@@ -4,7 +4,7 @@
     "",
     "PURPOSE: When Ruflo routes a task that involves Claude Code configuration",
     "(anything under .claude/), this PreToolUse hook fires a non-blocking",
-    "reminder to consult /claude-internals before making changes.",
+    "reminder to consult /claude-code-internals before making changes.",
     "",
     "HOW TO INSTALL: Merge the 'PreToolUse' array below into the 'hooks'",
     "object in ~/.claude/settings.json, alongside the existing SessionStart",
@@ -29,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/skills/claude-internals/scripts/config-aware-hook.sh",
+            "command": "~/.claude/skills/claude-code-internals/scripts/config-aware-hook.sh",
             "timeout": 2000
           }
         ]

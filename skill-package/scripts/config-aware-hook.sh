@@ -66,7 +66,7 @@ esac
 # ─── OUTPUT ────────────────────────────────────────────────────
 if [ "$TARGETS_CLAUDE_CONFIG" = "true" ]; then
   # Exit 0 + stdout = proceed with tool + stdout injected as additionalContext to model
-  echo "⚡ This tool targets .claude/ config. Claude Code internals knowledge is available via /claude-internals [topic]. Consider consulting before making changes."
+  echo "⚡ This tool targets .claude/ config. Claude Code internals knowledge is available via /claude-code-internals [topic]. Consider consulting before making changes."
   exit 0
 fi
 

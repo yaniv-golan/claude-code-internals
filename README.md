@@ -27,7 +27,7 @@
 
 ## What This Is
 
-This is a Claude Code skill (a local knowledge package that Claude Code loads automatically) containing a complete reverse-engineering of Claude Code's internal architecture. 50 detailed lessons cover every major subsystem — from the boot sequence to unreleased features. When you type `/claude-internals hooks` or `/claude-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
+This is a Claude Code skill (a local knowledge package that Claude Code loads automatically) containing a complete reverse-engineering of Claude Code's internal architecture. 50 detailed lessons cover every major subsystem — from the boot sequence to unreleased features. When you type `/claude-code-internals hooks` or `/claude-code-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
 
 Without this skill, Claude knows *how to use* Claude Code but doesn't know *how Claude Code works internally*. With it, Claude becomes an expert on its own implementation — the query engine's retry logic, the 27 hook event types, the 7-phase permission pipeline, the compaction algorithm, the agent spawn lifecycle, all of it.
 
@@ -66,7 +66,7 @@ This is because Claude's training data doesn't include Claude Code's source code
 <summary>ASCII Version (for AI/accessibility)</summary>
 
 ```
-                    User asks: "/claude-internals hooks"
+                    User asks: "/claude-code-internals hooks"
                                     |
                                     v
                     +-------------------------------+
@@ -158,7 +158,7 @@ PreToolUse hook fires on Edit/Write/Bash targeting .claude/
         Model sees:
         "Claude Code internals
          available via
-         /claude-internals [topic]"
+         /claude-code-internals [topic]"
 ```
 
 </details>
@@ -209,15 +209,15 @@ npx ruflo@latest
 
 ### From the Zip File (Recommended)
 
-If someone sends you `claude-internals.zip`, this is all you need:
+If someone sends you `claude-code-internals.zip`, this is all you need:
 
 ```bash
 # 1. Create the skill directory
-mkdir -p ~/.claude/skills/claude-internals
+mkdir -p ~/.claude/skills/claude-code-internals
 
 # 2. Unzip into it
-cd ~/.claude/skills/claude-internals
-unzip ~/path/to/claude-internals.zip
+cd ~/.claude/skills/claude-code-internals
+unzip ~/path/to/claude-code-internals.zip
 
 # 3. Make scripts executable
 chmod +x scripts/*.sh scripts/*.js
@@ -226,7 +226,7 @@ chmod +x scripts/*.sh scripts/*.js
 # Close your terminal and reopen, or start a new Claude Code session
 
 # 5. Verify it works — type this in Claude Code:
-#   /claude-internals hooks
+#   /claude-code-internals hooks
 # You should see a detailed response about all 27 hook events,
 # exit code semantics, and configuration format. If you see
 # "Unknown skill" instead, Claude Code needs a restart.
@@ -237,7 +237,7 @@ That's it. The zip contains everything — the SKILL.md brain, all 50 lessons, b
 ### From This Repo
 
 ```bash
-cp -r skill-package/* ~/.claude/skills/claude-internals/
+cp -r skill-package/* ~/.claude/skills/claude-code-internals/
 ```
 
 ### Activate the PreToolUse Hook (Optional)
@@ -251,7 +251,7 @@ This adds a gentle nudge whenever Claude is about to modify `.claude/` config fi
     "hooks": [
       {
         "type": "command",
-        "command": "~/.claude/skills/claude-internals/scripts/config-aware-hook.sh",
+        "command": "~/.claude/skills/claude-code-internals/scripts/config-aware-hook.sh",
         "timeout": 2000
       }
     ]
@@ -270,40 +270,40 @@ This adds a gentle nudge whenever Claude is about to modify `.claude/` config fi
 ### Basic Topic Lookup
 
 ```
-/claude-internals hooks
+/claude-code-internals hooks
 ```
 Returns all 27 hook event types, exit code semantics (0=proceed, 1=proceed+warn, 2=block), 5 command types, configuration format, and the critical detail that hook config is snapshot-captured at startup.
 
 ```
-/claude-internals permissions
+/claude-code-internals permissions
 ```
 Returns the 7-phase permission pipeline, 5 permission modes, the 23 Bash security validators, rule matching (exact, prefix, wildcard), rule sources and priority order, auto-mode fast paths, and bypass mode limitations.
 
 ### Natural Language Questions
 
 ```
-/claude-internals how does context compaction work
+/claude-code-internals how does context compaction work
 ```
 Returns the compaction algorithm, token thresholds, microcompact vs full compaction, what gets preserved vs summarized, and how to avoid losing important context.
 
 ### Debugging Scenarios
 
 ```
-/claude-internals why isn't my hook firing
+/claude-code-internals why isn't my hook firing
 ```
 Surfaces: Hook config is snapshot-captured once at startup (changes mid-session don't take effect), matcher regex must match the tool name, PreToolUse vs PostToolUse timing, and the exit code contract.
 
 ### Configuration Reference
 
 ```
-/claude-internals settings cascade
+/claude-code-internals settings cascade
 ```
 Returns the 5-layer config cascade (policy > project > user > local > CLI), Zod schema validation, chokidar file watching, and how layers merge.
 
 ### When Keyword Search Fails, TF-IDF Succeeds
 
 ```
-/claude-internals what happens when Claude runs out of context space
+/claude-code-internals what happens when Claude runs out of context space
 ```
 The keyword "compaction" doesn't appear in the query, but the TF-IDF layer matches it to the Context Compaction lesson because of overlapping terms like "context" and the semantic structure of the question.
 
@@ -359,7 +359,7 @@ The skill then reads the matched section with exact line offsets and synthesizes
 
 ```
   +-------------------+         +-------------------+         +--------------------+
-  | claude-internals  |  load   |  RuFlo / RuVector |  query  | Any Ruflo Agent    |
+  | claude-code-internals  |  load   |  RuFlo / RuVector |  query  | Any Ruflo Agent    |
   | skill (LOCAL)     | ------> |  (UNIVERSAL)      | ------> | task_orchestrate   |
   |                   |         |                   |         | Swarms & Workflows |
   | 50 lessons        |         | 10 cluster embeds |         | OpenClaw           |
@@ -368,17 +368,17 @@ The skill then reads the matched section with exact line offsets and synthesizes
   |                   |         | 2 routing patterns |         |                    |
   +-------------------+         +-------------------+         +--------------------+
         LOCAL ONLY                   UNIVERSAL                  EVERYTHING BENEFITS
-  (only /claude-internals)    (any agent, any session)     (architecture-aware agents)
+  (only /claude-code-internals)    (any agent, any session)     (architecture-aware agents)
 ```
 
 </details>
 
 The skill works standalone with Layers 1 and 2. But to make Claude Code architecture knowledge **universally accessible** to all agents, swarms, workflows, and task orchestration, you can load it into RuFlo and RuVector. This enables:
 
-- **Any Ruflo agent** can search Claude Code internals via embeddings (not just the `/claude-internals` skill)
+- **Any Ruflo agent** can search Claude Code internals via embeddings (not just the `/claude-code-internals` skill)
 - **`task_orchestrate`** automatically consults the knowledge when routing tasks involving `.claude/` configuration
 - **Swarms and workflows** can access architecture knowledge without needing the skill loaded
-- **OpenClaw and other systems** can query the knowledge via the `claude-internals` namespace
+- **OpenClaw and other systems** can query the knowledge via the `claude-code-internals` namespace
 
 ### Step 1: Load Cluster Embeddings (10 High-Level Summaries)
 
@@ -386,7 +386,7 @@ This stores 10 thematic clusters covering the major architecture areas:
 
 ```bash
 # From the skill directory
-cd ~/.claude/skills/claude-internals
+cd ~/.claude/skills/claude-code-internals
 
 # Generate and store embeddings via Ruflo
 # (requires Ruflo MCP server running)
@@ -397,8 +397,8 @@ Or manually via Ruflo MCP tools:
 
 ```
 # Store embeddings for each architecture area
-embeddings_generate  text="Boot sequence, query engine, state management, system prompt assembly..."  namespace=claude-internals
-embeddings_generate  text="Tool system, bash security validators, file tools, search tools, MCP..."  namespace=claude-internals
+embeddings_generate  text="Boot sequence, query engine, state management, system prompt assembly..."  namespace=claude-code-internals
+embeddings_generate  text="Tool system, bash security validators, file tools, search tools, MCP..."  namespace=claude-code-internals
 # ... repeat for all 10 clusters
 ```
 
@@ -408,8 +408,8 @@ This gives Ruflo precise per-lesson search capability:
 
 ```
 # Store each lesson summary individually
-memory_store  key="lesson-01-boot-sequence"  value="Claude Code boot sequence: CLI arg parsing, config cascade, MCP init..."  namespace=claude-internals-lessons
-memory_store  key="lesson-02-query-engine"  value="Query engine: streaming SSE, retry logic, continuation, while loop..."  namespace=claude-internals-lessons
+memory_store  key="lesson-01-boot-sequence"  value="Claude Code boot sequence: CLI arg parsing, config cascade, MCP init..."  namespace=claude-code-internals-lessons
+memory_store  key="lesson-02-query-engine"  value="Query engine: streaming SSE, retry logic, continuation, while loop..."  namespace=claude-code-internals-lessons
 # ... repeat for all 50 lessons
 ```
 
@@ -418,8 +418,8 @@ memory_store  key="lesson-02-query-engine"  value="Query engine: streaming SSE, 
 Store high-level reference entries so Ruflo's semantic router knows this knowledge exists:
 
 ```
-agentdb_hierarchical-store  key="claude-internals-hooks"  value="27 hook events, exit codes, PreToolUse/PostToolUse, command types"  level=reference  namespace=claude-internals
-agentdb_hierarchical-store  key="claude-internals-permissions"  value="7-phase pipeline, 5 modes, 23 Bash validators, rule matching"  level=reference  namespace=claude-internals
+agentdb_hierarchical-store  key="claude-code-internals-hooks"  value="27 hook events, exit codes, PreToolUse/PostToolUse, command types"  level=reference  namespace=claude-code-internals
+agentdb_hierarchical-store  key="claude-code-internals-permissions"  value="7-phase pipeline, 5 modes, 23 Bash validators, rule matching"  level=reference  namespace=claude-code-internals
 # ... repeat for 5 core areas
 ```
 
@@ -428,23 +428,23 @@ agentdb_hierarchical-store  key="claude-internals-permissions"  value="7-phase p
 Tell `task_orchestrate` to auto-consult this namespace for Claude Code config tasks:
 
 ```
-memory_store  key="routing-claude-config"  value="When task involves .claude/ config, hooks, agents, skills, or permissions: search namespace=claude-internals first"  namespace=task-routing
-memory_store  key="routing-claude-debug"  value="When debugging Claude Code behavior: search namespace=claude-internals-lessons for relevant lesson"  namespace=task-routing
+memory_store  key="routing-claude-config"  value="When task involves .claude/ config, hooks, agents, skills, or permissions: search namespace=claude-code-internals first"  namespace=task-routing
+memory_store  key="routing-claude-debug"  value="When debugging Claude Code behavior: search namespace=claude-code-internals-lessons for relevant lesson"  namespace=task-routing
 ```
 
 ### Step 5: Verify It's Working
 
 ```
 # Test cluster search
-embeddings_search  query="agent swarm"  namespace=claude-internals
+embeddings_search  query="agent swarm"  namespace=claude-code-internals
 # Expected: top hit should be agents/swarm cluster with similarity > 0.65
 
 # Test lesson search
-embeddings_search  query="hook exit codes"  namespace=claude-internals-lessons
+embeddings_search  query="hook exit codes"  namespace=claude-code-internals-lessons
 # Expected: Hooks System lesson with similarity > 0.70
 
 # Test semantic reference
-agentdb_hierarchical-recall  query="permissions"  namespace=claude-internals
+agentdb_hierarchical-recall  query="permissions"  namespace=claude-code-internals
 # Expected: permissions reference entry
 ```
 
@@ -452,14 +452,14 @@ agentdb_hierarchical-recall  query="permissions"  namespace=claude-internals
 
 | Namespace | Entries | Purpose | Query Speed |
 |-----------|---------|---------|-------------|
-| `claude-internals` | 10 clusters | High-level topic routing | ~6ms |
-| `claude-internals-lessons` | 50 lessons | Precise lesson-level search | ~6ms |
+| `claude-code-internals` | 10 clusters | High-level topic routing | ~6ms |
+| `claude-code-internals-lessons` | 50 lessons | Precise lesson-level search | ~6ms |
 | `task-routing` | 2 patterns | Auto-consultation by `task_orchestrate` | N/A (routing) |
 | AgentDB references | 5 entries | Semantic router awareness | ~10ms |
 
 ## Troubleshooting
 
-**"Unknown skill" when typing `/claude-internals`**
+**"Unknown skill" when typing `/claude-code-internals`**
 Skills register at startup. Restart Claude Code (close terminal, reopen) and try again.
 
 **`lookup.sh` fails with "command not found: jq"**
@@ -472,7 +472,7 @@ Check Node.js version: `node --version` (requires v18+). If the file isn't execu
 Hook config is snapshot-captured once at startup. If you just added the hook to `settings.json`, restart Claude Code. Also verify the script path is correct and the script is executable: `chmod +x scripts/config-aware-hook.sh`.
 
 **Layer 3 (neural search) doesn't work**
-Layer 3 requires Ruflo with the `claude-internals` namespace populated. See [RuFlo Integration](#ruflo--ruvector-integration--universal-knowledge-access). Layers 1 and 2 work without Ruflo.
+Layer 3 requires Ruflo with the `claude-code-internals` namespace populated. See [RuFlo Integration](#ruflo--ruvector-integration--universal-knowledge-access). Layers 1 and 2 work without Ruflo.
 
 **Search returns the wrong lesson**
 Try a different query phrasing. Layer 1 (keyword) is exact-match only. Layer 2 (TF-IDF) works better with natural language. If both miss, the topic may span multiple lessons — try broader terms.
@@ -483,11 +483,11 @@ Try a different query phrasing. Layer 1 (keyword) is exact-match only. Layer 2 (
 <summary>Directory Structure (click to expand)</summary>
 
 ```
-claude-internals-skill/
+claude-code-internals-skill/
 |
 +-- README.md                       This file
 +-- LICENSE                         MIT license
-+-- claude-internals.zip            Shareable package (171KB)
++-- claude-code-internals.zip            Shareable package (171KB)
 +-- topic-index.json                494-keyword lookup index
 |
 +-- skill-package/                  Mirror of installed skill
@@ -531,7 +531,7 @@ claude-internals-skill/
 
 ### What's in the Zip
 
-The `claude-internals.zip` file is the complete, shareable package. It contains everything needed to install and use the skill:
+The `claude-code-internals.zip` file is the complete, shareable package. It contains everything needed to install and use the skill:
 
 | File | Size | Purpose |
 |------|------|---------|

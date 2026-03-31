@@ -6,3 +6,4 @@ ruvector/
 
 # OS files
 .DS_Store
+.claude/ .mcp.json

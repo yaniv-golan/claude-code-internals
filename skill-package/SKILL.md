@@ -1,7 +1,7 @@
 ---
-name: claude-internals
+name: claude-code-internals
 description: "Complete reverse-engineering of Claude Code's source architecture (v2.1.88) covering 50 internal systems."
-when_to_use: "Use /claude-internals [topic] for deep-dive answers about any of Claude Code's 50 internal systems: boot sequence, query engine, tools, agents, permissions, memory, hooks, settings, MCP, swarms, coordinator mode, rendering, compaction, sessions, analytics, plugins, OAuth, sandbox, and unreleased features (KAIROS, ULTRAPLAN, BUDDY). Invoke this skill whenever you need to understand how Claude Code actually works under the hood, debug unexpected behavior, configure hooks or agents correctly, understand permission modes, or make any architectural decision about Claude Code configuration. Also activates automatically when editing .claude/ config files."
+when_to_use: "Use /claude-code-internals [topic] for deep-dive answers about any of Claude Code's 50 internal systems: boot sequence, query engine, tools, agents, permissions, memory, hooks, settings, MCP, swarms, coordinator mode, rendering, compaction, sessions, analytics, plugins, OAuth, sandbox, and unreleased features (KAIROS, ULTRAPLAN, BUDDY). Invoke this skill whenever you need to understand how Claude Code actually works under the hood, debug unexpected behavior, configure hooks or agents correctly, understand permission modes, or make any architectural decision about Claude Code configuration. Also activates automatically when editing .claude/ config files."
 user-invocable: true
 argument-hint: "[topic - e.g. hooks, permissions, memory, agents, compaction]"
 arguments: topic
