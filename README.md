@@ -2,7 +2,7 @@
 
 > A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 50 lessons covering every internal subsystem, searchable three ways.
 
-**Version:** 1.0.0 | **Captured from:** Claude Code v2.1.88 | **Date:** 2026-03-31 | **License:** MIT
+**Skill Version:** 2.0.0 | **Captured from:** Claude Code v2.1.88 | **Date:** 2026-03-31 | **License:** MIT
 
 ---
 
@@ -116,6 +116,7 @@ This is because Claude's training data doesn't include Claude Code's source code
 
 | Layer | Script | Speed | Best For | Requires |
 |-------|--------|-------|----------|----------|
+| **Unified (RRF)** | `search.js` | ~60ms | **Use this by default** — combines keyword + TF-IDF via Reciprocal Rank Fusion | Node.js + `jq` |
 | **1. Keyword** | `lookup.sh` | Instant | Exact terms: "hooks", "permissions", "KAIROS" | `jq` |
 | **2. TF-IDF** | `semantic-search.js` | ~50ms | Natural language: "how does Claude decide what tools to use" | Node.js |
 | **3. Neural** | Ruflo embeddings | ~6ms | Semantic concepts without keyword overlap | Ruflo (optional) |
@@ -348,7 +349,48 @@ The skill then reads the matched section with exact line offsets and synthesizes
 
 2. **Use natural language when keywords don't work.** If "compaction" doesn't find what you need, try "what happens when Claude runs out of context space" — the TF-IDF layer handles fuzzy matching.
 
-3. **Know its limits.** This is captured from Claude Code **v2.1.88**. If Claude Code has updated, some internals may have changed. Run `claude --version` to compare.
+3. **Know its limits.** This is captured from Claude Code **v2.1.88**. If Claude Code has updated, some internals may have changed. The `check-version.sh` script detects this automatically.
+
+## Smart Features (v2.0)
+
+### Unified Search (Reciprocal Rank Fusion)
+
+Instead of choosing between keyword search and TF-IDF, `search.js` runs both and merges results using [Reciprocal Rank Fusion](https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf) — a proven technique from information retrieval that consistently outperforms either individual ranker.
+
+```bash
+node scripts/search.js "hook events"
+# Returns: Hooks System [HIGH - both layers], plus related lessons
+```
+
+Results are labeled with confidence:
+- **HIGH** — Both keyword and TF-IDF agree this is a top match
+- **MEDIUM** — One layer ranks it highly
+- **LOW** — Appears in lower ranks only
+
+### Version Staleness Detection
+
+The skill automatically warns when Claude Code has updated past the captured version:
+
+```bash
+bash scripts/check-version.sh
+# Silent if versions match
+# Warns: "captured from v2.1.88 but you are running vX.Y.Z"
+```
+
+### Troubleshooting Index
+
+25 common problems mapped to relevant lessons with one-line hints:
+
+```bash
+# When the skill sees a debugging query like "hook not firing", it checks
+# troubleshooting.json and surfaces:
+#   Hint: Hook config is snapshot-captured at startup. Restart Claude Code.
+#   → Lessons: 32 (Hooks), 26 (Settings), 1 (Boot Sequence)
+```
+
+### Cross-Reference Map
+
+200 lesson-to-lesson connections enable multi-topic synthesis. When you ask "how do hooks interact with permissions?", the skill reads both the Hooks lesson AND the Permissions lesson because the cross-reference map links them (relevance: 0.85).
 
 ## RuFlo & RuVector Integration — Universal Knowledge Access
 
@@ -545,8 +587,12 @@ The `claude-code-internals.zip` file is the complete, shareable package. It cont
 | `references/semantic-index.json` | 99KB | Pre-built TF-IDF vectors for all 50 lessons |
 | `scripts/lookup.sh` | 1.2KB | Keyword search (requires `jq`) |
 | `scripts/semantic-search.js` | 6.9KB | TF-IDF search (requires Node.js 18+) |
+| `scripts/search.js` | 17KB | **Unified RRF search** — keyword + TF-IDF fused (use this by default) |
+| `scripts/check-version.sh` | 1.4KB | Version staleness detection |
 | `scripts/build-rvf-index.js` | 13.6KB | TF-IDF index builder (for rebuilding after updates) |
 | `scripts/config-aware-hook.sh` | 3.5KB | PreToolUse `.claude/` path detector |
+| `references/cross-references.json` | 18KB | 200 lesson-to-lesson connections for multi-topic synthesis |
+| `references/troubleshooting.json` | 9KB | 25 symptom patterns with lesson pointers and hints |
 
 ## Version Tracking
 

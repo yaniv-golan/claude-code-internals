@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Pre-push hook: auto-increment patch version, update README, rebuild zip
+# Install: git config core.hooksPath .githooks
+#
+# What it does on every push:
+# 1. Reads current version from skill-package/version.json
+# 2. Increments the patch number (e.g., 2.0.0 -> 2.0.1)
+# 3. Updates version.json
+# 4. Updates the README.md version badge
+# 5. Syncs README to skill-package/
+# 6. Rebuilds claude-code-internals.zip
+# 7. Amends the commit with the version bump
+
+set -euo pipefail
+
+cd "$(git rev-parse --show-toplevel)"
+
+VERSION_FILE="skill-package/version.json"
+
+# Read current version
+if command -v jq &>/dev/null; then
+  CURRENT=$(jq -r '.skill_version' "$VERSION_FILE")
+else
+  CURRENT=$(grep '"skill_version"' "$VERSION_FILE" | sed 's/.*"\([0-9]*\.[0-9]*\.[0-9]*\)".*/\1/')
+fi
+
+# Increment patch
+MAJOR=$(echo "$CURRENT" | cut -d. -f1)
+MINOR=$(echo "$CURRENT" | cut -d. -f2)
+PATCH=$(echo "$CURRENT" | cut -d. -f3)
+NEW_PATCH=$((PATCH + 1))
+NEW_VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
+
+# Update version.json
+if command -v jq &>/dev/null; then
+  jq --arg v "$NEW_VERSION" '.skill_version = $v' "$VERSION_FILE" > "${VERSION_FILE}.tmp" && mv "${VERSION_FILE}.tmp" "$VERSION_FILE"
+else
+  sed -i '' "s/\"skill_version\": \"$CURRENT\"/\"skill_version\": \"$NEW_VERSION\"/" "$VERSION_FILE"
+fi
+
+# Update README version badge
+sed -i '' "s/\*\*Skill Version:\*\* $CURRENT/\*\*Skill Version:\*\* $NEW_VERSION/" README.md
+
+# Sync README to skill-package
+cp README.md skill-package/README.md
+
+# Rebuild zip
+rm -f claude-code-internals.zip
+cd skill-package && zip -r ../claude-code-internals.zip . -x "*.DS_Store" > /dev/null 2>&1 && cd ..
+
+# Stage and amend
+git add "$VERSION_FILE" README.md skill-package/README.md claude-code-internals.zip
+git commit --amend --no-edit > /dev/null 2>&1
+
+echo "Version bumped: $CURRENT -> $NEW_VERSION"
