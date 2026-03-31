@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "pi-brain": {
-      "type": "sse",
-      "url": "https://pi.ruv.io/sse"
-    }
-  }
-}
