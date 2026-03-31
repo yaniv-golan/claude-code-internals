@@ -1,0 +1,8 @@
+# Upstream submodule - cloned separately
+ruvector/
+
+# Claude Flow working files
+.claude-flow/
+
+# OS files
+.DS_Store

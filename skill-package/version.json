@@ -1,0 +1,11 @@
+{
+  "skill_version": "1.0.0",
+  "captured_version": "2.1.88",
+  "captured_date": "2026-03-31",
+  "source": "https://www.markdown.engineering/learn-claude-code/",
+  "lessons_count": 50,
+  "chapters_count": 8,
+  "total_size_kb": 320,
+  "keywords_indexed": 494,
+  "note": "Content may be outdated if Claude Code has been updated beyond v2.1.88. Check claude --version to compare."
+}

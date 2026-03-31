@@ -1,0 +1,39 @@
+{
+  "_comment": [
+    "Claude-Internals Skill <-> Ruflo Task Orchestration Integration",
+    "",
+    "PURPOSE: When Ruflo routes a task that involves Claude Code configuration",
+    "(anything under .claude/), this PreToolUse hook fires a non-blocking",
+    "reminder to consult /claude-internals before making changes.",
+    "",
+    "HOW TO INSTALL: Merge the 'PreToolUse' array below into the 'hooks'",
+    "object in ~/.claude/settings.json, alongside the existing SessionStart",
+    "and UserPromptSubmit hooks.",
+    "",
+    "EXIT CODE STRATEGY:",
+    "  - Exit 0 (no output): Tool does not target .claude/ -- silent pass-through.",
+    "  - Exit 1 (stderr): Tool targets .claude/ -- proceed but show reminder to user.",
+    "  - Exit 2 would block the tool (NOT used -- we want a nudge, not a gate).",
+    "",
+    "MATCHER EXPLANATION:",
+    "  The matcher uses '(Edit|Write|Bash)' to only fire on tools that can",
+    "  modify files. The script itself does the fine-grained .claude/ path",
+    "  detection. Read, Grep, Glob are excluded since they are read-only.",
+    "",
+    "UPDATED: 2026-03-31 | VERSION: 1.0.0"
+  ],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "(Edit|Write|Bash)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/stuartkerr/.claude/skills/claude-internals/scripts/config-aware-hook.sh",
+            "timeout": 2000
+          }
+        ]
+      }
+    ]
+  }
+}
