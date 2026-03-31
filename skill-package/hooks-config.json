@@ -20,7 +20,7 @@
     "  modify files. The script itself does the fine-grained .claude/ path",
     "  detection. Read, Grep, Glob are excluded since they are read-only.",
     "",
-    "UPDATED: 2026-03-31 | VERSION: 1.0.0"
+    "UPDATED: 2026-03-31 | VERSION: 1.1.0"
   ],
   "hooks": {
     "PreToolUse": [

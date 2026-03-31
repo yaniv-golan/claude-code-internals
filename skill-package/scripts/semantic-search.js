@@ -36,6 +36,8 @@ const STOP_WORDS = new Set([
   'about', 'above', 'after', 'again', 'also', 'any', 'because',
   'before', 'between', 'during', 'here', 'if', 'into', 'once',
   'out', 'over', 'then', 'there', 'through', 'under', 'until', 'up',
+  // Domain stop words: appear in every lesson, add noise not signal
+  'claude', 'code',
   'while', 'down', 'off', 'further', 'get', 'got'
 ]);
 

@@ -1,0 +1,1111 @@
+{
+  "generated": "2026-03-31",
+  "description": "Cross-reference map: for each lesson, lists related lessons ranked by relevance",
+  "references": {
+    "1": [
+      {
+        "id": 4,
+        "relevance": 0.85,
+        "reason": "boot sequence assembles the system prompt during startup"
+      },
+      {
+        "id": 5,
+        "relevance": 0.82,
+        "reason": "boot sequence is detailed in the architecture capstone overview"
+      },
+      {
+        "id": 42,
+        "relevance": 0.8,
+        "reason": "boot entrypoints and SDK share CLI bootstrap logic"
+      },
+      {
+        "id": 50,
+        "relevance": 0.7,
+        "reason": "boot sequence launches the REPL as final startup step"
+      },
+      {
+        "id": 3,
+        "relevance": 0.68,
+        "reason": "boot sequence initializes AppState and state management"
+      }
+    ],
+    "2": [
+      {
+        "id": 28,
+        "relevance": 0.87,
+        "reason": "query engine triggers autocompact when context window fills"
+      },
+      {
+        "id": 33,
+        "relevance": 0.78,
+        "reason": "query engine retry logic connects to error handling and recovery"
+      },
+      {
+        "id": 48,
+        "relevance": 0.75,
+        "reason": "message pipeline normalizes input before query engine processing"
+      },
+      {
+        "id": 46,
+        "relevance": 0.72,
+        "reason": "model system configures which LLM the query engine calls"
+      },
+      {
+        "id": 5,
+        "relevance": 0.7,
+        "reason": "architecture overview includes the query engine data flow"
+      }
+    ],
+    "3": [
+      {
+        "id": 50,
+        "relevance": 0.75,
+        "reason": "state management drives REPL render tree via useSyncExternalStore"
+      },
+      {
+        "id": 17,
+        "relevance": 0.7,
+        "reason": "state management feeds Ink renderer for reactive terminal UI"
+      },
+      {
+        "id": 5,
+        "relevance": 0.68,
+        "reason": "architecture capstone covers state management patterns"
+      },
+      {
+        "id": 1,
+        "relevance": 0.68,
+        "reason": "boot sequence initializes AppState and state management"
+      },
+      {
+        "id": 25,
+        "relevance": 0.65,
+        "reason": "AppState tracks permission-mode for allow/deny decisions"
+      }
+    ],
+    "4": [
+      {
+        "id": 1,
+        "relevance": 0.85,
+        "reason": "boot sequence assembles the system prompt during startup"
+      },
+      {
+        "id": 15,
+        "relevance": 0.77,
+        "reason": "system prompt injects CLAUDE.md and memory content"
+      },
+      {
+        "id": 11,
+        "relevance": 0.72,
+        "reason": "system prompt includes skill frontmatter for discovery"
+      },
+      {
+        "id": 26,
+        "relevance": 0.68,
+        "reason": "system prompt respects settings cascade for dynamic sections"
+      }
+    ],
+    "5": [
+      {
+        "id": 1,
+        "relevance": 0.82,
+        "reason": "boot sequence is detailed in the architecture capstone overview"
+      },
+      {
+        "id": 48,
+        "relevance": 0.73,
+        "reason": "architecture overview covers the message processing data flow"
+      },
+      {
+        "id": 6,
+        "relevance": 0.72,
+        "reason": "architecture capstone describes the tool system layer"
+      },
+      {
+        "id": 2,
+        "relevance": 0.7,
+        "reason": "architecture overview includes the query engine data flow"
+      },
+      {
+        "id": 3,
+        "relevance": 0.68,
+        "reason": "architecture capstone covers state management patterns"
+      }
+    ],
+    "6": [
+      {
+        "id": 25,
+        "relevance": 0.88,
+        "reason": "permissions gate every tool execution via allow/deny/ask rules"
+      },
+      {
+        "id": 32,
+        "relevance": 0.82,
+        "reason": "hooks intercept tool execution at pre/post lifecycle points"
+      },
+      {
+        "id": 7,
+        "relevance": 0.8,
+        "reason": "Bash tool implements the Tool interface with security validators"
+      },
+      {
+        "id": 8,
+        "relevance": 0.78,
+        "reason": "File tools (Read/Write/Edit) implement the Tool interface"
+      },
+      {
+        "id": 9,
+        "relevance": 0.75,
+        "reason": "Search tools (Glob/Grep) implement the Tool interface"
+      }
+    ],
+    "7": [
+      {
+        "id": 25,
+        "relevance": 0.85,
+        "reason": "Bash tool has 23 security validators enforced by permissions"
+      },
+      {
+        "id": 6,
+        "relevance": 0.8,
+        "reason": "Bash tool implements the Tool interface with security validators"
+      },
+      {
+        "id": 47,
+        "relevance": 0.8,
+        "reason": "Bash sandboxing uses seatbelt/bubblewrap from security system"
+      },
+      {
+        "id": 8,
+        "relevance": 0.68,
+        "reason": "Bash and File tools share security validation patterns"
+      },
+      {
+        "id": 33,
+        "relevance": 0.65,
+        "reason": "Bash tool error handling feeds into recovery system"
+      }
+    ],
+    "8": [
+      {
+        "id": 6,
+        "relevance": 0.78,
+        "reason": "File tools (Read/Write/Edit) implement the Tool interface"
+      },
+      {
+        "id": 9,
+        "relevance": 0.72,
+        "reason": "file tools and search tools work together for codebase navigation"
+      },
+      {
+        "id": 7,
+        "relevance": 0.68,
+        "reason": "Bash and File tools share security validation patterns"
+      },
+      {
+        "id": 36,
+        "relevance": 0.62,
+        "reason": "file tools write/edit tracked by git integration watcher"
+      }
+    ],
+    "9": [
+      {
+        "id": 6,
+        "relevance": 0.75,
+        "reason": "Search tools (Glob/Grep) implement the Tool interface"
+      },
+      {
+        "id": 8,
+        "relevance": 0.72,
+        "reason": "file tools and search tools work together for codebase navigation"
+      },
+      {
+        "id": 36,
+        "relevance": 0.6,
+        "reason": "search tools navigate the git-tracked filesystem"
+      }
+    ],
+    "10": [
+      {
+        "id": 35,
+        "relevance": 0.83,
+        "reason": "MCP servers use OAuth/PKCE for authentication flow"
+      },
+      {
+        "id": 31,
+        "relevance": 0.78,
+        "reason": "MCP and plugin systems both provide extensibility points"
+      },
+      {
+        "id": 6,
+        "relevance": 0.7,
+        "reason": "MCP tools register through the same Tool interface"
+      },
+      {
+        "id": 34,
+        "relevance": 0.68,
+        "reason": "MCP transport layer shares WebSocket patterns with bridge"
+      },
+      {
+        "id": 42,
+        "relevance": 0.65,
+        "reason": "Agent SDK exposes MCP tool registration for entrypoints"
+      }
+    ],
+    "11": [
+      {
+        "id": 32,
+        "relevance": 0.75,
+        "reason": "skills can register via lifecycle hooks for discovery"
+      },
+      {
+        "id": 18,
+        "relevance": 0.73,
+        "reason": "skills register as slash commands in the commands system"
+      },
+      {
+        "id": 4,
+        "relevance": 0.72,
+        "reason": "system prompt includes skill frontmatter for discovery"
+      },
+      {
+        "id": 31,
+        "relevance": 0.65,
+        "reason": "skills can be distributed through the plugin marketplace"
+      }
+    ],
+    "12": [
+      {
+        "id": 13,
+        "relevance": 0.9,
+        "reason": "coordinator mode dispatches and manages subagents"
+      },
+      {
+        "id": 14,
+        "relevance": 0.88,
+        "reason": "swarm/teams are multi-agent architectures built on agent system"
+      },
+      {
+        "id": 49,
+        "relevance": 0.72,
+        "reason": "agent system spawns background tasks managed by task system"
+      },
+      {
+        "id": 42,
+        "relevance": 0.7,
+        "reason": "Agent SDK provides programmatic agent spawning entrypoints"
+      },
+      {
+        "id": 36,
+        "relevance": 0.65,
+        "reason": "git worktrees enable isolated agent filesystem branches"
+      }
+    ],
+    "13": [
+      {
+        "id": 12,
+        "relevance": 0.9,
+        "reason": "coordinator mode dispatches and manages subagents"
+      },
+      {
+        "id": 14,
+        "relevance": 0.85,
+        "reason": "coordinator dispatches workers; teams/swarm extend this pattern"
+      },
+      {
+        "id": 49,
+        "relevance": 0.68,
+        "reason": "coordinator tracks worker tasks through task system"
+      }
+    ],
+    "14": [
+      {
+        "id": 12,
+        "relevance": 0.88,
+        "reason": "swarm/teams are multi-agent architectures built on agent system"
+      },
+      {
+        "id": 13,
+        "relevance": 0.85,
+        "reason": "coordinator dispatches workers; teams/swarm extend this pattern"
+      },
+      {
+        "id": 43,
+        "relevance": 0.7,
+        "reason": "KAIROS daemon uses autonomous agent patterns from swarm"
+      },
+      {
+        "id": 23,
+        "relevance": 0.62,
+        "reason": "swarm tmux sessions use fullscreen terminal multiplexing"
+      }
+    ],
+    "15": [
+      {
+        "id": 16,
+        "relevance": 0.92,
+        "reason": "dreams and auto-memory consolidate the memory system"
+      },
+      {
+        "id": 28,
+        "relevance": 0.78,
+        "reason": "context compaction directly affects what stays in memory"
+      },
+      {
+        "id": 4,
+        "relevance": 0.77,
+        "reason": "system prompt injects CLAUDE.md and memory content"
+      },
+      {
+        "id": 27,
+        "relevance": 0.65,
+        "reason": "session memory persists across session management lifecycle"
+      },
+      {
+        "id": 43,
+        "relevance": 0.62,
+        "reason": "KAIROS daemon uses memory for autonomous context persistence"
+      }
+    ],
+    "16": [
+      {
+        "id": 15,
+        "relevance": 0.92,
+        "reason": "dreams and auto-memory consolidate the memory system"
+      },
+      {
+        "id": 43,
+        "relevance": 0.78,
+        "reason": "KAIROS uses kairos-memory for autonomous dream consolidation"
+      },
+      {
+        "id": 27,
+        "relevance": 0.62,
+        "reason": "auto-memory extracts insights from session transcripts"
+      }
+    ],
+    "17": [
+      {
+        "id": 50,
+        "relevance": 0.82,
+        "reason": "Ink renderer powers the REPL screen rendering pipeline"
+      },
+      {
+        "id": 24,
+        "relevance": 0.73,
+        "reason": "Ink renderer applies theme/visual styling to terminal UI"
+      },
+      {
+        "id": 3,
+        "relevance": 0.7,
+        "reason": "state management feeds Ink renderer for reactive terminal UI"
+      },
+      {
+        "id": 23,
+        "relevance": 0.7,
+        "reason": "fullscreen mode uses Ink alternate screen buffer"
+      },
+      {
+        "id": 19,
+        "relevance": 0.68,
+        "reason": "Ink renderer draws dialog UI components"
+      }
+    ],
+    "18": [
+      {
+        "id": 11,
+        "relevance": 0.73,
+        "reason": "skills register as slash commands in the commands system"
+      },
+      {
+        "id": 19,
+        "relevance": 0.65,
+        "reason": "slash commands can trigger dialog UI prompts"
+      },
+      {
+        "id": 50,
+        "relevance": 0.62,
+        "reason": "commands execute within the REPL input loop"
+      }
+    ],
+    "19": [
+      {
+        "id": 25,
+        "relevance": 0.72,
+        "reason": "dialog UI presents permission prompts to the user"
+      },
+      {
+        "id": 17,
+        "relevance": 0.68,
+        "reason": "Ink renderer draws dialog UI components"
+      },
+      {
+        "id": 18,
+        "relevance": 0.65,
+        "reason": "slash commands can trigger dialog UI prompts"
+      },
+      {
+        "id": 20,
+        "relevance": 0.6,
+        "reason": "dialog notifications and toasts share UI patterns"
+      }
+    ],
+    "20": [
+      {
+        "id": 17,
+        "relevance": 0.68,
+        "reason": "notifications render through Ink terminal UI layer"
+      },
+      {
+        "id": 19,
+        "relevance": 0.6,
+        "reason": "dialog notifications and toasts share UI patterns"
+      },
+      {
+        "id": 50,
+        "relevance": 0.58,
+        "reason": "notification priority queue integrates with REPL screen"
+      }
+    ],
+    "21": [
+      {
+        "id": 22,
+        "relevance": 0.88,
+        "reason": "Vim mode keybindings are part of the keybindings system"
+      },
+      {
+        "id": 50,
+        "relevance": 0.65,
+        "reason": "Vim mode state machine operates within the REPL input layer"
+      },
+      {
+        "id": 17,
+        "relevance": 0.58,
+        "reason": "Vim mode renders cursor/mode indicator through Ink"
+      }
+    ],
+    "22": [
+      {
+        "id": 21,
+        "relevance": 0.88,
+        "reason": "Vim mode keybindings are part of the keybindings system"
+      },
+      {
+        "id": 50,
+        "relevance": 0.62,
+        "reason": "keybindings handle REPL input events and chord sequences"
+      },
+      {
+        "id": 26,
+        "relevance": 0.58,
+        "reason": "keybindings are customized via settings configuration"
+      }
+    ],
+    "23": [
+      {
+        "id": 17,
+        "relevance": 0.7,
+        "reason": "fullscreen mode uses Ink alternate screen buffer"
+      },
+      {
+        "id": 50,
+        "relevance": 0.65,
+        "reason": "fullscreen mode is a REPL screen rendering variant"
+      },
+      {
+        "id": 14,
+        "relevance": 0.62,
+        "reason": "swarm tmux sessions use fullscreen terminal multiplexing"
+      }
+    ],
+    "24": [
+      {
+        "id": 17,
+        "relevance": 0.73,
+        "reason": "Ink renderer applies theme/visual styling to terminal UI"
+      },
+      {
+        "id": 26,
+        "relevance": 0.65,
+        "reason": "theme preferences stored in settings configuration"
+      },
+      {
+        "id": 50,
+        "relevance": 0.6,
+        "reason": "theme colors render in the REPL screen buffer"
+      },
+      {
+        "id": 40,
+        "relevance": 0.5,
+        "reason": "buddy uses theme colors for sprite rendering"
+      }
+    ],
+    "25": [
+      {
+        "id": 6,
+        "relevance": 0.88,
+        "reason": "permissions gate every tool execution via allow/deny/ask rules"
+      },
+      {
+        "id": 7,
+        "relevance": 0.85,
+        "reason": "Bash tool has 23 security validators enforced by permissions"
+      },
+      {
+        "id": 32,
+        "relevance": 0.85,
+        "reason": "hooks fire before permission checks in tool execution pipeline"
+      },
+      {
+        "id": 26,
+        "relevance": 0.8,
+        "reason": "permission rules are configured within settings cascade"
+      },
+      {
+        "id": 47,
+        "relevance": 0.77,
+        "reason": "sandbox security enforces permission boundaries at OS level"
+      }
+    ],
+    "26": [
+      {
+        "id": 32,
+        "relevance": 0.8,
+        "reason": "hook configuration lives in settings.json alongside other settings"
+      },
+      {
+        "id": 25,
+        "relevance": 0.8,
+        "reason": "permission rules are configured within settings cascade"
+      },
+      {
+        "id": 30,
+        "relevance": 0.75,
+        "reason": "migration system upgrades settings between versions"
+      },
+      {
+        "id": 46,
+        "relevance": 0.7,
+        "reason": "settings configure model aliases and provider allowlists"
+      },
+      {
+        "id": 4,
+        "relevance": 0.68,
+        "reason": "system prompt respects settings cascade for dynamic sections"
+      }
+    ],
+    "27": [
+      {
+        "id": 28,
+        "relevance": 0.82,
+        "reason": "session transcripts undergo compaction to manage context window"
+      },
+      {
+        "id": 36,
+        "relevance": 0.68,
+        "reason": "session management uses git watcher for filesystem tracking"
+      },
+      {
+        "id": 15,
+        "relevance": 0.65,
+        "reason": "session memory persists across session management lifecycle"
+      },
+      {
+        "id": 16,
+        "relevance": 0.62,
+        "reason": "auto-memory extracts insights from session transcripts"
+      }
+    ],
+    "28": [
+      {
+        "id": 2,
+        "relevance": 0.87,
+        "reason": "query engine triggers autocompact when context window fills"
+      },
+      {
+        "id": 27,
+        "relevance": 0.82,
+        "reason": "session transcripts undergo compaction to manage context window"
+      },
+      {
+        "id": 15,
+        "relevance": 0.78,
+        "reason": "context compaction directly affects what stays in memory"
+      },
+      {
+        "id": 48,
+        "relevance": 0.65,
+        "reason": "message pipeline interacts with compaction for context management"
+      }
+    ],
+    "29": [
+      {
+        "id": 44,
+        "relevance": 0.95,
+        "reason": "shared keywords: analytics, telemetry, datadog, growthbook, pii, sampling, event-queue, kill-switch, metadata-enrichment, feature-flags"
+      },
+      {
+        "id": 33,
+        "relevance": 0.6,
+        "reason": "telemetry captures error rates from error handling system"
+      },
+      {
+        "id": 46,
+        "relevance": 0.58,
+        "reason": "telemetry tracks model usage and provider metrics"
+      }
+    ],
+    "30": [
+      {
+        "id": 26,
+        "relevance": 0.75,
+        "reason": "migration system upgrades settings between versions"
+      },
+      {
+        "id": 31,
+        "relevance": 0.62,
+        "reason": "migrations handle plugin manifest version changes"
+      },
+      {
+        "id": 47,
+        "relevance": 0.58,
+        "reason": "migrations gate features behind version-based security checks"
+      }
+    ],
+    "31": [
+      {
+        "id": 32,
+        "relevance": 0.82,
+        "reason": "plugins can register lifecycle hooks for extensibility"
+      },
+      {
+        "id": 10,
+        "relevance": 0.78,
+        "reason": "MCP and plugin systems both provide extensibility points"
+      },
+      {
+        "id": 11,
+        "relevance": 0.65,
+        "reason": "skills can be distributed through the plugin marketplace"
+      },
+      {
+        "id": 30,
+        "relevance": 0.62,
+        "reason": "migrations handle plugin manifest version changes"
+      }
+    ],
+    "32": [
+      {
+        "id": 25,
+        "relevance": 0.85,
+        "reason": "hooks fire before permission checks in tool execution pipeline"
+      },
+      {
+        "id": 31,
+        "relevance": 0.82,
+        "reason": "plugins can register lifecycle hooks for extensibility"
+      },
+      {
+        "id": 6,
+        "relevance": 0.82,
+        "reason": "hooks intercept tool execution at pre/post lifecycle points"
+      },
+      {
+        "id": 26,
+        "relevance": 0.8,
+        "reason": "hook configuration lives in settings.json alongside other settings"
+      },
+      {
+        "id": 11,
+        "relevance": 0.75,
+        "reason": "skills can register via lifecycle hooks for discovery"
+      }
+    ],
+    "33": [
+      {
+        "id": 2,
+        "relevance": 0.78,
+        "reason": "query engine retry logic connects to error handling and recovery"
+      },
+      {
+        "id": 7,
+        "relevance": 0.65,
+        "reason": "Bash tool error handling feeds into recovery system"
+      },
+      {
+        "id": 29,
+        "relevance": 0.6,
+        "reason": "telemetry captures error rates from error handling system"
+      },
+      {
+        "id": 46,
+        "relevance": 0.6,
+        "reason": "error handling manages model provider fallback chains"
+      }
+    ],
+    "34": [
+      {
+        "id": 37,
+        "relevance": 0.75,
+        "reason": "bridge remote control routes through upstream proxy"
+      },
+      {
+        "id": 41,
+        "relevance": 0.73,
+        "reason": "bridge/CCR enables Ultraplan remote session control"
+      },
+      {
+        "id": 42,
+        "relevance": 0.7,
+        "reason": "Agent SDK entrypoints use bridge/CCR control protocol"
+      },
+      {
+        "id": 10,
+        "relevance": 0.68,
+        "reason": "MCP transport layer shares WebSocket patterns with bridge"
+      },
+      {
+        "id": 35,
+        "relevance": 0.6,
+        "reason": "OAuth JWT tokens authenticate bridge remote connections"
+      }
+    ],
+    "35": [
+      {
+        "id": 10,
+        "relevance": 0.83,
+        "reason": "MCP servers use OAuth/PKCE for authentication flow"
+      },
+      {
+        "id": 47,
+        "relevance": 0.68,
+        "reason": "OAuth token storage uses keychain from security system"
+      },
+      {
+        "id": 34,
+        "relevance": 0.6,
+        "reason": "OAuth JWT tokens authenticate bridge remote connections"
+      }
+    ],
+    "36": [
+      {
+        "id": 27,
+        "relevance": 0.68,
+        "reason": "session management uses git watcher for filesystem tracking"
+      },
+      {
+        "id": 12,
+        "relevance": 0.65,
+        "reason": "git worktrees enable isolated agent filesystem branches"
+      },
+      {
+        "id": 8,
+        "relevance": 0.62,
+        "reason": "file tools write/edit tracked by git integration watcher"
+      },
+      {
+        "id": 9,
+        "relevance": 0.6,
+        "reason": "search tools navigate the git-tracked filesystem"
+      }
+    ],
+    "37": [
+      {
+        "id": 34,
+        "relevance": 0.75,
+        "reason": "bridge remote control routes through upstream proxy"
+      },
+      {
+        "id": 47,
+        "relevance": 0.65,
+        "reason": "proxy TLS/MITM inspection relates to security sandbox"
+      },
+      {
+        "id": 46,
+        "relevance": 0.6,
+        "reason": "proxy can route between model providers"
+      }
+    ],
+    "38": [
+      {
+        "id": 43,
+        "relevance": 0.72,
+        "reason": "cron scheduling powers KAIROS daemon recurring tasks"
+      },
+      {
+        "id": 49,
+        "relevance": 0.7,
+        "reason": "cron/task scheduling overlaps with background task system"
+      },
+      {
+        "id": 41,
+        "relevance": 0.6,
+        "reason": "Ultraplan polling interval resembles cron scheduling"
+      },
+      {
+        "id": 12,
+        "relevance": 0.58,
+        "reason": "scheduled tasks can spawn agent instances"
+      }
+    ],
+    "39": [
+      {
+        "id": 45,
+        "relevance": 0.65,
+        "reason": "voice input integrates with desktop app for push-to-talk"
+      },
+      {
+        "id": 50,
+        "relevance": 0.6,
+        "reason": "voice input feeds into the REPL input layer"
+      },
+      {
+        "id": 34,
+        "relevance": 0.55,
+        "reason": "voice WebSocket streaming shares patterns with bridge"
+      }
+    ],
+    "40": [
+      {
+        "id": 17,
+        "relevance": 0.6,
+        "reason": "buddy companion renders sprites through Ink renderer"
+      },
+      {
+        "id": 50,
+        "relevance": 0.55,
+        "reason": "buddy displays within the REPL screen easter egg"
+      },
+      {
+        "id": 24,
+        "relevance": 0.5,
+        "reason": "buddy uses theme colors for sprite rendering"
+      }
+    ],
+    "41": [
+      {
+        "id": 34,
+        "relevance": 0.73,
+        "reason": "bridge/CCR enables Ultraplan remote session control"
+      },
+      {
+        "id": 43,
+        "relevance": 0.65,
+        "reason": "Ultraplan and KAIROS both manage long-running remote sessions"
+      },
+      {
+        "id": 38,
+        "relevance": 0.6,
+        "reason": "Ultraplan polling interval resembles cron scheduling"
+      }
+    ],
+    "42": [
+      {
+        "id": 1,
+        "relevance": 0.8,
+        "reason": "boot entrypoints and SDK share CLI bootstrap logic"
+      },
+      {
+        "id": 12,
+        "relevance": 0.7,
+        "reason": "Agent SDK provides programmatic agent spawning entrypoints"
+      },
+      {
+        "id": 34,
+        "relevance": 0.7,
+        "reason": "Agent SDK entrypoints use bridge/CCR control protocol"
+      },
+      {
+        "id": 45,
+        "relevance": 0.68,
+        "reason": "desktop app uses Agent SDK entrypoints for IDE integration"
+      },
+      {
+        "id": 10,
+        "relevance": 0.65,
+        "reason": "Agent SDK exposes MCP tool registration for entrypoints"
+      }
+    ],
+    "43": [
+      {
+        "id": 16,
+        "relevance": 0.78,
+        "reason": "KAIROS uses kairos-memory for autonomous dream consolidation"
+      },
+      {
+        "id": 38,
+        "relevance": 0.72,
+        "reason": "cron scheduling powers KAIROS daemon recurring tasks"
+      },
+      {
+        "id": 14,
+        "relevance": 0.7,
+        "reason": "KAIROS daemon uses autonomous agent patterns from swarm"
+      },
+      {
+        "id": 41,
+        "relevance": 0.65,
+        "reason": "Ultraplan and KAIROS both manage long-running remote sessions"
+      },
+      {
+        "id": 15,
+        "relevance": 0.62,
+        "reason": "KAIROS daemon uses memory for autonomous context persistence"
+      }
+    ],
+    "44": [
+      {
+        "id": 29,
+        "relevance": 0.95,
+        "reason": "shared keywords: analytics, telemetry, datadog, growthbook, pii, sampling, event-queue, kill-switch, metadata-enrichment, feature-flags"
+      },
+      {
+        "id": 46,
+        "relevance": 0.7,
+        "reason": "cost analytics tracks spending per model provider"
+      },
+      {
+        "id": 2,
+        "relevance": 0.62,
+        "reason": "cost analytics monitors query engine API call costs"
+      }
+    ],
+    "45": [
+      {
+        "id": 42,
+        "relevance": 0.68,
+        "reason": "desktop app uses Agent SDK entrypoints for IDE integration"
+      },
+      {
+        "id": 39,
+        "relevance": 0.65,
+        "reason": "voice input integrates with desktop app for push-to-talk"
+      },
+      {
+        "id": 34,
+        "relevance": 0.6,
+        "reason": "desktop deep-links connect through bridge protocol"
+      }
+    ],
+    "46": [
+      {
+        "id": 2,
+        "relevance": 0.72,
+        "reason": "model system configures which LLM the query engine calls"
+      },
+      {
+        "id": 44,
+        "relevance": 0.7,
+        "reason": "cost analytics tracks spending per model provider"
+      },
+      {
+        "id": 26,
+        "relevance": 0.7,
+        "reason": "settings configure model aliases and provider allowlists"
+      },
+      {
+        "id": 33,
+        "relevance": 0.6,
+        "reason": "error handling manages model provider fallback chains"
+      },
+      {
+        "id": 37,
+        "relevance": 0.6,
+        "reason": "proxy can route between model providers"
+      }
+    ],
+    "47": [
+      {
+        "id": 7,
+        "relevance": 0.8,
+        "reason": "Bash sandboxing uses seatbelt/bubblewrap from security system"
+      },
+      {
+        "id": 25,
+        "relevance": 0.77,
+        "reason": "sandbox security enforces permission boundaries at OS level"
+      },
+      {
+        "id": 35,
+        "relevance": 0.68,
+        "reason": "OAuth token storage uses keychain from security system"
+      },
+      {
+        "id": 37,
+        "relevance": 0.65,
+        "reason": "proxy TLS/MITM inspection relates to security sandbox"
+      },
+      {
+        "id": 30,
+        "relevance": 0.58,
+        "reason": "migrations gate features behind version-based security checks"
+      }
+    ],
+    "48": [
+      {
+        "id": 2,
+        "relevance": 0.75,
+        "reason": "message pipeline normalizes input before query engine processing"
+      },
+      {
+        "id": 5,
+        "relevance": 0.73,
+        "reason": "architecture overview covers the message processing data flow"
+      },
+      {
+        "id": 28,
+        "relevance": 0.65,
+        "reason": "message pipeline interacts with compaction for context management"
+      },
+      {
+        "id": 6,
+        "relevance": 0.62,
+        "reason": "message pipeline transforms tool results for API format"
+      }
+    ],
+    "49": [
+      {
+        "id": 12,
+        "relevance": 0.72,
+        "reason": "agent system spawns background tasks managed by task system"
+      },
+      {
+        "id": 38,
+        "relevance": 0.7,
+        "reason": "cron/task scheduling overlaps with background task system"
+      },
+      {
+        "id": 13,
+        "relevance": 0.68,
+        "reason": "coordinator tracks worker tasks through task system"
+      }
+    ],
+    "50": [
+      {
+        "id": 17,
+        "relevance": 0.82,
+        "reason": "Ink renderer powers the REPL screen rendering pipeline"
+      },
+      {
+        "id": 3,
+        "relevance": 0.75,
+        "reason": "state management drives REPL render tree via useSyncExternalStore"
+      },
+      {
+        "id": 1,
+        "relevance": 0.7,
+        "reason": "boot sequence launches the REPL as final startup step"
+      },
+      {
+        "id": 23,
+        "relevance": 0.65,
+        "reason": "fullscreen mode is a REPL screen rendering variant"
+      },
+      {
+        "id": 21,
+        "relevance": 0.65,
+        "reason": "Vim mode state machine operates within the REPL input layer"
+      }
+    ]
+  }
+}

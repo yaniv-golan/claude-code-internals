@@ -1,4 +1,4 @@
-# Claude Internals Skill
+# Claude Code Internals
 
 > A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 50 lessons covering every internal subsystem, searchable three ways.
 
