@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp /Users/stuartkerr/Code/Pi_Brain_memories/claude-code-deep-dive-all-10-lessons.md ~/.claude/skills/claude-internals/references/01-core-architecture-tools.md)",
+      "Bash(cp /Users/stuartkerr/Code/Pi_Brain_memories/claude-code-deep-dive-batch2-agents-interface.md ~/.claude/skills/claude-internals/references/02-agents-intelligence-interface.md)",
+      "Bash(cp /Users/stuartkerr/Code/Pi_Brain_memories/claude-code-deep-dive-lessons.md ~/.claude/skills/claude-internals/references/03-interface-infrastructure.md)",
+      "Bash(cp /Users/stuartkerr/Code/Pi_Brain_memories/claude-code-deep-dive-batch2-10-lessons.md ~/.claude/skills/claude-internals/references/04-connectivity-plugins.md)",
+      "Bash(cp /Users/stuartkerr/Code/Pi_Brain_memories/claude-code-deep-dive-10-lessons.md ~/.claude/skills/claude-internals/references/05-unreleased-bigpicture.md)",
+      "Bash(bash /Users/stuartkerr/.claude/skills/claude-internals/scripts/config-aware-hook.sh)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(cp ~/.claude/skills/claude-code-internals/SKILL.md skill-package/SKILL.md)",
+      "Bash(cp ~/.claude/skills/claude-code-internals/scripts/config-aware-hook.sh skill-package/scripts/config-aware-hook.sh)"
+    ]
+  }
+}

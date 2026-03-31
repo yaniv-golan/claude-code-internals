@@ -187,14 +187,27 @@ function main() {
   // Sort by score descending
   scored.sort((a, b) => b.score - a.score);
 
-  // Take top N
-  const results = scored.slice(0, topN);
+  // Filter by minimum score threshold — scores below 0.03 are noise
+  const MIN_SCORE = 0.03;
+  const filtered = scored.filter(r => r.score >= MIN_SCORE);
+
+  // Take top N from filtered results
+  const results = filtered.slice(0, topN);
+
+  // Confidence labels
+  const confidence = (score) => {
+    if (score >= 0.20) return 'HIGH';
+    if (score >= 0.10) return 'MEDIUM';
+    if (score >= 0.03) return 'LOW';
+    return 'NONE';
+  };
 
   if (jsonOutput) {
     const output = results.map(r => ({
       id: r.id,
       title: r.title,
       score: +r.score.toFixed(4),
+      confidence: confidence(r.score),
       file: r.file,
       startLine: r.startLine,
       endLine: r.endLine,
@@ -206,18 +219,20 @@ function main() {
     console.log(`Tokens: [${queryTokens.join(', ')}]`);
     console.log(`${'='.repeat(60)}\n`);
 
-    for (let i = 0; i < results.length; i++) {
-      const r = results[i];
-      const scoreBar = '#'.repeat(Math.round(r.score * 40));
-      console.log(`  ${i + 1}. ${r.title} (Lesson ${r.id})`);
-      console.log(`     Score: ${r.score.toFixed(4)}  ${scoreBar}`);
-      console.log(`     File:  ${r.file}:${r.startLine}-${r.endLine}`);
-      console.log(`     Keywords: ${r.keywords.join(', ')}`);
-      console.log();
-    }
-
-    if (results.length === 0 || results[0].score === 0) {
-      console.log('  No matching results. Try different search terms.');
+    if (results.length === 0) {
+      console.log('  No confident matches found (all scores below threshold).');
+      console.log('  Try different search terms or use lookup.sh for exact keyword matching.');
+    } else {
+      for (let i = 0; i < results.length; i++) {
+        const r = results[i];
+        const scoreBar = '#'.repeat(Math.round(r.score * 40));
+        const conf = confidence(r.score);
+        console.log(`  ${i + 1}. ${r.title} (Lesson ${r.id}) [${conf}]`);
+        console.log(`     Score: ${r.score.toFixed(4)}  ${scoreBar}`);
+        console.log(`     File:  ${r.file}:${r.startLine}-${r.endLine}`);
+        console.log(`     Keywords: ${r.keywords.join(', ')}`);
+        console.log();
+      }
     }
   }
 }

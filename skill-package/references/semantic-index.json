@@ -7,7 +7,7 @@
     {
       "id": 1,
       "title": "Boot Sequence",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 25,
       "endLine": 234,
       "text": "Boot Sequence boot startup cli-entrypoint cold-start init How Claude Code boots up: CLI entrypoint, cold-start init, module eval, three-layer architecture, fast path, keychain prefetch, bare mode, worktree and tmux setup boot startup init cold-start cli-entrypoint cli main-tsx setup session-wiring repl-launcher ink three-layer-architecture fast-path module-eval keychain-prefetch bare-mode worktree tmux tengu-started deferred-prefetch fast-paths",
@@ -83,7 +83,7 @@
     {
       "id": 2,
       "title": "Query Engine & LLM API",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 236,
       "endLine": 501,
       "text": "Query Engine & LLM API query-engine api streaming retry autocompact Query engine loop that talks to the LLM API: streaming responses, content block deltas, retry with exponential backoff, 529 overload handling, opus fallback, prompt cache, autocompact triggers query-engine api streaming retry autocompact query-loop llm tool-execution content-block-delta stop-hooks token-budget exponential-backoff 529-overload opus-fallback prompt-cache context-management snip-compact microcompact context-collapse async-generator pipeline",
@@ -162,7 +162,7 @@
     {
       "id": 3,
       "title": "State Management",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 503,
       "endLine": 893,
       "text": "State Management state appstate react store selectors Application state management: AppState store, React selectors, createStore, useSyncExternalStore, immutable state, speculation, side effects, permission mode tracking state appstate react store selectors createstore usesyncexternalstore immutable deep-immutable speculation onchangeappstate side-effect permission-mode zustand",
@@ -215,7 +215,7 @@
     {
       "id": 4,
       "title": "System Prompt Construction",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 895,
       "endLine": 1030,
       "text": "System Prompt Construction system-prompt claude-md memory-injection prompt-cache dynamic-sections How the system prompt is built: CLAUDE.md injection, memory injection, dynamic sections, prompt cache boundaries, include directives, frontmatter, subagent prompts, undercover mode, env info prompt-cache system-prompt claude-md memory-injection dynamic-sections prompt-cache-boundary include-directive frontmatter subagent-prompt undercover-mode env-info memory-md",
@@ -269,7 +269,7 @@
     {
       "id": 5,
       "title": "Architecture Overview (Capstone)",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 1032,
       "endLine": 1261,
       "text": "Architecture Overview (Capstone) architecture capstone data-flow timeline overview Architecture capstone overview: six layers, data flow timeline, session wiring, query engine, tool system, hooks, state, async generators, the complete picture boot startup cold-start main-tsx setup session-wiring repl-launcher bare-mode tengu-started deferred-prefetch query-engine api streaming llm async-generator state appstate system-prompt claude-md architecture capstone data-flow timeline overview six-layers tools transcript compaction hooks",
@@ -363,7 +363,7 @@
     {
       "id": 6,
       "title": "Tool System",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 1263,
       "endLine": 1538,
       "text": "Tool System tools tool-interface orchestration concurrency permissions Tool system: how tools are defined, registered, and orchestrated. Tool interface, concurrency, build-tool helper, tool results, context modifiers, streaming tool executor, sibling abort, permission context, Zod schemas streaming tool-execution tools tool-interface orchestration concurrency build-tool tool-result context-modifier streaming-tool-executor tool-lifecycle sibling-abort permission-context zod permissions",
@@ -423,7 +423,7 @@
     {
       "id": 7,
       "title": "Bash Tool",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 1540,
       "endLine": 1704,
       "text": "Bash Tool bash shell security-validators sandboxing command-execution Bash tool: shell command execution, 23 security validators, sandboxing, shell snapshots, background execution, sed constraints, output handling bash shell security-validators sandboxing command-execution shell-snapshot 23-validators background-execution sed-constraint output-handling permissions security background-tasks",
@@ -474,7 +474,7 @@
     {
       "id": 8,
       "title": "File Tools (Read, Write, Edit)",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 1706,
       "endLine": 1864,
       "text": "File Tools (Read, Write, Edit) file-read file-write file-edit read-before-write atomic-write File tools for reading, writing, and editing: read-before-write enforcement, atomic writes, image support, PDF support, Jupyter notebooks, dedup, quote normalization, LSP notifications file-read file-write file-edit read-before-write atomic-write image-support pdf-support jupyter dedup quote-normalization lsp-notification",
@@ -526,7 +526,7 @@
     {
       "id": 9,
       "title": "Search Tools (Glob & Grep)",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 1866,
       "endLine": 2103,
       "text": "Search Tools (Glob & Grep) glob grep ripgrep search file-search Search tools Glob and Grep: ripgrep integration, mtime sorting, pagination, head limit, binary detection, EAGAIN retry glob grep ripgrep search file-search mtime-sort pagination head-limit ripgrep-binary eagain-retry",
@@ -572,7 +572,7 @@
     {
       "id": 10,
       "title": "MCP System",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 2105,
       "endLine": 2207,
       "text": "MCP System mcp model-context-protocol oauth transport elicitation MCP Model Context Protocol: OAuth, stdio and SSE transports, elicitation, WebSocket, tool proxy, server deduplication, instructions mcp model-context-protocol oauth transport elicitation stdio sse websocket mcp-tool-proxy server-deduplication mcp-instructions",
@@ -619,7 +619,7 @@
     {
       "id": 11,
       "title": "Skills System",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 7,
       "endLine": 172,
       "text": "Skills System skills skill-md frontmatter discovery commands Skills system: skill.md files, frontmatter format, discovery, slash commands, skill lifecycle, bundled and MCP skills, conditional skills, live reloading, fork context frontmatter shell skills skill-md discovery slash-commands skill-lifecycle bundled-skills mcp-skills conditional-skills live-reloading fork-context commands",
@@ -670,7 +670,7 @@
     {
       "id": 12,
       "title": "Agent System",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 174,
       "endLine": 443,
       "text": "Agent System agents subagent fork worktree async-agent Agent system: subagents, fork, async agents, agent tool, built-in and custom agents, explore agent, worktree isolation, send-message, agent frontmatter worktree agents subagent fork async-agent agent-tool built-in-agent custom-agent explore-agent worktree-isolation send-message agent-frontmatter",
@@ -717,7 +717,7 @@
     {
       "id": 13,
       "title": "Coordinator Mode",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 445,
       "endLine": 599,
       "text": "Coordinator Mode coordinator dispatcher workers scratchpad parallel-agents Coordinator mode: dispatcher, workers, scratchpad, parallel agents, research-synthesis-implement-verify pattern agents agent-tool coordinator dispatcher workers scratchpad parallel-agents coordinator-mode research-synthesis-implement-verify task-notification",
@@ -762,7 +762,7 @@
     {
       "id": 14,
       "title": "Teams & Swarm",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 601,
       "endLine": 866,
       "text": "Teams & Swarm swarm teams tmux mailbox teammate Teams and Swarm: multi-agent teams, tmux pane creation, mailbox communication, teammate, iTerm2, in-process backend, permission sync, shutdown worktree tmux concurrency agents send-message swarm teams mailbox teammate team-create team-delete iterm2 in-process-backend pane-creation permission-sync shutdown",
@@ -821,7 +821,7 @@
     {
       "id": 15,
       "title": "Memory System",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 868,
       "endLine": 1033,
       "text": "Memory System memory auto-memory memory-md team-memory session-memory Memory system: auto-memory, MEMORY.md, team memory, session memory, memory extraction, topic files, staleness detection, secret scanning claude-md memory-injection memory auto-memory memory-md team-memory session-memory memory-extraction topic-file staleness secret-scanning",
@@ -867,7 +867,7 @@
     {
       "id": 16,
       "title": "Auto Memory & Dreams",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 1035,
       "endLine": 1191,
       "text": "Auto Memory & Dreams dreams consolidation extract-memories memory-recall kairos-memory Auto memory and dreams: consolidation, extract-memories, memory recall, KAIROS memory, auto-dream, lock file, daily log memory auto-memory session-memory memory-extraction topic-file staleness dreams consolidation extract-memories memory-recall kairos-memory auto-dream lock-file daily-log dream-task",
@@ -919,7 +919,7 @@
     {
       "id": 17,
       "title": "Ink Renderer",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 1193,
       "endLine": 1384,
       "text": "Ink Renderer ink renderer yoga screen-buffer terminal-ui Ink renderer: terminal UI rendering with React-like reconciler, Yoga layout, screen buffer, virtual DOM, blit, dirty flag, scroll, style pool, wide character, ANSI ink react renderer yoga screen-buffer terminal-ui reconciler virtual-dom blit dirty-flag scroll style-pool wide-character ansi ui",
@@ -976,7 +976,7 @@
     {
       "id": 18,
       "title": "Commands System",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 1386,
       "endLine": 1544,
       "text": "Commands System commands slash-commands registration local-command prompt-command Commands system: slash commands, registration, local commands, prompt commands, local JSX commands, shell substitution, availability, bridge-safe skills slash-commands commands registration local-command prompt-command local-jsx-command shell-substitution availability bridge-safe",
@@ -1019,7 +1019,7 @@
     {
       "id": 19,
       "title": "Dialog UI",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 1546,
       "endLine": 1705,
       "text": "Dialog UI dialog ui wizard permission-dialog onboarding Dialog UI: wizard pattern, permission dialog, onboarding, launcher pattern, custom select, pane component react terminal-ui dialog ui wizard permission-dialog onboarding launcher-pattern custom-select pane-component",
@@ -1061,7 +1061,7 @@
     {
       "id": 20,
       "title": "Notification System",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 1707,
       "endLine": 1935,
       "text": "Notification System notifications toast terminal-notifier osc priority-queue Notification system: toast notifications, terminal-notifier, OSC sequences, priority queue, Kitty, Ghostty, bell, progress reporting iterm2 ansi notifications toast terminal-notifier osc priority-queue kitty ghostty bell progress-reporting",
@@ -1108,7 +1108,7 @@
     {
       "id": 21,
       "title": "Vim Mode Implementation",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 6,
       "endLine": 388,
       "text": "Vim Mode Implementation vim keybindings state-machine motions text-objects Vim mode: keybindings, state machine, motions, text objects, operators, transitions, pure functions, discriminated union, dot repeat vim motions text-objects operators transitions pure-functions discriminated-union dot-repeat keybindings state-machine",
@@ -1154,7 +1154,7 @@
     {
       "id": 22,
       "title": "Keybindings System",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 390,
       "endLine": 433,
       "text": "Keybindings System keybindings keyboard chord hotkeys input-handling Keybindings system: keyboard input handling, chord sequences, hotkeys, terminal decode, key matching, user customization keybindings keyboard chord hotkeys input-handling terminal-decode key-matching user-customization",
@@ -1195,7 +1195,7 @@
     {
       "id": 23,
       "title": "Fullscreen Mode Architecture",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 435,
       "endLine": 518,
       "text": "Fullscreen Mode Architecture fullscreen alt-screen mouse-tracking dec-mode tmux Fullscreen mode: alternate screen, mouse tracking, DEC mode, tmux integration, offscreen freeze tmux iterm2 osc fullscreen alt-screen mouse-tracking dec-mode offscreen-freeze alternate-screen",
@@ -1238,7 +1238,7 @@
     {
       "id": 24,
       "title": "Theme & Visual Styling System",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 520,
       "endLine": 641,
       "text": "Theme & Visual Styling System theme styling colors chalk daltonized Theme and visual styling: colors, chalk, daltonized accessibility, color resolution, shimmer, vscode boost, tmux clamp, agent color ansi theme styling colors chalk daltonized accessibility color-resolution shimmer vscode-boost tmux-clamp agent-color",
@@ -1286,7 +1286,7 @@
     {
       "id": 25,
       "title": "Permissions System",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 643,
       "endLine": 719,
       "text": "Permissions System permissions allow-deny-ask auto-mode bypass rule-matching Permissions system architecture: allow-deny-ask model, auto mode, bypass rules, rule matching, decision pipeline, five permission modes, shadowed rules, permission explainer permission-mode permission-context permission-dialog permissions allow-deny-ask auto-mode bypass rule-matching decision-pipeline five-permission-modes shadowed-rules permission-explainer security",
@@ -1341,7 +1341,7 @@
     {
       "id": 26,
       "title": "Settings & Configuration",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 721,
       "endLine": 897,
       "text": "Settings & Configuration settings configuration cascade mdm policy Settings and configuration: 5-layer cascade, MDM, policy, settings schema, merge semantics, cache architecture, file watching with chokidar, remote managed settings, ETag, security check zod live-reloading settings configuration cascade mdm policy 5-layer-cascade settings-schema merge-semantics cache-architecture file-watching chokidar remote-managed-settings etag security-check enterprise",
@@ -1400,7 +1400,7 @@
     {
       "id": 27,
       "title": "Session Management",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 899,
       "endLine": 950,
       "text": "Session Management session jsonl transcript resume cloud-sync Session management: JSONL transcript, resume, cloud sync, append-only, write pipeline, interrupt detection session jsonl transcript resume cloud-sync append-only write-pipeline interrupt-detection session-resume",
@@ -1440,7 +1440,7 @@
     {
       "id": 28,
       "title": "Context Compaction",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 952,
       "endLine": 1040,
       "text": "Context Compaction compaction context-window microcompact summarization token-management Context compaction: context window management, microcompact, summarization, token management, four-tier, session memory compact, reactive compact, post-compact cleanup, context command autocompact token-budget context-management snip-compact microcompact context-collapse compaction context-window summarization token-management four-tier session-memory-compact reactive-compact post-compact-cleanup context-command",
@@ -1494,7 +1494,7 @@
     {
       "id": 29,
       "title": "Analytics & Telemetry",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 1042,
       "endLine": 1255,
       "text": "Analytics & Telemetry analytics telemetry datadog growthbook pii Analytics and telemetry: Datadog integration, GrowthBook feature flags, PII protection, sampling, event queue, kill switch, metadata enrichment analytics telemetry datadog growthbook pii sampling event-queue kill-switch metadata-enrichment feature-flags",
@@ -1539,7 +1539,7 @@
     {
       "id": 30,
       "title": "Migration System",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 1257,
       "endLine": 1322,
       "text": "Migration System migration idempotent settings-upgrade version-gate backward-compat Migration system: idempotent migrations, settings upgrade, version gate, backward compatibility, discriminated union discriminated-union migration idempotent settings-upgrade version-gate backward-compat",
@@ -1577,7 +1577,7 @@
     {
       "id": 31,
       "title": "Plugin System",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 8,
       "endLine": 322,
       "text": "Plugin System plugins marketplace manifest dependency-resolution versioned-cache Plugin system: marketplace, manifest, dependency resolution, versioned cache, plugin.json, autoupdate, user config, plugin lifecycle mcp registration policy plugins marketplace manifest dependency-resolution versioned-cache plugin-json autoupdate user-config plugin-lifecycle",
@@ -1625,7 +1625,7 @@
     {
       "id": 32,
       "title": "Hooks System",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 324,
       "endLine": 456,
       "text": "Hooks System hooks lifecycle pre-tool-use post-tool-use exit-code Hooks system: lifecycle hooks, pre-tool-use, post-tool-use, exit code, hook events, session hooks, HTTP hooks, prompt hooks, agent hooks, async hooks stop-hooks hooks lifecycle pre-tool-use post-tool-use exit-code hook-events session-hooks http-hooks prompt-hooks agent-hooks async-hooks",
@@ -1673,7 +1673,7 @@
     {
       "id": 33,
       "title": "Error Handling and Recovery",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 458,
       "endLine": 576,
       "text": "Error Handling and Recovery errors recovery retry abort conversation-recovery Error handling and recovery: retry logic, abort, conversation recovery, error taxonomy, typed errors, error overlay, persistent retry, deserialization api retry exponential-backoff 529-overload opus-fallback interrupt-detection errors recovery abort conversation-recovery error-handling error-taxonomy typed-errors error-overlay persistent-retry deserialization",
@@ -1730,7 +1730,7 @@
     {
       "id": 34,
       "title": "Bridge and Remote Control",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 578,
       "endLine": 683,
       "text": "Bridge and Remote Control bridge remote-control ccr websocket jwt Bridge and remote control: CCR, WebSocket, JWT, bridge v1/v2, flush gate, standalone bridge, permission bridge transport sse websocket bridge-safe bridge remote-control ccr jwt bridge-v1-v2 flush-gate standalone-bridge permission-bridge",
@@ -1776,7 +1776,7 @@
     {
       "id": 35,
       "title": "OAuth Authentication",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 685,
       "endLine": 758,
       "text": "OAuth Authentication oauth pkce authentication token-storage keychain OAuth authentication: PKCE flow, token storage, keychain, token refresh, logout, enterprise, FedStart, scopes api oauth pkce authentication token-storage keychain token-refresh logout enterprise fedstart scopes",
@@ -1819,7 +1819,7 @@
     {
       "id": 36,
       "title": "Git Integration",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 760,
       "endLine": 834,
       "text": "Git Integration git filesystem-first git-watcher branch commit-tracking Git integration: filesystem-first approach, git watcher, branch tracking, commit tracking, git config parser, ref validation, gitignore, GitHub auth git filesystem-first git-watcher branch commit-tracking git-config-parser ref-validation gitignore github-auth",
@@ -1863,7 +1863,7 @@
     {
       "id": 37,
       "title": "Upstream Proxy System",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 836,
       "endLine": 898,
       "text": "Upstream Proxy System proxy upstream ccr-container tls mitm Upstream proxy system: CCR container, TLS, MITM, protobuf, connect over WebSocket, keepalive ccr proxy upstream ccr-container tls mitm protobuf connect-over-websocket keepalive security",
@@ -1904,7 +1904,7 @@
     {
       "id": 38,
       "title": "Cron and Task Scheduling",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 900,
       "endLine": 958,
       "text": "Cron and Task Scheduling cron scheduling jitter recurring-tasks timer Cron and task scheduling: jitter, recurring tasks, timer, cron task, one-shot tasks cron scheduling jitter recurring-tasks timer cron-task one-shot",
@@ -1939,7 +1939,7 @@
     {
       "id": 39,
       "title": "Voice System",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 960,
       "endLine": 1022,
       "text": "Voice System voice speech-to-text audio push-to-talk websocket-stt Voice system: speech-to-text, audio backend, push-to-talk, hold-to-talk, WebSocket STT, focus mode, microphone websocket voice speech-to-text audio push-to-talk websocket-stt audio-backend hold-to-talk focus-mode microphone",
@@ -1982,7 +1982,7 @@
     {
       "id": 40,
       "title": "Buddy Companion System",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 1024,
       "endLine": 1111,
       "text": "Buddy Companion System buddy tamagotchi pet easter-egg sprite Buddy companion system: tamagotchi pet easter egg, sprites, PRNG, rarity, animation, April Fools buddy tamagotchi pet easter-egg sprite prng rarity animation april-fools",
@@ -2024,7 +2024,7 @@
     {
       "id": 41,
       "title": "Ultraplan -- 30-Minute Remote Planning",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 5,
       "endLine": 322,
       "text": "Ultraplan -- 30-Minute Remote Planning ultraplan remote-planning ccr-session polling plan-delivery Ultraplan 30-minute remote planning: CCR session, polling, plan delivery, teleport, exit plan mode, remote execution ultraplan remote-planning ccr-session polling plan-delivery teleport exit-plan-mode remote-execution remote-agent-task",
@@ -2068,7 +2068,7 @@
     {
       "id": 42,
       "title": "Entrypoints & Agent SDK",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 324,
       "endLine": 577,
       "text": "Entrypoints & Agent SDK entrypoints sdk agent-sdk cli-bootstrap control-protocol Entrypoints and Agent SDK: CLI bootstrap, control protocol, MCP server mode, daemon, fast paths startup init cli-entrypoint cli fast-path hook-events tls entrypoints sdk agent-sdk cli-bootstrap control-protocol mcp-server-mode daemon fast-paths",
@@ -2122,7 +2122,7 @@
     {
       "id": 43,
       "title": "KAIROS -- Always-On Autonomous Daemon",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 579,
       "endLine": 756,
       "text": "KAIROS -- Always-On Autonomous Daemon kairos daemon autonomous sleep-tool assistant-mode KAIROS always-on autonomous daemon: sleep tool, assistant mode, proactive, tick loop, brief tool, push notification, subscribe PR, queue priority, cron, scheduling kairos-memory daily-log cron scheduling jitter recurring-tasks cron-task daemon kairos autonomous sleep-tool assistant-mode proactive tick-loop brief-tool push-notification subscribe-pr queue-priority",
@@ -2186,7 +2186,7 @@
     {
       "id": 44,
       "title": "Cost Analytics & Observability",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 758,
       "endLine": 963,
       "text": "Cost Analytics & Observability cost analytics observability opentelemetry datadog Cost analytics and observability: OpenTelemetry, Datadog, cost tracking, microdollars, session cost, proto fields, user buckets, quadratic backoff analytics telemetry datadog growthbook pii sampling event-queue kill-switch metadata-enrichment feature-flags cost observability opentelemetry cost-tracking microdollars session-cost proto-fields user-buckets quadratic-backoff",
@@ -2250,7 +2250,7 @@
     {
       "id": 45,
       "title": "Desktop App Integration",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 965,
       "endLine": 1093,
       "text": "Desktop App Integration desktop ide chrome-extension computer-use deep-link Desktop app integration: IDE support, Chrome extension, computer use, deep link, native messaging, VSCode, JetBrains, lockfile discovery cli desktop ide chrome-extension computer-use deep-link native-messaging vscode jetbrains lockfile-discovery",
@@ -2297,7 +2297,7 @@
     {
       "id": 46,
       "title": "Model System",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 1095,
       "endLine": 1278,
       "text": "Model System model provider alias allowlist fast-mode Model system: provider, alias, allowlist, fast mode, model selection, 1M context, effort levels, model migrations, deprecation, subagent model, Bedrock, Vertex context-window growthbook feature-flags model provider alias allowlist fast-mode model-selection 1m-context effort-levels model-migrations deprecation subagent-model bedrock vertex",
@@ -2353,7 +2353,7 @@
     {
       "id": 47,
       "title": "Sandbox & Security",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 1280,
       "endLine": 1410,
       "text": "Sandbox & Security sandbox security seatbelt bubblewrap keychain Sandbox and security: seatbelt, bubblewrap, network control, filesystem control, bare git escape, secure storage, fallback storage, keychain keychain-prefetch sandboxing keychain sandbox security seatbelt bubblewrap network-control filesystem-control bare-git-escape secure-storage fallback-storage",
@@ -2400,7 +2400,7 @@
     {
       "id": 48,
       "title": "Message Processing Pipeline",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 1412,
       "endLine": 1528,
       "text": "Message Processing Pipeline messages pipeline normalization user-input api-transform Message processing pipeline: normalization, user input, API transform, message construction, slug command, paste expansion, synthetic messages, message taxonomy data-flow input-handling messages pipeline normalization user-input api-transform message-construction slug-command paste-expansion synthetic-messages message-taxonomy",
@@ -2450,7 +2450,7 @@
     {
       "id": 49,
       "title": "Task System",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 1530,
       "endLine": 1664,
       "text": "Task System tasks background-tasks task-types output-management lifecycle Task system: background tasks, task types, output management, local shell task, local agent task, remote agent task, in-process teammate task, dream task, task notification background-execution teammate lifecycle tasks background-tasks task-types output-management local-shell-task local-agent-task remote-agent-task in-process-teammate-task dream-task task-notification",
@@ -2499,7 +2499,7 @@
     {
       "id": 50,
       "title": "REPL & Screen",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 1666,
       "endLine": 1879,
       "text": "REPL & Screen repl screen render-tree query-guard virtual-scroll REPL and Screen: render tree, query guard, virtual scroll, session resume, loading state, dialog priority, messages array, tool JSX, cancel handler, transcript mode, prompt input, spinner repl-launcher ink react usesyncexternalstore terminal-ui scroll ui fullscreen session resume repl screen render-tree query-guard virtual-scroll session-resume loading-state dialog-priority messages-array tool-jsx cancel-handler transcript-mode prompt-input spinner",

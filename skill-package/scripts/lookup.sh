@@ -20,17 +20,25 @@ fi
 
 TERM=$(printf '%s' "$1" | tr '[:upper:]' '[:lower:]')
 
-# 1. Find keyword_map keys that partially match the search term (case-insensitive).
-# 2. Collect the unique lesson IDs from those matches.
-# 3. Look up each lesson's file, startLine, endLine, title.
-# 4. Output one line per lesson: file:startLine:endLine "title"
+# ─── MULTI-WORD TOKENIZATION ─────────────────────────────────
+# Split the search term on whitespace. Search for each token
+# independently and return the union of matches, ranked by
+# how many tokens matched each lesson.
 
 RESULTS=$(jq -r --arg term "$TERM" '
   . as $root |
-  [ $root.keyword_map | to_entries[] | select(.key | ascii_downcase | contains($term)) | .value[] ] | unique |
-  map(. as $id | $root.lessons[] | select(.id == $id)) |
-  .[] |
-  "\(.file):\(.startLine):\(.endLine) \"\(.title)\""
+  # Split input into tokens
+  ($term | split(" ") | map(select(length > 0))) as $tokens |
+  # For each token, find matching lesson IDs
+  [ $tokens[] as $tok |
+    [ $root.keyword_map | to_entries[] | select(.key | ascii_downcase | contains($tok)) | .value[] ]
+  ] | flatten |
+  # Count how many tokens matched each lesson ID (for ranking)
+  group_by(.) | map({id: .[0], hits: length}) |
+  sort_by(-.hits) |
+  map(. as $match | $root.lessons[] | select(.id == $match.id) |
+    "\(.file):\(.startLine):\(.endLine) \"\(.title)\""
+  ) | .[] // empty
 ' "$INDEX")
 
 if [[ -z "$RESULTS" ]]; then

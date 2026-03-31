@@ -7,947 +7,2383 @@
       "id": 1,
       "title": "Boot Sequence",
       "lesson_number": "01",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 25,
       "endLine": 234,
-      "keywords": ["boot", "startup", "cli-entrypoint", "cold-start", "init"]
+      "keywords": [
+        "boot",
+        "startup",
+        "cli-entrypoint",
+        "cold-start",
+        "init"
+      ]
     },
     {
       "id": 2,
       "title": "Query Engine & LLM API",
       "lesson_number": "04",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 236,
       "endLine": 501,
-      "keywords": ["query-engine", "api", "streaming", "retry", "autocompact"]
+      "keywords": [
+        "query-engine",
+        "api",
+        "streaming",
+        "retry",
+        "autocompact"
+      ]
     },
     {
       "id": 3,
       "title": "State Management",
       "lesson_number": "12",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 503,
       "endLine": 893,
-      "keywords": ["state", "appstate", "react", "store", "selectors"]
+      "keywords": [
+        "state",
+        "appstate",
+        "react",
+        "store",
+        "selectors"
+      ]
     },
     {
       "id": 4,
       "title": "System Prompt Construction",
       "lesson_number": "39",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 895,
       "endLine": 1030,
-      "keywords": ["system-prompt", "claude-md", "memory-injection", "prompt-cache", "dynamic-sections"]
+      "keywords": [
+        "system-prompt",
+        "claude-md",
+        "memory-injection",
+        "prompt-cache",
+        "dynamic-sections"
+      ]
     },
     {
       "id": 5,
       "title": "Architecture Overview (Capstone)",
       "lesson_number": "50",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 1032,
       "endLine": 1261,
-      "keywords": ["architecture", "capstone", "data-flow", "timeline", "overview"]
+      "keywords": [
+        "architecture",
+        "capstone",
+        "data-flow",
+        "timeline",
+        "overview"
+      ]
     },
     {
       "id": 6,
       "title": "Tool System",
       "lesson_number": "02",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 1263,
       "endLine": 1538,
-      "keywords": ["tools", "tool-interface", "orchestration", "concurrency", "permissions"]
+      "keywords": [
+        "tools",
+        "tool-interface",
+        "orchestration",
+        "concurrency",
+        "permissions"
+      ]
     },
     {
       "id": 7,
       "title": "Bash Tool",
       "lesson_number": "17",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 1540,
       "endLine": 1704,
-      "keywords": ["bash", "shell", "security-validators", "sandboxing", "command-execution"]
+      "keywords": [
+        "bash",
+        "shell",
+        "security-validators",
+        "sandboxing",
+        "command-execution"
+      ]
     },
     {
       "id": 8,
       "title": "File Tools (Read, Write, Edit)",
       "lesson_number": "18",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 1706,
       "endLine": 1864,
-      "keywords": ["file-read", "file-write", "file-edit", "read-before-write", "atomic-write"]
+      "keywords": [
+        "file-read",
+        "file-write",
+        "file-edit",
+        "read-before-write",
+        "atomic-write"
+      ]
     },
     {
       "id": 9,
       "title": "Search Tools (Glob & Grep)",
       "lesson_number": "19",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 1866,
       "endLine": 2103,
-      "keywords": ["glob", "grep", "ripgrep", "search", "file-search"]
+      "keywords": [
+        "glob",
+        "grep",
+        "ripgrep",
+        "search",
+        "file-search"
+      ]
     },
     {
       "id": 10,
       "title": "MCP System",
       "lesson_number": "07",
-      "file": "claude-code-deep-dive-all-10-lessons.md",
+      "file": "01-core-architecture-tools.md",
       "startLine": 2105,
       "endLine": 2207,
-      "keywords": ["mcp", "model-context-protocol", "oauth", "transport", "elicitation"]
+      "keywords": [
+        "mcp",
+        "model-context-protocol",
+        "oauth",
+        "transport",
+        "elicitation"
+      ]
     },
     {
       "id": 11,
       "title": "Skills System",
       "lesson_number": "03",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 7,
       "endLine": 172,
-      "keywords": ["skills", "skill-md", "frontmatter", "discovery", "commands"]
+      "keywords": [
+        "skills",
+        "skill-md",
+        "frontmatter",
+        "discovery",
+        "commands"
+      ]
     },
     {
       "id": 12,
       "title": "Agent System",
       "lesson_number": "05",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 174,
       "endLine": 443,
-      "keywords": ["agents", "subagent", "fork", "worktree", "async-agent"]
+      "keywords": [
+        "agents",
+        "subagent",
+        "fork",
+        "worktree",
+        "async-agent"
+      ]
     },
     {
       "id": 13,
       "title": "Coordinator Mode",
       "lesson_number": "21",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 445,
       "endLine": 599,
-      "keywords": ["coordinator", "dispatcher", "workers", "scratchpad", "parallel-agents"]
+      "keywords": [
+        "coordinator",
+        "dispatcher",
+        "workers",
+        "scratchpad",
+        "parallel-agents"
+      ]
     },
     {
       "id": 14,
       "title": "Teams & Swarm",
       "lesson_number": "22",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 601,
       "endLine": 866,
-      "keywords": ["swarm", "teams", "tmux", "mailbox", "teammate"]
+      "keywords": [
+        "swarm",
+        "teams",
+        "tmux",
+        "mailbox",
+        "teammate"
+      ]
     },
     {
       "id": 15,
       "title": "Memory System",
       "lesson_number": "08",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 868,
       "endLine": 1033,
-      "keywords": ["memory", "auto-memory", "memory-md", "team-memory", "session-memory"]
+      "keywords": [
+        "memory",
+        "auto-memory",
+        "memory-md",
+        "team-memory",
+        "session-memory"
+      ]
     },
     {
       "id": 16,
       "title": "Auto Memory & Dreams",
       "lesson_number": "40",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 1035,
       "endLine": 1191,
-      "keywords": ["dreams", "consolidation", "extract-memories", "memory-recall", "kairos-memory"]
+      "keywords": [
+        "dreams",
+        "consolidation",
+        "extract-memories",
+        "memory-recall",
+        "kairos-memory"
+      ]
     },
     {
       "id": 17,
       "title": "Ink Renderer",
       "lesson_number": "11",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 1193,
       "endLine": 1384,
-      "keywords": ["ink", "renderer", "yoga", "screen-buffer", "terminal-ui"]
+      "keywords": [
+        "ink",
+        "renderer",
+        "yoga",
+        "screen-buffer",
+        "terminal-ui"
+      ]
     },
     {
       "id": 18,
       "title": "Commands System",
       "lesson_number": "13",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 1386,
       "endLine": 1544,
-      "keywords": ["commands", "slash-commands", "registration", "local-command", "prompt-command"]
+      "keywords": [
+        "commands",
+        "slash-commands",
+        "registration",
+        "local-command",
+        "prompt-command"
+      ]
     },
     {
       "id": 19,
       "title": "Dialog UI",
       "lesson_number": "35",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 1546,
       "endLine": 1705,
-      "keywords": ["dialog", "ui", "wizard", "permission-dialog", "onboarding"]
+      "keywords": [
+        "dialog",
+        "ui",
+        "wizard",
+        "permission-dialog",
+        "onboarding"
+      ]
     },
     {
       "id": 20,
       "title": "Notification System",
       "lesson_number": "30",
-      "file": "claude-code-deep-dive-batch2-agents-interface.md",
+      "file": "02-agents-intelligence-interface.md",
       "startLine": 1707,
       "endLine": 1935,
-      "keywords": ["notifications", "toast", "terminal-notifier", "osc", "priority-queue"]
+      "keywords": [
+        "notifications",
+        "toast",
+        "terminal-notifier",
+        "osc",
+        "priority-queue"
+      ]
     },
     {
       "id": 21,
       "title": "Vim Mode Implementation",
       "lesson_number": "31",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 6,
       "endLine": 388,
-      "keywords": ["vim", "keybindings", "state-machine", "motions", "text-objects"]
+      "keywords": [
+        "vim",
+        "keybindings",
+        "state-machine",
+        "motions",
+        "text-objects"
+      ]
     },
     {
       "id": 22,
       "title": "Keybindings System",
       "lesson_number": "33",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 390,
       "endLine": 433,
-      "keywords": ["keybindings", "keyboard", "chord", "hotkeys", "input-handling"]
+      "keywords": [
+        "keybindings",
+        "keyboard",
+        "chord",
+        "hotkeys",
+        "input-handling"
+      ]
     },
     {
       "id": 23,
       "title": "Fullscreen Mode Architecture",
       "lesson_number": "42",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 435,
       "endLine": 518,
-      "keywords": ["fullscreen", "alt-screen", "mouse-tracking", "dec-mode", "tmux"]
+      "keywords": [
+        "fullscreen",
+        "alt-screen",
+        "mouse-tracking",
+        "dec-mode",
+        "tmux"
+      ]
     },
     {
       "id": 24,
       "title": "Theme & Visual Styling System",
       "lesson_number": "41",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 520,
       "endLine": 641,
-      "keywords": ["theme", "styling", "colors", "chalk", "daltonized"]
+      "keywords": [
+        "theme",
+        "styling",
+        "colors",
+        "chalk",
+        "daltonized"
+      ]
     },
     {
       "id": 25,
       "title": "Permissions System",
       "lesson_number": "06",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 643,
       "endLine": 719,
-      "keywords": ["permissions", "allow-deny-ask", "auto-mode", "bypass", "rule-matching"]
+      "keywords": [
+        "permissions",
+        "allow-deny-ask",
+        "auto-mode",
+        "bypass",
+        "rule-matching"
+      ]
     },
     {
       "id": 26,
       "title": "Settings & Configuration",
       "lesson_number": "16",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 721,
       "endLine": 897,
-      "keywords": ["settings", "configuration", "cascade", "mdm", "policy"]
+      "keywords": [
+        "settings",
+        "configuration",
+        "cascade",
+        "mdm",
+        "policy"
+      ]
     },
     {
       "id": 27,
       "title": "Session Management",
       "lesson_number": "29",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 899,
       "endLine": 950,
-      "keywords": ["session", "jsonl", "transcript", "resume", "cloud-sync"]
+      "keywords": [
+        "session",
+        "jsonl",
+        "transcript",
+        "resume",
+        "cloud-sync"
+      ]
     },
     {
       "id": 28,
       "title": "Context Compaction",
       "lesson_number": "15",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 952,
       "endLine": 1040,
-      "keywords": ["compaction", "context-window", "microcompact", "summarization", "token-management"]
+      "keywords": [
+        "compaction",
+        "context-window",
+        "microcompact",
+        "summarization",
+        "token-management"
+      ]
     },
     {
       "id": 29,
       "title": "Analytics & Telemetry",
       "lesson_number": "32",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 1042,
       "endLine": 1255,
-      "keywords": ["analytics", "telemetry", "datadog", "growthbook", "pii"]
+      "keywords": [
+        "analytics",
+        "telemetry",
+        "datadog",
+        "growthbook",
+        "pii"
+      ]
     },
     {
       "id": 30,
       "title": "Migration System",
       "lesson_number": "34",
-      "file": "claude-code-deep-dive-lessons.md",
+      "file": "03-interface-infrastructure.md",
       "startLine": 1257,
       "endLine": 1322,
-      "keywords": ["migration", "idempotent", "settings-upgrade", "version-gate", "backward-compat"]
+      "keywords": [
+        "migration",
+        "idempotent",
+        "settings-upgrade",
+        "version-gate",
+        "backward-compat"
+      ]
     },
     {
       "id": 31,
       "title": "Plugin System",
       "lesson_number": "09",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 8,
       "endLine": 322,
-      "keywords": ["plugins", "marketplace", "manifest", "dependency-resolution", "versioned-cache"]
+      "keywords": [
+        "plugins",
+        "marketplace",
+        "manifest",
+        "dependency-resolution",
+        "versioned-cache"
+      ]
     },
     {
       "id": 32,
       "title": "Hooks System",
       "lesson_number": "10",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 324,
       "endLine": 456,
-      "keywords": ["hooks", "lifecycle", "pre-tool-use", "post-tool-use", "exit-code"]
+      "keywords": [
+        "hooks",
+        "lifecycle",
+        "pre-tool-use",
+        "post-tool-use",
+        "exit-code"
+      ]
     },
     {
       "id": 33,
       "title": "Error Handling and Recovery",
       "lesson_number": "44",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 458,
       "endLine": 576,
-      "keywords": ["errors", "recovery", "retry", "abort", "conversation-recovery"]
+      "keywords": [
+        "errors",
+        "recovery",
+        "retry",
+        "abort",
+        "conversation-recovery"
+      ]
     },
     {
       "id": 34,
       "title": "Bridge and Remote Control",
       "lesson_number": "20",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 578,
       "endLine": 683,
-      "keywords": ["bridge", "remote-control", "ccr", "websocket", "jwt"]
+      "keywords": [
+        "bridge",
+        "remote-control",
+        "ccr",
+        "websocket",
+        "jwt"
+      ]
     },
     {
       "id": 35,
       "title": "OAuth Authentication",
       "lesson_number": "25",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 685,
       "endLine": 758,
-      "keywords": ["oauth", "pkce", "authentication", "token-storage", "keychain"]
+      "keywords": [
+        "oauth",
+        "pkce",
+        "authentication",
+        "token-storage",
+        "keychain"
+      ]
     },
     {
       "id": 36,
       "title": "Git Integration",
       "lesson_number": "28",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 760,
       "endLine": 834,
-      "keywords": ["git", "filesystem-first", "git-watcher", "branch", "commit-tracking"]
+      "keywords": [
+        "git",
+        "filesystem-first",
+        "git-watcher",
+        "branch",
+        "commit-tracking"
+      ]
     },
     {
       "id": 37,
       "title": "Upstream Proxy System",
       "lesson_number": "36",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 836,
       "endLine": 898,
-      "keywords": ["proxy", "upstream", "ccr-container", "tls", "mitm"]
+      "keywords": [
+        "proxy",
+        "upstream",
+        "ccr-container",
+        "tls",
+        "mitm"
+      ]
     },
     {
       "id": 38,
       "title": "Cron and Task Scheduling",
       "lesson_number": "43",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 900,
       "endLine": 958,
-      "keywords": ["cron", "scheduling", "jitter", "recurring-tasks", "timer"]
+      "keywords": [
+        "cron",
+        "scheduling",
+        "jitter",
+        "recurring-tasks",
+        "timer"
+      ]
     },
     {
       "id": 39,
       "title": "Voice System",
       "lesson_number": "27",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 960,
       "endLine": 1022,
-      "keywords": ["voice", "speech-to-text", "audio", "push-to-talk", "websocket-stt"]
+      "keywords": [
+        "voice",
+        "speech-to-text",
+        "audio",
+        "push-to-talk",
+        "websocket-stt"
+      ]
     },
     {
       "id": 40,
       "title": "Buddy Companion System",
       "lesson_number": "45",
-      "file": "claude-code-deep-dive-batch2-10-lessons.md",
+      "file": "04-connectivity-plugins.md",
       "startLine": 1024,
       "endLine": 1111,
-      "keywords": ["buddy", "tamagotchi", "pet", "easter-egg", "sprite"]
+      "keywords": [
+        "buddy",
+        "tamagotchi",
+        "pet",
+        "easter-egg",
+        "sprite"
+      ]
     },
     {
       "id": 41,
       "title": "Ultraplan -- 30-Minute Remote Planning",
       "lesson_number": "Ultraplan",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 5,
       "endLine": 322,
-      "keywords": ["ultraplan", "remote-planning", "ccr-session", "polling", "plan-delivery"]
+      "keywords": [
+        "ultraplan",
+        "remote-planning",
+        "ccr-session",
+        "polling",
+        "plan-delivery"
+      ]
     },
     {
       "id": 42,
       "title": "Entrypoints & Agent SDK",
       "lesson_number": "Entrypoints",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 324,
       "endLine": 577,
-      "keywords": ["entrypoints", "sdk", "agent-sdk", "cli-bootstrap", "control-protocol"]
+      "keywords": [
+        "entrypoints",
+        "sdk",
+        "agent-sdk",
+        "cli-bootstrap",
+        "control-protocol"
+      ]
     },
     {
       "id": 43,
       "title": "KAIROS -- Always-On Autonomous Daemon",
       "lesson_number": "KAIROS",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 579,
       "endLine": 756,
-      "keywords": ["kairos", "daemon", "autonomous", "sleep-tool", "assistant-mode"]
+      "keywords": [
+        "kairos",
+        "daemon",
+        "autonomous",
+        "sleep-tool",
+        "assistant-mode"
+      ]
     },
     {
       "id": 44,
       "title": "Cost Analytics & Observability",
       "lesson_number": "Cost",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 758,
       "endLine": 963,
-      "keywords": ["cost", "analytics", "observability", "opentelemetry", "datadog"]
+      "keywords": [
+        "cost",
+        "analytics",
+        "observability",
+        "opentelemetry",
+        "datadog"
+      ]
     },
     {
       "id": 45,
       "title": "Desktop App Integration",
       "lesson_number": "Desktop",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 965,
       "endLine": 1093,
-      "keywords": ["desktop", "ide", "chrome-extension", "computer-use", "deep-link"]
+      "keywords": [
+        "desktop",
+        "ide",
+        "chrome-extension",
+        "computer-use",
+        "deep-link"
+      ]
     },
     {
       "id": 46,
       "title": "Model System",
       "lesson_number": "Model",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 1095,
       "endLine": 1278,
-      "keywords": ["model", "provider", "alias", "allowlist", "fast-mode"]
+      "keywords": [
+        "model",
+        "provider",
+        "alias",
+        "allowlist",
+        "fast-mode"
+      ]
     },
     {
       "id": 47,
       "title": "Sandbox & Security",
       "lesson_number": "Sandbox",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 1280,
       "endLine": 1410,
-      "keywords": ["sandbox", "security", "seatbelt", "bubblewrap", "keychain"]
+      "keywords": [
+        "sandbox",
+        "security",
+        "seatbelt",
+        "bubblewrap",
+        "keychain"
+      ]
     },
     {
       "id": 48,
       "title": "Message Processing Pipeline",
       "lesson_number": "Messages",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 1412,
       "endLine": 1528,
-      "keywords": ["messages", "pipeline", "normalization", "user-input", "api-transform"]
+      "keywords": [
+        "messages",
+        "pipeline",
+        "normalization",
+        "user-input",
+        "api-transform"
+      ]
     },
     {
       "id": 49,
       "title": "Task System",
       "lesson_number": "Tasks",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 1530,
       "endLine": 1664,
-      "keywords": ["tasks", "background-tasks", "task-types", "output-management", "lifecycle"]
+      "keywords": [
+        "tasks",
+        "background-tasks",
+        "task-types",
+        "output-management",
+        "lifecycle"
+      ]
     },
     {
       "id": 50,
       "title": "REPL & Screen",
       "lesson_number": "REPL",
-      "file": "claude-code-deep-dive-10-lessons.md",
+      "file": "05-unreleased-bigpicture.md",
       "startLine": 1666,
       "endLine": 1879,
-      "keywords": ["repl", "screen", "render-tree", "query-guard", "virtual-scroll"]
+      "keywords": [
+        "repl",
+        "screen",
+        "render-tree",
+        "query-guard",
+        "virtual-scroll"
+      ]
     }
   ],
   "keyword_map": {
-    "boot": [1, 5],
-    "startup": [1, 5, 42],
-    "init": [1, 42],
-    "cold-start": [1, 5],
-    "cli-entrypoint": [1, 42],
-    "cli": [1, 42, 45],
-    "main-tsx": [1, 5],
-    "setup": [1, 5],
-    "session-wiring": [1, 5],
-    "repl-launcher": [1, 5, 50],
-    "ink": [1, 17, 50],
-    "three-layer-architecture": [1],
-    "fast-path": [1, 42],
-    "module-eval": [1],
-    "keychain-prefetch": [1, 47],
-    "bare-mode": [1, 5],
-    "worktree": [1, 12, 14],
-    "tmux": [1, 14, 23],
-    "tengu-started": [1, 5],
-    "deferred-prefetch": [1, 5],
-    "query-engine": [2, 5],
-    "api": [2, 5, 33, 35],
-    "streaming": [2, 5, 6],
-    "retry": [2, 33],
-    "autocompact": [2, 28],
-    "query-loop": [2],
-    "llm": [2, 5],
-    "tool-execution": [2, 6],
-    "content-block-delta": [2],
-    "stop-hooks": [2, 32],
-    "token-budget": [2, 28],
-    "exponential-backoff": [2, 33],
-    "529-overload": [2, 33],
-    "opus-fallback": [2, 33],
-    "prompt-cache": [2, 4],
-    "context-management": [2, 28],
-    "snip-compact": [2, 28],
-    "microcompact": [2, 28],
-    "context-collapse": [2, 28],
-    "async-generator": [2, 5],
-    "state": [3, 5],
-    "appstate": [3, 5],
-    "react": [3, 17, 19, 50],
-    "store": [3],
-    "selectors": [3],
-    "createstore": [3],
-    "usesyncexternalstore": [3, 50],
-    "immutable": [3],
-    "deep-immutable": [3],
-    "speculation": [3],
-    "onchangeappstate": [3],
-    "side-effect": [3],
-    "permission-mode": [3, 25],
-    "zustand": [3],
-    "system-prompt": [4, 5],
-    "claude-md": [4, 5, 15],
-    "memory-injection": [4, 15],
-    "dynamic-sections": [4],
-    "prompt-cache-boundary": [4],
-    "include-directive": [4],
-    "frontmatter": [4, 11],
-    "subagent-prompt": [4],
-    "undercover-mode": [4],
-    "env-info": [4],
-    "architecture": [5],
-    "capstone": [5],
-    "data-flow": [5, 48],
-    "timeline": [5],
-    "overview": [5],
-    "six-layers": [5],
-    "tools": [5, 6],
-    "tool-interface": [6],
-    "orchestration": [6],
-    "concurrency": [6, 14],
-    "build-tool": [6],
-    "tool-result": [6],
-    "context-modifier": [6],
-    "streaming-tool-executor": [6],
-    "tool-lifecycle": [6],
-    "sibling-abort": [6],
-    "permission-context": [6, 25],
-    "zod": [6, 26],
-    "bash": [7],
-    "shell": [7, 11],
-    "security-validators": [7],
-    "sandboxing": [7, 47],
-    "command-execution": [7],
-    "shell-snapshot": [7],
-    "23-validators": [7],
-    "background-execution": [7, 49],
-    "sed-constraint": [7],
-    "output-handling": [7],
-    "file-read": [8],
-    "file-write": [8],
-    "file-edit": [8],
-    "read-before-write": [8],
-    "atomic-write": [8],
-    "image-support": [8],
-    "pdf-support": [8],
-    "jupyter": [8],
-    "dedup": [8],
-    "quote-normalization": [8],
-    "lsp-notification": [8],
-    "glob": [9],
-    "grep": [9],
-    "ripgrep": [9],
-    "search": [9],
-    "file-search": [9],
-    "mtime-sort": [9],
-    "pagination": [9],
-    "head-limit": [9],
-    "ripgrep-binary": [9],
-    "eagain-retry": [9],
-    "mcp": [10, 31],
-    "model-context-protocol": [10],
-    "oauth": [10, 35],
-    "transport": [10, 34],
-    "elicitation": [10],
-    "stdio": [10],
-    "sse": [10, 34],
-    "websocket": [10, 34, 39],
-    "mcp-tool-proxy": [10],
-    "server-deduplication": [10],
-    "mcp-instructions": [10],
-    "skills": [11, 18],
-    "skill-md": [11],
-    "discovery": [11],
-    "slash-commands": [11, 18],
-    "skill-lifecycle": [11],
-    "bundled-skills": [11],
-    "mcp-skills": [11],
-    "conditional-skills": [11],
-    "live-reloading": [11, 26],
-    "fork-context": [11],
-    "agents": [12, 13, 14],
-    "subagent": [12],
-    "fork": [12],
-    "async-agent": [12],
-    "agent-tool": [12, 13],
-    "built-in-agent": [12],
-    "custom-agent": [12],
-    "explore-agent": [12],
-    "worktree-isolation": [12],
-    "send-message": [12, 14],
-    "agent-frontmatter": [12],
-    "coordinator": [13],
-    "dispatcher": [13],
-    "workers": [13],
-    "scratchpad": [13],
-    "parallel-agents": [13],
-    "coordinator-mode": [13],
-    "research-synthesis-implement-verify": [13],
-    "swarm": [14],
-    "teams": [14],
-    "mailbox": [14],
-    "teammate": [14, 49],
-    "team-create": [14],
-    "team-delete": [14],
-    "iterm2": [14, 20, 23],
-    "in-process-backend": [14],
-    "pane-creation": [14],
-    "permission-sync": [14],
-    "shutdown": [14],
-    "memory": [15, 16],
-    "auto-memory": [15, 16],
-    "memory-md": [15, 4],
-    "team-memory": [15],
-    "session-memory": [15, 16],
-    "memory-extraction": [15, 16],
-    "topic-file": [15, 16],
-    "staleness": [15, 16],
-    "secret-scanning": [15],
-    "dreams": [16],
-    "consolidation": [16],
-    "extract-memories": [16],
-    "memory-recall": [16],
-    "kairos-memory": [16, 43],
-    "auto-dream": [16],
-    "lock-file": [16],
-    "daily-log": [16, 43],
-    "renderer": [17],
-    "yoga": [17],
-    "screen-buffer": [17],
-    "terminal-ui": [17, 19, 50],
-    "reconciler": [17],
-    "virtual-dom": [17],
-    "blit": [17],
-    "dirty-flag": [17],
-    "scroll": [17, 50],
-    "style-pool": [17],
-    "wide-character": [17],
-    "ansi": [17, 20, 24],
-    "commands": [18],
-    "registration": [18, 31],
-    "local-command": [18],
-    "prompt-command": [18],
-    "local-jsx-command": [18],
-    "shell-substitution": [18],
-    "availability": [18],
-    "bridge-safe": [18, 34],
-    "dialog": [19],
-    "ui": [19, 17, 50],
-    "wizard": [19],
-    "permission-dialog": [19, 25],
-    "onboarding": [19],
-    "launcher-pattern": [19],
-    "custom-select": [19],
-    "pane-component": [19],
-    "notifications": [20],
-    "toast": [20],
-    "terminal-notifier": [20],
-    "osc": [20, 23],
-    "priority-queue": [20],
-    "kitty": [20],
-    "ghostty": [20],
-    "bell": [20],
-    "progress-reporting": [20],
-    "vim": [21],
-    "motions": [21],
-    "text-objects": [21],
-    "operators": [21],
-    "transitions": [21],
-    "pure-functions": [21],
-    "discriminated-union": [21, 30],
-    "dot-repeat": [21],
-    "keybindings": [22],
-    "keyboard": [22],
-    "chord": [22],
-    "hotkeys": [22],
-    "input-handling": [22, 48],
-    "terminal-decode": [22],
-    "key-matching": [22],
-    "user-customization": [22],
-    "fullscreen": [23, 50],
-    "alt-screen": [23],
-    "mouse-tracking": [23],
-    "dec-mode": [23],
-    "offscreen-freeze": [23],
-    "alternate-screen": [23],
-    "theme": [24],
-    "styling": [24],
-    "colors": [24],
-    "chalk": [24],
-    "daltonized": [24],
-    "accessibility": [24],
-    "color-resolution": [24],
-    "shimmer": [24],
-    "vscode-boost": [24],
-    "tmux-clamp": [24],
-    "agent-color": [24],
-    "permissions": [25, 6, 7],
-    "allow-deny-ask": [25],
-    "auto-mode": [25],
-    "bypass": [25],
-    "rule-matching": [25],
-    "decision-pipeline": [25],
-    "five-permission-modes": [25],
-    "shadowed-rules": [25],
-    "permission-explainer": [25],
-    "settings": [26],
-    "configuration": [26],
-    "cascade": [26],
-    "mdm": [26],
-    "policy": [26, 31],
-    "5-layer-cascade": [26],
-    "settings-schema": [26],
-    "merge-semantics": [26],
-    "cache-architecture": [26],
-    "file-watching": [26],
-    "chokidar": [26],
-    "remote-managed-settings": [26],
-    "etag": [26],
-    "security-check": [26],
-    "session": [27, 50],
-    "jsonl": [27],
-    "transcript": [27, 5],
-    "resume": [27, 50],
-    "cloud-sync": [27],
-    "append-only": [27],
-    "write-pipeline": [27],
-    "interrupt-detection": [27, 33],
-    "compaction": [28, 5],
-    "context-window": [28, 46],
-    "summarization": [28],
-    "token-management": [28],
-    "four-tier": [28],
-    "session-memory-compact": [28],
-    "reactive-compact": [28],
-    "post-compact-cleanup": [28],
-    "context-command": [28],
-    "analytics": [29, 44],
-    "telemetry": [29, 44],
-    "datadog": [29, 44],
-    "growthbook": [29, 44, 46],
-    "pii": [29, 44],
-    "sampling": [29, 44],
-    "event-queue": [29, 44],
-    "kill-switch": [29, 44],
-    "metadata-enrichment": [29, 44],
-    "feature-flags": [29, 44, 46],
-    "migration": [30],
-    "idempotent": [30],
-    "settings-upgrade": [30],
-    "version-gate": [30],
-    "backward-compat": [30],
-    "plugins": [31],
-    "marketplace": [31],
-    "manifest": [31],
-    "dependency-resolution": [31],
-    "versioned-cache": [31],
-    "plugin-json": [31],
-    "autoupdate": [31],
-    "user-config": [31],
-    "plugin-lifecycle": [31],
-    "hooks": [32, 5],
-    "lifecycle": [32, 49],
-    "pre-tool-use": [32],
-    "post-tool-use": [32],
-    "exit-code": [32],
-    "hook-events": [32, 42],
-    "session-hooks": [32],
-    "http-hooks": [32],
-    "prompt-hooks": [32],
-    "agent-hooks": [32],
-    "async-hooks": [32],
-    "errors": [33],
-    "recovery": [33],
-    "abort": [33],
-    "conversation-recovery": [33],
-    "error-handling": [33],
-    "error-taxonomy": [33],
-    "typed-errors": [33],
-    "error-overlay": [33],
-    "persistent-retry": [33],
-    "deserialization": [33],
-    "bridge": [34],
-    "remote-control": [34],
-    "ccr": [34, 37],
-    "jwt": [34],
-    "bridge-v1-v2": [34],
-    "flush-gate": [34],
-    "standalone-bridge": [34],
-    "permission-bridge": [34],
-    "pkce": [35],
-    "authentication": [35],
-    "token-storage": [35],
-    "keychain": [35, 47],
-    "token-refresh": [35],
-    "logout": [35],
-    "enterprise": [35, 26],
-    "fedstart": [35],
-    "scopes": [35],
-    "git": [36],
-    "filesystem-first": [36],
-    "git-watcher": [36],
-    "branch": [36],
-    "commit-tracking": [36],
-    "git-config-parser": [36],
-    "ref-validation": [36],
-    "gitignore": [36],
-    "github-auth": [36],
-    "proxy": [37],
-    "upstream": [37],
-    "ccr-container": [37],
-    "tls": [37, 42],
-    "mitm": [37],
-    "protobuf": [37],
-    "connect-over-websocket": [37],
-    "keepalive": [37],
-    "cron": [38, 43],
-    "scheduling": [38, 43],
-    "jitter": [38, 43],
-    "recurring-tasks": [38, 43],
-    "timer": [38],
-    "cron-task": [38, 43],
-    "one-shot": [38],
-    "voice": [39],
-    "speech-to-text": [39],
-    "audio": [39],
-    "push-to-talk": [39],
-    "websocket-stt": [39],
-    "audio-backend": [39],
-    "hold-to-talk": [39],
-    "focus-mode": [39],
-    "microphone": [39],
-    "buddy": [40],
-    "tamagotchi": [40],
-    "pet": [40],
-    "easter-egg": [40],
-    "sprite": [40],
-    "prng": [40],
-    "rarity": [40],
-    "animation": [40],
-    "april-fools": [40],
-    "ultraplan": [41],
-    "remote-planning": [41],
-    "ccr-session": [41],
-    "polling": [41],
-    "plan-delivery": [41],
-    "teleport": [41],
-    "exit-plan-mode": [41],
-    "remote-execution": [41],
-    "entrypoints": [42],
-    "sdk": [42],
-    "agent-sdk": [42],
-    "cli-bootstrap": [42],
-    "control-protocol": [42],
-    "mcp-server-mode": [42],
-    "daemon": [42, 43],
-    "fast-paths": [42, 1],
-    "kairos": [43],
-    "autonomous": [43],
-    "sleep-tool": [43],
-    "assistant-mode": [43],
-    "proactive": [43],
-    "tick-loop": [43],
-    "brief-tool": [43],
-    "push-notification": [43],
-    "subscribe-pr": [43],
-    "queue-priority": [43],
-    "cost": [44],
-    "observability": [44],
-    "opentelemetry": [44],
-    "cost-tracking": [44],
-    "microdollars": [44],
-    "session-cost": [44],
-    "proto-fields": [44],
-    "user-buckets": [44],
-    "quadratic-backoff": [44],
-    "desktop": [45],
-    "ide": [45],
-    "chrome-extension": [45],
-    "computer-use": [45],
-    "deep-link": [45],
-    "native-messaging": [45],
-    "vscode": [45],
-    "jetbrains": [45],
-    "lockfile-discovery": [45],
-    "model": [46],
-    "provider": [46],
-    "alias": [46],
-    "allowlist": [46],
-    "fast-mode": [46],
-    "model-selection": [46],
-    "1m-context": [46],
-    "effort-levels": [46],
-    "model-migrations": [46],
-    "deprecation": [46],
-    "subagent-model": [46],
-    "bedrock": [46],
-    "vertex": [46],
-    "sandbox": [47],
-    "security": [7, 25, 37, 47],
-    "seatbelt": [47],
-    "bubblewrap": [47],
-    "network-control": [47],
-    "filesystem-control": [47],
-    "bare-git-escape": [47],
-    "secure-storage": [47],
-    "fallback-storage": [47],
-    "messages": [48],
-    "pipeline": [48, 2],
-    "normalization": [48],
-    "user-input": [48],
-    "api-transform": [48],
-    "message-construction": [48],
-    "slug-command": [48],
-    "paste-expansion": [48],
-    "synthetic-messages": [48],
-    "message-taxonomy": [48],
-    "tasks": [49],
-    "background-tasks": [49, 7],
-    "task-types": [49],
-    "output-management": [49],
-    "local-shell-task": [49],
-    "local-agent-task": [49],
-    "remote-agent-task": [49, 41],
-    "in-process-teammate-task": [49],
-    "dream-task": [49, 16],
-    "task-notification": [49, 13],
-    "repl": [50],
-    "screen": [50],
-    "render-tree": [50],
-    "query-guard": [50],
-    "virtual-scroll": [50],
-    "session-resume": [50, 27],
-    "loading-state": [50],
-    "dialog-priority": [50],
-    "messages-array": [50],
-    "tool-jsx": [50],
-    "cancel-handler": [50],
-    "transcript-mode": [50],
-    "prompt-input": [50],
-    "spinner": [50]
+    "boot": [
+      1,
+      5
+    ],
+    "startup": [
+      1,
+      5,
+      42
+    ],
+    "init": [
+      1,
+      42
+    ],
+    "cold-start": [
+      1,
+      5
+    ],
+    "cli-entrypoint": [
+      1,
+      42
+    ],
+    "cli": [
+      1,
+      42,
+      45
+    ],
+    "main-tsx": [
+      1,
+      5
+    ],
+    "setup": [
+      1,
+      5
+    ],
+    "session-wiring": [
+      1,
+      5
+    ],
+    "repl-launcher": [
+      1,
+      5,
+      50
+    ],
+    "ink": [
+      1,
+      17,
+      50
+    ],
+    "three-layer-architecture": [
+      1
+    ],
+    "fast-path": [
+      1,
+      42
+    ],
+    "module-eval": [
+      1
+    ],
+    "keychain-prefetch": [
+      1,
+      47
+    ],
+    "bare-mode": [
+      1,
+      5
+    ],
+    "worktree": [
+      1,
+      12,
+      14
+    ],
+    "tmux": [
+      1,
+      14,
+      23
+    ],
+    "tengu-started": [
+      1,
+      5
+    ],
+    "deferred-prefetch": [
+      1,
+      5
+    ],
+    "query-engine": [
+      2,
+      5
+    ],
+    "api": [
+      2,
+      5,
+      33,
+      35
+    ],
+    "streaming": [
+      2,
+      5,
+      6
+    ],
+    "retry": [
+      2,
+      33
+    ],
+    "autocompact": [
+      2,
+      28
+    ],
+    "query-loop": [
+      2
+    ],
+    "llm": [
+      2,
+      5
+    ],
+    "tool-execution": [
+      2,
+      6
+    ],
+    "content-block-delta": [
+      2
+    ],
+    "stop-hooks": [
+      2,
+      32
+    ],
+    "token-budget": [
+      2,
+      28
+    ],
+    "exponential-backoff": [
+      2,
+      33
+    ],
+    "529-overload": [
+      2,
+      33
+    ],
+    "opus-fallback": [
+      2,
+      33
+    ],
+    "prompt-cache": [
+      2,
+      4
+    ],
+    "context-management": [
+      2,
+      28
+    ],
+    "snip-compact": [
+      2,
+      28
+    ],
+    "microcompact": [
+      2,
+      28
+    ],
+    "context-collapse": [
+      2,
+      28
+    ],
+    "async-generator": [
+      2,
+      5
+    ],
+    "state": [
+      3,
+      5
+    ],
+    "appstate": [
+      3,
+      5
+    ],
+    "react": [
+      3,
+      17,
+      19,
+      50
+    ],
+    "store": [
+      3
+    ],
+    "selectors": [
+      3
+    ],
+    "createstore": [
+      3
+    ],
+    "usesyncexternalstore": [
+      3,
+      50
+    ],
+    "immutable": [
+      3
+    ],
+    "deep-immutable": [
+      3
+    ],
+    "speculation": [
+      3
+    ],
+    "onchangeappstate": [
+      3
+    ],
+    "side-effect": [
+      3
+    ],
+    "permission-mode": [
+      3,
+      25
+    ],
+    "zustand": [
+      3
+    ],
+    "system-prompt": [
+      4,
+      5
+    ],
+    "claude-md": [
+      4,
+      5,
+      15
+    ],
+    "memory-injection": [
+      4,
+      15
+    ],
+    "dynamic-sections": [
+      4
+    ],
+    "prompt-cache-boundary": [
+      4
+    ],
+    "include-directive": [
+      4
+    ],
+    "frontmatter": [
+      4,
+      11
+    ],
+    "subagent-prompt": [
+      4
+    ],
+    "undercover-mode": [
+      4
+    ],
+    "env-info": [
+      4
+    ],
+    "architecture": [
+      5
+    ],
+    "capstone": [
+      5
+    ],
+    "data-flow": [
+      5,
+      48
+    ],
+    "timeline": [
+      5
+    ],
+    "overview": [
+      5
+    ],
+    "six-layers": [
+      5
+    ],
+    "tools": [
+      5,
+      6
+    ],
+    "tool-interface": [
+      6
+    ],
+    "orchestration": [
+      6
+    ],
+    "concurrency": [
+      6,
+      14
+    ],
+    "build-tool": [
+      6
+    ],
+    "tool-result": [
+      6
+    ],
+    "context-modifier": [
+      6
+    ],
+    "streaming-tool-executor": [
+      6
+    ],
+    "tool-lifecycle": [
+      6
+    ],
+    "sibling-abort": [
+      6
+    ],
+    "permission-context": [
+      6,
+      25
+    ],
+    "zod": [
+      6,
+      26
+    ],
+    "bash": [
+      7
+    ],
+    "shell": [
+      7,
+      11
+    ],
+    "security-validators": [
+      7
+    ],
+    "sandboxing": [
+      7,
+      47
+    ],
+    "command-execution": [
+      7
+    ],
+    "shell-snapshot": [
+      7
+    ],
+    "23-validators": [
+      7
+    ],
+    "background-execution": [
+      7,
+      49
+    ],
+    "sed-constraint": [
+      7
+    ],
+    "output-handling": [
+      7
+    ],
+    "file-read": [
+      8
+    ],
+    "file-write": [
+      8
+    ],
+    "file-edit": [
+      8
+    ],
+    "read-before-write": [
+      8
+    ],
+    "atomic-write": [
+      8
+    ],
+    "image-support": [
+      8
+    ],
+    "pdf-support": [
+      8
+    ],
+    "jupyter": [
+      8
+    ],
+    "dedup": [
+      8
+    ],
+    "quote-normalization": [
+      8
+    ],
+    "lsp-notification": [
+      8
+    ],
+    "glob": [
+      9
+    ],
+    "grep": [
+      9
+    ],
+    "ripgrep": [
+      9
+    ],
+    "search": [
+      9
+    ],
+    "file-search": [
+      9
+    ],
+    "mtime-sort": [
+      9
+    ],
+    "pagination": [
+      9
+    ],
+    "head-limit": [
+      9
+    ],
+    "ripgrep-binary": [
+      9
+    ],
+    "eagain-retry": [
+      9
+    ],
+    "mcp": [
+      10,
+      31
+    ],
+    "model-context-protocol": [
+      10
+    ],
+    "oauth": [
+      10,
+      35
+    ],
+    "transport": [
+      10,
+      34
+    ],
+    "elicitation": [
+      10
+    ],
+    "stdio": [
+      10
+    ],
+    "sse": [
+      10,
+      34
+    ],
+    "websocket": [
+      10,
+      34,
+      39
+    ],
+    "mcp-tool-proxy": [
+      10
+    ],
+    "server-deduplication": [
+      10
+    ],
+    "mcp-instructions": [
+      10
+    ],
+    "skills": [
+      11,
+      18
+    ],
+    "skill-md": [
+      11
+    ],
+    "discovery": [
+      11
+    ],
+    "slash-commands": [
+      11,
+      18
+    ],
+    "skill-lifecycle": [
+      11
+    ],
+    "bundled-skills": [
+      11
+    ],
+    "mcp-skills": [
+      11
+    ],
+    "conditional-skills": [
+      11
+    ],
+    "live-reloading": [
+      11,
+      26
+    ],
+    "fork-context": [
+      11
+    ],
+    "agents": [
+      12,
+      13,
+      14
+    ],
+    "subagent": [
+      12
+    ],
+    "fork": [
+      12
+    ],
+    "async-agent": [
+      12
+    ],
+    "agent-tool": [
+      12,
+      13
+    ],
+    "built-in-agent": [
+      12
+    ],
+    "custom-agent": [
+      12
+    ],
+    "explore-agent": [
+      12
+    ],
+    "worktree-isolation": [
+      12
+    ],
+    "send-message": [
+      12,
+      14
+    ],
+    "agent-frontmatter": [
+      12
+    ],
+    "coordinator": [
+      13
+    ],
+    "dispatcher": [
+      13
+    ],
+    "workers": [
+      13
+    ],
+    "scratchpad": [
+      13
+    ],
+    "parallel-agents": [
+      13
+    ],
+    "coordinator-mode": [
+      13
+    ],
+    "research-synthesis-implement-verify": [
+      13
+    ],
+    "swarm": [
+      14
+    ],
+    "teams": [
+      14
+    ],
+    "mailbox": [
+      14
+    ],
+    "teammate": [
+      14,
+      49
+    ],
+    "team-create": [
+      14
+    ],
+    "team-delete": [
+      14
+    ],
+    "iterm2": [
+      14,
+      20,
+      23
+    ],
+    "in-process-backend": [
+      14
+    ],
+    "pane-creation": [
+      14
+    ],
+    "permission-sync": [
+      14
+    ],
+    "shutdown": [
+      14
+    ],
+    "memory": [
+      15,
+      16
+    ],
+    "auto-memory": [
+      15,
+      16
+    ],
+    "memory-md": [
+      15,
+      4
+    ],
+    "team-memory": [
+      15
+    ],
+    "session-memory": [
+      15,
+      16
+    ],
+    "memory-extraction": [
+      15,
+      16
+    ],
+    "topic-file": [
+      15,
+      16
+    ],
+    "staleness": [
+      15,
+      16
+    ],
+    "secret-scanning": [
+      15
+    ],
+    "dreams": [
+      16
+    ],
+    "consolidation": [
+      16
+    ],
+    "extract-memories": [
+      16
+    ],
+    "memory-recall": [
+      16
+    ],
+    "kairos-memory": [
+      16,
+      43
+    ],
+    "auto-dream": [
+      16
+    ],
+    "lock-file": [
+      16
+    ],
+    "daily-log": [
+      16,
+      43
+    ],
+    "renderer": [
+      17
+    ],
+    "yoga": [
+      17
+    ],
+    "screen-buffer": [
+      17
+    ],
+    "terminal-ui": [
+      17,
+      19,
+      50
+    ],
+    "reconciler": [
+      17
+    ],
+    "virtual-dom": [
+      17
+    ],
+    "blit": [
+      17
+    ],
+    "dirty-flag": [
+      17
+    ],
+    "scroll": [
+      17,
+      50
+    ],
+    "style-pool": [
+      17
+    ],
+    "wide-character": [
+      17
+    ],
+    "ansi": [
+      17,
+      20,
+      24
+    ],
+    "commands": [
+      18
+    ],
+    "registration": [
+      18,
+      31
+    ],
+    "local-command": [
+      18
+    ],
+    "prompt-command": [
+      18
+    ],
+    "local-jsx-command": [
+      18
+    ],
+    "shell-substitution": [
+      18
+    ],
+    "availability": [
+      18
+    ],
+    "bridge-safe": [
+      18,
+      34
+    ],
+    "dialog": [
+      19
+    ],
+    "ui": [
+      19,
+      17,
+      50
+    ],
+    "wizard": [
+      19
+    ],
+    "permission-dialog": [
+      19,
+      25
+    ],
+    "onboarding": [
+      19
+    ],
+    "launcher-pattern": [
+      19
+    ],
+    "custom-select": [
+      19
+    ],
+    "pane-component": [
+      19
+    ],
+    "notifications": [
+      20
+    ],
+    "toast": [
+      20
+    ],
+    "terminal-notifier": [
+      20
+    ],
+    "osc": [
+      20,
+      23
+    ],
+    "priority-queue": [
+      20
+    ],
+    "kitty": [
+      20
+    ],
+    "ghostty": [
+      20
+    ],
+    "bell": [
+      20
+    ],
+    "progress-reporting": [
+      20
+    ],
+    "vim": [
+      21
+    ],
+    "motions": [
+      21
+    ],
+    "text-objects": [
+      21
+    ],
+    "operators": [
+      21
+    ],
+    "transitions": [
+      21
+    ],
+    "pure-functions": [
+      21
+    ],
+    "discriminated-union": [
+      21,
+      30
+    ],
+    "dot-repeat": [
+      21
+    ],
+    "keybindings": [
+      22
+    ],
+    "keyboard": [
+      22
+    ],
+    "chord": [
+      22
+    ],
+    "hotkeys": [
+      22
+    ],
+    "input-handling": [
+      22,
+      48
+    ],
+    "terminal-decode": [
+      22
+    ],
+    "key-matching": [
+      22
+    ],
+    "user-customization": [
+      22
+    ],
+    "fullscreen": [
+      23,
+      50
+    ],
+    "alt-screen": [
+      23
+    ],
+    "mouse-tracking": [
+      23
+    ],
+    "dec-mode": [
+      23
+    ],
+    "offscreen-freeze": [
+      23
+    ],
+    "alternate-screen": [
+      23
+    ],
+    "theme": [
+      24
+    ],
+    "styling": [
+      24
+    ],
+    "colors": [
+      24
+    ],
+    "chalk": [
+      24
+    ],
+    "daltonized": [
+      24
+    ],
+    "accessibility": [
+      24
+    ],
+    "color-resolution": [
+      24
+    ],
+    "shimmer": [
+      24
+    ],
+    "vscode-boost": [
+      24
+    ],
+    "tmux-clamp": [
+      24
+    ],
+    "agent-color": [
+      24
+    ],
+    "permissions": [
+      25,
+      6,
+      7
+    ],
+    "allow-deny-ask": [
+      25
+    ],
+    "auto-mode": [
+      25
+    ],
+    "bypass": [
+      25
+    ],
+    "rule-matching": [
+      25
+    ],
+    "decision-pipeline": [
+      25
+    ],
+    "five-permission-modes": [
+      25
+    ],
+    "shadowed-rules": [
+      25
+    ],
+    "permission-explainer": [
+      25
+    ],
+    "settings": [
+      26
+    ],
+    "configuration": [
+      26
+    ],
+    "cascade": [
+      26
+    ],
+    "mdm": [
+      26
+    ],
+    "policy": [
+      26,
+      31
+    ],
+    "5-layer-cascade": [
+      26
+    ],
+    "settings-schema": [
+      26
+    ],
+    "merge-semantics": [
+      26
+    ],
+    "cache-architecture": [
+      26
+    ],
+    "file-watching": [
+      26
+    ],
+    "chokidar": [
+      26
+    ],
+    "remote-managed-settings": [
+      26
+    ],
+    "etag": [
+      26
+    ],
+    "security-check": [
+      26
+    ],
+    "session": [
+      27,
+      50
+    ],
+    "jsonl": [
+      27
+    ],
+    "transcript": [
+      27,
+      5
+    ],
+    "resume": [
+      27,
+      50
+    ],
+    "cloud-sync": [
+      27
+    ],
+    "append-only": [
+      27
+    ],
+    "write-pipeline": [
+      27
+    ],
+    "interrupt-detection": [
+      27,
+      33
+    ],
+    "compaction": [
+      28,
+      5
+    ],
+    "context-window": [
+      28,
+      46
+    ],
+    "summarization": [
+      28
+    ],
+    "token-management": [
+      28
+    ],
+    "four-tier": [
+      28
+    ],
+    "session-memory-compact": [
+      28
+    ],
+    "reactive-compact": [
+      28
+    ],
+    "post-compact-cleanup": [
+      28
+    ],
+    "context-command": [
+      28
+    ],
+    "analytics": [
+      29,
+      44
+    ],
+    "telemetry": [
+      29,
+      44
+    ],
+    "datadog": [
+      29,
+      44
+    ],
+    "growthbook": [
+      29,
+      44,
+      46
+    ],
+    "pii": [
+      29,
+      44
+    ],
+    "sampling": [
+      29,
+      44
+    ],
+    "event-queue": [
+      29,
+      44
+    ],
+    "kill-switch": [
+      29,
+      44
+    ],
+    "metadata-enrichment": [
+      29,
+      44
+    ],
+    "feature-flags": [
+      29,
+      44,
+      46
+    ],
+    "migration": [
+      30
+    ],
+    "idempotent": [
+      30
+    ],
+    "settings-upgrade": [
+      30
+    ],
+    "version-gate": [
+      30
+    ],
+    "backward-compat": [
+      30
+    ],
+    "plugins": [
+      31
+    ],
+    "marketplace": [
+      31
+    ],
+    "manifest": [
+      31
+    ],
+    "dependency-resolution": [
+      31
+    ],
+    "versioned-cache": [
+      31
+    ],
+    "plugin-json": [
+      31
+    ],
+    "autoupdate": [
+      31
+    ],
+    "user-config": [
+      31
+    ],
+    "plugin-lifecycle": [
+      31
+    ],
+    "hooks": [
+      32,
+      5
+    ],
+    "lifecycle": [
+      32,
+      49
+    ],
+    "pre-tool-use": [
+      32
+    ],
+    "post-tool-use": [
+      32
+    ],
+    "exit-code": [
+      32
+    ],
+    "hook-events": [
+      32,
+      42
+    ],
+    "session-hooks": [
+      32
+    ],
+    "http-hooks": [
+      32
+    ],
+    "prompt-hooks": [
+      32
+    ],
+    "agent-hooks": [
+      32
+    ],
+    "async-hooks": [
+      32
+    ],
+    "errors": [
+      33
+    ],
+    "recovery": [
+      33
+    ],
+    "abort": [
+      33
+    ],
+    "conversation-recovery": [
+      33
+    ],
+    "error-handling": [
+      33
+    ],
+    "error-taxonomy": [
+      33
+    ],
+    "typed-errors": [
+      33
+    ],
+    "error-overlay": [
+      33
+    ],
+    "persistent-retry": [
+      33
+    ],
+    "deserialization": [
+      33
+    ],
+    "bridge": [
+      34
+    ],
+    "remote-control": [
+      34
+    ],
+    "ccr": [
+      34,
+      37
+    ],
+    "jwt": [
+      34
+    ],
+    "bridge-v1-v2": [
+      34
+    ],
+    "flush-gate": [
+      34
+    ],
+    "standalone-bridge": [
+      34
+    ],
+    "permission-bridge": [
+      34
+    ],
+    "pkce": [
+      35
+    ],
+    "authentication": [
+      35
+    ],
+    "token-storage": [
+      35
+    ],
+    "keychain": [
+      35,
+      47
+    ],
+    "token-refresh": [
+      35
+    ],
+    "logout": [
+      35
+    ],
+    "enterprise": [
+      35,
+      26
+    ],
+    "fedstart": [
+      35
+    ],
+    "scopes": [
+      35
+    ],
+    "git": [
+      36
+    ],
+    "filesystem-first": [
+      36
+    ],
+    "git-watcher": [
+      36
+    ],
+    "branch": [
+      36
+    ],
+    "commit-tracking": [
+      36
+    ],
+    "git-config-parser": [
+      36
+    ],
+    "ref-validation": [
+      36
+    ],
+    "gitignore": [
+      36
+    ],
+    "github-auth": [
+      36
+    ],
+    "proxy": [
+      37
+    ],
+    "upstream": [
+      37
+    ],
+    "ccr-container": [
+      37
+    ],
+    "tls": [
+      37,
+      42
+    ],
+    "mitm": [
+      37
+    ],
+    "protobuf": [
+      37
+    ],
+    "connect-over-websocket": [
+      37
+    ],
+    "keepalive": [
+      37
+    ],
+    "cron": [
+      38,
+      43
+    ],
+    "scheduling": [
+      38,
+      43
+    ],
+    "jitter": [
+      38,
+      43
+    ],
+    "recurring-tasks": [
+      38,
+      43
+    ],
+    "timer": [
+      38
+    ],
+    "cron-task": [
+      38,
+      43
+    ],
+    "one-shot": [
+      38
+    ],
+    "voice": [
+      39
+    ],
+    "speech-to-text": [
+      39
+    ],
+    "audio": [
+      39
+    ],
+    "push-to-talk": [
+      39
+    ],
+    "websocket-stt": [
+      39
+    ],
+    "audio-backend": [
+      39
+    ],
+    "hold-to-talk": [
+      39
+    ],
+    "focus-mode": [
+      39
+    ],
+    "microphone": [
+      39
+    ],
+    "buddy": [
+      40
+    ],
+    "tamagotchi": [
+      40
+    ],
+    "pet": [
+      40
+    ],
+    "easter-egg": [
+      40
+    ],
+    "sprite": [
+      40
+    ],
+    "prng": [
+      40
+    ],
+    "rarity": [
+      40
+    ],
+    "animation": [
+      40
+    ],
+    "april-fools": [
+      40
+    ],
+    "ultraplan": [
+      41
+    ],
+    "remote-planning": [
+      41
+    ],
+    "ccr-session": [
+      41
+    ],
+    "polling": [
+      41
+    ],
+    "plan-delivery": [
+      41
+    ],
+    "teleport": [
+      41
+    ],
+    "exit-plan-mode": [
+      41
+    ],
+    "remote-execution": [
+      41
+    ],
+    "entrypoints": [
+      42
+    ],
+    "sdk": [
+      42
+    ],
+    "agent-sdk": [
+      42
+    ],
+    "cli-bootstrap": [
+      42
+    ],
+    "control-protocol": [
+      42
+    ],
+    "mcp-server-mode": [
+      42
+    ],
+    "daemon": [
+      42,
+      43
+    ],
+    "fast-paths": [
+      42,
+      1
+    ],
+    "kairos": [
+      43
+    ],
+    "autonomous": [
+      43
+    ],
+    "sleep-tool": [
+      43
+    ],
+    "assistant-mode": [
+      43
+    ],
+    "proactive": [
+      43
+    ],
+    "tick-loop": [
+      43
+    ],
+    "brief-tool": [
+      43
+    ],
+    "push-notification": [
+      43
+    ],
+    "subscribe-pr": [
+      43
+    ],
+    "queue-priority": [
+      43
+    ],
+    "cost": [
+      44
+    ],
+    "observability": [
+      44
+    ],
+    "opentelemetry": [
+      44
+    ],
+    "cost-tracking": [
+      44
+    ],
+    "microdollars": [
+      44
+    ],
+    "session-cost": [
+      44
+    ],
+    "proto-fields": [
+      44
+    ],
+    "user-buckets": [
+      44
+    ],
+    "quadratic-backoff": [
+      44
+    ],
+    "desktop": [
+      45
+    ],
+    "ide": [
+      45
+    ],
+    "chrome-extension": [
+      45
+    ],
+    "computer-use": [
+      45
+    ],
+    "deep-link": [
+      45
+    ],
+    "native-messaging": [
+      45
+    ],
+    "vscode": [
+      45
+    ],
+    "jetbrains": [
+      45
+    ],
+    "lockfile-discovery": [
+      45
+    ],
+    "model": [
+      46
+    ],
+    "provider": [
+      46
+    ],
+    "alias": [
+      46
+    ],
+    "allowlist": [
+      46
+    ],
+    "fast-mode": [
+      46
+    ],
+    "model-selection": [
+      46
+    ],
+    "1m-context": [
+      46
+    ],
+    "effort-levels": [
+      46
+    ],
+    "model-migrations": [
+      46
+    ],
+    "deprecation": [
+      46
+    ],
+    "subagent-model": [
+      46
+    ],
+    "bedrock": [
+      46
+    ],
+    "vertex": [
+      46
+    ],
+    "sandbox": [
+      47
+    ],
+    "security": [
+      7,
+      25,
+      37,
+      47
+    ],
+    "seatbelt": [
+      47
+    ],
+    "bubblewrap": [
+      47
+    ],
+    "network-control": [
+      47
+    ],
+    "filesystem-control": [
+      47
+    ],
+    "bare-git-escape": [
+      47
+    ],
+    "secure-storage": [
+      47
+    ],
+    "fallback-storage": [
+      47
+    ],
+    "messages": [
+      48
+    ],
+    "pipeline": [
+      48,
+      2
+    ],
+    "normalization": [
+      48
+    ],
+    "user-input": [
+      48
+    ],
+    "api-transform": [
+      48
+    ],
+    "message-construction": [
+      48
+    ],
+    "slug-command": [
+      48
+    ],
+    "paste-expansion": [
+      48
+    ],
+    "synthetic-messages": [
+      48
+    ],
+    "message-taxonomy": [
+      48
+    ],
+    "tasks": [
+      49
+    ],
+    "background-tasks": [
+      49,
+      7
+    ],
+    "task-types": [
+      49
+    ],
+    "output-management": [
+      49
+    ],
+    "local-shell-task": [
+      49
+    ],
+    "local-agent-task": [
+      49
+    ],
+    "remote-agent-task": [
+      49,
+      41
+    ],
+    "in-process-teammate-task": [
+      49
+    ],
+    "dream-task": [
+      49,
+      16
+    ],
+    "task-notification": [
+      49,
+      13
+    ],
+    "repl": [
+      50
+    ],
+    "screen": [
+      50
+    ],
+    "render-tree": [
+      50
+    ],
+    "query-guard": [
+      50
+    ],
+    "virtual-scroll": [
+      50
+    ],
+    "session-resume": [
+      50,
+      27
+    ],
+    "loading-state": [
+      50
+    ],
+    "dialog-priority": [
+      50
+    ],
+    "messages-array": [
+      50
+    ],
+    "tool-jsx": [
+      50
+    ],
+    "cancel-handler": [
+      50
+    ],
+    "transcript-mode": [
+      50
+    ],
+    "prompt-input": [
+      50
+    ],
+    "spinner": [
+      50
+    ]
   }
 }
