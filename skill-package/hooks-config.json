@@ -29,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/stuartkerr/.claude/skills/claude-internals/scripts/config-aware-hook.sh",
+            "command": "~/.claude/skills/claude-internals/scripts/config-aware-hook.sh",
             "timeout": 2000
           }
         ]

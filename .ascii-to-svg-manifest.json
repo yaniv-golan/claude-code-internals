@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "lastSync": "2026-03-31T22:15:00Z",
+  "diagrams": [
+    {
+      "id": "architecture",
+      "sourceFile": "README.md",
+      "sourceLine": 35,
+      "svgFile": "assets/diagrams/architecture.svg",
+      "asciiHash": "pending-hash-on-next-sync",
+      "lastConverted": "2026-03-31T22:15:00Z"
+    },
+    {
+      "id": "hook-flow",
+      "sourceFile": "README.md",
+      "sourceLine": 101,
+      "svgFile": "assets/diagrams/hook-flow.svg",
+      "asciiHash": "pending-hash-on-next-sync",
+      "lastConverted": "2026-03-31T22:15:00Z"
+    }
+  ]
+}

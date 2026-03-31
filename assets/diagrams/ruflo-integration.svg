@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" width="800" height="560">
+  <style>
+    text { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; fill: #e0e0e0; }
+    .title { font-size: 14px; font-weight: bold; fill: #a78bfa; }
+    .label { font-size: 12px; fill: #e0e0e0; }
+    .sublabel { font-size: 11px; fill: #9ca3af; }
+    .small { font-size: 10px; fill: #6b7280; }
+    .box { fill: #1e1e2e; stroke: #6366f1; stroke-width: 1.5; rx: 6; }
+    .box-skill { fill: #1e1e2e; stroke: #fbbf24; stroke-width: 1.5; rx: 6; }
+    .box-ruflo { fill: #1a1a2e; stroke: #818cf8; stroke-width: 1.5; rx: 6; }
+    .box-consumer { fill: #1a2e1a; stroke: #4ade80; stroke-width: 1.5; rx: 6; }
+    .arrow { stroke: #6366f1; stroke-width: 1.5; fill: none; marker-end: url(#a1); }
+    .arrow-data { stroke: #fbbf24; stroke-width: 1.5; fill: none; marker-end: url(#a2); stroke-dasharray: 6,3; }
+    .arrow-out { stroke: #4ade80; stroke-width: 1.5; fill: none; marker-end: url(#a3); }
+  </style>
+  <defs>
+    <marker id="a1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6366f1"/>
+    </marker>
+    <marker id="a2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#fbbf24"/>
+    </marker>
+    <marker id="a3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#4ade80"/>
+    </marker>
+  </defs>
+  <rect width="800" height="560" fill="#0d0d1a" rx="8"/>
+  <text x="400" y="30" text-anchor="middle" class="title">Making Knowledge Universally Accessible via RuFlo</text>
+
+  <!-- Source: Skill -->
+  <rect x="20" y="55" width="220" height="180" class="box-skill"/>
+  <text x="130" y="80" text-anchor="middle" class="label" style="fill: #fbbf24;">claude-internals skill</text>
+  <line x1="20" y1="90" x2="240" y2="90" style="stroke: #333; stroke-width: 0.5;"/>
+  <text x="130" y="110" text-anchor="middle" class="sublabel">50 lessons (318KB)</text>
+  <text x="130" y="128" text-anchor="middle" class="sublabel">494 keywords indexed</text>
+  <text x="130" y="146" text-anchor="middle" class="sublabel">TF-IDF vectors built</text>
+  <text x="130" y="170" text-anchor="middle" class="small">Only accessible via</text>
+  <text x="130" y="185" text-anchor="middle" class="small">/claude-internals [topic]</text>
+  <text x="130" y="200" text-anchor="middle" class="small">in current session</text>
+  <text x="130" y="225" text-anchor="middle" class="sublabel" style="fill: #fbbf24;">LOCAL ONLY</text>
+
+  <!-- Arrow: skill -> ruflo -->
+  <line x1="240" y1="145" x2="290" y2="145" class="arrow-data"/>
+  <text x="265" y="138" text-anchor="middle" class="small" style="fill: #fbbf24;">load</text>
+
+  <!-- Middle: Ruflo -->
+  <rect x="290" y="55" width="220" height="180" class="box-ruflo"/>
+  <text x="400" y="80" text-anchor="middle" class="label" style="fill: #818cf8;">RuFlo / RuVector</text>
+  <line x1="290" y1="90" x2="510" y2="90" style="stroke: #333; stroke-width: 0.5;"/>
+  <text x="400" y="112" text-anchor="middle" class="sublabel">10 cluster embeddings</text>
+  <text x="400" y="130" text-anchor="middle" class="sublabel">50 lesson embeddings</text>
+  <text x="400" y="148" text-anchor="middle" class="sublabel">5 semantic references</text>
+  <text x="400" y="166" text-anchor="middle" class="sublabel">2 routing patterns</text>
+  <text x="400" y="190" text-anchor="middle" class="small">MiniLM-L6-v2 ONNX</text>
+  <text x="400" y="205" text-anchor="middle" class="small">~6ms query time</text>
+  <text x="400" y="225" text-anchor="middle" class="sublabel" style="fill: #818cf8;">UNIVERSAL</text>
+
+  <!-- Arrows out to consumers -->
+  <line x1="510" y1="90" x2="570" y2="70" class="arrow-out"/>
+  <line x1="510" y1="120" x2="570" y2="140" class="arrow-out"/>
+  <line x1="510" y1="150" x2="570" y2="210" class="arrow-out"/>
+  <line x1="510" y1="180" x2="570" y2="280" class="arrow-out"/>
+
+  <!-- Consumer boxes -->
+  <rect x="570" y="50" width="210" height="50" class="box-consumer"/>
+  <text x="675" y="72" text-anchor="middle" class="label" style="fill: #4ade80;">Any Ruflo Agent</text>
+  <text x="675" y="90" text-anchor="middle" class="sublabel">embeddings_search "hooks"</text>
+
+  <rect x="570" y="120" width="210" height="50" class="box-consumer"/>
+  <text x="675" y="142" text-anchor="middle" class="label" style="fill: #4ade80;">task_orchestrate</text>
+  <text x="675" y="160" text-anchor="middle" class="sublabel">Auto-consults for .claude/ tasks</text>
+
+  <rect x="570" y="190" width="210" height="50" class="box-consumer"/>
+  <text x="675" y="212" text-anchor="middle" class="label" style="fill: #4ade80;">Swarms &amp; Workflows</text>
+  <text x="675" y="230" text-anchor="middle" class="sublabel">Architecture-aware agents</text>
+
+  <rect x="570" y="260" width="210" height="50" class="box-consumer"/>
+  <text x="675" y="282" text-anchor="middle" class="label" style="fill: #4ade80;">OpenClaw / Other Systems</text>
+  <text x="675" y="300" text-anchor="middle" class="sublabel">Query via namespace</text>
+
+  <!-- Bottom comparison -->
+  <rect x="20" y="290" width="760" height="250" style="fill: #111122; stroke: #333; stroke-width: 1; rx: 6;"/>
+  <text x="400" y="315" text-anchor="middle" class="title" style="fill: #818cf8;">Without vs. With RuFlo Integration</text>
+
+  <!-- Without -->
+  <rect x="40" y="335" width="350" height="180" style="fill: #1e1e2e; stroke: #ef4444; stroke-width: 1; rx: 6;"/>
+  <text x="215" y="358" text-anchor="middle" class="label" style="fill: #ef4444;">Without RuFlo</text>
+  <line x1="40" y1="367" x2="390" y2="367" style="stroke: #333; stroke-width: 0.5;"/>
+  <text x="215" y="390" text-anchor="middle" class="sublabel">Knowledge locked in one skill</text>
+  <text x="215" y="410" text-anchor="middle" class="sublabel">Only accessible via /claude-internals</text>
+  <text x="215" y="430" text-anchor="middle" class="sublabel">Only in the current session</text>
+  <text x="215" y="450" text-anchor="middle" class="sublabel">Other agents can't see it</text>
+  <text x="215" y="470" text-anchor="middle" class="sublabel">Swarms have no architecture context</text>
+  <text x="215" y="500" text-anchor="middle" class="small" style="fill: #ef4444;">Layers 1 &amp; 2 only (keyword + TF-IDF)</text>
+
+  <!-- With -->
+  <rect x="410" y="335" width="350" height="180" style="fill: #1a2e1a; stroke: #4ade80; stroke-width: 1; rx: 6;"/>
+  <text x="585" y="358" text-anchor="middle" class="label" style="fill: #4ade80;">With RuFlo</text>
+  <line x1="410" y1="367" x2="760" y2="367" style="stroke: #2d5a2d; stroke-width: 0.5;"/>
+  <text x="585" y="390" text-anchor="middle" class="sublabel">Knowledge available everywhere</text>
+  <text x="585" y="410" text-anchor="middle" class="sublabel">Any agent can search it</text>
+  <text x="585" y="430" text-anchor="middle" class="sublabel">Persists across all sessions</text>
+  <text x="585" y="450" text-anchor="middle" class="sublabel">task_orchestrate auto-consults</text>
+  <text x="585" y="470" text-anchor="middle" class="sublabel">Swarms are architecture-aware</text>
+  <text x="585" y="500" text-anchor="middle" class="small" style="fill: #4ade80;">All 3 layers (+ neural ~6ms search)</text>
+</svg>
