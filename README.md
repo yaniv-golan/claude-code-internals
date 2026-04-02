@@ -72,7 +72,7 @@ Or manually: download the zip, extract the contents to `~/.codex/skills/claude-c
 ### From This Repo (manual)
 
 ```bash
-cp -r skill-package/* ~/.claude/skills/claude-code-internals/
+cp -r skill-package/skills/claude-code-internals/* ~/.claude/skills/claude-code-internals/
 chmod +x ~/.claude/skills/claude-code-internals/scripts/*.sh \
          ~/.claude/skills/claude-code-internals/scripts/*.js
 ```
@@ -88,7 +88,7 @@ Adds a gentle reminder whenever Claude edits `.claude/` config files. Add to `ho
     "hooks": [
       {
         "type": "command",
-        "command": "~/.claude/skills/claude-code-internals/scripts/config-aware-hook.sh",
+        "command": "~/.claude/plugins/claude-code-internals/skills/claude-code-internals/scripts/config-aware-hook.sh",
         "timeout": 2000
       }
     ]
@@ -349,35 +349,39 @@ Hook config is snapshot-captured at startup. Restart Claude Code after adding th
 claude-code-internals/
 ├── .claude-plugin/
 │   └── marketplace.json            Marketplace plugin definition
-├── skill-package/                  The installable skill
+├── skill-package/                  Plugin package
 │   ├── .claude-plugin/
 │   │   └── plugin.json             Plugin definition
-│   ├── SKILL.md                    Skill brain (search strategy, lesson index)
-│   ├── version.json                Version tracking (v2.2.0 / v2.1.90)
-│   ├── hooks-config.json           PreToolUse hook definition
-│   ├── references/
-│   │   ├── 01-core-architecture-tools.md
-│   │   ├── 02-agents-intelligence-interface.md
-│   │   ├── 03-interface-infrastructure.md
-│   │   ├── 04-connectivity-plugins.md
-│   │   ├── 05-unreleased-bigpicture.md
-│   │   ├── 06-verified-new-v2.1.90.md   ← Chapter 9 (binary-verified)
-│   │   ├── topic-index.json
-│   │   ├── semantic-index.json
-│   │   ├── cross-references.json
-│   │   └── troubleshooting.json
-│   └── scripts/
-│       ├── fetch-lesson.js         Fetch lesson content by ID (new)
-│       ├── xref.js                 Cross-reference lookup CLI (new)
-│       ├── troubleshoot.js         Troubleshooting index CLI (new)
-│       ├── extract-bundle.sh       Extract JS bundle from Bun SEA (new)
-│       ├── diff-versions.sh        Diff env vars/commands between bundles (new)
-│       ├── search.js               Unified RRF search (keyword + TF-IDF)
-│       ├── semantic-search.js      TF-IDF search
-│       ├── lookup.sh               Keyword search
-│       ├── check-version.sh        Version staleness detection
-│       ├── build-rvf-index.js      TF-IDF index builder
-│       └── config-aware-hook.sh    PreToolUse .claude/ detector
+│   ├── LICENSE
+│   ├── README.md
+│   └── skills/
+│       └── claude-code-internals/  The skill itself
+│           ├── SKILL.md            Skill brain (search strategy, lesson index)
+│           ├── version.json        Version tracking (v2.2.0 / v2.1.90)
+│           ├── hooks-config.json   PreToolUse hook definition
+│           ├── references/
+│           │   ├── 01-core-architecture-tools.md
+│           │   ├── 02-agents-intelligence-interface.md
+│           │   ├── 03-interface-infrastructure.md
+│           │   ├── 04-connectivity-plugins.md
+│           │   ├── 05-unreleased-bigpicture.md
+│           │   ├── 06-verified-new-v2.1.90.md   ← Chapter 9 (binary-verified)
+│           │   ├── topic-index.json
+│           │   ├── semantic-index.json
+│           │   ├── cross-references.json
+│           │   └── troubleshooting.json
+│           └── scripts/
+│               ├── fetch-lesson.js         Fetch lesson content by ID (new)
+│               ├── xref.js                 Cross-reference lookup CLI (new)
+│               ├── troubleshoot.js         Troubleshooting index CLI (new)
+│               ├── extract-bundle.sh       Extract JS bundle from Bun SEA (new)
+│               ├── diff-versions.sh        Diff env vars/commands between bundles (new)
+│               ├── search.js               Unified RRF search (keyword + TF-IDF)
+│               ├── semantic-search.js      TF-IDF search
+│               ├── lookup.sh               Keyword search
+│               ├── check-version.sh        Version staleness detection
+│               ├── build-rvf-index.js      TF-IDF index builder
+│               └── config-aware-hook.sh    PreToolUse .claude/ detector
 ├── site/
 │   └── static/
 │       └── install-claude-desktop.html  "Add to Claude" button page

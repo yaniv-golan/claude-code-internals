@@ -21,7 +21,7 @@ jobs:
       - name: Build release zip
         run: |
           mkdir -p dist/claude-code-internals
-          cp -r skill-package/. dist/claude-code-internals/
+          cp -r skill-package/skills/claude-code-internals/. dist/claude-code-internals/
           # Remove any .git files that might have been copied
           find dist -name '.git' -exec rm -rf {} + 2>/dev/null || true
           cd dist

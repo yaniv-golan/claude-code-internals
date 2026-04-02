@@ -9,5 +9,5 @@
   "repository": "https://github.com/yaniv-golan/claude-code-internals",
   "license": "MIT",
   "keywords": ["claude-code", "internals", "architecture", "hooks", "permissions", "agents", "debugging"],
-  "skills": "."
+  "skills": "./skills"
 }
