@@ -47,7 +47,7 @@ Available topics (55 lessons across 9 chapters):
 bash ${CLAUDE_SKILL_DIR}/scripts/check-version.sh 2>/dev/null
 ```
 
-Silent if versions match. Prints a warning if your running Claude Code differs from v2.1.88.
+Silent if versions match. Prints a warning if your running Claude Code differs from v2.1.90.
 If there's a mismatch, note it in your answer — hooks and permission details change frequently.
 
 ## Step 2: Search with unified RRF
