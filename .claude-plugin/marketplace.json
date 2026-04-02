@@ -1,0 +1,23 @@
+{
+  "name": "claude-code-internals-marketplace",
+  "owner": {
+    "name": "Yaniv Golan",
+    "email": "yaniv@golan.name"
+  },
+  "metadata": {
+    "description": "Source-level architecture knowledge for Claude Code — 56 lessons covering hooks, permissions, agents, compaction, and more, verified against the v2.1.90 binary."
+  },
+  "plugins": [
+    {
+      "name": "claude-code-internals",
+      "source": "./skill-package",
+      "description": "Gives Claude source-level knowledge of its own architecture. 56 lessons covering every internal subsystem — hooks (all 27 event types), permissions (7-phase pipeline, 23 validators), boot sequence, agents, compaction, MCP, memory, and binary-verified new features in v2.1.90. Searchable via RRF (keyword + TF-IDF fusion).",
+      "author": {
+        "name": "Yaniv Golan",
+        "email": "yaniv@golan.name"
+      },
+      "category": "productivity",
+      "tags": ["claude-code", "internals", "architecture", "hooks", "permissions", "agents", "debugging", "configuration"]
+    }
+  ]
+}

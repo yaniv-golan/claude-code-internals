@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Build release zip
+        run: |
+          mkdir -p dist/claude-code-internals
+          cp -r skill-package/. dist/claude-code-internals/
+          # Remove any .git files that might have been copied
+          find dist -name '.git' -exec rm -rf {} + 2>/dev/null || true
+          cd dist
+          zip -r ../claude-code-internals.zip claude-code-internals/
+          echo "Zip size: $(du -sh ../claude-code-internals.zip | cut -f1)"
+
+      - name: Extract release notes from README
+        id: notes
+        run: |
+          # Use everything between the first two --- after the header as release notes,
+          # or fall back to a generic message
+          NOTES="Release v${{ steps.version.outputs.VERSION }}"
+          echo "NOTES=$NOTES" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "v${{ steps.version.outputs.VERSION }}"
+          body: |
+            ## Claude Code Internals v${{ steps.version.outputs.VERSION }}
+
+            Download `claude-code-internals.zip` and follow the [installation instructions](https://github.com/yaniv-golan/claude-code-internals#installation).
+
+            ### Quick install (Claude Code CLI)
+            ```bash
+            claude plugin marketplace add https://github.com/yaniv-golan/claude-code-internals
+            claude plugin install claude-code-internals@claude-code-internals-marketplace
+            ```
+
+            ### Quick install (Claude Desktop)
+            Click **Install in Claude Desktop** on the [repo page](https://github.com/yaniv-golan/claude-code-internals).
+          files: claude-code-internals.zip
+          draft: false
+          prerelease: false
