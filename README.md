@@ -1,6 +1,8 @@
 # Claude Code Internals
 
 > A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 56 lessons covering every internal subsystem, verified against the v2.1.90 binary, searchable three ways.
+>
+> **This is a modified fork** of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals). See [Attribution](#attribution) for what changed.
 
 [![Install in Claude Desktop](https://img.shields.io/badge/Install_in_Claude_Desktop-D97757?style=for-the-badge&logo=claude&logoColor=white)](https://yaniv-golan.github.io/claude-code-internals/static/install-claude-desktop.html)
 
