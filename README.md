@@ -433,8 +433,27 @@ node scripts/build-rvf-index.js
 | **Windows (WSL)** | Expected to work | Run inside WSL |
 | **Windows (native)** | Not supported | Bash scripts require a Unix shell |
 
+## Attribution
+
+This repository is a fork of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals) (v2.0.0). All foundational work is by **stuinfla**, including:
+
+- The 50 original lessons (Chapters 1–8), reverse-engineered from Claude Code v2.1.88
+- The unified RRF search engine (`search.js`, `semantic-search.js`, `lookup.sh`)
+- The 494-keyword topic index, TF-IDF vectors, cross-reference map, and troubleshooting index
+- The PreToolUse `.claude/` hook (`config-aware-hook.sh`), version check script, and RuFlo index builder
+- The original README documentation and architecture diagrams
+
+**What this fork adds** (v2.2.0, by Yaniv Golan):
+
+- Chapter 9 (Lessons 51–56): binary-verified new features in Claude Code v2.1.90, extracted directly from the Bun SEA binary and verified against official docs
+- 5 new scripts: `fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `extract-bundle.sh`, `diff-versions.sh`
+- Plugin marketplace infrastructure: `.claude-plugin/` files, "Add to Claude" install button, GitHub Actions release and Pages deploy workflows
+- Updated `SKILL.md` to use the new script CLIs instead of fragile inline `node -e` blocks
+
+See [CHANGELOG.md](CHANGELOG.md) for the full item-by-item breakdown.
+
+The architecture lesson content in `references/01–05` is sourced from [markdown.engineering](https://www.markdown.engineering/learn-claude-code/) and used for educational and tooling purposes.
+
 ## License
 
 MIT License. See [LICENSE](LICENSE) for full text.
-
-The architecture lesson content in `references/01–05` is sourced from [markdown.engineering](https://www.markdown.engineering/learn-claude-code/). The Chapter 9 content, skill packaging, indexes, search scripts, maintenance scripts, and hook integrations are original work.
