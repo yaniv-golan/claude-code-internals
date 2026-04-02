@@ -4,6 +4,10 @@
 
 [![Install in Claude Desktop](https://img.shields.io/badge/Install_in_Claude_Desktop-D97757?style=for-the-badge&logo=claude&logoColor=white)](https://yaniv-golan.github.io/claude-code-internals/static/install-claude-desktop.html)
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-plugin-F97316)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/plugins)
+[![Improved with Skill Creator Plus](https://img.shields.io/badge/Improved_with-Skill_Creator_Plus-4ecdc4?style=flat-square)](https://github.com/yaniv-golan/skill-creator-plus)
+
 **Skill Version:** 2.2.0 | **Captured from:** Claude Code v2.1.90 | **Date:** 2026-04-03 | **License:** MIT
 
 ---
@@ -443,7 +447,7 @@ This repository is a fork of [stuinfla/claude-code-internals](https://github.com
 - The PreToolUse `.claude/` hook (`config-aware-hook.sh`), version check script, and RuFlo index builder
 - The original README documentation and architecture diagrams
 
-**What this fork adds** (v2.2.0, by Yaniv Golan):
+**What this fork adds** (v2.2.0, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
 
 - Chapter 9 (Lessons 51–56): binary-verified new features in Claude Code v2.1.90, extracted directly from the Bun SEA binary and verified against official docs
 - 5 new scripts: `fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `extract-bundle.sh`, `diff-versions.sh`
