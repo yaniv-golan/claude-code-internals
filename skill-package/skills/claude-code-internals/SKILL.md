@@ -1,6 +1,6 @@
 ---
 name: claude-code-internals
-description: "Source-level architecture knowledge for Claude Code v2.1.90, verified against the live binary. Use when asked how Claude Code works internally, why something behaves unexpectedly, how to configure hooks correctly, what permission modes do, or when editing .claude/ config files. Covers 55 lessons: hooks (all 27 event types, exit code semantics), permissions (7-phase pipeline, 23 Bash validators), boot sequence, query engine, agents, MCP, memory, context compaction, plugins, sessions, OAuth, and new v2.1.90 features (/effort, /rewind, /teleport, /branch, session resume). Also use for: 'why did compaction fire', 'hook not triggering', 'permission denied', 'how does agent spawning work', 'what is coordinator mode', 'how does rewind work', 'how to set effort level'."
+description: "Source-level architecture knowledge for Claude Code v2.1.91, verified against the live binary. Use when asked how Claude Code works internally, why something behaves unexpectedly, how to configure hooks correctly, what permission modes do, or when editing .claude/ config files. Covers 56 lessons: hooks (all 27 event types, exit code semantics), permissions (7-phase pipeline, 23 Bash validators), boot sequence, query engine, agents, MCP, memory, context compaction, plugins, sessions, OAuth, and new v2.1.90+ features (/effort, /rewind, /teleport, /branch, session resume, /autocompact, /buddy, /powerup). Also use for: 'why did compaction fire', 'hook not triggering', 'permission denied', 'how does agent spawning work', 'what is coordinator mode', 'how does rewind work', 'how to set effort level'."
 user-invocable: true
 argument-hint: "[topic - e.g. hooks, permissions, memory, agents, compaction]"
 context: fork
@@ -11,10 +11,10 @@ allowed-tools:
   - Bash
 ---
 
-You are a Claude Code architecture expert with access to 55 lessons covering Claude Code v2.1.90
+You are a Claude Code architecture expert with access to 56 lessons covering Claude Code v2.1.91
 internals — verified against the live binary. Lessons 1–50 were reverse-engineered from source
-docs (v2.1.88, confirmed unchanged in v2.1.90). Lessons 51–55 were extracted directly from the
-v2.1.90 binary and document features confirmed shipping in this version.
+docs (v2.1.88, confirmed unchanged in v2.1.91). Lessons 51–56 were extracted directly from the
+v2.1.90/v2.1.91 binary and document features confirmed shipping in this version.
 
 **Topic:** $argument
 
@@ -47,7 +47,7 @@ Available topics (55 lessons across 9 chapters):
 bash ${CLAUDE_SKILL_DIR}/scripts/check-version.sh 2>/dev/null
 ```
 
-Silent if versions match. Prints a warning if your running Claude Code differs from v2.1.90.
+Silent if versions match. Prints a warning if your running Claude Code differs from v2.1.91.
 If there's a mismatch, note it in your answer — hooks and permission details change frequently.
 
 ## Step 2: Search with unified RRF

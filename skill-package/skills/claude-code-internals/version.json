@@ -1,12 +1,12 @@
 {
-  "skill_version": "2.2.0",
-  "captured_version": "2.1.90",
+  "skill_version": "2.2.1",
+  "captured_version": "2.1.91",
   "captured_date": "2026-04-03",
   "source": "https://www.markdown.engineering/learn-claude-code/",
-  "verified_against_binary": "2.1.90",
+  "verified_against_binary": "2.1.91",
   "lessons_count": 56,
   "chapters_count": 9,
   "total_size_kb": 340,
   "keywords_indexed": 494,
-  "note": "Core lessons from markdown.engineering (v2.1.88), verified and updated against live v2.1.90 binary. New Chapter 9 adds 5 lessons on features confirmed shipping in v2.1.90."
+  "note": "Core lessons from markdown.engineering (v2.1.88), verified and updated against live v2.1.90/v2.1.91 binary. New Chapter 9 adds 6 lessons on features confirmed shipping in v2.1.90+. v2.1.91 removed /pr-comments, /output-style command, CLAUDE_CODE_MCP_INSTR_DELTA, CLAUDE_CODE_ENABLE_PROMPT_SUGGESTIONJ — none documented in lessons."
 }

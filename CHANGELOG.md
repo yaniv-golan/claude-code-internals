@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.2.1 — 2026-04-03 (this fork)
+
+Verified against Claude Code v2.1.91. No new lessons needed — v2.1.91 is removal-only:
+
+- `/pr-comments` command removed (was undocumented built-in "Get comments from a GitHub pull request")
+- `/output-style` command removed (`output-styles/` plugin directory support still present)
+- `CLAUDE_CODE_MCP_INSTR_DELTA` env var removed
+- `CLAUDE_CODE_ENABLE_PROMPT_SUGGESTIONJ` env var removed (typo-named, likely dead code)
+
+None of these appeared in our lessons. Updated version references throughout.
+
+---
+
 ## v2.2.0 — 2026-04-03 (this fork)
 
 Forked from [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals) (v2.0.0, 50 lessons, v2.1.88).
