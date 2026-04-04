@@ -1,7 +1,7 @@
 {
-  "generated": "2026-03-31",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering)",
-  "total_lessons": 50,
+  "generated": "2026-04-04",
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.92",
+  "total_lessons": 58,
   "lessons": [
     {
       "id": 1,
@@ -751,6 +751,126 @@
         "render-tree",
         "query-guard",
         "virtual-scroll"
+      ]
+    },
+    {
+      "id": 51,
+      "title": "/effort Command & Reasoning Budget",
+      "lesson_number": "51",
+      "file": "06-verified-new-v2.1.90.md",
+      "startLine": 33,
+      "endLine": 93,
+      "keywords": [
+        "effort",
+        "reasoning-budget",
+        "effortLevel",
+        "ultrathink",
+        "thinking"
+      ]
+    },
+    {
+      "id": 52,
+      "title": "/rewind & File Checkpointing",
+      "lesson_number": "52",
+      "file": "06-verified-new-v2.1.90.md",
+      "startLine": 94,
+      "endLine": 155,
+      "keywords": [
+        "rewind",
+        "checkpoint",
+        "file-history",
+        "rollback",
+        "snapshot"
+      ]
+    },
+    {
+      "id": 53,
+      "title": "/teleport: Session Transfer",
+      "lesson_number": "53",
+      "file": "06-verified-new-v2.1.90.md",
+      "startLine": 156,
+      "endLine": 225,
+      "keywords": [
+        "teleport",
+        "session-transfer",
+        "claude-ai",
+        "web-session",
+        "git-validation"
+      ]
+    },
+    {
+      "id": 54,
+      "title": "/branch: Conversation Forking",
+      "lesson_number": "54",
+      "file": "06-verified-new-v2.1.90.md",
+      "startLine": 226,
+      "endLine": 283,
+      "keywords": [
+        "branch",
+        "fork",
+        "conversation-fork",
+        "subagent",
+        "isolation"
+      ]
+    },
+    {
+      "id": 55,
+      "title": "Session Resume & New env vars (v2.1.90)",
+      "lesson_number": "55",
+      "file": "06-verified-new-v2.1.90.md",
+      "startLine": 284,
+      "endLine": 423,
+      "keywords": [
+        "session-resume",
+        "advisor-model",
+        "env-vars",
+        "resume-threshold",
+        "gleaming-fair"
+      ]
+    },
+    {
+      "id": 56,
+      "title": "New Commands: /autocompact, /buddy, /powerup, /toggle-memory",
+      "lesson_number": "56",
+      "file": "06-verified-new-v2.1.90.md",
+      "startLine": 424,
+      "endLine": 588,
+      "keywords": [
+        "autocompact",
+        "buddy",
+        "companion",
+        "powerup",
+        "toggle-memory"
+      ]
+    },
+    {
+      "id": 57,
+      "title": "v2.1.92 Command Changes",
+      "lesson_number": "57",
+      "file": "07-verified-new-v2.1.92.md",
+      "startLine": 18,
+      "endLine": 130,
+      "keywords": [
+        "setup-bedrock",
+        "stop-hook",
+        "teleport",
+        "commands",
+        "v2.1.92"
+      ]
+    },
+    {
+      "id": 58,
+      "title": "New env vars in v2.1.92",
+      "lesson_number": "58",
+      "file": "07-verified-new-v2.1.92.md",
+      "startLine": 131,
+      "endLine": 260,
+      "keywords": [
+        "env-vars",
+        "CLAUDE_CODE_EXECPATH",
+        "remote-control",
+        "fast-mode",
+        "v2.1.92"
       ]
     }
   ],
@@ -2384,6 +2504,77 @@
     ],
     "spinner": [
       50
+    ],
+    "effort": [
+      51
+    ],
+    "reasoning-budget": [
+      51
+    ],
+    "effortLevel": [
+      51
+    ],
+    "ultrathink": [
+      51
+    ],
+    "rewind": [
+      52
+    ],
+    "checkpoint": [
+      52
+    ],
+    "file-history": [
+      52
+    ],
+    "teleport": [
+      53,
+      57
+    ],
+    "session-transfer": [
+      53
+    ],
+    "branch": [
+      54
+    ],
+    "fork": [
+      54
+    ],
+    "conversation-fork": [
+      54
+    ],
+    "advisor-model": [
+      55
+    ],
+    "autocompact": [
+      56
+    ],
+    "buddy": [
+      56
+    ],
+    "companion": [
+      56
+    ],
+    "powerup": [
+      56
+    ],
+    "toggle-memory": [
+      56
+    ],
+    "setup-bedrock": [
+      57
+    ],
+    "stop-hook": [
+      57
+    ],
+    "v2.1.92": [
+      57,
+      58
+    ],
+    "CLAUDE_CODE_EXECPATH": [
+      58
+    ],
+    "remote-control": [
+      58
     ]
   }
 }

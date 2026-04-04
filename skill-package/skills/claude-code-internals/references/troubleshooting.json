@@ -126,6 +126,26 @@
       "pattern": ["notification not showing", "toast missing", "no desktop notification", "alert not appearing"],
       "lessons": [20, 26, 17],
       "hint": "Notifications use terminal-notifier or OSC escape sequences depending on platform; check that your terminal supports the notification method and it is not disabled in settings."
+    },
+    {
+      "pattern": ["setup-bedrock missing", "bedrock command not found", "reconfigure bedrock", "bedrock region", "bedrock model pin"],
+      "lessons": [57],
+      "hint": "/setup-bedrock is only visible when CLAUDE_CODE_USE_BEDROCK is set; it launches the interactive Bedrock configuration wizard."
+    },
+    {
+      "pattern": ["stop hook prompt", "session stop condition", "stop hook session only", "quick stop hook"],
+      "lessons": [57, 10],
+      "hint": "/stop-hook is currently disabled (isEnabled: false in v2.1.92); use the full hooks system via settings.json or /hooks to configure Stop hooks."
+    },
+    {
+      "pattern": ["hook script find claude binary", "claude path in hook", "CLAUDE_CODE_EXECPATH", "hook invoke claude"],
+      "lessons": [58, 10],
+      "hint": "CLAUDE_CODE_EXECPATH is automatically injected into every spawned shell/hook environment — use $CLAUDE_CODE_EXECPATH in hook scripts to invoke the claude binary without hard-coding a path."
+    },
+    {
+      "pattern": ["remote control session name", "session prefix remote", "hostname session name", "CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX"],
+      "lessons": [58, 41],
+      "hint": "Set CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX (or --session-name-prefix) to customize auto-generated remote control session names; defaults to the machine hostname, sanitized to lowercase alphanumeric."
     }
   ]
 }

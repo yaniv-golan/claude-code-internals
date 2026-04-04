@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.2.2 — 2026-04-04 (this fork)
+
+Verified against Claude Code **v2.1.92** (built 2026-04-03T23:25:51Z). Adds Chapter 10 (Lessons 57–58) and backfills the search index with Lessons 51–56 (previously undiscoverable via search).
+
+### Added
+
+**Chapter 10 — Binary-verified changes in v2.1.92** (Lessons 57–58)
+
+- **L57 — Command changes**: `/setup-bedrock` (Bedrock only, hidden otherwise); `/stop-hook` (session-only Stop hook prompt, `isEnabled: false` — disabled); `/teleport` confirmed present; `/tag` and `/vim` removed; `/advisor` description updated.
+- **L58 — New env vars**: `CLAUDE_CODE_EXECPATH` (auto-injected path to claude binary in all spawned shells); `CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX` (remote control session naming); `CLAUDE_CODE_SKIP_FAST_MODE_ORG_CHECK`; `CLAUDE_CODE_SIMULATE_PROXY_USAGE`; `CLAUDE_BASE` (internal constant).
+
+### Fixed
+
+- Added Lessons 51–56 to `topic-index.json` — they were present in reference docs but missing from the search index, making them unsearchable. All 58 lessons now indexed (605 vocabulary terms).
+- Added cross-references, troubleshooting entries, and keyword map entries for all new lessons.
+
+---
+
 ## v2.2.1 — 2026-04-03 (this fork)
 
 Verified against Claude Code v2.1.91. No new lessons needed — v2.1.91 is removal-only:

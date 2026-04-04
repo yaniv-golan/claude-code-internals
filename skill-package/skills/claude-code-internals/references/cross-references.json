@@ -1106,6 +1106,102 @@
         "relevance": 0.65,
         "reason": "Vim mode state machine operates within the REPL input layer"
       }
+    ],
+    "51": [
+      {
+        "id": 2,
+        "relevance": 0.8,
+        "reason": "effortValue flows through the query engine as a distinct API parameter"
+      },
+      {
+        "id": 55,
+        "relevance": 0.72,
+        "reason": "advisor model setting lives in the same env-vars / session config lesson"
+      }
+    ],
+    "52": [
+      {
+        "id": 7,
+        "relevance": 0.78,
+        "reason": "file checkpointing wraps every Bash/edit tool write with a snapshot"
+      },
+      {
+        "id": 8,
+        "relevance": 0.75,
+        "reason": "file tools (Write/Edit) are the primary triggers for checkpoint creation"
+      }
+    ],
+    "53": [
+      {
+        "id": 57,
+        "relevance": 0.85,
+        "reason": "v2.1.92 confirms /teleport is present; implementation unchanged"
+      },
+      {
+        "id": 41,
+        "relevance": 0.7,
+        "reason": "bridge/remote infrastructure underpins the teleport session transfer"
+      }
+    ],
+    "54": [
+      {
+        "id": 12,
+        "relevance": 0.78,
+        "reason": "/branch spawns a fork subagent — relates to the full agent system"
+      },
+      {
+        "id": 52,
+        "relevance": 0.65,
+        "reason": "both /rewind and /branch let users recover from an unwanted path"
+      }
+    ],
+    "55": [
+      {
+        "id": 27,
+        "relevance": 0.75,
+        "reason": "session resume builds on the session management subsystem"
+      },
+      {
+        "id": 58,
+        "relevance": 0.7,
+        "reason": "v2.1.92 adds more env vars; Lesson 55 covers the v2.1.90 batch"
+      }
+    ],
+    "56": [
+      {
+        "id": 28,
+        "relevance": 0.8,
+        "reason": "/autocompact directly configures the context compaction subsystem"
+      },
+      {
+        "id": 19,
+        "relevance": 0.65,
+        "reason": "/buddy injects a companion system prompt — relates to memory/prompt injection"
+      }
+    ],
+    "57": [
+      {
+        "id": 53,
+        "relevance": 0.85,
+        "reason": "/teleport full implementation is in Lesson 53; L57 confirms presence in v2.1.92"
+      },
+      {
+        "id": 58,
+        "relevance": 0.78,
+        "reason": "L57 and L58 both document v2.1.92 changes — read together"
+      }
+    ],
+    "58": [
+      {
+        "id": 55,
+        "relevance": 0.78,
+        "reason": "L55 covers v2.1.90 env vars; L58 continues with v2.1.92 additions"
+      },
+      {
+        "id": 41,
+        "relevance": 0.72,
+        "reason": "CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX configures the bridge/remote system"
+      }
     ]
   }
 }
