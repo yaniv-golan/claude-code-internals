@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.2.3 — 2026-04-07 (this fork)
+
+### Added
+
+- **L59 — AskUserQuestionTool**: Full documentation extracted from v2.1.92 binary. Covers input/output schemas (questions, options, multiSelect, preview), permission logic (always requires human interaction), Plan Mode restrictions, HTML/markdown preview validation, isEnabled() guard against overlapping prompts, and rendering methods.
+
+### Fixed
+
+- Lesson count corrected from 56 to 59 in CLAUDE.md (was undercounting since v2.2.2).
+
+---
+
 ## v2.2.2 — 2026-04-04 (this fork)
 
 Verified against Claude Code **v2.1.92** (built 2026-04-03T23:25:51Z). Adds Chapter 10 (Lessons 57–58) and backfills the search index with Lessons 51–56 (previously undiscoverable via search).

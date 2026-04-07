@@ -1,6 +1,6 @@
 # Claude Code Internals
 
-> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 58 lessons covering every internal subsystem, verified against the v2.1.92 binary, searchable three ways.
+> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 59 lessons covering every internal subsystem, verified against the v2.1.92 binary, searchable three ways.
 >
 > **This is a modified fork** of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals). See [Attribution](#attribution) for what changed.
 
@@ -280,7 +280,7 @@ Returns the companion system internals: the date gate (April 2026+, first-party 
 ```bash
 node scripts/fetch-lesson.js 32          # Hooks System content
 node scripts/fetch-lesson.js 32 --meta   # Metadata only (file, line range)
-node scripts/fetch-lesson.js --list      # All 58 lessons
+node scripts/fetch-lesson.js --list      # All 59 lessons
 ```
 
 ### xref.js — Shell-Safe Cross-Reference Lookup

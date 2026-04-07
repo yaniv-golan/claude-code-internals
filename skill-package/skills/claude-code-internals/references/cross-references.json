@@ -1202,6 +1202,23 @@
         "relevance": 0.72,
         "reason": "CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX configures the bridge/remote system"
       }
+    ],
+    "59": [
+      {
+        "id": 6,
+        "relevance": 0.88,
+        "reason": "L6 covers the tool system architecture that AskUserQuestionTool implements"
+      },
+      {
+        "id": 5,
+        "relevance": 0.82,
+        "reason": "L5 documents the permission pipeline including requiresUserInteraction tools"
+      },
+      {
+        "id": 21,
+        "relevance": 0.7,
+        "reason": "L21 covers Plan Mode; AskUserQuestion has specific Plan Mode restrictions"
+      }
     ]
   }
 }

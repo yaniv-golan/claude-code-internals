@@ -1,12 +1,12 @@
 {
-  "skill_version": "2.2.2",
+  "skill_version": "2.2.3",
   "captured_version": "2.1.92",
   "captured_date": "2026-04-04",
   "source": "https://www.markdown.engineering/learn-claude-code/",
   "verified_against_binary": "2.1.92",
-  "lessons_count": 58,
+  "lessons_count": 59,
   "chapters_count": 10,
   "total_size_kb": 360,
   "keywords_indexed": 605,
-  "note": "Core lessons from markdown.engineering (v2.1.88), verified and updated against live v2.1.90/v2.1.91/v2.1.92 binary. New Chapter 10 (L57-L58) covers v2.1.92 changes: /setup-bedrock, /stop-hook (disabled), /teleport confirmed, /tag+/vim removed, 5 new env vars (CLAUDE_CODE_EXECPATH, CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX, CLAUDE_CODE_SKIP_FAST_MODE_ORG_CHECK, CLAUDE_CODE_SIMULATE_PROXY_USAGE, CLAUDE_BASE)."
+  "note": "Core lessons from markdown.engineering (v2.1.88), verified and updated against live v2.1.90/v2.1.91/v2.1.92 binary. New Chapter 10 (L57-L58) covers v2.1.92 changes. L59 adds AskUserQuestionTool documentation."
 }

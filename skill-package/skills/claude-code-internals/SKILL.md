@@ -1,6 +1,6 @@
 ---
 name: claude-code-internals
-description: "Source-level architecture knowledge for Claude Code v2.1.92, verified against the live binary. Use when asked how Claude Code works internally, why something behaves unexpectedly, how to configure hooks correctly, what permission modes do, or when editing .claude/ config files. Covers 58 lessons: hooks (all 27 event types, exit code semantics), permissions (7-phase pipeline, 23 Bash validators), boot sequence, query engine, agents, MCP, memory, context compaction, plugins, sessions, OAuth, and new v2.1.90+ features (/effort, /rewind, /teleport, /branch, session resume, /autocompact, /buddy, /powerup). Also use for: 'why did compaction fire', 'hook not triggering', 'permission denied', 'how does agent spawning work', 'what is coordinator mode', 'how does rewind work', 'how to set effort level'."
+description: "Source-level architecture knowledge for Claude Code v2.1.92, verified against the live binary. Use when asked how Claude Code works internally, why something behaves unexpectedly, how to configure hooks correctly, what permission modes do, or when editing .claude/ config files. Covers 59 lessons: hooks (all 27 event types, exit code semantics), permissions (7-phase pipeline, 23 Bash validators), boot sequence, query engine, agents, MCP, memory, context compaction, plugins, sessions, OAuth, and new v2.1.90+ features (/effort, /rewind, /teleport, /branch, session resume, /autocompact, /buddy, /powerup). Also use for: 'why did compaction fire', 'hook not triggering', 'permission denied', 'how does agent spawning work', 'what is coordinator mode', 'how does rewind work', 'how to set effort level', 'how does AskUserQuestion work', 'what are AskUserQuestion options'."
 user-invocable: true
 argument-hint: "[topic - e.g. hooks, permissions, memory, agents, compaction]"
 context: fork
@@ -11,7 +11,7 @@ allowed-tools:
   - Bash
 ---
 
-You are a Claude Code architecture expert with access to 58 lessons covering Claude Code v2.1.92
+You are a Claude Code architecture expert with access to 59 lessons covering Claude Code v2.1.92
 internals — verified against the live binary. Lessons 1–50 were reverse-engineered from source
 docs (v2.1.88, confirmed unchanged in v2.1.92). Lessons 51–58 were extracted directly from the
 v2.1.90/v2.1.92 binary and document features confirmed shipping in this version.
@@ -23,7 +23,7 @@ v2.1.90/v2.1.92 binary and document features confirmed shipping in this version.
 If `$argument` is empty or just whitespace, print this index and ask what the user wants to know:
 
 ```
-Available topics (58 lessons across 10 chapters):
+Available topics (59 lessons across 10 chapters):
   Boot & Core:    boot sequence, query engine, state management, system prompt, architecture overview
   Tools:          tool system, bash tool, file tools, search tools, MCP system
   Agents & AI:    skills system, agent system, coordinator mode, teams/swarm
@@ -38,7 +38,8 @@ Available topics (58 lessons across 10 chapters):
                   /branch conversation fork, session resume, new env vars [binary-verified],
                   /autocompact /buddy /toggle-memory [undocumented], /powerup [documented]
   New (v2.1.92):  /setup-bedrock (Bedrock users only), /stop-hook (disabled), CLAUDE_CODE_EXECPATH,
-                  CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX, removed /tag+/vim
+                  CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX, removed /tag+/vim,
+                  AskUserQuestionTool (full schema, preview, permissions, Plan Mode rules)
 ```
 
 ---

@@ -1,7 +1,7 @@
 {
   "generated": "2026-04-04",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.92",
-  "total_lessons": 58,
+  "total_lessons": 59,
   "lessons": [
     {
       "id": 1,
@@ -871,6 +871,23 @@
         "remote-control",
         "fast-mode",
         "v2.1.92"
+      ]
+    },
+    {
+      "id": 59,
+      "title": "AskUserQuestionTool",
+      "lesson_number": "59",
+      "file": "07-verified-new-v2.1.92.md",
+      "startLine": 264,
+      "endLine": 365,
+      "keywords": [
+        "AskUserQuestion",
+        "ask-user",
+        "multiple-choice",
+        "question",
+        "user-interaction",
+        "preview",
+        "multiSelect"
       ]
     }
   ],
@@ -2575,6 +2592,27 @@
     ],
     "remote-control": [
       58
+    ],
+    "AskUserQuestion": [
+      59
+    ],
+    "ask-user": [
+      59
+    ],
+    "multiple-choice": [
+      59
+    ],
+    "question": [
+      59
+    ],
+    "user-interaction": [
+      59
+    ],
+    "preview": [
+      59
+    ],
+    "multiSelect": [
+      59
     ]
   }
 }

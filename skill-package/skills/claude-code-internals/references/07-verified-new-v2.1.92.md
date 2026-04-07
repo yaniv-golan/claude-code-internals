@@ -258,3 +258,108 @@ v2.1.91 had removed the following (noted in `version.json` from the prior update
 
 None of these were documented in lessons (they were caught by the diff but deemed
 not worth documenting). They remain absent in v2.1.92.
+
+---
+
+## Lesson 59 -- AskUserQuestionTool
+
+**Source:** Binary extraction from v2.1.92
+
+### Purpose
+
+AskUserQuestionTool presents structured multiple-choice questions to the user during execution. Unlike plain text output, it renders a dedicated question form in the UI that requires explicit user selection before the conversation continues.
+
+Use cases:
+- Gather user preferences or requirements
+- Clarify ambiguous instructions
+- Get decisions on implementation choices
+- Offer choices about what direction to take
+
+### Tool Properties
+
+| Property | Value |
+|----------|-------|
+| name | `AskUserQuestion` |
+| searchHint | `"prompt the user with a multiple-choice question"` |
+| shouldDefer | `true` (loaded via ToolSearch) |
+| isReadOnly | `true` |
+| isConcurrencySafe | `true` |
+| requiresUserInteraction | `true` |
+| maxResultSizeChars | 100,000 |
+
+### Input Schema
+
+**Top-level fields:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| questions | Question[] | Yes | 1–4 questions (must have unique text) |
+| answers | Record<string, string> | No | User answers collected by permission component |
+| annotations | object | No | Per-question annotations from user |
+| metadata | `{ source?: string }` | No | Analytics identifier (e.g. `"remember"` for /remember command) |
+
+**Question object:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| question | string | Yes | Complete question text, should end with `?` |
+| header | string | Yes | Short chip/tag label, max 12 characters |
+| options | Option[] | Yes | 2–4 options (unique labels; "Other" is added automatically) |
+| multiSelect | boolean | No | Default `false`. Set `true` for non-mutually-exclusive choices |
+
+**Option object:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| label | string | Yes | Display text (1–5 words) |
+| description | string | Yes | Explanation of what option means or trade-offs |
+| preview | string | No | Markdown or HTML fragment rendered when option is focused |
+
+### Output Schema
+
+| Field | Type | Description |
+|-------|------|-------------|
+| questions | Question[] | The questions that were asked |
+| answers | Record<string, string> | Question text → answer string (multi-select answers are comma-separated) |
+| annotations | object | Optional per-question annotations |
+
+### Preview Feature
+
+Options can include a `preview` field for rich visual comparisons:
+- **Markdown preview**: rendered in a monospace box, supports multi-line with newlines
+- **HTML preview**: must be a self-contained fragment (no `<html>`, `<body>`, `<!DOCTYPE>`, `<script>`, or `<style>` tags — inline styles only)
+- When any option has a preview, the UI switches to side-by-side layout (options left, preview right)
+- Previews are only supported for single-select questions (not `multiSelect`)
+
+HTML validation rejects full documents and script/style tags, returning detailed error messages.
+
+### Permission & Interaction Logic
+
+`AskUserQuestion` always requires human involvement — it cannot be auto-approved even in `bypassPermissions` mode. Its `checkPermissions()` always returns `{ behavior: "ask" }`.
+
+**isEnabled() guard**: returns `false` when other interactive tools are already pending (prevents overlapping permission prompts).
+
+### Plan Mode Restrictions
+
+- Use to clarify requirements or choose between approaches **before** finalizing a plan
+- Do **not** use to ask "Is my plan ready?" or "Should I proceed?" — use `ExitPlanMode` instead
+- Do **not** reference "the plan" in questions — users cannot see the plan until `ExitPlanMode` is called
+
+### Recommended Option Ordering
+
+If recommending a specific option, make it the first in the list and append `"(Recommended)"` to its label.
+
+### Key Distinction from Text Output
+
+| Aspect | AskUserQuestion | Plain text output |
+|--------|----------------|-------------------|
+| UI | Dedicated question form with selectable options | Inline markdown |
+| Interaction | Blocks until user selects | No interaction required |
+| Response | Structured answers object | No structured response |
+| Permission | Always requires human involvement | N/A |
+
+### Rendering Methods
+
+- `renderToolResultMessage()` — displays "User answered Claude's questions:" followed by answer list
+- `renderToolUseRejectedMessage()` — displays rejection message if user declines
+- `toAutoClassifierInput()` — returns question texts joined by ` | ` for the security classifier
