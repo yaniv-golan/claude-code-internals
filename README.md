@@ -10,7 +10,7 @@
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-plugin-F97316)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/plugins)
 [![Improved with Skill Creator Plus](https://img.shields.io/badge/Improved_with-Skill_Creator_Plus-4ecdc4?style=flat-square)](https://github.com/yaniv-golan/skill-creator-plus)
 
-**Skill Version:** 2.2.2 | **Captured from:** Claude Code v2.1.92 | **Date:** 2026-04-04 | **License:** MIT
+**Skill Version:** 2.2.3 | **Captured from:** Claude Code v2.1.92 | **Date:** 2026-04-07 | **License:** MIT
 
 ---
 
@@ -118,7 +118,7 @@ Adds a gentle reminder whenever Claude edits `.claude/` config files. Add to `ho
 
 ## What This Is
 
-This is a Claude Code skill containing a complete reverse-engineering of Claude Code's internal architecture, verified against the v2.1.92 binary. 58 detailed lessons cover every major subsystem — from the boot sequence to undocumented features found directly in the binary. When you type `/claude-code-internals hooks` or `/claude-code-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
+This is a Claude Code skill containing a complete reverse-engineering of Claude Code's internal architecture, verified against the v2.1.92 binary. 59 detailed lessons cover every major subsystem — from the boot sequence to undocumented features found directly in the binary. When you type `/claude-code-internals hooks` or `/claude-code-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
 
 Without this skill, Claude knows *how to use* Claude Code but doesn't know *how Claude Code works internally*. With it, Claude becomes an expert on its own implementation — the query engine's retry logic, all 27 hook event types, the 7-phase permission pipeline, the compaction algorithm, the agent spawn lifecycle, and binary-verified internals of features like `/effort`, `/rewind`, `/teleport`, `/branch`, and `/buddy`.
 
@@ -168,7 +168,7 @@ Claude Code is a powerful tool, but Claude doesn't understand its own internals.
           | (keyword)   |  | search.js     |  | (by lesson ID) |
           |             |  | (TF-IDF)      |  |                |
           | jq query    |  | cosine sim    |  | xref.js        |
-          | against 494 |  | against 56    |  | troubleshoot.js|
+          | against 494 |  | against 59    |  | troubleshoot.js|
           | keywords    |  | lesson TF-IDF |  |                |
           +------+------+  +-------+-------+  +-------+--------+
                  |                 |                   |
@@ -267,7 +267,7 @@ Returns the companion system internals: the date gate (April 2026+, first-party 
 
 1. **Use it BEFORE configuring anything under `.claude/`.** The skill knows exact formats, valid values, and edge cases.
 2. **Use natural language when keywords don't work.** "what happens when Claude runs out of context space" finds the compaction lesson even without the word "compaction."
-3. **Know its limits.** Core lessons (1–50) were captured from Claude Code v2.1.88. Chapters 9–10 (lessons 51–58) were verified directly against the v2.1.90/v2.1.92 binary.
+3. **Know its limits.** Core lessons (1–50) were captured from Claude Code v2.1.88. Chapters 9–10 (lessons 51–59) were verified directly against the v2.1.90/v2.1.92 binary.
 
 ## Smart Features (v2.2)
 
@@ -357,7 +357,7 @@ claude-code-internals/
 │   └── skills/
 │       └── claude-code-internals/  The skill itself
 │           ├── SKILL.md            Skill brain (search strategy, lesson index)
-│           ├── version.json        Version tracking (v2.2.2 / v2.1.92)
+│           ├── version.json        Version tracking (v2.2.3 / v2.1.92)
 │           ├── hooks-config.json   PreToolUse hook definition
 │           ├── references/
 │           │   ├── 01-core-architecture-tools.md
@@ -396,7 +396,7 @@ claude-code-internals/
 </details>
 
 <details>
-<summary>The 56 Lessons — 9 Chapters (click to expand)</summary>
+<summary>The 59 Lessons — 10 Chapters (click to expand)</summary>
 
 | Ch | File | Lessons |
 |----|------|---------|
@@ -404,9 +404,9 @@ claude-code-internals/
 | 3–4 | `02-agents-intelligence-interface.md` | Skills System, Agent System, Coordinator Mode, Teams/Swarm, Memory System, Auto-Memory, Ink Renderer, Commands System, Dialog/UI, Notifications |
 | 4–5 | `03-interface-infrastructure.md` | Vim Mode, Keybindings, Fullscreen, Theme/Styling, Permissions, Settings/Config, Session Management, Context Compaction, Analytics/Telemetry, Migrations |
 | 5–6 | `04-connectivity-plugins.md` | Plugin System, Hooks System, Error Handling, Bridge/Remote, OAuth, Git Integration, Upstream Proxy, Cron/Scheduling, Voice System, BUDDY Companion |
-| 7–8 | `05-unreleased-bigpicture.md` | ULTRAPLAN, Entrypoints/SDK, KAIROS Always-On, Cost Analytics, Desktop App, Model System, Sandbox/Security, Message Processing, Task System, REPL Screen |
+| 7–8 | `05-unreleased-bigpicture.md` | ULTRAPLAN (**now released** as research preview), Entrypoints/SDK, KAIROS Always-On, Cost Analytics, Desktop App, Model System, Sandbox/Security, Message Processing, Task System, REPL Screen |
 | **9** | **`06-verified-new-v2.1.90.md`** | **/effort** (reasoning budget), **/rewind** (file checkpointing), **/teleport** (session transfer), **/branch** (conversation fork), Session resume & new env vars, New commands: /autocompact /buddy /powerup /toggle-memory |
-| **10** | **`07-verified-new-v2.1.92.md`** | v2.1.92 command changes: **/setup-bedrock**, **/stop-hook** (disabled), /tag+/vim removed (L57). New env vars: **CLAUDE_CODE_EXECPATH**, CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX, CLAUDE_CODE_SKIP_FAST_MODE_ORG_CHECK (L58) |
+| **10** | **`07-verified-new-v2.1.92.md`** | v2.1.92 command changes: **/setup-bedrock**, **/stop-hook** (disabled), /tag+/vim removed (L57). New env vars: **CLAUDE_CODE_EXECPATH**, CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX, CLAUDE_CODE_SKIP_FAST_MODE_ORG_CHECK (L58). **AskUserQuestionTool** full documentation (L59) |
 
 </details>
 
@@ -414,10 +414,10 @@ claude-code-internals/
 
 ```json
 {
-  "skill_version": "2.2.2",
+  "skill_version": "2.2.3",
   "captured_version": "2.1.92",
   "verified_against_binary": "2.1.92",
-  "captured_date": "2026-04-04"
+  "captured_date": "2026-04-07"
 }
 ```
 
@@ -455,10 +455,11 @@ This repository is a fork of [stuinfla/claude-code-internals](https://github.com
 - The PreToolUse `.claude/` hook (`config-aware-hook.sh`), version check script, and RuFlo index builder
 - The original README documentation and architecture diagrams
 
-**What this fork adds** (v2.2.0–v2.2.2, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
+**What this fork adds** (v2.2.0–v2.2.3, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
 
 - Chapter 9 (Lessons 51–56): binary-verified new features in Claude Code v2.1.90, extracted directly from the Bun SEA binary and verified against official docs
-- Chapter 10 (Lessons 57–58): binary-verified changes in Claude Code v2.1.92 — new commands, removed commands, and new env vars
+- Chapter 10 (Lessons 57–59): binary-verified changes in Claude Code v2.1.92 — new commands, removed commands, new env vars, and AskUserQuestionTool documentation
+- ULTRAPLAN (L41) status updated: now officially released as research preview
 - 5 new scripts: `fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `extract-bundle.sh`, `diff-versions.sh`
 - Plugin marketplace infrastructure: `.claude-plugin/` files, "Add to Claude" install button, GitHub Actions release and Pages deploy workflows
 - Updated `SKILL.md` to use the new script CLIs instead of fragile inline `node -e` blocks
