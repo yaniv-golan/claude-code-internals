@@ -605,17 +605,19 @@
     },
     {
       "id": 41,
-      "title": "Ultraplan -- 30-Minute Remote Planning",
+      "title": "Ultraplan -- Remote Planning via Claude Code on the Web (Research Preview)",
       "lesson_number": "Ultraplan",
       "file": "05-unreleased-bigpicture.md",
       "startLine": 5,
-      "endLine": 322,
+      "endLine": 329,
       "keywords": [
         "ultraplan",
         "remote-planning",
         "ccr-session",
         "polling",
-        "plan-delivery"
+        "plan-delivery",
+        "research-preview",
+        "claude-code-on-the-web"
       ]
     },
     {
@@ -623,8 +625,8 @@
       "title": "Entrypoints & Agent SDK",
       "lesson_number": "Entrypoints",
       "file": "05-unreleased-bigpicture.md",
-      "startLine": 324,
-      "endLine": 577,
+      "startLine": 331,
+      "endLine": 584,
       "keywords": [
         "entrypoints",
         "sdk",
@@ -638,8 +640,8 @@
       "title": "KAIROS -- Always-On Autonomous Daemon",
       "lesson_number": "KAIROS",
       "file": "05-unreleased-bigpicture.md",
-      "startLine": 579,
-      "endLine": 756,
+      "startLine": 586,
+      "endLine": 763,
       "keywords": [
         "kairos",
         "daemon",
@@ -653,8 +655,8 @@
       "title": "Cost Analytics & Observability",
       "lesson_number": "Cost",
       "file": "05-unreleased-bigpicture.md",
-      "startLine": 758,
-      "endLine": 963,
+      "startLine": 765,
+      "endLine": 970,
       "keywords": [
         "cost",
         "analytics",
@@ -668,8 +670,8 @@
       "title": "Desktop App Integration",
       "lesson_number": "Desktop",
       "file": "05-unreleased-bigpicture.md",
-      "startLine": 965,
-      "endLine": 1093,
+      "startLine": 972,
+      "endLine": 1100,
       "keywords": [
         "desktop",
         "ide",
@@ -683,8 +685,8 @@
       "title": "Model System",
       "lesson_number": "Model",
       "file": "05-unreleased-bigpicture.md",
-      "startLine": 1095,
-      "endLine": 1278,
+      "startLine": 1102,
+      "endLine": 1285,
       "keywords": [
         "model",
         "provider",
@@ -698,8 +700,8 @@
       "title": "Sandbox & Security",
       "lesson_number": "Sandbox",
       "file": "05-unreleased-bigpicture.md",
-      "startLine": 1280,
-      "endLine": 1410,
+      "startLine": 1287,
+      "endLine": 1417,
       "keywords": [
         "sandbox",
         "security",
@@ -713,8 +715,8 @@
       "title": "Message Processing Pipeline",
       "lesson_number": "Messages",
       "file": "05-unreleased-bigpicture.md",
-      "startLine": 1412,
-      "endLine": 1528,
+      "startLine": 1419,
+      "endLine": 1535,
       "keywords": [
         "messages",
         "pipeline",
@@ -728,8 +730,8 @@
       "title": "Task System",
       "lesson_number": "Tasks",
       "file": "05-unreleased-bigpicture.md",
-      "startLine": 1530,
-      "endLine": 1664,
+      "startLine": 1537,
+      "endLine": 1671,
       "keywords": [
         "tasks",
         "background-tasks",
@@ -743,8 +745,8 @@
       "title": "REPL & Screen",
       "lesson_number": "REPL",
       "file": "05-unreleased-bigpicture.md",
-      "startLine": 1666,
-      "endLine": 1879,
+      "startLine": 1673,
+      "endLine": 1886,
       "keywords": [
         "repl",
         "screen",
@@ -2592,6 +2594,12 @@
     ],
     "remote-control": [
       58
+    ],
+    "research-preview": [
+      41
+    ],
+    "claude-code-on-the-web": [
+      41
     ],
     "AskUserQuestion": [
       59

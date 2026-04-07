@@ -32,7 +32,8 @@ Available topics (59 lessons across 10 chapters):
   Infrastructure: permissions, settings/config, session management, context compaction, analytics, migrations
   Connectivity:   plugin system, hooks system, error handling, bridge/remote, OAuth, git integration,
                   upstream proxy, cron/scheduling, voice system, BUDDY companion
-  Unreleased:     ULTRAPLAN, entrypoints/SDK, KAIROS always-on, cost analytics, desktop app,
+  Released:       ULTRAPLAN (research preview) — remote planning via Claude Code on the web
+  Unreleased:     entrypoints/SDK, KAIROS always-on, cost analytics, desktop app,
                   model system, sandbox/security, message processing, task system, REPL screen
   New (v2.1.90):  /effort reasoning budget, /rewind file checkpointing, /teleport session transfer,
                   /branch conversation fork, session resume, new env vars [binary-verified],

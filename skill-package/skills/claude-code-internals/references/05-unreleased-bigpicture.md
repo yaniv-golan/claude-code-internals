@@ -2,7 +2,14 @@
 
 ---
 
-## LESSON 1: ULTRAPLAN -- 30-Minute Remote Planning
+## LESSON 1: ULTRAPLAN -- Remote Planning via Claude Code on the Web
+
+> **Status update (2026-04-07):** Ultraplan is now officially released as a **research preview**
+> and documented at https://code.claude.com/docs/en/ultraplan. The implementation details below
+> remain accurate — the official docs confirm the same architecture (keyword trigger, /ultraplan
+> command, local plan handoff, polling phases, browser review with inline comments, and two
+> execution paths). The official docs additionally mention emoji reactions and an outline sidebar
+> in the browser review UI (browser-side features not visible in the CLI binary).
 
 **Source files:**
 - `commands/ultraplan.tsx`
