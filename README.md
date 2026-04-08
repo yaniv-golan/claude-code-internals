@@ -1,5 +1,7 @@
 # Claude Code Internals
 
+![Claude Code Internals banner](assets/banner.png)
+
 > A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 61 lessons covering every internal subsystem, verified against the v2.1.96 binary, searchable three ways.
 >
 > **This is a modified fork** of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals). See [Attribution](#attribution) for what changed.
