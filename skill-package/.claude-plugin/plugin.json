@@ -1,7 +1,7 @@
 {
   "name": "claude-code-internals",
-  "version": "2.2.4",
-  "description": "Gives Claude source-level knowledge of its own architecture. 61 lessons covering every internal subsystem — hooks (all 27 event types), permissions (7-phase pipeline, 23 validators), boot sequence, agents, compaction, MCP, memory, AskUserQuestion tool, and binary-verified new features through v2.1.94.",
+  "version": "2.2.5",
+  "description": "Gives Claude source-level knowledge of its own architecture. 61 lessons covering every internal subsystem — hooks (all 27 event types), permissions (7-phase pipeline, 23 validators), boot sequence, agents, compaction, MCP, memory, AskUserQuestion tool, and binary-verified new features through v2.1.94, re-verified on v2.1.96.",
   "author": {
     "name": "Yaniv Golan",
     "email": "yaniv@golan.name"

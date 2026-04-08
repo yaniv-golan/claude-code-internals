@@ -28,8 +28,8 @@ for arg in "$@"; do
     echo ""
     echo "Examples:"
     echo "  $0"
-    echo "  $0 ~/.local/share/claude/versions/2.1.94"
-    echo "  $0 ~/.local/share/claude/versions/2.1.94 bundle.js"
+    echo "  $0 ~/.local/share/claude/versions/2.1.96"
+    echo "  $0 ~/.local/share/claude/versions/2.1.96 bundle.js"
     exit 0
   elif [[ -z "$BINARY" && -f "$arg" ]]; then
     BINARY="$arg"
