@@ -80,14 +80,18 @@ def extract_envvars(text):
 def extract_commands(text):
     """Extract slash command definitions: name:"...", description:"..." pairs."""
     cmds = {}
-    # Match name:"foo" within a few hundred chars of description:"bar"
-    for m in re.finditer(r'name:"([^"]{1,60})"', text):
+    # Match name:"foo" within a few hundred chars of either:
+    #   description:"bar"
+    #   get description(){return"bar"}
+    for m in re.finditer(r'name:"([a-z][a-z0-9+-]{0,59})"', text):
         name = m.group(1)
-        # Look for description within 300 chars after name
-        window = text[m.start():m.start()+300]
-        dm = re.search(r'description:"([^"]{1,200})"', window)
+        window = text[m.start():m.start()+500]
+        dm = re.search(
+            r'(?:description:"([^"]{1,200})"|get description\(\)\{return"([^"]{1,200})"\})',
+            window,
+        )
         if dm:
-            cmds[name] = dm.group(1)
+            cmds[name] = dm.group(1) or dm.group(2)
     return cmds
 
 def extract_hook_types(text):

@@ -28,8 +28,8 @@ for arg in "$@"; do
     echo ""
     echo "Examples:"
     echo "  $0"
-    echo "  $0 ~/.local/share/claude/versions/2.1.90/claude"
-    echo "  $0 ~/.local/share/claude/versions/2.1.90/claude bundle.js"
+    echo "  $0 ~/.local/share/claude/versions/2.1.94"
+    echo "  $0 ~/.local/share/claude/versions/2.1.94 bundle.js"
     exit 0
   elif [[ -z "$BINARY" && -f "$arg" ]]; then
     BINARY="$arg"
@@ -44,7 +44,9 @@ if [[ -z "$BINARY" ]]; then
   # Try versioned directory first (most reliable — gets the actual binary, not a wrapper)
   if [[ -d "$HOME/.local/share/claude/versions" ]]; then
     latest=$(ls -t "$HOME/.local/share/claude/versions/" 2>/dev/null | head -1 || true)
-    if [[ -n "$latest" && -f "$HOME/.local/share/claude/versions/$latest/claude" ]]; then
+    if [[ -n "$latest" && -f "$HOME/.local/share/claude/versions/$latest" ]]; then
+      BINARY="$HOME/.local/share/claude/versions/$latest"
+    elif [[ -n "$latest" && -f "$HOME/.local/share/claude/versions/$latest/claude" ]]; then
       BINARY="$HOME/.local/share/claude/versions/$latest/claude"
     fi
   fi
@@ -71,11 +73,36 @@ fi
 
 # ── Get version from binary ────────────────────────────────────────────────────
 
-VERSION=$(strings "$BINARY" 2>/dev/null \
-  | grep -oE '"version":"[0-9]+\.[0-9]+\.[0-9]+"' \
-  | head -1 \
-  | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
-  || echo "unknown")
+VERSION=""
+
+if [[ -x "$BINARY" ]]; then
+  VERSION=$("$BINARY" --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || true)
+fi
+
+if [[ -z "$VERSION" ]]; then
+  VERSION=$(strings "$BINARY" 2>/dev/null \
+    | grep -oE 'VERSION:"[0-9]+\.[0-9]+\.[0-9]+"' \
+    | head -1 \
+    | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
+    || true)
+fi
+
+if [[ -z "$VERSION" ]]; then
+  VERSION=$(strings "$BINARY" 2>/dev/null \
+    | grep -oE '"version":"[0-9]+\.[0-9]+\.[0-9]+"' \
+    | head -1 \
+    | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
+    || true)
+fi
+
+if [[ -z "$VERSION" ]]; then
+  base_name=$(basename "$BINARY")
+  if [[ "$base_name" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    VERSION="$base_name"
+  else
+    VERSION="unknown"
+  fi
+fi
 
 if [[ -z "$OUTPUT" ]]; then
   OUTPUT="claude-${VERSION}-bundle.js"

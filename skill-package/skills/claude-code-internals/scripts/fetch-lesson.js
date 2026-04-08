@@ -20,8 +20,10 @@ const SKILL_DIR = path.resolve(__dirname, '..');
 const TOPIC_INDEX = path.join(SKILL_DIR, 'references', 'topic-index.json');
 const REF_DIR = path.join(SKILL_DIR, 'references');
 
-// Chapter 9 lessons not in topic-index.json (added in v2.1.90 update)
-const CHAPTER9_LESSONS = [
+// Fallback lessons for older topic-index.json snapshots that may not yet include
+// the binary-verified chapters. Current topic-index.json should already contain
+// these, so loadLessons() de-duplicates by ID after merging.
+const FALLBACK_LESSONS = [
   {
     id: 51,
     title: '/effort Command & Reasoning Budget',
@@ -80,7 +82,13 @@ function loadLessons() {
   } catch (e) {
     process.stderr.write(`Warning: could not load topic-index.json: ${e.message}\n`);
   }
-  return [...lessons, ...CHAPTER9_LESSONS];
+  const deduped = new Map();
+  for (const lesson of [...lessons, ...FALLBACK_LESSONS]) {
+    if (!deduped.has(lesson.id)) {
+      deduped.set(lesson.id, lesson);
+    }
+  }
+  return [...deduped.values()].sort((a, b) => a.id - b.id);
 }
 
 function findLesson(id, lessons) {

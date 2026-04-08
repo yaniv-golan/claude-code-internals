@@ -1219,6 +1219,35 @@
         "relevance": 0.7,
         "reason": "L21 covers Plan Mode; AskUserQuestion has specific Plan Mode restrictions"
       }
+    ],
+    "60": [
+      {
+        "id": 18,
+        "relevance": 0.9,
+        "reason": "L18 covers the commands system that /autofix-pr and /team-onboarding plug into"
+      },
+      {
+        "id": 34,
+        "relevance": 0.82,
+        "reason": "/autofix-pr depends on remote-session infrastructure rather than local-only command execution"
+      }
+    ],
+    "61": [
+      {
+        "id": 46,
+        "relevance": 0.88,
+        "reason": "CLAUDE_CODE_USE_MANTLE adds a new provider path inside the model/provider system"
+      },
+      {
+        "id": 10,
+        "relevance": 0.76,
+        "reason": "CLAUDE_CODE_MCP_ALLOWLIST_ENV changes how MCP environments are gated and exposed"
+      },
+      {
+        "id": 47,
+        "relevance": 0.72,
+        "reason": "CLAUDE_CODE_SANDBOXED alters trust and sandbox acceptance behavior"
+      }
     ]
   }
 }

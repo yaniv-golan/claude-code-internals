@@ -146,6 +146,21 @@
       "pattern": ["remote control session name", "session prefix remote", "hostname session name", "CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX"],
       "lessons": [58, 41],
       "hint": "Set CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX (or --session-name-prefix) to customize auto-generated remote control session names; defaults to the machine hostname, sanitized to lowercase alphanumeric."
+    },
+    {
+      "pattern": ["autofix-pr missing", "autofix-pr command not found", "remote sessions disabled", "allow_remote_sessions"],
+      "lessons": [60, 34],
+      "hint": "/autofix-pr is gated behind remote sessions. In v2.1.94 it only enables when the Claude.ai subscriber gate passes and the allow_remote_sessions policy is enabled."
+    },
+    {
+      "pattern": ["team-onboarding missing", "ONBOARDING.md guide", "teammate onboarding command", "CLAUDE_CODE_TEAM_ONBOARDING"],
+      "lessons": [60, 61],
+      "hint": "/team-onboarding is a built-in prompt command gated by CLAUDE_CODE_TEAM_ONBOARDING or a feature flag. It generates onboarding content from your usage data and writes ONBOARDING.md."
+    },
+    {
+      "pattern": ["mantle provider", "CLAUDE_CODE_USE_MANTLE", "ANTHROPIC_BEDROCK_MANTLE_BASE_URL", "CLAUDE_CODE_SKIP_MANTLE_AUTH"],
+      "lessons": [61, 46],
+      "hint": "v2.1.94 adds a Mantle provider path. Set CLAUDE_CODE_USE_MANTLE to select it, ANTHROPIC_BEDROCK_MANTLE_BASE_URL to override the default AWS-region-derived endpoint, and CLAUDE_CODE_SKIP_MANTLE_AUTH only for debugging."
     }
   ]
 }

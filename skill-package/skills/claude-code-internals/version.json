@@ -1,12 +1,12 @@
 {
-  "skill_version": "2.2.3",
-  "captured_version": "2.1.92",
-  "captured_date": "2026-04-04",
+  "skill_version": "2.2.4",
+  "captured_version": "2.1.94",
+  "captured_date": "2026-04-08",
   "source": "https://www.markdown.engineering/learn-claude-code/",
-  "verified_against_binary": "2.1.92",
-  "lessons_count": 59,
-  "chapters_count": 10,
-  "total_size_kb": 360,
-  "keywords_indexed": 605,
-  "note": "Core lessons from markdown.engineering (v2.1.88), verified and updated against live v2.1.90/v2.1.91/v2.1.92 binary. New Chapter 10 (L57-L58) covers v2.1.92 changes. L59 adds AskUserQuestionTool documentation."
+  "verified_against_binary": "2.1.94",
+  "lessons_count": 61,
+  "chapters_count": 11,
+  "total_size_kb": 688,
+  "keywords_indexed": 634,
+  "note": "Core lessons from markdown.engineering (v2.1.88), verified and updated against live v2.1.90/v2.1.91/v2.1.92/v2.1.94 binaries. Chapter 10 (L57-L59) covers v2.1.92 changes. Chapter 11 (L60-L61) adds v2.1.94 command and env-var changes, including /autofix-pr, /team-onboarding, Mantle provider support, CLAUDE_CODE_MCP_ALLOWLIST_ENV, and CLAUDE_CODE_SANDBOXED."
 }

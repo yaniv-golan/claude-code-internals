@@ -91,6 +91,8 @@ const DESCRIPTIONS = {
   48: 'Message processing pipeline: normalization, user input, API transform, message construction, slug command, paste expansion, synthetic messages, message taxonomy',
   49: 'Task system: background tasks, task types, output management, local shell task, local agent task, remote agent task, in-process teammate task, dream task, task notification',
   50: 'REPL and Screen: render tree, query guard, virtual scroll, session resume, loading state, dialog priority, messages array, tool JSX, cancel handler, transcript mode, prompt input, spinner',
+  60: 'v2.1.94 command changes: autofix-pr remote PR monitor, team-onboarding guide generation from usage data, onboarding markdown, loop command still present, command metadata getter change, remote sessions',
+  61: 'v2.1.94 environment variables and provider changes: mantle provider, CLAUDE_CODE_USE_MANTLE, ANTHROPIC_BEDROCK_MANTLE_BASE_URL, ANTHROPIC_BEDROCK_MANTLE_API_KEY, CLAUDE_CODE_SKIP_MANTLE_AUTH, CLAUDE_CODE_MCP_ALLOWLIST_ENV, CLAUDE_CODE_SANDBOXED, CLAUDE_CODE_TEAM_ONBOARDING',
 };
 
 /**
