@@ -1248,6 +1248,72 @@
         "relevance": 0.72,
         "reason": "CLAUDE_CODE_SANDBOXED alters trust and sandbox acceptance behavior"
       }
+    ],
+    "62": [
+      {
+        "id": 16,
+        "relevance": 0.95,
+        "reason": "L16 covers auto-memory and dreams infrastructure; L62 is the user-facing /dream command"
+      },
+      {
+        "id": 15,
+        "relevance": 0.88,
+        "reason": "L15 covers memory system architecture; /dream reads and writes the same memory files"
+      },
+      {
+        "id": 49,
+        "relevance": 0.8,
+        "reason": "DreamTask is one of the task types documented in L49's task system"
+      },
+      {
+        "id": 38,
+        "relevance": 0.7,
+        "reason": "/dream nightly uses RemoteTrigger cron scheduling from L38"
+      }
+    ],
+    "63": [
+      {
+        "id": 8,
+        "relevance": 0.9,
+        "reason": "Perforce mode adds read-only guards to Edit/Write/NotebookEdit file tools from L8"
+      },
+      {
+        "id": 7,
+        "relevance": 0.82,
+        "reason": "Script caps limit Bash tool execution counts; L7 covers the Bash tool architecture"
+      },
+      {
+        "id": 47,
+        "relevance": 0.75,
+        "reason": "Script caps are part of the broader sandbox/security hardening from L47"
+      },
+      {
+        "id": 36,
+        "relevance": 0.68,
+        "reason": "Perforce VCS detection extends the git integration system from L36"
+      }
+    ],
+    "64": [
+      {
+        "id": 56,
+        "relevance": 0.88,
+        "reason": "L56 documents /buddy implementation; L64 records its complete removal in v2.1.97"
+      },
+      {
+        "id": 46,
+        "relevance": 0.82,
+        "reason": "Custom model capabilities and /setup-vertex extend the model/provider system from L46"
+      },
+      {
+        "id": 57,
+        "relevance": 0.75,
+        "reason": "/setup-vertex is companion to /setup-bedrock added in v2.1.92 (L57)"
+      },
+      {
+        "id": 55,
+        "relevance": 0.7,
+        "reason": "L55 covers v2.1.90 env vars; L64 continues with v2.1.97-v2.1.100 additions and removals"
+      }
     ]
   }
 }

@@ -707,6 +707,11 @@ type CronTask = {
 
 ### AutoDream: Background Memory Consolidation
 
+> **Update (v2.1.97):** `/dream` is now a user-facing slash command (alias `/learn`) with
+> `userInvocable: true`. See L62 in Chapter 12 for the full deep dive including the
+> expanded gate chain, tool sandboxing rules, team memory, tiny memory mode, DreamTask
+> lifecycle tracking, and `/dream nightly` scheduled mode.
+
 **Gate Chain (Cheapest-First):**
 1. `kairosActive` -> skip if true
 2. `isRemoteMode` -> skip

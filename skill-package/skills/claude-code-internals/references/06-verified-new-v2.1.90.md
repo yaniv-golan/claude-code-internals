@@ -484,6 +484,10 @@ settings key: userSettings.autoCompactWindow (number | undefined)
 
 ## /buddy [pet|off|on]
 
+> **Removed in v2.1.97.** All buddy-specific code was fully deleted, not just hidden.
+> See L64 in Chapter 12 for removal details. The implementation below documents the
+> feature as it existed through v2.1.96.
+
 **What it does:** Hatches and manages a persistent "coding companion" — a named
 character (e.g. a snail) that sits beside the input box and occasionally comments.
 

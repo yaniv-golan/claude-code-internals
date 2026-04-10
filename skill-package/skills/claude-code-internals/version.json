@@ -1,12 +1,12 @@
 {
-  "skill_version": "2.2.5",
-  "captured_version": "2.1.96",
-  "captured_date": "2026-04-08",
+  "skill_version": "2.3.0",
+  "captured_version": "2.1.100",
+  "captured_date": "2026-04-10",
   "source": "https://www.markdown.engineering/learn-claude-code/",
-  "verified_against_binary": "2.1.96",
-  "lessons_count": 61,
-  "chapters_count": 11,
-  "total_size_kb": 688,
-  "keywords_indexed": 634,
-  "note": "Core lessons from markdown.engineering (v2.1.88), verified and updated against live v2.1.90/v2.1.91/v2.1.92/v2.1.94/v2.1.96 binaries. Chapter 10 (L57-L59) covers v2.1.92 changes. Chapter 11 (L60-L61) adds v2.1.94 command and env-var changes, including /autofix-pr, /team-onboarding, Mantle provider support, CLAUDE_CODE_MCP_ALLOWLIST_ENV, and CLAUDE_CODE_SANDBOXED. No new lessons were required for v2.1.96 because it is a bugfix-only release relative to v2.1.94."
+  "verified_against_binary": "2.1.100",
+  "lessons_count": 64,
+  "chapters_count": 12,
+  "total_size_kb": 710,
+  "keywords_indexed": 660,
+  "note": "Core lessons from markdown.engineering (v2.1.88), verified and updated against live v2.1.90/v2.1.91/v2.1.92/v2.1.94/v2.1.96/v2.1.100 binaries. Chapter 12 (L62-L64) covers v2.1.97-v2.1.100 changes: /dream user-facing memory consolidation, Perforce mode, Script Caps, /setup-vertex, custom model capabilities, /buddy removal, and REPL env var cleanup. v2.1.100 itself is bugfix-only relative to v2.1.98."
 }

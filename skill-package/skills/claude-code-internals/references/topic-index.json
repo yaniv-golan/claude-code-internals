@@ -1,7 +1,7 @@
 {
-  "generated": "2026-04-08",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.94",
-  "total_lessons": 61,
+  "generated": "2026-04-10",
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.100",
+  "total_lessons": 64,
   "lessons": [
     {
       "id": 1,
@@ -921,6 +921,64 @@
         "CLAUDE_CODE_MCP_ALLOWLIST_ENV",
         "v2.1.94"
       ]
+    },
+    {
+      "id": 62,
+      "title": "/dream: User-Facing Memory Consolidation",
+      "lesson_number": "62",
+      "file": "09-verified-new-v2.1.100.md",
+      "startLine": 25,
+      "endLine": 278,
+      "keywords": [
+        "dream",
+        "learn",
+        "memory-consolidation",
+        "auto-dream",
+        "consolidation-phases",
+        "dream-nightly",
+        "tiny-memory",
+        "team-memory",
+        "dream-task",
+        "v2.1.97",
+        "v2.1.100"
+      ]
+    },
+    {
+      "id": 63,
+      "title": "Perforce Mode & Script Caps",
+      "lesson_number": "63",
+      "file": "09-verified-new-v2.1.100.md",
+      "startLine": 279,
+      "endLine": 456,
+      "keywords": [
+        "perforce",
+        "CLAUDE_CODE_PERFORCE_MODE",
+        "p4",
+        "helix-core",
+        "script-caps",
+        "CLAUDE_CODE_SCRIPT_CAPS",
+        "exfiltration",
+        "subprocess-hardening",
+        "v2.1.98"
+      ]
+    },
+    {
+      "id": 64,
+      "title": "v2.1.97-v2.1.100 Command & Env Var Changes",
+      "lesson_number": "64",
+      "file": "09-verified-new-v2.1.100.md",
+      "startLine": 457,
+      "endLine": 560,
+      "keywords": [
+        "setup-vertex",
+        "buddy-removed",
+        "ANTHROPIC_CUSTOM_MODEL_OPTION_SUPPORTED_CAPABILITIES",
+        "custom-model-capabilities",
+        "CLAUDE_CODE_MAX_CONTEXT_TOKENS",
+        "v2.1.97",
+        "v2.1.98",
+        "v2.1.100"
+      ]
     }
   ],
   "keyword_map": {
@@ -1507,7 +1565,8 @@
       4
     ],
     "team-memory": [
-      15
+      15,
+      62
     ],
     "session-memory": [
       15,
@@ -1529,10 +1588,12 @@
       15
     ],
     "dreams": [
-      16
+      16,
+      62
     ],
     "consolidation": [
-      16
+      16,
+      62
     ],
     "extract-memories": [
       16
@@ -1545,7 +1606,8 @@
       43
     ],
     "auto-dream": [
-      16
+      16,
+      62
     ],
     "lock-file": [
       16
@@ -2505,7 +2567,8 @@
     ],
     "dream-task": [
       49,
-      16
+      16,
+      62
     ],
     "task-notification": [
       49,
@@ -2686,6 +2749,76 @@
     ],
     "CLAUDE_CODE_MCP_ALLOWLIST_ENV": [
       61
+    ],
+    "dream": [
+      62
+    ],
+    "learn": [
+      62
+    ],
+    "memory-consolidation": [
+      62
+    ],
+    "consolidation-phases": [
+      62
+    ],
+    "dream-nightly": [
+      62
+    ],
+    "tiny-memory": [
+      62
+    ],
+    "perforce": [
+      63
+    ],
+    "CLAUDE_CODE_PERFORCE_MODE": [
+      63
+    ],
+    "p4": [
+      63
+    ],
+    "helix-core": [
+      63
+    ],
+    "script-caps": [
+      63
+    ],
+    "CLAUDE_CODE_SCRIPT_CAPS": [
+      63
+    ],
+    "exfiltration": [
+      63
+    ],
+    "subprocess-hardening": [
+      63
+    ],
+    "setup-vertex": [
+      64
+    ],
+    "ANTHROPIC_CUSTOM_MODEL_OPTION_SUPPORTED_CAPABILITIES": [
+      64
+    ],
+    "custom-model-capabilities": [
+      64
+    ],
+    "CLAUDE_CODE_MAX_CONTEXT_TOKENS": [
+      64
+    ],
+    "buddy-removed": [
+      64
+    ],
+    "v2.1.100": [
+      62,
+      63,
+      64
+    ],
+    "v2.1.97": [
+      62,
+      64
+    ],
+    "v2.1.98": [
+      63,
+      64
     ]
   }
 }

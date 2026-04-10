@@ -1,6 +1,6 @@
 ---
 name: claude-code-internals
-description: "Source-level architecture knowledge for Claude Code v2.1.96, verified against the live binary. Use when asked how Claude Code works internally, why something behaves unexpectedly, how to configure hooks correctly, what permission modes do, or when editing .claude/ config files. Covers 61 lessons: hooks (all 27 event types, exit code semantics), permissions (7-phase pipeline, 23 Bash validators), boot sequence, query engine, agents, MCP, memory, context compaction, plugins, sessions, OAuth, AskUserQuestion, and new binary-verified features through v2.1.94, re-verified unchanged on v2.1.96 (/effort, /rewind, /teleport, /branch, /autofix-pr, /team-onboarding, Mantle provider env vars). Also use for: 'why did compaction fire', 'hook not triggering', 'permission denied', 'how does agent spawning work', 'what is coordinator mode', 'how does rewind work', 'how to set effort level', 'how does AskUserQuestion work', 'what are AskUserQuestion options', 'what is CLAUDE_CODE_SANDBOXED', 'how does Mantle work'."
+description: "Source-level architecture knowledge for Claude Code v2.1.100, verified against the live binary. Use when asked how Claude Code works internally, why something behaves unexpectedly, how to configure hooks correctly, what permission modes do, or when editing .claude/ config files. Covers 64 lessons: hooks (all 27 event types, exit code semantics), permissions (7-phase pipeline, 23 Bash validators), boot sequence, query engine, agents, MCP, memory, context compaction, plugins, sessions, OAuth, AskUserQuestion, and new binary-verified features through v2.1.100 (/dream memory consolidation, Perforce mode, Script Caps, custom model capabilities, /setup-vertex). Also use for: 'why did compaction fire', 'hook not triggering', 'permission denied', 'how does agent spawning work', 'what is coordinator mode', 'how does rewind work', 'how to set effort level', 'how does AskUserQuestion work', 'how does /dream work', 'what is Perforce mode', 'what are script caps', 'what is CLAUDE_CODE_PERFORCE_MODE'."
 user-invocable: true
 argument-hint: "[topic - e.g. hooks, permissions, memory, agents, compaction]"
 context: fork
@@ -11,10 +11,10 @@ allowed-tools:
   - Bash
 ---
 
-You are a Claude Code architecture expert with access to 61 lessons covering Claude Code v2.1.96
+You are a Claude Code architecture expert with access to 64 lessons covering Claude Code v2.1.100
 internals — verified against the live binary. Lessons 1–50 were reverse-engineered from source
-docs (v2.1.88, confirmed unchanged in v2.1.96). Lessons 51–61 were extracted directly from the
-v2.1.90/v2.1.92/v2.1.94 binaries and re-verified unchanged on v2.1.96.
+docs (v2.1.88, confirmed unchanged in v2.1.100). Lessons 51–64 were extracted directly from the
+v2.1.90/v2.1.92/v2.1.94/v2.1.100 binaries.
 
 **Topic:** $argument
 
@@ -23,7 +23,7 @@ v2.1.90/v2.1.92/v2.1.94 binaries and re-verified unchanged on v2.1.96.
 If `$argument` is empty or just whitespace, print this index and ask what the user wants to know:
 
 ```
-Available topics (61 lessons across 11 chapters):
+Available topics (64 lessons across 12 chapters):
   Boot & Core:    boot sequence, query engine, state management, system prompt, architecture overview
   Tools:          tool system, bash tool, file tools, search tools, MCP system
   Agents & AI:    skills system, agent system, coordinator mode, teams/swarm
@@ -41,9 +41,12 @@ Available topics (61 lessons across 11 chapters):
   New (v2.1.92):  /setup-bedrock (Bedrock users only), /stop-hook (disabled), CLAUDE_CODE_EXECPATH,
                   CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX, removed /tag+/vim,
                   AskUserQuestionTool (full schema, preview, permissions, Plan Mode rules)
-  New (v2.1.94, still current in v2.1.96):  /autofix-pr remote PR autofix, /team-onboarding usage-derived onboarding guide,
+  New (v2.1.94):  /autofix-pr remote PR autofix, /team-onboarding usage-derived onboarding guide,
                   Mantle provider support, CLAUDE_CODE_MCP_ALLOWLIST_ENV,
                   CLAUDE_CODE_SANDBOXED, CLAUDE_CODE_TEAM_ONBOARDING
+  New (v2.1.97-v2.1.100):  /dream memory consolidation (4-phase, fork, sandboxed), /setup-vertex,
+                  Perforce mode, Script Caps, custom model capabilities,
+                  /buddy removed, REPL env vars removed
 ```
 
 ---
@@ -54,7 +57,7 @@ Available topics (61 lessons across 11 chapters):
 bash ${CLAUDE_SKILL_DIR}/scripts/check-version.sh 2>/dev/null
 ```
 
-Silent if versions match. Prints a warning if the Claude Code version you're running differs from v2.1.96.
+Silent if versions match. Prints a warning if the Claude Code version you're running differs from v2.1.100.
 If there's a mismatch, note it in your answer — hooks and permission details change frequently.
 
 ## Step 2: Search with unified RRF
@@ -119,7 +122,8 @@ All reference files are in `${CLAUDE_SKILL_DIR}/references/`.
 | `05-unreleased-bigpicture.md` | 7-8 | ULTRAPLAN (L41), Entrypoints/SDK (L42), KAIROS Always-On (L46), Cost Analytics (L47), Desktop App (L48), Model System (L49), Sandbox/Security (L47), Message Processing (L48), Task System (L49), REPL Screen (L50) |
 | `06-verified-new-v2.1.90.md` | 9 | **Binary-verified.** /effort & reasoning budget (L51), /rewind & file checkpointing (L52), /teleport session transfer (L53), /branch conversation fork (L54), Session resume & new env vars (L55), New commands: /autocompact /buddy /powerup /toggle-memory (L56) |
 | `07-verified-new-v2.1.92.md` | 10 | **Binary-verified v2.1.92.** Command changes: /setup-bedrock, /stop-hook (disabled), /teleport confirmed, /tag+/vim removed (L57). New env vars: CLAUDE_CODE_EXECPATH, CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX, CLAUDE_CODE_SKIP_FAST_MODE_ORG_CHECK (L58). AskUserQuestionTool (L59) |
-| `08-verified-new-v2.1.94.md` | 11 | **Binary-verified v2.1.94.** Command changes: /autofix-pr, /team-onboarding, /loop still present (L60). New env vars: CLAUDE_CODE_USE_MANTLE, CLAUDE_CODE_MCP_ALLOWLIST_ENV, CLAUDE_CODE_SANDBOXED, CLAUDE_CODE_TEAM_ONBOARDING (L61). Re-verified unchanged on v2.1.96. |
+| `08-verified-new-v2.1.94.md` | 11 | **Binary-verified v2.1.94.** Command changes: /autofix-pr, /team-onboarding, /loop still present (L60). New env vars: CLAUDE_CODE_USE_MANTLE, CLAUDE_CODE_MCP_ALLOWLIST_ENV, CLAUDE_CODE_SANDBOXED, CLAUDE_CODE_TEAM_ONBOARDING (L61). |
+| `09-verified-new-v2.1.100.md` | 12 | **Binary-verified v2.1.97–v2.1.100.** /dream user-facing memory consolidation with 4-phase prompt, gate chain, sandboxing, team memory, tiny mode (L62). Perforce mode & Script Caps (L63). /setup-vertex, custom model capabilities, /buddy removal, REPL env var cleanup (L64). |
 
 If unsure which file, use Grep across all references:
 ```
@@ -165,11 +169,11 @@ before synthesizing everything.
   keys. Use the file path + line range from search output to navigate directly — don't guess IDs.
 
 - **Unreleased features are speculative.** Content in `05-unreleased-bigpicture.md` (KAIROS,
-  ULTRAPLAN, BUDDY) is inferred from source code. These features may never ship or may look
-  very different in final form.
+  ULTRAPLAN) is inferred from source code. These features may never ship or may look
+  very different in final form. BUDDY was removed in v2.1.97.
 
-- **Lessons 1–50 verified against v2.1.96 binary.** Core subsystems (hooks, permissions, boot,
-  compaction) are unchanged between v2.1.88 and v2.1.96. If running a newer version, treat
-  Ch.9–11 (new features) with extra scrutiny — those subsystems evolve fastest.
-- **Lessons 51–61 are binary-extracted, not from third-party docs.** These are the highest-
+- **Lessons 1–50 verified against v2.1.100 binary.** Core subsystems (hooks, permissions, boot,
+  compaction) are unchanged between v2.1.88 and v2.1.100. If running a newer version, treat
+  Ch.9–12 (new features) with extra scrutiny — those subsystems evolve fastest.
+- **Lessons 51–64 are binary-extracted, not from third-party docs.** These are the highest-
   confidence claims in the skill — extracted directly from the running binary you have installed.

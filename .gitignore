@@ -12,3 +12,6 @@ ruvector/
 .mcp.json
 .swarm/
 AGENTS.md
+
+# Internal research docs
+docs/internal/
