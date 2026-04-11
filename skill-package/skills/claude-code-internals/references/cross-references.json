@@ -1269,6 +1269,11 @@
         "id": 38,
         "relevance": 0.7,
         "reason": "/dream nightly uses RemoteTrigger cron scheduling from L38"
+      },
+      {
+        "id": 68,
+        "relevance": 0.9,
+        "reason": "GrowthBook flag evaluation mechanism (E_() function, override paths, remote-eval mode) explains why /dream isEnabled gate blocks"
       }
     ],
     "63": [
@@ -1401,6 +1406,11 @@
         "id": 10,
         "relevance": 0.65,
         "reason": "MCP registry changes affect MCP server discovery from L10"
+      },
+      {
+        "id": 62,
+        "relevance": 0.85,
+        "reason": "GrowthBook flag tengu_kairos_dream gates /dream command; L68 documents full GrowthBook evaluation internals"
       }
     ]
   }

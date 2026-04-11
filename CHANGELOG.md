@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.4.1 — 2026-04-11 (this fork)
+
+Deep dive into `/dream` command gating and GrowthBook feature flag evaluation internals.
+
+### Changed
+
+- **L62 — `/dream`**: Added detailed `isEnabled` gate chain analysis (`IF5` in v2.1.101), the 3-gate breakdown (`!kairosActive`, memory enabled, `tengu_kairos_dream`), memory-enabled cascade (`l4()` 5-level check), comparison table of `/dream` vs auto-dream gates, and updated bundle symbol table with v2.1.101 identifiers.
+- **L68 — v2.1.101 Changes**: Added full GrowthBook Feature Flag Internals section: `E_()` evaluation chain (5 steps), SDK configuration (remote-eval mode, Anthropic API proxy, client key, per-user/org keying), cache persistence (`~/.claude.json`), local override feasibility analysis (all 3 override paths dead/stubbed in production), wrapper function symbol table, and non-obvious behavior notes (Bedrock/Vertex bypass, ignored TTL parameter).
+- Updated `topic-index.json` with new keywords: `isEnabled`, `gating`, `tengu-kairos-dream`, `growthbook`, `feature-flag`, `remote-eval`, `flag-override`, `NQq`, `E_`. Updated keyword_map entries.
+- Updated `cross-references.json` with L62↔L68 bidirectional references for GrowthBook gating.
+- Added 2 new troubleshooting entries: "dream not recognized" and "feature flag not working/override".
+- Regenerated `semantic-index.json` (68 lessons, 691 vocabulary terms).
+
 ## v2.4.0 — 2026-04-11 (this fork)
 
 Verified against Claude Code **v2.1.101** (binary extraction 2026-04-11). Adds Chapter 13 (Lessons 65–68) covering all changes in v2.1.101. Bundle size increased ~670KB (89.4MB to 90.0MB).

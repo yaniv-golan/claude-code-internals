@@ -928,7 +928,7 @@
       "lesson_number": "62",
       "file": "09-verified-new-v2.1.100.md",
       "startLine": 25,
-      "endLine": 278,
+      "endLine": 336,
       "keywords": [
         "dream",
         "learn",
@@ -940,7 +940,10 @@
         "team-memory",
         "dream-task",
         "v2.1.97",
-        "v2.1.100"
+        "v2.1.100",
+        "isEnabled",
+        "gating",
+        "tengu-kairos-dream"
       ]
     },
     {
@@ -1043,8 +1046,8 @@
       "title": "v2.1.101 Command & Env Var Changes",
       "lesson_number": "68",
       "file": "10-verified-new-v2.1.101.md",
-      "startLine": 457,
-      "endLine": 540,
+      "startLine": 496,
+      "endLine": 669,
       "keywords": [
         "update-command",
         "CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH",
@@ -1052,7 +1055,14 @@
         "sdk-observability",
         "mcp-registry",
         "mcp-directory-bff",
-        "v2.1.101"
+        "v2.1.101",
+        "growthbook",
+        "feature-flag",
+        "gating",
+        "remote-eval",
+        "flag-override",
+        "NQq",
+        "E_"
       ]
     }
   ],
@@ -1161,8 +1171,7 @@
       33
     ],
     "autocompact": [
-      2,
-      28
+      56
     ],
     "query-loop": [
       2
@@ -1543,7 +1552,7 @@
       12
     ],
     "fork": [
-      12
+      54
     ],
     "async-agent": [
       12
@@ -1775,7 +1784,8 @@
       25
     ],
     "onboarding": [
-      19
+      60,
+      61
     ],
     "launcher-pattern": [
       19
@@ -2060,7 +2070,8 @@
     "growthbook": [
       29,
       44,
-      46
+      46,
+      68
     ],
     "pii": [
       29,
@@ -2085,7 +2096,9 @@
     "feature-flags": [
       29,
       44,
-      46
+      46,
+      62,
+      68
     ],
     "migration": [
       30
@@ -2199,7 +2212,7 @@
       34
     ],
     "remote-control": [
-      34
+      58
     ],
     "ccr": [
       34,
@@ -2260,7 +2273,7 @@
       36
     ],
     "branch": [
-      36
+      54
     ],
     "commit-tracking": [
       36
@@ -2360,7 +2373,7 @@
       39
     ],
     "buddy": [
-      40
+      56
     ],
     "tamagotchi": [
       40
@@ -2402,7 +2415,8 @@
       41
     ],
     "teleport": [
-      41
+      53,
+      57
     ],
     "exit-plan-mode": [
       41
@@ -2721,18 +2735,8 @@
     "file-history": [
       52
     ],
-    "teleport": [
-      53,
-      57
-    ],
     "session-transfer": [
       53
-    ],
-    "branch": [
-      54
-    ],
-    "fork": [
-      54
     ],
     "conversation-fork": [
       54
@@ -2745,12 +2749,6 @@
       58,
       61,
       68
-    ],
-    "autocompact": [
-      56
-    ],
-    "buddy": [
-      56
     ],
     "companion": [
       56
@@ -2772,9 +2770,6 @@
       58
     ],
     "CLAUDE_CODE_EXECPATH": [
-      58
-    ],
-    "remote-control": [
       58
     ],
     "research-preview": [
@@ -2813,10 +2808,6 @@
     ],
     "remote-sessions": [
       60
-    ],
-    "onboarding": [
-      60,
-      61
     ],
     "v2.1.94": [
       60,
@@ -2983,6 +2974,27 @@
       65,
       66,
       67,
+      68
+    ],
+    "gating": [
+      62,
+      68,
+      65,
+      67
+    ],
+    "isEnabled": [
+      62,
+      56,
+      57
+    ],
+    "remote-eval": [
+      68
+    ],
+    "flag-override": [
+      68
+    ],
+    "tengu-kairos-dream": [
+      62,
       68
     ]
   }

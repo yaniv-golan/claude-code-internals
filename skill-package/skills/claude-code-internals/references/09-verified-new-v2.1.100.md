@@ -249,14 +249,73 @@ Important nuances:
   post-turn; dream runs as a separate background fork). Session memory (JSONL transcripts) is
   read-only input to dream, not modified by it.
 
-## Key Identifiers in the Bundle **[v2.1.100]**
+## `/dream` Command `isEnabled` Gate Chain **[v2.1.101]**
+
+The manual `/dream` command has its own `isEnabled` function (`IF5` in v2.1.101, `Qu5` in
+v2.1.100). All three gates must pass for the command to appear:
+
+```javascript
+function IF5() {
+  return !fG() && l4() && dN("tengu_kairos_dream", false, bF5)
+}
+```
+
+| Gate | Function | Check | Default |
+|------|----------|-------|---------|
+| 1 | `!fG()` | Kairos NOT active (`R_.kairosActive`) | Passes (always `false`) |
+| 2 | `l4()` | Memory enabled (see below) | Passes unless explicitly disabled |
+| 3 | `dN("tengu_kairos_dream", false, bF5)` | GrowthBook server flag | **`false` — blocks by default** |
+
+### Gate 2 detail: `l4()` (memory enabled)
+
+Checks in order:
+1. `Eg()` → `R_.memoryToggledOff` runtime flag (set by `/toggle-memory`, which is disabled)
+2. `CLAUDE_CODE_DISABLE_AUTO_MEMORY` env var → truthy disables
+3. `CLAUDE_CODE_SIMPLE` env var → truthy disables
+4. `CLAUDE_CODE_REMOTE` without `CLAUDE_CODE_REMOTE_MEMORY_DIR` → disables
+5. User setting `autoMemoryEnabled` (via `X8()`)
+6. Default: `true`
+
+### Gate 3: the blocking gate
+
+`dN()` delegates to `E_()` (GrowthBook flag evaluator, see L68 for full GrowthBook internals).
+The flag `tengu_kairos_dream` must be `true` on Anthropic's server. The default is `false`.
+There is **no local override** — env override store is hardcoded `null`, config override
+functions are stubbed as no-ops in the production binary.
+
+### `/dream` vs auto-dream: different gates
+
+The manual `/dream` command (`IF5`) and auto-dream background task (`b7_`) check **different
+flags**:
+
+| Check | `/dream` (`IF5`) | Auto-dream (`b7_`) |
+|-------|------------------|-------------------|
+| `!kairosActive` | Yes | No |
+| `l4()` (memory enabled) | Yes | Yes (via `Zn_`) |
+| `tengu_kairos_dream` | **Yes (primary gate)** | No |
+| `tengu_onyx_plover` | No | Yes (alternative gate) |
+| `tengu_herring_clock` | No | Yes (via `KE_`) |
+| `autoDreamEnabled` setting | No | Yes |
+
+This means the `/dream` command and auto-dream can be independently enabled/disabled by
+Anthropic's server-side rollout.
+
+## Key Identifiers in the Bundle
+
+**v2.1.101 symbols** (v2.1.100 equivalents in parentheses):
 
 | Symbol | Purpose |
 |--------|---------|
 | `C9_()` | Builds the consolidation prompt (normal mode) |
 | `iu5()` | Builds the scheduling prompt |
-| `nu5()` | Registers the `/dream` slash command |
-| `Qu5()` | `isEnabled` check for the command |
+| `mF5()` (`nu5`) | Registers the `/dream` slash command |
+| `IF5()` (`Qu5`) | `isEnabled` check for the command |
+| `fG()` | Returns `kairosActive` state |
+| `l4()` | Memory-enabled check (5-level cascade) |
+| `b7_()` | Auto-dream eligibility (separate from `/dream`) |
+| `Zn_()` | Dream feature availability check (for auto-dream) |
+| `KE_()` | Team memory content check |
+| `kz7()` | `tengu_onyx_plover` flag check |
 | `N9_()` | `autoDreamEnabled` check (settings + server flag) |
 | `TA7()` | Auto-dream initialization (sets up `KA7`) |
 | `OA7()` | Auto-dream entry point (called from main loop) |

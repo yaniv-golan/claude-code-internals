@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "created": "2026-04-11T06:05:23.915Z",
+  "created": "2026-04-11T08:09:57.608Z",
   "description": "TF-IDF semantic index for Claude Code internals lessons. Use semantic-search.js to query.",
   "total_entries": 68,
   "entries": [
@@ -54,7 +54,7 @@
         "code": 1.2639,
         "boots": 2.6372,
         "module": 3.1646,
-        "eval": 3.1646,
+        "eval": 2.6448,
         "three": 3.1646,
         "layer": 2.6448,
         "architecture": 1.9576,
@@ -74,7 +74,7 @@
         "repl": 1.9506,
         "launcher": 1.7708,
         "ink": 1.9506,
-        "tengu": 2.204,
+        "tengu": 1.7708,
         "started": 2.204,
         "deferred": 2.204,
         "paths": 2.204
@@ -343,7 +343,7 @@
         "launcher": 1.7708,
         "bare": 1.9506,
         "mode": 0.9043,
-        "tengu": 2.204,
+        "tengu": 1.7708,
         "started": 2.204,
         "deferred": 2.204,
         "prefetch": 1.9506,
@@ -903,8 +903,8 @@
         "extract": 2.6372,
         "memories": 2.6372,
         "recall": 2.6372,
-        "kairos": 1.9506,
-        "dream": 1.9506,
+        "kairos": 1.6313,
+        "dream": 1.7708,
         "lock": 2.4614,
         "file": 1.5173,
         "daily": 2.057,
@@ -964,7 +964,7 @@
         "dom": 3.1646,
         "blit": 3.1646,
         "dirty": 3.1646,
-        "flag": 3.1646,
+        "flag": 2.6448,
         "scroll": 2.6448,
         "style": 3.1646,
         "pool": 3.1646,
@@ -1386,7 +1386,7 @@
         "file": 1.5173,
         "watching": 2.6372,
         "chokidar": 2.6372,
-        "remote": 1.5173,
+        "remote": 1.421,
         "managed": 2.6372,
         "etag": 2.6372,
         "security": 1.6313,
@@ -1519,11 +1519,11 @@
         "analytics": 3.5264,
         "telemetry": 3.5264,
         "datadog": 3.0856,
-        "growthbook": 2.7308,
+        "growthbook": 2.4791,
         "pii": 3.0856,
         "integration": 1.6313,
-        "feature": 2.3407,
-        "flags": 2.3407,
+        "feature": 1.9576,
+        "flags": 1.9576,
         "protection": 2.6372,
         "sampling": 2.6448,
         "event": 2.6448,
@@ -1755,7 +1755,7 @@
       ],
       "tfidf": {
         "bridge": 3.5264,
-        "remote": 1.6553,
+        "remote": 1.5502,
         "control": 1.9317,
         "ccr": 1.986,
         "websocket": 1.803,
@@ -2050,7 +2050,7 @@
       "tfidf": {
         "30": 2.4111,
         "ultraplan": 3.3153,
-        "remote": 2.4277,
+        "remote": 2.2736,
         "planning": 3.3153,
         "via": 2.4111,
         "claude": 1.239,
@@ -2161,7 +2161,7 @@
         "tick-loop"
       ],
       "tfidf": {
-        "kairos": 3.1209,
+        "kairos": 2.6101,
         "always": 2.9537,
         "autonomous": 3.7976,
         "daemon": 3.1737,
@@ -2241,7 +2241,7 @@
         "quadratic": 2.6372,
         "backoff": 1.9506,
         "telemetry": 1.9836,
-        "growthbook": 1.7555,
+        "growthbook": 1.5937,
         "pii": 1.9836,
         "sampling": 1.9836,
         "event": 1.9836,
@@ -2250,8 +2250,8 @@
         "switch": 1.9836,
         "metadata": 1.7555,
         "enrichment": 1.9836,
-        "feature": 1.7555,
-        "flags": 1.7555
+        "feature": 1.4682,
+        "flags": 1.4682
       }
     },
     {
@@ -2352,9 +2352,9 @@
         "bedrock": 1.8725,
         "vertex": 2.1158,
         "window": 1.9395,
-        "growthbook": 1.7165,
-        "feature": 1.7165,
-        "flags": 1.7165
+        "growthbook": 1.5583,
+        "feature": 1.4355,
+        "flags": 1.4355
       }
     },
     {
@@ -2495,10 +2495,10 @@
         "local": 2.178,
         "shell": 1.5833,
         "agent": 1.3218,
-        "remote": 1.3567,
+        "remote": 1.2705,
         "process": 1.9706,
         "teammate": 2.0743,
-        "dream": 1.744,
+        "dream": 1.5833,
         "notification": 1.4586,
         "execution": 1.3818
       }
@@ -2744,7 +2744,7 @@
       "file": "06-verified-new-v2.1.90.md",
       "startLine": 424,
       "endLine": 588,
-      "text": "New Commands: /autocompact, /buddy, /powerup, /toggle-memory autocompact buddy companion powerup toggle-memory  autocompact buddy companion powerup toggle-memory",
+      "text": "New Commands: /autocompact, /buddy, /powerup, /toggle-memory autocompact buddy companion powerup toggle-memory  autocompact buddy companion powerup toggle-memory isEnabled",
       "keywords": [
         "autocompact",
         "buddy",
@@ -2756,6 +2756,7 @@
         "autocompact",
         "buddy",
         "companion",
+        "isEnabled",
         "powerup",
         "toggle-memory"
       ],
@@ -2767,7 +2768,8 @@
         "powerup": 4.2195,
         "toggle": 4.2195,
         "memory": 2.2736,
-        "companion": 2.9386
+        "companion": 2.9386,
+        "isenabled": 2.0806
       }
     },
     {
@@ -2776,7 +2778,7 @@
       "file": "07-verified-new-v2.1.92.md",
       "startLine": 18,
       "endLine": 130,
-      "text": "v2.1.92 Command Changes setup-bedrock stop-hook teleport commands v2.1.92  teleport setup-bedrock stop-hook v2.1.92 commands",
+      "text": "v2.1.92 Command Changes setup-bedrock stop-hook teleport commands v2.1.92  teleport setup-bedrock stop-hook v2.1.92 isEnabled commands",
       "keywords": [
         "setup-bedrock",
         "stop-hook",
@@ -2786,6 +2788,7 @@
       ],
       "related_topics": [
         "commands",
+        "isEnabled",
         "setup-bedrock",
         "stop-hook",
         "teleport",
@@ -2801,7 +2804,8 @@
         "stop": 2.6007,
         "hook": 2.6007,
         "teleport": 2.6007,
-        "commands": 2.361
+        "commands": 2.361,
+        "isenabled": 2.0806
       }
     },
     {
@@ -2834,7 +2838,7 @@
         "claude": 1.4455,
         "code": 1.6852,
         "execpath": 3.5163,
-        "remote": 2.0231,
+        "remote": 1.8947,
         "control": 2.361,
         "fast": 2.361,
         "mode": 1.2058
@@ -2908,7 +2912,7 @@
         "pr": 2.9386,
         "team": 1.9576,
         "onboarding": 3.1209,
-        "remote": 2.0231,
+        "remote": 1.8947,
         "sessions": 3.1646,
         "monitor": 2.4614,
         "guide": 2.4614,
@@ -2982,8 +2986,8 @@
       "title": "/dream: User-Facing Memory Consolidation",
       "file": "09-verified-new-v2.1.100.md",
       "startLine": 25,
-      "endLine": 278,
-      "text": "/dream: User-Facing Memory Consolidation dream learn memory-consolidation auto-dream consolidation-phases dream-nightly tiny-memory team-memory dream-task v2.1.97 v2.1.100  team-memory dreams consolidation auto-dream dream-task dream learn memory-consolidation consolidation-phases dream-nightly tiny-memory v2.1.100 v2.1.97",
+      "endLine": 336,
+      "text": "/dream: User-Facing Memory Consolidation dream learn memory-consolidation auto-dream consolidation-phases dream-nightly tiny-memory team-memory dream-task v2.1.97 v2.1.100 isEnabled gating tengu-kairos-dream  team-memory dreams consolidation auto-dream feature-flags dream-task dream learn memory-consolidation consolidation-phases dream-nightly tiny-memory v2.1.100 v2.1.97 gating isEnabled tengu-kairos-dream",
       "keywords": [
         "dream",
         "learn",
@@ -2995,7 +2999,10 @@
         "team-memory",
         "dream-task",
         "v2.1.97",
-        "v2.1.100"
+        "v2.1.100",
+        "isEnabled",
+        "gating",
+        "tengu-kairos-dream"
       ],
       "related_topics": [
         "auto-dream",
@@ -3005,30 +3012,40 @@
         "dream-nightly",
         "dream-task",
         "dreams",
+        "feature-flags",
+        "gating",
+        "isEnabled",
         "learn",
         "memory-consolidation",
         "team-memory",
+        "tengu-kairos-dream",
         "tiny-memory",
         "v2.1.100",
         "v2.1.97"
       ],
       "tfidf": {
-        "97": 2.155,
-        "100": 1.9072,
-        "dream": 3.1209,
-        "user": 1.3487,
-        "facing": 2.3442,
-        "memory": 2.021,
-        "consolidation": 2.9386,
-        "learn": 2.5786,
-        "auto": 1.7314,
-        "phases": 2.5786,
-        "nightly": 2.5786,
-        "tiny": 2.5786,
-        "team": 1.595,
-        "task": 1.3894,
-        "v2": 1.195,
-        "dreams": 1.9591
+        "97": 2.0838,
+        "100": 1.8442,
+        "dream": 2.8332,
+        "user": 1.3242,
+        "facing": 2.3015,
+        "memory": 1.8602,
+        "consolidation": 2.7249,
+        "learn": 2.4933,
+        "auto": 1.6742,
+        "phases": 2.4933,
+        "nightly": 2.4933,
+        "tiny": 2.4933,
+        "team": 1.5423,
+        "task": 1.3435,
+        "v2": 1.1281,
+        "isenabled": 1.8442,
+        "gating": 1.6742,
+        "tengu": 1.6742,
+        "kairos": 1.5423,
+        "dreams": 1.9235,
+        "feature": 1.4237,
+        "flags": 1.4237
       }
     },
     {
@@ -3138,7 +3155,7 @@
       "file": "10-verified-new-v2.1.101.md",
       "startLine": 18,
       "endLine": 148,
-      "text": "Proactive Recap: Away Summary System proactive away-summary recap sedge-lantern focus-blur terminal-focus forked-api-call v2.1.101  proactive away-summary recap sedge-lantern focus-blur terminal-focus forked-api-call v2.1.101",
+      "text": "Proactive Recap: Away Summary System proactive away-summary recap sedge-lantern focus-blur terminal-focus forked-api-call v2.1.101  proactive away-summary recap sedge-lantern focus-blur terminal-focus forked-api-call v2.1.101 gating",
       "keywords": [
         "proactive",
         "away-summary",
@@ -3153,6 +3170,7 @@
         "away-summary",
         "focus-blur",
         "forked-api-call",
+        "gating",
         "proactive",
         "recap",
         "sedge-lantern",
@@ -3174,7 +3192,8 @@
         "forked": 3.1646,
         "api": 1.7052,
         "call": 3.1646,
-        "v2": 1.2409
+        "v2": 1.2409,
+        "gating": 1.7708
       }
     },
     {
@@ -3233,7 +3252,7 @@
       "file": "10-verified-new-v2.1.101.md",
       "startLine": 284,
       "endLine": 455,
-      "text": "Dynamic Loop Pacing & Cloud-First Offering loop-dynamic ScheduleWakeup loop-aging cloud-first cinder-almanac kairos-loop-dynamic loops-command recurringMaxAgeMs cron scheduling v2.1.101  cron scheduling recurring-tasks loop-dynamic ScheduleWakeup loop-aging cloud-first cinder-almanac kairos-loop-dynamic loops-command v2.1.101 recurringMaxAgeMs",
+      "text": "Dynamic Loop Pacing & Cloud-First Offering loop-dynamic ScheduleWakeup loop-aging cloud-first cinder-almanac kairos-loop-dynamic loops-command recurringMaxAgeMs cron scheduling v2.1.101  cron scheduling recurring-tasks loop-dynamic ScheduleWakeup loop-aging cloud-first cinder-almanac kairos-loop-dynamic loops-command v2.1.101 gating recurringMaxAgeMs",
       "keywords": [
         "loop-dynamic",
         "ScheduleWakeup",
@@ -3252,6 +3271,7 @@
         "cinder-almanac",
         "cloud-first",
         "cron",
+        "gating",
         "kairos-loop-dynamic",
         "loop-aging",
         "loop-dynamic",
@@ -3273,7 +3293,7 @@
         "aging": 2.7125,
         "cinder": 2.7125,
         "almanac": 2.7125,
-        "kairos": 2.0063,
+        "kairos": 1.6779,
         "loops": 2.7125,
         "command": 1.2323,
         "recurringmaxagems": 2.7125,
@@ -3281,16 +3301,17 @@
         "scheduling": 2.0063,
         "v2": 1.0636,
         "recurring": 1.7834,
-        "tasks": 1.4915
+        "tasks": 1.4915,
+        "gating": 1.619
       }
     },
     {
       "id": 68,
       "title": "v2.1.101 Command & Env Var Changes",
       "file": "10-verified-new-v2.1.101.md",
-      "startLine": 457,
-      "endLine": 540,
-      "text": "v2.1.101 Command & Env Var Changes update-command CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH oauth-refresh sdk-observability mcp-registry mcp-directory-bff v2.1.101  oauth sdk env-vars update-command CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH oauth-refresh sdk-observability mcp-registry mcp-directory-bff v2.1.101",
+      "startLine": 496,
+      "endLine": 669,
+      "text": "v2.1.101 Command & Env Var Changes update-command CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH oauth-refresh sdk-observability mcp-registry mcp-directory-bff v2.1.101 growthbook feature-flag gating remote-eval flag-override NQq E_  oauth growthbook feature-flags sdk env-vars update-command CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH oauth-refresh sdk-observability mcp-registry mcp-directory-bff v2.1.101 gating remote-eval flag-override tengu-kairos-dream feature-flag NQq E_",
       "keywords": [
         "update-command",
         "CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH",
@@ -3298,17 +3319,33 @@
         "sdk-observability",
         "mcp-registry",
         "mcp-directory-bff",
-        "v2.1.101"
+        "v2.1.101",
+        "growthbook",
+        "feature-flag",
+        "gating",
+        "remote-eval",
+        "flag-override",
+        "NQq",
+        "E_"
       ],
       "related_topics": [
         "CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH",
+        "E_",
+        "NQq",
         "env-vars",
+        "feature-flag",
+        "feature-flags",
+        "flag-override",
+        "gating",
+        "growthbook",
         "mcp-directory-bff",
         "mcp-registry",
         "oauth",
         "oauth-refresh",
+        "remote-eval",
         "sdk",
         "sdk-observability",
+        "tengu-kairos-dream",
         "update-command",
         "v2.1.101"
       ],
@@ -3330,7 +3367,19 @@
         "registry": 2.9537,
         "directory": 2.9537,
         "bff": 2.9537,
-        "vars": 1.6999
+        "growthbook": 1.9832,
+        "feature": 2.0881,
+        "flag": 3.1737,
+        "gating": 1.9832,
+        "remote": 1.5915,
+        "eval": 2.4685,
+        "override": 2.9537,
+        "nqq": 2.9537,
+        "flags": 1.566,
+        "vars": 1.6999,
+        "tengu": 1.6999,
+        "kairos": 1.566,
+        "dream": 1.6999
       }
     }
   ],
@@ -3593,6 +3642,7 @@
     "fullscreen",
     "functions",
     "gate",
+    "gating",
     "generation",
     "generator",
     "generators",
@@ -3636,6 +3686,7 @@
     "interaction",
     "interface",
     "interrupt",
+    "isenabled",
     "isolation",
     "iterm2",
     "jetbrains",
@@ -3728,6 +3779,7 @@
     "notification",
     "notifications",
     "notifier",
+    "nqq",
     "oauth",
     "objects",
     "observability",
@@ -3746,6 +3798,7 @@
     "output",
     "overlay",
     "overload",
+    "override",
     "overview",
     "p4",
     "pacing",
@@ -4046,7 +4099,7 @@
     "code": 2.0223,
     "boots": 4.2195,
     "module": 4.2195,
-    "eval": 4.2195,
+    "eval": 3.5264,
     "three": 4.2195,
     "layer": 3.5264,
     "architecture": 2.6101,
@@ -4066,7 +4119,7 @@
     "repl": 3.1209,
     "launcher": 2.8332,
     "ink": 3.1209,
-    "tengu": 3.5264,
+    "tengu": 2.8332,
     "started": 3.5264,
     "deferred": 3.5264,
     "paths": 3.5264,
@@ -4298,8 +4351,8 @@
     "extract": 4.2195,
     "memories": 4.2195,
     "recall": 4.2195,
-    "kairos": 3.1209,
-    "dream": 3.1209,
+    "kairos": 2.6101,
+    "dream": 2.8332,
     "lock": 4.2195,
     "daily": 3.5264,
     "log": 3.5264,
@@ -4317,7 +4370,7 @@
     "dom": 4.2195,
     "blit": 4.2195,
     "dirty": 4.2195,
-    "flag": 4.2195,
+    "flag": 3.5264,
     "scroll": 3.5264,
     "style": 4.2195,
     "pool": 4.2195,
@@ -4412,7 +4465,7 @@
     "semantics": 4.2195,
     "watching": 4.2195,
     "chokidar": 4.2195,
-    "remote": 2.4277,
+    "remote": 2.2736,
     "managed": 4.2195,
     "etag": 4.2195,
     "check": 4.2195,
@@ -4432,10 +4485,10 @@
     "analytics": 3.5264,
     "telemetry": 3.5264,
     "datadog": 3.5264,
-    "growthbook": 3.1209,
+    "growthbook": 2.8332,
     "pii": 3.5264,
-    "feature": 3.1209,
-    "flags": 3.1209,
+    "feature": 2.6101,
+    "flags": 2.6101,
     "protection": 4.2195,
     "sampling": 3.5264,
     "event": 3.5264,
@@ -4634,6 +4687,7 @@
     "fair": 4.2195,
     "powerup": 4.2195,
     "toggle": 4.2195,
+    "isenabled": 3.1209,
     "changes": 2.6101,
     "execpath": 4.2195,
     "askuserquestiontool": 4.2195,
@@ -4667,6 +4721,7 @@
     "phases": 4.2195,
     "nightly": 4.2195,
     "tiny": 4.2195,
+    "gating": 2.8332,
     "perforce": 4.2195,
     "script": 4.2195,
     "caps": 4.2195,
@@ -4710,6 +4765,8 @@
     "update": 4.2195,
     "registry": 4.2195,
     "directory": 4.2195,
-    "bff": 4.2195
+    "bff": 4.2195,
+    "override": 4.2195,
+    "nqq": 4.2195
   }
 }

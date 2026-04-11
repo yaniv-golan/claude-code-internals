@@ -3,184 +3,547 @@
   "description": "Maps common symptoms/problems to relevant lessons for debugging Claude Code internals",
   "symptoms": [
     {
-      "pattern": ["hook not firing", "hook doesn't fire", "hook not working", "hook not triggering", "hooks broken"],
-      "lessons": [32, 26, 1],
+      "pattern": [
+        "hook not firing",
+        "hook doesn't fire",
+        "hook not working",
+        "hook not triggering",
+        "hooks broken"
+      ],
+      "lessons": [
+        32,
+        26,
+        1
+      ],
       "hint": "Hook config is snapshot-captured at startup; restart Claude Code after changing settings.json, and verify the hook matcher (event type + pattern) is correct."
     },
     {
-      "pattern": ["permission keeps asking", "permission prompt won't go away", "permission loop", "always asking permission", "allow deny ask stuck"],
-      "lessons": [25, 26, 6],
+      "pattern": [
+        "permission keeps asking",
+        "permission prompt won't go away",
+        "permission loop",
+        "always asking permission",
+        "allow deny ask stuck"
+      ],
+      "lessons": [
+        25,
+        26,
+        6
+      ],
       "hint": "Check that your permission rules in settings.json use the correct tool name and pattern; rules are evaluated top-down with first-match-wins semantics."
     },
     {
-      "pattern": ["context keeps getting compacted", "losing context", "context window full", "context shrinking", "conversation too long"],
-      "lessons": [28, 2, 4],
+      "pattern": [
+        "context keeps getting compacted",
+        "losing context",
+        "context window full",
+        "context shrinking",
+        "conversation too long"
+      ],
+      "lessons": [
+        28,
+        2,
+        4
+      ],
       "hint": "Compaction triggers at ~80% of the context window; reduce system prompt size, split work across sessions, or use memory to persist critical facts across compactions."
     },
     {
-      "pattern": ["agent won't spawn", "agent fails", "subagent error", "agent not starting", "fork failed"],
-      "lessons": [12, 13, 49],
+      "pattern": [
+        "agent won't spawn",
+        "agent fails",
+        "subagent error",
+        "agent not starting",
+        "fork failed"
+      ],
+      "lessons": [
+        12,
+        13,
+        49
+      ],
       "hint": "Agents inherit the parent's permission config but get a fresh conversation; check that the task description is clear and that resource limits (max concurrent agents) are not exceeded."
     },
     {
-      "pattern": ["mcp server not connecting", "mcp timeout", "mcp not working", "mcp tool missing", "mcp server failed"],
-      "lessons": [10, 26, 33],
+      "pattern": [
+        "mcp server not connecting",
+        "mcp timeout",
+        "mcp not working",
+        "mcp tool missing",
+        "mcp server failed"
+      ],
+      "lessons": [
+        10,
+        26,
+        33
+      ],
       "hint": "MCP servers are started as child processes at boot; check the server command/args in settings.json, verify the binary exists, and look for stderr output in the MCP connection log."
     },
     {
-      "pattern": ["skill not showing up", "skill not registered", "skill not found", "skill not loading", "slash command skill missing"],
-      "lessons": [11, 18, 26],
+      "pattern": [
+        "skill not showing up",
+        "skill not registered",
+        "skill not found",
+        "skill not loading",
+        "slash command skill missing"
+      ],
+      "lessons": [
+        11,
+        18,
+        26
+      ],
       "hint": "Skills must have valid frontmatter with a name/description and be placed in a recognized skill directory (~/.claude/skills/ or project .claude/skills/); check the discovery path."
     },
     {
-      "pattern": ["settings not taking effect", "config not loading", "configuration ignored", "settings not applying", "config change not working"],
-      "lessons": [26, 1, 30],
+      "pattern": [
+        "settings not taking effect",
+        "config not loading",
+        "configuration ignored",
+        "settings not applying",
+        "config change not working"
+      ],
+      "lessons": [
+        26,
+        1,
+        30
+      ],
       "hint": "Settings use a cascade: enterprise MDM > organization > project > user; a higher-priority layer may be overriding your change. Restart Claude Code after editing settings.json."
     },
     {
-      "pattern": ["memory not saving", "memory not persisting", "memory lost", "memory not working", "memory file empty"],
-      "lessons": [15, 16, 4],
+      "pattern": [
+        "memory not saving",
+        "memory not persisting",
+        "memory lost",
+        "memory not working",
+        "memory file empty"
+      ],
+      "lessons": [
+        15,
+        16,
+        4
+      ],
       "hint": "Auto-memory writes to MEMORY.md files in .claude/ directories; check file permissions and verify memory extraction is enabled in settings (it runs at conversation end)."
     },
     {
-      "pattern": ["coordinator not dispatching", "coordinator mode broken", "coordinator stuck", "coordinator not working", "parallel dispatch failed"],
-      "lessons": [13, 12, 14],
+      "pattern": [
+        "coordinator not dispatching",
+        "coordinator mode broken",
+        "coordinator stuck",
+        "coordinator not working",
+        "parallel dispatch failed"
+      ],
+      "lessons": [
+        13,
+        12,
+        14
+      ],
       "hint": "Coordinator mode requires the model to decide to dispatch; ensure your prompt clearly describes parallelizable subtasks and that max worker count is not set to zero."
     },
     {
-      "pattern": ["swarm not working", "team not working", "teammates not responding", "mailbox empty", "tmux swarm broken"],
-      "lessons": [14, 13, 12],
+      "pattern": [
+        "swarm not working",
+        "team not working",
+        "teammates not responding",
+        "mailbox empty",
+        "tmux swarm broken"
+      ],
+      "lessons": [
+        14,
+        13,
+        12
+      ],
       "hint": "Teams/swarm uses tmux panes and a file-based mailbox for inter-agent communication; verify tmux is installed, the session exists, and agents are polling their mailbox paths."
     },
     {
-      "pattern": ["bash command blocked", "bash permission denied", "command not allowed", "shell blocked", "bash security error"],
-      "lessons": [7, 25, 47],
+      "pattern": [
+        "bash command blocked",
+        "bash permission denied",
+        "command not allowed",
+        "shell blocked",
+        "bash security error"
+      ],
+      "lessons": [
+        7,
+        25,
+        47
+      ],
       "hint": "Bash commands pass through security validators that block destructive patterns (rm -rf /, etc.); check permission rules and sandbox settings for allowed command patterns."
     },
     {
-      "pattern": ["file write blocked", "can't edit file", "file permission denied", "write not allowed", "edit rejected"],
-      "lessons": [8, 25, 47],
+      "pattern": [
+        "file write blocked",
+        "can't edit file",
+        "file permission denied",
+        "write not allowed",
+        "edit rejected"
+      ],
+      "lessons": [
+        8,
+        25,
+        47
+      ],
       "hint": "File writes require read-before-write verification and respect permission rules; ensure the path is within the allowed workspace and that no deny rule matches the file pattern."
     },
     {
-      "pattern": ["session lost", "can't resume session", "session not found", "resume failed", "conversation disappeared"],
-      "lessons": [27, 3, 33],
+      "pattern": [
+        "session lost",
+        "can't resume session",
+        "session not found",
+        "resume failed",
+        "conversation disappeared"
+      ],
+      "lessons": [
+        27,
+        3,
+        33
+      ],
       "hint": "Sessions are stored as JSONL transcripts in ~/.claude/sessions/; use `claude --resume` with the session ID. Cloud sync may need to complete before a session appears on another machine."
     },
     {
-      "pattern": ["system prompt too large", "prompt cache miss", "cache not hitting", "system prompt overflow", "prompt too long"],
-      "lessons": [4, 28, 2],
+      "pattern": [
+        "system prompt too large",
+        "prompt cache miss",
+        "cache not hitting",
+        "system prompt overflow",
+        "prompt too long"
+      ],
+      "lessons": [
+        4,
+        28,
+        2
+      ],
       "hint": "The system prompt is assembled from CLAUDE.md, memory, tool definitions, and dynamic sections; large CLAUDE.md files or many MCP tools can push it past cache-friendly boundaries."
     },
     {
-      "pattern": ["analytics not sending", "telemetry disabled", "telemetry not working", "datadog not receiving", "metrics missing"],
-      "lessons": [29, 44, 26],
+      "pattern": [
+        "analytics not sending",
+        "telemetry disabled",
+        "telemetry not working",
+        "datadog not receiving",
+        "metrics missing"
+      ],
+      "lessons": [
+        29,
+        44,
+        26
+      ],
       "hint": "Telemetry respects the settings.json telemetry flag and environment variables; check that telemetry is not disabled by an enterprise MDM policy or CLAUDE_TELEMETRY_DISABLED env var."
     },
     {
-      "pattern": ["plugin not loading", "plugin missing", "plugin failed", "marketplace plugin broken", "plugin install error"],
-      "lessons": [31, 26, 33],
+      "pattern": [
+        "plugin not loading",
+        "plugin missing",
+        "plugin failed",
+        "marketplace plugin broken",
+        "plugin install error"
+      ],
+      "lessons": [
+        31,
+        26,
+        33
+      ],
       "hint": "Plugins are resolved from the marketplace manifest with dependency checks and version pinning; verify the plugin name, check the versioned cache, and look for resolution conflicts."
     },
     {
-      "pattern": ["oauth flow failing", "auth broken", "authentication error", "token expired", "login failed", "oauth redirect broken"],
-      "lessons": [35, 10, 34],
+      "pattern": [
+        "oauth flow failing",
+        "auth broken",
+        "authentication error",
+        "token expired",
+        "login failed",
+        "oauth redirect broken"
+      ],
+      "lessons": [
+        35,
+        10,
+        34
+      ],
       "hint": "OAuth uses PKCE flow with tokens stored in the system keychain; check that the callback port is not in use, the keychain entry is not corrupted, and the token has not expired."
     },
     {
-      "pattern": ["git integration issues", "git not working", "git watcher broken", "branch not detected", "commit tracking failed"],
-      "lessons": [36, 7, 26],
+      "pattern": [
+        "git integration issues",
+        "git not working",
+        "git watcher broken",
+        "branch not detected",
+        "commit tracking failed"
+      ],
+      "lessons": [
+        36,
+        7,
+        26
+      ],
       "hint": "Git integration is filesystem-first with a background file watcher; ensure you are in a git repo, the watcher process is running, and .gitignore is not hiding relevant changes."
     },
     {
-      "pattern": ["compaction removing important context", "lost information after compaction", "compaction too aggressive", "context summary missing details"],
-      "lessons": [28, 15, 2],
+      "pattern": [
+        "compaction removing important context",
+        "lost information after compaction",
+        "compaction too aggressive",
+        "context summary missing details"
+      ],
+      "lessons": [
+        28,
+        15,
+        2
+      ],
       "hint": "Compaction uses summarization to preserve key facts; pin critical information in MEMORY.md or CLAUDE.md so it survives compaction, and keep individual messages focused."
     },
     {
-      "pattern": ["commands not appearing", "slash commands missing", "slash command not found", "command not registered", "custom command gone"],
-      "lessons": [18, 11, 26],
+      "pattern": [
+        "commands not appearing",
+        "slash commands missing",
+        "slash command not found",
+        "command not registered",
+        "custom command gone"
+      ],
+      "lessons": [
+        18,
+        11,
+        26
+      ],
       "hint": "Commands are registered at startup from built-in definitions, skills, and .claude/commands/ directories; verify the command file exists and has the correct format."
     },
     {
-      "pattern": ["tool not found", "tool missing", "tool not available", "tool disappeared", "tool not in list"],
-      "lessons": [6, 10, 31],
+      "pattern": [
+        "tool not found",
+        "tool missing",
+        "tool not available",
+        "tool disappeared",
+        "tool not in list"
+      ],
+      "lessons": [
+        6,
+        10,
+        31
+      ],
       "hint": "Tools come from built-in definitions, MCP servers, and plugins; check that the tool's source is configured and the MCP server providing it connected successfully at startup."
     },
     {
-      "pattern": ["slow startup", "boot takes too long", "claude code slow to start", "long cold start", "initialization hang"],
-      "lessons": [1, 10, 5],
+      "pattern": [
+        "slow startup",
+        "boot takes too long",
+        "claude code slow to start",
+        "long cold start",
+        "initialization hang"
+      ],
+      "lessons": [
+        1,
+        10,
+        5
+      ],
       "hint": "Boot time is dominated by MCP server startup and settings resolution; reduce the number of MCP servers or defer non-essential ones to cut cold-start latency."
     },
     {
-      "pattern": ["api error", "rate limited", "429 error", "api retry failing", "streaming broken"],
-      "lessons": [2, 33, 44],
+      "pattern": [
+        "api error",
+        "rate limited",
+        "429 error",
+        "api retry failing",
+        "streaming broken"
+      ],
+      "lessons": [
+        2,
+        33,
+        44
+      ],
       "hint": "The query engine has built-in retry with exponential backoff for transient API errors; persistent 429s mean you are hitting rate limits -- reduce parallel agents or wait."
     },
     {
-      "pattern": ["render broken", "ui glitch", "terminal display wrong", "screen corruption", "ink rendering error"],
-      "lessons": [17, 50, 24],
+      "pattern": [
+        "render broken",
+        "ui glitch",
+        "terminal display wrong",
+        "screen corruption",
+        "ink rendering error"
+      ],
+      "lessons": [
+        17,
+        50,
+        24
+      ],
       "hint": "The Ink renderer uses Yoga for layout in the terminal; resize events, non-standard terminal emulators, or missing Unicode support can cause display issues."
     },
     {
-      "pattern": ["notification not showing", "toast missing", "no desktop notification", "alert not appearing"],
-      "lessons": [20, 26, 17],
+      "pattern": [
+        "notification not showing",
+        "toast missing",
+        "no desktop notification",
+        "alert not appearing"
+      ],
+      "lessons": [
+        20,
+        26,
+        17
+      ],
       "hint": "Notifications use terminal-notifier or OSC escape sequences depending on platform; check that your terminal supports the notification method and it is not disabled in settings."
     },
     {
-      "pattern": ["setup-bedrock missing", "bedrock command not found", "reconfigure bedrock", "bedrock region", "bedrock model pin"],
-      "lessons": [57],
+      "pattern": [
+        "setup-bedrock missing",
+        "bedrock command not found",
+        "reconfigure bedrock",
+        "bedrock region",
+        "bedrock model pin"
+      ],
+      "lessons": [
+        57
+      ],
       "hint": "/setup-bedrock is only visible when CLAUDE_CODE_USE_BEDROCK is set; it launches the interactive Bedrock configuration wizard."
     },
     {
-      "pattern": ["stop hook prompt", "session stop condition", "stop hook session only", "quick stop hook"],
-      "lessons": [57, 10],
+      "pattern": [
+        "stop hook prompt",
+        "session stop condition",
+        "stop hook session only",
+        "quick stop hook"
+      ],
+      "lessons": [
+        57,
+        10
+      ],
       "hint": "/stop-hook is currently disabled (isEnabled: false in v2.1.92); use the full hooks system via settings.json or /hooks to configure Stop hooks."
     },
     {
-      "pattern": ["hook script find claude binary", "claude path in hook", "CLAUDE_CODE_EXECPATH", "hook invoke claude"],
-      "lessons": [58, 10],
+      "pattern": [
+        "hook script find claude binary",
+        "claude path in hook",
+        "CLAUDE_CODE_EXECPATH",
+        "hook invoke claude"
+      ],
+      "lessons": [
+        58,
+        10
+      ],
       "hint": "CLAUDE_CODE_EXECPATH is automatically injected into every spawned shell/hook environment — use $CLAUDE_CODE_EXECPATH in hook scripts to invoke the claude binary without hard-coding a path."
     },
     {
-      "pattern": ["remote control session name", "session prefix remote", "hostname session name", "CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX"],
-      "lessons": [58, 41],
+      "pattern": [
+        "remote control session name",
+        "session prefix remote",
+        "hostname session name",
+        "CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX"
+      ],
+      "lessons": [
+        58,
+        41
+      ],
       "hint": "Set CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX (or --session-name-prefix) to customize auto-generated remote control session names; defaults to the machine hostname, sanitized to lowercase alphanumeric."
     },
     {
-      "pattern": ["autofix-pr missing", "autofix-pr command not found", "remote sessions disabled", "allow_remote_sessions"],
-      "lessons": [60, 34],
+      "pattern": [
+        "autofix-pr missing",
+        "autofix-pr command not found",
+        "remote sessions disabled",
+        "allow_remote_sessions"
+      ],
+      "lessons": [
+        60,
+        34
+      ],
       "hint": "/autofix-pr is gated behind remote sessions. In v2.1.94 it only enables when the Claude.ai subscriber gate passes and the allow_remote_sessions policy is enabled."
     },
     {
-      "pattern": ["team-onboarding missing", "ONBOARDING.md guide", "teammate onboarding command", "CLAUDE_CODE_TEAM_ONBOARDING"],
-      "lessons": [60, 61],
+      "pattern": [
+        "team-onboarding missing",
+        "ONBOARDING.md guide",
+        "teammate onboarding command",
+        "CLAUDE_CODE_TEAM_ONBOARDING"
+      ],
+      "lessons": [
+        60,
+        61
+      ],
       "hint": "/team-onboarding is a built-in prompt command gated by CLAUDE_CODE_TEAM_ONBOARDING or a feature flag. It generates onboarding content from your usage data and writes ONBOARDING.md."
     },
     {
-      "pattern": ["mantle provider", "CLAUDE_CODE_USE_MANTLE", "ANTHROPIC_BEDROCK_MANTLE_BASE_URL", "CLAUDE_CODE_SKIP_MANTLE_AUTH"],
-      "lessons": [61, 46],
+      "pattern": [
+        "mantle provider",
+        "CLAUDE_CODE_USE_MANTLE",
+        "ANTHROPIC_BEDROCK_MANTLE_BASE_URL",
+        "CLAUDE_CODE_SKIP_MANTLE_AUTH"
+      ],
+      "lessons": [
+        61,
+        46
+      ],
       "hint": "v2.1.94 adds a Mantle provider path. Set CLAUDE_CODE_USE_MANTLE to select it, ANTHROPIC_BEDROCK_MANTLE_BASE_URL to override the default AWS-region-derived endpoint, and CLAUDE_CODE_SKIP_MANTLE_AUTH only for debugging."
     },
     {
-      "pattern": ["TLS error", "certificate error", "SSL error", "CERT_STORE", "ca certificate", "self-signed certificate", "corporate proxy certificate", "UNABLE_TO_VERIFY_LEAF_SIGNATURE"],
-      "lessons": [66, 37],
+      "pattern": [
+        "TLS error",
+        "certificate error",
+        "SSL error",
+        "CERT_STORE",
+        "ca certificate",
+        "self-signed certificate",
+        "corporate proxy certificate",
+        "UNABLE_TO_VERIFY_LEAF_SIGNATURE"
+      ],
+      "lessons": [
+        66,
+        37
+      ],
       "hint": "Set CLAUDE_CODE_CERT_STORE to 'system' (OS certs), 'bundled' (Node.js built-in), or 'bundled,system' (both, the default). For corporate proxies with custom CAs, use 'system' or set NODE_EXTRA_CA_CERTS to your CA bundle path. Changes take effect on settings reload without restart."
     },
     {
-      "pattern": ["loop not scheduling", "loop stopped", "loop aged out", "dynamic loop", "ScheduleWakeup", "loop expired", "loop max age"],
-      "lessons": [67, 38],
+      "pattern": [
+        "loop not scheduling",
+        "loop stopped",
+        "loop aged out",
+        "dynamic loop",
+        "ScheduleWakeup",
+        "loop expired",
+        "loop max age"
+      ],
+      "lessons": [
+        67,
+        38
+      ],
       "hint": "Dynamic loops (tengu_kairos_loop_dynamic flag) auto-stop after recurringMaxAgeMs (default 7 days). Delays are clamped to [60, 3600] seconds. Check if the loop aged out via tengu_loop_dynamic_wakeup_aged_out telemetry."
     },
     {
-      "pattern": ["cloud schedule", "cloud loop", "loop cloud first", "/schedule vs /loop", "remote loop", "durable loop"],
-      "lessons": [67, 38],
+      "pattern": [
+        "cloud schedule",
+        "cloud loop",
+        "loop cloud first",
+        "/schedule vs /loop",
+        "remote loop",
+        "durable loop"
+      ],
+      "lessons": [
+        67,
+        38
+      ],
       "hint": "When tengu_cinder_almanac is enabled, /loop offers cloud scheduling for intervals >= 60min or daily phrasing. Cloud schedules persist across sessions; local loops stop when the session closes."
     },
     {
-      "pattern": ["oauth refresh", "SDK_HAS_OAUTH_REFRESH", "401 token expired SDK", "SDK token refresh"],
-      "lessons": [68, 35],
+      "pattern": [
+        "oauth refresh",
+        "SDK_HAS_OAUTH_REFRESH",
+        "401 token expired SDK",
+        "SDK token refresh"
+      ],
+      "lessons": [
+        68,
+        35
+      ],
       "hint": "Set CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH when your SDK parent process provides a token refresh callback. On 401, Claude Code calls back to get a fresh token instead of failing."
+    },
+    {
+      "pattern": "dream not recognized|dream not available|dream command missing|learn not recognized",
+      "hint": "/dream is gated by server-side GrowthBook flag tengu_kairos_dream (default: false). No local override exists. Anthropic controls rollout per user/org.",
+      "lessons": [
+        62,
+        68
+      ],
+      "added": "2026-04-11"
+    },
+    {
+      "pattern": "feature flag not working|feature gate|tengu.*not enabled|growthbook override",
+      "hint": "All local override mechanisms (env vars, config overrides) are stubbed/dead-code in the production binary. Flags are evaluated server-side via remoteEval. See L68 GrowthBook internals.",
+      "lessons": [
+        68
+      ],
+      "added": "2026-04-11"
     }
   ]
 }

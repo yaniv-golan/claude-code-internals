@@ -583,6 +583,84 @@ Seven new telemetry events for SDK health monitoring:
 | `tengu_sdk_schema_violation` | Schema validation issues |
 | `tengu_sdk_session_crash` | Session crash reporting |
 
+## GrowthBook Feature Flag Internals
+
+Claude Code uses GrowthBook for feature gating. All `tengu_*` flags are evaluated via a
+common mechanism documented here. Understanding this is essential for diagnosing why gated
+features (like `/dream`, away summary, dynamic loops) are unavailable.
+
+### Evaluation Function: `E_(flagName, defaultValue)`
+
+Exported as `getFeatureValue_CACHED_MAY_BE_STALE`. Evaluation chain:
+
+1. **`RZH()` — env override check**: Returns `NQq`, which is hardcoded to `null` in the
+   production binary and **never assigned**. Dead code path.
+2. **`GZH()` — config override check**: Stubbed as `function GZH(){return}` (returns
+   `undefined`). The setter `BS4()` and clearer `FS4()` are also no-ops. Override path
+   **completely disabled** in production.
+3. **`Nb` — in-memory Map**: Populated from the GrowthBook SDK's remote evaluation response.
+   This is the live authoritative source.
+4. **`w_().cachedGrowthBookFeatures`** — Persisted to `~/.claude.json` as a fallback cache.
+   Used when the SDK hasn't initialized yet (first ~5 seconds of startup).
+5. **Default value** from the calling code (typically `false` for gated features).
+
+### SDK Configuration
+
+| Setting | Value |
+|---------|-------|
+| API host | `https://api.anthropic.com/` (Anthropic's proxy, NOT standard GrowthBook CDN) |
+| Client key | `sdk-zAZezfDKGoZuXXKe` |
+| Mode | `remoteEval: true` — evaluation happens **server-side** |
+| Cache key attributes | `["id", "organizationUUID"]` — flags are per-user/org |
+| Init timeout | 5000ms |
+
+Because `remoteEval: true`, the SDK sends user attributes to Anthropic's server and receives
+pre-evaluated flag values. The SDK never has flag rules/conditions locally — it cannot evaluate
+flags offline using its own logic.
+
+### Cache Persistence
+
+Flag values are cached in `~/.claude.json` under the `cachedGrowthBookFeatures` key. This
+cache is:
+- Written after each successful server fetch
+- Read on startup before the SDK initializes (provides values for the first ~5 seconds)
+- Overwritten by the server response within seconds of startup
+
+### Local Override Feasibility
+
+All three local override mechanisms are **stripped from the production build**:
+
+| Method | Status | Details |
+|--------|--------|---------|
+| Env var override (`NQq`) | Dead code | Hardcoded `null`, never assigned |
+| Config override (`GZH/BS4/FS4`) | Stubbed no-ops | Functions return immediately |
+| Forced features | Not exposed | No env var like `CLAUDE_CODE_FEATURE_FLAGS` exists |
+| Edit `~/.claude.json` cache | Ephemeral | Server response overwrites within ~5s of startup |
+| Binary patch consumer function | Works but fragile | Undone by auto-updates |
+
+### Wrapper Functions
+
+| Symbol | Purpose |
+|--------|---------|
+| `E_(H, _)` | Core evaluator (`getFeatureValue_CACHED_MAY_BE_STALE`) |
+| `dN(H, _, q)` | `getFeatureValue_CACHED_WITH_REFRESH` — delegates to `E_`, ignores TTL param |
+| `uS4(H)` | `hasGrowthBookEnvOverride` — checks `NQq` (always `null` → always `false`) |
+| `RZH()` | Returns env overrides (`NQq`, always `null`) |
+| `GZH()` | Returns config overrides (stubbed, returns `undefined`) |
+| `BS4()` | `setGrowthBookConfigOverride` (no-op) |
+| `FS4()` | `clearGrowthBookConfigOverrides` (no-op) |
+| `Zo()` | Stats/GrowthBook enabled check (false for Bedrock/Vertex/Foundry) |
+| `tAH()` | `isStatsEnabled` — true for standard API users |
+
+### Non-obvious Behavior
+
+- **Bedrock/Vertex/Foundry users bypass flags entirely**: `Zo()` returns `false`, so `E_()`
+  always returns the default value. For most gated features this means `false` (disabled).
+- **The 5-minute TTL parameter** passed to `dN()` (e.g., `bF5 = 300000` for dream) is
+  **completely ignored** in v2.1.101 — `dN` just delegates to `E_` without any TTL logic.
+- **Flag values are user+org specific**: the `remoteEval` mode sends `id` and
+  `organizationUUID` as attributes, enabling targeted rollouts per user or organization.
+
 ## Bundle Size
 
 | Version | Bundle size | Delta |
