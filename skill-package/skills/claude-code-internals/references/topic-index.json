@@ -1,7 +1,7 @@
 {
   "generated": "2026-04-11",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.101",
-  "total_lessons": 68,
+  "total_lessons": 69,
   "lessons": [
     {
       "id": 1,
@@ -1072,6 +1072,33 @@
         "yQq",
         "cache-injection"
       ]
+    },
+    {
+      "id": 69,
+      "title": "Marble Origami: Reversible Context Collapse Persistence",
+      "lesson_number": "69",
+      "file": "10-verified-new-v2.1.101.md",
+      "startLine": 750,
+      "endLine": 884,
+      "keywords": [
+        "marble-origami",
+        "context-collapse",
+        "contextCollapse",
+        "compaction",
+        "reversible",
+        "snapshot",
+        "commit",
+        "session-jsonl",
+        "persistence",
+        "resume",
+        "sL5",
+        "tL5",
+        "recordContextCollapseCommit",
+        "recordContextCollapseSnapshot",
+        "frustration-detection",
+        "survey",
+        "v2.1.101"
+      ]
     }
   ],
   "keyword_map": {
@@ -2036,7 +2063,8 @@
     ],
     "compaction": [
       28,
-      5
+      5,
+      69
     ],
     "context-window": [
       28,
@@ -3025,6 +3053,32 @@
     "command-registration": [
       62,
       22
+    ],
+    "marble-origami": [
+      69
+    ],
+    "context-collapse": [
+      69,
+      28
+    ],
+    "contextCollapse": [
+      69,
+      28
+    ],
+    "reversible": [
+      69
+    ],
+    "recordContextCollapseCommit": [
+      69
+    ],
+    "recordContextCollapseSnapshot": [
+      69
+    ],
+    "frustration-detection": [
+      69
+    ],
+    "survey": [
+      69
     ]
   }
 }

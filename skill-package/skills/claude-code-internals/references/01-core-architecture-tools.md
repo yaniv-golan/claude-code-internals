@@ -408,7 +408,7 @@ Pre-API call reduction occurs in priority order:
 1. **applyToolResultBudget()** -- Caps individual tool result byte size; large results stored externally with reference stubs
 2. **snipCompact (HISTORY_SNIP)** -- Removes provably unneeded middle messages, freeing tokens without summarization
 3. **microcompact / cached microcompact** -- Merges consecutive tool-result/user pairs into condensed summaries; cached variant uses API-side cache edits
-4. **contextCollapse (CONTEXT_COLLAPSE)** -- Read-time projection over full REPL history; staged collapses committed per entry
+4. **contextCollapse (CONTEXT_COLLAPSE)** -- Read-time projection over full REPL history; staged collapses committed per entry. **Reversible:** persisted as `marble-origami-snapshot` (last-writer-wins state) and `marble-origami-commit` (array of finalized collapses) in session JSONL. Full original messages are retained, enabling restore on resume. See Lesson 69 for details.
 5. **autoCompact** -- At blocking limit approach, triggers full summarization via forked agent; loop continues immediately post-compact
 
 **Blocking limit check** occurs after all compaction. If context exceeds limit, synthetic `PROMPT_TOO_LONG_ERROR_MESSAGE` is yielded and loop exits with `blocking_limit` reason.

@@ -1412,6 +1412,28 @@
         "relevance": 0.85,
         "reason": "GrowthBook flag tengu_kairos_dream gates /dream command; L68 documents full GrowthBook evaluation internals"
       }
+    ],
+    "69": [
+      {
+        "id": 2,
+        "relevance": 0.92,
+        "reason": "context collapse is step 4 in the compaction pipeline documented in L2 (Query Engine)"
+      },
+      {
+        "id": 28,
+        "relevance": 0.88,
+        "reason": "marble-origami persistence complements the autocompact and snipCompact strategies from L28"
+      },
+      {
+        "id": 3,
+        "relevance": 0.75,
+        "reason": "collapse state is persisted in session JSONL; L3 covers the state management layer"
+      },
+      {
+        "id": 65,
+        "relevance": 0.6,
+        "reason": "both L65 (away summary) and L69 (context collapse) write custom entry types to session JSONL"
+      }
     ]
   }
 }

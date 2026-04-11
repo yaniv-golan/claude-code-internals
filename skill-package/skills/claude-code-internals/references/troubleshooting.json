@@ -283,9 +283,10 @@
       "lessons": [
         28,
         15,
-        2
+        2,
+        69
       ],
-      "hint": "Compaction uses summarization to preserve key facts; pin critical information in MEMORY.md or CLAUDE.md so it survives compaction, and keep individual messages focused."
+      "hint": "Compaction uses summarization to preserve key facts; context collapse (L69) is reversible via marble-origami persistence. Pin critical information in MEMORY.md or CLAUDE.md so it survives compaction, and keep individual messages focused."
     },
     {
       "pattern": [

@@ -15,6 +15,7 @@ Updated: 2026-04-11 | Source: Binary extraction from claude v2.1.101
 66. [Lesson 66 -- CA Certificate Store Configuration](#lesson-66----ca-certificate-store-configuration)
 67. [Lesson 67 -- Dynamic Loop Pacing & Cloud-First Offering](#lesson-67----dynamic-loop-pacing--cloud-first-offering)
 68. [Lesson 68 -- v2.1.101 Command & Env Var Changes](#lesson-68----v21101-command--env-var-changes)
+69. [Lesson 69 -- Marble Origami: Reversible Context Collapse Persistence](#lesson-69----marble-origami-reversible-context-collapse-persistence)
 
 ---
 
@@ -738,6 +739,130 @@ patching (byte replacement of function bodies) non-viable on macOS.
 - **`isEnabled` is lazy for all commands**: slash commands are always registered; `isEnabled`
   is a function reference checked at dispatch time via `Ve()`. This means flag changes take
   effect immediately without session restart.
+
+---
+
+# LESSON 69 -- MARBLE ORIGAMI: REVERSIBLE CONTEXT COLLAPSE PERSISTENCE
+
+## Overview
+
+Context collapse (`contextCollapse` in the compaction pipeline) is a read-time projection
+that collapses REPL history entries without discarding the originals. Unlike proactive or
+reactive compaction (which summarize and discard), context collapse is **reversible** — the
+full original messages remain in the session JSONL and can be restored.
+
+The persistence layer for this system uses internal entry type names `marble-origami-commit`
+and `marble-origami-snapshot`, written to the session JSONL file alongside regular transcript
+entries.
+
+## Two-Phase Persistence Model
+
+### Snapshot (`marble-origami-snapshot`)
+
+Records the current collapse state — which messages are collapsed and how. Written via
+`recordContextCollapseSnapshot()` (obfuscated as `tL5`):
+
+```typescript
+// Deobfuscated from v2.1.101 binary
+async function recordContextCollapseSnapshot(data) {
+  const sessionId = getCurrentSessionId();
+  if (!sessionId) return;
+  await getSessionWriter().appendEntry({
+    type: "marble-origami-snapshot",
+    sessionId,
+    ...data,
+  });
+}
+```
+
+The snapshot is a **last-writer-wins** record — only the most recent snapshot for a session
+is used during resume. The JSONL parser tracks it as a single value
+(`contextCollapseSnapshot`), not an array.
+
+### Commit (`marble-origami-commit`)
+
+Finalizes a collapse operation. Written via `recordContextCollapseCommit()` (obfuscated as
+`sL5`):
+
+```typescript
+async function recordContextCollapseCommit(data) {
+  const sessionId = getCurrentSessionId();
+  if (!sessionId) return;
+  await getSessionWriter().appendEntry({
+    type: "marble-origami-commit",
+    sessionId,
+    ...data,
+  });
+}
+```
+
+Commits are stored as an **array** (`contextCollapseCommits`) and filtered by session ID
+during load. Multiple commits can exist per session, representing successive collapse
+operations.
+
+## Session Storage Integration
+
+Both entry types are written to the main session JSONL file (not a sidechain or subagent
+transcript). The session writer (`Gu7` class) handles them in its `appendEntry` dispatch:
+
+```
+if (entry.type === "marble-origami-commit") this.enqueueWrite(sessionFile, entry);
+else if (entry.type === "marble-origami-snapshot") this.enqueueWrite(sessionFile, entry);
+```
+
+## Resume & Hydration
+
+When a session is loaded (via `loadTranscriptFile` / `yt`), the JSONL parser collects:
+
+- `contextCollapseCommits: []` — all `marble-origami-commit` entries, filtered to current
+  session ID
+- `contextCollapseSnapshot` — the last `marble-origami-snapshot` entry for the current
+  session (single value, not array)
+
+These are threaded through the full resume pipeline:
+
+1. `loadTranscriptFile()` → parses raw JSONL, collects commits and snapshot
+2. `loadTranscriptFromFile()` → filters by session ID
+3. `enrichLogs()` → attaches to enriched log entries
+4. Resume path → restores collapse state so the conversation continues with the same
+   collapsed view
+
+## Relationship to Other Compaction Strategies
+
+Context collapse is item 4 in the 5-step compaction pipeline (see Lesson 2):
+
+| # | Strategy | Reversible | Persistence |
+|---|----------|-----------|-------------|
+| 1 | `applyToolResultBudget` | No (truncates) | External reference stubs |
+| 2 | `snipCompact` | No (removes messages) | None (in-memory) |
+| 3 | `microcompact` | No (merges pairs) | None (in-memory) |
+| 4 | `contextCollapse` | **Yes** | `marble-origami-*` JSONL entries |
+| 5 | `autoCompact` | No (summarizes) | Summary in JSONL |
+
+## UI Survey System (Frustration Detection)
+
+The UI includes a survey priority system with four survey types rendered inline. The
+priority ordering (checked in sequence, first non-closed wins):
+
+1. `postCompactSurvey` — shown after compaction events
+2. `memorySurvey` — shown after memory operations
+3. `feedbackSurvey` — general feedback collection
+4. `frustrationDetection` — last-priority survey for detecting user frustration
+
+These are standard UI survey components (`a5_` renderer), not regex-based telemetry. The
+frustration detection survey is presented as an interactive prompt, not passive pattern
+matching. There is no "wtf regex" or profanity-scanning telemetry in the binary.
+
+## Key Implementation Details
+
+| Symbol (obfuscated) | Purpose |
+|---------------------|---------|
+| `sL5()` | `recordContextCollapseCommit` — writes `marble-origami-commit` entry |
+| `tL5()` | `recordContextCollapseSnapshot` — writes `marble-origami-snapshot` entry |
+| `Gu7` | Session writer class (handles all JSONL entry dispatch) |
+| `yt()` | `loadTranscriptFile` — parses JSONL, collects collapse entries |
+| `Br7` | Survey priority renderer (postCompact > memory > feedback > frustration) |
+| `mr7()` | Survey priority function (returns first non-closed survey type) |
 
 ## Bundle Size
 
