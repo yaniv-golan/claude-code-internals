@@ -1,7 +1,7 @@
 {
-  "generated": "2026-04-10",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.100",
-  "total_lessons": 64,
+  "generated": "2026-04-11",
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.101",
+  "total_lessons": 68,
   "lessons": [
     {
       "id": 1,
@@ -979,6 +979,81 @@
         "v2.1.98",
         "v2.1.100"
       ]
+    },
+    {
+      "id": 65,
+      "title": "Proactive Recap: Away Summary System",
+      "lesson_number": "65",
+      "file": "10-verified-new-v2.1.101.md",
+      "startLine": 18,
+      "endLine": 148,
+      "keywords": [
+        "proactive",
+        "away-summary",
+        "recap",
+        "sedge-lantern",
+        "focus-blur",
+        "terminal-focus",
+        "forked-api-call",
+        "v2.1.101"
+      ]
+    },
+    {
+      "id": 66,
+      "title": "CA Certificate Store Configuration",
+      "lesson_number": "66",
+      "file": "10-verified-new-v2.1.101.md",
+      "startLine": 150,
+      "endLine": 282,
+      "keywords": [
+        "CLAUDE_CODE_CERT_STORE",
+        "ca-certificates",
+        "tls",
+        "enterprise",
+        "system-ca",
+        "bundled-certs",
+        "NODE_EXTRA_CA_CERTS",
+        "mTLS",
+        "v2.1.101"
+      ]
+    },
+    {
+      "id": 67,
+      "title": "Dynamic Loop Pacing & Cloud-First Offering",
+      "lesson_number": "67",
+      "file": "10-verified-new-v2.1.101.md",
+      "startLine": 284,
+      "endLine": 455,
+      "keywords": [
+        "loop-dynamic",
+        "ScheduleWakeup",
+        "loop-aging",
+        "cloud-first",
+        "cinder-almanac",
+        "kairos-loop-dynamic",
+        "loops-command",
+        "recurringMaxAgeMs",
+        "cron",
+        "scheduling",
+        "v2.1.101"
+      ]
+    },
+    {
+      "id": 68,
+      "title": "v2.1.101 Command & Env Var Changes",
+      "lesson_number": "68",
+      "file": "10-verified-new-v2.1.101.md",
+      "startLine": 457,
+      "endLine": 540,
+      "keywords": [
+        "update-command",
+        "CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH",
+        "oauth-refresh",
+        "sdk-observability",
+        "mcp-registry",
+        "mcp-directory-bff",
+        "v2.1.101"
+      ]
     }
   ],
   "keyword_map": {
@@ -1395,7 +1470,8 @@
     ],
     "oauth": [
       10,
-      35
+      35,
+      68
     ],
     "transport": [
       10,
@@ -2165,7 +2241,8 @@
     ],
     "enterprise": [
       35,
-      26
+      26,
+      66
     ],
     "fedstart": [
       35
@@ -2211,7 +2288,8 @@
     ],
     "tls": [
       37,
-      42
+      42,
+      66
     ],
     "mitm": [
       37
@@ -2227,11 +2305,13 @@
     ],
     "cron": [
       38,
-      43
+      43,
+      67
     ],
     "scheduling": [
       38,
-      43
+      43,
+      67
     ],
     "jitter": [
       38,
@@ -2239,7 +2319,8 @@
     ],
     "recurring-tasks": [
       38,
-      43
+      43,
+      67
     ],
     "timer": [
       38
@@ -2333,7 +2414,8 @@
       42
     ],
     "sdk": [
-      42
+      42,
+      68
     ],
     "agent-sdk": [
       42
@@ -2368,7 +2450,8 @@
       43
     ],
     "proactive": [
-      43
+      43,
+      65
     ],
     "tick-loop": [
       43
@@ -2660,7 +2743,8 @@
     "env-vars": [
       55,
       58,
-      61
+      61,
+      68
     ],
     "autocompact": [
       56
@@ -2819,6 +2903,87 @@
     "v2.1.98": [
       63,
       64
+    ],
+    "away-summary": [
+      65
+    ],
+    "recap": [
+      65
+    ],
+    "sedge-lantern": [
+      65
+    ],
+    "focus-blur": [
+      65
+    ],
+    "terminal-focus": [
+      65
+    ],
+    "forked-api-call": [
+      65
+    ],
+    "CLAUDE_CODE_CERT_STORE": [
+      66
+    ],
+    "ca-certificates": [
+      66
+    ],
+    "system-ca": [
+      66
+    ],
+    "bundled-certs": [
+      66
+    ],
+    "NODE_EXTRA_CA_CERTS": [
+      66
+    ],
+    "mTLS": [
+      66
+    ],
+    "loop-dynamic": [
+      67
+    ],
+    "ScheduleWakeup": [
+      67
+    ],
+    "loop-aging": [
+      67
+    ],
+    "cloud-first": [
+      67
+    ],
+    "cinder-almanac": [
+      67
+    ],
+    "kairos-loop-dynamic": [
+      67
+    ],
+    "loops-command": [
+      67
+    ],
+    "update-command": [
+      68
+    ],
+    "CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH": [
+      68
+    ],
+    "oauth-refresh": [
+      68
+    ],
+    "sdk-observability": [
+      68
+    ],
+    "mcp-registry": [
+      68
+    ],
+    "mcp-directory-bff": [
+      68
+    ],
+    "v2.1.101": [
+      65,
+      66,
+      67,
+      68
     ]
   }
 }

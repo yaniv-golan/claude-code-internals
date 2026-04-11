@@ -5,13 +5,13 @@
     "email": "yaniv@golan.name"
   },
   "metadata": {
-    "description": "Source-level architecture knowledge for Claude Code — 64 lessons covering hooks, permissions, agents, compaction, /dream memory consolidation, Perforce mode, Script Caps, and more, verified through the v2.1.100 binary."
+    "description": "Source-level architecture knowledge for Claude Code — 68 lessons covering hooks, permissions, agents, compaction, /dream, proactive away summary, CERT_STORE, dynamic loop pacing, and more, verified through the v2.1.101 binary."
   },
   "plugins": [
     {
       "name": "claude-code-internals",
       "source": "./skill-package",
-      "description": "Gives Claude source-level knowledge of its own architecture. 64 lessons covering every internal subsystem — hooks (all 27 event types), permissions (7-phase pipeline, 23 validators), boot sequence, agents, compaction, MCP, memory, AskUserQuestion, and binary-verified new features through v2.1.100 (/dream memory consolidation, Perforce mode, Script Caps, custom model capabilities). Searchable via RRF (keyword + TF-IDF fusion).",
+      "description": "Gives Claude source-level knowledge of its own architecture. 68 lessons covering every internal subsystem — hooks (all 27 event types), permissions (7-phase pipeline, 23 validators), boot sequence, agents, compaction, MCP, memory, AskUserQuestion, and binary-verified new features through v2.1.101 (proactive away summary, CLAUDE_CODE_CERT_STORE, dynamic loop pacing, cloud-first loops, /dream, Perforce mode, Script Caps). Searchable via RRF (keyword + TF-IDF fusion).",
       "author": {
         "name": "Yaniv Golan",
         "email": "yaniv@golan.name"

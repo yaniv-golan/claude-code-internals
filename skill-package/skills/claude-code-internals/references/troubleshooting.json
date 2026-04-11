@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-31",
+  "generated": "2026-04-11",
   "description": "Maps common symptoms/problems to relevant lessons for debugging Claude Code internals",
   "symptoms": [
     {
@@ -161,6 +161,26 @@
       "pattern": ["mantle provider", "CLAUDE_CODE_USE_MANTLE", "ANTHROPIC_BEDROCK_MANTLE_BASE_URL", "CLAUDE_CODE_SKIP_MANTLE_AUTH"],
       "lessons": [61, 46],
       "hint": "v2.1.94 adds a Mantle provider path. Set CLAUDE_CODE_USE_MANTLE to select it, ANTHROPIC_BEDROCK_MANTLE_BASE_URL to override the default AWS-region-derived endpoint, and CLAUDE_CODE_SKIP_MANTLE_AUTH only for debugging."
+    },
+    {
+      "pattern": ["TLS error", "certificate error", "SSL error", "CERT_STORE", "ca certificate", "self-signed certificate", "corporate proxy certificate", "UNABLE_TO_VERIFY_LEAF_SIGNATURE"],
+      "lessons": [66, 37],
+      "hint": "Set CLAUDE_CODE_CERT_STORE to 'system' (OS certs), 'bundled' (Node.js built-in), or 'bundled,system' (both, the default). For corporate proxies with custom CAs, use 'system' or set NODE_EXTRA_CA_CERTS to your CA bundle path. Changes take effect on settings reload without restart."
+    },
+    {
+      "pattern": ["loop not scheduling", "loop stopped", "loop aged out", "dynamic loop", "ScheduleWakeup", "loop expired", "loop max age"],
+      "lessons": [67, 38],
+      "hint": "Dynamic loops (tengu_kairos_loop_dynamic flag) auto-stop after recurringMaxAgeMs (default 7 days). Delays are clamped to [60, 3600] seconds. Check if the loop aged out via tengu_loop_dynamic_wakeup_aged_out telemetry."
+    },
+    {
+      "pattern": ["cloud schedule", "cloud loop", "loop cloud first", "/schedule vs /loop", "remote loop", "durable loop"],
+      "lessons": [67, 38],
+      "hint": "When tengu_cinder_almanac is enabled, /loop offers cloud scheduling for intervals >= 60min or daily phrasing. Cloud schedules persist across sessions; local loops stop when the session closes."
+    },
+    {
+      "pattern": ["oauth refresh", "SDK_HAS_OAUTH_REFRESH", "401 token expired SDK", "SDK token refresh"],
+      "lessons": [68, 35],
+      "hint": "Set CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH when your SDK parent process provides a token refresh callback. On 401, Claude Code calls back to get a fresh token instead of failing."
     }
   ]
 }

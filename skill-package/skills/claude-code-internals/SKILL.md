@@ -1,6 +1,6 @@
 ---
 name: claude-code-internals
-description: "Source-level architecture knowledge for Claude Code v2.1.100, verified against the live binary. Use when asked how Claude Code works internally, why something behaves unexpectedly, how to configure hooks correctly, what permission modes do, or when editing .claude/ config files. Covers 64 lessons: hooks (all 27 event types, exit code semantics), permissions (7-phase pipeline, 23 Bash validators), boot sequence, query engine, agents, MCP, memory, context compaction, plugins, sessions, OAuth, AskUserQuestion, and new binary-verified features through v2.1.100 (/dream memory consolidation, Perforce mode, Script Caps, custom model capabilities, /setup-vertex). Also use for: 'why did compaction fire', 'hook not triggering', 'permission denied', 'how does agent spawning work', 'what is coordinator mode', 'how does rewind work', 'how to set effort level', 'how does AskUserQuestion work', 'how does /dream work', 'what is Perforce mode', 'what are script caps', 'what is CLAUDE_CODE_PERFORCE_MODE'."
+description: "Source-level architecture knowledge for Claude Code v2.1.101, verified against the live binary. Use when asked how Claude Code works internally, why something behaves unexpectedly, how to configure hooks correctly, what permission modes do, or when editing .claude/ config files. Covers 68 lessons: hooks (all 27 event types, exit code semantics), permissions (7-phase pipeline, 23 Bash validators), boot sequence, query engine, agents, MCP, memory, context compaction, plugins, sessions, OAuth, AskUserQuestion, and new binary-verified features through v2.1.101 (proactive away summary, CLAUDE_CODE_CERT_STORE, dynamic loop pacing, cloud-first loops, /dream, Perforce mode, Script Caps). Also use for: 'why did compaction fire', 'hook not triggering', 'permission denied', 'how does agent spawning work', 'what is coordinator mode', 'how does rewind work', 'how to set effort level', 'how does AskUserQuestion work', 'how does /dream work', 'what is Perforce mode', 'what are script caps', 'what is CLAUDE_CODE_CERT_STORE', 'what is away summary', 'how does loop pacing work'."
 user-invocable: true
 argument-hint: "[topic - e.g. hooks, permissions, memory, agents, compaction]"
 context: fork
@@ -11,10 +11,10 @@ allowed-tools:
   - Bash
 ---
 
-You are a Claude Code architecture expert with access to 64 lessons covering Claude Code v2.1.100
+You are a Claude Code architecture expert with access to 68 lessons covering Claude Code v2.1.101
 internals — verified against the live binary. Lessons 1–50 were reverse-engineered from source
-docs (v2.1.88, confirmed unchanged in v2.1.100). Lessons 51–64 were extracted directly from the
-v2.1.90/v2.1.92/v2.1.94/v2.1.100 binaries.
+docs (v2.1.88, confirmed unchanged in v2.1.101). Lessons 51–68 were extracted directly from the
+v2.1.90/v2.1.92/v2.1.94/v2.1.100/v2.1.101 binaries.
 
 **Topic:** $argument
 
@@ -23,7 +23,7 @@ v2.1.90/v2.1.92/v2.1.94/v2.1.100 binaries.
 If `$argument` is empty or just whitespace, print this index and ask what the user wants to know:
 
 ```
-Available topics (64 lessons across 12 chapters):
+Available topics (68 lessons across 13 chapters):
   Boot & Core:    boot sequence, query engine, state management, system prompt, architecture overview
   Tools:          tool system, bash tool, file tools, search tools, MCP system
   Agents & AI:    skills system, agent system, coordinator mode, teams/swarm
@@ -47,6 +47,10 @@ Available topics (64 lessons across 12 chapters):
   New (v2.1.97-v2.1.100):  /dream memory consolidation (4-phase, fork, sandboxed), /setup-vertex,
                   Perforce mode, Script Caps, custom model capabilities,
                   /buddy removed, REPL env vars removed
+  New (v2.1.101): proactive away summary (recap on terminal refocus), CLAUDE_CODE_CERT_STORE,
+                  dynamic loop pacing with aging, cloud-first loop offering,
+                  /loops management UI (disabled), /update in-place upgrade (disabled),
+                  SDK OAuth refresh, SDK observability telemetry, MCP registry BFF
 ```
 
 ---

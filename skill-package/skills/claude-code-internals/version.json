@@ -1,12 +1,12 @@
 {
-  "skill_version": "2.3.0",
-  "captured_version": "2.1.100",
-  "captured_date": "2026-04-10",
+  "skill_version": "2.4.0",
+  "captured_version": "2.1.101",
+  "captured_date": "2026-04-11",
   "source": "https://www.markdown.engineering/learn-claude-code/",
-  "verified_against_binary": "2.1.100",
-  "lessons_count": 64,
-  "chapters_count": 12,
-  "total_size_kb": 710,
-  "keywords_indexed": 660,
-  "note": "Core lessons from markdown.engineering (v2.1.88), verified and updated against live v2.1.90/v2.1.91/v2.1.92/v2.1.94/v2.1.96/v2.1.100 binaries. Chapter 12 (L62-L64) covers v2.1.97-v2.1.100 changes: /dream user-facing memory consolidation, Perforce mode, Script Caps, /setup-vertex, custom model capabilities, /buddy removal, and REPL env var cleanup. v2.1.100 itself is bugfix-only relative to v2.1.98."
+  "verified_against_binary": "2.1.101",
+  "lessons_count": 68,
+  "chapters_count": 13,
+  "total_size_kb": 740,
+  "keywords_indexed": 700,
+  "note": "Core lessons from markdown.engineering (v2.1.88), verified and updated against live v2.1.90/v2.1.91/v2.1.92/v2.1.94/v2.1.96/v2.1.100/v2.1.101 binaries. Chapter 13 (L65-L68) covers v2.1.101 changes: proactive away summary system, CLAUDE_CODE_CERT_STORE, dynamic loop pacing with aging, cloud-first loop offering, /loops management UI, /update command, SDK OAuth refresh, SDK observability telemetry, MCP registry BFF."
 }

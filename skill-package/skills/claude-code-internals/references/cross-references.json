@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-31",
+  "generated": "2026-04-11",
   "description": "Cross-reference map: for each lesson, lists related lessons ranked by relevance",
   "references": {
     "1": [
@@ -1313,6 +1313,94 @@
         "id": 55,
         "relevance": 0.7,
         "reason": "L55 covers v2.1.90 env vars; L64 continues with v2.1.97-v2.1.100 additions and removals"
+      }
+    ],
+    "65": [
+      {
+        "id": 43,
+        "relevance": 0.82,
+        "reason": "KAIROS proactive mode and away_summary both inject autonomous system messages"
+      },
+      {
+        "id": 2,
+        "relevance": 0.75,
+        "reason": "away_summary uses a forked query engine call with constrained parameters"
+      },
+      {
+        "id": 48,
+        "relevance": 0.7,
+        "reason": "away_summary message injection extends the message processing pipeline"
+      },
+      {
+        "id": 50,
+        "relevance": 0.65,
+        "reason": "terminal focus detection for away_summary operates within the REPL layer"
+      }
+    ],
+    "66": [
+      {
+        "id": 37,
+        "relevance": 0.88,
+        "reason": "proxy/upstream system shares TLS cert infrastructure with the new cert store"
+      },
+      {
+        "id": 35,
+        "relevance": 0.72,
+        "reason": "OAuth/PKCE authentication uses the same TLS connections configured by cert store"
+      },
+      {
+        "id": 26,
+        "relevance": 0.7,
+        "reason": "cert store cache is invalidated on settings reload via the settings cascade"
+      },
+      {
+        "id": 10,
+        "relevance": 0.65,
+        "reason": "MCP WebSocket connections use MN() which reads certs from the cert store"
+      }
+    ],
+    "67": [
+      {
+        "id": 38,
+        "relevance": 0.9,
+        "reason": "dynamic loop pacing extends the cron scheduling system from L38"
+      },
+      {
+        "id": 43,
+        "relevance": 0.82,
+        "reason": "loop aging uses recurringMaxAgeMs from KAIROS daemon configuration"
+      },
+      {
+        "id": 59,
+        "relevance": 0.75,
+        "reason": "cloud-first offering uses AskUserQuestion tool documented in L59"
+      },
+      {
+        "id": 18,
+        "relevance": 0.7,
+        "reason": "/loops is a new local-jsx command; L18 covers the commands system architecture"
+      }
+    ],
+    "68": [
+      {
+        "id": 64,
+        "relevance": 0.88,
+        "reason": "L64 covers v2.1.97-v2.1.100 changes; L68 continues with v2.1.101"
+      },
+      {
+        "id": 42,
+        "relevance": 0.78,
+        "reason": "SDK OAuth refresh and SDK observability extend the Agent SDK entrypoints from L42"
+      },
+      {
+        "id": 35,
+        "relevance": 0.72,
+        "reason": "OAuth token refresh flow builds on the authentication system from L35"
+      },
+      {
+        "id": 10,
+        "relevance": 0.65,
+        "reason": "MCP registry changes affect MCP server discovery from L10"
       }
     ]
   }
