@@ -1,4 +1,4 @@
-Updated: 2026-04-04 | Source: Binary extraction from claude v2.1.92
+Updated: 2026-04-11 | Source: Binary extraction from claude v2.1.92
 
 # Chapter 10: Verified New in v2.1.92 (Source-Confirmed)
 
@@ -21,7 +21,7 @@ Updated: 2026-04-04 | Source: Binary extraction from claude v2.1.92
 
 | Change | Command | Notes |
 |--------|---------|-------|
-| Added | `/setup-bedrock` | Reconfigure AWS Bedrock — hidden unless `CLAUDE_CODE_USE_BEDROCK` is set |
+| Added | `/setup-bedrock` | Reconfigure AWS Bedrock — conditionally visible (requires `CLAUDE_CODE_USE_BEDROCK`). **Now officially documented.** |
 | Added | `/stop-hook` | Session-only Stop hook via prompt — `isEnabled: () => false` (disabled) |
 | Added | `/teleport` | Resume a Claude.ai web session — confirmed present (see Lesson 53 for full docs) |
 | Removed | `/tag` | No longer present in binary |
@@ -36,6 +36,12 @@ Updated: 2026-04-04 | Source: Binary extraction from claude v2.1.92
 
 **Availability gate:** `isHidden: () => !dH(process.env.CLAUDE_CODE_USE_BEDROCK)`
 — only visible when `CLAUDE_CODE_USE_BEDROCK` is set (truthy). Always hidden for non-Bedrock users.
+
+> **Status update (2026-04-11):** `/setup-bedrock` is now officially documented at
+> code.claude.com/docs/en/commands. The official description reads: "Configure Amazon Bedrock
+> authentication, region, and model pins through an interactive wizard. Only visible when
+> `CLAUDE_CODE_USE_BEDROCK=1` is set." The implementation details below (telemetry events,
+> internal function names, availability gate) remain unique to this lesson.
 
 **What it does:** Launches the interactive Bedrock setup wizard (`kg_` React component via
 `Tr6()`). Equivalent to re-running the Bedrock onboarding flow from within a session.
@@ -138,7 +144,7 @@ Five new environment variables found in the v2.1.92 bundle that were absent from
 | `CLAUDE_CODE_EXECPATH` | `process.execPath` | Path to the Claude Code binary, auto-injected into spawned shell environments | Undocumented |
 | `CLAUDE_CODE_SIMULATE_PROXY_USAGE` | — | Debug/test flag to simulate proxy usage | Undocumented |
 | `CLAUDE_CODE_SKIP_FAST_MODE_ORG_CHECK` | — | Skip organization-level eligibility check for fast mode | Undocumented |
-| `CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX` | hostname | Prefix for auto-generated Remote Control session names | CLI help only |
+| `CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX` | hostname | Prefix for auto-generated Remote Control session names | **Official** (env-vars page + CLI reference) |
 
 ---
 

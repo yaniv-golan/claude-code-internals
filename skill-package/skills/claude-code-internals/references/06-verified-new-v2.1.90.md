@@ -1,4 +1,4 @@
-Updated: 2026-04-03 | Source: Binary extraction from claude v2.1.90
+Updated: 2026-04-11 | Source: Binary extraction from claude v2.1.90
 
 # Chapter 9: Verified New in v2.1.90 (Source-Confirmed)
 
@@ -12,10 +12,14 @@ Updated: 2026-04-03 | Source: Binary extraction from claude v2.1.90
 > the **implementation-level detail** extracted from the binary — internal type names, state
 > keys, API betas, telemetry event names, and non-obvious behaviors not in the official docs.
 > Lesson 55 contains a mix: the session resume auto-prompt, advisor model, and several env
-> vars are **genuinely undocumented** (not in official docs as of 2026-04-03).
+> vars are **genuinely undocumented** (not in official docs as of 2026-04-03). Some env vars
+> have since been documented — see inline status updates.
 > Lesson 56 documents four new commands found in v2.1.90 that are absent from v2.1.88.
-> /powerup and /buddy (base command) are officially documented; /buddy sub-arguments,
-> /autocompact, and /toggle-memory are not.
+> /powerup is officially documented; /buddy was removed in v2.1.97;
+> /autocompact and /toggle-memory remain undocumented.
+>
+> **Docs status refresh (2026-04-11):** `/effort max` and `/effort auto` are now officially
+> documented. See inline notes throughout this chapter for other status changes.
 
 ---
 
@@ -86,8 +90,9 @@ and `fastMode`. It is logged to telemetry as `effortValue` in `tengu_api_query` 
 - `supportedEffortLevels` in the model config schema determines which levels are valid for a
   given model. Not all models support all levels.
 - `supportsAdaptiveThinking` flag controls whether `auto` is available.
-- Official docs list `low`, `medium`, `high` only; `max` (ultrathink) and `auto` are binary-
-  confirmed present but not mentioned in official docs.
+- **Status update (2026-04-11):** `max` and `auto` are now officially documented. The commands
+  page lists `/effort [low|medium|high|max|auto]` and the CLI reference documents `--effort`
+  with `max` as an option (Opus 4.6 only). `auto` resets to the model default.
 
 ---
 
@@ -354,8 +359,13 @@ Documentation status noted per variable. "Official" = appears in code.claude.com
 | `CLAUDE_CODE_DISABLE_CLAUDE_API_SKILL` | — | Disable the built-in Claude API skill | Undocumented |
 | `CLAUDE_CODE_PLUGIN_KEEP_MARKETPLACE_ON_FAILURE` | — | Keep marketplace plugins when load fails | Official |
 | `CLAUDE_CODE_REMOTE_SETTINGS_PATH` | — | Path to remote/shared settings file | Undocumented |
-| `CLAUDE_CODE_SKIP_ANTHROPIC_AWS_AUTH` | — | Skip Anthropic AWS auth flow | Undocumented |
+| `CLAUDE_CODE_SKIP_ANTHROPIC_AWS_AUTH` | — | Skip Anthropic AWS auth flow | Undocumented (see note) |
 | `CLAUDE_CODE_USE_ANTHROPIC_AWS` | — | Use Anthropic-managed AWS endpoints | Undocumented |
+
+> **Note (2026-04-11):** `CLAUDE_CODE_SKIP_ANTHROPIC_AWS_AUTH` may have been superseded by
+> `CLAUDE_CODE_SKIP_BEDROCK_AUTH` (now officially documented). The official env-vars page
+> also now documents `CLAUDE_CODE_RESUME_INTERRUPTED_TURN` (auto-resume mid-turn sessions)
+> and `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE`, which were not present when this chapter was written.
 
 ### Removed from v2.1.88
 
@@ -425,14 +435,14 @@ Elicitation/ElicitationResult, PermissionRequest/Denied).
 
 ## Documentation status
 
-Verified against the official commands page (2026-04-03):
+Verified against the official commands page (2026-04-11):
 
 | Command | Docs | Official description |
 |---------|------|---------------------|
-| `/autocompact` | **Undocumented** | — |
-| `/buddy` | **Documented** (base only) | "Interactive pet creature that watches you code" (v2.1.89 changelog). Sub-arguments `[pet\|off\|on]` are undocumented. |
+| `/autocompact` | **Undocumented** | Not in the commands page. (The env var `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` IS now documented.) |
+| `/buddy` | **Removed** | Removed in v2.1.97 (see L64). Was documented in v2.1.89 changelog. |
 | `/powerup` | **Documented** | "Discover Claude Code features through quick interactive lessons with animated demos" |
-| `/toggle-memory` | **Undocumented** | — |
+| `/toggle-memory` | **Undocumented** | Not in the commands page. `/memory` IS documented (toggle auto-memory, edit CLAUDE.md). |
 
 For documented commands, this lesson still adds value via binary-extracted implementation
 details (state keys, telemetry events, availability gates, internal type names) not in the

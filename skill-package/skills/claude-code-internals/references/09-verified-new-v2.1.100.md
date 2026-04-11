@@ -1,4 +1,4 @@
-Updated: 2026-04-10 | Source: Binary extraction from claude v2.1.100
+Updated: 2026-04-11 | Source: Binary extraction from claude v2.1.100
 
 # Chapter 12: Verified New in v2.1.97--v2.1.100 (Source-Confirmed)
 
@@ -358,6 +358,11 @@ workspaces. Perforce uses a "checkout before edit" model -- files are read-only 
 explicitly opened for edit via `p4 edit`. This conflicts with Claude Code's default behavior
 of writing files directly.
 
+> **Now officially documented** (2026-04-11): `CLAUDE_CODE_PERFORCE_MODE` appears in the
+> env-vars page ("Enable Perforce-aware write protection") and the v2.1.98 changelog. The
+> implementation details below (system context injection, tool-level enforcement, internal
+> function names) remain unique to this lesson.
+
 When the env var is truthy, Claude Code:
 1. Injects a Perforce-aware preamble into the system context
 2. Blocks write operations on read-only files with an actionable error message
@@ -463,6 +468,11 @@ locally but Perforce wouldn't know it was modified, leading to lost changes on t
 Introduced in **v2.1.98**. A **per-command Bash call-count limiter** -- an anti-exfiltration
 security mechanism for scripted/subprocess environments with potentially untrusted input.
 
+> **Now officially documented** (2026-04-11): `CLAUDE_CODE_SCRIPT_CAPS` appears in the
+> env-vars page ("Limit script invocations per session") and the v2.1.98 changelog. The
+> implementation details below (JSON parsing, enforcement flow, error handling) remain unique
+> to this lesson.
+
 ### When It's Active
 
 Only in "script mode" -- when `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB` is truthy. This is the same
@@ -531,8 +541,12 @@ matches `curl`, `curl -s`, and even `nocurl` (by design: coarse safety net, not 
 
 ### /setup-vertex (v2.1.98)
 
-Reconfigure Google Vertex AI authentication, project, region, or model pins. Hidden unless
-`CLAUDE_CODE_USE_VERTEX` is set:
+Reconfigure Google Vertex AI authentication, project, region, or model pins. Conditionally
+visible — requires `CLAUDE_CODE_USE_VERTEX` to be set:
+
+> **Now officially documented** (2026-04-11): `/setup-vertex` appears in the commands page
+> with description: "Configure Google Vertex AI authentication, project, region, and model
+> pins through an interactive wizard. Only visible when `CLAUDE_CODE_USE_VERTEX=1` is set."
 
 ```javascript
 get isHidden() { return !pH(process.env.CLAUDE_CODE_USE_VERTEX) }

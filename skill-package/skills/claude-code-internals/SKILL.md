@@ -35,17 +35,20 @@ Available topics (68 lessons across 13 chapters):
   Released:       ULTRAPLAN (research preview) — remote planning via Claude Code on the web
   Unreleased:     entrypoints/SDK, KAIROS always-on, cost analytics, desktop app,
                   model system, sandbox/security, message processing, task system, REPL screen
-  New (v2.1.90):  /effort reasoning budget, /rewind file checkpointing, /teleport session transfer,
-                  /branch conversation fork, session resume, new env vars [binary-verified],
-                  /autocompact /buddy /toggle-memory [undocumented], /powerup [documented]
-  New (v2.1.92):  /setup-bedrock (Bedrock users only), /stop-hook (disabled), CLAUDE_CODE_EXECPATH,
-                  CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX, removed /tag+/vim,
+  New (v2.1.90):  /effort reasoning budget [now documented incl. max/auto], /rewind file checkpointing,
+                  /teleport session transfer, /branch conversation fork, session resume,
+                  new env vars [binary-verified],
+                  /autocompact /toggle-memory [undocumented], /powerup [documented],
+                  /buddy [removed in v2.1.97]
+  New (v2.1.92):  /setup-bedrock [now documented], /stop-hook (disabled), CLAUDE_CODE_EXECPATH,
+                  CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX [now documented], removed /tag+/vim,
                   AskUserQuestionTool (full schema, preview, permissions, Plan Mode rules)
   New (v2.1.94):  /autofix-pr remote PR autofix, /team-onboarding usage-derived onboarding guide,
                   Mantle provider support, CLAUDE_CODE_MCP_ALLOWLIST_ENV,
                   CLAUDE_CODE_SANDBOXED, CLAUDE_CODE_TEAM_ONBOARDING
-  New (v2.1.97-v2.1.100):  /dream memory consolidation (4-phase, fork, sandboxed), /setup-vertex,
-                  Perforce mode, Script Caps, custom model capabilities,
+  New (v2.1.97-v2.1.100):  /dream memory consolidation (4-phase, fork, sandboxed),
+                  /setup-vertex [now documented], Perforce mode [now documented],
+                  Script Caps [now documented], custom model capabilities,
                   /buddy removed, REPL env vars removed
   New (v2.1.101): proactive away summary (recap on terminal refocus), CLAUDE_CODE_CERT_STORE,
                   dynamic loop pacing with aging, cloud-first loop offering,
