@@ -928,7 +928,7 @@
       "lesson_number": "62",
       "file": "09-verified-new-v2.1.100.md",
       "startLine": 25,
-      "endLine": 336,
+      "endLine": 348,
       "keywords": [
         "dream",
         "learn",
@@ -943,7 +943,9 @@
         "v2.1.100",
         "isEnabled",
         "gating",
-        "tengu-kairos-dream"
+        "tengu-kairos-dream",
+        "lazy-dispatch",
+        "command-registration"
       ]
     },
     {
@@ -1047,7 +1049,7 @@
       "lesson_number": "68",
       "file": "10-verified-new-v2.1.101.md",
       "startLine": 496,
-      "endLine": 669,
+      "endLine": 748,
       "keywords": [
         "update-command",
         "CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH",
@@ -1062,7 +1064,13 @@
         "remote-eval",
         "flag-override",
         "NQq",
-        "E_"
+        "E_",
+        "code-signing",
+        "bun-sea",
+        "SIGKILL",
+        "cache-writeback",
+        "yQq",
+        "cache-injection"
       ]
     }
   ],
@@ -2996,6 +3004,27 @@
     "tengu-kairos-dream": [
       62,
       68
+    ],
+    "code-signing": [
+      68
+    ],
+    "bun-sea": [
+      68
+    ],
+    "cache-writeback": [
+      68
+    ],
+    "cache-injection": [
+      68,
+      62
+    ],
+    "lazy-dispatch": [
+      62,
+      68
+    ],
+    "command-registration": [
+      62,
+      22
     ]
   }
 }

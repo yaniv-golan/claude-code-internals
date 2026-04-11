@@ -618,25 +618,89 @@ Because `remoteEval: true`, the SDK sends user attributes to Anthropic's server 
 pre-evaluated flag values. The SDK never has flag rules/conditions locally — it cannot evaluate
 flags offline using its own logic.
 
-### Cache Persistence
+### SDK Initialization
+
+The GrowthBook SDK init is **lazy** — wrapped in a memoized thunk (`QS6 = A6(...)`) that
+only fires when something first accesses a feature flag. This means:
+- No network request until the first `E_()` call
+- The `Nb` map is empty until init completes
+- During init (up to 5s timeout), `E_()` falls through to the cache
+
+### Cache Persistence and Writeback
 
 Flag values are cached in `~/.claude.json` under the `cachedGrowthBookFeatures` key. This
 cache is:
 - Written after each successful server fetch
 - Read on startup before the SDK initializes (provides values for the first ~5 seconds)
-- Overwritten by the server response within seconds of startup
+- **Replaced entirely** by the server response within seconds of startup
+
+The cache writeback function `yQq()` replaces the **entire** `cachedGrowthBookFeatures`
+object with `Object.fromEntries(Nb)`:
+
+```javascript
+function yQq() {
+  let H = Object.fromEntries(Nb);       // ALL flags from server
+  let _ = w_();
+  if (Pj(_.cachedGrowthBookFeatures, H)) return;  // skip if identical
+  p_((q) => ({...q, cachedGrowthBookFeatures: H})); // REPLACE entire object
+}
+```
+
+This means any key NOT in the server response gets **wiped** from the cache. For flags
+the server doesn't send at all (like `tengu_kairos_dream` when not enrolled), the key
+is removed entirely — not set to `false`, just deleted.
+
+### Flag Absence vs Explicit False
+
+Flags can be in three states relative to the server response:
+- **Explicitly returned** (true or false): stored in `Nb`, authoritative
+- **Absent from response**: NOT in `Nb`, falls through to cache, but cache gets wiped by `yQq()`
+- **Not in cache either**: falls through to the default value in the calling code
+
+For `tengu_kairos_dream`, the server does not include it in the response at all. `Nb` never
+contains it, so `E_()` correctly falls through to the cache — but `yQq()` has already
+replaced the cache with `Object.fromEntries(Nb)` which doesn't include the key.
 
 ### Local Override Feasibility
 
-All three local override mechanisms are **stripped from the production build**:
+All three built-in override mechanisms are **stripped from the production build**:
 
 | Method | Status | Details |
 |--------|--------|---------|
 | Env var override (`NQq`) | Dead code | Hardcoded `null`, never assigned |
 | Config override (`GZH/BS4/FS4`) | Stubbed no-ops | Functions return immediately |
 | Forced features | Not exposed | No env var like `CLAUDE_CODE_FEATURE_FLAGS` exists |
-| Edit `~/.claude.json` cache | Ephemeral | Server response overwrites within ~5s of startup |
-| Binary patch consumer function | Works but fragile | Undone by auto-updates |
+| Edit `~/.claude.json` cache | Wiped on startup | `yQq()` replaces entire object with server response |
+| Binary patch | **SIGKILL on macOS** | Bun SEA is code-signed; modifying any bytes triggers macOS kill |
+| Cache injection + watcher | **Works** | Inject flag, poll to re-inject after `yQq()` writeback (see below) |
+
+### Cache Injection Workaround
+
+For flags **absent from the server response** (not explicitly `false`, just missing), cache
+injection with a filesystem watcher can force activation:
+
+1. Write `"tengu_kairos_dream": true` into `~/.claude.json` `cachedGrowthBookFeatures`
+2. Start a background poller that re-injects the flag every 500ms for ~30 seconds
+3. Launch Claude Code — the SDK initializes, `yQq()` wipes the cache, the poller re-injects
+4. When `/dream` is invoked, `E_()` checks `Nb` (miss) → falls through to cache (hit: `true`)
+5. After the 30s poller exits, the flag persists because nothing overwrites it mid-session
+
+This works because:
+- `isEnabled` is checked lazily at dispatch time (not at registration)
+- `Nb` never contains the flag (server doesn't send it)
+- `yQq()` only fires during startup SDK init, not continuously
+- The poller survives the single writeback event
+
+This does NOT work for flags the server **explicitly returns as `false`** — those populate
+`Nb` and `Nb.has()` returns `true`, short-circuiting the cache fallback.
+
+### Bun SEA Code Signing
+
+The Claude binary is a **Bun Single Executable Archive** — a Mach-O arm64 binary with the
+JS bundle embedded as a binary resource. On macOS, the binary is **code-signed**. Any
+modification to the binary bytes (even within the embedded JS source) invalidates the
+signature, causing macOS to SIGKILL the process on launch. This makes traditional binary
+patching (byte replacement of function bodies) non-viable on macOS.
 
 ### Wrapper Functions
 
@@ -651,6 +715,11 @@ All three local override mechanisms are **stripped from the production build**:
 | `FS4()` | `clearGrowthBookConfigOverrides` (no-op) |
 | `Zo()` | Stats/GrowthBook enabled check (false for Bedrock/Vertex/Foundry) |
 | `tAH()` | `isStatsEnabled` — true for standard API users |
+| `yQq()` | Cache writeback — replaces `cachedGrowthBookFeatures` with `Object.fromEntries(Nb)` |
+| `QS6` | Lazy SDK init thunk (memoized via `A6()`) |
+| `Nb` | In-memory `Map` of flag values from remote eval |
+| `Pj()` | Deep equality check (skips writeback if cache already matches) |
+| `mS4()` | Returns merged view: `Nb` entries if available, else cached features |
 
 ### Non-obvious Behavior
 
@@ -660,6 +729,15 @@ All three local override mechanisms are **stripped from the production build**:
   **completely ignored** in v2.1.101 — `dN` just delegates to `E_` without any TTL logic.
 - **Flag values are user+org specific**: the `remoteEval` mode sends `id` and
   `organizationUUID` as attributes, enabling targeted rollouts per user or organization.
+- **SDK init is lazy**: the GrowthBook client is not created until the first flag is checked.
+  Before init, `Nb` is empty and `E_()` falls through to the cache or default.
+- **Cache writeback is destructive**: `yQq()` replaces the entire `cachedGrowthBookFeatures`
+  object, not just the changed keys. Flags absent from the server response are deleted.
+- **Binary patching is not viable on macOS**: the Bun SEA binary is code-signed. Modifying
+  any bytes causes macOS to SIGKILL the process on launch.
+- **`isEnabled` is lazy for all commands**: slash commands are always registered; `isEnabled`
+  is a function reference checked at dispatch time via `Ve()`. This means flag changes take
+  effect immediately without session restart.
 
 ## Bundle Size
 

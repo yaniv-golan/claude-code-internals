@@ -276,6 +276,18 @@ Checks in order:
 5. User setting `autoMemoryEnabled` (via `X8()`)
 6. Default: `true`
 
+### Command registration vs dispatch
+
+`isEnabled` is checked **lazily at dispatch time**, not at registration time. The registration
+flow stores `isEnabled: IF5` as a function reference in the `ob7` command array. When the user
+types `/dream`, the `SW` function filters visible commands by calling `Ve(z)` which invokes
+`z.isEnabled?.()` — i.e., `IF5()` — at that moment. This means:
+
+- The `/dream` command IS registered in all sessions regardless of the flag value
+- The flag is checked fresh on every invocation attempt
+- If the flag becomes true mid-session (e.g., via cache injection), `/dream` becomes
+  immediately available without restart
+
 ### Gate 3: the blocking gate
 
 `dN()` delegates to `E_()` (GrowthBook flag evaluator, see L68 for full GrowthBook internals).

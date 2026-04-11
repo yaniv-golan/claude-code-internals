@@ -530,7 +530,7 @@
     },
     {
       "pattern": "dream not recognized|dream not available|dream command missing|learn not recognized",
-      "hint": "/dream is gated by server-side GrowthBook flag tengu_kairos_dream (default: false). No local override exists. Anthropic controls rollout per user/org.",
+      "hint": "/dream is gated by server-side GrowthBook flag tengu_kairos_dream (default: false). The server does not send this flag, so it falls through to the default. Workaround: use scripts/patch-dream.sh to inject the flag into the local cache with a watcher that survives the SDK cache writeback. Binary patching is not viable (code-signed Bun SEA, SIGKILL on macOS).",
       "lessons": [
         62,
         68
@@ -539,7 +539,7 @@
     },
     {
       "pattern": "feature flag not working|feature gate|tengu.*not enabled|growthbook override",
-      "hint": "All local override mechanisms (env vars, config overrides) are stubbed/dead-code in the production binary. Flags are evaluated server-side via remoteEval. See L68 GrowthBook internals.",
+      "hint": "All local override mechanisms (env vars, config overrides) are stubbed/dead-code in the production binary. Flags are evaluated server-side via remoteEval. Binary is code-signed (SIGKILL on modification). For flags absent from server response, cache injection with a filesystem watcher can work. See L68 GrowthBook internals and scripts/patch-dream.sh for the technique.",
       "lessons": [
         68
       ],
