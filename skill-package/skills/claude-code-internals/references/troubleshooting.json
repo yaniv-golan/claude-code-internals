@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-11",
+  "generated": "2026-04-12",
   "description": "Maps common symptoms/problems to relevant lessons for debugging Claude Code internals",
   "symptoms": [
     {
@@ -344,9 +344,27 @@
       "lessons": [
         2,
         33,
-        44
+        44,
+        70
       ],
-      "hint": "The query engine has built-in retry with exponential backoff for transient API errors; persistent 429s mean you are hitting rate limits -- reduce parallel agents or wait."
+      "hint": "The query engine has built-in retry with exponential backoff for transient API errors; persistent 429s mean you are hitting rate limits -- reduce parallel agents or wait. In v2.1.104+, partial streaming content is preserved on timeout instead of being discarded."
+    },
+    {
+      "pattern": [
+        "streaming timeout",
+        "stream idle",
+        "partial response lost",
+        "streaming fallback",
+        "non-streaming fallback",
+        "stream stall"
+      ],
+      "lessons": [
+        70,
+        2,
+        33
+      ],
+      "hint": "v2.1.104 added partial yield protection: if content blocks were already streamed to you, a timeout no longer discards them. Set CLAUDE_CODE_DISABLE_NONSTREAMING_FALLBACK to prevent any fallback. The default idle timeout is 90s (override via CLAUDE_STREAM_IDLE_TIMEOUT_MS).",
+      "added": "2026-04-12"
     },
     {
       "pattern": [

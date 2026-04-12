@@ -1,12 +1,12 @@
 {
-  "skill_version": "2.4.4",
-  "captured_version": "2.1.101",
-  "captured_date": "2026-04-11",
+  "skill_version": "2.5.0",
+  "captured_version": "2.1.104",
+  "captured_date": "2026-04-12",
   "source": "https://www.markdown.engineering/learn-claude-code/",
-  "verified_against_binary": "2.1.101",
-  "lessons_count": 69,
-  "chapters_count": 13,
-  "total_size_kb": 745,
-  "keywords_indexed": 716,
-  "note": "Core lessons from markdown.engineering (v2.1.88), verified and updated against live v2.1.90/v2.1.91/v2.1.92/v2.1.94/v2.1.96/v2.1.100/v2.1.101 binaries. Chapter 13 (L65-L69) covers v2.1.101 changes: proactive away summary system, CLAUDE_CODE_CERT_STORE, dynamic loop pacing with aging, cloud-first loop offering, /loops management UI, /update command, SDK OAuth refresh, SDK observability telemetry, MCP registry BFF, marble-origami context collapse persistence."
+  "verified_against_binary": "2.1.104",
+  "lessons_count": 71,
+  "chapters_count": 14,
+  "total_size_kb": 755,
+  "keywords_indexed": 724,
+  "note": "Core lessons from markdown.engineering (v2.1.88), verified and updated against live v2.1.90/v2.1.91/v2.1.92/v2.1.94/v2.1.96/v2.1.100/v2.1.101/v2.1.104 binaries. Chapter 14 (L70-L71) covers v2.1.104 changes: streaming partial yield protection (prevents discarding partial content during fallback), system prompt 'Communication style' → 'Text output (does not apply to tool calls)' rename (gated by quiet_salted_ember + opus-4-6)."
 }

@@ -1,7 +1,7 @@
 {
-  "generated": "2026-04-11",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.101",
-  "total_lessons": 69,
+  "generated": "2026-04-12",
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.104",
+  "total_lessons": 71,
   "lessons": [
     {
       "id": 1,
@@ -1099,6 +1099,45 @@
         "survey",
         "v2.1.101"
       ]
+    },
+    {
+      "id": 70,
+      "title": "Streaming Partial Yield Protection",
+      "lesson_number": "70",
+      "file": "11-verified-new-v2.1.104.md",
+      "startLine": 22,
+      "endLine": 138,
+      "keywords": [
+        "streaming",
+        "partial-yield",
+        "fallback",
+        "non-streaming",
+        "watchdog",
+        "idle-timeout",
+        "StreamIdleTimeoutError",
+        "tengu_streaming_fallback_to_non_streaming",
+        "tengu_streaming_idle_timeout",
+        "CLAUDE_CODE_DISABLE_NONSTREAMING_FALLBACK",
+        "v2.1.104"
+      ]
+    },
+    {
+      "id": 71,
+      "title": "System Prompt Section Rename: Text Output",
+      "lesson_number": "71",
+      "file": "11-verified-new-v2.1.104.md",
+      "startLine": 140,
+      "endLine": 195,
+      "keywords": [
+        "system-prompt",
+        "communication-style",
+        "text-output",
+        "quiet_salted_ember",
+        "opus-4-6",
+        "prompt-rename",
+        "clientDataCache",
+        "v2.1.104"
+      ]
     }
   ],
   "keyword_map": {
@@ -1199,7 +1238,8 @@
     "streaming": [
       2,
       5,
-      6
+      6,
+      70
     ],
     "retry": [
       2,
@@ -1317,7 +1357,8 @@
     ],
     "system-prompt": [
       4,
-      5
+      5,
+      71
     ],
     "claude-md": [
       4,
@@ -3079,6 +3120,55 @@
     ],
     "survey": [
       69
+    ],
+    "partial-yield": [
+      70
+    ],
+    "fallback": [
+      70
+    ],
+    "non-streaming": [
+      70
+    ],
+    "watchdog": [
+      70
+    ],
+    "idle-timeout": [
+      70
+    ],
+    "StreamIdleTimeoutError": [
+      70
+    ],
+    "tengu_streaming_fallback_to_non_streaming": [
+      70
+    ],
+    "tengu_streaming_idle_timeout": [
+      70
+    ],
+    "CLAUDE_CODE_DISABLE_NONSTREAMING_FALLBACK": [
+      70
+    ],
+    "v2.1.104": [
+      70,
+      71
+    ],
+    "communication-style": [
+      71
+    ],
+    "text-output": [
+      71
+    ],
+    "quiet_salted_ember": [
+      71
+    ],
+    "opus-4-6": [
+      71
+    ],
+    "prompt-rename": [
+      71
+    ],
+    "clientDataCache": [
+      71
     ]
   }
 }

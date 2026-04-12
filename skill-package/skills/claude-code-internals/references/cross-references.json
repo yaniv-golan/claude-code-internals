@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-11",
+  "generated": "2026-04-12",
   "description": "Cross-reference map: for each lesson, lists related lessons ranked by relevance",
   "references": {
     "1": [
@@ -1433,6 +1433,40 @@
         "id": 65,
         "relevance": 0.6,
         "reason": "both L65 (away summary) and L69 (context collapse) write custom entry types to session JSONL"
+      }
+    ],
+    "70": [
+      {
+        "id": 2,
+        "relevance": 0.92,
+        "reason": "streaming fallback is part of the query engine's error recovery pipeline"
+      },
+      {
+        "id": 33,
+        "relevance": 0.82,
+        "reason": "partial yield protection extends the error handling and recovery system"
+      },
+      {
+        "id": 29,
+        "relevance": 0.7,
+        "reason": "new telemetry events (tier field, partial_yield cause) feed into analytics"
+      }
+    ],
+    "71": [
+      {
+        "id": 4,
+        "relevance": 0.9,
+        "reason": "system prompt section rename directly modifies the assembled system prompt"
+      },
+      {
+        "id": 46,
+        "relevance": 0.72,
+        "reason": "rename is model-gated (opus-4-6 only), relating to model system configuration"
+      },
+      {
+        "id": 68,
+        "relevance": 0.65,
+        "reason": "quiet_salted_ember is a clientDataCache flag, distinct from GrowthBook flags in L68"
       }
     ]
   }
