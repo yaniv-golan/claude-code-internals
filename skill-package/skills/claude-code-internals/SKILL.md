@@ -1,6 +1,6 @@
 ---
 name: claude-code-internals
-description: "Source-level architecture knowledge for Claude Code v2.1.104, verified against the live binary. Use when asked how Claude Code works internally, why something behaves unexpectedly, how to configure hooks correctly, what permission modes do, or when editing .claude/ config files. Covers 71 lessons: hooks (all 27 event types, exit code semantics), permissions (7-phase pipeline, 23 Bash validators), boot sequence, query engine, agents, MCP, memory, context compaction, plugins, sessions, OAuth, AskUserQuestion, and new binary-verified features through v2.1.104 (streaming partial yield protection, system prompt rename, proactive away summary, CLAUDE_CODE_CERT_STORE, dynamic loop pacing, cloud-first loops, /dream, Perforce mode, Script Caps, marble-origami context collapse). Also use for: 'why did compaction fire', 'hook not triggering', 'permission denied', 'how does agent spawning work', 'what is coordinator mode', 'how does rewind work', 'how to set effort level', 'how does AskUserQuestion work', 'how does /dream work', 'what is Perforce mode', 'what are script caps', 'what is CLAUDE_CODE_CERT_STORE', 'what is away summary', 'how does loop pacing work', 'what is marble origami', 'how does context collapse work', 'streaming fallback', 'partial yield', 'quiet_salted_ember'."
+description: "Source-level architecture knowledge for Claude Code v2.1.109, verified against the live binary. Use when asked how Claude Code works internally, why something behaves unexpectedly, how to configure hooks correctly, what permission modes do, or when editing .claude/ config files. Covers 76 lessons: hooks (all 27 event types, exit code semantics), permissions (7-phase pipeline, 23 Bash validators), boot sequence, query engine, agents, MCP, memory, context compaction, plugins, sessions, OAuth, AskUserQuestion, and new binary-verified features through v2.1.109 (/recap on-demand session recap, multi-repo checkout, byte-level stream watchdog, REPL mode, managed-agents API beta, streaming partial yield protection, system prompt rename, proactive away summary, CLAUDE_CODE_CERT_STORE, dynamic loop pacing, cloud-first loops, /dream, Perforce mode, Script Caps, marble-origami context collapse). Also use for: 'why did compaction fire', 'hook not triggering', 'permission denied', 'how does agent spawning work', 'what is coordinator mode', 'how does rewind work', 'how to set effort level', 'how does AskUserQuestion work', 'how does /dream work', 'what is Perforce mode', 'what are script caps', 'what is CLAUDE_CODE_CERT_STORE', 'what is away summary', 'how does loop pacing work', 'what is marble origami', 'how does context collapse work', 'streaming fallback', 'partial yield', 'quiet_salted_ember', 'what is /recap', 'byte watchdog', 'REPL mode', 'multi-repo checkout', 'managed agents'."
 user-invocable: true
 argument-hint: "[topic - e.g. hooks, permissions, memory, agents, compaction]"
 context: fork
@@ -11,10 +11,10 @@ allowed-tools:
   - Bash
 ---
 
-You are a Claude Code architecture expert with access to 71 lessons covering Claude Code v2.1.104
+You are a Claude Code architecture expert with access to 76 lessons covering Claude Code v2.1.109
 internals — verified against the live binary. Lessons 1–50 were reverse-engineered from source
-docs (v2.1.88, confirmed unchanged in v2.1.104). Lessons 51–71 were extracted directly from the
-v2.1.90/v2.1.92/v2.1.94/v2.1.100/v2.1.101/v2.1.104 binaries.
+docs (v2.1.88, confirmed unchanged in v2.1.109). Lessons 51–76 were extracted directly from the
+v2.1.90/v2.1.92/v2.1.94/v2.1.100/v2.1.101/v2.1.104/v2.1.107/v2.1.108/v2.1.109 binaries.
 
 **Topic:** $argument
 
@@ -23,7 +23,7 @@ v2.1.90/v2.1.92/v2.1.94/v2.1.100/v2.1.101/v2.1.104 binaries.
 If `$argument` is empty or just whitespace, print this index and ask what the user wants to know:
 
 ```
-Available topics (71 lessons across 14 chapters):
+Available topics (76 lessons across 15 chapters):
   Boot & Core:    boot sequence, query engine, state management, system prompt, architecture overview
   Tools:          tool system, bash tool, file tools, search tools, MCP system
   Agents & AI:    skills system, agent system, coordinator mode, teams/swarm
@@ -58,6 +58,10 @@ Available topics (71 lessons across 14 chapters):
   New (v2.1.104): streaming partial yield protection (preserves partial content on timeout),
                   system prompt "Communication style" → "Text output (does not apply to tool calls)"
                   rename (gated: quiet_salted_ember + opus-4-6 model only)
+  New (v2.1.107-v2.1.109): /recap on-demand session recap, multi-repo checkout (REPO_CHECKOUTS,
+                  BASE_REFS), byte-level stream watchdog, REPL mode, managed-agents-2026-04-01
+                  API beta, /think-back+/thinkback-play removed, /clear description change,
+                  Session recap settings toggle, rate limit upgrade paths
 ```
 
 ---
@@ -68,7 +72,7 @@ Available topics (71 lessons across 14 chapters):
 bash ${CLAUDE_SKILL_DIR}/scripts/check-version.sh 2>/dev/null
 ```
 
-Silent if versions match. Prints a warning if the Claude Code version you're running differs from v2.1.104.
+Silent if versions match. Prints a warning if the Claude Code version you're running differs from v2.1.109.
 If there's a mismatch, note it in your answer — hooks and permission details change frequently.
 
 ## Step 2: Search with unified RRF
@@ -135,6 +139,9 @@ All reference files are in `${CLAUDE_SKILL_DIR}/references/`.
 | `07-verified-new-v2.1.92.md` | 10 | **Binary-verified v2.1.92.** Command changes: /setup-bedrock, /stop-hook (disabled), /teleport confirmed, /tag+/vim removed (L57). New env vars: CLAUDE_CODE_EXECPATH, CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX, CLAUDE_CODE_SKIP_FAST_MODE_ORG_CHECK (L58). AskUserQuestionTool (L59) |
 | `08-verified-new-v2.1.94.md` | 11 | **Binary-verified v2.1.94.** Command changes: /autofix-pr, /team-onboarding, /loop still present (L60). New env vars: CLAUDE_CODE_USE_MANTLE, CLAUDE_CODE_MCP_ALLOWLIST_ENV, CLAUDE_CODE_SANDBOXED, CLAUDE_CODE_TEAM_ONBOARDING (L61). |
 | `09-verified-new-v2.1.100.md` | 12 | **Binary-verified v2.1.97–v2.1.100.** /dream user-facing memory consolidation with 4-phase prompt, gate chain, sandboxing, team memory, tiny mode (L62). Perforce mode & Script Caps (L63). /setup-vertex, custom model capabilities, /buddy removal, REPL env var cleanup (L64). |
+| `10-verified-new-v2.1.101.md` | 13 | **Binary-verified v2.1.101.** Proactive away summary (L65). CA Certificate Store (L66). Dynamic loop pacing & cloud-first offering (L67). v2.1.101 command & env var changes (L68). Marble Origami reversible context collapse (L69). |
+| `11-verified-new-v2.1.104.md` | 14 | **Binary-verified v2.1.104.** Streaming partial yield protection (L70). System prompt section rename: "Text output" (L71). |
+| `12-verified-new-v2.1.109.md` | 15 | **Binary-verified v2.1.107–v2.1.109.** /recap on-demand session recap (L72). Multi-repo checkout & base refs (L73). Byte-level stream watchdog (L74). REPL mode (L75). v2.1.107–v2.1.109 command & env var changes (L76). |
 
 If unsure which file, use Grep across all references:
 ```

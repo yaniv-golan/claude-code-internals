@@ -1,7 +1,7 @@
 {
-  "generated": "2026-04-12",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.104",
-  "total_lessons": 71,
+  "generated": "2026-04-16",
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.109",
+  "total_lessons": 76,
   "lessons": [
     {
       "id": 1,
@@ -1138,6 +1138,126 @@
         "clientDataCache",
         "v2.1.104"
       ]
+    },
+    {
+      "id": 72,
+      "title": "/recap: On-Demand Session Recap",
+      "lesson_number": "72",
+      "file": "12-verified-new-v2.1.109.md",
+      "startLine": 22,
+      "endLine": 73,
+      "keywords": [
+        "recap",
+        "on-demand-recap",
+        "away-summary",
+        "sedge-lantern",
+        "CLAUDE_CODE_ENABLE_AWAY_SUMMARY",
+        "awaySummaryEnabled",
+        "session-recap",
+        "v2.1.107"
+      ]
+    },
+    {
+      "id": 73,
+      "title": "Multi-Repo Checkout & Base Refs",
+      "lesson_number": "73",
+      "file": "12-verified-new-v2.1.109.md",
+      "startLine": 75,
+      "endLine": 138,
+      "keywords": [
+        "multi-repo",
+        "repo-checkouts",
+        "CLAUDE_CODE_REPO_CHECKOUTS",
+        "CLAUDE_CODE_BASE_REFS",
+        "base-refs",
+        "branch-watching",
+        "ccr-v2",
+        "cloud-code-runner",
+        "CLAUDE_CODE_USE_CCR_V2",
+        "merge-base",
+        "TQ1",
+        "fs-watchFile",
+        "external-metadata",
+        "current-branches",
+        "v2.1.107"
+      ]
+    },
+    {
+      "id": 74,
+      "title": "Byte-Level Stream Watchdog",
+      "lesson_number": "74",
+      "file": "12-verified-new-v2.1.109.md",
+      "startLine": 140,
+      "endLine": 187,
+      "keywords": [
+        "byte-watchdog",
+        "stream-watchdog",
+        "CLAUDE_ENABLE_BYTE_WATCHDOG",
+        "tengu_stream_watchdog_default_on",
+        "transport-layer",
+        "idle-timeout",
+        "v2.1.107"
+      ]
+    },
+    {
+      "id": 75,
+      "title": "REPL Mode",
+      "lesson_number": "75",
+      "file": "12-verified-new-v2.1.109.md",
+      "startLine": 189,
+      "endLine": 308,
+      "keywords": [
+        "repl-mode",
+        "CLAUDE_CODE_REPL",
+        "CLAUDE_REPL_VARIANT",
+        "tengu_slate_harbor",
+        "repl_main_thread",
+        "query-source",
+        "vm-context",
+        "bun-transpiler",
+        "tool-restriction",
+        "helper-shortcuts",
+        "hydration",
+        "replay-log",
+        "prompt-suggestions",
+        "v2.1.108"
+      ]
+    },
+    {
+      "id": 76,
+      "title": "v2.1.107-v2.1.109 Command & Env Var Changes",
+      "lesson_number": "76",
+      "file": "12-verified-new-v2.1.109.md",
+      "startLine": 310,
+      "endLine": 485,
+      "keywords": [
+        "think-back-removed",
+        "thinkback-play-removed",
+        "clear-description-change",
+        "managed-agents-2026-04-01",
+        "managed-agents-docs",
+        "embedded-documentation",
+        "language-detection",
+        "ZU5",
+        "SKILL_MODEL_VARS",
+        "CLAUDE_CODE_DISABLE_CLAUDE_API_SKILL",
+        "CLAUDE_API_SKILL_DESCRIPTION",
+        "CLAUDE_INTERNAL_ASSISTANT_TEAM_NAME",
+        "CLAUDE_CODE_RESUME_FROM_SESSION",
+        "CLAUDE_CODE_ULTRAREVIEW_PREFLIGHT_FIXTURE",
+        "upgrade-paths",
+        "rate-limit",
+        "unified-rate-limit",
+        "HS9",
+        "oV9",
+        "early-warning",
+        "tengu_garnet_plover",
+        "tengu_jade_anvil_4",
+        "tengu_coral_beacon",
+        "v2.1.107",
+        "v2.1.108",
+        "v2.1.109"
+      ]
     }
   ],
   "keyword_map": {
@@ -1239,7 +1359,8 @@
       2,
       5,
       6,
-      70
+      70,
+      74
     ],
     "retry": [
       2,
@@ -2175,7 +2296,10 @@
       44,
       46,
       62,
-      68
+      68,
+      72,
+      74,
+      75
     ],
     "migration": [
       30
@@ -2749,7 +2873,8 @@
       13
     ],
     "repl": [
-      50
+      50,
+      75
     ],
     "screen": [
       50
@@ -2825,7 +2950,8 @@
       55,
       58,
       61,
-      68
+      68,
+      76
     ],
     "companion": [
       56
@@ -2973,13 +3099,16 @@
       64
     ],
     "away-summary": [
-      65
+      65,
+      72
     ],
     "recap": [
-      65
+      65,
+      72
     ],
     "sedge-lantern": [
-      65
+      65,
+      72
     ],
     "focus-blur": [
       65
@@ -3057,7 +3186,8 @@
       62,
       68,
       65,
-      67
+      67,
+      72
     ],
     "isEnabled": [
       62,
@@ -3131,10 +3261,12 @@
       70
     ],
     "watchdog": [
-      70
+      70,
+      74
     ],
     "idle-timeout": [
-      70
+      70,
+      74
     ],
     "StreamIdleTimeoutError": [
       70
@@ -3169,6 +3301,196 @@
     ],
     "clientDataCache": [
       71
+    ],
+    "on-demand-recap": [
+      72
+    ],
+    "CLAUDE_CODE_ENABLE_AWAY_SUMMARY": [
+      72
+    ],
+    "awaySummaryEnabled": [
+      72
+    ],
+    "session-recap": [
+      72
+    ],
+    "multi-repo": [
+      73
+    ],
+    "repo-checkouts": [
+      73
+    ],
+    "CLAUDE_CODE_REPO_CHECKOUTS": [
+      73
+    ],
+    "CLAUDE_CODE_BASE_REFS": [
+      73
+    ],
+    "base-refs": [
+      73
+    ],
+    "branch-watching": [
+      73
+    ],
+    "byte-watchdog": [
+      74
+    ],
+    "stream-watchdog": [
+      74
+    ],
+    "CLAUDE_ENABLE_BYTE_WATCHDOG": [
+      74
+    ],
+    "tengu_stream_watchdog_default_on": [
+      74
+    ],
+    "transport-layer": [
+      74
+    ],
+    "repl-mode": [
+      75
+    ],
+    "CLAUDE_CODE_REPL": [
+      75
+    ],
+    "CLAUDE_REPL_VARIANT": [
+      75
+    ],
+    "tengu_slate_harbor": [
+      75
+    ],
+    "repl_main_thread": [
+      75
+    ],
+    "query-source": [
+      75
+    ],
+    "think-back-removed": [
+      76
+    ],
+    "thinkback-play-removed": [
+      76
+    ],
+    "clear-description-change": [
+      76
+    ],
+    "managed-agents-2026-04-01": [
+      76
+    ],
+    "CLAUDE_API_SKILL_DESCRIPTION": [
+      76
+    ],
+    "CLAUDE_INTERNAL_ASSISTANT_TEAM_NAME": [
+      76
+    ],
+    "CLAUDE_CODE_RESUME_FROM_SESSION": [
+      76
+    ],
+    "CLAUDE_CODE_ULTRAREVIEW_PREFLIGHT_FIXTURE": [
+      76
+    ],
+    "upgrade-paths": [
+      76
+    ],
+    "tengu_garnet_plover": [
+      76
+    ],
+    "v2.1.107": [
+      72,
+      73,
+      74,
+      76
+    ],
+    "v2.1.108": [
+      75,
+      76
+    ],
+    "v2.1.109": [
+      76
+    ],
+    "ccr-v2": [
+      73
+    ],
+    "cloud-code-runner": [
+      73
+    ],
+    "CLAUDE_CODE_USE_CCR_V2": [
+      73
+    ],
+    "merge-base": [
+      73
+    ],
+    "TQ1": [
+      73
+    ],
+    "fs-watchFile": [
+      73
+    ],
+    "external-metadata": [
+      73
+    ],
+    "current-branches": [
+      73
+    ],
+    "vm-context": [
+      75
+    ],
+    "bun-transpiler": [
+      75
+    ],
+    "tool-restriction": [
+      75
+    ],
+    "helper-shortcuts": [
+      75
+    ],
+    "hydration": [
+      75
+    ],
+    "replay-log": [
+      75
+    ],
+    "prompt-suggestions": [
+      75
+    ],
+    "managed-agents-docs": [
+      76
+    ],
+    "embedded-documentation": [
+      76
+    ],
+    "language-detection": [
+      76
+    ],
+    "ZU5": [
+      76
+    ],
+    "SKILL_MODEL_VARS": [
+      76
+    ],
+    "CLAUDE_CODE_DISABLE_CLAUDE_API_SKILL": [
+      76
+    ],
+    "rate-limit": [
+      76
+    ],
+    "unified-rate-limit": [
+      76
+    ],
+    "HS9": [
+      76
+    ],
+    "oV9": [
+      76
+    ],
+    "early-warning": [
+      76
+    ],
+    "tengu_jade_anvil_4": [
+      76
+    ],
+    "tengu_coral_beacon": [
+      76
     ]
   }
 }

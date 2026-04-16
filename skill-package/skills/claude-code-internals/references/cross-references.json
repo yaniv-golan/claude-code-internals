@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-12",
+  "generated": "2026-04-16",
   "description": "Cross-reference map: for each lesson, lists related lessons ranked by relevance",
   "references": {
     "1": [
@@ -1105,6 +1105,11 @@
         "id": 21,
         "relevance": 0.65,
         "reason": "Vim mode state machine operates within the REPL input layer"
+      },
+      {
+        "id": 75,
+        "relevance": 0.7,
+        "reason": "L75 introduces REPL mode as a variant of the REPL screen"
       }
     ],
     "51": [
@@ -1340,6 +1345,11 @@
         "id": 50,
         "relevance": 0.65,
         "reason": "terminal focus detection for away_summary operates within the REPL layer"
+      },
+      {
+        "id": 72,
+        "relevance": 0.95,
+        "reason": "L72 adds on-demand /recap command using the same away summary infrastructure"
       }
     ],
     "66": [
@@ -1411,6 +1421,11 @@
         "id": 62,
         "relevance": 0.85,
         "reason": "GrowthBook flag tengu_kairos_dream gates /dream command; L68 documents full GrowthBook evaluation internals"
+      },
+      {
+        "id": 76,
+        "relevance": 0.88,
+        "reason": "L76 continues version-change documentation for v2.1.107-v2.1.109"
       }
     ],
     "69": [
@@ -1450,6 +1465,11 @@
         "id": 29,
         "relevance": 0.7,
         "reason": "new telemetry events (tier field, partial_yield cause) feed into analytics"
+      },
+      {
+        "id": 74,
+        "relevance": 0.92,
+        "reason": "L74 adds byte-level stream watchdog, counterpart to the event-level watchdog in L70"
       }
     ],
     "71": [
@@ -1467,6 +1487,111 @@
         "id": 68,
         "relevance": 0.65,
         "reason": "quiet_salted_ember is a clientDataCache flag, distinct from GrowthBook flags in L68"
+      }
+    ],
+    "72": [
+      {
+        "id": 65,
+        "relevance": 0.95,
+        "reason": "L65 documents the passive away summary system; L72 adds the on-demand /recap command using the same infrastructure"
+      },
+      {
+        "id": 18,
+        "relevance": 0.72,
+        "reason": "/recap registers as a slash command in the commands system from L18"
+      },
+      {
+        "id": 26,
+        "relevance": 0.68,
+        "reason": "awaySummaryEnabled setting toggle lives in the settings cascade from L26"
+      }
+    ],
+    "73": [
+      {
+        "id": 36,
+        "relevance": 0.82,
+        "reason": "multi-repo checkout extends git integration with branch watching across multiple repos"
+      },
+      {
+        "id": 37,
+        "relevance": 0.85,
+        "reason": "multi-repo checkout is CCR v2 remote infrastructure; branch data flows to CCR server via external_metadata"
+      },
+      {
+        "id": 12,
+        "relevance": 0.7,
+        "reason": "multi-repo support enables agents to operate across multiple repository checkouts"
+      },
+      {
+        "id": 18,
+        "relevance": 0.72,
+        "reason": "TQ1() merge-base resolution feeds into Write/Edit tool diff generation"
+      }
+    ],
+    "74": [
+      {
+        "id": 70,
+        "relevance": 0.95,
+        "reason": "L70 documents event-level stream watchdog and partial yield protection; L74 adds the byte-level counterpart"
+      },
+      {
+        "id": 2,
+        "relevance": 0.82,
+        "reason": "byte watchdog wraps the fetch layer used by the query engine's streaming pipeline"
+      },
+      {
+        "id": 33,
+        "relevance": 0.7,
+        "reason": "byte watchdog timeout feeds into the error handling and recovery system"
+      }
+    ],
+    "75": [
+      {
+        "id": 50,
+        "relevance": 0.88,
+        "reason": "REPL mode is a variant of the REPL screen documented in L50"
+      },
+      {
+        "id": 2,
+        "relevance": 0.78,
+        "reason": "REPL VM provides haiku()/opus()/sonnet() model sampling functions that invoke the query engine"
+      },
+      {
+        "id": 6,
+        "relevance": 0.75,
+        "reason": "REPL mode restricts tool set via OkH then re-injects tools into the VM via G47()/U4H()"
+      },
+      {
+        "id": 32,
+        "relevance": 0.7,
+        "reason": "REPL mode is compaction-aware — warns when VM state is cleared during context compaction"
+      }
+    ],
+    "76": [
+      {
+        "id": 68,
+        "relevance": 0.9,
+        "reason": "L68 covers v2.1.101 changes; L76 continues with v2.1.107-v2.1.109 changes"
+      },
+      {
+        "id": 64,
+        "relevance": 0.82,
+        "reason": "L64 covers v2.1.97-v2.1.100 changes; L76 is the next version change catch-all"
+      },
+      {
+        "id": 42,
+        "relevance": 0.72,
+        "reason": "managed-agents-2026-04-01 beta string and 33 embedded docs relate to Agent SDK entrypoints from L42"
+      },
+      {
+        "id": 11,
+        "relevance": 0.75,
+        "reason": "managed-agents docs are embedded as a built-in skill (claude-api); language detection via ZU5 parallels the skills system from L11"
+      },
+      {
+        "id": 2,
+        "relevance": 0.7,
+        "reason": "rate limit upgrade paths and HS9() unified header parsing interact with the query engine's response handling"
       }
     ]
   }

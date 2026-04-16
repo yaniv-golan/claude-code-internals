@@ -1,7 +1,7 @@
 {
   "name": "claude-code-internals",
-  "version": "2.5.0",
-  "description": "Gives Claude source-level knowledge of its own architecture. 71 lessons covering every internal subsystem — hooks (all 27 event types), permissions (7-phase pipeline, 23 validators), boot sequence, agents, compaction (including marble-origami reversible collapse), MCP, memory, AskUserQuestion tool, and binary-verified new features through v2.1.104 (streaming partial yield protection, system prompt rename, proactive away summary, CLAUDE_CODE_CERT_STORE, dynamic loop pacing, cloud-first loops, /dream, Perforce mode, Script Caps).",
+  "version": "2.6.0",
+  "description": "Gives Claude source-level knowledge of its own architecture. 76 lessons covering every internal subsystem — hooks (all 27 event types), permissions (7-phase pipeline, 23 validators), boot sequence, agents, compaction (including marble-origami reversible collapse), MCP, memory, AskUserQuestion tool, and binary-verified new features through v2.1.109 (/recap on-demand session recap, multi-repo checkout, byte-level stream watchdog, REPL mode, managed-agents API beta, streaming partial yield protection, system prompt rename, proactive away summary, CLAUDE_CODE_CERT_STORE, dynamic loop pacing, cloud-first loops, /dream, Perforce mode, Script Caps).",
   "author": {
     "name": "Yaniv Golan",
     "email": "yaniv@golan.name"

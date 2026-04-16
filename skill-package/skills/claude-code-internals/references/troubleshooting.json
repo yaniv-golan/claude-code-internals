@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-12",
+  "generated": "2026-04-16",
   "description": "Maps common symptoms/problems to relevant lessons for debugging Claude Code internals",
   "symptoms": [
     {
@@ -548,7 +548,7 @@
       "hint": "Set CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH when your SDK parent process provides a token refresh callback. On 401, Claude Code calls back to get a fresh token instead of failing."
     },
     {
-      "pattern": "dream not recognized|dream not available|dream command missing|learn not recognized",
+      "pattern": ["dream not recognized", "dream not available", "dream command missing", "learn not recognized"],
       "hint": "/dream is gated by server-side GrowthBook flag tengu_kairos_dream (default: false). The server does not send this flag, so it falls through to the default. Workaround: use scripts/patch-dream.sh to inject the flag into the local cache with a watcher that survives the SDK cache writeback. Binary patching is not viable (code-signed Bun SEA, SIGKILL on macOS).",
       "lessons": [
         62,
@@ -557,12 +557,104 @@
       "added": "2026-04-11"
     },
     {
-      "pattern": "feature flag not working|feature gate|tengu.*not enabled|growthbook override",
+      "pattern": ["feature flag not working", "feature gate", "tengu not enabled", "growthbook override"],
       "hint": "All local override mechanisms (env vars, config overrides) are stubbed/dead-code in the production binary. Flags are evaluated server-side via remoteEval. Binary is code-signed (SIGKILL on modification). For flags absent from server response, cache injection with a filesystem watcher can work. See L68 GrowthBook internals and scripts/patch-dream.sh for the technique.",
       "lessons": [
         68
       ],
       "added": "2026-04-11"
+    },
+    {
+      "pattern": [
+        "recap not working",
+        "/recap not available",
+        "recap command missing",
+        "session recap disabled"
+      ],
+      "lessons": [72, 65],
+      "hint": "/recap is gated behind tengu_sedge_lantern feature flag (default: false). Check with CLAUDE_CODE_ENABLE_AWAY_SUMMARY=true to force-enable. Also check awaySummaryEnabled in /config settings."
+    },
+    {
+      "pattern": [
+        "stream timeout",
+        "byte watchdog",
+        "no bytes received",
+        "stream idle byte",
+        "transport timeout"
+      ],
+      "lessons": [74, 70],
+      "hint": "Byte-level watchdog (CLAUDE_ENABLE_BYTE_WATCHDOG) detects transport-layer stalls. Event-level watchdog detects SSE parsing stalls. Set CLAUDE_ENABLE_BYTE_WATCHDOG=false to disable byte watchdog. Check tengu_stream_watchdog_default_on flag (default: true)."
+    },
+    {
+      "pattern": [
+        "multi repo",
+        "multiple repositories",
+        "repo checkouts not working",
+        "base refs"
+      ],
+      "lessons": [73],
+      "hint": "Multi-repo support uses CLAUDE_CODE_REPO_CHECKOUTS (JSON map of label→path) and CLAUDE_CODE_BASE_REFS (JSON map of label→ref). Both must be valid JSON with string→string entries."
+    },
+    {
+      "pattern": [
+        "think-back missing",
+        "thinkback not found",
+        "/think-back removed"
+      ],
+      "lessons": [76],
+      "hint": "/think-back and /thinkback-play were completely removed in v2.1.107. They are no longer available."
+    },
+    {
+      "pattern": [
+        "repl not working",
+        "repl mode disabled",
+        "CLAUDE_CODE_REPL not working",
+        "repl tools missing",
+        "repl import blocked"
+      ],
+      "lessons": [75],
+      "hint": "REPL mode is gated behind tengu_slate_harbor (default: false). Set CLAUDE_CODE_REPL=true to force-enable. Only works on cli/remote entrypoints. import/require are blocked — code runs in sealed VM. Tools are restricted to Read/Write/Edit/Bash/NotebookEdit via OkH set."
+    },
+    {
+      "pattern": [
+        "repl state lost",
+        "repl variables gone",
+        "repl reset",
+        "repl cleared"
+      ],
+      "lessons": [75, 32],
+      "hint": "REPL VM state is compaction-aware — context compaction clears the VM state and warns. Variables persist within a session but not across compaction events. Check replay-log for state hydration."
+    },
+    {
+      "pattern": [
+        "rate limit warning",
+        "rate limit suggestion",
+        "upgrade paths",
+        "rate limit upgrade",
+        "try /model sonnet"
+      ],
+      "lessons": [76],
+      "hint": "Rate limit upgrade paths use a 3-layer system: server header hints (anthropic-ratelimit-unified-upgrade-paths), client lever hints (oV9 — gated by tengu_garnet_plover, pro+seven_day only), and interactive options menu. Early warnings fire at percentage-based thresholds before actual rejection."
+    },
+    {
+      "pattern": [
+        "multi repo not working",
+        "branch watching not working",
+        "repo checkouts ignored",
+        "CCR v2 checkout"
+      ],
+      "lessons": [73, 37],
+      "hint": "Multi-repo checkout is CCR v2 infrastructure only — requires CLAUDE_CODE_USE_CCR_V2 to be enabled. Env vars are set by the external CCR orchestrator, not for local CLI use. Branch watching uses fs.watchFile on .git/HEAD at 1s intervals."
+    },
+    {
+      "pattern": [
+        "managed agents docs",
+        "claude-api skill",
+        "API skill disabled",
+        "managed agents not available"
+      ],
+      "lessons": [76, 42],
+      "hint": "33 managed-agents docs (~324KB) are embedded in the binary as part of the claude-api built-in skill. Disabled by CLAUDE_CODE_DISABLE_CLAUDE_API_SKILL env var. Language detection via ZU5() selects docs by project language; Go/Java/Ruby/PHP/C# have no managed-agents specific files."
     }
   ]
 }
