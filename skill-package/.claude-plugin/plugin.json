@@ -1,7 +1,7 @@
 {
   "name": "claude-code-internals",
-  "version": "2.7.0",
-  "description": "Gives Claude source-level knowledge of its own architecture. 84 lessons covering every internal subsystem — hooks (all 27 event types), permissions (7-phase pipeline, 23 validators), boot sequence, agents, compaction (including marble-origami reversible collapse), MCP, memory, AskUserQuestion tool, and binary-verified new features through v2.1.111 (Remote Workflow Commands /autopilot /bugfix /dashboard /docs /investigate, server-side Advisor Tool, PushNotification + KAIROS mobile push, Context Hint API server-driven micro-compaction, Fullscreen TUI with /focus and /tui, Proxy Auth Helper, System Prompt GB Override, /less-permission-prompts, canary channel, slow first-byte watchdog).",
+  "version": "2.8.0",
+  "description": "Gives Claude source-level knowledge of its own architecture. 85 lessons covering every internal subsystem — hooks (all 27 event types), permissions (7-phase pipeline, 23 validators), boot sequence, agents, compaction (including marble-origami reversible collapse), MCP, memory, AskUserQuestion tool, and binary-verified new features through v2.1.113 (server-side Advisor Tool, PushNotification + KAIROS mobile push, Context Hint API server-driven micro-compaction, Fullscreen TUI with /focus /tui and DECSTBM scrolling regions, Proxy Auth Helper, System Prompt GB Override, /fewer-permission-prompts, canary channel, slow first-byte watchdog, async-agent stall watchdog, Remote Workflow Commands /autopilot /bugfix /dashboard /docs /investigate sunset in v2.1.113).",
   "author": {
     "name": "Yaniv Golan",
     "email": "yaniv@golan.name"

@@ -17,6 +17,8 @@ Updated: 2026-04-17 | Source: Binary extraction from claude v2.1.110/v2.1.111
 > the bundle, you will miss this — every lesson below names both the client-side machinery
 > and the server-side gate controlling it.
 
+> **⚠ Direction correction in v2.1.113 — read Chapter 17 (L85) before treating this chapter as the final word.** The most visible expression of the "thin client dispatching to cloud" pattern documented here — the Remote Workflow Commands of L77 — was **removed outright in v2.1.113**, less than three release cycles after it shipped. The CCR v2 back-end (L73, `$X4()`, `CLAUDE_CODE_USE_CCR_V2`) survived, but the user-facing surface was pulled. In its place, v2.1.113 added local-daemon infrastructure (`CLAUDE_BG_BACKEND=daemon`, `autoAddRemoteControlDaemonWorker`) that sketches a different architecture: *the local binary hosts the session and survives terminal detachment*, rather than *the cloud hosts the session and the CLI dispatches to it*. The destination (unattended headless execution) is similar; the posture is inverted. Treat the server-driven-behavior narrative as **one thread, not the settled state** — Claude Code is in architectural flux.
+
 ---
 
 ## TABLE OF CONTENTS
@@ -33,6 +35,15 @@ Updated: 2026-04-17 | Source: Binary extraction from claude v2.1.110/v2.1.111
 ---
 
 # LESSON 77 -- REMOTE WORKFLOW COMMANDS
+
+> **⚠ SUNSET IN v2.1.113:** All five commands documented below (`/autopilot`, `/bugfix`,
+> `/dashboard`, `/docs`, `/investigate`) were **removed outright in v2.1.113** — zero
+> residual occurrences in the bundle, no feature-flag gate, no deprecation shim. The
+> back-end CCR v2 infrastructure (L73, `$X4()`, `CLAUDE_CODE_USE_CCR_V2`) is still
+> present; only the user-facing slash commands were deleted. See **L85** for details
+> of the sunset. This lesson remains as historical documentation for what v2.1.110
+> actually shipped. `/autofix-pr` (L60) is a different remote-workflow command and was
+> not affected.
 
 ## Overview
 
@@ -496,14 +507,14 @@ additions that don't warrant their own lessons.
 
 | Command | Version | Notes |
 |---------|---------|-------|
-| `/autopilot` | v2.1.110 | Remote Workflow (L77) |
-| `/bugfix` | v2.1.110 | Remote Workflow (L77) |
-| `/dashboard` | v2.1.110 | Remote Workflow (L77) |
-| `/docs` | v2.1.110 | Remote Workflow (L77) |
-| `/investigate` | v2.1.110 | Remote Workflow (L77) |
+| `/autopilot` | v2.1.110 | Remote Workflow (L77) — **removed in v2.1.113 (see L85)** |
+| `/bugfix` | v2.1.110 | Remote Workflow (L77) — **removed in v2.1.113 (see L85)** |
+| `/dashboard` | v2.1.110 | Remote Workflow (L77) — **removed in v2.1.113 (see L85)** |
+| `/docs` | v2.1.110 | Remote Workflow (L77) — **removed in v2.1.113 (see L85)** |
+| `/investigate` | v2.1.110 | Remote Workflow (L77) — **removed in v2.1.113 (see L85)** |
 | `/focus` | v2.1.110 | Fullscreen focus-timer (L81) |
 | `/tui` | v2.1.110 | Toggle fullscreen (L81) |
-| `/less-permission-prompts` | v2.1.111 | Methodology prompt (see below) |
+| `/less-permission-prompts` | v2.1.111 | Methodology prompt (see below) — **renamed to `/fewer-permission-prompts` in v2.1.113 (see L85)** |
 
 ## `/less-permission-prompts`
 

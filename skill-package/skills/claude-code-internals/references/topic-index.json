@@ -1,7 +1,7 @@
 {
-  "generated": "2026-04-17",
+  "generated": "2026-04-18",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.111",
-  "total_lessons": 84,
+  "total_lessons": 85,
   "lessons": [
     {
       "id": 1,
@@ -1458,6 +1458,77 @@
         "tengu_thinking_clear_latched",
         "v2.1.110",
         "v2.1.111"
+      ]
+    },
+    {
+      "id": 85,
+      "title": "v2.1.112-v2.1.113 Command & Env Var Changes (Remote Workflow Sunset)",
+      "lesson_number": "85",
+      "file": "14-verified-new-v2.1.113.md",
+      "startLine": 27,
+      "endLine": 179,
+      "keywords": [
+        "v2.1.112",
+        "v2.1.113",
+        "remote-workflow-sunset",
+        "autopilot-removed",
+        "bugfix-removed",
+        "dashboard-removed",
+        "docs-removed",
+        "investigate-removed",
+        "less-permission-prompts-renamed",
+        "fewer-permission-prompts",
+        "CLAUDE_ASYNC_AGENT_STALL_TIMEOUT_MS",
+        "async-agent-stall-watchdog",
+        "tengu_async_agent_stall_timeout",
+        "CLAUDE_BG_BACKEND",
+        "daemon-backend",
+        "bQ4",
+        "L_9",
+        "CLAUDE_CODE_BS_AS_CTRL_BACKSPACE",
+        "backspace-mapping",
+        "win32-backspace",
+        "fF4",
+        "jF4",
+        "CLAUDE_CODE_DECSTBM",
+        "DECSTBM",
+        "fullscreen-margin",
+        "tengu_marlin_porch",
+        "YHH",
+        "compact-description-changed",
+        "exit-description-changed",
+        "jA5",
+        "YA5",
+        "$X4",
+        "allow_remote_sessions",
+        "ccr-v2-sunset",
+        "tengu_silk_hinge",
+        "tengu_amber_lynx",
+        "tengu_unclean_exit",
+        "tengu_update_refused",
+        "tengu_image_resize_degraded",
+        "tengu_show_message_timestamps_setting_changed",
+        "showMessageTimestamps",
+        "autoAddRemoteControlDaemonWorker",
+        "activeCallWatchdogs",
+        "resetStallWatchdog",
+        "MCP-call-watchdog",
+        "mcp-transport-watchdog",
+        "daemon-mode",
+        "SIGHUP_ignored_bg",
+        "orphan-detector",
+        "update-command-iteration",
+        "tengu_remote_workflow_spawner_started",
+        "tengu_remote_workflow_spawner_result",
+        "submit-feedback-dialog",
+        "bug-report-dialog",
+        "feedback-submission",
+        "message-timestamps",
+        "stall-watchdog-hierarchy",
+        "tengu_sdk_stall",
+        "transport-dropped-mid-call",
+        "active_tasks-refusal",
+        "transcript_path_drift"
       ]
     }
   ],
@@ -3693,19 +3764,23 @@
       77
     ],
     "autopilot": [
-      77
+      77,
+      85
     ],
     "bugfix": [
-      77
+      77,
+      85
     ],
     "dashboard": [
-      77
+      77,
+      85
     ],
     "docs": [
       77
     ],
     "investigate": [
-      77
+      77,
+      85
     ],
     "ccr-byoc-2025-07-29": [
       77
@@ -3953,7 +4028,8 @@
       83
     ],
     "less-permission-prompts": [
-      84
+      84,
+      85
     ],
     "canary-channel": [
       84
@@ -4045,6 +4121,246 @@
       82,
       83,
       84
+    ],
+    "autopilot-removed": [
+      85
+    ],
+    "async-agent-stall-watchdog": [
+      85
+    ],
+    "daemon-backend": [
+      85
+    ],
+    "investigate-removed": [
+      85
+    ],
+    "dashboard-removed": [
+      85
+    ],
+    "claude_code_bs_as_ctrl_backspace": [
+      85
+    ],
+    "jf4": [
+      85
+    ],
+    "claude_code_decstbm": [
+      85
+    ],
+    "exit-description-changed": [
+      85
+    ],
+    "tengu_async_agent_stall_timeout": [
+      85
+    ],
+    "stall watchdog": [
+      85
+    ],
+    "exit description": [
+      85
+    ],
+    "ff4": [
+      85
+    ],
+    "bugfix removed": [
+      85
+    ],
+    "v2.1.112": [
+      85
+    ],
+    "daemon background": [
+      85
+    ],
+    "v2.1.113": [
+      85
+    ],
+    "l_9": [
+      85
+    ],
+    "backspace-mapping": [
+      85
+    ],
+    "compact-description-changed": [
+      85
+    ],
+    "ya5": [
+      85
+    ],
+    "ccr-v2-sunset": [
+      85
+    ],
+    "remote workflow sunset": [
+      85
+    ],
+    "marlin porch": [
+      85
+    ],
+    "claude_bg_backend": [
+      85
+    ],
+    "bq4": [
+      85
+    ],
+    "tengu_marlin_porch": [
+      85
+    ],
+    "$x4": [
+      85
+    ],
+    "docs-removed": [
+      85
+    ],
+    "async agent stall": [
+      85
+    ],
+    "remote-workflow-sunset": [
+      85
+    ],
+    "bugfix-removed": [
+      85
+    ],
+    "bg backend": [
+      85
+    ],
+    "decstbm": [
+      85
+    ],
+    "win32-backspace": [
+      85
+    ],
+    "allow_remote_sessions": [
+      85
+    ],
+    "ctrl backspace": [
+      85
+    ],
+    "autopilot removed": [
+      85
+    ],
+    "ja5": [
+      85
+    ],
+    "fullscreen-margin": [
+      85
+    ],
+    "yhh": [
+      85
+    ],
+    "claude_async_agent_stall_timeout_ms": [
+      85
+    ],
+    "fewer-permission-prompts": [
+      85
+    ],
+    "compact description": [
+      85
+    ],
+    "less-permission-prompts-renamed": [
+      85
+    ],
+    "/autopilot": [
+      85
+    ],
+    "/bugfix": [
+      85
+    ],
+    "/dashboard": [
+      85
+    ],
+    "/docs": [
+      85
+    ],
+    "/investigate": [
+      85
+    ],
+    "/less-permission-prompts": [
+      85
+    ],
+    "tengu_silk_hinge": [
+      85
+    ],
+    "silk_hinge": [
+      85
+    ],
+    "tengu_amber_lynx": [
+      85
+    ],
+    "amber_lynx": [
+      85
+    ],
+    "tengu_unclean_exit": [
+      85
+    ],
+    "tengu_update_refused": [
+      85
+    ],
+    "tengu_image_resize_degraded": [
+      85
+    ],
+    "tengu_show_message_timestamps_setting_changed": [
+      85
+    ],
+    "showmessagetimestamps": [
+      85
+    ],
+    "show message timestamps": [
+      85
+    ],
+    "message timestamps": [
+      85
+    ],
+    "autoaddremotecontroldaemonworker": [
+      85
+    ],
+    "activecallwatchdogs": [
+      85
+    ],
+    "resetstallwatchdog": [
+      85
+    ],
+    "mcp call watchdog": [
+      85
+    ],
+    "mcp transport watchdog": [
+      85
+    ],
+    "mcp transport lost": [
+      85
+    ],
+    "transport dropped mid-call": [
+      85
+    ],
+    "daemon mode": [
+      85
+    ],
+    "sighup ignored bg": [
+      85
+    ],
+    "claude daemon": [
+      85
+    ],
+    "update command disabled": [
+      85
+    ],
+    "update still disabled": [
+      85
+    ],
+    "image resize degraded": [
+      85
+    ],
+    "feedback dialog": [
+      85
+    ],
+    "bug report dialog": [
+      85
+    ],
+    "submit feedback": [
+      85
+    ],
+    "sdk stall": [
+      85
+    ],
+    "stall watchdog hierarchy": [
+      85
     ]
   }
 }

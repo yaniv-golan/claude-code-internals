@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-17",
+  "generated": "2026-04-18",
   "description": "Maps common symptoms/problems to relevant lessons for debugging Claude Code internals",
   "symptoms": [
     {
@@ -848,6 +848,167 @@
         29
       ],
       "hint": "v2.1.110-v2.1.111 moved significant behavior to the server side. Advisor Tool (tengu_sage_compass2), Context Hint API (tengu_hazel_osprey), System Prompt GB Override (CLAUDE_CODE_REMOTE + user-supplied GB feature), Canary channel (tengu_canary), Fullscreen rollout (tengu_pewter_brook) all let Anthropic alter behavior per-user/per-org without a binary release. Two users on the same binary can get materially different experiences."
+    },
+    {
+      "pattern": [
+        "autopilot gone",
+        "bugfix command removed",
+        "where is /dashboard",
+        "/docs not working",
+        "investigate command missing",
+        "remote workflow commands removed"
+      ],
+      "lessons": [
+        85,
+        77,
+        60
+      ],
+      "hint": "All five Remote Workflow Commands (/autopilot, /bugfix, /dashboard, /docs, /investigate) were removed outright in v2.1.113 \u2014 no feature flag, no deprecation shim, code deleted. See L85. The back-end CCR v2 infrastructure (L73) and /autofix-pr (L60) survive. L77 remains as historical documentation for what v2.1.110 shipped."
+    },
+    {
+      "pattern": [
+        "less-permission-prompts not found",
+        "unknown command less-permission",
+        "fewer-permission-prompts",
+        "permission prompt command"
+      ],
+      "lessons": [
+        85,
+        84
+      ],
+      "hint": "`/less-permission-prompts` was renamed to `/fewer-permission-prompts` in v2.1.113. The methodology prompt body is byte-identical; only the command name changed. The unknown-command did-you-mean helper (_a5()) should suggest the new name. See L85."
+    },
+    {
+      "pattern": [
+        "async agent stall",
+        "agent watchdog",
+        "agent stall timeout",
+        "tengu_async_agent_stall_timeout",
+        "agent aborted no progress"
+      ],
+      "lessons": [
+        85,
+        6
+      ],
+      "hint": "v2.1.113 added CLAUDE_ASYNC_AGENT_STALL_TIMEOUT_MS (default 600000ms / 10min). When no progress message arrives within the timeout, the async agent signal is aborted and tengu_async_agent_stall_timeout is emitted with agent_type/stall_ms/last_message_type/message_count. See L85."
+    },
+    {
+      "pattern": [
+        "backspace not working windows",
+        "ctrl backspace",
+        "CLAUDE_CODE_BS_AS_CTRL_BACKSPACE",
+        "windows terminal delete word"
+      ],
+      "lessons": [
+        85,
+        26
+      ],
+      "hint": "v2.1.113 added CLAUDE_CODE_BS_AS_CTRL_BACKSPACE. Auto-enabled on win32 except mintty/cygwin. Set truthy to force-on, explicit false to force-off. Fixes the Windows quirk where backspace arrives as BS (\\x08) instead of Ctrl+Backspace (\\x7F). See L85."
+    },
+    {
+      "pattern": [
+        "fullscreen sticky bar",
+        "DECSTBM",
+        "CLAUDE_CODE_DECSTBM",
+        "tui scrolling region",
+        "tengu_marlin_porch"
+      ],
+      "lessons": [
+        85,
+        81
+      ],
+      "hint": "v2.1.113 added CLAUDE_CODE_DECSTBM opt-in for ANSI Set Top/Bottom Margin escape sequences in the fullscreen TUI, plus tengu_marlin_porch as the GrowthBook rollout gate. Requires TTY + capability check + not-CI. Env var short-circuits the flag. See L85 for resolver details, L81 for fullscreen TUI context."
+    },
+    {
+      "pattern": [
+        "CLAUDE_BG_BACKEND",
+        "daemon background",
+        "background stdout EPIPE",
+        "background writer crashed"
+      ],
+      "lessons": [
+        85
+      ],
+      "hint": "v2.1.113 added CLAUDE_BG_BACKEND. When exactly \"daemon\", the background stdout writer latches EIO/EPIPE into a flag (L_9) instead of throwing. Used to stabilize writes when the parent TTY has detached under a daemon supervisor. See L85."
+    },
+    {
+      "pattern": [
+        "show message timestamps",
+        "timestamps in chat",
+        "timestamp each message",
+        "tengu_silk_hinge"
+      ],
+      "lessons": [
+        85
+      ],
+      "hint": "v2.1.113 adds a 'Show message timestamps' setting (showMessageTimestamps, default false). Toggle is only visible in /config when GrowthBook flag tengu_silk_hinge is enabled \u2014 a server-gated UX rollout. Changes fire tengu_show_message_timestamps_setting_changed telemetry. See L85."
+    },
+    {
+      "pattern": [
+        "claude survived sighup",
+        "daemon mode",
+        "claude stays running after terminal close",
+        "autoAddRemoteControlDaemonWorker",
+        "auto add remote control daemon"
+      ],
+      "lessons": [
+        85,
+        37
+      ],
+      "hint": "v2.1.113 adds daemon-mode support via CLAUDE_BG_BACKEND=daemon: SIGHUP is ignored (logged SIGHUP_ignored_bg), stdout EIO/EPIPE is latched instead of thrown, and the 30s TTY-orphan detector is bypassed. Paired with a new user setting autoAddRemoteControlDaemonWorker (consumer is not present in the binary \u2014 likely server-side or forthcoming). Together these sketch a 'Claude Code as daemon worker under Remote Control' architecture. See L85 for semantics, L37 for Bridge/Remote context."
+    },
+    {
+      "pattern": [
+        "mcp tool hung",
+        "mcp call hangs",
+        "mcp transport dropped",
+        "tool still running",
+        "transport lost mid-call",
+        "activeCallWatchdogs"
+      ],
+      "lessons": [
+        85,
+        7
+      ],
+      "hint": "v2.1.113 adds MCP call watchdog (activeCallWatchdogs set on MCP transport state). Every 30s an in-flight MCP tool call logs 'Tool X still running (Ns elapsed)'. If the transport observed an error mid-call, the call is aborted 90s after the error mark with 'MCP server X transport dropped mid-call; response for tool Y was lost'. Closes a hole where MCP tool calls could hang indefinitely after transport errors. See L85."
+    },
+    {
+      "pattern": [
+        "prior session crashed",
+        "claude crashed last time",
+        "tengu_unclean_exit",
+        "session exited uncleanly"
+      ],
+      "lessons": [
+        85,
+        31
+      ],
+      "hint": "v2.1.113 adds unclean-exit detection at startup. When a prior interactive session is found to have exited uncleanly, a startup message 'Prior session exited uncleanly: SID (vX)' is logged and tengu_unclean_exit fires with session_age_sec, prior_version, on_current_version. Pure observability \u2014 does not auto-resume. See L85."
+    },
+    {
+      "pattern": [
+        "/update command",
+        "update command hidden",
+        "why is /update hidden",
+        "claude update in place",
+        "tengu_update_refused"
+      ],
+      "lessons": [
+        85,
+        68
+      ],
+      "hint": "/update is still isEnabled:()=>false and isHidden:true in v2.1.113 (not user-visible), but its implementation is being actively iterated. Two refusal paths now emit tengu_update_refused: active_tasks (refuses while any task is running/pending) and transcript_path_drift (refuses when session transcript is in a different project dir). Signals an upcoming staged launch of in-place native-installer upgrade. See L85, and L68 for the v2.1.101 state where /update was first introduced-but-disabled."
+    },
+    {
+      "pattern": [
+        "image could not be processed",
+        "image resize failed",
+        "tengu_image_resize_degraded"
+      ],
+      "lessons": [
+        85
+      ],
+      "hint": "v2.1.113 adds tengu_image_resize_degraded telemetry emitted when an image block throws a VI error during processing; the block is substituted with a text placeholder '[Image could not be processed: <message>]'. No user-configurable gate \u2014 purely observational. See L85."
     }
   ]
 }

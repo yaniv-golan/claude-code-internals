@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-17",
+  "generated": "2026-04-18",
   "description": "Cross-reference map: for each lesson, lists related lessons ranked by relevance",
   "references": {
     "1": [
@@ -824,6 +824,11 @@
         "id": 46,
         "relevance": 0.6,
         "reason": "proxy can route between model providers"
+      },
+      {
+        "id": 85,
+        "relevance": 0.75,
+        "reason": "L85 adds CLAUDE_BG_BACKEND=daemon and autoAddRemoteControlDaemonWorker \u2014 the env gate for the always-on local worker this Remote Control bridge feeds into"
       }
     ],
     "38": [
@@ -951,6 +956,11 @@
         "id": 15,
         "relevance": 0.62,
         "reason": "KAIROS daemon uses memory for autonomous context persistence"
+      },
+      {
+        "id": 85,
+        "relevance": 0.65,
+        "reason": "L85's daemon-mode env gate is the first explicit local-infrastructure switch for the KAIROS always-on pattern"
       }
     ],
     "44": [
@@ -1235,6 +1245,11 @@
         "id": 34,
         "relevance": 0.82,
         "reason": "/autofix-pr depends on remote-session infrastructure rather than local-only command execution"
+      },
+      {
+        "id": 85,
+        "relevance": 0.5,
+        "reason": "L85's Remote Workflow sunset leaves /autofix-pr (L60) as the surviving remote-spawn command"
       }
     ],
     "61": [
@@ -1426,6 +1441,11 @@
         "id": 76,
         "relevance": 0.88,
         "reason": "L76 continues version-change documentation for v2.1.107-v2.1.109"
+      },
+      {
+        "id": 85,
+        "relevance": 0.5,
+        "reason": "L85 shows /update actively iterating (module hash churn, new refusal paths) despite still being isEnabled:()=>false from L68 \u2014 daemon-mode may be the delivery vehicle"
       }
     ],
     "69": [
@@ -1619,6 +1639,11 @@
         "id": 83,
         "relevance": 0.68,
         "reason": "CCR-hosted remote sessions may get server-overridden system prompts via the mechanism in L83"
+      },
+      {
+        "id": 85,
+        "relevance": 0.95,
+        "reason": "L85 documents the v2.1.113 sunset of all five Remote Workflow Commands described here"
       }
     ],
     "78": [
@@ -1668,6 +1693,11 @@
         "id": 20,
         "relevance": 0.65,
         "reason": "PushNotification complements the local notification system (L20) \u2014 one is transactional, the other is in-session"
+      },
+      {
+        "id": 85,
+        "relevance": 0.5,
+        "reason": "L85's daemon-mode gate complements the mobile push infrastructure of L79 \u2014 both are moves toward an always-on local posture"
       }
     ],
     "80": [
@@ -1717,6 +1747,11 @@
         "id": 84,
         "relevance": 0.6,
         "reason": "/focus and /tui are among the new slash commands tabulated in L84"
+      },
+      {
+        "id": 85,
+        "relevance": 0.55,
+        "reason": "L85 adds CLAUDE_CODE_DECSTBM + tengu_marlin_porch for scrolling-region support in the fullscreen TUI"
       }
     ],
     "82": [
@@ -1783,6 +1818,58 @@
         "id": 11,
         "relevance": 0.65,
         "reason": "/less-permission-prompts is a built-in skill/command; coexists with user-installed skills per L11 precedence rules"
+      },
+      {
+        "id": 85,
+        "relevance": 0.9,
+        "reason": "L85 is the next per-release catch-all, covering v2.1.112-v2.1.113 command and env-var changes"
+      }
+    ],
+    "85": [
+      {
+        "id": 77,
+        "relevance": 0.95,
+        "reason": "L85 documents the sunset of the 5 Remote Workflow Commands introduced in L77 (v2.1.110); read L77 for how they worked, L85 for what was removed and why that matters"
+      },
+      {
+        "id": 84,
+        "relevance": 0.9,
+        "reason": "L85 continues the per-release catch-all pattern established by L84 (v2.1.110-v2.1.111); together they document the full v2.1.110-v2.1.113 command/env-var delta"
+      },
+      {
+        "id": 60,
+        "relevance": 0.7,
+        "reason": "L60's /autofix-pr is the surviving Remote Workflow command \u2014 read together to see which remote commands persist vs. were sunset"
+      },
+      {
+        "id": 81,
+        "relevance": 0.65,
+        "reason": "L85's CLAUDE_CODE_DECSTBM + tengu_marlin_porch extends the Fullscreen TUI machinery documented in L81"
+      },
+      {
+        "id": 73,
+        "relevance": 0.6,
+        "reason": "L73 CCR v2 multi-repo infrastructure survives the L85 sunset \u2014 the scaffolding remains even though L77's user-facing commands were removed"
+      },
+      {
+        "id": 6,
+        "relevance": 0.55,
+        "reason": "L85's CLAUDE_ASYNC_AGENT_STALL_TIMEOUT_MS is an async-agent watchdog; L6 is the agent system canonical reference"
+      },
+      {
+        "id": 37,
+        "relevance": 0.75,
+        "reason": "Remote Control bridge the daemon worker is expected to plug into; autoAddRemoteControlDaemonWorker sits alongside L37's remoteControlAtStartup as a second ingress for the same persistent worker"
+      },
+      {
+        "id": 43,
+        "relevance": 0.65,
+        "reason": "KAIROS cron/scheduling infrastructure depends on a long-lived process; CLAUDE_BG_BACKEND=daemon is the first explicit env gate for that always-on local posture"
+      },
+      {
+        "id": 79,
+        "relevance": 0.5,
+        "reason": "Mobile push pipeline requires a background worker reachable when no TTY is attached \u2014 daemon-mode env gate makes that explicit"
       }
     ]
   }
