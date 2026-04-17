@@ -1,12 +1,12 @@
 {
-  "skill_version": "2.6.0",
-  "captured_version": "2.1.109",
-  "captured_date": "2026-04-16",
+  "skill_version": "2.7.0",
+  "captured_version": "2.1.111",
+  "captured_date": "2026-04-17",
   "source": "https://www.markdown.engineering/learn-claude-code/",
-  "verified_against_binary": "2.1.109",
-  "lessons_count": 76,
-  "chapters_count": 15,
-  "total_size_kb": 770,
-  "keywords_indexed": 760,
-  "note": "Core lessons from markdown.engineering (v2.1.88), verified and updated against live v2.1.90/v2.1.91/v2.1.92/v2.1.94/v2.1.96/v2.1.100/v2.1.101/v2.1.104/v2.1.107/v2.1.108/v2.1.109 binaries. Chapter 15 (L72-L76) covers v2.1.107-v2.1.109 changes: /recap on-demand session recap, multi-repo checkout support, byte-level stream watchdog, REPL mode, /think-back removal, /clear description change, managed-agents-2026-04-01 beta."
+  "verified_against_binary": "2.1.111",
+  "lessons_count": 84,
+  "chapters_count": 16,
+  "total_size_kb": 790,
+  "keywords_indexed": 820,
+  "note": "Core lessons from markdown.engineering (v2.1.88), verified and updated against live v2.1.90/v2.1.91/v2.1.92/v2.1.94/v2.1.96/v2.1.100/v2.1.101/v2.1.104/v2.1.107/v2.1.108/v2.1.109/v2.1.110/v2.1.111 binaries. Chapter 16 (L77-L84) covers v2.1.110-v2.1.111 changes: Remote Workflow Commands (CCR v2), server-side Advisor Tool, PushNotification + KAIROS, Context Hint API (server-driven micro-compaction), Fullscreen TUI + /focus + /tui, Proxy Auth Helper, System Prompt GB Override, /less-permission-prompts, canary channel, slow first-byte watchdog."
 }

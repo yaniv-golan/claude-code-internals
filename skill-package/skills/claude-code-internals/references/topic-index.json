@@ -1,7 +1,7 @@
 {
-  "generated": "2026-04-16",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.109",
-  "total_lessons": 76,
+  "generated": "2026-04-17",
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.111",
+  "total_lessons": 84,
   "lessons": [
     {
       "id": 1,
@@ -1258,6 +1258,207 @@
         "v2.1.108",
         "v2.1.109"
       ]
+    },
+    {
+      "id": 77,
+      "title": "Remote Workflow Commands (/autopilot, /bugfix, /dashboard, /docs, /investigate)",
+      "lesson_number": "77",
+      "file": "13-verified-new-v2.1.111.md",
+      "startLine": 35,
+      "endLine": 100,
+      "keywords": [
+        "remote-workflow",
+        "autopilot",
+        "bugfix",
+        "dashboard",
+        "docs",
+        "investigate",
+        "ccr-v2",
+        "cloud-code-runner",
+        "ccr-byoc-2025-07-29",
+        "jA5",
+        "YA5",
+        "remote-session",
+        "v2.1.110"
+      ]
+    },
+    {
+      "id": 78,
+      "title": "Advisor Tool (Server-Side Reviewer Model)",
+      "lesson_number": "78",
+      "file": "13-verified-new-v2.1.111.md",
+      "startLine": 101,
+      "endLine": 173,
+      "keywords": [
+        "advisor-tool",
+        "advisor",
+        "server-tool-use",
+        "advisor-tool-result",
+        "tengu_sage_compass2",
+        "CLAUDE_CODE_DISABLE_ADVISOR_TOOL",
+        "CLAUDE_CODE_ENABLE_EXPERIMENTAL_ADVISOR_TOOL",
+        "byH",
+        "zx",
+        "reviewer-model",
+        "agent-on-agent",
+        "superego",
+        "opus-4-7",
+        "sonnet-4-6",
+        "first-party-only",
+        "v2.1.110"
+      ]
+    },
+    {
+      "id": 79,
+      "title": "PushNotification Tool + KAIROS Mobile Push",
+      "lesson_number": "79",
+      "file": "13-verified-new-v2.1.111.md",
+      "startLine": 174,
+      "endLine": 227,
+      "keywords": [
+        "PushNotification",
+        "push-notification-tool",
+        "KAIROS",
+        "mobile-push",
+        "proactive",
+        "remote-control-bridge",
+        "disabledReason",
+        "config_off",
+        "user_present",
+        "bridge_inactive",
+        "localSent",
+        "hasFocus",
+        "v2.1.110"
+      ]
+    },
+    {
+      "id": 80,
+      "title": "Context Hint API (Server-Driven Micro-Compaction)",
+      "lesson_number": "80",
+      "file": "13-verified-new-v2.1.111.md",
+      "startLine": 228,
+      "endLine": 298,
+      "keywords": [
+        "context-hint",
+        "context-hint-api",
+        "context-hint-2026-04-09",
+        "tengu_hazel_osprey",
+        "YE5",
+        "sF7",
+        "sT9",
+        "keep-recent",
+        "micro-compaction",
+        "server-driven-compaction",
+        "422",
+        "424",
+        "409",
+        "529",
+        "invalid_request",
+        "context_hint_rejection",
+        "repl_main_thread",
+        "v2.1.110"
+      ]
+    },
+    {
+      "id": 81,
+      "title": "Fullscreen TUI, /focus, /tui",
+      "lesson_number": "81",
+      "file": "13-verified-new-v2.1.111.md",
+      "startLine": 299,
+      "endLine": 358,
+      "keywords": [
+        "fullscreen-tui",
+        "tui",
+        "focus",
+        "alt-screen",
+        "CLAUDE_CODE_FULLSCREEN",
+        "CLAUDE_CODE_NO_FLICKER",
+        "tengu_pewter_brook",
+        "tengu_ochre_hollow",
+        "Qq",
+        "child_process-spawn",
+        "respawn",
+        "tmux-control-mode",
+        "focus-timer",
+        "pomodoro",
+        "v2.1.110"
+      ]
+    },
+    {
+      "id": 82,
+      "title": "Proxy Auth Helper",
+      "lesson_number": "82",
+      "file": "13-verified-new-v2.1.111.md",
+      "startLine": 359,
+      "endLine": 416,
+      "keywords": [
+        "proxy-auth-helper",
+        "proxyAuthHelper",
+        "CLAUDE_CODE_PROXY_AUTHENTICATE",
+        "qP_",
+        "rotating-proxy-credential",
+        "workspace-trust",
+        "stale-cache-fallback",
+        "apiKeyHelper",
+        "awsAuthRefresh",
+        "shell-command-helper",
+        "v2.1.111"
+      ]
+    },
+    {
+      "id": 83,
+      "title": "System Prompt Modifications (GB Override, Append-Subagent, Verified-vs-Assumed)",
+      "lesson_number": "83",
+      "file": "13-verified-new-v2.1.111.md",
+      "startLine": 417,
+      "endLine": 489,
+      "keywords": [
+        "system-prompt-override",
+        "system-prompt-gb-override",
+        "CLAUDE_CODE_SYSTEM_PROMPT_GB_FEATURE",
+        "CLAUDE_CODE_REMOTE",
+        "CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT",
+        "appendSubagentSystemPrompt",
+        "verified-vs-assumed",
+        "hallucination-mitigation",
+        "prompt-composition",
+        "v2.1.111"
+      ]
+    },
+    {
+      "id": 84,
+      "title": "v2.1.110-v2.1.111 Command & Env Var Changes",
+      "lesson_number": "84",
+      "file": "13-verified-new-v2.1.111.md",
+      "startLine": 490,
+      "endLine": 625,
+      "keywords": [
+        "less-permission-prompts",
+        "canary-channel",
+        "tengu_canary",
+        "rp1",
+        "op1",
+        "slow-first-byte",
+        "CLAUDE_SLOW_FIRST_BYTE_MS",
+        "tengu_api_slow_first_byte",
+        "background-plugin-refresh",
+        "CLAUDE_CODE_ENABLE_BACKGROUND_PLUGIN_REFRESH",
+        "unknown-command-suggestion",
+        "tengu_unknown_command_suggestion",
+        "_a5",
+        "external-editor-context",
+        "externalEditorContext",
+        "pr-status-footer",
+        "prStatusFooterEnabled",
+        "tengu_slash_link_clicked",
+        "tengu_review_remote_stopped",
+        "tengu_vscode_sdk_stream_ended_no_result",
+        "tengu_relay_chain_v",
+        "tengu_tool_search_unsupported_model",
+        "tengu_thinking_clear_latched",
+        "v2.1.110",
+        "v2.1.111"
+      ]
     }
   ],
   "keyword_map": {
@@ -1420,7 +1621,7 @@
       28
     ],
     "context-collapse": [
-      2,
+      69,
       28
     ],
     "async-generator": [
@@ -3228,10 +3429,6 @@
     "marble-origami": [
       69
     ],
-    "context-collapse": [
-      69,
-      28
-    ],
     "contextCollapse": [
       69,
       28
@@ -3491,6 +3688,363 @@
     ],
     "tengu_coral_beacon": [
       76
+    ],
+    "remote-workflow": [
+      77
+    ],
+    "autopilot": [
+      77
+    ],
+    "bugfix": [
+      77
+    ],
+    "dashboard": [
+      77
+    ],
+    "docs": [
+      77
+    ],
+    "investigate": [
+      77
+    ],
+    "ccr-byoc-2025-07-29": [
+      77
+    ],
+    "jA5": [
+      77
+    ],
+    "YA5": [
+      77
+    ],
+    "remote-session": [
+      77
+    ],
+    "v2.1.110": [
+      77,
+      78,
+      79,
+      80,
+      81,
+      84
+    ],
+    "advisor-tool": [
+      78
+    ],
+    "advisor": [
+      78
+    ],
+    "server-tool-use": [
+      78
+    ],
+    "advisor-tool-result": [
+      78
+    ],
+    "tengu_sage_compass2": [
+      78
+    ],
+    "CLAUDE_CODE_DISABLE_ADVISOR_TOOL": [
+      78
+    ],
+    "CLAUDE_CODE_ENABLE_EXPERIMENTAL_ADVISOR_TOOL": [
+      78
+    ],
+    "byH": [
+      78
+    ],
+    "zx": [
+      78
+    ],
+    "reviewer-model": [
+      78
+    ],
+    "agent-on-agent": [
+      78
+    ],
+    "superego": [
+      78
+    ],
+    "opus-4-7": [
+      78
+    ],
+    "sonnet-4-6": [
+      78
+    ],
+    "first-party-only": [
+      78,
+      80
+    ],
+    "PushNotification": [
+      79
+    ],
+    "push-notification-tool": [
+      79
+    ],
+    "KAIROS": [
+      79,
+      43
+    ],
+    "mobile-push": [
+      79
+    ],
+    "remote-control-bridge": [
+      79
+    ],
+    "disabledReason": [
+      79
+    ],
+    "config_off": [
+      79
+    ],
+    "user_present": [
+      79
+    ],
+    "bridge_inactive": [
+      79
+    ],
+    "localSent": [
+      79
+    ],
+    "hasFocus": [
+      79
+    ],
+    "context-hint": [
+      80
+    ],
+    "context-hint-api": [
+      80
+    ],
+    "context-hint-2026-04-09": [
+      80
+    ],
+    "tengu_hazel_osprey": [
+      80
+    ],
+    "YE5": [
+      80
+    ],
+    "sF7": [
+      80
+    ],
+    "sT9": [
+      80
+    ],
+    "keep-recent": [
+      80
+    ],
+    "micro-compaction": [
+      80
+    ],
+    "server-driven-compaction": [
+      80
+    ],
+    "422": [
+      80
+    ],
+    "424": [
+      80
+    ],
+    "409": [
+      80
+    ],
+    "529": [
+      80,
+      2
+    ],
+    "invalid_request": [
+      80
+    ],
+    "context_hint_rejection": [
+      80
+    ],
+    "fullscreen-tui": [
+      81
+    ],
+    "tui": [
+      81
+    ],
+    "focus": [
+      81
+    ],
+    "CLAUDE_CODE_FULLSCREEN": [
+      81
+    ],
+    "CLAUDE_CODE_NO_FLICKER": [
+      81
+    ],
+    "tengu_pewter_brook": [
+      81
+    ],
+    "tengu_ochre_hollow": [
+      81
+    ],
+    "Qq": [
+      81
+    ],
+    "child_process-spawn": [
+      81
+    ],
+    "respawn": [
+      81
+    ],
+    "tmux-control-mode": [
+      81
+    ],
+    "focus-timer": [
+      81
+    ],
+    "pomodoro": [
+      81
+    ],
+    "proxy-auth-helper": [
+      82
+    ],
+    "proxyAuthHelper": [
+      82
+    ],
+    "CLAUDE_CODE_PROXY_AUTHENTICATE": [
+      82
+    ],
+    "qP_": [
+      82
+    ],
+    "rotating-proxy-credential": [
+      82
+    ],
+    "workspace-trust": [
+      82
+    ],
+    "stale-cache-fallback": [
+      82
+    ],
+    "apiKeyHelper": [
+      82
+    ],
+    "awsAuthRefresh": [
+      82
+    ],
+    "shell-command-helper": [
+      82
+    ],
+    "system-prompt-override": [
+      83
+    ],
+    "system-prompt-gb-override": [
+      83
+    ],
+    "CLAUDE_CODE_SYSTEM_PROMPT_GB_FEATURE": [
+      83
+    ],
+    "CLAUDE_CODE_REMOTE": [
+      83
+    ],
+    "CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT": [
+      83
+    ],
+    "appendSubagentSystemPrompt": [
+      83
+    ],
+    "verified-vs-assumed": [
+      83
+    ],
+    "hallucination-mitigation": [
+      83
+    ],
+    "prompt-composition": [
+      83
+    ],
+    "less-permission-prompts": [
+      84
+    ],
+    "canary-channel": [
+      84
+    ],
+    "tengu_canary": [
+      84
+    ],
+    "rp1": [
+      84
+    ],
+    "op1": [
+      84
+    ],
+    "slow-first-byte": [
+      84
+    ],
+    "CLAUDE_SLOW_FIRST_BYTE_MS": [
+      84
+    ],
+    "tengu_api_slow_first_byte": [
+      84
+    ],
+    "background-plugin-refresh": [
+      84
+    ],
+    "CLAUDE_CODE_ENABLE_BACKGROUND_PLUGIN_REFRESH": [
+      84
+    ],
+    "unknown-command-suggestion": [
+      84
+    ],
+    "tengu_unknown_command_suggestion": [
+      84
+    ],
+    "_a5": [
+      84
+    ],
+    "external-editor-context": [
+      84
+    ],
+    "externalEditorContext": [
+      84
+    ],
+    "pr-status-footer": [
+      84
+    ],
+    "prStatusFooterEnabled": [
+      84
+    ],
+    "tengu_slash_link_clicked": [
+      84
+    ],
+    "tengu_review_remote_stopped": [
+      84
+    ],
+    "tengu_vscode_sdk_stream_ended_no_result": [
+      84
+    ],
+    "tengu_relay_chain_v": [
+      84
+    ],
+    "tengu_tool_search_unsupported_model": [
+      84
+    ],
+    "tengu_thinking_clear_latched": [
+      84
+    ],
+    "v2.1.111": [
+      82,
+      83,
+      84
+    ],
+    "server-driven-behavior": [
+      78,
+      80,
+      83,
+      84
+    ],
+    "growthbook-flag": [
+      78,
+      80,
+      81,
+      84
+    ],
+    "kill-switch-env-var": [
+      78,
+      80,
+      81,
+      82,
+      83,
+      84
     ]
   }
 }

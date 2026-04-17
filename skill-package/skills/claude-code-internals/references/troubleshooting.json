@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-16",
+  "generated": "2026-04-17",
   "description": "Maps common symptoms/problems to relevant lessons for debugging Claude Code internals",
   "symptoms": [
     {
@@ -432,7 +432,7 @@
         58,
         10
       ],
-      "hint": "CLAUDE_CODE_EXECPATH is automatically injected into every spawned shell/hook environment — use $CLAUDE_CODE_EXECPATH in hook scripts to invoke the claude binary without hard-coding a path."
+      "hint": "CLAUDE_CODE_EXECPATH is automatically injected into every spawned shell/hook environment \u2014 use $CLAUDE_CODE_EXECPATH in hook scripts to invoke the claude binary without hard-coding a path."
     },
     {
       "pattern": [
@@ -548,7 +548,12 @@
       "hint": "Set CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH when your SDK parent process provides a token refresh callback. On 401, Claude Code calls back to get a fresh token instead of failing."
     },
     {
-      "pattern": ["dream not recognized", "dream not available", "dream command missing", "learn not recognized"],
+      "pattern": [
+        "dream not recognized",
+        "dream not available",
+        "dream command missing",
+        "learn not recognized"
+      ],
       "hint": "/dream is gated by server-side GrowthBook flag tengu_kairos_dream (default: false). The server does not send this flag, so it falls through to the default. Workaround: use scripts/patch-dream.sh to inject the flag into the local cache with a watcher that survives the SDK cache writeback. Binary patching is not viable (code-signed Bun SEA, SIGKILL on macOS).",
       "lessons": [
         62,
@@ -557,7 +562,12 @@
       "added": "2026-04-11"
     },
     {
-      "pattern": ["feature flag not working", "feature gate", "tengu not enabled", "growthbook override"],
+      "pattern": [
+        "feature flag not working",
+        "feature gate",
+        "tengu not enabled",
+        "growthbook override"
+      ],
       "hint": "All local override mechanisms (env vars, config overrides) are stubbed/dead-code in the production binary. Flags are evaluated server-side via remoteEval. Binary is code-signed (SIGKILL on modification). For flags absent from server response, cache injection with a filesystem watcher can work. See L68 GrowthBook internals and scripts/patch-dream.sh for the technique.",
       "lessons": [
         68
@@ -571,7 +581,10 @@
         "recap command missing",
         "session recap disabled"
       ],
-      "lessons": [72, 65],
+      "lessons": [
+        72,
+        65
+      ],
       "hint": "/recap is gated behind tengu_sedge_lantern feature flag (default: false). Check with CLAUDE_CODE_ENABLE_AWAY_SUMMARY=true to force-enable. Also check awaySummaryEnabled in /config settings."
     },
     {
@@ -582,7 +595,10 @@
         "stream idle byte",
         "transport timeout"
       ],
-      "lessons": [74, 70],
+      "lessons": [
+        74,
+        70
+      ],
       "hint": "Byte-level watchdog (CLAUDE_ENABLE_BYTE_WATCHDOG) detects transport-layer stalls. Event-level watchdog detects SSE parsing stalls. Set CLAUDE_ENABLE_BYTE_WATCHDOG=false to disable byte watchdog. Check tengu_stream_watchdog_default_on flag (default: true)."
     },
     {
@@ -592,8 +608,10 @@
         "repo checkouts not working",
         "base refs"
       ],
-      "lessons": [73],
-      "hint": "Multi-repo support uses CLAUDE_CODE_REPO_CHECKOUTS (JSON map of label→path) and CLAUDE_CODE_BASE_REFS (JSON map of label→ref). Both must be valid JSON with string→string entries."
+      "lessons": [
+        73
+      ],
+      "hint": "Multi-repo support uses CLAUDE_CODE_REPO_CHECKOUTS (JSON map of label\u2192path) and CLAUDE_CODE_BASE_REFS (JSON map of label\u2192ref). Both must be valid JSON with string\u2192string entries."
     },
     {
       "pattern": [
@@ -601,7 +619,9 @@
         "thinkback not found",
         "/think-back removed"
       ],
-      "lessons": [76],
+      "lessons": [
+        76
+      ],
       "hint": "/think-back and /thinkback-play were completely removed in v2.1.107. They are no longer available."
     },
     {
@@ -612,8 +632,10 @@
         "repl tools missing",
         "repl import blocked"
       ],
-      "lessons": [75],
-      "hint": "REPL mode is gated behind tengu_slate_harbor (default: false). Set CLAUDE_CODE_REPL=true to force-enable. Only works on cli/remote entrypoints. import/require are blocked — code runs in sealed VM. Tools are restricted to Read/Write/Edit/Bash/NotebookEdit via OkH set."
+      "lessons": [
+        75
+      ],
+      "hint": "REPL mode is gated behind tengu_slate_harbor (default: false). Set CLAUDE_CODE_REPL=true to force-enable. Only works on cli/remote entrypoints. import/require are blocked \u2014 code runs in sealed VM. Tools are restricted to Read/Write/Edit/Bash/NotebookEdit via OkH set."
     },
     {
       "pattern": [
@@ -622,8 +644,11 @@
         "repl reset",
         "repl cleared"
       ],
-      "lessons": [75, 32],
-      "hint": "REPL VM state is compaction-aware — context compaction clears the VM state and warns. Variables persist within a session but not across compaction events. Check replay-log for state hydration."
+      "lessons": [
+        75,
+        32
+      ],
+      "hint": "REPL VM state is compaction-aware \u2014 context compaction clears the VM state and warns. Variables persist within a session but not across compaction events. Check replay-log for state hydration."
     },
     {
       "pattern": [
@@ -633,8 +658,10 @@
         "rate limit upgrade",
         "try /model sonnet"
       ],
-      "lessons": [76],
-      "hint": "Rate limit upgrade paths use a 3-layer system: server header hints (anthropic-ratelimit-unified-upgrade-paths), client lever hints (oV9 — gated by tengu_garnet_plover, pro+seven_day only), and interactive options menu. Early warnings fire at percentage-based thresholds before actual rejection."
+      "lessons": [
+        76
+      ],
+      "hint": "Rate limit upgrade paths use a 3-layer system: server header hints (anthropic-ratelimit-unified-upgrade-paths), client lever hints (oV9 \u2014 gated by tengu_garnet_plover, pro+seven_day only), and interactive options menu. Early warnings fire at percentage-based thresholds before actual rejection."
     },
     {
       "pattern": [
@@ -643,8 +670,11 @@
         "repo checkouts ignored",
         "CCR v2 checkout"
       ],
-      "lessons": [73, 37],
-      "hint": "Multi-repo checkout is CCR v2 infrastructure only — requires CLAUDE_CODE_USE_CCR_V2 to be enabled. Env vars are set by the external CCR orchestrator, not for local CLI use. Branch watching uses fs.watchFile on .git/HEAD at 1s intervals."
+      "lessons": [
+        73,
+        37
+      ],
+      "hint": "Multi-repo checkout is CCR v2 infrastructure only \u2014 requires CLAUDE_CODE_USE_CCR_V2 to be enabled. Env vars are set by the external CCR orchestrator, not for local CLI use. Branch watching uses fs.watchFile on .git/HEAD at 1s intervals."
     },
     {
       "pattern": [
@@ -653,8 +683,171 @@
         "API skill disabled",
         "managed agents not available"
       ],
-      "lessons": [76, 42],
+      "lessons": [
+        76,
+        42
+      ],
       "hint": "33 managed-agents docs (~324KB) are embedded in the binary as part of the claude-api built-in skill. Disabled by CLAUDE_CODE_DISABLE_CLAUDE_API_SKILL env var. Language detection via ZU5() selects docs by project language; Go/Java/Ruby/PHP/C# have no managed-agents specific files."
+    },
+    {
+      "pattern": [
+        "autopilot not found",
+        "bugfix not found",
+        "dashboard command missing",
+        "/investigate unknown",
+        "remote workflow commands hidden",
+        "remote workflows don't work"
+      ],
+      "lessons": [
+        77,
+        73
+      ],
+      "hint": "Remote Workflow Commands (/autopilot, /bugfix, /dashboard, /docs, /investigate) require CCR v2 ($X4() gate). They're hidden entirely when CCR v2 is not enabled. Requires CLAUDE_CODE_USE_CCR_V2 and server-side provisioning. All five spawn a remote session via POST /v1/sessions with beta header ccr-byoc-2025-07-29."
+    },
+    {
+      "pattern": [
+        "tool call got rejected",
+        "model second-guessed itself",
+        "server_tool_use content block",
+        "advisor_tool_result",
+        "model refused to run tool",
+        "tool intercepted"
+      ],
+      "lessons": [
+        78
+      ],
+      "hint": "The Advisor Tool (server-side reviewer model) may intercept tool calls. Gates: first-party API only, opus-4-6/opus-4-7/sonnet-4-6 only, tengu_sage_compass2 flag on (or CLAUDE_CODE_ENABLE_EXPERIMENTAL_ADVISOR_TOOL=1). Hard-disable with CLAUDE_CODE_DISABLE_ADVISOR_TOOL=1."
+    },
+    {
+      "pattern": [
+        "push notification not working",
+        "phone not getting notifications",
+        "PushNotification tool error",
+        "KAIROS push failed",
+        "bridge inactive",
+        "user_present suppressed"
+      ],
+      "lessons": [
+        79,
+        43,
+        34
+      ],
+      "hint": "PushNotification requires: user push setting enabled (not config_off), user not actively at terminal (not user_present), and Remote Control bridge running locally (not bridge_inactive). Check disabledReason in tool output. Only 'proactive' status is accepted. KAIROS is the server-side push service; bridge is the local relay."
+    },
+    {
+      "pattern": [
+        "context compacted without asking",
+        "context shrinking mysteriously",
+        "context_hint_rejection",
+        "422 context too large",
+        "context hint api",
+        "server compacted my context"
+      ],
+      "lessons": [
+        80,
+        28
+      ],
+      "hint": "Context Hint API lets the server signal compaction via HTTP 422/424/409/529 or SSE invalid_request with type=context_hint_rejection. Triggers keep-recent micro-compaction (sT9, keepRecent=5). Only activates on first-party API on repl_main_thread* when tengu_hazel_osprey is on. No env var disables it \u2014 feature-flag controlled."
+    },
+    {
+      "pattern": [
+        "fullscreen not working",
+        "/tui broken",
+        "alt-screen blank",
+        "tmux fullscreen issue",
+        "/focus timer blank",
+        "terminal blank after /tui"
+      ],
+      "lessons": [
+        81,
+        23
+      ],
+      "hint": "Fullscreen precedence (first match wins): CLAUDE_CODE_NO_FLICKER=1 hard disables, CLAUDE_CODE_FULLSCREEN=1 hard enables, tmux -CC auto-disables, then userSettings.tui, then tengu_pewter_brook. /tui respawns the process via child_process.spawn. If terminal goes blank, your terminal may not support alt-screen \u2014 set CLAUDE_CODE_NO_FLICKER=1."
+    },
+    {
+      "pattern": [
+        "proxy auth failing",
+        "proxy credentials rotating",
+        "proxy helper not running",
+        "Proxy-Authorization header missing",
+        "CLAUDE_CODE_PROXY_AUTHENTICATE"
+      ],
+      "lessons": [
+        82,
+        37
+      ],
+      "hint": "Proxy Auth Helper requires strict CLAUDE_CODE_PROXY_AUTHENTICATE=\"1\" (literal string, not \"true\"). Shell command set in settings under proxyAuthHelper. Project/local settings need workspace trust. 30s exec timeout; falls back to stale cache on exec failure rather than failing the request."
+    },
+    {
+      "pattern": [
+        "system prompt changed",
+        "prompt unexpectedly different",
+        "server overrode my prompt",
+        "system prompt not what I configured",
+        "CLAUDE_CODE_SYSTEM_PROMPT_GB_FEATURE"
+      ],
+      "lessons": [
+        83,
+        4,
+        71
+      ],
+      "hint": "In CCR/remote contexts, the server can replace the system prompt entirely via a GrowthBook feature. Requires both CLAUDE_CODE_REMOTE truthy AND CLAUDE_CODE_SYSTEM_PROMPT_GB_FEATURE set to a valid GB feature name returning a non-empty string. Falls back to default on any failure. Distinct from L71's quiet_salted_ember section rename."
+    },
+    {
+      "pattern": [
+        "slow first byte",
+        "no stream chunk",
+        "request hanging",
+        "tengu_api_slow_first_byte",
+        "CLAUDE_SLOW_FIRST_BYTE_MS"
+      ],
+      "lessons": [
+        84,
+        74
+      ],
+      "hint": "Slow first-byte watchdog logs 'warn' after CLAUDE_SLOW_FIRST_BYTE_MS (default 30000ms) with no stream chunk. Purely observational \u2014 does NOT abort the request. Complements L74's byte-level watchdog which does abort."
+    },
+    {
+      "pattern": [
+        "unknown command did you mean",
+        "typo in slash command",
+        "claude command not found suggestion"
+      ],
+      "lessons": [
+        84,
+        18
+      ],
+      "hint": "Unknown slash commands now trigger fuzzy-match suggestion via _a5() \u2192 BCH(). Writes 'unknown command \"X\"' + '\u2514 Did you mean claude Y?' to stderr, emits tengu_unknown_command_suggestion, exits 1."
+    },
+    {
+      "pattern": [
+        "canary channel",
+        "native installer wrong version",
+        "got a newer version than expected",
+        "tengu_canary"
+      ],
+      "lessons": [
+        84,
+        31
+      ],
+      "hint": "Canary channel (rp1()) reads GrowthBook feature tengu_canary expecting {external: semver}. Native-installer target-picker op1() overrides target if canary > target AND !exceedsMaxVersion. Server-controlled rolling canary \u2014 not user-configurable."
+    },
+    {
+      "pattern": [
+        "server-driven behavior",
+        "different behavior same binary",
+        "why do my colleague and I get different claude behavior",
+        "feature flag behavior difference",
+        "tengu flag"
+      ],
+      "lessons": [
+        78,
+        80,
+        83,
+        84,
+        29
+      ],
+      "hint": "v2.1.110-v2.1.111 moved significant behavior to the server side. Advisor Tool (tengu_sage_compass2), Context Hint API (tengu_hazel_osprey), System Prompt GB Override (CLAUDE_CODE_REMOTE + user-supplied GB feature), Canary channel (tengu_canary), Fullscreen rollout (tengu_pewter_brook) all let Anthropic alter behavior per-user/per-org without a binary release. Two users on the same binary can get materially different experiences."
     }
   ]
 }

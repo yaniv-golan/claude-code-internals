@@ -1,13 +1,13 @@
 {
   "name": "claude-code-internals",
-  "version": "2.6.0",
-  "description": "Gives Claude source-level knowledge of its own architecture. 76 lessons covering every internal subsystem — hooks (all 27 event types), permissions (7-phase pipeline, 23 validators), boot sequence, agents, compaction (including marble-origami reversible collapse), MCP, memory, AskUserQuestion tool, and binary-verified new features through v2.1.109 (/recap on-demand session recap, multi-repo checkout, byte-level stream watchdog, REPL mode, managed-agents API beta, streaming partial yield protection, system prompt rename, proactive away summary, CLAUDE_CODE_CERT_STORE, dynamic loop pacing, cloud-first loops, /dream, Perforce mode, Script Caps).",
+  "version": "2.7.0",
+  "description": "Gives Claude source-level knowledge of its own architecture. 84 lessons covering every internal subsystem — hooks (all 27 event types), permissions (7-phase pipeline, 23 validators), boot sequence, agents, compaction (including marble-origami reversible collapse), MCP, memory, AskUserQuestion tool, and binary-verified new features through v2.1.111 (Remote Workflow Commands /autopilot /bugfix /dashboard /docs /investigate, server-side Advisor Tool, PushNotification + KAIROS mobile push, Context Hint API server-driven micro-compaction, Fullscreen TUI with /focus and /tui, Proxy Auth Helper, System Prompt GB Override, /less-permission-prompts, canary channel, slow first-byte watchdog).",
   "author": {
     "name": "Yaniv Golan",
     "email": "yaniv@golan.name"
   },
   "repository": "https://github.com/yaniv-golan/claude-code-internals",
-  "license": "MIT",
+   "license": "MIT",
   "keywords": ["claude-code", "internals", "architecture", "hooks", "permissions", "agents", "debugging"],
   "skills": "./skills"
 }

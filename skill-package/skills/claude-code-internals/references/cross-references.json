@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-16",
+  "generated": "2026-04-17",
   "description": "Cross-reference map: for each lesson, lists related lessons ranked by relevance",
   "references": {
     "1": [
@@ -1152,7 +1152,7 @@
       {
         "id": 12,
         "relevance": 0.78,
-        "reason": "/branch spawns a fork subagent — relates to the full agent system"
+        "reason": "/branch spawns a fork subagent \u2014 relates to the full agent system"
       },
       {
         "id": 52,
@@ -1181,7 +1181,7 @@
       {
         "id": 19,
         "relevance": 0.65,
-        "reason": "/buddy injects a companion system prompt — relates to memory/prompt injection"
+        "reason": "/buddy injects a companion system prompt \u2014 relates to memory/prompt injection"
       }
     ],
     "57": [
@@ -1193,7 +1193,7 @@
       {
         "id": 58,
         "relevance": 0.78,
-        "reason": "L57 and L58 both document v2.1.92 changes — read together"
+        "reason": "L57 and L58 both document v2.1.92 changes \u2014 read together"
       }
     ],
     "58": [
@@ -1564,7 +1564,7 @@
       {
         "id": 32,
         "relevance": 0.7,
-        "reason": "REPL mode is compaction-aware — warns when VM state is cleared during context compaction"
+        "reason": "REPL mode is compaction-aware \u2014 warns when VM state is cleared during context compaction"
       }
     ],
     "76": [
@@ -1592,6 +1592,197 @@
         "id": 2,
         "relevance": 0.7,
         "reason": "rate limit upgrade paths and HS9() unified header parsing interact with the query engine's response handling"
+      }
+    ],
+    "77": [
+      {
+        "id": 73,
+        "relevance": 0.92,
+        "reason": "L77 Remote Workflows are CCR v2 sessions; L73 documents CCR v2 multi-repo infrastructure"
+      },
+      {
+        "id": 34,
+        "relevance": 0.8,
+        "reason": "Remote sessions use the Remote Control bridge from L34"
+      },
+      {
+        "id": 79,
+        "relevance": 0.78,
+        "reason": "Remote Workflows often pair with PushNotification for 'pings you when it needs you' flow"
+      },
+      {
+        "id": 41,
+        "relevance": 0.72,
+        "reason": "ULTRAPLAN is the earlier remote-session pattern that informed Remote Workflows"
+      },
+      {
+        "id": 83,
+        "relevance": 0.68,
+        "reason": "CCR-hosted remote sessions may get server-overridden system prompts via the mechanism in L83"
+      }
+    ],
+    "78": [
+      {
+        "id": 2,
+        "relevance": 0.82,
+        "reason": "Advisor Tool injects server_tool_use / advisor_tool_result content blocks into the query engine's streaming response"
+      },
+      {
+        "id": 46,
+        "relevance": 0.8,
+        "reason": "Advisor is strictly gated to opus-4-6 / opus-4-7 / sonnet-4-6 per the model system's allow-list logic"
+      },
+      {
+        "id": 80,
+        "relevance": 0.75,
+        "reason": "Both L78 and L80 are server-driven behavioral modifications \u2014 read together as the 'server takes the wheel' cluster"
+      },
+      {
+        "id": 83,
+        "relevance": 0.68,
+        "reason": "Advisor's behavior pairs with System Prompt GB Override \u2014 both let the server alter primary-model behavior"
+      },
+      {
+        "id": 29,
+        "relevance": 0.65,
+        "reason": "Advisor enablement flows through GrowthBook gate tengu_sage_compass2 per L29 telemetry/flag infrastructure"
+      }
+    ],
+    "79": [
+      {
+        "id": 43,
+        "relevance": 0.9,
+        "reason": "KAIROS is the always-on daemon from L43; PushNotification is the tool interface to it"
+      },
+      {
+        "id": 77,
+        "relevance": 0.8,
+        "reason": "Remote Workflows use PushNotification to ping the user when long-running cloud sessions need input"
+      },
+      {
+        "id": 34,
+        "relevance": 0.75,
+        "reason": "PushNotification routes through the Remote Control bridge (L34) before reaching KAIROS"
+      },
+      {
+        "id": 20,
+        "relevance": 0.65,
+        "reason": "PushNotification complements the local notification system (L20) \u2014 one is transactional, the other is in-session"
+      }
+    ],
+    "80": [
+      {
+        "id": 28,
+        "relevance": 0.92,
+        "reason": "Context Hint triggers keep-recent micro-compaction \u2014 extends the compaction system from L28 with a server-driven trigger"
+      },
+      {
+        "id": 2,
+        "relevance": 0.88,
+        "reason": "Context Hint signals arrive as HTTP status codes and SSE errors on the query engine's streaming response"
+      },
+      {
+        "id": 78,
+        "relevance": 0.75,
+        "reason": "Both L78 and L80 are server-driven behavioral modifications \u2014 paired in the 'server takes the wheel' narrative"
+      },
+      {
+        "id": 33,
+        "relevance": 0.72,
+        "reason": "422/424/409/529 responses feed into the error handling pipeline from L33 with compact-and-retry semantics"
+      },
+      {
+        "id": 69,
+        "relevance": 0.65,
+        "reason": "Context Hint compaction is distinct from marble-origami reversible collapse (L69); read together to understand all compaction pathways"
+      }
+    ],
+    "81": [
+      {
+        "id": 23,
+        "relevance": 0.95,
+        "reason": "L23 documents fullscreen / alt-screen architecture; L81 adds the /focus /tui commands and 5-tier activation precedence"
+      },
+      {
+        "id": 17,
+        "relevance": 0.72,
+        "reason": "Fullscreen rendering uses the Ink renderer from L17 with alt-screen buffer flip"
+      },
+      {
+        "id": 22,
+        "relevance": 0.65,
+        "reason": "Fullscreen mode interacts with keybindings (L22) \u2014 input handling changes in alt-screen mode"
+      },
+      {
+        "id": 84,
+        "relevance": 0.6,
+        "reason": "/focus and /tui are among the new slash commands tabulated in L84"
+      }
+    ],
+    "82": [
+      {
+        "id": 37,
+        "relevance": 0.9,
+        "reason": "L37 documents the upstream proxy system; L82 adds a user-defined shell-command helper for rotating proxy credentials"
+      },
+      {
+        "id": 26,
+        "relevance": 0.75,
+        "reason": "Proxy auth helper is a settings.json key subject to L26's workspace-trust model"
+      },
+      {
+        "id": 66,
+        "relevance": 0.65,
+        "reason": "Both L82 and L66 (CA cert store) are enterprise-network features \u2014 related configuration surface"
+      }
+    ],
+    "83": [
+      {
+        "id": 4,
+        "relevance": 0.92,
+        "reason": "L4 covers system prompt construction; L83 adds GB override, append-subagent, and verified-vs-assumed layers"
+      },
+      {
+        "id": 71,
+        "relevance": 0.78,
+        "reason": "L71 is an earlier system-prompt gated rename (quiet_salted_ember); same 'server mutates prompt' pattern"
+      },
+      {
+        "id": 12,
+        "relevance": 0.72,
+        "reason": "append-subagent-prompt applies to subagent dispatches from the agent system L12"
+      },
+      {
+        "id": 77,
+        "relevance": 0.68,
+        "reason": "System prompt GB override is gated on CLAUDE_CODE_REMOTE \u2014 primarily runs inside CCR v2 Remote Workflows from L77"
+      },
+      {
+        "id": 78,
+        "relevance": 0.65,
+        "reason": "Both L78 and L83 are server-controlled behavioral overrides; read together"
+      }
+    ],
+    "84": [
+      {
+        "id": 76,
+        "relevance": 0.9,
+        "reason": "L76 covers v2.1.107-v2.1.109 changes; L84 continues the pattern with v2.1.110-v2.1.111 changes"
+      },
+      {
+        "id": 68,
+        "relevance": 0.82,
+        "reason": "L68 covers v2.1.101 changes; L84 is the next catch-all"
+      },
+      {
+        "id": 31,
+        "relevance": 0.7,
+        "reason": "Background plugin refresh (L84) extends the plugin system from L31"
+      },
+      {
+        "id": 11,
+        "relevance": 0.65,
+        "reason": "/less-permission-prompts is a built-in skill/command; coexists with user-installed skills per L11 precedence rules"
       }
     ]
   }
