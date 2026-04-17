@@ -585,6 +585,15 @@ SDK --> Dev: async generator yields messages
 
 ## LESSON 3: KAIROS -- ALWAYS-ON AUTONOMOUS DAEMON
 
+> **Public surfacing update (v2.1.113 / L85):** the KAIROS subsystem documented below
+> has been ant-only behind feature flags since v2.1.88. In v2.1.113, a public env var
+> `CLAUDE_BG_BACKEND=daemon` appeared in the shipping binary — survives `SIGHUP`,
+> latches `stdout` EIO/EPIPE, bypasses the TTY-orphan detector — which is plausibly the
+> first binary-reachable piece of KAIROS. An unrelated early-April 2026 npm source-map
+> leak also publicly exposed KAIROS as "autonomous always-on daemon mode," matching
+> this lesson's characterization. See L85 (Chapter 17) for the v2.1.113 daemon-mode
+> env var and its daemon-mode cross-reference cluster.
+
 ### Feature Flag Architecture
 
 ```javascript

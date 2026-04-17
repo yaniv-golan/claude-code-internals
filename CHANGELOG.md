@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.8.1 — 2026-04-18 (this fork)
+
+Post-v2.8.0 correction: the Daemon-Mode Thread cluster in L85 originally characterized L43 as "KAIROS / Cron" and described daemon mode as assembling *new* daemon infrastructure. L43 is actually titled "KAIROS — Always-On Autonomous Daemon" and documents the full daemon architecture (feature flags, `kairosActive` state pivot, `<tengu_tick>` wake-up loop, queue priorities). Corrected framing: v2.1.113's `CLAUDE_BG_BACKEND=daemon` env var is plausibly the first *binary-reachable public surface* of the KAIROS daemon subsystem that has been ant-only since v2.1.88 — not a new system.
+
+### Changed
+
+- **L85 Daemon-Mode Thread cluster** — rewrote the L43 row to make explicit that L43 is the architectural home of daemon mode and L85 is its first public binary surfacing; the v2.1.113 env var and KAIROS are the same feature at different stages of rollout.
+- **L43 (KAIROS)** — added a "Public surfacing update" blockquote at lesson top pointing readers forward to L85 for the v2.1.113 env var surface, and noting the April 2026 npm source-map leak as external corroboration that KAIROS = "autonomous always-on daemon mode."
+- **L85 Unresolved section** — added an "External corroboration (April 2026 source-map leak)" bullet citing public reports that independently described KAIROS as autonomous always-on daemon mode, matching L43's characterization; this shifts daemon mode from "plausible future direction" to "confirmed staged-for-launch feature."
+- **cross-references.json** — strengthened L43 ↔ L85 relevance from 0.65 to 0.95 bidirectional, reflecting architectural parent-child rather than thematic neighbor.
+- Regenerated `semantic-index.json`.
+
 ## v2.8.0 — 2026-04-18 (this fork)
 
 Adds Chapter 17 covering v2.1.112–v2.1.113: one new lesson (L85) documenting the first **sunset event** in the post-v2.1.90 binary-extraction era. Anthropic removed all five Remote Workflow Commands (`/autopilot`, `/bugfix`, `/dashboard`, `/docs`, `/investigate`) that shipped in v2.1.110 — less than three release cycles after their introduction — while keeping the CCR v2 back-end infrastructure intact. L77 is now historical documentation with a prominent sunset banner. v2.1.112 produced zero material bundle changes.

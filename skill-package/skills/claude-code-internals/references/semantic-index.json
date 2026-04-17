@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "created": "2026-04-17T21:56:06.724Z",
+  "created": "2026-04-17T22:08:32.994Z",
   "description": "TF-IDF semantic index for Claude Code internals lessons. Use semantic-search.js to query.",
   "total_entries": 85,
   "entries": [

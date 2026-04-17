@@ -959,8 +959,8 @@
       },
       {
         "id": 85,
-        "relevance": 0.65,
-        "reason": "L85's daemon-mode env gate is the first explicit local-infrastructure switch for the KAIROS always-on pattern"
+        "relevance": 0.95,
+        "reason": "L85's CLAUDE_BG_BACKEND=daemon env var is the first binary-shipped public surface of the KAIROS daemon architecture documented here; April 2026 npm source-map leak externally corroborated KAIROS=daemon."
       }
     ],
     "44": [
@@ -1863,8 +1863,8 @@
       },
       {
         "id": 43,
-        "relevance": 0.65,
-        "reason": "KAIROS cron/scheduling infrastructure depends on a long-lived process; CLAUDE_BG_BACKEND=daemon is the first explicit env gate for that always-on local posture"
+        "relevance": 0.95,
+        "reason": "L43 IS the KAIROS always-on autonomous daemon architecture; L85's CLAUDE_BG_BACKEND=daemon is plausibly the first binary-reachable public surface of that subsystem. Read L43 first, then L85."
       },
       {
         "id": 79,
