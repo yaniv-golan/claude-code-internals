@@ -20,13 +20,16 @@ A skill is a named, reusable prompt workflow that Claude Code can discover and e
 
 **Load**
 - Reads `skill-name/SKILL.md` files
-- Token count estimated from frontmatter only (name + description + whenToUse)
-- Skill listing budget-capped at "1% of the context window"
+- Listing budget computed in **characters**, not tokens (verified in v2.1.116 bundle: `X6_` in the skills module)
+- Formula: `budget = ctxWindowTokens × 4 × skillListingBudgetFraction` (default fraction `0.01`); fallback `8000` if model context unknown; env override `SLASH_COMMAND_TOOL_CHAR_BUDGET`
+- Per-skill description hard cap `skillListingMaxDescChars` (default `1536` chars), truncated with `…` before listing packing
 
 **Parse**
 - Frontmatter parsed into `Command` object
 - Validates all fields (description, allowed tools, arguments, model override, hooks, paths, effort, shell)
-- Skills with `paths` field become conditional skills (stored but not surfaced until matching file opened)
+- Skills with a non-empty `paths` field become **conditional skills** (stored in `Pf.conditionalSkills`, withheld from the listing until activated by a matching file edit/touch)
+- Activation matcher uses the `ignore` npm package (gitignore-style), **not** glob matching
+- `paths: **` (or any list that reduces to only `**`) is stripped at parse time → treated as unconditional
 
 **Substitute** -- Argument substitution order:
 1. Named args: `$foo`, `$bar` (mapped by position from `arguments` frontmatter)
@@ -43,15 +46,52 @@ A skill is a named, reusable prompt workflow that Claude Code can discover and e
 **Inject**
 - Skill tool returns `ToolResult`. Inline skills carry `allowedTools` and optional `model` override for subsequent tool calls. Forked skills display "Done" byline and feed sub-agent output back as context.
 
-### Four Skill Sources & Priority
+### Skill Sources & Priority
 
 Priority hierarchy (first loaded wins):
 1. **Managed/Policy** (`managed/.claude/skills/`) -- Enterprise-controlled, lockable via `CLAUDE_CODE_DISABLE_POLICY_SKILLS`
 2. **User (Personal)** (`~/.claude/skills/`) -- Cross-project library, watched via chokidar
 3. **Project** (`.claude/skills/`) -- Repository-scoped, walked up from project root
-4. **Bundled** -- Compiled into CLI via `registerBundledSkill()`
+4. **Additional** (`--add-dir`) -- Per-session extra roots, each with `.claude/skills/`
+5. **Legacy commands** (`.claude/commands/`) -- Tagged `loadedFrom: 'commands_DEPRECATED'`
+6. **Bundled** -- Registered separately via `registerBundledSkill()`, merged into the same listing
 
-Deduplication by resolved file path (not name), so symlinked skills can shadow real ones.
+Deduplication is by `realpath(SKILL.md)`, not by name. When two entries resolve to the same file, the second is **skipped** with log `"Skipping duplicate skill 'X' from Y (same file already loaded from Z)"`. Order in `QO8` loader is policy → user → project → additional → legacy, so higher-priority paths win. Bundled skills have distinct names and don't participate in realpath dedup.
+
+### Listing Format Injected to the Model
+
+When the Skill tool is available, a system-role message is injected with this verbatim header:
+
+> *"The following skills are available for use with the Skill tool:"*
+
+Each entry is rendered by `UP1`:
+```
+- ${name}: ${description} - ${whenToUse}
+```
+(description and whenToUse joined with ` - `, sharing one line and one budget). Name-only mode produces `- ${name}` with no description.
+
+### Budget Algorithm (`kr6`)
+
+Constants (from v2.1.116 bundle):
+- `ZL9 = 0.01` -- `skillListingBudgetFraction` default
+- `LL9 = 4` -- chars per token
+- `BP1 = 8000` -- fallback budget when no context window known
+- `gP1 = 1536` -- `skillListingMaxDescChars` default
+- `Zr6 = 20` -- minimum per-skill allocation before global collapse
+
+Algorithm:
+1. Render every skill full (`- name: desc - when`), except those marked name-only by `E4H` (currently hardcoded `"on"` -- see "skillOverrides" below).
+2. If total fits in budget → emit all full.
+3. Otherwise: **bundled skills are protected** (kept full). Non-bundled become truncatable.
+4. Compute `f = (remainingBudget - fixedCost) / truncatableCount` -- per-skill description budget.
+5. If `f < 20` → **all truncatable skills collapse to `- ${name}`** (name-only mode, globally).
+6. Otherwise → each description truncated to `f` characters via `t7(desc, f)`.
+
+**Skills never disappear from the listing.** The failure mode when frontmatter bloats is silent global collapse to name-only -- every skill loses its description at once, and the model has nothing but names to choose from. One runaway `when_to_use` can trigger this for every skill in the listing.
+
+Tunables (in settings):
+- `skillListingBudgetFraction` -- fraction of context window for budget
+- `skillListingMaxDescChars` -- per-skill pre-truncation cap
 
 ### SKILL.md Format & Frontmatter Reference
 
@@ -95,20 +135,24 @@ shell:
 | `model` | string | Model alias or `inherit` |
 | `effort` | low/medium/high/int | Thinking budget |
 | `version` | string | Informational tag (no runtime effect) |
-| `user-invocable` | bool | Default `true`; `false` hides from `/skills` menu |
-| `paths` | glob string(s) | Conditional activation glob patterns |
+| `user-invocable` | bool | Default `true`; `false` **blocks user `/name` invocation** (model-only; also `isHidden: true`) |
+| `paths` | list of gitignore-style patterns | Conditional activation; withheld until matching file edit/touch |
 | `hooks` | object | Pre/post tool-use lifecycle hooks |
 | `agent` | string | Agent type (e.g., `code`, `browser`) for forking |
 | `shell` | object | Shell interpreter config for `!backtick` |
-| `disable-model-invocation` | bool | Blocks Skill tool calls (slash command only) |
+| `disable-model-invocation` | bool | **Blocks Skill-tool (model) invocation**; slash `/name` still works |
+
+`user-invocable` and `disable-model-invocation` are symmetric opposites: one makes the skill model-only, the other makes it user-only.
 
 ### Advanced Patterns
 
 **Conditional Skills (paths-based)**
-- Syntax matches `.gitignore`/CLAUDE.md conditional rules
-- Pattern `**` treated as unconditional (same as omitting `paths`)
-- Interacts with dynamic discovery: model reads files deeper in tree, walks toward `cwd`, discovers `.claude/skills/` directories
-- Gitignored directories skipped
+- Stored at load in `Pf.conditionalSkills` (a Map), withheld from the listing
+- Activation: `QIH(touchedPaths, root)` runs on file edits/touches; matches via the `ignore` npm package (gitignore syntax, not glob)
+- Once activated, moved to `Pf.dynamicSkills` and added to `activatedConditionalSkillNames` for the rest of the session
+- Pattern `**` (or any list reducing to just `**`) is stripped at parse → unconditional
+- Telemetry: `tengu_dynamic_skills_changed` with `source: "conditional_paths"`
+- Interacts with dynamic discovery: walking toward `cwd`, new `.claude/skills/` directories can be discovered; gitignored directories skipped
 
 **Bundled Skills**
 - Registered via `registerBundledSkill()`
@@ -136,9 +180,10 @@ registerBundledSkill({
 - Appear in SkillsMenu under "MCP skills" group
 - Naming convention: `server-name:skill-name`
 
-Key differences:
-- **No shell injection**: `!backtick` and ` ```! ` blocks silently skipped (security boundary -- "remote and untrusted")
-- **`${CLAUDE_SKILL_DIR}` meaningless**: No local directory
+Key differences (verified in `dO8` / `createSkillCommand`):
+- **Shell-processing pass skipped entirely**: the `on(E, ..., shell)` processor that expands `` !`cmd` `` and ``` ```! ``` blocks runs only when `loadedFrom !== "mcp"`. In MCP skills those blocks remain as **literal text** in the prompt -- not executed, not removed
+- **`${CLAUDE_SKILL_DIR}` inert**: no `baseDir` is attached, so the token passes through unsubstituted
+- **`${CLAUDE_SESSION_ID}` still works**: substitution happens before the MCP branch
 - Registered separately in `AppState.mcp.commands`
 - Merged via `getAllCommands()` at invocation time
 
@@ -152,19 +197,97 @@ return uniqBy([...localCommands, ...mcpSkills], 'name')
 
 ### Permission & Auto-Allow Logic
 
-`checkPermissions()` waterfall:
-1. **Deny rules**: Block if skill name matches deny rule (or prefix with `:*`)
-2. **Remote canonical skills**: Auto-allowed (experimental ant-only feature)
-3. **Allow rules**: Proceed if explicit allow rule matches
-4. **Safe properties check**: Auto-allow if only "safe" properties (no allowed-tools, model override, hooks, paths)
-5. **Ask**: Otherwise prompt user for explicit approval; suggest exact or prefix (`:*`) rules
+Skill-tool `checkPermissions` waterfall (verified in `C5H` definition):
+1. **Deny rules**: block if skill name matches an explicit deny rule or `prefix:*` pattern
+2. **Allow rules**: proceed if an allow rule matches
+3. **Safe-skill auto-allow**: `Y_5(skill)` returns true if every Command field outside the "safe" set is undefined/null/empty. Safe set (`z_5`):
+   ```
+   type, progressMessage, contentLength, argNames, model, effort, source, pluginInfo,
+   disableNonInteractive, skillRoot, context, agent, getPromptForCommand, frontmatterKeys,
+   createdBy, name, description, hasUserSpecifiedDescription, isEnabled, isHidden, aliases,
+   isMcp, argumentHint, whenToUse, paths, version, disableModelInvocation, userInvocable,
+   loadedFrom, immediate, userFacingName
+   ```
+   So `model`, `effort`, and `paths` are **safe** (no prompt). The fields that flip to "ask" are `allowedTools` (non-empty), `hooks` (non-empty), `shell`, and any other non-listed custom field
+4. **Ask**: prompt user; suggestions include `addRules` for exact name and `name:*` prefix
+
+Separate validation in `validateInput` (before `checkPermissions` runs):
+- `disable-model-invocation: true` without a session `n47` override → rejected
+- `E4H(skill) === "off"` or `"user-invocable-only"` → rejected (dead code; see "skillOverrides" below)
+
+Slash-command invocation (`q_5`):
+- `userInvocable === false` → user gets `"This skill can only be invoked by Claude, not directly by users."`
 
 ### Live Reloading
-- `skillChangeDetector` module watches directories with chokidar
-- Debounces 300 ms on SKILL.md change
-- Fires `ConfigChange` hooks
-- Clears memoization caches
-- On Bun: stat-polling used instead of `FSWatcher` (avoids known Bun deadlock)
+Watcher constants in `Bo5()`:
+- `Io5 = 1000` ms -- chokidar `awaitWriteFinish.stabilityThreshold`
+- `xo5 = 500` ms -- `pollInterval`
+- `uo5 = 300` ms -- **reload debounce** on SKILL.md change (batches rapid edits)
+- `mo5 = 2000` ms -- Bun stat-polling interval (avoids Bun `FSWatcher` deadlock)
+
+On each batched change: fires `ConfigChange` hook (can block reload), clears memoization, re-emits skill list.
+
+### skillOverrides Setting (UI-only in v2.1.116)
+
+Settings schema defines:
+```
+skillOverrides: { [skillName]: "on" | "name-only" | "user-invocable-only" | "off" }
+```
+Effective-override lookup (`kS5`/`vS5`) feeds the `/skills` menu display, with precedence: policy → flag → author (`disableModelInvocation === true` implies `user-invocable-only`) → plugin source (implies `"on"`) → project settings → user settings.
+
+**But runtime enforcement is stubbed.** The `E4H(skill)` function used by `kr6` (listing formatter), `fp5` (model-visibility filter), and `validateInput` is hardcoded `return "on"` in this build. So setting `skillOverrides.foo = "off"` today has no effect on the model listing or the Skill tool. The UI shows the override; the runtime ignores it.
+
+Practical implication: to actually block a skill today, use the frontmatter fields `disable-model-invocation: true` or `user-invocable: false`, which are checked directly and do work.
+
+### progressMessage (plumbed but unrendered in v2.1.116)
+
+Every command-like object carries a `progressMessage` field: a short human label intended to appear in the spinner row while the command/skill executes (e.g. `"creating commit"`, `"analyzing your codebase"`).
+
+**Defaults set at construction:**
+- User slash commands (`.claude/commands/*.md`): `"running"`
+- Skills (`$.isSkillMode`): `"loading"`
+- MCP prompts (`<server>:<prompt>`): `"running"`
+- Bundled plugin skills: `"loading"` when `isSkillMode`, else `"running"`
+
+**Built-in overrides (hardcoded in the bundle):**
+
+| Command | progressMessage |
+|---|---|
+| `/commit` | `creating commit` |
+| `/commit-push-pr` | `creating commit and PR` |
+| `/init` | `analyzing your codebase` |
+| `/init-verifiers` | `analyzing your project and creating verifier skills` |
+| `/statusline` | `setting up statusLine` |
+| `/security-review` | `analyzing code changes for security risks` |
+| `/team-onboarding` | `scanning usage data` |
+| `/insights` | `analyzing your sessions` |
+
+**The dead-code catch.** Only two read sites exist in the 92 MB v2.1.116 bundle, both feeding the rendering helper `c47` (exported as `formatSkillLoadingMetadata`):
+
+1. `K_5(cmd)` — user-typed slash path: `c47(cmd.name, cmd.progressMessage)` when `loadedFrom ∈ {skills, plugin, mcp}`.
+2. Agent preloaded-skills path: `EH(skillName, skill.progressMessage)` where `EH === c47`.
+
+`c47` signature and body:
+
+```js
+function c47(H, _ = "loading") {   // `_` is the progressMessage
+  return [
+    `<command-message>${H}</command-message>`,
+    `<command-name>${H}</command-name>`,
+    "<skill-format>true</skill-format>"
+  ].join("\n")
+}
+```
+
+The second argument is accepted and defaulted but **never referenced in the output**. The field is plumbed end-to-end — declared, defaulted, hardcoded on builtins, passed to the render function — and then dropped at the leaf. Users see the `<command-name>/<command-message>` XML but not the progress label.
+
+**Not a frontmatter field.** Searching the bundle for `progress-message` / any frontmatter parser path that writes `progressMessage` returns zero matches. Skill and command authors cannot set it from YAML today; only bundled builtins supply custom values.
+
+**Safe-properties listing.** `progressMessage` is included in `z_5` (the auto-allow safe set), so if a parse path is ever added, customizing it won't trigger a permission prompt.
+
+**Distinct from tool-use progress.** The other 40 `progressMessage` occurrences in the bundle belong to the tool-use progress stream (`progressMessagesByToolUseID`, `progressMessagesForMessage`, `bash_progress`, `mcp_progress`, `repl_tool_call`). That's a different field on a different shape and is actively rendered (e.g. the "Running…" spinner over streaming bash output).
+
+**Likely history.** The builtin-specific strings (`"creating commit"` etc.) and the defaulted `_="loading"` parameter both read as a UI that used to render the message and was refactored without removing the field. A future build may re-wire `c47` to emit a `<progress-message>` element (or similar) — at which point the existing infrastructure would light up without touching command definitions.
 
 ### Legacy Support
 `.claude/commands/` directory still supported with `loadedFrom: 'commands_DEPRECATED'`. Accepts both single `.md` files and `skill-name/SKILL.md` directory format. New work uses `.claude/skills/`.

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-18",
+  "generated": "2026-04-21",
   "description": "Cross-reference map: for each lesson, lists related lessons ranked by relevance",
   "references": {
     "1": [
@@ -1870,6 +1870,38 @@
         "id": 79,
         "relevance": 0.5,
         "reason": "Mobile push pipeline requires a background worker reachable when no TTY is attached \u2014 daemon-mode env gate makes that explicit"
+      }
+    ],
+    "86": [
+      {
+        "id": 85,
+        "relevance": 0.8,
+        "reason": "L85 and L86 are sequential per-release catch-alls; L86's CLAUDE_CODE_RETRY_WATCHDOG fits L85's instrumentation-for-unattended-operation theme and only activates on L85's daemon/remote entrypoint"
+      },
+      {
+        "id": 66,
+        "relevance": 0.7,
+        "reason": "L66 Proxy Auth Helper handles Anthropic auth proxying; L86 documents the separate CLAUDE_CODE_HTTP(S)_PROXY fallback chain for network-layer proxies"
+      },
+      {
+        "id": 73,
+        "relevance": 0.7,
+        "reason": "L86's CLAUDE_CODE_RETRY_WATCHDOG gates on CLAUDE_CODE_ENTRYPOINT set to 'remote', which is the CCR v2 remote-session entrypoint documented in L73"
+      },
+      {
+        "id": 37,
+        "relevance": 0.55,
+        "reason": "Remote Control bridge is the other ingress for unattended operation; L86's retry watchdog protects the same class of long-lived remote sessions"
+      },
+      {
+        "id": 84,
+        "relevance": 0.5,
+        "reason": "L84 is the prior per-release catch-all; L86 continues the pattern"
+      },
+      {
+        "id": 11,
+        "relevance": 0.4,
+        "reason": "L11 Skills System was re-verified against the same v2.1.116 bundle as L86; both are v2.9.x work"
       }
     ]
   }

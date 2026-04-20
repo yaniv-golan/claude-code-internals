@@ -1,5 +1,78 @@
 # Changelog
 
+## v2.9.1 — 2026-04-21 (this fork)
+
+Adds a new lesson **L86** (Chapter 18) covering v2.1.114–v2.1.116 binary changes, and extends L11 with a `progressMessage` deep-dive. Lesson count goes from 85 → 86, chapter count from 17 → 18.
+
+### Added: L86 — v2.1.114–v2.1.116 (OIDC Federation + Proxy + `/model` Headless)
+
+New reference file `15-verified-new-v2.1.116.md`, verified by direct bundle extraction/diff of v2.1.113 → v2.1.114 (confirmed no-op) → v2.1.116. Covers:
+
+- **OIDC Federation enterprise auth.** New `authentication.type: "oidc_federation"` joins existing `user_oauth`. Eight new `ANTHROPIC_*` env vars (`FEDERATION_RULE_ID`, `IDENTITY_TOKEN`, `IDENTITY_TOKEN_FILE`, `ORGANIZATION_ID`, `SERVICE_ACCOUNT_ID`, `SCOPE`, `CONFIG_DIR`, `PROFILE`). New API beta header `oidc-federation-2026-04-01`. Two configuration modes: **env-quad** (fully env-driven, `pf_()` returns `"env-quad"` when any of the four core vars set) and **credentials-file** (profile-based at `<config_dir>/configs/<profile>.json`, wins over env-quad when present with `authentication.type: "oidc_federation"`). Directory resolution precedence `ANTHROPIC_CONFIG_DIR → $XDG_CONFIG_HOME/anthropic → $HOME/.config/anthropic`. Profile resolution `ANTHROPIC_PROFILE → <config_dir>/active_config → "default"`. Parallel `<config_dir>/credentials/<profile>.json` convention noted for `user_oauth` profiles.
+- **Proxy fallbacks.** `CLAUDE_CODE_HTTP_PROXY` and `CLAUDE_CODE_HTTPS_PROXY` added as **lowest-priority** entries in `ZA9()` resolver (`HTTP_PROXY → http_proxy → CLAUDE_CODE_HTTP_PROXY`). Downstream propagation to npm (`npm_config_proxy`), yarn, docker, `JAVA_TOOL_OPTIONS` (only appended if not already containing `-Dhttps.proxyHost=`), `GLOBAL_AGENT_*`, Google Cloud SDK (`CLOUDSDK_PROXY_*`), Electron, and `FSSPEC_GCS` for child processes. Both vars also added to the spawned-env allowlist so children inherit them.
+- **`/model` non-interactive mode.** Second registration with `supportsNonInteractive: true` and `argumentHint: "<model>"` sits alongside the existing interactive menu. `claude -p "/model sonnet" "..."` now works for scripting.
+- **`CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT`.** Alias for existing `CLAUDE_CODE_SIMPLE`. Both checked by `$J8()`; when true, `TX()` returns a skeletal system prompt.
+- **`CLAUDE_CODE_RETRY_WATCHDOG`.** Enables retry watchdog only on `V6()==="linux"` AND `CLAUDE_CODE_ENTRYPOINT === "remote"`. Not for local developer use — targets CCR v2 (L73) and daemon-mode (L85) long-lived sessions.
+- **Diff artifact note.** The bundle diff reports `CLAUDE_CODE_` as a bare env var. Actually a string literal used by the diagnostic env-dump function `F1K()` for `.startsWith("CLAUDE_CODE_")` filtering — not a configurable variable. Documented to prevent future confusion.
+- **12 new `tengu_*` identifiers (GB flags + telemetry).** Deep-dived after discovering the structural diff script missed this namespace entirely. Split into three buckets:
+  - **GB flags gating dark-launched features:** `tengu_ccr_post_turn_summary` (post-turn summary in remote sessions, additionally gated on `CLAUDE_CODE_REMOTE`), `tengu_doorbell_agave` (the `enforce_web_search_mcp_isolation` tool-use isolation latch, introducing `Pa_()` with `denyMessage`/`activeLatch`/`classifiedAs` and classifications for `cowork`/`workspace`/`session-info`/`mcp-registry`/`plugins`/`scheduled-tasks`/`dispatch`/`ide`), `tengu_gouda_loop` (closed-issue notification for reported GitHub issues), `tengu_mcp_concurrent_connect` (parallel MCP connection at boot vs serial).
+  - **Telemetry implying new wired-up features:** `tengu_mcp_resource_templates_fetched` (new `resources/templates/list` MCP capability), `tengu_rc_upsell_notification_shown` (new `/remote-control` idle-upsell toast at `priority: medium`), `tengu_remote_attach_session` (new `--remote` attach capability — error `"Attaching to an existing remote session is not enabled for your account."`), `tengu_ultraplan_plan_ready` (ULTRAPLAN plan-ready surface, paired with `tengu_ultraplan_awaiting_input`), `tengu_tool_use_isolation_latch_denied` (telemetry when tool blocked by the Agave latch).
+  - **Pure observational telemetry:** `tengu_cli_flags`, `tengu_keybinding_fired`, `tengu_scroll_arrows_detected`.
+  - Narrative: v2.1.116 is **not** pure infrastructure — it ships several flagged-off features whose wiring is already in the binary. When the flags flip on, there will be no binary change to correlate.
+- **`diff-versions.sh` enhancement.** Script now also extracts `tengu_*` identifiers (`--section=tengu` or in the `all` default). Prior runs missed these 12 additions; re-ran v2.1.113 → v2.1.116 to confirm the new extractor catches all 12.
+
+L86 cross-referenced in `cross-references.json` to L85 (sequential catch-all + instrumentation-for-unattended-operation theme + ULTRAPLAN), L66 (Proxy Auth Helper, distinct mechanism), L73 (CCR v2 entrypoint + `--remote` CLI), L37 (Remote Control), L84 (prior catch-all), L17 (MCP, for concurrent-connect + resource-templates), L11 (parallel v2.9.x verification).
+
+### Added: `progressMessage` section in L11
+
+Verified in the v2.1.116 bundle (2 read sites, both feeding `c47` / `formatSkillLoadingMetadata`). Documents:
+
+- Defaults per source (user-slash `"running"`, skills `"loading"`, MCP prompts `"running"`).
+- Built-in hardcoded strings for `/commit`, `/commit-push-pr`, `/init`, `/init-verifiers`, `/statusline`, `/security-review`, `/team-onboarding`, `/insights`.
+- **`c47` accepts the progressMessage as its second argument but never references it in the output** — plumbed end-to-end and dropped at the leaf. Plumbed but unrendered in v2.1.116.
+- No frontmatter parse path writes `progressMessage`; only bundled builtins supply custom values.
+- Distinguished from the separately active tool-use progress stream (`progressMessagesByToolUseID`, `bash_progress`, `mcp_progress`).
+
+### Indexing
+
+- `topic-index.json`: bumped `total_lessons` to 86, `generated` to 2026-04-21; added L86 entry now with **86 keywords** (original 56 + 30 tengu/GB-flag/feature-flag terms); extended L86 endLine to 449 after tengu section added; extended L11 endLine to cover the new `progressMessage` section and added `progress-message` + `skill-overrides` keywords.
+- `cross-references.json`: added L86 reference block; linked to L17 (MCP) for concurrent-connect and resource-templates; updated `generated` date.
+- `semantic-index.json`: rebuilt twice — final run produces 86 entries with 1017-term vocabulary (was 988 before tengu additions; 946 in v2.9.0 baseline).
+- `diff-versions.sh`: added `extract_tengu()` function and new `tengu` section, ensuring future diffs don't miss the feature-flag/telemetry namespace.
+
+### Version metadata
+
+- `version.json`: `skill_version` 2.9.1, `captured_version` 2.1.116, `lessons_count` 86, `chapters_count` 18, `captured_date` 2026-04-21, note rewritten.
+- `plugin.json`: version 2.9.1, description updated for L86 coverage and 86-lesson count.
+- `SKILL.md`: frontmatter description updated (v2.1.113 → v2.1.116, added 14 new search keywords for the new surface), body intro updated, topic index section gains a `New (v2.1.114-v2.1.116)` bullet.
+- `CLAUDE.md`: header `86 lessons`; repo-structure diagram adds `15-verified-new-v2.1.116.md`; Key-facts lesson-ID line updated to reflect v2.1.114 no-op and v2.1.116 deltas.
+
+## v2.9.0 — 2026-04-21 (this fork)
+
+Re-verified the Skills System lesson (L11 in `02-agents-intelligence-interface.md`) directly against the v2.1.116 bundle. Six corrections and six additions — this lesson had carried paraphrased claims since the original markdown.engineering capture that turned out to be wrong in non-trivial ways when checked against the live code. No new lessons, no version-gap coverage change; count stays at 85.
+
+### Changed (corrections)
+
+- **Listing budget unit** — was described as tokens ("1% of the context window"). Actual: **characters**. Formula (`X6_`): `budget = ctxWindowTokens × 4 × skillListingBudgetFraction`; default fraction `0.01`; fallback `8000` chars when ctx unknown; env override `SLASH_COMMAND_TOOL_CHAR_BUDGET`.
+- **Over-budget behavior** — was described as eviction ("skills get dropped from the listing"). Actual (`kr6`): **description truncation** with graceful degradation. Bundled skills stay full. Per-skill budget `f = remaining / truncatableCount`; each description truncated to `f` chars. If `f < 20` (`Zr6`), **all** truncatable skills collapse to `- ${name}` globally. Skills never disappear from the listing — the real failure mode is silent global collapse to name-only. Added per-skill hard cap `skillListingMaxDescChars = 1536` (`gP1`) and the listing header + entry format literals (`- ${name}: ${description} - ${whenToUse}`).
+- **Conditional skill activation** — was described as triggered when the model "opens" a matching file. Actual (`QIH`): triggered on file **edits/touches**, matched via the `ignore` npm package (gitignore-style), not glob. Storage in `Pf.conditionalSkills`; once activated, moved to `Pf.dynamicSkills` and added to `activatedConditionalSkillNames` for the session. Emits `tengu_dynamic_skills_changed` with `source: "conditional_paths"`.
+- **`user-invocable: false` semantics** — was described as "hides from `/skills` menu." Actual (`q_5`): **blocks user `/name` invocation** with message *"This skill can only be invoked by Claude, not directly by users."* Menu hiding is a side-effect via `isHidden: !userInvocable`. The two knobs are symmetric opposites: `disable-model-invocation: true` → user-only; `user-invocable: false` → model-only.
+- **Safe-properties auto-allow set** — was described as "no allowed-tools, model override, hooks, paths." Actual (`Y_5` + set `z_5`): `model`, `effort`, `paths`, `disableModelInvocation`, `userInvocable`, `context`, `agent`, `version`, and others are **safe** (no prompt). The fields that flip to "ask" are `allowedTools` (non-empty), `hooks` (non-empty), `shell`, and any custom field outside the safe set. Full safe set now listed verbatim in the lesson.
+- **MCP shell "silently stripped"** — imprecise. Actual (`dO8`): the shell-processing pass `on(E, ..., shell)` is **skipped entirely** when `loadedFrom === "mcp"`. `` !`cmd` `` and ``` ```! ``` blocks remain as **literal text** in the prompt — not executed, not removed. `${CLAUDE_SKILL_DIR}` stays inert (no baseDir on MCP skills). `${CLAUDE_SESSION_ID}` still substitutes.
+- **Symlink dedup wording** — "can shadow real ones" replaced with actual behavior: dedup by `realpath(SKILL.md)`; second-encountered is skipped with log `"Skipping duplicate skill 'X' from Y (same file already loaded from Z)"`.
+
+### Added
+
+- **`skillOverrides` setting section** — the `skillOverrides: { [skillName]: "on" | "name-only" | "user-invocable-only" | "off" }` setting exists in the schema and feeds the `/skills` menu UI (`kS5`/`vS5` precedence: policy → flag → author → plugin → project → user). But runtime enforcement via `E4H(skill)` is hardcoded `return "on"` in v2.1.116, so the setting has no effect on the model-facing listing or the Skill tool. Documented as "UI-only dead code" with a pointer to the working alternatives (`disable-model-invocation`, `user-invocable`).
+- **Live-reload watcher constants** — `Io5 = 1000` (stabilityThreshold), `xo5 = 500` (pollInterval), `uo5 = 300` (reload debounce), `mo5 = 2000` (Bun stat-polling).
+- **Skill source priority expanded** — now 6 levels: policy → user → project → additional (`--add-dir`) → legacy `commands_DEPRECATED` → bundled. Bundled registered separately, doesn't participate in realpath dedup.
+- **Full safe set `z_5`** — listed verbatim in the permission section.
+
+### Version metadata
+
+- `verified_against_binary: 2.1.116` (was 2.1.113). Re-extracted the bundle and re-read the skills module directly; lesson constants and algorithms reflect v2.1.116.
+- Bumped version to 2.9.0 in `version.json`, `plugin.json`, `SKILL.md`, `CLAUDE.md`.
+
 ## v2.8.1 — 2026-04-18 (this fork)
 
 Post-v2.8.0 correction: the Daemon-Mode Thread cluster in L85 originally characterized L43 as "KAIROS / Cron" and described daemon mode as assembling *new* daemon infrastructure. L43 is actually titled "KAIROS — Always-On Autonomous Daemon" and documents the full daemon architecture (feature flags, `kairosActive` state pivot, `<tengu_tick>` wake-up loop, queue priorities). Corrected framing: v2.1.113's `CLAUDE_BG_BACKEND=daemon` env var is plausibly the first *binary-reachable public surface* of the KAIROS daemon subsystem that has been ant-only since v2.1.88 — not a new system.

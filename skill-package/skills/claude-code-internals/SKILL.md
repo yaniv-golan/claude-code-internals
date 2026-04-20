@@ -1,6 +1,6 @@
 ---
 name: claude-code-internals
-description: "Source-level architecture knowledge for Claude Code v2.1.113, verified against the live binary. Use when asked how Claude Code works internally, why something behaves unexpectedly, how to configure hooks correctly, what permission modes do, or when editing .claude/ config files. Covers 85 lessons: hooks (all 27 event types, exit code semantics), permissions (7-phase pipeline, 23 Bash validators), boot sequence, query engine, agents, MCP, memory, context compaction, plugins, sessions, OAuth, AskUserQuestion, and new binary-verified features through v2.1.113 (server-side Advisor Tool, PushNotification + KAIROS mobile push, Context Hint API server-driven micro-compaction, Fullscreen TUI with /focus /tui and DECSTBM scrolling regions, Proxy Auth Helper, System Prompt GB Override, /fewer-permission-prompts (renamed from /less-permission-prompts), canary channel, slow first-byte watchdog, async-agent stall watchdog, daemon background-stdout backend, Windows backspace mapping, /recap, multi-repo checkout, byte watchdog, REPL mode, managed-agents API beta, streaming partial yield, marble-origami context collapse, Remote Workflow Commands /autopilot /bugfix /dashboard /docs /investigate shipped in v2.1.110 and sunset in v2.1.113). Also use for: 'why did compaction fire', 'hook not triggering', 'permission denied', 'how does agent spawning work', 'what is coordinator mode', 'how does rewind work', 'how to set effort level', 'how does AskUserQuestion work', 'how does /dream work', 'what is Perforce mode', 'what are script caps', 'what is CLAUDE_CODE_CERT_STORE', 'what is away summary', 'how does loop pacing work', 'what is marble origami', 'how does context collapse work', 'streaming fallback', 'partial yield', 'quiet_salted_ember', 'what is /recap', 'byte watchdog', 'REPL mode', 'multi-repo checkout', 'managed agents', 'why is /autopilot gone', 'why was /bugfix removed', 'what is the advisor tool', 'what is PushNotification', 'what is context hint', 'what is fullscreen TUI', 'proxy auth helper', 'system prompt override', '/fewer-permission-prompts', 'tengu_hazel_osprey', 'tengu_sage_compass2', 'tengu_pewter_brook', 'tengu_marlin_porch', 'canary channel', 'slow first byte', 'async agent stall', 'CLAUDE_BG_BACKEND', 'DECSTBM'."
+description: "Source-level architecture knowledge for Claude Code v2.1.116, verified against the live binary. Use when asked how Claude Code works internally, why something behaves unexpectedly, how to configure hooks correctly, what permission modes do, or when editing .claude/ config files. Covers 86 lessons: hooks (all 27 event types, exit code semantics), permissions (7-phase pipeline, 23 Bash validators), boot sequence, query engine, agents, MCP, memory, context compaction, plugins, sessions, OAuth, AskUserQuestion, and new binary-verified features through v2.1.116 (OIDC Federation enterprise auth with credentials-file profiles, CLAUDE_CODE_HTTP(S)_PROXY fallbacks and downstream proxy propagation to npm/yarn/docker/Java/gcloud child processes, /model slash command non-interactive mode for headless scripting, CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT slim-prompt alias, CLAUDE_CODE_RETRY_WATCHDOG gated to Linux+remote entrypoint, server-side Advisor Tool, PushNotification + KAIROS mobile push, Context Hint API server-driven micro-compaction, Fullscreen TUI with /focus /tui and DECSTBM scrolling regions, Proxy Auth Helper, System Prompt GB Override, /fewer-permission-prompts (renamed from /less-permission-prompts), canary channel, slow first-byte watchdog, async-agent stall watchdog, daemon background-stdout backend, Windows backspace mapping, /recap, multi-repo checkout, byte watchdog, REPL mode, managed-agents API beta, streaming partial yield, marble-origami context collapse, Remote Workflow Commands /autopilot /bugfix /dashboard /docs /investigate shipped in v2.1.110 and sunset in v2.1.113). Also use for: 'why did compaction fire', 'hook not triggering', 'permission denied', 'how does agent spawning work', 'what is coordinator mode', 'how does rewind work', 'how to set effort level', 'how does AskUserQuestion work', 'how does /dream work', 'what is Perforce mode', 'what are script caps', 'what is CLAUDE_CODE_CERT_STORE', 'what is away summary', 'how does loop pacing work', 'what is marble origami', 'how does context collapse work', 'streaming fallback', 'partial yield', 'quiet_salted_ember', 'what is /recap', 'byte watchdog', 'REPL mode', 'multi-repo checkout', 'managed agents', 'why is /autopilot gone', 'why was /bugfix removed', 'what is the advisor tool', 'what is PushNotification', 'what is context hint', 'what is fullscreen TUI', 'proxy auth helper', 'system prompt override', '/fewer-permission-prompts', 'tengu_hazel_osprey', 'tengu_sage_compass2', 'tengu_pewter_brook', 'tengu_marlin_porch', 'canary channel', 'slow first byte', 'async agent stall', 'CLAUDE_BG_BACKEND', 'DECSTBM', 'OIDC federation', 'identity token', 'ANTHROPIC_FEDERATION_RULE_ID', 'ANTHROPIC_CONFIG_DIR', 'ANTHROPIC_PROFILE', 'env-quad', 'credentials file', 'CLAUDE_CODE_HTTP_PROXY', 'CLAUDE_CODE_HTTPS_PROXY', 'proxy fallback', '/model headless', 'CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT', 'CLAUDE_CODE_RETRY_WATCHDOG', 'tool-use isolation latch', 'enforce_web_search_mcp_isolation', 'tengu_doorbell_agave', 'tengu_gouda_loop', 'tengu_mcp_concurrent_connect', 'tengu_mcp_resource_templates_fetched', 'tengu_rc_upsell_notification_shown', 'tengu_remote_attach_session', 'tengu_ultraplan_plan_ready', 'tengu_tool_use_isolation_latch_denied', 'tengu_ccr_post_turn_summary', '--remote attach', '/remote-control upsell', 'ULTRAPLAN plan ready', 'MCP resource templates', 'MCP concurrent connect', 'closed issue notice', 'Pa_ isolation latch'."
 user-invocable: true
 argument-hint: "[topic - e.g. hooks, permissions, memory, agents, compaction]"
 context: fork
@@ -11,10 +11,10 @@ allowed-tools:
   - Bash
 ---
 
-You are a Claude Code architecture expert with access to 85 lessons covering Claude Code v2.1.113
-internals — verified against the live binary. Lessons 1–50 were reverse-engineered from source
-docs (v2.1.88, confirmed unchanged in v2.1.113). Lessons 51–85 were extracted directly from the
-v2.1.90/v2.1.92/v2.1.94/v2.1.100/v2.1.101/v2.1.104/v2.1.107/v2.1.108/v2.1.109/v2.1.110/v2.1.111/v2.1.112/v2.1.113 binaries.
+You are a Claude Code architecture expert with access to 86 lessons covering Claude Code
+internals — verified against live binaries through v2.1.116. Lessons 1–50 were reverse-engineered
+from source docs (v2.1.88, confirmed unchanged through v2.1.116). Lessons 51–86 were extracted
+directly from the v2.1.90/v2.1.92/v2.1.94/v2.1.100/v2.1.101/v2.1.104/v2.1.107/v2.1.108/v2.1.109/v2.1.110/v2.1.111/v2.1.112/v2.1.113/v2.1.114/v2.1.116 binaries. L11 (Skills System) was re-verified against the v2.1.116 bundle in v2.9.0 and extended with a `progressMessage` deep-dive in v2.9.1. L86 (OIDC Federation + proxy plumbing + `/model` headless) was added in v2.9.1.
 
 **Topic:** $argument
 
@@ -23,7 +23,7 @@ v2.1.90/v2.1.92/v2.1.94/v2.1.100/v2.1.101/v2.1.104/v2.1.107/v2.1.108/v2.1.109/v2
 If `$argument` is empty or just whitespace, print this index and ask what the user wants to know:
 
 ```
-Available topics (85 lessons across 17 chapters):
+Available topics (86 lessons across 18 chapters):
   Boot & Core:    boot sequence, query engine, state management, system prompt, architecture overview
   Tools:          tool system, bash tool, file tools, search tools, MCP system
   Agents & AI:    skills system, agent system, coordinator mode, teams/swarm
@@ -81,6 +81,23 @@ Available topics (85 lessons across 17 chapters):
                   (CLAUDE_CODE_BS_AS_CTRL_BACKSPACE), fullscreen DECSTBM scrolling regions
                   (CLAUDE_CODE_DECSTBM + tengu_marlin_porch), /compact and /exit description
                   tweaks. v2.1.112 was a no-op release for public surface.
+  New (v2.1.114-v2.1.116): OIDC Federation enterprise auth (authentication.type:
+                  "oidc_federation", beta header oidc-federation-2026-04-01, 8 new
+                  ANTHROPIC_* env vars: FEDERATION_RULE_ID, IDENTITY_TOKEN,
+                  IDENTITY_TOKEN_FILE, ORGANIZATION_ID, SERVICE_ACCOUNT_ID, SCOPE,
+                  CONFIG_DIR, PROFILE), env-quad vs credentials-file profile resolution
+                  at <config_dir>/configs/<profile>.json, /model slash command
+                  supportsNonInteractive for headless use, CLAUDE_CODE_HTTP(S)_PROXY
+                  fallbacks with downstream propagation to npm/yarn/docker/Java/gcloud,
+                  CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT alias, CLAUDE_CODE_RETRY_WATCHDOG
+                  (Linux + remote entrypoint only), 12 new tengu_* identifiers incl.
+                  4 GB flags gating dark-launched features: tengu_doorbell_agave
+                  (enforce_web_search_mcp_isolation tool-use isolation latch via Pa_()),
+                  tengu_mcp_concurrent_connect (parallel MCP boot), tengu_gouda_loop
+                  (closed-issue notice), tengu_ccr_post_turn_summary (remote post-turn
+                  summary); plus telemetry implying wired-up /remote-control upsell,
+                  --remote attach capability, ULTRAPLAN plan-ready, and MCP
+                  resources/templates/list capability. v2.1.114 was a no-op release.
 ```
 
 ---
@@ -91,7 +108,7 @@ Available topics (85 lessons across 17 chapters):
 bash ${CLAUDE_SKILL_DIR}/scripts/check-version.sh 2>/dev/null
 ```
 
-Silent if versions match. Prints a warning if the Claude Code version you're running differs from v2.1.113.
+Silent if versions match. Prints a warning if the Claude Code version you're running differs from v2.1.116.
 If there's a mismatch, note it in your answer — hooks and permission details change frequently.
 
 ## Step 2: Search with unified RRF
@@ -163,6 +180,7 @@ All reference files are in `${CLAUDE_SKILL_DIR}/references/`.
 | `12-verified-new-v2.1.109.md` | 15 | **Binary-verified v2.1.107–v2.1.109.** /recap on-demand session recap (L72). Multi-repo checkout & base refs (L73). Byte-level stream watchdog (L74). REPL mode (L75). v2.1.107–v2.1.109 command & env var changes (L76). |
 | `13-verified-new-v2.1.111.md` | 16 | **Binary-verified v2.1.110–v2.1.111.** Remote Workflow Commands /autopilot /bugfix /dashboard /docs /investigate (L77 — sunset in v2.1.113, see L85). Advisor Tool server-side reviewer model (L78). PushNotification + KAIROS mobile push (L79). Context Hint API server-driven micro-compaction (L80). Fullscreen TUI + /focus + /tui (L81). Proxy Auth Helper (L82). System Prompt GB Override, append-subagent, verified-vs-assumed (L83). v2.1.110–v2.1.111 command & env var changes incl. /less-permission-prompts (renamed in v2.1.113), canary channel, slow first-byte watchdog (L84). |
 | `14-verified-new-v2.1.113.md` | 17 | **Binary-verified v2.1.112–v2.1.113.** v2.1.112 no-op. v2.1.113: Remote Workflow Commands sunset (all 5 deleted), /less-permission-prompts → /fewer-permission-prompts rename, 4 new env vars (CLAUDE_ASYNC_AGENT_STALL_TIMEOUT_MS async-agent stall watchdog, CLAUDE_BG_BACKEND daemon stdout backend, CLAUDE_CODE_BS_AS_CTRL_BACKSPACE Windows backspace mapping, CLAUDE_CODE_DECSTBM fullscreen margin support), tengu_marlin_porch GrowthBook flag, /compact and /exit description tweaks (L85). |
+| `15-verified-new-v2.1.116.md` | 18 | **Binary-verified v2.1.114–v2.1.116.** v2.1.114 no-op. v2.1.116: OIDC Federation enterprise auth (authentication.type "oidc_federation", 8 new ANTHROPIC_* env vars, beta header oidc-federation-2026-04-01, credentials-file profile system at `<config_dir>/configs/<profile>.json` vs env-quad mode), CLAUDE_CODE_HTTP(S)_PROXY fallbacks with downstream propagation to npm/yarn/docker/Java/gcloud, /model supportsNonInteractive for headless scripting, CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT alias, CLAUDE_CODE_RETRY_WATCHDOG (Linux + remote entrypoint), and 12 new tengu_* identifiers: 4 GB flags gating dark-launched features (tengu_doorbell_agave tool-use isolation latch via Pa_() + enforce_web_search_mcp_isolation, tengu_mcp_concurrent_connect parallel MCP boot, tengu_gouda_loop closed-issue notice, tengu_ccr_post_turn_summary), 5 telemetry implying wired-up features (MCP resources/templates/list, /remote-control upsell toast, --remote attach capability, ULTRAPLAN plan-ready, isolation-latch-denied), 3 observational telemetry (tengu_cli_flags, tengu_keybinding_fired, tengu_scroll_arrows_detected) (L86). |
 
 If unsure which file, use Grep across all references:
 ```

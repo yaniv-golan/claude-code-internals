@@ -8,6 +8,7 @@
 #   - New / removed slash commands (name:"...", description:"...")
 #   - New / removed hook event types (the xv1 array)
 #   - New / removed API beta strings
+#   - New / removed tengu_* identifiers (GB feature flags + telemetry events)
 #   - Version strings present in each bundle
 #
 # Usage:
@@ -15,7 +16,7 @@
 #   ./diff-versions.sh <old-bundle.js> <new-bundle.js> --json
 #   ./diff-versions.sh <old-bundle.js> <new-bundle.js> --section=envvars
 #
-# Sections: envvars, commands, hooks, betas, versions, all (default)
+# Sections: envvars, commands, hooks, betas, tengu, versions, all (default)
 #
 # Requirements: python3 (stdlib only)
 
@@ -33,7 +34,7 @@ for arg in "$@"; do
     --help|-h)
       echo "Usage: $0 <old-bundle.js> <new-bundle.js> [--json] [--section=SECTION]"
       echo ""
-      echo "Sections: envvars, commands, hooks, betas, versions, all (default)"
+      echo "Sections: envvars, commands, hooks, betas, tengu, versions, all (default)"
       echo ""
       echo "Examples:"
       echo "  $0 claude-2.1.88-bundle.js claude-2.1.90-bundle.js"
@@ -113,6 +114,15 @@ def extract_betas(text):
     """Extract API beta strings (format: word-YYYY-MM-DD)."""
     return set(re.findall(r'"([a-z][a-z0-9-]+-20\d\d-\d\d-\d\d)"', text))
 
+def extract_tengu(text):
+    """Extract tengu_* identifiers (GB feature flags + telemetry events).
+
+    GB flags are accessed via S_("tengu_*", ...) or QK("tengu_*").
+    Telemetry events are fired via Q("tengu_*", ...) / E("tengu_*", ...) etc.
+    Both namespaces share the tengu_ prefix so we extract all quoted "tengu_*" literals.
+    """
+    return set(re.findall(r'"(tengu_[a-z0-9_]+)"', text))
+
 def extract_versions(text):
     """Extract version strings."""
     return set(re.findall(r'"version":"(\d+\.\d+\.\d+)"', text))
@@ -148,6 +158,9 @@ if section in ('hooks', 'all'):
 
 if section in ('betas', 'all'):
     results['betas'] = diff_sets(extract_betas(old_text), extract_betas(new_text), 'API Beta Strings')
+
+if section in ('tengu', 'all'):
+    results['tengu'] = diff_sets(extract_tengu(old_text), extract_tengu(new_text), 'tengu_* Identifiers (GB flags + telemetry)')
 
 if section in ('versions', 'all'):
     results['versions'] = {
@@ -215,7 +228,7 @@ def print_diff(d, name_fn=lambda x: x):
                 print(f'       old: {str(v["old"])[:60]}')
                 print(f'       new: {str(v["new"])[:60]}')
 
-for key in ('envvars', 'commands', 'hooks', 'betas'):
+for key in ('envvars', 'commands', 'hooks', 'betas', 'tengu'):
     if key in results:
         print_diff(results[key])
 
