@@ -55,16 +55,36 @@ The plugin system comprises **five conceptual layers**:
 - Connect MCP servers with userConfig injection
 - Register LSP servers
 
-## Marketplace Sources
+## Sources: two distinct schema unions
+
+The word "source" covers **two different zod unions** in the binary. They are not interchangeable — a plugin-source type like `pip` is invalid as a marketplace source, and marketplace-only allowlist types like `hostPattern` are invalid inside a plugin entry.
+
+### Plugin sources (`plugins[].source` inside a marketplace catalog)
+
+How a single plugin listed in a marketplace catalog is fetched. Bare string form is also accepted and means "relative path from the marketplace root."
 
 | Type | Details |
 |------|---------|
-| **github** | Clones `owner/repo` over SSH (HTTPS in remote mode); official uses `anthropics/claude-plugins-official` |
-| **git** | HTTPS, SSH (`git@`), or `file://`; validated before clone |
-| **git-subdir** | Partial clone with sparse-checkout; version includes path hash |
-| **url** | Direct HTTP/HTTPS fetch of marketplace JSON; GCS fallback for official |
-| **npm** | Installed to shared `npm-cache/node_modules/` then copied |
-| **directory/file** | Local path; excluded from zip-cache |
+| **github** | `{repo: "owner/name", ref?, path?, commit?}` — plugin lives in a GitHub repo |
+| **git-subdir** | `{url, path, ref?}` — partial clone with sparse-checkout; version includes path hash |
+| **url** | `{url}` — direct download of a plugin archive |
+| **npm** | `{package, version?, registry?}` — installed to shared `npm-cache/node_modules/` then copied |
+| **pip** *(undocumented)* | `{package, version?, registry?}` — PyPI name with specifier (`==1.0.0`, `>=2.0.0`); optional custom index URL. Parallels `npm` for Python-backed plugins |
+| *(bare string)* | Relative path from the marketplace directory |
+
+### Marketplace sources (how the catalog itself is fetched)
+
+| Type | Details |
+|------|---------|
+| **github** | `{repo, ref?, path?, sparsePaths?}` — clones `owner/repo` over SSH (HTTPS in remote mode); official uses `anthropics/claude-plugins-official` |
+| **git** *(undocumented)* | `{url, ref?, path?, sparsePaths?}` — HTTPS, SSH (`git@`), or `file://`; validated before clone |
+| **url** | `{url}` — direct HTTP/HTTPS fetch of marketplace JSON; GCS fallback for official |
+| **npm** | `{package, version?, registry?}` — installed to shared `npm-cache/node_modules/` then copied |
+| **file** | `{path}` — local marketplace.json path; excluded from zip-cache |
+| **directory** | `{path}` — local marketplace directory; excluded from zip-cache |
+| **hostPattern** | Allowlist entry matching by host glob; used in policy-driven marketplace resolution |
+| **pathPattern** | Allowlist entry matching by path glob; used in policy-driven marketplace resolution |
+| **settings** | Sentinel pointing at a settings-declared marketplace (no network fetch of its own) |
 
 **Official Marketplace:** Implicitly declared when any enabled plugin references it. Auto-clones `anthropics/claude-plugins-official` on first launch.
 

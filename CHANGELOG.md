@@ -1,5 +1,34 @@
 # Changelog
 
+## v2.9.2 — 2026-04-21 (this fork)
+
+Amends **L43** (`references/04-connectivity-plugins.md`) to reflect the full set of `source` literals present in the v2.1.116 zod schema. No new lessons; patch bump only.
+
+### Changed
+
+- **Sources table restructured into two distinct unions.** The single "Marketplace Sources" table conflated plugin-sources (inside a marketplace catalog's `plugins[].source`) with marketplace-sources (how the catalog itself is fetched). These are separate zod unions in the binary — a plugin-source type like `pip` is invalid as a marketplace source, and marketplace-only allowlist types like `hostPattern` are invalid inside a plugin entry. Section now titled "Sources: two distinct schema unions" with separate tables and a lead paragraph explaining the distinction.
+
+### Added
+
+- **`pip` plugin source** *(undocumented)* — PyPI-backed mechanism paralleling `npm` for Python-packaged plugins. Schema `{package, version?, registry?}` with pip-style specifiers (`==1.0.0`, `>=2.0.0`) and optional custom index URL. Not mentioned in Anthropic's public plugin-source docs.
+- **`hostPattern` / `pathPattern` / `settings` marketplace sources** — allowlist/sentinel source types used in policy-driven marketplace resolution; previously missing from the internals table.
+- **Bare-string plugin source** noted explicitly ("relative path from the marketplace directory").
+
+### Verification
+
+All 11 source literals confirmed by exhaustive grep of the v2.1.116 bundle:
+
+```
+grep -ao 'source:h\.literal("[^"]*")' /tmp/claude-2.1.116-bundle.js | sort | uniq -c
+```
+
+Result: `directory` ×1, `file` ×1, `git` ×1, `git-subdir` ×1, `github` ×2 (plugin + marketplace), `hostPattern` ×1, `npm` ×2, `pathPattern` ×1, `pip` ×1, `settings` ×1, `url` ×2. No `"zip"` source type. Prior narrower grep had missed `git` and `pip` because the alternation list didn't include them.
+
+### Version metadata
+
+- `version.json`: `skill_version` 2.9.1 → 2.9.2; note extended with the source-union restructure rationale.
+- `plugin.json`: version 2.9.1 → 2.9.2.
+
 ## v2.9.1 — 2026-04-21 (this fork)
 
 Adds a new lesson **L86** (Chapter 18) covering v2.1.114–v2.1.116 binary changes, and extends L11 with a `progressMessage` deep-dive. Lesson count goes from 85 → 86, chapter count from 17 → 18.
