@@ -1,5 +1,133 @@
 # Changelog
 
+## v2.10.0 — 2026-04-23 (this fork)
+
+Adds **Chapter 19** (`references/16-verified-new-v2.1.118.md`) with two new lessons covering the v2.1.117 and v2.1.118 binaries — plus three source-traced deep dives: `/fork` execution mechanics, WIF OAuth lock internals, and the previously-undocumented AI verification hook. Lesson count goes from 86 → 88, chapter count from 18 → 19. Verified against the v2.1.118 binary.
+
+### Deep dive: `/fork` execution mechanics (in L87)
+
+Traced `_a7`, `V75`, `C75`, `Id5`, `bd5`, `_d_`, `GuH`, `quH`, `GC` to reveal **three distinct fork paths** that had been conflated in my initial write-up:
+
+1. **User-typed `/fork <directive>`** (`_a7` → `quH` → `xy` with `isAsync: true`) — **backgrounded**, parent NOT blocked, uses `ph` fork subagent type, full parent messages + REPL replay log inheritance, `useExactTools: true`, registers with parent's task registry. System confirmation: `<emoji> forked <name> (<id4>)`.
+2. **Slash command with `context: "fork"` frontmatter** (`V75` with `isAsync: false`) — **synchronous, parent blocks**, uses `H.agent` from frontmatter or general-purpose fallback, returns `<local-command-stdout>`.
+3. **Skill invoked via Skill tool with `context: "fork"`** (`C75` with `isAsync: false`) — **synchronous, parent blocks**, same semantics as V75 but reached via Skill tool path. **New in v2.1.118** — `_a7`/`V75` both existed dark-launched in v2.1.116.
+
+Critical correction: the `ph` fork subagent type (tools:`["*"]`, maxTurns:200, model:`"inherit"`, permissionMode:`"bubble"`) is used **only** by path 1. Paths 2-3 use whatever agent is specified. The `whenToUse` comment about "omitting subagent_type" refers to a hypothetical Task dispatcher fallback that is not yet wired up.
+
+Also documents: `bd5` name generation (first 3 tokens, lowercased, alphanumeric-only, ≤24 chars, `"fork"` fallback), the "Cannot fork before the first conversation turn" guard (new in v2.1.117), and the dark-launch note that v2.1.117's "new" `/fork` is a visibility flip, not a code-add.
+
+### Deep dive: WIF OAuth lock internals (in L88)
+
+Traced `Vk4`, `Gv_`, `RY`, `tvq`, `e5` to document the concrete lock mechanism — and corrected the attribution: the **mechanism** landed in v2.1.117, the **telemetry** in v2.1.118.
+
+- **Lock type**: `proper-lockfile` npm package, directory-level `mkdir` mutex (not file-level `fcntl`). Locks the **containing directory** of the credentials file via `evq.dirname(credPath)` — serializes all operations across profiles in that dir.
+- **Retry budget**: `tvq = 5` max retries with 1000–2000ms jittered backoff (`1000 + Math.random() * 1000`). Total wait: 5–10 seconds worst case.
+- **Only `ELOCKED` is retried** — any other error (filesystem, permission) bubbles immediately.
+- **Final error**: typed `e5` class with verbatim message `"Could not acquire credentials lock at <path> after 5 retries"`.
+- **`onCompromised: wH`** — logs but continues; lock compromise does NOT trigger release.
+- **`Symbol.asyncDispose`** attached for ES2022 `using` support.
+- **Debug steps** for `tengu_wif_user_oauth_lock_retry_limit` added: `lsof <config_dir>/credentials/.lock`; `rmdir` the stale lockfile only after confirming no live holder.
+- **`tengu_oauth_401_recovered_from_disk`** documented as a separate belt-and-suspenders path — catches cases where a sibling process refreshes the token between in-memory cache load and the outbound request (lock isn't contested but cache is stale).
+
+### Deep dive: AI verification hook (new L88 section — `bs7`)
+
+`tengu_agent_stop_hook_blocking` telemetry led to discovering an **entire previously-undocumented hook TYPE**: an AI verification hook that spawns its own sub-conversation to return a structured verdict `{ok: true}` or `{ok: false, reason}`. The mechanism (`bs7`) shipped silently in v2.1.116; only the `_blocking` outcome telemetry is new in v2.1.118.
+
+Key mechanics documented:
+- **Max 50 turns** (constant `B = 50`), **60 s default timeout** (overridable via `hookConfig.timeout` in seconds).
+- **System prompt** for Stop/SubagentStop: `"You are verifying a stop condition in Claude Code. Your task is to verify that the agent completed the given plan."` Other events get `"You are evaluating a <eventName> hook…"`. Full verbatim prompt included in the lesson.
+- **Permission mode**: `"dontAsk"` — hook never prompts the user.
+- **Transcript auto-allow**: `Read(/<transcript-path>)` added to session rules so the hook agent can read the conversation history without triggering a permission dialog.
+- **Thinking disabled** (`thinkingConfig: {type: "disabled"}`).
+- **Tool set**: parent's tools minus pre-existing structured-output tool minus denylist, plus a fresh structured-output tool for the hook's verdict.
+- **Five outcomes** mapped to their telemetry events — `success`, `blocking` (NEW), `cancelled (max_turns)`, `cancelled (no structured output)`, `non_blocking_error`.
+
+Reconstructed hook config shape: `{type: "agent"?, event, prompt, timeout?, model?}`. Substantially extends the L10 hooks-system surface with a second execution model beyond shell commands. Added `L88 → L10` cross-reference.
+
+### Added: L87 — v2.1.117 `/fork` Subagent Command, Rate-Limit/Subscription Overrides, `/autocompact` + `/stop-hook` Removal
+
+New slash command **`/fork <directive>`** spawns a **background subagent that inherits the full conversation context** of the parent session.
+
+- **Three-layer gating.** Slash-command `isEnabled: iv` → `sJ9() !== "disabled"`; fork-enable helper `GR()` requires interactive mode (`!S8()`), then either `CLAUDE_CODE_FORK_SUBAGENT` env truthy or GB flag `tengu_copper_fox` (default false).
+- **New implicit `fork` subagent type.** `tools:["*"]`, `maxTurns:200`, `model:"inherit"`, `permissionMode:"bubble"`. Not user-selectable via `Task({ subagent_type: "fork" })` — triggered by **omitting** `subagent_type` when the experiment is active.
+- **Parent-context inheritance modes** (`forksParentContext`): `"turn"` → slice from `turnStartIndex`; `true` → full history; absent → fresh start. REPL hydration uses `{kind:"fork", log:[...replayLog]}` to resume mid-stream.
+- **Skill `context: "fork"` frontmatter now dispatches** to real fork helper `V75` instead of inline `H$7` (the field was schema-accepted in v2.1.116 but dispatch was a no-op).
+- **Bridge reattach env vars** `CLAUDE_BRIDGE_REATTACH_SESSION` / `CLAUDE_BRIDGE_REATTACH_SEQ` passed once-and-consumed for TUI reattach flow; explicitly dropped from child env in `preSpawn`.
+- **`f` keybinding chord** registered in query-ready shortcut table.
+- Paired telemetry: `tengu_fork_subagent_enabled`, `tengu_remote_attach_session_rejected`. UI string: `"Fork started — processing in background"`.
+
+**Rate-limit / subscription overrides** — two new env vars feed directly into the OAuth token object:
+
+- `CLAUDE_CODE_SUBSCRIPTION_TYPE` overrides reported subscription type (default `null`).
+- `CLAUDE_CODE_RATE_LIMIT_TIER` overrides reported rate-limit tier (default `null`).
+
+Client-side test hooks (not a security boundary — server still authoritative). Pair with v2.1.118's dark-launched `/pro-trial-expired` for Pro plan trial UI testing.
+
+**`/schedule` gains one-time scheduling.** Description shifts from static string to template literal with runtime capability check; terminology changes from "triggers" to "routines"; adds `"on a cron schedule or once at a specific time"` when capability enabled.
+
+**Removed outright:**
+
+- `/autocompact` (interactive auto-compact-window command — gone alongside `tengu_autocompact_command` and `tengu_autocompact_dialog_opened` telemetry). Replacement: `/config` settings UI.
+- `/stop-hook` (was `isEnabled:()=>false` since v2.1.92 — now fully removed). Replacement: edit `.claude/settings.json` directly.
+
+**Other observability adds:** `tengu_advisor_strip_retry` (Advisor Tool retry path on server-rejection markers), `tengu_byte_watchdog_fired_late` (`{idle_ms, late_ms, readable_errored}` when watchdog fires ≥1000ms late), `tengu_team_artifact_tip_shown`, `tengu_tussock_oriole` (opaque codename), `tengu_amber_redwood` → `tengu_amber_redwood2` version bump. Notable removal: `tengu_mcp_concurrent_connect` (parallel MCP boot either became default or rolled back).
+
+### Added: L88 — v2.1.118 `/cost` + `/stats` → `/usage` Aliases, `cache-diagnosis-2026-04-07`, Frontmatter Shadow Validator, WIF OAuth Locking
+
+**`/cost` and `/stats` folded into `/usage` aliases.** The standalone registrations are deleted. `/usage` now has **two registrations**:
+
+- **Interactive** (TUI): `requires:{ink:true}`, `thinClientDispatch:"control-request"`, description `"Show session cost, plan usage, and activity stats"` (unified dashboard — what `/stats` used to show).
+- **Non-interactive** (headless): `supportsNonInteractive:true`, `isEnabled:()=>S8()`, description `"Show the total cost and duration of the current session"` (what `/cost` used to show).
+
+Aliases `["cost", "stats"]` on both registrations — typing `/cost` or `/stats` still works but they're no longer distinct commands in `/help` or autocomplete.
+
+**`/autofix-pr` deremoted.** Description drops `"remote session"` framing — now `"Monitor and autofix any issues with the current PR"`. Continues L85's Remote Workflow sunset direction.
+
+**`/pro-trial-expired` dark-launched.** New command with `isEnabled:()=>false`. When enabled (date-gate or GB flag), shows upsell/renewal UI for users whose Pro plan trial has ended. Paired telemetry `tengu_pro_trial_expired_choice`. Combined with L87's env-var overrides, forms a full test surface for Pro plan rollout.
+
+**New API beta `cache-diagnosis-2026-04-07`** for prompt cache diagnostics. Client sends opt-in; if server rejects (`sj9(lH)` matches rejection marker), the in-memory flag `r=false`, `UD_(false)` persists the decision, and `"[cache-diagnosis] server rejected beta — dropping"` logs. Single rejection disables the beta for the remainder of the session.
+
+**Frontmatter shadow validator** (deep-dived in L88):
+
+- **`pjH(kind, frontmatter)`** runs `qT1[kind]().strict().safeParse(_)` and emits `tengu_frontmatter_shadow_unknown_key` (per unknown key) or `tengu_frontmatter_shadow_mismatch` (per Zod issue) on failure. Wrapped in `try {} catch {}` — validator failure can't break skill loading.
+- **Dispatch table `qT1 = { skill: eO1, agent: HT1, "output-style": _T1 }`** — three entries only; no `"command"`. Custom slash commands validate as `"skill"` (the `eO1` schema is a superset of the pure command schema `tO1`).
+- **Per-session dedup** via `Gj9 = new Set()`: each unique `(event, surface, detail)` tuple emits once. A skills dir with 50 copies of the same bad key fires once, not 50×.
+- **Key correction:** there is **no formal primary schema** — the primary path is imperative (`Cz8` reads properties directly and coerces with JS, silently ignoring unknown keys). The Zod schemas added in v2.1.118 are the **only** formal frontmatter validation in the codebase.
+- **Full schema tables** documented in L88: `tO1` (11 command keys), `eO1 = tO1.extend(...)` (25 skill keys; `context` is the only typed enum `inline`/`fork`), `HT1` (16 agent keys; `name` + `description` required; camelCase divergence from skill kebab-case), `_T1` (4 output-style keys).
+- **Notable drift point:** `progressMessage` — documented in L11 as an object-level field on command/skill descriptors (not a YAML-sourced field today) — is absent from `eO1`. Skills adding it aspirationally get no behavior AND fire unknown-key telemetry.
+
+**WIF user-OAuth advisory file-locking** prevents refresh-token races between multiple Claude Code processes sharing `<config_dir>/credentials/<profile>.json`:
+
+- `tengu_wif_user_oauth_lock_acquired` / `..._released` — normal path.
+- `tengu_wif_user_oauth_lock_retry` — lock contention; `..._retry_limit` — budget exhausted.
+- `tengu_oauth_token_refresh_lock_release_error` — release path error.
+- `tengu_oauth_401_recovered_from_disk` — post-hoc recovery when 401 despite valid in-memory token triggers a disk re-read.
+
+**Removed env vars:** `CLAUDE_CODE_AGENT_NAME`, `CLAUDE_CODE_TEAM_NAME` (derived from session state now via `YY_()` / `standaloneAgentContext`).
+
+**Other observability:** `tengu_agent_stop_hook_blocking`, `tengu_auto_mode_opt_in_dialog_decline_dont_ask`, `tengu_keybindings_dom` (Desktop App), `tengu_terminal_probe`, `tengu_warm_resume_hint_eligible`, `tengu_push_notif_upsell_notification_shown`, plus four codename GB flags (`tengu_ember_trail`, `tengu_mocha_barista`, `tengu_orchid_mantis`, `tengu_slate_kestrel`). Removed: `tengu_ccr_post_turn_summary` (feature shipped default-on or rolled back), `tengu_config_tool_changed`, `tengu_vscode_cc_auth`.
+
+### Changed
+
+- **`SKILL.md`** frontmatter description, body intro, Step 1 version warning, references table, and available-topics listing all updated for 88 lessons / 19 chapters / v2.1.118.
+- **`topic-index.json`**: L87 and L88 entries added with keywords; `keyword_map` extended with ~70 new entries (fork, usage aliases, shadow validator, WIF OAuth, etc.); `generated` → `2026-04-23`.
+- **`cross-references.json`**: L87 wired to L11 (skill `context:"fork"` dispatch), L6 (agent system), L29 (permissions bubble), L85 (release-catch-all continuity), L74 (byte watchdog telemetry), L78 (advisor retry), L69 (marble-origami replay log), L88 (paired chapter). L88 wired to L87, L11 (shadow validator), L38 (OAuth), L86 (credentials file), L73 / L85 (Remote Workflow sunset direction), L22 (commands system dispatch), L35 (plugin frontmatter).
+- **`troubleshooting.json`**: seven new problem patterns — `/fork not available`, `why is /cost|/stats|/autocompact|/stop-hook gone`, OAuth refresh races, frontmatter unknown keys, `/pro-trial-expired`.
+- **`semantic-index.json`** rebuilt (88 entries, vocab 1098 terms, 220.3 KB).
+- **`version.json`**: `skill_version` 2.9.2 → 2.10.0; `captured_version` 2.1.116 → 2.1.118; `verified_against_binary` 2.1.116 → 2.1.118; `lessons_count` 86 → 88; `chapters_count` 18 → 19.
+- **`plugin.json`**: version 2.9.2 → 2.10.0; description updated with v2.1.117–v2.1.118 highlights.
+
+### Verification
+
+All deltas confirmed by bundle diff:
+
+```bash
+bash skill-package/skills/claude-code-internals/scripts/diff-versions.sh \
+  /tmp/claude-2.1.116-bundle.js /tmp/claude-2.1.118-bundle.js
+```
+
+v2.1.116 → v2.1.118: +5 env vars, −2 env vars, +2 slash commands, −5 standalone registrations (2 genuine removals + 2 folded-to-aliases + 1 false-positive `/schedule` due to template-literal desc), +1 API beta, +28 `tengu_*`, −9 `tengu_*`.
+
 ## v2.9.2 — 2026-04-21 (this fork)
 
 Amends **L43** (`references/04-connectivity-plugins.md`) to reflect the full set of `source` literals present in the v2.1.116 zod schema. No new lessons; patch bump only.

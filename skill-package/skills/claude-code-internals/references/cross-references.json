@@ -1903,6 +1903,95 @@
         "relevance": 0.4,
         "reason": "L11 Skills System was re-verified against the same v2.1.116 bundle as L86; both are v2.9.x work"
       }
+    ],
+    "87": [
+      {
+        "id": 11,
+        "relevance": 0.88,
+        "reason": "Skills' context:'fork' frontmatter field (accepted in v2.1.116 per L11) now actually dispatches to the new fork subagent type introduced in L87"
+      },
+      {
+        "id": 6,
+        "relevance": 0.85,
+        "reason": "L87 introduces a new implicit 'fork' subagent type — extends the agent system (L6) with a non-user-selectable agent triggered by omitting subagent_type"
+      },
+      {
+        "id": 29,
+        "relevance": 0.7,
+        "reason": "Fork subagent uses permissionMode:'bubble' — child permission prompts bubble up via the L29 permission pipeline"
+      },
+      {
+        "id": 85,
+        "relevance": 0.65,
+        "reason": "L85 is the prior per-release catch-all; L87 continues the pattern"
+      },
+      {
+        "id": 74,
+        "relevance": 0.55,
+        "reason": "tengu_byte_watchdog_fired_late added in L87 measures stall cases the byte watchdog (L74) catches late"
+      },
+      {
+        "id": 78,
+        "relevance": 0.55,
+        "reason": "tengu_advisor_strip_retry added in L87 is a new retry branch in the Advisor Tool (L78) wire protocol"
+      },
+      {
+        "id": 69,
+        "relevance": 0.4,
+        "reason": "Fork REPL hydration uses {kind:'fork', log:[replayLog]} — leverages the same replay-log mechanism as marble-origami (L69)"
+      },
+      {
+        "id": 88,
+        "relevance": 0.9,
+        "reason": "L88 is the other half of Chapter 19 (v2.1.117-v2.1.118); continues the same release window"
+      }
+    ],
+    "88": [
+      {
+        "id": 87,
+        "relevance": 0.9,
+        "reason": "L87 is the other half of Chapter 19 (v2.1.117-v2.1.118); /fork paired with UI consolidation completes the two-release theme"
+      },
+      {
+        "id": 11,
+        "relevance": 0.9,
+        "reason": "L88's shadow schema (eO1) is the only formal skill frontmatter validation in the codebase — L11's imperative extractor (Cz8) is the 'primary'. progressMessage (documented in L11 as object-level, not YAML) is the notable drift: absent from eO1, so aspirational YAML usage fires telemetry"
+      },
+      {
+        "id": 38,
+        "relevance": 0.85,
+        "reason": "WIF user-OAuth locking in L88 hardens the L38 OAuth token refresh path — prevents multi-process refresh races. Lock mechanism (Vk4/Gv_ via proper-lockfile directory-level mutex, tvq=5 retries × 1-2s jitter) landed in v2.1.117; all 5 telemetry events landed in v2.1.118"
+      },
+      {
+        "id": 10,
+        "relevance": 0.8,
+        "reason": "L88's 'Agent Stop Hook' deep-dive documents a previously-undocumented hook TYPE: AI verification hook (bs7) that spawns a dedicated sub-conversation to decide {ok: true/false, reason}. Mechanism pre-existed; v2.1.118 added tengu_agent_stop_hook_blocking telemetry. Substantially extends the L10 hooks-system surface with a second execution model beyond shell commands"
+      },
+      {
+        "id": 86,
+        "relevance": 0.78,
+        "reason": "WIF locking in L88 protects the <config_dir>/credentials/<profile>.json path that L86 OIDC Federation also uses"
+      },
+      {
+        "id": 73,
+        "relevance": 0.7,
+        "reason": "/autofix-pr description change in L88 drops 'remote session' framing — continues repositioning from L73 CCR v2 / L85 Remote Workflow sunset"
+      },
+      {
+        "id": 85,
+        "relevance": 0.6,
+        "reason": "L85's Remote Workflow sunset direction continues in L88: /autofix-pr deremoted, /cost + /stats folded into /usage"
+      },
+      {
+        "id": 22,
+        "relevance": 0.55,
+        "reason": "L88's /usage dual registration (interactive TUI + headless) changes the commands-system dispatch described in L22"
+      },
+      {
+        "id": 35,
+        "relevance": 0.45,
+        "reason": "Frontmatter shadow validator also applies to plugin frontmatter — will affect the L35 plugin system loader if promoted to strict mode"
+      }
     ]
   }
 }

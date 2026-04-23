@@ -1,7 +1,7 @@
 {
-  "generated": "2026-04-21",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.116",
-  "total_lessons": 86,
+  "generated": "2026-04-23",
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118",
+  "total_lessons": 88,
   "lessons": [
     {
       "id": 1,
@@ -1625,6 +1625,253 @@
         "S_",
         "QK",
         "CLAUDE_CODE_REMOTE"
+      ]
+    },
+    {
+      "id": 87,
+      "title": "v2.1.117 /fork Subagent Command, Rate-Limit/Subscription Overrides, /autocompact + /stop-hook Removal",
+      "lesson_number": "87",
+      "file": "16-verified-new-v2.1.118.md",
+      "startLine": 45,
+      "endLine": 458,
+      "keywords": [
+        "v2.1.117",
+        "fork",
+        "/fork",
+        "fork-subagent",
+        "fork-command",
+        "background-agent",
+        "background-subagent",
+        "inherit-conversation",
+        "forksParentContext",
+        "forkContextMessages",
+        "fork-experiment",
+        "CLAUDE_CODE_FORK_SUBAGENT",
+        "CLAUDE_BRIDGE_REATTACH_SESSION",
+        "CLAUDE_BRIDGE_REATTACH_SEQ",
+        "bridge-reattach",
+        "preSpawn",
+        "tengu_copper_fox",
+        "copper_fox",
+        "tengu_fork_subagent_enabled",
+        "tengu_remote_attach_session_rejected",
+        "iv",
+        "sJ9",
+        "GR",
+        "Sz1",
+        "V75",
+        "H$7",
+        "implicit-fork",
+        "fork-keybinding",
+        "f-chord",
+        "Fork started processing in background",
+        "context-fork",
+        "skill-context-fork",
+        "CLAUDE_CODE_RATE_LIMIT_TIER",
+        "CLAUDE_CODE_SUBSCRIPTION_TYPE",
+        "rate-limit-tier",
+        "subscription-type",
+        "rateLimitTier",
+        "subscriptionType",
+        "oauth-token-override",
+        "/schedule",
+        "triggers",
+        "routines",
+        "one-time-schedule",
+        "/autocompact",
+        "autocompact-removed",
+        "tengu_autocompact_command",
+        "tengu_autocompact_dialog_opened",
+        "/stop-hook",
+        "stop-hook-removed",
+        "tengu_stop_hook_command",
+        "tengu_stop_hook_removed",
+        "tengu_advisor_strip_retry",
+        "advisor-strip-retry",
+        "retry-advisor-strip",
+        "tengu_byte_watchdog_fired_late",
+        "byte-watchdog-late",
+        "tengu_team_artifact_tip_shown",
+        "tengu_tussock_oriole",
+        "tengu_amber_redwood2",
+        "tengu_mcp_concurrent_connect-removed",
+        "v2.1.117-removed",
+        "v2.1.117-added",
+        "_a7",
+        "V75",
+        "C75",
+        "Id5",
+        "bd5",
+        "_d_",
+        "GuH",
+        "quH",
+        "GC",
+        "fork-name-generation",
+        "fork-dark-launch",
+        "Cannot fork before first turn",
+        "cannot-fork-before-first-turn",
+        "fork-guard",
+        "fork-three-paths",
+        "fork-async-vs-sync",
+        "fork-backgrounded",
+        "fork-inline",
+        "context-fork-dispatch",
+        "fork-tool-inheritance",
+        "useExactTools",
+        "local-command-stdout",
+        "tengu_slash_command_forked",
+        "replHydration-fork",
+        "replay-log-fork"
+      ]
+    },
+    {
+      "id": 88,
+      "title": "v2.1.118 /cost + /stats → /usage Aliases, cache-diagnosis-2026-04-07, Frontmatter Shadow Validator, WIF OAuth Locking",
+      "lesson_number": "88",
+      "file": "16-verified-new-v2.1.118.md",
+      "startLine": 459,
+      "endLine": 1328,
+      "keywords": [
+        "v2.1.118",
+        "/cost",
+        "/stats",
+        "/usage",
+        "usage-aliases",
+        "cost-alias",
+        "stats-alias",
+        "thinClientDispatch",
+        "control-request",
+        "requires-ink",
+        "supportsNonInteractive",
+        "S8",
+        "/autofix-pr",
+        "autofix-pr-deremoted",
+        "/pro-trial-expired",
+        "pro-trial-expired",
+        "tengu_pro_trial_expired_choice",
+        "cache-diagnosis",
+        "cache-diagnosis-2026-04-07",
+        "prompt-cache-diagnostics",
+        "tengu_prompt_cache_diagnostics",
+        "server-reject-beta",
+        "UD_",
+        "sj9",
+        "frontmatter-shadow",
+        "shadow-validator",
+        "shadow-validation",
+        "tengu_frontmatter_shadow_unknown_key",
+        "tengu_frontmatter_shadow_mismatch",
+        "unrecognized_keys",
+        "Zj9",
+        "pjH",
+        "qT1",
+        "Gj9",
+        "Gj9-dedup",
+        "tO1",
+        "eO1",
+        "HT1",
+        "_T1",
+        "ml6",
+        "gyH",
+        "NM",
+        "Z__",
+        "Cz8",
+        "primary-schema",
+        "no-primary-schema",
+        "imperative-extraction",
+        "shadow-schema-table",
+        "skill-shadow-schema",
+        "agent-shadow-schema",
+        "output-style-shadow-schema",
+        "command-shadow-schema",
+        "progressMessage",
+        "progressMessage-drift",
+        "allowedTools-camelCase",
+        "argumentHint-camelCase",
+        "disableModelInvocation-camelCase",
+        "userInvocable-camelCase",
+        "frontmatter-drift",
+        "kebab-vs-camel",
+        "context-enum",
+        "strict-zod",
+        "zod-strict",
+        "safeParse",
+        "unrecognized-keys-code",
+        "invalid-enum-value",
+        "skill-frontmatter-validation",
+        "plugin-frontmatter-validation",
+        "zod-shadow",
+        "strict-frontmatter-mode",
+        "wif-oauth-lock",
+        "wif-user-oauth-lock",
+        "tengu_wif_user_oauth_lock_acquired",
+        "tengu_wif_user_oauth_lock_released",
+        "tengu_wif_user_oauth_lock_retry",
+        "tengu_wif_user_oauth_lock_retry_limit",
+        "tengu_oauth_token_refresh_lock_release_error",
+        "tengu_oauth_401_recovered_from_disk",
+        "oauth-refresh-race",
+        "credentials-file-lock",
+        "multi-process-credentials",
+        "CLAUDE_CODE_AGENT_NAME",
+        "CLAUDE_CODE_TEAM_NAME",
+        "agent-name-removed",
+        "team-name-removed",
+        "tengu_agent_stop_hook_blocking",
+        "tengu_auto_mode_opt_in_dialog_decline_dont_ask",
+        "tengu_ember_trail",
+        "tengu_keybindings_dom",
+        "tengu_mocha_barista",
+        "tengu_orchid_mantis",
+        "tengu_push_notif_upsell_notification_shown",
+        "tengu_slate_kestrel",
+        "tengu_terminal_probe",
+        "tengu_warm_resume_hint_eligible",
+        "terminal-probe",
+        "dom-keybindings",
+        "warm-resume-hint",
+        "marble-origami-warm",
+        "tengu_ccr_post_turn_summary-removed",
+        "tengu_config_tool_changed-removed",
+        "tengu_vscode_cc_auth-removed",
+        "v2.1.118-removed",
+        "v2.1.118-added",
+        "Vk4",
+        "Gv_",
+        "RY",
+        "tvq",
+        "e5",
+        "proper-lockfile",
+        "ELOCKED",
+        "credentials-dir-lock",
+        "directory-lock",
+        "mkdir-mutex",
+        "onCompromised",
+        "Symbol.asyncDispose",
+        "lock-retry-budget",
+        "tengu_oauth_token_refresh_race_recovered",
+        "bs7",
+        "agent-stop-hook",
+        "agent-hook",
+        "ai-verification-hook",
+        "hook-agent",
+        "tengu_agent_stop_hook_success",
+        "tengu_agent_stop_hook_max_turns",
+        "tengu_agent_stop_hook_error",
+        "structured-output-hook",
+        "hook-50-turns",
+        "hook-60s-timeout",
+        "hookConfig.timeout",
+        "hookConfig.prompt",
+        "hookConfig.model",
+        "verify-stop-condition",
+        "hook-system-prompt",
+        "dontAsk-hook",
+        "auto-allow-transcript-read",
+        "AK6",
+        "GX",
+        "ys7",
+        "cA_"
       ]
     }
   ],
@@ -4457,6 +4704,465 @@
     ],
     "stall watchdog hierarchy": [
       85
+    ],
+    "fork": [
+      87
+    ],
+    "/fork": [
+      87
+    ],
+    "fork subagent": [
+      87
+    ],
+    "fork command": [
+      87
+    ],
+    "background agent": [
+      87
+    ],
+    "background subagent": [
+      87
+    ],
+    "tengu_copper_fox": [
+      87
+    ],
+    "copper_fox": [
+      87
+    ],
+    "CLAUDE_CODE_FORK_SUBAGENT": [
+      87
+    ],
+    "CLAUDE_BRIDGE_REATTACH_SESSION": [
+      87
+    ],
+    "CLAUDE_BRIDGE_REATTACH_SEQ": [
+      87
+    ],
+    "bridge reattach": [
+      87
+    ],
+    "implicit fork": [
+      87
+    ],
+    "forksParentContext": [
+      87
+    ],
+    "forkContextMessages": [
+      87
+    ],
+    "f chord": [
+      87
+    ],
+    "CLAUDE_CODE_RATE_LIMIT_TIER": [
+      87
+    ],
+    "CLAUDE_CODE_SUBSCRIPTION_TYPE": [
+      87
+    ],
+    "rate limit tier": [
+      87
+    ],
+    "subscription type": [
+      87
+    ],
+    "/autocompact": [
+      87
+    ],
+    "autocompact removed": [
+      87
+    ],
+    "/stop-hook": [
+      87
+    ],
+    "stop-hook removed": [
+      87
+    ],
+    "/schedule": [
+      87
+    ],
+    "routines": [
+      87
+    ],
+    "triggers": [
+      87
+    ],
+    "one-time schedule": [
+      87
+    ],
+    "tengu_advisor_strip_retry": [
+      87
+    ],
+    "tengu_byte_watchdog_fired_late": [
+      87
+    ],
+    "tengu_team_artifact_tip_shown": [
+      87
+    ],
+    "tengu_fork_subagent_enabled": [
+      87
+    ],
+    "tengu_remote_attach_session_rejected": [
+      87
+    ],
+    "/cost": [
+      88
+    ],
+    "/stats": [
+      88
+    ],
+    "/usage": [
+      88
+    ],
+    "usage aliases": [
+      88
+    ],
+    "cost alias": [
+      88
+    ],
+    "stats alias": [
+      88
+    ],
+    "thinClientDispatch": [
+      88
+    ],
+    "/autofix-pr": [
+      73,
+      88
+    ],
+    "/pro-trial-expired": [
+      88
+    ],
+    "pro-trial-expired": [
+      88
+    ],
+    "cache-diagnosis": [
+      88
+    ],
+    "cache-diagnosis-2026-04-07": [
+      88
+    ],
+    "prompt cache diagnostics": [
+      88
+    ],
+    "tengu_prompt_cache_diagnostics": [
+      88
+    ],
+    "frontmatter shadow": [
+      88
+    ],
+    "shadow validator": [
+      88
+    ],
+    "tengu_frontmatter_shadow_unknown_key": [
+      88
+    ],
+    "tengu_frontmatter_shadow_mismatch": [
+      88
+    ],
+    "strict frontmatter mode": [
+      88
+    ],
+    "zod shadow": [
+      88
+    ],
+    "wif oauth lock": [
+      88
+    ],
+    "wif user oauth": [
+      88
+    ],
+    "tengu_wif_user_oauth_lock_acquired": [
+      88
+    ],
+    "tengu_wif_user_oauth_lock_released": [
+      88
+    ],
+    "tengu_wif_user_oauth_lock_retry": [
+      88
+    ],
+    "tengu_wif_user_oauth_lock_retry_limit": [
+      88
+    ],
+    "tengu_oauth_401_recovered_from_disk": [
+      88
+    ],
+    "tengu_oauth_token_refresh_lock_release_error": [
+      88
+    ],
+    "credentials file lock": [
+      88
+    ],
+    "oauth refresh race": [
+      88
+    ],
+    "multi-process credentials": [
+      88
+    ],
+    "CLAUDE_CODE_AGENT_NAME": [
+      88
+    ],
+    "CLAUDE_CODE_TEAM_NAME": [
+      88
+    ],
+    "tengu_agent_stop_hook_blocking": [
+      88
+    ],
+    "tengu_auto_mode_opt_in_dialog_decline_dont_ask": [
+      88
+    ],
+    "tengu_keybindings_dom": [
+      88
+    ],
+    "tengu_terminal_probe": [
+      88
+    ],
+    "tengu_warm_resume_hint_eligible": [
+      88
+    ],
+    "tengu_push_notif_upsell_notification_shown": [
+      88
+    ],
+    "terminal probe": [
+      88
+    ],
+    "dom keybindings": [
+      88
+    ],
+    "warm resume hint": [
+      88
+    ],
+    "why is /cost gone": [
+      88
+    ],
+    "why is /stats gone": [
+      88
+    ],
+    "why is /autocompact gone": [
+      87
+    ],
+    "why is /stop-hook gone": [
+      87
+    ],
+    "v2.1.117": [
+      87
+    ],
+    "v2.1.118": [
+      88
+    ],
+    "pjH": [
+      88
+    ],
+    "qT1": [
+      88
+    ],
+    "Gj9": [
+      88
+    ],
+    "Gj9 dedup": [
+      88
+    ],
+    "tO1": [
+      88
+    ],
+    "eO1": [
+      88
+    ],
+    "HT1": [
+      88
+    ],
+    "_T1": [
+      88
+    ],
+    "ml6": [
+      88
+    ],
+    "gyH": [
+      88
+    ],
+    "Cz8": [
+      88,
+      11
+    ],
+    "primary schema": [
+      88
+    ],
+    "no primary schema": [
+      88
+    ],
+    "imperative extraction": [
+      88
+    ],
+    "skill shadow schema": [
+      88
+    ],
+    "agent shadow schema": [
+      88
+    ],
+    "output-style shadow schema": [
+      88
+    ],
+    "progressMessage": [
+      88,
+      11
+    ],
+    "progressMessage drift": [
+      88
+    ],
+    "allowedTools camelCase": [
+      88
+    ],
+    "argumentHint camelCase": [
+      88
+    ],
+    "frontmatter drift": [
+      88
+    ],
+    "kebab vs camel": [
+      88
+    ],
+    "strict zod": [
+      88
+    ],
+    "zod strict": [
+      88
+    ],
+    "safeParse": [
+      88
+    ],
+    "which keys would fire": [
+      88
+    ],
+    "which keys trigger telemetry": [
+      88
+    ],
+    "_a7": [
+      87
+    ],
+    "V75": [
+      87
+    ],
+    "C75": [
+      88
+    ],
+    "Id5": [
+      87
+    ],
+    "bd5": [
+      87
+    ],
+    "fork three paths": [
+      87
+    ],
+    "fork backgrounded": [
+      87
+    ],
+    "fork async": [
+      87
+    ],
+    "fork inline": [
+      87
+    ],
+    "Cannot fork before first turn": [
+      87
+    ],
+    "cannot fork before first turn": [
+      87
+    ],
+    "fork guard": [
+      87
+    ],
+    "fork name generation": [
+      87
+    ],
+    "useExactTools": [
+      87
+    ],
+    "local-command-stdout": [
+      87
+    ],
+    "tengu_slash_command_forked": [
+      87
+    ],
+    "fork dark launch": [
+      87
+    ],
+    "Vk4": [
+      88
+    ],
+    "Gv_": [
+      88
+    ],
+    "proper-lockfile": [
+      88
+    ],
+    "ELOCKED": [
+      88
+    ],
+    "credentials dir lock": [
+      88
+    ],
+    "directory lock": [
+      88
+    ],
+    "mkdir mutex": [
+      88
+    ],
+    "onCompromised": [
+      88
+    ],
+    "lock retry budget": [
+      88
+    ],
+    "tvq": [
+      88
+    ],
+    "e5 error": [
+      88
+    ],
+    "Could not acquire credentials lock": [
+      88
+    ],
+    "bs7": [
+      88
+    ],
+    "agent stop hook": [
+      88
+    ],
+    "agent hook": [
+      88
+    ],
+    "ai verification hook": [
+      88
+    ],
+    "hook agent": [
+      88
+    ],
+    "tengu_agent_stop_hook_success": [
+      88
+    ],
+    "tengu_agent_stop_hook_max_turns": [
+      88
+    ],
+    "tengu_agent_stop_hook_error": [
+      88
+    ],
+    "hook 50 turns": [
+      88
+    ],
+    "hook 60s timeout": [
+      88
+    ],
+    "hookConfig timeout": [
+      88
+    ],
+    "verify stop condition": [
+      88
+    ],
+    "hook system prompt": [
+      88
+    ],
+    "structured output hook": [
+      88
     ]
   }
 }

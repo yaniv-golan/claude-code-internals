@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-18",
+  "generated": "2026-04-23",
   "description": "Maps common symptoms/problems to relevant lessons for debugging Claude Code internals",
   "symptoms": [
     {
@@ -1009,6 +1009,142 @@
         85
       ],
       "hint": "v2.1.113 adds tengu_image_resize_degraded telemetry emitted when an image block throws a VI error during processing; the block is substituted with a text placeholder '[Image could not be processed: <message>]'. No user-configurable gate \u2014 purely observational. See L85."
+    },
+    {
+      "pattern": [
+        "/fork not available",
+        "/fork command not found",
+        "fork command missing",
+        "how to enable /fork",
+        "fork subagent disabled"
+      ],
+      "lessons": [
+        87
+      ],
+      "hint": "/fork is interactive-only (S8() non-interactive mode disables it) and gated behind two layers: set CLAUDE_CODE_FORK_SUBAGENT=1 to force-enable, or wait for the tengu_copper_fox GB flag to flip on for your account (default false). /fork does not appear in `claude -p` headless sessions at all. See L87."
+    },
+    {
+      "pattern": [
+        "why is /cost gone",
+        "/cost command missing",
+        "/cost not found",
+        "why is /stats gone",
+        "/stats command missing",
+        "/stats not found",
+        "cost command removed",
+        "stats command removed"
+      ],
+      "lessons": [
+        88
+      ],
+      "hint": "v2.1.118 folded /cost and /stats into /usage as aliases. They still work when typed (alias resolution at the command registry), but no longer show up as standalone commands in /help or autocomplete. In interactive mode you get the unified TUI dashboard ('Show session cost, plan usage, and activity stats'); in headless mode (claude -p) you get the brief 'cost and duration' string. See L88."
+    },
+    {
+      "pattern": [
+        "why is /autocompact gone",
+        "/autocompact command missing",
+        "/autocompact not found",
+        "autocompact command removed",
+        "autocompact window size"
+      ],
+      "lessons": [
+        87
+      ],
+      "hint": "v2.1.117 removed /autocompact outright (both the command and its tengu_autocompact_* telemetry). Configure the auto-compact window size via /config settings UI or edit the underlying setting key in settings.json directly. See L87."
+    },
+    {
+      "pattern": [
+        "why is /stop-hook gone",
+        "/stop-hook command missing",
+        "stop-hook removed",
+        "session-only stop hook"
+      ],
+      "lessons": [
+        87
+      ],
+      "hint": "v2.1.117 removed /stop-hook entirely. It had been isEnabled:()=>false (shelf-parked) since v2.1.92 (L57). To configure Stop hooks, edit .claude/settings.json directly with a `hooks` section specifying event:'Stop'. See L87 and L10 (hooks system)."
+    },
+    {
+      "pattern": [
+        "oauth refresh token race",
+        "oauth 401 after refresh",
+        "refresh token already used",
+        "multiple claude instances oauth",
+        "wif lock error",
+        "tengu_wif_user_oauth_lock_retry_limit",
+        "Could not acquire credentials lock",
+        "ELOCKED credentials",
+        "credentials lock stuck"
+      ],
+      "lessons": [
+        88,
+        38
+      ],
+      "hint": "v2.1.117 landed directory-level locking (proper-lockfile) around WIF user-OAuth token refresh; v2.1.118 added all 5 telemetry events on top. The lock is on <config_dir>/credentials/ (the DIRECTORY, not the file), acquired via Gv_ \u2192 Vk4 \u2192 RY(path, {onCompromised: wH}). Retry budget is exactly tvq=5 attempts with 1000-2000ms jittered backoff = 5-10s max wait. On exhaustion: throws typed error e5 with message 'Could not acquire credentials lock at <path> after 5 retries'. If tengu_wif_user_oauth_lock_retry_limit fires, another Claude Code process is stuck holding the lock \u2014 investigate with `lsof <config_dir>/credentials/.lock` and `ls -la <config_dir>/credentials/.lock`. If confirmed orphaned, `rmdir <config_dir>/credentials/.lock` clears it (safe only when no live holder). tengu_oauth_401_recovered_from_disk indicates the post-hoc disk re-read recovery path succeeded \u2014 separate from the lock, catches cases where a sibling refreshed between in-memory cache load and the outbound request. See L88, and L38 for the base OAuth flow."
+    },
+    {
+      "pattern": [
+        "agent stop hook blocking",
+        "tengu_agent_stop_hook_blocking",
+        "tengu_agent_stop_hook_success",
+        "tengu_agent_stop_hook_max_turns",
+        "tengu_agent_stop_hook_error",
+        "hook condition was not met",
+        "agent hook did not complete within 50 turns",
+        "ai verification hook",
+        "agent hook timeout"
+      ],
+      "lessons": [
+        88,
+        10
+      ],
+      "hint": "Claude Code has a previously-undocumented hook TYPE: the AI verification hook (bs7). Instead of a shell command, an agent hook spawns a dedicated sub-conversation that returns structured output {ok: true} (allow stop) or {ok: false, reason} (block). v2.1.118 added tengu_agent_stop_hook_blocking telemetry for the !ok outcome \u2014 the mechanism itself pre-existed. Limits: max 50 turns (constant B=50), 60s default timeout (override via hookConfig.timeout in seconds), permissionMode:'dontAsk', thinking disabled. System prompt for Stop/SubagentStop events: 'You are verifying a stop condition in Claude Code. Your task is to verify that the agent completed the given plan.' Read(<transcript>) is auto-allowed. Five outcomes: success, blocking, cancelled (max turns), cancelled (no structured output), non_blocking_error. If the hook fires often and uses tool-call chains, expect latency \u2014 consider raising timeout or simplifying the verification prompt. See L88 for the full mechanism and L10 for the shell-command hook baseline."
+    },
+    {
+      "pattern": [
+        "fork sync or async",
+        "/fork blocks conversation",
+        "fork inline vs background",
+        "skill context fork blocks",
+        "skill context:fork sync",
+        "three fork paths"
+      ],
+      "lessons": [
+        87
+      ],
+      "hint": "/fork has three distinct execution paths with very different semantics. (1) User types /fork <directive>: backgrounded (isAsync:true) via _a7 \u2192 quH \u2192 xy, returns immediately, parent NOT blocked, shows '<emoji> forked <name> (<id4>)' system message, uses ph fork subagent type (tools:['*'], maxTurns:200, model:'inherit', permissionMode:'bubble'), gets full parent messages + REPL replay log. Guard: 'Cannot fork before the first conversation turn' (new in v2.1.117) if no renderedSystemPrompt. (2) Slash command with context:'fork' frontmatter: synchronous via V75, parent BLOCKS, inline progress streaming, uses H.agent from frontmatter or general-purpose fallback, returns <local-command-stdout>. (3) Skill invoked via Skill tool with context:'fork': synchronous via C75 (NEW in v2.1.118), same semantics as V75 but reaches via Skill tool path. See L87 for details. The 'fork' subagent type (ph) is ONLY used by path 1 \u2014 paths 2/3 use whatever agent is specified."
+    },
+    {
+      "pattern": [
+        "frontmatter unknown key",
+        "skill frontmatter warning",
+        "tengu_frontmatter_shadow_unknown_key",
+        "tengu_frontmatter_shadow_mismatch",
+        "plugin frontmatter shadow",
+        "progressMessage unknown",
+        "progressMessage warning",
+        "allowedTools camelCase",
+        "argumentHint camelCase",
+        "which keys trigger telemetry",
+        "shadow validator schema",
+        "frontmatter drift"
+      ],
+      "lessons": [
+        88,
+        11
+      ],
+      "hint": "v2.1.118 added shadow validation (pjH) that calls qT1[kind]().strict().safeParse(frontmatter) and emits tengu_frontmatter_shadow_unknown_key / _mismatch telemetry on drift. There is NO formal primary schema \u2014 primary frontmatter handling is imperative (Cz8 reads properties directly and ignores unknown keys), so the Zod schemas added in v2.1.118 are the only formal validation. Per-session dedup via Gj9 Set means each unique (event,surface,detail) tuple fires once. Dispatch table has 3 entries: skill (eO1), agent (HT1), output-style (_T1) \u2014 custom commands are validated as 'skill'. The big known drift: progressMessage is documented in L11 but NOT in eO1, so any skill declaring it fires telemetry on load. Also watch kebab-vs-camel drift: schema uses allowed-tools / argument-hint / disable-model-invocation / user-invocable (kebab) for skills but tools / disallowedTools / mcpServers / maxTurns / initialPrompt / permissionMode (camel) for agents. See L88 for the full schema tables."
+    },
+    {
+      "pattern": [
+        "/pro-trial-expired",
+        "pro trial expired dialog",
+        "pro plan trial ended"
+      ],
+      "lessons": [
+        88
+      ],
+      "hint": "v2.1.118 dark-launched /pro-trial-expired (isEnabled:()=>false). Currently inert. When the date-gate or GB flag enables it, users whose Pro plan trial has ended will see an upsell/renewal UI with tracked choices (tengu_pro_trial_expired_choice). Combined with CLAUDE_CODE_SUBSCRIPTION_TYPE / CLAUDE_CODE_RATE_LIMIT_TIER env vars (L87), this is test-surface for the Pro plan rollout. See L88."
     }
   ]
 }
