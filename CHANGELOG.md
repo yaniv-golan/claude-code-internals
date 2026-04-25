@@ -1,5 +1,40 @@
 # Changelog
 
+## v2.11.1 — 2026-04-25 (this fork) — L89 dark-launch correction
+
+**Methodology error fix in L89.** The v2.11.0 release of L89 (and the companion deep-dive material) treated `/background`, `/stop`, `/daemon`, and `claude agents` Fleet view as user-facing GA surfaces. **They are not.** The runtime *code* shipped in v2.1.119, but the *user-facing surfaces* are dark-launched behind GrowthBook flags or hardcoded kill-switches. Verified empirically (`claude /daemon` → "Unknown command", `claude agents` → legacy listing utility, not the dashboard).
+
+### Corrected gating map (v2.1.119 / v2.1.120)
+
+| Surface | Status | Gate |
+|---------|--------|------|
+| `/daemon` | ❌ DARK-LAUNCHED for everyone | `function OqH() { return false }` — hardcoded literal, no flag override |
+| `claude agents` Ink TUI (Fleet view) | ❌ DARK-LAUNCHED by default | `isAgentsFleetEnabled() = C0H() = v_("tengu_slate_meadow", false)`. When off, `claude agents` falls through to a **legacy agent-listing utility** (just dumps installed plugin agents + built-ins). |
+| `/background` (alias `/bg`) | ⚠ GATED | Same `tengu_slate_meadow` GB flag. Flipped on for Claude Max / Cowork-product users; off for default. The `isEnabled: () => true` per-command field is misleading — gating is at the **command-resolver-array inclusion** level: `...Q3K && C0H() ? [Q3K] : []`. |
+| `/stop` | ⚠ CONDITIONAL | `isEnabled: () => SESSION_KIND === "bg"`. Invisible outside a bg session, transitively gated by `tengu_slate_meadow`. |
+| `/autocompact` | ✅ LIVE | Unconditional in master command-list array `SN8` |
+| `/fork` (L87) | ✅ LIVE since v2.1.117 | No gate |
+
+### Methodology lesson — registration vs. registry
+
+When a new slash command appears in the bundle diff, **three distinct gates** exist:
+
+1. **Per-command `isEnabled`** field (visible in the command spec): controls slash-menu visibility.
+2. **Master command-resolver-array inclusion** (the `...VAR && fn() ? [VAR] : []` spread expression): controls whether the resolver finds it. **If excluded here, user gets "Unknown command" even with `isEnabled: () => true`.**
+3. **Per-command `isHidden`** field: controls did-you-mean suggestions.
+
+The original L89 traced registration (gate 1) but missed gate 2. **Always trace the array-inclusion expression.** Three documented dark-launch cases now in this skill follow the same pattern: `/update` (L68/L85, hardcoded `isEnabled: () => false`), KAIROS daemon (L43, ant-only flags), and now `/daemon` (L89, hardcoded `OqH() = false`) plus `/background`/Fleet view (L89, GB-flag gated).
+
+### Files changed
+
+- `references/17-verified-new-v2.1.120.md` — chapter intro now leads with a dark-launch callout table and a methodology note. `/background`, `/daemon`, Fleet view, `/stop` sections each prefixed with surface-status quotes flagging gating. Summary table updated to count "live for default users" separately from "registrations in bundle."
+- `version.json`, `plugin.json` — `2.11.0 → 2.11.1`.
+- `SKILL.md` description amended with corrected dark-launch reality.
+
+### Audit log
+
+Reproducible audit at `/tmp/cowork-surface-audit.log` documents the 9-phase verification (bundle gate analysis + empirical tests) that surfaced the error.
+
 ## v2.11.0 — 2026-04-25 (this fork)
 
 Adds **Chapter 20** (`references/17-verified-new-v2.1.120.md`) with two new lessons covering the v2.1.119 and v2.1.120 binaries — the **Claude Cowork runtime release**. Lesson count goes from 88 → 90, chapter count from 19 → 20. Verified against the v2.1.120 binary (`BUILD_TIME: "2026-04-24T19:00:49Z"`, `GIT_SHA: "080f07fb4224786b965b9ea0a35f0cff594f2eb6"`).

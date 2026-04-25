@@ -102,22 +102,60 @@ via `CLAUDE_CODE_SESSION_KIND ∈ {"bg", "daemon", "daemon-worker"}`. When you r
 chapter and the source, treat "background session" / "BG" as the technical name and "Cowork"
 as the product context.
 
+### ⚠ Critical: most of these surfaces are dark-launched
+
+The runtime *code* shipped in v2.1.119; the *user-facing surface* is gated behind GrowthBook
+flags or hardcoded kill-switches. **Confirmed empirically** (Claude Max v2.1.119):
+
+| Surface | Status | Gate |
+|---------|--------|------|
+| `/daemon` slash command | ❌ DARK-LAUNCHED for everyone | `OqH() = return false` (hardcoded literal — no flag override possible) |
+| `claude agents` Fleet view Ink TUI | ❌ DARK-LAUNCHED by default | `isAgentsFleetEnabled() = C0H() = v_("tengu_slate_meadow", false)`. When off, `claude agents` falls through to a **legacy agent-listing utility** that just prints installed plugin agents + built-ins — not the Fleet view dashboard. |
+| `/background` + `/bg` slash command | ⚠ GATED | Same `tengu_slate_meadow` GB flag. Appears flipped on for Claude Max / Cowork-product users; off for default. Per-command `isEnabled: () => true` is misleading — the command-resolver-array inclusion is what's gated: `...Q3K && C0H() ? [Q3K] : []`. |
+| `/stop` slash command | ⚠ CONDITIONAL (no separate dark-launch gate) | `isEnabled: E4 = () => x4H() === "bg"`. Only enabled inside a bg session. Since `/background` is what creates bg sessions, this is transitively gated by `tengu_slate_meadow` for most users. |
+| `/autocompact` slash command | ✅ LIVE | Unconditional in master command-list array `SN8` |
+| `/fork` slash command (L87) | ✅ LIVE since v2.1.117 | No gate |
+
+**Methodology note:** when a new slash command appears in the bundle diff, three distinct
+gates exist — (1) per-command `isEnabled` field, (2) **master command-resolver-array
+inclusion** (the `...VAR && fn() ? [VAR] : []` spread expression), (3) per-command
+`isHidden`. *Registration in the bundle does not mean the command is reachable.* Always
+trace the array-inclusion expression. The original draft of this chapter missed this
+distinction and treated several dark-launched commands as live; sections below have been
+corrected to flag dark-launch status, but always verify on your own account by typing the
+command — gate evaluation may be cohort-specific.
+
+The information below describes what each surface *will do* when its gate is open, plus
+notes the current gating status. **Read with the live/dark-launched distinction in mind.**
+
 ---
 
 ## `/background` + `/bg` — Fork the Current Session into the Background
 
-Registered in `vO3`:
+> **Surface status: GB-flag gated** (`tengu_slate_meadow`, default false). Live for
+> Claude Max / Cowork-product users; "Unknown command" on default accounts. The
+> `isEnabled: () => true` field on the registration is misleading — it's the *per-command*
+> check; the actual gate is at the **command-resolver-array inclusion** level.
+
+Per-command registration (in `vO3`):
 
 ```js
 { type: "local-jsx",
   name: "background",
   aliases: ["bg"],
   description: "Continue this session in the background and free the terminal",
-  isEnabled: () => true,
+  isEnabled: () => true,                    // ← always-true at this level…
   load: () => Promise.resolve().then(() => (cV8(), HTK)) }
 ```
 
-Always enabled. Aliased — typing `/bg` works.
+…but the master command-resolver array gates the inclusion:
+
+```js
+...Q3K && C0H() ? [Q3K] : [],               // C0H() = v_("tengu_slate_meadow", false)
+```
+
+`Q3K` is the import name for the `/background` module. When `tengu_slate_meadow` is on,
+typing `/bg` works because of the alias.
 
 ### What `/background` actually does
 
@@ -158,7 +196,14 @@ The user sees: `"Fork started — processing in background"`.
 
 ## `/stop` — Stop the Current Background Session
 
-Two registrations, matching the dual-registration pattern from `/usage`/`/model`/`/stop` in
+> **Surface status: conditionally enabled — no separate dark-launch gate.** Per-command
+> `isEnabled: vK = () => SESSION_KIND === "bg"`. So `/stop` only appears in the
+> slash-command menu inside a bg session. Since bg sessions are spawned by `/background`
+> (which is gated by `tengu_slate_meadow`), `/stop` is transitively unreachable for users
+> without that GB flag flipped. Verified: in v2.1.119 the registration uses identifier
+> `E4 = () => x4H() === "bg"`; the v2.1.120 helper is the same predicate via `vK`.
+
+Two registrations, matching the dual-registration pattern from `/usage`/`/model` in
 L88/L86:
 
 ```js
@@ -244,7 +289,16 @@ Used internally to re-establish the bridge channel when needed.
 
 ## `/daemon` — Ink TUI Managing Three Service Categories
 
-Registered as `F53`:
+> **Surface status: HARDCODED OFF for everyone in v2.1.119 and v2.1.120.** Typing `/daemon`
+> returns *"Unknown command: /daemon"* on every account. This is **not** a GB-flag flip
+> away — the gate function is `function OqH() { return false }` (a literal), so the master
+> command-resolver array spread `...Q$6 && OqH() ? [Q$6] : []` always evaluates empty.
+> Expect this to remain off until Anthropic ships a real implementation of `OqH()`. The
+> registration object exists in the bundle (described below) so the daemon-management
+> machinery can be code-reviewed and its eventual surface understood — but it is not
+> currently a usable command.
+
+Registered as `F53` in v2.1.120 (and `iK3` in v2.1.119; the rename is cosmetic):
 
 ```js
 { type: "local-jsx",
@@ -253,6 +307,14 @@ Registered as `F53`:
   immediate: true,
   requires: { ink: true },
   load: () => Promise.resolve().then(() => (MV8(), JV8)) }
+```
+
+Imported into the master command-array as `Q$6` and gated:
+
+```js
+function OqH() { return !1 }                // literally returns false
+...
+...Q$6 && OqH() ? [Q$6] : [],               // → never included
 ```
 
 ### Three managed service categories
@@ -407,21 +469,51 @@ needs to control how aggressively conversation gets summarized.
 
 ## Fleet View = `claude agents` CLI Subcommand (Cowork's PR Dashboard)
 
+> **Surface status: DARK-LAUNCHED on default accounts.** When `tengu_slate_meadow` is off
+> (the default), `claude agents` does NOT mount the Fleet view Ink TUI described below.
+> Instead, it falls through to a **legacy agent-listing utility** that prints something
+> like:
+>
+> ```
+> $ claude agents
+> 21 active agents
+>
+> Plugin agents:
+>   plugin-name:agent-name · sonnet
+>   ...
+>
+> Built-in agents:
+>   claude-code-guide · haiku
+>   Explore · haiku
+>   general-purpose · inherit
+>   ...
+> ```
+>
+> This is just an installed-agents registry dump — useful for "what agents do I have?" but
+> NOT the dashboard described in the rest of this section. Fleet view (the Ink TUI with
+> per-agent PR state tracking) only appears when `tengu_slate_meadow` is on.
+>
+> The Ink TUI form below is what users with the gate flipped see. The original draft of
+> this chapter conflated the two paths; both exist, and the `claude agents` CLI argv
+> branch chooses based on the gate.
+
 Fleet view is the **agents dashboard**. Despite the name `tengu_fleetview`, it is *not* a
 panel inside a regular session — it's a **standalone CLI subcommand** that mounts its own
-Ink TUI.
+Ink TUI when its gate is open.
 
 ### Trigger paths
 
 1. **`claude agents`** CLI subcommand. Argv-parser branch:
    ```js
    if (H[0] === "agents" && ph3(H.slice(1)) && process.stdout.isTTY) {
-     // gate: isAgentsFleetEnabled()
-     // initialize logging, mount Ink TUI
+     // gate: isAgentsFleetEnabled() = C0H() = v_("tengu_slate_meadow", false)
+     // when false → falls through to legacy listing utility
+     // when true  → initialize logging, mount Ink TUI:
      await mountFleetView(rootInk);
    }
    ```
-   Requires TTY. Gated on `isAgentsFleetEnabled()`.
+   Requires TTY. Gated on `isAgentsFleetEnabled() = C0H() = v_("tengu_slate_meadow", false)`
+   — the same gate as `/background`.
 
 2. **Left-arrow keybinding** from foreground REPL. The handler at `tengu_open_agents_via_left`:
    ```js
@@ -879,7 +971,8 @@ for LLM), `tengu_classifier_summary_kill` (master kill switch)
 
 | Category | Count | Notes |
 |----------|-------|-------|
-| Slash commands added | 4 | `/background` (alias `/bg`), `/stop`, `/daemon`, `/autocompact` (re-added) |
+| Slash commands added (registrations in bundle) | 4 | `/background` (alias `/bg`), `/stop`, `/daemon`, `/autocompact` (re-added) |
+| Slash commands actually live for default users | 1 | Only `/autocompact` is universally reachable. `/daemon` is hardcoded off (`OqH() = false`); `/background` is gated by `tengu_slate_meadow` GB flag (default false; flipped on for Claude Max / Cowork users); `/stop` is conditionally enabled by `SESSION_KIND==='bg'` and transitively gated by the same GB flag. |
 | Slash command descriptions changed | 1 | `/exit` |
 | Env vars added | 16 | (after diff correction — `_FORK_SUBAGENTM` was a string-table artifact) |
 | Telemetry / GB flag identifiers added | 62 | Background+daemon (36), Fleet view (4), pro-trial (4), classifier (4), codenames (5), other (9) |
