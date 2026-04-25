@@ -1,5 +1,77 @@
 # Changelog
 
+## v2.11.0 — 2026-04-25 (this fork)
+
+Adds **Chapter 20** (`references/17-verified-new-v2.1.120.md`) with two new lessons covering the v2.1.119 and v2.1.120 binaries — the **Claude Cowork runtime release**. Lesson count goes from 88 → 90, chapter count from 19 → 20. Verified against the v2.1.120 binary (`BUILD_TIME: "2026-04-24T19:00:49Z"`, `GIT_SHA: "080f07fb4224786b965b9ea0a35f0cff594f2eb6"`).
+
+### Framing: Cowork is the product, Claude Code is the runtime
+
+v2.1.119–v2.1.120 are the runtime infrastructure for [Claude Cowork](https://www.anthropic.com/product/claude-cowork) (Anthropic's desktop task-automation product, research preview late January 2026, recently GA on paid plans). **There is no "cowork" string in the bundle** — Cowork is the product label for sessions running with `CLAUDE_CODE_SESSION_KIND="bg"`; detection is via the BG family. The lessons explicitly position the daemon/background-session GA as Cowork's runtime going live, citing [anthropic.com/product/claude-cowork](https://www.anthropic.com/product/claude-cowork) and [claude.com/blog/cowork-research-preview](https://claude.com/blog/cowork-research-preview).
+
+### L89 — v2.1.119 Cowork Runtime Goes Live
+
+**Slash commands (4 added, 1 description-changed):** `/background` (alias `/bg`) forks the *current main session* into a `kind:"fork"` background subagent reusing L87 fork-subagent infrastructure unchanged; `/stop` dual-registered (interactive Ink modal + non-interactive headless), only enabled when `SESSION_KIND==='bg'`; `/daemon` Ink TUI manages three service categories (`assistant`, `scheduled`, `remoteControl` — the "remote-control server" entry is the channel Cowork Desktop talks to); `/autocompact` re-introduced (token-count parameterized via `argumentHint: "[auto|<tokens>]"`, default ~100k, max ~1M, app-state field `autoCompactWindow`); `/exit` description acknowledges bg detach/stop semantics.
+
+**Fleet view = `claude agents` CLI subcommand (NOT a panel):** standalone Ink TUI dashboard mounted via `mountFleetView(rootInk)`, gated on `isAgentsFleetEnabled()`. Tracks per-agent **PR state** (`state`, `title`, `review`, `mergeable`, `mergeStateStatus`, `checks.passed/failed/pending`, `additions`, `deletions`). `tengu_fleetview_pr_batch` GB toggle = single batched GitHub API call vs. one-per-PR fallback. Confirms the Cowork **Dispatch** product pattern: many parallel agents, each owning a worktree+branch+PR; Fleet view is the CI-board.
+
+**Session identity taxonomy:** `CLAUDE_CODE_SESSION_KIND` accepts exactly `"bg"` | `"daemon"` | `"daemon-worker"` (helpers `T1H()` validates, `vK()` = "is bg?", `uC_()` reads `CLAUDE_BG_BACKEND`). 5-var BG-context check (`SESSION_KIND || BG_SOURCE || BG_ISOLATION || BG_BACKEND || SESSION_NAME`) gates env-stripping in `bV()` — all 5 deleted from env before subprocess spawn so daemon plumbing doesn't leak.
+
+**Worktree isolation = runtime prompt mutation:** when `SESSION_KIND === "bg"` and `CLAUDE_BG_ISOLATION === "worktree"`, the agent's system prompt is rewritten by `bA3()` to insert "Call the EnterWorktree tool as your first action — before reading files or running commands…" Confirms the worktree-based isolation model.
+
+**Persistence model** (`/background` + `/stop` lifecycle): PTY stream recorded to `CLAUDE_PTY_RECORD` file via internal `--bg-pty-host <sock> <cols> <rows> -- <file> [args...]` argv mode (verbatim from bad-argv error message); transcript persisted by bridge transport (log: `[bridge:repl] Session persistence enabled — transcript writer + hydrate readers registered`); single-use `CLAUDE_BRIDGE_REATTACH_SESSION/SEQ` tokens (L87) consumed exactly once for reattach, deleted from `process.env` immediately after read.
+
+**Classifier-summary system (the Cowork Desktop status pipeline):** surface map (`bg`/`watched`/`ccr`/`bridge`/`desktop`/`cli`) → capabilities (`state`/`summary`) → engine (`heuristic`/`llm`). Three independent kill switches: `tengu_classifier_disabled_surfaces` (skip-list), `tengu_classifier_summary_kill` (master kill), `tengu_cobalt_wren` (LLM→heuristic cost circuit-breaker). Output schema `{status_category: "blocked"|"review_ready", status_detail, needs_action}` pushed via `notifyMetadataChanged({post_turn_summary})` — this is the API Cowork Desktop's "what's the agent doing" UI subscribes to. `CLAUDE_CODE_CLASSIFIER_SUMMARY` env var is the manual override.
+
+**`/daemon` lease + supervisor model:** `tengu_daemon_lease` (single-daemon-per-config-dir invariant), `tengu_daemon_self_restart_on_upgrade` (binary-identity polling for hot-upgrade), `tengu_daemon_idle_exit`, `tengu_daemon_worker_crash`, `tengu_daemon_worker_permanent_exit`, plus full bg-worker lifecycle telemetry (~30 events).
+
+**Pro-trial conversion screens** (4 telemetry events) — Cowork is paid-only, so the upsell funnel lives at the Claude Code surface where users hit the gate.
+
+**16 new env vars** (corrected count after diff-tool fix): `CLAUDE_CODE_SESSION_KIND/ID/NAME/LOG`, `CLAUDE_BG_ISOLATION`, `CLAUDE_BG_RENDEZVOUS_SOCK`, `CLAUDE_BG_SOURCE`, `CLAUDE_JOB_DIR`, `CLAUDE_PTY_RECORD`, `CLAUDE_AGENT`, `CLAUDE_AGENTS_SELECT`, `CLAUDE_CODE_AGENT`, `CLAUDE_CODE_HIDE_CWD`, `CLAUDE_CODE_VERIFY_PROMPT`, `CLAUDE_CODE_CLASSIFIER_SUMMARY`, `CLAUDE_INTERNAL_FC_OVERRIDES`. Stealth promotions: `CLAUDE_BG_BACKEND` (3→7 occurrences) and `CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES` (3→4) became load-bearing without being newly added.
+
+**62 new tengu_* identifiers**: 36 background+daemon, 4 fleet view, 4 pro-trial, 4 classifier, 5 codename flags, 9 other.
+
+### L90 — v2.1.120 Daemon On-Demand Model + Lean Prompt + Memory-Write UX + Plan-Mode Tripwire
+
+**Major architectural reveal: persistent daemon install is kill-switched.** `xQH()` aborts with verbatim text *"daemon service is not installed (service install is disabled in this version; the daemon runs on demand)"*. Despite all v2.1.119's `tengu_daemon_install` / `_auto_uninstall` telemetry being live, the user-facing daemon is **strictly on-demand** in v2.1.120. New `CLAUDE_CODE_DAEMON_COLD_START` env var accepts only `"transient"` (default, silent on-demand) or `"ask"` (prompted with `tengu_bg_daemon_cold_start_ask`/`_answer` UX). Function `Ci6()` resolution order: env → `settings.json daemonColdStart` → GB default `daemonColdStartGbDefault()`.
+
+**`CLAUDE_CODE_LEAN_PROMPT` is per-section, not wholesale.** Distinct from L86's `CLAUDE_CODE_SIMPLE` / `_SYSTEM_PROMPT` (total prompt swap). Each leanable section has its own gate: `LEAN_PROMPT env || <codename GB flag>`. Two leanable sections in v2.1.120: Bash/ripgrep description (`Fz` gate, `tengu_vellum_lantern`, **Opus-4.7-only**) and memory-types section (`cK8` gate, `tengu_ochre_finch`).
+
+**`CLAUDE_EFFORT` is NOT an env var** — the v2.1.120 diff regex was misreading a binary string-table dump. Actual semantics: (1) skill/command frontmatter field `effort:` (in the `_X5` skill-frontmatter key set), (2) template substitution token `${CLAUDE_EFFORT}` resolved by `_I(model, effort)`. Value space `low | medium | high (default) | xhigh` resolves to literal English phrases (`"Comprehensive implementation with extensive testing and documentation"` etc.) — prompt-shaping mechanism, not a model API parameter.
+
+**`CLAUDE_COWORK_MEMORY_GUIDELINES` = Cowork's memory-bypass escape hatch.** When set + non-empty + auto-memory enabled, function `Bf_(H)` short-circuits and returns `\`# auto memory\\n${q.trim()}\`` — completely replacing the entire memory-injection pipeline. Sibling `CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES` (pre-existed since v2.1.118) is the additive form.
+
+**`tengu_memory_write_survey_event` = Approve/Reject confirmation dialog for memory file writes.** Per-write summary generated via fast Sonnet-4.6 LLM call (`maxOutputTokensOverride: 150`, no caching, querySource `"memory_write_survey_summarize"`). System prompt: *"You write one-sentence confirmation summaries for an Approve/Reject dialog."* User prompt: *"Summarize this memory file update in one short sentence (≤120 chars) for a confirmation dialog…"* Dialog state machine has a 5-second countdown (`T03 = 5`) and a `summaryLineThreshold` for bypassing the prompt on small writes. Directly relevant to anyone running auto-memory pipelines.
+
+**`CLAUDE_CODE_VERIFY_PROMPT` is debugging-workflow discipline, NOT safety.** Hypothesis disproved. The injected text is a 3-step *"reproduce → fix → re-observe"* instruction. Identifies `tengu_sparrow_ledger` as its dark-launch GB flag.
+
+**`tengu_plan_mode_violated` is observability-only.** No early return, no thrown error. Tripwire for "plan mode should have held this but didn't" — real enforcement lives upstream at the permission layer.
+
+**`tengu_bg_retired` = idle worker reaper, NOT feature sunset.** Six "do not retire" guards: `no-state`, `not-settled`, `inflight`, `session-cron`, `routine`, `grace`. Codename misled the original investigation.
+
+**Daemon hot-upgrade** via binary-identity polling — `setInterval(L, A)` detects when binary on disk differs from running, sets `W = true`, emits `tengu_daemon_self_restart_on_upgrade`, gracefully shuts down (`v.manager?.killAll("SIGTERM")`). Standard hot-upgrade pattern. Pairs with the v2.1.113 (L85) `/update` refusal-path work.
+
+**Auto-relaunch rate-limit gates** confirmed by accessor names: `AUTO_RELAUNCH_UNFOCUSED_MS:()=>oz6` (1h minimum focus-loss before eligible) and `AUTO_RELAUNCH_MIN_INTERVAL_MS:()=>sYK` (6h minimum interval between relaunches). `CLAUDE_AGENTS_AUTO_RELAUNCHED_AT` is the env-key timestamp.
+
+**`/schedule` description simplified, NOT a new registration.** Both v2.1.119 and v2.1.120 have only one `name:"schedule"` registration. v2.1.119 had a conditional template-literal description with `${H?...}` for one-time-vs-recurring; v2.1.120 collapsed it to a single static cron-only string.
+
+**4 new env vars**: `CLAUDE_CODE_DAEMON_COLD_START`, `CLAUDE_CODE_LEAN_PROMPT`, `CLAUDE_COWORK_MEMORY_GUIDELINES`, `CLAUDE_AGENTS_AUTO_RELAUNCHED_AT`. **6 new GB flags** (5 codenames + `tengu_ochre_finch`). **11 GB flags removed** (routine cleanup of dark-launched-and-graduated). **6 new telemetry events**.
+
+### Bonus prompt-section literals discovered (citations)
+
+In the same code region as `yA3` (the verify-prompt content), three additional system-prompt section literals were captured verbatim and added as citations:
+
+- **`ZE7`** = subagent system prompt: *"You are an agent for Claude Code, Anthropic's official CLI for Claude. Given the user's message, you should use the tools available to complete the task. Complete the task fully — don't gold-plate, but don't leave it half-done. When you complete the task, respond with a concise report covering what was done and any key findings — the caller will relay this to the user, so it only needs the essentials."*
+- **`uA3`** = "Context management" prompt section
+- **`pA3`** = "Focus mode" prompt section
+
+### Tooling fix: `scripts/diff-versions.sh` env-var extractor
+
+The `\b...\b` regex picked up adjacent bytes from the binary string table when those bytes happened to be in `[A-Z0-9_]`, producing false positives like `CLAUDE_CODE_FORK_SUBAGENTM` (real var: `CLAUDE_CODE_FORK_SUBAGENT`). It also missed env vars that only appear in object-literal key position (e.g. `CLAUDE_PROJECT_DIR`, set for child processes via `{...env, CLAUDE_PROJECT_DIR: x}`). Replaced with three JS-context anchors: `process.env.X` (with negative-lookahead `(?![A-Z0-9_])` to avoid the `||null`-style following-char bug), `"X"`/`'X'`, and `{X:...}`/`,X:`. Both the v2.1.119 false-add and v2.1.120 false-remove of `_FORK_SUBAGENTM` are gone; `CLAUDE_PROJECT_DIR` now extracts correctly. Verified on v2.1.118/119/120 bundles.
+
+### Cross-reference cluster — Cowork's runtime stack
+
+Read as a group: **L37** (Bridge / Remote Control transport that persists transcripts) → **L43** (KAIROS daemon characterization from ant-only feature flags) → **L77/L85** (Remote Workflow Commands sunset + first `CLAUDE_BG_BACKEND` public surface) → **L86** (OIDC Federation auth, dual-registration pattern) → **L87** (`/fork` + `CLAUDE_BRIDGE_REATTACH_SESSION/SEQ` plumbing reused unchanged) → **L88** (dual-registration pattern adopters `/usage`/`/cost`/`/stats`) → **L89/L90** (this chapter — where the runtime becomes a coherent user-facing product surface).
+
 ## v2.10.0 — 2026-04-23 (this fork)
 
 Adds **Chapter 19** (`references/16-verified-new-v2.1.118.md`) with two new lessons covering the v2.1.117 and v2.1.118 binaries — plus three source-traced deep dives: `/fork` execution mechanics, WIF OAuth lock internals, and the previously-undocumented AI verification hook. Lesson count goes from 86 → 88, chapter count from 18 → 19. Verified against the v2.1.118 binary.
