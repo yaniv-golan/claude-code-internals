@@ -160,7 +160,12 @@ typing `/bg` works because of the alias.
 ### What `/background` actually does
 
 The handler `YTK(H, _, q)` does **not** spawn a fresh agent. It forks the **current main
-session** into a background fork-subagent, reusing the L87 `/fork` infrastructure:
+session** into a background fork-subagent using the **v2.1.119-improved** `/fork`
+infrastructure. Per the official Anthropic v2.1.119 changelog: *"`/fork` now writes a
+pointer and hydrates on read instead of full conversation copies."* So /background uses the
+L87 fork-subagent *type* (still `kind:"fork"`), but the parent-conversation-inheritance
+mechanism switched from full-duplication (as L87 documents) to pointer-based hydration
+on demand in v2.1.119. Concretely:
 
 1. Capture the rendered system prompt of the current session.
 2. Copy the REPL replay log (or hydrate from messages if no log exists yet).
@@ -469,6 +474,17 @@ needs to control how aggressively conversation gets summarized.
 
 ## Fleet View = `claude agents` CLI Subcommand (Cowork's PR Dashboard)
 
+> **Disambiguation: `claude agents` (CLI subcommand) vs `/agents` (slash command).** These
+> are two **different surfaces** with confusingly-similar names — the original draft of
+> this section conflated them.
+>
+> - **`/agents` slash command** is `{type:"local-jsx", name:"agents", description:"Manage
+>   agent configurations"}` — pre-existed v2.1.118, always enabled, opens an Ink panel for
+>   agent-config management. **Not** the Fleet view. **Not** new in v2.1.119/v2.1.120.
+> - **`claude agents` CLI subcommand** is what this section documents — and it has the
+>   dual code path described below (Fleet view if `tengu_slate_meadow` enabled; legacy
+>   agent-listing utility if not).
+>
 > **Surface status: DARK-LAUNCHED on default accounts.** When `tengu_slate_meadow` is off
 > (the default), `claude agents` does NOT mount the Fleet view Ink TUI described below.
 > Instead, it falls through to a **legacy agent-listing utility** that prints something
@@ -923,13 +939,43 @@ for LLM), `tengu_classifier_summary_kill` (master kill switch)
 
 ---
 
+## Pre-Existing Public Surface Worth Cross-Referencing
+
+The L89 user-facing surface is mostly dark-launched, but two **pre-existing public** slash
+commands are closely related and *do* work for default users — worth knowing about
+alongside the new dark-launched material:
+
+| Command | Description (verbatim from registration) | Note |
+|---------|------------------------------------------|------|
+| `/agents` | "Manage agent configurations" | Pre-existed v2.1.118. Different from the dark-launched `claude agents` Fleet view CLI subcommand — see disambiguation in the Fleet View section above. |
+| `/tasks` (alias `/bashes`) | "List and manage background tasks" | Pre-existed v2.1.118. Public surface for managing background bash tasks (the **Ctrl+B** backgrounded shell commands), distinct from the dark-launched `/background` (which forks the *session*). If a user asks "how do I manage my background tasks", `/tasks` is the answer for default users; `/daemon` is the answer for Cowork users when its gate is opened. |
+
+## Public Settings Added in v2.1.119 (Confirmed via Official Changelog)
+
+The official Anthropic v2.1.119 changelog confirms one settings addition my diff missed.
+`scripts/diff-versions.sh` extracts env vars but not `~/.claude/settings.json` keys, so this
+slipped through:
+
+| Setting | Description |
+|---------|-------------|
+| `prUrlTemplate` | "URL template for PR links in the footer badge and inline messages. Placeholders: `{host} {owner} {repo} {number} {url}`. Example: `https://reviews.example.com/{owner}/{repo}/...`." Used by `JA_(H)` (PR-link rendering helper). Supports the Fleet view's per-PR display when that surface eventually opens, plus the existing footer/inline PR-badge display today. |
+
+> **Tooling gap noted**: `scripts/diff-versions.sh` `extract_settings()` does not exist —
+> the script extracts env vars, slash commands, hook event types, API beta strings, and
+> tengu_* identifiers, but not config-schema field names. Future versions of this skill
+> should consider adding settings extraction (look for `Z(\w*).object({...})` Zod schemas
+> or settings-key string sets).
+
 ## What Did NOT Change in v2.1.119
 
 - **Hook event types**: 19, unchanged
 - **API beta strings**: 32, unchanged (no new beta despite the major surface additions)
 - **Permission pipeline**: unchanged 7-phase flow (L8)
 - **OIDC Federation surface (L86)**: unchanged
-- **`/fork` machinery (L87)**: reused unchanged for `/background`
+- **`/fork` subagent type / `kind:"fork"`**: unchanged. The *parent-conversation
+  inheritance mechanism* did change in v2.1.119 (full-copy → pointer + hydrate-on-read,
+  per official changelog) — see `/background` section above. The subagent type itself,
+  the `iv()` enable check, and the `tengu_copper_fox` GB flag are all unchanged.
 
 ---
 
@@ -949,6 +995,37 @@ for LLM), `tengu_classifier_summary_kill` (master kill switch)
    pinch point rather than a slow per-PR drip. Toggle via `tengu_fleetview_pr_batch`.
 5. **`/daemon` is a TUI; persistent install is *not* shipped in v2.1.119** (see L90 — this
    becomes explicit with `xQH()`'s kill-switch and the `transient`/`ask` cold-start model).
+
+---
+
+## Source-of-Truth Cross-Check (v2.11.2 audit)
+
+Cross-checked against the [official Anthropic v2.1.119 changelog](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md):
+
+**Confirmed (in both bundle and official changelog):**
+- `prUrlTemplate` setting (added to v2.1.119 — see Public Settings section above)
+- `CLAUDE_CODE_HIDE_CWD` env var
+- `/fork` mechanism change to pointer + hydrate-on-read (this section reflected in the
+  /background description above)
+
+**Bundle-only (NOT in official changelog → confirms dark-launch framing):**
+- `/background`, `/bg`, `/stop`, `/daemon`, `/autocompact` re-introduction
+- Fleet view (`claude agents` Ink TUI dashboard)
+- All `CLAUDE_CODE_SESSION_KIND/ID/NAME/LOG`, `CLAUDE_BG_*`, `CLAUDE_PTY_RECORD`, etc.
+- All 62 new `tengu_*` identifiers, including the codename flags
+- Classifier-summary status pipeline
+- Pro-trial conversion flow
+
+The complete absence of any of the above from Anthropic's public v2.1.119 changelog is
+strong external corroboration that these are Cowork-runtime infrastructure shipped to
+the binary but held back from user-facing announcement until the GB flags are flipped.
+
+**Official v2.1.119 changelog items NOT covered in this lesson** (out of scope — not
+Cowork-related):
+- Vim mode Esc behavior fix
+- Plugin pinning auto-update to highest satisfying git tag
+- Subagent + SDK MCP server reconfiguration parallel connect
+- Configuration settings persistence to `~/.claude/settings.json`
 
 ---
 

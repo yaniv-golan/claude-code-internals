@@ -1,5 +1,47 @@
 # Changelog
 
+## v2.11.2 — 2026-04-25 (this fork) — L89 cross-checked against official changelog
+
+External fact-check of L89 against the [official Anthropic v2.1.119 changelog](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md). Three corrections, two additions, one bonus validation.
+
+### Corrections (things I had wrong or missed)
+
+1. **`/background` reuses an *updated* `/fork` mechanism, not the L87 form.** Per the official v2.1.119 changelog: *"`/fork` now writes a pointer and hydrates on read instead of full conversation copies."* L89 originally claimed `/background` reused the L87 fork-subagent infrastructure *unchanged*. Corrected: the subagent type and gating are unchanged, but the parent-conversation-inheritance mechanism switched from full-duplication to pointer-based hydration in v2.1.119. /background is built on the *new* form.
+
+2. **Disambiguated `/agents` (slash command, public) vs `claude agents` (CLI subcommand, dark-launched Fleet view).** These are two different surfaces with confusingly-similar names. The original L89 conflated them.
+   - `/agents` slash command: `{type:"local-jsx", name:"agents", description:"Manage agent configurations"}` — pre-existed v2.1.118, always enabled, opens an agent-config Ink panel. **Not** Fleet view.
+   - `claude agents` CLI subcommand: dual code-path (Fleet view if `tengu_slate_meadow` is on; legacy agent-listing utility if not). The dark-launch documented in v2.11.1 still applies.
+
+3. **Cross-referenced the public `/tasks` (alias `/bashes`) slash command.** Pre-existed v2.1.118; described as "List and manage background tasks" — handles the **Ctrl+B** background bash tasks. Distinct from the dark-launched `/background` (which forks the *session*, not a bash command). L89 should have called this out as the answer to "how do I manage background tasks" for default users.
+
+### Additions (the changelog had things my diff missed)
+
+4. **`prUrlTemplate` setting added in v2.1.119.** Settings keys are not extracted by `scripts/diff-versions.sh` (env vars yes, settings no), so this slipped through. URL template for PR links in footer badge and inline messages, with placeholders `{host} {owner} {repo} {number} {url}`. Used by `JA_(H)` PR-link rendering helper. Supports the Fleet view's per-PR display when that surface eventually opens, plus existing PR-badge rendering today.
+
+   Tooling-gap note added to L89: future skill versions should add settings extraction to the diff script (look for Zod schemas / settings-key string sets).
+
+### Bonus validation
+
+5. **The complete absence of `/background`, `/bg`, `/stop`, `/daemon`, `/autocompact`, Fleet view, `CLAUDE_CODE_SESSION_KIND`, classifier-summary, and `tengu_*` flags from the official v2.1.119 changelog is strong external corroboration of v2.11.1's dark-launch framing.** Anthropic publicly documented the supporting infrastructure (`prUrlTemplate`, `CLAUDE_CODE_HIDE_CWD`, `/fork` mechanics) but said nothing about the user surfaces those things support. New "Source-of-Truth Cross-Check" section in L89 documents this explicitly.
+
+### Hallucinated AI-source claim invalidated
+
+The fact-check source (an unreliable AI) referenced an internal "Chyros" codename for a planned background daemon. **Bundle check: 0 occurrences of "Chyros" in v2.1.118/119/120; 34 occurrences of "kairos/Kairos/KAIROS".** The actual codename is **KAIROS** (Greek god of opportunity), as documented in L43. The AI almost certainly hallucinated a near-Greek-time-word.
+
+### Methodology takeaway (added to feedback memory)
+
+When reverse-engineering the bundle, **always cross-check findings against the official Anthropic CHANGELOG** at `https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md`. The two are complementary:
+- Official changelog = source of truth for documented user surface
+- Bundle excavation = source of truth for what code exists
+- The DELTA between them = dark-launched surface (most useful for this skill)
+
+Settings keys (`prUrlTemplate`-style) are NOT extracted by `diff-versions.sh` — known tool gap.
+
+### Files changed
+
+- `references/17-verified-new-v2.1.120.md` — `/background` section corrected for v2.1.119 fork-mechanism change; Fleet view section gets disambiguation block; new "Pre-Existing Public Surface Worth Cross-Referencing" section for `/agents` + `/tasks`; new "Public Settings Added in v2.1.119" section for `prUrlTemplate`; new "Source-of-Truth Cross-Check" section validates the dark-launch framing against official changelog.
+- `version.json`, `plugin.json`: 2.11.1 → 2.11.2.
+
 ## v2.11.1 — 2026-04-25 (this fork) — L89 dark-launch correction
 
 **Methodology error fix in L89.** The v2.11.0 release of L89 (and the companion deep-dive material) treated `/background`, `/stop`, `/daemon`, and `claude agents` Fleet view as user-facing GA surfaces. **They are not.** The runtime *code* shipped in v2.1.119, but the *user-facing surfaces* are dark-launched behind GrowthBook flags or hardcoded kill-switches. Verified empirically (`claude /daemon` → "Unknown command", `claude agents` → legacy listing utility, not the dashboard).
