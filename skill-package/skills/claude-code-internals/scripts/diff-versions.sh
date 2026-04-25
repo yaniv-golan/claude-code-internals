@@ -75,8 +75,27 @@ def read(path):
         return f.read().decode('utf-8', errors='replace')
 
 def extract_envvars(text):
-    """Extract CLAUDE_* and ANTHROPIC_* variable names."""
-    return set(re.findall(r'\b((?:CLAUDE|ANTHROPIC)_[A-Z][A-Z0-9_]{2,})\b', text))
+    """Extract CLAUDE_* and ANTHROPIC_* variable names.
+
+    Anchored on JS-code contexts (process.env.X or "X") rather than \\b word
+    boundaries. Word-boundary matching slurps adjacent bytes from the binary
+    string table when those bytes happen to be in [A-Z0-9_] — string-table
+    layout shifts every build, so adjacency is stochastic. Code-context
+    matches are stable because they're delimited by . or quote chars.
+    """
+    # Three JS-context anchors:
+    #   1. process.env.X  — runtime read
+    #   2. "X" or 'X'     — string literal (read site, registration, etc.)
+    #   3. {X:...} or ,X: — object-literal key (env var passed to child process)
+    patterns = [
+        r'process\.env\.((?:CLAUDE|ANTHROPIC)_[A-Z][A-Z0-9_]{2,})(?![A-Z0-9_])',
+        r'["\']((?:CLAUDE|ANTHROPIC)_[A-Z][A-Z0-9_]{2,})["\']',
+        r'[\{,]\s*((?:CLAUDE|ANTHROPIC)_[A-Z][A-Z0-9_]{2,})\s*:',
+    ]
+    out = set()
+    for p in patterns:
+        out.update(re.findall(p, text))
+    return out
 
 def extract_commands(text):
     """Extract slash command definitions: name:"...", description:"..." pairs."""
