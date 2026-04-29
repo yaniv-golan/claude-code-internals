@@ -1,5 +1,49 @@
 # Changelog
 
+## v2.11.3 — 2026-04-29 (this fork) — Sub-agent tool-grant filtering documented + topic-index gap closed
+
+Empirical-and-source pass on a real Cowork failure: forked sub-agents from `founder-skills:*` skills couldn't persist artifacts despite declaring `Bash` in `tools:`. Trace went through the v2.1.120 bundle, identified the `Tw8` base-tool filter and `Jl_` allowlist as the mechanism, ruled out a "Task-as-poison" pattern-match hypothesis, and confirmed empirically that adding `Write` and `Edit` to the agent's `tools:` array restores artifact persistence (probe lands `done`, byte-exact content match).
+
+### Added
+
+1. **L89 — new section: "Sub-Agent Tool-Grant Filtering: How Cowork-Async Dispatch Silently Strips Bash."** Documents:
+   - The async-mode flag derivation (`isAsync = (O === true || v.background === true) && !lFH`)
+   - The `Tw8` base-tool filter sequence (yJ pass-through → r3H drop → F_8 non-builtin drop → Jl_ async allowlist → V9/_X experimental fallback)
+   - Resolved `Jl_` symbols (`Bq=Read, dV=WebSearch, _v=TodoWrite, A4=Grep, NY=WebFetch, h1=Glob, L9=Edit, s7=Write, Af=NotebookEdit, Xf=Skill, cN=TaskStop`); `Dq="Bash"` confirmed absent from the allowlist
+   - The `vc()` user-tools classifier with its `validTools` / `invalidTools` / `unavailableTools` / `resolvedTools` buckets
+   - The `Sz()` → `n0()` parse/canonicalize chain via the `ev6` legacy-name rename map (`Task → Agent`, `KillShell → cN`, `AgentOutputTool → BashOutput`, `BashOutputTool → BashOutput`)
+   - The Agent special-case: `if (N === Z9) { ... if (!K) { P.push(v); continue } }` — with default `K = false`, declaring `"Task"` is a no-op (pushed to `validTools` but not `resolvedTools`)
+   - Why `general-purpose` (`tools: ["*"]`, `source: "built-in"`) inherits the full filtered base via the wildcard branch, while plugin fork-skills with narrow `tools:` declarations get only the intersection
+   - The empirical probe table (before-fix `fail`, after-fix `done`, control `general-purpose` `done` via Write)
+   - Cross-references to L11 (Skills), L87 (fork plumbing), L37 (Bridge), L88 (settings)
+
+2. **Risks Worth Flagging entry #6** points authors at the new section with the practical fix shape ("declare Write/Edit in the agent's tools:; move shell work to the top session").
+
+3. **Scope-clarification callout** under the L89 section, distinguishing the runtime tool filter (governs forked-agent post-dispatch tool calls) from the body-time shell-substitution kill switch (governs `` !`cmd` `` substitutions before fork dispatch, via `CLAUDE_CODE_IS_COWORK` policy logic). Earlier drafts conflated the two; both gist and lesson now distinguish them clearly.
+
+### Fixed
+
+4. **`topic-index.json` had no L89 / L90 entries.** Preexisting gap: the index claimed `total_lessons: 88` while ch20 contained both lessons, so semantic search couldn't find Cowork-runtime / daemon / lean-prompt / sub-agent-tool-grant content. Added 275 new keywords across the two new entries; `keyword_map` grew from 985 to 1287 entries. Rebuilt `semantic-index.json` (90 lessons, 1363 vocab terms, 279 KB). Search for `Bash-stripped`, `CLAUDE_CODE_LEAN_PROMPT`, `sub-agent-tool-grant-filter`, `daemon-on-demand`, `tengu_memory_write_survey_event`, etc. now resolves.
+
+### Companion gist updates (separate artifact, not in this plugin)
+
+The public Skills/Plugins/Marketplaces reference gist (https://gist.github.com/yaniv-golan/303b6213b7a33167b3f98b076a5f81ad) was updated through four rounds of external fact-check, ending with: corrected `arguments` / `${CLAUDE_EFFORT}` / `channels` / `${CLAUDE_PLUGIN_ROOT}` documentation status to current docs, deleted nonexistent `pip` plugin source, fixed marketplace CLI commands (`claude plugin marketplace update`, no `refresh`/`auto-update`), corrected SDK section (default loads user/project skills, `allowed-tools` is CLI-only), corrected PowerShell gating, removed claims about `${CLAUDE_PROJECT_DIR}` and `${CLAUDE_PLUGIN_ROOT}` being injected as Bash-tool env vars, distinguished body-time shell-sub kill switch from runtime async filter, distinguished agent `tools:` (actual availability) from skill `allowed-tools:` (permission preapproval), warned that `CLAUDE_CODE_SESSION_KIND` and `CLAUDE_CODE_SESSION_NAME` are stripped from shell subprocess env. Final fact-check pass: "no remaining hard factual errors."
+
+### Files changed
+
+- `skill-package/skills/claude-code-internals/references/17-verified-new-v2.1.120.md` — new L89 section + scope clarification
+- `skill-package/skills/claude-code-internals/references/topic-index.json` — L89/L90 entries + keyword_map
+- `skill-package/skills/claude-code-internals/references/semantic-index.json` — rebuilt
+- `skill-package/skills/claude-code-internals/version.json` — `skill_version` and `keywords_indexed`
+- `skill-package/.claude-plugin/plugin.json` — `version`
+- `CHANGELOG.md` — this entry
+
+### Methodology takeaway
+
+When debugging a Cowork-specific behavior, do not pattern-match the only-novel-token in user-supplied frontmatter as the cause. Source-trace first: the bundle's filter chain may strip tools at a stage upstream of any user declaration. The "Task-as-poison" hypothesis was empirically falsifiable in a single probe; a 5-minute trace through `Tw8`/`vc` would have ruled it out without needing the probe.
+
+---
+
 ## v2.11.2 — 2026-04-25 (this fork) — L89 cross-checked against official changelog
 
 External fact-check of L89 against the [official Anthropic v2.1.119 changelog](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md). Three corrections, two additions, one bonus validation.
