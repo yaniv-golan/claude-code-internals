@@ -981,16 +981,29 @@ slipped through:
 
 ## Sub-Agent Tool-Grant Filtering: How Cowork-Async Dispatch Silently Strips Bash
 
-> **Status:** Empirically confirmed (probe lands `done`, byte-exact content match). The
-> filter machinery (`Tw8`, `Jl_`, `vc`, etc.) is *pre-existing* — not new in v2.1.119 —
-> but its consequences become user-visible at scale once Cowork's runtime is GA, because
-> Cowork's product surface is the first time most authors ship `context: fork` skills
-> into background-async dispatch in volume.
+> **Status:** Empirically confirmed (probe lands `done`, byte-exact content match) for the
+> runtime-tool-availability mechanism. The filter machinery (`Tw8`, `Jl_`, `vc`, etc.) is
+> *pre-existing* — not new in v2.1.119 — but its consequences become user-visible at scale
+> once Cowork's runtime is GA, because Cowork's product surface is the first time most
+> authors ship `context: fork` skills into background-async dispatch in volume.
+>
+> **Scope clarification:** This filter operates on the **forked sub-agent's runtime tool
+> set** (what the agent can call after dispatch). It is distinct from **body-time shell
+> substitution** (`` !`cmd` `` blocks), which is processed by the prompt expander **before**
+> fork dispatch and is governed by the Cowork shell-substitution kill switch
+> (`CLAUDE_CODE_IS_COWORK` participates in the policy logic). A skill body that relies on
+> `` !`cmd` `` substitutions in Cowork will see those substitutions replaced with
+> `[shell command execution disabled by policy]` (or similar policy-marker text) at
+> expansion time — that is **not** the same as the Bash-tool-absent failure described here.
+> Earlier drafts of this section (and of the gist) conflated the two; both have been
+> corrected. The `Tw8`/`Jl_` filter is what causes a forked agent to find the `Bash` tool
+> *absent at runtime when it tries to call it post-dispatch*.
 
 The user-facing version of this material is in [the Skills/Plugins/Marketplaces
 gist](https://gist.github.com/yaniv-golan/303b6213b7a33167b3f98b076a5f81ad)
-(*"Sub-agent tool-grant filtering"* subsection inside `## Claude Cowork mode`). This
-section documents the source-level trace.
+(*"Sub-agent tool-grant filtering"* subsection inside `## Claude Cowork mode`,
+plus the *"Cowork caveat"* under shipping scripts which now distinguishes the two
+mechanisms). This section documents the source-level trace for the runtime filter.
 
 ### The mechanism
 
