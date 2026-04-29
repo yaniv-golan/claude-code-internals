@@ -1,7 +1,7 @@
 {
-  "generated": "2026-04-23",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118",
-  "total_lessons": 88,
+  "generated": "2026-04-29",
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.120",
+  "total_lessons": 90,
   "lessons": [
     {
       "id": 1,
@@ -1726,7 +1726,7 @@
     },
     {
       "id": 88,
-      "title": "v2.1.118 /cost + /stats → /usage Aliases, cache-diagnosis-2026-04-07, Frontmatter Shadow Validator, WIF OAuth Locking",
+      "title": "v2.1.118 /cost + /stats \u2192 /usage Aliases, cache-diagnosis-2026-04-07, Frontmatter Shadow Validator, WIF OAuth Locking",
       "lesson_number": "88",
       "file": "16-verified-new-v2.1.118.md",
       "startLine": 459,
@@ -1872,6 +1872,301 @@
         "GX",
         "ys7",
         "cA_"
+      ]
+    },
+    {
+      "id": 89,
+      "title": "v2.1.119 Cowork Runtime Goes Live: /background, /daemon, Fleet View, Classifier-Summary, Session Identity Taxonomy",
+      "lesson_number": "89",
+      "file": "17-verified-new-v2.1.120.md",
+      "startLine": 83,
+      "endLine": 1278,
+      "keywords": [
+        "v2.1.119",
+        "cowork",
+        "cowork-runtime",
+        "claude-cowork",
+        "/background",
+        "/bg",
+        "/stop",
+        "/daemon",
+        "/autocompact",
+        "autocompact-reintroduced",
+        "background-session",
+        "bg-session",
+        "daemon-tui",
+        "daemon-supervisor",
+        "fleet-view",
+        "claude-agents",
+        "agents-fleet",
+        "agents-cli-subcommand",
+        "claude-respawn",
+        "kind-fork",
+        "fork-subagent",
+        "fork-reuse",
+        "session-identity",
+        "session-kind",
+        "session-id",
+        "session-name",
+        "session-log",
+        "CLAUDE_CODE_SESSION_KIND",
+        "CLAUDE_CODE_SESSION_ID",
+        "CLAUDE_CODE_SESSION_NAME",
+        "CLAUDE_CODE_SESSION_LOG",
+        "CLAUDE_CODE_AGENT",
+        "CLAUDE_CODE_IS_COWORK",
+        "CLAUDE_BG_BACKEND",
+        "CLAUDE_BG_RENDEZVOUS_SOCK",
+        "CLAUDE_BG_ISOLATION",
+        "CLAUDE_BG_BG_INFO",
+        "CLAUDE_BG_LEASE",
+        "CLAUDE_PTY_RECORD",
+        "CLAUDE_BRIDGE_REATTACH_SESSION",
+        "CLAUDE_BRIDGE_REATTACH_SEQ",
+        "CLAUDE_AGENTS_AUTO_RELAUNCHED_AT",
+        "CLAUDE_AGENTS_SELECT",
+        "CLAUDE_CODE_HIDE_CWD",
+        "CLAUDE_CODE_FLEET_VIEW",
+        "bg-context-strip",
+        "5-var-strip",
+        "T1H",
+        "vK",
+        "uC_",
+        "worktree-isolation",
+        "bA3",
+        "runtime-prompt-mutation",
+        "EnterWorktree-forced",
+        "pty-recording",
+        "bg-pty-host",
+        "ptyrecord",
+        "classifier-summary",
+        "post-turn-summary",
+        "notifyMetadataChanged",
+        "iS7",
+        "rS7",
+        "oS7",
+        "aS7",
+        "Jy5",
+        "tengu_classifier_disabled_surfaces",
+        "tengu_classifier_summary_kill",
+        "tengu_cobalt_wren",
+        "llm-summary",
+        "heuristic-summary",
+        "cost-circuit-breaker",
+        "summary-engine-selection",
+        "pro-trial",
+        "pro-trial-conversion",
+        "pro-trial-screen",
+        "tengu_pro_trial_intro_shown",
+        "tengu_pro_trial_intro_choice",
+        "tengu_pro_trial_renew_shown",
+        "tengu_pro_trial_renew_choice",
+        "remote-control-server",
+        "cowork-desktop-bridge",
+        "bridge-channel",
+        "remoteControl-service",
+        "scheduled-service",
+        "assistant-service",
+        "supervisor-pid",
+        "lease-supervisor",
+        "tengu_fleetview_pr_batch",
+        "isAgentsFleetEnabled",
+        "per-agent-pr-state",
+        "mergeStateStatus",
+        "additions-deletions",
+        "checks-passed-failed-pending",
+        "prUrlTemplate",
+        "tengu_bg_session_started",
+        "tengu_bg_session_stopped",
+        "tengu_bg_pty_host_started",
+        "tengu_bg_pty_recording_started",
+        "tengu_daemon_started",
+        "tengu_daemon_worker_spawned",
+        "tengu_daemon_worker_lease_acquired",
+        "tengu_daemon_worker_lease_released",
+        "tengu_daemon_supervisor_heartbeat",
+        "tengu_daemon_lease_recovered",
+        "tengu_autocompact_command",
+        "tengu_autocompact_dialog_opened",
+        "tengu_fleetview_opened",
+        "tengu_fleetview_closed",
+        "tengu_classifier_classification_succeeded",
+        "tengu_classifier_classification_failed",
+        "tengu_cowork_pro_trial_intro_shown",
+        "tengu_cowork_pro_trial_intro_choice",
+        "tengu_amber_redwood3",
+        "tengu_chestnut_owl",
+        "tengu_birch_thrush",
+        "tengu_oak_lapwing",
+        "tengu_pine_marten",
+        "tengu_codename_flag",
+        "Tw8",
+        "Jl_",
+        "gN9",
+        "r3H",
+        "F_8",
+        "vc",
+        "Sz",
+        "n0",
+        "ev6",
+        "Z9",
+        "Ih",
+        "Dq",
+        "isAsync",
+        "v-background",
+        "lFH",
+        "Bash-stripped",
+        "sub-agent-tool-grant-filter",
+        "async-tool-allowlist",
+        "tool-grant-filter",
+        "fork-skill-bash",
+        "fork-skill-loses-bash",
+        "context-fork-cowork",
+        "Write-Edit-survives-filter",
+        "Bash-not-in-Jl_",
+        "TaskStop",
+        "Skill",
+        "general-purpose-wildcard",
+        "tools-asterisk",
+        "wildcard-branch",
+        "validTools",
+        "invalidTools",
+        "unavailableTools",
+        "resolvedTools",
+        "allowedAgentTypes",
+        "tool-name-canonicalization",
+        "task-canonicalizes-to-agent",
+        "rename-map-ev6",
+        "K-false-default",
+        "agent-special-case",
+        "Anthropic-changelog-cross-check",
+        "v2.1.119-changelog",
+        "subagent-mcp-parallel-connect",
+        "settings-persistence-delete",
+        "vim-mode-esc-fix",
+        "plugin-pinning-auto-update",
+        "v2.1.119-added",
+        "official-changelog-corroboration",
+        "dark-launch-corroboration"
+      ]
+    },
+    {
+      "id": 90,
+      "title": "v2.1.120 Daemon On-Demand Model, CLAUDE_CODE_LEAN_PROMPT, Memory-Write Approval UX, Plan-Mode Tripwire, CLAUDE_COWORK_MEMORY_GUIDELINES",
+      "lesson_number": "90",
+      "file": "17-verified-new-v2.1.120.md",
+      "startLine": 1279,
+      "endLine": 2000,
+      "keywords": [
+        "v2.1.120",
+        "v2.1.120-bundle",
+        "BUILD_TIME",
+        "GIT_SHA",
+        "VERSION-literal",
+        "bundle-metadata-embedded",
+        "daemon-on-demand",
+        "daemon-cold-start",
+        "daemon-no-persistent-install",
+        "transient",
+        "ask",
+        "CLAUDE_CODE_DAEMON_COLD_START",
+        "xQH",
+        "service-install-disabled",
+        "daemon-service-not-installed",
+        "daemon-self-restart",
+        "daemon-hot-upgrade",
+        "tengu_daemon_self_restart_on_upgrade",
+        "AUTO_RELAUNCH_UNFOCUSED_MS",
+        "AUTO_RELAUNCH_MIN_INTERVAL_MS",
+        "auto-relaunch-rate-limit",
+        "oz6",
+        "sYK",
+        "1h-rate-gate",
+        "6h-rate-gate",
+        "CLAUDE_CODE_LEAN_PROMPT",
+        "lean-prompt",
+        "lean-system-prompt",
+        "per-section-prompt-shaping",
+        "memory-section-lean",
+        "bash-ripgrep-lean",
+        "tengu_vellum_lantern",
+        "tengu_ochre_finch",
+        "cK8",
+        "memory-section-gate",
+        "Opus-4.7-only",
+        "model-class-check",
+        "lean-vs-simple",
+        "CLAUDE_CODE_SIMPLE-not-LEAN",
+        "CLAUDE_EFFORT",
+        "effort-frontmatter-field",
+        "effort-template-substitution",
+        "effort-token",
+        "_I",
+        "RPH",
+        "JIH",
+        "dc_",
+        "low-medium-high-xhigh",
+        "effort-default-high",
+        "skill-effort-injection",
+        "command-effort-injection",
+        "not-an-env-var",
+        "not-process-env",
+        "diff-tool-string-table-artifact",
+        "extract_envvars-fix",
+        "diff-versions-sh-anchor",
+        "_FORK_SUBAGENTM-artifact",
+        "string-table-adjacency",
+        "JS-context-anchor",
+        "CLAUDE_COWORK_MEMORY_GUIDELINES",
+        "CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES",
+        "CLAUDE_COWORK_MEMORY_PATH_OVERRIDE",
+        "Bf_",
+        "memory-bypass",
+        "memory-pipeline-replace",
+        "memory-pipeline-additive",
+        "extraGuidelines",
+        "tengu_moth_copse",
+        "auto-memory-replacement",
+        "team-memory-bypass",
+        "Cowork-memory-escape-hatch",
+        "tengu_memory_write_survey_event",
+        "memory-write-approval",
+        "memory-write-confirmation",
+        "approve-reject-dialog",
+        "5-second-countdown",
+        "Sonnet-4.6-summary",
+        "120-char-summary",
+        "memory-survey-confirmation",
+        "CLAUDE_CODE_VERIFY_PROMPT",
+        "verify-prompt",
+        "debugging-workflow-discipline",
+        "reproduce-fix-reobserve",
+        "tengu_sparrow_ledger",
+        "verify-prompt-dark-launch",
+        "tengu_plan_mode_violated",
+        "plan-mode-tripwire",
+        "plan-mode-observability",
+        "non-readonly-tool-leak",
+        "no-enforcement-tripwire",
+        "tengu_bg_retired",
+        "idle-worker-reaper",
+        "bg-retired-not-sunset",
+        "no-state-guard",
+        "not-settled-guard",
+        "inflight-guard",
+        "session-cron-guard",
+        "routine-guard",
+        "grace-guard",
+        "do-not-retire-guards",
+        "/schedule-description-simplified",
+        "schedule-template-literal-fix",
+        "no-new-registration",
+        "Bundle-now-embeds-VERSION-literally",
+        "v2.1.120-changelog",
+        "v2.1.120-added",
+        "Cowork-runtime-refinement",
+        "Sub-Agent-Tool-Grant-Filtering-cross-ref",
+        "Cowork-async-dispatch-cross-ref"
       ]
     }
   ],
@@ -2364,7 +2659,7 @@
       12
     ],
     "fork": [
-      54
+      87
     ],
     "async-agent": [
       12
@@ -2383,7 +2678,8 @@
       12
     ],
     "worktree-isolation": [
-      12
+      12,
+      89
     ],
     "send-message": [
       12,
@@ -4705,9 +5001,6 @@
     "stall watchdog hierarchy": [
       85
     ],
-    "fork": [
-      87
-    ],
     "/fork": [
       87
     ],
@@ -4733,10 +5026,12 @@
       87
     ],
     "CLAUDE_BRIDGE_REATTACH_SESSION": [
-      87
+      87,
+      89
     ],
     "CLAUDE_BRIDGE_REATTACH_SEQ": [
-      87
+      87,
+      89
     ],
     "bridge reattach": [
       87
@@ -4766,7 +5061,8 @@
       87
     ],
     "/autocompact": [
-      87
+      87,
+      89
     ],
     "autocompact removed": [
       87
@@ -5163,6 +5459,819 @@
     ],
     "structured output hook": [
       88
+    ],
+    "v2.1.119": [
+      89
+    ],
+    "cowork": [
+      89
+    ],
+    "cowork-runtime": [
+      89
+    ],
+    "claude-cowork": [
+      89
+    ],
+    "/background": [
+      89
+    ],
+    "/bg": [
+      89
+    ],
+    "/stop": [
+      89
+    ],
+    "/daemon": [
+      89
+    ],
+    "autocompact-reintroduced": [
+      89
+    ],
+    "background-session": [
+      89
+    ],
+    "bg-session": [
+      89
+    ],
+    "daemon-tui": [
+      89
+    ],
+    "daemon-supervisor": [
+      89
+    ],
+    "fleet-view": [
+      89
+    ],
+    "claude-agents": [
+      89
+    ],
+    "agents-fleet": [
+      89
+    ],
+    "agents-cli-subcommand": [
+      89
+    ],
+    "claude-respawn": [
+      89
+    ],
+    "kind-fork": [
+      89
+    ],
+    "fork-subagent": [
+      89
+    ],
+    "fork-reuse": [
+      89
+    ],
+    "session-identity": [
+      89
+    ],
+    "session-kind": [
+      89
+    ],
+    "session-id": [
+      89
+    ],
+    "session-name": [
+      89
+    ],
+    "session-log": [
+      89
+    ],
+    "CLAUDE_CODE_SESSION_KIND": [
+      89
+    ],
+    "CLAUDE_CODE_SESSION_ID": [
+      89
+    ],
+    "CLAUDE_CODE_SESSION_NAME": [
+      89
+    ],
+    "CLAUDE_CODE_SESSION_LOG": [
+      89
+    ],
+    "CLAUDE_CODE_AGENT": [
+      89
+    ],
+    "CLAUDE_CODE_IS_COWORK": [
+      89
+    ],
+    "CLAUDE_BG_BACKEND": [
+      89
+    ],
+    "CLAUDE_BG_RENDEZVOUS_SOCK": [
+      89
+    ],
+    "CLAUDE_BG_ISOLATION": [
+      89
+    ],
+    "CLAUDE_BG_BG_INFO": [
+      89
+    ],
+    "CLAUDE_BG_LEASE": [
+      89
+    ],
+    "CLAUDE_PTY_RECORD": [
+      89
+    ],
+    "CLAUDE_AGENTS_AUTO_RELAUNCHED_AT": [
+      89
+    ],
+    "CLAUDE_AGENTS_SELECT": [
+      89
+    ],
+    "CLAUDE_CODE_HIDE_CWD": [
+      89
+    ],
+    "CLAUDE_CODE_FLEET_VIEW": [
+      89
+    ],
+    "bg-context-strip": [
+      89
+    ],
+    "5-var-strip": [
+      89
+    ],
+    "T1H": [
+      89
+    ],
+    "vK": [
+      89
+    ],
+    "uC_": [
+      89
+    ],
+    "bA3": [
+      89
+    ],
+    "runtime-prompt-mutation": [
+      89
+    ],
+    "EnterWorktree-forced": [
+      89
+    ],
+    "pty-recording": [
+      89
+    ],
+    "bg-pty-host": [
+      89
+    ],
+    "ptyrecord": [
+      89
+    ],
+    "classifier-summary": [
+      89
+    ],
+    "post-turn-summary": [
+      89
+    ],
+    "notifyMetadataChanged": [
+      89
+    ],
+    "iS7": [
+      89
+    ],
+    "rS7": [
+      89
+    ],
+    "oS7": [
+      89
+    ],
+    "aS7": [
+      89
+    ],
+    "Jy5": [
+      89
+    ],
+    "tengu_classifier_disabled_surfaces": [
+      89
+    ],
+    "tengu_classifier_summary_kill": [
+      89
+    ],
+    "tengu_cobalt_wren": [
+      89
+    ],
+    "llm-summary": [
+      89
+    ],
+    "heuristic-summary": [
+      89
+    ],
+    "cost-circuit-breaker": [
+      89
+    ],
+    "summary-engine-selection": [
+      89
+    ],
+    "pro-trial": [
+      89
+    ],
+    "pro-trial-conversion": [
+      89
+    ],
+    "pro-trial-screen": [
+      89
+    ],
+    "tengu_pro_trial_intro_shown": [
+      89
+    ],
+    "tengu_pro_trial_intro_choice": [
+      89
+    ],
+    "tengu_pro_trial_renew_shown": [
+      89
+    ],
+    "tengu_pro_trial_renew_choice": [
+      89
+    ],
+    "remote-control-server": [
+      89
+    ],
+    "cowork-desktop-bridge": [
+      89
+    ],
+    "bridge-channel": [
+      89
+    ],
+    "remoteControl-service": [
+      89
+    ],
+    "scheduled-service": [
+      89
+    ],
+    "assistant-service": [
+      89
+    ],
+    "supervisor-pid": [
+      89
+    ],
+    "lease-supervisor": [
+      89
+    ],
+    "tengu_fleetview_pr_batch": [
+      89
+    ],
+    "isAgentsFleetEnabled": [
+      89
+    ],
+    "per-agent-pr-state": [
+      89
+    ],
+    "mergeStateStatus": [
+      89
+    ],
+    "additions-deletions": [
+      89
+    ],
+    "checks-passed-failed-pending": [
+      89
+    ],
+    "prUrlTemplate": [
+      89
+    ],
+    "tengu_bg_session_started": [
+      89
+    ],
+    "tengu_bg_session_stopped": [
+      89
+    ],
+    "tengu_bg_pty_host_started": [
+      89
+    ],
+    "tengu_bg_pty_recording_started": [
+      89
+    ],
+    "tengu_daemon_started": [
+      89
+    ],
+    "tengu_daemon_worker_spawned": [
+      89
+    ],
+    "tengu_daemon_worker_lease_acquired": [
+      89
+    ],
+    "tengu_daemon_worker_lease_released": [
+      89
+    ],
+    "tengu_daemon_supervisor_heartbeat": [
+      89
+    ],
+    "tengu_daemon_lease_recovered": [
+      89
+    ],
+    "tengu_autocompact_command": [
+      89
+    ],
+    "tengu_autocompact_dialog_opened": [
+      89
+    ],
+    "tengu_fleetview_opened": [
+      89
+    ],
+    "tengu_fleetview_closed": [
+      89
+    ],
+    "tengu_classifier_classification_succeeded": [
+      89
+    ],
+    "tengu_classifier_classification_failed": [
+      89
+    ],
+    "tengu_cowork_pro_trial_intro_shown": [
+      89
+    ],
+    "tengu_cowork_pro_trial_intro_choice": [
+      89
+    ],
+    "tengu_amber_redwood3": [
+      89
+    ],
+    "tengu_chestnut_owl": [
+      89
+    ],
+    "tengu_birch_thrush": [
+      89
+    ],
+    "tengu_oak_lapwing": [
+      89
+    ],
+    "tengu_pine_marten": [
+      89
+    ],
+    "tengu_codename_flag": [
+      89
+    ],
+    "Tw8": [
+      89
+    ],
+    "Jl_": [
+      89
+    ],
+    "gN9": [
+      89
+    ],
+    "r3H": [
+      89
+    ],
+    "F_8": [
+      89
+    ],
+    "vc": [
+      89
+    ],
+    "Sz": [
+      89
+    ],
+    "n0": [
+      89
+    ],
+    "ev6": [
+      89
+    ],
+    "Z9": [
+      89
+    ],
+    "Ih": [
+      89
+    ],
+    "Dq": [
+      89
+    ],
+    "isAsync": [
+      89
+    ],
+    "v-background": [
+      89
+    ],
+    "lFH": [
+      89
+    ],
+    "Bash-stripped": [
+      89
+    ],
+    "sub-agent-tool-grant-filter": [
+      89
+    ],
+    "async-tool-allowlist": [
+      89
+    ],
+    "tool-grant-filter": [
+      89
+    ],
+    "fork-skill-bash": [
+      89
+    ],
+    "fork-skill-loses-bash": [
+      89
+    ],
+    "context-fork-cowork": [
+      89
+    ],
+    "Write-Edit-survives-filter": [
+      89
+    ],
+    "Bash-not-in-Jl_": [
+      89
+    ],
+    "TaskStop": [
+      89
+    ],
+    "Skill": [
+      89
+    ],
+    "general-purpose-wildcard": [
+      89
+    ],
+    "tools-asterisk": [
+      89
+    ],
+    "wildcard-branch": [
+      89
+    ],
+    "validTools": [
+      89
+    ],
+    "invalidTools": [
+      89
+    ],
+    "unavailableTools": [
+      89
+    ],
+    "resolvedTools": [
+      89
+    ],
+    "allowedAgentTypes": [
+      89
+    ],
+    "tool-name-canonicalization": [
+      89
+    ],
+    "task-canonicalizes-to-agent": [
+      89
+    ],
+    "rename-map-ev6": [
+      89
+    ],
+    "K-false-default": [
+      89
+    ],
+    "agent-special-case": [
+      89
+    ],
+    "Anthropic-changelog-cross-check": [
+      89
+    ],
+    "v2.1.119-changelog": [
+      89
+    ],
+    "subagent-mcp-parallel-connect": [
+      89
+    ],
+    "settings-persistence-delete": [
+      89
+    ],
+    "vim-mode-esc-fix": [
+      89
+    ],
+    "plugin-pinning-auto-update": [
+      89
+    ],
+    "v2.1.119-added": [
+      89
+    ],
+    "official-changelog-corroboration": [
+      89
+    ],
+    "dark-launch-corroboration": [
+      89
+    ],
+    "v2.1.120": [
+      90
+    ],
+    "v2.1.120-bundle": [
+      90
+    ],
+    "BUILD_TIME": [
+      90
+    ],
+    "GIT_SHA": [
+      90
+    ],
+    "VERSION-literal": [
+      90
+    ],
+    "bundle-metadata-embedded": [
+      90
+    ],
+    "daemon-on-demand": [
+      90
+    ],
+    "daemon-cold-start": [
+      90
+    ],
+    "daemon-no-persistent-install": [
+      90
+    ],
+    "transient": [
+      90
+    ],
+    "ask": [
+      90
+    ],
+    "CLAUDE_CODE_DAEMON_COLD_START": [
+      90
+    ],
+    "xQH": [
+      90
+    ],
+    "service-install-disabled": [
+      90
+    ],
+    "daemon-service-not-installed": [
+      90
+    ],
+    "daemon-self-restart": [
+      90
+    ],
+    "daemon-hot-upgrade": [
+      90
+    ],
+    "tengu_daemon_self_restart_on_upgrade": [
+      90
+    ],
+    "AUTO_RELAUNCH_UNFOCUSED_MS": [
+      90
+    ],
+    "AUTO_RELAUNCH_MIN_INTERVAL_MS": [
+      90
+    ],
+    "auto-relaunch-rate-limit": [
+      90
+    ],
+    "oz6": [
+      90
+    ],
+    "sYK": [
+      90
+    ],
+    "1h-rate-gate": [
+      90
+    ],
+    "6h-rate-gate": [
+      90
+    ],
+    "CLAUDE_CODE_LEAN_PROMPT": [
+      90
+    ],
+    "lean-prompt": [
+      90
+    ],
+    "lean-system-prompt": [
+      90
+    ],
+    "per-section-prompt-shaping": [
+      90
+    ],
+    "memory-section-lean": [
+      90
+    ],
+    "bash-ripgrep-lean": [
+      90
+    ],
+    "tengu_vellum_lantern": [
+      90
+    ],
+    "tengu_ochre_finch": [
+      90
+    ],
+    "cK8": [
+      90
+    ],
+    "memory-section-gate": [
+      90
+    ],
+    "Opus-4.7-only": [
+      90
+    ],
+    "model-class-check": [
+      90
+    ],
+    "lean-vs-simple": [
+      90
+    ],
+    "CLAUDE_CODE_SIMPLE-not-LEAN": [
+      90
+    ],
+    "CLAUDE_EFFORT": [
+      90
+    ],
+    "effort-frontmatter-field": [
+      90
+    ],
+    "effort-template-substitution": [
+      90
+    ],
+    "effort-token": [
+      90
+    ],
+    "_I": [
+      90
+    ],
+    "RPH": [
+      90
+    ],
+    "JIH": [
+      90
+    ],
+    "dc_": [
+      90
+    ],
+    "low-medium-high-xhigh": [
+      90
+    ],
+    "effort-default-high": [
+      90
+    ],
+    "skill-effort-injection": [
+      90
+    ],
+    "command-effort-injection": [
+      90
+    ],
+    "not-an-env-var": [
+      90
+    ],
+    "not-process-env": [
+      90
+    ],
+    "diff-tool-string-table-artifact": [
+      90
+    ],
+    "extract_envvars-fix": [
+      90
+    ],
+    "diff-versions-sh-anchor": [
+      90
+    ],
+    "_FORK_SUBAGENTM-artifact": [
+      90
+    ],
+    "string-table-adjacency": [
+      90
+    ],
+    "JS-context-anchor": [
+      90
+    ],
+    "CLAUDE_COWORK_MEMORY_GUIDELINES": [
+      90
+    ],
+    "CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES": [
+      90
+    ],
+    "CLAUDE_COWORK_MEMORY_PATH_OVERRIDE": [
+      90
+    ],
+    "Bf_": [
+      90
+    ],
+    "memory-bypass": [
+      90
+    ],
+    "memory-pipeline-replace": [
+      90
+    ],
+    "memory-pipeline-additive": [
+      90
+    ],
+    "extraGuidelines": [
+      90
+    ],
+    "tengu_moth_copse": [
+      90
+    ],
+    "auto-memory-replacement": [
+      90
+    ],
+    "team-memory-bypass": [
+      90
+    ],
+    "Cowork-memory-escape-hatch": [
+      90
+    ],
+    "tengu_memory_write_survey_event": [
+      90
+    ],
+    "memory-write-approval": [
+      90
+    ],
+    "memory-write-confirmation": [
+      90
+    ],
+    "approve-reject-dialog": [
+      90
+    ],
+    "5-second-countdown": [
+      90
+    ],
+    "Sonnet-4.6-summary": [
+      90
+    ],
+    "120-char-summary": [
+      90
+    ],
+    "memory-survey-confirmation": [
+      90
+    ],
+    "CLAUDE_CODE_VERIFY_PROMPT": [
+      90
+    ],
+    "verify-prompt": [
+      90
+    ],
+    "debugging-workflow-discipline": [
+      90
+    ],
+    "reproduce-fix-reobserve": [
+      90
+    ],
+    "tengu_sparrow_ledger": [
+      90
+    ],
+    "verify-prompt-dark-launch": [
+      90
+    ],
+    "tengu_plan_mode_violated": [
+      90
+    ],
+    "plan-mode-tripwire": [
+      90
+    ],
+    "plan-mode-observability": [
+      90
+    ],
+    "non-readonly-tool-leak": [
+      90
+    ],
+    "no-enforcement-tripwire": [
+      90
+    ],
+    "tengu_bg_retired": [
+      90
+    ],
+    "idle-worker-reaper": [
+      90
+    ],
+    "bg-retired-not-sunset": [
+      90
+    ],
+    "no-state-guard": [
+      90
+    ],
+    "not-settled-guard": [
+      90
+    ],
+    "inflight-guard": [
+      90
+    ],
+    "session-cron-guard": [
+      90
+    ],
+    "routine-guard": [
+      90
+    ],
+    "grace-guard": [
+      90
+    ],
+    "do-not-retire-guards": [
+      90
+    ],
+    "/schedule-description-simplified": [
+      90
+    ],
+    "schedule-template-literal-fix": [
+      90
+    ],
+    "no-new-registration": [
+      90
+    ],
+    "Bundle-now-embeds-VERSION-literally": [
+      90
+    ],
+    "v2.1.120-changelog": [
+      90
+    ],
+    "v2.1.120-added": [
+      90
+    ],
+    "Cowork-runtime-refinement": [
+      90
+    ],
+    "Sub-Agent-Tool-Grant-Filtering-cross-ref": [
+      90
+    ],
+    "Cowork-async-dispatch-cross-ref": [
+      90
     ]
   }
 }
