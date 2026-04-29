@@ -979,6 +979,216 @@ slipped through:
 
 ---
 
+## Sub-Agent Tool-Grant Filtering: How Cowork-Async Dispatch Silently Strips Bash
+
+> **Status:** Empirically confirmed (probe lands `done`, byte-exact content match). The
+> filter machinery (`Tw8`, `Jl_`, `vc`, etc.) is *pre-existing* — not new in v2.1.119 —
+> but its consequences become user-visible at scale once Cowork's runtime is GA, because
+> Cowork's product surface is the first time most authors ship `context: fork` skills
+> into background-async dispatch in volume.
+
+The user-facing version of this material is in [the Skills/Plugins/Marketplaces
+gist](https://gist.github.com/yaniv-golan/303b6213b7a33167b3f98b076a5f81ad)
+(*"Sub-agent tool-grant filtering"* subsection inside `## Claude Cowork mode`). This
+section documents the source-level trace.
+
+### The mechanism
+
+Three functions on the dispatch path. Bundle symbols (v2.1.120):
+
+```js
+// 1. Async-mode flag derivation. Set per-spawn at sub-agent dispatch.
+isAsync: (O === true || v.background === true) && !lFH
+
+// 2. Base-tool filter. Applied BEFORE user's tools:[] is consulted.
+function Tw8({tools: H, isBuiltIn: _, isAsync: q = false, permissionMode: K}) {
+  return H.filter((O) => {
+    if (yJ(O)) return true;                       // unconditional pass-through
+    if (p4(O, GX) && K === "plan") return true;   // edit-tools in plan mode
+    if (r3H.has(O.name)) return false;            // r3H = drop set (BashOutput, Agent, …)
+    if (!_ && F_8.has(O.name)) return false;      // F_8 = r3H spread, applies to non-builtin
+    if (q && !Jl_.has(O.name)) {                  // ASYNC + name not in allowlist
+      if (V9() && _X()) {                         // experimental-agent-teams fallback
+        if (p4(O, Z9)) return true;               // Z9 = "Agent"
+        if (gN9.has(O.name)) return true;         // gN9 = supplementary allowlist
+      }
+      return false;                               // → DROPPED
+    }
+    return true;
+  });
+}
+
+// 3. User-declared tools[] classifier. Intersects user's list with post-Tw8 base.
+function vc(H, _, q = false, K = false) {
+  // ... (full body in bundle) ...
+  // Returns: { hasWildcard, validTools, invalidTools, unavailableTools, resolvedTools, allowedAgentTypes }
+  // resolvedTools is what reaches the model.
+}
+```
+
+### `Jl_` allowlist contents (resolved symbols)
+
+```
+Bq    "Read"
+dV    "WebSearch"
+_v    "TodoWrite"
+A4    "Grep"
+NY    "WebFetch"
+h1    "Glob"
+L9    "Edit"
+s7    "Write"
+Af    "NotebookEdit"
+Xf    "Skill"
+cN    "TaskStop"
+...gP (spread of an array; not fully resolved in this trace)
+QW, $j, Al_, zl_, JA, FP  (six unresolved symbols)
+```
+
+`Dq = "Bash"` is **not** in `Jl_`. Verified by `grep` over the bundle — `Dq` does not
+appear as a member of the `Jl_` literal. The fallback path (`V9() && _X()`) only re-enables
+`Z9` (Agent) and `gN9` members; `gN9 = new Set([qv, Yr, GR, cV, ZX, IM, Kv, oPH])` —
+also no `Dq`.
+
+### `r3H` / `F_8` drop set
+
+```
+r3H = new Set([xh, GX, Q3H, Z9, ST])
+F_8 = new Set([...r3H])
+```
+
+- `xh` = the `BashOutput` tool
+- `GX` = edit-related (resolves `p4(O, GX)` in the plan-mode bypass)
+- `Q3H` = unresolved
+- `Z9` = `"Agent"`
+- `ST` = unresolved
+
+Applied unconditionally for non-built-in agents (`if (!_ && F_8.has(O.name)) return false`).
+**Bash isn't in `r3H` or `F_8`** — the Bash drop happens via the async path, not the
+plugin-source path.
+
+### Tool-name parse and canonicalization
+
+User-declared tool patterns go through `Sz` → `n0` before reaching `vc`'s lookup:
+
+```js
+function Sz(H) {
+  let _ = GT4(H, "(");
+  if (_ === -1) return { toolName: n0(H) };
+  // ... handles "Bash(gh:*)" form ...
+}
+
+function n0(H) {
+  return Object.hasOwn(ev6, H) ? ev6[H] : H;
+}
+
+ev6 = {
+  Task: Z9,                  // "Agent"
+  KillShell: cN,             // current name
+  AgentOutputTool: xh,       // BashOutput
+  BashOutputTool: xh,        // BashOutput
+  ...X8q ? { Brief: X8q.BRIEF_TOOL_NAME } : {}
+};
+```
+
+So `"Task"` in a user's `tools:` array is canonicalized to `"Agent"` at parse. In `vc`'s
+classifier, the Agent special-case is:
+
+```js
+if (N === Z9) {                         // canonicalized name === "Agent"
+  if (h) L = h.split(",").map(...);     // capture allowedAgentTypes from "Agent(general-purpose,Explore)"
+  if (!K) { P.push(v); continue }       // K=false (default) → push to validTools, skip resolvedTools
+}
+```
+
+With default `K = false`, declaring `"Task"` (or `"Agent"`) in the array marks it
+syntactically valid but **never adds the Agent tool to `resolvedTools`** — and never
+strips other tools. It's a no-op for filtering purposes. Declaring `"Task"` does not
+"poison" the list, contrary to a tempting pattern-match.
+
+### Why `general-purpose` works in Cowork-async but plugin fork-skills don't
+
+`general-purpose` registration in the bundle:
+
+```js
+{
+  agentType: "general-purpose",
+  whenToUse: "...",
+  tools: ["*"],                        // ← wildcard form
+  source: "built-in",
+  baseDir: "built-in",
+  getSystemPrompt: aB1
+}
+```
+
+The wildcard form (`["*"]` *or* `undefined`) takes the early-return branch in `vc`:
+
+```js
+if (O === void 0 || (O.length === 1 && O[0] === "*"))
+  return { hasWildcard: true, ..., resolvedTools: D };
+```
+
+`D` is the post-`Tw8` base set. So `general-purpose` inherits `Read`, `Write`, `Edit`,
+`Glob`, `Grep`, `WebSearch`, `WebFetch`, etc. — everything the async filter allows.
+A plugin fork-skill that declares e.g. `tools: ["Read", "Bash", "Glob", "Grep"]` gets
+the *intersection* of that list with `D` — which is `{Read, Glob, Grep}`. Read-only.
+
+### Empirical confirmation
+
+Probe (one sub-agent, one tight write-a-file contract, in a Cowork session):
+
+| Variant | Declared `tools:` | Result |
+|---------|-------------------|--------|
+| Plugin fork-skill, before fix | `["Read", "Bash", "Task", "Glob", "Grep"]` | `fail`, no file |
+| Same skill, after adding `Write`/`Edit` | `[..., "Bash", "Task", ..., "Write", "Edit"]` | `done`, file present, byte-exact match |
+| `general-purpose` (control) | `["*"]` (built-in default) | `done`, file present (used `Write`, not Bash) |
+
+The "before" → "after" delta is `Write` and `Edit` declarations — keeping `Bash` and
+`Task` unchanged. Both had been hypothesized as candidates for the strip (`Bash` because
+Cowork might be permission-tightening; `Task` because it was the only declaration absent
+from a known-working plugin agent's frontmatter). Neither hypothesis matched the source
+trace. The fix that worked is the one the source predicted.
+
+### Implications
+
+- **Authors of `context: fork` skills must declare `Write` and/or `Edit` in `tools:`** if
+  they want artifact persistence in Cowork. Bash is dead in this dispatch context.
+- **Shell-bound work belongs in the top Cowork session**, not a forked sub-agent. The top
+  session is the main loop, not a `Tw8`-filtered subagent dispatch — it isn't filtered
+  through `Jl_`. Or expose the work as MCP tools.
+- **The "missing tool" surfaces silently to the model.** `unavailableTools` and
+  `invalidTools` are internal classifier buckets; only `resolvedTools` reaches the
+  model's tool listing. From inside the sub-agent, a filtered-out tool is
+  indistinguishable from one that was never declared.
+- **Skill telemetry doesn't surface this either.** Tool-use count > 0 in parent telemetry
+  reflects whatever tools the sub-agent *did* call (Read, Glob) — not the gap between
+  declared and resolved.
+
+### Cross-references
+
+- **L11** (Skills, ch1) — frontmatter `tools:` field, `context: fork` semantics
+- **L87** (`/fork` subagent + reattach plumbing) — fork dispatch is what becomes
+  Cowork's async path. The filtering described here applies to *every* `kind:"fork"`
+  spawn in a background context, not just Cowork-product use cases.
+- **L37** (Bridge / Remote Control) — the transport layer that defines what "background"
+  means in the first place
+- **L88** (settings persistence) — settings layer where `policySettings.disabledTools`
+  could (in principle) provide an alternative gate; not connected to this filter today
+
+### Status of the symbol resolutions
+
+Resolved (verified `var X = "Foo"`):
+`Bq=Read, dV=WebSearch, _v=TodoWrite, A4=Grep, NY=WebFetch, h1=Glob, L9=Edit, s7=Write, Af=NotebookEdit, Xf=Skill, cN=TaskStop, Dq=Bash, Z9=Agent, Ih=Task, xh=BashOutput`.
+
+Unresolved at trace time:
+`gP` (spread, contents not enumerated), `QW`, `$j`, `Al_`, `zl_`, `JA`, `FP`, `Q3H`, `ST`,
+`gN9`'s members (`qv, Yr, GR, cV, ZX, IM, Kv, oPH`).
+
+If a future trace resolves any of these to "Bash" the conclusion changes — but the empirical
+probe result rules out Bash being secretly allowlisted under a different symbol. The probe
+is the binding evidence; the symbol trace is the explanation.
+
+---
+
 ## Risks Worth Flagging
 
 1. **The bg-context env vars are stripped from subprocess env.** If you write a hook that
@@ -995,6 +1205,12 @@ slipped through:
    pinch point rather than a slow per-PR drip. Toggle via `tengu_fleetview_pr_batch`.
 5. **`/daemon` is a TUI; persistent install is *not* shipped in v2.1.119** (see L90 — this
    becomes explicit with `xQH()`'s kill-switch and the `transient`/`ask` cold-start model).
+6. **`context: fork` skills silently lose Bash in Cowork.** The async sub-agent dispatch
+   path applies a base-tool filter (`Tw8`) that enforces an allowlist (`Jl_`) before the
+   user's `tools:` declaration is consulted. `Bash` (`Dq`) is not in the allowlist; `Write`
+   and `Edit` are. A skill that ships Bash-based persistence works locally but produces
+   read-only sub-agents in Cowork. Authors should declare `Write` / `Edit` and move
+   shell work to the top session. See [Sub-Agent Tool-Grant Filtering](#sub-agent-tool-grant-filtering-how-cowork-async-dispatch-silently-strips-bash) above for the full trace.
 
 ---
 
