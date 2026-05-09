@@ -1206,6 +1206,96 @@ described this filter's mechanism — `Tw8`/`Jl_`/`vc`/`r3H`/`F_8`/`Sz`/`n0`/`ev
 just looked at the wrong layer for the Bash question. Skip ahead to
 [Implications](#implications--updated-v21113-revised-2026-05-10) for the actionable
 guidance; what follows is debugging archaeology of the wrong layer.
+
+### Plugin hooks don't fire in Cowork sessions
+
+A separate Cowork behavior worth documenting alongside the tool-architecture story,
+because it surprises plugin authors the same way: **plugin hooks declared in
+`hooks/hooks.json` never fire in Cowork sessions.** Plugin skills, slash commands,
+and MCP servers DO load (Cowork passes per-plugin `--plugin-dir` args), but the hook
+lifecycle is dead from the plugin's perspective. Hooks declared in
+`~/.claude/settings.json` (user scope) DO fire — the discriminator is *scope*, not
+*event type* or *plugin presence*.
+
+#### Mechanism
+
+The desktop spawns the in-VM CLI with `--setting-sources=user`. Verified empirically
+in `~/Library/Logs/Claude/cowork_vm_node.log`:
+
+```
+[Spawn:create] id=<uuid> name=<session-name> cmd=/usr/local/bin/claude args=
+  --output-format stream-json --verbose --input-format stream-json
+  --max-thinking-tokens 31999 --effort medium --model claude-opus-4-6
+  ...
+  --setting-sources=user                                         ← THIS
+  --permission-mode default --allow-dangerously-skip-permissions
+  ...
+  --plugin-dir /sessions/<id>/mnt/.local-plugins/cache/<mp>/<plugin>/<version>
+  --plugin-dir /sessions/<id>/mnt/.local-plugins/cache/<mp2>/<plugin2>/<version>
+  ...
+```
+
+`--setting-sources=user` restricts the CLI's settings resolution to user scope —
+i.e., `~/.claude/settings.json`. Plugin-scoped hooks live in *plugin* scope (as
+loaded from each plugin's `hooks/hooks.json`), so they're silently excluded from
+hook discovery. The plugin's other artifacts (skills, commands, MCP servers) still
+load because they come through the per-plugin `--plugin-dir` args, not through
+settings-source resolution.
+
+Empirical confirmation: across 8 MB of recent `cowork_vm_node.log` and 2 MB of
+`coworkd.log` activity, **zero "hook" log lines for any Cowork session**. CCD-mode
+sessions (session IDs of pattern `local_<uuid>` rather than the
+`<adj>-<adj>-<word>` Cowork pattern) on the same host show `[Stop hook] Query
+completed` log entries — same desktop process, same Stop-hook code path, fires for
+CCD, doesn't fire for Cowork.
+
+#### Upstream tracking
+
+- [#16288 — Plugin hooks not loaded from external hooks.json file](https://github.com/anthropics/claude-code/issues/16288):
+  the general CLI bug. Per binary analysis pasted into the thread, most hook
+  dispatchers in the CLI (e.g. `runAgent` for `SubagentStart/Stop`, the `Stop` hook
+  path) call hook execution without first `await`-ing `loadPluginHooks()`. Plugin
+  hooks load fire-and-forget at startup. If the load promise hasn't resolved when
+  the dispatcher runs, plugin hooks are invisible. Only `processSessionStartHooks`
+  has the await guard. Affects CCD too (intermittently, per race timing).
+- [#27398 — Cowork: Plugin hooks from hooks/hooks.json never fire — `--setting-sources user` excludes plugin scope](https://github.com/anthropics/claude-code/issues/27398):
+  the Cowork-specific exclusion via the launch flag. Closed as duplicate of #16288.
+  Worth knowing: even when #16288's race is fixed, Cowork plugin hooks won't fire
+  because the flag excludes them at scope-resolution time, separate from the race.
+
+Two distinct bugs that interact. CCD hits (#16288) intermittently. Cowork hits both —
+even fixing the race wouldn't help Cowork until the launch flag is changed too.
+
+#### Reported impact (from issue thread)
+
+- `Stop` and `SubagentStop` hooks for telemetry/cleanup never fire in Cowork. Plugin
+  authors who built these for session-summary or cleanup behavior have silently-
+  broken plugins in Cowork.
+- `PostToolUse` matchers on `Skill` (e.g., for org-level adoption tracking via Azure
+  App Insights) silently no-op in Cowork. Confirmed across multiple users in
+  #16288's comment thread.
+- `UserPromptSubmit` works in some configurations and not others — depends on
+  whether the race condition (#16288) bites or the scope exclusion (#27398) bites
+  for that event.
+
+#### Workaround
+
+Move hooks from the plugin's `hooks/hooks.json` to `~/.claude/settings.json` (user
+scope). The CLI loads them in both Cowork and CCD; the `--setting-sources=user`
+flag includes them by definition. This breaks the plugin-author UX (you can't ship
+"install this plugin and hooks just work" — users have to manually add hook
+declarations), but it's the only path that fires hooks in Cowork today.
+
+#### Implication for our `userconfig-probe` plugin
+
+The `userconfig-probe` plugin we set up earlier in this conversation declares its
+SessionStart hook in `hooks/hooks.json`. Per the mechanism above, that hook will
+not fire in Cowork — it's plugin-scope, excluded by `--setting-sources=user`. The
+plugin install works; the hook lifecycle doesn't. To validate the userConfig
+env-var injection mechanism end-to-end: either move the probe hook to
+`~/.claude/settings.json` (user scope), wait for upstream fix, or test via CCD
+instead of Cowork.
+
 ### Original v2.11.3 trace (preserved for archaeology)
 
 What follows is the original v2.11.3 source-level trace of the CLI's async sub-agent
@@ -1671,6 +1761,21 @@ empirical probe was correct; the symbol trace looked at the wrong file.
    but schema-loaded only when `ToolSearch` is called. Tools missing from the immediate
    list may still be callable. The original v2.11.3 probe missed this and concluded
    shell was unreachable from sub-agents — it isn't, just deferred.
+
+9. **Plugin hooks declared in a plugin's `hooks/hooks.json` don't fire in Cowork
+   sessions.** Mechanism: the desktop launches the in-VM CLI with
+   `--setting-sources=user`, which restricts settings resolution to user scope —
+   plugin-scoped hooks are silently excluded. Plugin skills, slash commands, and MCP
+   servers DO still load (via `--plugin-dir` args). Workaround: move hooks to
+   `~/.claude/settings.json` (user scope). Tracked upstream as
+   [#16288](https://github.com/anthropics/claude-code/issues/16288) (general CLI race)
+   and [#27398](https://github.com/anthropics/claude-code/issues/27398)
+   (Cowork-specific scope exclusion, closed as duplicate). Plugin authors shipping
+   `Stop`/`SubagentStop`/`UserPromptSubmit`/`PostToolUse` hooks for telemetry,
+   cleanup, or learning capture have silently-broken plugins in Cowork until the
+   upstream fix lands. See the
+   ["Plugin hooks don't fire in Cowork sessions"](#plugin-hooks-dont-fire-in-cowork-sessions)
+   subsection above.
 
 ---
 
