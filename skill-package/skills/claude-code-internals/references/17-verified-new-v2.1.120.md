@@ -979,31 +979,241 @@ slipped through:
 
 ---
 
-## Sub-Agent Tool-Grant Filtering: How Cowork-Async Dispatch Silently Strips Bash
+## Cowork's Tool Architecture: Why `Bash` Isn't Where You Expect It (And Where It Is)
 
-> **Status:** Empirically confirmed (probe lands `done`, byte-exact content match) for the
-> runtime-tool-availability mechanism. The filter machinery (`Tw8`, `Jl_`, `vc`, etc.) is
-> *pre-existing* — not new in v2.1.119 — but its consequences become user-visible at scale
-> once Cowork's runtime is GA, because Cowork's product surface is the first time most
-> authors ship `context: fork` skills into background-async dispatch in volume.
->
-> **Scope clarification:** This filter operates on the **forked sub-agent's runtime tool
-> set** (what the agent can call after dispatch). It is distinct from **body-time shell
-> substitution** (`` !`cmd` `` blocks), which is processed by the prompt expander **before**
-> fork dispatch and is governed by the Cowork shell-substitution kill switch
-> (`CLAUDE_CODE_IS_COWORK` participates in the policy logic). A skill body that relies on
-> `` !`cmd` `` substitutions in Cowork will see those substitutions replaced with
-> `[shell command execution disabled by policy]` (or similar policy-marker text) at
-> expansion time — that is **not** the same as the Bash-tool-absent failure described here.
-> Earlier drafts of this section (and of the gist) conflated the two; both have been
-> corrected. The `Tw8`/`Jl_` filter is what causes a forked agent to find the `Bash` tool
-> *absent at runtime when it tries to call it post-dispatch*.
+> **History — corrected three times.** Originally added v2.11.3 with a wrong mechanism
+> (claimed the CLI's async filter strips Bash; binary shows Bash IS in that allowlist).
+> Corrected v2.11.13 (2026-05-09) but kept sub-agent-specific framing. Corrected
+> v2.11.14 (2026-05-10) widening the scope to Cowork-wide. Corrected v2.11.15
+> (2026-05-10) leading with the clean framing instead of incrementally fixing the
+> original. The empirical claim ("Cowork sub-agents declared with narrow `tools:` lists
+> that include `Bash` find it unavailable") was always correct; the mechanism
+> explanations and scope framings shipped between v2.11.3 and v2.11.14 were wrong in
+> ways that masked the actual simple story.
 
-The user-facing version of this material is in [the Skills/Plugins/Marketplaces
-gist](https://gist.github.com/yaniv-golan/303b6213b7a33167b3f98b076a5f81ad)
-(*"Sub-agent tool-grant filtering"* subsection inside `## Claude Cowork mode`,
-plus the *"Cowork caveat"* under shipping scripts which now distinguishes the two
-mechanisms). This section documents the source-level trace for the runtime filter.
+### The simple story
+
+**Cowork has no built-in `Bash` tool. At any dispatch level. Period.**
+
+The shell path in Cowork is `mcp__workspace__bash` — an MCP tool registered by the
+desktop's `workspace` MCP server, which runs commands inside the workspace VM. It's
+in the **deferred tool tier**: name visible in the registry, schema loaded on demand
+via `ToolSearch`, callable after that. Same on macOS, Windows, Linux; same at
+top-level main session, async forked sub-agent, sync Task-tool sub-agent. The literal
+name `Bash` doesn't refer to a registered tool *anywhere* in Cowork.
+
+The reason `SKILL.md` files routinely say "run X via bash" without ever declaring
+`allowed-tools: Bash` and have it work, is that the main-thread model has both
+`ToolSearch` (immediate tier) and `mcp__workspace__bash` (deferred tier) in its
+registered set. When the model reads "run X via bash," it calls `ToolSearch` to load
+the bash tool's schema, then invokes `mcp__workspace__bash` with the command. From
+the skill author's perspective, "Bash works in Cowork." From the binary's
+perspective, no tool named `Bash` was ever called.
+
+The reason a sub-agent with a *narrow* `tools:` declaration like
+`["Read", "Bash", "Task", "Glob", "Grep"]` *can't* do shell isn't the async filter:
+the literal name `Bash` doesn't resolve, `Task` is canonicalized to `Agent` (which is
+in the sub-agent drop set under default settings), and `mcp__workspace__bash` isn't
+declared. The agent ends up with `{Read, Glob, Grep}` — read-only.
+
+This is exactly what the [founder-skills v0.3.0 incident](#what-the-founder-skills-v030-incident-actually-was)
+was. The fix the team chose (adding `Write`/`Edit`) gave the agent persistence; an
+alternative fix would have been adding `mcp__workspace__bash` + `ToolSearch`, with
+the operational caveats discussed below.
+
+### Mechanism: desktop-side host-loop registration excludes the names
+
+The exclusion happens in the desktop bundle (`Claude.app/Contents/Resources/app.asar`
+→ `.vite/build/index.js`), not the CLI bundle. When the desktop spawns a Cowork
+session, it runs the registered built-in tools through a host-loop-safe set. Five
+names are excluded: `Bash`, `NotebookEdit`, `REPL`, `JavaScript`, `WebFetch`. Each
+gets an MCP replacement registered separately by the workspace MCP server:
+
+- `Bash` → `mcp__workspace__bash` (Linux aarch64 Ubuntu shell inside the workspace VM)
+- `WebFetch` → `mcp__workspace__web_fetch`
+
+The exclusion is **Cowork-mode only**. CCD mode (host CLI invoked without `--cowork`,
+no microVM) registers all five normally — host bash is callable as `Bash` in CCD.
+
+The CLI does have its own async sub-agent allowlist filter (`Tw8`/`LW8`), and it runs,
+and `Bash` is in its allowlist (via the spread member `[Bash, PowerShell]`). But
+that's irrelevant for the Bash question in Cowork because the desktop's exclusion
+already removed Bash from the input pool. The CLI filter is downstream — it does
+enforce real differential restrictions on async sub-agents (drops `AskUserQuestion`,
+`Agent`, plan-mode tools, etc.), but those are unrelated to Bash.
+
+### Cowork's tool tiers
+
+Cowork's tool availability has two tiers. Both top-level and sub-agent see the same
+two-tier shape; they differ only by the `Agent` tool (top-level has it; sub-agents
+don't, because of the CLI's drop set).
+
+- **Immediate tier** — schemas pre-loaded, callable directly. Small set of ~10 names:
+  `Edit, Glob, Grep, Read, Skill, ToolSearch, Write, Agent` (top-level only) plus a
+  small visualize-MCP set.
+- **Deferred tier** — name visible in the registry, schema loaded on demand via
+  `ToolSearch`. Calling a deferred tool directly fails with `InputValidationError`
+  until ToolSearch loads its schema.
+
+**Most of the toolset is deferred**, not just shell. `WebSearch`, `AskUserQuestion`,
+all `mcp__cowork__*`, all `mcp__workspace__*` (including `mcp__workspace__bash`), all
+`mcp__skills__*`, all `mcp__plugins__*`, all `mcp__scheduled-tasks__*`, plus all
+connector-server tools (Slack, Notion, Calendar, Gmail, Canva, Airtable, etc.) — all
+deferred.
+
+This tiering is the Cowork architectural choice that makes the user-perceived "Bash
+works" experience possible. The model has `ToolSearch` immediate, the deferred tier
+visible by name, and the inference to load+call the right deferred tool when a user
+or skill says "run X via bash." Skill authors don't need to know which specific MCP
+tool runs commands — the model figures it out — as long as they're in a context
+where the deferred tools are accessible.
+
+### Why `SKILL.md` works without `allowed-tools`
+
+A SKILL.md running in the main thread has the full Cowork tool registry available:
+immediate + deferred. When the skill body says "run the script via bash" (or shows
+`python3 scripts/foo.py`), the model:
+
+1. Recognizes the request needs shell.
+2. Calls `ToolSearch` (immediate tier) to find a bash-capable tool.
+3. ToolSearch returns the schema for `mcp__workspace__bash` (deferred → now loaded).
+4. Model invokes `mcp__workspace__bash` with the command.
+
+No `allowed-tools` declaration was needed because the registered tool set is the full
+Cowork set; the only constraint `allowed-tools` controls is *permission*, not
+*availability*. The skill author writes shell-using prose; the model handles the
+actual call.
+
+### Why a narrow-`tools:` sub-agent doesn't get the same behavior
+
+A sub-agent dispatched by `SKILL.md` gets a tool set built from its own `tools:`
+frontmatter intersected with the inherited Cowork tool set. The behavior depends
+sharply on what the agent declared:
+
+- **Wildcard `tools: ["*"]`**: the sub-agent inherits the full filtered base set,
+  including `mcp__workspace__bash` (deferred) and `ToolSearch` (immediate). It can
+  use shell with the same "ToolSearch then call" pattern the main thread uses.
+- **Narrow declaration omitting shell-relevant names**: e.g.
+  `tools: ["Read", "Bash", "Task", "Glob", "Grep"]`. The intersection with registered
+  tool names is:
+  - `Read`, `Glob`, `Grep` → registered → kept
+  - `Bash` → not a registered tool name in Cowork → no-op (drops to `invalidTools`)
+  - `Task` → canonicalized to `Agent` at parse → in the sub-agent drop set → no-op
+  - Result: `{Read, Glob, Grep}`. Read-only. No shell. No persistence.
+
+The narrow-declaration case is the founder-skills v0.3.0 case. It's **not** that the
+filter "stripped Bash" — there was no registered Bash to strip. It's that the
+declaration named tools that don't exist in Cowork, plus omitted the tools that
+*could* have given the agent shell (`mcp__workspace__bash` and `ToolSearch`).
+
+### What the founder-skills v0.3.0 incident actually was
+
+The founder-skills team's [2026-04-29 investigation](https://github.com/yaniv-golan/lool-ventures-founder-skills/blob/main/docs/internal/2026-04-29-cowork-subagent-investigation.md)
+(in the project's internal docs) documented a Cowork run where five sub-agents
+silently produced prose narration instead of artifact files. The diagnostic stages
+were sound; the empirical findings (sub-agents reporting `tool_uses: 0`, fabricating
+shell transcripts in their narrative replies, resolving to `{Read, Glob, Grep}`)
+were correct. The root-cause attribution was wrong:
+
+- **Stated cause**: "Cowork's async sub-agent dispatch filters Bash out of every
+  sub-agent's toolset, regardless of what the agent's `tools:` frontmatter declares."
+- **Actual cause**: The sub-agent's `tools:` declaration named `Bash` and `Task`,
+  neither of which is a registered tool name in Cowork. Both no-op'd. The
+  declaration's intersection with the registered set yielded `{Read, Glob, Grep}`.
+
+The team's fix (v0.3.1: add `Write`/`Edit` to the agent declarations) was correct
+for their use case — the agents needed to persist data files, and `Write`/`Edit` are
+real registered names that work without VM dependency. But this fix doesn't give
+agents shell. For their full pipeline (producer scripts, compose, validation),
+shell-bound work had to live somewhere — and the team's v0.4.1 architecture
+correctly chose the main thread for that.
+
+The team's v0.4.1 architecture ("SKILL.md runs in main thread; sub-agents do
+analytical work via Read/Edit/Glob/Grep only") is **right architecture**, even
+though the rationale documented in their `cowork-architecture-and-v0.4.x-learning.md`
+("Cowork sub-agents can't run Bash because of the filter") is partially wrong. The
+right rationale: narrow sub-agent tool declarations that omit
+`mcp__workspace__bash` + `ToolSearch` have no shell path in Cowork; main-thread
+orchestration is simpler than declaring those + the ToolSearch dance + the
+operational baggage of `mcp__workspace__bash` (VM dependency, no cwd carryover,
+mount-path translation, `outputs/` boundary, `pip --break-system-packages`,
+Linux-only shell idioms).
+
+### `mcp__workspace__bash` operational contract
+
+Skills targeting Cowork that DO use shell from a sub-agent need to know
+`mcp__workspace__bash` is **not equivalent to host `Bash`**. From an actual probe of
+a v2.1.121-bundled Cowork session:
+
+- **Sandbox is a Linux microVM, not the user's Mac.** aarch64 Ubuntu container at
+  `/sessions/<sessionId>/`. Even on macOS or Windows, the bash inside is Linux bash
+  with a Linux PATH. On Windows the VM is served by `CoworkVMService` (Hyper-V); on
+  macOS by Apple Hypervisor with `smol-bin.{x64,arm64}.img`.
+- **Each call is independent — no cwd or env carryover between calls.** Multi-step
+  pipelines must chain (`&&`, `;`, `|`) into a single command, or use absolute paths
+  in every step. A skill that does `cd foo` in one call and expects the next call's
+  cwd to be `foo/` is broken in Cowork.
+- **Skill files mount under `/sessions/<id>/mnt/`, not at host paths.** A SKILL.md
+  saying `python3 scripts/foo.py` doesn't work as written — `scripts/foo.py` is a
+  host-relative path that doesn't exist in the VM. The skill needs to either
+  `cd /sessions/<id>/mnt/.claude/skills/<skill>/` first (chained into the same
+  `mcp__workspace__bash` call as the python invocation) or use the absolute mount
+  path: `python3 /sessions/<id>/mnt/.claude/skills/<skill>/scripts/foo.py`.
+  Hard-coded host paths (`/Users/yaniv/...`) fail in the VM.
+- **Persistence boundary: only `/sessions/<id>/mnt/outputs/` survives session end.**
+  Maps to the host's `~/Library/Application Support/.../outputs/` directory and is
+  what the user can see via the Cowork desktop UI. Files written elsewhere in the
+  sandbox (`/tmp/`, `~`, scratch dirs) vanish at session end and are invisible to
+  the user during the session.
+- **Sandbox tooling.** Python 3, Node.js, standard CLI tools (git, curl, jq, etc.),
+  and allowlisted network egress are preinstalled. The exact allowlist depends on
+  the Cowork user's network-egress setting in `Settings → Capabilities → Allow
+  network egress`. `pip install` requires `--break-system-packages` (PEP 668).
+- **Out of scope: native-Mac driving.** Skills opening native macOS apps,
+  controlling the desktop, driving Adobe apps, or reading host paths outside the
+  mounts go through *different* MCP servers, not through `mcp__workspace__bash`.
+- **VM dependency.** When the platform VM service fails to start,
+  `mcp__workspace__bash` dies with `Workspace unavailable. The isolated Linux
+  environment failed to start.` File-op tools (`Read`, `Write`, `Edit`, `Glob`,
+  `Grep`) keep working because they don't depend on the VM. See
+  [GH#56772](https://github.com/anthropics/claude-code/issues/56772) for the
+  Windows-specific autostart failure.
+
+For skill authors moving a working CCD skill into Cowork, the most common breakages
+are: (1) relative-path script invocations breaking under VM mount paths;
+(2) `cd`-then-do-stuff patterns broken by the no-cwd-carryover rule; (3) artifacts
+written outside `outputs/` invisible to the user; (4) `pip install` failing without
+`--break-system-packages`; (5) host-path references (e.g. `/Users/...`) failing
+because they don't exist in the VM.
+
+### What the CLI's async sub-agent filter actually does (for completeness)
+
+The CLI has a filter that runs at sub-agent dispatch time. It IS the gate for several
+real restrictions on async sub-agents — distinct from Layer 1's Cowork-wide name
+exclusion, but worth knowing because it explains other absences:
+
+- `AskUserQuestion` — dropped from forked sub-agents. Top session keeps it.
+- `Agent` — dropped from forked sub-agents (no nested dispatch).
+- `ExitPlanMode`, `EnterPlanMode`, `TaskOutput`, `WaitForMcpServers` — also dropped.
+
+These are CLI-side and DO take effect at the async-dispatch boundary. They're real,
+they affect behavior, and they explain why a sub-agent can't ask the user questions
+or dispatch nested sub-agents. They just don't explain Bash unavailability — Bash
+was never registered in Cowork to be in this filter's input.
+
+The original v2.11.3 source-level trace (preserved as archaeology below) accurately
+described this filter's mechanism — `Tw8`/`Jl_`/`vc`/`r3H`/`F_8`/`Sz`/`n0`/`ev6`. It
+just looked at the wrong layer for the Bash question. Skip ahead to
+[Implications](#implications--updated-v21113-revised-2026-05-10) for the actionable
+guidance; what follows is debugging archaeology of the wrong layer.
+### Original v2.11.3 trace (preserved for archaeology)
+
+What follows is the original v2.11.3 source-level trace of the CLI's async sub-agent
+filter (`Tw8`/`Jl_`/`vc`/`r3H`/`F_8`/`Sz`/`n0`/`ev6`). The trace is correct as a
+description of *that filter*, but the filter is not the gate that explains "Bash
+unavailable in Cowork." See [Cowork-wide tool architecture](#cowork-wide-tool-architecture)
+above for the actual mechanism. The user-facing version of this material is in [the
+Skills/Plugins/Marketplaces gist](https://gist.github.com/yaniv-golan/303b6213b7a33167b3f98b076a5f81ad).
 
 ### The mechanism
 
@@ -1039,7 +1249,7 @@ function vc(H, _, q = false, K = false) {
 }
 ```
 
-### `Jl_` allowlist contents (resolved symbols)
+### `Jl_` allowlist contents — CORRECTED v2.11.13
 
 ```
 Bq    "Read"
@@ -1053,14 +1263,34 @@ s7    "Write"
 Af    "NotebookEdit"
 Xf    "Skill"
 cN    "TaskStop"
-...gP (spread of an array; not fully resolved in this trace)
-QW, $j, Al_, zl_, JA, FP  (six unresolved symbols)
+...gP   (SPREAD — was unresolved at original trace time; v2.11.13 resolved it)
+        gP = VW = [wq, D9] = ["Bash", "PowerShell"]
+QW, $j, Al_, zl_, JA, FP   (other resolved members in v2.1.138 / v2.1.119:
+                            "StructuredOutput", "ToolSearch", "EnterWorktree",
+                            "ExitWorktree", "REPL", "Monitor")
 ```
 
-`Dq = "Bash"` is **not** in `Jl_`. Verified by `grep` over the bundle — `Dq` does not
-appear as a member of the `Jl_` literal. The fallback path (`V9() && _X()`) only re-enables
-`Z9` (Agent) and `gN9` members; `gN9 = new Set([qv, Yr, GR, cV, ZX, IM, Kv, oPH])` —
-also no `Dq`.
+**v2.11.3 said:** `Dq = "Bash"` is not in `Jl_`. **v2.11.13 correction:** `Dq` was the
+wrong symbol to grep for — Bash's symbol was `wq` (v2.1.119) and `Vq` (v2.1.138). Bash
+IS in `Jl_` (v2.1.119) and `Ys_` (v2.1.138), via the `...VW` / `...$2` spread member.
+Cross-version verification:
+
+```
+v2.1.119: VW = [wq, D9];   wq = "Bash";   D9 = "PowerShell";
+          jQ_ = new Set([..., ...VW, ...]);    // spreads Bash, PowerShell
+
+v2.1.138: $2 = [Vq, h9];   Vq = "Bash";   h9 = "PowerShell";
+          Ys_ = new Set([..., ...$2, ...]);    // spreads Bash, PowerShell
+```
+
+The fallback path `(V9() && _X())` (v2.1.119) / `(r9() && PW())` (v2.1.138) is the
+experimental-agent-teams gate — re-enables `Agent` plus a supplementary set
+`gN9`/`Up9 = {TaskCreate, TaskGet, TaskList, TaskUpdate, SendMessage, CronCreate,
+CronDelete, CronList}`. Also not relevant to Bash availability.
+
+The async-allowlist filter is **not** what removes Bash from Cowork sub-agents. See the
+[Two-layer gate](#two-layer-gate-host-loop-substitution-then-async-allowlist) section
+above.
 
 ### `r3H` / `F_8` drop set
 
@@ -1161,17 +1391,58 @@ Cowork might be permission-tightening; `Task` because it was the only declaratio
 from a known-working plugin agent's frontmatter). Neither hypothesis matched the source
 trace. The fix that worked is the one the source predicted.
 
-### Implications
+### Implications — UPDATED v2.11.13 (revised 2026-05-10)
 
-- **Authors of `context: fork` skills must declare `Write` and/or `Edit` in `tools:`** if
-  they want artifact persistence in Cowork. Bash is dead in this dispatch context.
-- **Shell-bound work belongs in the top Cowork session**, not a forked sub-agent. The top
-  session is the main loop, not a `Tw8`-filtered subagent dispatch — it isn't filtered
-  through `Jl_`. Or expose the work as MCP tools.
-- **The "missing tool" surfaces silently to the model.** `unavailableTools` and
-  `invalidTools` are internal classifier buckets; only `resolvedTools` reaches the
-  model's tool listing. From inside the sub-agent, a filtered-out tool is
-  indistinguishable from one that was never declared.
+For skill authors targeting Cowork (top-level main session AND forked sub-agents alike):
+
+- **Declaring `tools: [..., "Bash", ...]` is a no-op in Cowork.** The literal name
+  `Bash` doesn't refer to a registered tool in any Cowork dispatch level. Declarations
+  fall into `invalidTools` silently. This is true at top-level too — the asymmetry
+  prior versions of this lesson implied (top-level has Bash, sub-agent doesn't) does
+  not exist. Cowork main sessions also lack built-in `Bash`; they just hide it well
+  because the model knows to use `mcp__workspace__bash` transparently when a user asks
+  for shell.
+
+- **The canonical Cowork shell path is `mcp__workspace__bash` via `ToolSearch`.**
+  Declare it in the agent's `tools:` frontmatter (literal exact match — `mcp__server__*`
+  wildcards don't work in agent declarations), call `ToolSearch` to load its schema,
+  then invoke. This applies to both top-level and sub-agent dispatch. See
+  [`mcp__workspace__bash` operational contract](#mcpworkspacebash--the-operational-contract)
+  for the substantive constraints on how it differs from CCD-mode `Bash`.
+
+- **`Write` / `Edit` for portable artifact persistence.** Both work in Cowork and CCD
+  without VM dependency. They reach the user's real filesystem directly. Most portable
+  path; survives even when the workspace VM service has failed to start.
+
+- **Moving shell-bound work to the top Cowork session does not give you built-in Bash.**
+  Top-level lacks built-in Bash too; it just routes to `mcp__workspace__bash`
+  transparently. The "move to top session" pattern that earlier versions of this lesson
+  suggested still has merit — the top session has the `Agent` tool (sub-agents don't)
+  and absorbs intermediate work into parent context — but it's not "the place where
+  Bash is registered." There is no such place in Cowork.
+
+What's *actually* sub-agent-specific (the CLI's `LW8`/`Ys_` filter is real, just not
+the Bash gate):
+
+- **`AskUserQuestion` is dropped from forked sub-agents** by the CLI's drop set
+  (`$zH`). Sub-agents can't ask the user questions; only the top session can.
+- **`Agent` is dropped from forked sub-agents** — sub-agents can't dispatch
+  sub-sub-agents.
+- **`ExitPlanMode`, `EnterPlanMode`, `TaskOutput`, `WaitForMcpServers` are dropped**
+  from sub-agents by the same set.
+
+These are CLI-side restrictions that DO take effect at the async-dispatch boundary,
+distinct from Layer 1's Cowork-wide Bash exclusion.
+
+The "missing tool" surfaces silently to the model. `unavailableTools` and
+`invalidTools` are internal classifier buckets; only `resolvedTools` reaches the
+model's tool listing. From inside the sub-agent, a filtered-out tool is
+indistinguishable from one that was never declared. This is the cognitive trap that
+produced the original wrong-mechanism claim — empirically the model "doesn't have
+Bash," and there are several layers that could explain it. The actual layer was the
+desktop-side host-loop registration; the lesson's original trace looked at the
+downstream CLI filter and the empirical probe (correctly) reported absence without
+distinguishing layers.
 - **Skill telemetry doesn't surface this either.** Tool-use count > 0 in parent telemetry
   reflects whatever tools the sub-agent *did* call (Read, Glob) — not the gap between
   declared and resolved.
@@ -1187,18 +1458,169 @@ trace. The fix that worked is the one the source predicted.
 - **L88** (settings persistence) — settings layer where `policySettings.disabledTools`
   could (in principle) provide an alternative gate; not connected to this filter today
 
-### Status of the symbol resolutions
+### MCP path: the same filter, the other direction
 
-Resolved (verified `var X = "Foo"`):
-`Bq=Read, dV=WebSearch, _v=TodoWrite, A4=Grep, NY=WebFetch, h1=Glob, L9=Edit, s7=Write, Af=NotebookEdit, Xf=Skill, cN=TaskStop, Dq=Bash, Z9=Agent, Ih=Task, xh=BashOutput`.
+The `Tw8` body shown above starts with `if (yJ(O)) return true;`. `yJ` resolves at offset
+5,036,218:
 
-Unresolved at trace time:
-`gP` (spread, contents not enumerated), `QW`, `$j`, `Al_`, `zl_`, `JA`, `FP`, `Q3H`, `ST`,
-`gN9`'s members (`qv, Yr, GR, cV, ZX, IM, Kv, oPH`).
+```js
+function yJ(H) { return H.name?.startsWith("mcp__") || H.isMcp === true; }
+```
 
-If a future trace resolves any of these to "Bash" the conclusion changes — but the empirical
-probe result rules out Bash being secretly allowlisted under a different symbol. The probe
-is the binding evidence; the symbol trace is the explanation.
+This is the **MCP fast-path**. It runs before the `Jl_` allowlist gate, before the
+`F_8` non-built-in drop set, before the `r3H` universal drop set. **Any tool whose name
+starts with `mcp__` (or whose object has `isMcp === true`) survives the filter
+unconditionally** — `isAsync`, `isBuiltIn`, and `permissionMode` are all ignored for
+MCP entries. This is the runtime mechanism behind "expose the work as MCP tools" as
+the documented Cowork-async escape hatch: a custom MCP server's tools are immune to
+the entire `Tw8` regime by name shape alone.
+
+#### How parent MCP state reaches the fork
+
+Sub-agent dispatch site at offset ~8,001,500 (in the agent-tool `Z9` invocation):
+
+```js
+let n = Ja(i, w.getAppState().mcp.tools.concat(h), { skipReplFilter: true }),
+  ...
+  availableTools: L ? w.options.tools : n,
+```
+
+- `i` is the sub-agent's permission context.
+- `w.getAppState().mcp.tools` is the parent session's **live** MCP tool list — sourced
+  from the React state container managed by `MCPConnectionManager`, not by re-resolving
+  `.mcp.json` for the child.
+- `h = w.options.tools.filter(yJ)` adds any MCP tools the parent had in its option list
+  that haven't yet shown up in the live state (covers race-window cases at session boot).
+- `L` is the user-typed-`/fork` flag (L87). For `context: fork` skills going through
+  Cowork-async dispatch, `L` is false — the sub-agent receives `availableTools = n`.
+
+`Ja` at offset 8,711,381:
+
+```js
+function Ja(H, _, q) {
+  let K = tR(H, q);                     // base tools (built-in)
+  let O = r8H(_, H);                    // MCP tools after permission filter
+  return Rw([...K].sort(T).concat(O.sort(T)), "name");
+}
+```
+
+So a Cowork-async fork inherits the parent's MCP connections **by reference** — the same
+client objects, the same tool instances. The fork does not open its own MCP clients. This
+is why a server connected once at the parent's session boot is callable from every fork
+that follows.
+
+#### `requiredMcpServers` enforces presence at dispatch with a 30-second poll
+
+Same dispatch site, immediately above the `Ja` call:
+
+```js
+let N = v.requiredMcpServers;
+if (N?.length) {
+  let AH = P.mcp.clients.some(s =>
+    s.type === "pending" && N.some(a => s.name.toLowerCase().includes(a.toLowerCase()))
+  );
+  if (AH) {
+    let KH = Date.now() + 30000;
+    while (Date.now() < KH) {
+      await w8(500);                                            // 500ms poll interval
+      zH = w.getAppState();
+      if (zH.mcp.clients.some(/* failed match */)) break;
+      if (!zH.mcp.clients.some(/* still pending */)) break;
+    }
+  }
+  if (!ei_(v, JH)) {
+    throw new Error(`Agent '${v.agentType}' requires MCP servers matching: ${...}.`);
+  }
+}
+```
+
+**Up to 30 seconds, polled every 500ms, against the parent's live `state.mcp.clients`.**
+If a required server ends up `failed` or never appears, dispatch throws with a useful
+error. This is the runtime contract for the `requiredMcpServers` agent-frontmatter field
+(documented as a field but not as a behavior). Authors who want fail-fast behavior on
+missing MCP infrastructure should declare it.
+
+#### Negative finding: there is no skill-callable runtime MCP registration
+
+Verified by exclusion against the v2.1.120 bundle:
+
+- **`claude mcp add --scope dynamic`** is explicitly rejected at offset 7,368,245:
+  `case "dynamic": throw new Error("Cannot add MCP server to scope: dynamic");`. The
+  user-addable scopes (`project` → `.mcp.json`, `user` → settings.json `mcpServers`,
+  `local` → local settings) all write to disk only.
+- **The chokidar watcher does not watch `.mcp.json`.** `PW3()` at offset ~12,533,956
+  enumerates only skill / command directories (`userSettings/skills`,
+  `userSettings/commands`, `projectSettings/skills`, `projectSettings/commands`,
+  plus `--add-dir` paths' `.claude/skills`). Modifying `.mcp.json` mid-session has zero
+  runtime effect — the live `state.mcp.clients` set is fixed at session boot.
+- **`/mcp` exposes reconnect / toggle on already-known servers** via `MCPConnectionManager`.
+  No add-server flow reaches the connection manager mid-session.
+- **Runtime-injection paths that exist** are all out-of-band for skill bodies:
+  `--mcp-config` CLI flag (process boot only), `dynamicMcpConfig` REPL prop (populated
+  from `--mcp-config`), SDK `io({extraServers})` / `setSettingSources` callbacks (SDK-only).
+
+The working pattern for "dynamic MCP capabilities from a skill" is therefore
+**static declaration with a behaviorally dynamic server**: the launcher is in
+plugin manifest or `.mcp.json`, but the launcher process reads runtime state — env vars,
+`${CLAUDE_PLUGIN_DATA}/runtime.json`, stdin — to decide which tools to expose. Skills
+mutate the state the launcher reads; the registration itself is static.
+
+#### Agent `tools:` matches MCP names exactly — no `mcp__server__*` expansion
+
+The `Sz` → `n0` chain shown above is exact-match by canonicalized name. The classifier
+loop in `vc` does `f.get(toolName)` — a literal `Map.get`. There is no glob, no prefix
+expansion, no server-level wildcard.
+
+| Form | Where it works | Where it doesn't |
+|------|----------------|------------------|
+| `tools: ["*"]` | Agent declarations (wildcard branch in `vc` returns `hasWildcard: true`, `resolvedTools = D` — full filtered base set including all live MCP tools) | n/a |
+| `tools: ["mcp__myserver__exact_tool_name"]` | Agent declarations (literal `f.get` hit) | n/a |
+| `tools: ["mcp__myserver__*"]` | **Permission rules only** — `allowedTools` / `disallowedTools` go through a different validator at offset ~1,111,367 that explicitly accepts the `*` form for MCP and recommends it as the canonical syntax for server-wide grants. | **Not in agent `tools:` declarations** — falls into `invalidTools` silently, same failure mode as a typo. |
+| `tools: ["mcp__myserver"]` | n/a | Same as above — exact match fails, no implicit expansion. |
+
+The trap: copying `mcp__server__*` from a permission rule into an agent's frontmatter
+looks correct (the validator accepts it; the rule works in `allowedTools`), but the
+runtime classifier silently drops it. Authors get the same "agent has no tools"
+symptom as the Bash-strip case, and the cause looks identical from the model's side.
+
+### Status of the symbol resolutions — CORRECTED v2.11.13
+
+The original v2.11.3 list said `Dq=Bash`. **That was wrong.** `Dq` is unresolved (not
+Bash in any traced version). Bash's symbol in v2.1.119 was `wq`, in v2.1.138 is `Vq`,
+and it reaches `Jl_`/`Ys_` indirectly via the spread member `VW`/`$2`.
+
+Resolved (v2.1.119 / v2.1.138 — minified symbols rename per release):
+- v2.1.119: `wq=Bash, D9=PowerShell, VW=[wq,D9]`, jQ_ allowlist contents:
+  `lq=Read, hV=WebSearch, ZS=TodoWrite, T4=Grep, NY=WebFetch, V1=Glob, ...VW, C9=Edit,
+  _K=Write, Hf=NotebookEdit, wf=Skill, vW=StructuredOutput, Kj=ToolSearch,
+  TQ_=EnterWorktree, $Q_=ExitWorktree, $A=REPL, pP=Monitor, EN=TaskStop`.
+  Drop set `R3H = {Ly=TaskOutput, wX=ExitPlanMode, M3H=EnterPlanMode, S9=Agent,
+  YA=AskUserQuestion}`.
+- v2.1.138: `Vq=Bash, h9=PowerShell, $2=[Vq,h9]`, Ys_ allowlist: same shape, renamed
+  symbols (`H9=Read, Sh=WebSearch, yC=TodoWrite, W4=Grep, fj=WebFetch, E1=Glob, ...$2,
+  L7=Edit, rK=Write, bX=NotebookEdit, SM=Skill, RG=StructuredOutput, hA=ToolSearch,
+  $BH=EnterWorktree, $s_=ExitWorktree, G$=REPL, z2=Monitor, Pu=TaskStop`).
+  Drop set `$zH = {mc=TaskOutput, gW=ExitPlanMode, OzH=EnterPlanMode, O7=Agent,
+  YT=AskUserQuestion, zzH=WaitForMcpServers}` (one new member: WaitForMcpServers).
+
+New in v2.1.138 that v2.1.119 didn't have:
+- `Fp9 = new Set([O7, Pu, QW, RG, ...[], ...[], ...[]])` — fork-subagent-specific
+  allowlist, much more restrictive than `Ys_`. Resolved members: `Agent, TaskStop,
+  SendMessage, StructuredOutput`. Three empty conditional spreads suggest feature-flag-
+  gated additions.
+
+Filter / dispatch function symbols:
+- v2.1.119: `gz8` (filter), `jQ_` (async allowlist), `R3H` (drop), `LH8` (non-builtin
+  drop), `lk9` (experimental fallback), `Oc` (classifier), `vJ` (MCP fast-path).
+- v2.1.138: `LW8` (filter), `Ys_` (async allowlist), `$zH` (drop), `M58` (non-builtin
+  drop), `Up9` (experimental fallback), `el` (classifier), `hG` (MCP fast-path).
+- **All renamed.** Pin extractors to behavioral anchors (`({tools, isBuiltIn, isAsync,
+  permissionMode})` signature, `[Bash, PowerShell]` array spread, `name?.startsWith
+  ("mcp__")` fast-path body), not symbol names.
+
+The v2.11.3 conclusion ("symbol trace is the explanation [for Bash being filtered]") was
+wrong — the Bash filter explanation is in the *desktop bundle*, not the CLI bundle. The
+empirical probe was correct; the symbol trace looked at the wrong file.
 
 ---
 
@@ -1218,12 +1640,37 @@ is the binding evidence; the symbol trace is the explanation.
    pinch point rather than a slow per-PR drip. Toggle via `tengu_fleetview_pr_batch`.
 5. **`/daemon` is a TUI; persistent install is *not* shipped in v2.1.119** (see L90 — this
    becomes explicit with `xQH()`'s kill-switch and the `transient`/`ask` cold-start model).
-6. **`context: fork` skills silently lose Bash in Cowork.** The async sub-agent dispatch
-   path applies a base-tool filter (`Tw8`) that enforces an allowlist (`Jl_`) before the
-   user's `tools:` declaration is consulted. `Bash` (`Dq`) is not in the allowlist; `Write`
-   and `Edit` are. A skill that ships Bash-based persistence works locally but produces
-   read-only sub-agents in Cowork. Authors should declare `Write` / `Edit` and move
-   shell work to the top session. See [Sub-Agent Tool-Grant Filtering](#sub-agent-tool-grant-filtering-how-cowork-async-dispatch-silently-strips-bash) above for the full trace.
+6. **Cowork has no built-in `Bash` tool — at any dispatch level.** The empirical claim
+   that fork sub-agents lack Bash was always right. Corrected twice (v2.11.13) — the
+   mechanism is *not* the `Tw8`/`Jl_` async filter (Bash IS in that allowlist via
+   spread), and the scope is *not* sub-agent-specific (top-level Cowork main sessions
+   also lack built-in Bash). The actual gate is the desktop bundle's
+   `HOST_LOOP_EXCLUDED_BUILTIN_TOOLS = {Bash, NotebookEdit, REPL, JavaScript, WebFetch}`,
+   which strips these names from registration in Cowork mode entirely.
+   `mcp__workspace__bash` is the canonical Cowork shell tool — runs in the workspace
+   Linux VM, available as a deferred MCP tool that loads via `ToolSearch`. See
+   [Cowork's Tool Architecture](#coworks-tool-architecture-why-bash-isnt-where-you-expect-it-and-where-it-is)
+   above.
+
+7. **`mcp__workspace__bash` is not equivalent to host `Bash`.** Five operational
+   constraints worth flagging: (a) no cwd or env carryover between calls — chain
+   multi-step pipelines with `&&` / `;` or use absolute paths; (b) host-side skill
+   files mount under `/sessions/<id>/mnt/`, not at their host path — relative-path
+   script invocations need to `cd` to the mount or use absolute mount paths; (c) only
+   `/sessions/<id>/mnt/outputs/` survives session end as user-visible artifact storage;
+   (d) `pip install` requires `--break-system-packages`; (e) it's Linux aarch64 Ubuntu
+   inside the VM regardless of host OS, so platform-specific shell idioms (e.g. macOS
+   `pbpaste`, BSD `sed -i ''`) don't work. Skills that move from CCD to Cowork will hit
+   these.
+
+8. **Don't probe a session's tool availability by listing immediate tools alone.**
+   Cowork's immediate tier is small (~10 tools at top-level: `Edit, Glob, Grep, Read,
+   Skill, ToolSearch, Write, Agent` + the visualize MCPs; sub-agents are the same minus
+   `Agent`). Most tools — including `WebSearch`, all `mcp__cowork__*`, all
+   `mcp__workspace__*`, all connector tools — are in the deferred tier, name-visible
+   but schema-loaded only when `ToolSearch` is called. Tools missing from the immediate
+   list may still be callable. The original v2.11.3 probe missed this and concluded
+   shell was unreachable from sub-agents — it isn't, just deferred.
 
 ---
 

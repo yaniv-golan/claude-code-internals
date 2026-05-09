@@ -1,5 +1,495 @@
 # Changelog
 
+## v2.11.15 — 2026-05-10 (this fork) — L89 third pass: clean-lead framing replaces accreted corrections
+
+The v2.11.3 → v2.11.13 → v2.11.14 chain accreted layered correction callouts that left the L89 section harder to read than the underlying facts warranted. v2.11.15 replaces the section's lead with the clean simple story.
+
+### What changed
+
+The section's narrative now leads with: **"Cowork has no built-in `Bash` tool. At any dispatch level. Period."** — and explains derivatively. Old "two-layer gate" framing carried sub-agent-centric structure inherited from the original incident. New structure starts with the user-visible fact, explains why `SKILL.md` works without `allowed-tools` (main thread has `ToolSearch` immediate + `mcp__workspace__bash` deferred, the model figures out the dispatch), explains why a narrow sub-agent tools-list declaration fails (literal `Bash` name doesn't resolve, `Task` canonicalizes to `Agent` which is in the sub-agent drop set, `mcp__workspace__bash` isn't declared), then dives into mechanism for readers who want it.
+
+### New subsection: "What the founder-skills v0.3.0 incident actually was"
+
+Documents the actual mechanism the original investigation hit, in the project's own terms: the sub-agent declared `tools: ["Read", "Bash", "Task", "Glob", "Grep"]`. Bash and Task are no-op names in Cowork. Resolution to `{Read, Glob, Grep}` was correctly observed empirically; the attribution ("Cowork strips Bash from sub-agents") was wrong. The fix (`Write`/`Edit`) was correct for the use case but unrelated to "Bash filtering." Cross-references the team's v0.4.x architecture writeup with a note that the rationale documented there needs updating: the v0.4.1 architecture is right, but for slightly different reasons than the team thought.
+
+### Removed: layered correction callouts
+
+The v2.11.13 + v2.11.14 callouts at the top of the section are replaced with a single short "History — corrected three times" paragraph. The mechanically wrong v2.11.3 trace text is no longer mixed into the corrected lead — it's marked as archaeology and structurally separated.
+
+### Operational contract: unchanged
+
+The five-constraint `mcp__workspace__bash` operational contract section (introduced v2.11.14) is preserved verbatim — those constraints didn't change with the framing rewrite.
+
+### Companion gist (303b6213): same clean-lead pass
+
+Top-of-gist correction callout simplified. "Sub-agent tool-grant filtering" section reorganized to lead with the simple story rather than incrementally correcting prior framing. The deferred-tool-tier and operational-contract subsections preserved from v2.11.14.
+
+---
+
+## v2.11.14 — 2026-05-10 (this fork) — L89 scope-corrected: Cowork-wide, not sub-agent-specific + `mcp__workspace__bash` operational contract documented
+
+A second-round correction to v2.11.13's L89 update. v2.11.13 fixed the mechanism (host-loop substitution in the desktop bundle is the gate, not the CLI's async sub-agent filter). v2.11.14 fixes the scope: the gate is **Cowork-wide**, not sub-agent-specific. Plus: documents `mcp__workspace__bash`'s operational contract (the five constraints skill authors hit when moving CCD skills into Cowork) — none of which the prior versions captured.
+
+### Corrected — scope was wrong in v2.11.13
+
+v2.11.13 said sub-agents in Cowork have no built-in `Bash` and pointed to the desktop's `HOST_LOOP_EXCLUDED_BUILTIN_TOOLS = [Bash, NotebookEdit, REPL, JavaScript, WebFetch]` as the gate. That's correct — but v2.11.13 implied (via the section title "Sub-Agent Tool-Grant Filtering" and several subsections framed around sub-agent dispatch) that top-level Cowork sessions still have built-in Bash and only sub-agents lose it. Empirically that's wrong: a top-level Cowork main session probed in v2.1.121-bundled CLI also has no built-in Bash in either tier.
+
+The actual asymmetry between top-level and sub-agent is exactly **one tool**: top-level has `Agent` (so the model can dispatch sub-agents); sub-agents don't have `Agent` (no nested dispatch). Both have:
+- The same ~10-name immediate tier: `Edit, Glob, Grep, Read, Skill, ToolSearch, Write` + visualize-MCP tools (top-level adds `Agent`).
+- The same broad deferred tier: `WebSearch`, `AskUserQuestion`, all `mcp__cowork__*`, all `mcp__workspace__*` (including `mcp__workspace__bash`), all `mcp__skills__*`, all connector tools (Slack, Notion, Gmail, etc.).
+
+The CLI's async sub-agent filter (`Tw8`/`LW8`) does still apply differential drops to sub-agents — `AskUserQuestion`, `Agent`, `ExitPlanMode`, `EnterPlanMode`, `TaskOutput`, `WaitForMcpServers` are dropped at async dispatch. But none of those are Bash. The Bash question is settled by Layer 1 (host-loop registration) for both dispatch levels.
+
+### New — `mcp__workspace__bash` operational contract subsection
+
+The actual constraints skill authors hit (none of these were in v2.11.3 or v2.11.13):
+
+1. **No cwd or env carryover between calls.** Each `mcp__workspace__bash` invocation is independent. Multi-step pipelines must chain (`&&` / `;`) into one command or use absolute paths in every step. Skills with `cd foo` followed by another call expecting cwd=`foo` are broken in Cowork.
+
+2. **Skill files mount under `/sessions/<id>/mnt/`, not at host paths.** A SKILL.md saying `python3 scripts/foo.py` doesn't work as written — `scripts/foo.py` doesn't exist in the VM's filesystem. The skill needs `cd /sessions/<id>/mnt/.claude/skills/<skill>/ && python3 scripts/foo.py` (chained into one call) or absolute mount path. Hard-coded host paths (`/Users/yaniv/...`) fail in the VM.
+
+3. **`/sessions/<id>/mnt/outputs/` is the only persistence boundary.** Maps to host's `~/Library/Application Support/.../outputs/`. Files written elsewhere in the sandbox (`/tmp/`, `~`, scratch dirs) vanish at session end and aren't visible to the user during the session either.
+
+4. **`pip install` requires `--break-system-packages`** (PEP 668).
+
+5. **Linux aarch64 Ubuntu inside the VM, regardless of host OS.** Platform-specific shell idioms — `pbpaste`, BSD `sed -i ''` vs GNU `sed -i`, `open` vs `xdg-open` — don't translate. CCD-mode skills using macOS-specific tooling break in Cowork.
+
+6. **Out of scope: native-Mac driving.** Skills opening native macOS apps, controlling the desktop, driving Adobe apps go through *different* MCP servers, not `mcp__workspace__bash`.
+
+7. **VM dependency.** When the platform VM service fails, this MCP tool dies with `Workspace unavailable. The isolated Linux environment failed to start.` File-op tools (Read/Write/Edit/Glob/Grep) keep working — they don't depend on the VM. See [GH#56772](https://github.com/anthropics/claude-code/issues/56772) for the Windows-specific autostart failure.
+
+### Section reorganization
+
+L89 was renamed from "Sub-Agent Tool-Grant Filtering: How Cowork-Async Dispatch Silently Strips Bash" to "Cowork's Tool Architecture: Why `Bash` Isn't Where You Expect It (And Where It Is)" — both for accuracy and because the original title primed readers to look for sub-agent-specific mechanisms. The two correction-callouts at the top (v2.11.13 round 1 + round 2) are consolidated into one paragraph documenting the full timeline. The Two-layer-gate section is rewritten as Cowork-wide. The Layer 1 (desktop) and Layer 2 (CLI) subsections are absorbed into the new structure. The `mcp__workspace__bash` operational contract is a new section right after Layer 1, before the historical-archaeology Layer 2 trace.
+
+Implications section rewritten: three working paths (declare `mcp__workspace__bash` and use ToolSearch; persist via `Write`/`Edit`; move shell-bound work to top session) but with the v2.11.13 framing corrected — top session also lacks built-in Bash, so "move to top" doesn't give you Bash, it just absorbs work into parent context. Risks Worth Flagging items 6-7 split into 6 (no-built-in-Bash, Cowork-wide), 7 (operational contract), 8 (deferred-tier discovery via ToolSearch).
+
+### Companion gist (303b6213)
+
+Same scope correction applied. The "Sub-agent tool-grant filtering" section reframed as Cowork-wide. New subsection on the deferred-tool tier with the actual immediate-set list. New subsection on the operational contract. Mermaid diagram revised to show host-loop registration applying to top-level + sub-agent symmetrically.
+
+---
+
+## v2.11.13 — 2026-05-09 (this fork) — L89 sub-agent-tool-grant trace corrected (mechanism was wrong, empirical was right) + new MCP-bash deferred-tool path
+
+A round of fresh probing across two Claude Code CLI versions and a real Cowork session surfaced a load-bearing error in the v2.11.3 trace, which v2.11.4 through v2.11.12 carried forward. The empirical claim ("Bash unavailable in Cowork sub-agents") stays correct. The mechanism explanation gets replaced.
+
+### Corrected — L89 "Sub-Agent Tool-Grant Filtering"
+
+**What v2.11.3 said:** the `Tw8` async filter strips `Bash` because `Dq = "Bash"` is not in the `Jl_` allowlist. **What's actually true:** `Dq` was the wrong symbol to grep for. Bash's symbol is `wq` (v2.1.119) / `Vq` (v2.1.138), and it reaches `Jl_`/`Ys_` indirectly via the spread member `VW = [wq, D9]` / `$2 = [Vq, h9]` (which the original trace marked as "spread, contents not enumerated"). Re-extraction:
+
+```
+v2.1.119: VW = [wq="Bash", D9="PowerShell"];   jQ_ = new Set([..., ...VW, ...])
+v2.1.138: $2 = [Vq="Bash", h9="PowerShell"];   Ys_ = new Set([..., ...$2, ...])
+```
+
+`Bash` IS in the async allowlist in both versions. The async filter is not the gate.
+
+**The actual gate is one layer up, in the desktop bundle** (`/Applications/Claude.app/Contents/Resources/app.asar` → `.vite/build/index.js`):
+
+```js
+HOST_LOOP_EXCLUDED_BUILTIN_TOOLS = jie = ["Bash", "NotebookEdit", "REPL", "JavaScript", "WebFetch"]
+HOST_LOOP_SAFE_BUILTIN_TOOLS     = zvt = ["Task", "Glob", "Grep", "Read", "Edit", "Write", ..., "Skill", "AskUserQuestion", "ToolSearch", "SendUserMessage"]
+PTi(tools) = tools.filter(t => t.startsWith("mcp__") || zvt.includes(t))
+```
+
+In Cowork mode, the desktop applies `PTi` to the registered built-in tool set before handing it to the SDK. `Bash` is in `jie` and not in `zvt`, so it's stripped at registration time. The CLI's `LW8`/`Ys_` filter never sees a Bash tool object — the question of whether `Ys_.has("Bash")` is true is moot.
+
+The desktop's `workspace` MCP server registers replacements:
+
+```
+psi = `mcp__${WB="workspace"}__${Qy="bash"}`         // "mcp__workspace__bash"
+msi = `mcp__${WB="workspace"}__${Kv="web_fetch"}`    // "mcp__workspace__web_fetch"
+```
+
+This filtering is **Cowork-mode only**. CCD mode (host CLI without `--cowork`) does NOT apply `jie`/`PTi`/`zvt`. Empirically re-confirmed: Task-dispatched async sub-agent on host CLI v2.1.138 (parent set to `CLAUDE_CODE_SESSION_KIND=bg`, response carries SendMessage continuation token confirming async dispatch) sees Bash and runs `echo PROBE_MARKER_<uuid>` successfully. Cowork's filtering is desktop-side and platform-bound.
+
+### New — `mcp__workspace__bash` deferred-tool path
+
+A finding the v2.11.3 documentation missed entirely. Cowork sub-agent tool availability has two tiers:
+
+- **Immediate** — schema loaded, callable directly.
+- **Deferred** — name visible in the registry, schema loaded on demand via `ToolSearch`. Direct invocation fails with `InputValidationError` until ToolSearch loads the schema.
+
+Empirical re-probe in actual Cowork: a Task-dispatched general-purpose sub-agent reports `[Edit, Glob, Grep, Read, Skill, ToolSearch, Write]` immediate plus `mcp__workspace__bash` and `mcp__workspace__web_fetch` deferred. The original v2.11.3 probe didn't enumerate the deferred tier and concluded "shell unreachable from sub-agents" — it isn't, just deferred.
+
+This means **a third working path exists** for shell in Cowork sub-agents, on top of the two v2.11.3 documented:
+
+1. **Use `mcp__workspace__bash` from the sub-agent itself.** Declare it in the agent's `tools:` frontmatter (literal exact match — agent declarations don't accept `mcp__server__*` wildcards), invoke `ToolSearch` from inside the sub-agent to load its schema, then call. Runs in the workspace VM with user folders mounted under `/sessions/<vmProcessName>/mnt/`.
+
+2. **Persist via `Write` / `Edit`** (v2.11.3 path). Reaches user's real filesystem; portable across Cowork and CCD without VM dependency.
+
+3. **Move shell-bound work to the top Cowork session** (v2.11.3 path). Cost: parent context absorbs intermediate work.
+
+### VM dependency caveat
+
+`mcp__workspace__bash` is backed by the platform VM (Apple Hypervisor on macOS, Hyper-V via `CoworkVMService` on Windows). When the VM service fails to start, this MCP tool dies with `Workspace unavailable. The isolated Linux environment failed to start.` File-op tools (Read/Write/Edit/Glob/Grep) keep working because they don't depend on the VM. See [GH#56772](https://github.com/anthropics/claude-code/issues/56772) for the Windows-specific autostart failure mode.
+
+### Companion gist (303b6213)
+
+Same corrections applied to the public-facing gist:
+- Mermaid diagram of `Jl_` allowlist contents was technically a correct subset but mislabeled — it's "what survives the async filter," not "what the sub-agent sees in Cowork." Two-layer model added.
+- "Cowork caveat" reworded — `Bash` isn't a registered tool name in Cowork (Layer 1 strips it + substitutes `mcp__workspace__bash`), not "filtered by the async filter."
+- Workarounds section gains the `mcp__workspace__bash` + ToolSearch path as a peer to Write/Edit and top-session-shell.
+- Symbol-trace verification line pins to behavioral anchors and includes both bundles' identifiers (desktop: `jie`/`zvt`/`PTi`; CLI: `LW8`/`Ys_` v2.1.138, `gz8`/`jQ_` v2.1.119).
+- New "Cowork's deferred-tool tier" subsection.
+
+### Risks Worth Flagging — added entry
+
+When probing a sub-agent's tool availability, enumerate BOTH the immediate set AND the deferred tier (via `ToolSearch`). Tools absent from the immediate list may still be callable. `mcp__workspace__bash` is the canonical example.
+
+### Verified-against-binary bumped
+
+`verified_against_binary` field in `version.json` now reads `CLI 2.1.138 + Claude.app 1.6259.1 (cross-checked against CLI 2.1.119 + Claude.app 1.5354.0)`. The two-version cross-check is what allowed identifying the spread member as the wrong-trace root cause.
+
+---
+
+## v2.11.12 — 2026-05-02 (this fork) — Cowork+scope rejection caveat; toggle-off/on guidance tightened
+
+External Codex round caught two real issues that the previous rounds missed:
+
+### Added — Cowork-specific scope rejection caveat (L26)
+
+The CLI rejects `--cowork` combined with any non-`user` scope. Verified in both v2.1.121 (Desktop-pinned) and v2.1.126 (standalone): `--cowork can only be used with user scope` aborts the command. Found 6+ call sites (install, uninstall, update, enable, disable, prune all carry the same check).
+
+So while the CLI nominally supports `-s, --scope <user|project|local|managed>` on `plugin update`, manually running `claude plugin update <id> --scope project --cowork` is NOT a valid workaround for keeping a project / local / managed Cowork install fresh. The org-level (user-scope) install in the active Cowork root is what `claude plugin update` and Desktop's Update button actually advance; project / local / managed-scoped Cowork installs are difficult to keep up to date through any standard path. Documented as a caveat in L26 v2.11.12 under the existing `--scope` discussion.
+
+### Companion gist tightens
+
+Three more gist passages tightened that the v2.11.11 round didn't catch:
+
+1. **"Practical consequence" paragraph in the live-updates section** said Settings UI Refresh / Update / Enable / Disable / Install / Uninstall buttons "remain useful for advancing on-disk state and refreshing the org-plugin MCP layer." Misleading: only enable/disable, uninstall/delete, and the local-upload install path fire `refreshPluginMcps`. Refresh marketplace, Update plugin, and the main Install IPC do not. Reworded.
+
+2. **Short-version playbook recipes** (classic and backend) suggested toggling the plugin off/on as a recovery for "still shows old content." This implies toggle off/on fixes general staleness — it doesn't. Toggle off/on does fire `refreshPluginMcps`, but that only reconciles org-plugin MCP connections, not skills/commands/agents/hooks. Reworded both recipes to recommend `+ New task` directly and de-emphasize toggle off/on with the explicit MCP-only caveat.
+
+3. **Added Anthropic-managed-skills caveat to the "new task" guidance** — even a fresh Cowork task can stay stale until the `skills-plugin` cache is repaired (per v2.11.8's silent-stale failure mode for built-in skills like `pdf` / `xlsx`). Worth flagging at the recovery-recommendation level so users don't assume "+ New task" universally fixes staleness.
+
+### Files changed
+
+- `skill-package/skills/claude-code-internals/references/04-connectivity-plugins.md` — Cowork+scope rejection caveat added under the existing `--scope` discussion in the Desktop-side cross-check
+- `skill-package/skills/claude-code-internals/version.json` — `skill_version` and `note`
+- `skill-package/.claude-plugin/plugin.json` — `version`
+- `CLAUDE.md` — pinned skill version updated
+- `CHANGELOG.md` — this entry
+
+### Methodology takeaway
+
+The `--cowork` + scope-rejection finding is a small but operationally significant fact that the bundle makes very explicit (literal abort message, 6+ call sites). It would have been visible in any earlier round if the question "what happens if I combine --cowork with --scope project?" had been asked. The lesson here is the same as several earlier rounds: when documenting a flag's accepted values, don't just list the schema — also enumerate which combinations the CLI actively rejects at runtime. Rejection paths are part of the API surface.
+
+---
+
+## v2.11.11 — 2026-05-02 (this fork) — refreshWarning precision + gist guidance cleanup
+
+External Codex round on v1.5354.0 + v2.1.121 + v2.1.126 caught one residual L26 imprecision and two gist regressions.
+
+### Corrected (L26)
+
+L26 v2.11.10 said the CLI "captures this internally as a `refreshWarning` field on its update result." More precise per Codex: the warning text is captured in a local variable and **concatenated into the update-result message string**, not exposed as a structured field. Desktop's stdout parser only extracts the `from X to Y` version pattern and discards the rest. The practical conclusion is unchanged — Desktop hides marketplace refresh failures during update — but the mechanism description was off.
+
+### Companion gist updates
+
+Same `refreshWarning` precision fix applied to the public gist, plus two more issues fixed:
+
+1. **Two passages still implied Settings → Refresh and Settings → Update fire `refreshPluginMcps`.** v2.11.10 corrected the L26 enumeration but missed two equivalent claims in the gist's "Why Claude keeps using an old plugin" item #15 and the "Practical stale-update checks" decision tree step 7. Both rewrote to: "Refresh and Update do NOT fire `refreshPluginMcps()`; only enable/disable, uninstall/delete, and local-upload variants do. For org-plugin MCP reconnect, toggle the plugin off/on. For skills/commands/agents/hooks freshness, no IPC op refreshes a running task — start `+ New task`."
+
+2. **Duplicate H1 lines at the top of the gist.** Regression from `gh gist edit` operations that occasionally re-prepend the description line. Re-stripped — gist now opens directly with the H1.
+
+### Files changed
+
+- `skill-package/skills/claude-code-internals/references/04-connectivity-plugins.md` — `refreshWarning` paragraph tightened
+- `skill-package/skills/claude-code-internals/version.json` — `skill_version` and `note`
+- `skill-package/.claude-plugin/plugin.json` — `version`
+- `CLAUDE.md` — pinned skill version updated
+- `CHANGELOG.md` — this entry
+
+### Methodology takeaway
+
+When an external review surfaces "X overstates Y" and you fix it in one location, grep for the exact phrasing across every artifact. v2.11.10 fixed the `refreshPluginMcps` enumeration in the L26 cross-check section but two earlier-written paragraphs in the gist's troubleshooting table and decision tree carried the same claim under different wording. "Settings UI op fires the refresh" appeared in three distinct places; one fix didn't propagate. For any future correction, run a cross-document `grep` for the wrong claim's various paraphrases before declaring the fix complete.
+
+---
+
+## v2.11.10 — 2026-05-02 (this fork) — refreshPluginMcps() call-site enumeration corrected
+
+External Codex review against v1.5354.0 + v2.1.126 caught a real overstatement in v2.11.8: the L26 lesson (and the public gist) said `refreshPluginMcps()` is invoked from "every state-mutating plugin op (~10 call sites: install / update / uninstall / setPluginEnabled / deletePlugin / etc.)". Bundle re-trace by enumerating all 7 `refreshPluginMcps()` call sites under their containing dispatcher operations shows that's wrong.
+
+### Corrected
+
+`refreshPluginMcps()` is invoked from a **specific subset** of dispatcher operations:
+
+- `installPluginFromZip` (local-upload install path — different from the main `installPlugin` IPC handler)
+- `deletePlugin` (custom delete)
+- `setPluginEnabled` (local enable/disable)
+- `setRemotePluginEnabled` (RPM enable/disable)
+- `uninstallPlugin` (both the RPM remote-API path and the non-git fallback)
+- `installLocalOrgPlugin` (local org-plugin install)
+
+**Notably absent: the main `installPlugin` IPC handler and `updatePlugin`.** Neither calls `refreshPluginMcps()` after the operation completes — not on the RPM/remote-API path, not on the classic CLI fallback. Clicking Settings → Install or Settings → Update does NOT fire the org-plugin MCP refresh; only enable/disable, delete, uninstall, and the local-upload variants do.
+
+This matters operationally: a user (or a downstream debugging tool) who runs Settings → Update expecting an MCP-connection refresh against the newly-installed plugin version will not get one. The Cowork task's MCP connections to that plugin will keep using whatever they had before the update. Toggle the plugin off/on (which DOES call `refreshPluginMcps`) to force the reconnect, or — for skill / command / agent / hook content, where MCP refresh wouldn't help anyway — open `+ New task` for a fresh `local_<UUID>/` session.
+
+### Files changed
+
+- `skill-package/skills/claude-code-internals/references/04-connectivity-plugins.md` — `refreshPluginMcps` subsection rewritten with the actual call-site list and the explicit "absent from install/update" call-out
+- `skill-package/skills/claude-code-internals/version.json` — `skill_version` and `note`
+- `skill-package/.claude-plugin/plugin.json` — `version`
+- `CLAUDE.md` — pinned skill version updated
+- `CHANGELOG.md` — this entry
+
+### Methodology takeaway
+
+The original v2.11.8 framing came from counting `refreshPluginMcps()` call sites in the bundle (10 hits) without grouping them by dispatcher op. Several hits were inside the `refreshPluginMcps` definition + `doRefreshPluginMcps` body itself, not call sites. Of the 7 actual call sites, 0 are in `installPlugin` or `updatePlugin`. "Number of grep matches" is not the same as "number of distinct dispatcher operations that fire the function" — for any future bundle-trace claim of "this is called from N places," enumerate the containing functions, don't just count regex hits.
+
+---
+
+## v2.11.9 — 2026-05-02 (this fork) — Cowork uses Desktop-pinned VM binary, not standalone CLI on PATH
+
+Methodology correction surfaced by external Codex round comparing v2.1.121 (Desktop-pinned) and v2.1.126 (standalone on PATH). Earlier rounds of the Desktop trace had implicitly conflated "the Cowork CLI" with "the standalone CLI on PATH" — that's wrong any time Desktop is pinned to a different version.
+
+### Added — Cowork-binary methodology callout
+
+Claude Desktop pins and manages its own VM-side Claude Code binary at:
+
+```text
+~/Library/Application Support/Claude/claude-code-vm/<sdk-version>/claude
+~/Library/Application Support/Claude/claude-code-vm/.sdk-version    # records the pinned version
+```
+
+At audit time Desktop is pinned to **v2.1.121** while standalone `claude` on PATH is **v2.1.126**. They diverge because Desktop pins SDK versions on its own release cadence and doesn't auto-bump when the user updates the standalone CLI.
+
+For tracing:
+
+- **Cowork-internal behavior** (in-VM `claude plugin <op>`, `skipIfRecent`, the per-source-type badge resolution invoked via VM CLI runners, the `_syncSkills` flow if it runs in-VM) → trace against the Desktop-pinned binary.
+- **Standalone-CLI behavior** (`claude plugin <op>` from a regular terminal outside Cowork) → trace against the binary on PATH.
+- **Desktop main-process behavior** (IPC handlers, native engine, badge computation, sync orchestration) → trace against `app.asar`'s `.vite/build/index.js`.
+
+For most claims in the lesson and trace doc, v2.1.121 and v2.1.126 behavior matches — the codepaths haven't materially diverged for plugin management between those two patch versions. But anyone tracking down a Cowork-specific behavior that doesn't reproduce against the standalone CLI should extract the pinned binary directly.
+
+### Corrected
+
+**L26 `refreshWarning` claim was wrong.** v2.11.8 said the CLI's `refreshWarning` field "propagates back to Desktop, but Desktop's UI doesn't typically surface it prominently." Bundle re-trace shows Desktop's `updatePlugin` IPC wrapper does NOT propagate `refreshWarning` at all — it returns only `{ success, pluginId, oldVersion, newVersion, alreadyUpToDate }`. The refresh warning is captured by the CLI internally and appears only in the CLI's own log output; nothing calling Desktop's IPC sees it.
+
+### Files changed
+
+- `skill-package/skills/claude-code-internals/references/04-connectivity-plugins.md` — Cowork-binary methodology callout added to "Desktop-side cross-check (v1.5354.0)"; `refreshWarning` propagation claim corrected
+- `docs/internal/desktop-bundle-trace-v1.5354.0.md` — new "Methodology note" section at the top covering the Cowork-pinned-binary distinction with extraction snippet
+- `skill-package/skills/claude-code-internals/version.json` — `skill_version` and `note`
+- `skill-package/.claude-plugin/plugin.json` — `version`
+- `CLAUDE.md` — pinned skill version updated; added Cowork-VM v2.1.121 to the binary list
+- `CHANGELOG.md` — this entry
+
+### Methodology takeaway
+
+The pinned-VM-binary distinction is a real Claude Cowork architectural fact that Anthropic's docs don't emphasise: the binary that runs inside Cowork's microVM is NOT necessarily the same as the binary on the user's PATH. Anyone reverse-engineering Cowork's behavior who doesn't know this could spend hours tracing the wrong binary against bugs that only reproduce in the pinned version. Worth surfacing as the first methodology rule in any future Cowork-internals trace.
+
+---
+
+## v2.11.8 — 2026-05-02 (this fork) — Desktop trace extended; Anthropic-managed skills cache documented
+
+Six findings accumulated in the public Desktop-plugins gist across multiple Codex review rounds, none of which were yet reflected in the L26 lesson or the internal trace note. v2.11.8 extends both with bundle-verified evidence.
+
+### Added — six L26 subsections under "Desktop-side cross-check"
+
+1. **CLI's `claude plugin update` `skipIfRecent` 30s short-circuit + cached-data fallback.** Refresh is silently skipped if `lastUpdated` is within the last 30 seconds; if refresh fails, exception is caught and the worker proceeds against the cached clone with a warn log "using cached data". So `claude plugin update` reports can be against stale clone data. Reliable update sequence: `claude plugin marketplace update <mp>` → verify clone HEAD advanced → `claude plugin update`.
+
+2. **Desktop `updatePlugin` has two paths: RPM remote-API or classic CLI fallback.** RPM-managed plugins go through `Hrt(r, marketplaceScope)` (remote API). Non-RPM plugins fall through to `A(s, "git").updatePlugin(r, n)` — the classic CLI shell-out without `--scope`. v2.11.6's "Desktop omits --scope" applies only to the classic fallback.
+
+3. **Per-source-type badge path correction.** v2.11.6 said the badge reads `<marketplace-clone>/<plugin-name>/.claude-plugin/plugin.json` for both source types. Corrected: string sources read at `<marketplace-clone>/<plugin.source>/...` (path resolver does `path.join(clone, entry.source)`); object sources fall through to the `<plugin-name>/` fallback path which usually doesn't exist for object sources, then falls back to `marketplace.json#plugins[].version`.
+
+4. **`installed_plugins.json` v1→v2 migration is CLI-only.** Desktop's native reader `V_(e)` parses JSON and returns it as-is — no migration. Downstream code accesses `plugins[id][0]` which is `undefined` on a v1 single-object value; plugins silently invisible in Desktop UI until CLI runs and migrates the file. Hand-written `installed_plugins.json` files should be written as v2.
+
+5. **Per-session `known_marketplaces.json` files.** Found at `<userData>/local-agent-mode-sessions/<acc>/<org>/local_<UUID>/.claude/plugins/`, written by the in-VM CLI (giveaway: VM-relative `installLocation` paths like `/sessions/<vm-name>/mnt/...`). Desktop IPC handlers do NOT read these files; they consult `<acc>/<org>/cowork_plugins/known_marketplaces.json` instead.
+
+6. **Settings UI's marketplace listing is single-`(accountId, orgId)` per IPC call.** Native `listMarketplaces` reads exactly one `known_marketplaces.json` per call, resolved from the passed `pluginContext`. No aggregation at IPC layer. The empirical observation that the "Personal" tab shows CCD-host entries from a Cowork session implies renderer-side merging (renderer is partially served from `claude.ai` web origin, outside the local-bundle audit).
+
+### Added — high-impact new section: "Anthropic-managed skills cache (`skills-plugin/`)"
+
+This is operationally the most important new finding. Cowork ships with a set of Anthropic-curated built-in skills (`pdf`, `xlsx`, `theme-factory`, `consolidate-memory`, `schedule`, `setup-cowork`, `doc-coauthoring`, `algorithmic-art`, `internal-comms`, `skill-creator`, `fiction-studio`) that are NOT user-installed plugins. They live in their own cache:
+
+```text
+<userData>/local-agent-mode-sessions/skills-plugin/<orgId>/<accountId>/
+  .claude-plugin/plugin.json
+  skills/<skill-name>/SKILL.md
+```
+
+Note `<orgId>/<accountId>` order — opposite of the Cowork plugin roots which use `<accountId>/<orgId>`.
+
+Sync model:
+- 10-minute background timer; also runs on app focus
+- `_syncSkills` calls org skills API, computes delta against local manifest
+- Downloads run with concurrency 10 via `downloadSkills`
+- Per-skill download failures are CAUGHT, LOGGED, and NOT propagated
+- After downloads complete, `writeManifest` runs UNCONDITIONALLY with the full remote skill list (including new `updatedAt` for any failed skill)
+
+**Silent-stale failure mode**: download fails → manifest written with new `updatedAt` → next sync sees matching `updatedAt` + existing-on-disk SKILL.md → skips redownload → stale skill content persists indefinitely. Desktop restart does NOT fix it. The 10-minute sync timer cannot recover from this state on its own.
+
+Recovery: `rm` the stale SKILL.md (or whole skill directory) under `skills-plugin/<orgId>/<accountId>/skills/<skill-name>/`. Next sync's third condition (`!SKILL.md exists`) re-fires and the skill is redownloaded.
+
+This cache is invisible to every other staleness check covered in the lesson — `installed_plugins.json` doesn't list these skills, no `marketplace.json` does, RPM doesn't track them, `refreshPluginMcps` doesn't touch them. If a Cowork session is using stale `pdf`/`xlsx`/etc. content, the cause is here. Tools that diagnose Cowork plugin staleness should include this cache in their checks.
+
+### Files changed
+
+- `skill-package/skills/claude-code-internals/references/04-connectivity-plugins.md` — six new subsections + Anthropic-managed-skills-cache section under L26 Desktop cross-check
+- `docs/internal/desktop-bundle-trace-v1.5354.0.md` — extended with bundle excerpts (offsets, function bodies, `_syncSkills` failure trace) for all six findings; corrected the v2.11.6 install-snapshot framing left over from earlier
+- `skill-package/skills/claude-code-internals/version.json` — `skill_version` and `note`
+- `skill-package/.claude-plugin/plugin.json` — `version`
+- `CLAUDE.md` — pinned skill version updated
+- `CHANGELOG.md` — this entry
+
+### Methodology takeaway
+
+The Anthropic-managed skills cache is the kind of finding that only an external user with disk access to the right paths would surface — none of the standard plugin-staleness checks would point at `skills-plugin/`, and the silent failure mode means the bug is invisible to every Anthropic-side telemetry signal that doesn't track per-skill download success rates. Multiple rounds of external Codex review on the public gist over 24 hours surfaced 14+ corrections, of which this was the most operationally significant. Worth treating "external bundle review on a dense doc, in series, with cross-checks against on-disk state" as a high-yield methodology for catching architectural surface that Anthropic-internal documentation doesn't cover.
+
+---
+
+## v2.11.7 — 2026-05-02 (this fork) — Six corrections to v2.11.6 Desktop-side trace
+
+External bundle review (Codex, against Claude Desktop v1.5354.0 and standalone Claude Code v2.1.126) caught six material errors in v2.11.6's Desktop trace. All six were independently verified against the local Desktop bundle and CLI binaries before applying corrections.
+
+### Errors corrected
+
+1. **Desktop's "Update available" badge does NOT read plugin.json from the install snapshot.** v2.11.6 claimed object-source plugins read `installed_plugins.json[id][0].installPath/.claude-plugin/plugin.json`, frozen at install time. Bundle re-trace shows `i_t` is called with only 3 args (`marketplacesDir`, `marketplace`, `plugin`); `t_t`'s object-source branch is gated on a 4th `options` arg that the badge call does not supply. So `t_t` returns the fallback path `<marketplace-clone>/<plugin-name>/`. For object-source plugins, that directory doesn't contain plugin.json (the install lives in the cache dir). `i_t`'s readFile fails, falls through to `fte`, which returns the marketplace.json plugin entry. **The badge is keyed on `marketplace.json#plugins[<plugin>].version`, not on `plugin.json#version`, for object-source plugins.** Bumping both fields is the reliable release pattern.
+
+2. **`refreshPluginMcps` is org-plugin MCP-only, not a general skill/command/agent/hook refresher.** `doRefreshPluginMcps` filters `source === "org-plugin"` and operates on the direct-MCP connections list. Settings-UI plugin ops do NOT trigger a skill or command re-scan in the running Cowork task. The reliable boundary for skill/command/agent/hook freshness is a new task ("+ New task"), which spawns a fresh `local_<UUID>/` session that scans disk from scratch.
+
+3. **Desktop's `updatePlugin` shells out without `--scope`.** The CLI has supported `-s, --scope <user|project|local|managed>` on `plugin update` since v2.1.120 (default `user`), but Desktop's `buildArgs` is `["plugin","update", pluginId]` — no scope flag. Desktop-driven updates can leave project / local / managed installs untouched. Desktop's `installPlugin` and `uninstallPlugin` DO forward scope; only update doesn't.
+
+4. **`installed_plugins.json` schema v2 includes `managed` scope, `resolvedVersion`, and `auto`.** v2.11.6's lesson and the gist undersold the schema. Verified in v2.1.126: `scope: enum(["managed","user","project","local"])`, `resolvedVersion` (tag-derived semver from version-constraint installs, used by `verifyAndDemote`), `auto` (true when pulled in as a transitive dependency, eligible for orphan sweep).
+
+5. **Plugin-entry source variants miscatalogued.** Verified in v2.1.126: plugin-entry `npm` source accepts `package` (broader than name — URL or local path also valid), optional `version`, optional `registry`. There is no `directory` plugin-entry variant (that's marketplace-level only). New `unsupported` placeholder exists for forward-compatible source rewrites by older clients.
+
+6. **Desktop parses for `"already up to date"` but CLI emits `"already at the latest version"`.** Pre-existing string mismatch in both v2.1.120 and v2.1.126. The actual update operation succeeds; only Desktop's `alreadyUpToDate: boolean` field returned to the renderer reads `false` on no-op success. Minor metadata bug, not a functional one.
+
+### Files changed
+
+- `skill-package/skills/claude-code-internals/references/04-connectivity-plugins.md` — L26 "Desktop-side cross-check" subsection rewritten with the corrected trace
+- `skill-package/skills/claude-code-internals/version.json` — `skill_version` and `note`
+- `skill-package/.claude-plugin/plugin.json` — `version`
+- `CHANGELOG.md` — this entry
+
+### Companion gist updates (separate artifact, not in this plugin)
+
+The public gist at `claude-desktop-plugins-architecture.md` was rewritten to reflect all six corrections: cache-table row, plugins[].source variants table (npm fields, no directory variant, unsupported placeholder), installed_plugins.json schema (managed/resolvedVersion/auto + v1/v2 distinction), Update Detection section (correct read-location table), listAvailablePlugins flow, "Why Claude keeps using an old plugin" item #3, the practical playbook step 1, and the live-update / new-task guidance.
+
+### Methodology takeaway
+
+The v2.11.6 trace got `i_t` and `t_t` correct as functions, but failed to check **how they're actually called from the badge code path**. The 4th-arg-gated branch in `t_t` is the kind of detail that requires reading the call site, not just the function definition. "Read the function's body" is necessary; "read every distinct call site of that function" is what catches branch-pruning behaviors like this.
+
+The other five corrections follow a similar pattern: schema fields and source variants are simple field-presence checks that the original trace skipped because the gist's earlier list "looked complete enough." Bundle reviews catch what you weren't looking for. External cross-check is load-bearing for any artifact this dense.
+
+---
+
+## v2.11.6 — 2026-05-02 (this fork) — Desktop-side bundle trace; corrects v2.11.5 Desktop framing
+
+Extracted `/Applications/Claude.app/Contents/Resources/app.asar` (Claude Desktop v1.5354.0) and traced its plugin-management code paths against the v2.1.120 standalone CLI. The trace corrected two material errors carried in earlier artifacts.
+
+### Errors corrected
+
+1. **v2.11.5's "Desktop UI vs CLI: two different version resolvers" framing was wrong.** Bundle evidence shows Desktop and the CLI use the **same priority chain** (plugin.json#version primary, marketplace.json#plugins[].version fallback). The asymmetry is real but is at a different layer: it's about *what plugin.json file gets read*, not about the priority order.
+
+2. **claude-plugin-doctor's reading of `agent/local_ditto_<uuid>/` as per-subagent state was wrong.** Bundle confirms these are per-org-generation directories: `Bm = "local_"`, `juA(orgUuid, gen) = local_ditto_<orgUuid>` plus `_g<N>` for `gen > 0`. The generation counter increments when the bridge force-rotates the local session (transport recovery, `resetModel`, clean-state restart) — historical bridge state, not subagent fan-out.
+
+### Added
+
+1. **L26 — new "Desktop-side cross-check (v1.5354.0)" subsection** under the existing Version Resolution Priority section. Shows the `i_t` / `t_t` / `hte` helpers from the Desktop bundle and explains the per-source-type read location:
+   - Desktop's `updatePlugin` IPC handler is a thin wrapper that shells out to `claude plugin update <id>` and parses stdout. Same K6H resolver end-to-end.
+   - Desktop's "Update available" badge in `listAvailablePlugins` uses K6H-equivalent priority but reads plugin.json from a per-source-type-resolved location.
+   - **String sources** (`"./plugin-name"`): read from `<marketplace-clone>/<source>/.claude-plugin/plugin.json` — live, badge surfaces after refresh.
+   - **Object sources** (`github` / `url` / `git-subdir` / `directory` — the majority of public marketplaces): read from `installed_plugins.json[id][0].installPath/.claude-plugin/plugin.json` — frozen at install time, so `pluginJson.version === installedVersion` and the badge effectively does not fire from this code path.
+   - The CLI's `claude plugin update` still detects bumps because it operates on a freshly-fetched marketplace-clone view, not the install snapshot. This explains the operationally-observed asymmetry.
+
+2. **Internal investigation note**: `docs/internal/desktop-bundle-trace-v1.5354.0.md` captures the full Desktop trace with bundle excerpts, including `local_<UUID>` and `local_ditto_<orgUuid>_g<N>` lifecycle.
+
+### Companion gist updates (separate artifact, not in this plugin)
+
+The public Skills/Plugins/Marketplaces reference at `claude-desktop-plugins-architecture.md`:
+
+- Replaced the wrong "Desktop UI vs CLI: two different version resolvers" section with a corrected "Update detection: same priority on Desktop and the CLI, but different read sources" section that documents the per-source-type badge behavior.
+- Updated the cache-table row to point at the corrected explanation.
+- Corrected the per-conversation overlay subsection: `local_<UUID>/` is per-session; `local_ditto_<orgUuid>_g<N>/` is per-org-generation (not per-subagent). The `_g<N>` accumulation is bridge-rotation history.
+- Updated the `listAvailablePlugins` operation flow to spell out the source-type-dependent read location.
+- Tightened the "Short version" recipe: bumping `marketplace.json#plugins[].version` is no longer described as a way to make the Desktop badge appear (it isn't, for object-source plugins). Users are pointed at `claude plugin update` (or Desktop's Update button, which shells out to it) instead of waiting on the badge.
+
+### Files changed
+
+- `skill-package/skills/claude-code-internals/references/04-connectivity-plugins.md` — new Desktop-side cross-check subsection in L26
+- `docs/internal/desktop-bundle-trace-v1.5354.0.md` — new internal note
+- `skill-package/skills/claude-code-internals/version.json` — `skill_version` and `note`
+- `skill-package/.claude-plugin/plugin.json` — `version`
+- `CHANGELOG.md` — this entry
+
+### Methodology takeaway
+
+The Desktop bundle was previously unverified — both the original gist's "Desktop reads marketplace.json only" claim and v2.11.5's "two different resolvers" correction were inferred from observed behavior, not source-traced. Extracting `app.asar` and grepping the main process bundle took ~10 minutes and revealed the actual mechanism. When two artifacts disagree about a binary's behavior and neither has been traced, the resolution is not to pick the more popular framing — it's to extract and read the binary. Both had been wrong.
+
+The shape of the fix shows why this matters operationally: the "asymmetry" plugin authors hit isn't between Desktop and the CLI as separate version resolvers — they share a resolver. It's between **a freshly-fetched marketplace-clone view (CLI on update)** and **a frozen install snapshot (Desktop badge for object-source plugins)**. The two surfaces converge for string-source plugins, diverge for object-source. Knowing which surface is reading from which location is what lets a downstream tool like claude-plugin-doctor implement correct detection.
+
+---
+
+## v2.11.5 — 2026-05-02 (this fork) — `claude plugin update` version-resolution priority
+
+Bundle trace through `K6H` (offset 4,388,116) — the resolver `claude plugin update` uses on both the installed-snapshot side and the freshly-fetched-candidate side of its comparison. Motivated by an external bug report (claude-plugin-doctor) that proposed an inverted priority chain where `marketplace.json#plugins[].version` is primary; bundle evidence shows `plugin.json#version` is primary, with `marketplace.json#plugins[].version` only firing when the manifest is absent or missing the field.
+
+The mistake matters because: under the inverted read, github-source marketplaces (which usually leave `plugins[].version` unset) would be no-op for `claude plugin update`. Empirically they're not. The K6H trace explains why.
+
+### Added
+
+1. **L26 (`04-connectivity-plugins.md`) — new section "`claude plugin update` — Version Resolution Priority"** placed after Background Autoupdate and before the Lesson 10 boundary. Documents:
+   - The K6H signature and full body, with bundle offset
+   - The five-level resolution priority: (1) plugin.json#version PRIMARY, (2) marketplace.json#plugins[].version FALLBACK, (3) pre-resolved git SHA, (4) computed git SHA, (5) "unknown" sentinel
+   - The `git-subdir` variant: 12-char SHA + 8-char hash of the subpath
+   - The comparison shape (`O.version === R || O.installPath === v || O.installPath === N`) — both sides go through K6H, no drift
+   - The "marketplace.json is the source of truth" misreading and why it produces the wrong empirical prediction (no-op for most github-source marketplaces)
+   - Implications for plugin authors: bump `plugin.json#version` for releases; treat `marketplace.json#plugins[].version` as a curator-pin override only
+
+### Files changed
+
+- `skill-package/skills/claude-code-internals/references/04-connectivity-plugins.md` — new "Version Resolution Priority" section
+- `skill-package/skills/claude-code-internals/version.json` — `skill_version` and `note`
+- `skill-package/.claude-plugin/plugin.json` — `version`
+- `CHANGELOG.md` — this entry
+
+### Methodology takeaway
+
+When a downstream tool reports a "version trap" or contradiction, three questions to ask in order: (1) is the contradiction in *this* gist or another artifact (grep verbatim), (2) does the proposed fix have the right *direction* or just the right *idea*, (3) what does the binary actually do at the comparison site? The agent's instinct ("the gist conflates sources") was right. The fix priority they proposed was inverted because they hadn't traced K6H. The five-minute trace (find the resolver, read its body) settles it definitively. Negative findings — "no, marketplace.json#plugins[].version is *not* primary" — close out the misreading and prevent it from propagating into downstream documentation.
+
+---
+
+## v2.11.4 — 2026-04-30 (this fork) — MCP path through the Cowork-async filter
+
+Extension to the L90 "Sub-Agent Tool-Grant Filtering" section. v2.11.3 documented how `Tw8` strips `Bash` from forked agents in Cowork-async dispatch. This pass traces the **other** half of the filter — what happens to MCP tools, how the parent's MCP state reaches the fork, and what runtime registration paths exist (none that are skill-callable).
+
+Motivated by a real question: "if a skill spawns an MCP server at runtime via `mcp-bash-framework`, can a forked sub-agent use it?" Bundle trace says: the bypass works, but the registration step has nowhere to land — the working pattern is static declaration with a behaviorally dynamic launcher.
+
+### Added
+
+1. **L90 — new sub-section "MCP path: the same filter, the other direction"** under the existing Sub-Agent Tool-Grant Filtering heading. Documents:
+   - The `yJ` MCP fast-path in `Tw8` (offset 5,036,218): `function yJ(H){return H.name?.startsWith("mcp__") || H.isMcp === true}` runs as the **first** branch and returns true unconditionally. MCP tools bypass `Jl_` (async allowlist), `F_8` (non-built-in drop set), and `r3H` (universal drop set) regardless of `isAsync`/`isBuiltIn`/`permissionMode`. This is the runtime mechanism behind "expose the work as MCP tools" as the documented Cowork-async escape hatch.
+   - The parent→fork MCP-state inheritance flow at the dispatch site (offset ~8,001,500): `availableTools = Ja(perm, w.getAppState().mcp.tools.concat(w.options.tools.filter(yJ)), {skipReplFilter: true})` for non-`/fork` paths. `Ja` (offset 8,711,381) returns `tR(perm, opts) + r8H(mcpTools, perm)` deduped by name. Forks inherit the parent's live MCP connections **by reference**, not by re-resolving `.mcp.json`.
+   - The `requiredMcpServers` 30-second poll against `state.mcp.clients` (500ms interval, throws on `failed`/missing). This is the runtime contract for the agent-frontmatter field — documented as a field elsewhere but not as a behavior.
+   - Negative finding: **no skill-callable runtime MCP registration.** `claude mcp add --scope dynamic` rejected at offset 7,368,245. `PW3()` chokidar setup at offset ~12,533,956 watches only skill/command directories — `.mcp.json` is not watched. `/mcp` slash command exposes only reconnect/toggle on already-known servers. `--mcp-config` and SDK `io({extraServers})` callbacks are out-of-band for skill bodies. The connection-manager set is fixed at session boot.
+   - The working pattern: static MCP declaration with a behaviorally dynamic launcher. The launcher reads runtime state — env vars, `${CLAUDE_PLUGIN_DATA}/runtime.json`, stdin — to vary tool listing across turns. Skills mutate the launcher's input state; the registration itself stays static.
+   - Agent `tools:` exact-match constraint: `Sz`/`n0` chain does literal `f.get(name)` lookup. `tools: ["mcp__server__*"]` falls into `invalidTools` silently. The `mcp__server__*` prefix form works in **permission rules** (validator at offset ~1,111,367 explicitly accepts it) but NOT in agent declarations. Authors copying the form from a permission rule into an agent's frontmatter get the same "agent has no tools" symptom as the Bash-strip case.
+
+2. **Internal investigation note** at `docs/internal/mcp-from-skill-to-subagent.md`. Captures the trace and the working/failing patterns. Not part of the published skill, but referenced from the L90 update for source provenance.
+
+### Companion gist updates (separate artifact, not in this plugin)
+
+The public Skills/Plugins/Marketplaces reference gist (https://gist.github.com/yaniv-golan/303b6213b7a33167b3f98b076a5f81ad) gained three Mermaid diagrams in an earlier pass: containment hierarchy (Marketplace → Plugin → component dirs), loading-order chain (10-stage chain → dedup gate → model listing), and Cowork-async dispatch sequence (showing the `Tw8` filter dropping Bash silently). The gist's recommendation to "expose the work as MCP tools" as the Cowork escape hatch is now verified at the bundle level and tied to the specific bypass mechanism.
+
+### Files changed
+
+- `skill-package/skills/claude-code-internals/references/17-verified-new-v2.1.120.md` — new "MCP path: the same filter, the other direction" sub-section under Sub-Agent Tool-Grant Filtering
+- `skill-package/skills/claude-code-internals/version.json` — `skill_version` and `note`
+- `skill-package/.claude-plugin/plugin.json` — `version`
+- `docs/internal/mcp-from-skill-to-subagent.md` — new investigation note
+- `CHANGELOG.md` — this entry
+
+### Methodology takeaway
+
+The bundle answer to "can a runtime-spawned MCP server be used from a fork?" was a clean composition of three traces — filter chain (`Tw8` first-branch `yJ`), state inheritance (`Ja` reading `state.mcp.tools`), and registration paths (rejected `dynamic` scope + missing watcher). Each was a 5-minute grep. The combined picture inverts the user's question: instead of "register at runtime, use from fork", the answer is "register at boot with a launcher that varies its output, mutate state from the skill, call from anywhere." Negative findings (no `.mcp.json` watcher, no `dynamic` scope) are as load-bearing as positive ones — they're what makes the working pattern unique.
+
+---
+
 ## v2.11.3 — 2026-04-29 (this fork) — Sub-agent tool-grant filtering documented + topic-index gap closed
 
 Empirical-and-source pass on a real Cowork failure: forked sub-agents from `founder-skills:*` skills couldn't persist artifacts despite declaring `Bash` in `tools:`. Trace went through the v2.1.120 bundle, identified the `Tw8` base-tool filter and `Jl_` allowlist as the mechanism, ruled out a "Task-as-poison" pattern-match hypothesis, and confirmed empirically that adding `Write` and `Edit` to the agent's `tools:` array restores artifact persistence (probe lands `done`, byte-exact content match).
