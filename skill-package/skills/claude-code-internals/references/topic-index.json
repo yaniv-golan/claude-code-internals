@@ -1,7 +1,7 @@
 {
-  "generated": "2026-04-29",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.120",
-  "total_lessons": 90,
+  "generated": "2026-06-01",
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159",
+  "total_lessons": 104,
   "lessons": [
     {
       "id": 1,
@@ -1726,7 +1726,7 @@
     },
     {
       "id": 88,
-      "title": "v2.1.118 /cost + /stats \u2192 /usage Aliases, cache-diagnosis-2026-04-07, Frontmatter Shadow Validator, WIF OAuth Locking",
+      "title": "v2.1.118 /cost + /stats → /usage Aliases, cache-diagnosis-2026-04-07, Frontmatter Shadow Validator, WIF OAuth Locking",
       "lesson_number": "88",
       "file": "16-verified-new-v2.1.118.md",
       "startLine": 459,
@@ -2168,9 +2168,290 @@
         "Sub-Agent-Tool-Grant-Filtering-cross-ref",
         "Cowork-async-dispatch-cross-ref"
       ]
+    },
+    {
+      "id": 91,
+      "title": "v2.1.159 Dynamic Workflows: Workflow Tool, Agent/Budget Caps, Journal-Resume, Keyword Trigger",
+      "lesson_number": "91",
+      "file": "18-verified-new-v2.1.159.md",
+      "startLine": 54,
+      "endLine": 93,
+      "keywords": [
+        "dynamic-workflows",
+        "workflow-tool",
+        "workflows-command",
+        "agent-cap",
+        "token-budget",
+        "journal-resume",
+        "workflow-keyword",
+        "AW-gate",
+        "sub-agent-fanout"
+      ]
+    },
+    {
+      "id": 92,
+      "title": "v2.1.159 Coordinator Mode: Worker-Team Dispatch Role",
+      "lesson_number": "92",
+      "file": "18-verified-new-v2.1.159.md",
+      "startLine": 94,
+      "endLine": 123,
+      "keywords": [
+        "coordinator-mode",
+        "TeamCreate",
+        "TeamDelete",
+        "CLAUDE_CODE_COORDINATOR_MODE",
+        "coordinator-panel",
+        "worker-team",
+        "dispatch-role"
+      ]
+    },
+    {
+      "id": 93,
+      "title": "v2.1.159 Opus 4.8 Launch + Effort Ladder + Fast-Mode Downgrade",
+      "lesson_number": "93",
+      "file": "18-verified-new-v2.1.159.md",
+      "startLine": 124,
+      "endLine": 160,
+      "keywords": [
+        "opus-4-8",
+        "claude-opus-4-8",
+        "effort",
+        "xhigh",
+        "max-effort",
+        "effort-ladder",
+        "CLAUDE_CODE_EFFORT_LEVEL",
+        "fast-mode-override",
+        "CLAUDE_EFFORT",
+        "model-fallback",
+        "launch-banner"
+      ]
+    },
+    {
+      "id": 94,
+      "title": "v2.1.159 Streaming Tool Execution GA + Reliability Layer",
+      "lesson_number": "94",
+      "file": "18-verified-new-v2.1.159.md",
+      "startLine": 161,
+      "endLine": 191,
+      "keywords": [
+        "streaming-tool-execution",
+        "streaming-ga",
+        "byte-watchdog",
+        "CLAUDE_BYTE_STREAM_IDLE_TIMEOUT_MS",
+        "stale-connection-retry",
+        "watchdog-retry",
+        "gate-deleted"
+      ]
+    },
+    {
+      "id": 95,
+      "title": "v2.1.159 MessageDisplay Hook + the 30-Event Master Array + Stop-Hook Block Cap",
+      "lesson_number": "95",
+      "file": "18-verified-new-v2.1.159.md",
+      "startLine": 192,
+      "endLine": 230,
+      "keywords": [
+        "messagedisplay",
+        "messagedisplay-hook",
+        "hook-event-types",
+        "30-hooks",
+        "master-hook-array",
+        "stop-hook-block-cap",
+        "reloadskills",
+        "sessiontitle",
+        "displaycontent",
+        "hook-count"
+      ]
+    },
+    {
+      "id": 96,
+      "title": "v2.1.159 Auto-Mode Promotion to Default + Repo-Spoof Guard",
+      "lesson_number": "96",
+      "file": "18-verified-new-v2.1.159.md",
+      "startLine": 231,
+      "endLine": 260,
+      "keywords": [
+        "auto-mode",
+        "auto-mode-default",
+        "CLAUDE_CODE_ENABLE_AUTO_MODE",
+        "auto-default-nudge",
+        "untrusted-source-guard",
+        "repo-spoof",
+        "afk-mode",
+        "defaultMode-auto"
+      ]
+    },
+    {
+      "id": 97,
+      "title": "v2.1.159 Cloud Gateway OAuth Provider",
+      "lesson_number": "97",
+      "file": "18-verified-new-v2.1.159.md",
+      "startLine": 261,
+      "endLine": 282,
+      "keywords": [
+        "cloud-gateway",
+        "gateway-provider",
+        "gatewayAuth",
+        "jwt",
+        "idp-refresh",
+        "CLAUDE_CODE_USE_GATEWAY",
+        "oauth-gateway",
+        "login-gateway"
+      ]
+    },
+    {
+      "id": 98,
+      "title": "v2.1.159 Org-Managed Skills/Plugins Sync + CLI-as-Skill",
+      "lesson_number": "98",
+      "file": "18-verified-new-v2.1.159.md",
+      "startLine": 283,
+      "endLine": 318,
+      "keywords": [
+        "skills-sync",
+        "plugins-sync",
+        "CLAUDE_CODE_SYNC_SKILLS",
+        "CLAUDE_CODE_SYNC_PLUGINS",
+        "teleport-org",
+        "claude-code-docs",
+        "tengu_birch_kettle",
+        "mcp-reconcile",
+        "org-managed",
+        "reload-skills"
+      ]
+    },
+    {
+      "id": 99,
+      "title": "v2.1.159 Host-Delegated Credential Refresh + OIDC env-quad",
+      "lesson_number": "99",
+      "file": "18-verified-new-v2.1.159.md",
+      "startLine": 319,
+      "endLine": 355,
+      "keywords": [
+        "host-auth",
+        "host-auth-refresh",
+        "CLAUDE_CODE_SDK_HAS_HOST_AUTH_REFRESH",
+        "CLAUDE_CODE_HOST_AUTH_ENV_VAR",
+        "CLAUDE_BG_AUTH_SNAPSHOT_PATH",
+        "ANTHROPIC_WORKSPACE_ID",
+        "managedByHost",
+        "credential-refresh",
+        "env-quad"
+      ]
+    },
+    {
+      "id": 100,
+      "title": "v2.1.159 Background Runtime: Binary Takeover + Fleet to Agent-View Rename",
+      "lesson_number": "100",
+      "file": "18-verified-new-v2.1.159.md",
+      "startLine": 356,
+      "endLine": 400,
+      "keywords": [
+        "binary-takeover",
+        "tengu_bg_binary_takeover",
+        "self-upgrade",
+        "spawn-fallback",
+        "agent-view",
+        "CLAUDE_CODE_DISABLE_AGENT_VIEW",
+        "fleet-rename",
+        "bridge-attestation",
+        "bg-permission-rules",
+        "tcc-disclaim",
+        "supervised",
+        "cowork-three-root",
+        "host-loop"
+      ]
+    },
+    {
+      "id": 101,
+      "title": "v2.1.159 /loop Keepalive (KAIROS Self-Pacing Safety Net) + /dream Routine",
+      "lesson_number": "101",
+      "file": "18-verified-new-v2.1.159.md",
+      "startLine": 401,
+      "endLine": 430,
+      "keywords": [
+        "loop-keepalive",
+        "CLAUDE_CODE_LOOP_KEEPALIVE",
+        "kairos",
+        "kairos-loop-dynamic",
+        "loop-pacing",
+        "dream-routine",
+        "dream-not-removed",
+        "aged-out"
+      ]
+    },
+    {
+      "id": 102,
+      "title": "v2.1.159 Plan-Interview Removal + Team-Memory Multistore + Command Churn + Spend Nudges",
+      "lesson_number": "102",
+      "file": "18-verified-new-v2.1.159.md",
+      "startLine": 431,
+      "endLine": 463,
+      "keywords": [
+        "plan-interview-removed",
+        "CLAUDE_MEMORY_STORES",
+        "team-memory",
+        "multistore",
+        "command-churn",
+        "commit-removed",
+        "usage-credits",
+        "wellbeing",
+        "scroll-speed",
+        "spend-limit-nudge",
+        "startup-notice",
+        "fotw"
+      ]
+    },
+    {
+      "id": 103,
+      "title": "v2.1.159 PEWTER_OWL Gate over the SendUserMessage (Brief) Tool",
+      "lesson_number": "103",
+      "file": "18-verified-new-v2.1.159.md",
+      "startLine": 464,
+      "endLine": 493,
+      "keywords": [
+        "pewter-owl",
+        "CLAUDE_CODE_PEWTER_OWL",
+        "senduserMessage",
+        "brief-tool",
+        "tengu_pewter_owl_model",
+        "internal-output-channel",
+        "messaging-tool"
+      ]
+    },
+    {
+      "id": 104,
+      "title": "v2.1.159 New Codename GB-Flag Triage (~30 flags)",
+      "lesson_number": "104",
+      "file": "18-verified-new-v2.1.159.md",
+      "startLine": 494,
+      "endLine": 521,
+      "keywords": [
+        "codename-flags",
+        "gb-flags",
+        "cedar_hollow",
+        "amber_lattice",
+        "cinder_plover",
+        "cobalt_thicket",
+        "prompt-copy-override",
+        "dark-launch",
+        "statsig-flags"
+      ]
     }
   ],
   "keyword_map": {
+    "409": [
+      80
+    ],
+    "422": [
+      80
+    ],
+    "424": [
+      80
+    ],
+    "529": [
+      80,
+      2
+    ],
     "boot": [
       1,
       5
@@ -2449,7 +2730,9 @@
       6
     ],
     "orchestration": [
-      6
+      6,
+      91,
+      92
     ],
     "concurrency": [
       6,
@@ -2689,7 +2972,8 @@
       12
     ],
     "coordinator": [
-      13
+      13,
+      92
     ],
     "dispatcher": [
       13
@@ -3426,7 +3710,8 @@
       37
     ],
     "keepalive": [
-      37
+      37,
+      101
     ],
     "cron": [
       38,
@@ -3528,7 +3813,8 @@
     ],
     "teleport": [
       53,
-      57
+      57,
+      98
     ],
     "exit-plan-mode": [
       41
@@ -3564,7 +3850,9 @@
       1
     ],
     "kairos": [
-      43
+      43,
+      67,
+      101
     ],
     "autonomous": [
       43
@@ -3940,7 +4228,8 @@
       61
     ],
     "dream": [
-      62
+      62,
+      101
     ],
     "learn": [
       62
@@ -4550,19 +4839,6 @@
     ],
     "server-driven-compaction": [
       80
-    ],
-    "422": [
-      80
-    ],
-    "424": [
-      80
-    ],
-    "409": [
-      80
-    ],
-    "529": [
-      80,
-      2
     ],
     "invalid_request": [
       80
@@ -6272,6 +6548,140 @@
     ],
     "Cowork-async-dispatch-cross-ref": [
       90
+    ],
+    "workflow": [
+      91
+    ],
+    "workflows": [
+      91
+    ],
+    "fanout": [
+      91
+    ],
+    "teamcreate": [
+      92
+    ],
+    "teamdelete": [
+      92
+    ],
+    "opus48": [
+      93
+    ],
+    "opus": [
+      46,
+      93
+    ],
+    "xhigh": [
+      93
+    ],
+    "ladder": [
+      93
+    ],
+    "fastmode": [
+      93
+    ],
+    "messagedisplay": [
+      95
+    ],
+    "displaycontent": [
+      95
+    ],
+    "reloadskills": [
+      95
+    ],
+    "sessiontitle": [
+      95
+    ],
+    "stophookcap": [
+      95
+    ],
+    "automode": [
+      96
+    ],
+    "afk": [
+      96
+    ],
+    "repospoof": [
+      96
+    ],
+    "gateway": [
+      97
+    ],
+    "idprefresh": [
+      97
+    ],
+    "syncskills": [
+      98
+    ],
+    "syncplugins": [
+      98
+    ],
+    "birchkettle": [
+      98
+    ],
+    "claudecodedocs": [
+      98
+    ],
+    "hostauth": [
+      99
+    ],
+    "authsnapshot": [
+      99
+    ],
+    "workspaceid": [
+      99
+    ],
+    "managedbyhost": [
+      99
+    ],
+    "takeover": [
+      100
+    ],
+    "agentview": [
+      100
+    ],
+    "fleet": [
+      89,
+      100
+    ],
+    "attestation": [
+      100
+    ],
+    "multistore": [
+      102
+    ],
+    "memorystores": [
+      102
+    ],
+    "wellbeing": [
+      102
+    ],
+    "usagecredits": [
+      102
+    ],
+    "scrollspeed": [
+      102
+    ],
+    "spendnudge": [
+      102
+    ],
+    "pewter": [
+      103
+    ],
+    "pewterowl": [
+      103
+    ],
+    "sendusermessage": [
+      103
+    ],
+    "brief": [
+      103
+    ],
+    "codename": [
+      104
+    ],
+    "gbflag": [
+      104
     ]
   }
 }

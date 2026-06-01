@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-23",
+  "generated": "2026-06-01",
   "description": "Maps common symptoms/problems to relevant lessons for debugging Claude Code internals",
   "symptoms": [
     {
@@ -432,7 +432,7 @@
         58,
         10
       ],
-      "hint": "CLAUDE_CODE_EXECPATH is automatically injected into every spawned shell/hook environment \u2014 use $CLAUDE_CODE_EXECPATH in hook scripts to invoke the claude binary without hard-coding a path."
+      "hint": "CLAUDE_CODE_EXECPATH is automatically injected into every spawned shell/hook environment — use $CLAUDE_CODE_EXECPATH in hook scripts to invoke the claude binary without hard-coding a path."
     },
     {
       "pattern": [
@@ -611,7 +611,7 @@
       "lessons": [
         73
       ],
-      "hint": "Multi-repo support uses CLAUDE_CODE_REPO_CHECKOUTS (JSON map of label\u2192path) and CLAUDE_CODE_BASE_REFS (JSON map of label\u2192ref). Both must be valid JSON with string\u2192string entries."
+      "hint": "Multi-repo support uses CLAUDE_CODE_REPO_CHECKOUTS (JSON map of label→path) and CLAUDE_CODE_BASE_REFS (JSON map of label→ref). Both must be valid JSON with string→string entries."
     },
     {
       "pattern": [
@@ -635,7 +635,7 @@
       "lessons": [
         75
       ],
-      "hint": "REPL mode is gated behind tengu_slate_harbor (default: false). Set CLAUDE_CODE_REPL=true to force-enable. Only works on cli/remote entrypoints. import/require are blocked \u2014 code runs in sealed VM. Tools are restricted to Read/Write/Edit/Bash/NotebookEdit via OkH set."
+      "hint": "REPL mode is gated behind tengu_slate_harbor (default: false). Set CLAUDE_CODE_REPL=true to force-enable. Only works on cli/remote entrypoints. import/require are blocked — code runs in sealed VM. Tools are restricted to Read/Write/Edit/Bash/NotebookEdit via OkH set."
     },
     {
       "pattern": [
@@ -648,7 +648,7 @@
         75,
         32
       ],
-      "hint": "REPL VM state is compaction-aware \u2014 context compaction clears the VM state and warns. Variables persist within a session but not across compaction events. Check replay-log for state hydration."
+      "hint": "REPL VM state is compaction-aware — context compaction clears the VM state and warns. Variables persist within a session but not across compaction events. Check replay-log for state hydration."
     },
     {
       "pattern": [
@@ -661,7 +661,7 @@
       "lessons": [
         76
       ],
-      "hint": "Rate limit upgrade paths use a 3-layer system: server header hints (anthropic-ratelimit-unified-upgrade-paths), client lever hints (oV9 \u2014 gated by tengu_garnet_plover, pro+seven_day only), and interactive options menu. Early warnings fire at percentage-based thresholds before actual rejection."
+      "hint": "Rate limit upgrade paths use a 3-layer system: server header hints (anthropic-ratelimit-unified-upgrade-paths), client lever hints (oV9 — gated by tengu_garnet_plover, pro+seven_day only), and interactive options menu. Early warnings fire at percentage-based thresholds before actual rejection."
     },
     {
       "pattern": [
@@ -674,7 +674,7 @@
         73,
         37
       ],
-      "hint": "Multi-repo checkout is CCR v2 infrastructure only \u2014 requires CLAUDE_CODE_USE_CCR_V2 to be enabled. Env vars are set by the external CCR orchestrator, not for local CLI use. Branch watching uses fs.watchFile on .git/HEAD at 1s intervals."
+      "hint": "Multi-repo checkout is CCR v2 infrastructure only — requires CLAUDE_CODE_USE_CCR_V2 to be enabled. Env vars are set by the external CCR orchestrator, not for local CLI use. Branch watching uses fs.watchFile on .git/HEAD at 1s intervals."
     },
     {
       "pattern": [
@@ -747,7 +747,7 @@
         80,
         28
       ],
-      "hint": "Context Hint API lets the server signal compaction via HTTP 422/424/409/529 or SSE invalid_request with type=context_hint_rejection. Triggers keep-recent micro-compaction (sT9, keepRecent=5). Only activates on first-party API on repl_main_thread* when tengu_hazel_osprey is on. No env var disables it \u2014 feature-flag controlled."
+      "hint": "Context Hint API lets the server signal compaction via HTTP 422/424/409/529 or SSE invalid_request with type=context_hint_rejection. Triggers keep-recent micro-compaction (sT9, keepRecent=5). Only activates on first-party API on repl_main_thread* when tengu_hazel_osprey is on. No env var disables it — feature-flag controlled."
     },
     {
       "pattern": [
@@ -762,7 +762,7 @@
         81,
         23
       ],
-      "hint": "Fullscreen precedence (first match wins): CLAUDE_CODE_NO_FLICKER=1 hard disables, CLAUDE_CODE_FULLSCREEN=1 hard enables, tmux -CC auto-disables, then userSettings.tui, then tengu_pewter_brook. /tui respawns the process via child_process.spawn. If terminal goes blank, your terminal may not support alt-screen \u2014 set CLAUDE_CODE_NO_FLICKER=1."
+      "hint": "Fullscreen precedence (first match wins): CLAUDE_CODE_NO_FLICKER=1 hard disables, CLAUDE_CODE_FULLSCREEN=1 hard enables, tmux -CC auto-disables, then userSettings.tui, then tengu_pewter_brook. /tui respawns the process via child_process.spawn. If terminal goes blank, your terminal may not support alt-screen — set CLAUDE_CODE_NO_FLICKER=1."
     },
     {
       "pattern": [
@@ -805,7 +805,7 @@
         84,
         74
       ],
-      "hint": "Slow first-byte watchdog logs 'warn' after CLAUDE_SLOW_FIRST_BYTE_MS (default 30000ms) with no stream chunk. Purely observational \u2014 does NOT abort the request. Complements L74's byte-level watchdog which does abort."
+      "hint": "Slow first-byte watchdog logs 'warn' after CLAUDE_SLOW_FIRST_BYTE_MS (default 30000ms) with no stream chunk. Purely observational — does NOT abort the request. Complements L74's byte-level watchdog which does abort."
     },
     {
       "pattern": [
@@ -817,7 +817,7 @@
         84,
         18
       ],
-      "hint": "Unknown slash commands now trigger fuzzy-match suggestion via _a5() \u2192 BCH(). Writes 'unknown command \"X\"' + '\u2514 Did you mean claude Y?' to stderr, emits tengu_unknown_command_suggestion, exits 1."
+      "hint": "Unknown slash commands now trigger fuzzy-match suggestion via _a5() → BCH(). Writes 'unknown command \"X\"' + '└ Did you mean claude Y?' to stderr, emits tengu_unknown_command_suggestion, exits 1."
     },
     {
       "pattern": [
@@ -830,7 +830,7 @@
         84,
         31
       ],
-      "hint": "Canary channel (rp1()) reads GrowthBook feature tengu_canary expecting {external: semver}. Native-installer target-picker op1() overrides target if canary > target AND !exceedsMaxVersion. Server-controlled rolling canary \u2014 not user-configurable."
+      "hint": "Canary channel (rp1()) reads GrowthBook feature tengu_canary expecting {external: semver}. Native-installer target-picker op1() overrides target if canary > target AND !exceedsMaxVersion. Server-controlled rolling canary — not user-configurable."
     },
     {
       "pattern": [
@@ -863,7 +863,7 @@
         77,
         60
       ],
-      "hint": "All five Remote Workflow Commands (/autopilot, /bugfix, /dashboard, /docs, /investigate) were removed outright in v2.1.113 \u2014 no feature flag, no deprecation shim, code deleted. See L85. The back-end CCR v2 infrastructure (L73) and /autofix-pr (L60) survive. L77 remains as historical documentation for what v2.1.110 shipped."
+      "hint": "All five Remote Workflow Commands (/autopilot, /bugfix, /dashboard, /docs, /investigate) were removed outright in v2.1.113 — no feature flag, no deprecation shim, code deleted. See L85. The back-end CCR v2 infrastructure (L73) and /autofix-pr (L60) survive. L77 remains as historical documentation for what v2.1.110 shipped."
     },
     {
       "pattern": [
@@ -941,7 +941,7 @@
       "lessons": [
         85
       ],
-      "hint": "v2.1.113 adds a 'Show message timestamps' setting (showMessageTimestamps, default false). Toggle is only visible in /config when GrowthBook flag tengu_silk_hinge is enabled \u2014 a server-gated UX rollout. Changes fire tengu_show_message_timestamps_setting_changed telemetry. See L85."
+      "hint": "v2.1.113 adds a 'Show message timestamps' setting (showMessageTimestamps, default false). Toggle is only visible in /config when GrowthBook flag tengu_silk_hinge is enabled — a server-gated UX rollout. Changes fire tengu_show_message_timestamps_setting_changed telemetry. See L85."
     },
     {
       "pattern": [
@@ -955,7 +955,7 @@
         85,
         37
       ],
-      "hint": "v2.1.113 adds daemon-mode support via CLAUDE_BG_BACKEND=daemon: SIGHUP is ignored (logged SIGHUP_ignored_bg), stdout EIO/EPIPE is latched instead of thrown, and the 30s TTY-orphan detector is bypassed. Paired with a new user setting autoAddRemoteControlDaemonWorker (consumer is not present in the binary \u2014 likely server-side or forthcoming). Together these sketch a 'Claude Code as daemon worker under Remote Control' architecture. See L85 for semantics, L37 for Bridge/Remote context."
+      "hint": "v2.1.113 adds daemon-mode support via CLAUDE_BG_BACKEND=daemon: SIGHUP is ignored (logged SIGHUP_ignored_bg), stdout EIO/EPIPE is latched instead of thrown, and the 30s TTY-orphan detector is bypassed. Paired with a new user setting autoAddRemoteControlDaemonWorker (consumer is not present in the binary — likely server-side or forthcoming). Together these sketch a 'Claude Code as daemon worker under Remote Control' architecture. See L85 for semantics, L37 for Bridge/Remote context."
     },
     {
       "pattern": [
@@ -983,7 +983,7 @@
         85,
         31
       ],
-      "hint": "v2.1.113 adds unclean-exit detection at startup. When a prior interactive session is found to have exited uncleanly, a startup message 'Prior session exited uncleanly: SID (vX)' is logged and tengu_unclean_exit fires with session_age_sec, prior_version, on_current_version. Pure observability \u2014 does not auto-resume. See L85."
+      "hint": "v2.1.113 adds unclean-exit detection at startup. When a prior interactive session is found to have exited uncleanly, a startup message 'Prior session exited uncleanly: SID (vX)' is logged and tengu_unclean_exit fires with session_age_sec, prior_version, on_current_version. Pure observability — does not auto-resume. See L85."
     },
     {
       "pattern": [
@@ -1008,7 +1008,7 @@
       "lessons": [
         85
       ],
-      "hint": "v2.1.113 adds tengu_image_resize_degraded telemetry emitted when an image block throws a VI error during processing; the block is substituted with a text placeholder '[Image could not be processed: <message>]'. No user-configurable gate \u2014 purely observational. See L85."
+      "hint": "v2.1.113 adds tengu_image_resize_degraded telemetry emitted when an image block throws a VI error during processing; the block is substituted with a text placeholder '[Image could not be processed: <message>]'. No user-configurable gate — purely observational. See L85."
     },
     {
       "pattern": [
@@ -1080,7 +1080,7 @@
         88,
         38
       ],
-      "hint": "v2.1.117 landed directory-level locking (proper-lockfile) around WIF user-OAuth token refresh; v2.1.118 added all 5 telemetry events on top. The lock is on <config_dir>/credentials/ (the DIRECTORY, not the file), acquired via Gv_ \u2192 Vk4 \u2192 RY(path, {onCompromised: wH}). Retry budget is exactly tvq=5 attempts with 1000-2000ms jittered backoff = 5-10s max wait. On exhaustion: throws typed error e5 with message 'Could not acquire credentials lock at <path> after 5 retries'. If tengu_wif_user_oauth_lock_retry_limit fires, another Claude Code process is stuck holding the lock \u2014 investigate with `lsof <config_dir>/credentials/.lock` and `ls -la <config_dir>/credentials/.lock`. If confirmed orphaned, `rmdir <config_dir>/credentials/.lock` clears it (safe only when no live holder). tengu_oauth_401_recovered_from_disk indicates the post-hoc disk re-read recovery path succeeded \u2014 separate from the lock, catches cases where a sibling refreshed between in-memory cache load and the outbound request. See L88, and L38 for the base OAuth flow."
+      "hint": "v2.1.117 landed directory-level locking (proper-lockfile) around WIF user-OAuth token refresh; v2.1.118 added all 5 telemetry events on top. The lock is on <config_dir>/credentials/ (the DIRECTORY, not the file), acquired via Gv_ → Vk4 → RY(path, {onCompromised: wH}). Retry budget is exactly tvq=5 attempts with 1000-2000ms jittered backoff = 5-10s max wait. On exhaustion: throws typed error e5 with message 'Could not acquire credentials lock at <path> after 5 retries'. If tengu_wif_user_oauth_lock_retry_limit fires, another Claude Code process is stuck holding the lock — investigate with `lsof <config_dir>/credentials/.lock` and `ls -la <config_dir>/credentials/.lock`. If confirmed orphaned, `rmdir <config_dir>/credentials/.lock` clears it (safe only when no live holder). tengu_oauth_401_recovered_from_disk indicates the post-hoc disk re-read recovery path succeeded — separate from the lock, catches cases where a sibling refreshed between in-memory cache load and the outbound request. See L88, and L38 for the base OAuth flow."
     },
     {
       "pattern": [
@@ -1098,7 +1098,7 @@
         88,
         10
       ],
-      "hint": "Claude Code has a previously-undocumented hook TYPE: the AI verification hook (bs7). Instead of a shell command, an agent hook spawns a dedicated sub-conversation that returns structured output {ok: true} (allow stop) or {ok: false, reason} (block). v2.1.118 added tengu_agent_stop_hook_blocking telemetry for the !ok outcome \u2014 the mechanism itself pre-existed. Limits: max 50 turns (constant B=50), 60s default timeout (override via hookConfig.timeout in seconds), permissionMode:'dontAsk', thinking disabled. System prompt for Stop/SubagentStop events: 'You are verifying a stop condition in Claude Code. Your task is to verify that the agent completed the given plan.' Read(<transcript>) is auto-allowed. Five outcomes: success, blocking, cancelled (max turns), cancelled (no structured output), non_blocking_error. If the hook fires often and uses tool-call chains, expect latency \u2014 consider raising timeout or simplifying the verification prompt. See L88 for the full mechanism and L10 for the shell-command hook baseline."
+      "hint": "Claude Code has a previously-undocumented hook TYPE: the AI verification hook (bs7). Instead of a shell command, an agent hook spawns a dedicated sub-conversation that returns structured output {ok: true} (allow stop) or {ok: false, reason} (block). v2.1.118 added tengu_agent_stop_hook_blocking telemetry for the !ok outcome — the mechanism itself pre-existed. Limits: max 50 turns (constant B=50), 60s default timeout (override via hookConfig.timeout in seconds), permissionMode:'dontAsk', thinking disabled. System prompt for Stop/SubagentStop events: 'You are verifying a stop condition in Claude Code. Your task is to verify that the agent completed the given plan.' Read(<transcript>) is auto-allowed. Five outcomes: success, blocking, cancelled (max turns), cancelled (no structured output), non_blocking_error. If the hook fires often and uses tool-call chains, expect latency — consider raising timeout or simplifying the verification prompt. See L88 for the full mechanism and L10 for the shell-command hook baseline."
     },
     {
       "pattern": [
@@ -1112,7 +1112,7 @@
       "lessons": [
         87
       ],
-      "hint": "/fork has three distinct execution paths with very different semantics. (1) User types /fork <directive>: backgrounded (isAsync:true) via _a7 \u2192 quH \u2192 xy, returns immediately, parent NOT blocked, shows '<emoji> forked <name> (<id4>)' system message, uses ph fork subagent type (tools:['*'], maxTurns:200, model:'inherit', permissionMode:'bubble'), gets full parent messages + REPL replay log. Guard: 'Cannot fork before the first conversation turn' (new in v2.1.117) if no renderedSystemPrompt. (2) Slash command with context:'fork' frontmatter: synchronous via V75, parent BLOCKS, inline progress streaming, uses H.agent from frontmatter or general-purpose fallback, returns <local-command-stdout>. (3) Skill invoked via Skill tool with context:'fork': synchronous via C75 (NEW in v2.1.118), same semantics as V75 but reaches via Skill tool path. See L87 for details. The 'fork' subagent type (ph) is ONLY used by path 1 \u2014 paths 2/3 use whatever agent is specified."
+      "hint": "/fork has three distinct execution paths with very different semantics. (1) User types /fork <directive>: backgrounded (isAsync:true) via _a7 → quH → xy, returns immediately, parent NOT blocked, shows '<emoji> forked <name> (<id4>)' system message, uses ph fork subagent type (tools:['*'], maxTurns:200, model:'inherit', permissionMode:'bubble'), gets full parent messages + REPL replay log. Guard: 'Cannot fork before the first conversation turn' (new in v2.1.117) if no renderedSystemPrompt. (2) Slash command with context:'fork' frontmatter: synchronous via V75, parent BLOCKS, inline progress streaming, uses H.agent from frontmatter or general-purpose fallback, returns <local-command-stdout>. (3) Skill invoked via Skill tool with context:'fork': synchronous via C75 (NEW in v2.1.118), same semantics as V75 but reaches via Skill tool path. See L87 for details. The 'fork' subagent type (ph) is ONLY used by path 1 — paths 2/3 use whatever agent is specified."
     },
     {
       "pattern": [
@@ -1133,7 +1133,7 @@
         88,
         11
       ],
-      "hint": "v2.1.118 added shadow validation (pjH) that calls qT1[kind]().strict().safeParse(frontmatter) and emits tengu_frontmatter_shadow_unknown_key / _mismatch telemetry on drift. There is NO formal primary schema \u2014 primary frontmatter handling is imperative (Cz8 reads properties directly and ignores unknown keys), so the Zod schemas added in v2.1.118 are the only formal validation. Per-session dedup via Gj9 Set means each unique (event,surface,detail) tuple fires once. Dispatch table has 3 entries: skill (eO1), agent (HT1), output-style (_T1) \u2014 custom commands are validated as 'skill'. The big known drift: progressMessage is documented in L11 but NOT in eO1, so any skill declaring it fires telemetry on load. Also watch kebab-vs-camel drift: schema uses allowed-tools / argument-hint / disable-model-invocation / user-invocable (kebab) for skills but tools / disallowedTools / mcpServers / maxTurns / initialPrompt / permissionMode (camel) for agents. See L88 for the full schema tables."
+      "hint": "v2.1.118 added shadow validation (pjH) that calls qT1[kind]().strict().safeParse(frontmatter) and emits tengu_frontmatter_shadow_unknown_key / _mismatch telemetry on drift. There is NO formal primary schema — primary frontmatter handling is imperative (Cz8 reads properties directly and ignores unknown keys), so the Zod schemas added in v2.1.118 are the only formal validation. Per-session dedup via Gj9 Set means each unique (event,surface,detail) tuple fires once. Dispatch table has 3 entries: skill (eO1), agent (HT1), output-style (_T1) — custom commands are validated as 'skill'. The big known drift: progressMessage is documented in L11 but NOT in eO1, so any skill declaring it fires telemetry on load. Also watch kebab-vs-camel drift: schema uses allowed-tools / argument-hint / disable-model-invocation / user-invocable (kebab) for skills but tools / disallowedTools / mcpServers / maxTurns / initialPrompt / permissionMode (camel) for agents. See L88 for the full schema tables."
     },
     {
       "pattern": [
@@ -1145,6 +1145,87 @@
         88
       ],
       "hint": "v2.1.118 dark-launched /pro-trial-expired (isEnabled:()=>false). Currently inert. When the date-gate or GB flag enables it, users whose Pro plan trial has ended will see an upsell/renewal UI with tracked choices (tengu_pro_trial_expired_choice). Combined with CLAUDE_CODE_SUBSCRIPTION_TYPE / CLAUDE_CODE_RATE_LIMIT_TIER env vars (L87), this is test-surface for the Pro plan rollout. See L88."
+    },
+    {
+      "pattern": [
+        "why is /commit gone",
+        "/commit removed",
+        "/commit-push-pr missing"
+      ],
+      "lessons": [
+        102
+      ],
+      "hint": "Removed as builtins in v2.1.159 and migrated to the commit-commands plugin (install it to restore /commit)."
+    },
+    {
+      "pattern": [
+        "plugin hooks don't fire in cowork",
+        "cowork hook not firing",
+        "cowork plugin hook",
+        "sessionstart hook cowork"
+      ],
+      "lessons": [
+        89,
+        100
+      ],
+      "hint": "Plugin hooks DO fire in Cowork — but only if the plugin is in the desktop's account/org cowork_plugins namespace. Install via the Cowork APP UI, not the standalone CLI --cowork (which writes a different root the desktop never reads). See L89."
+    },
+    {
+      "pattern": [
+        "why is /dream gone",
+        "/dream removed",
+        "/dream missing"
+      ],
+      "lessons": [
+        101
+      ],
+      "hint": "Not removed — reclassified from a slash command to a built-in routine in v2.1.159."
+    },
+    {
+      "pattern": [
+        "workflow agent cap",
+        "too many workflow agents",
+        "workflow budget exceeded",
+        "workflow stopped early"
+      ],
+      "lessons": [
+        91
+      ],
+      "hint": "Dynamic Workflows hard-caps at 1000 agents; the token budget is opt-in (only bites if a caller sets it)."
+    },
+    {
+      "pattern": [
+        "disable streaming tool execution",
+        "turn off streaming tool execution"
+      ],
+      "lessons": [
+        94
+      ],
+      "hint": "Not possible — streaming tool execution went GA in v2.1.159; the gate was deleted with no escape hatch."
+    },
+    {
+      "pattern": [
+        "how many hook event types",
+        "hook event count",
+        "27 hook events",
+        "19 hook events"
+      ],
+      "lessons": [
+        95,
+        10
+      ],
+      "hint": "The live master hook array is 30 as of v2.1.159; older '27' (v2.1.90) and '19' (a diff-tool undercount) figures are stale."
+    },
+    {
+      "pattern": [
+        "cloud gateway session expired",
+        "gateway login",
+        "CLAUDE_CODE_USE_GATEWAY not working"
+      ],
+      "lessons": [
+        97
+      ],
+      "hint": "Select the Cloud gateway via /login (not CLAUDE_CODE_USE_GATEWAY, which is dead/unread). On expiry, run /login to reconnect."
     }
   ]
 }

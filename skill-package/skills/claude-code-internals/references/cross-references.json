@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-21",
+  "generated": "2026-06-01",
   "description": "Cross-reference map: for each lesson, lists related lessons ranked by relevance",
   "references": {
     "1": [
@@ -828,7 +828,7 @@
       {
         "id": 85,
         "relevance": 0.75,
-        "reason": "L85 adds CLAUDE_BG_BACKEND=daemon and autoAddRemoteControlDaemonWorker \u2014 the env gate for the always-on local worker this Remote Control bridge feeds into"
+        "reason": "L85 adds CLAUDE_BG_BACKEND=daemon and autoAddRemoteControlDaemonWorker — the env gate for the always-on local worker this Remote Control bridge feeds into"
       }
     ],
     "38": [
@@ -1162,7 +1162,7 @@
       {
         "id": 12,
         "relevance": 0.78,
-        "reason": "/branch spawns a fork subagent \u2014 relates to the full agent system"
+        "reason": "/branch spawns a fork subagent — relates to the full agent system"
       },
       {
         "id": 52,
@@ -1191,7 +1191,7 @@
       {
         "id": 19,
         "relevance": 0.65,
-        "reason": "/buddy injects a companion system prompt \u2014 relates to memory/prompt injection"
+        "reason": "/buddy injects a companion system prompt — relates to memory/prompt injection"
       }
     ],
     "57": [
@@ -1203,7 +1203,7 @@
       {
         "id": 58,
         "relevance": 0.78,
-        "reason": "L57 and L58 both document v2.1.92 changes \u2014 read together"
+        "reason": "L57 and L58 both document v2.1.92 changes — read together"
       }
     ],
     "58": [
@@ -1445,7 +1445,7 @@
       {
         "id": 85,
         "relevance": 0.5,
-        "reason": "L85 shows /update actively iterating (module hash churn, new refusal paths) despite still being isEnabled:()=>false from L68 \u2014 daemon-mode may be the delivery vehicle"
+        "reason": "L85 shows /update actively iterating (module hash churn, new refusal paths) despite still being isEnabled:()=>false from L68 — daemon-mode may be the delivery vehicle"
       }
     ],
     "69": [
@@ -1584,7 +1584,7 @@
       {
         "id": 32,
         "relevance": 0.7,
-        "reason": "REPL mode is compaction-aware \u2014 warns when VM state is cleared during context compaction"
+        "reason": "REPL mode is compaction-aware — warns when VM state is cleared during context compaction"
       }
     ],
     "76": [
@@ -1660,12 +1660,12 @@
       {
         "id": 80,
         "relevance": 0.75,
-        "reason": "Both L78 and L80 are server-driven behavioral modifications \u2014 read together as the 'server takes the wheel' cluster"
+        "reason": "Both L78 and L80 are server-driven behavioral modifications — read together as the 'server takes the wheel' cluster"
       },
       {
         "id": 83,
         "relevance": 0.68,
-        "reason": "Advisor's behavior pairs with System Prompt GB Override \u2014 both let the server alter primary-model behavior"
+        "reason": "Advisor's behavior pairs with System Prompt GB Override — both let the server alter primary-model behavior"
       },
       {
         "id": 29,
@@ -1692,19 +1692,19 @@
       {
         "id": 20,
         "relevance": 0.65,
-        "reason": "PushNotification complements the local notification system (L20) \u2014 one is transactional, the other is in-session"
+        "reason": "PushNotification complements the local notification system (L20) — one is transactional, the other is in-session"
       },
       {
         "id": 85,
         "relevance": 0.5,
-        "reason": "L85's daemon-mode gate complements the mobile push infrastructure of L79 \u2014 both are moves toward an always-on local posture"
+        "reason": "L85's daemon-mode gate complements the mobile push infrastructure of L79 — both are moves toward an always-on local posture"
       }
     ],
     "80": [
       {
         "id": 28,
         "relevance": 0.92,
-        "reason": "Context Hint triggers keep-recent micro-compaction \u2014 extends the compaction system from L28 with a server-driven trigger"
+        "reason": "Context Hint triggers keep-recent micro-compaction — extends the compaction system from L28 with a server-driven trigger"
       },
       {
         "id": 2,
@@ -1714,7 +1714,7 @@
       {
         "id": 78,
         "relevance": 0.75,
-        "reason": "Both L78 and L80 are server-driven behavioral modifications \u2014 paired in the 'server takes the wheel' narrative"
+        "reason": "Both L78 and L80 are server-driven behavioral modifications — paired in the 'server takes the wheel' narrative"
       },
       {
         "id": 33,
@@ -1741,7 +1741,7 @@
       {
         "id": 22,
         "relevance": 0.65,
-        "reason": "Fullscreen mode interacts with keybindings (L22) \u2014 input handling changes in alt-screen mode"
+        "reason": "Fullscreen mode interacts with keybindings (L22) — input handling changes in alt-screen mode"
       },
       {
         "id": 84,
@@ -1768,7 +1768,7 @@
       {
         "id": 66,
         "relevance": 0.65,
-        "reason": "Both L82 and L66 (CA cert store) are enterprise-network features \u2014 related configuration surface"
+        "reason": "Both L82 and L66 (CA cert store) are enterprise-network features — related configuration surface"
       }
     ],
     "83": [
@@ -1790,7 +1790,7 @@
       {
         "id": 77,
         "relevance": 0.68,
-        "reason": "System prompt GB override is gated on CLAUDE_CODE_REMOTE \u2014 primarily runs inside CCR v2 Remote Workflows from L77"
+        "reason": "System prompt GB override is gated on CLAUDE_CODE_REMOTE — primarily runs inside CCR v2 Remote Workflows from L77"
       },
       {
         "id": 78,
@@ -1839,7 +1839,7 @@
       {
         "id": 60,
         "relevance": 0.7,
-        "reason": "L60's /autofix-pr is the surviving Remote Workflow command \u2014 read together to see which remote commands persist vs. were sunset"
+        "reason": "L60's /autofix-pr is the surviving Remote Workflow command — read together to see which remote commands persist vs. were sunset"
       },
       {
         "id": 81,
@@ -1849,7 +1849,7 @@
       {
         "id": 73,
         "relevance": 0.6,
-        "reason": "L73 CCR v2 multi-repo infrastructure survives the L85 sunset \u2014 the scaffolding remains even though L77's user-facing commands were removed"
+        "reason": "L73 CCR v2 multi-repo infrastructure survives the L85 sunset — the scaffolding remains even though L77's user-facing commands were removed"
       },
       {
         "id": 6,
@@ -1869,7 +1869,7 @@
       {
         "id": 79,
         "relevance": 0.5,
-        "reason": "Mobile push pipeline requires a background worker reachable when no TTY is attached \u2014 daemon-mode env gate makes that explicit"
+        "reason": "Mobile push pipeline requires a background worker reachable when no TTY is attached — daemon-mode env gate makes that explicit"
       }
     ],
     "86": [
@@ -1991,6 +1991,158 @@
         "id": 35,
         "relevance": 0.45,
         "reason": "Frontmatter shadow validator also applies to plugin frontmatter — will affect the L35 plugin system loader if promoted to strict mode"
+      }
+    ],
+    "dynamic-workflows": [
+      {
+        "id": 91,
+        "relevance": 0.95,
+        "reason": "the Workflow tool + dynamic-workflows subsystem"
+      },
+      {
+        "id": 92,
+        "relevance": 0.7,
+        "reason": "coordinator mode composes with workflows"
+      },
+      {
+        "id": 5,
+        "relevance": 0.5,
+        "reason": "workflows fan out sub-agents"
+      }
+    ],
+    "coordinator-mode-v2159": [
+      {
+        "id": 92,
+        "relevance": 0.95,
+        "reason": "v2.1.159 coordinator dispatch-mode wiring"
+      },
+      {
+        "id": 21,
+        "relevance": 0.8,
+        "reason": "foundational coordinator-mode lesson"
+      },
+      {
+        "id": 22,
+        "relevance": 0.6,
+        "reason": "teams & swarm"
+      }
+    ],
+    "opus-4-8": [
+      {
+        "id": 93,
+        "relevance": 0.95,
+        "reason": "Opus 4.8 launch + effort ladder"
+      },
+      {
+        "id": 51,
+        "relevance": 0.7,
+        "reason": "/effort command & reasoning budget"
+      },
+      {
+        "id": 46,
+        "relevance": 0.6,
+        "reason": "model system"
+      }
+    ],
+    "messagedisplay-hook": [
+      {
+        "id": 95,
+        "relevance": 0.95,
+        "reason": "MessageDisplay hook + the 30-event master array"
+      },
+      {
+        "id": 10,
+        "relevance": 0.6,
+        "reason": "hooks system foundation"
+      }
+    ],
+    "cloud-gateway": [
+      {
+        "id": 97,
+        "relevance": 0.9,
+        "reason": "Cloud gateway OAuth provider"
+      },
+      {
+        "id": 29,
+        "relevance": 0.5,
+        "reason": "session/auth management"
+      }
+    ],
+    "skills-plugins-sync": [
+      {
+        "id": 98,
+        "relevance": 0.9,
+        "reason": "org-managed skills/plugins sync from Console"
+      },
+      {
+        "id": 11,
+        "relevance": 0.5,
+        "reason": "skills system"
+      },
+      {
+        "id": 26,
+        "relevance": 0.5,
+        "reason": "settings cascade"
+      }
+    ],
+    "host-auth-refresh": [
+      {
+        "id": 99,
+        "relevance": 0.9,
+        "reason": "host-delegated credential refresh"
+      },
+      {
+        "id": 86,
+        "relevance": 0.5,
+        "reason": "OIDC federation env-quad"
+      }
+    ],
+    "binary-takeover": [
+      {
+        "id": 100,
+        "relevance": 0.9,
+        "reason": "background binary-takeover self-upgrade + agent-view rename"
+      },
+      {
+        "id": 90,
+        "relevance": 0.6,
+        "reason": "daemon on-demand model"
+      },
+      {
+        "id": 89,
+        "relevance": 0.6,
+        "reason": "cowork runtime"
+      }
+    ],
+    "loop-keepalive": [
+      {
+        "id": 101,
+        "relevance": 0.9,
+        "reason": "/loop keepalive KAIROS safety net"
+      },
+      {
+        "id": 67,
+        "relevance": 0.6,
+        "reason": "dynamic loop pacing"
+      }
+    ],
+    "team-memory-multistore": [
+      {
+        "id": 102,
+        "relevance": 0.85,
+        "reason": "CLAUDE_MEMORY_STORES multistore"
+      },
+      {
+        "id": 8,
+        "relevance": 0.7,
+        "reason": "memory system"
+      }
+    ],
+    "pewter-owl-senduserMessage": [
+      {
+        "id": 103,
+        "relevance": 0.9,
+        "reason": "PEWTER_OWL gate over the internal SendUserMessage tool"
       }
     ]
   }
