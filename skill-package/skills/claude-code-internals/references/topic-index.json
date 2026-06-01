@@ -1880,7 +1880,7 @@
       "lesson_number": "89",
       "file": "17-verified-new-v2.1.120.md",
       "startLine": 83,
-      "endLine": 1278,
+      "endLine": 1946,
       "keywords": [
         "v2.1.119",
         "cowork",
@@ -2047,7 +2047,22 @@
         "plugin-pinning-auto-update",
         "v2.1.119-added",
         "official-changelog-corroboration",
-        "dark-launch-corroboration"
+        "dark-launch-corroboration",
+        "CLAUDE_PLUGIN_ROOT",
+        "plugin-root-resolution",
+        "plugin-root-host-side",
+        "in-vm-plugin-root",
+        "remote-plugins-mount",
+        "local-plugins-cache",
+        "mnt-remote-plugins",
+        "host-vm-boundary",
+        "host-loop-staging",
+        "coworkroot-probe",
+        "hook-side-effects",
+        "sessionstart-export-not-propagated",
+        "hook-env-not-in-vm",
+        "plugin-script-invocation-cowork",
+        "cowork-skill-author-guidance"
       ]
     },
     {
@@ -2055,8 +2070,8 @@
       "title": "v2.1.120 Daemon On-Demand Model, CLAUDE_CODE_LEAN_PROMPT, Memory-Write Approval UX, Plan-Mode Tripwire, CLAUDE_COWORK_MEMORY_GUIDELINES",
       "lesson_number": "90",
       "file": "17-verified-new-v2.1.120.md",
-      "startLine": 1279,
-      "endLine": 2000,
+      "startLine": 1947,
+      "endLine": 2680,
       "keywords": [
         "v2.1.120",
         "v2.1.120-bundle",
