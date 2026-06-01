@@ -193,7 +193,7 @@ The `/update` slash command remains `isEnabled: () => false` and `isHidden: true
 
 ## What Did Not Change in v2.1.113
 
-- **Hook event types:** 19 event types, same set as v2.1.112/v2.1.111. No additions.
+- **Hook event types:** same set as v2.1.112/v2.1.111 — no additions in v2.1.113. *(Correction: an earlier revision listed "19 event types" here; that figure was a `diff-versions.sh` undercount artifact — its `extract_hook_types` regex used a suffix allowlist that silently dropped events like `MessageDisplay`/`PostToolBatch`/`CwdChanged`. The real master array was already ≥27 by v2.1.90 (see Ch9/L10) and is 30 as of v2.1.159. The extractor has since been fixed.)*
 - **API beta strings:** 30 betas, identical set to v2.1.112/v2.1.111. `context-hint-2026-04-09` (L80), `ccr-byoc-2025-07-29` (L77/L73), `managed-agents-2026-04-01` (L76) all still present — the API surface did not churn this release.
 - **CCR v2 back-end gates:** `CLAUDE_CODE_USE_CCR_V2`, `allow_remote_sessions`, `$X4()` still in the bundle. Multi-repo checkout infrastructure (L73) still present.
 - **All other v2.1.110–v2.1.111 lessons (L78–L84):** Advisor Tool, PushNotification/KAIROS, Context Hint API, Fullscreen TUI, Proxy Auth Helper, System Prompt GB Override, and the L84 catch-all items (canary channel, slow first-byte watchdog, background plugin refresh, unknown-command did-you-mean, new telemetry events) are unchanged.

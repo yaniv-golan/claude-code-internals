@@ -2045,6 +2045,12 @@ detailed body. This is a **pattern**: lean mode delegates verbose content to ski
 
 Don't conflate them.
 
+> **Update (v2.1.159):** the lean prompt is now the **default** ("except for Haiku, Sonnet,
+> Opus 4.7 and earlier" — CHANGELOG 2.1.154), i.e. the staged rollout this section describes has
+> graduated. The Bash/ripgrep gate `tengu_vellum_lantern` (and its `claude-opus-4-7`-only model
+> guard) is **removed from the v2.1.159 bundle**; `tengu_ochre_finch` (memory-types section)
+> survives. Treat the per-section flag table above as the v2.1.120 snapshot, not current gating.
+
 ---
 
 ## `CLAUDE_EFFORT` — A Skill Frontmatter Field, NOT an Env Var
@@ -2096,6 +2102,12 @@ function _L1(H) {
 
 `_I(model, effort)` = `JIH(model, effort) ?? "high"` then `RPH(string)` validates. `JIH` is
 the per-model gate (some models may not support `xhigh`).
+
+> **Note (v2.1.159):** the substituter's minified name is `bk(model, effort)` in v2.1.159
+> (`_I` is the v2.1.120 name — minified identifiers drift between builds; the mechanism is
+> unchanged). The effort tier set also gained `max` (full set `["low","medium","high","xhigh","max"]`)
+> and Opus 4.8 ships defaulting to `high` (Opus 4.7 defaulted to `xhigh`) — see the
+> v2.1.159 chapter for the launch/effort details.
 
 ### Critical implication for skill authors
 

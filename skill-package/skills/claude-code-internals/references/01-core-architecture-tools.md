@@ -346,7 +346,9 @@ for await (const message of deps.callModel({
 
 ### Streaming Tool Execution
 
-When `config.gates.streamingToolExecution` is enabled, `StreamingToolExecutor` fires tools while the stream remains open, enabling parallel execution and reduced latency on multi-tool turns.
+`StreamingToolExecutor` fires tools while the stream remains open, enabling parallel execution and reduced latency on multi-tool turns.
+
+> **Update (v2.1.159, was gated through v2.1.120):** streaming tool execution is now **unconditional** — "enabled for all users" (CHANGELOG 2.1.154). The `config.gates.streamingToolExecution` gate (Statsig key `tengu_streaming_tool_execution2`) was **deleted**, not merely defaulted on: the executor is built directly (`new U__(...)`, formerly the gated `jM_`), with **no remaining env/flag escape hatch**, and the A/B telemetry (`_used`/`_not_used`) is gone. A separate reliability layer was added around it (stale-connection / idle-watchdog pre-first-event retries, the `CLAUDE_BYTE_STREAM_IDLE_TIMEOUT_MS` byte watchdog).
 
 **Tombstone messages:** Mid-stream fallback triggers yield `{ type: 'tombstone', message }` to prevent "thinking blocks cannot be modified" API errors on retry.
 

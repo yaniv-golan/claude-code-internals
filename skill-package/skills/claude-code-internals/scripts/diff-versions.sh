@@ -97,37 +97,76 @@ def extract_envvars(text):
         out.update(re.findall(p, text))
     return out
 
+def extract_env_reads(text):
+    """Subset of extract_envvars that ACTUALLY reads process.env.X.
+
+    Used to flag "string-literal-only" matches — names that appear only as
+    quoted strings or object keys but are never read via process.env. Those are
+    frequently FALSE POSITIVES: bundled skill/markdown text (ANTHROPIC_ENVIRONMENT_ID),
+    module exports (CLAUDE_CODE_SKILL_NAME), allowlist-array entries that are never
+    consumed (CLAUDE_CODE_USE_GATEWAY), or string-table dumps (CLAUDE_EFFORT). A
+    var with a real read here is a high-confidence behavioral env var.
+    """
+    return set(re.findall(
+        r'process\.env\.((?:CLAUDE|ANTHROPIC)_[A-Z][A-Z0-9_]{2,})(?![A-Z0-9_])', text))
+
 def extract_commands(text):
-    """Extract slash command definitions: name:"...", description:"..." pairs."""
+    """Extract slash command definitions keyed by name:"...".
+
+    A command is recognized when a `description:` key or a `get description()`
+    getter appears within the window after name:"...". The description TEXT is
+    captured when it's a plain double-quoted or backtick (template-literal)
+    string; computed/dynamic descriptions (e.g. get description(){return COND?
+    "a":"b"}) are recorded as "(dynamic)" so the command still counts as PRESENT.
+
+    Why the extra forms matter: a string-only matcher silently MISSED commands
+    whose description is a template literal (ultraplan/ultrareview/fast/model)
+    or a dynamic ternary (remote-control's get description(){return KN()?...}),
+    causing FALSE REMOVALS when a command's description form changed between
+    builds. (Genuine removals — e.g. /dream, which moved from a name:"dream"
+    command to a built-in routine — still surface correctly: there's no
+    name:"dream" registration in the new bundle, so it is legitimately absent.)
+    """
     cmds = {}
-    # Match name:"foo" within a few hundred chars of either:
-    #   description:"bar"
-    #   get description(){return"bar"}
     for m in re.finditer(r'name:"([a-z][a-z0-9+-]{0,59})"', text):
         name = m.group(1)
-        window = text[m.start():m.start()+500]
-        dm = re.search(
-            r'(?:description:"([^"]{1,200})"|get description\(\)\{return"([^"]{1,200})"\})',
-            window,
-        )
+        window = text[m.start():m.start()+600]
+        dm = (re.search(r'description:"([^"]{1,200})"', window)
+              or re.search(r'get description\(\)\{return"([^"]{1,200})"', window))
         if dm:
-            cmds[name] = dm.group(1) or dm.group(2)
+            cmds[name] = dm.group(1); continue
+        bm = (re.search(r'description:`([^`]{1,300})`', window)
+              or re.search(r'get description\(\)\{return`([^`]{1,300})`', window))
+        if bm:
+            cmds[name] = bm.group(1); continue
+        if re.search(r'get description\(\)\{|[,{]description:', window):
+            cmds[name] = "(dynamic)"
     return cmds
 
 def extract_hook_types(text):
-    """Extract hook event type names from the xv1 array or similar enum."""
-    # Hook types appear as quoted strings in an array near "PreToolUse"
-    # Find the array containing PreToolUse
-    idx = text.find('PreToolUse')
+    """Extract hook event type names from the master hook-event array.
+
+    The array is a flat list of quoted PascalCase strings whose first element is
+    "PreToolUse" (e.g. ["PreToolUse","PostToolUse",...,"MessageDisplay"]).
+
+    NOTE: a previous version filtered to a fixed suffix allowlist
+    (...Start|Stop|Use|Change|...). That silently dropped any event whose name
+    ends otherwise — MessageDisplay (ends "Display"), PostToolBatch ("Batch"),
+    CwdChanged/FileChanged ("Changed") — and, because the drop happened in BOTH
+    bundles, the diff reported "unchanged" while the real array grew. We now
+    capture EVERY PascalCase string inside the array literal, so the count tracks
+    the live array (30 as of v2.1.159). Anchor on the quoted "PreToolUse" so the
+    backward [-scan lands on the array's own opening bracket, not an earlier one.
+    """
+    idx = text.find('"PreToolUse"')
     if idx == -1:
         return set()
-    # Search backward for array start, forward for array end
-    start = text.rfind('[', max(0, idx-500), idx)
-    end = text.find(']', idx, idx+2000)
+    start = text.rfind('[', max(0, idx-2000), idx)
+    end = text.find(']', idx, idx+4000)
     if start == -1 or end == -1:
         return set()
     chunk = text[start:end+1]
-    return set(re.findall(r'"([A-Z][a-zA-Z]+(?:Start|Stop|Use|Change|Submit|Created|Compact|Request|Denied|Result|Loaded|Idle|Failure|End|Removed|Create))"', chunk))
+    return set(re.findall(r'"([A-Z][a-zA-Z]+)"', chunk))
 
 def extract_betas(text):
     """Extract API beta strings (format: word-YYYY-MM-DD)."""
@@ -168,6 +207,8 @@ results = {}
 
 if section in ('envvars', 'all'):
     results['envvars'] = diff_sets(extract_envvars(old_text), extract_envvars(new_text), 'Environment Variables')
+    # High-confidence subset: names actually read via process.env.X in the new bundle.
+    results['envvars']['env_reads_new'] = sorted(extract_env_reads(new_text))
 
 if section in ('commands', 'all'):
     results['commands'] = diff_dicts(extract_commands(old_text), extract_commands(new_text), 'Slash Commands')
@@ -250,6 +291,19 @@ def print_diff(d, name_fn=lambda x: x):
 for key in ('envvars', 'commands', 'hooks', 'betas', 'tengu'):
     if key in results:
         print_diff(results[key])
+        # Flag added env vars with no process.env.X read — likely false positives
+        # (markdown/exports/allowlist-only/string-table). Verify before documenting.
+        if key == 'envvars':
+            reads = set(results['envvars'].get('env_reads_new', []))
+            suspect = [v for v in results['envvars'].get('added', []) if v not in reads]
+            if suspect:
+                print(f'   ⚠ Verify ({len(suspect)} added with NO process.env read — may be markdown/export/allowlist-only/dead):')
+                for v in suspect:
+                    print(f'       ? {v}')
 
+print('\n  NOTE: This is a HEURISTIC diff — verify before documenting. Known gaps:')
+print('   • Slash commands moved to the routines table (name+cron+template, e.g. /dream)')
+print('     show as "removed" — they are reclassified, not deleted. Grep "/<name>" in both.')
+print('   • Env vars flagged "⚠ Verify" lack a process.env read; confirm a real read site.')
 print(f'\n{"="*60}\n')
 PYEOF
