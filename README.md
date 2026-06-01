@@ -2,7 +2,7 @@
 
 ![Claude Code Internals banner](assets/banner.png)
 
-> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 68 lessons covering every internal subsystem, verified against the v2.1.101 binary, searchable three ways.
+> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 104 lessons covering every internal subsystem, verified against the v2.1.159 binary, searchable three ways.
 >
 > **This is a modified fork** of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals). See [Attribution](#attribution) for what changed.
 
@@ -12,7 +12,7 @@
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-plugin-F97316)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/plugins)
 [![Improved with Skill Creator Plus](https://img.shields.io/badge/Improved_with-Skill_Creator_Plus-4ecdc4?style=flat-square)](https://github.com/yaniv-golan/skill-creator-plus)
 
-**Skill Version:** 2.4.0 | **Captured from:** Claude Code v2.1.101 | **Date:** 2026-04-11 | **License:** MIT
+**Skill Version:** 2.12.0 | **Captured from:** Claude Code v2.1.159 | **Date:** 2026-06-01 | **License:** MIT
 
 ---
 
@@ -120,9 +120,9 @@ Adds a gentle reminder whenever Claude edits `.claude/` config files. Add to `ho
 
 ## What This Is
 
-This is a Claude Code skill containing a complete reverse-engineering of Claude Code's internal architecture, verified against the v2.1.101 binary. 68 detailed lessons cover every major subsystem — from the boot sequence to undocumented features found directly in the binary. The latest net-new lesson content (Chapter 13) covers the v2.1.101 changes: proactive away summary system, `CLAUDE_CODE_CERT_STORE`, dynamic loop pacing with aging, cloud-first loop offering, and SDK observability. When you type `/claude-code-internals hooks` or `/claude-code-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
+This is a Claude Code skill containing a complete reverse-engineering of Claude Code's internal architecture, verified against the v2.1.159 binary. 104 detailed lessons cover every major subsystem — from the boot sequence to undocumented features found directly in the binary. The latest net-new lesson content (Chapter 21) covers the v2.1.139–v2.1.159 changes: Dynamic Workflows + coordinator mode, the Opus 4.8 launch (effort ladder low|medium|high|xhigh|max), streaming-tool-execution GA, the `MessageDisplay` hook (the live master hook array is now 30), auto-mode promotion to default, the Cloud gateway provider, org-managed skills/plugins sync, host-delegated credential refresh, background binary-takeover, and `/loop` keepalive. When you type `/claude-code-internals hooks` or `/claude-code-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
 
-Without this skill, Claude knows *how to use* Claude Code but doesn't know *how Claude Code works internally*. With it, Claude becomes an expert on its own implementation — the query engine's retry logic, all 27 hook event types, the 7-phase permission pipeline, the compaction algorithm, the agent spawn lifecycle, and binary-verified internals of features like `/effort`, `/rewind`, `/teleport`, `/branch`, `/dream`, Perforce mode, and the away summary system.
+Without this skill, Claude knows *how to use* Claude Code but doesn't know *how Claude Code works internally*. With it, Claude becomes an expert on its own implementation — the query engine's retry logic, all 30 hook event types, the 7-phase permission pipeline, the compaction algorithm, the agent spawn lifecycle, and binary-verified internals of features like `/effort`, `/rewind`, `/teleport`, `/branch`, Dynamic Workflows, the Opus 4.8 effort ladder, the Cowork runtime, and `/fork`.
 
 ## Why This Skill Is Useful
 
@@ -225,7 +225,7 @@ brew install jq node
 ```
 /claude-code-internals hooks
 ```
-Returns all 27 hook event types, exit code semantics (0=proceed, 1=proceed+warn, 2=block), command types, configuration format, and the critical detail that hook config is snapshot-captured at startup.
+Returns all 30 hook event types, exit code semantics (0=proceed, 1=proceed+warn, 2=block), command types, configuration format, and the critical detail that hook config is snapshot-captured at startup.
 
 ```
 /claude-code-internals permissions
@@ -269,7 +269,7 @@ Returns the companion system internals: the date gate (April 2026+, first-party 
 
 1. **Use it BEFORE configuring anything under `.claude/`.** The skill knows exact formats, valid values, and edge cases.
 2. **Use natural language when keywords don't work.** "what happens when Claude runs out of context space" finds the compaction lesson even without the word "compaction."
-3. **Know its limits.** Core lessons (1–50) were captured from Claude Code v2.1.88. Chapters 9–13 (lessons 51–68) were verified directly against the v2.1.90/v2.1.92/v2.1.94/v2.1.100/v2.1.101 binaries.
+3. **Know its limits.** Core lessons (1–50) were captured from Claude Code v2.1.88. Chapters 9–21 (lessons 51–104) were verified directly against the v2.1.90 through v2.1.159 binaries.
 
 ## Smart Features (v2.2)
 
@@ -282,7 +282,7 @@ Returns the companion system internals: the date gate (April 2026+, first-party 
 ```bash
 node scripts/fetch-lesson.js 32          # Hooks System content
 node scripts/fetch-lesson.js 32 --meta   # Metadata only (file, line range)
-node scripts/fetch-lesson.js --list      # All 68 lessons
+node scripts/fetch-lesson.js --list      # All 104 lessons
 ```
 
 ### xref.js — Shell-Safe Cross-Reference Lookup
@@ -312,7 +312,7 @@ bash scripts/diff-versions.sh claude-2.1.88-bundle.js claude-2.1.90-bundle.js
 
 ```bash
 bash scripts/check-version.sh
-# Silent if versions match (currently v2.1.101)
+# Silent if versions match (currently v2.1.159)
 # Warns if you are running a newer version
 ```
 
@@ -359,7 +359,7 @@ claude-code-internals/
 │   └── skills/
 │       └── claude-code-internals/  The skill itself
 │           ├── SKILL.md            Skill brain (search strategy, lesson index)
-│           ├── version.json        Version tracking (v2.4.0 / v2.1.101)
+│           ├── version.json        Version tracking (v2.12.0 / v2.1.159)
 │           ├── hooks-config.json   PreToolUse hook definition
 │           ├── references/
 │           │   ├── 01-core-architecture-tools.md
@@ -372,6 +372,14 @@ claude-code-internals/
 │           │   ├── 08-verified-new-v2.1.94.md   ← Chapter 11 (binary-verified)
 │           │   ├── 09-verified-new-v2.1.100.md  ← Chapter 12 (binary-verified)
 │           │   ├── 10-verified-new-v2.1.101.md  ← Chapter 13 (binary-verified)
+│           │   ├── 11-verified-new-v2.1.104.md  ← Chapter 14 (binary-verified)
+│           │   ├── 12-verified-new-v2.1.109.md  ← Chapter 15 (binary-verified)
+│           │   ├── 13-verified-new-v2.1.111.md  ← Chapter 16 (binary-verified)
+│           │   ├── 14-verified-new-v2.1.113.md  ← Chapter 17 (binary-verified)
+│           │   ├── 15-verified-new-v2.1.116.md  ← Chapter 18 (binary-verified)
+│           │   ├── 16-verified-new-v2.1.118.md  ← Chapter 19 (binary-verified)
+│           │   ├── 17-verified-new-v2.1.120.md  ← Chapter 20 (binary-verified)
+│           │   ├── 18-verified-new-v2.1.159.md  ← Chapter 21 (binary-verified)
 │           │   ├── topic-index.json
 │           │   ├── semantic-index.json
 │           │   ├── cross-references.json
@@ -401,7 +409,7 @@ claude-code-internals/
 </details>
 
 <details>
-<summary>The 68 Lessons — 13 Chapters (click to expand)</summary>
+<summary>The 104 Lessons — 21 Chapters (click to expand)</summary>
 
 | Ch | File | Lessons |
 |----|------|---------|
@@ -415,6 +423,14 @@ claude-code-internals/
 | **11** | **`08-verified-new-v2.1.94.md`** | v2.1.94 command changes: **/autofix-pr**, **/team-onboarding**, `/loop` still present (L60). New env vars: **CLAUDE_CODE_USE_MANTLE**, **CLAUDE_CODE_MCP_ALLOWLIST_ENV**, **CLAUDE_CODE_SANDBOXED**, CLAUDE_CODE_TEAM_ONBOARDING (L61) |
 | **12** | **`09-verified-new-v2.1.100.md`** | **/dream** user-facing memory consolidation with 4-phase prompt, gate chain, sandboxing, team memory, tiny mode (L62). **Perforce mode** & **Script Caps** (L63). **/setup-vertex**, custom model capabilities, /buddy removal, REPL env var cleanup (L64) |
 | **13** | **`10-verified-new-v2.1.101.md`** | **Proactive away summary** system with terminal focus tracking, forked API call, recap rendering (L65). **CLAUDE_CODE_CERT_STORE** CA certificate configuration (L66). **Dynamic loop pacing** with aging, cloud-first offering, /loops UI (L67). **/update** command, SDK OAuth refresh, SDK observability, MCP registry BFF (L68) |
+| **14** | **`11-verified-new-v2.1.104.md`** | **Streaming Partial Yield Protection** (L70). System prompt section rename: Text Output (L71) |
+| **15** | **`12-verified-new-v2.1.109.md`** | **/recap** on-demand session recap (L72). **Multi-repo checkout** & base refs (L73). **Byte-level stream watchdog** (L74). **REPL mode** (L75). v2.1.107–v2.1.109 command & env-var changes (L76) |
+| **16** | **`13-verified-new-v2.1.111.md`** | **Remote Workflow Commands** /autopilot /bugfix /dashboard /docs /investigate (L77). **Advisor Tool** (server-side reviewer) (L78). **PushNotification** + KAIROS mobile push (L79). **Context Hint API** (L80). **Fullscreen TUI**, /focus, /tui (L81). Proxy Auth Helper (L82). System-prompt GB override (L83). v2.1.110–v2.1.111 changes (L84) |
+| **17** | **`14-verified-new-v2.1.113.md`** | v2.1.112–v2.1.113 changes — **Remote Workflow sunset** (L85) |
+| **18** | **`15-verified-new-v2.1.116.md`** | v2.1.114–v2.1.116 — **OIDC Federation** enterprise auth, config profiles, proxy plumbing, **/model headless** (L86) |
+| **19** | **`16-verified-new-v2.1.118.md`** | v2.1.117 **/fork** background subagent, rate-limit/subscription overrides, /autocompact + /stop-hook removal (L87). v2.1.118 **/cost + /stats → /usage** aliases, cache-diagnosis beta, frontmatter shadow validator, WIF OAuth locking (L88) |
+| **20** | **`17-verified-new-v2.1.120.md`** | **Claude Cowork runtime** GA — v2.1.119 /background, /daemon, Fleet view, classifier-summary, session-identity taxonomy (L89). v2.1.120 daemon on-demand model, **CLAUDE_CODE_LEAN_PROMPT**, memory-write Approve/Reject UX, plan-mode tripwire, CLAUDE_COWORK_MEMORY_GUIDELINES (L90). *(L89 updated v2.11.18: plugin hooks DO fire in Cowork — three-root namespace + host-loop staging.)* |
+| **21** | **`18-verified-new-v2.1.159.md`** | **Dynamic Workflows** + coordinator mode (L91–92). **Opus 4.8** launch + effort ladder (L93). **Streaming tool execution GA** (L94). **MessageDisplay hook** = 30th master-array event (L95). Auto-mode promotion + repo-spoof guard (L96). **Cloud gateway** OAuth (L97). Org-managed **skills/plugins sync** (L98). Host-delegated credential refresh (L99). Background **binary takeover** + Fleet→agent-view rename (L100). **/loop keepalive** (L101). Plan-interview removal + team-memory multistore + command churn (L102). **PEWTER_OWL** over SendUserMessage (L103). ~30 codename GB-flag triage (L104) |
 
 </details>
 
@@ -422,10 +438,10 @@ claude-code-internals/
 
 ```json
 {
-  "skill_version": "2.4.0",
-  "captured_version": "2.1.101",
-  "verified_against_binary": "2.1.101",
-  "captured_date": "2026-04-11"
+  "skill_version": "2.12.0",
+  "captured_version": "2.1.159",
+  "verified_against_binary": "2.1.159",
+  "captured_date": "2026-06-01"
 }
 ```
 
@@ -463,13 +479,21 @@ This repository is a fork of [stuinfla/claude-code-internals](https://github.com
 - The PreToolUse `.claude/` hook (`config-aware-hook.sh`), version check script, and RuFlo index builder
 - The original README documentation and architecture diagrams
 
-**What this fork adds** (v2.2.0–v2.4.0, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
+**What this fork adds** (v2.2.0–v2.12.0, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
 
 - Chapter 9 (Lessons 51–56): binary-verified new features in Claude Code v2.1.90, extracted directly from the Bun SEA binary and verified against official docs
 - Chapter 10 (Lessons 57–59): binary-verified changes in Claude Code v2.1.92 — new commands, removed commands, new env vars, and AskUserQuestionTool documentation
 - Chapter 11 (Lessons 60–61): binary-verified changes in Claude Code v2.1.94 — `/autofix-pr`, `/team-onboarding`, Mantle provider support, `CLAUDE_CODE_MCP_ALLOWLIST_ENV`, and `CLAUDE_CODE_SANDBOXED`
 - Chapter 12 (Lessons 62–64): binary-verified changes in Claude Code v2.1.97–v2.1.100 — `/dream` memory consolidation, Perforce mode, Script Caps, `/setup-vertex`, custom model capabilities, `/buddy` removal
 - Chapter 13 (Lessons 65–68): binary-verified changes in Claude Code v2.1.101 — proactive away summary system, `CLAUDE_CODE_CERT_STORE`, dynamic loop pacing with aging, cloud-first loop offering, `/loops` management UI, `/update` command, SDK OAuth refresh, SDK observability, MCP registry BFF
+- Chapter 14 (Lessons 70–71): v2.1.104 — streaming partial-yield protection, Text Output system-prompt rename
+- Chapter 15 (Lessons 72–76): v2.1.107–v2.1.109 — `/recap`, multi-repo checkout & base refs, byte-level stream watchdog, REPL mode
+- Chapter 16 (Lessons 77–84): v2.1.110–v2.1.111 — Remote Workflow Commands, Advisor Tool, PushNotification + KAIROS mobile push, Context Hint API, Fullscreen TUI / `/focus` / `/tui`, Proxy Auth Helper, system-prompt GB override
+- Chapter 17 (Lesson 85): v2.1.112–v2.1.113 — Remote Workflow sunset
+- Chapter 18 (Lesson 86): v2.1.114–v2.1.116 — OIDC Federation enterprise auth, config profiles, proxy plumbing, `/model` headless
+- Chapter 19 (Lessons 87–88): v2.1.117–v2.1.118 — `/fork` background subagent, `/cost` + `/stats` → `/usage` aliases, cache-diagnosis beta, frontmatter shadow validator, WIF OAuth locking
+- Chapter 20 (Lessons 89–90): v2.1.119–v2.1.120 — Claude Cowork runtime GA (`/background`, `/daemon`, Fleet view, classifier-summary), daemon on-demand model, `CLAUDE_CODE_LEAN_PROMPT`, memory-write Approve/Reject UX (L89 updated v2.11.18: plugin hooks DO fire in Cowork — three-root namespace + host-loop staging)
+- Chapter 21 (Lessons 91–104): v2.1.139–v2.1.159 — Dynamic Workflows + coordinator mode, Opus 4.8 launch + effort ladder, streaming-tool-execution GA, `MessageDisplay` hook (30-event master array), auto-mode promotion + repo-spoof guard, Cloud gateway OAuth, org-managed skills/plugins sync, host-delegated credential refresh, background binary-takeover + Fleet→agent-view rename, `/loop` keepalive, plan-interview removal + team-memory multistore + command churn, PEWTER_OWL over SendUserMessage, codename GB-flag triage
 - ULTRAPLAN (L41) status updated: now officially released as research preview
 - 5 new scripts: `fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `extract-bundle.sh`, `diff-versions.sh`
 - Plugin marketplace infrastructure: `.claude-plugin/` files, "Add to Claude" install button, GitHub Actions release and Pages deploy workflows
