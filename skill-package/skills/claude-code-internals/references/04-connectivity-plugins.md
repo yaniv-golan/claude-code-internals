@@ -339,6 +339,361 @@ export function findReverseDependents(pluginId, plugins): string[] {
 
 **Race Condition Handling:** Module stores notification in `pendingNotification`, delivered when handler eventually called.
 
+## `claude plugin update` — Version Resolution Priority
+
+The `update` worker (`gi5` in v2.1.120) resolves "current" and "candidate" versions through the same function `K6H` at bundle offset 4,388,116. Both sides of the up-to-date comparison go through it, which keeps the chain consistent across install snapshot and fresh check.
+
+```js
+function K6H(pluginId, source, manifest, path, providedVersion, sha) {
+  if (manifest?.version)  return manifest.version;        // 1. plugin.json#version
+  if (providedVersion)    return providedVersion;         // 2. marketplace.json#plugins[].version
+  if (sha) {
+    if (source.source === "git-subdir") {
+      // SHA + 8-char hash of the subpath
+      return `${sha.substring(0,12)}-${pathHash}`;
+    }
+    return sha.substring(0, 12);                          // 3. pre-resolved git SHA
+  }
+  if (path) {
+    let s = await ah1(path);
+    if (s) return s.substring(0, 12);                     // 4. computed git SHA
+  }
+  return "unknown";                                       // 5. sentinel
+}
+```
+
+### Resolution priority
+
+1. **`<marketplace-clone>/<plugin-source>/.claude-plugin/plugin.json#version`** — PRIMARY. Read fresh from disk on every update check via `B4_(X, name, source).manifest`. Bumping this is the reliable trigger for `claude plugin update` to detect a new version.
+2. **`marketplace.json#plugins[<plugin>].version`** — fallback. Used only when the plugin source dir lacks `plugin.json` or that file has no `version` field. Most github-source marketplaces leave this unset; the resolver falls through to (1) and works fine.
+3. **Pre-resolved git SHA** (12 chars; for `git-subdir` source, `SHA + 8-char path-hash`).
+4. **Computed git SHA** of the plugin source dir via `ah1(path)` → `git rev-parse HEAD`.
+5. The literal string `"unknown"`.
+
+### Comparison shape
+
+In the worker's main path:
+
+```js
+let v = Dd(pluginId, R), N = uxH(pluginId, R);
+if (O.version === R || O.installPath === v || O.installPath === N) {
+  // alreadyUpToDate
+}
+```
+
+- `O.version` = installed version snapshot from `installed_plugins.json` (itself K6H-resolved at install time).
+- `R` = freshly K6H-resolved candidate from the current marketplace clone.
+- `O.installPath` checks fall through `Dd`/`uxH` (versioned-path computers) — these catch the case where the version string changed under a moved install path.
+
+### Common misreading: "marketplace.json version is the source of truth"
+
+A natural-looking but **wrong** read of the gist's "compares first entry's version with the marketplace manifest version" phrasing is to put `marketplace.json#plugins[].version` first in priority. Inverted from reality: `manifest?.version` (plugin.json) is checked first, and `providedVersion` (the marketplace entry's version field) is the *fallback*. This matters because:
+
+- A github-source marketplace whose `marketplace.json` has no `version` field on plugin entries — i.e., **most** of them — would be a no-op for `claude plugin update` if the comparison really read marketplace.json first. It isn't, and it doesn't.
+- Plugin authors get reliable update detection by bumping their `plugin.json#version` even when their marketplace catalog lists the plugin without an explicit version.
+
+### Implications for plugin authors
+
+- **Always bump `plugin.json#version` for releases.** It's the canonical source K6H reads first, and it survives any marketplace.json shape.
+- **`marketplace.json#plugins[].version` is for marketplaces that want to pin or override** — e.g., a curator who wants to ship `0.4.1` of a plugin while the upstream `plugin.json` says `0.5.0-beta`. Ignore this field unless you have that need.
+- **Both sides of the update comparison go through K6H.** No risk of "installed snapshot uses one resolver, fresh check uses another" drift. If `O.version` is `"0.2.0"` and the bumped `plugin.json#version` is `"0.4.1"`, the comparison is `"0.2.0" === "0.4.1"` → false → update fires.
+
+### Desktop-side cross-check (v1.5354.0)
+
+The Claude Desktop app (`/Applications/Claude.app`, Electron main process at `.vite/build/index.js`) implements `updatePlugin` as a thin wrapper that shells out to `claude plugin update <id>` and parses stdout for `"from X to Y"`. The actual update operation therefore goes through K6H end-to-end — Desktop has no parallel resolver for the update path.
+
+> **Methodology note: which Claude Code binary Cowork actually uses.** Claude Desktop pins and manages its own VM-side Claude Code binary at:
+>
+> ```text
+> ~/Library/Application Support/Claude/claude-code-vm/<sdk-version>/claude
+> ```
+>
+> The pinned version is recorded in `~/Library/Application Support/Claude/claude-code-vm/.sdk-version`. As of this audit, Desktop is pinned to **v2.1.121**, while the standalone `claude` binary on PATH is **v2.1.126**. **Cowork's in-VM CLI runs the Desktop-pinned binary**, not the standalone one. The behaviors in this lesson have been cross-checked against both binaries and match for the items covered, but if you're tracing Cowork-specific behavior (in-VM `claude plugin marketplace update`, the update worker's `skipIfRecent` short-circuit, the per-source-type badge resolution invoked via VM CLI runners) you should default to extracting the Desktop-pinned binary, not the latest on PATH. The standalone CLI's behavior governs `claude plugin <op>` invocations from a regular terminal outside Cowork.
+
+Two clarifications that v2.11.6 got wrong, corrected here in v2.11.7 after tracing the Desktop bundle more carefully:
+
+**1. Desktop's `updatePlugin` does not pass `--scope`.** The buildArgs is `["plugin","update", pluginId]` — no scope flag. The CLI accepts `-s, --scope <user|project|local|managed>` (default `user`), so a Desktop-driven update can leave project / local / managed installs untouched. Desktop's `installPlugin` and `uninstallPlugin` DO forward scope; only update doesn't.
+
+**Cowork-specific caveat**: the CLI rejects `--cowork` combined with any non-`user` scope. Both v2.1.121 and v2.1.126 emit `--cowork can only be used with user scope` and abort. So a manual `claude plugin update <id> --scope project --cowork` is not a valid workaround for project / local / managed Cowork installs. In practice, project / local / managed-scoped Cowork installs are difficult to keep up to date through any standard path; the org-level (user-scope) install in the active Cowork root is what `claude plugin update` and Desktop's Update button actually advance.
+
+**2. Desktop's "Update available" badge has a known parser-string mismatch.** Desktop checks `output.toLowerCase().includes("already up to date")` to set its `alreadyUpToDate: boolean` response field, but the CLI emits `"already at the latest version"` for the no-op case (in v2.1.120 and v2.1.126). The actual update behavior is correct; only the boolean Desktop returns to the renderer is wrong.
+
+#### Badge computation
+
+The badge is computed in Desktop's `listAvailablePlugins`. The dispatcher routes this op to the **non-git native engine** (it does NOT shell out to `claude plugin list --json --available` for the badge). Both engines exist; only the native one is wired into the dispatcher.
+
+The native engine's badge call site:
+
+```js
+const c = await Promise.all(a.map(({pluginName, marketplaceName}) =>
+  i_t(t.marketplacesDir, marketplaceName, pluginName)   // 3 args, no options
+));
+```
+
+`i_t` calls `t_t` which resolves the plugin source dir. **Crucial detail**: `t_t` requires a 3rd `options` argument to take the install-snapshot branch:
+
+```js
+async function t_t(e, A, t) {
+  const i = await fte(e, A);                            // marketplace.json plugin entry
+  if (typeof i?.source === "string" && i.source)
+    return path.join(e, i.source);                       // string source: <clone>/<source>
+  if (i?.source && typeof i.source === "object" && t) {  // <-- requires t (options)
+    const r = await hte(...);                            // would read installed_plugins[id][0].installPath
+    if (r) return r;
+  }
+  return path.join(e, A);                                // fallback: <clone>/<plugin-name>
+}
+```
+
+The badge call (`i_t(marketplacesDir, marketplace, plugin)`) supplies only 3 args, so `t_t` is invoked **without** the options arg. For object-source plugins, the object-source branch is therefore skipped, and `t_t` returns the fallback path `<marketplace-clone>/<plugin-name>/`. That directory does NOT contain a `.claude-plugin/plugin.json` for object-source plugins (their installs live elsewhere — in the cache directory). So `i_t`'s `readFile` fails, and it falls through to `fte` which returns the **marketplace.json plugin entry**.
+
+The end result: `availableVersion = marketplaceEntry.version !== installedVersion ? marketplaceEntry.version : undefined`. The badge is keyed on `marketplace.json#plugins[<plugin>].version` for object-source plugins, not on `plugin.json#version`.
+
+For string-source plugins, `t_t` returns `<marketplace-clone>/<source>/`, which IS the plugin source dir; `i_t`'s readFile succeeds, and the badge picks up `plugin.json#version` directly.
+
+#### Implication for plugin authors
+
+| Plugin source shape | What surfaces a `plugin.json#version` bump on the badge | What surfaces a `marketplace.json#plugins[].version` bump on the badge |
+|---|---|---|
+| String (rare) | Yes — after marketplace refresh | Yes (fallback when plugin.json absent) |
+| Object (`github`, `url`, `git-subdir`, `npm`) — **most public marketplaces** | No — badge doesn't read the upstream plugin.json | Yes |
+
+So for object-source plugins, **bumping both `plugin.json#version` and `marketplace.json#plugins[].version` is the reliable release pattern**: the former lets `claude plugin update` (CLI) detect and apply the bump; the latter lets the Desktop badge surface it.
+
+The CLI's `claude plugin update` reliably detects `plugin.json#version` bumps for both source shapes because it operates on a freshly-fetched marketplace-clone view of the source manifest, not the catalog entry.
+
+#### `refreshPluginMcps` is narrower than its name suggests
+
+Desktop's dispatcher invokes `refreshPluginMcps()` from a **specific subset** of plugin ops, not from every plugin mutation. Bundle-verified call sites in v1.5354.0:
+
+- `installPluginFromZip` (local-upload install path)
+- `deletePlugin` (custom delete)
+- `setPluginEnabled` (local enable/disable)
+- `setRemotePluginEnabled` (RPM enable/disable)
+- `uninstallPlugin` (both the RPM remote-API path and the non-git fallback)
+- `installLocalOrgPlugin` (local org-plugin install)
+
+**Notably absent: the main `installPlugin` IPC handler and `updatePlugin`.** Neither calls `refreshPluginMcps()` after the operation completes — not on the RPM/remote-API path, not on the classic CLI fallback. So clicking Settings → Install or Settings → Update does NOT fire the org-plugin MCP refresh; only enable/disable, delete, uninstall, and the local-upload variants do.
+
+When it does fire, `doRefreshPluginMcps` filters its work to `source === "org-plugin"`:
+
+```js
+async doRefreshPluginMcps() {
+  await this.mcpConnection;
+  const A = this.mergePluginConfigs(...).filter(s => s.source === "org-plugin");
+  ...
+}
+```
+
+This means Settings-UI plugin operations refresh **only org-plugin MCP connections** in the live Cowork task — they do NOT trigger a re-scan of skills, commands, agents, or hooks in the running CLI subprocess. The host's `cowork_plugins/` directory is rwd-mounted into the VM, so file-level changes ARE visible on disk to the CLI; but the running CLI doesn't necessarily re-read those files mid-task.
+
+`bridge.reloadPlugins()` is a defined bridge method (`{ subtype: "reload_plugins" }`), but the inspected Desktop bundle has no call sites for it from any install/update/uninstall/enable/upload flow. Treat it as present-but-unwired.
+
+For reliable freshness of skill/command/agent/hook content in an active Cowork task, the boundary is **a new task** ("+ New task" in the Cowork UI), which spawns a fresh `local_<UUID>/` session that scans current disk state from scratch.
+
+#### CLI's `plugin update` flow has a `skipIfRecent` short-circuit and silent cached-data fallback
+
+Inside the CLI's update worker (offset ~9086500 in v2.1.126), before the version comparison, the worker tries to refresh the marketplace clone:
+
+```js
+if (X && (X.source === "github" || X.source === "git" || X.source === "url")) {
+  try {
+    await vYH(K, void 0, { skipIfRecent: true })
+  } catch (P) {
+    T = `marketplace not refreshed (${VH(P)})`;
+    N(`Failed to refresh marketplace '${K}' before update; using cached data: ${VH(P)}`,
+      { level: "warn" })
+  }
+}
+```
+
+The refresh function `vYH` honors `skipIfRecent`:
+
+```js
+if (q?.skipIfRecent && O.lastUpdated) {
+  let T = Date.now() - new Date(O.lastUpdated).getTime();
+  if (T >= 0 && T < 30000) {
+    N(`Skipping refresh for marketplace '${H}' — refreshed ${Math.round(T/1000)}s ago`);
+    return;
+  }
+}
+```
+
+Two consequences:
+
+1. If the marketplace's `lastUpdated` is within the last **30 seconds**, the refresh is silently skipped — `claude plugin update` runs against whatever the clone currently has.
+2. If the refresh fails (network error, auth glitch, etc.), the exception is caught and the worker proceeds against the **cached clone** with a warn log: `Failed to refresh marketplace '<name>' before update; using cached data: <error>`. The CLI captures the warning text in a local variable that gets concatenated into the update-result **message string** — not exposed as a structured field. Desktop's `updatePlugin` IPC wrapper, however, parses stdout only for the `from X to Y` version pattern and returns only `{ success, pluginId, oldVersion, newVersion, alreadyUpToDate }`. The refresh warning is therefore not visible to anything calling Desktop's IPC; it only appears in the CLI's own log output and (in some cases) in the unparsed CLI message text that Desktop discards.
+
+So `claude plugin update` reporting "already up to date" or "from X to Y" can be against stale clone data. Authors who want a guaranteed-fresh update should run `claude plugin marketplace update <mp>` first AND verify the clone HEAD actually advanced (the silent-refresh trap from L26's earlier section), then run `claude plugin update`.
+
+#### Desktop's update has two paths: RPM remote-API or classic CLI fallback
+
+The dispatcher's `updatePlugin` IPC handler picks per request:
+
+```js
+updatePlugin: Nw("update_plugin", async (i, r, n, s) => {
+  if (await OS()) {                                           // RPM/remote-API enabled?
+    let o = (await (await hm()).getInstalledPluginsWithPaths())
+              .find(g => g.id === r || Go(g) === r);
+    if (o) {                                                  // plugin found in RPM manifest
+      i("cowork_remote_api");
+      let a = await Hrt(r, s?.marketplaceScope);              // remote-API update
+      if (!a) throw new Error("Plugin is no longer available from the marketplace.");
+      return { success: true, pluginId: r };
+    }
+  }
+  return A(s, "git").updatePlugin(r, n);                       // classic CLI fallback (no --scope)
+}, ...)
+```
+
+So:
+
+- **RPM-managed plugins** go through the remote API (`Hrt`) which takes a `marketplaceScope` parameter (different from the CLI's `-s, --scope`).
+- **Non-RPM plugins** fall through to `A(s, "git").updatePlugin(r, n)` — the classic CLI path that shells out to `claude plugin update <pluginId>` **without** `--scope` (defaults to user). v2.11.6's framing of "Desktop omits --scope" is correct only for this fallback path.
+
+#### Desktop badge per-source-type read location
+
+The v2.11.6 framing in the previous subsection said the badge reads `<marketplace-clone>/<plugin-name>/.claude-plugin/plugin.json` for both source types. That's wrong for string sources — `t_t` uses different code paths:
+
+```js
+async function t_t(e, A, t) {
+  const i = await fte(e, A);                                 // marketplace.json plugin entry
+  if (typeof i?.source === "string" && i.source)
+    return path.join(e, i.source);                            // STRING: <clone>/<plugin.source>
+  if (i?.source && typeof i.source === "object" && t) {       // OBJECT (with options arg)
+    const r = await hte(...);                                 // would consult installed_plugins[id][0].installPath
+    if (r) return r;
+  }
+  return path.join(e, A);                                     // FALLBACK: <clone>/<plugin-name>
+}
+```
+
+The badge call passes only 3 args to the helper (no `options`), so for object-source plugins the second branch is skipped and `t_t` returns the fallback path `<clone>/<plugin-name>/`. For object sources this directory typically doesn't contain plugin.json (the install lives in `cowork_plugins/cache/...`), so `i_t`'s readFile misses and falls through to `fte` returning the marketplace.json plugin entry's `version`.
+
+Corrected per-source-type badge read locations:
+
+| Source shape | Path the badge reads | Outcome |
+|---|---|---|
+| String (`"./plugin-name"`) | `<marketplace-clone>/<plugin.source>/.claude-plugin/plugin.json` | File is in the clone — badge picks up plugin.json#version bumps after refresh |
+| Object (`github`/`url`/`git-subdir`/`npm`) | `<marketplace-clone>/<plugin-name>/.claude-plugin/plugin.json` (fallback path; usually doesn't exist) | Falls through to `marketplace.json#plugins[<plugin>].version` |
+
+#### `installed_plugins.json` v1→v2 migration is CLI-only
+
+The schema has two on-disk versions: v1 maps each plugin id to a single entry; v2 maps each plugin id to an `Array<Entry>`, one per scope. The CLI migrates v1 to v2 in memory when it next reads the file. **Desktop's native reader does not migrate**:
+
+```js
+async function V_(e) {
+  try {
+    const A = await ee.readFile(e, "utf-8");
+    const t = JSON.parse(A);
+    return !t.plugins || typeof t.plugins !== "object"
+      ? { version: 2, plugins: {} }
+      : t;                                                   // returns parsed JSON as-is
+  } catch (A) {
+    if (A.code !== "ENOENT") R.warn(...);
+    return { version: 2, plugins: {} };
+  }
+}
+```
+
+Downstream Desktop code assumes `plugins[id]` is an array and accesses `plugins[id][0]`. On a v1 file (where `plugins[id]` is a single object), `plugins[id][0]` is `undefined`. `hte` returns null; `listAvailablePlugins`'s `flatMap` returns empty. **Plugins are silently invisible in the Desktop UI until the CLI runs and migrates the file.**
+
+Practical implication: any tool that hand-writes `installed_plugins.json` should write it as v2. If a user reports "Desktop UI shows no plugins, but CLI sees them," check the file's `version` field — if it's `1`, the CLI hasn't migrated it yet (or the file was edited externally to revert).
+
+#### Per-session `known_marketplaces.json` files (CLI-internal, not consulted by Desktop IPC)
+
+Cowork sessions create per-session known-marketplaces files at `<userData>/local-agent-mode-sessions/<accountId>/<orgId>/local_<UUID>/.claude/plugins/known_marketplaces.json`. These are written by the **in-VM CLI** when a session activates a marketplace. The giveaway is the `installLocation` field — VM-relative paths like `/sessions/<vm-name>/mnt/.claude/plugins/marketplaces/...`, not host paths.
+
+Desktop's IPC handlers (`listMarketplaces`, `installPlugin`, etc.) do NOT read these files. They consult `<accountId>/<orgId>/cowork_plugins/known_marketplaces.json`. Treat the per-session file as a CLI-internal cache with no Desktop-side significance.
+
+#### Settings UI's marketplace listing is single-`(accountId, orgId)` per IPC call
+
+`listMarketplaces` reads exactly **one** `known_marketplaces.json` per call, resolved from the passed `pluginContext.{accountId, orgId}` — the path resolver returns paths for one pair. There is no aggregation at the IPC layer, neither across modes (CCD ↔ Cowork) nor across orgs.
+
+Empirically the Settings UI's "Personal" tab can show entries from CCD's host file even from a Cowork session — implying the renderer is calling `listMarketplaces` more than once with different `pluginContext` values and merging. The renderer is partially served from a remote web origin, so the exact merge logic is outside the local-bundle audit. Bundle-side: each individual IPC call reads exactly one file.
+
+#### Anthropic-managed skills cache (`skills-plugin/`)
+
+Cowork ships with Anthropic-curated built-in skills (`pdf`, `xlsx`, `theme-factory`, `consolidate-memory`, `schedule`, `setup-cowork`, `doc-coauthoring`, `algorithmic-art`, `internal-comms`, `skill-creator`, `fiction-studio`) that are **not user-installed plugins** and don't appear in `installed_plugins.json` or any `marketplace.json`. They live in their own cache:
+
+```text
+<userData>/local-agent-mode-sessions/skills-plugin/<orgId>/<accountId>/
+  .claude-plugin/plugin.json
+  skills/<skill-name>/
+    SKILL.md
+    (auxiliary files)
+```
+
+Note the directory order: `<orgId>/<accountId>` — opposite of the Cowork plugin roots which use `<accountId>/<orgId>`. Tooling that walks one structure and assumes the other will miss this cache.
+
+The sync model:
+
+- Background timer fires every **10 minutes** (`_syncIntervalMs = 6e5`); also runs on app focus.
+- `_syncSkills` calls the org skills API for the enabled-skill list, then computes a delta against the local manifest:
+
+```js
+calculateDelta(A, t, i) {
+  const r = new Map(i.map(c => [c.name, c]));   // local
+  ...
+  for (const c of t) {                           // remote
+    const g = r.get(c.name);
+    const u = XA.existsSync(path.join(getSkillDir(A, c.name), "SKILL.md"));
+    (!g || g.updatedAt !== c.updatedAt || !u) && s.push(c);
+  }
+  ...
+}
+```
+
+- Downloads run with concurrency 10 via `downloadSkills`:
+
+```js
+async downloadSkills(A, t) {
+  const i = new P1({ concurrency: mbr });   // mbr = 10
+  let r = 0;
+  return await i.addAll(t.map(n => async () => {
+    try {
+      await wjA(n.skillId, getSkillDir(A, n.name));
+      r++;
+    } catch (s) {
+      R.error(`[SkillsPlugin] Failed to download ${n.name}:`, s);   // caught & logged, NOT propagated
+    }
+  }));
+  return r;
+}
+```
+
+- After downloads complete (successful or not), `_syncSkills` calls `writeManifest` **unconditionally** with the full remote skill list, including the new `updatedAt` for any skill that failed to download.
+
+##### The silent-stale failure mode
+
+This combination produces an operationally-serious bug:
+
+1. Delta says skill X needs download (remote `updatedAt` is newer than local).
+2. Download throws — network failure, 4xx, OAuth glitch, whatever. Error caught and logged.
+3. `writeManifest` runs anyway, recording X's new `updatedAt` in the local manifest.
+4. Next sync: `calculateDelta` sees `localManifest.updatedAt === remote.updatedAt` for X. If the old SKILL.md is still on disk (download threw before overwriting), the third condition (`!SKILL.md exists`) is also false. **The skill is not redownloaded.**
+5. Stale skill text persists — potentially indefinitely. Desktop restart doesn't fix it (next sync still sees matching `updatedAt`). The 10-minute sync timer can't recover from this state.
+
+**Recovery**: delete the stale SKILL.md (or the whole skill directory) under `skills-plugin/<orgId>/<accountId>/skills/<skill-name>/`, then trigger a sync (focus Desktop or wait 10 minutes). The third "needs download" check (`SKILL.md missing`) will fire and the skill will be redownloaded:
+
+```bash
+rm -rf "<userData>/local-agent-mode-sessions/skills-plugin/<orgId>/<accountId>/skills/<skill-name>"
+# Or just the SKILL.md file:
+rm "<userData>/local-agent-mode-sessions/skills-plugin/<orgId>/<accountId>/skills/<skill-name>/SKILL.md"
+```
+
+##### Why this matters for stale-plugin debugging
+
+This cache is invisible to every other staleness check covered earlier in this lesson:
+
+- Not in `installed_plugins.json` (these aren't user-installed plugins).
+- Not in any `marketplace.json` (no marketplace catalog lists them).
+- Not in `rpm/manifest.json` (RPM doesn't track them).
+- Not affected by `refreshPluginMcps` (that's MCP-only).
+- Not refreshed by starting a new Cowork task (the new task uses whatever the local skill files say).
+
+If a Cowork session is using stale `pdf` / `xlsx` / etc. content, the cause is here. Tools that diagnose Cowork plugin staleness should include this cache in their checks.
+
 ---
 
 # LESSON 10: THE HOOKS SYSTEM
