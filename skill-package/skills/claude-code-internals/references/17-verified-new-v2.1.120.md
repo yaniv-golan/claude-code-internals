@@ -649,6 +649,15 @@ delete $.CLAUDE_CODE_SESSION_NAME;
 So daemon plumbing **does not leak into child processes** the bg session spawns (e.g., user
 tools, hooks). Children see a clean env unless explicitly opted in.
 
+> **Version note (v2.1.160):** the delete-chain has since grown from 5 to **12** vars — the
+> original five plus `CLAUDE_CODE_OAUTH_TOKEN`, `CLAUDE_CODE_SUBSCRIPTION_TYPE`,
+> `CLAUDE_CODE_RATE_LIMIT_TIER`, `CLAUDE_BG_AUTH_SNAPSHOT_PATH`,
+> `CLAUDE_CODE_RESUME_INTERRUPTED_TURN`, `CLAUDE_BG_SESSION_PERMISSION_RULES`, and
+> `CLAUDE_BG_MEMORY_TOGGLED_OFF`. The expansion now also scrubs the **credential** vars
+> (OAuth token, subscription, rate-limit tier, the one-shot auth-snapshot path) from children —
+> the same defensive posture as the one-shot snapshot handoff (L99). The 5-var form above is
+> accurate for v2.1.119/v2.1.120.
+
 ### Background isolation: runtime prompt rewriting
 
 When `CLAUDE_CODE_SESSION_KIND === "bg"` and `CLAUDE_BG_ISOLATION === "worktree"`, the agent's
@@ -1299,6 +1308,8 @@ via the Cowork app UI, run in a real desktop session) settled them:
 | `find … -name <script>` in the VM (ground truth) | `/sessions/<id>/mnt/.remote-plugins/plugin_<id>/scripts/<script>` | Plugin files **are** mounted in-VM, but at a **remapped** path keyed by `plugin_<id>` under `.remote-plugins/` (the `rpm`/org-remote half of root #3; the marketplace half mounts under `.local-plugins/cache/<mp>/<plugin>/<ver>`, per the argv below). |
 | hook `export PROBE_ENV_FROM_HOOK=…` read in-VM | **empty** | A hook's environment exports do **not** cross into the agent shell. |
 | host `/tmp/...` file written by the hook, `cat` in-VM | **missing** | Host filesystem writes by a hook are **not** visible in the VM. |
+| `env` field in `~/.claude/settings.json` (user scope), read in-VM | **empty** | The settings `env` map is `Object.assign`'d into `process.env` for the **CLI** (binary: `Object.assign(process.env, v9_(I6(scope)…))` over user/project/local/managed/policy; schema `env: h.record(h.string())`), and a fresh CLI session echoes the value — but it does **not** reach the Cowork sandbox. |
+| `env` field in `/Library/Application Support/ClaudeCode/managed-settings.json` (managed scope), read in-VM | **empty** | Even the highest-priority host settings scope does not cross. **No host-filesystem settings scope (user OR managed) reaches the Cowork sandbox** (re-verified v2.1.160, 2026-06-02 with `hello-from-host`/`hello-from-managed` sentinels). |
 
 **Consequences for skill authors targeting Cowork:**
 
@@ -1309,10 +1320,35 @@ via the Cowork app UI, run in a real desktop session) settled them:
   `/sessions/<id>/mnt/.remote-plugins/plugin_<id>/…` (or `.local-plugins/cache/…` for marketplace
   installs). `plugin_<id>` is install-specific, so discover it at runtime (e.g.
   `find /sessions/*/mnt/.*-plugins -name <script>`) rather than hardcoding it.
-- **Never depend on a `SessionStart` hook to `export` an env var or stage a file for the agent** — neither
-  crosses the host↔VM boundary. Pass data by **flag/argument** to a script invoked at the discovered
-  mount path, or write it where the VM can read it. (This is the same class of bug as a host-injected
-  `$VAR` contract: it works in single-process CCD, silently breaks in Cowork.)
+- **Never depend on a `SessionStart` hook to `export` an env var or stage a file for the agent — nor on the
+  `settings.json` `env` field (user *or* managed scope)** — none of these cross the host↔VM boundary. Pass
+  data by **flag/argument** to a script invoked at the discovered mount path, or write it where the VM can
+  read it. (This is the same class of bug as a host-injected `$VAR` contract: it works in single-process
+  CCD, silently breaks in Cowork.) For getting a third-party API key (Airtable/Affinity, etc.) *into* a
+  Cowork session, the host has no env channel to the **in-VM shell** — use an MCP server (`mcpServers` in
+  `claude_desktop_config.json`, key in the server's `env:` block — runs host-side, see the split-execution
+  section below), a proxy that injects credentials into outbound calls, or the account-level claude.ai
+  connectors; the only thing the *sandbox shell* ingests from the host is Anthropic's own auth via the SDK
+  RPC channel (see L99).
+
+#### Split execution: host-side MCP servers vs the sealed in-VM shell (verified 2026-06-03)
+
+The host↔VM table above is about the **in-VM agent shell** (`mcp__workspace__bash`). But Cowork has a **split execution model**, and the other half changes the credential story. Empirically tested (real desktop Cowork session, app v1.x / CLI v2.1.160):
+
+- **stdio MCP servers declared in `~/Library/Application Support/Claude/claude_desktop_config.json` run on the HOST, not in the VM** — spawned by the Desktop (Electron) app through a login shell, and bridged into the Cowork session as `mcp__<server>__*` tools. Proof: a `cowork-probe` entry (`npx @modelcontextprotocol/server-everything`) appeared in a Cowork session, and its `get-env` returned **macOS host paths** (`/opt/homebrew/.../node`, user-agent `darwin arm64`, `__CF_USER_TEXT_ENCODING`, the full host *shell* `PATH` incl. pyenv/cargo/nvm/pnpm) **plus** the per-server `PROBE_MARKER=from-desktop-config` from its `env:` block.
+- **This corrects the "import-only" read of `claude_desktop_config.json`.** That was true only for the *CLI binary* (where the file is reachable solely via `claude mcp add-from-claude-desktop`). The *Desktop app* genuinely reads `mcpServers` from it (it has validation + error dialogs: *"…not valid MCP server configurations and were skipped"*) and wires those servers into Cowork.
+- **The MCP env-allowlist (`CLAUDE_CODE_MCP_ALLOWLIST_ENV` → `RW8`/`oG8`/`LU5`={HOME,LOGNAME,PATH,SHELL,TERM,USER}) governs only CLI-spawned servers** (`.mcp.json`/`--mcp-config`, in-sandbox). It does **not** govern these Desktop-host-spawned servers, which receive the full host env. (So `launchctl setenv`/`~/.zshrc` vars likely reach a `claude_desktop_config.json` server — not isolation-tested; the `PROBE_MARKER` arrived via `env:`.)
+- **The host→Cowork *session* env is Anthropic-auth-only** — built by `Ucr({oauthToken, apiHost, shellPath, subscriptionType})` (`sessionEnv`), not user-controllable. The local-agent session-config schema `{skills, mcpServers, hooks, agents, clis}` has **no `env` field**.
+
+**Getting credentials in — the validated routes:**
+
+| Need | Route | Why it works |
+| --- | --- | --- |
+| Key for an MCP-shaped integration | `claude_desktop_config.json` → `mcpServers.<name>.env` | server runs host-side, key never enters the VM, available in every Cowork session after a Desktop restart |
+| Key for a **non-MCP CLI run in the in-VM shell** | secrets file in a **mounted folder**, read inline | no env channel reaches the in-VM shell; the filesystem mount is the only host→VM path (read + use in ONE `mcp__workspace__bash` call — no env carryover) |
+| Standard CRM/data ops | account-level claude.ai connectors (`remoteMcpServers`) | OAuth-once, no keys |
+
+**"Always-mounted path" = a Cowork Project (= the code's `CoworkSpace`).** Verified by the binary string `Space "${n}" not found. Use list_projects to see available spaces` — the UI's **"Project"** and the code's **"Space"** are the same object. There is **no** free-form "always mount path X" key in `claude_desktop_config.json`; per-spawn mounts derive from `userSelectedFolders` + app dirs (note: the auto-mounted `.claude` is a *per-session synthesized* dir from session storage — `getClaudeConfigDir()` — **not** `~/.claude`, which is why user `settings.json` `env` never reaches the VM). A folder-bound Project (`ProjectLocal`, fields incl. `ccdFolderPath` + `autoMountFolders`, stored server-side at claude.ai, *"Claude will have read and write access to this folder"*) auto-mounts its folder for every session started in it. So: attach the secrets-file folder to a Project → it's mounted in every session of that Project, no manual per-session mount. `localAgentModeTrustedFolders` (in `claude_desktop_config.json`) is trust/auto-**approval**, not auto-mount (*"directory mounts use userSelectedFolders"*).
 
 #### Verified: the desktop launch argv
 

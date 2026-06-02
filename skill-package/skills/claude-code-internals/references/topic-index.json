@@ -921,7 +921,15 @@
         "CLAUDE_CODE_USE_MANTLE",
         "CLAUDE_CODE_SANDBOXED",
         "CLAUDE_CODE_MCP_ALLOWLIST_ENV",
-        "v2.1.94"
+        "v2.1.94",
+        "mcp-env-allowlist-mechanism",
+        "RW8",
+        "oG8",
+        "ilH",
+        "dk-passthrough",
+        "LU5",
+        "per-server-env-survives",
+        "mcp-allowlist-contents"
       ]
     },
     {
@@ -2062,7 +2070,44 @@
         "sessionstart-export-not-propagated",
         "hook-env-not-in-vm",
         "plugin-script-invocation-cowork",
-        "cowork-skill-author-guidance"
+        "cowork-skill-author-guidance",
+        "split-execution",
+        "claude_desktop_config.json",
+        "mcpServers-cowork",
+        "host-spawned-mcp",
+        "mcp-server-host-side",
+        "cowork-credentials",
+        "cowork-api-key",
+        "pass-api-key-cowork",
+        "settings-env-not-inherited",
+        "managed-settings-not-inherited",
+        "sessionEnv",
+        "Ucr",
+        "mcp-env-allowlist",
+        "RW8",
+        "oG8",
+        "ilH",
+        "dk-passthrough",
+        "LU5",
+        "per-server-env",
+        "cowork-project",
+        "CoworkSpace",
+        "project-equals-space",
+        "autoMountFolders",
+        "ccdFolderPath",
+        "ProjectLocal",
+        "list_projects",
+        "always-mounted-folder",
+        "in-vm-cli-secret",
+        "filesystem-mount-channel",
+        "localAgentModeTrustedFolders",
+        "12-var-strip",
+        "getClaudeConfigDir",
+        "remoteMcpServers",
+        "cowork-secrets-file",
+        "coworkUserFilesPath",
+        "airtable-key-cowork",
+        "affinity-key-cowork"
       ]
     },
     {
@@ -2350,7 +2395,11 @@
         "ANTHROPIC_WORKSPACE_ID",
         "managedByHost",
         "credential-refresh",
-        "env-quad"
+        "env-quad",
+        "sessionEnv",
+        "Ucr",
+        "anthropic-auth-only",
+        "host-session-env"
       ]
     },
     {
@@ -6697,6 +6746,139 @@
     ],
     "gbflag": [
       104
+    ],
+    "split-execution": [
+      89
+    ],
+    "claude_desktop_config.json": [
+      89
+    ],
+    "mcpServers-cowork": [
+      89
+    ],
+    "host-spawned-mcp": [
+      89
+    ],
+    "mcp-server-host-side": [
+      89
+    ],
+    "cowork-credentials": [
+      89
+    ],
+    "cowork-api-key": [
+      89
+    ],
+    "pass-api-key-cowork": [
+      89
+    ],
+    "settings-env-not-inherited": [
+      89
+    ],
+    "managed-settings-not-inherited": [
+      89
+    ],
+    "sessionEnv": [
+      89,
+      99
+    ],
+    "Ucr": [
+      89,
+      99
+    ],
+    "mcp-env-allowlist": [
+      89
+    ],
+    "RW8": [
+      89,
+      61
+    ],
+    "oG8": [
+      89,
+      61
+    ],
+    "ilH": [
+      89,
+      61
+    ],
+    "dk-passthrough": [
+      89,
+      61
+    ],
+    "LU5": [
+      89,
+      61
+    ],
+    "per-server-env": [
+      89
+    ],
+    "cowork-project": [
+      89
+    ],
+    "CoworkSpace": [
+      89
+    ],
+    "project-equals-space": [
+      89
+    ],
+    "autoMountFolders": [
+      89
+    ],
+    "ccdFolderPath": [
+      89
+    ],
+    "ProjectLocal": [
+      89
+    ],
+    "list_projects": [
+      89
+    ],
+    "always-mounted-folder": [
+      89
+    ],
+    "in-vm-cli-secret": [
+      89
+    ],
+    "filesystem-mount-channel": [
+      89
+    ],
+    "localAgentModeTrustedFolders": [
+      89
+    ],
+    "12-var-strip": [
+      89
+    ],
+    "getClaudeConfigDir": [
+      89
+    ],
+    "remoteMcpServers": [
+      89
+    ],
+    "cowork-secrets-file": [
+      89
+    ],
+    "coworkUserFilesPath": [
+      89
+    ],
+    "airtable-key-cowork": [
+      89
+    ],
+    "affinity-key-cowork": [
+      89
+    ],
+    "mcp-env-allowlist-mechanism": [
+      61
+    ],
+    "per-server-env-survives": [
+      61
+    ],
+    "mcp-allowlist-contents": [
+      61
+    ],
+    "anthropic-auth-only": [
+      99
+    ],
+    "host-session-env": [
+      99
     ]
   }
 }

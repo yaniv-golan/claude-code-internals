@@ -214,7 +214,17 @@ unset, the default is `true` when running under the `local-agent` entrypoint.
 **Non-obvious behavior:**
 - This mirrors the nearby `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB` gate, suggesting the same
   "explicit true / explicit false / local-agent default" pattern.
-- The exact allowlist contents are implemented elsewhere; this function only controls the gate.
+- **The allowlist mechanism (resolved against v2.1.160):** when the gate is ON, a spawned MCP
+  server's env is built as `gate() ? { ...oG8(), ...ilH() } : dk()` —
+  - `oG8()` copies **only** the allowlisted keys: `LU5` = `["HOME","LOGNAME","PATH","SHELL","TERM","USER"]`
+    (Windows adds `"PROGRAMFILES"`). Ambient host vars (e.g. an API key) are **dropped**.
+  - `ilH()` is the **per-server `env:` block** from MCP config — merged in **regardless** of the gate,
+    so a key placed in a server's `env:` always reaches it.
+  - `dk()` (gate OFF) is the full `{...process.env}` passthrough.
+  So in `local-agent`/Cowork the only env an MCP server sees is `{HOME,LOGNAME,PATH,SHELL,TERM,USER}` +
+  its explicit `env:` block — *for servers the CLI itself spawns*. Note this gate does **not** govern
+  MCP servers the desktop app spawns host-side from `claude_desktop_config.json` (those get the full
+  host env — see Ch20 L89 "Split execution" subsection).
 
 ---
 

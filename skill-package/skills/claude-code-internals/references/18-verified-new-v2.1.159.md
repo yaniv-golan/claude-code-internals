@@ -336,6 +336,12 @@ OIDC env-quad.
   `CLAUDE_CODE_HOST_AUTH_REFRESH_TIMEOUT_MS` overrides the default.
 - `CLAUDE_BG_AUTH_SNAPSHOT_PATH`: single-use bg credential handoff — reads path, deletes env var, unlinks
   file, installs `{accessToken, scopes?, subscriptionType?, rateLimitTier?}`.
+- **Desktop-side corroboration (app.asar, 2026-06-03):** when the Cowork/Code desktop app spawns an
+  in-VM session it builds the session env via `Ucr({oauthToken, apiHost, shellPath, subscriptionType})`
+  (the `sessionEnv` object) — i.e. the host hands the session **only Anthropic-auth material**, no
+  arbitrary user env. This is the host-side mirror of the in-VM picture and explains why no third-party
+  API key crosses into the Cowork shell (see Ch20 L89 "Split execution"). It does **not** restrict
+  host-side MCP servers, which the app spawns separately with full host env.
 - `ANTHROPIC_WORKSPACE_ID`: real runtime read in OIDC env-quad mode, joining
   `organization_id`/`federation_rule_id`/`web_identity_token_file` (machinery is L86-era).
 - ⚠️ `ANTHROPIC_ENVIRONMENT_ID`/`ANTHROPIC_ENVIRONMENT_KEY` are **NOT CLI env reads** — they live only in
