@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-01",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159",
-  "total_lessons": 104,
+  "generated": "2026-06-04",
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4",
+  "total_lessons": 105,
   "lessons": [
     {
       "id": 1,
@@ -2500,6 +2500,61 @@
         "dark-launch",
         "statsig-flags"
       ]
+    },
+    {
+      "id": 105,
+      "title": "Desktop MCP-Apps Bridge Dialect + Elicitation Control Protocol (app.asar 1.9659.4)",
+      "lesson_number": "105",
+      "file": "19-desktop-mcp-apps-elicitation.md",
+      "startLine": 26,
+      "endLine": 138,
+      "keywords": [
+        "mcp-apps",
+        "mcp-app",
+        "ui-resource",
+        "ui://",
+        "profile=mcp-app",
+        "app-renderer",
+        "postmessagetransport",
+        "window.app",
+        "sendrequest",
+        "sendprompt",
+        "ui/message",
+        "ui/request-display-mode",
+        "ui/download-file",
+        "anthropic:attach-files",
+        "ui/notifications",
+        "callservertool",
+        "servertools",
+        "tools/call",
+        "bridge-dialect",
+        "skybridge",
+        "ext-apps",
+        "visualize-widget",
+        "imagine",
+        "show_widget",
+        "getImagineServerDef",
+        "elicitation",
+        "elicitation/create",
+        "onElicitation",
+        "elicit-form",
+        "elicit-url",
+        "notifications/elicitation/complete",
+        "requestedSchema",
+        "elicit-action",
+        "claude-desktop",
+        "app.asar",
+        "desktop-host",
+        "mcp-host",
+        "private-input",
+        "secret-capture",
+        "read-only-myth",
+        "credential-onboarding",
+        "host-bridge",
+        "sandboxed-iframe",
+        "cowork-ui",
+        "ccd"
+      ]
     }
   ],
   "keyword_map": {
@@ -2941,7 +2996,8 @@
       34
     ],
     "elicitation": [
-      10
+      10,
+      105
     ],
     "stdio": [
       10
@@ -6879,6 +6935,138 @@
     ],
     "host-session-env": [
       99
+    ],
+    "mcp-apps": [
+      105
+    ],
+    "mcp-app": [
+      105
+    ],
+    "ui-resource": [
+      105
+    ],
+    "ui://": [
+      105
+    ],
+    "profile=mcp-app": [
+      105
+    ],
+    "app-renderer": [
+      105
+    ],
+    "postmessagetransport": [
+      105
+    ],
+    "window.app": [
+      105
+    ],
+    "sendrequest": [
+      105
+    ],
+    "sendprompt": [
+      105
+    ],
+    "ui/message": [
+      105
+    ],
+    "ui/request-display-mode": [
+      105
+    ],
+    "ui/download-file": [
+      105
+    ],
+    "anthropic:attach-files": [
+      105
+    ],
+    "ui/notifications": [
+      105
+    ],
+    "callservertool": [
+      105
+    ],
+    "servertools": [
+      105
+    ],
+    "tools/call": [
+      105
+    ],
+    "bridge-dialect": [
+      105
+    ],
+    "skybridge": [
+      105
+    ],
+    "ext-apps": [
+      105
+    ],
+    "visualize-widget": [
+      105
+    ],
+    "imagine": [
+      105
+    ],
+    "show_widget": [
+      105
+    ],
+    "getImagineServerDef": [
+      105
+    ],
+    "elicitation/create": [
+      105
+    ],
+    "onElicitation": [
+      105
+    ],
+    "elicit-form": [
+      105
+    ],
+    "elicit-url": [
+      105
+    ],
+    "notifications/elicitation/complete": [
+      105
+    ],
+    "requestedSchema": [
+      105
+    ],
+    "elicit-action": [
+      105
+    ],
+    "claude-desktop": [
+      105
+    ],
+    "app.asar": [
+      105
+    ],
+    "desktop-host": [
+      105
+    ],
+    "mcp-host": [
+      105
+    ],
+    "private-input": [
+      105
+    ],
+    "secret-capture": [
+      105
+    ],
+    "read-only-myth": [
+      105
+    ],
+    "credential-onboarding": [
+      105
+    ],
+    "host-bridge": [
+      105
+    ],
+    "sandboxed-iframe": [
+      105
+    ],
+    "cowork-ui": [
+      105
+    ],
+    "ccd": [
+      105
     ]
   }
 }

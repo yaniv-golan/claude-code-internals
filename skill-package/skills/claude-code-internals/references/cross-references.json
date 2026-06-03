@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-01",
+  "generated": "2026-06-04",
   "description": "Cross-reference map: for each lesson, lists related lessons ranked by relevance",
   "references": {
     "1": [
@@ -2143,6 +2143,37 @@
         "id": 103,
         "relevance": 0.9,
         "reason": "PEWTER_OWL gate over the internal SendUserMessage tool"
+      }
+    ],
+    "105": [
+      {
+        "id": 89,
+        "relevance": 0.83,
+        "reason": "Cowork split execution — the in-VM shell is sealed; elicitation/MCP-Apps are the host-side user channels"
+      },
+      {
+        "id": 99,
+        "relevance": 0.8,
+        "reason": "same Agent-SDK control-request dispatcher: host_auth_token_refresh/oauth_token_refresh are siblings of the elicitation subtype"
+      },
+      {
+        "id": 95,
+        "relevance": 0.6,
+        "reason": "another binary-verified Desktop/host-side surface (the 30-event hook master array)"
+      }
+    ],
+    "89": [
+      {
+        "id": 105,
+        "relevance": 0.78,
+        "reason": "Desktop MCP-Apps bridge + elicitation: how MCP servers collect private user input in Desktop/Cowork"
+      }
+    ],
+    "99": [
+      {
+        "id": 105,
+        "relevance": 0.78,
+        "reason": "Desktop MCP-Apps bridge + elicitation: how MCP servers collect private user input in Desktop/Cowork"
       }
     ]
   }

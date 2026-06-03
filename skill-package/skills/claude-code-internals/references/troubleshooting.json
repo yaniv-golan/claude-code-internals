@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-01",
+  "generated": "2026-06-04",
   "description": "Maps common symptoms/problems to relevant lessons for debugging Claude Code internals",
   "symptoms": [
     {
@@ -1226,6 +1226,22 @@
         97
       ],
       "hint": "Select the Cloud gateway via /login (not CLAUDE_CODE_USE_GATEWAY, which is dead/unread). On expiry, run /login to reconnect."
+    },
+    {
+      "pattern": [
+        "MCP App can't submit",
+        "UI can't send data back",
+        "app ui read only",
+        "collect secret in MCP app",
+        "callServerTool not working",
+        "UI tool call blocked",
+        "how to collect a secret from the user",
+        "mcp app form not submitting"
+      ],
+      "lessons": [
+        105
+      ],
+      "hint": "Claude Desktop's MCP App UI has NO server-tool-call channel; its only data-return path (sendPrompt) injects into the chat. Use MCP elicitation (elicitation/create, form or url mode) to capture private input — it returns to the server as the request response, not into the transcript. (L105)"
     }
   ]
 }
