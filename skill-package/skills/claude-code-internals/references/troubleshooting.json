@@ -1242,6 +1242,25 @@
         105
       ],
       "hint": "Claude Desktop's MCP App UI has NO server-tool-call channel; its only data-return path (sendPrompt) injects into the chat. Use MCP elicitation (elicitation/create, form or url mode) to capture private input — it returns to the server as the request response, not into the transcript. (L105)"
+    },
+    {
+      "pattern": [
+        "API key field doesn't appear in Customize Plugins",
+        "plugin credential field missing",
+        "clis env not showing",
+        "set once api key cowork not working",
+        "Plugin OAuth is not enabled for this account",
+        "plugin.json clis block ignored",
+        "no credential field for my CLI plugin",
+        "how to set a CLI plugin secret in Claude Desktop",
+        "cowork CLI can't see API key"
+      ],
+      "lessons": [
+        106,
+        105,
+        89
+      ],
+      "hint": "The clis.*.env credential broker (enter once under Customize -> Plugins, encrypted in cowork-plugin-env, injected at CLI invocation) is dark-launched behind GrowthBook gate 2307090146 (cli_plugin), off by default. A valid manifest renders NOTHING with no error: the renderer (GXr) strips clis and the runtime chokepoint (PKr, ahead of VKr) returns oauth_disabled. There is no manual workaround while gated. Decode ~/Library/Application Support/Claude/fcache to read the gate state. Until it flips, give an in-VM Cowork CLI its key via project .env / a key-file on a mounted folder (see L89)."
     }
   ]
 }

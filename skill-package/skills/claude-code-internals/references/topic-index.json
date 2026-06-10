@@ -1,7 +1,7 @@
 {
   "generated": "2026-06-04",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4",
-  "total_lessons": 105,
+  "total_lessons": 106,
   "lessons": [
     {
       "id": 1,
@@ -2555,6 +2555,58 @@
         "cowork-ui",
         "ccd"
       ]
+    },
+    {
+      "id": 106,
+      "title": "Desktop CLI-Plugin Credential Broker (clis.*.env) + the cli_plugin Dark-Launch Gate 2307090146 (app.asar 1.11847.5)",
+      "lesson_number": "106",
+      "file": "20-desktop-cli-plugin-credential-broker.md",
+      "startLine": 30,
+      "endLine": 201,
+      "keywords": [
+        "clis",
+        "clis.env",
+        "cli-plugin",
+        "credential-broker",
+        "cowork-plugin-env",
+        "plugin-env-storage",
+        "setPluginEnvVars",
+        "customize-plugins",
+        "set-once-key",
+        "api-key-field",
+        "envVar",
+        "secret-field",
+        "safeStorage",
+        "VKr",
+        "PKr",
+        "classifyInner",
+        "cliPluginBridge",
+        "GXr",
+        "pJe",
+        "Xd",
+        "isFeatureEnabled",
+        "2307090146",
+        "cli_plugin",
+        "feature-gate",
+        "growthbook",
+        "fcache",
+        "dark-launch",
+        "cowork-plugin-oauth",
+        "egress-allowlist",
+        "network-allowlist",
+        "claude-desktop",
+        "app.asar",
+        "desktop-host",
+        "cowork-cli",
+        "credential-field-missing",
+        "plugin-oauth-not-enabled",
+        "hardcodedMainGrowthBookFeatures",
+        "ccd-mode",
+        "missing-credential",
+        "in-vm-secret",
+        "getPluginCliStatus",
+        "plugin-credential-ui"
+      ]
     }
   ],
   "keyword_map": {
@@ -3584,7 +3636,8 @@
       29,
       44,
       46,
-      68
+      68,
+      106
     ],
     "pii": [
       29,
@@ -7033,13 +7086,16 @@
       105
     ],
     "claude-desktop": [
-      105
+      105,
+      106
     ],
     "app.asar": [
-      105
+      105,
+      106
     ],
     "desktop-host": [
-      105
+      105,
+      106
     ],
     "mcp-host": [
       105
@@ -7067,6 +7123,120 @@
     ],
     "ccd": [
       105
+    ],
+    "clis": [
+      106
+    ],
+    "clis.env": [
+      106
+    ],
+    "cli-plugin": [
+      106
+    ],
+    "credential-broker": [
+      106
+    ],
+    "cowork-plugin-env": [
+      106
+    ],
+    "plugin-env-storage": [
+      106
+    ],
+    "setPluginEnvVars": [
+      106
+    ],
+    "customize-plugins": [
+      106
+    ],
+    "set-once-key": [
+      106
+    ],
+    "api-key-field": [
+      106
+    ],
+    "envVar": [
+      106
+    ],
+    "secret-field": [
+      106
+    ],
+    "safeStorage": [
+      106
+    ],
+    "VKr": [
+      106
+    ],
+    "PKr": [
+      106
+    ],
+    "classifyInner": [
+      106
+    ],
+    "cliPluginBridge": [
+      106
+    ],
+    "GXr": [
+      106
+    ],
+    "pJe": [
+      106
+    ],
+    "Xd": [
+      106
+    ],
+    "isFeatureEnabled": [
+      106
+    ],
+    "2307090146": [
+      106
+    ],
+    "cli_plugin": [
+      106
+    ],
+    "feature-gate": [
+      106
+    ],
+    "fcache": [
+      106
+    ],
+    "dark-launch": [
+      106
+    ],
+    "cowork-plugin-oauth": [
+      106
+    ],
+    "egress-allowlist": [
+      106
+    ],
+    "network-allowlist": [
+      106
+    ],
+    "cowork-cli": [
+      106
+    ],
+    "credential-field-missing": [
+      106
+    ],
+    "plugin-oauth-not-enabled": [
+      106
+    ],
+    "hardcodedMainGrowthBookFeatures": [
+      106
+    ],
+    "ccd-mode": [
+      106
+    ],
+    "missing-credential": [
+      106
+    ],
+    "in-vm-secret": [
+      106
+    ],
+    "getPluginCliStatus": [
+      106
+    ],
+    "plugin-credential-ui": [
+      106
     ]
   }
 }

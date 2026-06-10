@@ -2160,6 +2160,11 @@
         "id": 95,
         "relevance": 0.6,
         "reason": "another binary-verified Desktop/host-side surface (the 30-event hook master array)"
+      },
+      {
+        "id": 106,
+        "relevance": 0.86,
+        "reason": "the third Desktop credential channel — the clis.*.env CLI-tool broker (gated off), complementing MCP App UI / elicitation"
       }
     ],
     "89": [
@@ -2167,6 +2172,11 @@
         "id": 105,
         "relevance": 0.78,
         "reason": "Desktop MCP-Apps bridge + elicitation: how MCP servers collect private user input in Desktop/Cowork"
+      },
+      {
+        "id": 106,
+        "relevance": 0.7,
+        "reason": "how an in-VM Cowork CLI is *meant* to get a set-once secret: the host-side clis.*.env broker (currently gated off)"
       }
     ],
     "99": [
@@ -2174,6 +2184,28 @@
         "id": 105,
         "relevance": 0.78,
         "reason": "Desktop MCP-Apps bridge + elicitation: how MCP servers collect private user input in Desktop/Cowork"
+      }
+    ],
+    "106": [
+      {
+        "id": 105,
+        "relevance": 0.86,
+        "reason": "the other two Desktop credential channels (MCP App UI vs elicitation); same app.asar host — this is the third (CLI-tool) channel"
+      },
+      {
+        "id": 89,
+        "relevance": 0.82,
+        "reason": "Cowork split execution — the in-VM shell is sealed from host env, the exact problem the clis.*.env broker solves; three-root plugin namespace"
+      },
+      {
+        "id": 99,
+        "relevance": 0.66,
+        "reason": "host-delegated credential refresh — cowork-plugin-oauth sibling + oauth_token_refresh/host_auth_token_refresh control-requests"
+      },
+      {
+        "id": 104,
+        "relevance": 0.5,
+        "reason": "codename GB-flag triage — 2307090146 (cli_plugin) is another dark-launch gate of the same family"
       }
     ]
   }
