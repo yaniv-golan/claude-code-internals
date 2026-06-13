@@ -1993,6 +1993,138 @@
         "reason": "Frontmatter shadow validator also applies to plugin frontmatter — will affect the L35 plugin system loader if promoted to strict mode"
       }
     ],
+    "89": [
+      {
+        "id": 105,
+        "relevance": 0.78,
+        "reason": "Desktop MCP-Apps bridge + elicitation: how MCP servers collect private user input in Desktop/Cowork"
+      },
+      {
+        "id": 106,
+        "relevance": 0.7,
+        "reason": "how an in-VM Cowork CLI is *meant* to get a set-once secret: the host-side clis.*.env broker (currently gated off)"
+      },
+      {
+        "id": 107,
+        "relevance": 0.9,
+        "reason": "the spawn + stream-json control-protocol contract that drives the host-loop agent (flags, handshake, SDK MCP delivery, permissions)"
+      },
+      {
+        "id": 108,
+        "relevance": 0.8,
+        "reason": "production gate states (incl host-loop 1143815894) + the bg/cowork env-var catalog"
+      }
+    ],
+    "99": [
+      {
+        "id": 105,
+        "relevance": 0.78,
+        "reason": "Desktop MCP-Apps bridge + elicitation: how MCP servers collect private user input in Desktop/Cowork"
+      }
+    ],
+    "105": [
+      {
+        "id": 89,
+        "relevance": 0.83,
+        "reason": "Cowork split execution — the in-VM shell is sealed; elicitation/MCP-Apps are the host-side user channels"
+      },
+      {
+        "id": 99,
+        "relevance": 0.8,
+        "reason": "same Agent-SDK control-request dispatcher: host_auth_token_refresh/oauth_token_refresh are siblings of the elicitation subtype"
+      },
+      {
+        "id": 95,
+        "relevance": 0.6,
+        "reason": "another binary-verified Desktop/host-side surface (the 30-event hook master array)"
+      },
+      {
+        "id": 106,
+        "relevance": 0.86,
+        "reason": "the third Desktop credential channel — the clis.*.env CLI-tool broker (gated off), complementing MCP App UI / elicitation"
+      },
+      {
+        "id": 107,
+        "relevance": 0.78,
+        "reason": "the driver side of the same control protocol whose dispatcher (elicitation etc.) L105 documents"
+      }
+    ],
+    "106": [
+      {
+        "id": 105,
+        "relevance": 0.86,
+        "reason": "the other two Desktop credential channels (MCP App UI vs elicitation); same app.asar host — this is the third (CLI-tool) channel"
+      },
+      {
+        "id": 89,
+        "relevance": 0.82,
+        "reason": "Cowork split execution — the in-VM shell is sealed from host env, the exact problem the clis.*.env broker solves; three-root plugin namespace"
+      },
+      {
+        "id": 99,
+        "relevance": 0.66,
+        "reason": "host-delegated credential refresh — cowork-plugin-oauth sibling + oauth_token_refresh/host_auth_token_refresh control-requests"
+      },
+      {
+        "id": 104,
+        "relevance": 0.5,
+        "reason": "codename GB-flag triage — 2307090146 (cli_plugin) is another dark-launch gate of the same family"
+      },
+      {
+        "id": 107,
+        "relevance": 0.6,
+        "reason": "the agent-side spawn/auth contract; CLI secrets from the L106 broker are consumed by an agent spawned this way"
+      }
+    ],
+    "107": [
+      {
+        "id": 89,
+        "relevance": 0.9,
+        "reason": "host-loop vs VM-loop + split execution: L107 is the driver/spawn side, L89 the in-VM-shell/mount side of the same architecture"
+      },
+      {
+        "id": 105,
+        "relevance": 0.78,
+        "reason": "the control-request dispatcher (elicitation/can_use_tool/mcp_message) seen from the agent side; L107 is the driver side of the same stream-json protocol"
+      },
+      {
+        "id": 106,
+        "relevance": 0.6,
+        "reason": "the CLI-plugin credential broker is the Desktop-host way to get a secret to a Cowork CLI; L107 covers the agent spawn/auth contract that consumes it"
+      },
+      {
+        "id": 99,
+        "relevance": 0.55,
+        "reason": "host-delegated credential refresh (host_auth_token_refresh) is the auth half of the same control protocol L107 documents"
+      },
+      {
+        "id": 108,
+        "relevance": 0.85,
+        "reason": "the env-var/gate/extended-subtype reference catalog for the same Cowork surface"
+      }
+    ],
+    "108": [
+      {
+        "id": 107,
+        "relevance": 0.85,
+        "reason": "L108 catalogs the env vars/gates/subtypes; L107 is the spawn+control-protocol contract that uses them"
+      },
+      {
+        "id": 89,
+        "relevance": 0.8,
+        "reason": "host-loop gate 1143815894 and the split-execution env surface are catalogued here with live fcache states"
+      },
+      {
+        "id": 106,
+        "relevance": 0.65,
+        "reason": "the cli_plugin gate 2307090146 (off) is one of the production gates catalogued; L106 is its full mechanism"
+      },
+      {
+        "id": 99,
+        "relevance": 0.55,
+        "reason": "the CLAUDE_BG_*_AUTH single-use handshake + host-auth env vars relate to host-delegated credential refresh"
+      }
+    ],
     "dynamic-workflows": [
       {
         "id": 91,
@@ -2143,69 +2275,6 @@
         "id": 103,
         "relevance": 0.9,
         "reason": "PEWTER_OWL gate over the internal SendUserMessage tool"
-      }
-    ],
-    "105": [
-      {
-        "id": 89,
-        "relevance": 0.83,
-        "reason": "Cowork split execution — the in-VM shell is sealed; elicitation/MCP-Apps are the host-side user channels"
-      },
-      {
-        "id": 99,
-        "relevance": 0.8,
-        "reason": "same Agent-SDK control-request dispatcher: host_auth_token_refresh/oauth_token_refresh are siblings of the elicitation subtype"
-      },
-      {
-        "id": 95,
-        "relevance": 0.6,
-        "reason": "another binary-verified Desktop/host-side surface (the 30-event hook master array)"
-      },
-      {
-        "id": 106,
-        "relevance": 0.86,
-        "reason": "the third Desktop credential channel — the clis.*.env CLI-tool broker (gated off), complementing MCP App UI / elicitation"
-      }
-    ],
-    "89": [
-      {
-        "id": 105,
-        "relevance": 0.78,
-        "reason": "Desktop MCP-Apps bridge + elicitation: how MCP servers collect private user input in Desktop/Cowork"
-      },
-      {
-        "id": 106,
-        "relevance": 0.7,
-        "reason": "how an in-VM Cowork CLI is *meant* to get a set-once secret: the host-side clis.*.env broker (currently gated off)"
-      }
-    ],
-    "99": [
-      {
-        "id": 105,
-        "relevance": 0.78,
-        "reason": "Desktop MCP-Apps bridge + elicitation: how MCP servers collect private user input in Desktop/Cowork"
-      }
-    ],
-    "106": [
-      {
-        "id": 105,
-        "relevance": 0.86,
-        "reason": "the other two Desktop credential channels (MCP App UI vs elicitation); same app.asar host — this is the third (CLI-tool) channel"
-      },
-      {
-        "id": 89,
-        "relevance": 0.82,
-        "reason": "Cowork split execution — the in-VM shell is sealed from host env, the exact problem the clis.*.env broker solves; three-root plugin namespace"
-      },
-      {
-        "id": 99,
-        "relevance": 0.66,
-        "reason": "host-delegated credential refresh — cowork-plugin-oauth sibling + oauth_token_refresh/host_auth_token_refresh control-requests"
-      },
-      {
-        "id": 104,
-        "relevance": 0.5,
-        "reason": "codename GB-flag triage — 2307090146 (cli_plugin) is another dark-launch gate of the same family"
       }
     ]
   }

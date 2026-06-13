@@ -1261,6 +1261,49 @@
         89
       ],
       "hint": "The clis.*.env credential broker (enter once under Customize -> Plugins, encrypted in cowork-plugin-env, injected at CLI invocation) is dark-launched behind GrowthBook gate 2307090146 (cli_plugin), off by default. A valid manifest renders NOTHING with no error: the renderer (GXr) strips clis and the runtime chokepoint (PKr, ahead of VKr) returns oauth_disabled. There is no manual workaround while gated. Decode ~/Library/Application Support/Claude/fcache to read the gate state. Until it flips, give an in-VM Cowork CLI its key via project .env / a key-file on a mounted folder (see L89)."
+    },
+    {
+      "pattern": [
+        "AskUserQuestion never fires in my headless/SDK cowork driver",
+        "AskUserQuestion silently auto-dismissed",
+        "control_response ZodError expected object received undefined",
+        "how to drive Cowork headless",
+        "cowork spawn flags",
+        "does the cowork agent run in the VM or on the host",
+        "--cowork flag rejected can only be used with user scope",
+        "Cowork ignores --mcp-config / .mcp.json",
+        "how do I pass MCP servers to a cowork agent",
+        "CLAUDE_CODE_USE_COWORK_PLUGINS broke my settings"
+      ],
+      "lessons": [
+        107,
+        89,
+        105
+      ],
+      "hint": "Cowork mode = CLAUDE_CODE_IS_COWORK=1 (the --cowork flag is rejected; do not set CLAUDE_CODE_USE_COWORK_PLUGINS). Drive the agent over the stream-json control protocol: spawn -p --verbose --input-format stream-json --output-format stream-json --permission-prompt-tool stdio (without stdio routing AskUserQuestion is silently auto-dismissed); send the initialize handshake FIRST; the control_response envelope is doubly nested (response.response.<payload>). Cowork ignores --mcp-config — deliver MCP via sdkMcpServers in initialize + mcp_message tunneling (the driver IS the MCP server). In production (host-loop, gate 1143815894) the agent loop runs host-side and only mcp__workspace__bash/web_fetch run in the VM. See L107 (contract), L89 (host-loop/split execution), L105 (control-request dispatcher)."
+    },
+    {
+      "pattern": [
+        "what cowork environment variables exist",
+        "which growthbook gate controls cowork",
+        "is host-loop on or off",
+        "how do I read the fcache gate state",
+        "CLAUDE_CODE_ENABLE_XAA",
+        "CLAUDE_CODE_ENVIRONMENT_KIND",
+        "CLAUDE_BG_CLAIM_AUTH",
+        "ANTHROPIC_DEFAULT_FABLE_MODEL",
+        "what control protocol subtypes exist",
+        "get_session_cost",
+        "side_question",
+        "why is my cowork task dispatch limited",
+        "task dispatch perTask global limit"
+      ],
+      "lessons": [
+        108,
+        107,
+        89
+      ],
+      "hint": "Chapter 25 (L108) is the binary-verified catalog. Env vars: see Part A (model/effort, cowork/bg runtime incl. CLAUDE_BG_*_AUTH single-use handshake + CLAUDE_CODE_WORKER_EPOCH, auth incl. CLAUDE_CODE_ENABLE_XAA, Agent-SDK, Desktop-only). Gates: Part B decodes the live fcache — host-loop 1143815894, Fable 3045399524, bridge-SDK-adapter 583857784, cowork-config 1978029737, task-dispatch limiter 1648655587 {perTask:1,global:3}, sparkplug 2340532315 all ON; coworkKappa 123929380 and cli_plugin 2307090146 OFF. Read gate state yourself by decoding ~/Library/Application Support/Claude/fcache (8-byte CLF header + gzip). Control-protocol subtypes: Part C (get_session_cost, get_binary_version, generate_session_title, ultrareview_launch, side_question + system messages + Bv1/Uv1 sets). See L107 (spawn/protocol contract), L89 (host-loop/split execution)."
     }
   ]
 }

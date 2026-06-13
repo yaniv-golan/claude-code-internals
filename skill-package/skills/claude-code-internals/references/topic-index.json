@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-04",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4",
-  "total_lessons": 106,
+  "generated": "2026-06-13",
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170)",
+  "total_lessons": 108,
   "lessons": [
     {
       "id": 1,
@@ -1888,7 +1888,7 @@
       "lesson_number": "89",
       "file": "17-verified-new-v2.1.120.md",
       "startLine": 83,
-      "endLine": 1946,
+      "endLine": 2031,
       "keywords": [
         "v2.1.119",
         "cowork",
@@ -2115,8 +2115,8 @@
       "title": "v2.1.120 Daemon On-Demand Model, CLAUDE_CODE_LEAN_PROMPT, Memory-Write Approval UX, Plan-Mode Tripwire, CLAUDE_COWORK_MEMORY_GUIDELINES",
       "lesson_number": "90",
       "file": "17-verified-new-v2.1.120.md",
-      "startLine": 1947,
-      "endLine": 2680,
+      "startLine": 2032,
+      "endLine": 2766,
       "keywords": [
         "v2.1.120",
         "v2.1.120-bundle",
@@ -2607,6 +2607,134 @@
         "getPluginCliStatus",
         "plugin-credential-ui"
       ]
+    },
+    {
+      "id": 107,
+      "title": "The Cowork Spawn + stream-json Control-Protocol Contract (CLAUDE_CODE_IS_COWORK, --permission-prompt-tool stdio, control_response double-nesting, SDK MCP delivery; app.asar 1.12603.1 / in-VM ELF 2.1.170)",
+      "lesson_number": "107",
+      "file": "21-cowork-control-protocol.md",
+      "startLine": 22,
+      "endLine": 241,
+      "keywords": [
+        "cowork-spawn-contract",
+        "stream-json",
+        "control-protocol",
+        "control_request",
+        "control_response",
+        "initialize-handshake",
+        "double-nested-response",
+        "CLAUDE_CODE_IS_COWORK",
+        "cowork-mode-env",
+        "--cowork-rejected",
+        "--permission-prompt-tool",
+        "permission-prompt-tool-stdio",
+        "askuserquestion-answer-shape",
+        "updatedInput.answers",
+        "sdkMcpServers",
+        "mcp_message",
+        "mcp-tunneling",
+        "driver-is-mcp-server",
+        "--mcp-config-ignored",
+        "mcp-config-inert",
+        "CLAUDE_CODE_USE_COWORK_PLUGINS",
+        "TSO",
+        "cowork_settings.json",
+        "--allowedTools",
+        "--tools",
+        "layered-permission",
+        "run_in_background-blocked",
+        "allow-dangerously-skip-permissions",
+        "CLAUDE_CODE_OAUTH_TOKEN",
+        "setup-token",
+        "MAX_THINKING_TOKENS",
+        "31999",
+        "--effort",
+        "CLAUDE_FORCE_HOST_LOOP",
+        "appendSubagentSystemPrompt",
+        "CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT",
+        "sdk-control-protocol",
+        "claude-code-vm",
+        "in-vm-elf",
+        "headless-driver",
+        "ubuntu-22-guest",
+        "node-v12",
+        "break-system-packages",
+        "host-loop-driver"
+      ]
+    },
+    {
+      "id": 108,
+      "title": "Cowork/Desktop Environment Variables, Production GrowthBook Gates & the Extended Control-Protocol Surface (app.asar 1.12603.1 / in-VM ELF 2.1.170 / live fcache)",
+      "lesson_number": "108",
+      "file": "22-cowork-env-gates-protocol.md",
+      "startLine": 21,
+      "endLine": 137,
+      "keywords": [
+        "cowork-env-vars",
+        "desktop-env-vars",
+        "growthbook-gates",
+        "fcache-gates",
+        "control-protocol-subtypes",
+        "CLAUDE_CODE_ENABLE_XAA",
+        "xaa",
+        "cross-app-authentication",
+        "sep-990",
+        "CLAUDE_CODE_ENVIRONMENT_KIND",
+        "byoc",
+        "anthropic_cloud",
+        "CLAUDE_CODE_WORKER_EPOCH",
+        "CLAUDE_CODE_WORKSPACE_HOST_PATHS",
+        "CLAUDE_BG_CLAIM_AUTH",
+        "CLAUDE_BG_PTY_AUTH",
+        "CLAUDE_BG_RV_AUTH",
+        "CLAUDE_BG_SOCKET_TOKENS_PATH",
+        "CLAUDE_BG_STARTUP_WEDGE_MS",
+        "CLAUDE_COWORK_MEMORY_INDEX_CONTENT",
+        "CLAUDE_AGENT_SDK_CLIENT_APP",
+        "CLAUDE_AGENT_SDK_VERSION",
+        "CLAUDE_AGENT_SDK_MCP_NO_PREFIX",
+        "CLAUDE_AGENT_SDK_DISABLE_BUILTIN_AGENTS",
+        "ANTHROPIC_DEFAULT_FABLE_MODEL",
+        "CLAUDE_CODE_ALWAYS_ENABLE_EFFORT",
+        "CLAUDE_CODE_DISABLE_1M_CONTEXT",
+        "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING",
+        "CLAUDE_CODE_DONT_INHERIT_ENV",
+        "CLAUDE_CODE_PLAN_V2_AGENT_COUNT",
+        "CLAUDE_CODE_COLD_COMPACT",
+        "CLAUDE_TRUSTED_DEVICE_TOKEN",
+        "CLAUDE_AI_URL",
+        "CLAUDE_EXTRA_HEADERS_TOKEN",
+        "CLAUDE_UPDATER_TOKEN",
+        "CLAUDE_DESKTOP_LOCAL_FRAME_SHELL",
+        "CLAUDE_CODE_BG_CLASSIFIER_MODEL",
+        "CLAUDE_CODE_AUTO_MODE_MODEL",
+        "gate-1143815894",
+        "gate-3045399524",
+        "gate-583857784",
+        "gate-1978029737",
+        "gate-1648655587",
+        "gate-2340532315",
+        "gate-2392971184",
+        "sparkplug",
+        "bridge-sdk-adapter",
+        "task-dispatch-limiter",
+        "coworkWebFetchViaApi",
+        "coworkArtifacts",
+        "coworkKappa",
+        "get_session_cost",
+        "get_binary_version",
+        "generate_session_title",
+        "ultrareview_launch",
+        "side_question",
+        "elicitation_complete",
+        "files_persisted",
+        "local_command_output",
+        "api_metrics",
+        "Bv1",
+        "Uv1",
+        "mcp_call",
+        "fable-5-model-override"
+      ]
     }
   ],
   "keyword_map": {
@@ -2622,6 +2750,12 @@
     "529": [
       80,
       2
+    ],
+    "31999": [
+      107
+    ],
+    "2307090146": [
+      106
     ],
     "boot": [
       1,
@@ -3033,7 +3167,9 @@
     ],
     "mcp": [
       10,
-      31
+      31,
+      107,
+      108
     ],
     "model-context-protocol": [
       10
@@ -3637,7 +3773,8 @@
       44,
       46,
       68,
-      106
+      106,
+      108
     ],
     "pii": [
       29,
@@ -4009,7 +4146,8 @@
       42
     ],
     "control-protocol": [
-      42
+      42,
+      107
     ],
     "mcp-server-mode": [
       42
@@ -4110,7 +4248,8 @@
       45
     ],
     "model": [
-      46
+      46,
+      108
     ],
     "provider": [
       46
@@ -5913,7 +6052,9 @@
       89
     ],
     "cowork": [
-      89
+      89,
+      107,
+      108
     ],
     "cowork-runtime": [
       89
@@ -7187,9 +7328,6 @@
     "isFeatureEnabled": [
       106
     ],
-    "2307090146": [
-      106
-    ],
     "cli_plugin": [
       106
     ],
@@ -7237,6 +7375,324 @@
     ],
     "plugin-credential-ui": [
       106
+    ],
+    "cowork-spawn-contract": [
+      107
+    ],
+    "stream-json": [
+      107
+    ],
+    "control_request": [
+      107
+    ],
+    "control_response": [
+      107
+    ],
+    "initialize-handshake": [
+      107
+    ],
+    "double-nested-response": [
+      107
+    ],
+    "claude_code_is_cowork": [
+      107
+    ],
+    "cowork-mode-env": [
+      107
+    ],
+    "--cowork-rejected": [
+      107
+    ],
+    "--permission-prompt-tool": [
+      107
+    ],
+    "permission-prompt-tool-stdio": [
+      107
+    ],
+    "askuserquestion-answer-shape": [
+      107
+    ],
+    "updatedinput.answers": [
+      107
+    ],
+    "sdkmcpservers": [
+      107
+    ],
+    "mcp_message": [
+      107
+    ],
+    "mcp-tunneling": [
+      107
+    ],
+    "driver-is-mcp-server": [
+      107
+    ],
+    "--mcp-config-ignored": [
+      107
+    ],
+    "mcp-config-inert": [
+      107
+    ],
+    "claude_code_use_cowork_plugins": [
+      107
+    ],
+    "tso": [
+      107
+    ],
+    "cowork_settings.json": [
+      107
+    ],
+    "--allowedtools": [
+      107
+    ],
+    "--tools": [
+      107
+    ],
+    "layered-permission": [
+      107
+    ],
+    "run_in_background-blocked": [
+      107
+    ],
+    "allow-dangerously-skip-permissions": [
+      107
+    ],
+    "claude_code_oauth_token": [
+      107
+    ],
+    "setup-token": [
+      107
+    ],
+    "max_thinking_tokens": [
+      107
+    ],
+    "--effort": [
+      107
+    ],
+    "claude_force_host_loop": [
+      107
+    ],
+    "appendsubagentsystemprompt": [
+      107
+    ],
+    "claude_code_enable_append_subagent_prompt": [
+      107
+    ],
+    "sdk-control-protocol": [
+      107
+    ],
+    "claude-code-vm": [
+      107
+    ],
+    "in-vm-elf": [
+      107
+    ],
+    "headless-driver": [
+      107
+    ],
+    "ubuntu-22-guest": [
+      107
+    ],
+    "node-v12": [
+      107
+    ],
+    "break-system-packages": [
+      107
+    ],
+    "host-loop-driver": [
+      107
+    ],
+    "cowork-env-vars": [
+      108
+    ],
+    "desktop-env-vars": [
+      108
+    ],
+    "growthbook-gates": [
+      108
+    ],
+    "fcache-gates": [
+      108
+    ],
+    "control-protocol-subtypes": [
+      108
+    ],
+    "claude_code_enable_xaa": [
+      108
+    ],
+    "xaa": [
+      108
+    ],
+    "cross-app-authentication": [
+      108
+    ],
+    "sep-990": [
+      108
+    ],
+    "claude_code_environment_kind": [
+      108
+    ],
+    "byoc": [
+      108
+    ],
+    "anthropic_cloud": [
+      108
+    ],
+    "claude_code_worker_epoch": [
+      108
+    ],
+    "claude_code_workspace_host_paths": [
+      108
+    ],
+    "claude_bg_claim_auth": [
+      108
+    ],
+    "claude_bg_pty_auth": [
+      108
+    ],
+    "claude_bg_rv_auth": [
+      108
+    ],
+    "claude_bg_socket_tokens_path": [
+      108
+    ],
+    "claude_bg_startup_wedge_ms": [
+      108
+    ],
+    "claude_cowork_memory_index_content": [
+      108
+    ],
+    "claude_agent_sdk_client_app": [
+      108
+    ],
+    "claude_agent_sdk_version": [
+      108
+    ],
+    "claude_agent_sdk_mcp_no_prefix": [
+      108
+    ],
+    "claude_agent_sdk_disable_builtin_agents": [
+      108
+    ],
+    "anthropic_default_fable_model": [
+      108
+    ],
+    "claude_code_always_enable_effort": [
+      108
+    ],
+    "claude_code_disable_1m_context": [
+      108
+    ],
+    "claude_code_disable_adaptive_thinking": [
+      108
+    ],
+    "claude_code_dont_inherit_env": [
+      108
+    ],
+    "claude_code_plan_v2_agent_count": [
+      108
+    ],
+    "claude_code_cold_compact": [
+      108
+    ],
+    "claude_trusted_device_token": [
+      108
+    ],
+    "claude_ai_url": [
+      108
+    ],
+    "claude_extra_headers_token": [
+      108
+    ],
+    "claude_updater_token": [
+      108
+    ],
+    "claude_desktop_local_frame_shell": [
+      108
+    ],
+    "claude_code_bg_classifier_model": [
+      108
+    ],
+    "claude_code_auto_mode_model": [
+      108
+    ],
+    "gate-1143815894": [
+      108
+    ],
+    "gate-3045399524": [
+      108
+    ],
+    "gate-583857784": [
+      108
+    ],
+    "gate-1978029737": [
+      108
+    ],
+    "gate-1648655587": [
+      108
+    ],
+    "gate-2340532315": [
+      108
+    ],
+    "gate-2392971184": [
+      108
+    ],
+    "sparkplug": [
+      108
+    ],
+    "bridge-sdk-adapter": [
+      108
+    ],
+    "task-dispatch-limiter": [
+      108
+    ],
+    "coworkwebfetchviaapi": [
+      108
+    ],
+    "coworkartifacts": [
+      108
+    ],
+    "coworkkappa": [
+      108
+    ],
+    "get_session_cost": [
+      108
+    ],
+    "get_binary_version": [
+      108
+    ],
+    "generate_session_title": [
+      108
+    ],
+    "ultrareview_launch": [
+      108
+    ],
+    "side_question": [
+      108
+    ],
+    "elicitation_complete": [
+      108
+    ],
+    "files_persisted": [
+      108
+    ],
+    "local_command_output": [
+      108
+    ],
+    "api_metrics": [
+      108
+    ],
+    "bv1": [
+      108
+    ],
+    "uv1": [
+      108
+    ],
+    "mcp_call": [
+      108
+    ],
+    "fable-5-model-override": [
+      108
     ]
   }
 }

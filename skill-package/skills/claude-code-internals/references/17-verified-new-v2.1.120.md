@@ -1331,9 +1331,58 @@ via the Cowork app UI, run in a real desktop session) settled them:
   connectors; the only thing the *sandbox shell* ingests from the host is Anthropic's own auth via the SDK
   RPC channel (see L99).
 
+#### host-loop vs VM-loop: where the agent loop actually runs (gate `1143815894`)
+
+The "split execution" documented below has a name and a switch. Whether a Cowork session runs
+**host-loop** or **VM-loop** is a single server-side GrowthBook decision, extracted from the desktop
+binary (`app.asar` 1.12603.1) and the in-VM agent ELF (`claude-code-vm/2.1.170/claude`, a **Linux/arm64**
+binary that only runs in a container/VM). The decision function, verbatim:
+
+```js
+function f_(){return HeA()||iX()?!1:(isDeveloperApprovedDevUrlOverrideEnabled&&process.env.CLAUDE_FORCE_HOST_LOOP==="1")?!0:cPt()}
+```
+
+where `HeA()` = `requireCoworkFullVmSandbox === true` (org policy), `iX()` = `settings.forceDisableHostLoop`,
+`cPt()` = GrowthBook gate `1143815894`. So: org policy / `forceDisableHostLoop` → **VM-loop**; the dev
+override `CLAUDE_FORCE_HOST_LOOP=1` → **host-loop**; otherwise the gate decides.
+
+**Production decodes to host-loop.** The on-disk `fcache` shows gate `1143815894` =
+`{value:true, on:true, source:"force"}` — so default consumer/Pro Cowork is **host-loop**, and only
+locked-down orgs (`requireCoworkFullVmSandbox`) get **VM-loop**.
+
+- **host-loop (the default).** The **agent loop runs on the host** — the macOS Claude Code binary at
+  `/usr/local/bin/claude`, the same process whose argv the log captures below. File tools
+  (Read/Edit/Write) hit the **host** filesystem at `hostCwd`; **only the shell and web tools run in the
+  VM** — `Bash` is replaced by `mcp__workspace__bash` and `WebFetch` by `mcp__workspace__web_fetch`,
+  both executed in the workspace microVM where folders mount under `/sessions/<id>/mnt/`. This is *why*
+  host-spawned MCP servers see full host env while `mcp__workspace__bash` is sealed (the "split" below),
+  and why a host `${CLAUDE_PLUGIN_ROOT}` path is unreachable from the VM shell.
+- **VM-loop (locked-down orgs).** The whole agent runs *inside* the VM via the staged Linux ELF:
+  `cwd:"/sessions/<id>"`, `CLAUDE_CONFIG_DIR=/sessions/<id>/mnt/.claude`. Those `/sessions/<id>/…`
+  strings live in the **in-VM ELF**, not the host CLI binary — which is exactly why a host-CLI string
+  search for them comes up empty (see the memory note that `/sessions/<id>/mnt` is "not in the binary":
+  true of the *host* binary, present in the *in-VM* one).
+
+**Terminology fix.** Earlier passages in this chapter call the logged `/usr/local/bin/claude` process
+"the in-VM CLI." Under host-loop (production) that is imprecise: it is the **host** agent, and the VM
+hosts only the workspace shell/web tools. Read "the spawned agent" as host-side unless the org is on
+VM-loop.
+
+> **Provenance.** `f_()`/`HeA()`/`iX()`/`cPt()` and the `fcache` gate decode are `[binary]` findings,
+> first-party verified (and adversarially re-greped) against `app.asar` **1.12603.1** + in-VM ELF
+> `claude-code-vm/2.1.170/claude`; the host-env / sealed-shell halves below are independently
+> `[empirical]` from this skill's own real-Cowork probes.
+>
+> **See also Ch24/L107** for the *driver* side of host-loop: the stream-json spawn flags + control
+> protocol the desktop uses to run this agent (incl. `CLAUDE_CODE_IS_COWORK=1` as the mode marker,
+> `--cowork` being rejected, `--mcp-config` being inert in favor of SDK-server delivery, and the
+> layered permission model).
+
 #### Split execution: host-side MCP servers vs the sealed in-VM shell (verified 2026-06-03)
 
-The host↔VM table above is about the **in-VM agent shell** (`mcp__workspace__bash`). But Cowork has a **split execution model**, and the other half changes the credential story. Empirically tested (real desktop Cowork session, app v1.x / CLI v2.1.160):
+The host↔VM table above is about the in-VM **shell** (`mcp__workspace__bash`) — the half of host-loop
+that runs in the VM. Cowork's **split execution model** is the host-loop consequence spelled out above,
+and the other half changes the credential story. Empirically tested (real desktop Cowork session, app v1.x / CLI v2.1.160):
 
 - **stdio MCP servers declared in `~/Library/Application Support/Claude/claude_desktop_config.json` run on the HOST, not in the VM** — spawned by the Desktop (Electron) app through a login shell, and bridged into the Cowork session as `mcp__<server>__*` tools. Proof: a `cowork-probe` entry (`npx @modelcontextprotocol/server-everything`) appeared in a Cowork session, and its `get-env` returned **macOS host paths** (`/opt/homebrew/.../node`, user-agent `darwin arm64`, `__CF_USER_TEXT_ENCODING`, the full host *shell* `PATH` incl. pyenv/cargo/nvm/pnpm) **plus** the per-server `PROBE_MARKER=from-desktop-config` from its `env:` block.
 - **This corrects the "import-only" read of `claude_desktop_config.json`.** That was true only for the *CLI binary* (where the file is reachable solely via `claude mcp add-from-claude-desktop`). The *Desktop app* genuinely reads `mcpServers` from it (it has validation + error dialogs: *"…not valid MCP server configurations and were skipped"*) and wires those servers into Cowork.

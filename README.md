@@ -2,7 +2,7 @@
 
 ![Claude Code Internals banner](assets/banner.png)
 
-> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 106 lessons covering every internal subsystem, verified against the v2.1.159 binary (plus the Claude Desktop `app.asar` for the two Desktop-host chapters), searchable three ways.
+> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 108 lessons covering every internal subsystem, verified against the v2.1.159 binary (plus the Claude Desktop `app.asar` for the two Desktop-host chapters, and the Cowork in-VM agent ELF for the spawn/control-protocol chapter), searchable three ways.
 >
 > **This is a modified fork** of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals). See [Attribution](#attribution) for what changed.
 
@@ -12,7 +12,7 @@
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-plugin-F97316)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/plugins)
 [![Improved with Skill Creator Plus](https://img.shields.io/badge/Improved_with-Skill_Creator_Plus-4ecdc4?style=flat-square)](https://github.com/yaniv-golan/skill-creator-plus)
 
-**Skill Version:** 2.14.0 | **Captured from:** Claude Code v2.1.159 (+ Claude Desktop app.asar 1.9659.4 / 1.11847.5) | **Date:** 2026-06-10 | **License:** MIT
+**Skill Version:** 2.15.0 | **Captured from:** Claude Code v2.1.159 (+ Claude Desktop app.asar 1.9659.4 / 1.11847.5 / 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) | **Date:** 2026-06-13 | **License:** MIT
 
 ---
 
@@ -120,7 +120,7 @@ Adds a gentle reminder whenever Claude edits `.claude/` config files. Add to `ho
 
 ## What This Is
 
-This is a Claude Code skill containing a complete reverse-engineering of Claude Code's internal architecture, verified against the v2.1.159 binary. 106 detailed lessons cover every major subsystem — from the boot sequence to undocumented features found directly in the binary. Chapter 21 covers the v2.1.139–v2.1.159 changes: Dynamic Workflows + coordinator mode, the Opus 4.8 launch (effort ladder low|medium|high|xhigh|max), streaming-tool-execution GA, the `MessageDisplay` hook (the live master hook array is now 30), auto-mode promotion to default, the Cloud gateway provider, org-managed skills/plugins sync, host-delegated credential refresh, background binary-takeover, and `/loop` keepalive. Two further chapters come from the Claude **Desktop** `app.asar`: Chapter 22 (L105) on the Desktop **MCP-Apps host bridge vs elicitation**, and Chapter 23 (L106) on the Cowork **CLI-plugin credential broker** (`clis.*.env`) and its `cli_plugin` dark-launch feature gate. When you type `/claude-code-internals hooks` or `/claude-code-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
+This is a Claude Code skill containing a complete reverse-engineering of Claude Code's internal architecture, verified against the v2.1.159 binary. 108 detailed lessons cover every major subsystem — from the boot sequence to undocumented features found directly in the binary. Chapter 21 covers the v2.1.139–v2.1.159 changes: Dynamic Workflows + coordinator mode, the Opus 4.8 launch (effort ladder low|medium|high|xhigh|max), streaming-tool-execution GA, the `MessageDisplay` hook (the live master hook array is now 30), auto-mode promotion to default, the Cloud gateway provider, org-managed skills/plugins sync, host-delegated credential refresh, background binary-takeover, and `/loop` keepalive. Two further chapters come from the Claude **Desktop** `app.asar`: Chapter 22 (L105) on the Desktop **MCP-Apps host bridge vs elicitation**, and Chapter 23 (L106) on the Cowork **CLI-plugin credential broker** (`clis.*.env`) and its `cli_plugin` dark-launch feature gate. Chapter 24 (L107) documents the Cowork **spawn + stream-json control-protocol contract** (`CLAUDE_CODE_IS_COWORK`, `--permission-prompt-tool stdio`, the `initialize` handshake, the doubly-nested `control_response`, SDK MCP delivery, and the layered permission model) and corrects Chapter 20's host-loop/VM-loop framing (gate `1143815894`; in production the agent loop runs host-side and only `mcp__workspace__bash`/`web_fetch` run in the VM) — first-party binary-verified against app.asar 1.12603.1 + the in-VM ELF `claude-code-vm/2.1.170` + the live `fcache`. Chapter 25 (L108) is a binary-verified reference catalog of ~33 Cowork/Desktop environment variables, the production GrowthBook gates decoded from the live `fcache` (host-loop, the bridge SDK-adapter transport, the task-dispatch limiter, sparkplug plugin sync, and more), and the extended control-protocol surface (`mcp_call`, `get_session_cost`, `side_question`, and the `Bv1`/`Uv1` dispatcher sets). When you type `/claude-code-internals hooks` or `/claude-code-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
 
 Without this skill, Claude knows *how to use* Claude Code but doesn't know *how Claude Code works internally*. With it, Claude becomes an expert on its own implementation — the query engine's retry logic, all 30 hook event types, the 7-phase permission pipeline, the compaction algorithm, the agent spawn lifecycle, and binary-verified internals of features like `/effort`, `/rewind`, `/teleport`, `/branch`, Dynamic Workflows, the Opus 4.8 effort ladder, the Cowork runtime, and `/fork`.
 
@@ -282,7 +282,7 @@ Returns the companion system internals: the date gate (April 2026+, first-party 
 ```bash
 node scripts/fetch-lesson.js 32          # Hooks System content
 node scripts/fetch-lesson.js 32 --meta   # Metadata only (file, line range)
-node scripts/fetch-lesson.js --list      # All 106 lessons
+node scripts/fetch-lesson.js --list      # All 108 lessons
 ```
 
 ### xref.js — Shell-Safe Cross-Reference Lookup
