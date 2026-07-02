@@ -2,7 +2,7 @@
 
 ![Claude Code Internals banner](assets/banner.png)
 
-> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 108 lessons covering every internal subsystem, verified against the v2.1.159 binary (plus the Claude Desktop `app.asar` for the two Desktop-host chapters, and the Cowork in-VM agent ELF for the spawn/control-protocol chapter), searchable three ways.
+> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 109 lessons covering every internal subsystem, verified against the v2.1.159 binary (plus the Claude Desktop `app.asar` for the Desktop-host chapters, and the Cowork in-VM agent ELF for the spawn/control-protocol and Spaces/Tasks chapters), searchable three ways.
 >
 > **This is a modified fork** of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals). See [Attribution](#attribution) for what changed.
 
@@ -12,7 +12,7 @@
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-plugin-F97316)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/plugins)
 [![Improved with Skill Creator Plus](https://img.shields.io/badge/Improved_with-Skill_Creator_Plus-4ecdc4?style=flat-square)](https://github.com/yaniv-golan/skill-creator-plus)
 
-**Skill Version:** 2.15.0 | **Captured from:** Claude Code v2.1.159 (+ Claude Desktop app.asar 1.9659.4 / 1.11847.5 / 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) | **Date:** 2026-06-13 | **License:** MIT
+**Skill Version:** 2.16.0 | **Captured from:** Claude Code v2.1.159 (+ Claude Desktop app.asar 1.9659.4 / 1.11847.5 / 1.12603.1 / 1.17377.2 + in-VM ELF claude-code-vm/2.1.170 / 2.1.197) | **Date:** 2026-07-02 | **License:** MIT
 
 ---
 
@@ -262,7 +262,7 @@ Returns the companion system internals: the date gate (April 2026+, first-party 
 # Source: 04-connectivity-plugins.md L324–456
 
 [full lesson content with type definitions, exit code table,
- all 27 event types, configuration examples...]
+ all 30 event types, configuration examples...]
 ```
 
 ## Getting the Most Out of It
@@ -282,7 +282,7 @@ Returns the companion system internals: the date gate (April 2026+, first-party 
 ```bash
 node scripts/fetch-lesson.js 32          # Hooks System content
 node scripts/fetch-lesson.js 32 --meta   # Metadata only (file, line range)
-node scripts/fetch-lesson.js --list      # All 108 lessons
+node scripts/fetch-lesson.js --list      # All 109 lessons
 ```
 
 ### xref.js — Shell-Safe Cross-Reference Lookup

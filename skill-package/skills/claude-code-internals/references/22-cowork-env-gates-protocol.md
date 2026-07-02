@@ -111,6 +111,16 @@ Beyond Ch22/L105's dispatcher subtypes (`initialize`, `can_use_tool`, `hook_call
 `elicitation`, `oauth_token_refresh`, `host_auth_token_refresh`) and Ch24/L107's
 `mcp_call`/`register_repo_root`/`request_user_dialog`/`stage_file`/`end_session`, these are also verified:
 
+> **`hook_callback` wire shape** `[binary 2.1.197]`: the envelope is
+> `control_request{subtype:"hook_callback", callback_id, input, tool_use_id?}` — `tool_use_id` is a top-level
+> sibling of `input`. The `input` is the shared hook-input object (`Ad()`): base fields `session_id`,
+> `transcript_path`, `cwd`, `prompt_id`, `permission_mode`, `agent_id`, `agent_type`, `effort:{level}`, plus
+> per-event fields (`hook_event_name`; PreToolUse/PostToolUse add `tool_name`/`tool_input`/`tool_use_id`).
+> A hook may reply `{async:true, asyncTimeout?}` to defer. **PreToolUse hook `deny` bypasses `canUseTool`**
+> and surfaces as an `is_error` tool_result, not a `can_use_tool` frame (full mechanism in Ch1/L-permissions:
+> "PreToolUse is an independent enforcement point").
+
+
 ### Additional request subtypes
 
 | Subtype | Direction | Purpose |

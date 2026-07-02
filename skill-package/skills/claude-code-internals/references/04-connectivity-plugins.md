@@ -729,6 +729,18 @@ If a Cowork session is using stale `pdf` / `xlsx` / etc. content, the cause is h
 **PreCompact:** 0=stdout as custom compact instructions, 2=block compaction
 **CwdChanged/FileChanged:** No exit code 2 blocking; set `CLAUDE_ENV_FILE`
 
+**Modern structured form + a key invariant** `[binary 2.1.197]`: besides exit codes, a PreToolUse hook can
+return JSON `hookSpecificOutput:{hookEventName:"PreToolUse", permissionDecision:"allow"|"deny"|"ask"}` (or
+legacy `{decision:"block", reason}`), mapped to a `permissionBehavior` (`deny`/`ask`/`defer`). **PreToolUse
+is an independent enforcement point, not gated by `canUseTool`:** it fires on *every* tool call — including
+`--allowedTools`-pre-approved tools — and a hook `deny` **bypasses `canUseTool`**, surfacing to the model as
+an `is_error` tool_result (the turn frame still returns `subtype:"success"` — tool-level, not run-level,
+failure). The hook **input contract** (shared `Ad()` builder): base `session_id`, `transcript_path`, `cwd`,
+`prompt_id`, `permission_mode`, `agent_id`, `agent_type`, `effort:{level}`, plus per-event
+`hook_event_name`/`tool_name`/`tool_input`/`tool_use_id`; delivered classic (stdin JSON) or as
+`control_request{subtype:"hook_callback", callback_id, input, tool_use_id?}`. Full write-up in Lesson 50
+(01-core, "PreToolUse is an independent enforcement point" / "Hook input contract").
+
 ## Five Hook Command Types
 
 ### 1. `command` (Shell subprocess)

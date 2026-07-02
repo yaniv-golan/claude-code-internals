@@ -41,7 +41,7 @@ This is because Claude's training data doesn't include Claude Code's source code
 
 ### What Changes With This Skill
 
-- **Claude stops guessing.** Every answer comes from indexed architecture documentation, not training data. When you ask about hooks, Claude reads the actual hook system lesson that documents all 27 event types, exit code semantics, and 5 command types.
+- **Claude stops guessing.** Every answer comes from indexed architecture documentation, not training data. When you ask about hooks, Claude reads the actual hook system lesson that documents all 30 event types, exit code semantics, and 5 command types.
 
 - **You get source-level depth.** Not "hooks let you run commands before and after tool use" but "PreToolUse hooks receive `{tool_name, tool_input}` as JSON on stdin, exit 0 proceeds silently, exit 1 proceeds with stderr shown to user, exit 2 blocks the tool and sends stderr to the model."
 

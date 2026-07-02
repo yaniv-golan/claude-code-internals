@@ -1209,6 +1209,46 @@ Every tool call passes through `canUseTool()` -- the architectural choke point.
 
 Security invariant: Snapshot captures hooks configuration once at startup. Prevents malicious project from modifying `settings.json` mid-session.
 
+### PreToolUse is an independent enforcement point, not gated by `canUseTool`
+
+`[binary 2.1.197]` PreToolUse hooks fire on **every** tool call — including tools already pre-approved
+via `--allowedTools`/the allowlist. They are *not* downstream of the permission decision, so the
+"`canUseTool()` is the choke point" framing above is incomplete: PreToolUse is a **second, independent
+gate**. A PreToolUse hook returns `hookSpecificOutput:{hookEventName:"PreToolUse",
+permissionDecision:"allow"|"deny"|"ask"}` (modern) or the legacy `{decision:"block", reason}`; the runner
+maps these to a `permissionBehavior` — `case "block"/"deny" → permissionBehavior:"deny"` +
+`blockingError:{blockingError: reason || "Blocked by hook"}`; `"ask" → "ask"`; `"defer" → "defer"`.
+
+Crucially, a hook **`deny` bypasses `canUseTool`** — verbatim from the binary's own control-protocol note:
+*"canUseTool's 'deny' surfaces via a `can_use_tool` control_request … PreToolUse hook denies **bypass
+canUseTool** and are not covered here."* Consequences:
+
+- A hook can deny a tool the permission system already **allowed** (so a hook is a genuine enforcement
+  point, distinct from the 7-phase permission pipeline — not merely an input to it).
+- A hook denial surfaces to the model as an **`is_error` tool_result** carrying the hook's `reason` — **not**
+  as a `can_use_tool`/`permission_denied` control event. The turn-level result frame still returns
+  `subtype:"success"`; only the individual tool call fails (**tool-level, not run-level, failure**), and the
+  model continues the turn.
+- Live-verified (auth'd transcript): an `--allowedTools`-pre-approved `Read` still emits `hook_callback`
+  every time, with **zero `can_use_tool` frames** anywhere in the transcript.
+
+### Hook input contract (what every hook receives)
+
+`[binary 2.1.197]` Every hook's input is assembled by one shared constructor (`Ad()`), then the per-event
+schema adds event-specific fields. **Base fields (all events):** `session_id`, `transcript_path`, `cwd`,
+`prompt_id`, `permission_mode`, `agent_id`, `agent_type`, `effort:{level}` (present only for
+effort-capable models; omitted otherwise). **PreToolUse / PostToolUse add:** `hook_event_name`,
+`tool_name`, `tool_input`, `tool_use_id`.
+
+Delivery is either **classic** (this JSON on the hook subprocess's stdin, for `settings.json` hooks) or the
+**stream-json control protocol** for SDK / headless / Cowork hosts:
+`control_request{subtype:"hook_callback", callback_id, input:<the object above>, tool_use_id?}` — where
+`tool_use_id` is **also** a top-level sibling of `input` in the envelope. A hook may return
+`{async:true, asyncTimeout?}` to defer its response. (`agent_id`/`agent_type` are populated for **sub-agent**
+hook invocations and are typically absent for the main loop — which is why a main-agent transcript won't show
+them.) See Ch26/L108 Part E for the full control-protocol subtype list (`hook_callback`/`hook_started`/
+`hook_progress`/`hook_response`).
+
 ## Interactive vs. Headless Execution
 
 | Aspect | Interactive (default) | Headless (-p/--print) |

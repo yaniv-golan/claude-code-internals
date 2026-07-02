@@ -182,6 +182,39 @@ actual layers, with current identifiers (app.asar 1.12603.1):
   `HOST_LOOP_PATH_GATED` = `["Read","Write","Edit","Glob","Grep"]` (+`MultiEdit`) get a PreToolUse hook
   (`vZe`/`Nen`) that **denies `/sessions/…` (VM) paths on the host-side file tools** ("VM path on host —
   use the bash tool for `/sessions/` paths") and enforces working-directory scoping.
+- **Why the gate exists: one shared scratch space, two path namespaces (not two filesystems).** `[binary]`
+  The host-loop system prompt (injected host-side by the Desktop `app.asar`, verbatim 1.17377.2) tells the
+  model: *"every call starts in the same working directory: the sandbox's outputs directory, **the same
+  scratch space the Read/Write/Edit tools use**. The sandbox sees this directory at a different path than
+  the file tools do, so **use bare filenames with both**"* — followed by a translation table
+  (`- <host/session path> → <mntRoot>/outputs/  (your outputs directory — cwd)`, plus per-folder /
+  `.claude/skills` / `uploads` rows). So `mcp__workspace__bash` (in-VM, sees the dir at `/mnt/outputs`) and
+  the host-side Read/Write/Edit tools operate on the **same files**, just under different absolute prefixes;
+  a file bash writes is readable by the file tools in the same session. The common failure mode is
+  capturing a **VM-absolute** path (`/sessions/<id>/mnt/outputs/x`) from bash output and feeding it to a
+  host file tool → the path-gate above denies it. The fix is the prompt's own guidance: **relative /
+  bare filenames**, not routing everything through bash (the host is *not* blind to the artifacts — it is
+  the same scratch space). This is *not* a partitioned "artifacts live in the VM, host can't see them"
+  model — that framing is contradicted by the product's own system prompt.
+- **`${CLAUDE_PLUGIN_ROOT}` under host-loop: one token, two namespaces — accepted by host file tools, useless
+  for in-VM bash.** `[binary/tested]` The token substitutes to a single value (`m={CLAUDE_PLUGIN_ROOT:t.path,…}`
+  in the agent bundle), and under host-loop that resolves **host-side** to `claude-hostloop-plugins/<hash>`
+  (the asar builds it as `path.join(os.tmpdir(),"claude-hostloop-plugins")`), the **same value in skill content
+  as in hooks** (tested: `docs/internal/cowork-pluginroot-probe`, v2.1.120; string-corroborated in 1.17377.2 +
+  in-VM 2.1.197). One token, three consumers:
+  - **Host-side `Read`/`Edit`/`Glob`/`Grep` of a reference** (`Read ${CLAUDE_PLUGIN_ROOT}/references/x.md`): a
+    host path → **accepted** (file tools want host paths; keep the token literal).
+  - **`bash`-executed scripts** (`bash ${CLAUDE_PLUGIN_ROOT}/scripts/x.py` → `mcp__workspace__bash`, in-VM): the
+    host path is **not present in the guest** → fails. bash must use the **in-VM mount** —
+    `/sessions/<id>/mnt/.local-plugins/…` (marketplace) or `/sessions/<id>/mnt/.remote-plugins/plugin_<id>/…`
+    (org-remote), discovered at runtime — not the token.
+  - **Outputs** (`report.md`): relative / bare filenames (the shared scratch above).
+  So a blanket "always resolve the token to the VM path" rule is **right for scripts, wrong for reference
+  Reads** — the VM path handed to a host file tool is then denied by the gate. The token can't be correct for
+  both host file tools and in-VM bash at once; the skill has to pick per consumer. **Live-reconfirm** the exact
+  per-tool acceptance for the current build with an in-session probe: echo the literal `${CLAUDE_PLUGIN_ROOT}`
+  value, then have a sub-agent `Read` a reference via (a) that value and (b) the `/sessions/…` VM path, and
+  quote both outcomes.
 - **The `run_in_background` block is speculation-engine, Bash/PowerShell only.** `[binary]` Not a cowork
   PreToolUse hook and **not `Task`**: the speculation engine's `canUseTool` aborts a backgrounded shell
   (`"run_in_background" in M && M.run_in_background===true` → "Speculation paused: backgrounded shell")

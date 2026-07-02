@@ -1,7 +1,7 @@
 {
   "generated": "2026-06-13",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170)",
-  "total_lessons": 108,
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02)",
+  "total_lessons": 109,
   "lessons": [
     {
       "id": 1,
@@ -15,7 +15,14 @@
         "startup",
         "cli-entrypoint",
         "cold-start",
-        "init"
+        "init",
+        "pretooluse-bypasses-canusetool",
+        "hook-independent-enforcement",
+        "hook-input-contract",
+        "permissionDecision",
+        "hook_callback-fields",
+        "allowlist-hook-still-fires",
+        "agent_id-agent_type-hook"
       ]
     },
     {
@@ -24,13 +31,20 @@
       "lesson_number": "04",
       "file": "01-core-architecture-tools.md",
       "startLine": 236,
-      "endLine": 501,
+      "endLine": 503,
       "keywords": [
         "query-engine",
         "api",
         "streaming",
         "retry",
-        "autocompact"
+        "autocompact",
+        "pretooluse-bypasses-canusetool",
+        "hook-independent-enforcement",
+        "hook-input-contract",
+        "permissionDecision",
+        "hook_callback-fields",
+        "allowlist-hook-still-fires",
+        "agent_id-agent_type-hook"
       ]
     },
     {
@@ -38,14 +52,21 @@
       "title": "State Management",
       "lesson_number": "12",
       "file": "01-core-architecture-tools.md",
-      "startLine": 503,
-      "endLine": 893,
+      "startLine": 505,
+      "endLine": 895,
       "keywords": [
         "state",
         "appstate",
         "react",
         "store",
-        "selectors"
+        "selectors",
+        "pretooluse-bypasses-canusetool",
+        "hook-independent-enforcement",
+        "hook-input-contract",
+        "permissionDecision",
+        "hook_callback-fields",
+        "allowlist-hook-still-fires",
+        "agent_id-agent_type-hook"
       ]
     },
     {
@@ -53,14 +74,21 @@
       "title": "System Prompt Construction",
       "lesson_number": "39",
       "file": "01-core-architecture-tools.md",
-      "startLine": 895,
-      "endLine": 1030,
+      "startLine": 897,
+      "endLine": 1032,
       "keywords": [
         "system-prompt",
         "claude-md",
         "memory-injection",
         "prompt-cache",
-        "dynamic-sections"
+        "dynamic-sections",
+        "pretooluse-bypasses-canusetool",
+        "hook-independent-enforcement",
+        "hook-input-contract",
+        "permissionDecision",
+        "hook_callback-fields",
+        "allowlist-hook-still-fires",
+        "agent_id-agent_type-hook"
       ]
     },
     {
@@ -68,14 +96,21 @@
       "title": "Architecture Overview (Capstone)",
       "lesson_number": "50",
       "file": "01-core-architecture-tools.md",
-      "startLine": 1032,
-      "endLine": 1261,
+      "startLine": 1034,
+      "endLine": 1303,
       "keywords": [
         "architecture",
         "capstone",
         "data-flow",
         "timeline",
-        "overview"
+        "overview",
+        "pretooluse-bypasses-canusetool",
+        "hook-independent-enforcement",
+        "hook-input-contract",
+        "permissionDecision",
+        "hook_callback-fields",
+        "allowlist-hook-still-fires",
+        "agent_id-agent_type-hook"
       ]
     },
     {
@@ -83,14 +118,22 @@
       "title": "Tool System",
       "lesson_number": "02",
       "file": "01-core-architecture-tools.md",
-      "startLine": 1263,
-      "endLine": 1538,
+      "startLine": 1305,
+      "endLine": 1580,
       "keywords": [
         "tools",
         "tool-interface",
         "orchestration",
         "concurrency",
-        "permissions"
+        "permissions",
+        "pretooluse-bypasses-canusetool",
+        "hook-independent-enforcement",
+        "hook-input-contract",
+        "permissionDecision",
+        "hook_callback-fields",
+        "allowlist-hook-still-fires",
+        "agent_id-agent_type-hook",
+        "is_error-tool-result"
       ]
     },
     {
@@ -98,14 +141,21 @@
       "title": "Bash Tool",
       "lesson_number": "17",
       "file": "01-core-architecture-tools.md",
-      "startLine": 1540,
-      "endLine": 1704,
+      "startLine": 1582,
+      "endLine": 1746,
       "keywords": [
         "bash",
         "shell",
         "security-validators",
         "sandboxing",
-        "command-execution"
+        "command-execution",
+        "pretooluse-bypasses-canusetool",
+        "hook-independent-enforcement",
+        "hook-input-contract",
+        "permissionDecision",
+        "hook_callback-fields",
+        "allowlist-hook-still-fires",
+        "agent_id-agent_type-hook"
       ]
     },
     {
@@ -113,14 +163,21 @@
       "title": "File Tools (Read, Write, Edit)",
       "lesson_number": "18",
       "file": "01-core-architecture-tools.md",
-      "startLine": 1706,
-      "endLine": 1864,
+      "startLine": 1748,
+      "endLine": 1906,
       "keywords": [
         "file-read",
         "file-write",
         "file-edit",
         "read-before-write",
-        "atomic-write"
+        "atomic-write",
+        "pretooluse-bypasses-canusetool",
+        "hook-independent-enforcement",
+        "hook-input-contract",
+        "permissionDecision",
+        "hook_callback-fields",
+        "allowlist-hook-still-fires",
+        "agent_id-agent_type-hook"
       ]
     },
     {
@@ -128,14 +185,21 @@
       "title": "Search Tools (Glob & Grep)",
       "lesson_number": "19",
       "file": "01-core-architecture-tools.md",
-      "startLine": 1866,
-      "endLine": 2103,
+      "startLine": 1908,
+      "endLine": 2145,
       "keywords": [
         "glob",
         "grep",
         "ripgrep",
         "search",
-        "file-search"
+        "file-search",
+        "pretooluse-bypasses-canusetool",
+        "hook-independent-enforcement",
+        "hook-input-contract",
+        "permissionDecision",
+        "hook_callback-fields",
+        "allowlist-hook-still-fires",
+        "agent_id-agent_type-hook"
       ]
     },
     {
@@ -143,14 +207,21 @@
       "title": "MCP System",
       "lesson_number": "07",
       "file": "01-core-architecture-tools.md",
-      "startLine": 2105,
-      "endLine": 2207,
+      "startLine": 2147,
+      "endLine": 2249,
       "keywords": [
         "mcp",
         "model-context-protocol",
         "oauth",
         "transport",
-        "elicitation"
+        "elicitation",
+        "pretooluse-bypasses-canusetool",
+        "hook-independent-enforcement",
+        "hook-input-contract",
+        "permissionDecision",
+        "hook_callback-fields",
+        "allowlist-hook-still-fires",
+        "agent_id-agent_type-hook"
       ]
     },
     {
@@ -370,8 +441,8 @@
       "title": "Permissions System",
       "lesson_number": "06",
       "file": "03-interface-infrastructure.md",
-      "startLine": 643,
-      "endLine": 719,
+      "startLine": 721,
+      "endLine": 897,
       "keywords": [
         "permissions",
         "allow-deny-ask",
@@ -461,7 +532,7 @@
       "lesson_number": "09",
       "file": "04-connectivity-plugins.md",
       "startLine": 8,
-      "endLine": 322,
+      "endLine": 697,
       "keywords": [
         "plugins",
         "marketplace",
@@ -475,14 +546,21 @@
       "title": "Hooks System",
       "lesson_number": "10",
       "file": "04-connectivity-plugins.md",
-      "startLine": 324,
-      "endLine": 456,
+      "startLine": 699,
+      "endLine": 843,
       "keywords": [
         "hooks",
         "lifecycle",
         "pre-tool-use",
         "post-tool-use",
-        "exit-code"
+        "exit-code",
+        "pretooluse-bypasses-canusetool",
+        "hook-independent-enforcement",
+        "hook-input-contract",
+        "permissionDecision",
+        "hook_callback-fields",
+        "allowlist-hook-still-fires",
+        "is_error-tool-result"
       ]
     },
     {
@@ -490,8 +568,8 @@
       "title": "Error Handling and Recovery",
       "lesson_number": "44",
       "file": "04-connectivity-plugins.md",
-      "startLine": 458,
-      "endLine": 576,
+      "startLine": 845,
+      "endLine": 963,
       "keywords": [
         "errors",
         "recovery",
@@ -505,8 +583,8 @@
       "title": "Bridge and Remote Control",
       "lesson_number": "20",
       "file": "04-connectivity-plugins.md",
-      "startLine": 578,
-      "endLine": 683,
+      "startLine": 965,
+      "endLine": 1070,
       "keywords": [
         "bridge",
         "remote-control",
@@ -520,8 +598,8 @@
       "title": "OAuth Authentication",
       "lesson_number": "25",
       "file": "04-connectivity-plugins.md",
-      "startLine": 685,
-      "endLine": 758,
+      "startLine": 1072,
+      "endLine": 1145,
       "keywords": [
         "oauth",
         "pkce",
@@ -535,8 +613,8 @@
       "title": "Git Integration",
       "lesson_number": "28",
       "file": "04-connectivity-plugins.md",
-      "startLine": 760,
-      "endLine": 834,
+      "startLine": 1147,
+      "endLine": 1221,
       "keywords": [
         "git",
         "filesystem-first",
@@ -550,8 +628,8 @@
       "title": "Upstream Proxy System",
       "lesson_number": "36",
       "file": "04-connectivity-plugins.md",
-      "startLine": 836,
-      "endLine": 898,
+      "startLine": 1223,
+      "endLine": 1285,
       "keywords": [
         "proxy",
         "upstream",
@@ -565,8 +643,8 @@
       "title": "Cron and Task Scheduling",
       "lesson_number": "43",
       "file": "04-connectivity-plugins.md",
-      "startLine": 900,
-      "endLine": 958,
+      "startLine": 1287,
+      "endLine": 1345,
       "keywords": [
         "cron",
         "scheduling",
@@ -580,8 +658,8 @@
       "title": "Voice System",
       "lesson_number": "27",
       "file": "04-connectivity-plugins.md",
-      "startLine": 960,
-      "endLine": 1022,
+      "startLine": 1347,
+      "endLine": 1409,
       "keywords": [
         "voice",
         "speech-to-text",
@@ -595,8 +673,8 @@
       "title": "Buddy Companion System",
       "lesson_number": "45",
       "file": "04-connectivity-plugins.md",
-      "startLine": 1024,
-      "endLine": 1111,
+      "startLine": 1411,
+      "endLine": 1498,
       "keywords": [
         "buddy",
         "tamagotchi",
@@ -762,8 +840,8 @@
       "title": "/effort Command & Reasoning Budget",
       "lesson_number": "51",
       "file": "06-verified-new-v2.1.90.md",
-      "startLine": 33,
-      "endLine": 93,
+      "startLine": 37,
+      "endLine": 97,
       "keywords": [
         "effort",
         "reasoning-budget",
@@ -777,8 +855,8 @@
       "title": "/rewind & File Checkpointing",
       "lesson_number": "52",
       "file": "06-verified-new-v2.1.90.md",
-      "startLine": 94,
-      "endLine": 155,
+      "startLine": 99,
+      "endLine": 159,
       "keywords": [
         "rewind",
         "checkpoint",
@@ -792,8 +870,8 @@
       "title": "/teleport: Session Transfer",
       "lesson_number": "53",
       "file": "06-verified-new-v2.1.90.md",
-      "startLine": 156,
-      "endLine": 225,
+      "startLine": 161,
+      "endLine": 229,
       "keywords": [
         "teleport",
         "session-transfer",
@@ -807,8 +885,8 @@
       "title": "/branch: Conversation Forking",
       "lesson_number": "54",
       "file": "06-verified-new-v2.1.90.md",
-      "startLine": 226,
-      "endLine": 283,
+      "startLine": 231,
+      "endLine": 287,
       "keywords": [
         "branch",
         "fork",
@@ -822,8 +900,8 @@
       "title": "Session Resume & New env vars (v2.1.90)",
       "lesson_number": "55",
       "file": "06-verified-new-v2.1.90.md",
-      "startLine": 284,
-      "endLine": 423,
+      "startLine": 289,
+      "endLine": 432,
       "keywords": [
         "session-resume",
         "advisor-model",
@@ -837,8 +915,8 @@
       "title": "New Commands: /autocompact, /buddy, /powerup, /toggle-memory",
       "lesson_number": "56",
       "file": "06-verified-new-v2.1.90.md",
-      "startLine": 424,
-      "endLine": 588,
+      "startLine": 434,
+      "endLine": 602,
       "keywords": [
         "autocompact",
         "buddy",
@@ -853,7 +931,7 @@
       "lesson_number": "57",
       "file": "07-verified-new-v2.1.92.md",
       "startLine": 18,
-      "endLine": 130,
+      "endLine": 135,
       "keywords": [
         "setup-bedrock",
         "stop-hook",
@@ -867,8 +945,8 @@
       "title": "New env vars in v2.1.92",
       "lesson_number": "58",
       "file": "07-verified-new-v2.1.92.md",
-      "startLine": 131,
-      "endLine": 260,
+      "startLine": 137,
+      "endLine": 371,
       "keywords": [
         "env-vars",
         "CLAUDE_CODE_EXECPATH",
@@ -915,7 +993,7 @@
       "lesson_number": "61",
       "file": "08-verified-new-v2.1.94.md",
       "startLine": 143,
-      "endLine": 263,
+      "endLine": 273,
       "keywords": [
         "mantle",
         "CLAUDE_CODE_USE_MANTLE",
@@ -963,8 +1041,8 @@
       "title": "Perforce Mode & Script Caps",
       "lesson_number": "63",
       "file": "09-verified-new-v2.1.100.md",
-      "startLine": 279,
-      "endLine": 456,
+      "startLine": 350,
+      "endLine": 536,
       "keywords": [
         "perforce",
         "CLAUDE_CODE_PERFORCE_MODE",
@@ -982,8 +1060,8 @@
       "title": "v2.1.97-v2.1.100 Command & Env Var Changes",
       "lesson_number": "64",
       "file": "09-verified-new-v2.1.100.md",
-      "startLine": 457,
-      "endLine": 560,
+      "startLine": 538,
+      "endLine": 645,
       "keywords": [
         "setup-vertex",
         "buddy-removed",
@@ -1000,8 +1078,8 @@
       "title": "Proactive Recap: Away Summary System",
       "lesson_number": "65",
       "file": "10-verified-new-v2.1.101.md",
-      "startLine": 18,
-      "endLine": 148,
+      "startLine": 22,
+      "endLine": 158,
       "keywords": [
         "proactive",
         "away-summary",
@@ -1018,8 +1096,8 @@
       "title": "CA Certificate Store Configuration",
       "lesson_number": "66",
       "file": "10-verified-new-v2.1.101.md",
-      "startLine": 150,
-      "endLine": 282,
+      "startLine": 160,
+      "endLine": 303,
       "keywords": [
         "CLAUDE_CODE_CERT_STORE",
         "ca-certificates",
@@ -1037,8 +1115,8 @@
       "title": "Dynamic Loop Pacing & Cloud-First Offering",
       "lesson_number": "67",
       "file": "10-verified-new-v2.1.101.md",
-      "startLine": 284,
-      "endLine": 455,
+      "startLine": 305,
+      "endLine": 495,
       "keywords": [
         "loop-dynamic",
         "ScheduleWakeup",
@@ -1058,8 +1136,8 @@
       "title": "v2.1.101 Command & Env Var Changes",
       "lesson_number": "68",
       "file": "10-verified-new-v2.1.101.md",
-      "startLine": 496,
-      "endLine": 748,
+      "startLine": 497,
+      "endLine": 743,
       "keywords": [
         "update-command",
         "CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH",
@@ -1088,8 +1166,8 @@
       "title": "Marble Origami: Reversible Context Collapse Persistence",
       "lesson_number": "69",
       "file": "10-verified-new-v2.1.101.md",
-      "startLine": 750,
-      "endLine": 884,
+      "startLine": 745,
+      "endLine": 872,
       "keywords": [
         "marble-origami",
         "context-collapse",
@@ -1115,8 +1193,8 @@
       "title": "Streaming Partial Yield Protection",
       "lesson_number": "70",
       "file": "11-verified-new-v2.1.104.md",
-      "startLine": 22,
-      "endLine": 138,
+      "startLine": 21,
+      "endLine": 159,
       "keywords": [
         "streaming",
         "partial-yield",
@@ -1136,8 +1214,8 @@
       "title": "System Prompt Section Rename: Text Output",
       "lesson_number": "71",
       "file": "11-verified-new-v2.1.104.md",
-      "startLine": 140,
-      "endLine": 195,
+      "startLine": 161,
+      "endLine": 240,
       "keywords": [
         "system-prompt",
         "communication-style",
@@ -1274,8 +1352,8 @@
       "title": "Remote Workflow Commands (/autopilot, /bugfix, /dashboard, /docs, /investigate)",
       "lesson_number": "77",
       "file": "13-verified-new-v2.1.111.md",
-      "startLine": 35,
-      "endLine": 100,
+      "startLine": 37,
+      "endLine": 110,
       "keywords": [
         "remote-workflow",
         "autopilot",
@@ -1297,8 +1375,8 @@
       "title": "Advisor Tool (Server-Side Reviewer Model)",
       "lesson_number": "78",
       "file": "13-verified-new-v2.1.111.md",
-      "startLine": 101,
-      "endLine": 173,
+      "startLine": 112,
+      "endLine": 183,
       "keywords": [
         "advisor-tool",
         "advisor",
@@ -1323,8 +1401,8 @@
       "title": "PushNotification Tool + KAIROS Mobile Push",
       "lesson_number": "79",
       "file": "13-verified-new-v2.1.111.md",
-      "startLine": 174,
-      "endLine": 227,
+      "startLine": 185,
+      "endLine": 237,
       "keywords": [
         "PushNotification",
         "push-notification-tool",
@@ -1346,8 +1424,8 @@
       "title": "Context Hint API (Server-Driven Micro-Compaction)",
       "lesson_number": "80",
       "file": "13-verified-new-v2.1.111.md",
-      "startLine": 228,
-      "endLine": 298,
+      "startLine": 239,
+      "endLine": 308,
       "keywords": [
         "context-hint",
         "context-hint-api",
@@ -1374,8 +1452,8 @@
       "title": "Fullscreen TUI, /focus, /tui",
       "lesson_number": "81",
       "file": "13-verified-new-v2.1.111.md",
-      "startLine": 299,
-      "endLine": 358,
+      "startLine": 310,
+      "endLine": 368,
       "keywords": [
         "fullscreen-tui",
         "tui",
@@ -1399,8 +1477,8 @@
       "title": "Proxy Auth Helper",
       "lesson_number": "82",
       "file": "13-verified-new-v2.1.111.md",
-      "startLine": 359,
-      "endLine": 416,
+      "startLine": 370,
+      "endLine": 426,
       "keywords": [
         "proxy-auth-helper",
         "proxyAuthHelper",
@@ -1420,8 +1498,8 @@
       "title": "System Prompt Modifications (GB Override, Append-Subagent, Verified-vs-Assumed)",
       "lesson_number": "83",
       "file": "13-verified-new-v2.1.111.md",
-      "startLine": 417,
-      "endLine": 489,
+      "startLine": 428,
+      "endLine": 499,
       "keywords": [
         "system-prompt-override",
         "system-prompt-gb-override",
@@ -1440,8 +1518,8 @@
       "title": "v2.1.110-v2.1.111 Command & Env Var Changes",
       "lesson_number": "84",
       "file": "13-verified-new-v2.1.111.md",
-      "startLine": 490,
-      "endLine": 625,
+      "startLine": 501,
+      "endLine": 655,
       "keywords": [
         "less-permission-prompts",
         "canary-channel",
@@ -1475,8 +1553,8 @@
       "title": "v2.1.112-v2.1.113 Command & Env Var Changes (Remote Workflow Sunset)",
       "lesson_number": "85",
       "file": "14-verified-new-v2.1.113.md",
-      "startLine": 27,
-      "endLine": 179,
+      "startLine": 63,
+      "endLine": 244,
       "keywords": [
         "v2.1.112",
         "v2.1.113",
@@ -1546,7 +1624,7 @@
       "title": "v2.1.114-v2.1.116 OIDC Federation, Config Profiles, Proxy Plumbing, /model Headless",
       "lesson_number": "86",
       "file": "15-verified-new-v2.1.116.md",
-      "startLine": 29,
+      "startLine": 57,
       "endLine": 449,
       "keywords": [
         "v2.1.114",
@@ -1641,7 +1719,7 @@
       "lesson_number": "87",
       "file": "16-verified-new-v2.1.118.md",
       "startLine": 45,
-      "endLine": 458,
+      "endLine": 457,
       "keywords": [
         "v2.1.117",
         "fork",
@@ -1734,7 +1812,7 @@
     },
     {
       "id": 88,
-      "title": "v2.1.118 /cost + /stats → /usage Aliases, cache-diagnosis-2026-04-07, Frontmatter Shadow Validator, WIF OAuth Locking",
+      "title": "v2.1.118 /cost + /stats \u2192 /usage Aliases, cache-diagnosis-2026-04-07, Frontmatter Shadow Validator, WIF OAuth Locking",
       "lesson_number": "88",
       "file": "16-verified-new-v2.1.118.md",
       "startLine": 459,
@@ -1888,7 +1966,7 @@
       "lesson_number": "89",
       "file": "17-verified-new-v2.1.120.md",
       "startLine": 83,
-      "endLine": 2031,
+      "endLine": 2030,
       "keywords": [
         "v2.1.119",
         "cowork",
@@ -2116,7 +2194,7 @@
       "lesson_number": "90",
       "file": "17-verified-new-v2.1.120.md",
       "startLine": 2032,
-      "endLine": 2766,
+      "endLine": 2765,
       "keywords": [
         "v2.1.120",
         "v2.1.120-bundle",
@@ -2235,7 +2313,7 @@
       "lesson_number": "91",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 54,
-      "endLine": 93,
+      "endLine": 92,
       "keywords": [
         "dynamic-workflows",
         "workflow-tool",
@@ -2254,7 +2332,7 @@
       "lesson_number": "92",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 94,
-      "endLine": 123,
+      "endLine": 122,
       "keywords": [
         "coordinator-mode",
         "TeamCreate",
@@ -2271,7 +2349,7 @@
       "lesson_number": "93",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 124,
-      "endLine": 160,
+      "endLine": 159,
       "keywords": [
         "opus-4-8",
         "claude-opus-4-8",
@@ -2292,7 +2370,7 @@
       "lesson_number": "94",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 161,
-      "endLine": 191,
+      "endLine": 190,
       "keywords": [
         "streaming-tool-execution",
         "streaming-ga",
@@ -2309,7 +2387,7 @@
       "lesson_number": "95",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 192,
-      "endLine": 230,
+      "endLine": 229,
       "keywords": [
         "messagedisplay",
         "messagedisplay-hook",
@@ -2329,7 +2407,7 @@
       "lesson_number": "96",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 231,
-      "endLine": 260,
+      "endLine": 259,
       "keywords": [
         "auto-mode",
         "auto-mode-default",
@@ -2347,7 +2425,7 @@
       "lesson_number": "97",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 261,
-      "endLine": 282,
+      "endLine": 281,
       "keywords": [
         "cloud-gateway",
         "gateway-provider",
@@ -2365,7 +2443,7 @@
       "lesson_number": "98",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 283,
-      "endLine": 318,
+      "endLine": 317,
       "keywords": [
         "skills-sync",
         "plugins-sync",
@@ -2385,7 +2463,7 @@
       "lesson_number": "99",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 319,
-      "endLine": 355,
+      "endLine": 360,
       "keywords": [
         "host-auth",
         "host-auth-refresh",
@@ -2407,8 +2485,8 @@
       "title": "v2.1.159 Background Runtime: Binary Takeover + Fleet to Agent-View Rename",
       "lesson_number": "100",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 356,
-      "endLine": 400,
+      "startLine": 362,
+      "endLine": 405,
       "keywords": [
         "binary-takeover",
         "tengu_bg_binary_takeover",
@@ -2430,8 +2508,8 @@
       "title": "v2.1.159 /loop Keepalive (KAIROS Self-Pacing Safety Net) + /dream Routine",
       "lesson_number": "101",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 401,
-      "endLine": 430,
+      "startLine": 407,
+      "endLine": 435,
       "keywords": [
         "loop-keepalive",
         "CLAUDE_CODE_LOOP_KEEPALIVE",
@@ -2448,8 +2526,8 @@
       "title": "v2.1.159 Plan-Interview Removal + Team-Memory Multistore + Command Churn + Spend Nudges",
       "lesson_number": "102",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 431,
-      "endLine": 463,
+      "startLine": 437,
+      "endLine": 468,
       "keywords": [
         "plan-interview-removed",
         "CLAUDE_MEMORY_STORES",
@@ -2470,8 +2548,8 @@
       "title": "v2.1.159 PEWTER_OWL Gate over the SendUserMessage (Brief) Tool",
       "lesson_number": "103",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 464,
-      "endLine": 493,
+      "startLine": 470,
+      "endLine": 498,
       "keywords": [
         "pewter-owl",
         "CLAUDE_CODE_PEWTER_OWL",
@@ -2487,8 +2565,8 @@
       "title": "v2.1.159 New Codename GB-Flag Triage (~30 flags)",
       "lesson_number": "104",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 494,
-      "endLine": 521,
+      "startLine": 500,
+      "endLine": 527,
       "keywords": [
         "codename-flags",
         "gb-flags",
@@ -2614,7 +2692,7 @@
       "lesson_number": "107",
       "file": "21-cowork-control-protocol.md",
       "startLine": 22,
-      "endLine": 241,
+      "endLine": 273,
       "keywords": [
         "cowork-spawn-contract",
         "stream-json",
@@ -2659,7 +2737,17 @@
         "ubuntu-22-guest",
         "node-v12",
         "break-system-packages",
-        "host-loop-driver"
+        "host-loop-driver",
+        "host-loop-shared-scratch",
+        "bash-vs-read-edit-paths",
+        "two-path-namespaces",
+        "use-bare-filenames",
+        "sessions-path-deny",
+        "CLAUDE_PLUGIN_ROOT-host-loop",
+        "plugin-root-resolution",
+        "claude-hostloop-plugins",
+        "plugin-reference-path",
+        "script-vs-reference-path"
       ]
     },
     {
@@ -2668,7 +2756,7 @@
       "lesson_number": "108",
       "file": "22-cowork-env-gates-protocol.md",
       "startLine": 21,
-      "endLine": 137,
+      "endLine": 146,
       "keywords": [
         "cowork-env-vars",
         "desktop-env-vars",
@@ -2733,7 +2821,118 @@
         "Bv1",
         "Uv1",
         "mcp_call",
-        "fable-5-model-override"
+        "fable-5-model-override",
+        "hook_callback-wire-shape",
+        "hook-input-Ad",
+        "tool_use_id-top-level",
+        "effort-level-hook"
+      ]
+    },
+    {
+      "id": 109,
+      "title": "Cowork Spaces, Scheduled Tasks, the Tasks Tool & File Checkpointing (app.asar 1.17377.2 / in-VM ELF 2.1.197)",
+      "lesson_number": "109",
+      "file": "23-cowork-spaces-tasks-checkpointing.md",
+      "startLine": 26,
+      "endLine": 317,
+      "keywords": [
+        "cowork-spaces",
+        "CoworkSpaces",
+        "addProjectToSpace",
+        "addFolderToSpace",
+        "createSpaceFolder",
+        "copyFilesToSpaceFolder",
+        "classifySessions",
+        "summarizeSpace",
+        "getAutoMemoryDir",
+        "readSpaceMemoryIndex",
+        "setAutoDescription",
+        "setRemoteSessionSpace",
+        "per-space-memory",
+        "space-folders",
+        "cowork-scheduled-tasks",
+        "CoworkScheduledTasks",
+        "CCDScheduledTasks",
+        "createScheduledTask",
+        "getWatcherHistory",
+        "scheduled_task_fire",
+        "cronExpression",
+        "watcher-task",
+        "clearChromePermissions",
+        "scheduledTasksWakeEnabled",
+        "tasks-tab",
+        "tasks_tab",
+        "gate-364911507",
+        "CLAUDE_CODE_ENABLE_TASKS",
+        "CLAUDE_CODE_TASK_LIST_ID",
+        "CLAUDE_AUTO_BACKGROUND_TASKS",
+        "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS",
+        "CLAUDE_CODE_BG_TASKS_REPORT_RUNNING",
+        "tasks-tool",
+        "background-tasks",
+        "run_in_background-hint",
+        "file-checkpointing",
+        "CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING",
+        "CLAUDE_CODE_DISABLE_FILE_CHECKPOINTING",
+        "rewind_files",
+        "file_snapshot",
+        "dry_run",
+        "CLAUDE_CODE_ENABLE_REMOTE_RECAP",
+        "away_summary",
+        "control-protocol-subtypes-2.1.197",
+        "apply_flag_settings",
+        "set_permission_mode",
+        "set_model",
+        "set_max_thinking_tokens",
+        "get_context_usage",
+        "reload_plugins",
+        "reload_skills",
+        "read_file",
+        "memory_recall",
+        "memory_saved",
+        "session_state_changed",
+        "model_fallback",
+        "model_consent_fallback",
+        "task_started",
+        "task_progress",
+        "task_summary",
+        "stop_task",
+        "worker_shutting_down",
+        "stop_hook_summary",
+        "coworkWebFetchViaApi",
+        "claude-fable-5-1m",
+        "fable-5-cowork-model",
+        "app.asar-1.17377.2",
+        "claude-code-vm-2.1.197",
+        "session-storage",
+        "chat-transcript-location",
+        "local-agent-mode-sessions",
+        "claude-code-sessions",
+        "cowork_host_loop_debug.log",
+        "cowork-logs",
+        "audit.jsonl",
+        "where-does-cowork-write-logs",
+        "CLAUDE_CONFIG_DIR-host-loop",
+        "cliSessionId",
+        "session-sandbox",
+        "Library-Logs-Claude",
+        "no-session-persistence",
+        "persistSession-false",
+        "CLAUDE_CODE_FORCE_SESSION_PERSISTENCE",
+        "CLAUDE_CODE_CHILD_SESSION",
+        "ephemeral-session",
+        "transcript-not-written",
+        "cleanupPeriodDays",
+        "no-create-session-in-dir",
+        "why-is-my-cowork-chat-missing",
+        "best-effort-transcript-write",
+        "rootfs.img",
+        "vm-image-mounts",
+        "systemd-mount-units",
+        "claudevm.bundle",
+        "mnt-.claude-skills.mount",
+        "vm-mount-verification",
+        "claude/skills-mount"
       ]
     }
   ],
@@ -4353,7 +4552,8 @@
     ],
     "background-tasks": [
       49,
-      7
+      7,
+      109
     ],
     "task-types": [
       49
@@ -7693,6 +7893,294 @@
     ],
     "fable-5-model-override": [
       108
+    ],
+    "cowork-spaces": [
+      109
+    ],
+    "CoworkSpaces": [
+      109
+    ],
+    "addProjectToSpace": [
+      109
+    ],
+    "addFolderToSpace": [
+      109
+    ],
+    "createSpaceFolder": [
+      109
+    ],
+    "copyFilesToSpaceFolder": [
+      109
+    ],
+    "classifySessions": [
+      109
+    ],
+    "summarizeSpace": [
+      109
+    ],
+    "getAutoMemoryDir": [
+      109
+    ],
+    "readSpaceMemoryIndex": [
+      109
+    ],
+    "setAutoDescription": [
+      109
+    ],
+    "setRemoteSessionSpace": [
+      109
+    ],
+    "per-space-memory": [
+      109
+    ],
+    "space-folders": [
+      109
+    ],
+    "cowork-scheduled-tasks": [
+      109
+    ],
+    "CoworkScheduledTasks": [
+      109
+    ],
+    "CCDScheduledTasks": [
+      109
+    ],
+    "createScheduledTask": [
+      109
+    ],
+    "getWatcherHistory": [
+      109
+    ],
+    "scheduled_task_fire": [
+      109
+    ],
+    "cronExpression": [
+      109
+    ],
+    "watcher-task": [
+      109
+    ],
+    "clearChromePermissions": [
+      109
+    ],
+    "scheduledTasksWakeEnabled": [
+      109
+    ],
+    "tasks-tab": [
+      109
+    ],
+    "tasks_tab": [
+      109
+    ],
+    "gate-364911507": [
+      109
+    ],
+    "CLAUDE_CODE_ENABLE_TASKS": [
+      109
+    ],
+    "CLAUDE_CODE_TASK_LIST_ID": [
+      109
+    ],
+    "CLAUDE_AUTO_BACKGROUND_TASKS": [
+      109
+    ],
+    "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": [
+      109
+    ],
+    "CLAUDE_CODE_BG_TASKS_REPORT_RUNNING": [
+      109
+    ],
+    "tasks-tool": [
+      109
+    ],
+    "run_in_background-hint": [
+      109
+    ],
+    "file-checkpointing": [
+      109
+    ],
+    "CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING": [
+      109
+    ],
+    "CLAUDE_CODE_DISABLE_FILE_CHECKPOINTING": [
+      109
+    ],
+    "rewind_files": [
+      109
+    ],
+    "file_snapshot": [
+      109
+    ],
+    "dry_run": [
+      109
+    ],
+    "CLAUDE_CODE_ENABLE_REMOTE_RECAP": [
+      109
+    ],
+    "away_summary": [
+      109
+    ],
+    "control-protocol-subtypes-2.1.197": [
+      109
+    ],
+    "apply_flag_settings": [
+      109
+    ],
+    "set_permission_mode": [
+      109
+    ],
+    "set_model": [
+      109
+    ],
+    "set_max_thinking_tokens": [
+      109
+    ],
+    "get_context_usage": [
+      109
+    ],
+    "reload_plugins": [
+      109
+    ],
+    "reload_skills": [
+      109
+    ],
+    "read_file": [
+      109
+    ],
+    "memory_recall": [
+      109
+    ],
+    "memory_saved": [
+      109
+    ],
+    "session_state_changed": [
+      109
+    ],
+    "model_fallback": [
+      109
+    ],
+    "model_consent_fallback": [
+      109
+    ],
+    "task_started": [
+      109
+    ],
+    "task_progress": [
+      109
+    ],
+    "task_summary": [
+      109
+    ],
+    "stop_task": [
+      109
+    ],
+    "worker_shutting_down": [
+      109
+    ],
+    "stop_hook_summary": [
+      109
+    ],
+    "coworkWebFetchViaApi": [
+      109
+    ],
+    "claude-fable-5-1m": [
+      109
+    ],
+    "fable-5-cowork-model": [
+      109
+    ],
+    "app.asar-1.17377.2": [
+      109
+    ],
+    "claude-code-vm-2.1.197": [
+      109
+    ],
+    "session-storage": [
+      109
+    ],
+    "chat-transcript-location": [
+      109
+    ],
+    "local-agent-mode-sessions": [
+      109
+    ],
+    "claude-code-sessions": [
+      109
+    ],
+    "cowork_host_loop_debug.log": [
+      109
+    ],
+    "cowork-logs": [
+      109
+    ],
+    "audit.jsonl": [
+      109
+    ],
+    "where-does-cowork-write-logs": [
+      109
+    ],
+    "CLAUDE_CONFIG_DIR-host-loop": [
+      109
+    ],
+    "cliSessionId": [
+      109
+    ],
+    "session-sandbox": [
+      109
+    ],
+    "Library-Logs-Claude": [
+      109
+    ],
+    "no-session-persistence": [
+      109
+    ],
+    "persistSession-false": [
+      109
+    ],
+    "CLAUDE_CODE_FORCE_SESSION_PERSISTENCE": [
+      109
+    ],
+    "CLAUDE_CODE_CHILD_SESSION": [
+      109
+    ],
+    "ephemeral-session": [
+      109
+    ],
+    "transcript-not-written": [
+      109
+    ],
+    "cleanupPeriodDays": [
+      109
+    ],
+    "no-create-session-in-dir": [
+      109
+    ],
+    "why-is-my-cowork-chat-missing": [
+      109
+    ],
+    "best-effort-transcript-write": [
+      109
+    ],
+    "rootfs.img": [
+      109
+    ],
+    "vm-image-mounts": [
+      109
+    ],
+    "systemd-mount-units": [
+      109
+    ],
+    "claudevm.bundle": [
+      109
+    ],
+    "mnt-.claude-skills.mount": [
+      109
+    ],
+    "vm-mount-verification": [
+      109
+    ],
+    "claude/skills-mount": [
+      109
     ]
   }
 }
