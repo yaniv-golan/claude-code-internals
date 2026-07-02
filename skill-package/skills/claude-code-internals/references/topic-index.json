@@ -1,7 +1,7 @@
 {
   "generated": "2026-06-13",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02)",
-  "total_lessons": 109,
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck)",
+  "total_lessons": 113,
   "lessons": [
     {
       "id": 1,
@@ -2934,6 +2934,107 @@
         "vm-mount-verification",
         "claude/skills-mount"
       ]
+    },
+    {
+      "id": 110,
+      "title": "Model Landscape: Sonnet 5 Default, Fable 5, Fallback Chain",
+      "lesson_number": "110",
+      "file": "24-verified-new-v2.1.198.md",
+      "startLine": 23,
+      "endLine": 48,
+      "keywords": [
+        "sonnet-5",
+        "claude-sonnet-5",
+        "default-model-sonnet-5",
+        "fable-5",
+        "claude-fable-5",
+        "fallbackModel",
+        "fallback-chain",
+        "opus-4-7-fast-mode",
+        "org-default-models",
+        "enforceAvailableModels",
+        "1m-context",
+        "model-landscape-2.1.198"
+      ]
+    },
+    {
+      "id": 111,
+      "title": "Announced CLI Surface v2.1.160-198",
+      "lesson_number": "111",
+      "file": "24-verified-new-v2.1.198.md",
+      "startLine": 50,
+      "endLine": 100,
+      "keywords": [
+        "/cd",
+        "move-session-cwd",
+        "/rewind-from-clear",
+        "/config-key-value",
+        "claude-mcp-login",
+        "Tool-param-value-permission",
+        "sandbox.credentials",
+        "sandbox.allowAppleEvents",
+        "autoMode.classifyAllShell",
+        "--safe-mode",
+        "CLAUDE_CODE_SAFE_MODE",
+        "subagent-nesting-5-deep",
+        "agentDepth",
+        "TeamCreate-removed",
+        "claude-in-chrome-ga",
+        "agent_needs_input",
+        "agent_completed",
+        "background-agent-notification",
+        "disableBundledSkills",
+        "CLAUDE_CODE_DISABLE_MOUSE_CLICKS",
+        "announced-cli-surface"
+      ]
+    },
+    {
+      "id": 112,
+      "title": "Dark-launched: Claude Design & Artifacts",
+      "lesson_number": "112",
+      "file": "24-verified-new-v2.1.198.md",
+      "startLine": 102,
+      "endLine": 154,
+      "keywords": [
+        "claude-design",
+        "/design",
+        "/design-sync",
+        "/design-login",
+        "DesignSync",
+        "CLAUDE_CODE_ENABLE_DESIGN_MCP",
+        "design-oauth",
+        "artifacts",
+        "/plan-artifact",
+        "Artifact-tool",
+        "tengu_cobalt_plinth",
+        "CLAUDE_CODE_ARTIFACT",
+        "launch-composer",
+        "/skill-doctor",
+        "/pause-memory",
+        "toggle-memory-renamed",
+        "dark-launched-2.1.198"
+      ]
+    },
+    {
+      "id": 113,
+      "title": "Auto-memory\u2192Knowledge-base + API-beta/Fallback Surface",
+      "lesson_number": "113",
+      "file": "24-verified-new-v2.1.198.md",
+      "startLine": 156,
+      "endLine": 200,
+      "keywords": [
+        "auto-memory-knowledge-base",
+        "bulk-inflate",
+        "periodic-resync",
+        "CLAUDE_CODE_FORCE_MEMORY_SURVEY",
+        "CLAUDE_CODE_KB_COHESION_FIXES",
+        "code-execution-2025-08-25",
+        "server-side-fallback",
+        "fallback-credit",
+        "prompt-caching-evict",
+        "CLAUDE_CODE_DISABLE_REFUSAL_FALLBACK",
+        "api-betas-2.1.198"
+      ]
     }
   ],
   "keyword_map": {
@@ -4466,7 +4567,8 @@
       46
     ],
     "1m-context": [
-      46
+      46,
+      110
     ],
     "effort-levels": [
       46
@@ -8181,6 +8283,186 @@
     ],
     "claude/skills-mount": [
       109
+    ],
+    "sonnet-5": [
+      110
+    ],
+    "claude-sonnet-5": [
+      110
+    ],
+    "default-model-sonnet-5": [
+      110
+    ],
+    "fable-5": [
+      110
+    ],
+    "claude-fable-5": [
+      110
+    ],
+    "fallbackModel": [
+      110
+    ],
+    "fallback-chain": [
+      110
+    ],
+    "opus-4-7-fast-mode": [
+      110
+    ],
+    "org-default-models": [
+      110
+    ],
+    "enforceAvailableModels": [
+      110
+    ],
+    "model-landscape-2.1.198": [
+      110
+    ],
+    "/cd": [
+      111
+    ],
+    "move-session-cwd": [
+      111
+    ],
+    "/rewind-from-clear": [
+      111
+    ],
+    "/config-key-value": [
+      111
+    ],
+    "claude-mcp-login": [
+      111
+    ],
+    "Tool-param-value-permission": [
+      111
+    ],
+    "sandbox.credentials": [
+      111
+    ],
+    "sandbox.allowAppleEvents": [
+      111
+    ],
+    "autoMode.classifyAllShell": [
+      111
+    ],
+    "--safe-mode": [
+      111
+    ],
+    "CLAUDE_CODE_SAFE_MODE": [
+      111
+    ],
+    "subagent-nesting-5-deep": [
+      111
+    ],
+    "agentDepth": [
+      111
+    ],
+    "TeamCreate-removed": [
+      111
+    ],
+    "claude-in-chrome-ga": [
+      111
+    ],
+    "agent_needs_input": [
+      111
+    ],
+    "agent_completed": [
+      111
+    ],
+    "background-agent-notification": [
+      111
+    ],
+    "disableBundledSkills": [
+      111
+    ],
+    "CLAUDE_CODE_DISABLE_MOUSE_CLICKS": [
+      111
+    ],
+    "announced-cli-surface": [
+      111
+    ],
+    "claude-design": [
+      112
+    ],
+    "/design": [
+      112
+    ],
+    "/design-sync": [
+      112
+    ],
+    "/design-login": [
+      112
+    ],
+    "DesignSync": [
+      112
+    ],
+    "CLAUDE_CODE_ENABLE_DESIGN_MCP": [
+      112
+    ],
+    "design-oauth": [
+      112
+    ],
+    "artifacts": [
+      112
+    ],
+    "/plan-artifact": [
+      112
+    ],
+    "Artifact-tool": [
+      112
+    ],
+    "tengu_cobalt_plinth": [
+      112
+    ],
+    "CLAUDE_CODE_ARTIFACT": [
+      112
+    ],
+    "launch-composer": [
+      112
+    ],
+    "/skill-doctor": [
+      112
+    ],
+    "/pause-memory": [
+      112
+    ],
+    "toggle-memory-renamed": [
+      112
+    ],
+    "dark-launched-2.1.198": [
+      112
+    ],
+    "auto-memory-knowledge-base": [
+      113
+    ],
+    "bulk-inflate": [
+      113
+    ],
+    "periodic-resync": [
+      113
+    ],
+    "CLAUDE_CODE_FORCE_MEMORY_SURVEY": [
+      113
+    ],
+    "CLAUDE_CODE_KB_COHESION_FIXES": [
+      113
+    ],
+    "code-execution-2025-08-25": [
+      113
+    ],
+    "server-side-fallback": [
+      113
+    ],
+    "fallback-credit": [
+      113
+    ],
+    "prompt-caching-evict": [
+      113
+    ],
+    "CLAUDE_CODE_DISABLE_REFUSAL_FALLBACK": [
+      113
+    ],
+    "api-betas-2.1.198": [
+      113
     ]
   }
 }

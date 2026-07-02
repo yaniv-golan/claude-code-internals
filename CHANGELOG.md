@@ -1,5 +1,26 @@
 # Changelog
 
+## v2.17.0 — 2026-07-02 (this fork) — Chapter 27 (L110–L113): the v2.1.159 → v2.1.198 CLI content refresh
+
+Closes the standalone-CLI content-baseline gap. The prior baseline was **v2.1.159** (Ch21) while the installed CLI is **v2.1.198** — 39 patch versions behind, and `check-version.sh` was warning. This chapter diffs the two (CDN-recovered v2.1.159 binary, sha256 `5adf7b4d…95f9` verified) and cross-checks the official Anthropic CHANGELOG for v2.1.160–2.1.198. New chapter `references/24-verified-new-v2.1.198.md`, four lessons. Diff surface: +135 env vars (117 not previously documented), +12/−4 slash commands, +4 API betas, +288/−32 `tengu_*`; hook event types unchanged at **30**.
+
+### L110 — Model landscape
+- **Claude Sonnet 5 is the new CLI default (v2.1.197)** — native 1M-token context; supersedes "Opus 4.8 is the default" from Ch21/L91. `claude-sonnet-5` `[binary]`. Opus 4.8 stays selectable.
+- Claude Fable 5 (v2.1.170, Mythos-class); `fallbackModel` 3-model chain (v2.1.166); `CLAUDE_CODE_ENABLE_OPUS_4_7_FAST_MODE`; org default models + `enforceAvailableModels`.
+
+### L111 — Announced CLI surface (in binary AND changelog)
+`/cd` (move session cwd without breaking the prompt cache), `--safe-mode`/`CLAUDE_CODE_SAFE_MODE`, `/config key=value`, `/rewind` from before `/clear`, `Tool(param:value)` permission-rule syntax (`ruleValue`), `sandbox.credentials` + `sandbox.allowAppleEvents`, `autoMode.classifyAllShell`, sub-agents spawn sub-agents 5-deep (`agentDepth`), `claude mcp login/logout`, Claude-in-Chrome GA + background-agent `Notification`-hook reasons `agent_needs_input`/`agent_completed` (a new *reason*, not a new event type — still 30), `TeamCreate`/`TeamDelete` removed (one implicit team), `disableBundledSkills`, `CLAUDE_CODE_DISABLE_MOUSE_CLICKS`. Removed env vars: `ANTHROPIC_FOUNDRY_AUTH_TOKEN`, `CLAUDE_CODE_AGENT_LIST_IN_MESSAGES`, `CLAUDE_CODE_TEAM_ONBOARDING`.
+
+### L112 — Dark-launched (in the binary but ABSENT from the official changelog)
+- **Claude Design** — `/design` (grant/revoke agent access to Design projects), `/design-sync` (push design-system components to claude.ai/design), `/design-login` (OAuth, telemetry `tengu_design_oauth_*`), `DesignSync` tool, `CLAUDE_CODE_ENABLE_DESIGN_MCP`/`_ENABLE_DESIGN_SYNC`/`_DESIGN_OAUTH_CLIENT_ID`; gate `pNe()`, off by default.
+- **Artifacts** — Artifact tool (`NR="Artifact"`) publishing a shareable page to `claude.ai/code/artifact/${slug}`; `/plan-artifact` **hard-disabled** (`v5e(){return!1}`); master GB flag **`tengu_cobalt_plinth`** (default false), `getArtifactDefaultOn` returns true once flipped; env `CLAUDE_CODE_ARTIFACT`/`_DISABLE_ARTIFACT`/`_ARTIFACTS_API_BASE_URL`/`_DIRECT_UPLOAD`/`_AUTO_OPEN`. This is the CLI's own flag — Desktop's `coworkArtifacts` (Ch25) is absent from the CLI bundle.
+- Launch Composer (`CLAUDE_CODE_ENABLE/DISABLE_LAUNCH_COMPOSER`); `/skill-doctor` (live, "skills unused and costing context"); `/pause-memory` (rename of the removed `/toggle-memory`, kept as an alias).
+
+### L113 — Auto-memory→knowledge-base + API betas
+Memory gained a bulk-inflate + periodic-resync knowledge-base model: `CLAUDE_CODE_DISABLE_MEMORY_BULK_INFLATE`/`_PERIODIC_RESYNC`, `_FORCE_EVALUATE_MEMORY`, `_FORCE_MEMORY_SURVEY`, `_KB_COHESION_FIXES`. Four new API betas: `code-execution-2025-08-25` (in the default `Betas` array), and `server-side-fallback-2026-06-01` / `fallback-credit-2026-06-01` / `prompt-caching-evict-2026-05-12` (GB-gated via `sb(...)`); `CLAUDE_CODE_DISABLE_REFUSAL_FALLBACK` opts out of the refusal→fallback path.
+
+Metadata: `skill_version` 2.16.0→**2.17.0**, `captured_version` 2.1.159→**2.1.198**, lessons 109→**113**, chapters 26→**27**, `keywords_indexed`→**1718**; `topic-index.json` (L110–L113 + `total_lessons`→113), semantic index rebuilt; `SKILL.md`/`plugin.json`/`marketplace.json`/`README.md`/`CLAUDE.md` (version + counts + content-baseline v2.1.159→v2.1.198). `check-version.sh` now matches the installed CLI.
+
 ## v2.16.0 — 2026-07-02 (this fork) — Chapter 26 (L109) + host-loop file-I/O, hook-enforcement, and index-integrity findings
 
 Headline: Chapter 26 (L109) — Cowork Spaces, Scheduled Tasks, the Tasks tool & SDK file-checkpointing. Plus a round of follow-on corrections/additions from live Cowork/skill debugging (host-loop shared-scratch model, `${CLAUDE_PLUGIN_ROOT}` per-consumer resolution, PreToolUse-bypasses-canUseTool + hook input contract) and a pre-existing `topic-index` line-range drift fix (65 corrections). All first-party binary-verified.
