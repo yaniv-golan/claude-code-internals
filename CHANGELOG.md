@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.17.1 — 2026-07-02 (this fork) — Docs consistency patch
+
+Documentation-only patch. No lesson content, index, or search changes — the skill payload is identical to v2.17.0. Fixes three human-facing description blocks that still referenced the pre-Chapter-27 baseline:
+
+- **`README.md`** — the body had drifted well behind the headline: version-tracking block, ASCII file tree, the collapsible chapter table, the "What this fork adds" chapter list, the "Know its limits" line, and the `check-version.sh` example all still said **v2.1.159** and stopped at **Chapter 21**. Extended all of them through **Chapter 27 / v2.1.198 / 113 lessons**, and added reference-file rows 19–24 to the tree.
+- **`.claude-plugin/marketplace.json`** — the plugin description said internals were verified "through v2.1.159"; now "through the v2.1.198 CLI" with Chapter 27 (Sonnet 5 default, Claude Design & Artifacts) called out.
+- **`skill-package/.claude-plugin/plugin.json`** — the long description opened "through v2.1.120" and enumerated only up to Chapter 26; bumped to v2.1.198 and appended the Chapter 27 (L110–L113) summary.
+
 ## v2.17.0 — 2026-07-02 (this fork) — Chapter 27 (L110–L113): the v2.1.159 → v2.1.198 CLI content refresh
 
 Closes the standalone-CLI content-baseline gap. The prior baseline was **v2.1.159** (Ch21) while the installed CLI is **v2.1.198** — 39 patch versions behind, and `check-version.sh` was warning. This chapter diffs the two (CDN-recovered v2.1.159 binary, sha256 `5adf7b4d…95f9` verified) and cross-checks the official Anthropic CHANGELOG for v2.1.160–2.1.198. New chapter `references/24-verified-new-v2.1.198.md`, four lessons. Diff surface: +135 env vars (117 not previously documented), +12/−4 slash commands, +4 API betas, +288/−32 `tengu_*`; hook event types unchanged at **30**.
