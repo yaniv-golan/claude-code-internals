@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.17.2 — 2026-07-03 (this fork) — Chapter 24 re-correction: the "5-tool forced-ask + Task block" claim was real
+
+Corrects a factual error introduced by v2.15.0's own adversarial re-verification. Ch24/L107's Part E previously stated there was **no** "PreToolUse hook that forces ask for ~5 cowork tools and blocks `Task run_in_background`" — that this was an earlier framing that conflated distinct mechanisms. That retraction was itself wrong.
+
+**What happened:** while reviewing a third-party project (`claude-cowork-headless-emulator`, a Cowork-runtime testing harness with its own independent binary captures across app.asar 1.11847.5→1.17377.2) for anything worth learning, its docs asserted the original claim as binary-verified fact — directly contradicting our "overturned" framing on the same underlying binary (1.12603.1). Rather than trust either side, re-grepped the **currently-installed** `Claude.app/Contents/Resources/app.asar` (v1.17377.2) directly.
+
+**Finding:** the claim was correct. The Desktop builds a literal `hooks:{PreToolUse:[...]}` object at local-agent spawn time — four matchers: `Task` (blocks any call with `run_in_background` truthy, `reason:"Background agents disabled"`), `Skill` (telemetry + additionalContext), a joined-name matcher forcing `permissionDecision:"ask"` for `mcp__cowork__*` tools (now **8**: `allow_cowork_file_delete`/`request_cowork_directory`/`launch_code_session`/`save_skill`/`create_scheduled_task`/`update_scheduled_task`/`start_watching`/`stop_watching` — grown from 5 at the emulator's pre-Ch26 1.12603.1 capture), and `mcp__.*` (generic gate via `wjt()`).
+
+**Root cause of the original error:** the L107 re-verification pass grepped only the CLI and in-VM agent ELF. This `hooks` config is built **Desktop-side**, in `app.asar`'s session-spawn code — a third artifact neither of those two searches would ever surface. "Not found in the bundle I searched" was mistaken for "doesn't exist."
+
+Also newly confirmed live and folded into the same section: `fileDeleteApprovedMounts` is a real per-session array gating outputs/connected-folder mounts `rw`→`rwd` on `allow_cowork_file_delete` approval, and `mcp__workspace__web_fetch` host-routes to `POST /api/organizations/<org>/cowork/web_fetch`.
+
+Updated: `CLAUDE.md` header clause, `references/21-cowork-control-protocol.md` (Part E rewrite + `run_in_background` bullet + Methodology point 5), `SKILL.md` frontmatter description, `version.json`, `skill-package/.claude-plugin/plugin.json`. No new lessons/chapters; content-baseline binaries unchanged (still app.asar 1.17377.2 / in-VM ELF 2.1.197 / CLI 2.1.198).
+
 ## v2.17.1 — 2026-07-02 (this fork) — Docs consistency patch
 
 Documentation-only patch. No lesson content, index, or search changes — the skill payload is identical to v2.17.0. Fixes three human-facing description blocks that still referenced the pre-Chapter-27 baseline:

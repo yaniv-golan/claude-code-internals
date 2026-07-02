@@ -163,9 +163,65 @@ chapter, not previously documented:
 
 ## Part E — Permission model and tool registry (layered, not blanket-allow)
 
-**Correction (binary-verified):** there is **no** "PreToolUse hook that forces ask for ~5 cowork tools
-and blocks `Task run_in_background`." That earlier framing conflated several distinct mechanisms. The
-actual layers, with current identifiers (app.asar 1.12603.1):
+**Re-correction (binary-verified live against app.asar 1.17377.2, 2026-07; independently cross-checked
+against the `claude-cowork-headless-emulator` project's own binary capture at 1.12603.1):** the original
+"PreToolUse hook that forces ask for ~5 cowork tools and blocks `Task run_in_background`" claim was
+**real**. A prior adversarial re-verification pass (see Methodology) wrongly retracted it — it grepped
+the CLI/in-VM agent bundle, but this config is built **Desktop-side** and passed as the `hooks` option
+when the local-agent session is spawned, so it was never going to show up there. Literal, from the live
+1.17377.2 `app.asar`:
+
+```
+hooks:{PreToolUse:[
+  {matcher:"Task",hooks:[async K=>{
+    if(K.hook_event_name!=="PreToolUse")return{};
+    const W=K.tool_input;
+    if(W!=null&&W.run_in_background)
+      return{decision:"block",reason:"Background agents disabled"};
+    ... // else: emit subagent_invoked telemetry
+  }]},
+  {matcher:"Skill",hooks:[async K=>{ ... skill_invoked telemetry, additionalContext injection ... }]},
+  {matcher:[...Abt,EV,dV,Oue,xue].join("|"),hooks:[async K=>
+    K.hook_event_name!=="PreToolUse"?{}:{hookSpecificOutput:{
+      hookEventName:"PreToolUse",
+      permissionDecision:"ask",
+      permissionDecisionReason:"This tool requires explicit approval regardless of permission mode."
+    }}
+  ]},
+  {matcher:"mcp__.*",hooks:[async K=>{ ... wjt(session, tool_name) → {decision:"block",reason} or {} ... }]}
+]}
+```
+
+Four matchers:
+
+- **`Task`** — blocks any `Task` call whose `tool_input.run_in_background` is truthy
+  (`reason:"Background agents disabled"`). This is a *second*, independent block from the CLI's own
+  speculation-engine restriction (see below) — Desktop-injected, `Task`-specific, unconditional.
+- **`Skill`** — fires `skill_invoked` telemetry (plugin/marketplace attribution) and can inject
+  `additionalContext`; also fires `cowork_consolidate_memory_called` for the memory-consolidation skill.
+- **The joined-name matcher — the real "5 (now 8) cowork tools."** `matcher` resolves to
+  `[...Abt, EV, dV, Oue, xue].join("|")` where `Abt = [RrA, AQ, l0A, hv]` are the constants for
+  `mcp__cowork__allow_cowork_file_delete`, `mcp__cowork__request_cowork_directory`,
+  `mcp__cowork__launch_code_session`, `mcp__cowork__save_skill`, and `EV`/`dV`/`Oue`/`xue` resolve to
+  `MCP_CREATE_SCHEDULED_TASK`/`MCP_UPDATE_SCHEDULED_TASK`/`MCP_START_WATCHING`/`MCP_STOP_WATCHING` (the
+  Ch26/L109 scheduled-tasks server). Any match forces `permissionDecision:"ask"` with reason *"This tool
+  requires explicit approval regardless of permission mode"* — unconditional, even under
+  `--allow-dangerously-skip-permissions`. The set has grown as Cowork gained features: a third-party
+  capture at app.asar 1.12603.1 (pre-Ch26) recorded 5 names (no scheduled-tasks/watching, no
+  `save_skill`); the live 1.17377.2 binary has 8.
+- **`mcp__.*`** — a generic MCP-tool gate via `wjt(session, tool_name)`; a `"block"` decision
+  short-circuits before the tool runs.
+
+None of this replaces the **host-loop tool partition** (`gre`/`PNt`/`BDt`/`QDt`) or the **path-gating
+PreToolUse hook** (`IeA`/`vZe`/`Nen`) below — those are a separate, additional layer verified on the
+CLI/in-VM side. The Desktop injects its own `hooks.PreToolUse` array on top, at spawn time. Also newly
+confirmed live: the outputs/connected-folder delete model is a real per-mount `fileDeleteApprovedMounts`
+array on the session object — mounts default to `rw` (write, no delete) and become `rwd` only once their
+path is added to that set (which happens when the user approves an `allow_cowork_file_delete` request);
+and the host-loop `mcp__workspace__web_fetch` genuinely routes host-side to
+`POST /api/organizations/<org>/cowork/web_fetch`.
+
+Full layer stack, current identifiers (unchanged 1.12603.1 → 1.17377.2 except where noted):
 
 - **`--allowedTools` pre-approval.** `[binary]` `--allowedTools <built-ins>` pre-approves tools — this,
   not a blanket auto-allow, is why "tools just run." `--tools` / `--allowedTools` are real flags.
@@ -215,10 +271,12 @@ actual layers, with current identifiers (app.asar 1.12603.1):
   per-tool acceptance for the current build with an in-session probe: echo the literal `${CLAUDE_PLUGIN_ROOT}`
   value, then have a sub-agent `Read` a reference via (a) that value and (b) the `/sessions/…` VM path, and
   quote both outcomes.
-- **The `run_in_background` block is speculation-engine, Bash/PowerShell only.** `[binary]` Not a cowork
-  PreToolUse hook and **not `Task`**: the speculation engine's `canUseTool` aborts a backgrounded shell
-  (`"run_in_background" in M && M.run_in_background===true` → "Speculation paused: backgrounded shell")
-  and applies only to `Ih = ["Bash","PowerShell"]`.
+- **A *second*, independent `run_in_background` restriction — the speculation engine, Bash/PowerShell
+  only.** `[binary]` Distinct from the Desktop's `Task`-matcher hook in Part E above: the CLI's own
+  speculation engine `canUseTool` separately aborts a backgrounded shell (`"run_in_background" in M &&
+  M.run_in_background===true` → "Speculation paused: backgrounded shell") for `Ih = ["Bash","PowerShell"]`
+  only. Two mechanisms, two disjoint tool scopes (`Task` via the Desktop hook, `Bash`/`PowerShell` via the
+  CLI speculation engine) — both real, neither substitutes for the other.
 - **Session rules are user-configured, not a hardcoded always-ask set.** `[binary]`
   `CLAUDE_BG_SESSION_PERMISSION_RULES` (parsed by `eXY()`) injects `{allow[],deny[]}` as
   `alwaysAllowRules.session` / `alwaysDenyRules.session`. The default `alwaysAskRules` is `{}` (populated
@@ -259,15 +317,24 @@ actual layers, with current identifiers (app.asar 1.12603.1):
 ## Methodology
 
 `[methodology]` (1) **The binary is ground truth.** Adversarial re-verification of this chapter against
-app.asar 1.12603.1 + the in-VM ELF 2.1.170 overturned two plausible-sounding claims (the `--effort`
-default and the "PreToolUse forced-ask for 5 cowork tools / `Task run_in_background` block") and
-sharpened several more (`--mcp-config` drop is safe/hermetic-mode, not cowork-bg; API-key vars are
-deleted not blanked) — paste literal matched bytes, don't trust a tidy story. (2) **Don't trust a single
-finder.** A discovery pass claimed the `cli_plugin` gate (`2307090146`) is force-on for interactive
-Anthropic users via the `Vdr` map; re-grep showed `Vdr` belongs to the **custom-3p** provider class
-(adjacent `[custom-3p]` log; this machine's interactive account takes the server-fetch path and its
+app.asar 1.12603.1 + the in-VM ELF 2.1.170 correctly overturned one plausible-sounding claim (the
+`--effort` default) and sharpened several more (`--mcp-config` drop is safe/hermetic-mode, not cowork-bg;
+API-key vars are deleted not blanked) — paste literal matched bytes, don't trust a tidy story. (2) **Don't
+trust a single finder.** A discovery pass claimed the `cli_plugin` gate (`2307090146`) is force-on for
+interactive Anthropic users via the `Vdr` map; re-grep showed `Vdr` belongs to the **custom-3p** provider
+class (adjacent `[custom-3p]` log; this machine's interactive account takes the server-fetch path and its
 `fcache` reads the gate OFF) — Ch23/L106's "off by default" stands. (3) **A server-side gate can change
 the entire architecture** — host-loop vs VM-loop is gate `1143815894` (Ch20/L89); pin the gate state per
 release (decode `fcache`) and reproduce the decision logic, not one branch. (4) **Two binaries, two
 truths** — host-loop runtime lives in the desktop `app.asar`; the in-VM agent flags/protocol live in the
-`claude-code-vm` ELF, so a string absent from one is often present in the other.
+`claude-code-vm` ELF, so a string absent from one is often present in the other. (5) **"Not found" doesn't
+survive a third binary.** The *same* re-verification pass in (1) also retracted the "PreToolUse
+forced-ask for 5 cowork tools / `Task run_in_background` block" claim as a false conflation — wrongly.
+That pass had grepped only the CLI/in-VM ELF (the two binaries in point (4)); the actual mechanism is a
+`hooks:{PreToolUse:[...]}` object the Desktop builds and passes as a spawn option — a **third** artifact,
+the Desktop `app.asar`'s session-spawn code, distinct from both the CLI and the in-VM agent. Re-grepping
+the live 1.17377.2 `app.asar` directly found the literal hooks array (Part E), independently cross-checked
+against the `claude-cowork-headless-emulator` project's own binary capture of the same claim. Lesson:
+before calling a multi-surface claim "overturned," enumerate *every* surface it could live on (CLI, in-VM
+agent, Desktop host, Desktop-injected runtime config) and check each — absence from the surfaces you
+happened to grep is not absence from the feature.
