@@ -6,5 +6,3937 @@
     "in_vm_elf": "2.1.197",
     "fcache_capture": "2026-07-02"
   },
-  "entries": []
+  "entries": [
+    {
+      "id": "env.ANTHROPIC_FEDERATION_RULE_ID",
+      "kind": "env-var",
+      "name": "ANTHROPIC_FEDERATION_RULE_ID",
+      "status": "live",
+      "first_seen": "2.1.116",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Required env-quad var for OIDC Federation auth: the federation rule id from the Anthropic console.",
+      "provenance": [
+        {
+          "lesson": 86
+        }
+      ]
+    },
+    {
+      "id": "env.ANTHROPIC_ORGANIZATION_ID",
+      "kind": "env-var",
+      "name": "ANTHROPIC_ORGANIZATION_ID",
+      "status": "live",
+      "first_seen": "2.1.116",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Required env-quad var for OIDC Federation auth: the target organization id.",
+      "provenance": [
+        {
+          "lesson": 86
+        }
+      ]
+    },
+    {
+      "id": "env.ANTHROPIC_IDENTITY_TOKEN",
+      "kind": "env-var",
+      "name": "ANTHROPIC_IDENTITY_TOKEN",
+      "status": "live",
+      "first_seen": "2.1.116",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Inline identity token (JWT) for OIDC Federation auth; alternative to ANTHROPIC_IDENTITY_TOKEN_FILE.",
+      "provenance": [
+        {
+          "lesson": 86
+        }
+      ]
+    },
+    {
+      "id": "env.ANTHROPIC_IDENTITY_TOKEN_FILE",
+      "kind": "env-var",
+      "name": "ANTHROPIC_IDENTITY_TOKEN_FILE",
+      "status": "live",
+      "first_seen": "2.1.116",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Path to a rotating identity-token file for OIDC Federation auth.",
+      "provenance": [
+        {
+          "lesson": 86
+        }
+      ]
+    },
+    {
+      "id": "env.ANTHROPIC_SERVICE_ACCOUNT_ID",
+      "kind": "env-var",
+      "name": "ANTHROPIC_SERVICE_ACCOUNT_ID",
+      "status": "live",
+      "first_seen": "2.1.116",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Optional service-account id for OIDC Federation auth.",
+      "provenance": [
+        {
+          "lesson": 86
+        }
+      ]
+    },
+    {
+      "id": "env.ANTHROPIC_SCOPE",
+      "kind": "env-var",
+      "name": "ANTHROPIC_SCOPE",
+      "status": "live",
+      "first_seen": "2.1.116",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Optional auth-scope override for OIDC Federation auth.",
+      "provenance": [
+        {
+          "lesson": 86
+        }
+      ]
+    },
+    {
+      "id": "env.ANTHROPIC_CONFIG_DIR",
+      "kind": "env-var",
+      "name": "ANTHROPIC_CONFIG_DIR",
+      "status": "live",
+      "first_seen": "2.1.116",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Overrides the config-directory root used for profile-based auth config (configs/, credentials/).",
+      "provenance": [
+        {
+          "lesson": 86
+        }
+      ]
+    },
+    {
+      "id": "env.ANTHROPIC_PROFILE",
+      "kind": "env-var",
+      "name": "ANTHROPIC_PROFILE",
+      "status": "live",
+      "first_seen": "2.1.116",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Selects the active profile within the config dir; falls back to <config_dir>/active_config then \"default\".",
+      "provenance": [
+        {
+          "lesson": 86
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_HTTP_PROXY",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_HTTP_PROXY",
+      "status": "live",
+      "first_seen": "2.1.116",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Lowest-priority HTTP proxy fallback, below HTTP_PROXY/http_proxy; propagated to ~15 downstream toolchains (npm, docker, JAVA_TOOL_OPTIONS, gcloud, etc.) for spawned children.",
+      "provenance": [
+        {
+          "lesson": 86
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_HTTPS_PROXY",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_HTTPS_PROXY",
+      "status": "live",
+      "first_seen": "2.1.116",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Lowest-priority HTTPS proxy fallback, below HTTPS_PROXY/https_proxy.",
+      "provenance": [
+        {
+          "lesson": 86
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT",
+      "status": "live",
+      "first_seen": "2.1.116",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Alias for CLAUDE_CODE_SIMPLE; when truthy, replaces the full system prompt with a skeletal CWD/Date-only prompt.",
+      "provenance": [
+        {
+          "lesson": 86
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_RETRY_WATCHDOG",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_RETRY_WATCHDOG",
+      "status": "live",
+      "first_seen": "2.1.116",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Enables a retry watchdog on API 429s; strictly gated to Linux + CLAUDE_CODE_ENTRYPOINT=\"remote\" (CCR/daemon workers, not local dev machines).",
+      "provenance": [
+        {
+          "lesson": 86
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_FORK_SUBAGENT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_FORK_SUBAGENT",
+      "status": "live",
+      "first_seen": "2.1.117",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Truthy env override that force-enables /fork ahead of the tengu_copper_fox GB flag (default false); non-interactive sessions never see /fork regardless.",
+      "provenance": [
+        {
+          "lesson": 87
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_RATE_LIMIT_TIER",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_RATE_LIMIT_TIER",
+      "status": "live",
+      "first_seen": "2.1.117",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Overrides the reported rate-limit tier on the client-constructed OAuth token object (client-side only; server remains authoritative).",
+      "provenance": [
+        {
+          "lesson": 87
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SUBSCRIPTION_TYPE",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SUBSCRIPTION_TYPE",
+      "status": "live",
+      "first_seen": "2.1.117",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Overrides the reported subscription type on the client-constructed OAuth token object; test-hook surface for Pro-trial/subscription UI.",
+      "provenance": [
+        {
+          "lesson": 87
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_BRIDGE_REATTACH_SESSION",
+      "kind": "env-var",
+      "name": "CLAUDE_BRIDGE_REATTACH_SESSION",
+      "status": "live",
+      "first_seen": "2.1.117",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Single-use session id for the bridge reattach handshake; read once and deleted from process.env so it does not leak into grandchildren.",
+      "provenance": [
+        {
+          "lesson": 87
+        },
+        {
+          "lesson": 89,
+          "note": "fully consumed by the bg/bridge persistence path"
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_BRIDGE_REATTACH_SEQ",
+      "kind": "env-var",
+      "name": "CLAUDE_BRIDGE_REATTACH_SEQ",
+      "status": "live",
+      "first_seen": "2.1.117",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Single-use sequence number to replay from on bridge reattach; read once and deleted from process.env.",
+      "provenance": [
+        {
+          "lesson": 87
+        },
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_AGENT_NAME",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_AGENT_NAME",
+      "status": "removed",
+      "first_seen": null,
+      "removed_in": "2.1.118",
+      "as_of": "2.1.198",
+      "summary": "Removed in v2.1.118; agent/team display context is now derived from session state (standaloneAgentContext) instead of an env override.",
+      "provenance": [
+        {
+          "lesson": 88
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_TEAM_NAME",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_TEAM_NAME",
+      "status": "removed",
+      "first_seen": null,
+      "removed_in": "2.1.118",
+      "as_of": "2.1.198",
+      "summary": "Removed alongside CLAUDE_CODE_AGENT_NAME in v2.1.118.",
+      "provenance": [
+        {
+          "lesson": 88
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SESSION_KIND",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SESSION_KIND",
+      "status": "live",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Session-kind discriminator: \"bg\" | \"daemon\" | \"daemon-worker\" | unset (interactive). The canonical Cowork/background-session detector; there is no literal \"cowork\" string in the bundle.",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SESSION_ID",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SESSION_ID",
+      "status": "live",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Stable session identifier for cross-process correlation.",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SESSION_NAME",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SESSION_NAME",
+      "status": "live",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Human-readable session name shown in the agents/Fleet view list.",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SESSION_LOG",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SESSION_LOG",
+      "status": "live",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Path to the session log file.",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_BG_ISOLATION",
+      "kind": "env-var",
+      "name": "CLAUDE_BG_ISOLATION",
+      "status": "live",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Background-isolation mode; value \"worktree\" triggers runtime system-prompt rewriting instructing the agent to call EnterWorktree before editing.",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_BG_RENDEZVOUS_SOCK",
+      "kind": "env-var",
+      "name": "CLAUDE_BG_RENDEZVOUS_SOCK",
+      "status": "live",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Unix-socket path for daemon<->worker IPC; used to send shutdown signals to idle/retired workers (tengu_bg_retired).",
+      "provenance": [
+        {
+          "lesson": 89
+        },
+        {
+          "lesson": 90
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_BG_SOURCE",
+      "kind": "env-var",
+      "name": "CLAUDE_BG_SOURCE",
+      "status": "live",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Records where a background session was spawned from (set by the daemon when dispatching workers).",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_JOB_DIR",
+      "kind": "env-var",
+      "name": "CLAUDE_JOB_DIR",
+      "status": "live",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Per-job state directory: worktree, transcript, and PTY recording all live here.",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_PTY_RECORD",
+      "kind": "env-var",
+      "name": "CLAUDE_PTY_RECORD",
+      "status": "live",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "File path for terminal-stream recording via the internal --bg-pty-host <sock> <cols> <rows> -- <file> argv mode.",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_AGENT",
+      "kind": "env-var",
+      "name": "CLAUDE_AGENT",
+      "status": "live",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Agent identifier set when running as a Fleet/agent-view-tracked agent.",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_AGENTS_SELECT",
+      "kind": "env-var",
+      "name": "CLAUDE_AGENTS_SELECT",
+      "status": "live",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Pre-selected agent id to highlight in the agents (Fleet) view; set when the left-arrow keybinding spawns a child \"claude agents\" process.",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_AGENT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_AGENT",
+      "status": "live",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Internal agent identity for the Claude Code instance, parallel to the agent-config concept.",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_HIDE_CWD",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_HIDE_CWD",
+      "status": "live",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "UI privacy knob: when truthy, blanks the cwd field in the status-line/header display (does not affect actual cwd). Useful for screensharing.",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_VERIFY_PROMPT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_VERIFY_PROMPT",
+      "status": "live",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Debugging-workflow discipline toggle, NOT a safety gate: injects a 3-step reproduce->fix->re-observe instruction section into the system prompt. Sibling GB flag: tengu_sparrow_ledger.",
+      "provenance": [
+        {
+          "lesson": 89
+        },
+        {
+          "lesson": 90
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_CLASSIFIER_SUMMARY",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_CLASSIFIER_SUMMARY",
+      "status": "live",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Manual override for classifier-summary engine selection: truthy -> \"llm\", falsy -> \"heuristic\"; bypasses GB-flag-driven default.",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_INTERNAL_FC_OVERRIDES",
+      "kind": "env-var",
+      "name": "CLAUDE_INTERNAL_FC_OVERRIDES",
+      "status": "dark-launched",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Internal function-calling overrides; no user-facing surface as of v2.1.119.",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DAEMON_COLD_START",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DAEMON_COLD_START",
+      "status": "live",
+      "first_seen": "2.1.120",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Daemon cold-start mode: \"transient\" (silent on-demand, default) or \"ask\" (prompt before starting). There is no persistent/installed mode in v2.1.120.",
+      "provenance": [
+        {
+          "lesson": 90
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_LEAN_PROMPT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_LEAN_PROMPT",
+      "status": "live",
+      "first_seen": "2.1.120",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Manual override forcing all leanable prompt sections (per-section, distinct from wholesale CLAUDE_CODE_SIMPLE) to their slim variants regardless of GB-flag rollout state.",
+      "provenance": [
+        {
+          "lesson": 90
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_COWORK_MEMORY_GUIDELINES",
+      "kind": "env-var",
+      "name": "CLAUDE_COWORK_MEMORY_GUIDELINES",
+      "status": "live",
+      "first_seen": "2.1.120",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Cowork's memory-injection bypass: when set and auto-memory is enabled, wholesale replaces the entire memory pipeline output with the env var's content (no team memory, no MEMORY.md index).",
+      "provenance": [
+        {
+          "lesson": 90
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES",
+      "kind": "env-var",
+      "name": "CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES",
+      "status": "live",
+      "first_seen": "2.1.118",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Additive Cowork memory-guidance hint, pre-existing since v2.1.118; sibling of the replace-form CLAUDE_COWORK_MEMORY_GUIDELINES added in v2.1.120.",
+      "provenance": [
+        {
+          "lesson": 89
+        },
+        {
+          "lesson": 90
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_AGENTS_AUTO_RELAUNCHED_AT",
+      "kind": "env-var",
+      "name": "CLAUDE_AGENTS_AUTO_RELAUNCHED_AT",
+      "status": "live",
+      "first_seen": "2.1.120",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Daemon-set timestamp on auto-relaunched workers; rate-limited to agents unfocused >=1h and >=6h since the last relaunch.",
+      "provenance": [
+        {
+          "lesson": 90
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_WORKFLOWS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_WORKFLOWS",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Tri-state availability override for Dynamic Workflows (the Workflow tool): truthy pulls from tengu_workflows_enabled, explicit-false disables, unset falls through to Statsig+plan default.",
+      "provenance": [
+        {
+          "lesson": 91
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_WORKFLOWS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_WORKFLOWS",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Hard kill switch for Dynamic Workflows, checked before org policy/availability.",
+      "provenance": [
+        {
+          "lesson": 91
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_COORDINATOR_MODE",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_COORDINATOR_MODE",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Enables the coordinator dispatch role (worker-team orchestration, TeamCreate/TeamDelete); remote/headless-gated.",
+      "provenance": [
+        {
+          "lesson": 92
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_EFFORT_LEVEL",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_EFFORT_LEVEL",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Global effort-tier pin overriding the per-model default (low|medium|high|xhigh|max), clamped to model capability.",
+      "provenance": [
+        {
+          "lesson": 93
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Truthy downgrades Opus 4.8 to Opus 4.6 (the inverse direction of the older 4.6->4.7 fast-mode var).",
+      "provenance": [
+        {
+          "lesson": 93
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ENABLE_OPUS_4_7_FAST_MODE",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ENABLE_OPUS_4_7_FAST_MODE",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Opt-in fast mode for Opus 4.7. Removed in v2.1.159 (the 4.6->4.7-era fast-mode var was retired alongside the Opus 4.8 launch) but reappears as a live, functioning var by v2.1.198 complementing CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE.",
+      "provenance": [
+        {
+          "lesson": 93,
+          "note": "removed in v2.1.159"
+        },
+        {
+          "lesson": 110,
+          "note": "live again as of v2.1.198"
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_BYTE_STREAM_IDLE_TIMEOUT_MS",
+      "kind": "env-var",
+      "name": "CLAUDE_BYTE_STREAM_IDLE_TIMEOUT_MS",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Byte-level stream idle-watchdog timeout, default 300000ms via Statsig, clamped [10000, 1800000]; takes precedence over the legacy CLAUDE_STREAM_IDLE_TIMEOUT_MS.",
+      "provenance": [
+        {
+          "lesson": 94
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_ENABLE_BYTE_WATCHDOG",
+      "kind": "env-var",
+      "name": "CLAUDE_ENABLE_BYTE_WATCHDOG",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Kill/force switch for the byte-level idle watchdog (on by default for SSE).",
+      "provenance": [
+        {
+          "lesson": 94
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_ENABLE_BYTE_WATCHDOG_BEDROCK",
+      "kind": "env-var",
+      "name": "CLAUDE_ENABLE_BYTE_WATCHDOG_BEDROCK",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Opt-in byte watchdog for the Bedrock eventstream transport (off by default, unlike SSE).",
+      "provenance": [
+        {
+          "lesson": 94
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_STOP_HOOK_BLOCK_CAP",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_STOP_HOOK_BLOCK_CAP",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Consecutive Stop-hook block override ceiling, default 8; <=0 disables the cap.",
+      "provenance": [
+        {
+          "lesson": 95
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ENABLE_AUTO_MODE",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ENABLE_AUTO_MODE",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Required to enable auto permission mode on non-first-party/non-anthropicAws providers (first-party has it always available).",
+      "provenance": [
+        {
+          "lesson": 96
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_USE_GATEWAY",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_USE_GATEWAY",
+      "status": "disabled",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Present only in the env-name allowlist and never actually read; does NOT select the new Cloud-gateway OAuth provider (that is chosen via /login). Dead/reserved.",
+      "provenance": [
+        {
+          "lesson": 97
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SYNC_SKILLS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SYNC_SKILLS",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Pure-env truthy gate (default OFF) enabling org-managed skills reconcile from Console, with a 10-minute re-sync.",
+      "provenance": [
+        {
+          "lesson": 98
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SYNC_PLUGINS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SYNC_PLUGINS",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Pure-env truthy gate (default OFF) enabling org-managed plugins reconcile from Console, plus MCP reconcile.",
+      "provenance": [
+        {
+          "lesson": 98
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SYNC_PLUGINS_MCP_TIMEOUT_MS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SYNC_PLUGINS_MCP_TIMEOUT_MS",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "MCP-reconcile timeout bound for org-managed plugin sync, default 10000ms; tengu_plugins_sync_mcp_skipped fires only when explicitly set to 0.",
+      "provenance": [
+        {
+          "lesson": 98
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SYNC_PLUGINS_INSTALL_TIMEOUT_MS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SYNC_PLUGINS_INSTALL_TIMEOUT_MS",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Plugin-install timeout bound for org-managed plugin sync, default 30000ms.",
+      "provenance": [
+        {
+          "lesson": 98
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SYNC_SKILLS_WAIT_TIMEOUT_MS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SYNC_SKILLS_WAIT_TIMEOUT_MS",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Skills-sync startup-wait bound for org-managed skills sync, default 5000ms.",
+      "provenance": [
+        {
+          "lesson": 98
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_CLAUDE_CODE_SKILL",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_CLAUDE_CODE_SKILL",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Suppresses the dark-launched built-in \"claude-code-docs\" CLI-as-skill (registerClaudeCodeSkill, default off via tengu_birch_kettle).",
+      "provenance": [
+        {
+          "lesson": 98
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Capability flag: an embedding host (Desktop, VS Code, local-agent) supplies a getOAuthToken callback for SDK-embedded sessions.",
+      "provenance": [
+        {
+          "lesson": 99
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SDK_HAS_HOST_AUTH_REFRESH",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SDK_HAS_HOST_AUTH_REFRESH",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Capability flag: an embedding host supplies a getHostAuthToken callback; covers a narrower entrypoint set than OAuth refresh (excludes claude-vscode).",
+      "provenance": [
+        {
+          "lesson": 99
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_HOST_AUTH_ENV_VAR",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_HOST_AUTH_ENV_VAR",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Names the env var holding the host-managed auth token, default ANTHROPIC_AUTH_TOKEN; its presence flips managedByHost.",
+      "provenance": [
+        {
+          "lesson": 99
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_HOST_AUTH_REFRESH_TIMEOUT_MS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_HOST_AUTH_REFRESH_TIMEOUT_MS",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Overrides the default 30000ms timeout on the host_auth_token_refresh / oauth_token_refresh control-request RPCs.",
+      "provenance": [
+        {
+          "lesson": 99
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_BG_AUTH_SNAPSHOT_PATH",
+      "kind": "env-var",
+      "name": "CLAUDE_BG_AUTH_SNAPSHOT_PATH",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Single-use on-disk credential handoff for background workers: path is read, the env var deleted, and the file unlinked after installing {accessToken, scopes, subscriptionType, rateLimitTier}.",
+      "provenance": [
+        {
+          "lesson": 99
+        }
+      ]
+    },
+    {
+      "id": "env.ANTHROPIC_WORKSPACE_ID",
+      "kind": "env-var",
+      "name": "ANTHROPIC_WORKSPACE_ID",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Workspace-disambiguation var read in OIDC env-quad mode alongside organization_id/federation_rule_id. NOT the Cowork Spaces id, despite the name overlap.",
+      "provenance": [
+        {
+          "lesson": 99
+        },
+        {
+          "lesson": 109,
+          "note": "confirmed still the L86 OIDC var, not the Spaces id"
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_SECURESTORAGE_CONFIG_DIR",
+      "kind": "env-var",
+      "name": "CLAUDE_SECURESTORAGE_CONFIG_DIR",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Relocates secure credential storage away from the default ~/.claude.",
+      "provenance": [
+        {
+          "lesson": 99
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Truthy forces managedByHost auth mode even without CLAUDE_CODE_HOST_AUTH_ENV_VAR being set.",
+      "provenance": [
+        {
+          "lesson": 99
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_AGENT_VIEW",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_AGENT_VIEW",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Disables the \"agent view\" (renamed from CLAUDE_CODE_DISABLE_AGENTS_FLEET/\"Fleet view\"); the underlying `claude agents` command behavior is unchanged, only naming.",
+      "provenance": [
+        {
+          "lesson": 100
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_AGENT_VIEW_RELAUNCH",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_AGENT_VIEW_RELAUNCH",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "One-shot marker set around the Fleet->agent-view rename migration.",
+      "provenance": [
+        {
+          "lesson": 100
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_BG_SESSION_PERMISSION_RULES",
+      "kind": "env-var",
+      "name": "CLAUDE_BG_SESSION_PERMISSION_RULES",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "JSON {allow[],deny[]} injected as session-scoped alwaysAllow/alwaysDenyRules for bg sessions only (SESSION_KIND===\"bg\"); user-configured, not a hardcoded always-ask list.",
+      "provenance": [
+        {
+          "lesson": 100
+        },
+        {
+          "lesson": 107,
+          "note": "confirmed user-configured, not hardcoded"
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_BG_TCC_DISCLAIMED",
+      "kind": "env-var",
+      "name": "CLAUDE_BG_TCC_DISCLAIMED",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "macOS one-shot marker for native self-respawn after a TCC (privacy permission) disclaim.",
+      "provenance": [
+        {
+          "lesson": 100
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SUPERVISED",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SUPERVISED",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "When set, an uncaught exception triggers a clean exit instead of a crash dump, for a supervising process to restart.",
+      "provenance": [
+        {
+          "lesson": 100
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SPAWN_TIMESTAMP_MS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SPAWN_TIMESTAMP_MS",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Records the process spawn timestamp (ms).",
+      "provenance": [
+        {
+          "lesson": 100
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_PTY_HOST_EXEC",
+      "kind": "env-var",
+      "name": "CLAUDE_PTY_HOST_EXEC",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "PTY host executable path used by the internal --bg-pty-host argv mode.",
+      "provenance": [
+        {
+          "lesson": 100
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_PTY_ORPHAN_CHECK_MS",
+      "kind": "env-var",
+      "name": "CLAUDE_PTY_ORPHAN_CHECK_MS",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "PTY orphan-check polling interval, default 2000ms.",
+      "provenance": [
+        {
+          "lesson": 100
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_BRIDGE_REATTACH_OUTBOUND_ONLY",
+      "kind": "env-var",
+      "name": "CLAUDE_BRIDGE_REATTACH_OUTBOUND_ONLY",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Restricts bridge reattach to outbound-only connections.",
+      "provenance": [
+        {
+          "lesson": 100
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_LOOP_KEEPALIVE",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_LOOP_KEEPALIVE",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Force-enables the /loop keepalive fallback wakeup (over the tengu_kairos_loop_keepalive Statsig default false); strictly subordinate to dynamic-loop mode.",
+      "provenance": [
+        {
+          "lesson": 101
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_PLAN_MODE_INTERVIEW_PHASE",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_PLAN_MODE_INTERVIEW_PHASE",
+      "status": "removed",
+      "first_seen": null,
+      "removed_in": "2.1.159",
+      "as_of": "2.1.198",
+      "summary": "The interactive \"interview\" phase on entering plan mode is fully removed in v2.1.159, along with its two telemetry flags.",
+      "provenance": [
+        {
+          "lesson": 102
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_MEMORY_STORES",
+      "kind": "env-var",
+      "name": "CLAUDE_MEMORY_STORES",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "JSON array mounting multiple team-memory stores (path string or {path, mode: rw|ro, mount}); duplicate mounts throw.",
+      "provenance": [
+        {
+          "lesson": 102
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_BG_MEMORY_TOGGLED_OFF",
+      "kind": "env-var",
+      "name": "CLAUDE_BG_MEMORY_TOGGLED_OFF",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Propagates a memory-off state into background child sessions.",
+      "provenance": [
+        {
+          "lesson": 102
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_PEWTER_OWL",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_PEWTER_OWL",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Hard on/off override for the PEWTER_OWL gate layer over the internal SendUserMessage/Brief tool (off-override beats all; force-on also supported).",
+      "provenance": [
+        {
+          "lesson": 103
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_IS_COWORK",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_IS_COWORK",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "The activation marker for Cowork mode; selected by this env var, not a CLI flag (--cowork itself is rejected at agent-invocation time, plugin-scope only).",
+      "provenance": [
+        {
+          "lesson": 107
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_USE_COWORK_PLUGINS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_USE_COWORK_PLUGINS",
+      "status": "disabled",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Do NOT set: flips the agent user-settings file to cowork_settings.json and plugin cache to cowork_plugins/ -- files the Desktop host never populates. The real Desktop never sets it; toggling it is an active bug, not a working switch.",
+      "provenance": [
+        {
+          "lesson": 107
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ALWAYS_ENABLE_EFFORT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ALWAYS_ENABLE_EFFORT",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Bypasses the per-model effort allowlist (effort is otherwise limited to fable-5/mythos-5/opus-4-8/opus-4-7 + select models).",
+      "provenance": [
+        {
+          "lesson": 107
+        },
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Gates appendSubagentSystemPrompt on the initialize control-request (subagent system-prompt append).",
+      "provenance": [
+        {
+          "lesson": 107
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_REMOTE",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_REMOTE",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Combined with CLAUDE_CODE_REMOTE_HERMETIC_MODE, triggers the ap5()/xB8() filter that drops non-SDK --mcp-config servers in hermetic-remote mode; also gates several CCR-era flags (tengu_ccr_post_turn_summary, retry watchdog).",
+      "provenance": [
+        {
+          "lesson": 107
+        },
+        {
+          "lesson": 86,
+          "note": "earlier CCR gating context"
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_REMOTE_HERMETIC_MODE",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_REMOTE_HERMETIC_MODE",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Paired with CLAUDE_CODE_REMOTE; both required for xB8() hermetic-remote mode, which drops non-SDK --mcp-config servers.",
+      "provenance": [
+        {
+          "lesson": 107
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_OAUTH_TOKEN",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_OAUTH_TOKEN",
+      "status": "live",
+      "first_seen": "1.12603.1",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "The Desktop's VM-env builder rtA() sets this to the session OAuth token for a spawned Cowork agent; ANTHROPIC_API_KEY/AUTH_TOKEN/CUSTOM_HEADERS are deleted (not blanked) alongside it, so the final env has no API-key vars at all.",
+      "provenance": [
+        {
+          "lesson": 107
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_WORKER_EPOCH",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_WORKER_EPOCH",
+      "status": "live",
+      "first_seen": "1.12603.1",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "CCR worker epoch (int) passed in by the host; a stale end_session (reason:\"archived\") is ignored when epoch>1 so a prior lifecycle cannot kill a reattached worker. Missing/NaN throws \"missing_epoch\".",
+      "provenance": [
+        {
+          "lesson": 107
+        },
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_1M_CONTEXT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_1M_CONTEXT",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Stops selecting/routing to [1m]-tagged models, for proxies/gateways without 1M-context support.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Suppresses adaptive (extended) thinking even on supporting models (opus-4-6/sonnet-4-6).",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_LEGACY_MODEL_REMAP",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_LEGACY_MODEL_REMAP",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Disables the silent old-alias -> canonical-model-ID remap; sends the exact model string as given.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_BG_CLASSIFIER_MODEL",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_BG_CLASSIFIER_MODEL",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Overrides the model used for the background classifier/summarizer that produces post-turn summaries for Cowork Desktop.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_AUTO_MODE_MODEL",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_AUTO_MODE_MODEL",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Overrides the model auto-mode selects.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.ANTHROPIC_DEFAULT_FABLE_MODEL",
+      "kind": "env-var",
+      "name": "ANTHROPIC_DEFAULT_FABLE_MODEL",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Fable-5 model-family override quartet (+ _NAME, _DESCRIPTION, _SUPPORTED_CAPABILITIES), matching the existing OPUS/SONNET/HAIKU pattern; in the managed-settings propagation allowlist so org policy reaches subagents.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ENVIRONMENT_KIND",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ENVIRONMENT_KIND",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Deployment-type tag: byoc | anthropic_cloud | bridge; drives the classifier-summary surface map (byoc adds \"ccr\", bridge adds \"bridge\").",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_BYOC_ENABLE_DATADOG",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_BYOC_ENABLE_DATADOG",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Under ENVIRONMENT_KIND=byoc, Datadog telemetry is suppressed unless this is also set.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_WORKSPACE_HOST_PATHS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_WORKSPACE_HOST_PATHS",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Pipe-separated host folders the Desktop injects (userSelectedFolders.join(\"|\")); the agent emits them as workspace.host_paths telemetry. Host-side source is a Cowork Space's folder set (Ch26/L109).",
+      "provenance": [
+        {
+          "lesson": 108
+        },
+        {
+          "lesson": 109,
+          "note": "confirmed as the host-side surface behind a Space's folderPath set"
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_BG_CLAIM_AUTH",
+      "kind": "env-var",
+      "name": "CLAUDE_BG_CLAIM_AUTH",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Part of the bg/Cowork auth handshake carrying host->worker claim auth; deleted from process.env immediately after read (single-use).",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_BG_SOCKET_TOKENS_PATH",
+      "kind": "env-var",
+      "name": "CLAUDE_BG_SOCKET_TOKENS_PATH",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Part of the bg/Cowork auth handshake carrying the socket-tokens path; deleted from process.env immediately after read.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_BG_RV_AUTH",
+      "kind": "env-var",
+      "name": "CLAUDE_BG_RV_AUTH",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Rendezvous-socket auth token for the bg/Cowork handshake; single-use, deleted after read.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_BG_PTY_AUTH",
+      "kind": "env-var",
+      "name": "CLAUDE_BG_PTY_AUTH",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "PTY-socket auth token for the bg/Cowork handshake; single-use, deleted after read.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_BG_STARTUP_WEDGE_MS",
+      "kind": "env-var",
+      "name": "CLAUDE_BG_STARTUP_WEDGE_MS",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Startup-watchdog timeout for hung bg workers, default 45000ms; firing kills the worker.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_COWORK_MEMORY_INDEX_CONTENT",
+      "kind": "env-var",
+      "name": "CLAUDE_COWORK_MEMORY_INDEX_CONTENT",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Injects the Cowork memory index as a raw string (non-empty = use directly, empty = disable, unset = use file path); sibling of CLAUDE_COWORK_MEMORY_GUIDELINES.",
+      "provenance": [
+        {
+          "lesson": 108
+        },
+        {
+          "lesson": 109,
+          "note": "Desktop counterpart is CoworkSpaces per-space auto-memory (getAutoMemoryDir)"
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ENABLE_XAA",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ENABLE_XAA",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Gates the XAA (Cross-App Authentication, SEP-990) OIDC flow for MCP OAuth; without it, any oauth.xaa server config throws.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_TRUSTED_DEVICE_TOKEN",
+      "kind": "env-var",
+      "name": "CLAUDE_TRUSTED_DEVICE_TOKEN",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Injects a trusted-device token directly, skipping proactive device-trust enrollment.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DONT_INHERIT_ENV",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DONT_INHERIT_ENV",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Bash-tool subprocesses get an empty base env (only SHELL/GIT_EDITOR/CLAUDECODE=1) instead of inheriting process.env; hermetic shell mode.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_AGENT_SDK_CLIENT_APP",
+      "kind": "env-var",
+      "name": "CLAUDE_AGENT_SDK_CLIENT_APP",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Appended as client-app/<val> in the User-Agent/x-app header for Agent SDK integrations.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_AGENT_SDK_VERSION",
+      "kind": "env-var",
+      "name": "CLAUDE_AGENT_SDK_VERSION",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Appended as agent-sdk/<val> in the User-Agent header.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_AGENT_SDK_MCP_NO_PREFIX",
+      "kind": "env-var",
+      "name": "CLAUDE_AGENT_SDK_MCP_NO_PREFIX",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Suppresses the tool-name prefix for MCP tools on sdk-type connections.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_AGENT_SDK_DISABLE_BUILTIN_AGENTS",
+      "kind": "env-var",
+      "name": "CLAUDE_AGENT_SDK_DISABLE_BUILTIN_AGENTS",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "With the multi-agent fork gate, returns an empty built-in-agents list for SDK integrations.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_PLAN_V2_AGENT_COUNT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_PLAN_V2_AGENT_COUNT",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Overrides the Dynamic-Workflow (plan-v2) main parallel-agent count (default tier-based: enterprise/team 3, else 1).",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_EXPLORE_AGENT_COUNT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_EXPLORE_AGENT_COUNT",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Overrides the Dynamic-Workflow explore parallel-agent count; L108 shorthand renders this as CLAUDE_CODE_PLAN_V2_..._EXPLORE_AGENT_COUNT while L111 gives the standalone name -- treat as the same explore-fan-out override, exact full identifier unconfirmed.",
+      "provenance": [
+        {
+          "lesson": 108
+        },
+        {
+          "lesson": 111
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_COLD_COMPACT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_COLD_COMPACT",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Triggers cold compaction (discard the whole in-flight conversation) instead of normal summary-preserving autocompact.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_AFTER_LAST_COMPACT",
+      "kind": "env-var",
+      "name": "CLAUDE_AFTER_LAST_COMPACT",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Appends {after_last_compact:true} to the skill/plugin-registry API query (skill sync after compaction).",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Three-way toggle for Git guidance in the system prompt (truthy=off, falsy-string=force-on, unset=policy default).",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_AI_URL",
+      "kind": "env-var",
+      "name": "CLAUDE_AI_URL",
+      "status": "live",
+      "first_seen": "1.12603.1",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Desktop-only: overrides the claude.ai base URL (staging/localhost detection); explicitly stripped before spawning the agent.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_EXTRA_HEADERS_TOKEN",
+      "kind": "env-var",
+      "name": "CLAUDE_EXTRA_HEADERS_TOKEN",
+      "status": "live",
+      "first_seen": "1.12603.1",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Desktop-only: a signed JWT (verified against an embedded public key) injecting extra HTTP headers into API requests; rejected tokens just warn.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_UPDATER_TOKEN",
+      "kind": "env-var",
+      "name": "CLAUDE_UPDATER_TOKEN",
+      "status": "live",
+      "first_seen": "1.12603.1",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Desktop-only: a signed JWT overriding the auto-updater config (server URL/channel).",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_DESKTOP_LOCAL_FRAME_SHELL",
+      "kind": "env-var",
+      "name": "CLAUDE_DESKTOP_LOCAL_FRAME_SHELL",
+      "status": "live",
+      "first_seen": "1.12603.1",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Desktop-only: \"=1\" enables the local-frame-shell render path (embedded webviews; alters link-click handling and CSP for sub-frames).",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ENABLE_TASKS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ENABLE_TASKS",
+      "status": "dark-launched",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Gates the agent-side Tasks tool family (TaskCreate/TaskList/TaskGet/TaskUpdate/TaskStop/TaskOutput), decision fn vv(); pairs with CLAUDE_CODE_TASK_LIST_ID (D$()). Behind the force-ON tasks_tab experiment (gate 364911507).",
+      "provenance": [
+        {
+          "lesson": 109,
+          "note": "binary-verified, in-VM ELF 2.1.197"
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_TASK_LIST_ID",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_TASK_LIST_ID",
+      "status": "dark-launched",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Pins the persistent task-list id for the Tasks tool family; same insider-experiment posture as CLAUDE_CODE_ENABLE_TASKS.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_AUTO_BACKGROUND_TASKS",
+      "kind": "env-var",
+      "name": "CLAUDE_AUTO_BACKGROUND_TASKS",
+      "status": "dark-launched",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "When truthy, auto-moves long-running work to a background task after ~120s (Rbm()).",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_BACKGROUND_TASKS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS",
+      "status": "live",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Suppresses the \"run_in_background: true\" hint injected into a tool description, hiding the background-task affordance.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_BG_TASKS_REPORT_RUNNING",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_BG_TASKS_REPORT_RUNNING",
+      "status": "live",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Keeps a session's status as \"not idle\" while its background tasks are still running.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING",
+      "status": "dark-launched",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Enables SDK file checkpointing/rewind (the rewind_files control-request + file_snapshot system message); overridden off by CLAUDE_CODE_DISABLE_FILE_CHECKPOINTING.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_FILE_CHECKPOINTING",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_FILE_CHECKPOINTING",
+      "status": "live",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Kill switch overriding CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ENABLE_REMOTE_RECAP",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ENABLE_REMOTE_RECAP",
+      "status": "dark-launched",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Enables the remote/away recap path, pairing with the away_summary control-protocol subtype; extends the L101 proactive-away-summary feature to the remote/Cowork surface.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ENABLE_DESIGN_MCP",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ENABLE_DESIGN_MCP",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Enables the Claude Design MCP server backing /design; gated off by default alongside pNe() and the other ENABLE_DESIGN_* vars.",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ENABLE_DESIGN_SYNC",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ENABLE_DESIGN_SYNC",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Enables /design-sync (push design-system components to claude.ai/design).",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DESIGN_OAUTH_CLIENT_ID",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DESIGN_OAUTH_CLIENT_ID",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "OAuth client id used by the /design-login flow.",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ARTIFACT",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Force enable/disable the Artifact tool in otherwise-excluded entrypoints; master reachability is still the tengu_cobalt_plinth GB flag (default false).",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_ARTIFACT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_ARTIFACT",
+      "status": "live",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Kill switch for the Artifact tool (pairs with the disableArtifact setting).",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACTS_API_BASE_URL",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ARTIFACTS_API_BASE_URL",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Artifacts upload API base URL; stripped from child-process environments.",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_DIRECT_UPLOAD",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ARTIFACT_DIRECT_UPLOAD",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Chooses the inline direct-upload lane vs redeploy for Artifacts (tengu_cobalt_plinth_direct).",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_AUTO_OPEN",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ARTIFACT_AUTO_OPEN",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Suppresses auto-opening the surfaced Artifact frame.",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ENABLE_LAUNCH_COMPOSER",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ENABLE_LAUNCH_COMPOSER",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Enables the dark-launched Launch Composer prompt-composer UI (not in the official changelog).",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_LAUNCH_COMPOSER",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_LAUNCH_COMPOSER",
+      "status": "live",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Disables Launch Composer.",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_MEMORY_BULK_INFLATE",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_MEMORY_BULK_INFLATE",
+      "status": "live",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Disables the auto-memory \"bulk inflate\" knowledge-base load path.",
+      "provenance": [
+        {
+          "lesson": 113
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_MEMORY_PERIODIC_RESYNC",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_MEMORY_PERIODIC_RESYNC",
+      "status": "live",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Disables periodic re-sync of the memory-store knowledge base.",
+      "provenance": [
+        {
+          "lesson": 113
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_FORCE_EVALUATE_MEMORY",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_FORCE_EVALUATE_MEMORY",
+      "status": "live",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Forces the memory-evaluation pass.",
+      "provenance": [
+        {
+          "lesson": 113
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_FORCE_MEMORY_SURVEY",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_FORCE_MEMORY_SURVEY",
+      "status": "live",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Forces the L90 Approve/Reject memory-write survey dialog to appear.",
+      "provenance": [
+        {
+          "lesson": 113
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_KB_COHESION_FIXES",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_KB_COHESION_FIXES",
+      "status": "live",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Toggles knowledge-base cohesion fixes in the memory pipeline.",
+      "provenance": [
+        {
+          "lesson": 113
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_REFUSAL_FALLBACK",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_REFUSAL_FALLBACK",
+      "status": "live",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Opts out of the refusal->fallback model path (the model_refusal_fallback control-subtype family).",
+      "provenance": [
+        {
+          "lesson": 113
+        }
+      ]
+    },
+    {
+      "id": "env.ANTHROPIC_FOUNDRY_AUTH_TOKEN",
+      "kind": "env-var",
+      "name": "ANTHROPIC_FOUNDRY_AUTH_TOKEN",
+      "status": "removed",
+      "first_seen": null,
+      "removed_in": "2.1.198",
+      "as_of": "2.1.198",
+      "summary": "Removed in the v2.1.160-198 CLI content refresh.",
+      "provenance": [
+        {
+          "lesson": 111
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_AGENT_LIST_IN_MESSAGES",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_AGENT_LIST_IN_MESSAGES",
+      "status": "removed",
+      "first_seen": null,
+      "removed_in": "2.1.198",
+      "as_of": "2.1.198",
+      "summary": "Removed in the v2.1.160-198 CLI content refresh.",
+      "provenance": [
+        {
+          "lesson": 111
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_TEAM_ONBOARDING",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_TEAM_ONBOARDING",
+      "status": "removed",
+      "first_seen": null,
+      "removed_in": "2.1.198",
+      "as_of": "2.1.198",
+      "summary": "Removed in the v2.1.160-198 refresh; was the machinery behind the earlier /team-onboarding command.",
+      "provenance": [
+        {
+          "lesson": 111
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_BUNDLED_SKILLS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_BUNDLED_SKILLS",
+      "status": "live",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "New settings-backed disableBundledSkills toggle.",
+      "provenance": [
+        {
+          "lesson": 111
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_MOUSE_CLICKS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_MOUSE_CLICKS",
+      "status": "live",
+      "first_seen": "2.1.195",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Disables mouse-click handling in the TUI.",
+      "provenance": [
+        {
+          "lesson": 111
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CLIENT_PRESENCE_FILE",
+      "kind": "env-var",
+      "name": "CLAUDE_CLIENT_PRESENCE_FILE",
+      "status": "live",
+      "first_seen": "2.1.181",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Presence-file path used to suppress mobile push notifications when a local client is active.",
+      "provenance": [
+        {
+          "lesson": 111
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SAFE_MODE",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SAFE_MODE",
+      "status": "live",
+      "first_seen": "2.1.169",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Env equivalent of --safe-mode: starts the session with all customizations disabled (the same I5() safe mode that drops --mcp-config).",
+      "provenance": [
+        {
+          "lesson": 111
+        },
+        {
+          "lesson": 107,
+          "note": "I5() safe-mode cross-reference"
+        }
+      ]
+    },
+    {
+      "id": "cmd.fork",
+      "kind": "slash-command",
+      "name": "/fork",
+      "status": "live",
+      "first_seen": "2.1.117",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Spawns a background subagent inheriting the full parent conversation (kind:\"fork\"); interactive-only, gated by CLAUDE_CODE_FORK_SUBAGENT env override or the tengu_copper_fox GB flag. Confirmed live since v2.1.117 in the L89 status table.",
+      "provenance": [
+        {
+          "lesson": 87
+        },
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "cmd.autocompact",
+      "kind": "slash-command",
+      "name": "/autocompact",
+      "status": "live",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Configures the auto-compact window size ([auto|<tokens>]). Removed in v2.1.117, then re-introduced token-count-parameterized and unconditionally live in v2.1.119.",
+      "provenance": [
+        {
+          "lesson": 87
+        },
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "cmd.stop-hook",
+      "kind": "slash-command",
+      "name": "/stop-hook",
+      "status": "removed",
+      "first_seen": null,
+      "removed_in": "2.1.117",
+      "as_of": "2.1.198",
+      "summary": "Set a session-only Stop hook with a quick prompt; already disabled (isEnabled:()=>false) before removal, gone entirely (with its telemetry) in v2.1.117.",
+      "provenance": [
+        {
+          "lesson": 87
+        }
+      ]
+    },
+    {
+      "id": "cmd.model",
+      "kind": "slash-command",
+      "name": "/model",
+      "status": "live",
+      "first_seen": "2.1.116",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Gains a second, non-interactive registration (supportsNonInteractive:true) alongside the pre-existing interactive menu, enabling `claude -p \"/model sonnet\" ...` scripting.",
+      "provenance": [
+        {
+          "lesson": 86
+        }
+      ]
+    },
+    {
+      "id": "cmd.usage",
+      "kind": "slash-command",
+      "name": "/usage",
+      "status": "live",
+      "first_seen": "2.1.118",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Absorbs /cost and /stats as aliases; gains dual registrations (interactive ink dashboard vs supportsNonInteractive headless cost+duration string).",
+      "provenance": [
+        {
+          "lesson": 88
+        }
+      ]
+    },
+    {
+      "id": "cmd.cost",
+      "kind": "slash-command",
+      "name": "/cost",
+      "status": "renamed",
+      "first_seen": null,
+      "removed_in": "2.1.118",
+      "as_of": "2.1.198",
+      "summary": "Standalone registration deleted in v2.1.118; folded into /usage as an alias (still resolves for scripts).",
+      "provenance": [
+        {
+          "lesson": 88
+        }
+      ],
+      "renamed_to": "/usage"
+    },
+    {
+      "id": "cmd.stats",
+      "kind": "slash-command",
+      "name": "/stats",
+      "status": "renamed",
+      "first_seen": null,
+      "removed_in": "2.1.118",
+      "as_of": "2.1.198",
+      "summary": "Standalone registration deleted in v2.1.118; folded into /usage as an alias.",
+      "provenance": [
+        {
+          "lesson": 88
+        }
+      ],
+      "renamed_to": "/usage"
+    },
+    {
+      "id": "cmd.autofix-pr",
+      "kind": "slash-command",
+      "name": "/autofix-pr",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Description \"deremoted\" from \"Spawn a remote Claude Code session...\" to \"Monitor and autofix any issues with the current PR\" in v2.1.118, continuing the Remote Workflow sunset framing.",
+      "provenance": [
+        {
+          "lesson": 88
+        }
+      ]
+    },
+    {
+      "id": "cmd.pro-trial-expired",
+      "kind": "slash-command",
+      "name": "/pro-trial-expired",
+      "status": "dark-launched",
+      "first_seen": "2.1.118",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Options shown when the Pro plan Claude Code trial has ended; isEnabled:()=>false, currently inert.",
+      "provenance": [
+        {
+          "lesson": 88
+        }
+      ]
+    },
+    {
+      "id": "cmd.background",
+      "kind": "slash-command",
+      "name": "/background",
+      "status": "dark-launched",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Alias /bg; forks the current main session into the background as a kind:\"fork\" subagent. Per-command isEnabled is always true but the master command-resolver array only includes it when tengu_slate_meadow (default false) is on -- live for Claude Max/Cowork accounts, \"Unknown command\" otherwise.",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "cmd.stop",
+      "kind": "slash-command",
+      "name": "/stop",
+      "status": "dark-launched",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Stops the current background session (transcript+worktree kept); isEnabled only true when SESSION_KIND===\"bg\", which is itself reachable only via the tengu_slate_meadow-gated /background.",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "cmd.daemon",
+      "kind": "slash-command",
+      "name": "/daemon",
+      "status": "kill-switched",
+      "first_seen": "2.1.119",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Ink TUI for managing assistant/scheduled/remote-control services; the gate function is a hardcoded `function OqH(){return false}` (not a flippable GB flag), so it is \"Unknown command\" for everyone in v2.1.119 and v2.1.120.",
+      "provenance": [
+        {
+          "lesson": 89
+        },
+        {
+          "lesson": 90
+        }
+      ]
+    },
+    {
+      "id": "cmd.schedule",
+      "kind": "slash-command",
+      "name": "/schedule",
+      "status": "live",
+      "first_seen": "2.1.117",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Create/update/list/run scheduled agents; terminology shifted \"triggers\"->\"routines\" and gained one-time scheduling in v2.1.117; the conditional description was collapsed to a single cron-only string in v2.1.120 (functionality unchanged, description simplified only).",
+      "provenance": [
+        {
+          "lesson": 87
+        },
+        {
+          "lesson": 89
+        },
+        {
+          "lesson": 90
+        }
+      ]
+    },
+    {
+      "id": "cmd.workflows",
+      "kind": "slash-command",
+      "name": "/workflows",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Run-history browser for Dynamic Workflows (local-jsx, isEnabled:()=>AW()); AW() defaults ON for non-pro/unauthenticated, OFF for pro accounts.",
+      "provenance": [
+        {
+          "lesson": 91
+        }
+      ]
+    },
+    {
+      "id": "cmd.commit",
+      "kind": "slash-command",
+      "name": "/commit",
+      "status": "removed",
+      "first_seen": null,
+      "removed_in": "2.1.159",
+      "as_of": "2.1.198",
+      "summary": "Removed as a builtin in v2.1.159; migrated to the commit-commands plugin.",
+      "provenance": [
+        {
+          "lesson": 102
+        }
+      ]
+    },
+    {
+      "id": "cmd.commit-push-pr",
+      "kind": "slash-command",
+      "name": "/commit-push-pr",
+      "status": "removed",
+      "first_seen": null,
+      "removed_in": "2.1.159",
+      "as_of": "2.1.198",
+      "summary": "Removed as a builtin in v2.1.159; migrated to the commit-commands plugin.",
+      "provenance": [
+        {
+          "lesson": 102
+        }
+      ]
+    },
+    {
+      "id": "cmd.extra-usage",
+      "kind": "slash-command",
+      "name": "/extra-usage",
+      "status": "renamed",
+      "first_seen": null,
+      "removed_in": "2.1.159",
+      "as_of": "2.1.198",
+      "summary": "Renamed to /usage-credits; kept as a hidden alias so old scripts keep working.",
+      "provenance": [
+        {
+          "lesson": 102
+        }
+      ],
+      "renamed_to": "/usage-credits"
+    },
+    {
+      "id": "cmd.usage-credits",
+      "kind": "slash-command",
+      "name": "/usage-credits",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "New name for the rename of /extra-usage (kept as a hidden alias).",
+      "provenance": [
+        {
+          "lesson": 102
+        }
+      ]
+    },
+    {
+      "id": "cmd.scroll-speed",
+      "kind": "slash-command",
+      "name": "/scroll-speed",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "New terminal-gated command to set scroll speed (tengu_scroll_speed_set).",
+      "provenance": [
+        {
+          "lesson": 102
+        }
+      ]
+    },
+    {
+      "id": "cmd.wellbeing",
+      "kind": "slash-command",
+      "name": "/wellbeing",
+      "status": "dark-launched",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Break reminders / quiet hours; isEnabled:()=>false, dark-launched.",
+      "provenance": [
+        {
+          "lesson": 102
+        }
+      ]
+    },
+    {
+      "id": "cmd.remote-control",
+      "kind": "slash-command",
+      "name": "/remote-control",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Not removed (an earlier diff flagged it as removed due to a dynamic-ternary description change); exists dark-launched, surfaced today only via the idle-time \"control this session from your phone\" upsell toast.",
+      "provenance": [
+        {
+          "lesson": 86
+        }
+      ]
+    },
+    {
+      "id": "cmd.dream",
+      "kind": "slash-command",
+      "name": "/dream",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "NOT removed: reclassified from a `name:\"dream\"` command registration to a built-in routine (clustered with /catch-up, /morning-checkin on a cron), so the diff tool flagged a false \"removal\".",
+      "provenance": [
+        {
+          "lesson": 101
+        }
+      ]
+    },
+    {
+      "id": "cmd.cd",
+      "kind": "slash-command",
+      "name": "/cd",
+      "status": "live",
+      "first_seen": "2.1.169",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Moves the session to a new working directory without breaking the prompt cache.",
+      "provenance": [
+        {
+          "lesson": 111
+        }
+      ]
+    },
+    {
+      "id": "cmd.rewind",
+      "kind": "slash-command",
+      "name": "/rewind",
+      "status": "live",
+      "first_seen": "2.1.191",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Gains the ability to resume a conversation from before a /clear was run, in addition to its existing checkpoint/undo aliases.",
+      "provenance": [
+        {
+          "lesson": 111
+        }
+      ]
+    },
+    {
+      "id": "cmd.config",
+      "kind": "slash-command",
+      "name": "/config",
+      "status": "live",
+      "first_seen": "2.1.181",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Gains a [key=value] argument form letting any setting be set directly from the prompt.",
+      "provenance": [
+        {
+          "lesson": 111
+        }
+      ]
+    },
+    {
+      "id": "cmd.bridge-kick",
+      "kind": "slash-command",
+      "name": "/bridge-kick",
+      "status": "removed",
+      "first_seen": null,
+      "removed_in": "2.1.198",
+      "as_of": "2.1.198",
+      "summary": "Removed in the v2.1.160-198 CLI content refresh.",
+      "provenance": [
+        {
+          "lesson": 111
+        }
+      ]
+    },
+    {
+      "id": "cmd.init-verifiers",
+      "kind": "slash-command",
+      "name": "/init-verifiers",
+      "status": "removed",
+      "first_seen": null,
+      "removed_in": "2.1.198",
+      "as_of": "2.1.198",
+      "summary": "Removed in the v2.1.160-198 CLI content refresh.",
+      "provenance": [
+        {
+          "lesson": 111
+        }
+      ]
+    },
+    {
+      "id": "cmd.simplify",
+      "kind": "slash-command",
+      "name": "/simplify",
+      "status": "removed",
+      "first_seen": null,
+      "removed_in": "2.1.198",
+      "as_of": "2.1.198",
+      "summary": "Removed in the v2.1.160-198 CLI content refresh.",
+      "provenance": [
+        {
+          "lesson": 111
+        }
+      ]
+    },
+    {
+      "id": "cmd.design",
+      "kind": "slash-command",
+      "name": "/design",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Hub for Claude Design (claude.ai/design): create/import/export/sync/login; grants or revokes agent access to Design projects. Dark-launched, absent from the official CHANGELOG.",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "cmd.design-sync",
+      "kind": "slash-command",
+      "name": "/design-sync",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Pushes design-system components to claude.ai/design; isEnabled:pNe (off by default).",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "cmd.design-login",
+      "kind": "slash-command",
+      "name": "/design-login",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Authorizes design-system access for /design-sync via an OAuth flow.",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "cmd.plan-artifact",
+      "kind": "slash-command",
+      "name": "/plan-artifact",
+      "status": "disabled",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Publishes a plan as a shareable Artifact; hard-disabled via isEnabled:v5e (function always returns false) -- reports \"plan-artifact slot not registered.\"",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "cmd.skill-doctor",
+      "kind": "slash-command",
+      "name": "/skill-doctor",
+      "status": "live",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Shows which loaded skills are unused and costing context; isEnabled:()=>true, live despite being absent from the official CHANGELOG.",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "cmd.toggle-memory",
+      "kind": "slash-command",
+      "name": "/toggle-memory",
+      "status": "renamed",
+      "first_seen": null,
+      "removed_in": "2.1.198",
+      "as_of": "2.1.198",
+      "summary": "Renamed to /pause-memory (kept as an alias, not deleted) in the v2.1.160-198 CLI content refresh.",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ],
+      "renamed_to": "/pause-memory"
+    },
+    {
+      "id": "cmd.pause-memory",
+      "kind": "slash-command",
+      "name": "/pause-memory",
+      "status": "live",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Pauses automemory for the session; aliases include memory-pause and toggle-memory (the rename target of the removed /toggle-memory name).",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "cmd.cowork-plugin",
+      "kind": "slash-command",
+      "name": "/cowork-plugin",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "userInvocable:false; isEnabled only when CLAUDE_CODE_ENTRYPOINT===\"remote_cowork\" -- an internal, non-user-facing command.",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "cmd.auto-mode-setup",
+      "kind": "slash-command",
+      "name": "/auto-mode-setup",
+      "status": "live",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Requires a workspace context (requires:{workspace:true}); not a GB-flag dark launch, just conditionally available.",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "gate.2307090146",
+      "kind": "gate",
+      "name": "2307090146 (cli_plugin)",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "CLI-plugin credential broker master gate -- OFF in live fcache captures 2026-06 and 2026-07-02; when off, renderer strips plugin.json `clis` and PKr returns oauth_disabled.",
+      "provenance": [
+        {
+          "lesson": 106
+        },
+        {
+          "lesson": 109,
+          "note": "fcache re-capture 2026-07-02, still OFF"
+        }
+      ]
+    },
+    {
+      "id": "gate.1143815894",
+      "kind": "gate",
+      "name": "1143815894 (host-loop)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Decides host-loop vs VM-loop execution for Cowork sessions (f_()->cPt()->dt(this)); ON (force) in the live fcache, so production Cowork runs host-loop -- only requireCoworkFullVmSandbox orgs get VM-loop.",
+      "provenance": [
+        {
+          "lesson": 107
+        },
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "gate.3045399524",
+      "kind": "gate",
+      "name": "3045399524 (Fable model allow)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Whitelists claude-fable-5 (+ the [1m] variant) as selectable in Desktop/Cowork; ON (force). By the 2026-07-02 capture this makes Fable 5 the live production Cowork model.",
+      "provenance": [
+        {
+          "lesson": 108
+        },
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "gate.583857784",
+      "kind": "gate",
+      "name": "583857784 (bridge transport SDK adapter)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Routes Cowork sessions through the SDK-based bridge transport (Bfn) instead of the legacy CCR HTTP transport (Rfn); ON (force), the current production transport path.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "gate.1978029737",
+      "kind": "gate",
+      "name": "1978029737 (Cowork runtime config)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Master Cowork tuning gate: sessionsBridgePollBlockMs, coworkNativeFilePreview, coworkWebFetchViaApi, coworkWebFetchPrompt, workspaceBashWaitLonger. ON (force); the in-VM agent itself also reads this gate for web_fetch routing.",
+      "provenance": [
+        {
+          "lesson": 108
+        },
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "gate.1648655587",
+      "kind": "gate",
+      "name": "1648655587 (task dispatch rate-limiter)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "{perTask:1, global:3} -- a dispatch session launches at most 1 sub-task and at most 3 concurrently, globally. ON (force), a real throughput ceiling on Cowork task dispatch.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "gate.1893165035",
+      "kind": "gate",
+      "name": "1893165035 (auto-retry error categories)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "categories:[api_prompt_too_long, process_already_running, api_model_not_found, api_request_too_large] are auto-retried; ON (force). Note api_model_not_found being auto-retried can mask model unavailability.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "gate.2340532315",
+      "kind": "gate",
+      "name": "2340532315 (sparkplug / plugin sync)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Master Cowork-plugin sync gate: startup syncPlugins(), per-session manifest load, enabled-state backfill. ON (force); OFF would show enabled_state_source:\"sparkplug-off\".",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "gate.2392971184",
+      "kind": "gate",
+      "name": "2392971184 (/rc alias + replay-user-messages)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Registers /rc as an alias for /remote-control, adds replay-user-messages to spawn extraArgs, and expands the OAuth scope to user:sessions:claude_code. ON (force).",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "gate.2940196192",
+      "kind": "gate",
+      "name": "2940196192 (coworkArtifacts)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Desktop-side artifacts gate: getAllWithDiskStatus(), askClaude() inference, the artifacts tool list. ON (force); distinct from the CLI's own tengu_cobalt_plinth Artifacts flag (the string coworkArtifacts is absent from the CLI bundle).",
+      "provenance": [
+        {
+          "lesson": 108
+        },
+        {
+          "lesson": 112,
+          "note": "contrasted with the CLI's own tengu_cobalt_plinth"
+        }
+      ]
+    },
+    {
+      "id": "gate.123929380",
+      "kind": "gate",
+      "name": "123929380 (coworkKappa)",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "A named \"Kappa\" skill variant plus project-mounting for non-session-typed clients; OFF (default) for the standard client.",
+      "provenance": [
+        {
+          "lesson": 108
+        },
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "gate.364911507",
+      "kind": "gate",
+      "name": "364911507 (tasks_tab experiment)",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "{tasks_tab:{enabled:true, split:1, salt:\"tasks_v1\", insiderForce:\"treatment\"}} -- force-treatment for insiders only, dark-launched to the general population. The same experiment bundle force-treats echo_unified_login.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "gate.pNe",
+      "kind": "gate",
+      "name": "pNe (Claude Design)",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "isEnabled gate for /design-sync and the wider Claude Design feature (claude.ai/design); off by default alongside the CLAUDE_CODE_ENABLE_DESIGN_* env vars.",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "gate.tengu_cobalt_plinth",
+      "kind": "gate",
+      "name": "tengu_cobalt_plinth (Artifacts)",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "The CLI's own master gate for the Artifact tool / claude.ai/code/artifact publishing; default false (Rpa() short-circuits when off). Parallel to, and independent from, Desktop's coworkArtifacts gate (2940196192).",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "beta.oidc-federation-2026-04-01",
+      "kind": "api-beta",
+      "name": "oidc-federation-2026-04-01",
+      "status": "live",
+      "first_seen": "2.1.116",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Sent when OIDC Federation auth mode is active; the only API beta string added in v2.1.116.",
+      "provenance": [
+        {
+          "lesson": 86
+        }
+      ]
+    },
+    {
+      "id": "beta.cache-diagnosis-2026-04-07",
+      "kind": "api-beta",
+      "name": "cache-diagnosis-2026-04-07",
+      "status": "live",
+      "first_seen": "2.1.118",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Prompt-cache diagnostics beta; sent opt-in for allowlisted accounts, gracefully dropped (and the decision persisted) if the server rejects it.",
+      "provenance": [
+        {
+          "lesson": 88
+        }
+      ]
+    },
+    {
+      "id": "beta.afk-mode-2026-01-31",
+      "kind": "api-beta",
+      "name": "afk-mode-2026-01-31",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Pre-existing beta token (predates v2.1.159) newly injected by third-party-provider auto mode when CLAUDE_CODE_ENABLE_AUTO_MODE is set.",
+      "provenance": [
+        {
+          "lesson": 96
+        }
+      ]
+    },
+    {
+      "id": "beta.code-execution-2025-08-25",
+      "kind": "api-beta",
+      "name": "code-execution-2025-08-25",
+      "status": "live",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "In the default Betas=[...] array; sent by default (not GB-gated) as of v2.1.198.",
+      "provenance": [
+        {
+          "lesson": 113
+        }
+      ]
+    },
+    {
+      "id": "beta.server-side-fallback-2026-06-01",
+      "kind": "api-beta",
+      "name": "server-side-fallback-2026-06-01",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "GB-gated (sb(\"server_side_fallback\",...)); server side of the L110 fallbackModel chain, letting the server transparently fall back to another model.",
+      "provenance": [
+        {
+          "lesson": 113
+        }
+      ]
+    },
+    {
+      "id": "beta.fallback-credit-2026-06-01",
+      "kind": "api-beta",
+      "name": "fallback-credit-2026-06-01",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "GB-gated (sb(\"fallback_credit\",...)); accounts for credit when the server-side-fallback beta substitutes a model.",
+      "provenance": [
+        {
+          "lesson": 113
+        }
+      ]
+    },
+    {
+      "id": "beta.prompt-caching-evict-2026-05-12",
+      "kind": "api-beta",
+      "name": "prompt-caching-evict-2026-05-12",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "GB-gated (sb(\"prompt_caching_evict\",...)); enables server-side cache eviction, pairing with the earlier cache-diagnosis beta.",
+      "provenance": [
+        {
+          "lesson": 113
+        }
+      ]
+    },
+    {
+      "id": "proto.initialize",
+      "kind": "control-subtype",
+      "name": "initialize",
+      "status": "live",
+      "first_seen": "1.9659.4",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "The first control_request the driver sends, before the user turn; carries systemPrompt, appendSubagentSystemPrompt, hooks, and sdkMcpServers.",
+      "provenance": [
+        {
+          "lesson": 105
+        },
+        {
+          "lesson": 107,
+          "note": "driver-side handshake detail"
+        }
+      ]
+    },
+    {
+      "id": "proto.can_use_tool",
+      "kind": "control-subtype",
+      "name": "can_use_tool",
+      "status": "live",
+      "first_seen": "1.9659.4",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Baseline control-request dispatcher subtype for permission prompts; requires --permission-prompt-tool stdio on the driver side or AskUserQuestion is silently auto-dismissed.",
+      "provenance": [
+        {
+          "lesson": 105
+        },
+        {
+          "lesson": 107
+        }
+      ]
+    },
+    {
+      "id": "proto.hook_callback",
+      "kind": "control-subtype",
+      "name": "hook_callback",
+      "status": "live",
+      "first_seen": "1.9659.4",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Control-request wire shape (2.1.197): {subtype:\"hook_callback\", callback_id, input, tool_use_id?}; input is the shared hook-input object (Ad()). A PreToolUse hook deny bypasses canUseTool and surfaces as an is_error tool_result.",
+      "provenance": [
+        {
+          "lesson": 105
+        },
+        {
+          "lesson": 108,
+          "note": "full wire-shape verified"
+        }
+      ]
+    },
+    {
+      "id": "proto.mcp_message",
+      "kind": "control-subtype",
+      "name": "mcp_message",
+      "status": "live",
+      "first_seen": "1.9659.4",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Tunnels JSON-RPC for an SDK-declared MCP server out to the driver; the driver replies with {mcp_response:{jsonrpc, id, result}} -- the driver IS the MCP server.",
+      "provenance": [
+        {
+          "lesson": 105
+        },
+        {
+          "lesson": 107
+        }
+      ]
+    },
+    {
+      "id": "proto.oauth_token_refresh",
+      "kind": "control-subtype",
+      "name": "oauth_token_refresh",
+      "status": "live",
+      "first_seen": "1.9659.4",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Host-delegated OAuth token refresh RPC; response.accessToken. Default 30000ms timeout.",
+      "provenance": [
+        {
+          "lesson": 105
+        },
+        {
+          "lesson": 99
+        }
+      ]
+    },
+    {
+      "id": "proto.host_auth_token_refresh",
+      "kind": "control-subtype",
+      "name": "host_auth_token_refresh",
+      "status": "live",
+      "first_seen": "1.9659.4",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Host-delegated generic auth-token refresh RPC (sibling of oauth_token_refresh); response.authToken.",
+      "provenance": [
+        {
+          "lesson": 105
+        },
+        {
+          "lesson": 99
+        }
+      ]
+    },
+    {
+      "id": "proto.elicitation",
+      "kind": "control-subtype",
+      "name": "elicitation",
+      "status": "live",
+      "first_seen": "1.9659.4",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Routes an MCP server's elicitation/create request to onElicitation({serverName, message, mode, url, elicitationId, requestedSchema, ...}); the {action, content} result returns privately to the server, never entering the chat.",
+      "provenance": [
+        {
+          "lesson": 105
+        }
+      ]
+    },
+    {
+      "id": "proto.mcp_call",
+      "kind": "control-subtype",
+      "name": "mcp_call",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Host->VM: invoke any subprocess MCP tool by fully-qualified name (mcp__server__tool) through the control channel, bypassing the model turn. Explicitly documented as having no permission check (control channel is trusted).",
+      "provenance": [
+        {
+          "lesson": 107
+        }
+      ]
+    },
+    {
+      "id": "proto.request_user_dialog",
+      "kind": "control-subtype",
+      "name": "request_user_dialog",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "VM->host: ask the host to render a tool-driven blocking dialog and return the choice; replaces the older setToolJSX/onDone pattern. ~6s auto-cancel; part of the async-park (Uv1) dispatcher set.",
+      "provenance": [
+        {
+          "lesson": 107
+        },
+        {
+          "lesson": 108,
+          "note": "confirmed as the third Uv1 async-park member"
+        }
+      ]
+    },
+    {
+      "id": "proto.register_repo_root",
+      "kind": "control-subtype",
+      "name": "register_repo_root",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Host->VM: add a working-directory root at runtime (must be a subdir of cwd); can carry reload_claude_md/reload_plugins/reload_skills sub-flags. Runtime hook behind multi-repo workflows.",
+      "provenance": [
+        {
+          "lesson": 107
+        },
+        {
+          "lesson": 109,
+          "note": "confirms the reload_* sub-flags"
+        }
+      ]
+    },
+    {
+      "id": "proto.stage_file",
+      "kind": "control-subtype",
+      "name": "stage_file",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Host->VM (CCR): stages a host file into the remote container filestore via stageFile(); companion system message files_persisted.",
+      "provenance": [
+        {
+          "lesson": 107
+        },
+        {
+          "lesson": 108,
+          "note": "files_persisted companion message"
+        }
+      ]
+    },
+    {
+      "id": "proto.end_session",
+      "kind": "control-subtype",
+      "name": "end_session",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Host->VM (CCR): terminates the worker; a reason:\"archived\" end_session is ignored when CLAUDE_CODE_WORKER_EPOCH>1 so a prior lifecycle cannot kill a reattached worker.",
+      "provenance": [
+        {
+          "lesson": 107
+        }
+      ]
+    },
+    {
+      "id": "proto.get_session_cost",
+      "kind": "control-subtype",
+      "name": "get_session_cost",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Host->VM: fetch the remote container's formatted session cost (same text /usage prints) so a thin client shows real cost.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "proto.get_binary_version",
+      "kind": "control-subtype",
+      "name": "get_binary_version",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Host->VM: returns {version, buildTime} so /version in --remote mode shows both client and remote CLI versions.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "proto.generate_session_title",
+      "kind": "control-subtype",
+      "name": "generate_session_title",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "VM<->host: LLM-driven session titling: {description, persist?} -> {title}.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "proto.ultrareview_launch",
+      "kind": "control-subtype",
+      "name": "ultrareview_launch",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Host->VM: control-channel entry point for /ultrareview: {args, confirm} -> injects the command plus a session-URL status message, with graceful fallback if blocked.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "proto.side_question",
+      "kind": "control-subtype",
+      "name": "side_question",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "VM->host: a free-form inline question -> {response, synthetic} (synthetic:true when auto-accepted).",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "proto.elicitation_complete",
+      "kind": "control-subtype",
+      "name": "elicitation_complete",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "type:\"system\" message: {mcp_server_name, elicitation_id} -- signals a URL-mode elicitation completed. Skipped by the headless output filter.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "proto.files_persisted",
+      "kind": "control-subtype",
+      "name": "files_persisted",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "type:\"system\" message: {files:[{filename,file_id}], failed, processed_at} -- companion to the stage_file request.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "proto.local_command_output",
+      "kind": "control-subtype",
+      "name": "local_command_output",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "type:\"system\" message: {content} -- slash-command output (e.g. /voice, /usage) piped through the SDK stream.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "proto.api_metrics",
+      "kind": "control-subtype",
+      "name": "api_metrics",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "type:\"system\" message: {ttft_ms, otps, ...} -- per-turn latency metrics.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "proto.thinking",
+      "kind": "control-subtype",
+      "name": "thinking",
+      "status": "live",
+      "first_seen": "2.1.170",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "type:\"system\" message: {content} -- rendered thinking text.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "proto.rewind_files",
+      "kind": "control-subtype",
+      "name": "rewind_files",
+      "status": "dark-launched",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Rolls files back to a prior user-message checkpoint: {subtype:\"rewind_files\", user_message_id, dry_run}; dry_run previews without writing. Gated by CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "proto.file_snapshot",
+      "kind": "control-subtype",
+      "name": "file_snapshot",
+      "status": "dark-launched",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "System message recording a checkpoint: {subtype:\"file_snapshot\", content:\"File snapshot\", level:\"info\", isMeta:true}. Same gating as rewind_files.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "proto.away_summary",
+      "kind": "control-subtype",
+      "name": "away_summary",
+      "status": "dark-launched",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Pairs with CLAUDE_CODE_ENABLE_REMOTE_RECAP; extends the L101 proactive-away-summary feature to the remote/Cowork surface.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "proto.scheduled_task_fire",
+      "kind": "control-subtype",
+      "name": "scheduled_task_fire",
+      "status": "live",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "type:\"system\" message the agent emits when a Desktop-scheduled (cron or watcher) task fires; the transcript renderer prints it as a dim status line. Scheduling/watching lives host-side; the agent only receives and surfaces the fire event.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "proto.task_started",
+      "kind": "control-subtype",
+      "name": "task_started (Tasks-tool family)",
+      "status": "dark-launched",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Consolidated entry for the Tasks-tool control-protocol event family: background_tasks, task_started, task_progress, task_updated, task_summary, task_notification, stop_task -- all tied to the CLAUDE_CODE_ENABLE_TASKS-gated Tasks tool and the force-ON tasks_tab insider experiment (gate 364911507).",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "proto.memory_recall",
+      "kind": "control-subtype",
+      "name": "memory_recall / memory_saved",
+      "status": "live",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "The agent surfaces memory recall/save events to the host -- the UI-facing side of the L90 memory-write Approve/Reject survey.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "proto.model_fallback",
+      "kind": "control-subtype",
+      "name": "model_fallback family",
+      "status": "live",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Consolidated entry for model_fallback, model_consent_fallback, model_refusal_fallback, model_refusal_no_fallback -- pairs with the L110 fallbackModel setting and the L113 server-side-fallback/fallback-credit betas; CLAUDE_CODE_DISABLE_REFUSAL_FALLBACK opts out of the refusal branch.",
+      "provenance": [
+        {
+          "lesson": 109
+        },
+        {
+          "lesson": 113
+        }
+      ]
+    },
+    {
+      "id": "ipc.CoworkSpaces",
+      "kind": "ipc-interface",
+      "name": "CoworkSpaces",
+      "status": "live",
+      "first_seen": "1.17377.2",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "New Desktop IPC interface (24 validated methods) organizing projects/folders/links/remote-sessions into a Space, with per-space auto-memory (getAutoMemoryDir/readSpaceMemoryIndex) and auto-organization (classifySessions/setAutoDescription/summarizeSpace). Did not exist at the Ch24/L107 baseline. UI reachability (coworkTabEnabled) is a separate server-side gate from the interface's presence.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "ipc.CoworkScheduledTasks",
+      "kind": "ipc-interface",
+      "name": "CoworkScheduledTasks (aka CCDScheduledTasks)",
+      "status": "live",
+      "first_seen": "1.17377.2",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "New Desktop IPC interface (9 validated methods) driving cron and watched tasks that fire agent sessions on a timer/trigger; tasks carry Chrome permissions. Governed by gates scheduledTasksWakeEnabled/scheduledTaskStaleReapEnabled/coworkScheduledTasksEnabled/ccdScheduledTasksEnabled.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "ipc.LocalPlugins",
+      "kind": "ipc-interface",
+      "name": "LocalPlugins",
+      "status": "dark-launched",
+      "first_seen": "1.11847.5",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Preload IPC namespace (mainView.js) exposing setPluginEnvVars/getPluginCliStatus/getPluginOAuthStatus/setPluginOAuthClient/startPluginOAuthFlow/revokePluginOAuth/getPluginShimOps/getPluginCliBatch for the clis.*.env credential broker; functionally dark, since the runtime chokepoint PKr returns oauth_disabled while gate 2307090146 (cli_plugin) is off.",
+      "provenance": [
+        {
+          "lesson": 106
+        }
+      ]
+    },
+    {
+      "id": "tool.Workflow",
+      "kind": "tool",
+      "name": "Workflow",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Runs a deterministic multi-agent JS script with journal-resume and a 1000-agent hard cap; gated by AW(), which defaults ON for non-pro/unauthenticated accounts and OFF for pro.",
+      "provenance": [
+        {
+          "lesson": 91
+        }
+      ]
+    },
+    {
+      "id": "tool.TeamCreate",
+      "kind": "tool",
+      "name": "TeamCreate",
+      "status": "removed",
+      "first_seen": null,
+      "removed_in": "2.1.178",
+      "as_of": "2.1.198",
+      "summary": "Coordinator-mode worker-team management tool; removed in v2.1.178 -- every session now has one implicit team.",
+      "provenance": [
+        {
+          "lesson": 92
+        },
+        {
+          "lesson": 111
+        }
+      ]
+    },
+    {
+      "id": "tool.TeamDelete",
+      "kind": "tool",
+      "name": "TeamDelete",
+      "status": "removed",
+      "first_seen": null,
+      "removed_in": "2.1.178",
+      "as_of": "2.1.198",
+      "summary": "Coordinator-mode worker-team management tool; removed alongside TeamCreate in v2.1.178.",
+      "provenance": [
+        {
+          "lesson": 92
+        },
+        {
+          "lesson": 111
+        }
+      ]
+    },
+    {
+      "id": "tool.Brief",
+      "kind": "tool",
+      "name": "Brief",
+      "status": "renamed",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Internal, non-user-invokable \"send a visible message to the user\" tool; renamed to SendUserMessage back in v2.1.138 (predates this chapter's v2.1.159 scope) with Brief kept as an alias. v2.1.159 adds the PEWTER_OWL gate layer on top, not a further rename.",
+      "provenance": [
+        {
+          "lesson": 103
+        }
+      ],
+      "renamed_to": "SendUserMessage"
+    },
+    {
+      "id": "tool.TaskCreate",
+      "kind": "tool",
+      "name": "TaskCreate",
+      "status": "dark-launched",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Part of the deferred Tasks tool family (with TaskList/TaskGet/TaskUpdate/TaskStop/TaskOutput); gated by CLAUDE_CODE_ENABLE_TASKS and the force-ON tasks_tab insider experiment (gate 364911507).",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "tool.TaskList",
+      "kind": "tool",
+      "name": "TaskList",
+      "status": "dark-launched",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Part of the deferred Tasks tool family; see tool.TaskCreate for gating.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "tool.TaskGet",
+      "kind": "tool",
+      "name": "TaskGet",
+      "status": "dark-launched",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Part of the deferred Tasks tool family; see tool.TaskCreate for gating.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "tool.TaskUpdate",
+      "kind": "tool",
+      "name": "TaskUpdate",
+      "status": "dark-launched",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Part of the deferred Tasks tool family; see tool.TaskCreate for gating.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "tool.TaskStop",
+      "kind": "tool",
+      "name": "TaskStop",
+      "status": "dark-launched",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Part of the deferred Tasks tool family; see tool.TaskCreate for gating.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "tool.TaskOutput",
+      "kind": "tool",
+      "name": "TaskOutput",
+      "status": "dark-launched",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Part of the deferred Tasks tool family; see tool.TaskCreate for gating.",
+      "provenance": [
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
+      "id": "tool.DesignSync",
+      "kind": "tool",
+      "name": "DesignSync",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Backs /design-sync (push design-system components to claude.ai/design); gated off by default (pNe()).",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "tool.Artifact",
+      "kind": "tool",
+      "name": "Artifact",
+      "status": "dark-launched",
+      "first_seen": "2.1.198",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Publishes a shareable web page to https://claude.ai/code/artifact/<slug>; master gate is the GrowthBook flag tengu_cobalt_plinth (default false). Excludes local-agent/claude-coworker* entrypoints even when on.",
+      "provenance": [
+        {
+          "lesson": 112
+        }
+      ]
+    },
+    {
+      "id": "hook.MessageDisplay",
+      "kind": "hook-event",
+      "name": "MessageDisplay",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "The 30th entry in the master hook-event array; fires as an assistant message streams (and once when complete) and can rewrite the on-screen delta via hookSpecificOutput.displayContent WITHOUT changing the stored transcript. Config-gated only (no Statsig flag) -- disabled unless a hook is configured. Earlier chapter counts of \"27\"/\"19\" were diff-tool undercounts, not real historical totals.",
+      "provenance": [
+        {
+          "lesson": 95
+        }
+      ]
+    }
+  ]
 }
