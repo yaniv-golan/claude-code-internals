@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.18.0 — 2026-07-03 (this fork) — Current-state layer
+
+Adds `references/state/`: a normalized "as of CLI 2.1.198" truth layer over the
+append-only lesson chapters — 8 domain pages (Cowork permissions/architecture/
+control-protocol/credential-channels, model landscape, command surface,
+memory/KB, plugins-skills-hooks) + `state/registry.json` (env vars, slash
+commands, gates, API betas, control subtypes, IPC interfaces, each with
+status/version/lesson-provenance). New scripts `state.js` (lookup + `--audit`
+reconciliation view) and `validate-state.js` (integrity: every provenance
+pointer must resolve in topic-index.json), with `node:test` coverage and a
+new `validate.yml` CI workflow. SKILL.md now directs current-behavior
+questions to the state layer first; the CLAUDE.md update workflow gains a
+mandatory reconcile step. Lessons remain immutable provenance. No lesson
+content changes; binary baseline unchanged (CLI 2.1.198 / app.asar 1.17377.2
+/ in-VM ELF 2.1.197).
+
 ## v2.17.2 — 2026-07-03 (this fork) — Chapter 24 re-correction: the "5-tool forced-ask + Task block" claim was real
 
 Corrects a factual error introduced by v2.15.0's own adversarial re-verification. Ch24/L107's Part E previously stated there was **no** "PreToolUse hook that forces ask for ~5 cowork tools and blocks `Task run_in_background`" — that this was an earlier framing that conflated distinct mechanisms. That retraction was itself wrong.

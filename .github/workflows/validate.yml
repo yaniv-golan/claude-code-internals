@@ -1,0 +1,22 @@
+name: validate
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  state-layer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Script tests
+        run: node --test 'skill-package/skills/claude-code-internals/scripts/tests/*.test.js'
+      - name: State-layer integrity
+        run: node skill-package/skills/claude-code-internals/scripts/validate-state.js
+      - name: State-layer reconciliation
+        run: |
+          out=$(node skill-package/skills/claude-code-internals/scripts/state.js --audit)
+          echo "$out"
+          echo "$out" | grep -q "everything reconciled to baseline"
