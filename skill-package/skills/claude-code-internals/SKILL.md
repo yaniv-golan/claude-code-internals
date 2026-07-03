@@ -163,7 +163,23 @@ Available topics (113 lessons across 27 chapters):
 
 ---
 
-## Step 1: Check version staleness
+## Step 1: Current-state layer (check FIRST for "how does it behave now" questions)
+
+`${CLAUDE_SKILL_DIR}/references/state/` is the normalized truth layer: per-domain pages +
+`state/registry.json`, each stamped `as_of` a binary version. Lessons are
+history and provenance; the state layer is current behavior.
+
+- Is a flag/command/gate live, dark, renamed, removed?
+  `node ${CLAUDE_SKILL_DIR}/scripts/state.js <name>` (e.g. `node ${CLAUDE_SKILL_DIR}/scripts/state.js toggle-memory`)
+- How does a domain currently work (Cowork permissions, control protocol,
+  credential channels, models, plugins/hooks, memory)?
+  Read the matching `references/state/<domain>.md` — it supersedes any
+  conflicting statement in an older lesson.
+- Only fall through to `search.js`/`fetch-lesson.js` when the state layer
+  has no matching domain/entry, or when the user asks about history,
+  corrections, or how something was verified.
+
+## Step 2: Check version staleness
 
 ```bash
 bash ${CLAUDE_SKILL_DIR}/scripts/check-version.sh 2>/dev/null
@@ -172,7 +188,7 @@ bash ${CLAUDE_SKILL_DIR}/scripts/check-version.sh 2>/dev/null
 Silent if versions match. Prints a warning if the Claude Code version you're running differs from v2.1.159.
 If there's a mismatch, note it in your answer — hooks and permission details change frequently.
 
-## Step 2: Search with unified RRF
+## Step 3: Search with unified RRF
 
 Run the Reciprocal Rank Fusion search (keyword + TF-IDF combined):
 
@@ -188,19 +204,19 @@ node ${CLAUDE_SKILL_DIR}/scripts/semantic-search.js "$argument"
 
 Results include lesson title, **lesson ID**, file path, line range, and confidence.
 `[HIGH]` = matched both search layers — strongly prefer these.
-Note the lesson IDs; you'll use them in Step 3.
+Note the lesson IDs; you'll use them in Step 4.
 
-## Step 3: Check cross-references for multi-topic queries
+## Step 4: Check cross-references for multi-topic queries
 
 Skip for single-concept queries. For queries spanning subsystems (e.g. "hooks and permissions",
-"agents and memory"), use the lesson IDs from Step 2 to surface related lessons you'd otherwise miss.
+"agents and memory"), use the lesson IDs from Step 3 to surface related lessons you'd otherwise miss.
 
 ```bash
 node ${CLAUDE_SKILL_DIR}/scripts/xref.js <id1> [id2] [id3]
 # Example: node ${CLAUDE_SKILL_DIR}/scripts/xref.js 10 29
 ```
 
-## Step 4: Check troubleshooting index for problem queries
+## Step 5: Check troubleshooting index for problem queries
 
 If the query describes a problem ("not working", "why", "broken", "keeps", "error", "won't", "fails"):
 
@@ -208,7 +224,7 @@ If the query describes a problem ("not working", "why", "broken", "keeps", "erro
 node ${CLAUDE_SKILL_DIR}/scripts/troubleshoot.js "$argument"
 ```
 
-## Step 5: Fetch matched lesson content
+## Step 6: Fetch matched lesson content
 
 Use `fetch-lesson.js` to retrieve lesson content by ID — no need to track file paths or line offsets:
 
@@ -260,7 +276,7 @@ Grep pattern="<keyword>" path="${CLAUDE_SKILL_DIR}/references/"
 For topics spanning multiple lessons, read all matching sections and synthesize using the
 cross-reference map.
 
-## Step 6: Synthesize a focused answer
+## Step 7: Synthesize a focused answer
 
 Structure your answer like this:
 
