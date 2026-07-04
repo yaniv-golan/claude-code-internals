@@ -1295,15 +1295,17 @@
         "what control protocol subtypes exist",
         "get_session_cost",
         "side_question",
-        "why is my cowork task dispatch limited",
-        "task dispatch perTask global limit"
+        "does cowork cap Task sub-agent dispatch",
+        "what is gate 1648655587",
+        "scheduled task perTask global limit"
       ],
       "lessons": [
         108,
+        109,
         107,
         89
       ],
-      "hint": "Chapter 25 (L108) is the binary-verified catalog. Env vars: see Part A (model/effort, cowork/bg runtime incl. CLAUDE_BG_*_AUTH single-use handshake + CLAUDE_CODE_WORKER_EPOCH, auth incl. CLAUDE_CODE_ENABLE_XAA, Agent-SDK, Desktop-only). Gates: Part B decodes the live fcache \u2014 host-loop 1143815894, Fable 3045399524, bridge-SDK-adapter 583857784, cowork-config 1978029737, task-dispatch limiter 1648655587 {perTask:1,global:3}, sparkplug 2340532315 all ON; coworkKappa 123929380 and cli_plugin 2307090146 OFF. Read gate state yourself by decoding ~/Library/Application Support/Claude/fcache (8-byte CLF header + gzip). Control-protocol subtypes: Part C (get_session_cost, get_binary_version, generate_session_title, ultrareview_launch, side_question + system messages + Bv1/Uv1 sets). See L107 (spawn/protocol contract), L89 (host-loop/split execution)."
+      "hint": "Chapter 25 (L108) is the binary-verified catalog. Env vars: see Part A (model/effort, cowork/bg runtime incl. CLAUDE_BG_*_AUTH single-use handshake + CLAUDE_CODE_WORKER_EPOCH, auth incl. CLAUDE_CODE_ENABLE_XAA, Agent-SDK, Desktop-only). Gates: Part B decodes the live fcache \u2014 host-loop 1143815894, Fable 3045399524, bridge-SDK-adapter 583857784, cowork-config 1978029737, scheduled-task session limiter 1648655587 {perTask:1,global:3}, sparkplug 2340532315 all ON; coworkKappa 123929380 and cli_plugin 2307090146 OFF. CORRECTED (v2.22.1): gate 1648655587 is NOT a Task-tool sub-agent dispatch cap (its original label here) \u2014 it caps concurrently-active Cowork scheduled/cron-task sessions (class L9t, Ch26/L109's scheduled-tasks feature), perTask:1/global:3 sessions, and has zero effect on in-conversation Task fan-out, which the Desktop caps nowhere. Read gate state yourself by decoding ~/Library/Application Support/Claude/fcache (8-byte CLF header + gzip). Control-protocol subtypes: Part C (get_session_cost, get_binary_version, generate_session_title, ultrareview_launch, side_question + system messages + Bv1/Uv1 sets). See L109 (scheduled tasks), L107 (spawn/protocol contract), L89 (host-loop/split execution)."
     },
     {
       "pattern": [
@@ -1365,6 +1367,42 @@
         108
       ],
       "hint": "Host-loop Cowork splits a skill across a host-side agent process (which has CLAUDE_CODE_IS_COWORK=1) and a sealed-env VM shell (mcp__workspace__bash) which has NO CLAUDE_CODE_* markers -- so a bare env check false-negatives exactly in Cowork. Detect with ordered checks: $CLAUDE_CODE_IS_COWORK set -> cowork (host-side/VM-loop); cwd under /sessions/<id> -> cowork VM shell; CLAUDECODE=1 -> Claude Code CLI (refine via CLAUDE_CODE_ENTRYPOINT); else other. Content-side, branch on Bash vs mcp__workspace__bash in the tool list. Note inline !`cmd` skill-shell execution is force-disabled in Cowork (q5n) and hook env-exports don't reach the VM. See L116."
+    },
+    {
+      "pattern": [
+        "why can't I delete a file in cowork outputs",
+        "rm fails in outputs directory cowork",
+        "probe file left over in outputs folder",
+        "outputs mount seems read only after write",
+        "what mounts exist in a cowork vm session",
+        "what does /sessions/<slug> look like",
+        "cowork session slug format",
+        "is home directory shared in cowork vm",
+        "is /tmp shared in cowork vm",
+        "coworkd process cowork vm",
+        "per session unix user cowork"
+      ],
+      "lessons": [
+        117,
+        109,
+        107,
+        89
+      ],
+      "hint": "Only a fixed set of paths are real, independently mounted/unmounted systemd units per session (sessions-<slug>-mnt-<name>.mount): outputs, uploads, .claude, .claude/skills, .claude/projects, and one per user-connected folder. Home and /tmp have NO mount unit at all -- they are plain, non-shared paths inside the guest's own root filesystem, which is why they're never host-visible and vanish at session end (not a permission restriction, a different kind of storage). A file written under outputs/ IS host-visible but subject to fileDeleteApprovedMounts (mounts default rw, not rwd -- delete requires an approved allow_cowork_file_delete request), which is why `rm` from the VM shell can silently fail to remove it there while still succeeding against an unrelated local/home copy. Session slugs are real Docker-style adjective-adjective-noun triples (e.g. zealous-vigilant-einstein), not UUIDs. The in-guest daemon coworkd provisions a dedicated Unix user (uid/gid) per session slug and spawns work as that user. See L117 (full mount inventory + methodology), L109 (fileDeleteApprovedMounts), L107 (path pattern)."
+    },
+    {
+      "pattern": [
+        "can I reference a host path from a cowork skill",
+        "how does .host-home work in cowork",
+        "why isn't .host-home mounted",
+        "no mnt-.host-home.mount unit",
+        "does cowork share the home directory with the vm"
+      ],
+      "lessons": [
+        108,
+        117
+      ],
+      "hint": "No -- `.host-home` under `/sessions/<id>/mnt/` is not a real bind mount (Ch31/L117's mount-unit inventory finds no `mnt-.host-home.mount`). It's a synthetic path-translation index, dark-gated by GrowthBook gate `2614807392` (Ch25/L108, off by default): when on, the system prompt explains that a path under `.host-home/<sub>` corresponds to a real absolute host path, letting the agent *reference* host paths in tool calls without the guest's home directory ever being shared."
     }
   ]
 }

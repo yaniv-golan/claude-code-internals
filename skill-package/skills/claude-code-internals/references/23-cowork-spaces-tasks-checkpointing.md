@@ -172,8 +172,11 @@ ultrareview_launch worker_shutting_down
 
 This installation's `fcache` decodes to **200 feature gates, 98 ON** (timestamp `1782941899533`). The **eleven
 gates documented in Ch25/L108 are all in the same on/off state** (host-loop `1143815894` ON, Fable-model
-`3045399524` ON, bridge-SDK-adapter `583857784` ON, cowork-runtime-config `1978029737` ON, task-limiter
-`1648655587` ON `{perTask:1,global:3}`, auto-retry `1893165035` ON, sparkplug `2340532315` ON, `/rc`-alias
+`3045399524` ON, bridge-SDK-adapter `583857784` ON, cowork-runtime-config `1978029737` ON, scheduled-task
+session limiter `1648655587` ON `{perTask:1,global:3}` (see Ch25/L108's v2.22.1 correction — it caps
+concurrent *scheduled/cron-task* sessions, not in-conversation `Task`-tool sub-agent fan-out, which this
+chapter's own scheduled-tasks feature is the actual surface for), auto-retry `1893165035` ON, sparkplug
+`2340532315` ON, `/rc`-alias
 `2392971184` ON, coworkArtifacts `2940196192` ON; **coworkKappa `123929380` OFF, cli_plugin `2307090146`
 OFF** — both now `source:"defaultValue"`). Value/experiment deltas worth noting:
 

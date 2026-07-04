@@ -2,7 +2,7 @@
 
 ![Claude Code Internals banner](assets/banner.png)
 
-> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 113 lessons covering every internal subsystem, verified against the v2.1.198 binary (plus the Claude Desktop `app.asar` for the Desktop-host chapters, and the Cowork in-VM agent ELF for the spawn/control-protocol and Spaces/Tasks chapters), searchable three ways.
+> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 117 lessons covering every internal subsystem, verified against the v2.1.198 binary (plus the Claude Desktop `app.asar` for the Desktop-host chapters, the Cowork in-VM agent ELF for the spawn/control-protocol and Spaces/Tasks chapters, and the golden Cowork VM disk image for filesystem/mount forensics), searchable three ways.
 >
 > **This is a modified fork** of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals). See [Attribution](#attribution) for what changed.
 
@@ -12,7 +12,7 @@
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-plugin-F97316)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/plugins)
 [![Improved with Skill Creator Plus](https://img.shields.io/badge/Improved_with-Skill_Creator_Plus-4ecdc4?style=flat-square)](https://github.com/yaniv-golan/skill-creator-plus)
 
-**Skill Version:** 2.17.0 | **Captured from:** Claude Code v2.1.198 (+ Claude Desktop app.asar 1.9659.4 / 1.11847.5 / 1.12603.1 / 1.17377.2 + in-VM ELF claude-code-vm/2.1.170 / 2.1.197) | **Date:** 2026-07-02 | **License:** MIT
+**Skill Version:** 2.23.0 | **Captured from:** Claude Code v2.1.198 (+ Claude Desktop app.asar 1.9659.4 / 1.11847.5 / 1.12603.1 / 1.17377.2 / 1.18286.0 + in-VM ELF claude-code-vm/2.1.170 / 2.1.197 + the golden Cowork VM disk image `rootfs.img`) | **Date:** 2026-07-04 | **License:** MIT
 
 ---
 
@@ -120,7 +120,7 @@ Adds a gentle reminder whenever Claude edits `.claude/` config files. Add to `ho
 
 ## What This Is
 
-This is a Claude Code skill containing a complete reverse-engineering of Claude Code's internal architecture, verified against the v2.1.198 binary. 113 detailed lessons cover every major subsystem — from the boot sequence to undocumented features found directly in the binary. Chapter 21 covers the v2.1.139–v2.1.159 changes: Dynamic Workflows + coordinator mode, the Opus 4.8 launch (effort ladder low|medium|high|xhigh|max), streaming-tool-execution GA, the `MessageDisplay` hook (the live master hook array is now 30), auto-mode promotion to default, the Cloud gateway provider, org-managed skills/plugins sync, host-delegated credential refresh, background binary-takeover, and `/loop` keepalive. Two further chapters come from the Claude **Desktop** `app.asar`: Chapter 22 (L105) on the Desktop **MCP-Apps host bridge vs elicitation**, and Chapter 23 (L106) on the Cowork **CLI-plugin credential broker** (`clis.*.env`) and its `cli_plugin` dark-launch feature gate. Chapter 24 (L107) documents the Cowork **spawn + stream-json control-protocol contract** (`CLAUDE_CODE_IS_COWORK`, `--permission-prompt-tool stdio`, the `initialize` handshake, the doubly-nested `control_response`, SDK MCP delivery, and the layered permission model) and corrects Chapter 20's host-loop/VM-loop framing (gate `1143815894`; in production the agent loop runs host-side and only `mcp__workspace__bash`/`web_fetch` run in the VM) — first-party binary-verified against app.asar 1.12603.1 + the in-VM ELF `claude-code-vm/2.1.170` + the live `fcache`. Chapter 25 (L108) is a binary-verified reference catalog of ~33 Cowork/Desktop environment variables, the production GrowthBook gates decoded from the live `fcache` (host-loop, the bridge SDK-adapter transport, the task-dispatch limiter, sparkplug plugin sync, and more), and the extended control-protocol surface (`mcp_call`, `get_session_cost`, `side_question`, and the `Bv1`/`Uv1` dispatcher sets). Chapter 26 (L109) documents Cowork's shift toward a workspace product — the `CoworkSpaces`/`CoworkScheduledTasks` Desktop IPC, the agent-side Tasks tool, and SDK file-checkpointing — binary-verified against app.asar 1.17377.2 + the in-VM ELF `claude-code-vm/2.1.197` + the live `fcache`. Chapter 27 (L110–L113) is the v2.1.160→v2.1.198 CLI content refresh: **Claude Sonnet 5 is the new CLI default** (native 1M context, superseding Opus 4.8), the announced surface (`/cd`, `--safe-mode`, `/config key=value`, sub-agents 5-deep, Claude-in-Chrome GA), and the **dark-launched** Claude Design and Artifacts (present in the binary, absent from the official changelog). When you type `/claude-code-internals hooks` or `/claude-code-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
+This is a Claude Code skill containing a complete reverse-engineering of Claude Code's internal architecture, verified against the v2.1.198 binary. 117 detailed lessons cover every major subsystem — from the boot sequence to undocumented features found directly in the binary. Chapter 21 covers the v2.1.139–v2.1.159 changes: Dynamic Workflows + coordinator mode, the Opus 4.8 launch (effort ladder low|medium|high|xhigh|max), streaming-tool-execution GA, the `MessageDisplay` hook (the live master hook array is now 30), auto-mode promotion to default, the Cloud gateway provider, org-managed skills/plugins sync, host-delegated credential refresh, background binary-takeover, and `/loop` keepalive. Two further chapters come from the Claude **Desktop** `app.asar`: Chapter 22 (L105) on the Desktop **MCP-Apps host bridge vs elicitation**, and Chapter 23 (L106) on the Cowork **CLI-plugin credential broker** (`clis.*.env`) and its `cli_plugin` dark-launch feature gate. Chapter 24 (L107) documents the Cowork **spawn + stream-json control-protocol contract** (`CLAUDE_CODE_IS_COWORK`, `--permission-prompt-tool stdio`, the `initialize` handshake, the doubly-nested `control_response`, SDK MCP delivery, and the layered permission model) and corrects Chapter 20's host-loop/VM-loop framing (gate `1143815894`; in production the agent loop runs host-side and only `mcp__workspace__bash`/`web_fetch` run in the VM) — first-party binary-verified against app.asar 1.12603.1 + the in-VM ELF `claude-code-vm/2.1.170` + the live `fcache`. Chapter 25 (L108) is a binary-verified reference catalog of ~40 Cowork/Desktop environment variables, the production GrowthBook gates decoded from the live `fcache` (host-loop, the bridge SDK-adapter transport, the scheduled-task session limiter, sparkplug plugin sync, a cluster of gate-conditioned spawn-env vars, and more), and the extended control-protocol surface (`mcp_call`, `get_session_cost`, `side_question`, and the `Bv1`/`Uv1` dispatcher sets). Chapter 26 (L109) documents Cowork's shift toward a workspace product — the `CoworkSpaces`/`CoworkScheduledTasks` Desktop IPC, the agent-side Tasks tool, and SDK file-checkpointing — binary-verified against app.asar 1.17377.2 + the in-VM ELF `claude-code-vm/2.1.197` + the live `fcache`. Chapter 27 (L110–L113) is the v2.1.160→v2.1.198 CLI content refresh: **Claude Sonnet 5 is the new CLI default** (native 1M context, superseding Opus 4.8), the announced surface (`/cd`, `--safe-mode`, `/config key=value`, sub-agents 5-deep, Claude-in-Chrome GA), and the **dark-launched** Claude Design and Artifacts (present in the binary, absent from the official changelog). Chapter 28 (L114) is a re-verification pass against Desktop app.asar 1.18286.0, correcting the "`--effort medium`" claim to a real per-session `LocalSessions` effort IPC family and promoting `CLAUDE_CODE_SUBAGENT_MODEL` from speculative to confirmed-wired. Chapter 29 (L115) documents subagent **resume semantics**: the `Task` tool is one-shot per call everywhere, but the standalone CLI resumes completed/stopped background agents via `SendMessage({to: <agentId>})` — a path Cowork severs at spawn. Chapter 30 (L116) covers **skill runtime detection** (CLI vs Cowork vs elsewhere), including the sealed-env VM shell that breaks a bare `$CLAUDE_CODE_IS_COWORK` check. Chapter 31 (L117) is **VM rootfs forensics**: direct inspection of the golden Cowork VM disk image reveals the full per-session mount inventory, confirms there's no mount unit for home or `/tmp`, and surfaces the in-guest `coworkd` daemon. A separate mutable [`references/state/`](skill-package/skills/claude-code-internals/references/state/) layer tracks the *current* truth for enumerable facts (env vars, gates, commands, IPC interfaces) on top of these append-only lesson chapters, validated by its own schema checker. When you type `/claude-code-internals hooks` or `/claude-code-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
 
 Without this skill, Claude knows *how to use* Claude Code but doesn't know *how Claude Code works internally*. With it, Claude becomes an expert on its own implementation — the query engine's retry logic, all 30 hook event types, the 7-phase permission pipeline, the compaction algorithm, the agent spawn lifecycle, and binary-verified internals of features like `/effort`, `/rewind`, `/teleport`, `/branch`, Dynamic Workflows, the Opus 4.8 effort ladder, the Cowork runtime, and `/fork`.
 
@@ -269,7 +269,7 @@ Returns the companion system internals: the date gate (April 2026+, first-party 
 
 1. **Use it BEFORE configuring anything under `.claude/`.** The skill knows exact formats, valid values, and edge cases.
 2. **Use natural language when keywords don't work.** "what happens when Claude runs out of context space" finds the compaction lesson even without the word "compaction."
-3. **Know its limits.** Core lessons (1–50) were captured from Claude Code v2.1.88. Chapters 9–27 (lessons 51–113) were verified directly against the v2.1.90 through v2.1.198 binaries.
+3. **Know its limits.** Core lessons (1–50) were captured from Claude Code v2.1.88. Chapters 9–31 (lessons 51–117) were verified directly against the v2.1.90 through v2.1.198 binaries (plus Claude Desktop `app.asar` and the Cowork in-VM ELF/disk image for the Desktop- and Cowork-specific chapters).
 
 ## Smart Features (v2.2)
 
@@ -282,7 +282,7 @@ Returns the companion system internals: the date gate (April 2026+, first-party 
 ```bash
 node scripts/fetch-lesson.js 32          # Hooks System content
 node scripts/fetch-lesson.js 32 --meta   # Metadata only (file, line range)
-node scripts/fetch-lesson.js --list      # All 113 lessons
+node scripts/fetch-lesson.js --list      # All 117 lessons
 ```
 
 ### xref.js — Shell-Safe Cross-Reference Lookup
@@ -359,7 +359,7 @@ claude-code-internals/
 │   └── skills/
 │       └── claude-code-internals/  The skill itself
 │           ├── SKILL.md            Skill brain (search strategy, lesson index)
-│           ├── version.json        Version tracking (v2.17.1 / v2.1.198)
+│           ├── version.json        Version tracking (v2.23.0 / v2.1.198)
 │           ├── hooks-config.json   PreToolUse hook definition
 │           ├── references/
 │           │   ├── 01-core-architecture-tools.md
@@ -386,6 +386,14 @@ claude-code-internals/
 │           │   ├── 22-cowork-env-gates-protocol.md         ← Chapter 25 (binary-verified)
 │           │   ├── 23-cowork-spaces-tasks-checkpointing.md ← Chapter 26 (binary-verified)
 │           │   ├── 24-verified-new-v2.1.198.md             ← Chapter 27 (binary-verified)
+│           │   ├── 25-verified-new-v1.18286.0-desktop.md   ← Chapter 28 (Desktop app.asar)
+│           │   ├── 26-subagent-resume-semantics.md         ← Chapter 29 (binary-verified)
+│           │   ├── 27-skill-runtime-detection.md           ← Chapter 30 (binary-verified)
+│           │   ├── 28-vm-rootfs-forensics.md               ← Chapter 31 (VM disk image forensics)
+│           │   ├── state/                                  ← mutable "current truth" layer
+│           │   │   ├── README.md
+│           │   │   ├── registry.json       Structured records (env vars, gates, commands, IPC…)
+│           │   │   └── *.md                One page per domain (Cowork architecture, permissions…)
 │           │   ├── topic-index.json
 │           │   ├── semantic-index.json
 │           │   ├── cross-references.json
@@ -401,6 +409,8 @@ claude-code-internals/
 │               ├── lookup.sh               Keyword search
 │               ├── check-version.sh        Version staleness detection
 │               ├── build-rvf-index.js      TF-IDF index builder
+│               ├── state.js                Current-state lookup + --audit CLI
+│               ├── validate-state.js       Schema validator for references/state/
 │               └── config-aware-hook.sh    PreToolUse .claude/ detector
 ├── site/
 │   └── static/
@@ -415,7 +425,7 @@ claude-code-internals/
 </details>
 
 <details>
-<summary>The 113 Lessons — 27 Chapters (click to expand)</summary>
+<summary>The 117 Lessons — 31 Chapters (click to expand)</summary>
 
 | Ch | File | Lessons |
 |----|------|---------|
@@ -443,6 +453,10 @@ claude-code-internals/
 | **25** | **`22-cowork-env-gates-protocol.md`** | Binary-verified reference catalog (L108): ~33 Cowork/Desktop env vars, the production GrowthBook gates decoded from the live fcache, and the extended control-protocol surface (`mcp_call`, `get_session_cost`, `side_question`, `Bv1`/`Uv1` dispatcher sets) |
 | **26** | **`23-cowork-spaces-tasks-checkpointing.md`** | **Cowork Spaces** + **Scheduled Tasks** + **Tasks tool** + **SDK file-checkpointing** (L109): new Desktop IPC `CoworkSpaces`/`CoworkScheduledTasks`, `scheduled_task_fire` event, `CLAUDE_CODE_ENABLE_TASKS`, `rewind_files`/`file_snapshot`, ~90-subtype control protocol — binary-verified vs app.asar 1.17377.2 + in-VM ELF 2.1.197 + fcache |
 | **27** | **`24-verified-new-v2.1.198.md`** | v2.1.160→v2.1.198 CLI content refresh. **Sonnet 5 = new default** (native 1M ctx, v2.1.197) + Fable 5 + `fallbackModel` 3-chain (L110). Announced surface: `/cd`, `--safe-mode`, `/config key=value`, `/rewind`-from-`/clear`, `Tool(param:value)` permissions, sub-agents 5-deep, Claude-in-Chrome GA (L111). **DARK-LAUNCHED**: **Claude Design** (`/design*`, `DesignSync`) + **Artifacts** (Artifact tool, `tengu_cobalt_plinth`) + Launch Composer + `/skill-doctor` + `/pause-memory` (L112). Memory→knowledge-base + 4 new API betas (L113) |
+| **28** | **`25-verified-new-v1.18286.0-desktop.md`** | Desktop `app.asar` **1.18286.0** re-verification (L114): every Ch23–Ch26 mechanism structurally unchanged (`cli_plugin` gate still off); corrects Ch24/L107's "`--effort medium`" claim to a real `LocalSessions.setEffort/getEffort` IPC family backed by `CLAUDE_CODE_EFFORT_LEVEL`; promotes `CLAUDE_CODE_SUBAGENT_MODEL` to confirmed-wired; new surface: `CLAUDE_CODE_QUESTION_PREVIEW_FORMAT`, `CLAUDE_CODE_ENABLE_ASK_USER_QUESTION_TOOL`, `CLAUDE_COWORK_MEMORY_PATH_OVERRIDE`, three new `mcp__cowork__*` tools |
+| **29** | **`26-subagent-resume-semantics.md`** | **Subagent resume semantics** (L115): `Task` is one-shot per call everywhere (no resume parameter), but the standalone CLI resumes completed/stopped background agents via `SendMessage({to: <agentId>})` → `resumeAgentBackground` (disk-transcript reload); Cowork severs the path at spawn (`SendMessage` omitted, `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1`, Desktop `Task` hook) — binary-verified vs CLI 2.1.198 + app.asar 1.18286.0 |
+| **30** | **`27-skill-runtime-detection.md`** | **Skill runtime detection** (L116): CLI vs Cowork vs elsewhere — host-loop Cowork splits a skill across a host-side agent process and a **sealed-env VM shell** with no `CLAUDE_CODE_*` markers, so a bare env check false-negatives in production Cowork; ordered detection recipe (`$CLAUDE_CODE_IS_COWORK` → cwd `/sessions/<id>` → `$CLAUDECODE`/`CLAUDE_CODE_ENTRYPOINT` → else) |
+| **31** | **`28-vm-rootfs-forensics.md`** | **VM rootfs forensics** (L117): direct inspection of the golden Cowork VM disk image (`rootfs.img`) — full per-session mount inventory (`outputs`/`uploads`/`.claude`/connected-folders, each a `sessions-<slug>-mnt-<name>.mount` unit) with the key negative result that home and `/tmp` have **no** mount unit; confirms Docker-style session-slug format; surfaces the in-guest `coworkd` daemon. v2.23.0 addendum: the `.host-home` mount name is a dark-gated synthetic path-translation index, not a real bind mount |
 
 </details>
 
@@ -450,7 +464,7 @@ claude-code-internals/
 
 ```json
 {
-  "skill_version": "2.17.1",
+  "skill_version": "2.23.0",
   "captured_version": "2.1.198",
   "verified_against_binary": "2.1.198",
   "captured_date": "2026-07-02"
@@ -491,7 +505,7 @@ This repository is a fork of [stuinfla/claude-code-internals](https://github.com
 - The PreToolUse `.claude/` hook (`config-aware-hook.sh`), version check script, and RuFlo index builder
 - The original README documentation and architecture diagrams
 
-**What this fork adds** (v2.2.0–v2.17.1, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
+**What this fork adds** (v2.2.0–v2.23.0, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
 
 - Chapter 9 (Lessons 51–56): binary-verified new features in Claude Code v2.1.90, extracted directly from the Bun SEA binary and verified against official docs
 - Chapter 10 (Lessons 57–59): binary-verified changes in Claude Code v2.1.92 — new commands, removed commands, new env vars, and AskUserQuestionTool documentation
@@ -512,6 +526,13 @@ This repository is a fork of [stuinfla/claude-code-internals](https://github.com
 - Chapter 25 (Lesson 108): binary-verified reference catalog — ~33 Cowork/Desktop env vars, production GrowthBook gates from the live fcache, and the extended control-protocol surface (`mcp_call`, `get_session_cost`, `side_question`, `Bv1`/`Uv1` sets)
 - Chapter 26 (Lesson 109): Cowork Spaces + Scheduled Tasks + Tasks tool + SDK file-checkpointing (`CoworkSpaces`/`CoworkScheduledTasks` IPC, `scheduled_task_fire`, `CLAUDE_CODE_ENABLE_TASKS`, `rewind_files`/`file_snapshot`, ~90-subtype control protocol) — binary-verified vs app.asar 1.17377.2 + in-VM ELF 2.1.197 + fcache
 - Chapter 27 (Lessons 110–113): v2.1.160–v2.1.198 CLI content refresh — Sonnet 5 as the new default (native 1M context) + Fable 5 + `fallbackModel` 3-chain (L110); announced surface (`/cd`, `--safe-mode`, `/config key=value`, `/rewind`-from-`/clear`, `Tool(param:value)` permissions, sub-agents 5-deep, Claude-in-Chrome GA, `TeamCreate`/`TeamDelete` removal) (L111); dark-launched Claude Design + Artifacts + Launch Composer + `/skill-doctor` + `/pause-memory` (L112); auto-memory→knowledge-base + 4 new API betas (L113)
+- `references/state/` current-state layer (v2.18.0): a mutable "as of version X" truth layer over the append-only lesson chapters — `registry.json` (structured records for env vars, slash commands, gates, API betas, control-protocol subtypes, tools, IPC interfaces) plus one narrative page per domain, validated by `scripts/validate-state.js` and audited by `scripts/state.js --audit`
+- Chapter 28 (Lesson 114): Desktop `app.asar` 1.18286.0 re-verification — confirms Ch23–Ch26 mechanisms unchanged, corrects Ch24/L107's `--effort medium` claim to a real `LocalSessions` effort IPC family, promotes `CLAUDE_CODE_SUBAGENT_MODEL` to confirmed-wired, catalogs new surface (`CLAUDE_CODE_QUESTION_PREVIEW_FORMAT`, `CLAUDE_COWORK_MEMORY_PATH_OVERRIDE`, three new `mcp__cowork__*` tools)
+- Chapter 29 (Lesson 115): subagent resume semantics — `Task` is one-shot per call everywhere, but the standalone CLI resumes completed/stopped background agents via `SendMessage({to: <agentId>})`; Cowork severs the path at spawn (own continuation primitive is redo/repair dispatch) — binary-verified vs CLI 2.1.198 + app.asar 1.18286.0
+- Chapter 30 (Lesson 116): skill runtime detection (CLI vs Cowork vs elsewhere) — the sealed-env VM shell that breaks a bare `$CLAUDE_CODE_IS_COWORK` check, the `CLAUDECODE`/`CLAUDE_CODE_ENTRYPOINT` marker inventory, and the ordered detection recipe
+- Chapter 31 (Lesson 117): VM rootfs forensics — direct inspection of the golden Cowork VM disk image (`rootfs.img`), a third artifact class beyond `app.asar` and the in-VM ELF; full per-session mount inventory, the no-mount-unit-for-home-or-`/tmp` negative result, Docker-style session-slug format, and the in-guest `coworkd` daemon
+- v2.22.1 correction: gate `1648655587` (Ch25/L108) was mislabeled a Task-dispatch rate-limiter — it's actually Cowork's scheduled/cron-task **session limiter**, with no cap found anywhere on in-conversation `Task`-tool fan-out
+- v2.23.0 extension: a cluster of gate-conditioned Cowork spawn-env vars (`MCP_CONNECTION_NONBLOCKING`, `CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES`, `CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING`, and others) added to Ch25/L108, plus the finding that `.host-home` (Ch31/L117) is a dark-gated synthetic path-translation index, not a real bind mount
 - ULTRAPLAN (L41) status updated: now officially released as research preview
 - 5 new scripts: `fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `extract-bundle.sh`, `diff-versions.sh`
 - Plugin marketplace infrastructure: `.claude-plugin/` files, "Add to Claude" install button, GitHub Actions release and Pages deploy workflows

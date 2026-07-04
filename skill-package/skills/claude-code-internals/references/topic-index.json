@@ -1,7 +1,7 @@
 {
   "generated": "2026-07-04",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes)",
-  "total_lessons": 116,
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF)",
+  "total_lessons": 117,
   "lessons": [
     {
       "id": 1,
@@ -2756,7 +2756,7 @@
       "lesson_number": "108",
       "file": "22-cowork-env-gates-protocol.md",
       "startLine": 21,
-      "endLine": 146,
+      "endLine": 193,
       "keywords": [
         "cowork-env-vars",
         "desktop-env-vars",
@@ -2805,6 +2805,7 @@
         "gate-2392971184",
         "sparkplug",
         "bridge-sdk-adapter",
+        "scheduled-task-session-limiter",
         "task-dispatch-limiter",
         "coworkWebFetchViaApi",
         "coworkArtifacts",
@@ -2825,7 +2826,29 @@
         "hook_callback-wire-shape",
         "hook-input-Ad",
         "tool_use_id-top-level",
-        "effort-level-hook"
+        "effort-level-hook",
+        "host-home",
+        "dot-host-home",
+        "skeleton-path-index",
+        "host-fs-skeleton",
+        "MCP_CONNECTION_NONBLOCKING",
+        "MCP_CONNECT_TIMEOUT_MS",
+        "CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES",
+        "CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING",
+        "CLAUDE_CODE_OAUTH_SCOPES",
+        "CLAUDE_CODE_SKIP_PRECOMPACT_LOAD",
+        "ENABLE_TOOL_SEARCH",
+        "gate-2614807392",
+        "gate-2860753854",
+        "gate-434204418",
+        "gate-66187241",
+        "gate-714014285",
+        "gate-1936081873",
+        "gate-4153934152",
+        "gate-1129419822",
+        "spawn-env-gates",
+        "gate-conditioned-env-vars",
+        "memory-extra-guidelines-value-gate"
       ]
     },
     {
@@ -3155,6 +3178,54 @@
         "1.18286.0"
       ],
       "summary": "How a skill reliably detects whether it runs in the Claude Code CLI, Claude Cowork, or elsewhere. The trap: host-loop Cowork splits a skill across a host-side agent process (CLAUDE_CODE_IS_COWORK=1, CLAUDE_CODE_ENTRYPOINT=local-agent) and a sealed-env VM shell (mcp__workspace__bash) where no CLAUDE_CODE_* marker survives -- a bare env check yields a false negative exactly when it matters. Inline !`cmd` skill-shell execution is force-disabled in Cowork (q5n) and hook exports don't cross the host/VM bridge, so neither can probe. Recipe: script-side ordered checks (IS_COWORK -> /sessions/<id> path signature -> CLAUDECODE=1 from bmt -> other), refined by the CLAUDE_CODE_ENTRYPOINT value sets (c2u/u2u/d2u, normalizer cvs); content-side, branch on the tool surface (Bash vs mcp__workspace__bash). Artifact-drift caveat: the old MGn host->VM env allowlist from asar v1.6259.1 is gone from 1.18286.0 (only the unrelated SSH-MCP jBo filter remains) -- the sealed-env fact now rests on the v2.12.2 empirical probe."
+    },
+    {
+      "id": 117,
+      "title": "VM Rootfs Forensics: The Mount Inventory, Session-Slug Format, and coworkd",
+      "lesson_number": "117",
+      "file": "28-vm-rootfs-forensics.md",
+      "startLine": 17,
+      "endLine": 192,
+      "keywords": [
+        "vm-rootfs-forensics",
+        "rootfs.img",
+        "vm_bundles",
+        "claudevm.bundle",
+        "raw-disk-image-forensics",
+        "systemd-journald",
+        "mount-inventory",
+        "mnt-outputs.mount",
+        "mnt-uploads.mount",
+        "mnt-.claude.mount",
+        "mnt-.claude-skills.mount",
+        "mnt-.claude-projects.mount",
+        "connected-folder-mount",
+        "no-home-mount",
+        "no-tmp-mount",
+        "bind-mount-vs-guest-local",
+        "session-slug-format",
+        "adjective-adjective-noun",
+        "docker-style-slug",
+        "zealous-vigilant-einstein",
+        "coworkd",
+        "coworkd-process-manager",
+        "per-session-unix-user",
+        "uid-gid-per-session",
+        "oneshot-job-spawn",
+        "claude-hostloop-plugins",
+        "deck-review-skill",
+        "vm-warm-pool",
+        "vm-multiplexing",
+        "session-to-vm-multiplexing",
+        "ripgrep-vs-grep-performance",
+        "rg-multi-gb-scan",
+        "fileDeleteApprovedMounts-explained",
+        "why-outputs-is-shared-but-home-is-not",
+        "host-home-not-a-mount",
+        "synthetic-path-translation",
+        "skeleton-path-index"
+      ],
+      "summary": "Direct forensic inspection of a third Cowork artifact class beyond app.asar and the in-VM ELF: the raw, unencrypted golden VM guest disk image (vm_bundles/claudevm.bundle/rootfs.img), which retains leftover systemd-journald log entries from real historical sessions. Extends the single verified .claude/skills mount-unit example (L104) to a full inventory (outputs, uploads, .claude, .claude/skills, .claude/projects, and one per user-connected folder), each independently mounted/unmounted per session as sessions-<slug>-mnt-<name>.mount -- and finds NO mount unit for home or /tmp, the structural reason those paths are never host-shared (they're plain guest-local paths, not bind mounts, an architecturally different kind of storage from outputs/). Confirms real session-slug values follow a Docker-style adjective-adjective-noun format. Surfaces a previously undocumented in-guest daemon, coworkd, which provisions a dedicated Unix user (uid/gid) per session slug and spawns work as that user via oneshot-<uuid> jobs -- concretely corroborating the host-loop plugin-staging mechanism (claude-hostloop-plugins/<hash>) with a real deck-review skill invocation. Notes a plausible but unconfirmed session-to-VM multiplexing inference from the idempotent user-exists check plus an observed empty vm_bundles/warm/ directory. Methodology: raw disk/container images are a searchable third artifact class when a feature isn't in either 'obvious' binary; rg is ~15-20x faster than grep -a or naive scripting-language regex over multi-GB images."
     }
   ],
   "keyword_map": {
@@ -8065,6 +8136,10 @@
     "bridge-sdk-adapter": [
       108
     ],
+    "scheduled-task-session-limiter": [
+      108,
+      109
+    ],
     "task-dispatch-limiter": [
       108
     ],
@@ -8384,7 +8459,8 @@
       109
     ],
     "rootfs.img": [
-      109
+      109,
+      117
     ],
     "vm-image-mounts": [
       109
@@ -8393,7 +8469,8 @@
       109
     ],
     "claudevm.bundle": [
-      109
+      109,
+      117
     ],
     "mnt-.claude-skills.mount": [
       109
@@ -8643,6 +8720,109 @@
     ],
     "entrypoint-values": [
       116
+    ],
+    "coworkd": [
+      117
+    ],
+    "mnt-outputs.mount": [
+      117
+    ],
+    "session-slug": [
+      117
+    ],
+    "vm-rootfs-forensics": [
+      117
+    ],
+    "vm-warm-pool": [
+      117
+    ],
+    "per-session-unix-user": [
+      117
+    ],
+    "oneshot-job-spawn": [
+      117
+    ],
+    "adjective-adjective-noun": [
+      117
+    ],
+    "no-home-mount": [
+      117
+    ],
+    "bind-mount-vs-guest-local": [
+      117
+    ],
+    "gate-1129419822": [
+      108
+    ],
+    "host-fs-skeleton": [
+      108
+    ],
+    "spawn-env-gates": [
+      108
+    ],
+    "dot-host-home": [
+      108
+    ],
+    "ENABLE_TOOL_SEARCH": [
+      108
+    ],
+    "gate-2614807392": [
+      108
+    ],
+    "gate-714014285": [
+      108
+    ],
+    "CLAUDE_CODE_SKIP_PRECOMPACT_LOAD": [
+      108
+    ],
+    "skeleton-path-index": [
+      108,
+      117
+    ],
+    "memory-extra-guidelines-value-gate": [
+      108
+    ],
+    "gate-66187241": [
+      108
+    ],
+    "gate-4153934152": [
+      108
+    ],
+    "gate-conditioned-env-vars": [
+      108
+    ],
+    "host-home-not-a-mount": [
+      117
+    ],
+    "gate-2860753854": [
+      108
+    ],
+    "MCP_CONNECT_TIMEOUT_MS": [
+      108
+    ],
+    "CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING": [
+      108
+    ],
+    "CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES": [
+      108
+    ],
+    "synthetic-path-translation": [
+      117
+    ],
+    "host-home": [
+      108
+    ],
+    "gate-1936081873": [
+      108
+    ],
+    "MCP_CONNECTION_NONBLOCKING": [
+      108
+    ],
+    "CLAUDE_CODE_OAUTH_SCOPES": [
+      108
+    ],
+    "gate-434204418": [
+      108
     ]
   }
 }

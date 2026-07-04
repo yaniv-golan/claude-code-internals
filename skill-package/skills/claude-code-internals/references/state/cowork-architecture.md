@@ -3,7 +3,7 @@ domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.198
 as_of_desktop: 1.18286.0
-sources: [89, 90, 107, 109, 114, 116]
+sources: [89, 90, 107, 108, 109, 114, 116, 117]
 updated: 2026-07-04
 ---
 
@@ -73,13 +73,63 @@ Inside the guest, mounts under `/sessions/<id>/mnt/` are created by the VM
 image's own systemd `.mount` units, which live in
 `~/Library/Application Support/Claude/vm_bundles/claudevm.bundle/
 rootfs.img` (a ~10 GB raw ext4 image) — not in the Desktop `app.asar` or
-the agent ELF. Verified: skills mount at
-`/sessions/<id>/mnt/.claude/skills` via a systemd unit named
-`sessions-<name>-mnt-.claude-skills.mount`, found verbatim in `rootfs.img`.
-The rule for "where does Cowork mount/stage X": grep `rootfs.img` for the
-path and for `*.mount` unit names — the agent ELF only shows how skills
-are *read*, not how the VM *lays them out*. "Absent from the client
-binaries" is not proof of "absent on disk."
+the agent ELF. The rule for "where does Cowork mount/stage X": grep
+`rootfs.img` for the path and for `*.mount` unit names — the agent ELF
+only shows how skills are *read*, not how the VM *lays them out*. "Absent
+from the client binaries" is not proof of "absent on disk."
+
+**Full mount inventory (L117).** Extending the single `.claude/skills`
+example above, a `.mount`-unit grep of `rootfs.img` (plus leftover
+`systemd-journald` entries from real historical sessions, still present in
+the golden image) surfaces the complete set of host-shared mount points,
+each instantiated per session as `sessions-<slug>-mnt-<name>.mount`:
+`outputs`, `uploads`, `.claude`, `.claude/skills`, `.claude/projects`, and
+one unit per user-connected folder (arbitrary names, e.g. `Downloads`,
+`work`, or a custom folder name). **There is no `.mount` unit for the
+guest's home directory or for `/tmp`.** That is the structural reason
+those two behave differently from `outputs/`: they were never bind-mounted
+at all — they're just ordinary paths inside the guest's own private,
+non-shared root filesystem, whereas `outputs/`/`uploads/`/`.claude/…`/
+connected-folders are independently mounted and unmounted, per session,
+as first-class systemd units. "Shared vs. VM-local" is not a permissions
+distinction on one filesystem; it's two different kinds of storage,
+decided per-path at image-build/session-provisioning time. This also
+explains *why* `fileDeleteApprovedMounts` (above) only ever needs to
+govern mounted paths — a file in guest-private home has no host-visible
+mount to gate in the first place.
+
+**`.host-home` is a reserved mount name that is not a mount at all.** It
+never appears in the inventory above, and shouldn't: it's gated by dark
+GrowthBook gate `2614807392` (off by default) and, when on, is a synthetic
+path-translation index, not a bind mount — the system prompt tells the
+model that a path under `/sessions/<id>/mnt/.host-home/<sub>` corresponds
+to a real absolute host path, and a resolver pair (`ece()` encode /
+`uCe()` decode) converts between the two. This lets the agent *reference*
+host paths in tool calls without the guest's home directory ever being
+shared, and is a third category alongside "bind-mounted" and
+"guest-private": a virtual namespace with no filesystem bridge at all.
+
+Session slugs (`/sessions/<slug>/`) are confirmed, with real historical
+examples surviving in the same journald leftovers, to follow a
+Docker-style `<adjective>-<adjective>-<noun>` triple format (e.g.
+`zealous-vigilant-einstein`, `lucid-awesome-bell`) — not a UUID.
+
+The same leftovers name an in-guest daemon, **`coworkd`**, that manages
+session lifecycle: it provisions a dedicated Unix user (uid/gid) per
+session slug (idempotently — "user already exists" is logged, not
+treated as an error) and spawns work as that user via named
+`oneshot-<uuid>` jobs, e.g. a `deck-review` skill script invocation
+resolving `SCRIPTS=.../claude-hostloop-plugins/<hash>/skills/deck-review/
+scripts` — real corroboration of the host-loop plugin-staging mechanism
+below. The idempotent user-exists check, together with an observed empty
+`vm_bundles/warm/<hash>/` directory alongside the golden image, is
+*suggestive* of session-to-VM multiplexing (a warm pool of booted guests,
+each capable of hosting more than one session's worth of per-user
+provisioning) — but this is an inference from indirect evidence, not a
+directly confirmed fact; no artifact yet states "one guest serves N
+sessions" outright. See lesson 117 for the full forensic trace and the
+tool-speed methodology note (`rg` over raw multi-GB images vs. `grep -a`
+vs. naive scripting-language regex).
 
 ## Session storage
 

@@ -2371,6 +2371,33 @@
         "id": 114,
         "relevance": 0.5,
         "reason": "pruned-baseline methodology reused for the vanished MGn allowlist caveat"
+      },
+      {
+        "id": 117,
+        "relevance": 0.7,
+        "reason": "the /sessions/<id> path signature this lesson uses as a structural discriminator is exactly the mount/slug layout L117 forensically confirms"
+      }
+    ],
+    "117": [
+      {
+        "id": 89,
+        "relevance": 0.75,
+        "reason": "host-loop plugin staging (claude-hostloop-plugins/<hash>) is corroborated end-to-end by a real coworkd oneshot spawn log line"
+      },
+      {
+        "id": 107,
+        "relevance": 0.7,
+        "reason": "the /sessions/<id>/mnt/... path pattern this lesson pins down with a full mount inventory and real session-slug examples"
+      },
+      {
+        "id": 109,
+        "relevance": 0.65,
+        "reason": "fileDeleteApprovedMounts only governs mounted paths -- this lesson explains structurally why home/tmp were never candidates"
+      },
+      {
+        "id": 116,
+        "relevance": 0.6,
+        "reason": "the /sessions/<id> filesystem signature that lesson uses for VM-shell detection is the same mount layout documented here"
       }
     ]
   }

@@ -1,4 +1,4 @@
-Updated: 2026-06-13 | Source: **First-party binary extraction & verification.** Every entry below was grepped from the installed **Claude.app (Desktop) `app.asar` 1.12603.1** (main process `.vite/build/index.js`), the **in-VM agent ELF `claude-code-vm/2.1.170/claude`** (Bun-SEA JS bundle), and the **live on-disk `fcache`** — surfaced by the same verification workflow as Ch24/L107 and individually re-grep-confirmed (presence + behavior anchor). Minified identifiers and gate IDs drift across versions; gate *states* are this installation's `fcache` snapshot (a standard interactive Anthropic account, 2026-06-13).
+Updated: 2026-07-04 | Source: **First-party binary extraction & verification.** Every entry below was grepped from the installed **Claude.app (Desktop) `app.asar` 1.12603.1** (main process `.vite/build/index.js`), the **in-VM agent ELF `claude-code-vm/2.1.170/claude`** (Bun-SEA JS bundle), and the **live on-disk `fcache`** — surfaced by the same verification workflow as Ch24/L107 and individually re-grep-confirmed (presence + behavior anchor). Minified identifiers and gate IDs drift across versions; gate *states* are this installation's `fcache` snapshot (a standard interactive Anthropic account, 2026-06-13). **v2.23.0 addendum (2026-07-04) re-verified the new spawn-env-gate cluster and the `.host-home`/`CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES` gate rows against this installation's own `app.asar` 1.18286.0** (a newer install than the chapter's original 1.12603.1 baseline; both were checked and the new entries are present in the 1.18286.0 build actually used for verification).
 
 # Chapter 25: Cowork & Desktop Environment Variables, Production GrowthBook Gates, and the Extended Control-Protocol Surface (app.asar 1.12603.1 / in-VM ELF 2.1.170)
 
@@ -9,6 +9,22 @@ Updated: 2026-06-13 | Source: **First-party binary extraction & verification.** 
 > beyond the seven dispatcher subtypes of Ch22/L105 and the five spawn-contract subtypes of Ch24/L107.
 > Companion to Ch20/L89 (host-loop/split execution), Ch24/L107 (spawn + control protocol), Ch23/L106
 > (the `cli_plugin` gate).
+>
+> **v2.22.1 CORRECTS Part B's gate `1648655587` entry**: it is the **scheduled-task session limiter**
+> (Ch26/L109's cron/watcher feature), not an in-conversation `Task`-tool sub-agent dispatch cap as
+> originally labeled. See the corrected table row below for the full evidence trail.
+>
+> **v2.23.0 EXTENDS Part A and Part B** with a cluster of spawn-env gates and one additional dark
+> gate this chapter's original pass missed, all independently re-verified against this
+> installation's own `app.asar` **1.18286.0**: a new "Gate-conditioned spawn-env vars" table in
+> Part A (`MCP_CONNECTION_NONBLOCKING`/`MCP_CONNECT_TIMEOUT_MS`, `CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES`,
+> `CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING`, `CLAUDE_CODE_OAUTH_SCOPES`,
+> `CLAUDE_CODE_SKIP_PRECOMPACT_LOAD`, `ENABLE_TOOL_SEARCH`) and two new Part B gate rows
+> (`2614807392` the `.host-home` skeleton-path-index gate, `2860753854` the
+> `CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES` default-text value-gate). Credit: surfaced by
+> cross-referencing the independent `claude-cowork-headless-emulator` project's `PINNED_GATES`
+> table in `src/sync/cowork-sync.ts`, then independently re-derived first-party from this
+> installation's binary before being added here (same verify-before-trust discipline as v2.22.1).
 
 ---
 
@@ -81,6 +97,29 @@ from the cited anchor.
 | `CLAUDE_AFTER_LAST_COMPACT` `[VM]` | Append `{after_last_compact:true}` to the skill/plugin-registry API query (skill sync after compaction). | `K8(process.env.CLAUDE_AFTER_LAST_COMPACT)?{after_last_compact:!0}:void 0` |
 | `CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS` `[VM]` | Three-way toggle for Git guidance in the system prompt (truthy=off, falsy-string=force-on, unset=policy). | `function iA8(){…CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS…}` |
 
+### Gate-conditioned spawn-env vars (added v2.23.0) `[ASAR]`
+
+These sit in the same Desktop→agent spawn-env object as `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS`/
+`CLAUDE_CODE_TAGS`/etc. (Ch29/L115), each one only injected when its GrowthBook gate (Part B) is
+on — a pattern this chapter's original pass didn't fully enumerate. All confirmed present verbatim
+in `app.asar` 1.18286.0's spawn-env builder, one `...At(id)&&{...}` spread per gate:
+
+| Var | Gate | Effect |
+| --- | --- | --- |
+| `MCP_CONNECTION_NONBLOCKING`, `MCP_CONNECT_TIMEOUT_MS` | `434204418` | When on: `"0"` / `"10000"`. |
+| `CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES` | `66187241` | `"true"` when on, `""` when off (always present, never omitted). |
+| `CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING` | `714014285` | `"1"` when on — **on** (force) in this installation's fcache. |
+| `CLAUDE_CODE_OAUTH_SCOPES` | `1936081873` | Set to the host-derived `o.scope` value when on. |
+| `CLAUDE_CODE_SKIP_PRECOMPACT_LOAD` | `4153934152` | `"1"` when on. |
+| `ENABLE_TOOL_SEARCH` | `1129419822` | `"auto"` when on — this gate is itself **dark** (absent from a standard fcache; see Part B). |
+
+`CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES` (previously documented in L90 as the additive sibling of
+`CLAUDE_COWORK_MEMORY_GUIDELINES`) is a related but different pattern: it's **always** present
+(not gate-conditioned on/off), and its *value* comes from GrowthBook string-config gate
+`2860753854` (`dE("2860753854","")`) — falling back to a hardcoded default block (`"## Sensitive
+personal information..."`, a PII-handling guidance template) when the remote config is empty. See
+the `2860753854` Part B row for the value-vs-boolean gate distinction.
+
 ### Desktop-only (`[ASAR]`; filtered out of the VM agent env)
 
 | Var | Effect | Anchor |
@@ -103,13 +142,15 @@ The desktop reads gates via `dt(id)` (→ `.on`) and `Qn(id,key,default)` (→ s
 | `3045399524` | **on** (force) | **Fable model allow** — `{enabled:["claude-fable-5[1m]","claude-fable-5"],alwaysLoad:true}`; whitelists claude-fable-5 (+1M) as selectable in Desktop. |
 | `583857784` | **on** (force) | **Bridge transport SDK adapter** (`Dfn`) — Cowork sessions use the SDK-based transport (`Bfn`) instead of the legacy CCR HTTP transport (`Rfn`). Current production transport path. |
 | `1978029737` | **on** (force) | **Cowork runtime multi-key config** — `sessionsBridgePollBlockMs:30`, `coworkNativeFilePreview:true`, **`coworkWebFetchViaApi:true`**, **`coworkWebFetchPrompt:true`**, `workspaceBashWaitLonger:true` (+ skillsSync/idleGrace/timeouts). Master Cowork tuning gate. |
-| `1648655587` | **on** (force) | **Task dispatch rate-limiter** — `{perTask:1, global:3}`. A dispatch session launches ≤1 sub-task; ≤3 concurrent globally. A real throughput ceiling on Cowork task dispatch. |
+| `1648655587` | **on** (force) | **Scheduled-task session limiter** (`class L9t`, `logPrefix:"[ScheduledTasks]"`/`"[CCDScheduledTasks]"`) — `{perTask:1, global:3}`. **CORRECTED in v2.22.1**: this table originally mislabeled it a "Task dispatch rate-limiter" implying a per-conversation `Task`-tool sub-agent fan-out cap. It is not. `shouldSkipDispatchForActiveSession` counts only *concurrently-active sessions carrying a `scheduledTaskId`* (i.e. sessions launched by Cowork's cron/scheduled-task feature, Ch26/L109): `perTask:1` ⇒ a given scheduled task never has >1 live session at once; `global:3` ⇒ ≤3 background scheduled-task sessions run concurrently across the whole desktop. On exceed it **skips** the dispatch (`recordSkipAndEmit`) and emits `${prefix}_scheduled_tasks_dispatch_skipped` telemetry — no in-agent-run hook, no model-visible effect. Grepping the same asar for `maxConcurrentSubagents`/`subagentLimit`/`concurrentTaskLimit`/`dispatchLimit` turns up nothing: **the Desktop caps in-conversation `Task`-tool sub-agent dispatch nowhere.** Credit: this correction originated from the independent `claude-cowork-headless-emulator` project's forensic pass (`2026-07-04-d4-dispatch-limiter-forensic.md`, ~95%-confidence adversarial review), re-verified first-party against this installation's own `app.asar` 1.18286.0 before being applied here. |
 | `1893165035` | **on** (force) | **Auto-retry error categories** — `categories:["api_prompt_too_long","process_already_running","api_model_not_found","api_request_too_large"]`. Note `api_model_not_found` is auto-retried (can mask model unavailability). |
 | `2340532315` | **on** (force) | **Plugin sync ("sparkplug")** — startup `syncPlugins()`, per-session manifest load, enabled-state backfill. OFF → `enabled_state_source:"sparkplug-off"`. Master Cowork-plugin gate. |
 | `2392971184` | **on** (force) | **`/rc` alias + replay-user-messages** — registers `/rc` for `/remote-control`, adds `replay-user-messages` to spawn extraArgs, expands OAuth scope `user:sessions:claude_code`. |
 | `2940196192` | **on** (force) | **coworkArtifacts** — artifact `getAllWithDiskStatus()`, `askClaude()` inference, the artifacts tool list. |
 | `123929380` | **off** (default) | **coworkKappa** — a named Kappa skill variant + project-mounting for non-session-typed clients; off for the standard client. |
 | `2307090146` | **off** (default) | **`cli_plugin`** broker (Ch23/L106). Confirmed off for the standard interactive account (force-on only for the `3p`/CCD class via the `Vdr` map). |
+| `2614807392` | **off** (dark — absent from fcache) | **`.host-home` skeleton-path index** (added v2.23.0). Governs whether the agent's system prompt is told about the `.host-home` mount name and the accompanying "paths under `.host-home` correspond to absolute host paths" explanation. `.host-home` is **not a real bind mount** — Ch31/L117's rootfs-forensics mount inventory found no `mnt-.host-home.mount` systemd unit, and this gate explains why: it's a synthetic path-translation trick (`ece()`/`uCe()` convert between `/sessions/<id>/mnt/.host-home/<sub>` and a real absolute host path), letting the agent *reference* host paths in prompts without the whole host home directory being shared. Off by default for the standard client, matching the emulator project's own `DARK_GATES` classification. |
+| `2860753854` | **on** (force, inert-default) | **`CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES` value gate** (added v2.23.0). Unlike every other gate in this table, this is a GrowthBook **string** config, not a boolean: `IWt()` returns `dE("2860753854","")` if non-empty, else falls back to a hardcoded default (`"## Sensitive personal information..."` PII-handling guidance). "On" here means the gate resolves to *some* string (truthy), not that a feature is toggled — the practical effect for a standard install is identical to the hardcoded default until Anthropic pushes a remote override. |
 
 ## Part C — the extended control-protocol surface
 

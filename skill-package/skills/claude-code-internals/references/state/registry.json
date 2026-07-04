@@ -598,13 +598,17 @@
       "first_seen": "2.1.118",
       "removed_in": null,
       "as_of": "2.1.198",
-      "summary": "Additive Cowork memory-guidance hint, pre-existing since v2.1.118; sibling of the replace-form CLAUDE_COWORK_MEMORY_GUIDELINES added in v2.1.120.",
+      "summary": "Additive Cowork memory-guidance hint, pre-existing since v2.1.118; sibling of the replace-form CLAUDE_COWORK_MEMORY_GUIDELINES added in v2.1.120. Its value is sourced from GrowthBook string-config gate 2860753854 (default: a hardcoded \"## Sensitive personal information...\" PII-handling block) -- see gate.2860753854 (v2.23.0 addendum).",
       "provenance": [
         {
           "lesson": 89
         },
         {
           "lesson": 90
+        },
+        {
+          "lesson": 108,
+          "note": "value-gate mechanism (2860753854) added v2.23.0"
         }
       ]
     },
@@ -2984,15 +2988,18 @@
     {
       "id": "gate.1648655587",
       "kind": "gate",
-      "name": "1648655587 (task dispatch rate-limiter)",
+      "name": "1648655587 (scheduled-task session limiter)",
       "status": "live",
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.198",
-      "summary": "{perTask:1, global:3} -- a dispatch session launches at most 1 sub-task and at most 3 concurrently, globally. ON (force), a real throughput ceiling on Cowork task dispatch.",
+      "summary": "{perTask:1, global:3} -- CORRECTED (v2.22.1): caps concurrently-active Cowork scheduled/cron-task sessions (class L9t, logPrefix [ScheduledTasks]/[CCDScheduledTasks]) -- at most 1 live session per scheduled task, at most 3 scheduled-task sessions globally; exceeding either skips the dispatch (recordSkipAndEmit) with no model-visible effect. It is NOT an in-conversation Task-tool sub-agent dispatch cap (originally mislabeled as one) -- the Desktop caps Task-tool fan-out nowhere. ON (force).",
       "provenance": [
         {
           "lesson": 108
+        },
+        {
+          "lesson": 109
         }
       ]
     },
@@ -4235,6 +4242,235 @@
         {
           "lesson": 116
         },
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "gate.2614807392",
+      "kind": "gate",
+      "name": "2614807392 (.host-home skeleton-path index)",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Governs whether the system prompt tells the agent about the `.host-home` mount name and its path-translation semantics. `.host-home` is not a real bind mount -- Ch31/L117's rootfs mount-unit inventory found no corresponding systemd unit -- it's a synthetic index resolved by ece()/uCe() that lets the agent reference absolute host paths (e.g. `/sessions/<id>/mnt/.host-home/<sub>` <-> a real host path) without the host home directory ever being shared. OFF (dark, absent from fcache) for the standard client.",
+      "provenance": [
+        {
+          "lesson": 108
+        },
+        {
+          "lesson": 117,
+          "note": "explains the .host-home mount-name reservation structurally"
+        }
+      ]
+    },
+    {
+      "id": "gate.2860753854",
+      "kind": "gate",
+      "name": "2860753854 (memoryExtraGuidelines value gate)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "A GrowthBook string-config gate (not boolean): IWt() returns dE(\"2860753854\",\"\") if non-empty, else a hardcoded default block (\"## Sensitive personal information...\" PII-handling guidance) used as the value of CLAUDE_CODE_MEMORY_EXTRA_GUIDELINES's sibling env, CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES. ON (force) in this installation's fcache, but the practical effect is identical to the hardcoded default (inert unless Anthropic pushes a remote override).",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "gate.434204418",
+      "kind": "gate",
+      "name": "434204418 (mcpConnectionNonblockingOff)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Controls whether the Desktop injects MCP_CONNECTION_NONBLOCKING:\"0\" and MCP_CONNECT_TIMEOUT_MS:\"10000\" into the Cowork spawn env, and (separately, same gate) whether the Desktop pre-builds local MCP servers for the session.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "gate.66187241",
+      "kind": "gate",
+      "name": "66187241 (emitToolUseSummaries)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Controls CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES in the Cowork spawn env -- \"true\" when on, \"\" when off (the key is always present, never omitted).",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "gate.714014285",
+      "kind": "gate",
+      "name": "714014285 (fineGrainedToolStreaming)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Controls CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING:\"1\" in the Cowork spawn env. ON (force) in this installation's fcache.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "gate.1936081873",
+      "kind": "gate",
+      "name": "1936081873 (oauthScopesEnv)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Controls whether CLAUDE_CODE_OAUTH_SCOPES (a host-derived OAuth scope string) is injected into the Cowork spawn env; also separately gates a system-prompt build-cache field (builtSystemPrompt) check on the same code path.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "gate.4153934152",
+      "kind": "gate",
+      "name": "4153934152 (skipPrecompactLoad)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Controls CLAUDE_CODE_SKIP_PRECOMPACT_LOAD:\"1\" in the Cowork spawn env.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "gate.1129419822",
+      "kind": "gate",
+      "name": "1129419822 (enableToolSearchAuto)",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Controls ENABLE_TOOL_SEARCH:\"auto\" in the Cowork spawn env. OFF (dark, absent from a standard fcache) -- pinned in the emulator project's DARK_GATES allowlist so an absent-to-present flip surfaces as a visible diff.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.MCP_CONNECTION_NONBLOCKING",
+      "kind": "env-var",
+      "name": "MCP_CONNECTION_NONBLOCKING",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Cowork spawn-env var, set to \"0\" when gate 434204418 is on; pairs with MCP_CONNECT_TIMEOUT_MS.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.MCP_CONNECT_TIMEOUT_MS",
+      "kind": "env-var",
+      "name": "MCP_CONNECT_TIMEOUT_MS",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Cowork spawn-env var, set to \"10000\" when gate 434204418 is on; pairs with MCP_CONNECTION_NONBLOCKING.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Cowork spawn-env var gated by 66187241 -- \"true\" when on, \"\" when off.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Cowork spawn-env var gated by 714014285 -- \"1\" when on (force-ON in this installation's fcache).",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_OAUTH_SCOPES",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_OAUTH_SCOPES",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Cowork spawn-env var gated by 1936081873, set to a host-derived OAuth scope string when on.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SKIP_PRECOMPACT_LOAD",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SKIP_PRECOMPACT_LOAD",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Cowork spawn-env var gated by 4153934152 -- \"1\" when on.",
+      "provenance": [
+        {
+          "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.ENABLE_TOOL_SEARCH",
+      "kind": "env-var",
+      "name": "ENABLE_TOOL_SEARCH",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Cowork spawn-env var gated by dark gate 1129419822, set to \"auto\" when on. Absent from a standard fcache.",
+      "provenance": [
         {
           "lesson": 108
         }
