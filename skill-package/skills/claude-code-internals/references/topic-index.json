@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-13",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck)",
-  "total_lessons": 113,
+  "generated": "2026-07-04",
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface)",
+  "total_lessons": 114,
   "lessons": [
     {
       "id": 1,
@@ -3034,6 +3034,32 @@
         "prompt-caching-evict",
         "CLAUDE_CODE_DISABLE_REFUSAL_FALLBACK",
         "api-betas-2.1.198"
+      ]
+    },
+    {
+      "id": 114,
+      "title": "Desktop v1.18286.0 Re-Verification, Effort-Spawn Correction & New Cowork Surface",
+      "lesson_number": "114",
+      "file": "25-verified-new-v1.18286.0-desktop.md",
+      "startLine": 23,
+      "endLine": 197,
+      "keywords": [
+        "cli_plugin-recheck",
+        "2307090146",
+        "effort-spawn-correction",
+        "LocalSessions-ipc",
+        "setEffort",
+        "CLAUDE_CODE_SUBAGENT_MODEL",
+        "CLAUDE_CODE_DISABLE_CRON-desktop-sense",
+        "CLAUDE_CODE_QUESTION_PREVIEW_FORMAT",
+        "CLAUDE_CODE_ENABLE_ASK_USER_QUESTION_TOOL",
+        "CLAUDE_COWORK_MEMORY_PATH_OVERRIDE",
+        "MCP_LIST_SCHEDULED_TASKS",
+        "mcp__cowork__propose_skills",
+        "mcp__cowork__send_user_message",
+        "mcp__cowork__present_files",
+        "no-byte-diff-baseline",
+        "desktop-re-verification"
       ]
     }
   ],

@@ -2,9 +2,9 @@
   "schema_version": 1,
   "as_of": {
     "cli": "2.1.198",
-    "desktop_asar": "1.17377.2",
+    "desktop_asar": "1.18286.0",
     "in_vm_elf": "2.1.197",
-    "fcache_capture": "2026-07-02"
+    "fcache_capture": "2026-07-04"
   },
   "entries": [
     {
@@ -3935,6 +3935,234 @@
       "provenance": [
         {
           "lesson": 95
+        }
+      ]
+    },
+    {
+      "id": "gate.2976814254",
+      "kind": "gate",
+      "name": "2976814254",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Gates a browser-preview-related feature; guard requires this gate AND sessionType===\"ccd\" AND not-SSH. Found riding in the same hardcodedMainGrowthBookFeatures force-on table as cli_plugin (2307090146), scoped to the 3p/CCD deployment class only.",
+      "provenance": [
+        {
+          "lesson": 114
+        }
+      ]
+    },
+    {
+      "id": "gate.3246569822",
+      "kind": "gate",
+      "name": "3246569822",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Gates canSaveSkill. Same force-on table as cli_plugin (2307090146), 3p/CCD-class only.",
+      "provenance": [
+        {
+          "lesson": 114
+        }
+      ]
+    },
+    {
+      "id": "gate.1696890383",
+      "kind": "gate",
+      "name": "1696890383",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Gates whether CLAUDE_COWORK_MEMORY_GUIDELINES (lesson 90) is constructed at spawn time at all. Same force-on table as cli_plugin (2307090146), 3p/CCD-class only.",
+      "provenance": [
+        {
+          "lesson": 114
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_QUESTION_PREVIEW_FORMAT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_QUESTION_PREVIEW_FORMAT",
+      "status": "live",
+      "first_seen": "1.18286.0",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Set from Desktop settings (askUserQuestion.previewFormat) at Cowork session spawn; the settings->env wiring behind lesson 107's AskUserQuestion reachability documentation.",
+      "provenance": [
+        {
+          "lesson": 114
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ENABLE_ASK_USER_QUESTION_TOOL",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ENABLE_ASK_USER_QUESTION_TOOL",
+      "status": "live",
+      "first_seen": "1.18286.0",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Set unconditionally to \"true\" in the main Cowork spawn env. Not previously named as its own enable-flag; lesson 107 only documented --permission-prompt-tool stdio as the mechanism keeping AskUserQuestion from being silently auto-dismissed.",
+      "provenance": [
+        {
+          "lesson": 114
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_AUTO_MEMORY",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_AUTO_MEMORY",
+      "status": "live",
+      "first_seen": "1.18286.0",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Fallback set to \"1\" in the Cowork spawn env when no memory path is resolvable; sibling of CLAUDE_COWORK_MEMORY_PATH_OVERRIDE.",
+      "provenance": [
+        {
+          "lesson": 114
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_COWORK_MEMORY_PATH_OVERRIDE",
+      "kind": "env-var",
+      "name": "CLAUDE_COWORK_MEMORY_PATH_OVERRIDE",
+      "status": "live",
+      "first_seen": "1.18286.0",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "The concrete env-var wiring between lesson 109's CoworkSpaces.getAutoMemoryDir (Space-scoped auto-memory directory) and the agent's Cowork spawn env.",
+      "provenance": [
+        {
+          "lesson": 114
+        },
+        {
+          "lesson": 109,
+          "note": "completes the getAutoMemoryDir IPC method documented there"
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_CRON",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_CRON",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Two distinct meanings under one name. CLI-side (lesson 38): the AGENT_TRIGGERS/tengu_kairos_cron kill switch. Desktop-side (lesson 114): a session-scoped `disableCron` setting set at Cowork session spawn (`A.disableCron?\"1\":\"\"`), forced true in background/ephemeral spawn helpers -- plausibly what keeps lesson 109's Scheduled Tasks from firing inside ephemeral/non-interactive Cowork spawns. Do not conflate the two.",
+      "provenance": [
+        {
+          "lesson": 38
+        },
+        {
+          "lesson": 114,
+          "note": "Desktop/Cowork-session-scoped meaning, distinct from the CLI AGENT_TRIGGERS sense"
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_AGENTS_FLEET",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_AGENTS_FLEET",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Lesson 100 documented this only as the old, renamed-away name for CLAUDE_CODE_DISABLE_AGENT_VIEW (Fleet view -> agent view rename). Still live for a narrower purpose: set to \"1\" alongside CLAUDE_CODE_DISABLE_BACKGROUND_TASKS in a Tasks-tool-child spawn path, suppressing nested Fleet/backgrounding from sub-tasks. The primary UI toggle renamed; this one spawn-path usage did not.",
+      "provenance": [
+        {
+          "lesson": 100,
+          "note": "documented only as the old name of DISABLE_AGENT_VIEW"
+        },
+        {
+          "lesson": 114,
+          "note": "confirmed still live for Tasks-tool-child nested-Fleet suppression"
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SUBAGENT_MODEL",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SUBAGENT_MODEL",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Promoted from speculative to confirmed. Lesson 46 catalogued this only as an unreleased precedence-order entry with no evidence anything set it. Lesson 114 confirms it is genuinely wired in the Desktop Cowork spawn path, reading a real defaultSubagentModel settings field.",
+      "provenance": [
+        {
+          "lesson": 46,
+          "note": "originally catalogued as speculative/unreleased"
+        },
+        {
+          "lesson": 114,
+          "note": "confirmed wired to a real Desktop settings field"
+        }
+      ]
+    },
+    {
+      "id": "tool.MCP_LIST_SCHEDULED_TASKS",
+      "kind": "tool",
+      "name": "MCP_LIST_SCHEDULED_TASKS",
+      "status": "live",
+      "first_seen": "1.18286.0",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "A 5th scheduled-tasks tool alongside lesson 109's CREATE/UPDATE/START_WATCHING/STOP_WATCHING. List-only, lower-privilege; confirmed NOT part of the 8-tool Desktop forced-ask matcher.",
+      "provenance": [
+        {
+          "lesson": 114
+        }
+      ]
+    },
+    {
+      "id": "tool.mcp__cowork__propose_skills",
+      "kind": "tool",
+      "name": "mcp__cowork__propose_skills",
+      "status": "live",
+      "first_seen": "1.18286.0",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "A cowork-namespaced MCP tool found in the same string-table region as save_skill/launch_code_session; not in the 8-tool forced-ask matcher.",
+      "provenance": [
+        {
+          "lesson": 114
+        }
+      ]
+    },
+    {
+      "id": "tool.mcp__cowork__send_user_message",
+      "kind": "tool",
+      "name": "mcp__cowork__send_user_message",
+      "status": "live",
+      "first_seen": "1.18286.0",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "A cowork-namespaced MCP tool found alongside propose_skills/present_files; not in the 8-tool forced-ask matcher.",
+      "provenance": [
+        {
+          "lesson": 114
+        }
+      ]
+    },
+    {
+      "id": "tool.mcp__cowork__present_files",
+      "kind": "tool",
+      "name": "mcp__cowork__present_files",
+      "status": "live",
+      "first_seen": "1.18286.0",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Promotes a scratchpad file to the outputs/artifacts area (log line: \"[present_files] Promoted scratchpad file...\"); not in the 8-tool forced-ask matcher.",
+      "provenance": [
+        {
+          "lesson": 114
         }
       ]
     }

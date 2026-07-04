@@ -2,9 +2,9 @@
 domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.198
-as_of_desktop: 1.17377.2
-sources: [89, 90, 107, 109]
-updated: 2026-07-03
+as_of_desktop: 1.18286.0
+sources: [89, 90, 107, 109, 114]
+updated: 2026-07-04
 ---
 
 # Cowork runtime architecture (current)
@@ -157,3 +157,14 @@ value in both skill content and hooks — **one token, two namespaces**):
 A blanket "always resolve `${CLAUDE_PLUGIN_ROOT}` to the VM path" rule is
 therefore wrong for host-side reference `Read`s and right only for
 in-VM-bash-executed scripts — the skill has to pick per consumer.
+
+## Re-verification at Desktop 1.18286.0 (2026-07-04)
+
+All of the above — the host-loop/VM-loop split, the shared-scratch-space
+filesystem model, session storage layout, and the three-root plugin
+namespace — is structurally unchanged in Desktop 1.18286.0 (lesson 114).
+One piece of prior underspecification is now resolved: the env var
+carrying a Space's per-space auto-memory directory (`CoworkSpaces.
+getAutoMemoryDir`, documented above via lesson 109) into the agent's spawn
+env is `CLAUDE_COWORK_MEMORY_PATH_OVERRIDE`, with `CLAUDE_CODE_
+DISABLE_AUTO_MEMORY=1` as the fallback when no memory path resolves.

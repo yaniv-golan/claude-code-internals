@@ -2,9 +2,9 @@
 domain: credential-channels
 title: Desktop/Cowork credential channels (current)
 as_of_cli: 2.1.198
-as_of_desktop: 1.17377.2
-sources: [105, 106, 107]
-updated: 2026-07-03
+as_of_desktop: 1.18286.0
+sources: [105, 106, 107, 114]
+updated: 2026-07-04
 ---
 
 # Desktop/Cowork credential channels (current)
@@ -70,6 +70,14 @@ lessons (see frontmatter).
    moment Anthropic flips the gate. Force-on exists only for the `3p`/CCD
    deployment class, not the standard client. Check gate state by decoding
    `~/Library/Application Support/Claude/fcache`.
+
+   **Re-confirmed off at Desktop 1.18286.0 (2026-07-04, lesson 114)** —
+   same `defaultValue` source, mechanism structurally unchanged (only
+   re-minified identifiers). No prior build was available to diff against
+   byte-for-byte (1.17377.2 was pruned by auto-update before this pass and
+   Anthropic does not serve historical Desktop `.app` builds), so this was
+   a re-verification against the previously-published mechanism, not a
+   binary diff.
 
 ## Auth at spawn
 

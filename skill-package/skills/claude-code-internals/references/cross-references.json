@@ -2276,6 +2276,38 @@
         "relevance": 0.9,
         "reason": "PEWTER_OWL gate over the internal SendUserMessage tool"
       }
+    ],
+    "114": [
+      {
+        "id": 106,
+        "relevance": 0.95,
+        "reason": "re-verifies the cli_plugin gate 2307090146 mechanism at a newer Desktop build"
+      },
+      {
+        "id": 107,
+        "relevance": 0.85,
+        "reason": "corrects the --effort spawn-value claim and re-verifies the forced-ask matcher"
+      },
+      {
+        "id": 108,
+        "relevance": 0.75,
+        "reason": "re-verifies all 11 catalogued gates and cross-checks env vars for this build"
+      },
+      {
+        "id": 109,
+        "relevance": 0.8,
+        "reason": "re-verifies CoworkSpaces/CoworkScheduledTasks IPC surfaces byte-for-byte and completes the getAutoMemoryDir env wiring"
+      },
+      {
+        "id": 93,
+        "relevance": 0.6,
+        "reason": "CLAUDE_CODE_EFFORT_LEVEL is the env var backing the corrected Desktop effort resolver"
+      },
+      {
+        "id": 46,
+        "relevance": 0.55,
+        "reason": "CLAUDE_CODE_SUBAGENT_MODEL promoted here from speculative to confirmed-wired"
+      }
     ]
   }
 }
