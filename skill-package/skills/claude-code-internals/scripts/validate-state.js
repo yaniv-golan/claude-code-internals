@@ -79,8 +79,11 @@ function validate(refsDir) {
     if (!registry.as_of || typeof registry.as_of.cli !== 'string') {
       errors.push('registry.json: as_of.cli missing');
     }
+    if (registry.entries !== undefined && !Array.isArray(registry.entries)) {
+      errors.push('registry.json: entries must be an array');
+    }
     const seen = new Set();
-    for (const entry of registry.entries || []) {
+    for (const entry of Array.isArray(registry.entries) ? registry.entries : []) {
       const label = entry.id || JSON.stringify(entry).slice(0, 60);
       for (const f of REQUIRED_ENTRY_FIELDS) {
         if (entry[f] === undefined || entry[f] === '') errors.push(`${label}: missing field "${f}"`);

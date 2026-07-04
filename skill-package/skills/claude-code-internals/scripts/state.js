@@ -27,6 +27,12 @@ const DEFAULT_REFS = path.join(__dirname, '..', 'references');
 function loadState(refsDir) {
   const stateDir = path.join(refsDir, 'state');
   const registry = JSON.parse(fs.readFileSync(path.join(stateDir, 'registry.json'), 'utf8'));
+  if (!registry || typeof registry !== 'object' || !registry.as_of || typeof registry.as_of.cli !== 'string') {
+    throw new Error('registry.json malformed (as_of.cli missing) — run validate-state.js');
+  }
+  if (registry.entries !== undefined && !Array.isArray(registry.entries)) {
+    throw new Error('registry.json malformed (entries is not an array) — run validate-state.js');
+  }
   const pages = fs.readdirSync(stateDir)
     .filter(f => f.endsWith('.md') && f !== 'README.md')
     .map(f => {
@@ -73,7 +79,8 @@ if (require.main === module) {
   const refsDir = DEFAULT_REFS;
 
   if (args[0] === '--audit') {
-    const r = audit(refsDir);
+    let r;
+    try { r = audit(refsDir); } catch (e) { console.error(`state layer unreadable: ${e.message}`); process.exit(1); }
     if (json) { console.log(JSON.stringify(r, null, 2)); process.exit(0); }
     console.log(`baseline: CLI ${r.baseline}`);
     if (!r.stale.length) { console.log('everything reconciled to baseline'); process.exit(0); }
@@ -87,7 +94,8 @@ if (require.main === module) {
     process.exit(2);
   }
 
-  const r = lookup(refsDir, args[0]);
+  let r;
+  try { r = lookup(refsDir, args[0]); } catch (e) { console.error(`state layer unreadable: ${e.message}`); process.exit(1); }
   if (json) { console.log(JSON.stringify(r, null, 2)); process.exit(0); }
   if (!r.entries.length && !r.pages.length) { console.log('no matches'); process.exit(0); }
   for (const e of r.entries) {

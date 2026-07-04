@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.18.1 — 2026-07-04 (this fork) — Follow-up hardening for the current-state layer
+
+Resolves every follow-up deferred from the v2.18.0 review. Tooling: `validate-state.js` now reports `entries must be an array` as a clean validation error instead of throwing on a malformed registry; `state.js` guards against a malformed/unvalidated `registry.json` (missing `as_of.cli`, non-array `entries`) with a descriptive error and a friendly CLI message ("state layer unreadable … run validate-state.js"); both test suites clean up their temp fixture dirs via `test.after` (no more orphaned tmpdirs) and gain two new tests (14 total). Content: `cmd.toggle-memory` no longer overloads `removed_in` for a rename (now `null`; the rename window lives in the summary); `references/state/README.md` codifies the per-kind status semantics (reachability for commands/env-vars/tools, fcache on/off for gates, contract presence for IPC interfaces — deliberate, not an inconsistency); one awkward cross-reference sentence in `command-surface.md` reworded. Index fix: `topic-index.json` lesson 107 `endLine` 273 → 340 — the L107 chapter's Part F (auth/env handoff: `rtA()`/`itA()`, `CLAUDE_CODE_OAUTH_TOKEN`) was outside the indexed range even though L107's own keywords referenced it; `fetch-lesson.js 107` now returns the full chapter, and `semantic-index.json` was rebuilt accordingly (113 entries). No lesson content changes; binary baseline unchanged (CLI 2.1.198 / app.asar 1.17377.2 / in-VM ELF 2.1.197).
+
 ## v2.18.0 — 2026-07-03 (this fork) — Current-state layer
 
 Adds `references/state/`: a normalized "as of CLI 2.1.198" truth layer over the

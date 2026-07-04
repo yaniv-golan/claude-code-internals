@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "created": "2026-07-02T21:12:06.421Z",
+  "created": "2026-07-04T11:17:59.240Z",
   "description": "TF-IDF semantic index for Claude Code internals lessons. Use semantic-search.js to query.",
   "total_entries": 113,
   "entries": [
@@ -8707,7 +8707,7 @@
       "title": "The Cowork Spawn + stream-json Control-Protocol Contract (CLAUDE_CODE_IS_COWORK, --permission-prompt-tool stdio, control_response double-nesting, SDK MCP delivery; app.asar 1.12603.1 / in-VM ELF 2.1.170)",
       "file": "21-cowork-control-protocol.md",
       "startLine": 22,
-      "endLine": 273,
+      "endLine": 340,
       "text": "The Cowork Spawn + stream-json Control-Protocol Contract (CLAUDE_CODE_IS_COWORK, --permission-prompt-tool stdio, control_response double-nesting, SDK MCP delivery; app.asar 1.12603.1 / in-VM ELF 2.1.170) cowork-spawn-contract stream-json control-protocol control_request control_response initialize-handshake double-nested-response CLAUDE_CODE_IS_COWORK cowork-mode-env --cowork-rejected --permission-prompt-tool permission-prompt-tool-stdio askuserquestion-answer-shape updatedInput.answers sdkMcpServers mcp_message mcp-tunneling driver-is-mcp-server --mcp-config-ignored mcp-config-inert CLAUDE_CODE_USE_COWORK_PLUGINS TSO cowork_settings.json --allowedTools --tools layered-permission run_in_background-blocked allow-dangerously-skip-permissions CLAUDE_CODE_OAUTH_TOKEN setup-token MAX_THINKING_TOKENS 31999 --effort CLAUDE_FORCE_HOST_LOOP appendSubagentSystemPrompt CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT sdk-control-protocol claude-code-vm in-vm-elf headless-driver ubuntu-22-guest node-v12 break-system-packages host-loop-driver host-loop-shared-scratch bash-vs-read-edit-paths two-path-namespaces use-bare-filenames sessions-path-deny CLAUDE_PLUGIN_ROOT-host-loop plugin-root-resolution claude-hostloop-plugins plugin-reference-path script-vs-reference-path  31999 mcp control-protocol cowork cowork-spawn-contract stream-json control_request control_response initialize-handshake double-nested-response claude_code_is_cowork cowork-mode-env --cowork-rejected --permission-prompt-tool permission-prompt-tool-stdio askuserquestion-answer-shape updatedinput.answers sdkmcpservers mcp_message mcp-tunneling driver-is-mcp-server --mcp-config-ignored mcp-config-inert claude_code_use_cowork_plugins tso cowork_settings.json --allowedtools --tools layered-permission run_in_background-blocked allow-dangerously-skip-permissions claude_code_oauth_token setup-token max_thinking_tokens --effort claude_force_host_loop appendsubagentsystemprompt claude_code_enable_append_subagent_prompt sdk-control-protocol claude-code-vm in-vm-elf headless-driver ubuntu-22-guest node-v12 break-system-packages host-loop-driver CLAUDE_CODE_IS_COWORK updatedInput.answers sdkMcpServers CLAUDE_CODE_USE_COWORK_PLUGINS TSO --allowedTools CLAUDE_CODE_OAUTH_TOKEN MAX_THINKING_TOKENS CLAUDE_FORCE_HOST_LOOP appendSubagentSystemPrompt CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT host-loop-shared-scratch bash-vs-read-edit-paths two-path-namespaces use-bare-filenames sessions-path-deny CLAUDE_PLUGIN_ROOT-host-loop plugin-root-resolution claude-hostloop-plugins plugin-reference-path script-vs-reference-path",
       "keywords": [
         "cowork-spawn-contract",

@@ -106,6 +106,6 @@ a user a dark-launched command is available to them.
   see L111 directly via `fetch-lesson.js 111` for anchors.
 - Cowork-specific command/tool gating (host-loop tool partition,
   `--allowedTools`, Desktop PreToolUse forced-ask): `cowork-permissions.md`.
-  `/background`/`/daemon`/`/stop`/Fleet-view gating specifically predates
-  this page's sources (L89–L90) — check `registry.json`'s `cmd.*` entries
-  for their current status.
+  `/background`/`/daemon`/`/stop`/Fleet-view gating is documented in
+  L89–L90, which predate this page's sources (L111–L112) — check
+  `registry.json`'s `cmd.*` entries for their current status.

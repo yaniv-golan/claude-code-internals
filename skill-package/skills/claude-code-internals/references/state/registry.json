@@ -2831,7 +2831,7 @@
       "name": "/toggle-memory",
       "status": "renamed",
       "first_seen": null,
-      "removed_in": "2.1.198",
+      "removed_in": null,
       "as_of": "2.1.198",
       "summary": "Renamed to /pause-memory (kept as an alias, not deleted) in the v2.1.160-198 CLI content refresh.",
       "provenance": [

@@ -7,9 +7,15 @@ const path = require('path');
 
 const { validate, parseFrontmatter } = require('../validate-state.js');
 
+const FIXTURE_DIRS = [];
+test.after(() => {
+  for (const d of FIXTURE_DIRS) fs.rmSync(d, { recursive: true, force: true });
+});
+
 /** Build a minimal valid refs fixture dir and return its path. */
 function makeFixture() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'state-fixture-'));
+  FIXTURE_DIRS.push(dir);
   fs.mkdirSync(path.join(dir, 'state'));
   fs.writeFileSync(path.join(dir, 'topic-index.json'), JSON.stringify({
     lessons: [
@@ -97,6 +103,16 @@ test('state page domain must match filename', () => {
   ].join('\n'));
   const errors = validate(dir);
   assert.ok(errors.some(e => e.includes('mismatched.md')), errors.join('; '));
+});
+
+test('non-array entries is a clean error, not a throw', () => {
+  const dir = makeFixture();
+  const regPath = path.join(dir, 'state', 'registry.json');
+  const reg = JSON.parse(fs.readFileSync(regPath, 'utf8'));
+  reg.entries = 'oops';
+  fs.writeFileSync(regPath, JSON.stringify(reg));
+  const errors = validate(dir);
+  assert.ok(errors.some(e => e.includes('entries must be an array')), errors.join('; '));
 });
 
 test('state page citing an unknown lesson is an error', () => {

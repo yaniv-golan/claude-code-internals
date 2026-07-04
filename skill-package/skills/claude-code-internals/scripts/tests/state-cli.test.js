@@ -7,8 +7,14 @@ const path = require('path');
 
 const { lookup, audit } = require('../state.js');
 
+const FIXTURE_DIRS = [];
+test.after(() => {
+  for (const d of FIXTURE_DIRS) fs.rmSync(d, { recursive: true, force: true });
+});
+
 function makeFixture() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'state-cli-fixture-'));
+  FIXTURE_DIRS.push(dir);
   fs.mkdirSync(path.join(dir, 'state'));
   fs.writeFileSync(path.join(dir, 'topic-index.json'), JSON.stringify({ lessons: [
     { id: 107, title: 'x', file: 'f.md', startLine: 1, endLine: 2, keywords: [] },
@@ -51,6 +57,14 @@ test('lookup matches renamed_to so the new name finds the old entry', () => {
   const r = lookup(makeFixture(), 'pause-memory');
   assert.strictEqual(r.entries.length, 1);
   assert.strictEqual(r.entries[0].id, 'cmd.toggle-memory');
+});
+
+test('malformed registry (missing as_of.cli) throws a clean error', () => {
+  const dir = makeFixture();
+  fs.writeFileSync(path.join(dir, 'state', 'registry.json'),
+    JSON.stringify({ schema_version: 1, entries: [] }));
+  assert.throws(() => audit(dir), /as_of\.cli missing/);
+  assert.throws(() => lookup(dir, 'x'), /as_of\.cli missing/);
 });
 
 test('audit reports entries and pages behind the registry baseline', () => {
