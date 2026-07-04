@@ -1,7 +1,7 @@
 {
   "generated": "2026-07-04",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface)",
-  "total_lessons": 114,
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes)",
+  "total_lessons": 116,
   "lessons": [
     {
       "id": 1,
@@ -3061,6 +3061,100 @@
         "no-byte-diff-baseline",
         "desktop-re-verification"
       ]
+    },
+    {
+      "id": 115,
+      "title": "Subagent Resume Semantics: Task vs SendMessage, CLI vs Cowork",
+      "lesson_number": "115",
+      "file": "26-subagent-resume-semantics.md",
+      "startLine": 20,
+      "endLine": 238,
+      "keywords": [
+        "subagent-resume",
+        "task-one-shot",
+        "resume-completed-agent",
+        "SendMessage-resume",
+        "resumedAgentId",
+        "resumeAgentBackground",
+        "dfe",
+        "agent-stopped",
+        "agent-evicted",
+        "agent-stopped-by-user",
+        "stoppedByUser",
+        "resumeInProcessTeammate",
+        "fork-inherits-context",
+        "subagent_type-fork",
+        "run_in_background-omitted",
+        "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS",
+        "CLAUDE_CODE_FORK_SUBAGENT",
+        "cowork-no-sendmessage",
+        "cowork-tools-list",
+        "redo-dispatch",
+        "repair-dispatch",
+        "transcript-resume",
+        "invocationKind-resume",
+        "is_resume",
+        "L114-correction",
+        "main-cowork-spawn-env",
+        "capability-detection",
+        "sendmessage-tool-presence"
+      ]
+    },
+    {
+      "id": 116,
+      "title": "Detecting the Runtime from a Skill: CLI vs Cowork vs Elsewhere",
+      "lesson_number": "116",
+      "file": "27-skill-runtime-detection.md",
+      "startLine": 19,
+      "endLine": 205,
+      "keywords": [
+        "runtime-detection",
+        "detect-cowork",
+        "detect-claude-code",
+        "skill-runtime-detection",
+        "CLAUDECODE",
+        "CLAUDE_CODE_ENTRYPOINT",
+        "entrypoint-values",
+        "local-agent",
+        "remote_cowork",
+        "claude-desktop-entrypoint",
+        "CLAUDE_CODE_IS_COWORK",
+        "CLAUDE_CODE_SESSION_ID",
+        "CLAUDE_CODE_CHILD_SESSION",
+        "AI_AGENT",
+        "sealed-vm-env",
+        "vm-env-scrub",
+        "sessions-path-signature",
+        "/sessions",
+        "mcp__workspace__bash",
+        "tool-surface-discriminator",
+        "disableSkillShellExecution",
+        "inline-shell-disabled-cowork",
+        "q5n",
+        "bmt",
+        "cvs",
+        "c2u",
+        "u2u",
+        "d2u",
+        "jX",
+        "Xga",
+        "avs",
+        "jBo",
+        "MGn-allowlist-gone",
+        "allowlist-drift",
+        "host-vm-boundary",
+        "hook-export-not-visible",
+        "uname-ambiguous",
+        "CLAUDE_PLUGIN_ROOT-host-side",
+        "detect_runtime-recipe",
+        "execution-context",
+        "elsewhere-detection",
+        "cursor-detection",
+        "harness-detection",
+        "v2.1.198",
+        "1.18286.0"
+      ],
+      "summary": "How a skill reliably detects whether it runs in the Claude Code CLI, Claude Cowork, or elsewhere. The trap: host-loop Cowork splits a skill across a host-side agent process (CLAUDE_CODE_IS_COWORK=1, CLAUDE_CODE_ENTRYPOINT=local-agent) and a sealed-env VM shell (mcp__workspace__bash) where no CLAUDE_CODE_* marker survives -- a bare env check yields a false negative exactly when it matters. Inline !`cmd` skill-shell execution is force-disabled in Cowork (q5n) and hook exports don't cross the host/VM bridge, so neither can probe. Recipe: script-side ordered checks (IS_COWORK -> /sessions/<id> path signature -> CLAUDECODE=1 from bmt -> other), refined by the CLAUDE_CODE_ENTRYPOINT value sets (c2u/u2u/d2u, normalizer cvs); content-side, branch on the tool surface (Bash vs mcp__workspace__bash). Artifact-drift caveat: the old MGn host->VM env allowlist from asar v1.6259.1 is gone from 1.18286.0 (only the unrelated SSH-MCP jBo filter remains) -- the sealed-env fact now rests on the v2.12.2 empirical probe."
     }
   ],
   "keyword_map": {
@@ -8489,6 +8583,66 @@
     ],
     "api-betas-2.1.198": [
       113
+    ],
+    "subagent-resume": [
+      115
+    ],
+    "SendMessage-resume": [
+      115
+    ],
+    "resumedAgentId": [
+      115
+    ],
+    "resumeAgentBackground": [
+      115
+    ],
+    "task-one-shot": [
+      115
+    ],
+    "resume-completed-agent": [
+      115
+    ],
+    "cowork-no-sendmessage": [
+      115
+    ],
+    "fork-inherits-context": [
+      115
+    ],
+    "redo-dispatch": [
+      115
+    ],
+    "repair-dispatch": [
+      115
+    ],
+    "runtime-detection": [
+      116
+    ],
+    "detect-cowork": [
+      116
+    ],
+    "detect-claude-code": [
+      116
+    ],
+    "CLAUDECODE": [
+      116
+    ],
+    "CLAUDE_CODE_ENTRYPOINT": [
+      116
+    ],
+    "sessions-path-signature": [
+      116
+    ],
+    "sealed-vm-env": [
+      116
+    ],
+    "disableSkillShellExecution": [
+      116
+    ],
+    "tool-surface-discriminator": [
+      116
+    ],
+    "entrypoint-values": [
+      116
     ]
   }
 }

@@ -3,7 +3,7 @@ domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.198
 as_of_desktop: 1.18286.0
-sources: [89, 90, 107, 109, 114]
+sources: [89, 90, 107, 109, 114, 116]
 updated: 2026-07-04
 ---
 
@@ -157,6 +157,26 @@ value in both skill content and hooks — **one token, two namespaces**):
 A blanket "always resolve `${CLAUDE_PLUGIN_ROOT}` to the VM path" rule is
 therefore wrong for host-side reference `Read`s and right only for
 in-VM-bash-executed scripts — the skill has to pick per consumer.
+
+## Runtime detection from a skill (lesson 116)
+
+"In Cowork" names three execution contexts with three different visible envs:
+the host-side agent process (`CLAUDE_CODE_IS_COWORK=1`,
+`CLAUDE_CODE_ENTRYPOINT=local-agent`), host-side hooks (same env), and the
+in-VM shell (`mcp__workspace__bash`, **sealed** — no `CLAUDE_CODE_*` markers
+survive; v2.12.2 probe). A skill's shell commands run in the third, so a bare
+`$CLAUDE_CODE_IS_COWORK` check false-negatives in production Cowork. Inline
+`` !`cmd` `` skill-shell execution is force-disabled under Cowork
+(`disableSkillShellExecution` short-circuit), and hook env-exports don't cross
+the host/VM bridge — neither can serve as a probe.
+
+Reliable recipe (ordered): `$CLAUDE_CODE_IS_COWORK` set → cowork (host-side or
+VM-loop); cwd under `/sessions/<id>` → cowork VM shell (host-loop); `$CLAUDECODE
+= 1` → Claude Code CLI (refine via `CLAUDE_CODE_ENTRYPOINT`); else → other
+harness. Content-side, branch on the tool surface: plain `Bash` vs
+`mcp__workspace__bash`. The old host→VM env allowlist (`MGn`, asar v1.6259.1)
+is gone from the 1.18286.0 asar — the sealed-env fact rests on the empirical
+probe, not that symbol.
 
 ## Re-verification at Desktop 1.18286.0 (2026-07-04)
 

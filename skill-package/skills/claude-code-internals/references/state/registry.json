@@ -1244,10 +1244,13 @@
       "first_seen": "2.1.170",
       "removed_in": null,
       "as_of": "2.1.198",
-      "summary": "The activation marker for Cowork mode; selected by this env var, not a CLI flag (--cowork itself is rejected at agent-invocation time, plugin-scope only).",
+      "summary": "The activation marker for Cowork mode; selected by this env var, not a CLI flag (--cowork itself is rejected at agent-invocation time, plugin-scope only). Visibility caveat (L116): under host-loop this var lives on the HOST-side agent process only -- a skill's shell commands run in the sealed-env VM (mcp__workspace__bash) and do not see it, so a bare env check false-negatives in production Cowork; it is also the switch that force-disables inline skill-shell execution (q5n/disableSkillShellExecution).",
       "provenance": [
         {
           "lesson": 107
+        },
+        {
+          "lesson": 116
         }
       ]
     },
@@ -1896,10 +1899,14 @@
       "first_seen": "2.1.197",
       "removed_in": null,
       "as_of": "2.1.198",
-      "summary": "Suppresses the \"run_in_background: true\" hint injected into a tool description, hiding the background-task affordance.",
+      "summary": "Disables background subagents. Effects (v2.1.198): removes run_in_background from the Task tool's model-facing schema (fLo's sJt branch) so subagents run synchronously; suppresses the \"run_in_background: true\" hint; makes SendMessage-resume of a stopped agent run to completion inline instead of resuming in the background. Set to \"1\" in the env block of the MAIN Cowork local-agent spawn (asar 1.18286.0) -- i.e. every Cowork session, alongside CLAUDE_CODE_DISABLE_AGENTS_FLEET.",
       "provenance": [
         {
           "lesson": 109
+        },
+        {
+          "lesson": 115,
+          "note": "schema omission + synchronous resume + main-Cowork-spawn siting"
         }
       ]
     },
@@ -4074,7 +4081,7 @@
       "first_seen": "2.1.159",
       "removed_in": null,
       "as_of": "2.1.198",
-      "summary": "Lesson 100 documented this only as the old, renamed-away name for CLAUDE_CODE_DISABLE_AGENT_VIEW (Fleet view -> agent view rename). Still live for a narrower purpose: set to \"1\" alongside CLAUDE_CODE_DISABLE_BACKGROUND_TASKS in a Tasks-tool-child spawn path, suppressing nested Fleet/backgrounding from sub-tasks. The primary UI toggle renamed; this one spawn-path usage did not.",
+      "summary": "Lesson 100 documented this only as the old, renamed-away name for CLAUDE_CODE_DISABLE_AGENT_VIEW (Fleet view -> agent view rename). Still live, set to \"1\" alongside CLAUDE_CODE_DISABLE_BACKGROUND_TASKS -- but L115 corrects L114's siting: in asar 1.18286.0 each var appears exactly once, in the MAIN Cowork local-agent spawn env builder (the block that sets CLAUDE_CODE_IS_COWORK=1), not a narrower Tasks-tool-child spawn path. Fleet/agent-view and backgrounding are suppressed for every Cowork session.",
       "provenance": [
         {
           "lesson": 100,
@@ -4083,6 +4090,10 @@
         {
           "lesson": 114,
           "note": "confirmed still live for Tasks-tool-child nested-Fleet suppression"
+        },
+        {
+          "lesson": 115,
+          "note": "corrects L114: set in the main Cowork spawn env, not a Tasks-tool-child path"
         }
       ]
     },
@@ -4163,6 +4174,69 @@
       "provenance": [
         {
           "lesson": 114
+        }
+      ]
+    },
+    {
+      "id": "tool.SendMessage",
+      "kind": "tool",
+      "name": "SendMessage",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Messaging tool that doubles as the subagent RESUME path: sending to a completed/stopped background agent's agentId (format a...-...) calls dfe/resumeAgentBackground, which reloads the disk transcript and continues the agent with the new prompt (tool result carries resumedAgentId; agents stopped by the user are refused). Default-enabled in the plain CLI (no isEnabled of its own); the il() agent-teams gate only shapes its structured-message schema. In Cowork it is ABSENT from the Desktop spawn's explicit tools:/allowedTools: lists, making resume unreachable there.",
+      "provenance": [
+        {
+          "lesson": 115
+        }
+      ]
+    },
+    {
+      "id": "tool.Task",
+      "kind": "tool",
+      "name": "Task",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Subagent dispatch. Input schema (THm/SHm/fLo): description, prompt, subagent_type, model, run_in_background, name, team_name (deprecated), mode, isolation, cwd -- NO resume parameter; every call spawns a fresh agent (tengu_agent_tool_selected is_resume:false). run_in_background is omitted from the schema when CLAUDE_CODE_DISABLE_BACKGROUND_TASKS is set or the fork experiment (PX()) is active; cwd is always omitted model-facing. Continuation lives elsewhere: SendMessage resume (tool.SendMessage), subagent_type 'fork' (inherits full conversation context), Workflow resumeFromRunId.",
+      "provenance": [
+        {
+          "lesson": 115
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDECODE",
+      "kind": "env-var",
+      "name": "CLAUDECODE",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Set to \"1\" (with CLAUDE_CODE_SESSION_ID and CLAUDE_CODE_CHILD_SESSION, +AI_AGENT from agent contexts) on every Bash-tool subprocess by the shell-env injector (bmt) and the shell-snapshot spawner -- the deliberate contract marker a script uses to detect it is running under the Claude Code CLI. NOT visible in the Cowork host-loop VM shell (mcp__workspace__bash, sealed env); there the /sessions/<id> path signature is the discriminator. See L116 for the full detection recipe.",
+      "provenance": [
+        {
+          "lesson": 116
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ENTRYPOINT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ENTRYPOINT",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "The CLI's own surface classifier, normalized at boot (cvs: local_agent->local-agent, mcp serve->mcp, CLAUDE_CODE_ACTION->claude-code-github-action, default cli/sdk-cli). Recognized values as of 2.1.198 (c2u): cli, mcp, sdk-cli, sdk-ts, sdk-py, bench, claude-vscode, claude-code-github-action, local-agent, local_agent, claude-desktop, remote, remote_baku, remote_cowork, remote_trigger, remote_desktop, remote_mobile, claude_in_slack, claude-in-slack, claude-in-teams, claude-desktop-3p, claude-security, ssh-remote. Desktop family subset u2u = {claude-desktop, claude-desktop-3p, local-agent}; Desktop Cowork spawns with local-agent, cloud Cowork workers with remote_cowork. Treat unknown values as 'Claude Code, unspecified surface' -- the set grows release to release.",
+      "provenance": [
+        {
+          "lesson": 116
+        },
+        {
+          "lesson": 108
         }
       ]
     }

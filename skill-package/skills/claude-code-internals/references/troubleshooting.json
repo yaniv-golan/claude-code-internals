@@ -1323,6 +1323,48 @@
         109
       ],
       "hint": "Host-loop Cowork is NOT two filesystems. bash (mcp__workspace__bash) runs in the VM and sees the outputs dir at /mnt/outputs; Read/Write/Edit run host-side and see the SAME files under the session/host path. The host prompt says so verbatim ('the same scratch space the Read/Write/Edit tools use ... use bare filenames with both'). Failure = passing a VM-absolute /sessions/<id>/mnt/... path from bash to a host file tool, which the PreToolUse path-gate (IeA=[Read,Write,Edit,Glob,Grep]) DENIES ('VM path on host'). Fix: relative/bare filenames, not routing through bash. See Ch24/L107 path-gate + Ch26/L109. ${CLAUDE_PLUGIN_ROOT} resolves HOST-SIDE (claude-hostloop-plugins/<hash>): keep it literal for host-side Read of references (accepted); but for bash-run scripts use the in-VM mount /sessions/<id>/mnt/.local-plugins/\u2026 (the host path is useless in the guest); outputs = relative filenames. One token can't be right for both host file tools and in-VM bash."
+    },
+    {
+      "pattern": [
+        "can't resume completed subagent",
+        "task tool one-shot resume",
+        "continue a finished background agent",
+        "sendmessage resume stopped agent",
+        "resumedAgentId",
+        "agent was stopped by the user and won't be resumed",
+        "no transcript found for agent id",
+        "cowork subagent can't be continued",
+        "run_in_background missing from task schema",
+        "background agents disabled cowork"
+      ],
+      "lessons": [
+        115,
+        107,
+        109,
+        91
+      ],
+      "hint": "The Task tool has no resume parameter anywhere -- each call spawns a fresh agent. In the standalone CLI (v2.1.198) a completed/stopped background agent IS resumable: SendMessage with the agentId (format a...-...) from the spawn result as `to` -- the agent-stopped branch calls dfe/resumeAgentBackground, reloading the disk transcript and continuing with your prompt (result carries resumedAgentId). Refusals: agents stopped BY THE USER ('treat its work as cancelled'), or no transcript on disk/memory. In Cowork, resume is unreachable by design: the Desktop spawn's explicit tools: list omits SendMessage, sets CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1 (run_in_background stripped from the Task schema), and a Desktop PreToolUse Task hook blocks run_in_background ('Background agents disabled') -- redo/repair dispatch with a fresh agent is the only continuation there. Alternatives in the CLI: subagent_type 'fork' (inherits full conversation) and Workflow resumeFromRunId (cached agent replay). See L115."
+    },
+    {
+      "pattern": [
+        "skill can't detect cowork",
+        "CLAUDE_CODE_IS_COWORK empty in shell",
+        "env var missing in cowork vm",
+        "detect if running in claude code",
+        "CLAUDECODE not set",
+        "how to tell cli from cowork",
+        "inline shell command not running in cowork skill",
+        "dynamic context not executing cowork",
+        "sessionstart export not visible to script",
+        "runtime detection skill"
+      ],
+      "lessons": [
+        116,
+        107,
+        89,
+        108
+      ],
+      "hint": "Host-loop Cowork splits a skill across a host-side agent process (which has CLAUDE_CODE_IS_COWORK=1) and a sealed-env VM shell (mcp__workspace__bash) which has NO CLAUDE_CODE_* markers -- so a bare env check false-negatives exactly in Cowork. Detect with ordered checks: $CLAUDE_CODE_IS_COWORK set -> cowork (host-side/VM-loop); cwd under /sessions/<id> -> cowork VM shell; CLAUDECODE=1 -> Claude Code CLI (refine via CLAUDE_CODE_ENTRYPOINT); else other. Content-side, branch on Bash vs mcp__workspace__bash in the tool list. Note inline !`cmd` skill-shell execution is force-disabled in Cowork (q5n) and hook env-exports don't reach the VM. See L116."
     }
   ]
 }

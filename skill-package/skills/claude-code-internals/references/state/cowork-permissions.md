@@ -2,9 +2,9 @@
 domain: cowork-permissions
 title: Cowork permission stack (current)
 as_of_cli: 2.1.198
-as_of_desktop: 1.17377.2
-sources: [89, 107, 108, 109]
-updated: 2026-07-03
+as_of_desktop: 1.18286.0
+sources: [89, 107, 108, 109, 115]
+updated: 2026-07-04
 ---
 
 # Cowork permission stack (current)
@@ -85,6 +85,19 @@ lessons (see frontmatter).
    delete) and become `rwd` only once their path is added to that set,
    which happens when the user approves an `allow_cowork_file_delete`
    request (one of the 8 tools forced to `ask` in layer 3).
+
+8. **Explicit `tools:` list at spawn — subagent resume severed** (L115).
+   The Desktop passes an explicit `tools:` array (and matching
+   `allowedTools:`) that omits `SendMessage` — the CLI's resume path for
+   completed background agents (don't confuse it with `SendUserMessage`,
+   which IS present for brief sessions). Combined with
+   `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1` in the same spawn env (strips
+   `run_in_background` from the Task schema → subagents run synchronously)
+   and layer 3's `Task` hook, a Cowork model cannot continue a completed
+   subagent at all: redo/repair dispatch with a fresh agent is the only
+   continuation primitive. In the standalone CLI the same binary resumes
+   completed agents via `SendMessage({to: <agentId>})`
+   (`resumeAgentBackground`, transcript reload, `resumedAgentId`).
 
 `--allow-dangerously-skip-permissions` is a **capability grant**; mode
 stays `default` (auth is layered on top, not replaced). Without

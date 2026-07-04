@@ -25,6 +25,12 @@ Updated: 2026-06-13 | Source: **First-party binary extraction & verification.** 
 All present in the binary noted; `[VM]` = in-VM agent ELF, `[ASAR]` = desktop main process. Behavior is
 from the cited anchor.
 
+> **Visibility note (added in v2.21.0).** "Present in the binary/spawn env" is not the same as
+> "visible to a skill's shell probe": under host-loop Cowork these vars live on the **host-side
+> agent process**, while a skill's shell commands run in the sealed-env VM via
+> `mcp__workspace__bash` and see none of them. For which markers are visible in which execution
+> context — and the reliable detection recipe — see **Ch30/L116**.
+
 ### Model / effort / thinking control
 
 | Var | Effect | Anchor |
