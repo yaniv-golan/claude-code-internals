@@ -2,9 +2,9 @@
 domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.198
-as_of_desktop: 1.17377.2
-sources: [5, 88, 89, 106, 109]
-updated: 2026-07-03
+as_of_desktop: 1.18286.0
+sources: [5, 88, 89, 106, 109, 118]
+updated: 2026-07-05
 ---
 
 # Plugins, skills & hooks (current)
@@ -99,6 +99,27 @@ future strict mode: today's unknown-key telemetry is the signal Anthropic
 would use to decide what to promote to a documented alias versus reject
 outright. Not covered: `plugin.json`, `mcp.json`, `settings.json`, memory
 files — each has its own dedicated, non-shadow parser.
+
+## `activeSkill` scope & attribution (internal, not in the stream)
+
+When a `Skill` tool runs, the agent sets `options.activeSkill` to the
+invoked skill. For an **inline** skill this is **sticky, most-recent-wins,
+no-pop** — it stays set until the next `Skill` call replaces it (there is no
+"skill exited" signal). For a **fork** skill (`context: fork`), the body runs
+in a forked sub-agent and the previous `activeSkill` is **restored** in a
+`finally`. Sub-agent dispatches inherit it via
+`spawnedBySkill: options.spawnedBySkill ?? options.activeSkill`, and a
+recursion guard (`tengu_skill_tool_fork_recursion`) blocks a fork sub-agent
+re-invoking its own skill.
+
+This scope is threaded onto every **outbound API request** as
+`attribution: c$(querySource, spawnedBySkill, activeSkill, activeMcpServer,
+activeMcpTool)` — but it is **absent from the local stream-json output**, whose
+only per-tool metadata (`tool_use_meta`) is display-only. So no exact tool→skill
+attribution exists in the stream; **fork**-skill inner tools are the exception
+(they carry `parent_tool_use_id` = the `Skill` id, so they're exactly
+attributable — and are currently *undercounted* in `toolCounts` because a `Skill`
+call isn't registered like an `Agent`/`Task` dispatch). See Ch32/L118.
 
 ## CLI-plugin credential broker
 

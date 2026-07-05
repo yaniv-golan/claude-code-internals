@@ -2,7 +2,7 @@
 
 ![Claude Code Internals banner](assets/banner.png)
 
-> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 117 lessons covering every internal subsystem, verified against the v2.1.198 binary (plus the Claude Desktop `app.asar` for the Desktop-host chapters, the Cowork in-VM agent ELF for the spawn/control-protocol and Spaces/Tasks chapters, and the golden Cowork VM disk image for filesystem/mount forensics), searchable three ways.
+> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 118 lessons covering every internal subsystem, verified against the v2.1.198 binary (plus the Claude Desktop `app.asar` for the Desktop-host chapters, the Cowork in-VM agent ELF for the spawn/control-protocol and Spaces/Tasks chapters, and the golden Cowork VM disk image for filesystem/mount forensics), searchable three ways.
 >
 > **This is a modified fork** of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals). See [Attribution](#attribution) for what changed.
 
@@ -12,7 +12,7 @@
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-plugin-F97316)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/plugins)
 [![Improved with Skill Creator Plus](https://img.shields.io/badge/Improved_with-Skill_Creator_Plus-4ecdc4?style=flat-square)](https://github.com/yaniv-golan/skill-creator-plus)
 
-**Skill Version:** 2.23.0 | **Captured from:** Claude Code v2.1.198 (+ Claude Desktop app.asar 1.9659.4 / 1.11847.5 / 1.12603.1 / 1.17377.2 / 1.18286.0 + in-VM ELF claude-code-vm/2.1.170 / 2.1.197 + the golden Cowork VM disk image `rootfs.img`) | **Date:** 2026-07-04 | **License:** MIT
+**Skill Version:** 2.24.0 | **Captured from:** Claude Code v2.1.198 (+ Claude Desktop app.asar 1.9659.4 / 1.11847.5 / 1.12603.1 / 1.17377.2 / 1.18286.0 + in-VM ELF claude-code-vm/2.1.170 / 2.1.197 + the golden Cowork VM disk image `rootfs.img`) | **Date:** 2026-07-05 | **License:** MIT
 
 ---
 
@@ -282,7 +282,7 @@ Returns the companion system internals: the date gate (April 2026+, first-party 
 ```bash
 node scripts/fetch-lesson.js 32          # Hooks System content
 node scripts/fetch-lesson.js 32 --meta   # Metadata only (file, line range)
-node scripts/fetch-lesson.js --list      # All 117 lessons
+node scripts/fetch-lesson.js --list      # All 118 lessons
 ```
 
 ### xref.js — Shell-Safe Cross-Reference Lookup
@@ -359,7 +359,7 @@ claude-code-internals/
 │   └── skills/
 │       └── claude-code-internals/  The skill itself
 │           ├── SKILL.md            Skill brain (search strategy, lesson index)
-│           ├── version.json        Version tracking (v2.23.0 / v2.1.198)
+│           ├── version.json        Version tracking (v2.24.0 / v2.1.198)
 │           ├── hooks-config.json   PreToolUse hook definition
 │           ├── references/
 │           │   ├── 01-core-architecture-tools.md
@@ -457,6 +457,7 @@ claude-code-internals/
 | **29** | **`26-subagent-resume-semantics.md`** | **Subagent resume semantics** (L115): `Task` is one-shot per call everywhere (no resume parameter), but the standalone CLI resumes completed/stopped background agents via `SendMessage({to: <agentId>})` → `resumeAgentBackground` (disk-transcript reload); Cowork severs the path at spawn (`SendMessage` omitted, `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1`, Desktop `Task` hook) — binary-verified vs CLI 2.1.198 + app.asar 1.18286.0 |
 | **30** | **`27-skill-runtime-detection.md`** | **Skill runtime detection** (L116): CLI vs Cowork vs elsewhere — host-loop Cowork splits a skill across a host-side agent process and a **sealed-env VM shell** with no `CLAUDE_CODE_*` markers, so a bare env check false-negatives in production Cowork; ordered detection recipe (`$CLAUDE_CODE_IS_COWORK` → cwd `/sessions/<id>` → `$CLAUDECODE`/`CLAUDE_CODE_ENTRYPOINT` → else) |
 | **31** | **`28-vm-rootfs-forensics.md`** | **VM rootfs forensics** (L117): direct inspection of the golden Cowork VM disk image (`rootfs.img`) — full per-session mount inventory (`outputs`/`uploads`/`.claude`/connected-folders, each a `sessions-<slug>-mnt-<name>.mount` unit) with the key negative result that home and `/tmp` have **no** mount unit; confirms Docker-style session-slug format; surfaces the in-guest `coworkd` daemon. v2.23.0 addendum: the `.host-home` mount name is a dark-gated synthetic path-translation index, not a real bind mount |
+| **32** | **`29-skill-scope-stream-contract.md`** | **Skill-scope attribution & the per-`tool_use` stream contract** (L118): the agent tracks an internal `activeSkill` scope (inline = sticky/no-pop, fork restores it in a `finally`) and threads an `attribution` bundle onto every **outbound API request** — but that scope is **absent from the local stream**, whose per-`tool_use` envelope is a small set of always-present + conditional fields (`tool_use_meta` is display-only). No exact tool→skill attribution in the stream; **fork** skills excepted (`parent_tool_use_id` = the `Skill` id, currently undercounted in `toolCounts`). Also pins `microcompact_boundary` (0 stream producers — render-only). Cross-artifact first-party vs in-VM ELF 2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0 |
 
 </details>
 
@@ -464,7 +465,7 @@ claude-code-internals/
 
 ```json
 {
-  "skill_version": "2.23.0",
+  "skill_version": "2.24.0",
   "captured_version": "2.1.198",
   "verified_against_binary": "2.1.198",
   "captured_date": "2026-07-02"
@@ -505,7 +506,7 @@ This repository is a fork of [stuinfla/claude-code-internals](https://github.com
 - The PreToolUse `.claude/` hook (`config-aware-hook.sh`), version check script, and RuFlo index builder
 - The original README documentation and architecture diagrams
 
-**What this fork adds** (v2.2.0–v2.23.0, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
+**What this fork adds** (v2.2.0–v2.24.0, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
 
 - Chapter 9 (Lessons 51–56): binary-verified new features in Claude Code v2.1.90, extracted directly from the Bun SEA binary and verified against official docs
 - Chapter 10 (Lessons 57–59): binary-verified changes in Claude Code v2.1.92 — new commands, removed commands, new env vars, and AskUserQuestionTool documentation
@@ -533,6 +534,7 @@ This repository is a fork of [stuinfla/claude-code-internals](https://github.com
 - Chapter 31 (Lesson 117): VM rootfs forensics — direct inspection of the golden Cowork VM disk image (`rootfs.img`), a third artifact class beyond `app.asar` and the in-VM ELF; full per-session mount inventory, the no-mount-unit-for-home-or-`/tmp` negative result, Docker-style session-slug format, and the in-guest `coworkd` daemon
 - v2.22.1 correction: gate `1648655587` (Ch25/L108) was mislabeled a Task-dispatch rate-limiter — it's actually Cowork's scheduled/cron-task **session limiter**, with no cap found anywhere on in-conversation `Task`-tool fan-out
 - v2.23.0 extension: a cluster of gate-conditioned Cowork spawn-env vars (`MCP_CONNECTION_NONBLOCKING`, `CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES`, `CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING`, and others) added to Ch25/L108, plus the finding that `.host-home` (Ch31/L117) is a dark-gated synthetic path-translation index, not a real bind mount
+- Chapter 32 (Lesson 118): skill-scope attribution & the per-`tool_use` stream contract — the agent's internal `activeSkill` scope (inline sticky/no-pop, fork restore-in-`finally`) and the `attribution` bundle on the **outbound API request**, both **absent from the local stream**; the per-`tool_use` envelope (always-present + conditional fields, display-only `tool_use_meta`); fork-skill `parent_tool_use_id` attribution + the `toolCounts` undercount; `microcompact_boundary` has 0 stream producers (render-only) — cross-artifact first-party vs in-VM ELF 2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0
 - ULTRAPLAN (L41) status updated: now officially released as research preview
 - 5 new scripts: `fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `extract-bundle.sh`, `diff-versions.sh`
 - Plugin marketplace infrastructure: `.claude-plugin/` files, "Add to Claude" install button, GitHub Actions release and Pages deploy workflows

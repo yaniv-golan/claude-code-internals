@@ -2,9 +2,9 @@
 domain: cowork-control-protocol
 title: Cowork spawn + stream-json control protocol (current)
 as_of_cli: 2.1.198
-as_of_desktop: 1.17377.2
-sources: [105, 107, 108, 109]
-updated: 2026-07-03
+as_of_desktop: 1.18286.0
+sources: [105, 107, 108, 109, 118]
+updated: 2026-07-05
 ---
 
 # Cowork spawn + stream-json control protocol (current)
@@ -122,3 +122,34 @@ Question input: `input.questions[] = {question, header, options:
 `answers: z.record(z.string(), z.string())`). The model then proceeds with
 the chosen answer. This is the over-the-wire answer shape for the same
 AskUserQuestion tool documented elsewhere in this skill.
+
+## Per-`tool_use` stream envelope (fixed field set)
+
+The locally-`yield`ed stream-json objects carry a **small, fixed** per-message
+field set (first-party, VM ELF 2.1.197 + host CLI 2.1.201): `type`
+(`assistant`/`user`), `message`, `parent_tool_use_id`, `session_id`, `uuid`,
+`error`, `request_id`, `supersedes` (conditional), and `tool_use_meta`
+(conditional). The only per-tool metadata, `tool_use_meta`, is **display-only**:
+`{id, display_name, server_display_name?, icon_url?}[]` (MCP tool titles/icons).
+
+**Skill scope is NOT in the stream.** Internally the agent tracks `activeSkill`
+and threads an `attribution` bundle —
+`c$(querySource, spawnedBySkill, activeSkill, activeMcpServer, activeMcpTool)` —
+onto every **outbound API request**, but that quintuple appears on **zero**
+`yield`ed stream objects. So a harness reading the stream cannot attribute a tool
+call to a skill exactly; for **inline** skills the ceiling is a sticky
+"active-skill window" (mirroring the agent's own no-pop `activeSkill`), while
+**fork** skills' inner tool calls arrive as `skill_progress`-wrapped messages
+carrying `parent_tool_use_id` = the `Skill` call id (exact). See Ch32/L118.
+
+## Compaction subtypes
+
+`{type:"system", subtype:"compact_boundary", …, compact_metadata}` fires on
+auto/manual compaction — **8 stream-emit producer sites** in 2.1.197 (identical
+in 2.1.201). **`microcompact_boundary`** is a distinct subtype string but
+**asymmetric: 0 emit sites** — its only two occurrences are a string-table
+constant and one Ink TUI renderer case that renders nothing
+(`if(subtype==="microcompact_boundary")return null`). So micro-compaction is
+**render-only and suppressed, NOT serialized into the stream** on this evidence;
+a stream/headless `compaction_occurred` signal should key on `compact_boundary`
+(keying on `microcompact_boundary` catches nothing). See Ch32/L118 Part D.

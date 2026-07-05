@@ -5,13 +5,13 @@
     "email": "yaniv@golan.name"
   },
   "metadata": {
-    "description": "Source-level architecture knowledge for Claude Code — 117 lessons covering hooks, permissions, agents, compaction, MCP, sessions, plugins, and Claude Cowork internals, verified through the v2.1.198 binary plus Claude Desktop app.asar 1.18286.0, the in-VM Cowork agent 2.1.197, and the golden Cowork VM disk image."
+    "description": "Source-level architecture knowledge for Claude Code — 118 lessons covering hooks, permissions, agents, compaction, MCP, sessions, plugins, and Claude Cowork internals, verified through the v2.1.198 binary plus Claude Desktop app.asar 1.18286.0, the in-VM Cowork agent 2.1.197, and the golden Cowork VM disk image."
   },
   "plugins": [
     {
       "name": "claude-code-internals",
       "source": "./skill-package",
-      "description": "Gives Claude source-level knowledge of its own architecture. 117 lessons covering every internal subsystem — hooks (all 30 event types, PreToolUse-bypasses-canUseTool, hook input contract), permissions (7-phase pipeline, 23 validators), boot sequence, agents, compaction, MCP, memory, sessions, plugins, AskUserQuestion, and binary-verified internals through the v2.1.198 CLI + Claude Desktop app.asar 1.18286.0 + in-VM agent 2.1.197 + the golden Cowork VM disk image — Chapter 27's model landscape (Sonnet 5 as the new default, native 1M context) and dark-launched Claude Design & Artifacts, plus Claude Cowork (Spaces, Scheduled Tasks, Tasks tool, SDK file-checkpointing, subagent resume semantics, skill runtime detection, VM rootfs mount forensics, host-loop shared-scratch/path-namespace model, control-protocol contract, production GrowthBook gates) and a mutable current-state layer over the append-only lesson chapters. Searchable via RRF (keyword + TF-IDF fusion).",
+      "description": "Gives Claude source-level knowledge of its own architecture. 118 lessons covering every internal subsystem — hooks (all 30 event types, PreToolUse-bypasses-canUseTool, hook input contract), permissions (7-phase pipeline, 23 validators), boot sequence, agents, compaction, MCP, memory, sessions, plugins, AskUserQuestion, and binary-verified internals through the v2.1.198 CLI + Claude Desktop app.asar 1.18286.0 + in-VM agent 2.1.197 + the golden Cowork VM disk image — Chapter 27's model landscape (Sonnet 5 as the new default, native 1M context) and dark-launched Claude Design & Artifacts, plus Claude Cowork (Spaces, Scheduled Tasks, Tasks tool, SDK file-checkpointing, subagent resume semantics, skill runtime detection, VM rootfs mount forensics, skill-scope attribution & the per-tool_use stream contract, host-loop shared-scratch/path-namespace model, control-protocol contract, production GrowthBook gates) and a mutable current-state layer over the append-only lesson chapters. Searchable via RRF (keyword + TF-IDF fusion).",
       "author": {
         "name": "Yaniv Golan",
         "email": "yaniv@golan.name"

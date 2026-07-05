@@ -112,6 +112,14 @@ This is the runtime behind the **`tasks_tab` experiment** (Part F), which is for
 `fcache`. Related agent control-protocol subtypes: `background_tasks`, `task_started`, `task_progress`,
 `task_updated`, `task_summary`, `task_notification`, `stop_task` (Part E).
 
+**Wire format pinned (first-party, ELF 2.1.197; added v2.24.0 via the L118 cross-artifact pass).**
+`TaskCreate`'s `tool_result` text is the literal template `` `Task #${n.id} created successfully: ${n.subject}` ``,
+and the agent defines its **own** parse regex for it — `Nom = /^Task #(\S+) created successfully/` — so a consumer
+recovering the assigned task id should reuse that exact regex (capture group 1), not guess. `TaskUpdate`'s input
+schema is `{taskId: string, status?: "pending"|"in_progress"|"completed"|"deleted", subject?, activeForm?}` — note
+**`deleted` is a real wire status** (confirmed via the literal set `"in_progress","completed","deleted"` in the
+binary), i.e. a task can be deleted through `TaskUpdate`, not only created/advanced.
+
 ## Part D — SDK file checkpointing / rewind & remote recap (agent-side, new)
 
 The agent now supports **file checkpointing with a rewind path** over the control protocol:
@@ -166,7 +174,10 @@ ultrareview_launch worker_shutting_down
   `model_refusal_no_fallback`.
 - **Lifecycle / telemetry:** `turn_starting`, `turn_duration`, `worker_shutting_down`, `stop_hook_summary`,
   `submit_feedback`, `api_retry`, `thinking_tokens`, `compact_boundary`, `agents_killed`, `file_suggestions`,
-  `mirror_error`, `bridge_state`, `bridge_status`, `remote_control`.
+  `mirror_error`, `bridge_state`, `bridge_status`, `remote_control`. (**`compact_boundary` has a distinct
+  micro-compaction sibling, `microcompact_boundary`**, pinned first-party in v2.24.0 — see Ch32/L118 Part D;
+  unlike `compact_boundary` it is `return null`'d in at least one render path, so it does not always surface
+  as a visible boundary.)
 
 ## Part F — Production `fcache` gate posture (snapshot 2026-07-02)
 

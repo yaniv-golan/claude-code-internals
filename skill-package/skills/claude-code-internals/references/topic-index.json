@@ -1,7 +1,7 @@
 {
-  "generated": "2026-07-04",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF)",
-  "total_lessons": 117,
+  "generated": "2026-07-05",
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party)",
+  "total_lessons": 118,
   "lessons": [
     {
       "id": 1,
@@ -1812,7 +1812,7 @@
     },
     {
       "id": 88,
-      "title": "v2.1.118 /cost + /stats \u2192 /usage Aliases, cache-diagnosis-2026-04-07, Frontmatter Shadow Validator, WIF OAuth Locking",
+      "title": "v2.1.118 /cost + /stats → /usage Aliases, cache-diagnosis-2026-04-07, Frontmatter Shadow Validator, WIF OAuth Locking",
       "lesson_number": "88",
       "file": "16-verified-new-v2.1.118.md",
       "startLine": 459,
@@ -2955,7 +2955,12 @@
         "claudevm.bundle",
         "mnt-.claude-skills.mount",
         "vm-mount-verification",
-        "claude/skills-mount"
+        "claude/skills-mount",
+        "TaskCreate-result-format",
+        "Task-created-successfully",
+        "Nom-regex",
+        "TaskUpdate-schema",
+        "deleted-task-status"
       ]
     },
     {
@@ -3040,7 +3045,7 @@
     },
     {
       "id": 113,
-      "title": "Auto-memory\u2192Knowledge-base + API-beta/Fallback Surface",
+      "title": "Auto-memory→Knowledge-base + API-beta/Fallback Surface",
       "lesson_number": "113",
       "file": "24-verified-new-v2.1.198.md",
       "startLine": 156,
@@ -3226,6 +3231,69 @@
         "skeleton-path-index"
       ],
       "summary": "Direct forensic inspection of a third Cowork artifact class beyond app.asar and the in-VM ELF: the raw, unencrypted golden VM guest disk image (vm_bundles/claudevm.bundle/rootfs.img), which retains leftover systemd-journald log entries from real historical sessions. Extends the single verified .claude/skills mount-unit example (L104) to a full inventory (outputs, uploads, .claude, .claude/skills, .claude/projects, and one per user-connected folder), each independently mounted/unmounted per session as sessions-<slug>-mnt-<name>.mount -- and finds NO mount unit for home or /tmp, the structural reason those paths are never host-shared (they're plain guest-local paths, not bind mounts, an architecturally different kind of storage from outputs/). Confirms real session-slug values follow a Docker-style adjective-adjective-noun format. Surfaces a previously undocumented in-guest daemon, coworkd, which provisions a dedicated Unix user (uid/gid) per session slug and spawns work as that user via oneshot-<uuid> jobs -- concretely corroborating the host-loop plugin-staging mechanism (claude-hostloop-plugins/<hash>) with a real deck-review skill invocation. Notes a plausible but unconfirmed session-to-VM multiplexing inference from the idempotent user-exists check plus an observed empty vm_bundles/warm/ directory. Methodology: raw disk/container images are a searchable third artifact class when a feature isn't in either 'obvious' binary; rg is ~15-20x faster than grep -a or naive scripting-language regex over multi-GB images."
+    },
+    {
+      "id": 118,
+      "title": "Skill-Scope Attribution & the Per-tool_use Stream Contract",
+      "lesson_number": "118",
+      "file": "29-skill-scope-stream-contract.md",
+      "startLine": 13,
+      "endLine": 263,
+      "keywords": [
+        "skill-scope-attribution",
+        "activeSkill",
+        "spawnedBySkill",
+        "attribution-bundle",
+        "sticky-skill-window",
+        "no-pop-skill-scope",
+        "inline-vs-fork-skill",
+        "fork-skill-restore",
+        "querySource",
+        "activeMcpServer",
+        "activeMcpTool",
+        "W1e-skill-id-normalizer",
+        "Ypm-fork-runner",
+        "tengu_skill_tool_fork_recursion",
+        "skill_invoke_fork_recursion",
+        "fork-recursion-guard",
+        "tool_use_meta",
+        "tool-use-meta-schema",
+        "display-name",
+        "server_display_name",
+        "icon_url",
+        "per-tool_use-stream-contract",
+        "stream-json-envelope",
+        "parent_tool_use_id",
+        "supersedes",
+        "skill_progress",
+        "agent_progress",
+        "fork-skill-parent-id",
+        "fork-skill-exact-attribution",
+        "toolCounts-undercount-fork-skill",
+        "attribution-not-in-stream",
+        "attribution-on-api-request",
+        "compact_boundary",
+        "microcompact_boundary",
+        "micro-compaction-subtype",
+        "return-null-subtype",
+        "skill-to-tool-attribution",
+        "tool-skill-mapping",
+        "cowork-stream-contract",
+        "claude-cowork-headless-emulator",
+        "host-cli-2.1.201",
+        "skill-runtime-scope",
+        "subagent_type",
+        "task_description",
+        "dispatch-scoped-envelope-fields",
+        "message.model",
+        "per-message-usage",
+        "service_tier",
+        "inference_geo",
+        "init-message-fields",
+        "init-agents-field",
+        "skills-bare-names",
+        "availableSkills-names-only"
+      ]
     }
   ],
   "keyword_map": {
@@ -8823,6 +8891,60 @@
     ],
     "gate-434204418": [
       108
+    ],
+    "activeSkill": [
+      118
+    ],
+    "spawnedBySkill": [
+      118
+    ],
+    "tool_use_meta": [
+      118
+    ],
+    "microcompact_boundary": [
+      118
+    ],
+    "attribution bundle": [
+      118
+    ],
+    "skill scope": [
+      118
+    ],
+    "skill attribution": [
+      118
+    ],
+    "parent_tool_use_id": [
+      118
+    ],
+    "fork skill": [
+      118
+    ],
+    "tengu_skill_tool_fork_recursion": [
+      118
+    ],
+    "subagent_type": [
+      118
+    ],
+    "task_description": [
+      118
+    ],
+    "message.model": [
+      118
+    ],
+    "per-message usage": [
+      118
+    ],
+    "init message fields": [
+      118
+    ],
+    "TaskCreate result": [
+      109
+    ],
+    "deleted task status": [
+      109
+    ],
+    "Nom regex": [
+      109
     ]
   }
 }

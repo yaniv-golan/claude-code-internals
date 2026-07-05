@@ -828,7 +828,7 @@
       {
         "id": 85,
         "relevance": 0.75,
-        "reason": "L85 adds CLAUDE_BG_BACKEND=daemon and autoAddRemoteControlDaemonWorker \u2014 the env gate for the always-on local worker this Remote Control bridge feeds into"
+        "reason": "L85 adds CLAUDE_BG_BACKEND=daemon and autoAddRemoteControlDaemonWorker — the env gate for the always-on local worker this Remote Control bridge feeds into"
       }
     ],
     "38": [
@@ -1162,7 +1162,7 @@
       {
         "id": 12,
         "relevance": 0.78,
-        "reason": "/branch spawns a fork subagent \u2014 relates to the full agent system"
+        "reason": "/branch spawns a fork subagent — relates to the full agent system"
       },
       {
         "id": 52,
@@ -1191,7 +1191,7 @@
       {
         "id": 19,
         "relevance": 0.65,
-        "reason": "/buddy injects a companion system prompt \u2014 relates to memory/prompt injection"
+        "reason": "/buddy injects a companion system prompt — relates to memory/prompt injection"
       }
     ],
     "57": [
@@ -1203,7 +1203,7 @@
       {
         "id": 58,
         "relevance": 0.78,
-        "reason": "L57 and L58 both document v2.1.92 changes \u2014 read together"
+        "reason": "L57 and L58 both document v2.1.92 changes — read together"
       }
     ],
     "58": [
@@ -1445,7 +1445,7 @@
       {
         "id": 85,
         "relevance": 0.5,
-        "reason": "L85 shows /update actively iterating (module hash churn, new refusal paths) despite still being isEnabled:()=>false from L68 \u2014 daemon-mode may be the delivery vehicle"
+        "reason": "L85 shows /update actively iterating (module hash churn, new refusal paths) despite still being isEnabled:()=>false from L68 — daemon-mode may be the delivery vehicle"
       }
     ],
     "69": [
@@ -1584,7 +1584,7 @@
       {
         "id": 32,
         "relevance": 0.7,
-        "reason": "REPL mode is compaction-aware \u2014 warns when VM state is cleared during context compaction"
+        "reason": "REPL mode is compaction-aware — warns when VM state is cleared during context compaction"
       }
     ],
     "76": [
@@ -1660,12 +1660,12 @@
       {
         "id": 80,
         "relevance": 0.75,
-        "reason": "Both L78 and L80 are server-driven behavioral modifications \u2014 read together as the 'server takes the wheel' cluster"
+        "reason": "Both L78 and L80 are server-driven behavioral modifications — read together as the 'server takes the wheel' cluster"
       },
       {
         "id": 83,
         "relevance": 0.68,
-        "reason": "Advisor's behavior pairs with System Prompt GB Override \u2014 both let the server alter primary-model behavior"
+        "reason": "Advisor's behavior pairs with System Prompt GB Override — both let the server alter primary-model behavior"
       },
       {
         "id": 29,
@@ -1692,19 +1692,19 @@
       {
         "id": 20,
         "relevance": 0.65,
-        "reason": "PushNotification complements the local notification system (L20) \u2014 one is transactional, the other is in-session"
+        "reason": "PushNotification complements the local notification system (L20) — one is transactional, the other is in-session"
       },
       {
         "id": 85,
         "relevance": 0.5,
-        "reason": "L85's daemon-mode gate complements the mobile push infrastructure of L79 \u2014 both are moves toward an always-on local posture"
+        "reason": "L85's daemon-mode gate complements the mobile push infrastructure of L79 — both are moves toward an always-on local posture"
       }
     ],
     "80": [
       {
         "id": 28,
         "relevance": 0.92,
-        "reason": "Context Hint triggers keep-recent micro-compaction \u2014 extends the compaction system from L28 with a server-driven trigger"
+        "reason": "Context Hint triggers keep-recent micro-compaction — extends the compaction system from L28 with a server-driven trigger"
       },
       {
         "id": 2,
@@ -1714,7 +1714,7 @@
       {
         "id": 78,
         "relevance": 0.75,
-        "reason": "Both L78 and L80 are server-driven behavioral modifications \u2014 paired in the 'server takes the wheel' narrative"
+        "reason": "Both L78 and L80 are server-driven behavioral modifications — paired in the 'server takes the wheel' narrative"
       },
       {
         "id": 33,
@@ -1741,7 +1741,7 @@
       {
         "id": 22,
         "relevance": 0.65,
-        "reason": "Fullscreen mode interacts with keybindings (L22) \u2014 input handling changes in alt-screen mode"
+        "reason": "Fullscreen mode interacts with keybindings (L22) — input handling changes in alt-screen mode"
       },
       {
         "id": 84,
@@ -1768,7 +1768,7 @@
       {
         "id": 66,
         "relevance": 0.65,
-        "reason": "Both L82 and L66 (CA cert store) are enterprise-network features \u2014 related configuration surface"
+        "reason": "Both L82 and L66 (CA cert store) are enterprise-network features — related configuration surface"
       }
     ],
     "83": [
@@ -1790,7 +1790,7 @@
       {
         "id": 77,
         "relevance": 0.68,
-        "reason": "System prompt GB override is gated on CLAUDE_CODE_REMOTE \u2014 primarily runs inside CCR v2 Remote Workflows from L77"
+        "reason": "System prompt GB override is gated on CLAUDE_CODE_REMOTE — primarily runs inside CCR v2 Remote Workflows from L77"
       },
       {
         "id": 78,
@@ -1839,7 +1839,7 @@
       {
         "id": 60,
         "relevance": 0.7,
-        "reason": "L60's /autofix-pr is the surviving Remote Workflow command \u2014 read together to see which remote commands persist vs. were sunset"
+        "reason": "L60's /autofix-pr is the surviving Remote Workflow command — read together to see which remote commands persist vs. were sunset"
       },
       {
         "id": 81,
@@ -1849,7 +1849,7 @@
       {
         "id": 73,
         "relevance": 0.6,
-        "reason": "L73 CCR v2 multi-repo infrastructure survives the L85 sunset \u2014 the scaffolding remains even though L77's user-facing commands were removed"
+        "reason": "L73 CCR v2 multi-repo infrastructure survives the L85 sunset — the scaffolding remains even though L77's user-facing commands were removed"
       },
       {
         "id": 6,
@@ -1869,7 +1869,7 @@
       {
         "id": 79,
         "relevance": 0.5,
-        "reason": "Mobile push pipeline requires a background worker reachable when no TTY is attached \u2014 daemon-mode env gate makes that explicit"
+        "reason": "Mobile push pipeline requires a background worker reachable when no TTY is attached — daemon-mode env gate makes that explicit"
       }
     ],
     "86": [
@@ -1913,12 +1913,12 @@
       {
         "id": 6,
         "relevance": 0.85,
-        "reason": "L87 introduces a new implicit 'fork' subagent type \u2014 extends the agent system (L6) with a non-user-selectable agent triggered by omitting subagent_type"
+        "reason": "L87 introduces a new implicit 'fork' subagent type — extends the agent system (L6) with a non-user-selectable agent triggered by omitting subagent_type"
       },
       {
         "id": 29,
         "relevance": 0.7,
-        "reason": "Fork subagent uses permissionMode:'bubble' \u2014 child permission prompts bubble up via the L29 permission pipeline"
+        "reason": "Fork subagent uses permissionMode:'bubble' — child permission prompts bubble up via the L29 permission pipeline"
       },
       {
         "id": 85,
@@ -1938,7 +1938,7 @@
       {
         "id": 69,
         "relevance": 0.4,
-        "reason": "Fork REPL hydration uses {kind:'fork', log:[replayLog]} \u2014 leverages the same replay-log mechanism as marble-origami (L69)"
+        "reason": "Fork REPL hydration uses {kind:'fork', log:[replayLog]} — leverages the same replay-log mechanism as marble-origami (L69)"
       },
       {
         "id": 88,
@@ -1955,12 +1955,12 @@
       {
         "id": 11,
         "relevance": 0.9,
-        "reason": "L88's shadow schema (eO1) is the only formal skill frontmatter validation in the codebase \u2014 L11's imperative extractor (Cz8) is the 'primary'. progressMessage (documented in L11 as object-level, not YAML) is the notable drift: absent from eO1, so aspirational YAML usage fires telemetry"
+        "reason": "L88's shadow schema (eO1) is the only formal skill frontmatter validation in the codebase — L11's imperative extractor (Cz8) is the 'primary'. progressMessage (documented in L11 as object-level, not YAML) is the notable drift: absent from eO1, so aspirational YAML usage fires telemetry"
       },
       {
         "id": 38,
         "relevance": 0.85,
-        "reason": "WIF user-OAuth locking in L88 hardens the L38 OAuth token refresh path \u2014 prevents multi-process refresh races. Lock mechanism (Vk4/Gv_ via proper-lockfile directory-level mutex, tvq=5 retries \u00d7 1-2s jitter) landed in v2.1.117; all 5 telemetry events landed in v2.1.118"
+        "reason": "WIF user-OAuth locking in L88 hardens the L38 OAuth token refresh path — prevents multi-process refresh races. Lock mechanism (Vk4/Gv_ via proper-lockfile directory-level mutex, tvq=5 retries × 1-2s jitter) landed in v2.1.117; all 5 telemetry events landed in v2.1.118"
       },
       {
         "id": 10,
@@ -1975,7 +1975,7 @@
       {
         "id": 73,
         "relevance": 0.7,
-        "reason": "/autofix-pr description change in L88 drops 'remote session' framing \u2014 continues repositioning from L73 CCR v2 / L85 Remote Workflow sunset"
+        "reason": "/autofix-pr description change in L88 drops 'remote session' framing — continues repositioning from L73 CCR v2 / L85 Remote Workflow sunset"
       },
       {
         "id": 85,
@@ -1990,7 +1990,7 @@
       {
         "id": 35,
         "relevance": 0.45,
-        "reason": "Frontmatter shadow validator also applies to plugin frontmatter \u2014 will affect the L35 plugin system loader if promoted to strict mode"
+        "reason": "Frontmatter shadow validator also applies to plugin frontmatter — will affect the L35 plugin system loader if promoted to strict mode"
       }
     ],
     "89": [
@@ -2026,7 +2026,7 @@
       {
         "id": 89,
         "relevance": 0.83,
-        "reason": "Cowork split execution \u2014 the in-VM shell is sealed; elicitation/MCP-Apps are the host-side user channels"
+        "reason": "Cowork split execution — the in-VM shell is sealed; elicitation/MCP-Apps are the host-side user channels"
       },
       {
         "id": 99,
@@ -2041,7 +2041,7 @@
       {
         "id": 106,
         "relevance": 0.86,
-        "reason": "the third Desktop credential channel \u2014 the clis.*.env CLI-tool broker (gated off), complementing MCP App UI / elicitation"
+        "reason": "the third Desktop credential channel — the clis.*.env CLI-tool broker (gated off), complementing MCP App UI / elicitation"
       },
       {
         "id": 107,
@@ -2053,22 +2053,22 @@
       {
         "id": 105,
         "relevance": 0.86,
-        "reason": "the other two Desktop credential channels (MCP App UI vs elicitation); same app.asar host \u2014 this is the third (CLI-tool) channel"
+        "reason": "the other two Desktop credential channels (MCP App UI vs elicitation); same app.asar host — this is the third (CLI-tool) channel"
       },
       {
         "id": 89,
         "relevance": 0.82,
-        "reason": "Cowork split execution \u2014 the in-VM shell is sealed from host env, the exact problem the clis.*.env broker solves; three-root plugin namespace"
+        "reason": "Cowork split execution — the in-VM shell is sealed from host env, the exact problem the clis.*.env broker solves; three-root plugin namespace"
       },
       {
         "id": 99,
         "relevance": 0.66,
-        "reason": "host-delegated credential refresh \u2014 cowork-plugin-oauth sibling + oauth_token_refresh/host_auth_token_refresh control-requests"
+        "reason": "host-delegated credential refresh — cowork-plugin-oauth sibling + oauth_token_refresh/host_auth_token_refresh control-requests"
       },
       {
         "id": 104,
         "relevance": 0.5,
-        "reason": "codename GB-flag triage \u2014 2307090146 (cli_plugin) is another dark-launch gate of the same family"
+        "reason": "codename GB-flag triage — 2307090146 (cli_plugin) is another dark-launch gate of the same family"
       },
       {
         "id": 107,
@@ -2101,6 +2101,11 @@
         "id": 108,
         "relevance": 0.85,
         "reason": "the env-var/gate/extended-subtype reference catalog for the same Cowork surface"
+      },
+      {
+        "id": 118,
+        "relevance": 0.75,
+        "reason": "the exact per-tool_use stream envelope fields + tool_use_meta schema"
       }
     ],
     "108": [
@@ -2376,6 +2381,11 @@
         "id": 117,
         "relevance": 0.7,
         "reason": "the /sessions/<id> path signature this lesson uses as a structural discriminator is exactly the mount/slug layout L117 forensically confirms"
+      },
+      {
+        "id": 118,
+        "relevance": 0.85,
+        "reason": "skill-scope attribution: what the agent tracks internally (activeSkill/attribution) and why it's absent from the stream"
       }
     ],
     "117": [
@@ -2398,6 +2408,45 @@
         "id": 116,
         "relevance": 0.6,
         "reason": "the /sessions/<id> filesystem signature that lesson uses for VM-shell detection is the same mount layout documented here"
+      }
+    ],
+    "118": [
+      {
+        "id": 116,
+        "relevance": 0.9,
+        "reason": "skill runtime detection — the host/VM env split; L118 is the 'what the agent tracks internally about skills' companion"
+      },
+      {
+        "id": 107,
+        "relevance": 0.85,
+        "reason": "the stream-json control-protocol contract; L118 pins the exact per-tool_use envelope fields"
+      },
+      {
+        "id": 109,
+        "relevance": 0.78,
+        "reason": "the ~90-subtype control protocol; L118 adds microcompact_boundary beside compact_boundary"
+      },
+      {
+        "id": 87,
+        "relevance": 0.72,
+        "reason": "/fork and context:fork dispatch; L118 adds fork-skill parent_tool_use_id attribution + recursion guard"
+      },
+      {
+        "id": 115,
+        "relevance": 0.7,
+        "reason": "subagent resume/continuation; fork-skill inner tools inherit the dispatch's parentToolUseId scope"
+      },
+      {
+        "id": 11,
+        "relevance": 0.62,
+        "reason": "Skills system — activeSkill scope, inline vs fork (context:'fork') dispatch"
+      }
+    ],
+    "109": [
+      {
+        "id": 118,
+        "relevance": 0.7,
+        "reason": "microcompact_boundary is a distinct sibling subtype to compact_boundary"
       }
     ]
   }

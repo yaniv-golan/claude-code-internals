@@ -3706,6 +3706,24 @@
       ]
     },
     {
+      "id": "proto.microcompact_boundary",
+      "kind": "control-subtype",
+      "name": "microcompact_boundary",
+      "status": "live",
+      "first_seen": "2.1.197",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "type:\"system\" subtype string for micro-compaction, sibling of compact_boundary — but ASYMMETRIC: in the in-VM ELF 2.1.197 (identical host CLI 2.1.201) compact_boundary has 8 subtype:\"compact_boundary\" stream-emit producer sites, while microcompact_boundary has 0 — its only two occurrences are a string-table constant and one Ink TUI renderer case that renders nothing (if(subtype===\"microcompact_boundary\")return null). So micro-compaction is render-only and suppressed, NOT serialized into stream-json. A stream/headless compaction_occurred signal should key on compact_boundary; keying on microcompact_boundary catches nothing on this evidence.",
+      "provenance": [
+        {
+          "lesson": 118
+        },
+        {
+          "lesson": 109
+        }
+      ]
+    },
+    {
       "id": "ipc.CoworkSpaces",
       "kind": "ipc-interface",
       "name": "CoworkSpaces",
