@@ -4,7 +4,7 @@ title: Cowork runtime architecture (current)
 as_of_cli: 2.1.198
 as_of_desktop: 1.18286.0
 sources: [89, 90, 107, 108, 109, 114, 116, 117]
-updated: 2026-07-04
+updated: 2026-07-07
 ---
 
 # Cowork runtime architecture (current)
@@ -207,6 +207,33 @@ value in both skill content and hooks — **one token, two namespaces**):
 A blanket "always resolve `${CLAUDE_PLUGIN_ROOT}` to the VM path" rule is
 therefore wrong for host-side reference `Read`s and right only for
 in-VM-bash-executed scripts — the skill has to pick per consumer.
+
+This host-side resolution holds **only under host-loop (production)**. The
+Desktop picks the plugin dir in one branch,
+`Ei = isHostLoopModeEnabled ? qX(installPath) : sdkPath`, so under
+**VM-loop** (`requireCoworkFullVmSandbox` orgs, whole agent in-VM) the same
+branch hands the agent `sdkPath` — the VM mount — and the token then
+resolves to `/sessions/<id>/mnt/.local-plugins/…` (or `.remote-plugins/…`),
+**usable directly from the VM shell**. The string `claude-hostloop-plugins`
+is absent from both agent binaries (host CLI, in-VM ELF) and present only in
+the Desktop driver, so an in-VM agent cannot resolve to a host path at all.
+The invariant is: the token points at the agent's own `--plugin-dir`.
+
+Two mechanics behind the host-loop staging path (`qX`): it is
+**space-triggered** — `if (!installPath.includes(" ")) return installPath`,
+so the `claude-hostloop-plugins/<hash>` symlink exists only to launder
+install paths *containing spaces* past unquoted `${CLAUDE_PLUGIN_ROOT}` in
+hook commands (a space-free path resolves to the real host install dir even
+under host-loop; Desktop plugins under `~/Library/Application Support/…`
+always hit the space case) — and the staged dir is a **deterministic**
+`sha256(installPath).slice(0,16)` with no session id / timestamp /
+randomness, so it is stable across invocations, sessions, and reboots.
+
+The host-loop mechanics above are **live-confirmed** (2026-07-07): a probe plugin uploaded
+via the Cowork app UI resolved `${CLAUDE_PLUGIN_ROOT}` to
+`…/T/claude-hostloop-plugins/aa86f0206322553f`, whose `readlink` target's
+`sha256(installPath)[:16]` reproduced that basename exactly, and two separate sessions produced
+the same hash. VM-loop resolution stays static-derived from the mode branch.
 
 ## Runtime detection from a skill (lesson 116)
 

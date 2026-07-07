@@ -4,7 +4,7 @@ title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.198
 as_of_desktop: 1.18286.0
 sources: [5, 88, 89, 106, 109, 118]
-updated: 2026-07-05
+updated: 2026-07-07
 ---
 
 # Plugins, skills & hooks (current)
@@ -39,24 +39,68 @@ Mechanism: the host loop symlinks each enabled plugin into a temp
 `claude-hostloop-plugins/<hash>` dir at session start and runs hooks
 **host-side**.
 
-## `${CLAUDE_PLUGIN_ROOT}` resolves host-side everywhere
+## `${CLAUDE_PLUGIN_ROOT}` resolves to wherever the agent loaded the plugin from
 
-`${CLAUDE_PLUGIN_ROOT}` resolves to **one value** — the host-side
-`claude-hostloop-plugins/<hash>` staging path — in both skill content and
-hook invocations. That value is:
+The token substitutes to **one value per agent** — the directory the
+plugin was loaded from (`CLAUDE_PLUGIN_ROOT: t.path`, where `t.path` is the
+`--plugin-dir` the agent was spawned with). *Which* directory that is
+depends on the execution mode; the Desktop picks it in a single branch,
+`Ei = isHostLoopModeEnabled ? qX(installPath) : sdkPath`:
 
-- **accepted** by host-side `Read`/`Edit`/`Glob`/`Grep` (they want a host
-  path — keep the token literal for those consumers), but
-- **useless to in-VM bash** (`mcp__workspace__bash`), which cannot see
-  that host path at all.
+- **Host-loop (production).** Resolves **host-side** to the staging path
+  `claude-hostloop-plugins/<hash>` (or the raw host install path — see
+  space-triggering below). Host-side `Read`/`Edit`/`Glob`/`Grep` **accept**
+  it (they want a host path — keep the token literal there), but in-VM bash
+  (`mcp__workspace__bash`) **cannot see** it. A script run through the VM
+  shell must instead use the VM mount, discovered at runtime rather than via
+  the token: `/sessions/<id>/mnt/.local-plugins/cache/<mp>/<plugin>/<version>`
+  (marketplace/local) or `/sessions/<id>/mnt/.remote-plugins/plugin_<id>/…`
+  (org-remote). This is the **"one token, two namespaces"** split — no single
+  rule works for both consumers; pick per where the reference is used.
+- **VM-loop (`requireCoworkFullVmSandbox` orgs).** The whole agent runs
+  in-VM, so the same branch hands it `sdkPath` — the token resolves to the
+  **in-VM mount** (`/sessions/<id>/mnt/.local-plugins/…` or
+  `.remote-plugins/plugin_<id>/…`) and `bash ${CLAUDE_PLUGIN_ROOT}/x.sh`
+  **works**. Decisive: the string `claude-hostloop-plugins` is **absent from
+  both agent binaries** (host CLI, in-VM ELF) and present only in the Desktop
+  driver — an in-VM agent structurally cannot resolve to a host path.
 
-A plugin script invoked through the VM shell must instead use the
-VM-mounted plugin path, discovered at runtime rather than via the token:
-`/sessions/<id>/mnt/.local-plugins/cache/<mp>/<plugin>/<version>` for
-marketplace installs, or
-`/sessions/<id>/mnt/.remote-plugins/plugin_<id>/…` for org-remote
-installs. There is no single rule that works for both consumers — pick
-the resolution path per where the reference is used.
+So L89's "resolves host-side **everywhere**" holds **only under host-loop**.
+The real invariant: the token points at the agent's own `--plugin-dir` —
+host-side under host-loop, VM-side under VM-loop.
+
+Two mechanics behind the host-loop value (`qX`):
+
+- **Staging is space-triggered.** `qX` is `if (!installPath.includes(" "))
+  return installPath` — the `claude-hostloop-plugins/<hash>` symlink exists
+  *only* to launder install paths **containing spaces** past an unquoted
+  `${CLAUDE_PLUGIN_ROOT}` in a hook command. A space-free install path
+  resolves to the **real host install path** even under host-loop. Desktop
+  plugins live under `~/Library/Application Support/…` (has a space), so the
+  hash path is what you normally see.
+- **The value is stable, not per-invocation.** The staged dir is a
+  deterministic pure function of the install path —
+  `sha256(installPath).slice(0,16)`, no session id / timestamp / randomness —
+  idempotent and mutex-guarded, so it is identical across invocations,
+  sessions, and reboots (it differs only if the symlink can't be created,
+  when it falls back to the raw path).
+
+(There is also a third, minor substitution site: the agent injects
+`CLAUDE_PLUGIN_ROOT` into an MCP server's `headersHelper` exec env, but only
+when that server is plugin-owned.)
+
+**Host-loop mechanics live-confirmed** (2026-07-07, via `docs/internal/cowork-pluginroot-probe`
+uploaded through the Cowork app UI): a real session echoed
+`CONTENT_PLUGIN_ROOT=…/T/claude-hostloop-plugins/aa86f0206322553f`; on the host,
+`readlink` of that path pointed at the plugin's install dir under
+`…/local-agent-mode-sessions/<acc>/<org>/rpm/plugin_<ULID>`, and
+`printf '%s' "$installPath" | shasum -a 256 | cut -c1-16` reproduced the basename
+**exactly** — and two *separate* sessions yielded the **same** hash, confirming the
+deterministic, session-independent staging live. An **uploaded** plugin lands under host
+`rpm/plugin_<ULID>` and mounts in-VM as `.remote-plugins/plugin_<ULID>` (org-remote class,
+ULID-keyed), while a marketplace install mounts as `.local-plugins/cache/<mp>/<plugin>/<ver>`.
+**VM-loop** resolution remains **static-derived from the branch** (a live VM-loop run needs a
+locked-down org or the `forceDisableHostLoop` Dev-Menu toggle).
 
 ## PreToolUse is a second, independent enforcement point
 

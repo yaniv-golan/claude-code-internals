@@ -1331,6 +1331,42 @@ via the Cowork app UI, run in a real desktop session) settled them:
   connectors; the only thing the *sandbox shell* ingests from the host is Anthropic's own auth via the SDK
   RPC channel (see L99).
 
+#### CORRECTION (static re-verification, 2026-07-07): `${CLAUDE_PLUGIN_ROOT}` is host-side *only under host-loop*
+
+The "do not invoke plugin scripts via `${CLAUDE_PLUGIN_ROOT}` in-VM" guidance above is **host-loop-specific**.
+A static re-verification (`app.asar` 1.18286.0 + in-VM ELF `claude-code-vm/2.1.197` + host CLI 2.1.201) shows
+the token resolves to **whatever `--plugin-dir` the agent was spawned with** (`CLAUDE_PLUGIN_ROOT: t.path`),
+and the Desktop picks that dir in a single branch:
+
+```js
+const Ei = isHostLoopModeEnabled ? await qX(installPath) : sdkPath   // -> passed as --plugin-dir
+```
+
+- **host-loop (production):** `qX(installPath)` → the host staging path `claude-hostloop-plugins/<hash>`
+  (or the raw host install path — see below). Useless to in-VM bash, as documented above.
+- **VM-loop (`requireCoworkFullVmSandbox` orgs, whole agent in-VM):** `sdkPath` → the **in-VM mount**
+  `/sessions/<id>/mnt/.local-plugins/…` (marketplace/local) or `.remote-plugins/plugin_<id>/…` (org-remote).
+  There, `bash ${CLAUDE_PLUGIN_ROOT}/scripts/x.sh` **works** — the opposite of host-loop.
+
+**Decisive negative:** the string `claude-hostloop-plugins` is **absent from both agent binaries** (host CLI
+2.1.201, in-VM ELF 2.1.197) and appears only in `app.asar` — staging is a pure Desktop-driver concern, so an
+in-VM agent structurally cannot resolve the token to a host path. The v2.12.1 "resolves host-side
+**EVERYWHERE**" wording therefore means **host-loop everywhere**, not all modes.
+
+Two host-loop mechanics of the staging helper `qX`:
+
+- **Space-triggered.** `qX` opens with `if (!installPath.includes(" ")) return installPath` — the
+  `claude-hostloop-plugins/<hash>` symlink exists *only* to launder install paths **containing spaces** past
+  an unquoted `${CLAUDE_PLUGIN_ROOT}` in a hook command. A space-free install path resolves to the **real
+  host install path** even under host-loop. (Desktop plugins live under `~/Library/Application Support/…`,
+  which has a space, so the hash path is what you normally see.)
+- **Deterministic + stable.** The staged dir is `sha256(installPath).slice(0,16)` under `os.tmpdir()` — no
+  session id, timestamp, or randomness — idempotent and mutex-guarded, so it is **identical across
+  invocations, sessions, and reboots** (it falls back to the raw path only if the symlink can't be created).
+
+There is also a third, minor substitution site: the agent injects `CLAUDE_PLUGIN_ROOT` into an MCP server's
+`headersHelper` exec env, but only when that server is plugin-owned.
+
 #### host-loop vs VM-loop: where the agent loop actually runs (gate `1143815894`)
 
 The "split execution" documented below has a name and a switch. Whether a Cowork session runs

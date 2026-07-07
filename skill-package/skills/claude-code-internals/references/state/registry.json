@@ -4493,6 +4493,21 @@
           "lesson": 108
         }
       ]
+    },
+    {
+      "id": "env.CLAUDE_PLUGIN_ROOT",
+      "kind": "env-var",
+      "name": "CLAUDE_PLUGIN_ROOT",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Template token + injected env var resolving to the plugin's own --plugin-dir (agent sets CLAUDE_PLUGIN_ROOT: t.path). Under Cowork the Desktop picks the dir per mode: Ei = isHostLoopModeEnabled ? qX(installPath) : sdkPath. Host-loop (production) => host-side claude-hostloop-plugins/<hash> staging path, accepted by host file tools (Read/Edit/Glob/Grep) but useless to in-VM bash (mcp__workspace__bash), which must use the VM mount /sessions/<id>/mnt/.local-plugins|.remote-plugins/... instead. VM-loop (requireCoworkFullVmSandbox orgs, whole agent in-VM) => sdkPath = that VM mount, so bash ${CLAUDE_PLUGIN_ROOT}/x.sh works. Decisive: claude-hostloop-plugins is absent from both agent binaries (host CLI 2.1.201, in-VM ELF 2.1.197), present only in app.asar, so L89's 'host-side EVERYWHERE' is host-loop-only. Host-loop qX mechanics: space-triggered (returns the raw install path unless it contains a space) and deterministic (sha256(installPath).slice(0,16), stable across invocations/sessions/reboots). Third minor site: injected into a plugin-owned MCP server's headersHelper exec env. Host-loop mechanics live-confirmed 2026-07-07 (exact sha256(installPath)[:16] match + cross-session stability via docs/internal/cowork-pluginroot-probe); VM-loop resolution static-derived from the branch.",
+      "provenance": [
+        {
+          "lesson": 89
+        }
+      ]
     }
   ]
 }

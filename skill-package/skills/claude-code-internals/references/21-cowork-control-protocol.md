@@ -271,6 +271,19 @@ Full layer stack, current identifiers (unchanged 1.12603.1 → 1.17377.2 except 
   per-tool acceptance for the current build with an in-session probe: echo the literal `${CLAUDE_PLUGIN_ROOT}`
   value, then have a sub-agent `Read` a reference via (a) that value and (b) the `/sessions/…` VM path, and
   quote both outcomes.
+- **VM-loop flips the resolution.** `[binary]` The Desktop picks the plugin dir in one branch,
+  `Ei = isHostLoopModeEnabled ? qX(installPath) : sdkPath` — so under **VM-loop**
+  (`requireCoworkFullVmSandbox` orgs, whole agent in-VM) the agent is handed `sdkPath` and the token
+  resolves to the **in-VM mount** (`/sessions/<id>/mnt/.local-plugins/…` or `.remote-plugins/plugin_<id>/…`),
+  where `bash ${CLAUDE_PLUGIN_ROOT}/x.sh` **works** — the exact opposite of host-loop. `claude-hostloop-plugins`
+  is **absent from both agent binaries** (host CLI 2.1.201, in-VM ELF 2.1.197) and lives only in `app.asar`,
+  so an in-VM agent cannot resolve to a host path at all — L89's "host-side everywhere" is host-loop-only.
+  Two host-loop mechanics of `qX`: staging is **space-triggered** (it returns the raw install path unless it
+  contains a space — the `claude-hostloop-plugins/<hash>` symlink exists only to launder spaced paths past an
+  unquoted `${CLAUDE_PLUGIN_ROOT}` in a hook command; a space-free path resolves to the real host install dir
+  even under host-loop), and the staged dir is a **deterministic** `sha256(installPath).slice(0,16)` — no
+  session id / timestamp / randomness — stable across invocations, sessions, and reboots (verified static vs
+  `app.asar` 1.18286.0 + in-VM ELF 2.1.197 + host CLI 2.1.201, 2026-07-07).
 - **A *second*, independent `run_in_background` restriction — the speculation engine, Bash/PowerShell
   only.** `[binary]` Distinct from the Desktop's `Task`-matcher hook in Part E above: the CLI's own
   speculation engine `canUseTool` separately aborts a backgrounded shell (`"run_in_background" in M &&

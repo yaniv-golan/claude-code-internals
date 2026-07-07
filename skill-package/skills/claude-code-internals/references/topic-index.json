@@ -1966,7 +1966,7 @@
       "lesson_number": "89",
       "file": "17-verified-new-v2.1.120.md",
       "startLine": 83,
-      "endLine": 2030,
+      "endLine": 2066,
       "keywords": [
         "v2.1.119",
         "cowork",
@@ -2149,6 +2149,12 @@
         "hook-env-not-in-vm",
         "plugin-script-invocation-cowork",
         "cowork-skill-author-guidance",
+        "vm-loop-plugin-root",
+        "space-triggered-staging",
+        "sha256-staging",
+        "isHostLoopModeEnabled",
+        "sdkPath",
+        "plugin-root-vm-vs-host",
         "split-execution",
         "claude_desktop_config.json",
         "mcpServers-cowork",
@@ -2193,8 +2199,8 @@
       "title": "v2.1.120 Daemon On-Demand Model, CLAUDE_CODE_LEAN_PROMPT, Memory-Write Approval UX, Plan-Mode Tripwire, CLAUDE_COWORK_MEMORY_GUIDELINES",
       "lesson_number": "90",
       "file": "17-verified-new-v2.1.120.md",
-      "startLine": 2032,
-      "endLine": 2765,
+      "startLine": 2068,
+      "endLine": 2801,
       "keywords": [
         "v2.1.120",
         "v2.1.120-bundle",
@@ -2692,7 +2698,7 @@
       "lesson_number": "107",
       "file": "21-cowork-control-protocol.md",
       "startLine": 22,
-      "endLine": 340,
+      "endLine": 353,
       "keywords": [
         "cowork-spawn-contract",
         "stream-json",
@@ -2747,7 +2753,11 @@
         "plugin-root-resolution",
         "claude-hostloop-plugins",
         "plugin-reference-path",
-        "script-vs-reference-path"
+        "script-vs-reference-path",
+        "vm-loop-plugin-root",
+        "space-triggered-staging",
+        "sdkPath",
+        "isHostLoopModeEnabled"
       ]
     },
     {
