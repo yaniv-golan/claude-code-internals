@@ -2,9 +2,9 @@
 domain: cowork-control-protocol
 title: Cowork spawn + stream-json control protocol (current)
 as_of_cli: 2.1.198
-as_of_desktop: 1.18286.0
-sources: [105, 107, 108, 109, 118]
-updated: 2026-07-05
+as_of_desktop: 1.19367.0
+sources: [105, 107, 108, 109, 118, 119]
+updated: 2026-07-08
 ---
 
 # Cowork spawn + stream-json control protocol (current)
@@ -153,3 +153,70 @@ constant and one Ink TUI renderer case that renders nothing
 **render-only and suppressed, NOT serialized into the stream** on this evidence;
 a stream/headless `compaction_occurred` signal should key on `compact_boundary`
 (keying on `microcompact_boundary` catches nothing). See Ch32/L118 Part D.
+
+## Cloud tasks: teleport-to-cloud and the bridge-session worker (Ch33/L119)
+
+Two distinct Desktop-hosted mechanisms surfaced from a self-updated Desktop
+build turned out to be unchanged infrastructure, not a new feature — IPC
+surface diff between Desktop 1.18286.2 and 1.19367.0: **zero interfaces
+added/removed, +14/-0 methods, none cloud-task related.**
+
+**`teleportToCloud(sessionId, environmentId)`** re-hosts a local session to
+the cloud (not a state stream): `checkReadiness` (remote-session rejection +
+OAuth-token presence + clean working tree) → `pushBranch` (progress
+`pushing_branch`) → stop the local session → `generateTranscriptSummary`
+(progress `generating_summary`) → `POST ${claudeAiUrl}/v1/sessions` (progress
+`creating_session`; header `anthropic-beta: ccr-byoc-2025-07-29`) → returns
+`{sessionId, title, url, summary}` where `url` is the **absolute**
+`https://claude.ai/code/<id>`.
+
+**Bridge-session workers** are a *third* execution role beyond host-loop/
+VM-loop (Ch20/L89, Ch24/L107): a process that claims and executes
+cloud-hosted work items rather than running the agent loop itself. Both the
+Desktop and the CLI agent independently implement a poll/ack/stop client
+against `GET|POST /v1/environments/{id}/work/{poll,ack/{id},stop/{id}}`.
+**The CLI agent binary itself carries this client** (`pollForWork`/
+`acknowledgeWork`/`stopWork`, log-prefix `[bridge:api]`) — this is
+`claude remote-control`. Production dispatch ordering: poll → claim → branch
+on `work.type`: `"session"` → `handleSessionWork` (spawn/attach a real
+Cowork session); `"healthcheck"` → immediate ack, no session created;
+unrecognized type → warn and skip. `work_type` is not a closed client-side
+enum — just an open string with two currently-meaningful values and
+graceful unknown-value handling. A `401`/`403`/`404`/`409` on poll triggers
+a bounded number of re-register attempts before the poller gives up
+permanently. A newly-vendored (1.19367.0 only) but **unused** SDK helper
+pair, `WorkPoller`/`EnvironmentWorker` (`@anthropic-ai/sdk/helpers/beta/
+environments`, beta `managed-agents-2026-04-01`), ships alongside this
+hand-rolled client with no app-level call site — a dependency-bundling
+delta, not a runtime migration.
+
+**`CLAUDE_CODE_ENVIRONMENT_KIND=bridge` is this exact mechanism** — closing
+a gap this page (via Ch25/L108) previously left open. `claude
+remote-control`'s poller sets the var **itself**, at the point it spawns a
+child CLI process to run a claimed `"session"`-type work item (spawn env:
+`CLAUDE_CODE_ENVIRONMENT_KIND:"bridge"`, `CLAUDE_CODE_SESSION_ACCESS_TOKEN`,
+child argv `--print --sdk-url <url> --session-id <id> --input-format
+stream-json --output-format stream-json --replay-user-messages`, worktree
+`bridge-<slug>`). **The Desktop never assigns this value** (confirmed: zero
+spawn-env assignments in either build). The classifier-summary surface map
+(Ch25/L108) ORs *two* independent signals into the `"bridge"` surface —
+`CLAUDE_CODE_ENVIRONMENT_KIND==="bridge"` (the env-var path, above) **or**
+`replBridgeActive` (a live in-process flag toggled by the SDK-adapter bridge
+transport's connection state — `connected`/`ready`→true, `failed`→false —
+which is how a Desktop-hosted bridge session reaches the identical surface
+without ever receiving the env var). `byoc`/`anthropic_cloud` are sibling
+*environment-provider* kinds of the same environments API and feed the
+pre-existing `ccr` surface, not `bridge` — don't conflate the three values.
+
+Gate `583857784` (Ch25/L108, "bridge-SDK-adapter transport") is confirmed
+the *same* bridge-session concept as this section, not a homonym — its call
+chain (`poll → bind → connectSessionTransport → gate check`) is reached
+directly from `handleSessionWork`. Gate `1978029737` (Ch25/L108,
+cowork-runtime-config) gained a previously-undocumented key,
+`sessionsBridgePollIntervalMs`, alongside the already-known
+`sessionsBridgePollBlockMs`. See Ch33/L119 for full grep evidence,
+including two items reported as unresolved rather than assumed: no
+`heartbeat` request/response pair was located inside the `/v1/environments/
+{id}/work` family specifically (a separate, pre-existing `POST
+/worker/heartbeat` endpoint exists but its relationship to this call chain
+is unconfirmed), and no fully enumerable `work_type` schema was found.

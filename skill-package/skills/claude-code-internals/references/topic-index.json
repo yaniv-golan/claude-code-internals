@@ -1,7 +1,7 @@
 {
-  "generated": "2026-07-05",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party)",
-  "total_lessons": 118,
+  "generated": "2026-07-08",
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved)",
+  "total_lessons": 119,
   "lessons": [
     {
       "id": 1,
@@ -3303,6 +3303,75 @@
         "init-agents-field",
         "skills-bare-names",
         "availableSkills-names-only"
+      ]
+    },
+    {
+      "id": 119,
+      "title": "Desktop Cloud Tasks: Teleport-to-Cloud, Bridge-Session Workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge Link",
+      "lesson_number": "119",
+      "file": "30-desktop-cloud-tasks-teleport-bridge.md",
+      "startLine": 13,
+      "endLine": 193,
+      "keywords": [
+        "cloud-tasks",
+        "teleportToCloud",
+        "getTeleportReadiness",
+        "teleport-to-cloud",
+        "cloud-session-teleport",
+        "bridge-session",
+        "bridge-session-worker",
+        "WorkPoller",
+        "EnvironmentWorker",
+        "environments-work-poller",
+        "managed-agents-2026-04-01",
+        "pollForWork",
+        "handleWork",
+        "handleSessionWork",
+        "work_type",
+        "healthcheck-work-type",
+        "session-work-type",
+        "claude-remote-control",
+        "remote-control-bridge-worker",
+        "CLAUDE_CODE_ENVIRONMENT_KIND",
+        "ENVIRONMENT_KIND-bridge",
+        "isBridge",
+        "replBridgeActive",
+        "sessionSource-remote-control",
+        "bridge-vs-byoc-vs-anthropic_cloud",
+        "gate-583857784",
+        "bridge-SDK-adapter-transport",
+        "gate-1978029737",
+        "sessionsBridgePollIntervalMs",
+        "sessionsBridgePollBlockMs",
+        "getBridgeConsent",
+        "grantRemoteSessionFolder",
+        "grantRemoteSessionFolders",
+        "browseAndGrantRemoteSessionFolder",
+        "clearRemoteSessionFolderGrants",
+        "onBridgePermissionPreflight",
+        "respondBridgePermissionPreflight",
+        "kickBridgePoll",
+        "abandonBridgeEnvironment",
+        "findLocalSessionIdForBridgeId",
+        "LocalAgentModeSessions",
+        "childKind",
+        "ccr-byoc-2025-07-29",
+        "pushBranch",
+        "generateTranscriptSummary",
+        "pushing_branch",
+        "generating_summary",
+        "creating_session",
+        "IPC-surface-diff",
+        "claude.web interfaces",
+        "app.asar 1.19367.0",
+        "app.asar 1.18286.2",
+        "claude-cowork-headless-emulator",
+        "cloud environment provider",
+        "environment_providers cloud create",
+        "anthropic-beta ccr-byoc",
+        "Anthropic-Worker-ID",
+        "reclaim_older_than_ms",
+        "worker heartbeat"
       ]
     }
   ],
@@ -8955,6 +9024,39 @@
     ],
     "Nom regex": [
       109
+    ],
+    "teleportToCloud": [
+      119
+    ],
+    "bridge session worker": [
+      119
+    ],
+    "CLAUDE_CODE_ENVIRONMENT_KIND bridge": [
+      119
+    ],
+    "WorkPoller": [
+      119
+    ],
+    "claude remote-control": [
+      119
+    ],
+    "work_type schema": [
+      119
+    ],
+    "gate 583857784": [
+      119
+    ],
+    "cloud tasks Desktop": [
+      119
+    ],
+    "is cloud tasks new": [
+      119
+    ],
+    "getBridgeConsent": [
+      119
+    ],
+    "onBridgePermissionPreflight": [
+      119
     ]
   }
 }

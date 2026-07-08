@@ -2,9 +2,9 @@
 domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.198
-as_of_desktop: 1.18286.0
-sources: [89, 90, 107, 108, 109, 114, 116, 117]
-updated: 2026-07-07
+as_of_desktop: 1.19367.0
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119]
+updated: 2026-07-08
 ---
 
 # Cowork runtime architecture (current)
@@ -265,3 +265,19 @@ carrying a Space's per-space auto-memory directory (`CoworkSpaces.
 getAutoMemoryDir`, documented above via lesson 109) into the agent's spawn
 env is `CLAUDE_COWORK_MEMORY_PATH_OVERRIDE`, with `CLAUDE_CODE_
 DISABLE_AUTO_MEMORY=1` as the fallback when no memory path resolves.
+
+## Re-verification at Desktop 1.19367.0 (2026-07-08): cloud tasks are not new
+
+A self-updated Desktop build (1.19367.0) prompted a check for a "cloud
+tasks" feature. First-party IPC-surface diff against a 1.18286.2 baseline
+(one point release ahead of this page's prior 1.18286.0 pin): **zero
+interfaces added/removed, +14/-0 methods, none cloud-task related** — every
+cloud-task primitive (`teleportToCloud`, the bridge-session worker family,
+`LocalAgentModeSessions`, the `ccr-byoc-2025-07-29` beta) was already
+present, byte-similarly, in the older baseline. This is a UI/rollout change,
+not new client plumbing. Full mechanism (teleport-to-cloud flow, the
+bridge-session worker's poll/ack/stop client, and the confirmed
+`CLAUDE_CODE_ENVIRONMENT_KIND=bridge` link) is documented in
+`cowork-control-protocol.md`'s "Cloud tasks" section and lesson 119 — not
+duplicated here since it is a protocol/control-plane topic, not a
+filesystem/mount/plugin-namespace one like the rest of this page.

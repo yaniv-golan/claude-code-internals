@@ -2128,6 +2128,11 @@
         "id": 99,
         "relevance": 0.55,
         "reason": "the CLAUDE_BG_*_AUTH single-use handshake + host-auth env vars relate to host-delegated credential refresh"
+      },
+      {
+        "id": 119,
+        "relevance": 0.82,
+        "reason": "closes the CLAUDE_CODE_ENVIRONMENT_KIND=bridge gap this chapter left open -- confirms the mechanism is the agent's own claude remote-control bridge worker, and re-confirms gate 583857784 as the same bridge-session transport concept"
       }
     ],
     "dynamic-workflows": [
@@ -2447,6 +2452,28 @@
         "id": 118,
         "relevance": 0.7,
         "reason": "microcompact_boundary is a distinct sibling subtype to compact_boundary"
+      }
+    ],
+    "119": [
+      {
+        "id": 108,
+        "relevance": 0.9,
+        "reason": "L119's central finding: closes L108's open CLAUDE_CODE_ENVIRONMENT_KIND=bridge gap and re-confirms gate 583857784 (bridge-SDK-adapter transport) as the same mechanism under fresh symbol names"
+      },
+      {
+        "id": 107,
+        "relevance": 0.6,
+        "reason": "the CCR/bridge session-runtime family (CLAUDE_CODE_WORKER_EPOCH, CLAUDE_BG_*_AUTH handshake) this chapter's bridge-worker code extends"
+      },
+      {
+        "id": 109,
+        "relevance": 0.5,
+        "reason": "CLAUDE_CODE_WORKER_EPOCH and the CCR worker /worker/heartbeat endpoint this chapter distinguishes from the /v1/environments/{id}/work family"
+      },
+      {
+        "id": 118,
+        "relevance": 0.45,
+        "reason": "same cross-artifact first-party discipline: agent ELF (2.1.20x) + Desktop app.asar checked together, not separately"
       }
     ]
   }
