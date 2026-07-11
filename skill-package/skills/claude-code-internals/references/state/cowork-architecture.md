@@ -2,9 +2,9 @@
 domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.198
-as_of_desktop: 1.19367.0
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119]
-updated: 2026-07-08
+as_of_desktop: 1.20186.1
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 121, 122, 124]
+updated: 2026-07-11
 ---
 
 # Cowork runtime architecture (current)
@@ -15,24 +15,48 @@ lessons (see frontmatter).
 ## Host-loop vs VM-loop
 
 Whether a Cowork session's agent loop runs on the host or inside the VM is
-a single server-side decision, not a per-feature toggle:
+a single server-side decision, not a per-feature toggle. Re-verified at
+Desktop 1.20186.1 / host + in-VM agent 2.1.205 (lesson 124); the decision
+function is now `Pm()` (successor of the L107-era `f_()`):
 
 ```js
-function f_(){return HeA()||iX()?!1:(isDeveloperApprovedDevUrlOverrideEnabled
-  && process.env.CLAUDE_FORCE_HOST_LOOP==="1")?!0:cPt()}
+const UKe="forceDisableHostLoop";function FM(){return ot.get(UKe,!1)}
+function jKe(){return $t("1143815894")}
+function vI(){return Oe().workspace.requireFullVmSandbox}
+function Pm(){return vI()||FM()?!1:globalThis.isDeveloperApprovedDevUrlOverrideEnabled
+  && process.env.CLAUDE_FORCE_HOST_LOOP==="1"?!0:jKe()}
 ```
 
-- `HeA()` = org policy `requireCoworkFullVmSandbox === true` → forces
+- `vI()` = org policy `requireCoworkFullVmSandbox === true` → forces
   **VM-loop**.
-- `iX()` = `settings.forceDisableHostLoop` → forces **VM-loop**.
-- Dev override `CLAUDE_FORCE_HOST_LOOP=1` (behind an approved dev-URL flag)
-  → forces **host-loop**.
-- Otherwise, GrowthBook gate `1143815894` (`cPt()`) decides.
+- `FM()` = `settings.forceDisableHostLoop` → forces **VM-loop**.
+- Dev override `CLAUDE_FORCE_HOST_LOOP=1` → forces **host-loop** — but is
+  now **additionally gated** on
+  `globalThis.isDeveloperApprovedDevUrlOverrideEnabled` (a change vs the
+  L107/L108-era description), making the escape **dead on stock
+  installs**.
+- Otherwise, GrowthBook gate `1143815894` (`jKe()`) decides.
 
-**Production decodes to host-loop.** The live `fcache` shows gate
-`1143815894` = `{value:true, on:true, source:"force"}` — default
-consumer/Pro Cowork is host-loop; only locked-down orgs with
-`requireCoworkFullVmSandbox` get VM-loop.
+**Production decodes to host-loop.** The live `fcache` (2026-07-11
+recapture) shows gate `1143815894` = `{value:true, on:true, source:"force",
+ruleId:"fr_mnqhxsok"}` — default consumer/Pro Cowork is host-loop; only
+locked-down orgs with `requireCoworkFullVmSandbox` get VM-loop.
+
+**Resume-sticky, with a policy tripwire.** The gate is consulted only at
+fresh session start (`m=a?o.isHostLoopModeEnabled():...`); a *resumed*
+session keeps its persisted `hostLoopMode` rather than re-evaluating. If
+org policy flips to `requireFullVmSandbox` between a session's creation
+and a resume attempt, the resume throws verbatim: *"This session was
+created before your organization required the VM sandbox. It cannot be
+resumed under the current policy. Please start a new session."* — a hard
+stop, not a silent loop switch. `setForceDisableHostLoop` (IPC-settable)
+and `isHostLoopDevOverrideActive` are the companion local controls.
+
+**Custom-3p deployments bypass GrowthBook for this gate.** A hardcoded
+table (`uOt`/`hardcodedMainGrowthBookFeatures`) force-ONs `1143815894`
+(host-loop) unconditionally in custom-3p builds, alongside several other
+gates including `2307090146` (cli_plugin) — see "Plugin roots" below and
+`credential-channels.md`.
 
 - **Host-loop (the default).** The agent loop runs **on the host** — the
   same `/usr/local/bin/claude` binary process. `Read`/`Edit`/`Write` hit
@@ -130,6 +154,82 @@ directly confirmed fact; no artifact yet states "one guest serves N
 sessions" outright. See lesson 117 for the full forensic trace and the
 tool-speed methodology note (`rg` over raw multi-GB images vs. `grep -a`
 vs. naive scripting-language regex).
+
+## Sub-agent execution (host-loop)
+
+Task/Agent-tool sub-agents are **in-process async-generator loops**, not
+separate OS processes and not separately sandboxed (lessons 121–122,
+re-verified at Desktop 1.20186.1 / agent 2.1.205):
+
+- **Same process, same containment as the main thread.** A dispatch runs
+  the shared `nj({agentDefinition,...})` generator inline (or via the
+  in-process task registry for tracked/background ones), scoped through
+  AsyncLocalStorage. There is no per-sub-agent env assembly — identity is
+  a plain context object (`agentId`, `parentAgentId`, `depth`,
+  `parentSessionId`, `agentType:"subagent"`, `subagentName`, …), not
+  environment variables.
+- **cwd = the session outputs directory, always.** The host agent's `cwd`
+  is set once at spawn to
+  `local-agent-mode-sessions/<accountId>/<orgId>/local_<sessionId>/outputs`
+  (see "Session storage" below). A sub-agent's cwd is the **parent's
+  cwd** — cwd is AsyncLocalStorage-scoped with a process-level fallback,
+  and the Task tool's model-facing input schema **strips `cwd`** entirely
+  (`.omit({cwd:!0})`); a model cannot set it, only worktree isolation
+  changes it. So the canonical "reachable outputs root" for any sub-agent
+  IS its cwd, addressed via bare/cwd-relative paths — not a `/sessions/…`
+  form.
+- **The path-gate hook and the `canUseTool` chain both apply to
+  sub-agents identically to the main thread.** SDK-passed PreToolUse hooks
+  are registered process-globally with no subagent exclusion, and the
+  shared hook-input schema documents `agent_id` explicitly as *"Subagent
+  identifier. Present only when the hook fires from within a subagent
+  (e.g., a tool called by an AgentTool worker). Absent for the main
+  thread."* Hooks are skipped only for `bareFork` dispatches and the
+  `EndConversation` tool. See `cowork-permissions.md` layer 4.
+- **`/sessions/<id>` paths are DENIED, never translated, for file tools of
+  any origin** (main or sub-agent). The VM↔host path-translation index
+  (`mapVMPathToHostPath`/`deepTranslateVMPaths`) runs only on **outbound**
+  agent messages, `file://`/`computer://` URIs, and the scheduled-task
+  file reader — never on file-tool inputs. A sub-agent Write targeting
+  `/sessions/<id>/mnt/outputs/...` fails every time; a cwd-relative or
+  host-absolute-outputs Write succeeds every time. Apparent
+  non-determinism in practice is the *model* choosing which path form to
+  construct (e.g. echoing a VM-absolute path captured from bash output),
+  not a product-side namespace flip.
+- **Depth cap 5, no fan-out cap.** Dispatch throws at nesting depth ≥ 5
+  ("Subagent nesting limit reached (depth ${g} of 5)"), and the base
+  subagent tool filter hides the `Agent`/`Task` tool itself once
+  `agentDepth>=5` — enforced independently in both the host bundle
+  (`NMr=5`) and the in-VM ELF (`BLr=5`). No `Task`-specific concurrency or
+  fan-out limiter exists anywhere in either binary; the only bound on how
+  many sub-agents can be *running* at once is the generic per-turn tool
+  scheduler window, `env.CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY` (default
+  10, queues rather than refuses). The 25-agent/1.5M-token "workflow size"
+  figure is prompt guidance only, telemetry, not enforcement.
+- **Tool composition is a per-dispatch recomputed universe, not
+  inheritance-plus-injection.** A sub-agent's frontmatter `tools:` list is
+  authoritative, but only over what the *session* itself could ever offer
+  — nothing is injected beyond that except via an agent's own
+  `mcpServers:` frontmatter (the one sanctioned way a sub-agent gains
+  tools its parent session doesn't have) — which is **unavailable to
+  plugin-shipped agents**: a plugin agent's `permissionMode`/`hooks`/
+  `mcpServers` frontmatter fields are discarded with a warning at load
+  time (see `plugins-skills-hooks.md`). A dispatch that omits
+  `subagent_type` falls back to the built-in `general-purpose` type with
+  `tools:["*"]` — i.e. the FULL wildcard surface, including
+  `mcp__workspace__bash` in host-loop. "Shell-free sub-agent" is a real,
+  assertable property only when `subagent_type` is pinned to an
+  explicit-`tools:` agent; production audit-log evidence on this machine
+  shows the type-less fallback firing routinely (113 of 509 real
+  dispatches across 39 sessions carried no `subagent_type` at all).
+- **Sub-agent system-prompt append.** Host-loop sub-agents get a short
+  `## Cowork environment` section appended to their system prompt
+  (`subagent_env_hl`, sibling `subagent_env_vm` under VM-loop),
+  unconditionally generated and gated for consumption by
+  `env.CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT` — applies to Task
+  sub-agents only (not fork/`useExactTools` dispatches) and propagates to
+  nested sub-agents. See `cowork-control-protocol.md` for the full
+  handshake mechanism and `${CLAUDE_PLUGIN_ROOT}` pre-resolution details.
 
 ## Session storage
 

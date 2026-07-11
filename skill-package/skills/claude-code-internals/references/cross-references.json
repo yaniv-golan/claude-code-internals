@@ -2013,6 +2013,11 @@
         "id": 108,
         "relevance": 0.8,
         "reason": "production gate states (incl host-loop 1143815894) + the bg/cowork env-var catalog"
+      },
+      {
+        "id": 122,
+        "relevance": 0.8,
+        "reason": "L122 pins the exact host-loop shared-scratch mechanism L89 first observed: sub-agent cwd IS the session outputs directory, and /sessions/... paths are denied not translated for file tools"
       }
     ],
     "99": [
@@ -2074,6 +2079,11 @@
         "id": 107,
         "relevance": 0.6,
         "reason": "the agent-side spawn/auth contract; CLI secrets from the L106 broker are consumed by an agent spawned this way"
+      },
+      {
+        "id": 124,
+        "relevance": 0.55,
+        "reason": "L124's custom-3p hardcodedMainGrowthBookFeatures table (uOt) force-ONs the cli_plugin gate 2307090146 without GrowthBook, showing the L106 credential broker is live in custom-3p deployments even though it's dark on consumer GrowthBook"
       }
     ],
     "107": [
@@ -2106,6 +2116,21 @@
         "id": 118,
         "relevance": 0.75,
         "reason": "the exact per-tool_use stream envelope fields + tool_use_meta schema"
+      },
+      {
+        "id": 121,
+        "relevance": 0.85,
+        "reason": "L121 renames and extends L107's host-loop tool partition (PNt/gre -> HOST_LOOP_SAFE_BUILTIN_TOOLS/HOST_LOOP_EXCLUDED_BUILTIN_TOOLS; BDt/QDt superseded by the first-class toolAliases SDK option) and grows the force-ask matcher set to 9 tools"
+      },
+      {
+        "id": 123,
+        "relevance": 0.7,
+        "reason": "L123's subagent_env_hl/vm prompt append and appendSubagentSystemPrompt option are delivered over the same initialize control-protocol handshake L107 documented"
+      },
+      {
+        "id": 124,
+        "relevance": 0.85,
+        "reason": "L124's Pm()/jKe()/FM() is the direct successor of L107's f_() host-loop/VM-loop decision function, re-verified force-on at 1.20186.1/2.1.205"
       }
     ],
     "108": [
@@ -2133,6 +2158,21 @@
         "id": 119,
         "relevance": 0.82,
         "reason": "closes the CLAUDE_CODE_ENVIRONMENT_KIND=bridge gap this chapter left open -- confirms the mechanism is the agent's own claude remote-control bridge worker, and re-confirms gate 583857784 as the same bridge-session transport concept"
+      },
+      {
+        "id": 122,
+        "relevance": 0.8,
+        "reason": "L122 resolves the .host-home question raised by L108's gate 2614807392, confirming it is a synthetic path-translation index (ece()/uCe()), not a real mount"
+      },
+      {
+        "id": 123,
+        "relevance": 0.6,
+        "reason": "L123 traces CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT's real consumption gap beyond L108's env-var catalog listing"
+      },
+      {
+        "id": 124,
+        "relevance": 0.75,
+        "reason": "L124 re-confirms several L108 gate values unchanged and amends the cli_plugin (2307090146) dark/live split via the custom-3p uOt table"
       }
     ],
     "dynamic-workflows": [
@@ -2359,6 +2399,11 @@
         "id": 116,
         "relevance": 0.8,
         "reason": "runtime-detection companion: how a skill finds out which of these surfaces it is on"
+      },
+      {
+        "id": 124,
+        "relevance": 0.85,
+        "reason": "L124 re-verifies L115's Task-one-shot/SendMessage-resume/Cowork-severing conclusions at 1.20186.1/2.1.205, with the background-by-default polarity flip and the new session-level mcp__dispatch__send_message channel"
       }
     ],
     "116": [
@@ -2450,6 +2495,16 @@
         "id": 11,
         "relevance": 0.62,
         "reason": "Skills system — activeSkill scope, inline vs fork (context:'fork') dispatch"
+      },
+      {
+        "id": 121,
+        "relevance": 0.55,
+        "reason": "L121's GY tool-composition algorithm is re-verified with the same cross-artifact (host CLI + in-VM ELF + app.asar) discipline L118 used for the skill-scope stream contract"
+      },
+      {
+        "id": 124,
+        "relevance": 0.7,
+        "reason": "L124 adds task_started/toolUseResult/permission_denied as sibling stream-observability channels to L118's per-tool_use envelope contract"
       }
     ],
     "109": [
@@ -2501,6 +2556,84 @@
         "id": 119,
         "relevance": 0.5,
         "reason": "same first-party discipline against the same 1.19367.0 Desktop binary, and shares the LocalAgentModeSessions/LocalSessions interface-naming precedent"
+      }
+    ],
+    "121": [
+      {
+        "id": 107,
+        "relevance": 0.85,
+        "reason": "L121's Cowork host-loop tool-composition step (HOST_LOOP_SAFE_BUILTIN_TOOLS/HOST_LOOP_EXCLUDED_BUILTIN_TOOLS, renamed from L107's PNt/gre; toolAliases superseding BDt/QDt) is a symbol-renamed continuation of L107's host-loop tool partition, re-verified at 1.20186.1/2.1.205"
+      },
+      {
+        "id": 118,
+        "relevance": 0.55,
+        "reason": "same cross-artifact discipline (host CLI + in-VM ELF + app.asar checked together): L121's depth cap (NMr host / BLr VM, both =5) is confirmed identically in the in-VM ELF, and GY's silently-dropped invalidTools/unavailableTools mirrors L118's tool_use_meta display-only, zero-consumers finding pattern"
+      }
+    ],
+    "122": [
+      {
+        "id": 89,
+        "relevance": 0.85,
+        "reason": "L89 found host-loop's single shared scratch space (bash sees /mnt/outputs, file tools see the session path, same files); L122 pins the exact mechanism -- cwd IS the outputs directory (getStorageDir/sessionDirPaths) -- and confirms /sessions/... is denied, never translated, for file tools"
+      },
+      {
+        "id": 104,
+        "relevance": 0.4,
+        "reason": "same 'verify against the current binary, don't assume it carried over' discipline L104 established for codename GB-flags; L122 explicitly re-anchors the path-containment hook's matcher/offset at 1.20186.1 rather than assuming the L107-era symbols still apply"
+      },
+      {
+        "id": 108,
+        "relevance": 0.8,
+        "reason": "directly resolves the .host-home question left open by L108's gate 2614807392 (.host-home skeleton-path index, added v2.23.0) -- L122 confirms it is a synthetic path-translation index (ece()/uCe()), not a mount and not an input-side rewrite, in the same direction as L108's finding"
+      },
+      {
+        "id": 117,
+        "relevance": 0.75,
+        "reason": "L117's rootfs-forensics per-session mount inventory (outputs/uploads/.claude/.claude-skills/.claude-projects, no home/tmp mount unit) is the VM-side ground truth L122's VM-loop mount table (.claude rwd, .claude/skills ro, uploads ro, projects/artifacts/scheduled ro) matches"
+      }
+    ],
+    "123": [
+      {
+        "id": 107,
+        "relevance": 0.7,
+        "reason": "L107's --permission-prompt-tool stdio / initialize handshake spawn contract is the same control-protocol channel L123's appendSubagentSystemPrompt option and subagent_env_hl/vm text ride over"
+      },
+      {
+        "id": 108,
+        "relevance": 0.6,
+        "reason": "L108 catalogs the Cowork/Desktop env-var surface; L123 traces CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT's actual consumption gap -- set unconditionally at Desktop spawn but required independently of the initialize-delivered option"
+      }
+    ],
+    "124": [
+      {
+        "id": 90,
+        "relevance": 0.55,
+        "reason": "L90 first identified CLAUDE_EFFORT as a skill-frontmatter field/template token rather than a process.env var; L124's model-resolution chain shows the sibling CLAUDE_CODE_SUBAGENT_MODEL is a real env var with its own allowlist-check-then-warn-and-inherit fallback -- the contrast sharpens both"
+      },
+      {
+        "id": 106,
+        "relevance": 0.6,
+        "reason": "L124's custom-3p uOt gate table force-ONs 2307090146 (cli_plugin) alongside 1143815894 -- amending L106's finding that the credential broker is dark on consumer GrowthBook by showing it is live in custom-3p deployments"
+      },
+      {
+        "id": 107,
+        "relevance": 0.85,
+        "reason": "L124's Pm()/jKe()/FM() decision function is the direct successor of L107's f_() host-loop/VM-loop gate function, re-verified at gate 1143815894 still force-on in production"
+      },
+      {
+        "id": 108,
+        "relevance": 0.75,
+        "reason": "L124 re-confirms several L108 gate values unchanged (434204418, 66187241, 714014285, 1936081873, 4153934152) and amends L108's cli_plugin (2307090146) dark/live split via the custom-3p uOt table"
+      },
+      {
+        "id": 115,
+        "relevance": 0.85,
+        "reason": "L124 re-verifies all four Ch29/L115 conclusions at 1.20186.1/2.1.205 with two refinements: the background-by-default polarity flip and a new session-level (not sub-agent) mcp__dispatch__send_message continuation channel"
+      },
+      {
+        "id": 118,
+        "relevance": 0.7,
+        "reason": "L124 adds task_started/toolUseResult/permission_denied as sibling stream-observability channels to L118's per-tool_use envelope contract"
       }
     ]
   }

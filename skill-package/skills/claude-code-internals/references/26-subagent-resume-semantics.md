@@ -150,6 +150,19 @@ without a from-scratch redispatch:
 - **`Workflow({scriptPath, resumeFromRunId})`** (L91): completed `agent()` calls with
   unchanged `(prompt, opts)` replay from cache; only edited/new calls re-run.
 
+> **EXTENSION (v2.28.0, L124):** Re-verified 2026-07-11 against asar 1.20186.1 + agent 2.1.205 — the
+> sever-at-spawn conclusion holds (`SendMessage` still absent from `tools:`/`allowedTools:`, only
+> `SendUserMessage` appears; both disable vars still unconditional in the main spawn env; the Desktop
+> `Task` PreToolUse hook still blocks `run_in_background`) — with three deltas: (i) `run_in_background`
+> **polarity flipped** — background is now the default ("Set to false to run this agent
+> synchronously"), and under `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS` the param is stripped from the Task
+> schema entirely, not merely defaulted off; (ii) the CLI's `agent-stopped` `SendMessage` branch now
+> treats the disable var as an **`awaitCompletion` mode-switch** (resume-and-run-synchronously) instead
+> of an outright refusal — moot in Cowork either way; (iii) **new**: agent-type sessions get
+> `mcp__dispatch__send_message` (plus `MCP_DISPATCH_LIST_PROJECTS`, a `dispatchAgentNameEnabled`-gated
+> `MCP_DISPATCH_SET_AGENT_NAME`, and gate-`3723845789`'s `LIST_CODE_WORKSPACES`) — a Desktop-mediated
+> **cross-session** continuation primitive, distinct from sub-agent resume. See Ch35/L124.
+
 ## Part C — Cowork severs the resume path at spawn time
 
 In app.asar 1.18286.0, the local-agent (Cowork) session spawn makes three moves, each

@@ -140,6 +140,18 @@ none configured), `cwd`, `skills` (**a bare array of names**, no `when_to_use` �
 
 ### `tool_use_meta` is display metadata only
 
+> **EXTENSION (v2.28.0, L124):** Re-verified at 2.1.205 (2026-07-11) — three sibling wire channels
+> partially close the gap at the **dispatch level** (not skill level): (i) `type:"system"
+> subtype:"task_started"` carries the **resolved** `subagent_type` (sibling family: `task_progress`/
+> `task_updated`/`task_notification`/`background_tasks_changed`/`thinking_tokens`); (ii) the paired
+> user message's `toolUseResult` completion envelope carries `[agentId, agentType, content, prompt,
+> resolvedModel, status, toolStats, ...]` — the resolved child **model** is wire-observable post-hoc,
+> not just the dispatching assistant message's own `model`; (iii) `subtype:"permission_denied"` carries
+> a schema-documented sub-agent `agent_id`, but fires **only** for pre-ask denials
+> (`decideLocation==="pre-ask"`) — never for PreToolUse-hook denials or interactive asks the host
+> answers deny. None of these three carry `activeSkill`/`spawnedBySkill` — they close part of the
+> dispatch (Agent/Task) attribution gap, not the skill-scope gap this chapter documents. See Ch35/L124.
+
 The verbatim Zod schema:
 
 ```js

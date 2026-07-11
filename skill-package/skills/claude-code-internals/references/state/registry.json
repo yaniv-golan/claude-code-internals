@@ -2,9 +2,9 @@
   "schema_version": 1,
   "as_of": {
     "cli": "2.1.198",
-    "desktop_asar": "1.19367.0",
+    "desktop_asar": "1.20186.1",
     "in_vm_elf": "2.1.197",
-    "fcache_capture": "2026-07-04",
+    "fcache_capture": "2026-07-11",
     "agent_elf_parity_check": "2.1.202"
   },
   "entries": [
@@ -1300,10 +1300,14 @@
       "first_seen": "2.1.170",
       "removed_in": null,
       "as_of": "2.1.198",
-      "summary": "Gates appendSubagentSystemPrompt on the initialize control-request (subagent system-prompt append).",
+      "summary": "Gates appendSubagentSystemPrompt on the initialize control-request (subagent system-prompt append). Set unconditionally to \"1\" in every Cowork spawn env (Desktop-side) -- and this is REQUIRED, not just sufficient: consumption requires BOTH the env var AND initialize.appendSubagentSystemPrompt (pt(process.env.CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT)&&r.options.appendSubagentSystemPrompt). The CLI's own self-set helper (YRp) that flips this env var on has exactly one call site -- the hidden --append-subagent-system-prompt CLI flag path -- it is NOT invoked by the initialize handler itself. So an SDK/driver that sends the option over initialize without independently setting the env var in the agent's process env gets no append.",
       "provenance": [
         {
           "lesson": 107
+        },
+        {
+          "lesson": 123,
+          "note": "confirmed unconditional Cowork spawn-env injection + the initialize-delivery env-gate dependency (YRp only fires on the hidden flag path, not on initialize)"
         }
       ]
     },
@@ -2910,7 +2914,7 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.198",
-      "summary": "CLI-plugin credential broker master gate -- OFF in live fcache captures 2026-06 and 2026-07-02; when off, renderer strips plugin.json `clis` and PKr returns oauth_disabled.",
+      "summary": "CLI-plugin credential broker master gate -- OFF in live fcache captures 2026-06, 2026-07-02, and 2026-07-11; when off, renderer strips plugin.json `clis` and PKr returns oauth_disabled. Custom-3p deployment mode hardcodes this gate ON via a hardcodedMainGrowthBookFeatures table (uOt), bypassing GrowthBook entirely -- the cli_plugin credential broker (Ch23/L106) is LIVE in custom-3p deployments while still dark on consumer GrowthBook.",
       "provenance": [
         {
           "lesson": 106
@@ -2918,6 +2922,10 @@
         {
           "lesson": 109,
           "note": "fcache re-capture 2026-07-02, still OFF"
+        },
+        {
+          "lesson": 124,
+          "note": "custom-3p uOt hardcode table forces this ON outside GrowthBook; consumer GrowthBook still OFF at 2026-07-11 recapture"
         }
       ]
     },
@@ -2929,13 +2937,17 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.198",
-      "summary": "Decides host-loop vs VM-loop execution for Cowork sessions (f_()->cPt()->dt(this)); ON (force) in the live fcache, so production Cowork runs host-loop -- only requireCoworkFullVmSandbox orgs get VM-loop.",
+      "summary": "Decides host-loop vs VM-loop execution for Cowork sessions (successor decision fn Pm(), formerly f_()->cPt()->dt(this)); ON (force) in the live fcache (2026-07-11 recapture: ruleId fr_mnqhxsok), so production Cowork runs host-loop -- only requireCoworkFullVmSandbox orgs (or the local forceDisableHostLoop kill switch) get VM-loop. RESUME-STICKY: the decision is consulted only at fresh session start; a resumed session keeps its PERSISTED hostLoopMode rather than re-evaluating, and if org policy flips to requireFullVmSandbox mid-lifetime, resuming a session created host-loop throws a verbatim error (\"This session was created before your organization required the VM sandbox. It cannot be resumed under the current policy. Please start a new session.\") rather than silently switching loops. The CLAUDE_FORCE_HOST_LOOP=1 dev-override escape is now additionally gated on globalThis.isDeveloperApprovedDevUrlOverrideEnabled -- dead on stock installs. Custom-3p deployments hardcode this gate ON via the uOt table, alongside 2307090146 (cli_plugin) and several others, bypassing GrowthBook.",
       "provenance": [
         {
           "lesson": 107
         },
         {
           "lesson": 108
+        },
+        {
+          "lesson": 124,
+          "note": "resume-sticky semantics + verbatim policy-flip error; CLAUDE_FORCE_HOST_LOOP now dev-override-gated; custom-3p uOt hardcode"
         }
       ]
     },
@@ -3673,15 +3685,34 @@
     {
       "id": "proto.task_started",
       "kind": "control-subtype",
-      "name": "task_started (Tasks-tool family)",
-      "status": "dark-launched",
+      "name": "task_started (dispatch + Tasks-tool family)",
+      "status": "live",
       "first_seen": "2.1.197",
       "removed_in": null,
       "as_of": "2.1.198",
-      "summary": "Consolidated entry for the Tasks-tool control-protocol event family: background_tasks, task_started, task_progress, task_updated, task_summary, task_notification, stop_task -- all tied to the CLAUDE_CODE_ENABLE_TASKS-gated Tasks tool and the force-ON tasks_tab insider experiment (gate 364911507).",
+      "summary": "Consolidated entry for the task_started/task_progress/task_updated/task_notification/background_tasks_changed/thinking_tokens control-protocol family, plus the CLAUDE_CODE_ENABLE_TASKS-gated Tasks-tool-specific siblings background_tasks/task_summary/stop_task. task_started ITSELF is emitted unconditionally for any task-shaped dispatch -- confirmed for regular Task/Agent sub-agent calls, not just the Tasks tool: {type:\"system\",subtype:\"task_started\",task_id,tool_use_id,description,subagent_type:<RESOLVED agent type, includes the general-purpose fallback>,task_type,workflow_name,prompt}. A stream consumer gets exact resolved sub-agent types (including the type-less-dispatch fallback to built-in general-purpose) without parsing dispatch tool_use inputs. Status promoted to live on this basis; the Tasks-tool-specific siblings (background_tasks, task_summary, stop_task) remain tied to CLAUDE_CODE_ENABLE_TASKS, now confirmed unconditional in the Cowork spawn env, and the tasks_tab insider experiment (gate 364911507, force-ON).",
       "provenance": [
         {
           "lesson": 109
+        },
+        {
+          "lesson": 124,
+          "note": "confirmed task_started fires for regular sub-agent dispatch carrying the resolved subagent_type; status promoted live; thinking_tokens added to the family"
+        }
+      ]
+    },
+    {
+      "id": "proto.permission_denied",
+      "kind": "control-subtype",
+      "name": "permission_denied",
+      "status": "live",
+      "first_seen": "2.1.205",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "type:\"system\" subtype emitted for automatic PRE-ASK denials only: {tool_name,tool_use_id,agent_id,decision_reason_type,decision_reason,message}. agent_id is schema-documented as the sub-agent discriminator (\"Subagent ID when the denied tool call originated inside a subagent. Mirrors can_use_tool for host-side routing.\"). Scope is gated by IQo(e){return e.decideLocation===\"pre-ask\"} -- fires ONLY for automatic rule/mode/classifier denials evaluated agent-locally before the host is ever asked. Does NOT fire for interactive can_use_tool asks the host answers deny, and does NOT fire for PreToolUse-hook denials (those surface as an is_error tool_result instead). Carries no tool_input/path field. Consequence for Cowork: the host-loop path-gate (PreToolUse hook + canUseTool wrapper) never produces this event -- a corroborating source for pre-ask denials only, never the sole source of path-denial observability.",
+      "provenance": [
+        {
+          "lesson": 124
         }
       ]
     },
@@ -4143,7 +4174,7 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.198",
-      "summary": "Promoted from speculative to confirmed. Lesson 46 catalogued this only as an unreleased precedence-order entry with no evidence anything set it. Lesson 114 confirms it is genuinely wired in the Desktop Cowork spawn path, reading a real defaultSubagentModel settings field.",
+      "summary": "Promoted from speculative to confirmed. Lesson 46 catalogued this only as an unreleased precedence-order entry with no evidence anything set it. Lesson 114 confirms it is genuinely wired in the Desktop Cowork spawn path, reading a real defaultSubagentModel settings field. Full mechanism (L124): Desktop injects it CONDITIONALLY -- only when server-side YukonSilverConfig.defaultSubagentModel (IPC setYukonSilverConfig) is not the \"inherit\" sentinel; when \"inherit\", the env var is omitted entirely (by default a Cowork Task sub-agent runs the same model as the main loop). Agent-side resolution precedence: this env var (unless \"inherit\") -> the Agent-tool dispatch's own model param -> the sub-agent's frontmatter model: -> inherit the main-loop model (default). An unrecognized env value fails an availableModels-allowlist check and WARNS + falls back to inherit -- it does NOT fall through to the tool-param/frontmatter steps (telemetry subagent_model_resolve/override_dropped). Fork dispatches force-inherit: the Agent-tool never forwards its own model param on a fork call (model:B?void 0:m), so a fork always resolves via frontmatter/inherit regardless of this env var.",
       "provenance": [
         {
           "lesson": 46,
@@ -4152,6 +4183,10 @@
         {
           "lesson": 114,
           "note": "confirmed wired to a real Desktop settings field"
+        },
+        {
+          "lesson": 124,
+          "note": "full precedence chain + YukonSilverConfig conditional-injection mechanism + allowlist-fail behavior + fork force-inherit"
         }
       ]
     },
@@ -4238,10 +4273,29 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.198",
-      "summary": "Subagent dispatch. Input schema (THm/SHm/fLo): description, prompt, subagent_type, model, run_in_background, name, team_name (deprecated), mode, isolation, cwd -- NO resume parameter; every call spawns a fresh agent (tengu_agent_tool_selected is_resume:false). run_in_background is omitted from the schema when CLAUDE_CODE_DISABLE_BACKGROUND_TASKS is set or the fork experiment (PX()) is active; cwd is always omitted model-facing. Continuation lives elsewhere: SendMessage resume (tool.SendMessage), subagent_type 'fork' (inherits full conversation context), Workflow resumeFromRunId.",
+      "summary": "Subagent dispatch. Input schema (THm/SHm/fLo): description, prompt, subagent_type, model, run_in_background, name, team_name (deprecated), mode, isolation, cwd -- NO resume parameter; every call spawns a fresh agent (tengu_agent_tool_selected is_resume:false). run_in_background is omitted from the schema when CLAUDE_CODE_DISABLE_BACKGROUND_TASKS is set or the fork experiment (PX()) is active; cwd is always omitted model-facing (Task input schema .omit({cwd:!0})). Continuation lives elsewhere: SendMessage resume (tool.SendMessage), subagent_type 'fork' (inherits full conversation context), Workflow resumeFromRunId. Type-less dispatch (subagent_type omitted) falls back to the built-in general-purpose type with tools:[\"*\"] -- the FULL wildcard tool surface, including mcp__workspace__bash in Cowork host-loop; production audit-log evidence shows this fallback firing routinely (113 of 509 real dispatches across 39 sessions on one machine carried no subagent_type at all). Depth cap 5 (NMr host / BLr in-VM), enforced by hiding the Agent/Task tool itself from a sub-agent's own composed toolset once agentDepth>=5; no Task-specific fan-out/concurrency cap exists anywhere in either binary -- the only bound on parallel sub-agent starts is the generic env.CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY scheduler window.",
       "provenance": [
         {
           "lesson": 115
+        },
+        {
+          "lesson": 121,
+          "note": "type-less dispatch general-purpose fallback + depth cap + no fan-out cap, confirmed with production audit-log evidence"
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY",
+      "status": "live",
+      "first_seen": "2.1.205",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Generic per-turn tool-scheduler concurrency window: CQg(){let e=parseInt(process.env.CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY||\"\",10);return e>0?e:10} -- default 10, keyed on each tool's isConcurrencySafe; the scheduler queues excess calls rather than refusing them. This is the ONLY thing bounding parallel sub-agent starts -- no Task-specific fan-out cap exists anywhere in the binary (the 25-agent/1.5M-token workflowSize figure is prompt guidance/telemetry only, not enforcement).",
+      "provenance": [
+        {
+          "lesson": 121
         }
       ]
     },
@@ -4298,6 +4352,21 @@
       ]
     },
     {
+      "id": "gate.124685897",
+      "kind": "gate",
+      "name": "124685897 (starling section-prompt override)",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Gates ONLY whether server-delivered (\"starling\", via the renderer's spSectionPrompts record) section text may override the hardcoded system-prompt sections -- including subagent_env_hl/subagent_env_vm (the Cowork sub-agent environment-append text, see env.CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT). resolveSection/krt: if(!$t(\"124685897\"))return r (hardcoded fallback). Does NOT gate the append feature itself, which is env-var-gated independently. OFF (defaultValue) in the 2026-07-11 fcache -- the hardcoded texts ship.",
+      "provenance": [
+        {
+          "lesson": 123
+        }
+      ]
+    },
+    {
       "id": "gate.2860753854",
       "kind": "gate",
       "name": "2860753854 (memoryExtraGuidelines value gate)",
@@ -4316,14 +4385,18 @@
       "id": "gate.434204418",
       "kind": "gate",
       "name": "434204418 (mcpConnectionNonblockingOff)",
-      "status": "live",
+      "status": "dark-launched",
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.198",
-      "summary": "Controls whether the Desktop injects MCP_CONNECTION_NONBLOCKING:\"0\" and MCP_CONNECT_TIMEOUT_MS:\"10000\" into the Cowork spawn env, and (separately, same gate) whether the Desktop pre-builds local MCP servers for the session.",
+      "summary": "Controls whether the Desktop injects MCP_CONNECTION_NONBLOCKING:\"0\" and MCP_CONNECT_TIMEOUT_MS:\"10000\" into the Cowork spawn env, and (separately, same gate) whether the Desktop pre-builds local MCP servers for the session. OFF (defaultValue) at the 2026-07-11 fcache recapture -- the injected values are NOT currently applied in production. The \"0\"/\"10000\" figures themselves are unchanged from the v2.23.0 capture; an earlier draft's \"polarity change vs v2.23.0\" claim was wrong and is withdrawn.",
       "provenance": [
         {
           "lesson": 108
+        },
+        {
+          "lesson": 124,
+          "note": "reconfirmed OFF (defaultValue) at 2026-07-11; values 0/10000 unchanged from v2.23.0, not a polarity flip"
         }
       ]
     },
@@ -4395,10 +4468,14 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.198",
-      "summary": "Controls ENABLE_TOOL_SEARCH:\"auto\" in the Cowork spawn env. OFF (dark, absent from a standard fcache) -- pinned in the emulator project's DARK_GATES allowlist so an absent-to-present flip surfaces as a visible diff.",
+      "summary": "Controls ENABLE_TOOL_SEARCH:\"auto\" in the Cowork spawn env. OFF (dark, absent from a standard fcache) -- pinned in the emulator project's DARK_GATES allowlist so an absent-to-present flip surfaces as a visible diff. CONFIRMED (2026-07-11 recapture): still absent from the live fcache, AND absent from the agent binary entirely -- this gate does not exist agent-side. ToolSearch enablement is env/provider-driven (see env.ENABLE_TOOL_SEARCH), not gate-driven; the Desktop's conditional ...isFeatureEnabled(\"1129419822\")&&{ENABLE_TOOL_SEARCH:\"auto\"} injection is structurally dead today -- no rule to turn it on exists.",
       "provenance": [
         {
           "lesson": 108
+        },
+        {
+          "lesson": 124,
+          "note": "reconfirmed absent from fcache and confirmed absent agent-side entirely; ToolSearch is env/provider-driven not gate-driven"
         }
       ]
     },
@@ -4496,14 +4573,18 @@
       "id": "env.ENABLE_TOOL_SEARCH",
       "kind": "env-var",
       "name": "ENABLE_TOOL_SEARCH",
-      "status": "dark-launched",
+      "status": "live",
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.198",
-      "summary": "Cowork spawn-env var gated by dark gate 1129419822, set to \"auto\" when on. Absent from a standard fcache.",
+      "summary": "Full agent-side semantics (L124), correcting/extending the L108 'Desktop injects auto via a dark gate' framing: unset -> mode \"tst\" (ON for first-party -- MORE aggressive than \"auto\"); \"auto\" or \"auto:N\" -> mode \"tst-auto\", tool search deferred until deferred-tool token mass crosses a context-proportional threshold (default N=10, i.e. 10% of context: wxd = Math.floor(contextTokens * 10/100), char-count fallback threshold x2.5); any other falsy-ish value -> mode \"standard\" = tool search DISABLED (a naming trap -- \"standard\" sounds like a default, not off). Also force-disabled to \"standard\" by CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS or a HIPAA workspace (F_t()). Model support additionally gated by tme minus tengu_tool_search_unsupported_models. The Desktop's own conditional injection of ENABLE_TOOL_SEARCH:\"auto\" via gate 1129419822 (L108) is confirmed DEAD: the gate is absent from both the live fcache and the agent binary -- ToolSearch enablement in Cowork today is purely the agent's own default (\"tst\", ON), not gate-driven. Status promoted to live to reflect that the var (and ToolSearch itself) functions by default without needing the gate.",
       "provenance": [
         {
           "lesson": 108
+        },
+        {
+          "lesson": 124,
+          "note": "full mode semantics (tst/tst-auto/standard) + confirms gate 1129419822 is agent-side-absent; ToolSearch is env/provider-driven, default ON"
         }
       ]
     },

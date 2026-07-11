@@ -91,6 +91,15 @@ Ch22/L105 (`subtype:"elicitation"`/`can_use_tool`/`hook_callback`/`mcp_message`/
   *then* the user turn. The `initialize` request also carries `systemPrompt`,
   `appendSubagentSystemPrompt` (subagent append gated by
   `CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT=1`), `hooks`, and `sdkMcpServers`.
+
+  > **EXTENSION (v2.28.0, L123):** At 1.20186.1/2.1.205 (2026-07-11) the `initialize` request also
+  > carries **`toolAliases`** (the same single-hop alias map from Part E's L121 extension above)
+  > alongside `appendSubagentSystemPrompt`. The append gate's wiring is sharper than "gated by the env
+  > var" alone: the self-setter `YRp()` that flips `CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT="1"` has
+  > exactly one call site — the hidden `--append-subagent-system-prompt` CLI flag — and the `initialize`
+  > handler itself never calls it, so an `appendSubagentSystemPrompt` delivered over the control
+  > protocol is **inert** unless the env var is independently present in the agent process (which the
+  > Desktop's unconditional Cowork spawn-env `"1"` satisfies). See Ch35/L123.
 - **The `control_response` envelope is doubly nested.** `[binary]`
 
   ```json
@@ -209,6 +218,9 @@ Four matchers:
   `--allow-dangerously-skip-permissions`. The set has grown as Cowork gained features: a third-party
   capture at app.asar 1.12603.1 (pre-Ch26) recorded 5 names (no scheduled-tasks/watching, no
   `save_skill`); the live 1.17377.2 binary has 8.
+
+  > **EXTENSION (v2.28.0, L124):** At asar 1.20186.1 (2026-07-11) the joined-name matcher has grown to
+  > **9**: the same 8 plus `MCP_DELETE_SCHEDULED_TASK`. See Ch35/L124.
 - **`mcp__.*`** — a generic MCP-tool gate via `wjt(session, tool_name)`; a `"block"` decision
   short-circuits before the tool runs.
 
@@ -234,6 +246,15 @@ Full layer stack, current identifiers (unchanged 1.12603.1 → 1.17377.2 except 
   - `BDt = {Bash:"mcp__workspace__bash", WebFetch:"mcp__workspace__web_fetch"}`; `QDt(A)` adds the
     workspace alias **into the disabled-tools set** when `Bash`/`WebFetch` are disabled (additive
     injection alongside the originals — not a substitution in an allowed list).
+
+> **EXTENSION (v2.28.0, L121):** Re-verified at asar 1.20186.1 / host bundle 2.1.205 (2026-07-11): the
+> partition symbols are renamed and now exported **unminified** — `gre→p5e` (`HOST_LOOP_EXCLUDED_BUILTIN_TOOLS`),
+> `PNt→h5e` (`HOST_LOOP_SAFE_BUILTIN_TOOLS`), plus the path-gated set `g5e` (`HOST_LOOP_PATH_GATED_BUILTIN_TOOLS`,
+> see the next bullet) — stable sync sentinels to anchor future greps on instead of byte offsets. The
+> `BDt`/`QDt` injection is now a first-class SDK option, `toolAliases:{Bash:MCP_WORKSPACE_BASH,
+> WebFetch:MCP_WORKSPACE_WEB_FETCH}`, resolved single-hop (no chains) by `rc()` before name resolution;
+> deny rules with `source==="cliArg"`/`"toolsNarrowing"` deliberately do **not** expand to the aliased
+> MCP tool, and an alias never grants a tool the sub-agent isn't already bound to. See Ch35/L121.
 - **The actual PreToolUse hook is path-gating, not a forced-ask list.** `[binary]` `IeA` =
   `HOST_LOOP_PATH_GATED` = `["Read","Write","Edit","Glob","Grep"]` (+`MultiEdit`) get a PreToolUse hook
   (`vZe`/`Nen`) that **denies `/sessions/…` (VM) paths on the host-side file tools** ("VM path on host —
@@ -338,7 +359,18 @@ interactive Anthropic users via the `Vdr` map; re-grep showed `Vdr` belongs to t
 class (adjacent `[custom-3p]` log; this machine's interactive account takes the server-fetch path and its
 `fcache` reads the gate OFF) — Ch23/L106's "off by default" stands. (3) **A server-side gate can change
 the entire architecture** — host-loop vs VM-loop is gate `1143815894` (Ch20/L89); pin the gate state per
-release (decode `fcache`) and reproduce the decision logic, not one branch. (4) **Two binaries, two
+release (decode `fcache`) and reproduce the decision logic, not one branch.
+
+> **EXTENSION (v2.28.0, L124):** At asar 1.20186.1 (2026-07-11) the decision function is `Pm()`:
+> precedence is MDM `requireCoworkFullVmSandbox` / `forceDisableHostLoop` → VM-loop; else
+> `CLAUDE_FORCE_HOST_LOOP=1` — now **additionally gated** on `globalThis.isDeveloperApprovedDevUrlOverrideEnabled`,
+> so the env-var override is dead on stock installs; else gate `1143815894` (still force-on: production
+> is host-loop). `hostLoopMode` is also **resume-sticky** — the gate is consulted only at fresh session
+> start; resuming a host-loop session after the org later enables `requireCoworkFullVmSandbox` throws
+> "This session was created before your organization required the VM sandbox. It cannot be resumed
+> under the current policy." See Ch35/L124.
+
+(4) **Two binaries, two
 truths** — host-loop runtime lives in the desktop `app.asar`; the in-VM agent flags/protocol live in the
 `claude-code-vm` ELF, so a string absent from one is often present in the other. (5) **"Not found" doesn't
 survive a third binary.** The *same* re-verification pass in (1) also retracted the "PreToolUse

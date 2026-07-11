@@ -1,7 +1,7 @@
 {
   "generated": "2026-07-08",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party)",
-  "total_lessons": 120,
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries)",
+  "total_lessons": 124,
   "lessons": [
     {
       "id": 1,
@@ -3426,6 +3426,116 @@
         "MAX_THINKING_TOKENS-env-absent"
       ],
       "summary": "First-party binary trace of Cowork's two reasoning knobs against app.asar 1.19367.0. Extended thinking is a strict boolean -- maxThinkingTokens resolves to exactly 31999 or 0 (zgi/NX), never an arbitrary budget, delivered as --max-thinking-tokens/--thinking disabled flags with no MAX_THINKING_TOKENS env var at spawn; a live-session toggle calls query.setMaxThinkingTokens, confirming the payload behind the already-named set_max_thinking_tokens control-protocol subtype. Effort is a per-model enum (low/medium/high/xhigh(\"extra\")/max) resolved via qgi(override, A1e(model), E2t()) across FOUR model-config classes -- literal picker models, no-picker models that still emit --effort medium, a fable/mythos regex-default class with disallowThinkingDisabled, and unknown models with no config -- all sourced from a local settings-file object (effort/effortByModel), falling back to a hardcoded \"medium\" string, never CLAUDE_CODE_EFFORT_LEVEL. Corrects Ch28/L114's claim that the Desktop's LocalSessions effort IPC family is backed by CLAUDE_CODE_EFFORT_LEVEL: that env var is real but backs a separate, non-spawn-path getDefaultEffort() implementation -- the actual spawn value never touches it. Confirms setEffort's live-session branch calls applyFlagSettings({effortLevel}), giving the previously name-only apply_flag_settings control-protocol subtype its first concrete payload shape. Prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan (itself not yet implemented); every load-bearing binary claim independently re-derived first-party against this installation's own binary before folding in; the plan's own live-spawn-log analysis (flat 'medium' default, never per-model recommended) is relayed, not independently re-verified here."
+    },
+    {
+      "id": 121,
+      "title": "Task Sub-Agent Tool Composition: the GY Algorithm and the Type-less Fallback Trap",
+      "lesson_number": "121",
+      "file": "32-cowork-subagent-execution-model.md",
+      "startLine": 28,
+      "endLine": 137,
+      "keywords": [
+        "subagent-tools",
+        "sub-agent-tool-composition",
+        "GY-algorithm",
+        "tool-composition",
+        "general-purpose-fallback",
+        "type-less-dispatch",
+        "subagent_type",
+        "toolAliases",
+        "tool-alias",
+        "workspace-bash-alias",
+        "fan-out-cap",
+        "concurrency-cap",
+        "CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY",
+        "depth-limit",
+        "nesting-limit",
+        "workflowSize",
+        "plugin-agent-mcpServers",
+        "invalidTools",
+        "HOST_LOOP_SAFE_BUILTIN_TOOLS",
+        "HOST_LOOP_EXCLUDED_BUILTIN_TOOLS",
+        "disallowedTools-doc-bug"
+      ]
+    },
+    {
+      "id": 122,
+      "title": "Sub-Agent File-Tool Namespace: the Outputs cwd, Write/Delete, and the Path-Containment Hook",
+      "lesson_number": "122",
+      "file": "32-cowork-subagent-execution-model.md",
+      "startLine": 138,
+      "endLine": 208,
+      "keywords": [
+        "subagent-cwd",
+        "outputs-path",
+        "outputs-directory",
+        "sessions-denied",
+        "VM-path-denied",
+        "path-containment-subagent",
+        "subagent-hooks",
+        "agent_id-hook",
+        "fileDeleteApprovedMounts",
+        "uploads-read-only",
+        "first-folder-else-outputs",
+        "mount-mode-rw-rwd",
+        "CLAUDE_PLUGIN_ROOT-subagent",
+        "getStorageDir",
+        "sessionDirPaths",
+        "in-process-execution"
+      ]
+    },
+    {
+      "id": 123,
+      "title": "The Sub-Agent Prompt Append: subagent_env_hl / subagent_env_vm",
+      "lesson_number": "123",
+      "file": "32-cowork-subagent-execution-model.md",
+      "startLine": 209,
+      "endLine": 243,
+      "keywords": [
+        "subagent_env_hl",
+        "subagent_env_vm",
+        "append-subagent-prompt",
+        "appendSubagentSystemPrompt",
+        "buildSubagentEnvironmentPrompt",
+        "hostLoopMode",
+        "CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT",
+        "SP_SECTION_KEYS",
+        "gate-124685897",
+        "starling-override"
+      ]
+    },
+    {
+      "id": 124,
+      "title": "Sub-Agent Env/Model, Lifecycle Re-Verification, VM-Loop Deltas, Stream Observability & Methodology",
+      "lesson_number": "124",
+      "file": "32-cowork-subagent-execution-model.md",
+      "startLine": 244,
+      "endLine": 370,
+      "keywords": [
+        "subagent-model",
+        "CLAUDE_CODE_SUBAGENT_MODEL",
+        "model-resolution-chain",
+        "YukonSilver",
+        "YukonSilverConfig",
+        "ToolSearch-enablement",
+        "ENABLE_TOOL_SEARCH",
+        "tst-mode",
+        "task_started",
+        "permission_denied",
+        "resolvedModel",
+        "toolUseResult",
+        "fcache-gzip",
+        "fcache-format",
+        "mcp__dispatch__send_message",
+        "resume-stickiness",
+        "run_in_background-default",
+        "background-by-default-polarity-flip",
+        "uOt",
+        "custom-3p-gates",
+        "Pm-host-loop",
+        "hardcodedMainGrowthBookFeatures",
+        "host-loop-vm-loop-decision-function"
+      ]
     }
   ],
   "keyword_map": {
@@ -5933,10 +6043,12 @@
       83
     ],
     "CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT": [
-      83
+      83,
+      123
     ],
     "appendSubagentSystemPrompt": [
-      83
+      83,
+      123
     ],
     "verified-vs-assumed": [
       83
@@ -7176,7 +7288,8 @@
       89
     ],
     "invalidTools": [
-      89
+      89,
+      121
     ],
     "unavailableTools": [
       89
@@ -8560,7 +8673,8 @@
       109
     ],
     "task_started": [
-      109
+      109,
+      124
     ],
     "task_progress": [
       109
@@ -8964,7 +9078,8 @@
       108
     ],
     "ENABLE_TOOL_SEARCH": [
-      108
+      108,
+      124
     ],
     "gate-2614807392": [
       108
@@ -9055,7 +9170,8 @@
       118
     ],
     "subagent_type": [
-      118
+      118,
+      121
     ],
     "task_description": [
       118
@@ -9134,6 +9250,141 @@
     ],
     "extra effort level xhigh": [
       120
+    ],
+    "subagent tools": [
+      121
+    ],
+    "sub-agent tool composition": [
+      121
+    ],
+    "general-purpose fallback": [
+      121
+    ],
+    "type-less dispatch": [
+      121
+    ],
+    "toolAliases": [
+      121
+    ],
+    "tool alias": [
+      121
+    ],
+    "workspace bash alias": [
+      121
+    ],
+    "subagent cwd": [
+      122
+    ],
+    "outputs path": [
+      122
+    ],
+    "outputs directory": [
+      122
+    ],
+    "/sessions denied": [
+      122
+    ],
+    "VM path denied": [
+      122
+    ],
+    "path containment subagent": [
+      122
+    ],
+    "subagent hooks": [
+      122
+    ],
+    "agent_id hook": [
+      122
+    ],
+    "subagent_env_hl": [
+      123
+    ],
+    "subagent_env_vm": [
+      123
+    ],
+    "append subagent prompt": [
+      123
+    ],
+    "CLAUDE_CODE_SUBAGENT_MODEL": [
+      124
+    ],
+    "subagent model": [
+      124
+    ],
+    "YukonSilver": [
+      124
+    ],
+    "ToolSearch enablement": [
+      124
+    ],
+    "tst mode": [
+      124
+    ],
+    "fan-out cap": [
+      121
+    ],
+    "concurrency cap": [
+      121
+    ],
+    "CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY": [
+      121
+    ],
+    "depth limit": [
+      121
+    ],
+    "nesting limit": [
+      121
+    ],
+    "permission_denied": [
+      124
+    ],
+    "resolvedModel": [
+      124
+    ],
+    "toolUseResult": [
+      124
+    ],
+    "fcache gzip": [
+      124
+    ],
+    "fcache format": [
+      124
+    ],
+    "mcp__dispatch__send_message": [
+      124
+    ],
+    "resume stickiness": [
+      124
+    ],
+    "run_in_background default": [
+      124
+    ],
+    "workflowSize": [
+      121
+    ],
+    "plugin agent mcpServers": [
+      121
+    ],
+    "fileDeleteApprovedMounts": [
+      122
+    ],
+    "uploads read-only": [
+      122
+    ],
+    "first-folder-else-outputs": [
+      122
+    ],
+    "uOt": [
+      124
+    ],
+    "custom-3p gates": [
+      124
+    ],
+    "Pm host loop": [
+      124
+    ],
+    "GY algorithm": [
+      121
     ]
   }
 }

@@ -2,9 +2,9 @@
 domain: cowork-control-protocol
 title: Cowork spawn + stream-json control protocol (current)
 as_of_cli: 2.1.198
-as_of_desktop: 1.19367.0
-sources: [105, 107, 108, 109, 118, 119, 120]
-updated: 2026-07-08
+as_of_desktop: 1.20186.1
+sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124]
+updated: 2026-07-11
 ---
 
 # Cowork spawn + stream-json control protocol (current)
@@ -75,9 +75,33 @@ external driver) — not the Desktop app's internal IPC.
 - **`initialize` is the first message.** The driver sends
   `{type:"control_request", request_id, request:{subtype:"initialize"}}`
   before the user turn. It also carries `systemPrompt`,
-  `appendSubagentSystemPrompt` (gated by
-  `CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT=1`), `hooks`, and
+  `appendSubagentSystemPrompt`, `toolAliases`, `hooks`, and
   `sdkMcpServers`.
+  - **`appendSubagentSystemPrompt` consumption is env-gated, not just
+    option-gated (lesson 123).** The agent only applies the option when
+    BOTH `process.env.CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT` is
+    truthy AND `initialize.appendSubagentSystemPrompt` is present. The
+    CLI's own self-set helper (`YRp`) that flips this env var on has
+    exactly one call site — the hidden `--append-subagent-system-prompt
+    <prompt>` CLI flag path — it is **not** invoked by the `initialize`
+    handler itself. So a driver that sends the option over `initialize`
+    without independently setting the env var in the agent's process env
+    gets **no append**; the Desktop covers this by setting
+    `CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT:"1"` unconditionally in
+    every Cowork spawn env. The append applies to **Task sub-agents
+    only** (not fork/`useExactTools` dispatches) and **propagates to
+    nested sub-agents**. Content itself is `subagent_env_hl`/
+    `subagent_env_vm` (see `cowork-architecture.md`), server-overridable
+    only when GrowthBook gate `124685897` is on (OFF at the 2026-07-11
+    capture — the hardcoded text ships).
+  - **`toolAliases`** is a first-class SDK option (new at
+    1.20186.1/2.1.205; lesson 121): `{Bash: "mcp__workspace__bash",
+    WebFetch: "mcp__workspace__web_fetch"}` in Cowork host-loop. When the
+    model emits a `tool_use` whose name is a key in this map, execution
+    resolves the mapped name instead (single-hop, no chains) — this is
+    now the documented form of the mechanism formerly described only as
+    an ad hoc injection (`BDt`/`QDt`, Ch24/L107). Deny rules on `Bash`
+    deliberately do NOT expand to deny `mcp__workspace__bash` (`tXn`).
 - **The `control_response` envelope is doubly nested:**
 
   ```json
@@ -163,6 +187,74 @@ call to a skill exactly; for **inline** skills the ceiling is a sticky
 "active-skill window" (mirroring the agent's own no-pop `activeSkill`), while
 **fork** skills' inner tool calls arrive as `skill_progress`-wrapped messages
 carrying `parent_tool_use_id` = the `Skill` call id (exact). See Ch32/L118.
+
+## Sub-agent dispatch wire contract (lessons 121–124)
+
+Extends the fixed per-`tool_use` envelope above with the sub-agent-
+dispatch-specific pieces, re-verified against Desktop 1.20186.1 + host/
+in-VM agent 2.1.205:
+
+- **`task_started`** (`type:"system"`) carries the **RESOLVED** sub-agent
+  type on the wire — `{type:"system", subtype:"task_started", task_id,
+  tool_use_id, description, subagent_type, task_type, workflow_name,
+  prompt}`. `subagent_type` reflects resolution, including the type-less-
+  dispatch fallback to built-in `general-purpose` — a stream consumer
+  gets the real agent type without parsing the dispatching `tool_use`
+  input. Sibling subtypes in the same emitter family: `task_progress`,
+  `task_updated`, `task_notification`, `background_tasks_changed`,
+  `thinking_tokens`. See `proto.task_started` in the registry.
+- **`permission_denied`** (`type:"system"`) is a native denial-
+  attribution event, but for **pre-ask denials only**:
+  `{tool_name, tool_use_id, agent_id, decision_reason_type,
+  decision_reason, message}`, `agent_id` schema-documented as *"Subagent
+  ID when the denied tool call originated inside a subagent."* It fires
+  only when `decideLocation==="pre-ask"` — automatic rule/mode/classifier
+  denials evaluated before the host is ever asked. It does **not** fire
+  for interactive `can_use_tool` asks the host answers deny, and does
+  **not** fire for PreToolUse-hook denials (those surface as an
+  `is_error` tool_result — see `plugins-skills-hooks.md`'s PreToolUse
+  section). No `tool_input`/path field. Practical effect for Cowork: the
+  host-loop path-gate hook (`cowork-permissions.md` layer 4) never
+  produces this event — treat it as a corroborating signal for pre-ask
+  denials, never the sole source of path-denial observability. See
+  `proto.permission_denied`.
+- **The Agent-dispatch completion envelope** carries the resolved model
+  and identity. The completion object itself:
+  `{agentId, agentType, content, resolvedModel, totalDurationMs,
+  totalTokens, totalToolUseCount, usage, toolStats}`. The on-wire
+  `toolUseResult` field on the paired user message carries two more
+  wrapper-level additions — production logs show exactly `[agentId,
+  agentType, content, prompt, resolvedModel, status, toolStats,
+  totalDurationMs, totalTokens, totalToolUseCount, usage]`.
+  `agent_progress` messages also carry `resolvedModel`. A stream consumer
+  should read `toolUseResult.resolvedModel` for the model a sub-agent
+  actually ran on — not the dispatching assistant message's `model`
+  field.
+- **Force-ask matcher is now 9 joined names**, up from 8 (Ch24/L107,
+  Ch25/L108): the scheduled-tasks server gained
+  `MCP_DELETE_SCHEDULED_TASK` alongside `MCP_CREATE_SCHEDULED_TASK`/
+  `MCP_UPDATE_SCHEDULED_TASK`/`MCP_START_WATCHING`/`MCP_STOP_WATCHING`
+  and the four `mcp__cowork__*` tools. Full current table lives in
+  `cowork-permissions.md` layer 3.
+- **Agent-type sessions (`SESSION_TYPE_AGENT`) get a new
+  `mcp__dispatch__*` tool family** for Desktop-mediated **cross-session**
+  continuation — distinct from sub-agent resume (severed at spawn, see
+  `cowork-permissions.md` layer 8): `mcp__dispatch__send_message` ("Send
+  a user message to a local session... use this when the user's message
+  is a continuation of an existing session", routes via `e.sendMessage`,
+  logs `lam_dispatch_send_message`), `mcp__dispatch__list_projects`, and
+  a name-setting tool (`MCP_DISPATCH_SET_AGENT_NAME`) gated behind a
+  session-level `dispatchAgentNameEnabled` flag — plus
+  `LIST_CODE_WORKSPACES` behind gate `3723845789`. This operates at the
+  session level, not the sub-agent level; it does not restore Task-tool
+  resume.
+- **fcache decode recipe changed.** As of the 2026-07-11 capture the
+  on-disk `fcache` is no longer raw JSON: it's a container with magic
+  `CLF\x01\x00` + 3 bytes, then a **gzip stream starting at byte 8**
+  (observed: 24,863 bytes on disk → 86,779 decompressed, 207 gates).
+  Decode with `tail -c +9 fcache | gunzip`. Raw `grep`/`strings` against
+  the file — the technique used through v2.26.0 — no longer works and
+  will falsely report gates as absent.
 
 ## Compaction subtypes
 

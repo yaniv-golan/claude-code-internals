@@ -1459,6 +1459,58 @@
         93
       ],
       "hint": "Cowork's per-session --effort value is resolved from a local settings-file object (effort/effortByModel), never CLAUDE_CODE_EFFORT_LEVEL or any env var, with a hardcoded \"medium\" fallback (not the per-model \"recommended\" value) when nothing is set. Extended thinking is a strict boolean -- the budget is always exactly 31999 or 0, delivered via --max-thinking-tokens/--thinking disabled flags, never an env var. Setting CLAUDE_CODE_EFFORT_LEVEL or MAX_THINKING_TOKENS as an env var has no effect on a Cowork session's spawn."
+    },
+    {
+      "pattern": [
+        "sub-agent write denied /sessions path",
+        "is a VM path error Cowork",
+        "outside this session's connected folders",
+        "Read denied /sessions/<id>/mnt/outputs",
+        "host-loop file tool VM path denied"
+      ],
+      "lessons": [
+        122
+      ],
+      "hint": "Host-loop file tools (Read/Write/Edit/Glob/Grep/MultiEdit) run host-native and always deny /sessions/... paths -- never translate them -- for both the main thread and sub-agents. The agent's cwd already IS the session outputs directory, so use a cwd-relative path (e.g. artifacts/report.md) or the host-absolute outputs path instead of any /sessions/<id>/mnt/... form."
+    },
+    {
+      "pattern": [
+        "sub-agent ran mcp__workspace__bash unexpectedly",
+        "restricted sub-agent used ToolSearch",
+        "sub-agent has full tool access despite Read Edit Glob Grep frontmatter",
+        "Task dispatch missing subagent_type",
+        "general-purpose fallback tools wildcard"
+      ],
+      "lessons": [
+        121
+      ],
+      "hint": "A Task dispatch that omits subagent_type does not fail closed -- it silently resolves to the built-in general-purpose agent with tools:[\"*\"], the full session tool universe (including mcp__workspace__bash in Cowork host-loop). This fires in real production traffic (113 of 509 dispatches in one audit corpus). Always pin subagent_type: literally in every dispatch that should be scoped down."
+    },
+    {
+      "pattern": [
+        "appendSubagentSystemPrompt not delivered",
+        "sub-agent prompt append not working",
+        "initialize appendSubagentSystemPrompt ignored",
+        "sub-agents missing Cowork environment orientation text",
+        "CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT has no effect"
+      ],
+      "lessons": [
+        123
+      ],
+      "hint": "Consuming an appendSubagentSystemPrompt sent via the initialize control request also requires CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT to be present in the agent process env -- the initialize handler only stores the option, it never self-sets the env var (that only happens on the hidden --append-subagent-system-prompt CLI flag path). An SDK host that sends the option without also setting the env var gets silent inertness, not an error."
+    },
+    {
+      "pattern": [
+        "GrowthBook gate missing from fcache",
+        "grep fcache finds nothing",
+        "fcache gate looks absent but should be on",
+        "strings fcache no gates found",
+        "Desktop fcache format changed"
+      ],
+      "lessons": [
+        124
+      ],
+      "hint": "The Desktop fcache is no longer raw JSON -- it's a container with magic CLF\\x01\\x00 + 3 bytes, then a gzip stream starting at byte 8. Raw grep/strings against the file will falsely report gates as absent. Decode first: tail -c +9 fcache | gunzip, then search the decompressed JSON."
     }
   ]
 }

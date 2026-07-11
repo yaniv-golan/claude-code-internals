@@ -2,9 +2,9 @@
 domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.198
-as_of_desktop: 1.18286.0
-sources: [5, 88, 89, 106, 109, 118]
-updated: 2026-07-07
+as_of_desktop: 1.20186.1
+sources: [5, 88, 89, 106, 109, 118, 123, 124]
+updated: 2026-07-11
 ---
 
 # Plugins, skills & hooks (current)
@@ -39,6 +39,35 @@ Mechanism: the host loop symlinks each enabled plugin into a temp
 `claude-hostloop-plugins/<hash>` dir at session start and runs hooks
 **host-side**.
 
+## Plugin agent frontmatter restrictions
+
+A **plugin-shipped** agent definition (as opposed to a `.claude/agents/`
+project/user-level one) has three frontmatter fields silently discarded
+at load time, with a warning (lesson 124, re-verified at 1.20186.1/
+2.1.205): `permissionMode`, `hooks`, and `mcpServers` — verbatim: *"Plugin
+agent file ${e} sets ${G}, which is ignored for plugin agents. Use
+.claude/agents/ for this level of control."* Consequences:
+
+- **The `mcpServers:` frontmatter channel — the one sanctioned way a
+  sub-agent can gain tools its parent session doesn't have (its own
+  spawned MCP servers, filtered only by that agent's own
+  `disallowedTools`) — is `.claude/agents/`-only.** A plugin agent cannot
+  use it; a plugin author who wants a sub-agent-scoped MCP server has to
+  ship it as a top-level plugin `mcpServers:` entry instead (session-wide,
+  not sub-agent-scoped).
+- `permissionMode`/`hooks` on a plugin agent are likewise inert — only a
+  `.claude/agents/` definition can set per-agent permission mode or hooks.
+
+This sits on top of the standard tool-composition rule: a sub-agent's
+`tools:` frontmatter is authoritative only over what the **session**
+already offers (built-ins minus session-level deny rules, plus session
+MCP tools) — nothing is injected beyond that except via the sanctioned
+`mcpServers:` channel above. Omitting `subagent_type` entirely on a
+dispatch falls back to the built-in `general-purpose` type with
+`tools:["*"]` (full wildcard, not restricted) — a materially different
+outcome from pinning any explicit-`tools:` agent, plugin or not. See
+`cowork-architecture.md`'s "Sub-agent execution" section.
+
 ## `${CLAUDE_PLUGIN_ROOT}` resolves to wherever the agent loaded the plugin from
 
 The token substitutes to **one value per agent** — the directory the
@@ -68,6 +97,28 @@ depends on the execution mode; the Desktop picks it in a single branch,
 So L89's "resolves host-side **everywhere**" holds **only under host-loop**.
 The real invariant: the token points at the agent's own `--plugin-dir` —
 host-side under host-loop, VM-side under VM-loop.
+
+**Substitution happens once, at definition load — not at call time**
+(lesson 123). The primitive `PEe(e,t)` replaces `${CLAUDE_PLUGIN_ROOT}`
+(and `${CLAUDE_PROJECT_DIR}`/`${CLAUDE_PLUGIN_DATA}`) directly in TEXT
+when a plugin agent/skill/command definition is loaded — so a plugin
+sub-agent's system prompt, and a skill's or command's body/
+`allowed-tools` frontmatter, already contain the literal resolved path by
+the time the model ever sees them. This is *why* a plugin sub-agent's
+`Read` of its own `references/*.md` works under host-loop (the
+pre-resolved host path is in its prompt, and plugin paths are in the file
+tools' allow-roots, read-only) — not because of any runtime expansion.
+
+**File tools never expand the literal token.** There are zero occurrences
+of `${CLAUDE_PLUGIN_ROOT}` substitution in Read/Write/Edit/Glob/Grep path
+handling — a literal, un-pre-resolved `Read("${CLAUDE_PLUGIN_ROOT}/…")`
+call fails. **As a process env var**, `CLAUDE_PLUGIN_ROOT` is injected
+only into hook subprocesses, plugin MCP stdio servers (+
+`headersHelper`), and plugin LSP servers — it is **absent from the
+Bash-tool subprocess env** (`sEt()` injects only `CLAUDECODE`,
+`CLAUDE_CODE_SESSION_ID`, `CLAUDE_CODE_CHILD_SESSION`, and optionally
+`AI_AGENT`/`CLAUDE_EFFORT`/`TRACEPARENT`) — a model-typed
+`${CLAUDE_PLUGIN_ROOT}` inside a Bash command expands to empty.
 
 Two mechanics behind the host-loop value (`qX`):
 

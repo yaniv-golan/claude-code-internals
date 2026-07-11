@@ -146,6 +146,14 @@ each `{value:!0, on:!0, source:"force"}`) force-enables `2307090146` — but onl
 gate server-side and returns `null` from the hardcoded table. (In CCD mode, `setPluginEnvVars` is
 separately blocked with `"Not available in CCD mode."` via `xE()`.)
 
+> **EXTENSION (v2.28.0, L124):** Re-verified at asar 1.20186.1 (2026-07-11): the same force-on table
+> (now surfaced as an unminified method name, `hardcodedMainGrowthBookFeatures()`, and internally
+> called `uOt`) force-**ons** `2307090146` for custom-3p deployments — plus `1143815894` (host-loop),
+> `123929380` (coworkKappa), `2976814254`, `3246569822`, `1696890383`, `2940196192` (coworkArtifacts),
+> and `1978029737={coworkNativeFilePreview:true}` — **without GrowthBook**. So the `cli_plugin`
+> credential broker documented in this chapter is genuinely **live** in custom-3p deployments while
+> still dark on consumer GrowthBook (consumer fcache, re-checked 2026-07-11: still off). See Ch35/L124.
+
 **Reading the gate state.** Decode `~/Library/Application Support/Claude/fcache` (strip the 8-byte
 `CLF…` magic, gunzip). A standard account today shows:
 `"2307090146": { "value": false, "on": false, "off": true, "source": "defaultValue", "ruleId": null }`

@@ -113,6 +113,15 @@ in `app.asar` 1.18286.0's spawn-env builder, one `...At(id)&&{...}` spread per g
 | `CLAUDE_CODE_SKIP_PRECOMPACT_LOAD` | `4153934152` | `"1"` when on. |
 | `ENABLE_TOOL_SEARCH` | `1129419822` | `"auto"` when on — this gate is itself **dark** (absent from a standard fcache; see Part B). |
 
+> **EXTENSION (v2.28.0, L124):** Re-checked 2026-07-11 against asar 1.20186.1's live fcache:
+> `434204418` reads **off** (`defaultValue`) — the injected values `MCP_CONNECTION_NONBLOCKING:"0"` /
+> `MCP_CONNECT_TIMEOUT_MS:"10000"` are unchanged from the v2.23.0 capture (an earlier draft of this
+> note claimed a polarity change vs v2.23.0; that claim is withdrawn — only the gate's off-state is
+> new information). `1129419822` (`ENABLE_TOOL_SEARCH`) is still absent from the fcache and doesn't
+> exist agent-side at all as a gate — ToolSearch enablement is env/provider-driven, defaulting **on**
+> for first-party (see Ch35/L124). `714014285` and `1936081873` are still force-**on**; `66187241` and
+> `4153934152` are **off**. See Ch35/L124.
+
 `CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES` (previously documented in L90 as the additive sibling of
 `CLAUDE_COWORK_MEMORY_GUIDELINES`) is a related but different pattern: it's **always** present
 (not gate-conditioned on/off), and its *value* comes from GrowthBook string-config gate
@@ -129,12 +138,31 @@ the `2860753854` Part B row for the value-vs-boolean gate distinction.
 | `CLAUDE_UPDATER_TOKEN` | Signed JWT overriding the auto-updater config (server URL/channel). | `function VBr(){const A=process.env.CLAUDE_UPDATER_TOKEN;…}` |
 | `CLAUDE_DESKTOP_LOCAL_FRAME_SHELL` | `=1` enables the local-frame-shell render path (embedded webviews; alters link-click + CSP for sub-frames). | `if(process.env.CLAUDE_DESKTOP_LOCAL_FRAME_SHELL!=="1")return null` |
 
+> **EXTENSION (v2.28.0, L121–L124) — additions verified at asar 1.20186.1.** A fresh spawn-env sweep
+> (2026-07-11) turned up further vars beyond the tables above: `CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT:"1"`
+> (unconditional — gates the sub-agent system-prompt append; Ch35/L123), `CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY`
+> (agent-side generic tool-scheduler window, default 10 — the **only** bound on parallel sub-agent starts;
+> Ch35/L121), `DISABLE_MICROCOMPACT:"1"`, `CLAUDE_CODE_ENABLE_TASKS:"true"` (now unconditional, no longer
+> gate-conditioned), `CLAUDE_PROJECT_UUID`/`CLAUDE_PROJECT_TOOL`, `CLAUDE_CODE_BRIEF`/`CLAUDE_CODE_BRIEF_UPLOAD`
+> (agent-type sessions), `CLAUDE_CODE_TAGS` (`lam_session_type:...`), `CLAUDE_CODE_HOST_PLATFORM`. Also
+> sharpened: `ENABLE_TOOL_SEARCH`'s real semantics — unset defaults to mode `"tst"` (**on** for first-party),
+> `"auto"`/`"auto:N"` is a context-proportional (~10%-of-context-tokens) deferral threshold, and
+> `CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS` or a HIPAA workspace forces mode `"standard"` (tool search off).
+> Full detail in Ch35/L124.
+
 ## Part B — production GrowthBook gates (decoded from the live `fcache`)
 
 The desktop reads gates via `dt(id)` (→ `.on`) and `Qn(id,key,default)` (→ sub-keys), seeded from
 `/api/desktop/features` and disk-cached at `userData/fcache` (`CLF` magic + gzip). All states below are
 **this installation's snapshot** (standard interactive Anthropic account, 2026-06-13). `source:"force"`
 = server-forced override, not a local experiment.
+
+> **EXTENSION (v2.28.0, L124):** As of the 2026-07-11 capture (asar 1.20186.1) the fcache file format
+> changed: it is no longer raw JSON but a container — magic `CLF\x01\x00` + 3 bytes, then a **gzip
+> stream starting at byte 8** (24,863 bytes on disk → 86,779 decompressed; 207 gates in that capture).
+> Decode with `tail -c +9 fcache | gunzip`. Raw `grep`/`strings` against the file — the technique used
+> for every capture through v2.26.0 — **no longer works** and will falsely report gates as absent. See
+> Ch35/L124.
 
 | Gate | State | What it controls |
 | --- | --- | --- |
