@@ -106,6 +106,18 @@ value of that setting at the time of the original capture, not a compiled-in con
 citing Ch24/L107's "passes `--effort medium` explicitly" claim going forward should read it as "the
 setting happened to be `medium`," not "Desktop hardcodes medium."
 
+> **FURTHER CORRECTED in Ch34/L120 (2026-07-08, against a fresh 1.19367.0 build):** the "backed by
+> `CLAUDE_CODE_EFFORT_LEVEL`" half of this claim doesn't hold up under a full spawn-path trace. Two
+> distinct `getDefaultEffort()` implementations coexist in the bundle — a thin IPC passthrough and a
+> separate env-var reader that genuinely reads `CLAUDE_CODE_EFFORT_LEVEL` — but the value that
+> actually reaches `--effort <level>` at spawn (`qgi(effortOverride, A1e(model), E2t())`) resolves
+> exclusively from a **local settings-file object** (`effort`/`effortByModel` fields), with a
+> hardcoded `"medium"` string as the final fallback, never touching `CLAUDE_CODE_EFFORT_LEVEL` or
+> `process.env` in that chain. The IPC family name and existence documented here are still accurate;
+> only the "backed by that env var" causal link is wrong. See Ch34/L120 Part C for the full trace,
+> and Parts A–B for the accompanying extended-thinking (boolean, 31999-or-0) and four-class
+> per-model effort mechanics.
+
 ## Part D — promotion: `CLAUDE_CODE_SUBAGENT_MODEL` is now confirmed wired, not speculative
 
 Lesson 46 (`05-unreleased-bigpicture.md`, "Model System") previously catalogued
@@ -194,4 +206,7 @@ completed in Part E) · Lesson 38 (`04-connectivity-plugins.md`, Cron and Task S
 CLI-side meaning of `CLAUDE_CODE_DISABLE_CRON`) · Lesson 46 (`05-unreleased-bigpicture.md`, Model
 System — the speculative entry promoted in Part D) · Lesson 93 (`CLAUDE_CODE_EFFORT_LEVEL`,
 corrected relationship to the Desktop spawn arg in Part C) · Lesson 100 (Fleet view →
-agent view rename — the narrower surviving usage found in Part E).
+agent view rename — the narrower surviving usage found in Part E) · Ch34/L120
+(`31-desktop-reasoning-config-effort-thinking.md` — further corrects Part C's
+`CLAUDE_CODE_EFFORT_LEVEL` backing-store claim and documents the full effort/thinking spawn
+mechanics).

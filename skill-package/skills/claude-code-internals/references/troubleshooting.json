@@ -1444,6 +1444,21 @@
         109
       ],
       "hint": "microcompact_boundary is a distinct system subtype from compact_boundary and is return-null'd in at least one render path, so it doesn't always surface as a visible boundary. A compaction signal should key on BOTH subtypes."
+    },
+    {
+      "pattern": [
+        "effort default is medium not recommended",
+        "why does Cowork always emit --effort medium",
+        "extended thinking always 31999",
+        "CLAUDE_CODE_EFFORT_LEVEL not affecting Cowork session",
+        "MAX_THINKING_TOKENS env var ignored"
+      ],
+      "lessons": [
+        120,
+        114,
+        93
+      ],
+      "hint": "Cowork's per-session --effort value is resolved from a local settings-file object (effort/effortByModel), never CLAUDE_CODE_EFFORT_LEVEL or any env var, with a hardcoded \"medium\" fallback (not the per-model \"recommended\" value) when nothing is set. Extended thinking is a strict boolean -- the budget is always exactly 31999 or 0, delivered via --max-thinking-tokens/--thinking disabled flags, never an env var. Setting CLAUDE_CODE_EFFORT_LEVEL or MAX_THINKING_TOKENS as an env var has no effect on a Cowork session's spawn."
     }
   ]
 }

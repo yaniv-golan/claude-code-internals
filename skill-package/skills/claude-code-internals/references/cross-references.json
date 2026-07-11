@@ -2317,6 +2317,11 @@
         "id": 46,
         "relevance": 0.55,
         "reason": "CLAUDE_CODE_SUBAGENT_MODEL promoted here from speculative to confirmed-wired"
+      },
+      {
+        "id": 120,
+        "relevance": 0.9,
+        "reason": "further corrects Part C's CLAUDE_CODE_EFFORT_LEVEL backing-store claim and documents the full effort/thinking spawn mechanics"
       }
     ],
     "115": [
@@ -2474,6 +2479,28 @@
         "id": 118,
         "relevance": 0.45,
         "reason": "same cross-artifact first-party discipline: agent ELF (2.1.20x) + Desktop app.asar checked together, not separately"
+      }
+    ],
+    "120": [
+      {
+        "id": 114,
+        "relevance": 0.9,
+        "reason": "corrects Ch28/L114 Part C's claim that the Desktop effort IPC family is backed by CLAUDE_CODE_EFFORT_LEVEL"
+      },
+      {
+        "id": 93,
+        "relevance": 0.6,
+        "reason": "CLAUDE_CODE_EFFORT_LEVEL is real but confirmed here to back a sibling getter, not the Cowork spawn-path effort value"
+      },
+      {
+        "id": 109,
+        "relevance": 0.55,
+        "reason": "gives apply_flag_settings, first named in this chapter's control-protocol inventory, its first concrete payload shape"
+      },
+      {
+        "id": 119,
+        "relevance": 0.5,
+        "reason": "same first-party discipline against the same 1.19367.0 Desktop binary, and shares the LocalAgentModeSessions/LocalSessions interface-naming precedent"
       }
     ]
   }

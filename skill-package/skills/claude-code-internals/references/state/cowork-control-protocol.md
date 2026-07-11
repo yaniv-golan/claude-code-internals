@@ -3,7 +3,7 @@ domain: cowork-control-protocol
 title: Cowork spawn + stream-json control protocol (current)
 as_of_cli: 2.1.198
 as_of_desktop: 1.19367.0
-sources: [105, 107, 108, 109, 118, 119]
+sources: [105, 107, 108, 109, 118, 119, 120]
 updated: 2026-07-08
 ---
 
@@ -44,6 +44,28 @@ external driver) — not the Desktop app's internal IPC.
     `31999` does not appear anywhere in the in-VM bundle — it is purely a
     desktop-passed number. `CLAUDE_EFFORT` as a `process.env` var is a
     no-op.
+  - **Full spawn-time resolution mechanism (L120, corrects L114's
+    "backed by `CLAUDE_CODE_EFFORT_LEVEL`" claim):** neither knob is
+    env-backed at spawn. Extended thinking: `maxThinkingTokens =
+    zgi(extendedThinkingEnabled, extendedThinkingOverride, killSwitch)`
+    resolves to **exactly `31999` or `0`, never an arbitrary budget**
+    (`killSwitch` = a local settings object's `maxThinkingTokens === 0`
+    field, used only as an exact-zero flag). Effort: `effort =
+    qgi(effortOverride, perModelSetting, flatSettingOrMedium)` — a
+    **local settings-file object** (`effort`/`effortByModel` fields),
+    with a hardcoded `"medium"` string as the final fallback if unset —
+    `CLAUDE_CODE_EFFORT_LEVEL` is real (lesson 93, the CLI's own global
+    effort-tier pin) but backs a *different*, non-spawn-path
+    `getDefaultEffort()` getter, not this resolver. Per-model effort has
+    **four config classes**: literal
+    picker models, no-picker models (still emit `--effort medium`), a
+    `fable`/`mythos` regex-default class (`disallowThinkingDisabled:
+    true` — "Off" isn't offered for these models' thinking picker), and
+    unknown models (no config). A live-session toggle calls
+    `query.setMaxThinkingTokens(enabled?31999:0)` /
+    `query.applyFlagSettings({effortLevel})` — the first concrete
+    payload shapes confirmed for `set_max_thinking_tokens` /
+    `apply_flag_settings` below.
   - Full logged argv also carries `--model …`, `--setting-sources=user`,
     `--permission-mode default`, `--allow-dangerously-skip-permissions`,
     and one `--plugin-dir` per enabled plugin.

@@ -4566,6 +4566,24 @@
           "lesson": 119
         }
       ]
+    },
+    {
+      "id": "ipc.LocalSessions_reasoningConfig",
+      "kind": "ipc-interface",
+      "name": "LocalSessions / LocalAgentModeSessions (effort + extended-thinking methods)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "setEffort/setExtendedThinking (also on LocalAgentModeSessions)/getEffort/getDefaultEffort/setFastMode. Spawn-time resolution is settings-file-driven, NOT CLAUDE_CODE_EFFORT_LEVEL-backed (corrects L114): effort = qgi(effortOverride, A1e(model)=settings.effortByModel[model], E2t()=settings.effort||\"medium\"); extended thinking = zgi(enabled, override, killSwitch) yielding maxThinkingTokens strictly 31999 or 0 (NX=31999), never an arbitrary budget. Four per-model effort classes: literal picker models (s1r map), no-picker models (still emit --effort medium), fable/mythos regex-default class (o1r/i1r, disallowThinkingDisabled:true), unknown models (no config). Delivered exclusively as CLI flags (--effort <level>, --max-thinking-tokens <N> / --thinking disabled); CLAUDE_EFFORT and MAX_THINKING_TOKENS are no-ops as env vars at spawn. Live-session setEffort calls query.applyFlagSettings({effortLevel}); live-session setExtendedThinking calls query.setMaxThinkingTokens(enabled?31999:0) -- first concrete payload shapes for the apply_flag_settings / set_max_thinking_tokens control-protocol subtypes.",
+      "provenance": [
+        {
+          "lesson": 120
+        },
+        {
+          "lesson": 114
+        }
+      ]
     }
   ]
 }
