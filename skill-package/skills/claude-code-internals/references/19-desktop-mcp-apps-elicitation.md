@@ -136,3 +136,22 @@ array — a different host-side surface).
 | `getImagineServerDef` / `ui://imagine/show-widget.html` | built-in server | host | reference MCP App (`visualize`), Cowork/CCD-gated |
 | `elicitation/create` (subtype `elicitation`) | control RPC | Agent-SDK dispatcher → `onElicitation` | **private** user input → server; `form`+`url` modes; `accept`/`decline`/`cancel` |
 | `notifications/elicitation/complete` | notification | url-mode elicitation | completion signal (gated on `elicitation.url`) |
+
+## Addendum (v2.28.1) — the no-callback boundary generalizes beyond MCP Apps
+
+A rendered HTML artifact with a "Submit" or "Save" button is a useful case to check this finding
+against: an artifact-side script that starts a local HTTP server and has the artifact's `fetch()`
+call hit it works fine under Claude Code, because Claude Code runs on the user's own machine — but the
+same artifact rendered inside Cowork/claude.ai has **no local server behind it**. If the "submit"
+action is implemented as a client-side file download rather than a request the agent can observe,
+the UI can show a "saved" confirmation while the data never actually reaches Claude — there is no
+channel for the agent to read a browser-side download. The working pattern is a copyable text area:
+render the result as text and have the human paste it back into the conversation.
+
+This is the same host-webview boundary as Part A above (field-observed, not binary-verified for this
+specific case), but it applies to **any** rendered HTML artifact, not just the MCP-Apps bridge dialect
+specifically — confirming "no local server, no callback out of the webview" is a general property of
+Cowork/claude.ai's artifact rendering, not something unique to MCP Apps. The practical rule extends:
+anything you render for a user inside Cowork/claude.ai that needs to hand data back to the agent must
+do so via the conversation (chat-paste) or elicitation (for private data) — never a client-side
+download or an assumed local server.
