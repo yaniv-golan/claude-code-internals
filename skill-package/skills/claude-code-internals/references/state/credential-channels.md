@@ -2,9 +2,9 @@
 domain: credential-channels
 title: Desktop/Cowork credential channels (current)
 as_of_cli: 2.1.198
-as_of_desktop: 1.18286.0
-sources: [105, 106, 107, 114]
-updated: 2026-07-04
+as_of_desktop: 1.22209.0
+sources: [105, 106, 107, 114, 127]
+updated: 2026-07-17
 ---
 
 # Desktop/Cowork credential channels (current)
@@ -12,13 +12,14 @@ updated: 2026-07-04
 One page, current truth. History and correction trail live in the source
 lessons (see frontmatter).
 
-## The three Desktop credential channels
+## The four Desktop credential channels
 
 | Channel | For | User entry point | Returns value privately? | Status |
 |---|---|---|---|---|
 | **Elicitation** (`elicitation/create`) | MCP servers | host-native form/url dialog | yes — returned as the `elicitation/create` response | live |
 | **`claude_desktop_config.json` host-spawned MCP servers** | MCP-shaped integrations | `mcpServers.<name>.env` in the config file | yes — key never enters the VM | live |
 | **CLI-plugin `clis.*.env` broker** | CLI tools run in the in-VM shell | Customize → Plugins UI, entered once | yes — encrypted at rest, injected as env at invocation | **dark behind `gate.2307090146`**, off by default |
+| **`grand_prix` partner autofill bridge** | one hardcoded, HMAC-signed trusted partner | the partner's own paired browser-extension/app flow (not a Desktop settings UI) | yes — `list`/`fill` are tab-origin-scoped, injected directly into the live browser tab, never through the transcript | present in code; org-feature-gated; no confirmed live fcache state (Lesson 127) |
 
 1. **Elicitation.** The embedded Agent-SDK runtime routes a server's
    `elicitation/create` request through a control-request dispatcher keyed
@@ -78,6 +79,25 @@ lessons (see frontmatter).
    Anthropic does not serve historical Desktop `.app` builds), so this was
    a re-verification against the previously-published mechanism, not a
    binary diff.
+
+4. **`grand_prix` partner autofill bridge.** A single hardcoded, HMAC-verified
+   trusted partner (registry `Pm()`/`D4e`, keyed on stable partner id
+   `d2291431f58d728c`) supplies a signed config whose `protocolServices`
+   carry both tool definitions (`tool.manifest.{list,fill,release,code}`)
+   and system-prompt appends (`prompt.code_session_append`/
+   `prompt.cowork_session_append`) — the Desktop relays the partner's own
+   payload rather than authoring the tool surface itself. `list`/`fill`
+   are scoped to the active browser tab's origin
+   (`getActiveTabOrigin`/`$expectedOrigin`), and telemetry
+   (`grand_prix_credential_request_outcome` carrying `entry_count`,
+   `has_login`, `has_address`, `has_card`) confirms this is a
+   **login/address/payment-card autofill** channel, not a general secret
+   store — it fills values directly into a live tab, it does not return
+   them to the model or the transcript. Gated by an org feature flag;
+   this is **not** an extensibility point — a skill or integration cannot
+   register itself as a `grand_prix` partner. See Ch36/Lesson 127 for the
+   full mechanics; no live fcache decode confirms this channel's
+   production on/off state as of 1.22209.0.
 
 ## Auth at spawn
 

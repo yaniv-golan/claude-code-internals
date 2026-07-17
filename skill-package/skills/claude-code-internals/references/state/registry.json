@@ -2,7 +2,7 @@
   "schema_version": 1,
   "as_of": {
     "cli": "2.1.198",
-    "desktop_asar": "1.20186.1",
+    "desktop_asar": "1.22209.0",
     "in_vm_elf": "2.1.197",
     "fcache_capture": "2026-07-11",
     "agent_elf_parity_check": "2.1.202"
@@ -4663,6 +4663,36 @@
         },
         {
           "lesson": 114
+        }
+      ]
+    },
+    {
+      "id": "tool.claude_code_ios_simulator",
+      "kind": "tool",
+      "name": "claude_code_ios_simulator (MCP server \"Claude Code iOS Simulator\", tool `control`)",
+      "status": "dark-launched",
+      "first_seen": "1.22209.0",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Drives iOS Simulator (attach/launch/screenshot/tap/swipe/touch_path/text/button/open_url/detach) after an xcodebuild install. Structurally CCD-session-only (isEnabled requires sessionType===\"ccd\", never \"cowork\"/\"cowork-remote\") plus per-platform gate 3577536076 (code default false) plus org policy disableMobileSimulatorTools plus a user app preference -- cannot reach any Cowork agent's tool list, VM-sandboxed or not. No live fcache decode performed this pass; \"dark-launched\" reflects the code-level default and the session-type structural exclusion, not a fresh gate read.",
+      "provenance": [
+        {
+          "lesson": 125
+        }
+      ]
+    },
+    {
+      "id": "tool.claude_code_android_emulator",
+      "kind": "tool",
+      "name": "claude_code_android_emulator (MCP server \"Claude Code Android Emulator\", tool `control`)",
+      "status": "dark-launched",
+      "first_seen": "1.22209.0",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Drives an Android emulator (same action-enum shape as the iOS tool, screenshot-pixel coordinates, launch requires bundle_id, open_url via `am start`). Same structural CCD-session-only exclusion as claude_code_ios_simulator, per-platform gate 1403324732 (code default false). No live fcache decode performed this pass.",
+      "provenance": [
+        {
+          "lesson": 125
         }
       ]
     }

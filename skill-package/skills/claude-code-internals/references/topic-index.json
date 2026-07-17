@@ -1,7 +1,7 @@
 {
-  "generated": "2026-07-16",
-  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries)",
-  "total_lessons": 124,
+  "generated": "2026-07-17",
+  "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
+  "total_lessons": 128,
   "lessons": [
     {
       "id": 1,
@@ -3539,6 +3539,95 @@
         "Pm-host-loop",
         "hardcodedMainGrowthBookFeatures",
         "host-loop-vm-loop-decision-function"
+      ]
+    },
+    {
+      "id": 125,
+      "title": "Mobile Simulator Tool Surfaces: Real Schemas, Structurally CCD-Only",
+      "lesson_number": "125",
+      "file": "33-desktop-device-partner-permission-tuning.md",
+      "startLine": 16,
+      "endLine": 56,
+      "keywords": [
+        "ios-simulator",
+        "android-emulator",
+        "claude_code_ios_simulator",
+        "claude_code_android_emulator",
+        "mobile-simulator-tools",
+        "simulator-control-tool",
+        "ccd-session-type",
+        "simulator-vm-policy-disabled",
+        "CLAUDE_SIM_SANDBOX",
+        "disableMobileSimulatorTools",
+        "simulator-gate-3577536076",
+        "simulator-gate-1403324732",
+        "device-automation"
+      ]
+    },
+    {
+      "id": 126,
+      "title": "remote_devices: the Cowork-Facing Device Bridge",
+      "lesson_number": "126",
+      "file": "33-desktop-device-partner-permission-tuning.md",
+      "startLine": 59,
+      "endLine": 74,
+      "keywords": [
+        "remote_devices",
+        "remote-devices-server",
+        "cowork-remote-session-type",
+        "computer_request_access",
+        "computer_resolve_access",
+        "computer_release_lock",
+        "paired-remote-device",
+        "device-registry-endpoint",
+        "remote-device-bridge"
+      ]
+    },
+    {
+      "id": 127,
+      "title": "grand_prix: the Credential/Browser-Autofill Partner Bridge",
+      "lesson_number": "127",
+      "file": "33-desktop-device-partner-permission-tuning.md",
+      "startLine": 77,
+      "endLine": 96,
+      "keywords": [
+        "grand_prix",
+        "grand-prix-bridge",
+        "credential-autofill",
+        "browser-autofill",
+        "payment-card-autofill",
+        "grand_prix_credential_request_outcome",
+        "trusted-partner-bridge",
+        "tab-scoped-credentials",
+        "has_card",
+        "has_login",
+        "has_address",
+        "ccr-bridge",
+        "buildRemoteGrandPrixTools"
+      ]
+    },
+    {
+      "id": 128,
+      "title": "Auto-Mode Tuning, Scheduled-Task Approval, OTLP Tracing & Hardening",
+      "lesson_number": "128",
+      "file": "33-desktop-device-partner-permission-tuning.md",
+      "startLine": 99,
+      "endLine": 171,
+      "keywords": [
+        "tool_approval_default_always_allow",
+        "coworkAutoModeAlwaysAllowOverride",
+        "auto-mode-always-allow",
+        "scheduledTaskToolsApprovableByAutoMode",
+        "tryBeginSleepAutoResume",
+        "session-sleep-auto-resume",
+        "otlpTracesEnabled",
+        "CLAUDE_CODE_ENHANCED_TELEMETRY_BETA",
+        "OTEL_TRACES_EXPORTER",
+        "lam_folder_grant_refused_protected",
+        "protected-folder-grant",
+        "DXT_SIGNATURE_REQUIRED",
+        "extension-signing",
+        "dotfile-folder-grant-refusal"
       ]
     }
   ],
@@ -9389,6 +9478,153 @@
     ],
     "GY algorithm": [
       121
+    ],
+    "ios-simulator": [
+      125
+    ],
+    "android-emulator": [
+      125
+    ],
+    "claude_code_ios_simulator": [
+      125
+    ],
+    "claude_code_android_emulator": [
+      125
+    ],
+    "mobile-simulator-tools": [
+      125
+    ],
+    "simulator-control-tool": [
+      125
+    ],
+    "ccd-session-type": [
+      125
+    ],
+    "simulator-vm-policy-disabled": [
+      125
+    ],
+    "CLAUDE_SIM_SANDBOX": [
+      125
+    ],
+    "disableMobileSimulatorTools": [
+      125
+    ],
+    "simulator-gate-3577536076": [
+      125
+    ],
+    "simulator-gate-1403324732": [
+      125
+    ],
+    "device-automation": [
+      125
+    ],
+    "remote_devices": [
+      126
+    ],
+    "remote-devices-server": [
+      126
+    ],
+    "cowork-remote-session-type": [
+      126
+    ],
+    "computer_request_access": [
+      126
+    ],
+    "computer_resolve_access": [
+      126
+    ],
+    "computer_release_lock": [
+      126
+    ],
+    "paired-remote-device": [
+      126
+    ],
+    "device-registry-endpoint": [
+      126
+    ],
+    "remote-device-bridge": [
+      126
+    ],
+    "grand_prix": [
+      127
+    ],
+    "grand-prix-bridge": [
+      127
+    ],
+    "credential-autofill": [
+      127
+    ],
+    "browser-autofill": [
+      127
+    ],
+    "payment-card-autofill": [
+      127
+    ],
+    "grand_prix_credential_request_outcome": [
+      127
+    ],
+    "trusted-partner-bridge": [
+      127
+    ],
+    "tab-scoped-credentials": [
+      127
+    ],
+    "has_card": [
+      127
+    ],
+    "has_login": [
+      127
+    ],
+    "has_address": [
+      127
+    ],
+    "ccr-bridge": [
+      127
+    ],
+    "buildRemoteGrandPrixTools": [
+      127
+    ],
+    "tool_approval_default_always_allow": [
+      128
+    ],
+    "coworkAutoModeAlwaysAllowOverride": [
+      128
+    ],
+    "auto-mode-always-allow": [
+      128
+    ],
+    "scheduledTaskToolsApprovableByAutoMode": [
+      128
+    ],
+    "tryBeginSleepAutoResume": [
+      128
+    ],
+    "session-sleep-auto-resume": [
+      128
+    ],
+    "otlpTracesEnabled": [
+      128
+    ],
+    "CLAUDE_CODE_ENHANCED_TELEMETRY_BETA": [
+      128
+    ],
+    "OTEL_TRACES_EXPORTER": [
+      128
+    ],
+    "lam_folder_grant_refused_protected": [
+      128
+    ],
+    "protected-folder-grant": [
+      128
+    ],
+    "DXT_SIGNATURE_REQUIRED": [
+      128
+    ],
+    "extension-signing": [
+      128
+    ],
+    "dotfile-folder-grant-refusal": [
+      128
     ]
   }
 }

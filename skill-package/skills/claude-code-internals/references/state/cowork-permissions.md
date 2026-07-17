@@ -2,9 +2,9 @@
 domain: cowork-permissions
 title: Cowork permission stack (current)
 as_of_cli: 2.1.198
-as_of_desktop: 1.20186.1
-sources: [89, 107, 108, 109, 115, 121, 122, 124]
-updated: 2026-07-11
+as_of_desktop: 1.22209.0
+sources: [89, 107, 108, 109, 115, 121, 122, 124, 128]
+updated: 2026-07-17
 ---
 
 # Cowork permission stack (current)
@@ -145,6 +145,39 @@ lessons (see frontmatter).
 stays `default` (auth is layered on top, not replaced). Without
 `--permission-prompt-tool stdio` at spawn, `AskUserQuestion` is silently
 auto-dismissed and scripted answers never fire.
+
+## Auto-mode tuning at Desktop 1.22209.0 (lesson 128, no live gate-state capture)
+
+Three new gate ids extend auto-mode, found in a code diff only — **no live
+fcache decode was performed for this pass**, so treat these as
+"exists in code, logic as documented" rather than a confirmed production
+on/off state:
+
+- **`4200321681` (`coworkAutoModeAlwaysAllowOverride`)** backs the
+  advertised capability `tool_approval_default_always_allow`. Read the
+  name skeptically: the logic (`KSt`/`autoModeOverridesAlwaysAllow`) is
+  the *inverse* of what it suggests — under `permissionMode==="auto"` it
+  forces a **re-prompt** (not a silent allow) specifically for destructive
+  connector/MCP tools (`isDestructiveConnectorTool`), and a sibling guard
+  (`oBn`) strips `updatedPermissions` so "always allow" can never be
+  **persisted** for `computer:request_access`, `computer:
+  request_teach_access`, or cowork tools. Net effect: auto-mode's
+  blanket convenience gets a permanent carve-out for the risky class, not
+  a loosening of it.
+- **`1447478638` (`scheduledTaskToolsApprovableByAutoMode`)** — lets
+  scheduled-task tools be auto-approved under auto mode too (unless
+  `isMdmAutoModeDisabled`).
+- **`1076115445` (`tryBeginSleepAutoResume`)** — session sleep/auto-resume;
+  paired with new stop-button telemetry
+  (`lam_stop_button_received`/`_completed`,
+  `LocalAgentModeSessions.stop`).
+
+Also new: folder-grant hardening refuses managed paths and a shell dotfile
+set (`.zshrc .zshenv .zprofile .zlogin .bashrc .bash_profile .bash_login
+.profile .netrc`) outright, with new telemetry
+`lam_folder_grant_refused_protected` — previously a user could grant a
+folder containing these without an explicit block. Full detail: Chapter
+36 / lesson 128.
 
 ## Not part of the stack (adjacent, don't conflate)
 

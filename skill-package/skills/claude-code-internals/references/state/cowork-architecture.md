@@ -2,9 +2,9 @@
 domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.198
-as_of_desktop: 1.20186.1
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 121, 122, 124]
-updated: 2026-07-11
+as_of_desktop: 1.22209.0
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 121, 122, 124, 125, 126]
+updated: 2026-07-17
 ---
 
 # Cowork runtime architecture (current)
@@ -381,3 +381,38 @@ bridge-session worker's poll/ack/stop client, and the confirmed
 `cowork-control-protocol.md`'s "Cloud tasks" section and lesson 119 — not
 duplicated here since it is a protocol/control-plane topic, not a
 filesystem/mount/plugin-namespace one like the rest of this page.
+
+## Device automation surfaces (Desktop 1.22209.0, lessons 125-126)
+
+Desktop 1.22209.0 added a tool-group registry entry (12→15) for three
+device-facing MCP servers. They split into two structurally unrelated
+mechanisms that happen to share one registry slot:
+
+- **Mobile simulators** (`claude_code_ios_simulator`, `claude_code_android_
+  emulator` — one `control` tool each, driving iOS Simulator/Android
+  Emulator via xcodebuild/simctl/adb) are gated `sessionType==="ccd"` —
+  a **Claude Code Desktop coding session**, never `"cowork"`/
+  `"cowork-remote"` — plus a per-platform gate defaulting `false`
+  (`3577536076` iOS, `1403324732` Android) plus an org policy
+  (`disableMobileSimulatorTools`) plus a user app preference. **These
+  tools are structurally impossible for any Cowork agent to receive**,
+  VM-sandboxed or not — the session-type check alone rules it out before
+  any gate is consulted.
+- **`remote_devices`** (server `"remote-devices"`, `session_type:
+  "cowork-remote"`) is the actual Cowork-facing device story: a bridge to
+  a real, paired remote device via a `computer_resolve_access`/
+  `computer_request_access`/`computer_release_lock`/`computer_*` tool
+  surface, backed by a device registry
+  (`GET /api/organizations/{org}/cowork/remote_devices`,
+  enclave-key/safeStorage-bound). Its own `isEnabled` gating was not
+  traced (unlike the simulators' fully-read chain above) — treat its
+  live reachability as unconfirmed, not as "live" by analogy with the
+  simulators' documented exclusion.
+
+No live GrowthBook fcache was captured for this 1.21459.0→1.22209.0 diff
+pass — the "structurally excluded" verdict for the simulators rests on
+session-type discrimination in code, not a fresh gate-state read. Full
+tool schemas, gating code, and the `grand_prix` partner-credential bridge
+found in the same diff are in `references/33-desktop-device-partner-
+permission-tuning.md` (Chapter 36, lessons 125-128); the fourth-channel
+`grand_prix` summary lives in `credential-channels.md`.

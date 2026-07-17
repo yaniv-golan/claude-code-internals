@@ -1511,6 +1511,59 @@
         124
       ],
       "hint": "The Desktop fcache is no longer raw JSON -- it's a container with magic CLF\\x01\\x00 + 3 bytes, then a gzip stream starting at byte 8. Raw grep/strings against the file will falsely report gates as absent. Decode first: tail -c +9 fcache | gunzip, then search the decompressed JSON."
+    },
+    {
+      "pattern": [
+        "iOS simulator tool not available in Cowork",
+        "Android emulator tool missing",
+        "claude_code_ios_simulator not showing up",
+        "simulator disabled organization requires full VM sandbox",
+        "SIMULATOR_VM_POLICY_DISABLED_MESSAGE"
+      ],
+      "lessons": [
+        125
+      ],
+      "hint": "The mobile-simulator tools (claude_code_ios_simulator/claude_code_android_emulator) require sessionType===\"ccd\" -- a Claude Code Desktop coding session, never Cowork (\"cowork\"/\"cowork-remote\"). This is a structural exclusion, not just a gate: no Cowork agent, sandboxed or not, can ever receive these tools. They also require a per-platform gate (default false) and, for CCD sessions under an org requiring the full VM sandbox, are explicitly disabled with SIMULATOR_VM_POLICY_DISABLED_MESSAGE."
+    },
+    {
+      "pattern": [
+        "how does Cowork control a remote device",
+        "remote_devices tool",
+        "computer_request_access",
+        "cowork-remote session type",
+        "pair a device with Cowork"
+      ],
+      "lessons": [
+        126
+      ],
+      "hint": "remote_devices (server \"remote-devices\", session_type \"cowork-remote\") is the Cowork-facing device bridge -- distinct from the local mobile-simulator tools. It exposes computer_resolve_access/computer_request_access/computer_release_lock plus a dynamic computer_* tool set for controlling apps on a real paired device, backed by a device registry endpoint with per-device enclave keys. Its own enablement gating was not fully traced (unlike the simulators' confirmed CCD-only exclusion) -- treat live reachability as unconfirmed."
+    },
+    {
+      "pattern": [
+        "what is grand_prix in Claude Desktop",
+        "browser credential autofill Claude",
+        "grand_prix_credential_request_outcome",
+        "payment card autofill agent",
+        "does Claude fill in my passwords"
+      ],
+      "lessons": [
+        127
+      ],
+      "hint": "grand_prix is a signed, single-partner tool/prompt-injection bridge: one hardcoded, HMAC-verified trusted partner can inject host tools and system-prompt text, and service tab-scoped login/address/payment-card autofill requests (grand_prix_credential_request_outcome carries has_login/has_address/has_card). It is not a general credential API -- a skill or third-party integration cannot register itself as a grand_prix partner."
+    },
+    {
+      "pattern": [
+        "auto mode still asking for permission on connector tool",
+        "tool_approval_default_always_allow not working",
+        "always allow not persisting for MCP tool",
+        "OTLP traces not exporting from Cowork",
+        "CLAUDE_CODE_ENHANCED_TELEMETRY_BETA empty",
+        "otlpTracesEnabled default"
+      ],
+      "lessons": [
+        128
+      ],
+      "hint": "Gate 4200321681 (coworkAutoModeAlwaysAllowOverride) is intentionally the inverse of its name for destructive connector/MCP tools: under auto mode it forces a re-prompt and blocks \"always allow\" from ever persisting for them -- this is deliberate, not a bug. Separately, otlpTracesEnabled has no default (undefined, not false) and is read with a strict ===true check, so OTLP tracing is off unless a 3p-managed config explicitly turns it on -- CLAUDE_CODE_ENHANCED_TELEMETRY_BETA/OTEL_TRACES_EXPORTER are empty strings, not env-var absence, when it is off."
     }
   ]
 }
