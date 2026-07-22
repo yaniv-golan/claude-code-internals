@@ -1,9 +1,9 @@
 ---
 domain: cowork-architecture
 title: Cowork runtime architecture (current)
-as_of_cli: 2.1.198
+as_of_cli: 2.1.217
 as_of_desktop: 1.24012.1
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 121, 122, 124, 125, 126, 132]
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 121, 122, 124, 125, 126, 132, 134]
 updated: 2026-07-22
 ---
 
@@ -206,6 +206,16 @@ re-verified at Desktop 1.20186.1 / agent 2.1.205):
   scheduler window, `env.CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY` (default
   10, queues rather than refuses). The 25-agent/1.5M-token "workflow size"
   figure is prompt guidance only, telemetry, not enforcement.
+  **CORRECTED as of CLI 2.1.217 (L134):** the "no fan-out cap" clause no
+  longer holds — the standalone agent binary now enforces real Task
+  fan-out caps via `taskRegistry`: concurrent sub-agents default **20**
+  (`CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`, throws `subagent_concurrency_cap`,
+  bypass gate `tengu_amber_kestrel`), total spawns/session default **200**
+  (`CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION`, `subagent_count_cap`), WebSearch
+  200/session, and **nesting off by default** (`CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`
+  default 1; the depth-5 above is now the *ceiling*, not the default). These
+  run in the shared agent binary host-loop Cowork executes, so they apply
+  here; the Desktop-hook/VM-loop interaction was not separately traced.
 - **Tool composition is a per-dispatch recomputed universe, not
   inheritance-plus-injection.** A sub-agent's frontmatter `tools:` list is
   authoritative, but only over what the *session* itself could ever offer

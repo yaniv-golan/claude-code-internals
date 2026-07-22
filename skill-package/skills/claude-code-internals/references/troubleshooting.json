@@ -1613,6 +1613,68 @@
     132
    ],
    "hint": "On Desktop 1.24012.1 a folder-connected Cowork session may leave no host-side transcript (possible VM-loop shift or path change, unconfirmed). The host-side disk-recovery path for init.tools may not work on newer builds; verify where the build writes."
+  },
+  {
+   "pattern": [
+    "concurrent subagent limit reached",
+    "subagent_concurrency_cap",
+    "too many subagents",
+    "Do not retry subagent",
+    "subagent count cap"
+   ],
+   "lessons": [
+    134
+   ],
+   "hint": "2.1.217 caps concurrent sub-agents at 20 (CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS) and total per session at 200 (CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION); nesting is off by default (CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH, default 1). Raise the env vars or reduce fan-out."
+  },
+  {
+   "pattern": [
+    "subagents no longer nest",
+    "nested subagent not spawning",
+    "MAX_SUBAGENT_SPAWN_DEPTH",
+    "subagent depth"
+   ],
+   "lessons": [
+    134
+   ],
+   "hint": "Since 2.1.217 sub-agents don't spawn nested sub-agents by default (depth 1). Set CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH to allow deeper nesting (hard ceiling 5)."
+  },
+  {
+   "pattern": [
+    "/fork changed",
+    "where did in-session subagent go",
+    "/subtask",
+    "fork vs subtask"
+   ],
+   "lessons": [
+    135
+   ],
+   "hint": "2.1.212: /fork now copies the conversation into a new background session; the old in-session subagent moved to /subtask ('delegate with full context, result returns here')."
+  },
+  {
+   "pattern": [
+    "Claude Platform on AWS",
+    "Claude Platform on Google Cloud",
+    "anthropicAws",
+    "anthropicGoogleCloud",
+    "first-party cloud provider",
+    "CLAUDE_CODE_USE_ANTHROPIC_AWS"
+   ],
+   "lessons": [
+    133
+   ],
+   "hint": "An() now returns anthropicAws/anthropicGoogleCloud — the first-party Claude Platform on AWS/GCP (Anthropic operates inference, cloud provides IAM), distinct from BYOC bedrock/vertex. Select via CLAUDE_CODE_USE_ANTHROPIC_AWS / _GOOGLE_CLOUD."
+  },
+  {
+   "pattern": [
+    "CLAUDE_CODE_VERIFY_PROMPT gone",
+    "verify prompt not working",
+    "reproduce fix re-observe injection"
+   ],
+   "lessons": [
+    137
+   ],
+   "hint": "CLAUDE_CODE_VERIFY_PROMPT was removed by 2.1.217; the /verify and /code-review skills also stopped auto-running at 2.1.215."
   }
  ]
 }

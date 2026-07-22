@@ -2791,6 +2791,76 @@
     "relevance": 0.75,
     "reason": "the disk-recovery path that L132 warns may go dark on newer builds"
    }
+  ],
+  "133": [
+   {
+    "id": 110,
+    "relevance": 0.85,
+    "reason": "prior model/provider landscape this refresh supersedes"
+   },
+   {
+    "id": 86,
+    "relevance": 0.7,
+    "reason": "OIDC/provider auth machinery An() extends"
+   }
+  ],
+  "134": [
+   {
+    "id": 121,
+    "relevance": 0.95,
+    "reason": "corrects L121's 'no Task fan-out cap' — concurrent/per-session/depth caps now exist"
+   },
+   {
+    "id": 115,
+    "relevance": 0.6,
+    "reason": "subagent dispatch/resume this bounds"
+   }
+  ],
+  "135": [
+   {
+    "id": 87,
+    "relevance": 0.85,
+    "reason": "/fork origin — now redesigned to background session, in-session role moved to /subtask"
+   },
+   {
+    "id": 115,
+    "relevance": 0.7,
+    "reason": "subagent continuation primitives"
+   },
+   {
+    "id": 110,
+    "relevance": 0.5,
+    "reason": "content-baseline chapter"
+   }
+  ],
+  "136": [
+   {
+    "id": 130,
+    "relevance": 0.8,
+    "reason": "agent-proxy gh/git shim is the same fleet/VCS territory as the VCS SDK events"
+   },
+   {
+    "id": 91,
+    "relevance": 0.5,
+    "reason": "Dynamic Workflows the size-warnings guard"
+   }
+  ],
+  "137": [
+   {
+    "id": 90,
+    "relevance": 0.7,
+    "reason": "CLAUDE_CODE_VERIFY_PROMPT removed — was L90's debugging-discipline injection"
+   },
+   {
+    "id": 110,
+    "relevance": 0.6,
+    "reason": "opus fast-mode removal reconciles the model-landscape lesson"
+   },
+   {
+    "id": 130,
+    "relevance": 0.6,
+    "reason": "meta-view continues the Managed Agents fleet direction"
+   }
   ]
  }
 }

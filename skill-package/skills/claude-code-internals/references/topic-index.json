@@ -1,7 +1,7 @@
 {
   "generated": "2026-07-17",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 132,
+  "total_lessons": 137,
   "lessons": [
     {
       "id": 1,
@@ -3797,6 +3797,155 @@
         "negative-observation",
         "unconfirmed-inference"
       ]
+    },
+    {
+      "id": 133,
+      "title": "Provider & Auth Landscape: Claude Platform on AWS/GCP, Foundry, and the An() Seven",
+      "lesson_number": "133",
+      "file": "35-verified-new-v2.1.217.md",
+      "startLine": 17,
+      "endLine": 41,
+      "keywords": [
+        "An-provider-discriminator",
+        "anthropicAws",
+        "anthropicGoogleCloud",
+        "claude-platform-on-aws",
+        "claude-platform-on-google-cloud",
+        "first-party-on-hyperscaler",
+        "CLAUDE_CODE_USE_ANTHROPIC_AWS",
+        "CLAUDE_CODE_USE_ANTHROPIC_GOOGLE_CLOUD",
+        "ANTHROPIC_GOOGLE_CLOUD_BASE_URL",
+        "ANTHROPIC_FOUNDRY_AUTH_TOKEN",
+        "foundry",
+        "gateway",
+        "vertex",
+        "bedrock",
+        "seven-providers",
+        "CLAUDE_CODE_NO_MODEL_FALLBACK",
+        "CLAUDE_CODE_REFUSAL_FALLBACK_CATCH_ALL",
+        "opus-4-7-fast-mode-removed",
+        "ANTHROPIC_BEDROCK_MANTLE_API_KEY-removed",
+        "AWS_CHAIN_RESOLVE_TIMEOUT_MS",
+        "enterprise-gateway"
+      ]
+    },
+    {
+      "id": 134,
+      "title": "Sub-agent Fan-out Caps Now Exist — correcting Ch35/L121 & v2.22.1",
+      "lesson_number": "134",
+      "file": "35-verified-new-v2.1.217.md",
+      "startLine": 42,
+      "endLine": 64,
+      "keywords": [
+        "subagent-fan-out-cap",
+        "CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS",
+        "CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION",
+        "CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION",
+        "CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH",
+        "subagent_concurrency_cap",
+        "subagent_count_cap",
+        "taskRegistry",
+        "tengu_amber_kestrel",
+        "tengu_hazel_trellis",
+        "nesting-off-by-default",
+        "concurrent-20",
+        "per-session-200",
+        "depth-1-default",
+        "corrects-L121-no-fan-out-cap",
+        "DISABLE_EXPLORE_INHERIT_CAP",
+        "EXPERIMENTAL_OBSERVER_AGENTS",
+        "EXPERIMENTAL_AGENT_TEAMS",
+        "max-budget-usd",
+        "Do-not-retry-cap-error"
+      ]
+    },
+    {
+      "id": 135,
+      "title": "Command Surface: /subtask, the /fork Redesign, /import, and the Dark /artifacts",
+      "lesson_number": "135",
+      "file": "35-verified-new-v2.1.217.md",
+      "startLine": 65,
+      "endLine": 87,
+      "keywords": [
+        "slash-command-refresh",
+        "subtask-command",
+        "fork-redesign",
+        "fork-vs-subtask",
+        "import-command",
+        "artifacts-command",
+        "workshop-command",
+        "design-consent",
+        "design-revoke",
+        "explain-usage",
+        "cowork-plugin-removed",
+        "agents-wizard-removed",
+        "in-session-subagent-replaced",
+        "background-session-fork",
+        "dark-launched-commands",
+        "30-hook-events-unchanged",
+        "command-isEnabled-gate"
+      ]
+    },
+    {
+      "id": 136,
+      "title": "Feature Surfaces: Artifacts, Auto-Mode Wizard, Agent-Proxy VCS, Workflow Guardrails, per_message_effort",
+      "lesson_number": "136",
+      "file": "35-verified-new-v2.1.217.md",
+      "startLine": 88,
+      "endLine": 101,
+      "keywords": [
+        "tengu_artifact",
+        "artifacts-cli-buildout",
+        "auto-mode-setup-wizard",
+        "CLAUDE_CODE_AGENT_PROXY_GH_SHIM",
+        "CLAUDE_CODE_AGENT_PROXY_GIT_CONFIG",
+        "agent-proxy-vcs",
+        "WORKFLOW_SIZE_WARNING",
+        "dynamic-workflow-size",
+        "per-turn-control-2026-07-01",
+        "per_message_effort",
+        "mid-turn-set-model",
+        "CLAUDE_CODE_DISABLE_ORG_MEMORY",
+        "org-memory",
+        "CLAUDE_CODE_OTEL_CONTENT_MAX_LENGTH",
+        "CLAUDE_CODE_GZIP_REQUEST_BODIES",
+        "remote-workflow-plumbing",
+        "CLAUDE_CODE_TRIGGER_ID",
+        "CLAUDE_CODE_BRIDGE_SESSION_ID"
+      ]
+    },
+    {
+      "id": 137,
+      "title": "Retired Surface, Codename Triage & Confirmed Negatives",
+      "lesson_number": "137",
+      "file": "35-verified-new-v2.1.217.md",
+      "startLine": 102,
+      "endLine": 147,
+      "keywords": [
+        "removed-env-vars-2.1.217",
+        "CLAUDE_CODE_VERIFY_PROMPT-removed",
+        "opus-fast-mode-removed",
+        "CCR-v2-removed",
+        "ENABLE_DESIGN_MCP-removed",
+        "mantle-removed",
+        "plan-mode-interview-removed",
+        "codename-flags",
+        "ALDER_WICKET",
+        "AMBER_ASTROLABE",
+        "WALNUT_SPIRE",
+        "LANTERN_PRISM",
+        "247-tengu-identifiers",
+        "tengu_agent_worktree_cwd_escape_blocked",
+        "EndConversation-tool-2.1.214",
+        "hooks-30-unchanged",
+        "confirmed-negatives",
+        "meta-view",
+        "claude-platform-aws-gcp",
+        "autonomous-parallelism-governance",
+        "enterprise-distribution",
+        "multi-agent-orchestration-vocabulary",
+        "cli-content-baseline-2.1.217"
+      ]
     }
   ],
   "keyword_map": {
@@ -5346,10 +5495,12 @@
       46
     ],
     "bedrock": [
-      46
+      46,
+      133
     ],
     "vertex": [
-      46
+      46,
+      133
     ],
     "sandbox": [
       47
@@ -7989,7 +8140,8 @@
       96
     ],
     "gateway": [
-      97
+      97,
+      133
     ],
     "idprefresh": [
       97
@@ -10165,6 +10317,294 @@
     ],
     "event-driven-orchestration": [
       130
+    ],
+    "an-provider-discriminator": [
+      133
+    ],
+    "anthropicaws": [
+      133
+    ],
+    "anthropicgooglecloud": [
+      133
+    ],
+    "claude-platform-on-aws": [
+      133
+    ],
+    "claude-platform-on-google-cloud": [
+      133
+    ],
+    "first-party-on-hyperscaler": [
+      133
+    ],
+    "claude_code_use_anthropic_aws": [
+      133
+    ],
+    "claude_code_use_anthropic_google_cloud": [
+      133
+    ],
+    "anthropic_google_cloud_base_url": [
+      133
+    ],
+    "anthropic_foundry_auth_token": [
+      133
+    ],
+    "foundry": [
+      133
+    ],
+    "seven-providers": [
+      133
+    ],
+    "claude_code_no_model_fallback": [
+      133
+    ],
+    "claude_code_refusal_fallback_catch_all": [
+      133
+    ],
+    "opus-4-7-fast-mode-removed": [
+      133
+    ],
+    "anthropic_bedrock_mantle_api_key-removed": [
+      133
+    ],
+    "aws_chain_resolve_timeout_ms": [
+      133
+    ],
+    "enterprise-gateway": [
+      133
+    ],
+    "subagent-fan-out-cap": [
+      134
+    ],
+    "claude_code_max_concurrent_subagents": [
+      134
+    ],
+    "claude_code_max_subagents_per_session": [
+      134
+    ],
+    "claude_code_max_web_searches_per_session": [
+      134
+    ],
+    "claude_code_max_subagent_spawn_depth": [
+      134
+    ],
+    "subagent_concurrency_cap": [
+      134
+    ],
+    "subagent_count_cap": [
+      134
+    ],
+    "taskregistry": [
+      134
+    ],
+    "tengu_amber_kestrel": [
+      134
+    ],
+    "tengu_hazel_trellis": [
+      134
+    ],
+    "nesting-off-by-default": [
+      134
+    ],
+    "concurrent-20": [
+      134
+    ],
+    "per-session-200": [
+      134
+    ],
+    "depth-1-default": [
+      134
+    ],
+    "corrects-l121-no-fan-out-cap": [
+      134
+    ],
+    "disable_explore_inherit_cap": [
+      134
+    ],
+    "experimental_observer_agents": [
+      134
+    ],
+    "experimental_agent_teams": [
+      134
+    ],
+    "max-budget-usd": [
+      134
+    ],
+    "do-not-retry-cap-error": [
+      134
+    ],
+    "slash-command-refresh": [
+      135
+    ],
+    "subtask-command": [
+      135
+    ],
+    "fork-redesign": [
+      135
+    ],
+    "fork-vs-subtask": [
+      135
+    ],
+    "import-command": [
+      135
+    ],
+    "artifacts-command": [
+      135
+    ],
+    "workshop-command": [
+      135
+    ],
+    "design-consent": [
+      135
+    ],
+    "design-revoke": [
+      135
+    ],
+    "explain-usage": [
+      135
+    ],
+    "cowork-plugin-removed": [
+      135
+    ],
+    "agents-wizard-removed": [
+      135
+    ],
+    "in-session-subagent-replaced": [
+      135
+    ],
+    "background-session-fork": [
+      135
+    ],
+    "dark-launched-commands": [
+      135
+    ],
+    "30-hook-events-unchanged": [
+      135
+    ],
+    "command-isenabled-gate": [
+      135
+    ],
+    "tengu_artifact": [
+      136
+    ],
+    "artifacts-cli-buildout": [
+      136
+    ],
+    "auto-mode-setup-wizard": [
+      136
+    ],
+    "claude_code_agent_proxy_gh_shim": [
+      136
+    ],
+    "claude_code_agent_proxy_git_config": [
+      136
+    ],
+    "agent-proxy-vcs": [
+      136
+    ],
+    "workflow_size_warning": [
+      136
+    ],
+    "dynamic-workflow-size": [
+      136
+    ],
+    "per-turn-control-2026-07-01": [
+      136
+    ],
+    "per_message_effort": [
+      136
+    ],
+    "mid-turn-set-model": [
+      136
+    ],
+    "claude_code_disable_org_memory": [
+      136
+    ],
+    "org-memory": [
+      136
+    ],
+    "claude_code_otel_content_max_length": [
+      136
+    ],
+    "claude_code_gzip_request_bodies": [
+      136
+    ],
+    "remote-workflow-plumbing": [
+      136
+    ],
+    "claude_code_trigger_id": [
+      136
+    ],
+    "claude_code_bridge_session_id": [
+      136
+    ],
+    "removed-env-vars-2.1.217": [
+      137
+    ],
+    "claude_code_verify_prompt-removed": [
+      137
+    ],
+    "opus-fast-mode-removed": [
+      137
+    ],
+    "ccr-v2-removed": [
+      137
+    ],
+    "enable_design_mcp-removed": [
+      137
+    ],
+    "mantle-removed": [
+      137
+    ],
+    "plan-mode-interview-removed": [
+      137
+    ],
+    "codename-flags": [
+      137
+    ],
+    "alder_wicket": [
+      137
+    ],
+    "amber_astrolabe": [
+      137
+    ],
+    "walnut_spire": [
+      137
+    ],
+    "lantern_prism": [
+      137
+    ],
+    "247-tengu-identifiers": [
+      137
+    ],
+    "tengu_agent_worktree_cwd_escape_blocked": [
+      137
+    ],
+    "endconversation-tool-2.1.214": [
+      137
+    ],
+    "hooks-30-unchanged": [
+      137
+    ],
+    "confirmed-negatives": [
+      137
+    ],
+    "meta-view": [
+      137
+    ],
+    "claude-platform-aws-gcp": [
+      137
+    ],
+    "autonomous-parallelism-governance": [
+      137
+    ],
+    "enterprise-distribution": [
+      137
+    ],
+    "multi-agent-orchestration-vocabulary": [
+      137
+    ],
+    "cli-content-baseline-2.1.217": [
+      137
     ]
   }
 }

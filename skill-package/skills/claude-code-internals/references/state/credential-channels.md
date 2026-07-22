@@ -1,7 +1,7 @@
 ---
 domain: credential-channels
 title: Desktop/Cowork credential channels (current)
-as_of_cli: 2.1.198
+as_of_cli: 2.1.217
 as_of_desktop: 1.22209.0
 sources: [105, 106, 107, 114, 127]
 updated: 2026-07-17
