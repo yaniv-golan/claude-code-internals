@@ -2,9 +2,9 @@
 domain: cowork-control-protocol
 title: Cowork spawn + stream-json control protocol (current)
 as_of_cli: 2.1.198
-as_of_desktop: 1.20186.1
-sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124]
-updated: 2026-07-11
+as_of_desktop: 1.24012.1
+sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124, 129, 130]
+updated: 2026-07-22
 ---
 
 # Cowork spawn + stream-json control protocol (current)
@@ -334,3 +334,27 @@ including two items reported as unresolved rather than assumed: no
 {id}/work` family specifically (a separate, pre-existing `POST
 /worker/heartbeat` endpoint exists but its relationship to this call chain
 is unconfirmed), and no fully enumerable `work_type` schema was found.
+
+## VCS SDK events + SDK-MCP skill servers (L129/L130)
+
+**Two new `type:"system"` subtypes** replace Desktop's `gh pr create`
+regex-scraping: `code_change_published` (emitted by `izr()` on an observed
+github PR-create URL) and `vcs_state_changed` (emitted by `hlo()` per observed
+commit/push/merge/rebase; `kind` a strict enum agent-side, `"unknown"`-default
+on the consumer). Both **emit from agent 2.1.216** (0 at 2.1.215, 12/12 at
+2.1.216/2.1.217), are **git-operation-driven, not per-run**, and are **ungated
+agent-side** (`1311049725` / `cliSupportsVcsSdkEvents` are Desktop-only, absent
+from the CLI). Desktop *consumption* is floored at 2.1.217
+(`isPinnedCliAtLeast`), so a 2.1.216 agent + paired Desktop is a one-version
+blind window. Full `type:"system"` set (2.1.217): `init`, `status`,
+`hook_started`, `hook_progress`, `hook_response`, `post_turn_summary`,
+`task_summary`, `background_tasks_changed`, `code_change_published`,
+`vcs_state_changed`, `commands_changed`, `elicitation_complete`,
+`files_persisted`, `mirror_error`, `model_refusal_fallback`, + nested
+`bridge_state`.
+
+**Skill-discovery tools arrive over this same channel:** the `mcp__skills__*` /
+`mcp__plugins__*` tools the model actually sees are SDK-MCP servers declared in
+`initialize.sdkMcpServers`, tunneled as `control_request{subtype:"mcp_message"}`
+— NOT the native `ListSkills`/etc. See `plugins-skills-hooks.md` and Chapter 37
+(L129/L130), `references/34-skill-discovery-vcs-events-containment.md`.

@@ -1,1569 +1,1618 @@
 {
-  "generated": "2026-06-04",
-  "description": "Maps common symptoms/problems to relevant lessons for debugging Claude Code internals",
-  "symptoms": [
-    {
-      "pattern": [
-        "hook not firing",
-        "hook doesn't fire",
-        "hook not working",
-        "hook not triggering",
-        "hooks broken"
-      ],
-      "lessons": [
-        32,
-        26,
-        1
-      ],
-      "hint": "Hook config is snapshot-captured at startup; restart Claude Code after changing settings.json, and verify the hook matcher (event type + pattern) is correct."
-    },
-    {
-      "pattern": [
-        "permission keeps asking",
-        "permission prompt won't go away",
-        "permission loop",
-        "always asking permission",
-        "allow deny ask stuck"
-      ],
-      "lessons": [
-        25,
-        26,
-        6
-      ],
-      "hint": "Check that your permission rules in settings.json use the correct tool name and pattern; rules are evaluated top-down with first-match-wins semantics."
-    },
-    {
-      "pattern": [
-        "context keeps getting compacted",
-        "losing context",
-        "context window full",
-        "context shrinking",
-        "conversation too long"
-      ],
-      "lessons": [
-        28,
-        2,
-        4
-      ],
-      "hint": "Compaction triggers at ~80% of the context window; reduce system prompt size, split work across sessions, or use memory to persist critical facts across compactions."
-    },
-    {
-      "pattern": [
-        "agent won't spawn",
-        "agent fails",
-        "subagent error",
-        "agent not starting",
-        "fork failed"
-      ],
-      "lessons": [
-        12,
-        13,
-        49
-      ],
-      "hint": "Agents inherit the parent's permission config but get a fresh conversation; check that the task description is clear and that resource limits (max concurrent agents) are not exceeded."
-    },
-    {
-      "pattern": [
-        "mcp server not connecting",
-        "mcp timeout",
-        "mcp not working",
-        "mcp tool missing",
-        "mcp server failed"
-      ],
-      "lessons": [
-        10,
-        26,
-        33
-      ],
-      "hint": "MCP servers are started as child processes at boot; check the server command/args in settings.json, verify the binary exists, and look for stderr output in the MCP connection log."
-    },
-    {
-      "pattern": [
-        "skill not showing up",
-        "skill not registered",
-        "skill not found",
-        "skill not loading",
-        "slash command skill missing"
-      ],
-      "lessons": [
-        11,
-        18,
-        26
-      ],
-      "hint": "Skills must have valid frontmatter with a name/description and be placed in a recognized skill directory (~/.claude/skills/ or project .claude/skills/); check the discovery path."
-    },
-    {
-      "pattern": [
-        "settings not taking effect",
-        "config not loading",
-        "configuration ignored",
-        "settings not applying",
-        "config change not working"
-      ],
-      "lessons": [
-        26,
-        1,
-        30
-      ],
-      "hint": "Settings use a cascade: enterprise MDM > organization > project > user; a higher-priority layer may be overriding your change. Restart Claude Code after editing settings.json."
-    },
-    {
-      "pattern": [
-        "memory not saving",
-        "memory not persisting",
-        "memory lost",
-        "memory not working",
-        "memory file empty"
-      ],
-      "lessons": [
-        15,
-        16,
-        4
-      ],
-      "hint": "Auto-memory writes to MEMORY.md files in .claude/ directories; check file permissions and verify memory extraction is enabled in settings (it runs at conversation end)."
-    },
-    {
-      "pattern": [
-        "coordinator not dispatching",
-        "coordinator mode broken",
-        "coordinator stuck",
-        "coordinator not working",
-        "parallel dispatch failed"
-      ],
-      "lessons": [
-        13,
-        12,
-        14
-      ],
-      "hint": "Coordinator mode requires the model to decide to dispatch; ensure your prompt clearly describes parallelizable subtasks and that max worker count is not set to zero."
-    },
-    {
-      "pattern": [
-        "swarm not working",
-        "team not working",
-        "teammates not responding",
-        "mailbox empty",
-        "tmux swarm broken"
-      ],
-      "lessons": [
-        14,
-        13,
-        12
-      ],
-      "hint": "Teams/swarm uses tmux panes and a file-based mailbox for inter-agent communication; verify tmux is installed, the session exists, and agents are polling their mailbox paths."
-    },
-    {
-      "pattern": [
-        "bash command blocked",
-        "bash permission denied",
-        "command not allowed",
-        "shell blocked",
-        "bash security error"
-      ],
-      "lessons": [
-        7,
-        25,
-        47
-      ],
-      "hint": "Bash commands pass through security validators that block destructive patterns (rm -rf /, etc.); check permission rules and sandbox settings for allowed command patterns."
-    },
-    {
-      "pattern": [
-        "file write blocked",
-        "can't edit file",
-        "file permission denied",
-        "write not allowed",
-        "edit rejected"
-      ],
-      "lessons": [
-        8,
-        25,
-        47
-      ],
-      "hint": "File writes require read-before-write verification and respect permission rules; ensure the path is within the allowed workspace and that no deny rule matches the file pattern."
-    },
-    {
-      "pattern": [
-        "session lost",
-        "can't resume session",
-        "session not found",
-        "resume failed",
-        "conversation disappeared"
-      ],
-      "lessons": [
-        27,
-        3,
-        33
-      ],
-      "hint": "Sessions are stored as JSONL transcripts in ~/.claude/sessions/; use `claude --resume` with the session ID. Cloud sync may need to complete before a session appears on another machine."
-    },
-    {
-      "pattern": [
-        "system prompt too large",
-        "prompt cache miss",
-        "cache not hitting",
-        "system prompt overflow",
-        "prompt too long"
-      ],
-      "lessons": [
-        4,
-        28,
-        2
-      ],
-      "hint": "The system prompt is assembled from CLAUDE.md, memory, tool definitions, and dynamic sections; large CLAUDE.md files or many MCP tools can push it past cache-friendly boundaries."
-    },
-    {
-      "pattern": [
-        "analytics not sending",
-        "telemetry disabled",
-        "telemetry not working",
-        "datadog not receiving",
-        "metrics missing"
-      ],
-      "lessons": [
-        29,
-        44,
-        26
-      ],
-      "hint": "Telemetry respects the settings.json telemetry flag and environment variables; check that telemetry is not disabled by an enterprise MDM policy or CLAUDE_TELEMETRY_DISABLED env var."
-    },
-    {
-      "pattern": [
-        "plugin not loading",
-        "plugin missing",
-        "plugin failed",
-        "marketplace plugin broken",
-        "plugin install error"
-      ],
-      "lessons": [
-        31,
-        26,
-        33
-      ],
-      "hint": "Plugins are resolved from the marketplace manifest with dependency checks and version pinning; verify the plugin name, check the versioned cache, and look for resolution conflicts."
-    },
-    {
-      "pattern": [
-        "oauth flow failing",
-        "auth broken",
-        "authentication error",
-        "token expired",
-        "login failed",
-        "oauth redirect broken"
-      ],
-      "lessons": [
-        35,
-        10,
-        34
-      ],
-      "hint": "OAuth uses PKCE flow with tokens stored in the system keychain; check that the callback port is not in use, the keychain entry is not corrupted, and the token has not expired."
-    },
-    {
-      "pattern": [
-        "git integration issues",
-        "git not working",
-        "git watcher broken",
-        "branch not detected",
-        "commit tracking failed"
-      ],
-      "lessons": [
-        36,
-        7,
-        26
-      ],
-      "hint": "Git integration is filesystem-first with a background file watcher; ensure you are in a git repo, the watcher process is running, and .gitignore is not hiding relevant changes."
-    },
-    {
-      "pattern": [
-        "compaction removing important context",
-        "lost information after compaction",
-        "compaction too aggressive",
-        "context summary missing details"
-      ],
-      "lessons": [
-        28,
-        15,
-        2,
-        69
-      ],
-      "hint": "Compaction uses summarization to preserve key facts; context collapse (L69) is reversible via marble-origami persistence. Pin critical information in MEMORY.md or CLAUDE.md so it survives compaction, and keep individual messages focused."
-    },
-    {
-      "pattern": [
-        "commands not appearing",
-        "slash commands missing",
-        "slash command not found",
-        "command not registered",
-        "custom command gone"
-      ],
-      "lessons": [
-        18,
-        11,
-        26
-      ],
-      "hint": "Commands are registered at startup from built-in definitions, skills, and .claude/commands/ directories; verify the command file exists and has the correct format."
-    },
-    {
-      "pattern": [
-        "tool not found",
-        "tool missing",
-        "tool not available",
-        "tool disappeared",
-        "tool not in list"
-      ],
-      "lessons": [
-        6,
-        10,
-        31
-      ],
-      "hint": "Tools come from built-in definitions, MCP servers, and plugins; check that the tool's source is configured and the MCP server providing it connected successfully at startup."
-    },
-    {
-      "pattern": [
-        "slow startup",
-        "boot takes too long",
-        "claude code slow to start",
-        "long cold start",
-        "initialization hang"
-      ],
-      "lessons": [
-        1,
-        10,
-        5
-      ],
-      "hint": "Boot time is dominated by MCP server startup and settings resolution; reduce the number of MCP servers or defer non-essential ones to cut cold-start latency."
-    },
-    {
-      "pattern": [
-        "api error",
-        "rate limited",
-        "429 error",
-        "api retry failing",
-        "streaming broken"
-      ],
-      "lessons": [
-        2,
-        33,
-        44,
-        70
-      ],
-      "hint": "The query engine has built-in retry with exponential backoff for transient API errors; persistent 429s mean you are hitting rate limits -- reduce parallel agents or wait. In v2.1.104+, partial streaming content is preserved on timeout instead of being discarded."
-    },
-    {
-      "pattern": [
-        "streaming timeout",
-        "stream idle",
-        "partial response lost",
-        "streaming fallback",
-        "non-streaming fallback",
-        "stream stall"
-      ],
-      "lessons": [
-        70,
-        2,
-        33
-      ],
-      "hint": "v2.1.104 added partial yield protection: if content blocks were already streamed to you, a timeout no longer discards them. Set CLAUDE_CODE_DISABLE_NONSTREAMING_FALLBACK to prevent any fallback. The default idle timeout is 90s (override via CLAUDE_STREAM_IDLE_TIMEOUT_MS).",
-      "added": "2026-04-12"
-    },
-    {
-      "pattern": [
-        "render broken",
-        "ui glitch",
-        "terminal display wrong",
-        "screen corruption",
-        "ink rendering error"
-      ],
-      "lessons": [
-        17,
-        50,
-        24
-      ],
-      "hint": "The Ink renderer uses Yoga for layout in the terminal; resize events, non-standard terminal emulators, or missing Unicode support can cause display issues."
-    },
-    {
-      "pattern": [
-        "notification not showing",
-        "toast missing",
-        "no desktop notification",
-        "alert not appearing"
-      ],
-      "lessons": [
-        20,
-        26,
-        17
-      ],
-      "hint": "Notifications use terminal-notifier or OSC escape sequences depending on platform; check that your terminal supports the notification method and it is not disabled in settings."
-    },
-    {
-      "pattern": [
-        "setup-bedrock missing",
-        "bedrock command not found",
-        "reconfigure bedrock",
-        "bedrock region",
-        "bedrock model pin"
-      ],
-      "lessons": [
-        57
-      ],
-      "hint": "/setup-bedrock is only visible when CLAUDE_CODE_USE_BEDROCK is set; it launches the interactive Bedrock configuration wizard."
-    },
-    {
-      "pattern": [
-        "stop hook prompt",
-        "session stop condition",
-        "stop hook session only",
-        "quick stop hook"
-      ],
-      "lessons": [
-        57,
-        10
-      ],
-      "hint": "/stop-hook is currently disabled (isEnabled: false in v2.1.92); use the full hooks system via settings.json or /hooks to configure Stop hooks."
-    },
-    {
-      "pattern": [
-        "hook script find claude binary",
-        "claude path in hook",
-        "CLAUDE_CODE_EXECPATH",
-        "hook invoke claude"
-      ],
-      "lessons": [
-        58,
-        10
-      ],
-      "hint": "CLAUDE_CODE_EXECPATH is automatically injected into every spawned shell/hook environment — use $CLAUDE_CODE_EXECPATH in hook scripts to invoke the claude binary without hard-coding a path."
-    },
-    {
-      "pattern": [
-        "remote control session name",
-        "session prefix remote",
-        "hostname session name",
-        "CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX"
-      ],
-      "lessons": [
-        58,
-        41
-      ],
-      "hint": "Set CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX (or --session-name-prefix) to customize auto-generated remote control session names; defaults to the machine hostname, sanitized to lowercase alphanumeric."
-    },
-    {
-      "pattern": [
-        "autofix-pr missing",
-        "autofix-pr command not found",
-        "remote sessions disabled",
-        "allow_remote_sessions"
-      ],
-      "lessons": [
-        60,
-        34
-      ],
-      "hint": "/autofix-pr is gated behind remote sessions. In v2.1.94 it only enables when the Claude.ai subscriber gate passes and the allow_remote_sessions policy is enabled."
-    },
-    {
-      "pattern": [
-        "team-onboarding missing",
-        "ONBOARDING.md guide",
-        "teammate onboarding command",
-        "CLAUDE_CODE_TEAM_ONBOARDING"
-      ],
-      "lessons": [
-        60,
-        61
-      ],
-      "hint": "/team-onboarding is a built-in prompt command gated by CLAUDE_CODE_TEAM_ONBOARDING or a feature flag. It generates onboarding content from your usage data and writes ONBOARDING.md."
-    },
-    {
-      "pattern": [
-        "mantle provider",
-        "CLAUDE_CODE_USE_MANTLE",
-        "ANTHROPIC_BEDROCK_MANTLE_BASE_URL",
-        "CLAUDE_CODE_SKIP_MANTLE_AUTH"
-      ],
-      "lessons": [
-        61,
-        46
-      ],
-      "hint": "v2.1.94 adds a Mantle provider path. Set CLAUDE_CODE_USE_MANTLE to select it, ANTHROPIC_BEDROCK_MANTLE_BASE_URL to override the default AWS-region-derived endpoint, and CLAUDE_CODE_SKIP_MANTLE_AUTH only for debugging."
-    },
-    {
-      "pattern": [
-        "TLS error",
-        "certificate error",
-        "SSL error",
-        "CERT_STORE",
-        "ca certificate",
-        "self-signed certificate",
-        "corporate proxy certificate",
-        "UNABLE_TO_VERIFY_LEAF_SIGNATURE"
-      ],
-      "lessons": [
-        66,
-        37
-      ],
-      "hint": "Set CLAUDE_CODE_CERT_STORE to 'system' (OS certs), 'bundled' (Node.js built-in), or 'bundled,system' (both, the default). For corporate proxies with custom CAs, use 'system' or set NODE_EXTRA_CA_CERTS to your CA bundle path. Changes take effect on settings reload without restart."
-    },
-    {
-      "pattern": [
-        "loop not scheduling",
-        "loop stopped",
-        "loop aged out",
-        "dynamic loop",
-        "ScheduleWakeup",
-        "loop expired",
-        "loop max age"
-      ],
-      "lessons": [
-        67,
-        38
-      ],
-      "hint": "Dynamic loops (tengu_kairos_loop_dynamic flag) auto-stop after recurringMaxAgeMs (default 7 days). Delays are clamped to [60, 3600] seconds. Check if the loop aged out via tengu_loop_dynamic_wakeup_aged_out telemetry."
-    },
-    {
-      "pattern": [
-        "cloud schedule",
-        "cloud loop",
-        "loop cloud first",
-        "/schedule vs /loop",
-        "remote loop",
-        "durable loop"
-      ],
-      "lessons": [
-        67,
-        38
-      ],
-      "hint": "When tengu_cinder_almanac is enabled, /loop offers cloud scheduling for intervals >= 60min or daily phrasing. Cloud schedules persist across sessions; local loops stop when the session closes."
-    },
-    {
-      "pattern": [
-        "oauth refresh",
-        "SDK_HAS_OAUTH_REFRESH",
-        "401 token expired SDK",
-        "SDK token refresh"
-      ],
-      "lessons": [
-        68,
-        35
-      ],
-      "hint": "Set CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH when your SDK parent process provides a token refresh callback. On 401, Claude Code calls back to get a fresh token instead of failing."
-    },
-    {
-      "pattern": [
-        "dream not recognized",
-        "dream not available",
-        "dream command missing",
-        "learn not recognized"
-      ],
-      "hint": "/dream is gated by server-side GrowthBook flag tengu_kairos_dream (default: false). The server does not send this flag, so it falls through to the default. Workaround: use scripts/patch-dream.sh to inject the flag into the local cache with a watcher that survives the SDK cache writeback. Binary patching is not viable (code-signed Bun SEA, SIGKILL on macOS).",
-      "lessons": [
-        62,
-        68
-      ],
-      "added": "2026-04-11"
-    },
-    {
-      "pattern": [
-        "feature flag not working",
-        "feature gate",
-        "tengu not enabled",
-        "growthbook override"
-      ],
-      "hint": "All local override mechanisms (env vars, config overrides) are stubbed/dead-code in the production binary. Flags are evaluated server-side via remoteEval. Binary is code-signed (SIGKILL on modification). For flags absent from server response, cache injection with a filesystem watcher can work. See L68 GrowthBook internals and scripts/patch-dream.sh for the technique.",
-      "lessons": [
-        68
-      ],
-      "added": "2026-04-11"
-    },
-    {
-      "pattern": [
-        "recap not working",
-        "/recap not available",
-        "recap command missing",
-        "session recap disabled"
-      ],
-      "lessons": [
-        72,
-        65
-      ],
-      "hint": "/recap is gated behind tengu_sedge_lantern feature flag (default: false). Check with CLAUDE_CODE_ENABLE_AWAY_SUMMARY=true to force-enable. Also check awaySummaryEnabled in /config settings."
-    },
-    {
-      "pattern": [
-        "stream timeout",
-        "byte watchdog",
-        "no bytes received",
-        "stream idle byte",
-        "transport timeout"
-      ],
-      "lessons": [
-        74,
-        70
-      ],
-      "hint": "Byte-level watchdog (CLAUDE_ENABLE_BYTE_WATCHDOG) detects transport-layer stalls. Event-level watchdog detects SSE parsing stalls. Set CLAUDE_ENABLE_BYTE_WATCHDOG=false to disable byte watchdog. Check tengu_stream_watchdog_default_on flag (default: true)."
-    },
-    {
-      "pattern": [
-        "multi repo",
-        "multiple repositories",
-        "repo checkouts not working",
-        "base refs"
-      ],
-      "lessons": [
-        73
-      ],
-      "hint": "Multi-repo support uses CLAUDE_CODE_REPO_CHECKOUTS (JSON map of label→path) and CLAUDE_CODE_BASE_REFS (JSON map of label→ref). Both must be valid JSON with string→string entries."
-    },
-    {
-      "pattern": [
-        "think-back missing",
-        "thinkback not found",
-        "/think-back removed"
-      ],
-      "lessons": [
-        76
-      ],
-      "hint": "/think-back and /thinkback-play were completely removed in v2.1.107. They are no longer available."
-    },
-    {
-      "pattern": [
-        "repl not working",
-        "repl mode disabled",
-        "CLAUDE_CODE_REPL not working",
-        "repl tools missing",
-        "repl import blocked"
-      ],
-      "lessons": [
-        75
-      ],
-      "hint": "REPL mode is gated behind tengu_slate_harbor (default: false). Set CLAUDE_CODE_REPL=true to force-enable. Only works on cli/remote entrypoints. import/require are blocked — code runs in sealed VM. Tools are restricted to Read/Write/Edit/Bash/NotebookEdit via OkH set."
-    },
-    {
-      "pattern": [
-        "repl state lost",
-        "repl variables gone",
-        "repl reset",
-        "repl cleared"
-      ],
-      "lessons": [
-        75,
-        32
-      ],
-      "hint": "REPL VM state is compaction-aware — context compaction clears the VM state and warns. Variables persist within a session but not across compaction events. Check replay-log for state hydration."
-    },
-    {
-      "pattern": [
-        "rate limit warning",
-        "rate limit suggestion",
-        "upgrade paths",
-        "rate limit upgrade",
-        "try /model sonnet"
-      ],
-      "lessons": [
-        76
-      ],
-      "hint": "Rate limit upgrade paths use a 3-layer system: server header hints (anthropic-ratelimit-unified-upgrade-paths), client lever hints (oV9 — gated by tengu_garnet_plover, pro+seven_day only), and interactive options menu. Early warnings fire at percentage-based thresholds before actual rejection."
-    },
-    {
-      "pattern": [
-        "multi repo not working",
-        "branch watching not working",
-        "repo checkouts ignored",
-        "CCR v2 checkout"
-      ],
-      "lessons": [
-        73,
-        37
-      ],
-      "hint": "Multi-repo checkout is CCR v2 infrastructure only — requires CLAUDE_CODE_USE_CCR_V2 to be enabled. Env vars are set by the external CCR orchestrator, not for local CLI use. Branch watching uses fs.watchFile on .git/HEAD at 1s intervals."
-    },
-    {
-      "pattern": [
-        "managed agents docs",
-        "claude-api skill",
-        "API skill disabled",
-        "managed agents not available"
-      ],
-      "lessons": [
-        76,
-        42
-      ],
-      "hint": "33 managed-agents docs (~324KB) are embedded in the binary as part of the claude-api built-in skill. Disabled by CLAUDE_CODE_DISABLE_CLAUDE_API_SKILL env var. Language detection via ZU5() selects docs by project language; Go/Java/Ruby/PHP/C# have no managed-agents specific files."
-    },
-    {
-      "pattern": [
-        "autopilot not found",
-        "bugfix not found",
-        "dashboard command missing",
-        "/investigate unknown",
-        "remote workflow commands hidden",
-        "remote workflows don't work"
-      ],
-      "lessons": [
-        77,
-        73
-      ],
-      "hint": "Remote Workflow Commands (/autopilot, /bugfix, /dashboard, /docs, /investigate) require CCR v2 ($X4() gate). They're hidden entirely when CCR v2 is not enabled. Requires CLAUDE_CODE_USE_CCR_V2 and server-side provisioning. All five spawn a remote session via POST /v1/sessions with beta header ccr-byoc-2025-07-29."
-    },
-    {
-      "pattern": [
-        "tool call got rejected",
-        "model second-guessed itself",
-        "server_tool_use content block",
-        "advisor_tool_result",
-        "model refused to run tool",
-        "tool intercepted"
-      ],
-      "lessons": [
-        78
-      ],
-      "hint": "The Advisor Tool (server-side reviewer model) may intercept tool calls. Gates: first-party API only, opus-4-6/opus-4-7/sonnet-4-6 only, tengu_sage_compass2 flag on (or CLAUDE_CODE_ENABLE_EXPERIMENTAL_ADVISOR_TOOL=1). Hard-disable with CLAUDE_CODE_DISABLE_ADVISOR_TOOL=1."
-    },
-    {
-      "pattern": [
-        "push notification not working",
-        "phone not getting notifications",
-        "PushNotification tool error",
-        "KAIROS push failed",
-        "bridge inactive",
-        "user_present suppressed"
-      ],
-      "lessons": [
-        79,
-        43,
-        34
-      ],
-      "hint": "PushNotification requires: user push setting enabled (not config_off), user not actively at terminal (not user_present), and Remote Control bridge running locally (not bridge_inactive). Check disabledReason in tool output. Only 'proactive' status is accepted. KAIROS is the server-side push service; bridge is the local relay."
-    },
-    {
-      "pattern": [
-        "context compacted without asking",
-        "context shrinking mysteriously",
-        "context_hint_rejection",
-        "422 context too large",
-        "context hint api",
-        "server compacted my context"
-      ],
-      "lessons": [
-        80,
-        28
-      ],
-      "hint": "Context Hint API lets the server signal compaction via HTTP 422/424/409/529 or SSE invalid_request with type=context_hint_rejection. Triggers keep-recent micro-compaction (sT9, keepRecent=5). Only activates on first-party API on repl_main_thread* when tengu_hazel_osprey is on. No env var disables it — feature-flag controlled."
-    },
-    {
-      "pattern": [
-        "fullscreen not working",
-        "/tui broken",
-        "alt-screen blank",
-        "tmux fullscreen issue",
-        "/focus timer blank",
-        "terminal blank after /tui"
-      ],
-      "lessons": [
-        81,
-        23
-      ],
-      "hint": "Fullscreen precedence (first match wins): CLAUDE_CODE_NO_FLICKER=1 hard disables, CLAUDE_CODE_FULLSCREEN=1 hard enables, tmux -CC auto-disables, then userSettings.tui, then tengu_pewter_brook. /tui respawns the process via child_process.spawn. If terminal goes blank, your terminal may not support alt-screen — set CLAUDE_CODE_NO_FLICKER=1."
-    },
-    {
-      "pattern": [
-        "proxy auth failing",
-        "proxy credentials rotating",
-        "proxy helper not running",
-        "Proxy-Authorization header missing",
-        "CLAUDE_CODE_PROXY_AUTHENTICATE"
-      ],
-      "lessons": [
-        82,
-        37
-      ],
-      "hint": "Proxy Auth Helper requires strict CLAUDE_CODE_PROXY_AUTHENTICATE=\"1\" (literal string, not \"true\"). Shell command set in settings under proxyAuthHelper. Project/local settings need workspace trust. 30s exec timeout; falls back to stale cache on exec failure rather than failing the request."
-    },
-    {
-      "pattern": [
-        "system prompt changed",
-        "prompt unexpectedly different",
-        "server overrode my prompt",
-        "system prompt not what I configured",
-        "CLAUDE_CODE_SYSTEM_PROMPT_GB_FEATURE"
-      ],
-      "lessons": [
-        83,
-        4,
-        71
-      ],
-      "hint": "In CCR/remote contexts, the server can replace the system prompt entirely via a GrowthBook feature. Requires both CLAUDE_CODE_REMOTE truthy AND CLAUDE_CODE_SYSTEM_PROMPT_GB_FEATURE set to a valid GB feature name returning a non-empty string. Falls back to default on any failure. Distinct from L71's quiet_salted_ember section rename."
-    },
-    {
-      "pattern": [
-        "slow first byte",
-        "no stream chunk",
-        "request hanging",
-        "tengu_api_slow_first_byte",
-        "CLAUDE_SLOW_FIRST_BYTE_MS"
-      ],
-      "lessons": [
-        84,
-        74
-      ],
-      "hint": "Slow first-byte watchdog logs 'warn' after CLAUDE_SLOW_FIRST_BYTE_MS (default 30000ms) with no stream chunk. Purely observational — does NOT abort the request. Complements L74's byte-level watchdog which does abort."
-    },
-    {
-      "pattern": [
-        "unknown command did you mean",
-        "typo in slash command",
-        "claude command not found suggestion"
-      ],
-      "lessons": [
-        84,
-        18
-      ],
-      "hint": "Unknown slash commands now trigger fuzzy-match suggestion via _a5() → BCH(). Writes 'unknown command \"X\"' + '└ Did you mean claude Y?' to stderr, emits tengu_unknown_command_suggestion, exits 1."
-    },
-    {
-      "pattern": [
-        "canary channel",
-        "native installer wrong version",
-        "got a newer version than expected",
-        "tengu_canary"
-      ],
-      "lessons": [
-        84,
-        31
-      ],
-      "hint": "Canary channel (rp1()) reads GrowthBook feature tengu_canary expecting {external: semver}. Native-installer target-picker op1() overrides target if canary > target AND !exceedsMaxVersion. Server-controlled rolling canary — not user-configurable."
-    },
-    {
-      "pattern": [
-        "server-driven behavior",
-        "different behavior same binary",
-        "why do my colleague and I get different claude behavior",
-        "feature flag behavior difference",
-        "tengu flag"
-      ],
-      "lessons": [
-        78,
-        80,
-        83,
-        84,
-        29
-      ],
-      "hint": "v2.1.110-v2.1.111 moved significant behavior to the server side. Advisor Tool (tengu_sage_compass2), Context Hint API (tengu_hazel_osprey), System Prompt GB Override (CLAUDE_CODE_REMOTE + user-supplied GB feature), Canary channel (tengu_canary), Fullscreen rollout (tengu_pewter_brook) all let Anthropic alter behavior per-user/per-org without a binary release. Two users on the same binary can get materially different experiences."
-    },
-    {
-      "pattern": [
-        "autopilot gone",
-        "bugfix command removed",
-        "where is /dashboard",
-        "/docs not working",
-        "investigate command missing",
-        "remote workflow commands removed"
-      ],
-      "lessons": [
-        85,
-        77,
-        60
-      ],
-      "hint": "All five Remote Workflow Commands (/autopilot, /bugfix, /dashboard, /docs, /investigate) were removed outright in v2.1.113 — no feature flag, no deprecation shim, code deleted. See L85. The back-end CCR v2 infrastructure (L73) and /autofix-pr (L60) survive. L77 remains as historical documentation for what v2.1.110 shipped."
-    },
-    {
-      "pattern": [
-        "less-permission-prompts not found",
-        "unknown command less-permission",
-        "fewer-permission-prompts",
-        "permission prompt command"
-      ],
-      "lessons": [
-        85,
-        84
-      ],
-      "hint": "`/less-permission-prompts` was renamed to `/fewer-permission-prompts` in v2.1.113. The methodology prompt body is byte-identical; only the command name changed. The unknown-command did-you-mean helper (_a5()) should suggest the new name. See L85."
-    },
-    {
-      "pattern": [
-        "async agent stall",
-        "agent watchdog",
-        "agent stall timeout",
-        "tengu_async_agent_stall_timeout",
-        "agent aborted no progress"
-      ],
-      "lessons": [
-        85,
-        6
-      ],
-      "hint": "v2.1.113 added CLAUDE_ASYNC_AGENT_STALL_TIMEOUT_MS (default 600000ms / 10min). When no progress message arrives within the timeout, the async agent signal is aborted and tengu_async_agent_stall_timeout is emitted with agent_type/stall_ms/last_message_type/message_count. See L85."
-    },
-    {
-      "pattern": [
-        "backspace not working windows",
-        "ctrl backspace",
-        "CLAUDE_CODE_BS_AS_CTRL_BACKSPACE",
-        "windows terminal delete word"
-      ],
-      "lessons": [
-        85,
-        26
-      ],
-      "hint": "v2.1.113 added CLAUDE_CODE_BS_AS_CTRL_BACKSPACE. Auto-enabled on win32 except mintty/cygwin. Set truthy to force-on, explicit false to force-off. Fixes the Windows quirk where backspace arrives as BS (\\x08) instead of Ctrl+Backspace (\\x7F). See L85."
-    },
-    {
-      "pattern": [
-        "fullscreen sticky bar",
-        "DECSTBM",
-        "CLAUDE_CODE_DECSTBM",
-        "tui scrolling region",
-        "tengu_marlin_porch"
-      ],
-      "lessons": [
-        85,
-        81
-      ],
-      "hint": "v2.1.113 added CLAUDE_CODE_DECSTBM opt-in for ANSI Set Top/Bottom Margin escape sequences in the fullscreen TUI, plus tengu_marlin_porch as the GrowthBook rollout gate. Requires TTY + capability check + not-CI. Env var short-circuits the flag. See L85 for resolver details, L81 for fullscreen TUI context."
-    },
-    {
-      "pattern": [
-        "CLAUDE_BG_BACKEND",
-        "daemon background",
-        "background stdout EPIPE",
-        "background writer crashed"
-      ],
-      "lessons": [
-        85
-      ],
-      "hint": "v2.1.113 added CLAUDE_BG_BACKEND. When exactly \"daemon\", the background stdout writer latches EIO/EPIPE into a flag (L_9) instead of throwing. Used to stabilize writes when the parent TTY has detached under a daemon supervisor. See L85."
-    },
-    {
-      "pattern": [
-        "show message timestamps",
-        "timestamps in chat",
-        "timestamp each message",
-        "tengu_silk_hinge"
-      ],
-      "lessons": [
-        85
-      ],
-      "hint": "v2.1.113 adds a 'Show message timestamps' setting (showMessageTimestamps, default false). Toggle is only visible in /config when GrowthBook flag tengu_silk_hinge is enabled — a server-gated UX rollout. Changes fire tengu_show_message_timestamps_setting_changed telemetry. See L85."
-    },
-    {
-      "pattern": [
-        "claude survived sighup",
-        "daemon mode",
-        "claude stays running after terminal close",
-        "autoAddRemoteControlDaemonWorker",
-        "auto add remote control daemon"
-      ],
-      "lessons": [
-        85,
-        37
-      ],
-      "hint": "v2.1.113 adds daemon-mode support via CLAUDE_BG_BACKEND=daemon: SIGHUP is ignored (logged SIGHUP_ignored_bg), stdout EIO/EPIPE is latched instead of thrown, and the 30s TTY-orphan detector is bypassed. Paired with a new user setting autoAddRemoteControlDaemonWorker (consumer is not present in the binary — likely server-side or forthcoming). Together these sketch a 'Claude Code as daemon worker under Remote Control' architecture. See L85 for semantics, L37 for Bridge/Remote context."
-    },
-    {
-      "pattern": [
-        "mcp tool hung",
-        "mcp call hangs",
-        "mcp transport dropped",
-        "tool still running",
-        "transport lost mid-call",
-        "activeCallWatchdogs"
-      ],
-      "lessons": [
-        85,
-        7
-      ],
-      "hint": "v2.1.113 adds MCP call watchdog (activeCallWatchdogs set on MCP transport state). Every 30s an in-flight MCP tool call logs 'Tool X still running (Ns elapsed)'. If the transport observed an error mid-call, the call is aborted 90s after the error mark with 'MCP server X transport dropped mid-call; response for tool Y was lost'. Closes a hole where MCP tool calls could hang indefinitely after transport errors. See L85."
-    },
-    {
-      "pattern": [
-        "prior session crashed",
-        "claude crashed last time",
-        "tengu_unclean_exit",
-        "session exited uncleanly"
-      ],
-      "lessons": [
-        85,
-        31
-      ],
-      "hint": "v2.1.113 adds unclean-exit detection at startup. When a prior interactive session is found to have exited uncleanly, a startup message 'Prior session exited uncleanly: SID (vX)' is logged and tengu_unclean_exit fires with session_age_sec, prior_version, on_current_version. Pure observability — does not auto-resume. See L85."
-    },
-    {
-      "pattern": [
-        "/update command",
-        "update command hidden",
-        "why is /update hidden",
-        "claude update in place",
-        "tengu_update_refused"
-      ],
-      "lessons": [
-        85,
-        68
-      ],
-      "hint": "/update is still isEnabled:()=>false and isHidden:true in v2.1.113 (not user-visible), but its implementation is being actively iterated. Two refusal paths now emit tengu_update_refused: active_tasks (refuses while any task is running/pending) and transcript_path_drift (refuses when session transcript is in a different project dir). Signals an upcoming staged launch of in-place native-installer upgrade. See L85, and L68 for the v2.1.101 state where /update was first introduced-but-disabled."
-    },
-    {
-      "pattern": [
-        "image could not be processed",
-        "image resize failed",
-        "tengu_image_resize_degraded"
-      ],
-      "lessons": [
-        85
-      ],
-      "hint": "v2.1.113 adds tengu_image_resize_degraded telemetry emitted when an image block throws a VI error during processing; the block is substituted with a text placeholder '[Image could not be processed: <message>]'. No user-configurable gate — purely observational. See L85."
-    },
-    {
-      "pattern": [
-        "/fork not available",
-        "/fork command not found",
-        "fork command missing",
-        "how to enable /fork",
-        "fork subagent disabled"
-      ],
-      "lessons": [
-        87
-      ],
-      "hint": "/fork is interactive-only (S8() non-interactive mode disables it) and gated behind two layers: set CLAUDE_CODE_FORK_SUBAGENT=1 to force-enable, or wait for the tengu_copper_fox GB flag to flip on for your account (default false). /fork does not appear in `claude -p` headless sessions at all. See L87."
-    },
-    {
-      "pattern": [
-        "why is /cost gone",
-        "/cost command missing",
-        "/cost not found",
-        "why is /stats gone",
-        "/stats command missing",
-        "/stats not found",
-        "cost command removed",
-        "stats command removed"
-      ],
-      "lessons": [
-        88
-      ],
-      "hint": "v2.1.118 folded /cost and /stats into /usage as aliases. They still work when typed (alias resolution at the command registry), but no longer show up as standalone commands in /help or autocomplete. In interactive mode you get the unified TUI dashboard ('Show session cost, plan usage, and activity stats'); in headless mode (claude -p) you get the brief 'cost and duration' string. See L88."
-    },
-    {
-      "pattern": [
-        "why is /autocompact gone",
-        "/autocompact command missing",
-        "/autocompact not found",
-        "autocompact command removed",
-        "autocompact window size"
-      ],
-      "lessons": [
-        87
-      ],
-      "hint": "v2.1.117 removed /autocompact outright (both the command and its tengu_autocompact_* telemetry). Configure the auto-compact window size via /config settings UI or edit the underlying setting key in settings.json directly. See L87."
-    },
-    {
-      "pattern": [
-        "why is /stop-hook gone",
-        "/stop-hook command missing",
-        "stop-hook removed",
-        "session-only stop hook"
-      ],
-      "lessons": [
-        87
-      ],
-      "hint": "v2.1.117 removed /stop-hook entirely. It had been isEnabled:()=>false (shelf-parked) since v2.1.92 (L57). To configure Stop hooks, edit .claude/settings.json directly with a `hooks` section specifying event:'Stop'. See L87 and L10 (hooks system)."
-    },
-    {
-      "pattern": [
-        "oauth refresh token race",
-        "oauth 401 after refresh",
-        "refresh token already used",
-        "multiple claude instances oauth",
-        "wif lock error",
-        "tengu_wif_user_oauth_lock_retry_limit",
-        "Could not acquire credentials lock",
-        "ELOCKED credentials",
-        "credentials lock stuck"
-      ],
-      "lessons": [
-        88,
-        38
-      ],
-      "hint": "v2.1.117 landed directory-level locking (proper-lockfile) around WIF user-OAuth token refresh; v2.1.118 added all 5 telemetry events on top. The lock is on <config_dir>/credentials/ (the DIRECTORY, not the file), acquired via Gv_ → Vk4 → RY(path, {onCompromised: wH}). Retry budget is exactly tvq=5 attempts with 1000-2000ms jittered backoff = 5-10s max wait. On exhaustion: throws typed error e5 with message 'Could not acquire credentials lock at <path> after 5 retries'. If tengu_wif_user_oauth_lock_retry_limit fires, another Claude Code process is stuck holding the lock — investigate with `lsof <config_dir>/credentials/.lock` and `ls -la <config_dir>/credentials/.lock`. If confirmed orphaned, `rmdir <config_dir>/credentials/.lock` clears it (safe only when no live holder). tengu_oauth_401_recovered_from_disk indicates the post-hoc disk re-read recovery path succeeded — separate from the lock, catches cases where a sibling refreshed between in-memory cache load and the outbound request. See L88, and L38 for the base OAuth flow."
-    },
-    {
-      "pattern": [
-        "agent stop hook blocking",
-        "tengu_agent_stop_hook_blocking",
-        "tengu_agent_stop_hook_success",
-        "tengu_agent_stop_hook_max_turns",
-        "tengu_agent_stop_hook_error",
-        "hook condition was not met",
-        "agent hook did not complete within 50 turns",
-        "ai verification hook",
-        "agent hook timeout"
-      ],
-      "lessons": [
-        88,
-        10
-      ],
-      "hint": "Claude Code has a previously-undocumented hook TYPE: the AI verification hook (bs7). Instead of a shell command, an agent hook spawns a dedicated sub-conversation that returns structured output {ok: true} (allow stop) or {ok: false, reason} (block). v2.1.118 added tengu_agent_stop_hook_blocking telemetry for the !ok outcome — the mechanism itself pre-existed. Limits: max 50 turns (constant B=50), 60s default timeout (override via hookConfig.timeout in seconds), permissionMode:'dontAsk', thinking disabled. System prompt for Stop/SubagentStop events: 'You are verifying a stop condition in Claude Code. Your task is to verify that the agent completed the given plan.' Read(<transcript>) is auto-allowed. Five outcomes: success, blocking, cancelled (max turns), cancelled (no structured output), non_blocking_error. If the hook fires often and uses tool-call chains, expect latency — consider raising timeout or simplifying the verification prompt. See L88 for the full mechanism and L10 for the shell-command hook baseline."
-    },
-    {
-      "pattern": [
-        "fork sync or async",
-        "/fork blocks conversation",
-        "fork inline vs background",
-        "skill context fork blocks",
-        "skill context:fork sync",
-        "three fork paths"
-      ],
-      "lessons": [
-        87
-      ],
-      "hint": "/fork has three distinct execution paths with very different semantics. (1) User types /fork <directive>: backgrounded (isAsync:true) via _a7 → quH → xy, returns immediately, parent NOT blocked, shows '<emoji> forked <name> (<id4>)' system message, uses ph fork subagent type (tools:['*'], maxTurns:200, model:'inherit', permissionMode:'bubble'), gets full parent messages + REPL replay log. Guard: 'Cannot fork before the first conversation turn' (new in v2.1.117) if no renderedSystemPrompt. (2) Slash command with context:'fork' frontmatter: synchronous via V75, parent BLOCKS, inline progress streaming, uses H.agent from frontmatter or general-purpose fallback, returns <local-command-stdout>. (3) Skill invoked via Skill tool with context:'fork': synchronous via C75 (NEW in v2.1.118), same semantics as V75 but reaches via Skill tool path. See L87 for details. The 'fork' subagent type (ph) is ONLY used by path 1 — paths 2/3 use whatever agent is specified."
-    },
-    {
-      "pattern": [
-        "frontmatter unknown key",
-        "skill frontmatter warning",
-        "tengu_frontmatter_shadow_unknown_key",
-        "tengu_frontmatter_shadow_mismatch",
-        "plugin frontmatter shadow",
-        "progressMessage unknown",
-        "progressMessage warning",
-        "allowedTools camelCase",
-        "argumentHint camelCase",
-        "which keys trigger telemetry",
-        "shadow validator schema",
-        "frontmatter drift"
-      ],
-      "lessons": [
-        88,
-        11
-      ],
-      "hint": "v2.1.118 added shadow validation (pjH) that calls qT1[kind]().strict().safeParse(frontmatter) and emits tengu_frontmatter_shadow_unknown_key / _mismatch telemetry on drift. There is NO formal primary schema — primary frontmatter handling is imperative (Cz8 reads properties directly and ignores unknown keys), so the Zod schemas added in v2.1.118 are the only formal validation. Per-session dedup via Gj9 Set means each unique (event,surface,detail) tuple fires once. Dispatch table has 3 entries: skill (eO1), agent (HT1), output-style (_T1) — custom commands are validated as 'skill'. The big known drift: progressMessage is documented in L11 but NOT in eO1, so any skill declaring it fires telemetry on load. Also watch kebab-vs-camel drift: schema uses allowed-tools / argument-hint / disable-model-invocation / user-invocable (kebab) for skills but tools / disallowedTools / mcpServers / maxTurns / initialPrompt / permissionMode (camel) for agents. See L88 for the full schema tables."
-    },
-    {
-      "pattern": [
-        "/pro-trial-expired",
-        "pro trial expired dialog",
-        "pro plan trial ended"
-      ],
-      "lessons": [
-        88
-      ],
-      "hint": "v2.1.118 dark-launched /pro-trial-expired (isEnabled:()=>false). Currently inert. When the date-gate or GB flag enables it, users whose Pro plan trial has ended will see an upsell/renewal UI with tracked choices (tengu_pro_trial_expired_choice). Combined with CLAUDE_CODE_SUBSCRIPTION_TYPE / CLAUDE_CODE_RATE_LIMIT_TIER env vars (L87), this is test-surface for the Pro plan rollout. See L88."
-    },
-    {
-      "pattern": [
-        "why is /commit gone",
-        "/commit removed",
-        "/commit-push-pr missing"
-      ],
-      "lessons": [
-        102
-      ],
-      "hint": "Removed as builtins in v2.1.159 and migrated to the commit-commands plugin (install it to restore /commit)."
-    },
-    {
-      "pattern": [
-        "plugin hooks don't fire in cowork",
-        "cowork hook not firing",
-        "cowork plugin hook",
-        "sessionstart hook cowork"
-      ],
-      "lessons": [
-        89,
-        100
-      ],
-      "hint": "Plugin hooks DO fire in Cowork — but only if the plugin is in the desktop's account/org cowork_plugins namespace. Install via the Cowork APP UI, not the standalone CLI --cowork (which writes a different root the desktop never reads). See L89."
-    },
-    {
-      "pattern": [
-        "why is /dream gone",
-        "/dream removed",
-        "/dream missing"
-      ],
-      "lessons": [
-        101
-      ],
-      "hint": "Not removed — reclassified from a slash command to a built-in routine in v2.1.159."
-    },
-    {
-      "pattern": [
-        "workflow agent cap",
-        "too many workflow agents",
-        "workflow budget exceeded",
-        "workflow stopped early"
-      ],
-      "lessons": [
-        91
-      ],
-      "hint": "Dynamic Workflows hard-caps at 1000 agents; the token budget is opt-in (only bites if a caller sets it)."
-    },
-    {
-      "pattern": [
-        "disable streaming tool execution",
-        "turn off streaming tool execution"
-      ],
-      "lessons": [
-        94
-      ],
-      "hint": "Not possible — streaming tool execution went GA in v2.1.159; the gate was deleted with no escape hatch."
-    },
-    {
-      "pattern": [
-        "how many hook event types",
-        "hook event count",
-        "27 hook events",
-        "19 hook events"
-      ],
-      "lessons": [
-        95,
-        10
-      ],
-      "hint": "The live master hook array is 30 as of v2.1.159; older '27' (v2.1.90) and '19' (a diff-tool undercount) figures are stale."
-    },
-    {
-      "pattern": [
-        "cloud gateway session expired",
-        "gateway login",
-        "CLAUDE_CODE_USE_GATEWAY not working"
-      ],
-      "lessons": [
-        97
-      ],
-      "hint": "Select the Cloud gateway via /login (not CLAUDE_CODE_USE_GATEWAY, which is dead/unread). On expiry, run /login to reconnect."
-    },
-    {
-      "pattern": [
-        "MCP App can't submit",
-        "UI can't send data back",
-        "app ui read only",
-        "collect secret in MCP app",
-        "callServerTool not working",
-        "UI tool call blocked",
-        "how to collect a secret from the user",
-        "mcp app form not submitting"
-      ],
-      "lessons": [
-        105
-      ],
-      "hint": "Claude Desktop's MCP App UI has NO server-tool-call channel; its only data-return path (sendPrompt) injects into the chat. Use MCP elicitation (elicitation/create, form or url mode) to capture private input — it returns to the server as the request response, not into the transcript. (L105)"
-    },
-    {
-      "pattern": [
-        "API key field doesn't appear in Customize Plugins",
-        "plugin credential field missing",
-        "clis env not showing",
-        "set once api key cowork not working",
-        "Plugin OAuth is not enabled for this account",
-        "plugin.json clis block ignored",
-        "no credential field for my CLI plugin",
-        "how to set a CLI plugin secret in Claude Desktop",
-        "cowork CLI can't see API key"
-      ],
-      "lessons": [
-        106,
-        105,
-        89
-      ],
-      "hint": "The clis.*.env credential broker (enter once under Customize -> Plugins, encrypted in cowork-plugin-env, injected at CLI invocation) is dark-launched behind GrowthBook gate 2307090146 (cli_plugin), off by default. A valid manifest renders NOTHING with no error: the renderer (GXr) strips clis and the runtime chokepoint (PKr, ahead of VKr) returns oauth_disabled. There is no manual workaround while gated. Decode ~/Library/Application Support/Claude/fcache to read the gate state. Until it flips, give an in-VM Cowork CLI its key via project .env / a key-file on a mounted folder (see L89)."
-    },
-    {
-      "pattern": [
-        "AskUserQuestion never fires in my headless/SDK cowork driver",
-        "AskUserQuestion silently auto-dismissed",
-        "control_response ZodError expected object received undefined",
-        "how to drive Cowork headless",
-        "cowork spawn flags",
-        "does the cowork agent run in the VM or on the host",
-        "--cowork flag rejected can only be used with user scope",
-        "Cowork ignores --mcp-config / .mcp.json",
-        "how do I pass MCP servers to a cowork agent",
-        "CLAUDE_CODE_USE_COWORK_PLUGINS broke my settings"
-      ],
-      "lessons": [
-        107,
-        89,
-        105
-      ],
-      "hint": "Cowork mode = CLAUDE_CODE_IS_COWORK=1 (the --cowork flag is rejected; do not set CLAUDE_CODE_USE_COWORK_PLUGINS). Drive the agent over the stream-json control protocol: spawn -p --verbose --input-format stream-json --output-format stream-json --permission-prompt-tool stdio (without stdio routing AskUserQuestion is silently auto-dismissed); send the initialize handshake FIRST; the control_response envelope is doubly nested (response.response.<payload>). Cowork ignores --mcp-config — deliver MCP via sdkMcpServers in initialize + mcp_message tunneling (the driver IS the MCP server). In production (host-loop, gate 1143815894) the agent loop runs host-side and only mcp__workspace__bash/web_fetch run in the VM. See L107 (contract), L89 (host-loop/split execution), L105 (control-request dispatcher)."
-    },
-    {
-      "pattern": [
-        "what cowork environment variables exist",
-        "which growthbook gate controls cowork",
-        "is host-loop on or off",
-        "how do I read the fcache gate state",
-        "CLAUDE_CODE_ENABLE_XAA",
-        "CLAUDE_CODE_ENVIRONMENT_KIND",
-        "CLAUDE_BG_CLAIM_AUTH",
-        "ANTHROPIC_DEFAULT_FABLE_MODEL",
-        "what control protocol subtypes exist",
-        "get_session_cost",
-        "side_question",
-        "does cowork cap Task sub-agent dispatch",
-        "what is gate 1648655587",
-        "scheduled task perTask global limit"
-      ],
-      "lessons": [
-        108,
-        109,
-        107,
-        89
-      ],
-      "hint": "Chapter 25 (L108) is the binary-verified catalog. Env vars: see Part A (model/effort, cowork/bg runtime incl. CLAUDE_BG_*_AUTH single-use handshake + CLAUDE_CODE_WORKER_EPOCH, auth incl. CLAUDE_CODE_ENABLE_XAA, Agent-SDK, Desktop-only). Gates: Part B decodes the live fcache — host-loop 1143815894, Fable 3045399524, bridge-SDK-adapter 583857784, cowork-config 1978029737, scheduled-task session limiter 1648655587 {perTask:1,global:3}, sparkplug 2340532315 all ON; coworkKappa 123929380 and cli_plugin 2307090146 OFF. CORRECTED (v2.22.1): gate 1648655587 is NOT a Task-tool sub-agent dispatch cap (its original label here) — it caps concurrently-active Cowork scheduled/cron-task sessions (class L9t, Ch26/L109's scheduled-tasks feature), perTask:1/global:3 sessions, and has zero effect on in-conversation Task fan-out, which the Desktop caps nowhere. Read gate state yourself by decoding ~/Library/Application Support/Claude/fcache (8-byte CLF header + gzip). Control-protocol subtypes: Part C (get_session_cost, get_binary_version, generate_session_title, ultrareview_launch, side_question + system messages + Bv1/Uv1 sets). See L109 (scheduled tasks), L107 (spawn/protocol contract), L89 (host-loop/split execution)."
-    },
-    {
-      "pattern": [
-        "cowork file paths break between bash and read",
-        "sub-agent read edit different filesystem",
-        "bash writes file read tool can't find it cowork",
-        "/sessions/ path denied host file tool",
-        "VM path on host use the bash tool",
-        "skill file io broken cowork host-loop",
-        "CLAUDE_PLUGIN_ROOT wrong path cowork",
-        "plugin reference read fails cowork",
-        "script path vs reference path cowork"
-      ],
-      "lessons": [
-        107,
-        89,
-        109
-      ],
-      "hint": "Host-loop Cowork is NOT two filesystems. bash (mcp__workspace__bash) runs in the VM and sees the outputs dir at /mnt/outputs; Read/Write/Edit run host-side and see the SAME files under the session/host path. The host prompt says so verbatim ('the same scratch space the Read/Write/Edit tools use ... use bare filenames with both'). Failure = passing a VM-absolute /sessions/<id>/mnt/... path from bash to a host file tool, which the PreToolUse path-gate (IeA=[Read,Write,Edit,Glob,Grep]) DENIES ('VM path on host'). Fix: relative/bare filenames, not routing through bash. See Ch24/L107 path-gate + Ch26/L109. ${CLAUDE_PLUGIN_ROOT} resolves HOST-SIDE (claude-hostloop-plugins/<hash>): keep it literal for host-side Read of references (accepted); but for bash-run scripts use the in-VM mount /sessions/<id>/mnt/.local-plugins/… (the host path is useless in the guest); outputs = relative filenames. One token can't be right for both host file tools and in-VM bash."
-    },
-    {
-      "pattern": [
-        "can't resume completed subagent",
-        "task tool one-shot resume",
-        "continue a finished background agent",
-        "sendmessage resume stopped agent",
-        "resumedAgentId",
-        "agent was stopped by the user and won't be resumed",
-        "no transcript found for agent id",
-        "cowork subagent can't be continued",
-        "run_in_background missing from task schema",
-        "background agents disabled cowork"
-      ],
-      "lessons": [
-        115,
-        107,
-        109,
-        91
-      ],
-      "hint": "The Task tool has no resume parameter anywhere -- each call spawns a fresh agent. In the standalone CLI (v2.1.198) a completed/stopped background agent IS resumable: SendMessage with the agentId (format a...-...) from the spawn result as `to` -- the agent-stopped branch calls dfe/resumeAgentBackground, reloading the disk transcript and continuing with your prompt (result carries resumedAgentId). Refusals: agents stopped BY THE USER ('treat its work as cancelled'), or no transcript on disk/memory. In Cowork, resume is unreachable by design: the Desktop spawn's explicit tools: list omits SendMessage, sets CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1 (run_in_background stripped from the Task schema), and a Desktop PreToolUse Task hook blocks run_in_background ('Background agents disabled') -- redo/repair dispatch with a fresh agent is the only continuation there. Alternatives in the CLI: subagent_type 'fork' (inherits full conversation) and Workflow resumeFromRunId (cached agent replay). See L115."
-    },
-    {
-      "pattern": [
-        "skill can't detect cowork",
-        "CLAUDE_CODE_IS_COWORK empty in shell",
-        "env var missing in cowork vm",
-        "detect if running in claude code",
-        "CLAUDECODE not set",
-        "how to tell cli from cowork",
-        "inline shell command not running in cowork skill",
-        "dynamic context not executing cowork",
-        "sessionstart export not visible to script",
-        "runtime detection skill"
-      ],
-      "lessons": [
-        116,
-        107,
-        89,
-        108
-      ],
-      "hint": "Host-loop Cowork splits a skill across a host-side agent process (which has CLAUDE_CODE_IS_COWORK=1) and a sealed-env VM shell (mcp__workspace__bash) which has NO CLAUDE_CODE_* markers -- so a bare env check false-negatives exactly in Cowork. Detect with ordered checks: $CLAUDE_CODE_IS_COWORK set -> cowork (host-side/VM-loop); cwd under /sessions/<id> -> cowork VM shell; CLAUDECODE=1 -> Claude Code CLI (refine via CLAUDE_CODE_ENTRYPOINT); else other. Content-side, branch on Bash vs mcp__workspace__bash in the tool list. Note inline !`cmd` skill-shell execution is force-disabled in Cowork (q5n) and hook env-exports don't reach the VM. See L116."
-    },
-    {
-      "pattern": [
-        "why can't I delete a file in cowork outputs",
-        "rm fails in outputs directory cowork",
-        "probe file left over in outputs folder",
-        "outputs mount seems read only after write",
-        "what mounts exist in a cowork vm session",
-        "what does /sessions/<slug> look like",
-        "cowork session slug format",
-        "is home directory shared in cowork vm",
-        "is /tmp shared in cowork vm",
-        "coworkd process cowork vm",
-        "per session unix user cowork"
-      ],
-      "lessons": [
-        117,
-        109,
-        107,
-        89
-      ],
-      "hint": "Only a fixed set of paths are real, independently mounted/unmounted systemd units per session (sessions-<slug>-mnt-<name>.mount): outputs, uploads, .claude, .claude/skills, .claude/projects, and one per user-connected folder. Home and /tmp have NO mount unit at all -- they are plain, non-shared paths inside the guest's own root filesystem, which is why they're never host-visible and vanish at session end (not a permission restriction, a different kind of storage). A file written under outputs/ IS host-visible but subject to fileDeleteApprovedMounts (mounts default rw, not rwd -- delete requires an approved allow_cowork_file_delete request), which is why `rm` from the VM shell can silently fail to remove it there while still succeeding against an unrelated local/home copy. Session slugs are real Docker-style adjective-adjective-noun triples (e.g. zealous-vigilant-einstein), not UUIDs. The in-guest daemon coworkd provisions a dedicated Unix user (uid/gid) per session slug and spawns work as that user. See L117 (full mount inventory + methodology), L109 (fileDeleteApprovedMounts), L107 (path pattern)."
-    },
-    {
-      "pattern": [
-        "can I reference a host path from a cowork skill",
-        "how does .host-home work in cowork",
-        "why isn't .host-home mounted",
-        "no mnt-.host-home.mount unit",
-        "does cowork share the home directory with the vm"
-      ],
-      "lessons": [
-        108,
-        117
-      ],
-      "hint": "No -- `.host-home` under `/sessions/<id>/mnt/` is not a real bind mount (Ch31/L117's mount-unit inventory finds no `mnt-.host-home.mount`). It's a synthetic path-translation index, dark-gated by GrowthBook gate `2614807392` (Ch25/L108, off by default): when on, the system prompt explains that a path under `.host-home/<sub>` corresponds to a real absolute host path, letting the agent *reference* host paths in tool calls without the guest's home directory ever being shared."
-    },
-    {
-      "pattern": [
-        "can't tell which skill ran a tool",
-        "tool to skill attribution",
-        "skill scope not in stream",
-        "which skill called this tool",
-        "attribute tool call to skill"
-      ],
-      "lessons": [
-        118,
-        116,
-        107
-      ],
-      "hint": "No exact tool->skill attribution exists in the stream-json output. The agent tracks activeSkill/spawnedBySkill internally and sends it in the attribution bundle on the API request only. Local readers can at best reproduce a sticky 'active-skill window' for inline skills; fork skills carry an exact parent_tool_use_id (= the Skill call id)."
-    },
-    {
-      "pattern": [
-        "fork skill tools missing from toolCounts",
-        "context:fork tools not counted",
-        "skill_progress tool calls dropped",
-        "fork skill inner bash not counted"
-      ],
-      "lessons": [
-        118,
-        87
-      ],
-      "hint": "context:fork skill inner tool calls carry parent_tool_use_id = the outer Skill id but are NOT registered like Agent/Task dispatch children, so they're dropped from toolCounts/toolsCalled today (visible only in the raw tool log). Attribute by parentToolUseId to both count and scope them."
-    },
-    {
-      "pattern": [
-        "microcompact_boundary",
-        "micro-compaction not showing",
-        "compaction subtype missing",
-        "microcompaction event"
-      ],
-      "lessons": [
-        118,
-        109
-      ],
-      "hint": "microcompact_boundary is a distinct system subtype from compact_boundary and is return-null'd in at least one render path, so it doesn't always surface as a visible boundary. A compaction signal should key on BOTH subtypes."
-    },
-    {
-      "pattern": [
-        "effort default is medium not recommended",
-        "why does Cowork always emit --effort medium",
-        "extended thinking always 31999",
-        "CLAUDE_CODE_EFFORT_LEVEL not affecting Cowork session",
-        "MAX_THINKING_TOKENS env var ignored"
-      ],
-      "lessons": [
-        120,
-        114,
-        93
-      ],
-      "hint": "Cowork's per-session --effort value is resolved from a local settings-file object (effort/effortByModel), never CLAUDE_CODE_EFFORT_LEVEL or any env var, with a hardcoded \"medium\" fallback (not the per-model \"recommended\" value) when nothing is set. Extended thinking is a strict boolean -- the budget is always exactly 31999 or 0, delivered via --max-thinking-tokens/--thinking disabled flags, never an env var. Setting CLAUDE_CODE_EFFORT_LEVEL or MAX_THINKING_TOKENS as an env var has no effect on a Cowork session's spawn."
-    },
-    {
-      "pattern": [
-        "sub-agent write denied /sessions path",
-        "is a VM path error Cowork",
-        "outside this session's connected folders",
-        "Read denied /sessions/<id>/mnt/outputs",
-        "host-loop file tool VM path denied"
-      ],
-      "lessons": [
-        122
-      ],
-      "hint": "Host-loop file tools (Read/Write/Edit/Glob/Grep/MultiEdit) run host-native and always deny /sessions/... paths -- never translate them -- for both the main thread and sub-agents. The agent's cwd already IS the session outputs directory, so use a cwd-relative path (e.g. artifacts/report.md) or the host-absolute outputs path instead of any /sessions/<id>/mnt/... form."
-    },
-    {
-      "pattern": [
-        "sub-agent ran mcp__workspace__bash unexpectedly",
-        "restricted sub-agent used ToolSearch",
-        "sub-agent has full tool access despite Read Edit Glob Grep frontmatter",
-        "Task dispatch missing subagent_type",
-        "general-purpose fallback tools wildcard"
-      ],
-      "lessons": [
-        121
-      ],
-      "hint": "A Task dispatch that omits subagent_type does not fail closed -- it silently resolves to the built-in general-purpose agent with tools:[\"*\"], the full session tool universe (including mcp__workspace__bash in Cowork host-loop). This fires in real production traffic (113 of 509 dispatches in one audit corpus). Always pin subagent_type: literally in every dispatch that should be scoped down."
-    },
-    {
-      "pattern": [
-        "appendSubagentSystemPrompt not delivered",
-        "sub-agent prompt append not working",
-        "initialize appendSubagentSystemPrompt ignored",
-        "sub-agents missing Cowork environment orientation text",
-        "CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT has no effect"
-      ],
-      "lessons": [
-        123
-      ],
-      "hint": "Consuming an appendSubagentSystemPrompt sent via the initialize control request also requires CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT to be present in the agent process env -- the initialize handler only stores the option, it never self-sets the env var (that only happens on the hidden --append-subagent-system-prompt CLI flag path). An SDK host that sends the option without also setting the env var gets silent inertness, not an error."
-    },
-    {
-      "pattern": [
-        "GrowthBook gate missing from fcache",
-        "grep fcache finds nothing",
-        "fcache gate looks absent but should be on",
-        "strings fcache no gates found",
-        "Desktop fcache format changed"
-      ],
-      "lessons": [
-        124
-      ],
-      "hint": "The Desktop fcache is no longer raw JSON -- it's a container with magic CLF\\x01\\x00 + 3 bytes, then a gzip stream starting at byte 8. Raw grep/strings against the file will falsely report gates as absent. Decode first: tail -c +9 fcache | gunzip, then search the decompressed JSON."
-    },
-    {
-      "pattern": [
-        "iOS simulator tool not available in Cowork",
-        "Android emulator tool missing",
-        "claude_code_ios_simulator not showing up",
-        "simulator disabled organization requires full VM sandbox",
-        "SIMULATOR_VM_POLICY_DISABLED_MESSAGE"
-      ],
-      "lessons": [
-        125
-      ],
-      "hint": "The mobile-simulator tools (claude_code_ios_simulator/claude_code_android_emulator) require sessionType===\"ccd\" -- a Claude Code Desktop coding session, never Cowork (\"cowork\"/\"cowork-remote\"). This is a structural exclusion, not just a gate: no Cowork agent, sandboxed or not, can ever receive these tools. They also require a per-platform gate (default false) and, for CCD sessions under an org requiring the full VM sandbox, are explicitly disabled with SIMULATOR_VM_POLICY_DISABLED_MESSAGE."
-    },
-    {
-      "pattern": [
-        "how does Cowork control a remote device",
-        "remote_devices tool",
-        "computer_request_access",
-        "cowork-remote session type",
-        "pair a device with Cowork"
-      ],
-      "lessons": [
-        126
-      ],
-      "hint": "remote_devices (server \"remote-devices\", session_type \"cowork-remote\") is the Cowork-facing device bridge -- distinct from the local mobile-simulator tools. It exposes computer_resolve_access/computer_request_access/computer_release_lock plus a dynamic computer_* tool set for controlling apps on a real paired device, backed by a device registry endpoint with per-device enclave keys. Its own enablement gating was not fully traced (unlike the simulators' confirmed CCD-only exclusion) -- treat live reachability as unconfirmed."
-    },
-    {
-      "pattern": [
-        "what is grand_prix in Claude Desktop",
-        "browser credential autofill Claude",
-        "grand_prix_credential_request_outcome",
-        "payment card autofill agent",
-        "does Claude fill in my passwords"
-      ],
-      "lessons": [
-        127
-      ],
-      "hint": "grand_prix is a signed, single-partner tool/prompt-injection bridge: one hardcoded, HMAC-verified trusted partner can inject host tools and system-prompt text, and service tab-scoped login/address/payment-card autofill requests (grand_prix_credential_request_outcome carries has_login/has_address/has_card). It is not a general credential API -- a skill or third-party integration cannot register itself as a grand_prix partner."
-    },
-    {
-      "pattern": [
-        "auto mode still asking for permission on connector tool",
-        "tool_approval_default_always_allow not working",
-        "always allow not persisting for MCP tool",
-        "OTLP traces not exporting from Cowork",
-        "CLAUDE_CODE_ENHANCED_TELEMETRY_BETA empty",
-        "otlpTracesEnabled default"
-      ],
-      "lessons": [
-        128
-      ],
-      "hint": "Gate 4200321681 (coworkAutoModeAlwaysAllowOverride) is intentionally the inverse of its name for destructive connector/MCP tools: under auto mode it forces a re-prompt and blocks \"always allow\" from ever persisting for them -- this is deliberate, not a bug. Separately, otlpTracesEnabled has no default (undefined, not false) and is read with a strict ===true check, so OTLP tracing is off unless a 3p-managed config explicitly turns it on -- CLAUDE_CODE_ENHANCED_TELEMETRY_BETA/OTEL_TRACES_EXPORTER are empty strings, not env-var absence, when it is off."
-    }
-  ]
+ "generated": "2026-06-04",
+ "description": "Maps common symptoms/problems to relevant lessons for debugging Claude Code internals",
+ "symptoms": [
+  {
+   "pattern": [
+    "hook not firing",
+    "hook doesn't fire",
+    "hook not working",
+    "hook not triggering",
+    "hooks broken"
+   ],
+   "lessons": [
+    32,
+    26,
+    1
+   ],
+   "hint": "Hook config is snapshot-captured at startup; restart Claude Code after changing settings.json, and verify the hook matcher (event type + pattern) is correct."
+  },
+  {
+   "pattern": [
+    "permission keeps asking",
+    "permission prompt won't go away",
+    "permission loop",
+    "always asking permission",
+    "allow deny ask stuck"
+   ],
+   "lessons": [
+    25,
+    26,
+    6
+   ],
+   "hint": "Check that your permission rules in settings.json use the correct tool name and pattern; rules are evaluated top-down with first-match-wins semantics."
+  },
+  {
+   "pattern": [
+    "context keeps getting compacted",
+    "losing context",
+    "context window full",
+    "context shrinking",
+    "conversation too long"
+   ],
+   "lessons": [
+    28,
+    2,
+    4
+   ],
+   "hint": "Compaction triggers at ~80% of the context window; reduce system prompt size, split work across sessions, or use memory to persist critical facts across compactions."
+  },
+  {
+   "pattern": [
+    "agent won't spawn",
+    "agent fails",
+    "subagent error",
+    "agent not starting",
+    "fork failed"
+   ],
+   "lessons": [
+    12,
+    13,
+    49
+   ],
+   "hint": "Agents inherit the parent's permission config but get a fresh conversation; check that the task description is clear and that resource limits (max concurrent agents) are not exceeded."
+  },
+  {
+   "pattern": [
+    "mcp server not connecting",
+    "mcp timeout",
+    "mcp not working",
+    "mcp tool missing",
+    "mcp server failed"
+   ],
+   "lessons": [
+    10,
+    26,
+    33
+   ],
+   "hint": "MCP servers are started as child processes at boot; check the server command/args in settings.json, verify the binary exists, and look for stderr output in the MCP connection log."
+  },
+  {
+   "pattern": [
+    "skill not showing up",
+    "skill not registered",
+    "skill not found",
+    "skill not loading",
+    "slash command skill missing"
+   ],
+   "lessons": [
+    11,
+    18,
+    26
+   ],
+   "hint": "Skills must have valid frontmatter with a name/description and be placed in a recognized skill directory (~/.claude/skills/ or project .claude/skills/); check the discovery path."
+  },
+  {
+   "pattern": [
+    "settings not taking effect",
+    "config not loading",
+    "configuration ignored",
+    "settings not applying",
+    "config change not working"
+   ],
+   "lessons": [
+    26,
+    1,
+    30
+   ],
+   "hint": "Settings use a cascade: enterprise MDM > organization > project > user; a higher-priority layer may be overriding your change. Restart Claude Code after editing settings.json."
+  },
+  {
+   "pattern": [
+    "memory not saving",
+    "memory not persisting",
+    "memory lost",
+    "memory not working",
+    "memory file empty"
+   ],
+   "lessons": [
+    15,
+    16,
+    4
+   ],
+   "hint": "Auto-memory writes to MEMORY.md files in .claude/ directories; check file permissions and verify memory extraction is enabled in settings (it runs at conversation end)."
+  },
+  {
+   "pattern": [
+    "coordinator not dispatching",
+    "coordinator mode broken",
+    "coordinator stuck",
+    "coordinator not working",
+    "parallel dispatch failed"
+   ],
+   "lessons": [
+    13,
+    12,
+    14
+   ],
+   "hint": "Coordinator mode requires the model to decide to dispatch; ensure your prompt clearly describes parallelizable subtasks and that max worker count is not set to zero."
+  },
+  {
+   "pattern": [
+    "swarm not working",
+    "team not working",
+    "teammates not responding",
+    "mailbox empty",
+    "tmux swarm broken"
+   ],
+   "lessons": [
+    14,
+    13,
+    12
+   ],
+   "hint": "Teams/swarm uses tmux panes and a file-based mailbox for inter-agent communication; verify tmux is installed, the session exists, and agents are polling their mailbox paths."
+  },
+  {
+   "pattern": [
+    "bash command blocked",
+    "bash permission denied",
+    "command not allowed",
+    "shell blocked",
+    "bash security error"
+   ],
+   "lessons": [
+    7,
+    25,
+    47
+   ],
+   "hint": "Bash commands pass through security validators that block destructive patterns (rm -rf /, etc.); check permission rules and sandbox settings for allowed command patterns."
+  },
+  {
+   "pattern": [
+    "file write blocked",
+    "can't edit file",
+    "file permission denied",
+    "write not allowed",
+    "edit rejected"
+   ],
+   "lessons": [
+    8,
+    25,
+    47
+   ],
+   "hint": "File writes require read-before-write verification and respect permission rules; ensure the path is within the allowed workspace and that no deny rule matches the file pattern."
+  },
+  {
+   "pattern": [
+    "session lost",
+    "can't resume session",
+    "session not found",
+    "resume failed",
+    "conversation disappeared"
+   ],
+   "lessons": [
+    27,
+    3,
+    33
+   ],
+   "hint": "Sessions are stored as JSONL transcripts in ~/.claude/sessions/; use `claude --resume` with the session ID. Cloud sync may need to complete before a session appears on another machine."
+  },
+  {
+   "pattern": [
+    "system prompt too large",
+    "prompt cache miss",
+    "cache not hitting",
+    "system prompt overflow",
+    "prompt too long"
+   ],
+   "lessons": [
+    4,
+    28,
+    2
+   ],
+   "hint": "The system prompt is assembled from CLAUDE.md, memory, tool definitions, and dynamic sections; large CLAUDE.md files or many MCP tools can push it past cache-friendly boundaries."
+  },
+  {
+   "pattern": [
+    "analytics not sending",
+    "telemetry disabled",
+    "telemetry not working",
+    "datadog not receiving",
+    "metrics missing"
+   ],
+   "lessons": [
+    29,
+    44,
+    26
+   ],
+   "hint": "Telemetry respects the settings.json telemetry flag and environment variables; check that telemetry is not disabled by an enterprise MDM policy or CLAUDE_TELEMETRY_DISABLED env var."
+  },
+  {
+   "pattern": [
+    "plugin not loading",
+    "plugin missing",
+    "plugin failed",
+    "marketplace plugin broken",
+    "plugin install error"
+   ],
+   "lessons": [
+    31,
+    26,
+    33
+   ],
+   "hint": "Plugins are resolved from the marketplace manifest with dependency checks and version pinning; verify the plugin name, check the versioned cache, and look for resolution conflicts."
+  },
+  {
+   "pattern": [
+    "oauth flow failing",
+    "auth broken",
+    "authentication error",
+    "token expired",
+    "login failed",
+    "oauth redirect broken"
+   ],
+   "lessons": [
+    35,
+    10,
+    34
+   ],
+   "hint": "OAuth uses PKCE flow with tokens stored in the system keychain; check that the callback port is not in use, the keychain entry is not corrupted, and the token has not expired."
+  },
+  {
+   "pattern": [
+    "git integration issues",
+    "git not working",
+    "git watcher broken",
+    "branch not detected",
+    "commit tracking failed"
+   ],
+   "lessons": [
+    36,
+    7,
+    26
+   ],
+   "hint": "Git integration is filesystem-first with a background file watcher; ensure you are in a git repo, the watcher process is running, and .gitignore is not hiding relevant changes."
+  },
+  {
+   "pattern": [
+    "compaction removing important context",
+    "lost information after compaction",
+    "compaction too aggressive",
+    "context summary missing details"
+   ],
+   "lessons": [
+    28,
+    15,
+    2,
+    69
+   ],
+   "hint": "Compaction uses summarization to preserve key facts; context collapse (L69) is reversible via marble-origami persistence. Pin critical information in MEMORY.md or CLAUDE.md so it survives compaction, and keep individual messages focused."
+  },
+  {
+   "pattern": [
+    "commands not appearing",
+    "slash commands missing",
+    "slash command not found",
+    "command not registered",
+    "custom command gone"
+   ],
+   "lessons": [
+    18,
+    11,
+    26
+   ],
+   "hint": "Commands are registered at startup from built-in definitions, skills, and .claude/commands/ directories; verify the command file exists and has the correct format."
+  },
+  {
+   "pattern": [
+    "tool not found",
+    "tool missing",
+    "tool not available",
+    "tool disappeared",
+    "tool not in list"
+   ],
+   "lessons": [
+    6,
+    10,
+    31
+   ],
+   "hint": "Tools come from built-in definitions, MCP servers, and plugins; check that the tool's source is configured and the MCP server providing it connected successfully at startup."
+  },
+  {
+   "pattern": [
+    "slow startup",
+    "boot takes too long",
+    "claude code slow to start",
+    "long cold start",
+    "initialization hang"
+   ],
+   "lessons": [
+    1,
+    10,
+    5
+   ],
+   "hint": "Boot time is dominated by MCP server startup and settings resolution; reduce the number of MCP servers or defer non-essential ones to cut cold-start latency."
+  },
+  {
+   "pattern": [
+    "api error",
+    "rate limited",
+    "429 error",
+    "api retry failing",
+    "streaming broken"
+   ],
+   "lessons": [
+    2,
+    33,
+    44,
+    70
+   ],
+   "hint": "The query engine has built-in retry with exponential backoff for transient API errors; persistent 429s mean you are hitting rate limits -- reduce parallel agents or wait. In v2.1.104+, partial streaming content is preserved on timeout instead of being discarded."
+  },
+  {
+   "pattern": [
+    "streaming timeout",
+    "stream idle",
+    "partial response lost",
+    "streaming fallback",
+    "non-streaming fallback",
+    "stream stall"
+   ],
+   "lessons": [
+    70,
+    2,
+    33
+   ],
+   "hint": "v2.1.104 added partial yield protection: if content blocks were already streamed to you, a timeout no longer discards them. Set CLAUDE_CODE_DISABLE_NONSTREAMING_FALLBACK to prevent any fallback. The default idle timeout is 90s (override via CLAUDE_STREAM_IDLE_TIMEOUT_MS).",
+   "added": "2026-04-12"
+  },
+  {
+   "pattern": [
+    "render broken",
+    "ui glitch",
+    "terminal display wrong",
+    "screen corruption",
+    "ink rendering error"
+   ],
+   "lessons": [
+    17,
+    50,
+    24
+   ],
+   "hint": "The Ink renderer uses Yoga for layout in the terminal; resize events, non-standard terminal emulators, or missing Unicode support can cause display issues."
+  },
+  {
+   "pattern": [
+    "notification not showing",
+    "toast missing",
+    "no desktop notification",
+    "alert not appearing"
+   ],
+   "lessons": [
+    20,
+    26,
+    17
+   ],
+   "hint": "Notifications use terminal-notifier or OSC escape sequences depending on platform; check that your terminal supports the notification method and it is not disabled in settings."
+  },
+  {
+   "pattern": [
+    "setup-bedrock missing",
+    "bedrock command not found",
+    "reconfigure bedrock",
+    "bedrock region",
+    "bedrock model pin"
+   ],
+   "lessons": [
+    57
+   ],
+   "hint": "/setup-bedrock is only visible when CLAUDE_CODE_USE_BEDROCK is set; it launches the interactive Bedrock configuration wizard."
+  },
+  {
+   "pattern": [
+    "stop hook prompt",
+    "session stop condition",
+    "stop hook session only",
+    "quick stop hook"
+   ],
+   "lessons": [
+    57,
+    10
+   ],
+   "hint": "/stop-hook is currently disabled (isEnabled: false in v2.1.92); use the full hooks system via settings.json or /hooks to configure Stop hooks."
+  },
+  {
+   "pattern": [
+    "hook script find claude binary",
+    "claude path in hook",
+    "CLAUDE_CODE_EXECPATH",
+    "hook invoke claude"
+   ],
+   "lessons": [
+    58,
+    10
+   ],
+   "hint": "CLAUDE_CODE_EXECPATH is automatically injected into every spawned shell/hook environment — use $CLAUDE_CODE_EXECPATH in hook scripts to invoke the claude binary without hard-coding a path."
+  },
+  {
+   "pattern": [
+    "remote control session name",
+    "session prefix remote",
+    "hostname session name",
+    "CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX"
+   ],
+   "lessons": [
+    58,
+    41
+   ],
+   "hint": "Set CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX (or --session-name-prefix) to customize auto-generated remote control session names; defaults to the machine hostname, sanitized to lowercase alphanumeric."
+  },
+  {
+   "pattern": [
+    "autofix-pr missing",
+    "autofix-pr command not found",
+    "remote sessions disabled",
+    "allow_remote_sessions"
+   ],
+   "lessons": [
+    60,
+    34
+   ],
+   "hint": "/autofix-pr is gated behind remote sessions. In v2.1.94 it only enables when the Claude.ai subscriber gate passes and the allow_remote_sessions policy is enabled."
+  },
+  {
+   "pattern": [
+    "team-onboarding missing",
+    "ONBOARDING.md guide",
+    "teammate onboarding command",
+    "CLAUDE_CODE_TEAM_ONBOARDING"
+   ],
+   "lessons": [
+    60,
+    61
+   ],
+   "hint": "/team-onboarding is a built-in prompt command gated by CLAUDE_CODE_TEAM_ONBOARDING or a feature flag. It generates onboarding content from your usage data and writes ONBOARDING.md."
+  },
+  {
+   "pattern": [
+    "mantle provider",
+    "CLAUDE_CODE_USE_MANTLE",
+    "ANTHROPIC_BEDROCK_MANTLE_BASE_URL",
+    "CLAUDE_CODE_SKIP_MANTLE_AUTH"
+   ],
+   "lessons": [
+    61,
+    46
+   ],
+   "hint": "v2.1.94 adds a Mantle provider path. Set CLAUDE_CODE_USE_MANTLE to select it, ANTHROPIC_BEDROCK_MANTLE_BASE_URL to override the default AWS-region-derived endpoint, and CLAUDE_CODE_SKIP_MANTLE_AUTH only for debugging."
+  },
+  {
+   "pattern": [
+    "TLS error",
+    "certificate error",
+    "SSL error",
+    "CERT_STORE",
+    "ca certificate",
+    "self-signed certificate",
+    "corporate proxy certificate",
+    "UNABLE_TO_VERIFY_LEAF_SIGNATURE"
+   ],
+   "lessons": [
+    66,
+    37
+   ],
+   "hint": "Set CLAUDE_CODE_CERT_STORE to 'system' (OS certs), 'bundled' (Node.js built-in), or 'bundled,system' (both, the default). For corporate proxies with custom CAs, use 'system' or set NODE_EXTRA_CA_CERTS to your CA bundle path. Changes take effect on settings reload without restart."
+  },
+  {
+   "pattern": [
+    "loop not scheduling",
+    "loop stopped",
+    "loop aged out",
+    "dynamic loop",
+    "ScheduleWakeup",
+    "loop expired",
+    "loop max age"
+   ],
+   "lessons": [
+    67,
+    38
+   ],
+   "hint": "Dynamic loops (tengu_kairos_loop_dynamic flag) auto-stop after recurringMaxAgeMs (default 7 days). Delays are clamped to [60, 3600] seconds. Check if the loop aged out via tengu_loop_dynamic_wakeup_aged_out telemetry."
+  },
+  {
+   "pattern": [
+    "cloud schedule",
+    "cloud loop",
+    "loop cloud first",
+    "/schedule vs /loop",
+    "remote loop",
+    "durable loop"
+   ],
+   "lessons": [
+    67,
+    38
+   ],
+   "hint": "When tengu_cinder_almanac is enabled, /loop offers cloud scheduling for intervals >= 60min or daily phrasing. Cloud schedules persist across sessions; local loops stop when the session closes."
+  },
+  {
+   "pattern": [
+    "oauth refresh",
+    "SDK_HAS_OAUTH_REFRESH",
+    "401 token expired SDK",
+    "SDK token refresh"
+   ],
+   "lessons": [
+    68,
+    35
+   ],
+   "hint": "Set CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH when your SDK parent process provides a token refresh callback. On 401, Claude Code calls back to get a fresh token instead of failing."
+  },
+  {
+   "pattern": [
+    "dream not recognized",
+    "dream not available",
+    "dream command missing",
+    "learn not recognized"
+   ],
+   "hint": "/dream is gated by server-side GrowthBook flag tengu_kairos_dream (default: false). The server does not send this flag, so it falls through to the default. Workaround: use scripts/patch-dream.sh to inject the flag into the local cache with a watcher that survives the SDK cache writeback. Binary patching is not viable (code-signed Bun SEA, SIGKILL on macOS).",
+   "lessons": [
+    62,
+    68
+   ],
+   "added": "2026-04-11"
+  },
+  {
+   "pattern": [
+    "feature flag not working",
+    "feature gate",
+    "tengu not enabled",
+    "growthbook override"
+   ],
+   "hint": "All local override mechanisms (env vars, config overrides) are stubbed/dead-code in the production binary. Flags are evaluated server-side via remoteEval. Binary is code-signed (SIGKILL on modification). For flags absent from server response, cache injection with a filesystem watcher can work. See L68 GrowthBook internals and scripts/patch-dream.sh for the technique.",
+   "lessons": [
+    68
+   ],
+   "added": "2026-04-11"
+  },
+  {
+   "pattern": [
+    "recap not working",
+    "/recap not available",
+    "recap command missing",
+    "session recap disabled"
+   ],
+   "lessons": [
+    72,
+    65
+   ],
+   "hint": "/recap is gated behind tengu_sedge_lantern feature flag (default: false). Check with CLAUDE_CODE_ENABLE_AWAY_SUMMARY=true to force-enable. Also check awaySummaryEnabled in /config settings."
+  },
+  {
+   "pattern": [
+    "stream timeout",
+    "byte watchdog",
+    "no bytes received",
+    "stream idle byte",
+    "transport timeout"
+   ],
+   "lessons": [
+    74,
+    70
+   ],
+   "hint": "Byte-level watchdog (CLAUDE_ENABLE_BYTE_WATCHDOG) detects transport-layer stalls. Event-level watchdog detects SSE parsing stalls. Set CLAUDE_ENABLE_BYTE_WATCHDOG=false to disable byte watchdog. Check tengu_stream_watchdog_default_on flag (default: true)."
+  },
+  {
+   "pattern": [
+    "multi repo",
+    "multiple repositories",
+    "repo checkouts not working",
+    "base refs"
+   ],
+   "lessons": [
+    73
+   ],
+   "hint": "Multi-repo support uses CLAUDE_CODE_REPO_CHECKOUTS (JSON map of label→path) and CLAUDE_CODE_BASE_REFS (JSON map of label→ref). Both must be valid JSON with string→string entries."
+  },
+  {
+   "pattern": [
+    "think-back missing",
+    "thinkback not found",
+    "/think-back removed"
+   ],
+   "lessons": [
+    76
+   ],
+   "hint": "/think-back and /thinkback-play were completely removed in v2.1.107. They are no longer available."
+  },
+  {
+   "pattern": [
+    "repl not working",
+    "repl mode disabled",
+    "CLAUDE_CODE_REPL not working",
+    "repl tools missing",
+    "repl import blocked"
+   ],
+   "lessons": [
+    75
+   ],
+   "hint": "REPL mode is gated behind tengu_slate_harbor (default: false). Set CLAUDE_CODE_REPL=true to force-enable. Only works on cli/remote entrypoints. import/require are blocked — code runs in sealed VM. Tools are restricted to Read/Write/Edit/Bash/NotebookEdit via OkH set."
+  },
+  {
+   "pattern": [
+    "repl state lost",
+    "repl variables gone",
+    "repl reset",
+    "repl cleared"
+   ],
+   "lessons": [
+    75,
+    32
+   ],
+   "hint": "REPL VM state is compaction-aware — context compaction clears the VM state and warns. Variables persist within a session but not across compaction events. Check replay-log for state hydration."
+  },
+  {
+   "pattern": [
+    "rate limit warning",
+    "rate limit suggestion",
+    "upgrade paths",
+    "rate limit upgrade",
+    "try /model sonnet"
+   ],
+   "lessons": [
+    76
+   ],
+   "hint": "Rate limit upgrade paths use a 3-layer system: server header hints (anthropic-ratelimit-unified-upgrade-paths), client lever hints (oV9 — gated by tengu_garnet_plover, pro+seven_day only), and interactive options menu. Early warnings fire at percentage-based thresholds before actual rejection."
+  },
+  {
+   "pattern": [
+    "multi repo not working",
+    "branch watching not working",
+    "repo checkouts ignored",
+    "CCR v2 checkout"
+   ],
+   "lessons": [
+    73,
+    37
+   ],
+   "hint": "Multi-repo checkout is CCR v2 infrastructure only — requires CLAUDE_CODE_USE_CCR_V2 to be enabled. Env vars are set by the external CCR orchestrator, not for local CLI use. Branch watching uses fs.watchFile on .git/HEAD at 1s intervals."
+  },
+  {
+   "pattern": [
+    "managed agents docs",
+    "claude-api skill",
+    "API skill disabled",
+    "managed agents not available"
+   ],
+   "lessons": [
+    76,
+    42
+   ],
+   "hint": "33 managed-agents docs (~324KB) are embedded in the binary as part of the claude-api built-in skill. Disabled by CLAUDE_CODE_DISABLE_CLAUDE_API_SKILL env var. Language detection via ZU5() selects docs by project language; Go/Java/Ruby/PHP/C# have no managed-agents specific files."
+  },
+  {
+   "pattern": [
+    "autopilot not found",
+    "bugfix not found",
+    "dashboard command missing",
+    "/investigate unknown",
+    "remote workflow commands hidden",
+    "remote workflows don't work"
+   ],
+   "lessons": [
+    77,
+    73
+   ],
+   "hint": "Remote Workflow Commands (/autopilot, /bugfix, /dashboard, /docs, /investigate) require CCR v2 ($X4() gate). They're hidden entirely when CCR v2 is not enabled. Requires CLAUDE_CODE_USE_CCR_V2 and server-side provisioning. All five spawn a remote session via POST /v1/sessions with beta header ccr-byoc-2025-07-29."
+  },
+  {
+   "pattern": [
+    "tool call got rejected",
+    "model second-guessed itself",
+    "server_tool_use content block",
+    "advisor_tool_result",
+    "model refused to run tool",
+    "tool intercepted"
+   ],
+   "lessons": [
+    78
+   ],
+   "hint": "The Advisor Tool (server-side reviewer model) may intercept tool calls. Gates: first-party API only, opus-4-6/opus-4-7/sonnet-4-6 only, tengu_sage_compass2 flag on (or CLAUDE_CODE_ENABLE_EXPERIMENTAL_ADVISOR_TOOL=1). Hard-disable with CLAUDE_CODE_DISABLE_ADVISOR_TOOL=1."
+  },
+  {
+   "pattern": [
+    "push notification not working",
+    "phone not getting notifications",
+    "PushNotification tool error",
+    "KAIROS push failed",
+    "bridge inactive",
+    "user_present suppressed"
+   ],
+   "lessons": [
+    79,
+    43,
+    34
+   ],
+   "hint": "PushNotification requires: user push setting enabled (not config_off), user not actively at terminal (not user_present), and Remote Control bridge running locally (not bridge_inactive). Check disabledReason in tool output. Only 'proactive' status is accepted. KAIROS is the server-side push service; bridge is the local relay."
+  },
+  {
+   "pattern": [
+    "context compacted without asking",
+    "context shrinking mysteriously",
+    "context_hint_rejection",
+    "422 context too large",
+    "context hint api",
+    "server compacted my context"
+   ],
+   "lessons": [
+    80,
+    28
+   ],
+   "hint": "Context Hint API lets the server signal compaction via HTTP 422/424/409/529 or SSE invalid_request with type=context_hint_rejection. Triggers keep-recent micro-compaction (sT9, keepRecent=5). Only activates on first-party API on repl_main_thread* when tengu_hazel_osprey is on. No env var disables it — feature-flag controlled."
+  },
+  {
+   "pattern": [
+    "fullscreen not working",
+    "/tui broken",
+    "alt-screen blank",
+    "tmux fullscreen issue",
+    "/focus timer blank",
+    "terminal blank after /tui"
+   ],
+   "lessons": [
+    81,
+    23
+   ],
+   "hint": "Fullscreen precedence (first match wins): CLAUDE_CODE_NO_FLICKER=1 hard disables, CLAUDE_CODE_FULLSCREEN=1 hard enables, tmux -CC auto-disables, then userSettings.tui, then tengu_pewter_brook. /tui respawns the process via child_process.spawn. If terminal goes blank, your terminal may not support alt-screen — set CLAUDE_CODE_NO_FLICKER=1."
+  },
+  {
+   "pattern": [
+    "proxy auth failing",
+    "proxy credentials rotating",
+    "proxy helper not running",
+    "Proxy-Authorization header missing",
+    "CLAUDE_CODE_PROXY_AUTHENTICATE"
+   ],
+   "lessons": [
+    82,
+    37
+   ],
+   "hint": "Proxy Auth Helper requires strict CLAUDE_CODE_PROXY_AUTHENTICATE=\"1\" (literal string, not \"true\"). Shell command set in settings under proxyAuthHelper. Project/local settings need workspace trust. 30s exec timeout; falls back to stale cache on exec failure rather than failing the request."
+  },
+  {
+   "pattern": [
+    "system prompt changed",
+    "prompt unexpectedly different",
+    "server overrode my prompt",
+    "system prompt not what I configured",
+    "CLAUDE_CODE_SYSTEM_PROMPT_GB_FEATURE"
+   ],
+   "lessons": [
+    83,
+    4,
+    71
+   ],
+   "hint": "In CCR/remote contexts, the server can replace the system prompt entirely via a GrowthBook feature. Requires both CLAUDE_CODE_REMOTE truthy AND CLAUDE_CODE_SYSTEM_PROMPT_GB_FEATURE set to a valid GB feature name returning a non-empty string. Falls back to default on any failure. Distinct from L71's quiet_salted_ember section rename."
+  },
+  {
+   "pattern": [
+    "slow first byte",
+    "no stream chunk",
+    "request hanging",
+    "tengu_api_slow_first_byte",
+    "CLAUDE_SLOW_FIRST_BYTE_MS"
+   ],
+   "lessons": [
+    84,
+    74
+   ],
+   "hint": "Slow first-byte watchdog logs 'warn' after CLAUDE_SLOW_FIRST_BYTE_MS (default 30000ms) with no stream chunk. Purely observational — does NOT abort the request. Complements L74's byte-level watchdog which does abort."
+  },
+  {
+   "pattern": [
+    "unknown command did you mean",
+    "typo in slash command",
+    "claude command not found suggestion"
+   ],
+   "lessons": [
+    84,
+    18
+   ],
+   "hint": "Unknown slash commands now trigger fuzzy-match suggestion via _a5() → BCH(). Writes 'unknown command \"X\"' + '└ Did you mean claude Y?' to stderr, emits tengu_unknown_command_suggestion, exits 1."
+  },
+  {
+   "pattern": [
+    "canary channel",
+    "native installer wrong version",
+    "got a newer version than expected",
+    "tengu_canary"
+   ],
+   "lessons": [
+    84,
+    31
+   ],
+   "hint": "Canary channel (rp1()) reads GrowthBook feature tengu_canary expecting {external: semver}. Native-installer target-picker op1() overrides target if canary > target AND !exceedsMaxVersion. Server-controlled rolling canary — not user-configurable."
+  },
+  {
+   "pattern": [
+    "server-driven behavior",
+    "different behavior same binary",
+    "why do my colleague and I get different claude behavior",
+    "feature flag behavior difference",
+    "tengu flag"
+   ],
+   "lessons": [
+    78,
+    80,
+    83,
+    84,
+    29
+   ],
+   "hint": "v2.1.110-v2.1.111 moved significant behavior to the server side. Advisor Tool (tengu_sage_compass2), Context Hint API (tengu_hazel_osprey), System Prompt GB Override (CLAUDE_CODE_REMOTE + user-supplied GB feature), Canary channel (tengu_canary), Fullscreen rollout (tengu_pewter_brook) all let Anthropic alter behavior per-user/per-org without a binary release. Two users on the same binary can get materially different experiences."
+  },
+  {
+   "pattern": [
+    "autopilot gone",
+    "bugfix command removed",
+    "where is /dashboard",
+    "/docs not working",
+    "investigate command missing",
+    "remote workflow commands removed"
+   ],
+   "lessons": [
+    85,
+    77,
+    60
+   ],
+   "hint": "All five Remote Workflow Commands (/autopilot, /bugfix, /dashboard, /docs, /investigate) were removed outright in v2.1.113 — no feature flag, no deprecation shim, code deleted. See L85. The back-end CCR v2 infrastructure (L73) and /autofix-pr (L60) survive. L77 remains as historical documentation for what v2.1.110 shipped."
+  },
+  {
+   "pattern": [
+    "less-permission-prompts not found",
+    "unknown command less-permission",
+    "fewer-permission-prompts",
+    "permission prompt command"
+   ],
+   "lessons": [
+    85,
+    84
+   ],
+   "hint": "`/less-permission-prompts` was renamed to `/fewer-permission-prompts` in v2.1.113. The methodology prompt body is byte-identical; only the command name changed. The unknown-command did-you-mean helper (_a5()) should suggest the new name. See L85."
+  },
+  {
+   "pattern": [
+    "async agent stall",
+    "agent watchdog",
+    "agent stall timeout",
+    "tengu_async_agent_stall_timeout",
+    "agent aborted no progress"
+   ],
+   "lessons": [
+    85,
+    6
+   ],
+   "hint": "v2.1.113 added CLAUDE_ASYNC_AGENT_STALL_TIMEOUT_MS (default 600000ms / 10min). When no progress message arrives within the timeout, the async agent signal is aborted and tengu_async_agent_stall_timeout is emitted with agent_type/stall_ms/last_message_type/message_count. See L85."
+  },
+  {
+   "pattern": [
+    "backspace not working windows",
+    "ctrl backspace",
+    "CLAUDE_CODE_BS_AS_CTRL_BACKSPACE",
+    "windows terminal delete word"
+   ],
+   "lessons": [
+    85,
+    26
+   ],
+   "hint": "v2.1.113 added CLAUDE_CODE_BS_AS_CTRL_BACKSPACE. Auto-enabled on win32 except mintty/cygwin. Set truthy to force-on, explicit false to force-off. Fixes the Windows quirk where backspace arrives as BS (\\x08) instead of Ctrl+Backspace (\\x7F). See L85."
+  },
+  {
+   "pattern": [
+    "fullscreen sticky bar",
+    "DECSTBM",
+    "CLAUDE_CODE_DECSTBM",
+    "tui scrolling region",
+    "tengu_marlin_porch"
+   ],
+   "lessons": [
+    85,
+    81
+   ],
+   "hint": "v2.1.113 added CLAUDE_CODE_DECSTBM opt-in for ANSI Set Top/Bottom Margin escape sequences in the fullscreen TUI, plus tengu_marlin_porch as the GrowthBook rollout gate. Requires TTY + capability check + not-CI. Env var short-circuits the flag. See L85 for resolver details, L81 for fullscreen TUI context."
+  },
+  {
+   "pattern": [
+    "CLAUDE_BG_BACKEND",
+    "daemon background",
+    "background stdout EPIPE",
+    "background writer crashed"
+   ],
+   "lessons": [
+    85
+   ],
+   "hint": "v2.1.113 added CLAUDE_BG_BACKEND. When exactly \"daemon\", the background stdout writer latches EIO/EPIPE into a flag (L_9) instead of throwing. Used to stabilize writes when the parent TTY has detached under a daemon supervisor. See L85."
+  },
+  {
+   "pattern": [
+    "show message timestamps",
+    "timestamps in chat",
+    "timestamp each message",
+    "tengu_silk_hinge"
+   ],
+   "lessons": [
+    85
+   ],
+   "hint": "v2.1.113 adds a 'Show message timestamps' setting (showMessageTimestamps, default false). Toggle is only visible in /config when GrowthBook flag tengu_silk_hinge is enabled — a server-gated UX rollout. Changes fire tengu_show_message_timestamps_setting_changed telemetry. See L85."
+  },
+  {
+   "pattern": [
+    "claude survived sighup",
+    "daemon mode",
+    "claude stays running after terminal close",
+    "autoAddRemoteControlDaemonWorker",
+    "auto add remote control daemon"
+   ],
+   "lessons": [
+    85,
+    37
+   ],
+   "hint": "v2.1.113 adds daemon-mode support via CLAUDE_BG_BACKEND=daemon: SIGHUP is ignored (logged SIGHUP_ignored_bg), stdout EIO/EPIPE is latched instead of thrown, and the 30s TTY-orphan detector is bypassed. Paired with a new user setting autoAddRemoteControlDaemonWorker (consumer is not present in the binary — likely server-side or forthcoming). Together these sketch a 'Claude Code as daemon worker under Remote Control' architecture. See L85 for semantics, L37 for Bridge/Remote context."
+  },
+  {
+   "pattern": [
+    "mcp tool hung",
+    "mcp call hangs",
+    "mcp transport dropped",
+    "tool still running",
+    "transport lost mid-call",
+    "activeCallWatchdogs"
+   ],
+   "lessons": [
+    85,
+    7
+   ],
+   "hint": "v2.1.113 adds MCP call watchdog (activeCallWatchdogs set on MCP transport state). Every 30s an in-flight MCP tool call logs 'Tool X still running (Ns elapsed)'. If the transport observed an error mid-call, the call is aborted 90s after the error mark with 'MCP server X transport dropped mid-call; response for tool Y was lost'. Closes a hole where MCP tool calls could hang indefinitely after transport errors. See L85."
+  },
+  {
+   "pattern": [
+    "prior session crashed",
+    "claude crashed last time",
+    "tengu_unclean_exit",
+    "session exited uncleanly"
+   ],
+   "lessons": [
+    85,
+    31
+   ],
+   "hint": "v2.1.113 adds unclean-exit detection at startup. When a prior interactive session is found to have exited uncleanly, a startup message 'Prior session exited uncleanly: SID (vX)' is logged and tengu_unclean_exit fires with session_age_sec, prior_version, on_current_version. Pure observability — does not auto-resume. See L85."
+  },
+  {
+   "pattern": [
+    "/update command",
+    "update command hidden",
+    "why is /update hidden",
+    "claude update in place",
+    "tengu_update_refused"
+   ],
+   "lessons": [
+    85,
+    68
+   ],
+   "hint": "/update is still isEnabled:()=>false and isHidden:true in v2.1.113 (not user-visible), but its implementation is being actively iterated. Two refusal paths now emit tengu_update_refused: active_tasks (refuses while any task is running/pending) and transcript_path_drift (refuses when session transcript is in a different project dir). Signals an upcoming staged launch of in-place native-installer upgrade. See L85, and L68 for the v2.1.101 state where /update was first introduced-but-disabled."
+  },
+  {
+   "pattern": [
+    "image could not be processed",
+    "image resize failed",
+    "tengu_image_resize_degraded"
+   ],
+   "lessons": [
+    85
+   ],
+   "hint": "v2.1.113 adds tengu_image_resize_degraded telemetry emitted when an image block throws a VI error during processing; the block is substituted with a text placeholder '[Image could not be processed: <message>]'. No user-configurable gate — purely observational. See L85."
+  },
+  {
+   "pattern": [
+    "/fork not available",
+    "/fork command not found",
+    "fork command missing",
+    "how to enable /fork",
+    "fork subagent disabled"
+   ],
+   "lessons": [
+    87
+   ],
+   "hint": "/fork is interactive-only (S8() non-interactive mode disables it) and gated behind two layers: set CLAUDE_CODE_FORK_SUBAGENT=1 to force-enable, or wait for the tengu_copper_fox GB flag to flip on for your account (default false). /fork does not appear in `claude -p` headless sessions at all. See L87."
+  },
+  {
+   "pattern": [
+    "why is /cost gone",
+    "/cost command missing",
+    "/cost not found",
+    "why is /stats gone",
+    "/stats command missing",
+    "/stats not found",
+    "cost command removed",
+    "stats command removed"
+   ],
+   "lessons": [
+    88
+   ],
+   "hint": "v2.1.118 folded /cost and /stats into /usage as aliases. They still work when typed (alias resolution at the command registry), but no longer show up as standalone commands in /help or autocomplete. In interactive mode you get the unified TUI dashboard ('Show session cost, plan usage, and activity stats'); in headless mode (claude -p) you get the brief 'cost and duration' string. See L88."
+  },
+  {
+   "pattern": [
+    "why is /autocompact gone",
+    "/autocompact command missing",
+    "/autocompact not found",
+    "autocompact command removed",
+    "autocompact window size"
+   ],
+   "lessons": [
+    87
+   ],
+   "hint": "v2.1.117 removed /autocompact outright (both the command and its tengu_autocompact_* telemetry). Configure the auto-compact window size via /config settings UI or edit the underlying setting key in settings.json directly. See L87."
+  },
+  {
+   "pattern": [
+    "why is /stop-hook gone",
+    "/stop-hook command missing",
+    "stop-hook removed",
+    "session-only stop hook"
+   ],
+   "lessons": [
+    87
+   ],
+   "hint": "v2.1.117 removed /stop-hook entirely. It had been isEnabled:()=>false (shelf-parked) since v2.1.92 (L57). To configure Stop hooks, edit .claude/settings.json directly with a `hooks` section specifying event:'Stop'. See L87 and L10 (hooks system)."
+  },
+  {
+   "pattern": [
+    "oauth refresh token race",
+    "oauth 401 after refresh",
+    "refresh token already used",
+    "multiple claude instances oauth",
+    "wif lock error",
+    "tengu_wif_user_oauth_lock_retry_limit",
+    "Could not acquire credentials lock",
+    "ELOCKED credentials",
+    "credentials lock stuck"
+   ],
+   "lessons": [
+    88,
+    38
+   ],
+   "hint": "v2.1.117 landed directory-level locking (proper-lockfile) around WIF user-OAuth token refresh; v2.1.118 added all 5 telemetry events on top. The lock is on <config_dir>/credentials/ (the DIRECTORY, not the file), acquired via Gv_ → Vk4 → RY(path, {onCompromised: wH}). Retry budget is exactly tvq=5 attempts with 1000-2000ms jittered backoff = 5-10s max wait. On exhaustion: throws typed error e5 with message 'Could not acquire credentials lock at <path> after 5 retries'. If tengu_wif_user_oauth_lock_retry_limit fires, another Claude Code process is stuck holding the lock — investigate with `lsof <config_dir>/credentials/.lock` and `ls -la <config_dir>/credentials/.lock`. If confirmed orphaned, `rmdir <config_dir>/credentials/.lock` clears it (safe only when no live holder). tengu_oauth_401_recovered_from_disk indicates the post-hoc disk re-read recovery path succeeded — separate from the lock, catches cases where a sibling refreshed between in-memory cache load and the outbound request. See L88, and L38 for the base OAuth flow."
+  },
+  {
+   "pattern": [
+    "agent stop hook blocking",
+    "tengu_agent_stop_hook_blocking",
+    "tengu_agent_stop_hook_success",
+    "tengu_agent_stop_hook_max_turns",
+    "tengu_agent_stop_hook_error",
+    "hook condition was not met",
+    "agent hook did not complete within 50 turns",
+    "ai verification hook",
+    "agent hook timeout"
+   ],
+   "lessons": [
+    88,
+    10
+   ],
+   "hint": "Claude Code has a previously-undocumented hook TYPE: the AI verification hook (bs7). Instead of a shell command, an agent hook spawns a dedicated sub-conversation that returns structured output {ok: true} (allow stop) or {ok: false, reason} (block). v2.1.118 added tengu_agent_stop_hook_blocking telemetry for the !ok outcome — the mechanism itself pre-existed. Limits: max 50 turns (constant B=50), 60s default timeout (override via hookConfig.timeout in seconds), permissionMode:'dontAsk', thinking disabled. System prompt for Stop/SubagentStop events: 'You are verifying a stop condition in Claude Code. Your task is to verify that the agent completed the given plan.' Read(<transcript>) is auto-allowed. Five outcomes: success, blocking, cancelled (max turns), cancelled (no structured output), non_blocking_error. If the hook fires often and uses tool-call chains, expect latency — consider raising timeout or simplifying the verification prompt. See L88 for the full mechanism and L10 for the shell-command hook baseline."
+  },
+  {
+   "pattern": [
+    "fork sync or async",
+    "/fork blocks conversation",
+    "fork inline vs background",
+    "skill context fork blocks",
+    "skill context:fork sync",
+    "three fork paths"
+   ],
+   "lessons": [
+    87
+   ],
+   "hint": "/fork has three distinct execution paths with very different semantics. (1) User types /fork <directive>: backgrounded (isAsync:true) via _a7 → quH → xy, returns immediately, parent NOT blocked, shows '<emoji> forked <name> (<id4>)' system message, uses ph fork subagent type (tools:['*'], maxTurns:200, model:'inherit', permissionMode:'bubble'), gets full parent messages + REPL replay log. Guard: 'Cannot fork before the first conversation turn' (new in v2.1.117) if no renderedSystemPrompt. (2) Slash command with context:'fork' frontmatter: synchronous via V75, parent BLOCKS, inline progress streaming, uses H.agent from frontmatter or general-purpose fallback, returns <local-command-stdout>. (3) Skill invoked via Skill tool with context:'fork': synchronous via C75 (NEW in v2.1.118), same semantics as V75 but reaches via Skill tool path. See L87 for details. The 'fork' subagent type (ph) is ONLY used by path 1 — paths 2/3 use whatever agent is specified."
+  },
+  {
+   "pattern": [
+    "frontmatter unknown key",
+    "skill frontmatter warning",
+    "tengu_frontmatter_shadow_unknown_key",
+    "tengu_frontmatter_shadow_mismatch",
+    "plugin frontmatter shadow",
+    "progressMessage unknown",
+    "progressMessage warning",
+    "allowedTools camelCase",
+    "argumentHint camelCase",
+    "which keys trigger telemetry",
+    "shadow validator schema",
+    "frontmatter drift"
+   ],
+   "lessons": [
+    88,
+    11
+   ],
+   "hint": "v2.1.118 added shadow validation (pjH) that calls qT1[kind]().strict().safeParse(frontmatter) and emits tengu_frontmatter_shadow_unknown_key / _mismatch telemetry on drift. There is NO formal primary schema — primary frontmatter handling is imperative (Cz8 reads properties directly and ignores unknown keys), so the Zod schemas added in v2.1.118 are the only formal validation. Per-session dedup via Gj9 Set means each unique (event,surface,detail) tuple fires once. Dispatch table has 3 entries: skill (eO1), agent (HT1), output-style (_T1) — custom commands are validated as 'skill'. The big known drift: progressMessage is documented in L11 but NOT in eO1, so any skill declaring it fires telemetry on load. Also watch kebab-vs-camel drift: schema uses allowed-tools / argument-hint / disable-model-invocation / user-invocable (kebab) for skills but tools / disallowedTools / mcpServers / maxTurns / initialPrompt / permissionMode (camel) for agents. See L88 for the full schema tables."
+  },
+  {
+   "pattern": [
+    "/pro-trial-expired",
+    "pro trial expired dialog",
+    "pro plan trial ended"
+   ],
+   "lessons": [
+    88
+   ],
+   "hint": "v2.1.118 dark-launched /pro-trial-expired (isEnabled:()=>false). Currently inert. When the date-gate or GB flag enables it, users whose Pro plan trial has ended will see an upsell/renewal UI with tracked choices (tengu_pro_trial_expired_choice). Combined with CLAUDE_CODE_SUBSCRIPTION_TYPE / CLAUDE_CODE_RATE_LIMIT_TIER env vars (L87), this is test-surface for the Pro plan rollout. See L88."
+  },
+  {
+   "pattern": [
+    "why is /commit gone",
+    "/commit removed",
+    "/commit-push-pr missing"
+   ],
+   "lessons": [
+    102
+   ],
+   "hint": "Removed as builtins in v2.1.159 and migrated to the commit-commands plugin (install it to restore /commit)."
+  },
+  {
+   "pattern": [
+    "plugin hooks don't fire in cowork",
+    "cowork hook not firing",
+    "cowork plugin hook",
+    "sessionstart hook cowork"
+   ],
+   "lessons": [
+    89,
+    100
+   ],
+   "hint": "Plugin hooks DO fire in Cowork — but only if the plugin is in the desktop's account/org cowork_plugins namespace. Install via the Cowork APP UI, not the standalone CLI --cowork (which writes a different root the desktop never reads). See L89."
+  },
+  {
+   "pattern": [
+    "why is /dream gone",
+    "/dream removed",
+    "/dream missing"
+   ],
+   "lessons": [
+    101
+   ],
+   "hint": "Not removed — reclassified from a slash command to a built-in routine in v2.1.159."
+  },
+  {
+   "pattern": [
+    "workflow agent cap",
+    "too many workflow agents",
+    "workflow budget exceeded",
+    "workflow stopped early"
+   ],
+   "lessons": [
+    91
+   ],
+   "hint": "Dynamic Workflows hard-caps at 1000 agents; the token budget is opt-in (only bites if a caller sets it)."
+  },
+  {
+   "pattern": [
+    "disable streaming tool execution",
+    "turn off streaming tool execution"
+   ],
+   "lessons": [
+    94
+   ],
+   "hint": "Not possible — streaming tool execution went GA in v2.1.159; the gate was deleted with no escape hatch."
+  },
+  {
+   "pattern": [
+    "how many hook event types",
+    "hook event count",
+    "27 hook events",
+    "19 hook events"
+   ],
+   "lessons": [
+    95,
+    10
+   ],
+   "hint": "The live master hook array is 30 as of v2.1.159; older '27' (v2.1.90) and '19' (a diff-tool undercount) figures are stale."
+  },
+  {
+   "pattern": [
+    "cloud gateway session expired",
+    "gateway login",
+    "CLAUDE_CODE_USE_GATEWAY not working"
+   ],
+   "lessons": [
+    97
+   ],
+   "hint": "Select the Cloud gateway via /login (not CLAUDE_CODE_USE_GATEWAY, which is dead/unread). On expiry, run /login to reconnect."
+  },
+  {
+   "pattern": [
+    "MCP App can't submit",
+    "UI can't send data back",
+    "app ui read only",
+    "collect secret in MCP app",
+    "callServerTool not working",
+    "UI tool call blocked",
+    "how to collect a secret from the user",
+    "mcp app form not submitting"
+   ],
+   "lessons": [
+    105
+   ],
+   "hint": "Claude Desktop's MCP App UI has NO server-tool-call channel; its only data-return path (sendPrompt) injects into the chat. Use MCP elicitation (elicitation/create, form or url mode) to capture private input — it returns to the server as the request response, not into the transcript. (L105)"
+  },
+  {
+   "pattern": [
+    "API key field doesn't appear in Customize Plugins",
+    "plugin credential field missing",
+    "clis env not showing",
+    "set once api key cowork not working",
+    "Plugin OAuth is not enabled for this account",
+    "plugin.json clis block ignored",
+    "no credential field for my CLI plugin",
+    "how to set a CLI plugin secret in Claude Desktop",
+    "cowork CLI can't see API key"
+   ],
+   "lessons": [
+    106,
+    105,
+    89
+   ],
+   "hint": "The clis.*.env credential broker (enter once under Customize -> Plugins, encrypted in cowork-plugin-env, injected at CLI invocation) is dark-launched behind GrowthBook gate 2307090146 (cli_plugin), off by default. A valid manifest renders NOTHING with no error: the renderer (GXr) strips clis and the runtime chokepoint (PKr, ahead of VKr) returns oauth_disabled. There is no manual workaround while gated. Decode ~/Library/Application Support/Claude/fcache to read the gate state. Until it flips, give an in-VM Cowork CLI its key via project .env / a key-file on a mounted folder (see L89)."
+  },
+  {
+   "pattern": [
+    "AskUserQuestion never fires in my headless/SDK cowork driver",
+    "AskUserQuestion silently auto-dismissed",
+    "control_response ZodError expected object received undefined",
+    "how to drive Cowork headless",
+    "cowork spawn flags",
+    "does the cowork agent run in the VM or on the host",
+    "--cowork flag rejected can only be used with user scope",
+    "Cowork ignores --mcp-config / .mcp.json",
+    "how do I pass MCP servers to a cowork agent",
+    "CLAUDE_CODE_USE_COWORK_PLUGINS broke my settings"
+   ],
+   "lessons": [
+    107,
+    89,
+    105
+   ],
+   "hint": "Cowork mode = CLAUDE_CODE_IS_COWORK=1 (the --cowork flag is rejected; do not set CLAUDE_CODE_USE_COWORK_PLUGINS). Drive the agent over the stream-json control protocol: spawn -p --verbose --input-format stream-json --output-format stream-json --permission-prompt-tool stdio (without stdio routing AskUserQuestion is silently auto-dismissed); send the initialize handshake FIRST; the control_response envelope is doubly nested (response.response.<payload>). Cowork ignores --mcp-config — deliver MCP via sdkMcpServers in initialize + mcp_message tunneling (the driver IS the MCP server). In production (host-loop, gate 1143815894) the agent loop runs host-side and only mcp__workspace__bash/web_fetch run in the VM. See L107 (contract), L89 (host-loop/split execution), L105 (control-request dispatcher)."
+  },
+  {
+   "pattern": [
+    "what cowork environment variables exist",
+    "which growthbook gate controls cowork",
+    "is host-loop on or off",
+    "how do I read the fcache gate state",
+    "CLAUDE_CODE_ENABLE_XAA",
+    "CLAUDE_CODE_ENVIRONMENT_KIND",
+    "CLAUDE_BG_CLAIM_AUTH",
+    "ANTHROPIC_DEFAULT_FABLE_MODEL",
+    "what control protocol subtypes exist",
+    "get_session_cost",
+    "side_question",
+    "does cowork cap Task sub-agent dispatch",
+    "what is gate 1648655587",
+    "scheduled task perTask global limit"
+   ],
+   "lessons": [
+    108,
+    109,
+    107,
+    89
+   ],
+   "hint": "Chapter 25 (L108) is the binary-verified catalog. Env vars: see Part A (model/effort, cowork/bg runtime incl. CLAUDE_BG_*_AUTH single-use handshake + CLAUDE_CODE_WORKER_EPOCH, auth incl. CLAUDE_CODE_ENABLE_XAA, Agent-SDK, Desktop-only). Gates: Part B decodes the live fcache — host-loop 1143815894, Fable 3045399524, bridge-SDK-adapter 583857784, cowork-config 1978029737, scheduled-task session limiter 1648655587 {perTask:1,global:3}, sparkplug 2340532315 all ON; coworkKappa 123929380 and cli_plugin 2307090146 OFF. CORRECTED (v2.22.1): gate 1648655587 is NOT a Task-tool sub-agent dispatch cap (its original label here) — it caps concurrently-active Cowork scheduled/cron-task sessions (class L9t, Ch26/L109's scheduled-tasks feature), perTask:1/global:3 sessions, and has zero effect on in-conversation Task fan-out, which the Desktop caps nowhere. Read gate state yourself by decoding ~/Library/Application Support/Claude/fcache (8-byte CLF header + gzip). Control-protocol subtypes: Part C (get_session_cost, get_binary_version, generate_session_title, ultrareview_launch, side_question + system messages + Bv1/Uv1 sets). See L109 (scheduled tasks), L107 (spawn/protocol contract), L89 (host-loop/split execution)."
+  },
+  {
+   "pattern": [
+    "cowork file paths break between bash and read",
+    "sub-agent read edit different filesystem",
+    "bash writes file read tool can't find it cowork",
+    "/sessions/ path denied host file tool",
+    "VM path on host use the bash tool",
+    "skill file io broken cowork host-loop",
+    "CLAUDE_PLUGIN_ROOT wrong path cowork",
+    "plugin reference read fails cowork",
+    "script path vs reference path cowork"
+   ],
+   "lessons": [
+    107,
+    89,
+    109
+   ],
+   "hint": "Host-loop Cowork is NOT two filesystems. bash (mcp__workspace__bash) runs in the VM and sees the outputs dir at /mnt/outputs; Read/Write/Edit run host-side and see the SAME files under the session/host path. The host prompt says so verbatim ('the same scratch space the Read/Write/Edit tools use ... use bare filenames with both'). Failure = passing a VM-absolute /sessions/<id>/mnt/... path from bash to a host file tool, which the PreToolUse path-gate (IeA=[Read,Write,Edit,Glob,Grep]) DENIES ('VM path on host'). Fix: relative/bare filenames, not routing through bash. See Ch24/L107 path-gate + Ch26/L109. ${CLAUDE_PLUGIN_ROOT} resolves HOST-SIDE (claude-hostloop-plugins/<hash>): keep it literal for host-side Read of references (accepted); but for bash-run scripts use the in-VM mount /sessions/<id>/mnt/.local-plugins/… (the host path is useless in the guest); outputs = relative filenames. One token can't be right for both host file tools and in-VM bash."
+  },
+  {
+   "pattern": [
+    "can't resume completed subagent",
+    "task tool one-shot resume",
+    "continue a finished background agent",
+    "sendmessage resume stopped agent",
+    "resumedAgentId",
+    "agent was stopped by the user and won't be resumed",
+    "no transcript found for agent id",
+    "cowork subagent can't be continued",
+    "run_in_background missing from task schema",
+    "background agents disabled cowork"
+   ],
+   "lessons": [
+    115,
+    107,
+    109,
+    91
+   ],
+   "hint": "The Task tool has no resume parameter anywhere -- each call spawns a fresh agent. In the standalone CLI (v2.1.198) a completed/stopped background agent IS resumable: SendMessage with the agentId (format a...-...) from the spawn result as `to` -- the agent-stopped branch calls dfe/resumeAgentBackground, reloading the disk transcript and continuing with your prompt (result carries resumedAgentId). Refusals: agents stopped BY THE USER ('treat its work as cancelled'), or no transcript on disk/memory. In Cowork, resume is unreachable by design: the Desktop spawn's explicit tools: list omits SendMessage, sets CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1 (run_in_background stripped from the Task schema), and a Desktop PreToolUse Task hook blocks run_in_background ('Background agents disabled') -- redo/repair dispatch with a fresh agent is the only continuation there. Alternatives in the CLI: subagent_type 'fork' (inherits full conversation) and Workflow resumeFromRunId (cached agent replay). See L115."
+  },
+  {
+   "pattern": [
+    "skill can't detect cowork",
+    "CLAUDE_CODE_IS_COWORK empty in shell",
+    "env var missing in cowork vm",
+    "detect if running in claude code",
+    "CLAUDECODE not set",
+    "how to tell cli from cowork",
+    "inline shell command not running in cowork skill",
+    "dynamic context not executing cowork",
+    "sessionstart export not visible to script",
+    "runtime detection skill"
+   ],
+   "lessons": [
+    116,
+    107,
+    89,
+    108
+   ],
+   "hint": "Host-loop Cowork splits a skill across a host-side agent process (which has CLAUDE_CODE_IS_COWORK=1) and a sealed-env VM shell (mcp__workspace__bash) which has NO CLAUDE_CODE_* markers -- so a bare env check false-negatives exactly in Cowork. Detect with ordered checks: $CLAUDE_CODE_IS_COWORK set -> cowork (host-side/VM-loop); cwd under /sessions/<id> -> cowork VM shell; CLAUDECODE=1 -> Claude Code CLI (refine via CLAUDE_CODE_ENTRYPOINT); else other. Content-side, branch on Bash vs mcp__workspace__bash in the tool list. Note inline !`cmd` skill-shell execution is force-disabled in Cowork (q5n) and hook env-exports don't reach the VM. See L116."
+  },
+  {
+   "pattern": [
+    "why can't I delete a file in cowork outputs",
+    "rm fails in outputs directory cowork",
+    "probe file left over in outputs folder",
+    "outputs mount seems read only after write",
+    "what mounts exist in a cowork vm session",
+    "what does /sessions/<slug> look like",
+    "cowork session slug format",
+    "is home directory shared in cowork vm",
+    "is /tmp shared in cowork vm",
+    "coworkd process cowork vm",
+    "per session unix user cowork"
+   ],
+   "lessons": [
+    117,
+    109,
+    107,
+    89
+   ],
+   "hint": "Only a fixed set of paths are real, independently mounted/unmounted systemd units per session (sessions-<slug>-mnt-<name>.mount): outputs, uploads, .claude, .claude/skills, .claude/projects, and one per user-connected folder. Home and /tmp have NO mount unit at all -- they are plain, non-shared paths inside the guest's own root filesystem, which is why they're never host-visible and vanish at session end (not a permission restriction, a different kind of storage). A file written under outputs/ IS host-visible but subject to fileDeleteApprovedMounts (mounts default rw, not rwd -- delete requires an approved allow_cowork_file_delete request), which is why `rm` from the VM shell can silently fail to remove it there while still succeeding against an unrelated local/home copy. Session slugs are real Docker-style adjective-adjective-noun triples (e.g. zealous-vigilant-einstein), not UUIDs. The in-guest daemon coworkd provisions a dedicated Unix user (uid/gid) per session slug and spawns work as that user. See L117 (full mount inventory + methodology), L109 (fileDeleteApprovedMounts), L107 (path pattern)."
+  },
+  {
+   "pattern": [
+    "can I reference a host path from a cowork skill",
+    "how does .host-home work in cowork",
+    "why isn't .host-home mounted",
+    "no mnt-.host-home.mount unit",
+    "does cowork share the home directory with the vm"
+   ],
+   "lessons": [
+    108,
+    117
+   ],
+   "hint": "No -- `.host-home` under `/sessions/<id>/mnt/` is not a real bind mount (Ch31/L117's mount-unit inventory finds no `mnt-.host-home.mount`). It's a synthetic path-translation index, dark-gated by GrowthBook gate `2614807392` (Ch25/L108, off by default): when on, the system prompt explains that a path under `.host-home/<sub>` corresponds to a real absolute host path, letting the agent *reference* host paths in tool calls without the guest's home directory ever being shared."
+  },
+  {
+   "pattern": [
+    "can't tell which skill ran a tool",
+    "tool to skill attribution",
+    "skill scope not in stream",
+    "which skill called this tool",
+    "attribute tool call to skill"
+   ],
+   "lessons": [
+    118,
+    116,
+    107
+   ],
+   "hint": "No exact tool->skill attribution exists in the stream-json output. The agent tracks activeSkill/spawnedBySkill internally and sends it in the attribution bundle on the API request only. Local readers can at best reproduce a sticky 'active-skill window' for inline skills; fork skills carry an exact parent_tool_use_id (= the Skill call id)."
+  },
+  {
+   "pattern": [
+    "fork skill tools missing from toolCounts",
+    "context:fork tools not counted",
+    "skill_progress tool calls dropped",
+    "fork skill inner bash not counted"
+   ],
+   "lessons": [
+    118,
+    87
+   ],
+   "hint": "context:fork skill inner tool calls carry parent_tool_use_id = the outer Skill id but are NOT registered like Agent/Task dispatch children, so they're dropped from toolCounts/toolsCalled today (visible only in the raw tool log). Attribute by parentToolUseId to both count and scope them."
+  },
+  {
+   "pattern": [
+    "microcompact_boundary",
+    "micro-compaction not showing",
+    "compaction subtype missing",
+    "microcompaction event"
+   ],
+   "lessons": [
+    118,
+    109
+   ],
+   "hint": "microcompact_boundary is a distinct system subtype from compact_boundary and is return-null'd in at least one render path, so it doesn't always surface as a visible boundary. A compaction signal should key on BOTH subtypes."
+  },
+  {
+   "pattern": [
+    "effort default is medium not recommended",
+    "why does Cowork always emit --effort medium",
+    "extended thinking always 31999",
+    "CLAUDE_CODE_EFFORT_LEVEL not affecting Cowork session",
+    "MAX_THINKING_TOKENS env var ignored"
+   ],
+   "lessons": [
+    120,
+    114,
+    93
+   ],
+   "hint": "Cowork's per-session --effort value is resolved from a local settings-file object (effort/effortByModel), never CLAUDE_CODE_EFFORT_LEVEL or any env var, with a hardcoded \"medium\" fallback (not the per-model \"recommended\" value) when nothing is set. Extended thinking is a strict boolean -- the budget is always exactly 31999 or 0, delivered via --max-thinking-tokens/--thinking disabled flags, never an env var. Setting CLAUDE_CODE_EFFORT_LEVEL or MAX_THINKING_TOKENS as an env var has no effect on a Cowork session's spawn."
+  },
+  {
+   "pattern": [
+    "sub-agent write denied /sessions path",
+    "is a VM path error Cowork",
+    "outside this session's connected folders",
+    "Read denied /sessions/<id>/mnt/outputs",
+    "host-loop file tool VM path denied"
+   ],
+   "lessons": [
+    122
+   ],
+   "hint": "Host-loop file tools (Read/Write/Edit/Glob/Grep/MultiEdit) run host-native and always deny /sessions/... paths -- never translate them -- for both the main thread and sub-agents. The agent's cwd already IS the session outputs directory, so use a cwd-relative path (e.g. artifacts/report.md) or the host-absolute outputs path instead of any /sessions/<id>/mnt/... form."
+  },
+  {
+   "pattern": [
+    "sub-agent ran mcp__workspace__bash unexpectedly",
+    "restricted sub-agent used ToolSearch",
+    "sub-agent has full tool access despite Read Edit Glob Grep frontmatter",
+    "Task dispatch missing subagent_type",
+    "general-purpose fallback tools wildcard"
+   ],
+   "lessons": [
+    121
+   ],
+   "hint": "A Task dispatch that omits subagent_type does not fail closed -- it silently resolves to the built-in general-purpose agent with tools:[\"*\"], the full session tool universe (including mcp__workspace__bash in Cowork host-loop). This fires in real production traffic (113 of 509 dispatches in one audit corpus). Always pin subagent_type: literally in every dispatch that should be scoped down."
+  },
+  {
+   "pattern": [
+    "appendSubagentSystemPrompt not delivered",
+    "sub-agent prompt append not working",
+    "initialize appendSubagentSystemPrompt ignored",
+    "sub-agents missing Cowork environment orientation text",
+    "CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT has no effect"
+   ],
+   "lessons": [
+    123
+   ],
+   "hint": "Consuming an appendSubagentSystemPrompt sent via the initialize control request also requires CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT to be present in the agent process env -- the initialize handler only stores the option, it never self-sets the env var (that only happens on the hidden --append-subagent-system-prompt CLI flag path). An SDK host that sends the option without also setting the env var gets silent inertness, not an error."
+  },
+  {
+   "pattern": [
+    "GrowthBook gate missing from fcache",
+    "grep fcache finds nothing",
+    "fcache gate looks absent but should be on",
+    "strings fcache no gates found",
+    "Desktop fcache format changed"
+   ],
+   "lessons": [
+    124
+   ],
+   "hint": "The Desktop fcache is no longer raw JSON -- it's a container with magic CLF\\x01\\x00 + 3 bytes, then a gzip stream starting at byte 8. Raw grep/strings against the file will falsely report gates as absent. Decode first: tail -c +9 fcache | gunzip, then search the decompressed JSON."
+  },
+  {
+   "pattern": [
+    "iOS simulator tool not available in Cowork",
+    "Android emulator tool missing",
+    "claude_code_ios_simulator not showing up",
+    "simulator disabled organization requires full VM sandbox",
+    "SIMULATOR_VM_POLICY_DISABLED_MESSAGE"
+   ],
+   "lessons": [
+    125
+   ],
+   "hint": "The mobile-simulator tools (claude_code_ios_simulator/claude_code_android_emulator) require sessionType===\"ccd\" -- a Claude Code Desktop coding session, never Cowork (\"cowork\"/\"cowork-remote\"). This is a structural exclusion, not just a gate: no Cowork agent, sandboxed or not, can ever receive these tools. They also require a per-platform gate (default false) and, for CCD sessions under an org requiring the full VM sandbox, are explicitly disabled with SIMULATOR_VM_POLICY_DISABLED_MESSAGE."
+  },
+  {
+   "pattern": [
+    "how does Cowork control a remote device",
+    "remote_devices tool",
+    "computer_request_access",
+    "cowork-remote session type",
+    "pair a device with Cowork"
+   ],
+   "lessons": [
+    126
+   ],
+   "hint": "remote_devices (server \"remote-devices\", session_type \"cowork-remote\") is the Cowork-facing device bridge -- distinct from the local mobile-simulator tools. It exposes computer_resolve_access/computer_request_access/computer_release_lock plus a dynamic computer_* tool set for controlling apps on a real paired device, backed by a device registry endpoint with per-device enclave keys. Its own enablement gating was not fully traced (unlike the simulators' confirmed CCD-only exclusion) -- treat live reachability as unconfirmed."
+  },
+  {
+   "pattern": [
+    "what is grand_prix in Claude Desktop",
+    "browser credential autofill Claude",
+    "grand_prix_credential_request_outcome",
+    "payment card autofill agent",
+    "does Claude fill in my passwords"
+   ],
+   "lessons": [
+    127
+   ],
+   "hint": "grand_prix is a signed, single-partner tool/prompt-injection bridge: one hardcoded, HMAC-verified trusted partner can inject host tools and system-prompt text, and service tab-scoped login/address/payment-card autofill requests (grand_prix_credential_request_outcome carries has_login/has_address/has_card). It is not a general credential API -- a skill or third-party integration cannot register itself as a grand_prix partner."
+  },
+  {
+   "pattern": [
+    "auto mode still asking for permission on connector tool",
+    "tool_approval_default_always_allow not working",
+    "always allow not persisting for MCP tool",
+    "OTLP traces not exporting from Cowork",
+    "CLAUDE_CODE_ENHANCED_TELEMETRY_BETA empty",
+    "otlpTracesEnabled default"
+   ],
+   "lessons": [
+    128
+   ],
+   "hint": "Gate 4200321681 (coworkAutoModeAlwaysAllowOverride) is intentionally the inverse of its name for destructive connector/MCP tools: under auto mode it forces a re-prompt and blocks \"always allow\" from ever persisting for them -- this is deliberate, not a bug. Separately, otlpTracesEnabled has no default (undefined, not false) and is read with a strict ===true check, so OTLP tracing is off unless a 3p-managed config explicitly turns it on -- CLAUDE_CODE_ENHANCED_TELEMETRY_BETA/OTEL_TRACES_EXPORTER are empty strings, not env-var absence, when it is off."
+  },
+  {
+   "pattern": [
+    "cowork skill suggestions missing",
+    "model won't suggest skills",
+    "suggest_skills not available",
+    "skills not recommended in cowork"
+   ],
+   "lessons": [
+    129,
+    131
+   ],
+   "hint": "The model uses the SDK-MCP mcp__skills__suggest_skills tool (gated by suggestSkillsEnabled 245679952, on/force), NOT the native SuggestSkills. Check the system/init tools array — not the model's self-description — to see what actually rendered."
+  },
+  {
+   "pattern": [
+    "ListSkills not found",
+    "SuggestSkills missing",
+    "native skill tools absent",
+    "mcp__skills__ vs ListSkills"
+   ],
+   "lessons": [
+    129
+   ],
+   "hint": "Native ListSkills/SearchSkills/SuggestSkills are compiled into the CLI binary but gated by vLt and NEVER render in real Cowork; the model sees the Desktop SDK-MCP mcp__skills__* servers instead. Read init.tools to confirm."
+  },
+  {
+   "pattern": [
+    "VCS events not emitted",
+    "code_change_published missing",
+    "vcs_state_changed not firing",
+    "PR event not sent"
+   ],
+   "lessons": [
+    130
+   ],
+   "hint": "These emit only on a real git operation (gh pr create / commit / push / merge / rebase), not per-run, and only from agent 2.1.216+. Desktop consumption needs 2.1.217 (one-version blind window)."
+  },
+  {
+   "pattern": [
+    "cowork session no transcript",
+    "audit.jsonl missing",
+    "no host session file",
+    "init.tools not on disk 1.24012"
+   ],
+   "lessons": [
+    132
+   ],
+   "hint": "On Desktop 1.24012.1 a folder-connected Cowork session may leave no host-side transcript (possible VM-loop shift or path change, unconfirmed). The host-side disk-recovery path for init.tools may not work on newer builds; verify where the build writes."
+  }
+ ]
 }

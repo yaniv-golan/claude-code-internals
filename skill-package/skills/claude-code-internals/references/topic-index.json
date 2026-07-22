@@ -1,7 +1,7 @@
 {
   "generated": "2026-07-17",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 128,
+  "total_lessons": 132,
   "lessons": [
     {
       "id": 1,
@@ -3629,6 +3629,174 @@
         "extension-signing",
         "dotfile-folder-grant-refusal"
       ]
+    },
+    {
+      "id": 129,
+      "title": "Skill/Plugin Discovery: Native Agent Tools vs Desktop SDK-MCP, and the Disk Ground Truth",
+      "lesson_number": "129",
+      "file": "34-skill-discovery-vcs-events-containment.md",
+      "startLine": 16,
+      "endLine": 81,
+      "keywords": [
+        "skill-discovery-tools",
+        "plugin-discovery-tools",
+        "ListSkills",
+        "SearchSkills",
+        "SuggestSkills",
+        "ListPlugins",
+        "SearchPlugins",
+        "SuggestPluginInstall",
+        "native-agent-tools",
+        "mcp__skills__list_skills",
+        "mcp__skills__suggest_skills",
+        "mcp__plugins",
+        "sdk-mcp-discovery",
+        "vLt",
+        "Vne",
+        "CLAUDE_CODE_REMOTE",
+        "tengu_saddle_lantern",
+        "pI_",
+        "ekl-entrypoint-set",
+        "local-agent-entrypoint",
+        "system-init-tools-array",
+        "init-tools-ground-truth",
+        "model-self-report-confabulation",
+        "suggestSkillsEnabled",
+        "proactiveSkillSuggestEnabled",
+        "245679952",
+        "1598976391",
+        "3246569822",
+        "teleport-org",
+        "auth-teleport-org",
+        "rendered-tool-list",
+        "claude-cowork-headless-emulator",
+        "audit-jsonl-corpus",
+        "host-loop-init-record",
+        "fI_",
+        "pdd",
+        "shouldDefer-skill",
+        "branching-prompt-body"
+      ]
+    },
+    {
+      "id": 130,
+      "title": "VCS SDK Events: Emit Floor 2.1.216, Git-Operation-Driven, Ungated Agent-Side",
+      "lesson_number": "130",
+      "file": "34-skill-discovery-vcs-events-containment.md",
+      "startLine": 82,
+      "endLine": 179,
+      "keywords": [
+        "vcs-sdk-events",
+        "code_change_published",
+        "vcs_state_changed",
+        "emit-floor-2.1.216",
+        "git-operation-driven",
+        "cliSupportsVcsSdkEvents",
+        "isPinnedCliAtLeast",
+        "1311049725",
+        "gh-pr-create-scraping",
+        "izr",
+        "hlo",
+        "tjg-github-url",
+        "vcs-kind-enum",
+        "commit-push-merge-rebase",
+        "one-version-blind-window",
+        "tengu_git_operation",
+        "system-subtype-set",
+        "ungated-emit",
+        "desktop-consumption-floor",
+        "system_event-degradation",
+        "bindPrFromUrl",
+        "managed-agents-2026-04-01",
+        "fleet-observability",
+        "git_state_changed",
+        "vcs_sdk_event",
+        "bash_output-source",
+        "GitHubPrManager",
+        "/v1/environments",
+        "managed-agents",
+        "cloud-agents",
+        "pr-as-unit-of-work",
+        "multi-forge-provider",
+        "outcomes-success-condition",
+        "fleet-view-pr-tracking",
+        "event-driven-orchestration"
+      ]
+    },
+    {
+      "id": 131,
+      "title": "Desktop 1.22209.0 -> 1.24012.1 asar Delta",
+      "lesson_number": "131",
+      "file": "34-skill-discovery-vcs-events-containment.md",
+      "startLine": 180,
+      "endLine": 228,
+      "keywords": [
+        "asar-diff",
+        "1.24012.1",
+        "1.22209.0",
+        "allowedTools",
+        "mcp__mcp-registry__",
+        "mcp__plugins__search_plugins",
+        "mcp__scheduled-tasks__list_scheduled_tasks",
+        "allowedTools-not-rendered-list",
+        "getMcpSkillSources",
+        "dead-code",
+        "278625510",
+        "io.modelcontextprotocol/skills",
+        "mcp-skills-extension",
+        "bundled-skills",
+        "morning-skill-removed",
+        "setup-cowork",
+        "schedule-bundled-skill",
+        "3214976288",
+        "coworkTokens",
+        "usage-accounting",
+        "harnessCwd",
+        "naming-trap",
+        "EnterWorktree",
+        "ExitWorktree",
+        "1549258603",
+        "3705360580",
+        "oauth-refresh",
+        "clearTokenCache",
+        "expireForConfig",
+        "gate-absent-not-dark",
+        "fcache-unevaluated",
+        "sdkMcpServers"
+      ]
+    },
+    {
+      "id": 132,
+      "title": "LEAD: 1.24012.1 May Move Cowork Session State Off the Host",
+      "lesson_number": "132",
+      "file": "34-skill-discovery-vcs-events-containment.md",
+      "startLine": 229,
+      "endLine": 288,
+      "keywords": [
+        "session-containment",
+        "vm-loop-shift",
+        "host-loop-transcript",
+        "no-host-transcript",
+        "1143815894",
+        "boot-snapshot-gate",
+        "requireCoworkFullVmSandbox",
+        "f_-loop-decision",
+        "cowork_vm_node.log",
+        "CliGovernor",
+        "would-evict-0-sessions",
+        "hello-probe",
+        "disk-recovery-path",
+        "init-tools-recovery",
+        "rootfs-forensics",
+        "methodology-tripwire",
+        "folder-connected-session",
+        "local-agent-mode-sessions",
+        "claude-code-sessions",
+        "prompt-must-require-tool",
+        "1.24012.1-containment",
+        "negative-observation",
+        "unconfirmed-inference"
+      ]
     }
   ],
   "keyword_map": {
@@ -4120,7 +4288,8 @@
       11
     ],
     "bundled-skills": [
-      11
+      11,
+      131
     ],
     "mcp-skills": [
       11
@@ -5573,7 +5742,8 @@
       68
     ],
     "oauth-refresh": [
-      68
+      68,
+      131
     ],
     "sdk-observability": [
       68
@@ -5779,7 +5949,8 @@
       76
     ],
     "managed-agents-2026-04-01": [
-      76
+      76,
+      130
     ],
     "CLAUDE_API_SKILL_DESCRIPTION": [
       76
@@ -8315,7 +8486,8 @@
       107
     ],
     "sdkmcpservers": [
-      107
+      107,
+      131
     ],
     "mcp_message": [
       107
@@ -8806,10 +8978,12 @@
       109
     ],
     "local-agent-mode-sessions": [
-      109
+      109,
+      132
     ],
     "claude-code-sessions": [
-      109
+      109,
+      132
     ],
     "cowork_host_loop_debug.log": [
       109
@@ -9625,6 +9799,372 @@
     ],
     "dotfile-folder-grant-refusal": [
       128
+    ],
+    "skill-discovery-tools": [
+      129
+    ],
+    "plugin-discovery-tools": [
+      129
+    ],
+    "listskills": [
+      129
+    ],
+    "searchskills": [
+      129
+    ],
+    "suggestskills": [
+      129
+    ],
+    "listplugins": [
+      129
+    ],
+    "searchplugins": [
+      129
+    ],
+    "suggestplugininstall": [
+      129
+    ],
+    "native-agent-tools": [
+      129
+    ],
+    "mcp__skills__list_skills": [
+      129
+    ],
+    "mcp__skills__suggest_skills": [
+      129
+    ],
+    "mcp__plugins": [
+      129
+    ],
+    "sdk-mcp-discovery": [
+      129
+    ],
+    "vlt": [
+      129
+    ],
+    "vne": [
+      129
+    ],
+    "claude_code_remote": [
+      129
+    ],
+    "tengu_saddle_lantern": [
+      129
+    ],
+    "pi_": [
+      129
+    ],
+    "ekl-entrypoint-set": [
+      129
+    ],
+    "local-agent-entrypoint": [
+      129
+    ],
+    "system-init-tools-array": [
+      129
+    ],
+    "init-tools-ground-truth": [
+      129
+    ],
+    "model-self-report-confabulation": [
+      129
+    ],
+    "suggestskillsenabled": [
+      129
+    ],
+    "proactiveskillsuggestenabled": [
+      129
+    ],
+    "245679952": [
+      129
+    ],
+    "1598976391": [
+      129
+    ],
+    "3246569822": [
+      129
+    ],
+    "teleport-org": [
+      129
+    ],
+    "auth-teleport-org": [
+      129
+    ],
+    "rendered-tool-list": [
+      129
+    ],
+    "claude-cowork-headless-emulator": [
+      129
+    ],
+    "audit-jsonl-corpus": [
+      129
+    ],
+    "host-loop-init-record": [
+      129
+    ],
+    "fi_": [
+      129
+    ],
+    "pdd": [
+      129
+    ],
+    "shoulddefer-skill": [
+      129
+    ],
+    "branching-prompt-body": [
+      129
+    ],
+    "vcs-sdk-events": [
+      130
+    ],
+    "code_change_published": [
+      130
+    ],
+    "vcs_state_changed": [
+      130
+    ],
+    "emit-floor-2.1.216": [
+      130
+    ],
+    "git-operation-driven": [
+      130
+    ],
+    "clisupportsvcssdkevents": [
+      130
+    ],
+    "ispinnedcliatleast": [
+      130
+    ],
+    "1311049725": [
+      130
+    ],
+    "gh-pr-create-scraping": [
+      130
+    ],
+    "izr": [
+      130
+    ],
+    "hlo": [
+      130
+    ],
+    "tjg-github-url": [
+      130
+    ],
+    "vcs-kind-enum": [
+      130
+    ],
+    "commit-push-merge-rebase": [
+      130
+    ],
+    "one-version-blind-window": [
+      130
+    ],
+    "tengu_git_operation": [
+      130
+    ],
+    "system-subtype-set": [
+      130
+    ],
+    "ungated-emit": [
+      130
+    ],
+    "desktop-consumption-floor": [
+      130
+    ],
+    "system_event-degradation": [
+      130
+    ],
+    "bindprfromurl": [
+      130
+    ],
+    "asar-diff": [
+      131
+    ],
+    "1.24012.1": [
+      131
+    ],
+    "1.22209.0": [
+      131
+    ],
+    "allowedtools": [
+      131
+    ],
+    "mcp__mcp-registry__": [
+      131
+    ],
+    "mcp__plugins__search_plugins": [
+      131
+    ],
+    "mcp__scheduled-tasks__list_scheduled_tasks": [
+      131
+    ],
+    "allowedtools-not-rendered-list": [
+      131
+    ],
+    "getmcpskillsources": [
+      131
+    ],
+    "dead-code": [
+      131
+    ],
+    "278625510": [
+      131
+    ],
+    "io.modelcontextprotocol/skills": [
+      131
+    ],
+    "mcp-skills-extension": [
+      131
+    ],
+    "morning-skill-removed": [
+      131
+    ],
+    "setup-cowork": [
+      131
+    ],
+    "schedule-bundled-skill": [
+      131
+    ],
+    "3214976288": [
+      131
+    ],
+    "coworktokens": [
+      131
+    ],
+    "usage-accounting": [
+      131
+    ],
+    "harnesscwd": [
+      131
+    ],
+    "naming-trap": [
+      131
+    ],
+    "enterworktree": [
+      131
+    ],
+    "exitworktree": [
+      131
+    ],
+    "1549258603": [
+      131
+    ],
+    "3705360580": [
+      131
+    ],
+    "cleartokencache": [
+      131
+    ],
+    "expireforconfig": [
+      131
+    ],
+    "gate-absent-not-dark": [
+      131
+    ],
+    "fcache-unevaluated": [
+      131
+    ],
+    "session-containment": [
+      132
+    ],
+    "vm-loop-shift": [
+      132
+    ],
+    "host-loop-transcript": [
+      132
+    ],
+    "no-host-transcript": [
+      132
+    ],
+    "1143815894": [
+      132
+    ],
+    "boot-snapshot-gate": [
+      132
+    ],
+    "requirecoworkfullvmsandbox": [
+      132
+    ],
+    "f_-loop-decision": [
+      132
+    ],
+    "cowork_vm_node.log": [
+      132
+    ],
+    "cligovernor": [
+      132
+    ],
+    "would-evict-0-sessions": [
+      132
+    ],
+    "hello-probe": [
+      132
+    ],
+    "disk-recovery-path": [
+      132
+    ],
+    "init-tools-recovery": [
+      132
+    ],
+    "rootfs-forensics": [
+      132
+    ],
+    "methodology-tripwire": [
+      132
+    ],
+    "folder-connected-session": [
+      132
+    ],
+    "prompt-must-require-tool": [
+      132
+    ],
+    "1.24012.1-containment": [
+      132
+    ],
+    "negative-observation": [
+      132
+    ],
+    "unconfirmed-inference": [
+      132
+    ],
+    "fleet-observability": [
+      130
+    ],
+    "git_state_changed": [
+      130
+    ],
+    "vcs_sdk_event": [
+      130
+    ],
+    "bash_output-source": [
+      130
+    ],
+    "githubprmanager": [
+      130
+    ],
+    "/v1/environments": [
+      130
+    ],
+    "managed-agents": [
+      130
+    ],
+    "cloud-agents": [
+      130
+    ],
+    "pr-as-unit-of-work": [
+      130
+    ],
+    "multi-forge-provider": [
+      130
+    ],
+    "outcomes-success-condition": [
+      130
+    ],
+    "fleet-view-pr-tracking": [
+      130
+    ],
+    "event-driven-orchestration": [
+      130
     ]
   }
 }

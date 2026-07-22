@@ -2,9 +2,9 @@
 domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.198
-as_of_desktop: 1.22209.0
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 121, 122, 124, 125, 126]
-updated: 2026-07-17
+as_of_desktop: 1.24012.1
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 121, 122, 124, 125, 126, 132]
+updated: 2026-07-22
 ---
 
 # Cowork runtime architecture (current)
@@ -416,3 +416,21 @@ tool schemas, gating code, and the `grand_prix` partner-credential bridge
 found in the same diff are in `references/33-desktop-device-partner-
 permission-tuning.md` (Chapter 36, lessons 125-128); the fourth-channel
 `grand_prix` summary lives in `credential-channels.md`.
+
+## LEAD (unconfirmed): 1.24012.1 may move session state off the host (L132)
+
+A fresh folder-connected Cowork session under **Desktop 1.24012.1 + staged
+agent 2.1.217** left **no host-side transcript** (both
+`local-agent-mode-sessions` and `claude-code-sessions` untouched), no
+`claude-code/2.1.217` host process, and its probe string only inside the VM;
+`main.log`'s CliGovernor reported 0 local sessions. By contrast the Jul-16
+sessions (agent 2.1.202/209) were host-loop and wrote host-side `audit.jsonl`
+with a host `cwd`. **Unconfirmed** whether this is a host-loop→VM-loop routing
+flip or just a transcript-path change — the fcache host-loop gate `1143815894`
+is still `true/force` but that is a boot snapshot, not a live per-session read,
+and `requireCoworkFullVmSandbox` (the `f_()` override) is not fcache-readable.
+**Why it matters:** if newer builds keep transcripts in the VM, the host-side
+`audit.jsonl` disk-recovery path that verified the L129 tool surface goes dark,
+and future `init.tools` checks need live `rootfs.img` forensics (Ch31). Verify
+where a build writes before relying on the recovery path. Full detail: Chapter
+37, L132, `references/34-skill-discovery-vcs-events-containment.md`.

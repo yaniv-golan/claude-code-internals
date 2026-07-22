@@ -1,2723 +1,2796 @@
 {
-  "generated": "2026-06-04",
-  "description": "Cross-reference map: for each lesson, lists related lessons ranked by relevance",
-  "references": {
-    "1": [
-      {
-        "id": 4,
-        "relevance": 0.85,
-        "reason": "boot sequence assembles the system prompt during startup"
-      },
-      {
-        "id": 5,
-        "relevance": 0.82,
-        "reason": "boot sequence is detailed in the architecture capstone overview"
-      },
-      {
-        "id": 42,
-        "relevance": 0.8,
-        "reason": "boot entrypoints and SDK share CLI bootstrap logic"
-      },
-      {
-        "id": 50,
-        "relevance": 0.7,
-        "reason": "boot sequence launches the REPL as final startup step"
-      },
-      {
-        "id": 3,
-        "relevance": 0.68,
-        "reason": "boot sequence initializes AppState and state management"
-      }
-    ],
-    "2": [
-      {
-        "id": 28,
-        "relevance": 0.87,
-        "reason": "query engine triggers autocompact when context window fills"
-      },
-      {
-        "id": 33,
-        "relevance": 0.78,
-        "reason": "query engine retry logic connects to error handling and recovery"
-      },
-      {
-        "id": 48,
-        "relevance": 0.75,
-        "reason": "message pipeline normalizes input before query engine processing"
-      },
-      {
-        "id": 46,
-        "relevance": 0.72,
-        "reason": "model system configures which LLM the query engine calls"
-      },
-      {
-        "id": 5,
-        "relevance": 0.7,
-        "reason": "architecture overview includes the query engine data flow"
-      }
-    ],
-    "3": [
-      {
-        "id": 50,
-        "relevance": 0.75,
-        "reason": "state management drives REPL render tree via useSyncExternalStore"
-      },
-      {
-        "id": 17,
-        "relevance": 0.7,
-        "reason": "state management feeds Ink renderer for reactive terminal UI"
-      },
-      {
-        "id": 5,
-        "relevance": 0.68,
-        "reason": "architecture capstone covers state management patterns"
-      },
-      {
-        "id": 1,
-        "relevance": 0.68,
-        "reason": "boot sequence initializes AppState and state management"
-      },
-      {
-        "id": 25,
-        "relevance": 0.65,
-        "reason": "AppState tracks permission-mode for allow/deny decisions"
-      }
-    ],
-    "4": [
-      {
-        "id": 1,
-        "relevance": 0.85,
-        "reason": "boot sequence assembles the system prompt during startup"
-      },
-      {
-        "id": 15,
-        "relevance": 0.77,
-        "reason": "system prompt injects CLAUDE.md and memory content"
-      },
-      {
-        "id": 11,
-        "relevance": 0.72,
-        "reason": "system prompt includes skill frontmatter for discovery"
-      },
-      {
-        "id": 26,
-        "relevance": 0.68,
-        "reason": "system prompt respects settings cascade for dynamic sections"
-      }
-    ],
-    "5": [
-      {
-        "id": 1,
-        "relevance": 0.82,
-        "reason": "boot sequence is detailed in the architecture capstone overview"
-      },
-      {
-        "id": 48,
-        "relevance": 0.73,
-        "reason": "architecture overview covers the message processing data flow"
-      },
-      {
-        "id": 6,
-        "relevance": 0.72,
-        "reason": "architecture capstone describes the tool system layer"
-      },
-      {
-        "id": 2,
-        "relevance": 0.7,
-        "reason": "architecture overview includes the query engine data flow"
-      },
-      {
-        "id": 3,
-        "relevance": 0.68,
-        "reason": "architecture capstone covers state management patterns"
-      }
-    ],
-    "6": [
-      {
-        "id": 25,
-        "relevance": 0.88,
-        "reason": "permissions gate every tool execution via allow/deny/ask rules"
-      },
-      {
-        "id": 32,
-        "relevance": 0.82,
-        "reason": "hooks intercept tool execution at pre/post lifecycle points"
-      },
-      {
-        "id": 7,
-        "relevance": 0.8,
-        "reason": "Bash tool implements the Tool interface with security validators"
-      },
-      {
-        "id": 8,
-        "relevance": 0.78,
-        "reason": "File tools (Read/Write/Edit) implement the Tool interface"
-      },
-      {
-        "id": 9,
-        "relevance": 0.75,
-        "reason": "Search tools (Glob/Grep) implement the Tool interface"
-      }
-    ],
-    "7": [
-      {
-        "id": 25,
-        "relevance": 0.85,
-        "reason": "Bash tool has 23 security validators enforced by permissions"
-      },
-      {
-        "id": 6,
-        "relevance": 0.8,
-        "reason": "Bash tool implements the Tool interface with security validators"
-      },
-      {
-        "id": 47,
-        "relevance": 0.8,
-        "reason": "Bash sandboxing uses seatbelt/bubblewrap from security system"
-      },
-      {
-        "id": 8,
-        "relevance": 0.68,
-        "reason": "Bash and File tools share security validation patterns"
-      },
-      {
-        "id": 33,
-        "relevance": 0.65,
-        "reason": "Bash tool error handling feeds into recovery system"
-      }
-    ],
-    "8": [
-      {
-        "id": 6,
-        "relevance": 0.78,
-        "reason": "File tools (Read/Write/Edit) implement the Tool interface"
-      },
-      {
-        "id": 9,
-        "relevance": 0.72,
-        "reason": "file tools and search tools work together for codebase navigation"
-      },
-      {
-        "id": 7,
-        "relevance": 0.68,
-        "reason": "Bash and File tools share security validation patterns"
-      },
-      {
-        "id": 36,
-        "relevance": 0.62,
-        "reason": "file tools write/edit tracked by git integration watcher"
-      }
-    ],
-    "9": [
-      {
-        "id": 6,
-        "relevance": 0.75,
-        "reason": "Search tools (Glob/Grep) implement the Tool interface"
-      },
-      {
-        "id": 8,
-        "relevance": 0.72,
-        "reason": "file tools and search tools work together for codebase navigation"
-      },
-      {
-        "id": 36,
-        "relevance": 0.6,
-        "reason": "search tools navigate the git-tracked filesystem"
-      }
-    ],
-    "10": [
-      {
-        "id": 35,
-        "relevance": 0.83,
-        "reason": "MCP servers use OAuth/PKCE for authentication flow"
-      },
-      {
-        "id": 31,
-        "relevance": 0.78,
-        "reason": "MCP and plugin systems both provide extensibility points"
-      },
-      {
-        "id": 6,
-        "relevance": 0.7,
-        "reason": "MCP tools register through the same Tool interface"
-      },
-      {
-        "id": 34,
-        "relevance": 0.68,
-        "reason": "MCP transport layer shares WebSocket patterns with bridge"
-      },
-      {
-        "id": 42,
-        "relevance": 0.65,
-        "reason": "Agent SDK exposes MCP tool registration for entrypoints"
-      }
-    ],
-    "11": [
-      {
-        "id": 32,
-        "relevance": 0.75,
-        "reason": "skills can register via lifecycle hooks for discovery"
-      },
-      {
-        "id": 18,
-        "relevance": 0.73,
-        "reason": "skills register as slash commands in the commands system"
-      },
-      {
-        "id": 4,
-        "relevance": 0.72,
-        "reason": "system prompt includes skill frontmatter for discovery"
-      },
-      {
-        "id": 31,
-        "relevance": 0.65,
-        "reason": "skills can be distributed through the plugin marketplace"
-      }
-    ],
-    "12": [
-      {
-        "id": 13,
-        "relevance": 0.9,
-        "reason": "coordinator mode dispatches and manages subagents"
-      },
-      {
-        "id": 14,
-        "relevance": 0.88,
-        "reason": "swarm/teams are multi-agent architectures built on agent system"
-      },
-      {
-        "id": 49,
-        "relevance": 0.72,
-        "reason": "agent system spawns background tasks managed by task system"
-      },
-      {
-        "id": 42,
-        "relevance": 0.7,
-        "reason": "Agent SDK provides programmatic agent spawning entrypoints"
-      },
-      {
-        "id": 36,
-        "relevance": 0.65,
-        "reason": "git worktrees enable isolated agent filesystem branches"
-      }
-    ],
-    "13": [
-      {
-        "id": 12,
-        "relevance": 0.9,
-        "reason": "coordinator mode dispatches and manages subagents"
-      },
-      {
-        "id": 14,
-        "relevance": 0.85,
-        "reason": "coordinator dispatches workers; teams/swarm extend this pattern"
-      },
-      {
-        "id": 49,
-        "relevance": 0.68,
-        "reason": "coordinator tracks worker tasks through task system"
-      }
-    ],
-    "14": [
-      {
-        "id": 12,
-        "relevance": 0.88,
-        "reason": "swarm/teams are multi-agent architectures built on agent system"
-      },
-      {
-        "id": 13,
-        "relevance": 0.85,
-        "reason": "coordinator dispatches workers; teams/swarm extend this pattern"
-      },
-      {
-        "id": 43,
-        "relevance": 0.7,
-        "reason": "KAIROS daemon uses autonomous agent patterns from swarm"
-      },
-      {
-        "id": 23,
-        "relevance": 0.62,
-        "reason": "swarm tmux sessions use fullscreen terminal multiplexing"
-      }
-    ],
-    "15": [
-      {
-        "id": 16,
-        "relevance": 0.92,
-        "reason": "dreams and auto-memory consolidate the memory system"
-      },
-      {
-        "id": 28,
-        "relevance": 0.78,
-        "reason": "context compaction directly affects what stays in memory"
-      },
-      {
-        "id": 4,
-        "relevance": 0.77,
-        "reason": "system prompt injects CLAUDE.md and memory content"
-      },
-      {
-        "id": 27,
-        "relevance": 0.65,
-        "reason": "session memory persists across session management lifecycle"
-      },
-      {
-        "id": 43,
-        "relevance": 0.62,
-        "reason": "KAIROS daemon uses memory for autonomous context persistence"
-      }
-    ],
-    "16": [
-      {
-        "id": 15,
-        "relevance": 0.92,
-        "reason": "dreams and auto-memory consolidate the memory system"
-      },
-      {
-        "id": 43,
-        "relevance": 0.78,
-        "reason": "KAIROS uses kairos-memory for autonomous dream consolidation"
-      },
-      {
-        "id": 27,
-        "relevance": 0.62,
-        "reason": "auto-memory extracts insights from session transcripts"
-      }
-    ],
-    "17": [
-      {
-        "id": 50,
-        "relevance": 0.82,
-        "reason": "Ink renderer powers the REPL screen rendering pipeline"
-      },
-      {
-        "id": 24,
-        "relevance": 0.73,
-        "reason": "Ink renderer applies theme/visual styling to terminal UI"
-      },
-      {
-        "id": 3,
-        "relevance": 0.7,
-        "reason": "state management feeds Ink renderer for reactive terminal UI"
-      },
-      {
-        "id": 23,
-        "relevance": 0.7,
-        "reason": "fullscreen mode uses Ink alternate screen buffer"
-      },
-      {
-        "id": 19,
-        "relevance": 0.68,
-        "reason": "Ink renderer draws dialog UI components"
-      }
-    ],
-    "18": [
-      {
-        "id": 11,
-        "relevance": 0.73,
-        "reason": "skills register as slash commands in the commands system"
-      },
-      {
-        "id": 19,
-        "relevance": 0.65,
-        "reason": "slash commands can trigger dialog UI prompts"
-      },
-      {
-        "id": 50,
-        "relevance": 0.62,
-        "reason": "commands execute within the REPL input loop"
-      }
-    ],
-    "19": [
-      {
-        "id": 25,
-        "relevance": 0.72,
-        "reason": "dialog UI presents permission prompts to the user"
-      },
-      {
-        "id": 17,
-        "relevance": 0.68,
-        "reason": "Ink renderer draws dialog UI components"
-      },
-      {
-        "id": 18,
-        "relevance": 0.65,
-        "reason": "slash commands can trigger dialog UI prompts"
-      },
-      {
-        "id": 20,
-        "relevance": 0.6,
-        "reason": "dialog notifications and toasts share UI patterns"
-      }
-    ],
-    "20": [
-      {
-        "id": 17,
-        "relevance": 0.68,
-        "reason": "notifications render through Ink terminal UI layer"
-      },
-      {
-        "id": 19,
-        "relevance": 0.6,
-        "reason": "dialog notifications and toasts share UI patterns"
-      },
-      {
-        "id": 50,
-        "relevance": 0.58,
-        "reason": "notification priority queue integrates with REPL screen"
-      }
-    ],
-    "21": [
-      {
-        "id": 22,
-        "relevance": 0.88,
-        "reason": "Vim mode keybindings are part of the keybindings system"
-      },
-      {
-        "id": 50,
-        "relevance": 0.65,
-        "reason": "Vim mode state machine operates within the REPL input layer"
-      },
-      {
-        "id": 17,
-        "relevance": 0.58,
-        "reason": "Vim mode renders cursor/mode indicator through Ink"
-      }
-    ],
-    "22": [
-      {
-        "id": 21,
-        "relevance": 0.88,
-        "reason": "Vim mode keybindings are part of the keybindings system"
-      },
-      {
-        "id": 50,
-        "relevance": 0.62,
-        "reason": "keybindings handle REPL input events and chord sequences"
-      },
-      {
-        "id": 26,
-        "relevance": 0.58,
-        "reason": "keybindings are customized via settings configuration"
-      }
-    ],
-    "23": [
-      {
-        "id": 17,
-        "relevance": 0.7,
-        "reason": "fullscreen mode uses Ink alternate screen buffer"
-      },
-      {
-        "id": 50,
-        "relevance": 0.65,
-        "reason": "fullscreen mode is a REPL screen rendering variant"
-      },
-      {
-        "id": 14,
-        "relevance": 0.62,
-        "reason": "swarm tmux sessions use fullscreen terminal multiplexing"
-      }
-    ],
-    "24": [
-      {
-        "id": 17,
-        "relevance": 0.73,
-        "reason": "Ink renderer applies theme/visual styling to terminal UI"
-      },
-      {
-        "id": 26,
-        "relevance": 0.65,
-        "reason": "theme preferences stored in settings configuration"
-      },
-      {
-        "id": 50,
-        "relevance": 0.6,
-        "reason": "theme colors render in the REPL screen buffer"
-      },
-      {
-        "id": 40,
-        "relevance": 0.5,
-        "reason": "buddy uses theme colors for sprite rendering"
-      }
-    ],
-    "25": [
-      {
-        "id": 6,
-        "relevance": 0.88,
-        "reason": "permissions gate every tool execution via allow/deny/ask rules"
-      },
-      {
-        "id": 7,
-        "relevance": 0.85,
-        "reason": "Bash tool has 23 security validators enforced by permissions"
-      },
-      {
-        "id": 32,
-        "relevance": 0.85,
-        "reason": "hooks fire before permission checks in tool execution pipeline"
-      },
-      {
-        "id": 26,
-        "relevance": 0.8,
-        "reason": "permission rules are configured within settings cascade"
-      },
-      {
-        "id": 47,
-        "relevance": 0.77,
-        "reason": "sandbox security enforces permission boundaries at OS level"
-      }
-    ],
-    "26": [
-      {
-        "id": 32,
-        "relevance": 0.8,
-        "reason": "hook configuration lives in settings.json alongside other settings"
-      },
-      {
-        "id": 25,
-        "relevance": 0.8,
-        "reason": "permission rules are configured within settings cascade"
-      },
-      {
-        "id": 30,
-        "relevance": 0.75,
-        "reason": "migration system upgrades settings between versions"
-      },
-      {
-        "id": 46,
-        "relevance": 0.7,
-        "reason": "settings configure model aliases and provider allowlists"
-      },
-      {
-        "id": 4,
-        "relevance": 0.68,
-        "reason": "system prompt respects settings cascade for dynamic sections"
-      }
-    ],
-    "27": [
-      {
-        "id": 28,
-        "relevance": 0.82,
-        "reason": "session transcripts undergo compaction to manage context window"
-      },
-      {
-        "id": 36,
-        "relevance": 0.68,
-        "reason": "session management uses git watcher for filesystem tracking"
-      },
-      {
-        "id": 15,
-        "relevance": 0.65,
-        "reason": "session memory persists across session management lifecycle"
-      },
-      {
-        "id": 16,
-        "relevance": 0.62,
-        "reason": "auto-memory extracts insights from session transcripts"
-      }
-    ],
-    "28": [
-      {
-        "id": 2,
-        "relevance": 0.87,
-        "reason": "query engine triggers autocompact when context window fills"
-      },
-      {
-        "id": 27,
-        "relevance": 0.82,
-        "reason": "session transcripts undergo compaction to manage context window"
-      },
-      {
-        "id": 15,
-        "relevance": 0.78,
-        "reason": "context compaction directly affects what stays in memory"
-      },
-      {
-        "id": 48,
-        "relevance": 0.65,
-        "reason": "message pipeline interacts with compaction for context management"
-      }
-    ],
-    "29": [
-      {
-        "id": 44,
-        "relevance": 0.95,
-        "reason": "shared keywords: analytics, telemetry, datadog, growthbook, pii, sampling, event-queue, kill-switch, metadata-enrichment, feature-flags"
-      },
-      {
-        "id": 33,
-        "relevance": 0.6,
-        "reason": "telemetry captures error rates from error handling system"
-      },
-      {
-        "id": 46,
-        "relevance": 0.58,
-        "reason": "telemetry tracks model usage and provider metrics"
-      }
-    ],
-    "30": [
-      {
-        "id": 26,
-        "relevance": 0.75,
-        "reason": "migration system upgrades settings between versions"
-      },
-      {
-        "id": 31,
-        "relevance": 0.62,
-        "reason": "migrations handle plugin manifest version changes"
-      },
-      {
-        "id": 47,
-        "relevance": 0.58,
-        "reason": "migrations gate features behind version-based security checks"
-      }
-    ],
-    "31": [
-      {
-        "id": 32,
-        "relevance": 0.82,
-        "reason": "plugins can register lifecycle hooks for extensibility"
-      },
-      {
-        "id": 10,
-        "relevance": 0.78,
-        "reason": "MCP and plugin systems both provide extensibility points"
-      },
-      {
-        "id": 11,
-        "relevance": 0.65,
-        "reason": "skills can be distributed through the plugin marketplace"
-      },
-      {
-        "id": 30,
-        "relevance": 0.62,
-        "reason": "migrations handle plugin manifest version changes"
-      }
-    ],
-    "32": [
-      {
-        "id": 25,
-        "relevance": 0.85,
-        "reason": "hooks fire before permission checks in tool execution pipeline"
-      },
-      {
-        "id": 31,
-        "relevance": 0.82,
-        "reason": "plugins can register lifecycle hooks for extensibility"
-      },
-      {
-        "id": 6,
-        "relevance": 0.82,
-        "reason": "hooks intercept tool execution at pre/post lifecycle points"
-      },
-      {
-        "id": 26,
-        "relevance": 0.8,
-        "reason": "hook configuration lives in settings.json alongside other settings"
-      },
-      {
-        "id": 11,
-        "relevance": 0.75,
-        "reason": "skills can register via lifecycle hooks for discovery"
-      }
-    ],
-    "33": [
-      {
-        "id": 2,
-        "relevance": 0.78,
-        "reason": "query engine retry logic connects to error handling and recovery"
-      },
-      {
-        "id": 7,
-        "relevance": 0.65,
-        "reason": "Bash tool error handling feeds into recovery system"
-      },
-      {
-        "id": 29,
-        "relevance": 0.6,
-        "reason": "telemetry captures error rates from error handling system"
-      },
-      {
-        "id": 46,
-        "relevance": 0.6,
-        "reason": "error handling manages model provider fallback chains"
-      }
-    ],
-    "34": [
-      {
-        "id": 37,
-        "relevance": 0.75,
-        "reason": "bridge remote control routes through upstream proxy"
-      },
-      {
-        "id": 41,
-        "relevance": 0.73,
-        "reason": "bridge/CCR enables Ultraplan remote session control"
-      },
-      {
-        "id": 42,
-        "relevance": 0.7,
-        "reason": "Agent SDK entrypoints use bridge/CCR control protocol"
-      },
-      {
-        "id": 10,
-        "relevance": 0.68,
-        "reason": "MCP transport layer shares WebSocket patterns with bridge"
-      },
-      {
-        "id": 35,
-        "relevance": 0.6,
-        "reason": "OAuth JWT tokens authenticate bridge remote connections"
-      }
-    ],
-    "35": [
-      {
-        "id": 10,
-        "relevance": 0.83,
-        "reason": "MCP servers use OAuth/PKCE for authentication flow"
-      },
-      {
-        "id": 47,
-        "relevance": 0.68,
-        "reason": "OAuth token storage uses keychain from security system"
-      },
-      {
-        "id": 34,
-        "relevance": 0.6,
-        "reason": "OAuth JWT tokens authenticate bridge remote connections"
-      }
-    ],
-    "36": [
-      {
-        "id": 27,
-        "relevance": 0.68,
-        "reason": "session management uses git watcher for filesystem tracking"
-      },
-      {
-        "id": 12,
-        "relevance": 0.65,
-        "reason": "git worktrees enable isolated agent filesystem branches"
-      },
-      {
-        "id": 8,
-        "relevance": 0.62,
-        "reason": "file tools write/edit tracked by git integration watcher"
-      },
-      {
-        "id": 9,
-        "relevance": 0.6,
-        "reason": "search tools navigate the git-tracked filesystem"
-      }
-    ],
-    "37": [
-      {
-        "id": 34,
-        "relevance": 0.75,
-        "reason": "bridge remote control routes through upstream proxy"
-      },
-      {
-        "id": 47,
-        "relevance": 0.65,
-        "reason": "proxy TLS/MITM inspection relates to security sandbox"
-      },
-      {
-        "id": 46,
-        "relevance": 0.6,
-        "reason": "proxy can route between model providers"
-      },
-      {
-        "id": 85,
-        "relevance": 0.75,
-        "reason": "L85 adds CLAUDE_BG_BACKEND=daemon and autoAddRemoteControlDaemonWorker — the env gate for the always-on local worker this Remote Control bridge feeds into"
-      }
-    ],
-    "38": [
-      {
-        "id": 43,
-        "relevance": 0.72,
-        "reason": "cron scheduling powers KAIROS daemon recurring tasks"
-      },
-      {
-        "id": 49,
-        "relevance": 0.7,
-        "reason": "cron/task scheduling overlaps with background task system"
-      },
-      {
-        "id": 41,
-        "relevance": 0.6,
-        "reason": "Ultraplan polling interval resembles cron scheduling"
-      },
-      {
-        "id": 12,
-        "relevance": 0.58,
-        "reason": "scheduled tasks can spawn agent instances"
-      }
-    ],
-    "39": [
-      {
-        "id": 45,
-        "relevance": 0.65,
-        "reason": "voice input integrates with desktop app for push-to-talk"
-      },
-      {
-        "id": 50,
-        "relevance": 0.6,
-        "reason": "voice input feeds into the REPL input layer"
-      },
-      {
-        "id": 34,
-        "relevance": 0.55,
-        "reason": "voice WebSocket streaming shares patterns with bridge"
-      }
-    ],
-    "40": [
-      {
-        "id": 17,
-        "relevance": 0.6,
-        "reason": "buddy companion renders sprites through Ink renderer"
-      },
-      {
-        "id": 50,
-        "relevance": 0.55,
-        "reason": "buddy displays within the REPL screen easter egg"
-      },
-      {
-        "id": 24,
-        "relevance": 0.5,
-        "reason": "buddy uses theme colors for sprite rendering"
-      }
-    ],
-    "41": [
-      {
-        "id": 34,
-        "relevance": 0.73,
-        "reason": "bridge/CCR enables Ultraplan remote session control"
-      },
-      {
-        "id": 43,
-        "relevance": 0.65,
-        "reason": "Ultraplan and KAIROS both manage long-running remote sessions"
-      },
-      {
-        "id": 38,
-        "relevance": 0.6,
-        "reason": "Ultraplan polling interval resembles cron scheduling"
-      }
-    ],
-    "42": [
-      {
-        "id": 1,
-        "relevance": 0.8,
-        "reason": "boot entrypoints and SDK share CLI bootstrap logic"
-      },
-      {
-        "id": 12,
-        "relevance": 0.7,
-        "reason": "Agent SDK provides programmatic agent spawning entrypoints"
-      },
-      {
-        "id": 34,
-        "relevance": 0.7,
-        "reason": "Agent SDK entrypoints use bridge/CCR control protocol"
-      },
-      {
-        "id": 45,
-        "relevance": 0.68,
-        "reason": "desktop app uses Agent SDK entrypoints for IDE integration"
-      },
-      {
-        "id": 10,
-        "relevance": 0.65,
-        "reason": "Agent SDK exposes MCP tool registration for entrypoints"
-      }
-    ],
-    "43": [
-      {
-        "id": 16,
-        "relevance": 0.78,
-        "reason": "KAIROS uses kairos-memory for autonomous dream consolidation"
-      },
-      {
-        "id": 38,
-        "relevance": 0.72,
-        "reason": "cron scheduling powers KAIROS daemon recurring tasks"
-      },
-      {
-        "id": 14,
-        "relevance": 0.7,
-        "reason": "KAIROS daemon uses autonomous agent patterns from swarm"
-      },
-      {
-        "id": 41,
-        "relevance": 0.65,
-        "reason": "Ultraplan and KAIROS both manage long-running remote sessions"
-      },
-      {
-        "id": 15,
-        "relevance": 0.62,
-        "reason": "KAIROS daemon uses memory for autonomous context persistence"
-      },
-      {
-        "id": 85,
-        "relevance": 0.95,
-        "reason": "L85's CLAUDE_BG_BACKEND=daemon env var is the first binary-shipped public surface of the KAIROS daemon architecture documented here; April 2026 npm source-map leak externally corroborated KAIROS=daemon."
-      }
-    ],
-    "44": [
-      {
-        "id": 29,
-        "relevance": 0.95,
-        "reason": "shared keywords: analytics, telemetry, datadog, growthbook, pii, sampling, event-queue, kill-switch, metadata-enrichment, feature-flags"
-      },
-      {
-        "id": 46,
-        "relevance": 0.7,
-        "reason": "cost analytics tracks spending per model provider"
-      },
-      {
-        "id": 2,
-        "relevance": 0.62,
-        "reason": "cost analytics monitors query engine API call costs"
-      }
-    ],
-    "45": [
-      {
-        "id": 42,
-        "relevance": 0.68,
-        "reason": "desktop app uses Agent SDK entrypoints for IDE integration"
-      },
-      {
-        "id": 39,
-        "relevance": 0.65,
-        "reason": "voice input integrates with desktop app for push-to-talk"
-      },
-      {
-        "id": 34,
-        "relevance": 0.6,
-        "reason": "desktop deep-links connect through bridge protocol"
-      }
-    ],
-    "46": [
-      {
-        "id": 2,
-        "relevance": 0.72,
-        "reason": "model system configures which LLM the query engine calls"
-      },
-      {
-        "id": 44,
-        "relevance": 0.7,
-        "reason": "cost analytics tracks spending per model provider"
-      },
-      {
-        "id": 26,
-        "relevance": 0.7,
-        "reason": "settings configure model aliases and provider allowlists"
-      },
-      {
-        "id": 33,
-        "relevance": 0.6,
-        "reason": "error handling manages model provider fallback chains"
-      },
-      {
-        "id": 37,
-        "relevance": 0.6,
-        "reason": "proxy can route between model providers"
-      }
-    ],
-    "47": [
-      {
-        "id": 7,
-        "relevance": 0.8,
-        "reason": "Bash sandboxing uses seatbelt/bubblewrap from security system"
-      },
-      {
-        "id": 25,
-        "relevance": 0.77,
-        "reason": "sandbox security enforces permission boundaries at OS level"
-      },
-      {
-        "id": 35,
-        "relevance": 0.68,
-        "reason": "OAuth token storage uses keychain from security system"
-      },
-      {
-        "id": 37,
-        "relevance": 0.65,
-        "reason": "proxy TLS/MITM inspection relates to security sandbox"
-      },
-      {
-        "id": 30,
-        "relevance": 0.58,
-        "reason": "migrations gate features behind version-based security checks"
-      }
-    ],
-    "48": [
-      {
-        "id": 2,
-        "relevance": 0.75,
-        "reason": "message pipeline normalizes input before query engine processing"
-      },
-      {
-        "id": 5,
-        "relevance": 0.73,
-        "reason": "architecture overview covers the message processing data flow"
-      },
-      {
-        "id": 28,
-        "relevance": 0.65,
-        "reason": "message pipeline interacts with compaction for context management"
-      },
-      {
-        "id": 6,
-        "relevance": 0.62,
-        "reason": "message pipeline transforms tool results for API format"
-      }
-    ],
-    "49": [
-      {
-        "id": 12,
-        "relevance": 0.72,
-        "reason": "agent system spawns background tasks managed by task system"
-      },
-      {
-        "id": 38,
-        "relevance": 0.7,
-        "reason": "cron/task scheduling overlaps with background task system"
-      },
-      {
-        "id": 13,
-        "relevance": 0.68,
-        "reason": "coordinator tracks worker tasks through task system"
-      }
-    ],
-    "50": [
-      {
-        "id": 17,
-        "relevance": 0.82,
-        "reason": "Ink renderer powers the REPL screen rendering pipeline"
-      },
-      {
-        "id": 3,
-        "relevance": 0.75,
-        "reason": "state management drives REPL render tree via useSyncExternalStore"
-      },
-      {
-        "id": 1,
-        "relevance": 0.7,
-        "reason": "boot sequence launches the REPL as final startup step"
-      },
-      {
-        "id": 23,
-        "relevance": 0.65,
-        "reason": "fullscreen mode is a REPL screen rendering variant"
-      },
-      {
-        "id": 21,
-        "relevance": 0.65,
-        "reason": "Vim mode state machine operates within the REPL input layer"
-      },
-      {
-        "id": 75,
-        "relevance": 0.7,
-        "reason": "L75 introduces REPL mode as a variant of the REPL screen"
-      }
-    ],
-    "51": [
-      {
-        "id": 2,
-        "relevance": 0.8,
-        "reason": "effortValue flows through the query engine as a distinct API parameter"
-      },
-      {
-        "id": 55,
-        "relevance": 0.72,
-        "reason": "advisor model setting lives in the same env-vars / session config lesson"
-      }
-    ],
-    "52": [
-      {
-        "id": 7,
-        "relevance": 0.78,
-        "reason": "file checkpointing wraps every Bash/edit tool write with a snapshot"
-      },
-      {
-        "id": 8,
-        "relevance": 0.75,
-        "reason": "file tools (Write/Edit) are the primary triggers for checkpoint creation"
-      }
-    ],
-    "53": [
-      {
-        "id": 57,
-        "relevance": 0.85,
-        "reason": "v2.1.92 confirms /teleport is present; implementation unchanged"
-      },
-      {
-        "id": 41,
-        "relevance": 0.7,
-        "reason": "bridge/remote infrastructure underpins the teleport session transfer"
-      }
-    ],
-    "54": [
-      {
-        "id": 12,
-        "relevance": 0.78,
-        "reason": "/branch spawns a fork subagent — relates to the full agent system"
-      },
-      {
-        "id": 52,
-        "relevance": 0.65,
-        "reason": "both /rewind and /branch let users recover from an unwanted path"
-      }
-    ],
-    "55": [
-      {
-        "id": 27,
-        "relevance": 0.75,
-        "reason": "session resume builds on the session management subsystem"
-      },
-      {
-        "id": 58,
-        "relevance": 0.7,
-        "reason": "v2.1.92 adds more env vars; Lesson 55 covers the v2.1.90 batch"
-      }
-    ],
-    "56": [
-      {
-        "id": 28,
-        "relevance": 0.8,
-        "reason": "/autocompact directly configures the context compaction subsystem"
-      },
-      {
-        "id": 19,
-        "relevance": 0.65,
-        "reason": "/buddy injects a companion system prompt — relates to memory/prompt injection"
-      }
-    ],
-    "57": [
-      {
-        "id": 53,
-        "relevance": 0.85,
-        "reason": "/teleport full implementation is in Lesson 53; L57 confirms presence in v2.1.92"
-      },
-      {
-        "id": 58,
-        "relevance": 0.78,
-        "reason": "L57 and L58 both document v2.1.92 changes — read together"
-      }
-    ],
-    "58": [
-      {
-        "id": 55,
-        "relevance": 0.78,
-        "reason": "L55 covers v2.1.90 env vars; L58 continues with v2.1.92 additions"
-      },
-      {
-        "id": 41,
-        "relevance": 0.72,
-        "reason": "CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX configures the bridge/remote system"
-      }
-    ],
-    "59": [
-      {
-        "id": 6,
-        "relevance": 0.88,
-        "reason": "L6 covers the tool system architecture that AskUserQuestionTool implements"
-      },
-      {
-        "id": 5,
-        "relevance": 0.82,
-        "reason": "L5 documents the permission pipeline including requiresUserInteraction tools"
-      },
-      {
-        "id": 21,
-        "relevance": 0.7,
-        "reason": "L21 covers Plan Mode; AskUserQuestion has specific Plan Mode restrictions"
-      }
-    ],
-    "60": [
-      {
-        "id": 18,
-        "relevance": 0.9,
-        "reason": "L18 covers the commands system that /autofix-pr and /team-onboarding plug into"
-      },
-      {
-        "id": 34,
-        "relevance": 0.82,
-        "reason": "/autofix-pr depends on remote-session infrastructure rather than local-only command execution"
-      },
-      {
-        "id": 85,
-        "relevance": 0.5,
-        "reason": "L85's Remote Workflow sunset leaves /autofix-pr (L60) as the surviving remote-spawn command"
-      }
-    ],
-    "61": [
-      {
-        "id": 46,
-        "relevance": 0.88,
-        "reason": "CLAUDE_CODE_USE_MANTLE adds a new provider path inside the model/provider system"
-      },
-      {
-        "id": 10,
-        "relevance": 0.76,
-        "reason": "CLAUDE_CODE_MCP_ALLOWLIST_ENV changes how MCP environments are gated and exposed"
-      },
-      {
-        "id": 47,
-        "relevance": 0.72,
-        "reason": "CLAUDE_CODE_SANDBOXED alters trust and sandbox acceptance behavior"
-      }
-    ],
-    "62": [
-      {
-        "id": 16,
-        "relevance": 0.95,
-        "reason": "L16 covers auto-memory and dreams infrastructure; L62 is the user-facing /dream command"
-      },
-      {
-        "id": 15,
-        "relevance": 0.88,
-        "reason": "L15 covers memory system architecture; /dream reads and writes the same memory files"
-      },
-      {
-        "id": 49,
-        "relevance": 0.8,
-        "reason": "DreamTask is one of the task types documented in L49's task system"
-      },
-      {
-        "id": 38,
-        "relevance": 0.7,
-        "reason": "/dream nightly uses RemoteTrigger cron scheduling from L38"
-      },
-      {
-        "id": 68,
-        "relevance": 0.9,
-        "reason": "GrowthBook flag evaluation mechanism (E_() function, override paths, remote-eval mode) explains why /dream isEnabled gate blocks"
-      }
-    ],
-    "63": [
-      {
-        "id": 8,
-        "relevance": 0.9,
-        "reason": "Perforce mode adds read-only guards to Edit/Write/NotebookEdit file tools from L8"
-      },
-      {
-        "id": 7,
-        "relevance": 0.82,
-        "reason": "Script caps limit Bash tool execution counts; L7 covers the Bash tool architecture"
-      },
-      {
-        "id": 47,
-        "relevance": 0.75,
-        "reason": "Script caps are part of the broader sandbox/security hardening from L47"
-      },
-      {
-        "id": 36,
-        "relevance": 0.68,
-        "reason": "Perforce VCS detection extends the git integration system from L36"
-      }
-    ],
-    "64": [
-      {
-        "id": 56,
-        "relevance": 0.88,
-        "reason": "L56 documents /buddy implementation; L64 records its complete removal in v2.1.97"
-      },
-      {
-        "id": 46,
-        "relevance": 0.82,
-        "reason": "Custom model capabilities and /setup-vertex extend the model/provider system from L46"
-      },
-      {
-        "id": 57,
-        "relevance": 0.75,
-        "reason": "/setup-vertex is companion to /setup-bedrock added in v2.1.92 (L57)"
-      },
-      {
-        "id": 55,
-        "relevance": 0.7,
-        "reason": "L55 covers v2.1.90 env vars; L64 continues with v2.1.97-v2.1.100 additions and removals"
-      }
-    ],
-    "65": [
-      {
-        "id": 43,
-        "relevance": 0.82,
-        "reason": "KAIROS proactive mode and away_summary both inject autonomous system messages"
-      },
-      {
-        "id": 2,
-        "relevance": 0.75,
-        "reason": "away_summary uses a forked query engine call with constrained parameters"
-      },
-      {
-        "id": 48,
-        "relevance": 0.7,
-        "reason": "away_summary message injection extends the message processing pipeline"
-      },
-      {
-        "id": 50,
-        "relevance": 0.65,
-        "reason": "terminal focus detection for away_summary operates within the REPL layer"
-      },
-      {
-        "id": 72,
-        "relevance": 0.95,
-        "reason": "L72 adds on-demand /recap command using the same away summary infrastructure"
-      }
-    ],
-    "66": [
-      {
-        "id": 37,
-        "relevance": 0.88,
-        "reason": "proxy/upstream system shares TLS cert infrastructure with the new cert store"
-      },
-      {
-        "id": 35,
-        "relevance": 0.72,
-        "reason": "OAuth/PKCE authentication uses the same TLS connections configured by cert store"
-      },
-      {
-        "id": 26,
-        "relevance": 0.7,
-        "reason": "cert store cache is invalidated on settings reload via the settings cascade"
-      },
-      {
-        "id": 10,
-        "relevance": 0.65,
-        "reason": "MCP WebSocket connections use MN() which reads certs from the cert store"
-      }
-    ],
-    "67": [
-      {
-        "id": 38,
-        "relevance": 0.9,
-        "reason": "dynamic loop pacing extends the cron scheduling system from L38"
-      },
-      {
-        "id": 43,
-        "relevance": 0.82,
-        "reason": "loop aging uses recurringMaxAgeMs from KAIROS daemon configuration"
-      },
-      {
-        "id": 59,
-        "relevance": 0.75,
-        "reason": "cloud-first offering uses AskUserQuestion tool documented in L59"
-      },
-      {
-        "id": 18,
-        "relevance": 0.7,
-        "reason": "/loops is a new local-jsx command; L18 covers the commands system architecture"
-      }
-    ],
-    "68": [
-      {
-        "id": 64,
-        "relevance": 0.88,
-        "reason": "L64 covers v2.1.97-v2.1.100 changes; L68 continues with v2.1.101"
-      },
-      {
-        "id": 42,
-        "relevance": 0.78,
-        "reason": "SDK OAuth refresh and SDK observability extend the Agent SDK entrypoints from L42"
-      },
-      {
-        "id": 35,
-        "relevance": 0.72,
-        "reason": "OAuth token refresh flow builds on the authentication system from L35"
-      },
-      {
-        "id": 10,
-        "relevance": 0.65,
-        "reason": "MCP registry changes affect MCP server discovery from L10"
-      },
-      {
-        "id": 62,
-        "relevance": 0.85,
-        "reason": "GrowthBook flag tengu_kairos_dream gates /dream command; L68 documents full GrowthBook evaluation internals"
-      },
-      {
-        "id": 76,
-        "relevance": 0.88,
-        "reason": "L76 continues version-change documentation for v2.1.107-v2.1.109"
-      },
-      {
-        "id": 85,
-        "relevance": 0.5,
-        "reason": "L85 shows /update actively iterating (module hash churn, new refusal paths) despite still being isEnabled:()=>false from L68 — daemon-mode may be the delivery vehicle"
-      }
-    ],
-    "69": [
-      {
-        "id": 2,
-        "relevance": 0.92,
-        "reason": "context collapse is step 4 in the compaction pipeline documented in L2 (Query Engine)"
-      },
-      {
-        "id": 28,
-        "relevance": 0.88,
-        "reason": "marble-origami persistence complements the autocompact and snipCompact strategies from L28"
-      },
-      {
-        "id": 3,
-        "relevance": 0.75,
-        "reason": "collapse state is persisted in session JSONL; L3 covers the state management layer"
-      },
-      {
-        "id": 65,
-        "relevance": 0.6,
-        "reason": "both L65 (away summary) and L69 (context collapse) write custom entry types to session JSONL"
-      }
-    ],
-    "70": [
-      {
-        "id": 2,
-        "relevance": 0.92,
-        "reason": "streaming fallback is part of the query engine's error recovery pipeline"
-      },
-      {
-        "id": 33,
-        "relevance": 0.82,
-        "reason": "partial yield protection extends the error handling and recovery system"
-      },
-      {
-        "id": 29,
-        "relevance": 0.7,
-        "reason": "new telemetry events (tier field, partial_yield cause) feed into analytics"
-      },
-      {
-        "id": 74,
-        "relevance": 0.92,
-        "reason": "L74 adds byte-level stream watchdog, counterpart to the event-level watchdog in L70"
-      }
-    ],
-    "71": [
-      {
-        "id": 4,
-        "relevance": 0.9,
-        "reason": "system prompt section rename directly modifies the assembled system prompt"
-      },
-      {
-        "id": 46,
-        "relevance": 0.72,
-        "reason": "rename is model-gated (opus-4-6 only), relating to model system configuration"
-      },
-      {
-        "id": 68,
-        "relevance": 0.65,
-        "reason": "quiet_salted_ember is a clientDataCache flag, distinct from GrowthBook flags in L68"
-      }
-    ],
-    "72": [
-      {
-        "id": 65,
-        "relevance": 0.95,
-        "reason": "L65 documents the passive away summary system; L72 adds the on-demand /recap command using the same infrastructure"
-      },
-      {
-        "id": 18,
-        "relevance": 0.72,
-        "reason": "/recap registers as a slash command in the commands system from L18"
-      },
-      {
-        "id": 26,
-        "relevance": 0.68,
-        "reason": "awaySummaryEnabled setting toggle lives in the settings cascade from L26"
-      }
-    ],
-    "73": [
-      {
-        "id": 36,
-        "relevance": 0.82,
-        "reason": "multi-repo checkout extends git integration with branch watching across multiple repos"
-      },
-      {
-        "id": 37,
-        "relevance": 0.85,
-        "reason": "multi-repo checkout is CCR v2 remote infrastructure; branch data flows to CCR server via external_metadata"
-      },
-      {
-        "id": 12,
-        "relevance": 0.7,
-        "reason": "multi-repo support enables agents to operate across multiple repository checkouts"
-      },
-      {
-        "id": 18,
-        "relevance": 0.72,
-        "reason": "TQ1() merge-base resolution feeds into Write/Edit tool diff generation"
-      }
-    ],
-    "74": [
-      {
-        "id": 70,
-        "relevance": 0.95,
-        "reason": "L70 documents event-level stream watchdog and partial yield protection; L74 adds the byte-level counterpart"
-      },
-      {
-        "id": 2,
-        "relevance": 0.82,
-        "reason": "byte watchdog wraps the fetch layer used by the query engine's streaming pipeline"
-      },
-      {
-        "id": 33,
-        "relevance": 0.7,
-        "reason": "byte watchdog timeout feeds into the error handling and recovery system"
-      }
-    ],
-    "75": [
-      {
-        "id": 50,
-        "relevance": 0.88,
-        "reason": "REPL mode is a variant of the REPL screen documented in L50"
-      },
-      {
-        "id": 2,
-        "relevance": 0.78,
-        "reason": "REPL VM provides haiku()/opus()/sonnet() model sampling functions that invoke the query engine"
-      },
-      {
-        "id": 6,
-        "relevance": 0.75,
-        "reason": "REPL mode restricts tool set via OkH then re-injects tools into the VM via G47()/U4H()"
-      },
-      {
-        "id": 32,
-        "relevance": 0.7,
-        "reason": "REPL mode is compaction-aware — warns when VM state is cleared during context compaction"
-      }
-    ],
-    "76": [
-      {
-        "id": 68,
-        "relevance": 0.9,
-        "reason": "L68 covers v2.1.101 changes; L76 continues with v2.1.107-v2.1.109 changes"
-      },
-      {
-        "id": 64,
-        "relevance": 0.82,
-        "reason": "L64 covers v2.1.97-v2.1.100 changes; L76 is the next version change catch-all"
-      },
-      {
-        "id": 42,
-        "relevance": 0.72,
-        "reason": "managed-agents-2026-04-01 beta string and 33 embedded docs relate to Agent SDK entrypoints from L42"
-      },
-      {
-        "id": 11,
-        "relevance": 0.75,
-        "reason": "managed-agents docs are embedded as a built-in skill (claude-api); language detection via ZU5 parallels the skills system from L11"
-      },
-      {
-        "id": 2,
-        "relevance": 0.7,
-        "reason": "rate limit upgrade paths and HS9() unified header parsing interact with the query engine's response handling"
-      }
-    ],
-    "77": [
-      {
-        "id": 73,
-        "relevance": 0.92,
-        "reason": "L77 Remote Workflows are CCR v2 sessions; L73 documents CCR v2 multi-repo infrastructure"
-      },
-      {
-        "id": 34,
-        "relevance": 0.8,
-        "reason": "Remote sessions use the Remote Control bridge from L34"
-      },
-      {
-        "id": 79,
-        "relevance": 0.78,
-        "reason": "Remote Workflows often pair with PushNotification for 'pings you when it needs you' flow"
-      },
-      {
-        "id": 41,
-        "relevance": 0.72,
-        "reason": "ULTRAPLAN is the earlier remote-session pattern that informed Remote Workflows"
-      },
-      {
-        "id": 83,
-        "relevance": 0.68,
-        "reason": "CCR-hosted remote sessions may get server-overridden system prompts via the mechanism in L83"
-      },
-      {
-        "id": 85,
-        "relevance": 0.95,
-        "reason": "L85 documents the v2.1.113 sunset of all five Remote Workflow Commands described here"
-      }
-    ],
-    "78": [
-      {
-        "id": 2,
-        "relevance": 0.82,
-        "reason": "Advisor Tool injects server_tool_use / advisor_tool_result content blocks into the query engine's streaming response"
-      },
-      {
-        "id": 46,
-        "relevance": 0.8,
-        "reason": "Advisor is strictly gated to opus-4-6 / opus-4-7 / sonnet-4-6 per the model system's allow-list logic"
-      },
-      {
-        "id": 80,
-        "relevance": 0.75,
-        "reason": "Both L78 and L80 are server-driven behavioral modifications — read together as the 'server takes the wheel' cluster"
-      },
-      {
-        "id": 83,
-        "relevance": 0.68,
-        "reason": "Advisor's behavior pairs with System Prompt GB Override — both let the server alter primary-model behavior"
-      },
-      {
-        "id": 29,
-        "relevance": 0.65,
-        "reason": "Advisor enablement flows through GrowthBook gate tengu_sage_compass2 per L29 telemetry/flag infrastructure"
-      }
-    ],
-    "79": [
-      {
-        "id": 43,
-        "relevance": 0.9,
-        "reason": "KAIROS is the always-on daemon from L43; PushNotification is the tool interface to it"
-      },
-      {
-        "id": 77,
-        "relevance": 0.8,
-        "reason": "Remote Workflows use PushNotification to ping the user when long-running cloud sessions need input"
-      },
-      {
-        "id": 34,
-        "relevance": 0.75,
-        "reason": "PushNotification routes through the Remote Control bridge (L34) before reaching KAIROS"
-      },
-      {
-        "id": 20,
-        "relevance": 0.65,
-        "reason": "PushNotification complements the local notification system (L20) — one is transactional, the other is in-session"
-      },
-      {
-        "id": 85,
-        "relevance": 0.5,
-        "reason": "L85's daemon-mode gate complements the mobile push infrastructure of L79 — both are moves toward an always-on local posture"
-      }
-    ],
-    "80": [
-      {
-        "id": 28,
-        "relevance": 0.92,
-        "reason": "Context Hint triggers keep-recent micro-compaction — extends the compaction system from L28 with a server-driven trigger"
-      },
-      {
-        "id": 2,
-        "relevance": 0.88,
-        "reason": "Context Hint signals arrive as HTTP status codes and SSE errors on the query engine's streaming response"
-      },
-      {
-        "id": 78,
-        "relevance": 0.75,
-        "reason": "Both L78 and L80 are server-driven behavioral modifications — paired in the 'server takes the wheel' narrative"
-      },
-      {
-        "id": 33,
-        "relevance": 0.72,
-        "reason": "422/424/409/529 responses feed into the error handling pipeline from L33 with compact-and-retry semantics"
-      },
-      {
-        "id": 69,
-        "relevance": 0.65,
-        "reason": "Context Hint compaction is distinct from marble-origami reversible collapse (L69); read together to understand all compaction pathways"
-      }
-    ],
-    "81": [
-      {
-        "id": 23,
-        "relevance": 0.95,
-        "reason": "L23 documents fullscreen / alt-screen architecture; L81 adds the /focus /tui commands and 5-tier activation precedence"
-      },
-      {
-        "id": 17,
-        "relevance": 0.72,
-        "reason": "Fullscreen rendering uses the Ink renderer from L17 with alt-screen buffer flip"
-      },
-      {
-        "id": 22,
-        "relevance": 0.65,
-        "reason": "Fullscreen mode interacts with keybindings (L22) — input handling changes in alt-screen mode"
-      },
-      {
-        "id": 84,
-        "relevance": 0.6,
-        "reason": "/focus and /tui are among the new slash commands tabulated in L84"
-      },
-      {
-        "id": 85,
-        "relevance": 0.55,
-        "reason": "L85 adds CLAUDE_CODE_DECSTBM + tengu_marlin_porch for scrolling-region support in the fullscreen TUI"
-      }
-    ],
-    "82": [
-      {
-        "id": 37,
-        "relevance": 0.9,
-        "reason": "L37 documents the upstream proxy system; L82 adds a user-defined shell-command helper for rotating proxy credentials"
-      },
-      {
-        "id": 26,
-        "relevance": 0.75,
-        "reason": "Proxy auth helper is a settings.json key subject to L26's workspace-trust model"
-      },
-      {
-        "id": 66,
-        "relevance": 0.65,
-        "reason": "Both L82 and L66 (CA cert store) are enterprise-network features — related configuration surface"
-      }
-    ],
-    "83": [
-      {
-        "id": 4,
-        "relevance": 0.92,
-        "reason": "L4 covers system prompt construction; L83 adds GB override, append-subagent, and verified-vs-assumed layers"
-      },
-      {
-        "id": 71,
-        "relevance": 0.78,
-        "reason": "L71 is an earlier system-prompt gated rename (quiet_salted_ember); same 'server mutates prompt' pattern"
-      },
-      {
-        "id": 12,
-        "relevance": 0.72,
-        "reason": "append-subagent-prompt applies to subagent dispatches from the agent system L12"
-      },
-      {
-        "id": 77,
-        "relevance": 0.68,
-        "reason": "System prompt GB override is gated on CLAUDE_CODE_REMOTE — primarily runs inside CCR v2 Remote Workflows from L77"
-      },
-      {
-        "id": 78,
-        "relevance": 0.65,
-        "reason": "Both L78 and L83 are server-controlled behavioral overrides; read together"
-      }
-    ],
-    "84": [
-      {
-        "id": 76,
-        "relevance": 0.9,
-        "reason": "L76 covers v2.1.107-v2.1.109 changes; L84 continues the pattern with v2.1.110-v2.1.111 changes"
-      },
-      {
-        "id": 68,
-        "relevance": 0.82,
-        "reason": "L68 covers v2.1.101 changes; L84 is the next catch-all"
-      },
-      {
-        "id": 31,
-        "relevance": 0.7,
-        "reason": "Background plugin refresh (L84) extends the plugin system from L31"
-      },
-      {
-        "id": 11,
-        "relevance": 0.65,
-        "reason": "/less-permission-prompts is a built-in skill/command; coexists with user-installed skills per L11 precedence rules"
-      },
-      {
-        "id": 85,
-        "relevance": 0.9,
-        "reason": "L85 is the next per-release catch-all, covering v2.1.112-v2.1.113 command and env-var changes"
-      }
-    ],
-    "85": [
-      {
-        "id": 77,
-        "relevance": 0.95,
-        "reason": "L85 documents the sunset of the 5 Remote Workflow Commands introduced in L77 (v2.1.110); read L77 for how they worked, L85 for what was removed and why that matters"
-      },
-      {
-        "id": 84,
-        "relevance": 0.9,
-        "reason": "L85 continues the per-release catch-all pattern established by L84 (v2.1.110-v2.1.111); together they document the full v2.1.110-v2.1.113 command/env-var delta"
-      },
-      {
-        "id": 60,
-        "relevance": 0.7,
-        "reason": "L60's /autofix-pr is the surviving Remote Workflow command — read together to see which remote commands persist vs. were sunset"
-      },
-      {
-        "id": 81,
-        "relevance": 0.65,
-        "reason": "L85's CLAUDE_CODE_DECSTBM + tengu_marlin_porch extends the Fullscreen TUI machinery documented in L81"
-      },
-      {
-        "id": 73,
-        "relevance": 0.6,
-        "reason": "L73 CCR v2 multi-repo infrastructure survives the L85 sunset — the scaffolding remains even though L77's user-facing commands were removed"
-      },
-      {
-        "id": 6,
-        "relevance": 0.55,
-        "reason": "L85's CLAUDE_ASYNC_AGENT_STALL_TIMEOUT_MS is an async-agent watchdog; L6 is the agent system canonical reference"
-      },
-      {
-        "id": 37,
-        "relevance": 0.75,
-        "reason": "Remote Control bridge the daemon worker is expected to plug into; autoAddRemoteControlDaemonWorker sits alongside L37's remoteControlAtStartup as a second ingress for the same persistent worker"
-      },
-      {
-        "id": 43,
-        "relevance": 0.95,
-        "reason": "L43 IS the KAIROS always-on autonomous daemon architecture; L85's CLAUDE_BG_BACKEND=daemon is plausibly the first binary-reachable public surface of that subsystem. Read L43 first, then L85."
-      },
-      {
-        "id": 79,
-        "relevance": 0.5,
-        "reason": "Mobile push pipeline requires a background worker reachable when no TTY is attached — daemon-mode env gate makes that explicit"
-      }
-    ],
-    "86": [
-      {
-        "id": 85,
-        "relevance": 0.8,
-        "reason": "L85 and L86 are sequential per-release catch-alls; L86's CLAUDE_CODE_RETRY_WATCHDOG fits L85's instrumentation-for-unattended-operation theme and only activates on L85's daemon/remote entrypoint"
-      },
-      {
-        "id": 66,
-        "relevance": 0.7,
-        "reason": "L66 Proxy Auth Helper handles Anthropic auth proxying; L86 documents the separate CLAUDE_CODE_HTTP(S)_PROXY fallback chain for network-layer proxies"
-      },
-      {
-        "id": 73,
-        "relevance": 0.7,
-        "reason": "L86's CLAUDE_CODE_RETRY_WATCHDOG gates on CLAUDE_CODE_ENTRYPOINT set to 'remote', which is the CCR v2 remote-session entrypoint documented in L73"
-      },
-      {
-        "id": 37,
-        "relevance": 0.55,
-        "reason": "Remote Control bridge is the other ingress for unattended operation; L86's retry watchdog protects the same class of long-lived remote sessions"
-      },
-      {
-        "id": 84,
-        "relevance": 0.5,
-        "reason": "L84 is the prior per-release catch-all; L86 continues the pattern"
-      },
-      {
-        "id": 11,
-        "relevance": 0.4,
-        "reason": "L11 Skills System was re-verified against the same v2.1.116 bundle as L86; both are v2.9.x work"
-      }
-    ],
-    "87": [
-      {
-        "id": 11,
-        "relevance": 0.88,
-        "reason": "Skills' context:'fork' frontmatter field (accepted in v2.1.116 per L11) now actually dispatches to the new fork subagent type introduced in L87"
-      },
-      {
-        "id": 6,
-        "relevance": 0.85,
-        "reason": "L87 introduces a new implicit 'fork' subagent type — extends the agent system (L6) with a non-user-selectable agent triggered by omitting subagent_type"
-      },
-      {
-        "id": 29,
-        "relevance": 0.7,
-        "reason": "Fork subagent uses permissionMode:'bubble' — child permission prompts bubble up via the L29 permission pipeline"
-      },
-      {
-        "id": 85,
-        "relevance": 0.65,
-        "reason": "L85 is the prior per-release catch-all; L87 continues the pattern"
-      },
-      {
-        "id": 74,
-        "relevance": 0.55,
-        "reason": "tengu_byte_watchdog_fired_late added in L87 measures stall cases the byte watchdog (L74) catches late"
-      },
-      {
-        "id": 78,
-        "relevance": 0.55,
-        "reason": "tengu_advisor_strip_retry added in L87 is a new retry branch in the Advisor Tool (L78) wire protocol"
-      },
-      {
-        "id": 69,
-        "relevance": 0.4,
-        "reason": "Fork REPL hydration uses {kind:'fork', log:[replayLog]} — leverages the same replay-log mechanism as marble-origami (L69)"
-      },
-      {
-        "id": 88,
-        "relevance": 0.9,
-        "reason": "L88 is the other half of Chapter 19 (v2.1.117-v2.1.118); continues the same release window"
-      }
-    ],
-    "88": [
-      {
-        "id": 87,
-        "relevance": 0.9,
-        "reason": "L87 is the other half of Chapter 19 (v2.1.117-v2.1.118); /fork paired with UI consolidation completes the two-release theme"
-      },
-      {
-        "id": 11,
-        "relevance": 0.9,
-        "reason": "L88's shadow schema (eO1) is the only formal skill frontmatter validation in the codebase — L11's imperative extractor (Cz8) is the 'primary'. progressMessage (documented in L11 as object-level, not YAML) is the notable drift: absent from eO1, so aspirational YAML usage fires telemetry"
-      },
-      {
-        "id": 38,
-        "relevance": 0.85,
-        "reason": "WIF user-OAuth locking in L88 hardens the L38 OAuth token refresh path — prevents multi-process refresh races. Lock mechanism (Vk4/Gv_ via proper-lockfile directory-level mutex, tvq=5 retries × 1-2s jitter) landed in v2.1.117; all 5 telemetry events landed in v2.1.118"
-      },
-      {
-        "id": 10,
-        "relevance": 0.8,
-        "reason": "L88's 'Agent Stop Hook' deep-dive documents a previously-undocumented hook TYPE: AI verification hook (bs7) that spawns a dedicated sub-conversation to decide {ok: true/false, reason}. Mechanism pre-existed; v2.1.118 added tengu_agent_stop_hook_blocking telemetry. Substantially extends the L10 hooks-system surface with a second execution model beyond shell commands"
-      },
-      {
-        "id": 86,
-        "relevance": 0.78,
-        "reason": "WIF locking in L88 protects the <config_dir>/credentials/<profile>.json path that L86 OIDC Federation also uses"
-      },
-      {
-        "id": 73,
-        "relevance": 0.7,
-        "reason": "/autofix-pr description change in L88 drops 'remote session' framing — continues repositioning from L73 CCR v2 / L85 Remote Workflow sunset"
-      },
-      {
-        "id": 85,
-        "relevance": 0.6,
-        "reason": "L85's Remote Workflow sunset direction continues in L88: /autofix-pr deremoted, /cost + /stats folded into /usage"
-      },
-      {
-        "id": 22,
-        "relevance": 0.55,
-        "reason": "L88's /usage dual registration (interactive TUI + headless) changes the commands-system dispatch described in L22"
-      },
-      {
-        "id": 35,
-        "relevance": 0.45,
-        "reason": "Frontmatter shadow validator also applies to plugin frontmatter — will affect the L35 plugin system loader if promoted to strict mode"
-      }
-    ],
-    "89": [
-      {
-        "id": 105,
-        "relevance": 0.78,
-        "reason": "Desktop MCP-Apps bridge + elicitation: how MCP servers collect private user input in Desktop/Cowork"
-      },
-      {
-        "id": 106,
-        "relevance": 0.7,
-        "reason": "how an in-VM Cowork CLI is *meant* to get a set-once secret: the host-side clis.*.env broker (currently gated off)"
-      },
-      {
-        "id": 107,
-        "relevance": 0.9,
-        "reason": "the spawn + stream-json control-protocol contract that drives the host-loop agent (flags, handshake, SDK MCP delivery, permissions)"
-      },
-      {
-        "id": 108,
-        "relevance": 0.8,
-        "reason": "production gate states (incl host-loop 1143815894) + the bg/cowork env-var catalog"
-      },
-      {
-        "id": 122,
-        "relevance": 0.8,
-        "reason": "L122 pins the exact host-loop shared-scratch mechanism L89 first observed: sub-agent cwd IS the session outputs directory, and /sessions/... paths are denied not translated for file tools"
-      }
-    ],
-    "99": [
-      {
-        "id": 105,
-        "relevance": 0.78,
-        "reason": "Desktop MCP-Apps bridge + elicitation: how MCP servers collect private user input in Desktop/Cowork"
-      }
-    ],
-    "105": [
-      {
-        "id": 89,
-        "relevance": 0.83,
-        "reason": "Cowork split execution — the in-VM shell is sealed; elicitation/MCP-Apps are the host-side user channels"
-      },
-      {
-        "id": 99,
-        "relevance": 0.8,
-        "reason": "same Agent-SDK control-request dispatcher: host_auth_token_refresh/oauth_token_refresh are siblings of the elicitation subtype"
-      },
-      {
-        "id": 95,
-        "relevance": 0.6,
-        "reason": "another binary-verified Desktop/host-side surface (the 30-event hook master array)"
-      },
-      {
-        "id": 106,
-        "relevance": 0.86,
-        "reason": "the third Desktop credential channel — the clis.*.env CLI-tool broker (gated off), complementing MCP App UI / elicitation"
-      },
-      {
-        "id": 107,
-        "relevance": 0.78,
-        "reason": "the driver side of the same control protocol whose dispatcher (elicitation etc.) L105 documents"
-      }
-    ],
-    "106": [
-      {
-        "id": 105,
-        "relevance": 0.86,
-        "reason": "the other two Desktop credential channels (MCP App UI vs elicitation); same app.asar host — this is the third (CLI-tool) channel"
-      },
-      {
-        "id": 89,
-        "relevance": 0.82,
-        "reason": "Cowork split execution — the in-VM shell is sealed from host env, the exact problem the clis.*.env broker solves; three-root plugin namespace"
-      },
-      {
-        "id": 99,
-        "relevance": 0.66,
-        "reason": "host-delegated credential refresh — cowork-plugin-oauth sibling + oauth_token_refresh/host_auth_token_refresh control-requests"
-      },
-      {
-        "id": 104,
-        "relevance": 0.5,
-        "reason": "codename GB-flag triage — 2307090146 (cli_plugin) is another dark-launch gate of the same family"
-      },
-      {
-        "id": 107,
-        "relevance": 0.6,
-        "reason": "the agent-side spawn/auth contract; CLI secrets from the L106 broker are consumed by an agent spawned this way"
-      },
-      {
-        "id": 124,
-        "relevance": 0.55,
-        "reason": "L124's custom-3p hardcodedMainGrowthBookFeatures table (uOt) force-ONs the cli_plugin gate 2307090146 without GrowthBook, showing the L106 credential broker is live in custom-3p deployments even though it's dark on consumer GrowthBook"
-      },
-      {
-        "id": 127,
-        "relevance": 0.7,
-        "reason": "grand_prix is a fourth Desktop credential channel alongside the clis.*.env CLI-plugin broker"
-      }
-    ],
-    "107": [
-      {
-        "id": 89,
-        "relevance": 0.9,
-        "reason": "host-loop vs VM-loop + split execution: L107 is the driver/spawn side, L89 the in-VM-shell/mount side of the same architecture"
-      },
-      {
-        "id": 105,
-        "relevance": 0.78,
-        "reason": "the control-request dispatcher (elicitation/can_use_tool/mcp_message) seen from the agent side; L107 is the driver side of the same stream-json protocol"
-      },
-      {
-        "id": 106,
-        "relevance": 0.6,
-        "reason": "the CLI-plugin credential broker is the Desktop-host way to get a secret to a Cowork CLI; L107 covers the agent spawn/auth contract that consumes it"
-      },
-      {
-        "id": 99,
-        "relevance": 0.55,
-        "reason": "host-delegated credential refresh (host_auth_token_refresh) is the auth half of the same control protocol L107 documents"
-      },
-      {
-        "id": 108,
-        "relevance": 0.85,
-        "reason": "the env-var/gate/extended-subtype reference catalog for the same Cowork surface"
-      },
-      {
-        "id": 118,
-        "relevance": 0.75,
-        "reason": "the exact per-tool_use stream envelope fields + tool_use_meta schema"
-      },
-      {
-        "id": 121,
-        "relevance": 0.85,
-        "reason": "L121 renames and extends L107's host-loop tool partition (PNt/gre -> HOST_LOOP_SAFE_BUILTIN_TOOLS/HOST_LOOP_EXCLUDED_BUILTIN_TOOLS; BDt/QDt superseded by the first-class toolAliases SDK option) and grows the force-ask matcher set to 9 tools"
-      },
-      {
-        "id": 123,
-        "relevance": 0.7,
-        "reason": "L123's subagent_env_hl/vm prompt append and appendSubagentSystemPrompt option are delivered over the same initialize control-protocol handshake L107 documented"
-      },
-      {
-        "id": 124,
-        "relevance": 0.85,
-        "reason": "L124's Pm()/jKe()/FM() is the direct successor of L107's f_() host-loop/VM-loop decision function, re-verified force-on at 1.20186.1/2.1.205"
-      }
-    ],
-    "108": [
-      {
-        "id": 107,
-        "relevance": 0.85,
-        "reason": "L108 catalogs the env vars/gates/subtypes; L107 is the spawn+control-protocol contract that uses them"
-      },
-      {
-        "id": 89,
-        "relevance": 0.8,
-        "reason": "host-loop gate 1143815894 and the split-execution env surface are catalogued here with live fcache states"
-      },
-      {
-        "id": 106,
-        "relevance": 0.65,
-        "reason": "the cli_plugin gate 2307090146 (off) is one of the production gates catalogued; L106 is its full mechanism"
-      },
-      {
-        "id": 99,
-        "relevance": 0.55,
-        "reason": "the CLAUDE_BG_*_AUTH single-use handshake + host-auth env vars relate to host-delegated credential refresh"
-      },
-      {
-        "id": 119,
-        "relevance": 0.82,
-        "reason": "closes the CLAUDE_CODE_ENVIRONMENT_KIND=bridge gap this chapter left open -- confirms the mechanism is the agent's own claude remote-control bridge worker, and re-confirms gate 583857784 as the same bridge-session transport concept"
-      },
-      {
-        "id": 122,
-        "relevance": 0.8,
-        "reason": "L122 resolves the .host-home question raised by L108's gate 2614807392, confirming it is a synthetic path-translation index (ece()/uCe()), not a real mount"
-      },
-      {
-        "id": 123,
-        "relevance": 0.6,
-        "reason": "L123 traces CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT's real consumption gap beyond L108's env-var catalog listing"
-      },
-      {
-        "id": 124,
-        "relevance": 0.75,
-        "reason": "L124 re-confirms several L108 gate values unchanged and amends the cli_plugin (2307090146) dark/live split via the custom-3p uOt table"
-      },
-      {
-        "id": 128,
-        "relevance": 0.5,
-        "reason": "new 1.22209.0 gate ids extend the gate catalog, though without a fresh fcache decode this pass"
-      }
-    ],
-    "109": [
-      {
-        "id": 118,
-        "relevance": 0.7,
-        "reason": "microcompact_boundary is a distinct sibling subtype to compact_boundary"
-      }
-    ],
-    "114": [
-      {
-        "id": 106,
-        "relevance": 0.95,
-        "reason": "re-verifies the cli_plugin gate 2307090146 mechanism at a newer Desktop build"
-      },
-      {
-        "id": 107,
-        "relevance": 0.85,
-        "reason": "corrects the --effort spawn-value claim and re-verifies the forced-ask matcher"
-      },
-      {
-        "id": 108,
-        "relevance": 0.75,
-        "reason": "re-verifies all 11 catalogued gates and cross-checks env vars for this build"
-      },
-      {
-        "id": 109,
-        "relevance": 0.8,
-        "reason": "re-verifies CoworkSpaces/CoworkScheduledTasks IPC surfaces byte-for-byte and completes the getAutoMemoryDir env wiring"
-      },
-      {
-        "id": 93,
-        "relevance": 0.6,
-        "reason": "CLAUDE_CODE_EFFORT_LEVEL is the env var backing the corrected Desktop effort resolver"
-      },
-      {
-        "id": 46,
-        "relevance": 0.55,
-        "reason": "CLAUDE_CODE_SUBAGENT_MODEL promoted here from speculative to confirmed-wired"
-      },
-      {
-        "id": 120,
-        "relevance": 0.9,
-        "reason": "further corrects Part C's CLAUDE_CODE_EFFORT_LEVEL backing-store claim and documents the full effort/thinking spawn mechanics"
-      }
-    ],
-    "115": [
-      {
-        "id": 91,
-        "relevance": 0.6,
-        "reason": "Workflow resumeFromRunId is a sibling continuation primitive with cached agent replay"
-      },
-      {
-        "id": 92,
-        "relevance": 0.5,
-        "reason": "il() agent-teams gate shapes SendMessage's structured-message schema, not its availability"
-      },
-      {
-        "id": 87,
-        "relevance": 0.55,
-        "reason": "the fork subagent type whose full-context inheritance and fork-resume path this lesson documents"
-      },
-      {
-        "id": 107,
-        "relevance": 0.85,
-        "reason": "Cowork spawn contract and Desktop hooks option through which resume is severed"
-      },
-      {
-        "id": 109,
-        "relevance": 0.7,
-        "reason": "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS and the Tasks tool family; both knobs shown independent here"
-      },
-      {
-        "id": 114,
-        "relevance": 0.8,
-        "reason": "corrects L114's siting of DISABLE_AGENTS_FLEET/DISABLE_BACKGROUND_TASKS to the main Cowork spawn env"
-      },
-      {
-        "id": 116,
-        "relevance": 0.8,
-        "reason": "runtime-detection companion: how a skill finds out which of these surfaces it is on"
-      },
-      {
-        "id": 124,
-        "relevance": 0.85,
-        "reason": "L124 re-verifies L115's Task-one-shot/SendMessage-resume/Cowork-severing conclusions at 1.20186.1/2.1.205, with the background-by-default polarity flip and the new session-level mcp__dispatch__send_message channel"
-      }
-    ],
-    "116": [
-      {
-        "id": 107,
-        "relevance": 0.9,
-        "reason": "host-loop tool partition and spawn contract explain why the skill's shell runs as mcp__workspace__bash in the VM"
-      },
-      {
-        "id": 108,
-        "relevance": 0.85,
-        "reason": "the env-var catalog whose per-context visibility this lesson resolves"
-      },
-      {
-        "id": 115,
-        "relevance": 0.8,
-        "reason": "the same asar spawn env block (IS_COWORK/ENTRYPOINT=local-agent) read from the capability angle"
-      },
-      {
-        "id": 89,
-        "relevance": 0.75,
-        "reason": "coworkroot-probe ground truth: hook exports and host writes don't cross into the VM; plugin mount paths under /sessions/<id>"
-      },
-      {
-        "id": 114,
-        "relevance": 0.5,
-        "reason": "pruned-baseline methodology reused for the vanished MGn allowlist caveat"
-      },
-      {
-        "id": 117,
-        "relevance": 0.7,
-        "reason": "the /sessions/<id> path signature this lesson uses as a structural discriminator is exactly the mount/slug layout L117 forensically confirms"
-      },
-      {
-        "id": 118,
-        "relevance": 0.85,
-        "reason": "skill-scope attribution: what the agent tracks internally (activeSkill/attribution) and why it's absent from the stream"
-      }
-    ],
-    "117": [
-      {
-        "id": 89,
-        "relevance": 0.75,
-        "reason": "host-loop plugin staging (claude-hostloop-plugins/<hash>) is corroborated end-to-end by a real coworkd oneshot spawn log line"
-      },
-      {
-        "id": 107,
-        "relevance": 0.7,
-        "reason": "the /sessions/<id>/mnt/... path pattern this lesson pins down with a full mount inventory and real session-slug examples"
-      },
-      {
-        "id": 109,
-        "relevance": 0.65,
-        "reason": "fileDeleteApprovedMounts only governs mounted paths -- this lesson explains structurally why home/tmp were never candidates"
-      },
-      {
-        "id": 116,
-        "relevance": 0.6,
-        "reason": "the /sessions/<id> filesystem signature that lesson uses for VM-shell detection is the same mount layout documented here"
-      },
-      {
-        "id": 126,
-        "relevance": 0.45,
-        "reason": "remote_devices device-registry enrollment is a different, non-mount-based bridge mechanism from the VM rootfs mount inventory"
-      }
-    ],
-    "118": [
-      {
-        "id": 116,
-        "relevance": 0.9,
-        "reason": "skill runtime detection — the host/VM env split; L118 is the 'what the agent tracks internally about skills' companion"
-      },
-      {
-        "id": 107,
-        "relevance": 0.85,
-        "reason": "the stream-json control-protocol contract; L118 pins the exact per-tool_use envelope fields"
-      },
-      {
-        "id": 109,
-        "relevance": 0.78,
-        "reason": "the ~90-subtype control protocol; L118 adds microcompact_boundary beside compact_boundary"
-      },
-      {
-        "id": 87,
-        "relevance": 0.72,
-        "reason": "/fork and context:fork dispatch; L118 adds fork-skill parent_tool_use_id attribution + recursion guard"
-      },
-      {
-        "id": 115,
-        "relevance": 0.7,
-        "reason": "subagent resume/continuation; fork-skill inner tools inherit the dispatch's parentToolUseId scope"
-      },
-      {
-        "id": 11,
-        "relevance": 0.62,
-        "reason": "Skills system — activeSkill scope, inline vs fork (context:'fork') dispatch"
-      },
-      {
-        "id": 121,
-        "relevance": 0.55,
-        "reason": "L121's GY tool-composition algorithm is re-verified with the same cross-artifact (host CLI + in-VM ELF + app.asar) discipline L118 used for the skill-scope stream contract"
-      },
-      {
-        "id": 124,
-        "relevance": 0.7,
-        "reason": "L124 adds task_started/toolUseResult/permission_denied as sibling stream-observability channels to L118's per-tool_use envelope contract"
-      },
-      {
-        "id": 125,
-        "relevance": 0.4,
-        "reason": "server-list assembly and tool-group gating sit outside the per-tool_use stream contract this lesson documents"
-      }
-    ],
-    "119": [
-      {
-        "id": 108,
-        "relevance": 0.9,
-        "reason": "L119's central finding: closes L108's open CLAUDE_CODE_ENVIRONMENT_KIND=bridge gap and re-confirms gate 583857784 (bridge-SDK-adapter transport) as the same mechanism under fresh symbol names"
-      },
-      {
-        "id": 107,
-        "relevance": 0.6,
-        "reason": "the CCR/bridge session-runtime family (CLAUDE_CODE_WORKER_EPOCH, CLAUDE_BG_*_AUTH handshake) this chapter's bridge-worker code extends"
-      },
-      {
-        "id": 109,
-        "relevance": 0.5,
-        "reason": "CLAUDE_CODE_WORKER_EPOCH and the CCR worker /worker/heartbeat endpoint this chapter distinguishes from the /v1/environments/{id}/work family"
-      },
-      {
-        "id": 118,
-        "relevance": 0.45,
-        "reason": "same cross-artifact first-party discipline: agent ELF (2.1.20x) + Desktop app.asar checked together, not separately"
-      }
-    ],
-    "120": [
-      {
-        "id": 114,
-        "relevance": 0.9,
-        "reason": "corrects Ch28/L114 Part C's claim that the Desktop effort IPC family is backed by CLAUDE_CODE_EFFORT_LEVEL"
-      },
-      {
-        "id": 93,
-        "relevance": 0.6,
-        "reason": "CLAUDE_CODE_EFFORT_LEVEL is real but confirmed here to back a sibling getter, not the Cowork spawn-path effort value"
-      },
-      {
-        "id": 109,
-        "relevance": 0.55,
-        "reason": "gives apply_flag_settings, first named in this chapter's control-protocol inventory, its first concrete payload shape"
-      },
-      {
-        "id": 119,
-        "relevance": 0.5,
-        "reason": "same first-party discipline against the same 1.19367.0 Desktop binary, and shares the LocalAgentModeSessions/LocalSessions interface-naming precedent"
-      }
-    ],
-    "121": [
-      {
-        "id": 107,
-        "relevance": 0.85,
-        "reason": "L121's Cowork host-loop tool-composition step (HOST_LOOP_SAFE_BUILTIN_TOOLS/HOST_LOOP_EXCLUDED_BUILTIN_TOOLS, renamed from L107's PNt/gre; toolAliases superseding BDt/QDt) is a symbol-renamed continuation of L107's host-loop tool partition, re-verified at 1.20186.1/2.1.205"
-      },
-      {
-        "id": 118,
-        "relevance": 0.55,
-        "reason": "same cross-artifact discipline (host CLI + in-VM ELF + app.asar checked together): L121's depth cap (NMr host / BLr VM, both =5) is confirmed identically in the in-VM ELF, and GY's silently-dropped invalidTools/unavailableTools mirrors L118's tool_use_meta display-only, zero-consumers finding pattern"
-      },
-      {
-        "id": 125,
-        "relevance": 0.5,
-        "reason": "contrasts the GY per-dispatch sub-agent tool-composition layer with the higher server-assembly isEnabled gating that excludes the mobile-simulator tools from Cowork entirely"
-      }
-    ],
-    "122": [
-      {
-        "id": 89,
-        "relevance": 0.85,
-        "reason": "L89 found host-loop's single shared scratch space (bash sees /mnt/outputs, file tools see the session path, same files); L122 pins the exact mechanism -- cwd IS the outputs directory (getStorageDir/sessionDirPaths) -- and confirms /sessions/... is denied, never translated, for file tools"
-      },
-      {
-        "id": 104,
-        "relevance": 0.4,
-        "reason": "same 'verify against the current binary, don't assume it carried over' discipline L104 established for codename GB-flags; L122 explicitly re-anchors the path-containment hook's matcher/offset at 1.20186.1 rather than assuming the L107-era symbols still apply"
-      },
-      {
-        "id": 108,
-        "relevance": 0.8,
-        "reason": "directly resolves the .host-home question left open by L108's gate 2614807392 (.host-home skeleton-path index, added v2.23.0) -- L122 confirms it is a synthetic path-translation index (ece()/uCe()), not a mount and not an input-side rewrite, in the same direction as L108's finding"
-      },
-      {
-        "id": 117,
-        "relevance": 0.75,
-        "reason": "L117's rootfs-forensics per-session mount inventory (outputs/uploads/.claude/.claude-skills/.claude-projects, no home/tmp mount unit) is the VM-side ground truth L122's VM-loop mount table (.claude rwd, .claude/skills ro, uploads ro, projects/artifacts/scheduled ro) matches"
-      }
-    ],
-    "123": [
-      {
-        "id": 107,
-        "relevance": 0.7,
-        "reason": "L107's --permission-prompt-tool stdio / initialize handshake spawn contract is the same control-protocol channel L123's appendSubagentSystemPrompt option and subagent_env_hl/vm text ride over"
-      },
-      {
-        "id": 108,
-        "relevance": 0.6,
-        "reason": "L108 catalogs the Cowork/Desktop env-var surface; L123 traces CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT's actual consumption gap -- set unconditionally at Desktop spawn but required independently of the initialize-delivered option"
-      }
-    ],
-    "124": [
-      {
-        "id": 90,
-        "relevance": 0.55,
-        "reason": "L90 first identified CLAUDE_EFFORT as a skill-frontmatter field/template token rather than a process.env var; L124's model-resolution chain shows the sibling CLAUDE_CODE_SUBAGENT_MODEL is a real env var with its own allowlist-check-then-warn-and-inherit fallback -- the contrast sharpens both"
-      },
-      {
-        "id": 106,
-        "relevance": 0.6,
-        "reason": "L124's custom-3p uOt gate table force-ONs 2307090146 (cli_plugin) alongside 1143815894 -- amending L106's finding that the credential broker is dark on consumer GrowthBook by showing it is live in custom-3p deployments"
-      },
-      {
-        "id": 107,
-        "relevance": 0.85,
-        "reason": "L124's Pm()/jKe()/FM() decision function is the direct successor of L107's f_() host-loop/VM-loop gate function, re-verified at gate 1143815894 still force-on in production"
-      },
-      {
-        "id": 108,
-        "relevance": 0.75,
-        "reason": "L124 re-confirms several L108 gate values unchanged (434204418, 66187241, 714014285, 1936081873, 4153934152) and amends L108's cli_plugin (2307090146) dark/live split via the custom-3p uOt table"
-      },
-      {
-        "id": 115,
-        "relevance": 0.85,
-        "reason": "L124 re-verifies all four Ch29/L115 conclusions at 1.20186.1/2.1.205 with two refinements: the background-by-default polarity flip and a new session-level (not sub-agent) mcp__dispatch__send_message continuation channel"
-      },
-      {
-        "id": 118,
-        "relevance": 0.7,
-        "reason": "L124 adds task_started/toolUseResult/permission_denied as sibling stream-observability channels to L118's per-tool_use envelope contract"
-      }
-    ],
-    "125": [
-      {
-        "id": 126,
-        "relevance": 0.8,
-        "reason": "sibling device-automation tool group in the same registry slot, opposite direction (local sim vs remote-device bridge)"
-      },
-      {
-        "id": 128,
-        "relevance": 0.6,
-        "reason": "same chapter -- CLAUDE_SIM_SANDBOX and the mobile-simulator gating sit alongside the other 1.22209.0 hardening findings"
-      },
-      {
-        "id": 121,
-        "relevance": 0.5,
-        "reason": "server-assembly isEnabled gating sits above the GY per-dispatch tool-composition layer documented for sub-agents"
-      }
-    ],
-    "126": [
-      {
-        "id": 125,
-        "relevance": 0.8,
-        "reason": "sibling device-automation tool group, opposite direction"
-      },
-      {
-        "id": 127,
-        "relevance": 0.65,
-        "reason": "remote_devices tool assembly (zzrNR3X_.js) includes buildRemoteGrandPrixTools, the remote variant of the grand_prix bridge"
-      }
-    ],
-    "127": [
-      {
-        "id": 106,
-        "relevance": 0.75,
-        "reason": "a third and fourth Desktop credential channel respectively -- clis.*.env (CLI-invocation-scoped) vs grand_prix (browser-tab-scoped)"
-      },
-      {
-        "id": 126,
-        "relevance": 0.6,
-        "reason": "grand_prix has a dedicated remote variant wired into the remote_devices/cowork-remote tool assembly"
-      }
-    ],
-    "128": [
-      {
-        "id": 108,
-        "relevance": 0.55,
-        "reason": "gate catalog and fcache-decode methodology -- this chapter deliberately does not extend that catalog with live on/off states, for lack of a fresh capture"
-      },
-      {
-        "id": 124,
-        "relevance": 0.6,
-        "reason": "auto-mode and run_in_background permission-model topics from the same Cowork permission stack"
-      },
-      {
-        "id": 115,
-        "relevance": 0.4,
-        "reason": "session lifecycle (sleep/auto-resume, stop button) adjacent to subagent resume semantics"
-      }
-    ],
-    "dynamic-workflows": [
-      {
-        "id": 91,
-        "relevance": 0.95,
-        "reason": "the Workflow tool + dynamic-workflows subsystem"
-      },
-      {
-        "id": 92,
-        "relevance": 0.7,
-        "reason": "coordinator mode composes with workflows"
-      },
-      {
-        "id": 5,
-        "relevance": 0.5,
-        "reason": "workflows fan out sub-agents"
-      }
-    ],
-    "coordinator-mode-v2159": [
-      {
-        "id": 92,
-        "relevance": 0.95,
-        "reason": "v2.1.159 coordinator dispatch-mode wiring"
-      },
-      {
-        "id": 21,
-        "relevance": 0.8,
-        "reason": "foundational coordinator-mode lesson"
-      },
-      {
-        "id": 22,
-        "relevance": 0.6,
-        "reason": "teams & swarm"
-      }
-    ],
-    "opus-4-8": [
-      {
-        "id": 93,
-        "relevance": 0.95,
-        "reason": "Opus 4.8 launch + effort ladder"
-      },
-      {
-        "id": 51,
-        "relevance": 0.7,
-        "reason": "/effort command & reasoning budget"
-      },
-      {
-        "id": 46,
-        "relevance": 0.6,
-        "reason": "model system"
-      }
-    ],
-    "messagedisplay-hook": [
-      {
-        "id": 95,
-        "relevance": 0.95,
-        "reason": "MessageDisplay hook + the 30-event master array"
-      },
-      {
-        "id": 10,
-        "relevance": 0.6,
-        "reason": "hooks system foundation"
-      }
-    ],
-    "cloud-gateway": [
-      {
-        "id": 97,
-        "relevance": 0.9,
-        "reason": "Cloud gateway OAuth provider"
-      },
-      {
-        "id": 29,
-        "relevance": 0.5,
-        "reason": "session/auth management"
-      }
-    ],
-    "skills-plugins-sync": [
-      {
-        "id": 98,
-        "relevance": 0.9,
-        "reason": "org-managed skills/plugins sync from Console"
-      },
-      {
-        "id": 11,
-        "relevance": 0.5,
-        "reason": "skills system"
-      },
-      {
-        "id": 26,
-        "relevance": 0.5,
-        "reason": "settings cascade"
-      }
-    ],
-    "host-auth-refresh": [
-      {
-        "id": 99,
-        "relevance": 0.9,
-        "reason": "host-delegated credential refresh"
-      },
-      {
-        "id": 86,
-        "relevance": 0.5,
-        "reason": "OIDC federation env-quad"
-      }
-    ],
-    "binary-takeover": [
-      {
-        "id": 100,
-        "relevance": 0.9,
-        "reason": "background binary-takeover self-upgrade + agent-view rename"
-      },
-      {
-        "id": 90,
-        "relevance": 0.6,
-        "reason": "daemon on-demand model"
-      },
-      {
-        "id": 89,
-        "relevance": 0.6,
-        "reason": "cowork runtime"
-      }
-    ],
-    "loop-keepalive": [
-      {
-        "id": 101,
-        "relevance": 0.9,
-        "reason": "/loop keepalive KAIROS safety net"
-      },
-      {
-        "id": 67,
-        "relevance": 0.6,
-        "reason": "dynamic loop pacing"
-      }
-    ],
-    "team-memory-multistore": [
-      {
-        "id": 102,
-        "relevance": 0.85,
-        "reason": "CLAUDE_MEMORY_STORES multistore"
-      },
-      {
-        "id": 8,
-        "relevance": 0.7,
-        "reason": "memory system"
-      }
-    ],
-    "pewter-owl-senduserMessage": [
-      {
-        "id": 103,
-        "relevance": 0.9,
-        "reason": "PEWTER_OWL gate over the internal SendUserMessage tool"
-      }
-    ]
-  }
+ "generated": "2026-06-04",
+ "description": "Cross-reference map: for each lesson, lists related lessons ranked by relevance",
+ "references": {
+  "1": [
+   {
+    "id": 4,
+    "relevance": 0.85,
+    "reason": "boot sequence assembles the system prompt during startup"
+   },
+   {
+    "id": 5,
+    "relevance": 0.82,
+    "reason": "boot sequence is detailed in the architecture capstone overview"
+   },
+   {
+    "id": 42,
+    "relevance": 0.8,
+    "reason": "boot entrypoints and SDK share CLI bootstrap logic"
+   },
+   {
+    "id": 50,
+    "relevance": 0.7,
+    "reason": "boot sequence launches the REPL as final startup step"
+   },
+   {
+    "id": 3,
+    "relevance": 0.68,
+    "reason": "boot sequence initializes AppState and state management"
+   }
+  ],
+  "2": [
+   {
+    "id": 28,
+    "relevance": 0.87,
+    "reason": "query engine triggers autocompact when context window fills"
+   },
+   {
+    "id": 33,
+    "relevance": 0.78,
+    "reason": "query engine retry logic connects to error handling and recovery"
+   },
+   {
+    "id": 48,
+    "relevance": 0.75,
+    "reason": "message pipeline normalizes input before query engine processing"
+   },
+   {
+    "id": 46,
+    "relevance": 0.72,
+    "reason": "model system configures which LLM the query engine calls"
+   },
+   {
+    "id": 5,
+    "relevance": 0.7,
+    "reason": "architecture overview includes the query engine data flow"
+   }
+  ],
+  "3": [
+   {
+    "id": 50,
+    "relevance": 0.75,
+    "reason": "state management drives REPL render tree via useSyncExternalStore"
+   },
+   {
+    "id": 17,
+    "relevance": 0.7,
+    "reason": "state management feeds Ink renderer for reactive terminal UI"
+   },
+   {
+    "id": 5,
+    "relevance": 0.68,
+    "reason": "architecture capstone covers state management patterns"
+   },
+   {
+    "id": 1,
+    "relevance": 0.68,
+    "reason": "boot sequence initializes AppState and state management"
+   },
+   {
+    "id": 25,
+    "relevance": 0.65,
+    "reason": "AppState tracks permission-mode for allow/deny decisions"
+   }
+  ],
+  "4": [
+   {
+    "id": 1,
+    "relevance": 0.85,
+    "reason": "boot sequence assembles the system prompt during startup"
+   },
+   {
+    "id": 15,
+    "relevance": 0.77,
+    "reason": "system prompt injects CLAUDE.md and memory content"
+   },
+   {
+    "id": 11,
+    "relevance": 0.72,
+    "reason": "system prompt includes skill frontmatter for discovery"
+   },
+   {
+    "id": 26,
+    "relevance": 0.68,
+    "reason": "system prompt respects settings cascade for dynamic sections"
+   }
+  ],
+  "5": [
+   {
+    "id": 1,
+    "relevance": 0.82,
+    "reason": "boot sequence is detailed in the architecture capstone overview"
+   },
+   {
+    "id": 48,
+    "relevance": 0.73,
+    "reason": "architecture overview covers the message processing data flow"
+   },
+   {
+    "id": 6,
+    "relevance": 0.72,
+    "reason": "architecture capstone describes the tool system layer"
+   },
+   {
+    "id": 2,
+    "relevance": 0.7,
+    "reason": "architecture overview includes the query engine data flow"
+   },
+   {
+    "id": 3,
+    "relevance": 0.68,
+    "reason": "architecture capstone covers state management patterns"
+   }
+  ],
+  "6": [
+   {
+    "id": 25,
+    "relevance": 0.88,
+    "reason": "permissions gate every tool execution via allow/deny/ask rules"
+   },
+   {
+    "id": 32,
+    "relevance": 0.82,
+    "reason": "hooks intercept tool execution at pre/post lifecycle points"
+   },
+   {
+    "id": 7,
+    "relevance": 0.8,
+    "reason": "Bash tool implements the Tool interface with security validators"
+   },
+   {
+    "id": 8,
+    "relevance": 0.78,
+    "reason": "File tools (Read/Write/Edit) implement the Tool interface"
+   },
+   {
+    "id": 9,
+    "relevance": 0.75,
+    "reason": "Search tools (Glob/Grep) implement the Tool interface"
+   }
+  ],
+  "7": [
+   {
+    "id": 25,
+    "relevance": 0.85,
+    "reason": "Bash tool has 23 security validators enforced by permissions"
+   },
+   {
+    "id": 6,
+    "relevance": 0.8,
+    "reason": "Bash tool implements the Tool interface with security validators"
+   },
+   {
+    "id": 47,
+    "relevance": 0.8,
+    "reason": "Bash sandboxing uses seatbelt/bubblewrap from security system"
+   },
+   {
+    "id": 8,
+    "relevance": 0.68,
+    "reason": "Bash and File tools share security validation patterns"
+   },
+   {
+    "id": 33,
+    "relevance": 0.65,
+    "reason": "Bash tool error handling feeds into recovery system"
+   }
+  ],
+  "8": [
+   {
+    "id": 6,
+    "relevance": 0.78,
+    "reason": "File tools (Read/Write/Edit) implement the Tool interface"
+   },
+   {
+    "id": 9,
+    "relevance": 0.72,
+    "reason": "file tools and search tools work together for codebase navigation"
+   },
+   {
+    "id": 7,
+    "relevance": 0.68,
+    "reason": "Bash and File tools share security validation patterns"
+   },
+   {
+    "id": 36,
+    "relevance": 0.62,
+    "reason": "file tools write/edit tracked by git integration watcher"
+   }
+  ],
+  "9": [
+   {
+    "id": 6,
+    "relevance": 0.75,
+    "reason": "Search tools (Glob/Grep) implement the Tool interface"
+   },
+   {
+    "id": 8,
+    "relevance": 0.72,
+    "reason": "file tools and search tools work together for codebase navigation"
+   },
+   {
+    "id": 36,
+    "relevance": 0.6,
+    "reason": "search tools navigate the git-tracked filesystem"
+   }
+  ],
+  "10": [
+   {
+    "id": 35,
+    "relevance": 0.83,
+    "reason": "MCP servers use OAuth/PKCE for authentication flow"
+   },
+   {
+    "id": 31,
+    "relevance": 0.78,
+    "reason": "MCP and plugin systems both provide extensibility points"
+   },
+   {
+    "id": 6,
+    "relevance": 0.7,
+    "reason": "MCP tools register through the same Tool interface"
+   },
+   {
+    "id": 34,
+    "relevance": 0.68,
+    "reason": "MCP transport layer shares WebSocket patterns with bridge"
+   },
+   {
+    "id": 42,
+    "relevance": 0.65,
+    "reason": "Agent SDK exposes MCP tool registration for entrypoints"
+   }
+  ],
+  "11": [
+   {
+    "id": 32,
+    "relevance": 0.75,
+    "reason": "skills can register via lifecycle hooks for discovery"
+   },
+   {
+    "id": 18,
+    "relevance": 0.73,
+    "reason": "skills register as slash commands in the commands system"
+   },
+   {
+    "id": 4,
+    "relevance": 0.72,
+    "reason": "system prompt includes skill frontmatter for discovery"
+   },
+   {
+    "id": 31,
+    "relevance": 0.65,
+    "reason": "skills can be distributed through the plugin marketplace"
+   }
+  ],
+  "12": [
+   {
+    "id": 13,
+    "relevance": 0.9,
+    "reason": "coordinator mode dispatches and manages subagents"
+   },
+   {
+    "id": 14,
+    "relevance": 0.88,
+    "reason": "swarm/teams are multi-agent architectures built on agent system"
+   },
+   {
+    "id": 49,
+    "relevance": 0.72,
+    "reason": "agent system spawns background tasks managed by task system"
+   },
+   {
+    "id": 42,
+    "relevance": 0.7,
+    "reason": "Agent SDK provides programmatic agent spawning entrypoints"
+   },
+   {
+    "id": 36,
+    "relevance": 0.65,
+    "reason": "git worktrees enable isolated agent filesystem branches"
+   }
+  ],
+  "13": [
+   {
+    "id": 12,
+    "relevance": 0.9,
+    "reason": "coordinator mode dispatches and manages subagents"
+   },
+   {
+    "id": 14,
+    "relevance": 0.85,
+    "reason": "coordinator dispatches workers; teams/swarm extend this pattern"
+   },
+   {
+    "id": 49,
+    "relevance": 0.68,
+    "reason": "coordinator tracks worker tasks through task system"
+   }
+  ],
+  "14": [
+   {
+    "id": 12,
+    "relevance": 0.88,
+    "reason": "swarm/teams are multi-agent architectures built on agent system"
+   },
+   {
+    "id": 13,
+    "relevance": 0.85,
+    "reason": "coordinator dispatches workers; teams/swarm extend this pattern"
+   },
+   {
+    "id": 43,
+    "relevance": 0.7,
+    "reason": "KAIROS daemon uses autonomous agent patterns from swarm"
+   },
+   {
+    "id": 23,
+    "relevance": 0.62,
+    "reason": "swarm tmux sessions use fullscreen terminal multiplexing"
+   }
+  ],
+  "15": [
+   {
+    "id": 16,
+    "relevance": 0.92,
+    "reason": "dreams and auto-memory consolidate the memory system"
+   },
+   {
+    "id": 28,
+    "relevance": 0.78,
+    "reason": "context compaction directly affects what stays in memory"
+   },
+   {
+    "id": 4,
+    "relevance": 0.77,
+    "reason": "system prompt injects CLAUDE.md and memory content"
+   },
+   {
+    "id": 27,
+    "relevance": 0.65,
+    "reason": "session memory persists across session management lifecycle"
+   },
+   {
+    "id": 43,
+    "relevance": 0.62,
+    "reason": "KAIROS daemon uses memory for autonomous context persistence"
+   }
+  ],
+  "16": [
+   {
+    "id": 15,
+    "relevance": 0.92,
+    "reason": "dreams and auto-memory consolidate the memory system"
+   },
+   {
+    "id": 43,
+    "relevance": 0.78,
+    "reason": "KAIROS uses kairos-memory for autonomous dream consolidation"
+   },
+   {
+    "id": 27,
+    "relevance": 0.62,
+    "reason": "auto-memory extracts insights from session transcripts"
+   }
+  ],
+  "17": [
+   {
+    "id": 50,
+    "relevance": 0.82,
+    "reason": "Ink renderer powers the REPL screen rendering pipeline"
+   },
+   {
+    "id": 24,
+    "relevance": 0.73,
+    "reason": "Ink renderer applies theme/visual styling to terminal UI"
+   },
+   {
+    "id": 3,
+    "relevance": 0.7,
+    "reason": "state management feeds Ink renderer for reactive terminal UI"
+   },
+   {
+    "id": 23,
+    "relevance": 0.7,
+    "reason": "fullscreen mode uses Ink alternate screen buffer"
+   },
+   {
+    "id": 19,
+    "relevance": 0.68,
+    "reason": "Ink renderer draws dialog UI components"
+   }
+  ],
+  "18": [
+   {
+    "id": 11,
+    "relevance": 0.73,
+    "reason": "skills register as slash commands in the commands system"
+   },
+   {
+    "id": 19,
+    "relevance": 0.65,
+    "reason": "slash commands can trigger dialog UI prompts"
+   },
+   {
+    "id": 50,
+    "relevance": 0.62,
+    "reason": "commands execute within the REPL input loop"
+   }
+  ],
+  "19": [
+   {
+    "id": 25,
+    "relevance": 0.72,
+    "reason": "dialog UI presents permission prompts to the user"
+   },
+   {
+    "id": 17,
+    "relevance": 0.68,
+    "reason": "Ink renderer draws dialog UI components"
+   },
+   {
+    "id": 18,
+    "relevance": 0.65,
+    "reason": "slash commands can trigger dialog UI prompts"
+   },
+   {
+    "id": 20,
+    "relevance": 0.6,
+    "reason": "dialog notifications and toasts share UI patterns"
+   }
+  ],
+  "20": [
+   {
+    "id": 17,
+    "relevance": 0.68,
+    "reason": "notifications render through Ink terminal UI layer"
+   },
+   {
+    "id": 19,
+    "relevance": 0.6,
+    "reason": "dialog notifications and toasts share UI patterns"
+   },
+   {
+    "id": 50,
+    "relevance": 0.58,
+    "reason": "notification priority queue integrates with REPL screen"
+   }
+  ],
+  "21": [
+   {
+    "id": 22,
+    "relevance": 0.88,
+    "reason": "Vim mode keybindings are part of the keybindings system"
+   },
+   {
+    "id": 50,
+    "relevance": 0.65,
+    "reason": "Vim mode state machine operates within the REPL input layer"
+   },
+   {
+    "id": 17,
+    "relevance": 0.58,
+    "reason": "Vim mode renders cursor/mode indicator through Ink"
+   }
+  ],
+  "22": [
+   {
+    "id": 21,
+    "relevance": 0.88,
+    "reason": "Vim mode keybindings are part of the keybindings system"
+   },
+   {
+    "id": 50,
+    "relevance": 0.62,
+    "reason": "keybindings handle REPL input events and chord sequences"
+   },
+   {
+    "id": 26,
+    "relevance": 0.58,
+    "reason": "keybindings are customized via settings configuration"
+   }
+  ],
+  "23": [
+   {
+    "id": 17,
+    "relevance": 0.7,
+    "reason": "fullscreen mode uses Ink alternate screen buffer"
+   },
+   {
+    "id": 50,
+    "relevance": 0.65,
+    "reason": "fullscreen mode is a REPL screen rendering variant"
+   },
+   {
+    "id": 14,
+    "relevance": 0.62,
+    "reason": "swarm tmux sessions use fullscreen terminal multiplexing"
+   }
+  ],
+  "24": [
+   {
+    "id": 17,
+    "relevance": 0.73,
+    "reason": "Ink renderer applies theme/visual styling to terminal UI"
+   },
+   {
+    "id": 26,
+    "relevance": 0.65,
+    "reason": "theme preferences stored in settings configuration"
+   },
+   {
+    "id": 50,
+    "relevance": 0.6,
+    "reason": "theme colors render in the REPL screen buffer"
+   },
+   {
+    "id": 40,
+    "relevance": 0.5,
+    "reason": "buddy uses theme colors for sprite rendering"
+   }
+  ],
+  "25": [
+   {
+    "id": 6,
+    "relevance": 0.88,
+    "reason": "permissions gate every tool execution via allow/deny/ask rules"
+   },
+   {
+    "id": 7,
+    "relevance": 0.85,
+    "reason": "Bash tool has 23 security validators enforced by permissions"
+   },
+   {
+    "id": 32,
+    "relevance": 0.85,
+    "reason": "hooks fire before permission checks in tool execution pipeline"
+   },
+   {
+    "id": 26,
+    "relevance": 0.8,
+    "reason": "permission rules are configured within settings cascade"
+   },
+   {
+    "id": 47,
+    "relevance": 0.77,
+    "reason": "sandbox security enforces permission boundaries at OS level"
+   }
+  ],
+  "26": [
+   {
+    "id": 32,
+    "relevance": 0.8,
+    "reason": "hook configuration lives in settings.json alongside other settings"
+   },
+   {
+    "id": 25,
+    "relevance": 0.8,
+    "reason": "permission rules are configured within settings cascade"
+   },
+   {
+    "id": 30,
+    "relevance": 0.75,
+    "reason": "migration system upgrades settings between versions"
+   },
+   {
+    "id": 46,
+    "relevance": 0.7,
+    "reason": "settings configure model aliases and provider allowlists"
+   },
+   {
+    "id": 4,
+    "relevance": 0.68,
+    "reason": "system prompt respects settings cascade for dynamic sections"
+   }
+  ],
+  "27": [
+   {
+    "id": 28,
+    "relevance": 0.82,
+    "reason": "session transcripts undergo compaction to manage context window"
+   },
+   {
+    "id": 36,
+    "relevance": 0.68,
+    "reason": "session management uses git watcher for filesystem tracking"
+   },
+   {
+    "id": 15,
+    "relevance": 0.65,
+    "reason": "session memory persists across session management lifecycle"
+   },
+   {
+    "id": 16,
+    "relevance": 0.62,
+    "reason": "auto-memory extracts insights from session transcripts"
+   }
+  ],
+  "28": [
+   {
+    "id": 2,
+    "relevance": 0.87,
+    "reason": "query engine triggers autocompact when context window fills"
+   },
+   {
+    "id": 27,
+    "relevance": 0.82,
+    "reason": "session transcripts undergo compaction to manage context window"
+   },
+   {
+    "id": 15,
+    "relevance": 0.78,
+    "reason": "context compaction directly affects what stays in memory"
+   },
+   {
+    "id": 48,
+    "relevance": 0.65,
+    "reason": "message pipeline interacts with compaction for context management"
+   }
+  ],
+  "29": [
+   {
+    "id": 44,
+    "relevance": 0.95,
+    "reason": "shared keywords: analytics, telemetry, datadog, growthbook, pii, sampling, event-queue, kill-switch, metadata-enrichment, feature-flags"
+   },
+   {
+    "id": 33,
+    "relevance": 0.6,
+    "reason": "telemetry captures error rates from error handling system"
+   },
+   {
+    "id": 46,
+    "relevance": 0.58,
+    "reason": "telemetry tracks model usage and provider metrics"
+   }
+  ],
+  "30": [
+   {
+    "id": 26,
+    "relevance": 0.75,
+    "reason": "migration system upgrades settings between versions"
+   },
+   {
+    "id": 31,
+    "relevance": 0.62,
+    "reason": "migrations handle plugin manifest version changes"
+   },
+   {
+    "id": 47,
+    "relevance": 0.58,
+    "reason": "migrations gate features behind version-based security checks"
+   }
+  ],
+  "31": [
+   {
+    "id": 32,
+    "relevance": 0.82,
+    "reason": "plugins can register lifecycle hooks for extensibility"
+   },
+   {
+    "id": 10,
+    "relevance": 0.78,
+    "reason": "MCP and plugin systems both provide extensibility points"
+   },
+   {
+    "id": 11,
+    "relevance": 0.65,
+    "reason": "skills can be distributed through the plugin marketplace"
+   },
+   {
+    "id": 30,
+    "relevance": 0.62,
+    "reason": "migrations handle plugin manifest version changes"
+   }
+  ],
+  "32": [
+   {
+    "id": 25,
+    "relevance": 0.85,
+    "reason": "hooks fire before permission checks in tool execution pipeline"
+   },
+   {
+    "id": 31,
+    "relevance": 0.82,
+    "reason": "plugins can register lifecycle hooks for extensibility"
+   },
+   {
+    "id": 6,
+    "relevance": 0.82,
+    "reason": "hooks intercept tool execution at pre/post lifecycle points"
+   },
+   {
+    "id": 26,
+    "relevance": 0.8,
+    "reason": "hook configuration lives in settings.json alongside other settings"
+   },
+   {
+    "id": 11,
+    "relevance": 0.75,
+    "reason": "skills can register via lifecycle hooks for discovery"
+   }
+  ],
+  "33": [
+   {
+    "id": 2,
+    "relevance": 0.78,
+    "reason": "query engine retry logic connects to error handling and recovery"
+   },
+   {
+    "id": 7,
+    "relevance": 0.65,
+    "reason": "Bash tool error handling feeds into recovery system"
+   },
+   {
+    "id": 29,
+    "relevance": 0.6,
+    "reason": "telemetry captures error rates from error handling system"
+   },
+   {
+    "id": 46,
+    "relevance": 0.6,
+    "reason": "error handling manages model provider fallback chains"
+   }
+  ],
+  "34": [
+   {
+    "id": 37,
+    "relevance": 0.75,
+    "reason": "bridge remote control routes through upstream proxy"
+   },
+   {
+    "id": 41,
+    "relevance": 0.73,
+    "reason": "bridge/CCR enables Ultraplan remote session control"
+   },
+   {
+    "id": 42,
+    "relevance": 0.7,
+    "reason": "Agent SDK entrypoints use bridge/CCR control protocol"
+   },
+   {
+    "id": 10,
+    "relevance": 0.68,
+    "reason": "MCP transport layer shares WebSocket patterns with bridge"
+   },
+   {
+    "id": 35,
+    "relevance": 0.6,
+    "reason": "OAuth JWT tokens authenticate bridge remote connections"
+   }
+  ],
+  "35": [
+   {
+    "id": 10,
+    "relevance": 0.83,
+    "reason": "MCP servers use OAuth/PKCE for authentication flow"
+   },
+   {
+    "id": 47,
+    "relevance": 0.68,
+    "reason": "OAuth token storage uses keychain from security system"
+   },
+   {
+    "id": 34,
+    "relevance": 0.6,
+    "reason": "OAuth JWT tokens authenticate bridge remote connections"
+   }
+  ],
+  "36": [
+   {
+    "id": 27,
+    "relevance": 0.68,
+    "reason": "session management uses git watcher for filesystem tracking"
+   },
+   {
+    "id": 12,
+    "relevance": 0.65,
+    "reason": "git worktrees enable isolated agent filesystem branches"
+   },
+   {
+    "id": 8,
+    "relevance": 0.62,
+    "reason": "file tools write/edit tracked by git integration watcher"
+   },
+   {
+    "id": 9,
+    "relevance": 0.6,
+    "reason": "search tools navigate the git-tracked filesystem"
+   }
+  ],
+  "37": [
+   {
+    "id": 34,
+    "relevance": 0.75,
+    "reason": "bridge remote control routes through upstream proxy"
+   },
+   {
+    "id": 47,
+    "relevance": 0.65,
+    "reason": "proxy TLS/MITM inspection relates to security sandbox"
+   },
+   {
+    "id": 46,
+    "relevance": 0.6,
+    "reason": "proxy can route between model providers"
+   },
+   {
+    "id": 85,
+    "relevance": 0.75,
+    "reason": "L85 adds CLAUDE_BG_BACKEND=daemon and autoAddRemoteControlDaemonWorker — the env gate for the always-on local worker this Remote Control bridge feeds into"
+   }
+  ],
+  "38": [
+   {
+    "id": 43,
+    "relevance": 0.72,
+    "reason": "cron scheduling powers KAIROS daemon recurring tasks"
+   },
+   {
+    "id": 49,
+    "relevance": 0.7,
+    "reason": "cron/task scheduling overlaps with background task system"
+   },
+   {
+    "id": 41,
+    "relevance": 0.6,
+    "reason": "Ultraplan polling interval resembles cron scheduling"
+   },
+   {
+    "id": 12,
+    "relevance": 0.58,
+    "reason": "scheduled tasks can spawn agent instances"
+   }
+  ],
+  "39": [
+   {
+    "id": 45,
+    "relevance": 0.65,
+    "reason": "voice input integrates with desktop app for push-to-talk"
+   },
+   {
+    "id": 50,
+    "relevance": 0.6,
+    "reason": "voice input feeds into the REPL input layer"
+   },
+   {
+    "id": 34,
+    "relevance": 0.55,
+    "reason": "voice WebSocket streaming shares patterns with bridge"
+   }
+  ],
+  "40": [
+   {
+    "id": 17,
+    "relevance": 0.6,
+    "reason": "buddy companion renders sprites through Ink renderer"
+   },
+   {
+    "id": 50,
+    "relevance": 0.55,
+    "reason": "buddy displays within the REPL screen easter egg"
+   },
+   {
+    "id": 24,
+    "relevance": 0.5,
+    "reason": "buddy uses theme colors for sprite rendering"
+   }
+  ],
+  "41": [
+   {
+    "id": 34,
+    "relevance": 0.73,
+    "reason": "bridge/CCR enables Ultraplan remote session control"
+   },
+   {
+    "id": 43,
+    "relevance": 0.65,
+    "reason": "Ultraplan and KAIROS both manage long-running remote sessions"
+   },
+   {
+    "id": 38,
+    "relevance": 0.6,
+    "reason": "Ultraplan polling interval resembles cron scheduling"
+   }
+  ],
+  "42": [
+   {
+    "id": 1,
+    "relevance": 0.8,
+    "reason": "boot entrypoints and SDK share CLI bootstrap logic"
+   },
+   {
+    "id": 12,
+    "relevance": 0.7,
+    "reason": "Agent SDK provides programmatic agent spawning entrypoints"
+   },
+   {
+    "id": 34,
+    "relevance": 0.7,
+    "reason": "Agent SDK entrypoints use bridge/CCR control protocol"
+   },
+   {
+    "id": 45,
+    "relevance": 0.68,
+    "reason": "desktop app uses Agent SDK entrypoints for IDE integration"
+   },
+   {
+    "id": 10,
+    "relevance": 0.65,
+    "reason": "Agent SDK exposes MCP tool registration for entrypoints"
+   }
+  ],
+  "43": [
+   {
+    "id": 16,
+    "relevance": 0.78,
+    "reason": "KAIROS uses kairos-memory for autonomous dream consolidation"
+   },
+   {
+    "id": 38,
+    "relevance": 0.72,
+    "reason": "cron scheduling powers KAIROS daemon recurring tasks"
+   },
+   {
+    "id": 14,
+    "relevance": 0.7,
+    "reason": "KAIROS daemon uses autonomous agent patterns from swarm"
+   },
+   {
+    "id": 41,
+    "relevance": 0.65,
+    "reason": "Ultraplan and KAIROS both manage long-running remote sessions"
+   },
+   {
+    "id": 15,
+    "relevance": 0.62,
+    "reason": "KAIROS daemon uses memory for autonomous context persistence"
+   },
+   {
+    "id": 85,
+    "relevance": 0.95,
+    "reason": "L85's CLAUDE_BG_BACKEND=daemon env var is the first binary-shipped public surface of the KAIROS daemon architecture documented here; April 2026 npm source-map leak externally corroborated KAIROS=daemon."
+   }
+  ],
+  "44": [
+   {
+    "id": 29,
+    "relevance": 0.95,
+    "reason": "shared keywords: analytics, telemetry, datadog, growthbook, pii, sampling, event-queue, kill-switch, metadata-enrichment, feature-flags"
+   },
+   {
+    "id": 46,
+    "relevance": 0.7,
+    "reason": "cost analytics tracks spending per model provider"
+   },
+   {
+    "id": 2,
+    "relevance": 0.62,
+    "reason": "cost analytics monitors query engine API call costs"
+   }
+  ],
+  "45": [
+   {
+    "id": 42,
+    "relevance": 0.68,
+    "reason": "desktop app uses Agent SDK entrypoints for IDE integration"
+   },
+   {
+    "id": 39,
+    "relevance": 0.65,
+    "reason": "voice input integrates with desktop app for push-to-talk"
+   },
+   {
+    "id": 34,
+    "relevance": 0.6,
+    "reason": "desktop deep-links connect through bridge protocol"
+   }
+  ],
+  "46": [
+   {
+    "id": 2,
+    "relevance": 0.72,
+    "reason": "model system configures which LLM the query engine calls"
+   },
+   {
+    "id": 44,
+    "relevance": 0.7,
+    "reason": "cost analytics tracks spending per model provider"
+   },
+   {
+    "id": 26,
+    "relevance": 0.7,
+    "reason": "settings configure model aliases and provider allowlists"
+   },
+   {
+    "id": 33,
+    "relevance": 0.6,
+    "reason": "error handling manages model provider fallback chains"
+   },
+   {
+    "id": 37,
+    "relevance": 0.6,
+    "reason": "proxy can route between model providers"
+   }
+  ],
+  "47": [
+   {
+    "id": 7,
+    "relevance": 0.8,
+    "reason": "Bash sandboxing uses seatbelt/bubblewrap from security system"
+   },
+   {
+    "id": 25,
+    "relevance": 0.77,
+    "reason": "sandbox security enforces permission boundaries at OS level"
+   },
+   {
+    "id": 35,
+    "relevance": 0.68,
+    "reason": "OAuth token storage uses keychain from security system"
+   },
+   {
+    "id": 37,
+    "relevance": 0.65,
+    "reason": "proxy TLS/MITM inspection relates to security sandbox"
+   },
+   {
+    "id": 30,
+    "relevance": 0.58,
+    "reason": "migrations gate features behind version-based security checks"
+   }
+  ],
+  "48": [
+   {
+    "id": 2,
+    "relevance": 0.75,
+    "reason": "message pipeline normalizes input before query engine processing"
+   },
+   {
+    "id": 5,
+    "relevance": 0.73,
+    "reason": "architecture overview covers the message processing data flow"
+   },
+   {
+    "id": 28,
+    "relevance": 0.65,
+    "reason": "message pipeline interacts with compaction for context management"
+   },
+   {
+    "id": 6,
+    "relevance": 0.62,
+    "reason": "message pipeline transforms tool results for API format"
+   }
+  ],
+  "49": [
+   {
+    "id": 12,
+    "relevance": 0.72,
+    "reason": "agent system spawns background tasks managed by task system"
+   },
+   {
+    "id": 38,
+    "relevance": 0.7,
+    "reason": "cron/task scheduling overlaps with background task system"
+   },
+   {
+    "id": 13,
+    "relevance": 0.68,
+    "reason": "coordinator tracks worker tasks through task system"
+   }
+  ],
+  "50": [
+   {
+    "id": 17,
+    "relevance": 0.82,
+    "reason": "Ink renderer powers the REPL screen rendering pipeline"
+   },
+   {
+    "id": 3,
+    "relevance": 0.75,
+    "reason": "state management drives REPL render tree via useSyncExternalStore"
+   },
+   {
+    "id": 1,
+    "relevance": 0.7,
+    "reason": "boot sequence launches the REPL as final startup step"
+   },
+   {
+    "id": 23,
+    "relevance": 0.65,
+    "reason": "fullscreen mode is a REPL screen rendering variant"
+   },
+   {
+    "id": 21,
+    "relevance": 0.65,
+    "reason": "Vim mode state machine operates within the REPL input layer"
+   },
+   {
+    "id": 75,
+    "relevance": 0.7,
+    "reason": "L75 introduces REPL mode as a variant of the REPL screen"
+   }
+  ],
+  "51": [
+   {
+    "id": 2,
+    "relevance": 0.8,
+    "reason": "effortValue flows through the query engine as a distinct API parameter"
+   },
+   {
+    "id": 55,
+    "relevance": 0.72,
+    "reason": "advisor model setting lives in the same env-vars / session config lesson"
+   }
+  ],
+  "52": [
+   {
+    "id": 7,
+    "relevance": 0.78,
+    "reason": "file checkpointing wraps every Bash/edit tool write with a snapshot"
+   },
+   {
+    "id": 8,
+    "relevance": 0.75,
+    "reason": "file tools (Write/Edit) are the primary triggers for checkpoint creation"
+   }
+  ],
+  "53": [
+   {
+    "id": 57,
+    "relevance": 0.85,
+    "reason": "v2.1.92 confirms /teleport is present; implementation unchanged"
+   },
+   {
+    "id": 41,
+    "relevance": 0.7,
+    "reason": "bridge/remote infrastructure underpins the teleport session transfer"
+   }
+  ],
+  "54": [
+   {
+    "id": 12,
+    "relevance": 0.78,
+    "reason": "/branch spawns a fork subagent — relates to the full agent system"
+   },
+   {
+    "id": 52,
+    "relevance": 0.65,
+    "reason": "both /rewind and /branch let users recover from an unwanted path"
+   }
+  ],
+  "55": [
+   {
+    "id": 27,
+    "relevance": 0.75,
+    "reason": "session resume builds on the session management subsystem"
+   },
+   {
+    "id": 58,
+    "relevance": 0.7,
+    "reason": "v2.1.92 adds more env vars; Lesson 55 covers the v2.1.90 batch"
+   }
+  ],
+  "56": [
+   {
+    "id": 28,
+    "relevance": 0.8,
+    "reason": "/autocompact directly configures the context compaction subsystem"
+   },
+   {
+    "id": 19,
+    "relevance": 0.65,
+    "reason": "/buddy injects a companion system prompt — relates to memory/prompt injection"
+   }
+  ],
+  "57": [
+   {
+    "id": 53,
+    "relevance": 0.85,
+    "reason": "/teleport full implementation is in Lesson 53; L57 confirms presence in v2.1.92"
+   },
+   {
+    "id": 58,
+    "relevance": 0.78,
+    "reason": "L57 and L58 both document v2.1.92 changes — read together"
+   }
+  ],
+  "58": [
+   {
+    "id": 55,
+    "relevance": 0.78,
+    "reason": "L55 covers v2.1.90 env vars; L58 continues with v2.1.92 additions"
+   },
+   {
+    "id": 41,
+    "relevance": 0.72,
+    "reason": "CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX configures the bridge/remote system"
+   }
+  ],
+  "59": [
+   {
+    "id": 6,
+    "relevance": 0.88,
+    "reason": "L6 covers the tool system architecture that AskUserQuestionTool implements"
+   },
+   {
+    "id": 5,
+    "relevance": 0.82,
+    "reason": "L5 documents the permission pipeline including requiresUserInteraction tools"
+   },
+   {
+    "id": 21,
+    "relevance": 0.7,
+    "reason": "L21 covers Plan Mode; AskUserQuestion has specific Plan Mode restrictions"
+   }
+  ],
+  "60": [
+   {
+    "id": 18,
+    "relevance": 0.9,
+    "reason": "L18 covers the commands system that /autofix-pr and /team-onboarding plug into"
+   },
+   {
+    "id": 34,
+    "relevance": 0.82,
+    "reason": "/autofix-pr depends on remote-session infrastructure rather than local-only command execution"
+   },
+   {
+    "id": 85,
+    "relevance": 0.5,
+    "reason": "L85's Remote Workflow sunset leaves /autofix-pr (L60) as the surviving remote-spawn command"
+   }
+  ],
+  "61": [
+   {
+    "id": 46,
+    "relevance": 0.88,
+    "reason": "CLAUDE_CODE_USE_MANTLE adds a new provider path inside the model/provider system"
+   },
+   {
+    "id": 10,
+    "relevance": 0.76,
+    "reason": "CLAUDE_CODE_MCP_ALLOWLIST_ENV changes how MCP environments are gated and exposed"
+   },
+   {
+    "id": 47,
+    "relevance": 0.72,
+    "reason": "CLAUDE_CODE_SANDBOXED alters trust and sandbox acceptance behavior"
+   }
+  ],
+  "62": [
+   {
+    "id": 16,
+    "relevance": 0.95,
+    "reason": "L16 covers auto-memory and dreams infrastructure; L62 is the user-facing /dream command"
+   },
+   {
+    "id": 15,
+    "relevance": 0.88,
+    "reason": "L15 covers memory system architecture; /dream reads and writes the same memory files"
+   },
+   {
+    "id": 49,
+    "relevance": 0.8,
+    "reason": "DreamTask is one of the task types documented in L49's task system"
+   },
+   {
+    "id": 38,
+    "relevance": 0.7,
+    "reason": "/dream nightly uses RemoteTrigger cron scheduling from L38"
+   },
+   {
+    "id": 68,
+    "relevance": 0.9,
+    "reason": "GrowthBook flag evaluation mechanism (E_() function, override paths, remote-eval mode) explains why /dream isEnabled gate blocks"
+   }
+  ],
+  "63": [
+   {
+    "id": 8,
+    "relevance": 0.9,
+    "reason": "Perforce mode adds read-only guards to Edit/Write/NotebookEdit file tools from L8"
+   },
+   {
+    "id": 7,
+    "relevance": 0.82,
+    "reason": "Script caps limit Bash tool execution counts; L7 covers the Bash tool architecture"
+   },
+   {
+    "id": 47,
+    "relevance": 0.75,
+    "reason": "Script caps are part of the broader sandbox/security hardening from L47"
+   },
+   {
+    "id": 36,
+    "relevance": 0.68,
+    "reason": "Perforce VCS detection extends the git integration system from L36"
+   }
+  ],
+  "64": [
+   {
+    "id": 56,
+    "relevance": 0.88,
+    "reason": "L56 documents /buddy implementation; L64 records its complete removal in v2.1.97"
+   },
+   {
+    "id": 46,
+    "relevance": 0.82,
+    "reason": "Custom model capabilities and /setup-vertex extend the model/provider system from L46"
+   },
+   {
+    "id": 57,
+    "relevance": 0.75,
+    "reason": "/setup-vertex is companion to /setup-bedrock added in v2.1.92 (L57)"
+   },
+   {
+    "id": 55,
+    "relevance": 0.7,
+    "reason": "L55 covers v2.1.90 env vars; L64 continues with v2.1.97-v2.1.100 additions and removals"
+   }
+  ],
+  "65": [
+   {
+    "id": 43,
+    "relevance": 0.82,
+    "reason": "KAIROS proactive mode and away_summary both inject autonomous system messages"
+   },
+   {
+    "id": 2,
+    "relevance": 0.75,
+    "reason": "away_summary uses a forked query engine call with constrained parameters"
+   },
+   {
+    "id": 48,
+    "relevance": 0.7,
+    "reason": "away_summary message injection extends the message processing pipeline"
+   },
+   {
+    "id": 50,
+    "relevance": 0.65,
+    "reason": "terminal focus detection for away_summary operates within the REPL layer"
+   },
+   {
+    "id": 72,
+    "relevance": 0.95,
+    "reason": "L72 adds on-demand /recap command using the same away summary infrastructure"
+   }
+  ],
+  "66": [
+   {
+    "id": 37,
+    "relevance": 0.88,
+    "reason": "proxy/upstream system shares TLS cert infrastructure with the new cert store"
+   },
+   {
+    "id": 35,
+    "relevance": 0.72,
+    "reason": "OAuth/PKCE authentication uses the same TLS connections configured by cert store"
+   },
+   {
+    "id": 26,
+    "relevance": 0.7,
+    "reason": "cert store cache is invalidated on settings reload via the settings cascade"
+   },
+   {
+    "id": 10,
+    "relevance": 0.65,
+    "reason": "MCP WebSocket connections use MN() which reads certs from the cert store"
+   }
+  ],
+  "67": [
+   {
+    "id": 38,
+    "relevance": 0.9,
+    "reason": "dynamic loop pacing extends the cron scheduling system from L38"
+   },
+   {
+    "id": 43,
+    "relevance": 0.82,
+    "reason": "loop aging uses recurringMaxAgeMs from KAIROS daemon configuration"
+   },
+   {
+    "id": 59,
+    "relevance": 0.75,
+    "reason": "cloud-first offering uses AskUserQuestion tool documented in L59"
+   },
+   {
+    "id": 18,
+    "relevance": 0.7,
+    "reason": "/loops is a new local-jsx command; L18 covers the commands system architecture"
+   }
+  ],
+  "68": [
+   {
+    "id": 64,
+    "relevance": 0.88,
+    "reason": "L64 covers v2.1.97-v2.1.100 changes; L68 continues with v2.1.101"
+   },
+   {
+    "id": 42,
+    "relevance": 0.78,
+    "reason": "SDK OAuth refresh and SDK observability extend the Agent SDK entrypoints from L42"
+   },
+   {
+    "id": 35,
+    "relevance": 0.72,
+    "reason": "OAuth token refresh flow builds on the authentication system from L35"
+   },
+   {
+    "id": 10,
+    "relevance": 0.65,
+    "reason": "MCP registry changes affect MCP server discovery from L10"
+   },
+   {
+    "id": 62,
+    "relevance": 0.85,
+    "reason": "GrowthBook flag tengu_kairos_dream gates /dream command; L68 documents full GrowthBook evaluation internals"
+   },
+   {
+    "id": 76,
+    "relevance": 0.88,
+    "reason": "L76 continues version-change documentation for v2.1.107-v2.1.109"
+   },
+   {
+    "id": 85,
+    "relevance": 0.5,
+    "reason": "L85 shows /update actively iterating (module hash churn, new refusal paths) despite still being isEnabled:()=>false from L68 — daemon-mode may be the delivery vehicle"
+   }
+  ],
+  "69": [
+   {
+    "id": 2,
+    "relevance": 0.92,
+    "reason": "context collapse is step 4 in the compaction pipeline documented in L2 (Query Engine)"
+   },
+   {
+    "id": 28,
+    "relevance": 0.88,
+    "reason": "marble-origami persistence complements the autocompact and snipCompact strategies from L28"
+   },
+   {
+    "id": 3,
+    "relevance": 0.75,
+    "reason": "collapse state is persisted in session JSONL; L3 covers the state management layer"
+   },
+   {
+    "id": 65,
+    "relevance": 0.6,
+    "reason": "both L65 (away summary) and L69 (context collapse) write custom entry types to session JSONL"
+   }
+  ],
+  "70": [
+   {
+    "id": 2,
+    "relevance": 0.92,
+    "reason": "streaming fallback is part of the query engine's error recovery pipeline"
+   },
+   {
+    "id": 33,
+    "relevance": 0.82,
+    "reason": "partial yield protection extends the error handling and recovery system"
+   },
+   {
+    "id": 29,
+    "relevance": 0.7,
+    "reason": "new telemetry events (tier field, partial_yield cause) feed into analytics"
+   },
+   {
+    "id": 74,
+    "relevance": 0.92,
+    "reason": "L74 adds byte-level stream watchdog, counterpart to the event-level watchdog in L70"
+   }
+  ],
+  "71": [
+   {
+    "id": 4,
+    "relevance": 0.9,
+    "reason": "system prompt section rename directly modifies the assembled system prompt"
+   },
+   {
+    "id": 46,
+    "relevance": 0.72,
+    "reason": "rename is model-gated (opus-4-6 only), relating to model system configuration"
+   },
+   {
+    "id": 68,
+    "relevance": 0.65,
+    "reason": "quiet_salted_ember is a clientDataCache flag, distinct from GrowthBook flags in L68"
+   }
+  ],
+  "72": [
+   {
+    "id": 65,
+    "relevance": 0.95,
+    "reason": "L65 documents the passive away summary system; L72 adds the on-demand /recap command using the same infrastructure"
+   },
+   {
+    "id": 18,
+    "relevance": 0.72,
+    "reason": "/recap registers as a slash command in the commands system from L18"
+   },
+   {
+    "id": 26,
+    "relevance": 0.68,
+    "reason": "awaySummaryEnabled setting toggle lives in the settings cascade from L26"
+   }
+  ],
+  "73": [
+   {
+    "id": 36,
+    "relevance": 0.82,
+    "reason": "multi-repo checkout extends git integration with branch watching across multiple repos"
+   },
+   {
+    "id": 37,
+    "relevance": 0.85,
+    "reason": "multi-repo checkout is CCR v2 remote infrastructure; branch data flows to CCR server via external_metadata"
+   },
+   {
+    "id": 12,
+    "relevance": 0.7,
+    "reason": "multi-repo support enables agents to operate across multiple repository checkouts"
+   },
+   {
+    "id": 18,
+    "relevance": 0.72,
+    "reason": "TQ1() merge-base resolution feeds into Write/Edit tool diff generation"
+   }
+  ],
+  "74": [
+   {
+    "id": 70,
+    "relevance": 0.95,
+    "reason": "L70 documents event-level stream watchdog and partial yield protection; L74 adds the byte-level counterpart"
+   },
+   {
+    "id": 2,
+    "relevance": 0.82,
+    "reason": "byte watchdog wraps the fetch layer used by the query engine's streaming pipeline"
+   },
+   {
+    "id": 33,
+    "relevance": 0.7,
+    "reason": "byte watchdog timeout feeds into the error handling and recovery system"
+   }
+  ],
+  "75": [
+   {
+    "id": 50,
+    "relevance": 0.88,
+    "reason": "REPL mode is a variant of the REPL screen documented in L50"
+   },
+   {
+    "id": 2,
+    "relevance": 0.78,
+    "reason": "REPL VM provides haiku()/opus()/sonnet() model sampling functions that invoke the query engine"
+   },
+   {
+    "id": 6,
+    "relevance": 0.75,
+    "reason": "REPL mode restricts tool set via OkH then re-injects tools into the VM via G47()/U4H()"
+   },
+   {
+    "id": 32,
+    "relevance": 0.7,
+    "reason": "REPL mode is compaction-aware — warns when VM state is cleared during context compaction"
+   }
+  ],
+  "76": [
+   {
+    "id": 68,
+    "relevance": 0.9,
+    "reason": "L68 covers v2.1.101 changes; L76 continues with v2.1.107-v2.1.109 changes"
+   },
+   {
+    "id": 64,
+    "relevance": 0.82,
+    "reason": "L64 covers v2.1.97-v2.1.100 changes; L76 is the next version change catch-all"
+   },
+   {
+    "id": 42,
+    "relevance": 0.72,
+    "reason": "managed-agents-2026-04-01 beta string and 33 embedded docs relate to Agent SDK entrypoints from L42"
+   },
+   {
+    "id": 11,
+    "relevance": 0.75,
+    "reason": "managed-agents docs are embedded as a built-in skill (claude-api); language detection via ZU5 parallels the skills system from L11"
+   },
+   {
+    "id": 2,
+    "relevance": 0.7,
+    "reason": "rate limit upgrade paths and HS9() unified header parsing interact with the query engine's response handling"
+   }
+  ],
+  "77": [
+   {
+    "id": 73,
+    "relevance": 0.92,
+    "reason": "L77 Remote Workflows are CCR v2 sessions; L73 documents CCR v2 multi-repo infrastructure"
+   },
+   {
+    "id": 34,
+    "relevance": 0.8,
+    "reason": "Remote sessions use the Remote Control bridge from L34"
+   },
+   {
+    "id": 79,
+    "relevance": 0.78,
+    "reason": "Remote Workflows often pair with PushNotification for 'pings you when it needs you' flow"
+   },
+   {
+    "id": 41,
+    "relevance": 0.72,
+    "reason": "ULTRAPLAN is the earlier remote-session pattern that informed Remote Workflows"
+   },
+   {
+    "id": 83,
+    "relevance": 0.68,
+    "reason": "CCR-hosted remote sessions may get server-overridden system prompts via the mechanism in L83"
+   },
+   {
+    "id": 85,
+    "relevance": 0.95,
+    "reason": "L85 documents the v2.1.113 sunset of all five Remote Workflow Commands described here"
+   }
+  ],
+  "78": [
+   {
+    "id": 2,
+    "relevance": 0.82,
+    "reason": "Advisor Tool injects server_tool_use / advisor_tool_result content blocks into the query engine's streaming response"
+   },
+   {
+    "id": 46,
+    "relevance": 0.8,
+    "reason": "Advisor is strictly gated to opus-4-6 / opus-4-7 / sonnet-4-6 per the model system's allow-list logic"
+   },
+   {
+    "id": 80,
+    "relevance": 0.75,
+    "reason": "Both L78 and L80 are server-driven behavioral modifications — read together as the 'server takes the wheel' cluster"
+   },
+   {
+    "id": 83,
+    "relevance": 0.68,
+    "reason": "Advisor's behavior pairs with System Prompt GB Override — both let the server alter primary-model behavior"
+   },
+   {
+    "id": 29,
+    "relevance": 0.65,
+    "reason": "Advisor enablement flows through GrowthBook gate tengu_sage_compass2 per L29 telemetry/flag infrastructure"
+   }
+  ],
+  "79": [
+   {
+    "id": 43,
+    "relevance": 0.9,
+    "reason": "KAIROS is the always-on daemon from L43; PushNotification is the tool interface to it"
+   },
+   {
+    "id": 77,
+    "relevance": 0.8,
+    "reason": "Remote Workflows use PushNotification to ping the user when long-running cloud sessions need input"
+   },
+   {
+    "id": 34,
+    "relevance": 0.75,
+    "reason": "PushNotification routes through the Remote Control bridge (L34) before reaching KAIROS"
+   },
+   {
+    "id": 20,
+    "relevance": 0.65,
+    "reason": "PushNotification complements the local notification system (L20) — one is transactional, the other is in-session"
+   },
+   {
+    "id": 85,
+    "relevance": 0.5,
+    "reason": "L85's daemon-mode gate complements the mobile push infrastructure of L79 — both are moves toward an always-on local posture"
+   }
+  ],
+  "80": [
+   {
+    "id": 28,
+    "relevance": 0.92,
+    "reason": "Context Hint triggers keep-recent micro-compaction — extends the compaction system from L28 with a server-driven trigger"
+   },
+   {
+    "id": 2,
+    "relevance": 0.88,
+    "reason": "Context Hint signals arrive as HTTP status codes and SSE errors on the query engine's streaming response"
+   },
+   {
+    "id": 78,
+    "relevance": 0.75,
+    "reason": "Both L78 and L80 are server-driven behavioral modifications — paired in the 'server takes the wheel' narrative"
+   },
+   {
+    "id": 33,
+    "relevance": 0.72,
+    "reason": "422/424/409/529 responses feed into the error handling pipeline from L33 with compact-and-retry semantics"
+   },
+   {
+    "id": 69,
+    "relevance": 0.65,
+    "reason": "Context Hint compaction is distinct from marble-origami reversible collapse (L69); read together to understand all compaction pathways"
+   }
+  ],
+  "81": [
+   {
+    "id": 23,
+    "relevance": 0.95,
+    "reason": "L23 documents fullscreen / alt-screen architecture; L81 adds the /focus /tui commands and 5-tier activation precedence"
+   },
+   {
+    "id": 17,
+    "relevance": 0.72,
+    "reason": "Fullscreen rendering uses the Ink renderer from L17 with alt-screen buffer flip"
+   },
+   {
+    "id": 22,
+    "relevance": 0.65,
+    "reason": "Fullscreen mode interacts with keybindings (L22) — input handling changes in alt-screen mode"
+   },
+   {
+    "id": 84,
+    "relevance": 0.6,
+    "reason": "/focus and /tui are among the new slash commands tabulated in L84"
+   },
+   {
+    "id": 85,
+    "relevance": 0.55,
+    "reason": "L85 adds CLAUDE_CODE_DECSTBM + tengu_marlin_porch for scrolling-region support in the fullscreen TUI"
+   }
+  ],
+  "82": [
+   {
+    "id": 37,
+    "relevance": 0.9,
+    "reason": "L37 documents the upstream proxy system; L82 adds a user-defined shell-command helper for rotating proxy credentials"
+   },
+   {
+    "id": 26,
+    "relevance": 0.75,
+    "reason": "Proxy auth helper is a settings.json key subject to L26's workspace-trust model"
+   },
+   {
+    "id": 66,
+    "relevance": 0.65,
+    "reason": "Both L82 and L66 (CA cert store) are enterprise-network features — related configuration surface"
+   }
+  ],
+  "83": [
+   {
+    "id": 4,
+    "relevance": 0.92,
+    "reason": "L4 covers system prompt construction; L83 adds GB override, append-subagent, and verified-vs-assumed layers"
+   },
+   {
+    "id": 71,
+    "relevance": 0.78,
+    "reason": "L71 is an earlier system-prompt gated rename (quiet_salted_ember); same 'server mutates prompt' pattern"
+   },
+   {
+    "id": 12,
+    "relevance": 0.72,
+    "reason": "append-subagent-prompt applies to subagent dispatches from the agent system L12"
+   },
+   {
+    "id": 77,
+    "relevance": 0.68,
+    "reason": "System prompt GB override is gated on CLAUDE_CODE_REMOTE — primarily runs inside CCR v2 Remote Workflows from L77"
+   },
+   {
+    "id": 78,
+    "relevance": 0.65,
+    "reason": "Both L78 and L83 are server-controlled behavioral overrides; read together"
+   }
+  ],
+  "84": [
+   {
+    "id": 76,
+    "relevance": 0.9,
+    "reason": "L76 covers v2.1.107-v2.1.109 changes; L84 continues the pattern with v2.1.110-v2.1.111 changes"
+   },
+   {
+    "id": 68,
+    "relevance": 0.82,
+    "reason": "L68 covers v2.1.101 changes; L84 is the next catch-all"
+   },
+   {
+    "id": 31,
+    "relevance": 0.7,
+    "reason": "Background plugin refresh (L84) extends the plugin system from L31"
+   },
+   {
+    "id": 11,
+    "relevance": 0.65,
+    "reason": "/less-permission-prompts is a built-in skill/command; coexists with user-installed skills per L11 precedence rules"
+   },
+   {
+    "id": 85,
+    "relevance": 0.9,
+    "reason": "L85 is the next per-release catch-all, covering v2.1.112-v2.1.113 command and env-var changes"
+   }
+  ],
+  "85": [
+   {
+    "id": 77,
+    "relevance": 0.95,
+    "reason": "L85 documents the sunset of the 5 Remote Workflow Commands introduced in L77 (v2.1.110); read L77 for how they worked, L85 for what was removed and why that matters"
+   },
+   {
+    "id": 84,
+    "relevance": 0.9,
+    "reason": "L85 continues the per-release catch-all pattern established by L84 (v2.1.110-v2.1.111); together they document the full v2.1.110-v2.1.113 command/env-var delta"
+   },
+   {
+    "id": 60,
+    "relevance": 0.7,
+    "reason": "L60's /autofix-pr is the surviving Remote Workflow command — read together to see which remote commands persist vs. were sunset"
+   },
+   {
+    "id": 81,
+    "relevance": 0.65,
+    "reason": "L85's CLAUDE_CODE_DECSTBM + tengu_marlin_porch extends the Fullscreen TUI machinery documented in L81"
+   },
+   {
+    "id": 73,
+    "relevance": 0.6,
+    "reason": "L73 CCR v2 multi-repo infrastructure survives the L85 sunset — the scaffolding remains even though L77's user-facing commands were removed"
+   },
+   {
+    "id": 6,
+    "relevance": 0.55,
+    "reason": "L85's CLAUDE_ASYNC_AGENT_STALL_TIMEOUT_MS is an async-agent watchdog; L6 is the agent system canonical reference"
+   },
+   {
+    "id": 37,
+    "relevance": 0.75,
+    "reason": "Remote Control bridge the daemon worker is expected to plug into; autoAddRemoteControlDaemonWorker sits alongside L37's remoteControlAtStartup as a second ingress for the same persistent worker"
+   },
+   {
+    "id": 43,
+    "relevance": 0.95,
+    "reason": "L43 IS the KAIROS always-on autonomous daemon architecture; L85's CLAUDE_BG_BACKEND=daemon is plausibly the first binary-reachable public surface of that subsystem. Read L43 first, then L85."
+   },
+   {
+    "id": 79,
+    "relevance": 0.5,
+    "reason": "Mobile push pipeline requires a background worker reachable when no TTY is attached — daemon-mode env gate makes that explicit"
+   }
+  ],
+  "86": [
+   {
+    "id": 85,
+    "relevance": 0.8,
+    "reason": "L85 and L86 are sequential per-release catch-alls; L86's CLAUDE_CODE_RETRY_WATCHDOG fits L85's instrumentation-for-unattended-operation theme and only activates on L85's daemon/remote entrypoint"
+   },
+   {
+    "id": 66,
+    "relevance": 0.7,
+    "reason": "L66 Proxy Auth Helper handles Anthropic auth proxying; L86 documents the separate CLAUDE_CODE_HTTP(S)_PROXY fallback chain for network-layer proxies"
+   },
+   {
+    "id": 73,
+    "relevance": 0.7,
+    "reason": "L86's CLAUDE_CODE_RETRY_WATCHDOG gates on CLAUDE_CODE_ENTRYPOINT set to 'remote', which is the CCR v2 remote-session entrypoint documented in L73"
+   },
+   {
+    "id": 37,
+    "relevance": 0.55,
+    "reason": "Remote Control bridge is the other ingress for unattended operation; L86's retry watchdog protects the same class of long-lived remote sessions"
+   },
+   {
+    "id": 84,
+    "relevance": 0.5,
+    "reason": "L84 is the prior per-release catch-all; L86 continues the pattern"
+   },
+   {
+    "id": 11,
+    "relevance": 0.4,
+    "reason": "L11 Skills System was re-verified against the same v2.1.116 bundle as L86; both are v2.9.x work"
+   }
+  ],
+  "87": [
+   {
+    "id": 11,
+    "relevance": 0.88,
+    "reason": "Skills' context:'fork' frontmatter field (accepted in v2.1.116 per L11) now actually dispatches to the new fork subagent type introduced in L87"
+   },
+   {
+    "id": 6,
+    "relevance": 0.85,
+    "reason": "L87 introduces a new implicit 'fork' subagent type — extends the agent system (L6) with a non-user-selectable agent triggered by omitting subagent_type"
+   },
+   {
+    "id": 29,
+    "relevance": 0.7,
+    "reason": "Fork subagent uses permissionMode:'bubble' — child permission prompts bubble up via the L29 permission pipeline"
+   },
+   {
+    "id": 85,
+    "relevance": 0.65,
+    "reason": "L85 is the prior per-release catch-all; L87 continues the pattern"
+   },
+   {
+    "id": 74,
+    "relevance": 0.55,
+    "reason": "tengu_byte_watchdog_fired_late added in L87 measures stall cases the byte watchdog (L74) catches late"
+   },
+   {
+    "id": 78,
+    "relevance": 0.55,
+    "reason": "tengu_advisor_strip_retry added in L87 is a new retry branch in the Advisor Tool (L78) wire protocol"
+   },
+   {
+    "id": 69,
+    "relevance": 0.4,
+    "reason": "Fork REPL hydration uses {kind:'fork', log:[replayLog]} — leverages the same replay-log mechanism as marble-origami (L69)"
+   },
+   {
+    "id": 88,
+    "relevance": 0.9,
+    "reason": "L88 is the other half of Chapter 19 (v2.1.117-v2.1.118); continues the same release window"
+   }
+  ],
+  "88": [
+   {
+    "id": 87,
+    "relevance": 0.9,
+    "reason": "L87 is the other half of Chapter 19 (v2.1.117-v2.1.118); /fork paired with UI consolidation completes the two-release theme"
+   },
+   {
+    "id": 11,
+    "relevance": 0.9,
+    "reason": "L88's shadow schema (eO1) is the only formal skill frontmatter validation in the codebase — L11's imperative extractor (Cz8) is the 'primary'. progressMessage (documented in L11 as object-level, not YAML) is the notable drift: absent from eO1, so aspirational YAML usage fires telemetry"
+   },
+   {
+    "id": 38,
+    "relevance": 0.85,
+    "reason": "WIF user-OAuth locking in L88 hardens the L38 OAuth token refresh path — prevents multi-process refresh races. Lock mechanism (Vk4/Gv_ via proper-lockfile directory-level mutex, tvq=5 retries × 1-2s jitter) landed in v2.1.117; all 5 telemetry events landed in v2.1.118"
+   },
+   {
+    "id": 10,
+    "relevance": 0.8,
+    "reason": "L88's 'Agent Stop Hook' deep-dive documents a previously-undocumented hook TYPE: AI verification hook (bs7) that spawns a dedicated sub-conversation to decide {ok: true/false, reason}. Mechanism pre-existed; v2.1.118 added tengu_agent_stop_hook_blocking telemetry. Substantially extends the L10 hooks-system surface with a second execution model beyond shell commands"
+   },
+   {
+    "id": 86,
+    "relevance": 0.78,
+    "reason": "WIF locking in L88 protects the <config_dir>/credentials/<profile>.json path that L86 OIDC Federation also uses"
+   },
+   {
+    "id": 73,
+    "relevance": 0.7,
+    "reason": "/autofix-pr description change in L88 drops 'remote session' framing — continues repositioning from L73 CCR v2 / L85 Remote Workflow sunset"
+   },
+   {
+    "id": 85,
+    "relevance": 0.6,
+    "reason": "L85's Remote Workflow sunset direction continues in L88: /autofix-pr deremoted, /cost + /stats folded into /usage"
+   },
+   {
+    "id": 22,
+    "relevance": 0.55,
+    "reason": "L88's /usage dual registration (interactive TUI + headless) changes the commands-system dispatch described in L22"
+   },
+   {
+    "id": 35,
+    "relevance": 0.45,
+    "reason": "Frontmatter shadow validator also applies to plugin frontmatter — will affect the L35 plugin system loader if promoted to strict mode"
+   }
+  ],
+  "89": [
+   {
+    "id": 105,
+    "relevance": 0.78,
+    "reason": "Desktop MCP-Apps bridge + elicitation: how MCP servers collect private user input in Desktop/Cowork"
+   },
+   {
+    "id": 106,
+    "relevance": 0.7,
+    "reason": "how an in-VM Cowork CLI is *meant* to get a set-once secret: the host-side clis.*.env broker (currently gated off)"
+   },
+   {
+    "id": 107,
+    "relevance": 0.9,
+    "reason": "the spawn + stream-json control-protocol contract that drives the host-loop agent (flags, handshake, SDK MCP delivery, permissions)"
+   },
+   {
+    "id": 108,
+    "relevance": 0.8,
+    "reason": "production gate states (incl host-loop 1143815894) + the bg/cowork env-var catalog"
+   },
+   {
+    "id": 122,
+    "relevance": 0.8,
+    "reason": "L122 pins the exact host-loop shared-scratch mechanism L89 first observed: sub-agent cwd IS the session outputs directory, and /sessions/... paths are denied not translated for file tools"
+   }
+  ],
+  "99": [
+   {
+    "id": 105,
+    "relevance": 0.78,
+    "reason": "Desktop MCP-Apps bridge + elicitation: how MCP servers collect private user input in Desktop/Cowork"
+   }
+  ],
+  "105": [
+   {
+    "id": 89,
+    "relevance": 0.83,
+    "reason": "Cowork split execution — the in-VM shell is sealed; elicitation/MCP-Apps are the host-side user channels"
+   },
+   {
+    "id": 99,
+    "relevance": 0.8,
+    "reason": "same Agent-SDK control-request dispatcher: host_auth_token_refresh/oauth_token_refresh are siblings of the elicitation subtype"
+   },
+   {
+    "id": 95,
+    "relevance": 0.6,
+    "reason": "another binary-verified Desktop/host-side surface (the 30-event hook master array)"
+   },
+   {
+    "id": 106,
+    "relevance": 0.86,
+    "reason": "the third Desktop credential channel — the clis.*.env CLI-tool broker (gated off), complementing MCP App UI / elicitation"
+   },
+   {
+    "id": 107,
+    "relevance": 0.78,
+    "reason": "the driver side of the same control protocol whose dispatcher (elicitation etc.) L105 documents"
+   }
+  ],
+  "106": [
+   {
+    "id": 105,
+    "relevance": 0.86,
+    "reason": "the other two Desktop credential channels (MCP App UI vs elicitation); same app.asar host — this is the third (CLI-tool) channel"
+   },
+   {
+    "id": 89,
+    "relevance": 0.82,
+    "reason": "Cowork split execution — the in-VM shell is sealed from host env, the exact problem the clis.*.env broker solves; three-root plugin namespace"
+   },
+   {
+    "id": 99,
+    "relevance": 0.66,
+    "reason": "host-delegated credential refresh — cowork-plugin-oauth sibling + oauth_token_refresh/host_auth_token_refresh control-requests"
+   },
+   {
+    "id": 104,
+    "relevance": 0.5,
+    "reason": "codename GB-flag triage — 2307090146 (cli_plugin) is another dark-launch gate of the same family"
+   },
+   {
+    "id": 107,
+    "relevance": 0.6,
+    "reason": "the agent-side spawn/auth contract; CLI secrets from the L106 broker are consumed by an agent spawned this way"
+   },
+   {
+    "id": 124,
+    "relevance": 0.55,
+    "reason": "L124's custom-3p hardcodedMainGrowthBookFeatures table (uOt) force-ONs the cli_plugin gate 2307090146 without GrowthBook, showing the L106 credential broker is live in custom-3p deployments even though it's dark on consumer GrowthBook"
+   },
+   {
+    "id": 127,
+    "relevance": 0.7,
+    "reason": "grand_prix is a fourth Desktop credential channel alongside the clis.*.env CLI-plugin broker"
+   }
+  ],
+  "107": [
+   {
+    "id": 89,
+    "relevance": 0.9,
+    "reason": "host-loop vs VM-loop + split execution: L107 is the driver/spawn side, L89 the in-VM-shell/mount side of the same architecture"
+   },
+   {
+    "id": 105,
+    "relevance": 0.78,
+    "reason": "the control-request dispatcher (elicitation/can_use_tool/mcp_message) seen from the agent side; L107 is the driver side of the same stream-json protocol"
+   },
+   {
+    "id": 106,
+    "relevance": 0.6,
+    "reason": "the CLI-plugin credential broker is the Desktop-host way to get a secret to a Cowork CLI; L107 covers the agent spawn/auth contract that consumes it"
+   },
+   {
+    "id": 99,
+    "relevance": 0.55,
+    "reason": "host-delegated credential refresh (host_auth_token_refresh) is the auth half of the same control protocol L107 documents"
+   },
+   {
+    "id": 108,
+    "relevance": 0.85,
+    "reason": "the env-var/gate/extended-subtype reference catalog for the same Cowork surface"
+   },
+   {
+    "id": 118,
+    "relevance": 0.75,
+    "reason": "the exact per-tool_use stream envelope fields + tool_use_meta schema"
+   },
+   {
+    "id": 121,
+    "relevance": 0.85,
+    "reason": "L121 renames and extends L107's host-loop tool partition (PNt/gre -> HOST_LOOP_SAFE_BUILTIN_TOOLS/HOST_LOOP_EXCLUDED_BUILTIN_TOOLS; BDt/QDt superseded by the first-class toolAliases SDK option) and grows the force-ask matcher set to 9 tools"
+   },
+   {
+    "id": 123,
+    "relevance": 0.7,
+    "reason": "L123's subagent_env_hl/vm prompt append and appendSubagentSystemPrompt option are delivered over the same initialize control-protocol handshake L107 documented"
+   },
+   {
+    "id": 124,
+    "relevance": 0.85,
+    "reason": "L124's Pm()/jKe()/FM() is the direct successor of L107's f_() host-loop/VM-loop decision function, re-verified force-on at 1.20186.1/2.1.205"
+   }
+  ],
+  "108": [
+   {
+    "id": 107,
+    "relevance": 0.85,
+    "reason": "L108 catalogs the env vars/gates/subtypes; L107 is the spawn+control-protocol contract that uses them"
+   },
+   {
+    "id": 89,
+    "relevance": 0.8,
+    "reason": "host-loop gate 1143815894 and the split-execution env surface are catalogued here with live fcache states"
+   },
+   {
+    "id": 106,
+    "relevance": 0.65,
+    "reason": "the cli_plugin gate 2307090146 (off) is one of the production gates catalogued; L106 is its full mechanism"
+   },
+   {
+    "id": 99,
+    "relevance": 0.55,
+    "reason": "the CLAUDE_BG_*_AUTH single-use handshake + host-auth env vars relate to host-delegated credential refresh"
+   },
+   {
+    "id": 119,
+    "relevance": 0.82,
+    "reason": "closes the CLAUDE_CODE_ENVIRONMENT_KIND=bridge gap this chapter left open -- confirms the mechanism is the agent's own claude remote-control bridge worker, and re-confirms gate 583857784 as the same bridge-session transport concept"
+   },
+   {
+    "id": 122,
+    "relevance": 0.8,
+    "reason": "L122 resolves the .host-home question raised by L108's gate 2614807392, confirming it is a synthetic path-translation index (ece()/uCe()), not a real mount"
+   },
+   {
+    "id": 123,
+    "relevance": 0.6,
+    "reason": "L123 traces CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT's real consumption gap beyond L108's env-var catalog listing"
+   },
+   {
+    "id": 124,
+    "relevance": 0.75,
+    "reason": "L124 re-confirms several L108 gate values unchanged and amends the cli_plugin (2307090146) dark/live split via the custom-3p uOt table"
+   },
+   {
+    "id": 128,
+    "relevance": 0.5,
+    "reason": "new 1.22209.0 gate ids extend the gate catalog, though without a fresh fcache decode this pass"
+   }
+  ],
+  "109": [
+   {
+    "id": 118,
+    "relevance": 0.7,
+    "reason": "microcompact_boundary is a distinct sibling subtype to compact_boundary"
+   }
+  ],
+  "114": [
+   {
+    "id": 106,
+    "relevance": 0.95,
+    "reason": "re-verifies the cli_plugin gate 2307090146 mechanism at a newer Desktop build"
+   },
+   {
+    "id": 107,
+    "relevance": 0.85,
+    "reason": "corrects the --effort spawn-value claim and re-verifies the forced-ask matcher"
+   },
+   {
+    "id": 108,
+    "relevance": 0.75,
+    "reason": "re-verifies all 11 catalogued gates and cross-checks env vars for this build"
+   },
+   {
+    "id": 109,
+    "relevance": 0.8,
+    "reason": "re-verifies CoworkSpaces/CoworkScheduledTasks IPC surfaces byte-for-byte and completes the getAutoMemoryDir env wiring"
+   },
+   {
+    "id": 93,
+    "relevance": 0.6,
+    "reason": "CLAUDE_CODE_EFFORT_LEVEL is the env var backing the corrected Desktop effort resolver"
+   },
+   {
+    "id": 46,
+    "relevance": 0.55,
+    "reason": "CLAUDE_CODE_SUBAGENT_MODEL promoted here from speculative to confirmed-wired"
+   },
+   {
+    "id": 120,
+    "relevance": 0.9,
+    "reason": "further corrects Part C's CLAUDE_CODE_EFFORT_LEVEL backing-store claim and documents the full effort/thinking spawn mechanics"
+   }
+  ],
+  "115": [
+   {
+    "id": 91,
+    "relevance": 0.6,
+    "reason": "Workflow resumeFromRunId is a sibling continuation primitive with cached agent replay"
+   },
+   {
+    "id": 92,
+    "relevance": 0.5,
+    "reason": "il() agent-teams gate shapes SendMessage's structured-message schema, not its availability"
+   },
+   {
+    "id": 87,
+    "relevance": 0.55,
+    "reason": "the fork subagent type whose full-context inheritance and fork-resume path this lesson documents"
+   },
+   {
+    "id": 107,
+    "relevance": 0.85,
+    "reason": "Cowork spawn contract and Desktop hooks option through which resume is severed"
+   },
+   {
+    "id": 109,
+    "relevance": 0.7,
+    "reason": "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS and the Tasks tool family; both knobs shown independent here"
+   },
+   {
+    "id": 114,
+    "relevance": 0.8,
+    "reason": "corrects L114's siting of DISABLE_AGENTS_FLEET/DISABLE_BACKGROUND_TASKS to the main Cowork spawn env"
+   },
+   {
+    "id": 116,
+    "relevance": 0.8,
+    "reason": "runtime-detection companion: how a skill finds out which of these surfaces it is on"
+   },
+   {
+    "id": 124,
+    "relevance": 0.85,
+    "reason": "L124 re-verifies L115's Task-one-shot/SendMessage-resume/Cowork-severing conclusions at 1.20186.1/2.1.205, with the background-by-default polarity flip and the new session-level mcp__dispatch__send_message channel"
+   }
+  ],
+  "116": [
+   {
+    "id": 107,
+    "relevance": 0.9,
+    "reason": "host-loop tool partition and spawn contract explain why the skill's shell runs as mcp__workspace__bash in the VM"
+   },
+   {
+    "id": 108,
+    "relevance": 0.85,
+    "reason": "the env-var catalog whose per-context visibility this lesson resolves"
+   },
+   {
+    "id": 115,
+    "relevance": 0.8,
+    "reason": "the same asar spawn env block (IS_COWORK/ENTRYPOINT=local-agent) read from the capability angle"
+   },
+   {
+    "id": 89,
+    "relevance": 0.75,
+    "reason": "coworkroot-probe ground truth: hook exports and host writes don't cross into the VM; plugin mount paths under /sessions/<id>"
+   },
+   {
+    "id": 114,
+    "relevance": 0.5,
+    "reason": "pruned-baseline methodology reused for the vanished MGn allowlist caveat"
+   },
+   {
+    "id": 117,
+    "relevance": 0.7,
+    "reason": "the /sessions/<id> path signature this lesson uses as a structural discriminator is exactly the mount/slug layout L117 forensically confirms"
+   },
+   {
+    "id": 118,
+    "relevance": 0.85,
+    "reason": "skill-scope attribution: what the agent tracks internally (activeSkill/attribution) and why it's absent from the stream"
+   }
+  ],
+  "117": [
+   {
+    "id": 89,
+    "relevance": 0.75,
+    "reason": "host-loop plugin staging (claude-hostloop-plugins/<hash>) is corroborated end-to-end by a real coworkd oneshot spawn log line"
+   },
+   {
+    "id": 107,
+    "relevance": 0.7,
+    "reason": "the /sessions/<id>/mnt/... path pattern this lesson pins down with a full mount inventory and real session-slug examples"
+   },
+   {
+    "id": 109,
+    "relevance": 0.65,
+    "reason": "fileDeleteApprovedMounts only governs mounted paths -- this lesson explains structurally why home/tmp were never candidates"
+   },
+   {
+    "id": 116,
+    "relevance": 0.6,
+    "reason": "the /sessions/<id> filesystem signature that lesson uses for VM-shell detection is the same mount layout documented here"
+   },
+   {
+    "id": 126,
+    "relevance": 0.45,
+    "reason": "remote_devices device-registry enrollment is a different, non-mount-based bridge mechanism from the VM rootfs mount inventory"
+   }
+  ],
+  "118": [
+   {
+    "id": 116,
+    "relevance": 0.9,
+    "reason": "skill runtime detection — the host/VM env split; L118 is the 'what the agent tracks internally about skills' companion"
+   },
+   {
+    "id": 107,
+    "relevance": 0.85,
+    "reason": "the stream-json control-protocol contract; L118 pins the exact per-tool_use envelope fields"
+   },
+   {
+    "id": 109,
+    "relevance": 0.78,
+    "reason": "the ~90-subtype control protocol; L118 adds microcompact_boundary beside compact_boundary"
+   },
+   {
+    "id": 87,
+    "relevance": 0.72,
+    "reason": "/fork and context:fork dispatch; L118 adds fork-skill parent_tool_use_id attribution + recursion guard"
+   },
+   {
+    "id": 115,
+    "relevance": 0.7,
+    "reason": "subagent resume/continuation; fork-skill inner tools inherit the dispatch's parentToolUseId scope"
+   },
+   {
+    "id": 11,
+    "relevance": 0.62,
+    "reason": "Skills system — activeSkill scope, inline vs fork (context:'fork') dispatch"
+   },
+   {
+    "id": 121,
+    "relevance": 0.55,
+    "reason": "L121's GY tool-composition algorithm is re-verified with the same cross-artifact (host CLI + in-VM ELF + app.asar) discipline L118 used for the skill-scope stream contract"
+   },
+   {
+    "id": 124,
+    "relevance": 0.7,
+    "reason": "L124 adds task_started/toolUseResult/permission_denied as sibling stream-observability channels to L118's per-tool_use envelope contract"
+   },
+   {
+    "id": 125,
+    "relevance": 0.4,
+    "reason": "server-list assembly and tool-group gating sit outside the per-tool_use stream contract this lesson documents"
+   }
+  ],
+  "119": [
+   {
+    "id": 108,
+    "relevance": 0.9,
+    "reason": "L119's central finding: closes L108's open CLAUDE_CODE_ENVIRONMENT_KIND=bridge gap and re-confirms gate 583857784 (bridge-SDK-adapter transport) as the same mechanism under fresh symbol names"
+   },
+   {
+    "id": 107,
+    "relevance": 0.6,
+    "reason": "the CCR/bridge session-runtime family (CLAUDE_CODE_WORKER_EPOCH, CLAUDE_BG_*_AUTH handshake) this chapter's bridge-worker code extends"
+   },
+   {
+    "id": 109,
+    "relevance": 0.5,
+    "reason": "CLAUDE_CODE_WORKER_EPOCH and the CCR worker /worker/heartbeat endpoint this chapter distinguishes from the /v1/environments/{id}/work family"
+   },
+   {
+    "id": 118,
+    "relevance": 0.45,
+    "reason": "same cross-artifact first-party discipline: agent ELF (2.1.20x) + Desktop app.asar checked together, not separately"
+   }
+  ],
+  "120": [
+   {
+    "id": 114,
+    "relevance": 0.9,
+    "reason": "corrects Ch28/L114 Part C's claim that the Desktop effort IPC family is backed by CLAUDE_CODE_EFFORT_LEVEL"
+   },
+   {
+    "id": 93,
+    "relevance": 0.6,
+    "reason": "CLAUDE_CODE_EFFORT_LEVEL is real but confirmed here to back a sibling getter, not the Cowork spawn-path effort value"
+   },
+   {
+    "id": 109,
+    "relevance": 0.55,
+    "reason": "gives apply_flag_settings, first named in this chapter's control-protocol inventory, its first concrete payload shape"
+   },
+   {
+    "id": 119,
+    "relevance": 0.5,
+    "reason": "same first-party discipline against the same 1.19367.0 Desktop binary, and shares the LocalAgentModeSessions/LocalSessions interface-naming precedent"
+   }
+  ],
+  "121": [
+   {
+    "id": 107,
+    "relevance": 0.85,
+    "reason": "L121's Cowork host-loop tool-composition step (HOST_LOOP_SAFE_BUILTIN_TOOLS/HOST_LOOP_EXCLUDED_BUILTIN_TOOLS, renamed from L107's PNt/gre; toolAliases superseding BDt/QDt) is a symbol-renamed continuation of L107's host-loop tool partition, re-verified at 1.20186.1/2.1.205"
+   },
+   {
+    "id": 118,
+    "relevance": 0.55,
+    "reason": "same cross-artifact discipline (host CLI + in-VM ELF + app.asar checked together): L121's depth cap (NMr host / BLr VM, both =5) is confirmed identically in the in-VM ELF, and GY's silently-dropped invalidTools/unavailableTools mirrors L118's tool_use_meta display-only, zero-consumers finding pattern"
+   },
+   {
+    "id": 125,
+    "relevance": 0.5,
+    "reason": "contrasts the GY per-dispatch sub-agent tool-composition layer with the higher server-assembly isEnabled gating that excludes the mobile-simulator tools from Cowork entirely"
+   }
+  ],
+  "122": [
+   {
+    "id": 89,
+    "relevance": 0.85,
+    "reason": "L89 found host-loop's single shared scratch space (bash sees /mnt/outputs, file tools see the session path, same files); L122 pins the exact mechanism -- cwd IS the outputs directory (getStorageDir/sessionDirPaths) -- and confirms /sessions/... is denied, never translated, for file tools"
+   },
+   {
+    "id": 104,
+    "relevance": 0.4,
+    "reason": "same 'verify against the current binary, don't assume it carried over' discipline L104 established for codename GB-flags; L122 explicitly re-anchors the path-containment hook's matcher/offset at 1.20186.1 rather than assuming the L107-era symbols still apply"
+   },
+   {
+    "id": 108,
+    "relevance": 0.8,
+    "reason": "directly resolves the .host-home question left open by L108's gate 2614807392 (.host-home skeleton-path index, added v2.23.0) -- L122 confirms it is a synthetic path-translation index (ece()/uCe()), not a mount and not an input-side rewrite, in the same direction as L108's finding"
+   },
+   {
+    "id": 117,
+    "relevance": 0.75,
+    "reason": "L117's rootfs-forensics per-session mount inventory (outputs/uploads/.claude/.claude-skills/.claude-projects, no home/tmp mount unit) is the VM-side ground truth L122's VM-loop mount table (.claude rwd, .claude/skills ro, uploads ro, projects/artifacts/scheduled ro) matches"
+   }
+  ],
+  "123": [
+   {
+    "id": 107,
+    "relevance": 0.7,
+    "reason": "L107's --permission-prompt-tool stdio / initialize handshake spawn contract is the same control-protocol channel L123's appendSubagentSystemPrompt option and subagent_env_hl/vm text ride over"
+   },
+   {
+    "id": 108,
+    "relevance": 0.6,
+    "reason": "L108 catalogs the Cowork/Desktop env-var surface; L123 traces CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT's actual consumption gap -- set unconditionally at Desktop spawn but required independently of the initialize-delivered option"
+   }
+  ],
+  "124": [
+   {
+    "id": 90,
+    "relevance": 0.55,
+    "reason": "L90 first identified CLAUDE_EFFORT as a skill-frontmatter field/template token rather than a process.env var; L124's model-resolution chain shows the sibling CLAUDE_CODE_SUBAGENT_MODEL is a real env var with its own allowlist-check-then-warn-and-inherit fallback -- the contrast sharpens both"
+   },
+   {
+    "id": 106,
+    "relevance": 0.6,
+    "reason": "L124's custom-3p uOt gate table force-ONs 2307090146 (cli_plugin) alongside 1143815894 -- amending L106's finding that the credential broker is dark on consumer GrowthBook by showing it is live in custom-3p deployments"
+   },
+   {
+    "id": 107,
+    "relevance": 0.85,
+    "reason": "L124's Pm()/jKe()/FM() decision function is the direct successor of L107's f_() host-loop/VM-loop gate function, re-verified at gate 1143815894 still force-on in production"
+   },
+   {
+    "id": 108,
+    "relevance": 0.75,
+    "reason": "L124 re-confirms several L108 gate values unchanged (434204418, 66187241, 714014285, 1936081873, 4153934152) and amends L108's cli_plugin (2307090146) dark/live split via the custom-3p uOt table"
+   },
+   {
+    "id": 115,
+    "relevance": 0.85,
+    "reason": "L124 re-verifies all four Ch29/L115 conclusions at 1.20186.1/2.1.205 with two refinements: the background-by-default polarity flip and a new session-level (not sub-agent) mcp__dispatch__send_message continuation channel"
+   },
+   {
+    "id": 118,
+    "relevance": 0.7,
+    "reason": "L124 adds task_started/toolUseResult/permission_denied as sibling stream-observability channels to L118's per-tool_use envelope contract"
+   }
+  ],
+  "125": [
+   {
+    "id": 126,
+    "relevance": 0.8,
+    "reason": "sibling device-automation tool group in the same registry slot, opposite direction (local sim vs remote-device bridge)"
+   },
+   {
+    "id": 128,
+    "relevance": 0.6,
+    "reason": "same chapter -- CLAUDE_SIM_SANDBOX and the mobile-simulator gating sit alongside the other 1.22209.0 hardening findings"
+   },
+   {
+    "id": 121,
+    "relevance": 0.5,
+    "reason": "server-assembly isEnabled gating sits above the GY per-dispatch tool-composition layer documented for sub-agents"
+   }
+  ],
+  "126": [
+   {
+    "id": 125,
+    "relevance": 0.8,
+    "reason": "sibling device-automation tool group, opposite direction"
+   },
+   {
+    "id": 127,
+    "relevance": 0.65,
+    "reason": "remote_devices tool assembly (zzrNR3X_.js) includes buildRemoteGrandPrixTools, the remote variant of the grand_prix bridge"
+   }
+  ],
+  "127": [
+   {
+    "id": 106,
+    "relevance": 0.75,
+    "reason": "a third and fourth Desktop credential channel respectively -- clis.*.env (CLI-invocation-scoped) vs grand_prix (browser-tab-scoped)"
+   },
+   {
+    "id": 126,
+    "relevance": 0.6,
+    "reason": "grand_prix has a dedicated remote variant wired into the remote_devices/cowork-remote tool assembly"
+   }
+  ],
+  "128": [
+   {
+    "id": 108,
+    "relevance": 0.55,
+    "reason": "gate catalog and fcache-decode methodology -- this chapter deliberately does not extend that catalog with live on/off states, for lack of a fresh capture"
+   },
+   {
+    "id": 124,
+    "relevance": 0.6,
+    "reason": "auto-mode and run_in_background permission-model topics from the same Cowork permission stack"
+   },
+   {
+    "id": 115,
+    "relevance": 0.4,
+    "reason": "session lifecycle (sleep/auto-resume, stop button) adjacent to subagent resume semantics"
+   }
+  ],
+  "dynamic-workflows": [
+   {
+    "id": 91,
+    "relevance": 0.95,
+    "reason": "the Workflow tool + dynamic-workflows subsystem"
+   },
+   {
+    "id": 92,
+    "relevance": 0.7,
+    "reason": "coordinator mode composes with workflows"
+   },
+   {
+    "id": 5,
+    "relevance": 0.5,
+    "reason": "workflows fan out sub-agents"
+   }
+  ],
+  "coordinator-mode-v2159": [
+   {
+    "id": 92,
+    "relevance": 0.95,
+    "reason": "v2.1.159 coordinator dispatch-mode wiring"
+   },
+   {
+    "id": 21,
+    "relevance": 0.8,
+    "reason": "foundational coordinator-mode lesson"
+   },
+   {
+    "id": 22,
+    "relevance": 0.6,
+    "reason": "teams & swarm"
+   }
+  ],
+  "opus-4-8": [
+   {
+    "id": 93,
+    "relevance": 0.95,
+    "reason": "Opus 4.8 launch + effort ladder"
+   },
+   {
+    "id": 51,
+    "relevance": 0.7,
+    "reason": "/effort command & reasoning budget"
+   },
+   {
+    "id": 46,
+    "relevance": 0.6,
+    "reason": "model system"
+   }
+  ],
+  "messagedisplay-hook": [
+   {
+    "id": 95,
+    "relevance": 0.95,
+    "reason": "MessageDisplay hook + the 30-event master array"
+   },
+   {
+    "id": 10,
+    "relevance": 0.6,
+    "reason": "hooks system foundation"
+   }
+  ],
+  "cloud-gateway": [
+   {
+    "id": 97,
+    "relevance": 0.9,
+    "reason": "Cloud gateway OAuth provider"
+   },
+   {
+    "id": 29,
+    "relevance": 0.5,
+    "reason": "session/auth management"
+   }
+  ],
+  "skills-plugins-sync": [
+   {
+    "id": 98,
+    "relevance": 0.9,
+    "reason": "org-managed skills/plugins sync from Console"
+   },
+   {
+    "id": 11,
+    "relevance": 0.5,
+    "reason": "skills system"
+   },
+   {
+    "id": 26,
+    "relevance": 0.5,
+    "reason": "settings cascade"
+   }
+  ],
+  "host-auth-refresh": [
+   {
+    "id": 99,
+    "relevance": 0.9,
+    "reason": "host-delegated credential refresh"
+   },
+   {
+    "id": 86,
+    "relevance": 0.5,
+    "reason": "OIDC federation env-quad"
+   }
+  ],
+  "binary-takeover": [
+   {
+    "id": 100,
+    "relevance": 0.9,
+    "reason": "background binary-takeover self-upgrade + agent-view rename"
+   },
+   {
+    "id": 90,
+    "relevance": 0.6,
+    "reason": "daemon on-demand model"
+   },
+   {
+    "id": 89,
+    "relevance": 0.6,
+    "reason": "cowork runtime"
+   }
+  ],
+  "loop-keepalive": [
+   {
+    "id": 101,
+    "relevance": 0.9,
+    "reason": "/loop keepalive KAIROS safety net"
+   },
+   {
+    "id": 67,
+    "relevance": 0.6,
+    "reason": "dynamic loop pacing"
+   }
+  ],
+  "team-memory-multistore": [
+   {
+    "id": 102,
+    "relevance": 0.85,
+    "reason": "CLAUDE_MEMORY_STORES multistore"
+   },
+   {
+    "id": 8,
+    "relevance": 0.7,
+    "reason": "memory system"
+   }
+  ],
+  "pewter-owl-senduserMessage": [
+   {
+    "id": 103,
+    "relevance": 0.9,
+    "reason": "PEWTER_OWL gate over the internal SendUserMessage tool"
+   }
+  ],
+  "129": [
+   {
+    "id": 107,
+    "relevance": 0.9,
+    "reason": "SDK-MCP servers over the control protocol are the delivery channel for mcp__skills__*"
+   },
+   {
+    "id": 116,
+    "relevance": 0.8,
+    "reason": "entrypoint taxonomy (ekl/local-agent) drives the native-tool vLt fallback"
+   },
+   {
+    "id": 131,
+    "relevance": 0.85,
+    "reason": "the asar delta enumerates the allowedTools list carrying these tools"
+   },
+   {
+    "id": 118,
+    "relevance": 0.6,
+    "reason": "the system/init tools array is the authoritative per-tool_use stream contract"
+   }
+  ],
+  "130": [
+   {
+    "id": 106,
+    "relevance": 0.7,
+    "reason": "stream subtype inventory this VCS pair extends"
+   },
+   {
+    "id": 124,
+    "relevance": 0.7,
+    "reason": "task/stream observability subtypes"
+   },
+   {
+    "id": 131,
+    "relevance": 0.75,
+    "reason": "Desktop-side consumption gate + version floor for these events"
+   }
+  ],
+  "131": [
+   {
+    "id": 129,
+    "relevance": 0.85,
+    "reason": "the skill-discovery tools whose allowedTools/SDK-MCP delivery this diff confirms"
+   },
+   {
+    "id": 128,
+    "relevance": 0.7,
+    "reason": "prior Desktop asar diff chapter (1.21459->1.22209); this continues to 1.24012.1"
+   },
+   {
+    "id": 106,
+    "relevance": 0.6,
+    "reason": "CLI-plugin credential broker gate methodology (gate absent vs off)"
+   }
+  ],
+  "132": [
+   {
+    "id": 107,
+    "relevance": 0.85,
+    "reason": "f_() host-loop/VM-loop decision the containment lead turns on"
+   },
+   {
+    "id": 117,
+    "relevance": 0.8,
+    "reason": "VM rootfs forensics is the fallback verification path if host transcripts go dark"
+   },
+   {
+    "id": 129,
+    "relevance": 0.75,
+    "reason": "the disk-recovery path that L132 warns may go dark on newer builds"
+   }
+  ]
+ }
 }

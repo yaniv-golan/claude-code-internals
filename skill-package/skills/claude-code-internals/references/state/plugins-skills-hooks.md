@@ -2,9 +2,9 @@
 domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.198
-as_of_desktop: 1.20186.1
-sources: [5, 88, 89, 106, 109, 118, 123, 124]
-updated: 2026-07-11
+as_of_desktop: 1.24012.1
+sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131]
+updated: 2026-07-22
 ---
 
 # Plugins, skills & hooks (current)
@@ -226,3 +226,39 @@ whole pipeline (UI field, encrypted storage, invocation-time injection)
 is dark-launched behind a gate that is off by default for the standard
 client. Full mechanism, gate ID, and the two independent gate checks
 (renderer + runtime): `credential-channels.md`.
+
+## Skill/plugin discovery tools — what the Cowork model actually sees (L129/L131)
+
+Two distinct components share the "skill discovery" concept:
+
+- **Native agent tools** (`ListSkills`/`SearchSkills`/`SuggestSkills`, + plugin
+  twins), compiled into the CLI binary, gated by `vLt` (2.1.217) / `Vne`
+  (2.1.215) over `CLAUDE_CODE_REMOTE` + the `ekl` entrypoint set + feature
+  `tengu_saddle_lantern`. These are **never rendered in real Cowork** — verified
+  absent from the `system/init` `tools` array of 10+ real sessions (agent
+  2.1.165–2.1.209).
+- **Desktop SDK-MCP tools** (`mcp__skills__list_skills`/`suggest_skills`,
+  `mcp__plugins__*`), delivered over the control protocol
+  (`sdkMcpServers`/`mcp_message`). These **are** what the model sees — present
+  in every real session's `init.tools`. Gated by `suggestSkillsEnabled`
+  (`245679952`, on/force); the NEW `proactiveSkillSuggestEnabled` (`1598976391`,
+  off/default) adds an inert proactive-`trigger` mode. `suggest_skills` is
+  advisory/zero-side-effect.
+
+**Rule: read the `system/init` `tools` array to know a Cowork model's tool
+surface — never the model's self-description (it confabulates tool names).**
+`tengu_saddle_lantern` is a master switch, not just a deferral gate: one cached
+read drives the native family's enable branch, `SuggestSkills.shouldDefer`, and
+a branching prompt body.
+
+## Bundled skills & MCP-contributed skills (L131)
+
+Desktop ships **bundled skills** at `resources/bundled-skills` under a
+`bundled:` scheme; the set is `{schedule, setup-cowork}` as of 1.24012.1
+(`morning` was removed this release, gate `3214976288` gone). MCP-contributed
+skills (`getMcpSkillSources`, gate `278625510`, extension
+`io.modelcontextprotocol/skills`) are **dead code** today: one occurrence, zero
+callers, gate absent from fcache, and the boot MCP handshake advertises only
+`io.modelcontextprotocol/ui`. Tripwire: `getMcpSkillSources` occurrence count
+rising above 1. Full trace: `references/34-skill-discovery-vcs-events-
+containment.md` (Chapter 37, L129/L131).

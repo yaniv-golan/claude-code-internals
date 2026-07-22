@@ -2,10 +2,10 @@
   "schema_version": 1,
   "as_of": {
     "cli": "2.1.198",
-    "desktop_asar": "1.22209.0",
+    "desktop_asar": "1.24012.1",
     "in_vm_elf": "2.1.197",
-    "fcache_capture": "2026-07-11",
-    "agent_elf_parity_check": "2.1.202"
+    "fcache_capture": "2026-07-22",
+    "agent_elf_parity_check": "2.1.217"
   },
   "entries": [
     {
@@ -4693,6 +4693,204 @@
       "provenance": [
         {
           "lesson": 125
+        }
+      ]
+    },
+    {
+      "id": "tool.ListSkills",
+      "kind": "tool",
+      "name": "ListSkills",
+      "status": "dark-launched",
+      "first_seen": "2.1.215",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Native agent skill-discovery tool (CamelCase), compiled into the CLI binary; gated by vLt/Vne (CLAUDE_CODE_REMOTE necessary at 2.1.215, sufficient-not-necessary at 2.1.217). NEVER rendered in real Cowork init.tools across 2.1.165-2.1.209 — the model uses the SDK-MCP mcp__skills__* server instead.",
+      "provenance": [
+        {
+          "lesson": 129
+        }
+      ]
+    },
+    {
+      "id": "tool.SuggestSkills",
+      "kind": "tool",
+      "name": "SuggestSkills",
+      "status": "dark-launched",
+      "first_seen": "2.1.215",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Native agent skill-suggestion tool; shouldDefer=!pdd() and prompt body both keyed on tengu_saddle_lantern (proactive when on). Same vLt gate as ListSkills; not rendered in real Cowork.",
+      "provenance": [
+        {
+          "lesson": 129
+        }
+      ]
+    },
+    {
+      "id": "tool.mcp__skills__list_skills",
+      "kind": "tool",
+      "name": "mcp__skills__list_skills",
+      "status": "live",
+      "first_seen": "1.22209.0",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Desktop SDK-MCP skill-listing tool delivered over the control protocol (sdkMcpServers/mcp_message). CONFIRMED present in real Cowork init.tools across 10+ sessions (2.1.165-2.1.209) — this, not native ListSkills, is what the model sees.",
+      "provenance": [
+        {
+          "lesson": 129
+        }
+      ]
+    },
+    {
+      "id": "tool.mcp__skills__suggest_skills",
+      "kind": "tool",
+      "name": "mcp__skills__suggest_skills",
+      "status": "live",
+      "first_seen": "1.22209.0",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Desktop SDK-MCP skill-suggestion tool; advisory/zero-side-effect (searchAddableSkills IPC, cap 15). Gated by suggestSkillsEnabled (245679952, on/force). Confirmed in real Cowork init.tools.",
+      "provenance": [
+        {
+          "lesson": 129
+        }
+      ]
+    },
+    {
+      "id": "proto.code_change_published",
+      "kind": "control-subtype",
+      "name": "code_change_published",
+      "status": "live",
+      "first_seen": "2.1.216",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "type:system stream subtype; emitted by izr() when a gh-pr-create github URL is observed in Bash output. SDK-native replacement for gh-pr-create regex scraping. Emit floor 2.1.216; Desktop consumption floored at 2.1.217 (cliSupportsVcsSdkEvents).",
+      "provenance": [
+        {
+          "lesson": 130
+        }
+      ]
+    },
+    {
+      "id": "proto.vcs_state_changed",
+      "kind": "control-subtype",
+      "name": "vcs_state_changed",
+      "status": "live",
+      "first_seen": "2.1.216",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "type:system stream subtype; emitted by hlo() per observed commit/push/merge/rebase, kind strict-enum agent-side (host consumer defaults 'unknown'). Git-operation-driven, not per-run; ungated agent-side.",
+      "provenance": [
+        {
+          "lesson": 130
+        }
+      ]
+    },
+    {
+      "id": "gate.245679952",
+      "kind": "gate",
+      "name": "suggestSkillsEnabled",
+      "status": "live",
+      "first_seen": "1.22209.0",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "Gates the SDK-MCP suggest_skills tool + skills server. Live on/force (2026-07-22 fcache). When false, suggest_skills is filtered and scrubbed from list_skills' description.",
+      "provenance": [
+        {
+          "lesson": 129
+        }
+      ]
+    },
+    {
+      "id": "gate.1598976391",
+      "kind": "gate",
+      "name": "proactiveSkillSuggestEnabled",
+      "status": "dark-launched",
+      "first_seen": "1.24012.1",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "NEW. Proactive skill-suggestion mode for the SDK-MCP suggest_skills tool (trigger:[user_asked,proactive]); SDK-MCP twin of the agent-side tengu_saddle_lantern. off/defaultValue in the 2026-07-22 fcache — trigger plumbing inert today.",
+      "provenance": [
+        {
+          "lesson": 129
+        }
+      ]
+    },
+    {
+      "id": "gate.278625510",
+      "kind": "gate",
+      "name": "mcpSkillsExtension",
+      "status": "dark-launched",
+      "first_seen": "1.24012.1",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "NEW. Would enable MCP-contributed skills (getMcpSkillSources / io.modelcontextprotocol/skills extension). Dead code today: getMcpSkillSources has one occurrence (definition), zero callers; ABSENT from fcache (unevaluated, not confirmed-off). Tripwire: occurrence count > 1.",
+      "provenance": [
+        {
+          "lesson": 131
+        }
+      ]
+    },
+    {
+      "id": "gate.1311049725",
+      "kind": "gate",
+      "name": "vcsSdkEventsEnabled",
+      "status": "dark-launched",
+      "first_seen": "1.24012.1",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "NEW. Desktop-side consumption gate for the VCS SDK events; paired with cliSupportsVcsSdkEvents version floor isPinnedCliAtLeast('2.1.217'). Absent from CLI bundle (agent emit is ungated). ABSENT from fcache.",
+      "provenance": [
+        {
+          "lesson": 130
+        },
+        {
+          "lesson": 131
+        }
+      ]
+    },
+    {
+      "id": "gate.1549258603",
+      "kind": "gate",
+      "name": "sdkOauthRefreshRework",
+      "status": "dark-launched",
+      "first_seen": "1.24012.1",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "NEW. Swaps SDK OAuth refresh from a refresher-object to clearTokenCache-then-resolveSdkOauthToken. Live-lane auth only. ABSENT from fcache.",
+      "provenance": [
+        {
+          "lesson": 131
+        }
+      ]
+    },
+    {
+      "id": "gate.3705360580",
+      "kind": "gate",
+      "name": "ccdOauthRefreshRework",
+      "status": "dark-launched",
+      "first_seen": "1.24012.1",
+      "removed_in": null,
+      "as_of": "2.1.198",
+      "summary": "NEW. CCD counterpart of 1549258603: expireForConfig(getCcdOauthConfig)-then-readCcd. Live-lane auth only. ABSENT from fcache.",
+      "provenance": [
+        {
+          "lesson": 131
+        }
+      ]
+    },
+    {
+      "id": "gate.3214976288",
+      "kind": "gate",
+      "name": "morningBundledSkillEnabled",
+      "status": "removed",
+      "first_seen": "1.22209.0",
+      "removed_in": "1.24012.1",
+      "as_of": "2.1.198",
+      "summary": "Was the isEnabled gate for the 'morning' bundled skill. REMOVED in 1.24012.1 along with the skill; bundled-skills set went {morning,schedule,setup-cowork} -> {schedule,setup-cowork}.",
+      "provenance": [
+        {
+          "lesson": 131
         }
       ]
     }
