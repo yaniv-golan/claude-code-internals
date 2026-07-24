@@ -24,6 +24,11 @@ jobs:
           cp -r skill-package/skills/claude-code-internals/. dist/claude-code-internals/
           # Remove any .git files that might have been copied
           find dist -name '.git' -exec rm -rf {} + 2>/dev/null || true
+          # `zip -r` APPENDS to an existing archive. Any leftover/checked-in
+          # claude-code-internals.zip would silently merge stale files into the
+          # release asset (this shipped a stale v2.2.0 version.json through
+          # v2.31.0). Always start from a clean archive.
+          rm -f claude-code-internals.zip
           cd dist
           zip -r ../claude-code-internals.zip claude-code-internals/
           echo "Zip size: $(du -sh ../claude-code-internals.zip | cut -f1)"
