@@ -4,7 +4,7 @@
     "cli": "2.1.217",
     "desktop_asar": "1.24012.1",
     "in_vm_elf": "2.1.197",
-    "fcache_capture": "2026-07-22",
+    "fcache_capture": "2026-07-24",
     "agent_elf_parity_check": "2.1.217"
   },
   "entries": [
@@ -4749,7 +4749,7 @@
       "first_seen": "1.22209.0",
       "removed_in": null,
       "as_of": "2.1.217",
-      "summary": "Desktop SDK-MCP skill-suggestion tool; advisory/zero-side-effect (searchAddableSkills IPC, cap 15). Gated by suggestSkillsEnabled (245679952, on/force). Confirmed in real Cowork init.tools.",
+      "summary": "Desktop SDK-MCP skill-suggestion tool; advisory/zero-side-effect (searchAddableSkills, .slice(0,15), mapped to {name,description,skill_id,is_user_created}). THREE states: absent (245679952 off) / base (live default: {keywords,context_label}, required:[], NO trigger) / proactive (1598976391 on: +trigger). Presence is GATE-driven, not version-keyed. Confirmed in real Cowork init.tools.",
       "provenance": [
         {
           "lesson": 129
@@ -4794,7 +4794,7 @@
       "first_seen": "1.22209.0",
       "removed_in": null,
       "as_of": "2.1.217",
-      "summary": "Gates the SDK-MCP suggest_skills tool + skills server. Live on/force (2026-07-22 fcache). When false, suggest_skills is filtered and scrubbed from list_skills' description.",
+      "summary": "suggestSkillsEnabled — gates whether the Desktop SDK-MCP 'skills' server exposes suggest_skills. OFF => Zo() strips the tool AND rewrites list_skills's description; list_skills still renders. Live on/force (ruleId fr_movyeduu, fcache 2026-07-24).",
       "provenance": [
         {
           "lesson": 129
@@ -4809,7 +4809,7 @@
       "first_seen": "1.24012.1",
       "removed_in": null,
       "as_of": "2.1.217",
-      "summary": "NEW. Proactive skill-suggestion mode for the SDK-MCP suggest_skills tool (trigger:[user_asked,proactive]); SDK-MCP twin of the agent-side tengu_saddle_lantern. off/defaultValue in the 2026-07-22 fcache — trigger plumbing inert today.",
+      "summary": "proactiveSkillSuggestEnabled — only evaluated when 245679952 passed (conjunction: pt && isFeatureEnabled). ON => ti() swaps suggest_skills's description to `ei` and injects trigger:Lr into properties (required stays []). Live off/defaultValue (fcache 2026-07-24), so proactive mode is inert. Stickiness is keyed to the built-system-prompt cache via ft(): a mid-session MODEL SWITCH re-reads both gates, and the sticky-branch fallback is `?? false`, not the gate value.",
       "provenance": [
         {
           "lesson": 129
@@ -5101,6 +5101,126 @@
       "provenance": [
         {
           "lesson": 136
+        }
+      ]
+    },
+    {
+      "id": "tool.mcp__plugins__list_plugins",
+      "kind": "tool",
+      "name": "mcp__plugins__list_plugins",
+      "status": "live",
+      "first_seen": "1.22209.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Desktop SDK-MCP: render installed plugins as a widget. inputSchema {keywords[], context_label} required:[]; context_label is display-only and does not filter. Server isEnabled: sessionType==='cowork' && pluginsEnabled!==false. In allowedTools.",
+      "provenance": [
+        {
+          "lesson": 129
+        }
+      ]
+    },
+    {
+      "id": "tool.mcp__plugins__search_plugins",
+      "kind": "tool",
+      "name": "mcp__plugins__search_plugins",
+      "status": "live",
+      "first_seen": "1.22209.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Desktop SDK-MCP: search installable plugins. REQUIRED userIntent (natural language, verbatim/lightly paraphrased, NOT pre-tokenized) + optional keywords[], includeInstalled, trigger (shared Lr enum user_asked|proactive — UNGATED here, unlike suggest_skills). In allowedTools.",
+      "provenance": [
+        {
+          "lesson": 129
+        }
+      ]
+    },
+    {
+      "id": "tool.mcp__plugins__suggest_plugin_install",
+      "kind": "tool",
+      "name": "mcp__plugins__suggest_plugin_install",
+      "status": "live",
+      "first_seen": "1.22209.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Desktop SDK-MCP: render an inline plugin install card. REQUIRED contextLabel (3-5 words) + plugins[] (each REQUIRED pluginName/pluginId/description, optional backendId/skills[]). In allowedTools.",
+      "provenance": [
+        {
+          "lesson": 129
+        }
+      ]
+    },
+    {
+      "id": "tool.mcp__mcp-registry__search_mcp_registry",
+      "kind": "tool",
+      "name": "mcp__mcp-registry__search_mcp_registry",
+      "status": "live",
+      "first_seen": "1.22209.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Desktop SDK-MCP: search the MCP connector registry (searchDirectoryServers, .slice(0,10)). Server isEnabled: getDeploymentMode().type!=='3p' — the only discovery server NOT scoped to the cowork lane. In allowedTools.",
+      "provenance": [
+        {
+          "lesson": 129
+        }
+      ]
+    },
+    {
+      "id": "tool.mcp__mcp-registry__suggest_connectors",
+      "kind": "tool",
+      "name": "mcp__mcp-registry__suggest_connectors",
+      "status": "live",
+      "first_seen": "1.22209.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Desktop SDK-MCP: suggest connectors to install/reconnect. REQUIRED uuids[] (directoryUuid, or the UUID portion of mcp__{uuid}__{tool} when reconnecting a failed tool) + optional keywords[] (single brand-stripped lowercase noun; renders as 'For your {keyword}'). In allowedTools.",
+      "provenance": [
+        {
+          "lesson": 129
+        }
+      ]
+    },
+    {
+      "id": "tool.mcp__mcp-registry__list_connectors",
+      "kind": "tool",
+      "name": "mcp__mcp-registry__list_connectors",
+      "status": "live",
+      "first_seen": "1.22209.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Desktop SDK-MCP: list installed connectors; inputSchema {keywords[]} required:[]. In allowedTools.",
+      "provenance": [
+        {
+          "lesson": 129
+        }
+      ]
+    },
+    {
+      "id": "tool.mcp__cowork-onboarding__show_onboarding_role_picker",
+      "kind": "tool",
+      "name": "mcp__cowork-onboarding__show_onboarding_role_picker",
+      "status": "live",
+      "first_seen": "1.19367.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Desktop SDK-MCP: render a role-picker chip row during Cowork onboarding; call with NO args (role/dismissed are 'populated by the permission flow'). Fifth discovery server (serverName qr='cowork-onboarding'), isEnabled sessionType==='cowork' && isFeatureEnabled('2114777685') (force-ON live). Rendered in 1264 real init.tools records since agent 2.1.92. NOT in allowedTools — routed through the permission prompt.",
+      "provenance": [
+        {
+          "lesson": 129
+        }
+      ]
+    },
+    {
+      "id": "gate.2114777685",
+      "kind": "gate",
+      "name": "2114777685",
+      "status": "live",
+      "first_seen": "1.24012.1",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Gates the fifth SDK-MCP discovery server 'cowork-onboarding' (tool show_onboarding_role_picker) alongside sessionType==='cowork'. Live on/force (ruleId fr_mnj0h9xm, fcache 2026-07-24). Distinct from L131's four new-but-fcache-absent gate ids.",
+      "provenance": [
+        {
+          "lesson": 129
         }
       ]
     }

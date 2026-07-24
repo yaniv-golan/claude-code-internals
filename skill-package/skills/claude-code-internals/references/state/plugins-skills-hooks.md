@@ -4,7 +4,7 @@ title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.217
 as_of_desktop: 1.24012.1
 sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131]
-updated: 2026-07-22
+updated: 2026-07-24
 ---
 
 # Plugins, skills & hooks (current)
@@ -235,8 +235,8 @@ Two distinct components share the "skill discovery" concept:
   twins), compiled into the CLI binary, gated by `vLt` (2.1.217) / `Vne`
   (2.1.215) over `CLAUDE_CODE_REMOTE` + the `ekl` entrypoint set + feature
   `tengu_saddle_lantern`. These are **never rendered in real Cowork** — verified
-  absent from the `system/init` `tools` array of 10+ real sessions (agent
-  2.1.165–2.1.209).
+  absent from the `system/init` `tools` array of **all 427 real sessions**
+  (1678 `init` records, agent 2.1.64–2.1.217; zero occurrences).
 - **Desktop SDK-MCP tools** (`mcp__skills__list_skills`/`suggest_skills`,
   `mcp__plugins__*`), delivered over the control protocol
   (`sdkMcpServers`/`mcp_message`). These **are** what the model sees — present
@@ -250,6 +250,88 @@ surface — never the model's self-description (it confabulates tool names).**
 `tengu_saddle_lantern` is a master switch, not just a deferral gate: one cached
 read drives the native family's enable branch, `SuggestSkills.shouldDefer`, and
 a branching prompt body.
+
+### Complete rendered surface — 13 tools / 5 servers (as of asar 1.24012.1, agent 2.1.217)
+
+Verified against all 427 `audit.jsonl` files (1678 `init` records, agent
+2.1.64 → 2.1.217). Model-visible names are `mcp__<serverName>__<toolName>`.
+
+| Server | `isEnabled` | Tools |
+|---|---|---|
+| `skills` | `sessionType==="cowork" && skillsEnabled!==false` | `list_skills`, `suggest_skills` |
+| `plugins` | `sessionType==="cowork" && pluginsEnabled!==false` | `list_plugins`, `search_plugins`, `suggest_plugin_install` |
+| `mcp-registry` | `getDeploymentMode().type!=="3p"` | `list_connectors`, `search_mcp_registry`, `suggest_connectors` |
+| `scheduled-tasks` | (registration in an unextracted chunk) | `create_`/`list_`/`update_`/`delete_scheduled_task` |
+| `cowork-onboarding` | `sessionType==="cowork" && isFeatureEnabled("2114777685")` (force-ON) | `show_onboarding_role_picker` |
+
+Server objects are `{serverName, tools, handleToolCall, isEnabled,
+getDynamicTools?}` in array `si`, filtered by `oi(model, suggestSkillsEnabled,
+sessionType, proactiveSkillSuggestEnabled)`, managed by
+`InternalMcpServerManager`. **9 of the 13 are in `allowedTools`** — the 3
+mutating `scheduled-tasks` tools and `show_onboarding_role_picker` are
+deliberately left to a permission prompt (see Chapter 37 L131 addendum).
+
+Drift: 7 tools at 2.1.64–2.1.87 → 8 (2.1.92) → 10 (2.1.111) → 11 (2.1.121) →
+12 (2.1.128, `suggest_skills`) → 13 (2.1.205, `delete_scheduled_task`).
+**Do not model `suggest_skills` presence as version-keyed** — it is gate-driven,
+and the corpus shows zero within-version splits, so it cannot validate a
+version boundary.
+
+### Input schemas (verbatim, 1.24012.1)
+
+All `type:"object"`. Required fields in **bold**; everything else optional.
+
+| Tool | Properties |
+|---|---|
+| `list_skills` | `skill_names: string[]`, `keywords: string[]` (ignored if `skill_names` set), `context_label: string` — `required:[]` |
+| `suggest_skills` | `keywords: string[]`, `context_label: string` — `required:[]`; **no `trigger` in the base state** |
+| `list_plugins` | `keywords: string[]` (the filter), `context_label: string` (display-only) — `required:[]` |
+| `search_plugins` | **`userIntent: string`** (verbatim/lightly paraphrased, *not* pre-tokenized), `keywords: string[]`, `includeInstalled: boolean`, `trigger` (ungated here) |
+| `suggest_plugin_install` | **`contextLabel: string`** (3–5 words), **`plugins: object[]`** each **`pluginName`**/**`pluginId`**/**`description`** + `backendId`, `skills:[{**name**, description}]` |
+| `search_mcp_registry` | `keywords: string[]` |
+| `suggest_connectors` | **`uuids: string[]`** (directoryUuid, or the UUID portion of `mcp__{uuid}__{tool}`), `keywords: string[]` (single lowercase noun, brand-stripped) |
+| `list_connectors` | `keywords: string[]` — `required:[]` |
+| `show_onboarding_role_picker` | `role: string`, `dismissed: boolean` — both *"Populated by the permission flow… Do not set this yourself"*; call with no args |
+
+`trigger` is the shared constant `Lr = {type:"string",
+enum:["user_asked","proactive"], …}`, normalized by `Ur()` (non-matching →
+`undefined`).
+
+### `suggest_skills` has three states (literal branches in `oi`)
+
+`if(serverName===kt){ if(!suggestSkillsEnabled) return Zo(); if(proactive) return ti(); }` → else base `we`.
+
+| State | Gates | Shape |
+|---|---|---|
+| **absent** | `245679952` off | `Zo()` filters `suggest_skills` out **and** rewrites `list_skills`'s description (strips `" — fall back to suggest_skills"`) |
+| **base** (live default) | `245679952` on, `1598976391` off | `we` — no `trigger` property |
+| **proactive** | both on | `ti()` swaps description → `ei` and injects `trigger: Lr`; `required` stays `[]` |
+
+Gate evaluation is a **conjunction**: `1598976391` is only read when the first
+gate passed. Stickiness is keyed to the built-system-prompt cache via
+`ft(r,e) = r?.builtSystemPrompt!==undefined && (e===undefined ||
+r.builtSystemPromptModel===e)` — so **a mid-session model switch invalidates it
+and re-reads the gates**, and the sticky-branch fallback is `?? false`, *not*
+the gate value.
+
+### Output envelopes
+
+Standard MCP `{content:[{type:"text", text: JSON.stringify(inner)}]}`. Both
+`skills` tools share one `handleToolCall`.
+
+- `list_skills` inner: `resolved_skills` (from
+  `resolveSlashMenuSkills(sessionId, skill_names, keywords)`),
+  `installed_plugins` (plugin **name** strings; `[]` on parse failure),
+  `context_label`, `request_skill_names`, `request_keywords`, `note` — 3 `note`
+  variants (matched / no-match-but-plugins-exist / fully-empty, the last saying
+  the widget did not render).
+- `suggest_skills` inner: `resolved_skills` = `searchAddableSkills(sessionId,
+  keywords)` filtered on truthy `name`, **`.slice(0,15)`**, mapped to
+  `{name, description, skill_id, is_user_created}`; plus `context_label`,
+  `trigger` (only when proactive), `note`.
+
+The `.slice(0,15)` cap and the `note` wording are the fidelity-load-bearing
+bits for anyone stubbing this surface.
 
 ## Bundled skills & MCP-contributed skills (L131)
 
