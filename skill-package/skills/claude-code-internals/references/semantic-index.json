@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "created": "2026-08-05T10:50:20.218Z",
+  "created": "2026-08-05T12:19:37.314Z",
   "description": "TF-IDF semantic index for Claude Code internals lessons. Use semantic-search.js to query.",
   "total_entries": 142,
   "entries": [
@@ -477,7 +477,7 @@
         "agent": 0.8044,
         "id": 1.1189,
         "type": 1.2736,
-        "six": 2.9735,
+        "six": 2.5576,
         "layers": 2.9735,
         "session": 0.8234,
         "wiring": 2.5576,
@@ -1624,7 +1624,7 @@
       "file": "03-interface-infrastructure.md",
       "startLine": 721,
       "endLine": 897,
-      "text": "Permissions System permissions allow-deny-ask auto-mode bypass rule-matching Permissions system architecture: allow-deny-ask model, auto mode, bypass rules, rule matching, decision pipeline, five permission modes, shadowed rules, permission explainer permission-mode permission-context permission-dialog permissions allow-deny-ask auto-mode bypass rule-matching decision-pipeline five-permission-modes shadowed-rules permission-explainer security",
+      "text": "Permissions System permissions allow-deny-ask auto-mode bypass rule-matching Permissions system architecture: allow-deny-ask model, auto mode, bypass rules, rule matching, decision pipeline, five permission modes, shadowed rules, permission explainer permission-mode permission-context permission-dialog permissions allow-deny-ask auto-mode bypass rule-matching decision-pipeline shadowed-rules permission-explainer security six-permission-modes",
       "keywords": [
         "permissions",
         "allow-deny-ask",
@@ -1637,7 +1637,6 @@
         "auto-mode",
         "bypass",
         "decision-pipeline",
-        "five-permission-modes",
         "permission-context",
         "permission-dialog",
         "permission-explainer",
@@ -1645,7 +1644,8 @@
         "permissions",
         "rule-matching",
         "security",
-        "shadowed-rules"
+        "shadowed-rules",
+        "six-permission-modes"
       ],
       "tfidf": {
         "permissions": 2.6293,
@@ -1663,14 +1663,15 @@
         "rules": 3.0448,
         "decision": 2.4796,
         "pipeline": 2.1513,
-        "five": 3.1859,
+        "five": 2.8319,
         "permission": 2.3909,
         "modes": 2.7403,
         "shadowed": 3.1859,
         "explainer": 3.1859,
         "context": 1.0922,
         "dialog": 1.6436,
-        "security": 1.9122
+        "security": 1.9122,
+        "six": 2.4358
       }
     },
     {
@@ -16990,7 +16991,7 @@
     "data": 3.5695,
     "flow": 3.8572,
     "timeline": 4.9558,
-    "six": 4.9558,
+    "six": 4.2627,
     "layers": 4.9558,
     "generators": 4.9558,
     "complete": 3.8572,

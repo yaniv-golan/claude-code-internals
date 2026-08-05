@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.35.1 — 2026-08-05 (this fork) — permission-mode count corrected; README brought current
+
+**142 lessons / 39 chapters** (unchanged).
+
+**Lesson correction.** `03-interface-infrastructure.md` was headed **"Five Permission Modes"** while listing **six**. The live CLI binary (2.1.221) settles it — the mode enum is `["acceptEdits","auto","bypassPermissions","default","dontAsk","plan"]` — so the *list* was right and the *heading* was wrong. Heading fixed; `topic-index.json` keyword renamed `five-permission-modes` → `six-permission-modes` with its lesson mapping preserved.
+
+> Noted for a future pass, not claimed: the precedence map `Dcc` also carries a `bubble` key (`{plan:0, bubble:1, default:1, dontAsk:1, acceptEdits:2, auto:3, bypassPermissions:4}`) that is **not** a member of the mode enum. Untraced — not a seventh mode until someone shows it is.
+
+**README overhaul** (it had drifted 11 releases, describing v2.24.0 / 118 lessons / 31 chapters / v2.1.198):
+
+- **11 stale version and count claims** corrected — lessons 118/117 → **142**, chapters 31 → **39**, binary v2.1.198 → **v2.1.217**, `529` keywords → **3286**, `61` TF-IDF entries → **142**, plus the version block, the `--list` example and the artifact-class list.
+- **Seven missing chapters added** (Ch33–Ch39, L119–L142) to all three places that enumerate content: the chapter table, the directory tree, and the attribution list.
+- **Three factual errors fixed.** The `/effort` ladder read "low/medium/high/max/auto" — the real ladder is `low|medium|high|xhigh|max`, and the Desktop caveat from Ch34/L120 now appears alongside it. The `/buddy` usage example was showcasing a command **removed in v2.1.97** — which the README itself said, two sections away — replaced with a Cowork delete-policy query.
+- **Directory tree corrected.** `claude-code-internals.zip` was listed at the repo root but is a release-only artifact; `site/` was shown as a single file when it has a full generator + `dist/` tree; `scripts/tests/` was missing.
+- **"What This Is" rewritten.** It was a single run-on paragraph enumerating chapters inline — the structure that kept going stale — now four durable strands that don't need editing per release.
+- Dead `[full RuFlo integration guide](#)` anchor replaced; **Attribution** added to the TOC; the "Smart Features (v2.2)" version label dropped.
+
 ## v2.35.0 — 2026-08-05 (this fork) — EXTENDS Ch39/L139: a third mount-construction site, and a scoped backtick rule
 
 **142 lessons / 39 chapters** (unchanged). From the emulator project's reply to v2.34.0 — which conceded the `isBridgeSession` population error in full and independently confirmed every table correction — re-verified first-party against `app.asar` 1.25927.0.

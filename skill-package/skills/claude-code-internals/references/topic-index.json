@@ -5125,9 +5125,6 @@
     "decision-pipeline": [
       25
     ],
-    "five-permission-modes": [
-      25
-    ],
     "shadowed-rules": [
       25
     ],
@@ -14526,6 +14523,9 @@
     ],
     "plain-literal-version-scoped": [
       139
+    ],
+    "six-permission-modes": [
+      25
     ]
   }
 }

@@ -659,7 +659,7 @@ The system follows seven main phases:
 6. **Mode-based transformations** -- Permission context determines how "ask" results are handled
 7. **Auto mode classification** -- Optional AI-driven approval routing for ambiguous cases
 
-## Five Permission Modes
+## Six Permission Modes
 
 - **default**: Standard prompting for unrecognized actions
 - **plan**: Read-only phase blocking write operations
