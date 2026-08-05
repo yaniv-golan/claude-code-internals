@@ -442,13 +442,19 @@
       "lesson_number": "06",
       "file": "03-interface-infrastructure.md",
       "startLine": 643,
-      "endLine": 720,
+      "endLine": 741,
       "keywords": [
         "permissions",
         "allow-deny-ask",
         "auto-mode",
         "bypass",
-        "rule-matching"
+        "rule-matching",
+        "bubble-permission-mode",
+        "seventh-union-member",
+        "subagent-permission-mode",
+        "shouldAvoidPermissionPrompts",
+        "settable-vs-union-modes",
+        "fork-worker-agent-mode"
       ]
     },
     {
@@ -456,8 +462,8 @@
       "title": "Settings & Configuration",
       "lesson_number": "16",
       "file": "03-interface-infrastructure.md",
-      "startLine": 721,
-      "endLine": 898,
+      "startLine": 742,
+      "endLine": 919,
       "keywords": [
         "settings",
         "configuration",
@@ -471,8 +477,8 @@
       "title": "Session Management",
       "lesson_number": "29",
       "file": "03-interface-infrastructure.md",
-      "startLine": 899,
-      "endLine": 951,
+      "startLine": 920,
+      "endLine": 972,
       "keywords": [
         "session",
         "jsonl",
@@ -486,8 +492,8 @@
       "title": "Context Compaction",
       "lesson_number": "15",
       "file": "03-interface-infrastructure.md",
-      "startLine": 952,
-      "endLine": 1041,
+      "startLine": 973,
+      "endLine": 1062,
       "keywords": [
         "compaction",
         "context-window",
@@ -501,8 +507,8 @@
       "title": "Analytics & Telemetry",
       "lesson_number": "32",
       "file": "03-interface-infrastructure.md",
-      "startLine": 1042,
-      "endLine": 1256,
+      "startLine": 1063,
+      "endLine": 1277,
       "keywords": [
         "analytics",
         "telemetry",
@@ -516,8 +522,8 @@
       "title": "Migration System",
       "lesson_number": "34",
       "file": "03-interface-infrastructure.md",
-      "startLine": 1257,
-      "endLine": 1323,
+      "startLine": 1278,
+      "endLine": 1344,
       "keywords": [
         "migration",
         "idempotent",
@@ -14525,6 +14531,24 @@
       139
     ],
     "six-permission-modes": [
+      25
+    ],
+    "bubble-permission-mode": [
+      25
+    ],
+    "seventh-union-member": [
+      25
+    ],
+    "subagent-permission-mode": [
+      25
+    ],
+    "shouldAvoidPermissionPrompts": [
+      25
+    ],
+    "settable-vs-union-modes": [
+      25
+    ],
+    "fork-worker-agent-mode": [
       25
     ]
   }

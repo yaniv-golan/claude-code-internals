@@ -1,5 +1,33 @@
 # Changelog
 
+## v2.35.2 — 2026-08-05 (this fork) — `bubble`: the seventh permission mode you can never select
+
+**142 lessons / 39 chapters** (unchanged). Closes the lead v2.35.1 recorded as untraced.
+
+**`bubble` is a genuine seventh member of the permission-mode type union — and is deliberately unreachable from every user-facing surface.** It is the **sub-agent** mode: *hold no mode of your own, let permission decisions bubble up to the parent session.* Exactly two built-in agent definitions set it — the **`fork`** subagent and the **`worker`** agent.
+
+Its behavioural core is an omission: under `bubble`, `shouldAvoidPermissionPrompts` is **not** set, so a sub-agent is *permitted* to raise a prompt, which then surfaces on the parent.
+
+```js
+let Yt = i!==void 0 ? !i : ($e==="bubble"||Vo) ? !1 : o;
+if (Yt) An = {...An, shouldAvoidPermissionPrompts:!0};
+```
+
+Five independent mechanisms keep it off the user-facing surface: absent from the settable enum (whose own error string is *"Cannot set permission mode: must be one of …"*); **no display-map entry**, so `Hcc[e] ?? Hcc.default` silently renders it as "Manual"; the `Xrr(e){return e!=="bubble"}` guard routes it through a fallback wherever an `external` name is needed; the workflow-tool and remote-agent exporters both return **undefined** for it; and the remote control channel never emits `set_permission_mode` for it. It ranks **1** in the precedence map, tied with `default`.
+
+That it is a real union member rather than a stray string is settled by the dispatcher's **exhaustive** switch, whose `default` branch is the TypeScript `never` idiom — that only compiles if every union member has a case:
+
+```js
+case"default": case"dontAsk": case"acceptEdits": case"bypassPermissions": case"bubble": return t;
+default: { let o = e; return !1 }   // o: never
+```
+
+**This does not revise v2.35.1's count.** "Six permission modes" remains correct for the lesson, which enumerates the *settable* set — the binary's own error message defines that set as six. `bubble` is documented as a footnote to that list, not a seventh row.
+
+**Practical consequence:** enumerating permission modes from the settable enum is correct for anything user-facing, but misses `bubble` when reading a *sub-agent's* resolved permission context.
+
+Scope: verified identical in CLI **2.1.220 / 2.1.221 / 2.1.222** (2 setter sites, 1 switch case in each); **absent from Desktop `app.asar` 1.25927.0 entirely** — an agent-side concept that never crosses to the Desktop. **First-seen version not traced** (the 2.1.217 content baseline is not installed locally; recoverable from the release CDN if it ever matters).
+
 ## v2.35.1 — 2026-08-05 (this fork) — permission-mode count corrected; README brought current
 
 **142 lessons / 39 chapters** (unchanged).

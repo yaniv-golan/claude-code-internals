@@ -12,7 +12,7 @@
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-plugin-F97316)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/plugins)
 [![Improved with Skill Creator Plus](https://img.shields.io/badge/Improved_with-Skill_Creator_Plus-4ecdc4?style=flat-square)](https://github.com/yaniv-golan/skill-creator-plus)
 
-**Skill Version:** 2.35.1 | **Captured from:** Claude Code v2.1.217 (+ Claude Desktop app.asar through 1.25927.0 + Desktop-managed host agent Mach-O 2.1.221 + in-VM ELF claude-code-vm/2.1.170 / 2.1.197 / 2.1.205 + the golden Cowork VM disk image `rootfs.img` + live `fcache` decodes + Desktop's Chromium HTTP cache) | **Date:** 2026-08-05 | **License:** MIT
+**Skill Version:** 2.35.2 | **Captured from:** Claude Code v2.1.217 (+ Claude Desktop app.asar through 1.25927.0 + Desktop-managed host agent Mach-O 2.1.221 + in-VM ELF claude-code-vm/2.1.170 / 2.1.197 / 2.1.205 + the golden Cowork VM disk image `rootfs.img` + live `fcache` decodes + Desktop's Chromium HTTP cache) | **Date:** 2026-08-05 | **License:** MIT
 
 ---
 
@@ -369,7 +369,7 @@ claude-code-internals/
 │   └── skills/
 │       └── claude-code-internals/  The skill itself
 │           ├── SKILL.md            Skill brain (search strategy, lesson index)
-│           ├── version.json        Version tracking (v2.35.1 / v2.1.217)
+│           ├── version.json        Version tracking (v2.35.2 / v2.1.217)
 │           ├── hooks-config.json   PreToolUse hook definition
 │           ├── references/
 │           │   ├── 01-core-architecture-tools.md
@@ -501,7 +501,7 @@ claude-code-internals/
 
 ```json
 {
-  "skill_version": "2.35.1",
+  "skill_version": "2.35.2",
   "captured_version": "2.1.217",
   "verified_against_binary": "2.1.217",
   "captured_date": "2026-08-05"
@@ -542,7 +542,7 @@ This repository is a fork of [stuinfla/claude-code-internals](https://github.com
 - The PreToolUse `.claude/` hook (`config-aware-hook.sh`), version check script, and RuFlo index builder
 - The original README documentation and architecture diagrams
 
-**What this fork adds** (v2.2.0–v2.35.1, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
+**What this fork adds** (v2.2.0–v2.35.2, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
 
 - Chapter 9 (Lessons 51–56): binary-verified new features in Claude Code v2.1.90, extracted directly from the Bun SEA binary and verified against official docs
 - Chapter 10 (Lessons 57–59): binary-verified changes in Claude Code v2.1.92 — new commands, removed commands, new env vars, and AskUserQuestionTool documentation
@@ -579,7 +579,7 @@ This repository is a fork of [stuinfla/claude-code-internals](https://github.com
 - Chapter 38 (Lessons 133–137): v2.1.198→v2.1.217 CLI content refresh
 - Chapter 39 (Lessons 138–142): Cowork execution lanes, mount semantics and snapshot discipline — two lanes discriminated by `environment_kind`, per-mount delete policy and mount-mode construction, VM multiplexing confirmed with isolation intact, the fcache's two absence axes, and the `coworkSyspromptMap` prompt-replace channel
 - v2.34.0–v2.35.0 corrections: `isBridgeSession` is `sessionType === "agent"`, **not** L138's `environment_kind:"bridge"` (a namespace collision that invalidated a population estimate); `.projects/<uuid>` mounts read-only; a third mount-construction site (`[VMCLIRunner]`) belonging to neither session builder; and `cli-<8 hex>` as a second session-slug namespace
-- Permission-mode count corrected (v2.35.1): `03-interface-infrastructure.md` was headed "Five Permission Modes" while listing six — the live binary (2.1.221) confirms six (`acceptEdits`, `auto`, `bypassPermissions`, `default`, `dontAsk`, `plan`)
+- Permission-mode count corrected (v2.35.1–2): `03-interface-infrastructure.md` was headed "Five Permission Modes" while listing six — the live binary (2.1.221) confirms six *settable* modes (`acceptEdits`, `auto`, `bypassPermissions`, `default`, `dontAsk`, `plan`), plus a seventh union member `bubble` that is the sub-agent "let prompts bubble up to the parent" mode and is unreachable from every user-facing surface
 - ULTRAPLAN (L41) status updated: now officially released as research preview
 - 5 new scripts: `fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `extract-bundle.sh`, `diff-versions.sh`
 - Plugin marketplace infrastructure: `.claude-plugin/` files, "Add to Claude" install button, GitHub Actions release and Pages deploy workflows

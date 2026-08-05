@@ -668,6 +668,27 @@ The system follows seven main phases:
 - **auto**: Routes decisions through secondary Claude classifier (ANT-only, feature-flagged)
 - **dontAsk**: Converts all prompts to automatic denials
 
+> **Six is the SETTABLE count. There is a seventh union member, `bubble`, that you can never select.**
+> *(Verified in CLI 2.1.220 / 2.1.221 / 2.1.222; absent from Desktop `app.asar` 1.25927.0 entirely — this is an agent-side concept that never crosses to the Desktop. First-seen version not traced.)*
+>
+> `bubble` is the **sub-agent** mode: *hold no mode of your own, let permission decisions bubble up to the parent session.* Exactly two built-in agent definitions set it — the **`fork`** subagent and the **`worker`** agent (`"For executing tasks autonomously — research, implementation, or verification"`). Its behavioural core is that it does **not** set `shouldAvoidPermissionPrompts`, so a sub-agent under `bubble` is *permitted* to raise a prompt, which then surfaces on the parent:
+>
+> ```js
+> let Yt = i!==void 0 ? !i : ($e==="bubble"||Vo) ? !1 : o;
+> if (Yt) An = {...An, shouldAvoidPermissionPrompts:!0};
+> ```
+>
+> Five separate mechanisms keep it off the user-facing surface: it is **absent from the settable enum** (`["acceptEdits","auto","bypassPermissions","default","dontAsk","plan"]`, whose own error string is *"Cannot set permission mode: must be one of …"*); it has **no entry in the display map**, so the `Hcc[e] ?? Hcc.default` lookup silently renders it as "Manual"; the guard `Xrr(e){return e!=="bubble"}` routes it through a fallback wherever an `external` name is needed; the workflow-tool and remote-agent exporters both do `if (mode==="bubble") return;` → **undefined**; and the remote control channel never emits `set_permission_mode` for it. In the precedence map it ranks **1**, tied with `default`, so the `Dcc[e] <= Dcc[t]` clamp treats it as no more permissive than default.
+>
+> It is nonetheless a genuine member of the mode **type union**, not a stray string — the dispatcher's switch is exhaustive, and its `default` branch is the TypeScript `never` idiom, which only compiles if every union member has a case:
+>
+> ```js
+> case"default": case"dontAsk": case"acceptEdits": case"bypassPermissions": case"bubble": return t;
+> default: { let o = e; return !1 }   // o: never
+> ```
+>
+> **Practical consequence:** code that enumerates permission modes from the settable enum is correct for anything user-facing, but will miss `bubble` when reading a *sub-agent's* resolved permission context.
+
 ## Rule Matching System
 
 Rules follow the format `ToolName` or `ToolName(content)` with three matching types:
