@@ -61,13 +61,44 @@ function parseFrontmatter(text) {
 // of internal identifiers, with denylists only where shape cannot discriminate.
 // ---------------------------------------------------------------------------
 
-/** Words that legitimately look like internal identifiers in author-facing prose. */
+/**
+ * Words that legitimately look like internal identifiers in author-facing prose.
+ *
+ * THE CRITERION, so this list stays principled rather than growing by drift:
+ * **can a reader observe this name in their own session?** A tool the model is
+ * given appears in that session's tool list — publishing it discloses nothing,
+ * it only saves the reader from having to go look. A name they cannot observe
+ * (Desktop plumbing, feature-flag ids, minified symbols, config field names)
+ * stays out regardless of how useful it might seem.
+ *
+ * Rule 3 conflated "namespaced" with "internal". Those are different: some
+ * namespaced tools are handed to the model and are therefore author-facing,
+ * while `internal__*` really is plumbing a skill must never call.
+ */
 const DISCLOSURE_ALLOWLIST = new Set([
-  // author-facing tool names a skill author genuinely needs
+  // Delivery tools an author capability-checks. Anthropic's own bundled
+  // skill-authoring guidance names these inside a check, and the check is what
+  // provides portability — the names are what make it actionable.
   'present_files', 'send_user_file', 'sendUserFile',
+  // Session tools that appear in the model's tool list. Needed verbatim by the
+  // runtime-detection page, whose whole purpose is Cowork-specific detection:
+  // an author who has decided they need to branch on runtime cannot act on a
+  // paraphrase of the thing they must test for.
+  'mcp__workspace__bash', 'mcp__workspace__web_fetch',
   // ordinary hyphen/underscore prose that may appear in examples
   'skill_md', 'claude_md',
 ]);
+
+/**
+ * Never publishable regardless of shape — plumbing a skill must not call, and
+ * the permission tools the agent (not the skill) invokes. Checked explicitly so
+ * that widening the allowlist above can never accidentally admit these.
+ */
+const DISCLOSURE_NEVER = [
+  'device_commit_files',
+  'allow_cowork_file_delete',
+  'request_cowork_directory',
+];
 
 const DISCLOSURE_RULES = [
   {
@@ -130,6 +161,12 @@ function scanForDisclosure(text, label) {
   const failures = [];
   const flags = [];
   if (typeof text !== 'string' || !text) return { failures, flags };
+
+  for (const never of DISCLOSURE_NEVER) {
+    if (text.includes(never)) {
+      failures.push(`${label}: "${never}" — plumbing a skill must never call [never-publish]`);
+    }
+  }
 
   for (const rule of DISCLOSURE_RULES) {
     rule.re.lastIndex = 0;
@@ -498,7 +535,7 @@ module.exports = {
   validate, parseFrontmatter, KINDS, STATUSES,
   // shared with site/generator/lint-disclosure.js so PR-time and build-time
   // enforcement can never drift apart
-  scanForDisclosure, DISCLOSURE_RULES, DISCLOSURE_ALLOWLIST,
+  scanForDisclosure, DISCLOSURE_RULES, DISCLOSURE_ALLOWLIST, DISCLOSURE_NEVER,
   validateAuthorFacts,
 };
 

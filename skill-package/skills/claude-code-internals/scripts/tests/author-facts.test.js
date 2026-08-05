@@ -198,3 +198,28 @@ test('a fact citing a nonexistent state page is an error', () => {
   const errs = validateAuthorFacts(dir, LESSONS, REGISTRY);
   assert.ok(errs.some(e => /is not an existing state page/.test(e)), errs.join('\n'));
 });
+
+// --- allowlist criterion: observable-in-your-own-session ------------------
+//
+// Rule 3 conflated "namespaced" with "internal". Some namespaced tools are
+// handed to the model and so are observable by any reader in their own session;
+// publishing those discloses nothing. Plumbing the skill must never call stays
+// blocked regardless of shape, which is what DISCLOSURE_NEVER enforces.
+
+test('session tools an author can observe are publishable', () => {
+  const { failures } = scanForDisclosure(
+    'If the mcp__workspace__bash tool is available you are in Cowork; otherwise use Bash.', 'probe');
+  assert.deepStrictEqual(failures, [], 'runtime detection needs the tool name verbatim');
+});
+
+test('plumbing a skill must never call is blocked even though it is a tool name', () => {
+  for (const s of ['call device_commit_files next', 'use allow_cowork_file_delete']) {
+    const { failures } = scanForDisclosure(s, 'probe');
+    assert.ok(failures.some(f => /never-publish/.test(f)), `not blocked: ${s}`);
+  }
+});
+
+test('widening the allowlist did not open the whole namespace', () => {
+  const { failures } = scanForDisclosure('the mcp__skills__list_skills tool enumerates them', 'probe');
+  assert.ok(failures.length > 0, 'only observable session tools are allowlisted, not all namespaced names');
+});

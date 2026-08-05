@@ -3993,7 +3993,7 @@
       "lesson_number": "138",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
       "startLine": 19,
-      "endLine": 90,
+      "endLine": 108,
       "keywords": [
         "cowork-remote-lane",
         "cowork-local-lane",
@@ -4035,8 +4035,8 @@
       "title": "Delete Semantics: Per-Mount FUSE Policy, unlink and rmdir Only",
       "lesson_number": "139",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 91,
-      "endLine": 239,
+      "startLine": 109,
+      "endLine": 257,
       "keywords": [
         "cowork-delete-semantics",
         "unlink-rmdir-denied",
@@ -4098,8 +4098,8 @@
       "title": "VM Multiplexing Confirmed, Isolation Holds, and the Real Mount Inventory",
       "lesson_number": "140",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 240,
-      "endLine": 304,
+      "startLine": 258,
+      "endLine": 322,
       "keywords": [
         "vm-multiplexing-confirmed",
         "shared-vm-guest",
@@ -4137,8 +4137,8 @@
       "title": "Snapshot Discipline: the fcache Is a Moving Target with Two Absence Axes",
       "lesson_number": "141",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 305,
-      "endLine": 383,
+      "startLine": 323,
+      "endLine": 401,
       "keywords": [
         "fcache-snapshot-identity",
         "fcache-content-hash",
@@ -4176,8 +4176,8 @@
       "title": "coworkSyspromptMap: a Server-Driven Prompt REPLACE Channel",
       "lesson_number": "142",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 384,
-      "endLine": 419,
+      "startLine": 402,
+      "endLine": 438,
       "keywords": [
         "coworkSyspromptMap",
         "system-prompt-patch-channel",

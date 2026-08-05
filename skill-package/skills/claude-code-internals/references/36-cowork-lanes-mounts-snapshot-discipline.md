@@ -18,7 +18,7 @@ Updated: 2026-08-05 | Source: Multi-artifact first-party against THIS installati
 
 # LESSON 138 — TWO EXECUTION LANES
 
-**Cowork runs in two structurally different lanes, and the discriminator is `environment_kind` ∈ {`bridge`, `anthropic_cloud`} — never the session-id prefix. Every chapter before this one models the local lane only. Since 2026-07-07 remote is the default for new sessions on rolled-out accounts.**
+**Cowork runs in two structurally different lanes, and the discriminator is `environment_kind` ∈ {`bridge`, `anthropic_cloud`} — never the session-id prefix. Every chapter before this one models the local lane only. Which lane a given session gets is NOT determinable from any local artifact.**
 
 ## The oracle
 
@@ -74,6 +74,24 @@ Desktop main has **no lane branch**: `LocalAgentModeSessions.start` unconditiona
 | host file access | direct (host-loop) | `device_request_folder_access` + `remoteSessionFolderGrants`, **only while the Desktop app is open** |
 
 **Skill-authoring consequence:** a skill that writes to `outputs/` and states the path delivers correctly on local and **silently loses its deliverables on remote**. Anthropic's own deployed `skill-creator` handles this capability-conditionally ("`present_files`, or `SendUserFile` in Cowork remote… if you have neither, skip this step"). Never name `device_commit_files` in a skill — it is Desktop plumbing behind consent-gated folders.
+
+## ⚠️ CORRECTED — "remote is the default" is withdrawn
+
+An earlier revision of this lesson stated that *"since 2026-07-07 remote is the default for new
+sessions on rolled-out accounts."* **Overclaimed; withdrawn.** Provenance is Anthropic's public Help
+Center (relayed via the `claude-cowork-headless-emulator` project's lane forensics), not any artifact
+on this machine — and **the same source calls remote execution "in beta and rolling out gradually
+across plans"**, a qualifier the sentence dropped. It was also stated flat, with no evidence tier,
+in a chapter whose header sets tiers for every other claim.
+
+This machine's own data does not support it: the newest **local** session is current (2026-08-05)
+while the newest **remote** record is 2026-07-23 — three weeks stale. On this account the local lane
+is what runs.
+
+**What is first-party and does hold:** both lanes exist and are distinguishable by `environment_kind`;
+lane selection is decided renderer-side by an account-level rollout that cannot be read locally; so
+**which lane any given reader is on is unknowable from here.** For anyone writing guidance that is the
+load-bearing fact — not which lane is more common.
 
 ## Lane usage is per-account and observable
 
