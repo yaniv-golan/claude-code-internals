@@ -1,5 +1,50 @@
 # Changelog
 
+## v2.36.0 — 2026-08-05 (this fork) — the fact-verification audit: one falsified, one rewritten, one lesson corrected
+
+**146 lessons / 40 chapters.** A one-time audit re-checked the published author-facts against current artifacts instead of against the corpus that produced them. Chapter 40 (L143–L146) is what it found.
+
+Evidence base: host agent **2.1.221**, Desktop `app.asar` **1.25927.0**, a fresh gzip-wrapped GrowthBook `fcache` decode, and **four live Cowork probes** — with every timing, count and exit status read first-party from each session's own on-disk `audit.jsonl`. That mattered: the pasted transcript and the record disagreed in at least three places.
+
+### Falsified — `shell.no-package-installs`
+
+`pip install --user` and a project-local `npm install` both succeed and the packages import; a **global** install does not take effect. The fact was `inference`-tier, derived from the egress constraint. The premise holds and the conclusion never followed:
+
+```
+curl https://example.com      → 000
+curl https://pypi.org/simple/ → 200
+```
+
+Egress is filtered **by destination**, and the registries answer. Whether these installs fetched from a registry or a local cache was **not** distinguished — the falsification does not depend on it.
+
+> An `inference`-tier fact is a hypothesis with a citation. This one survived multiple releases because its premise was repeatedly re-verified while its conclusion never was. Test the *derived* claim, not the claim it was derived from.
+
+### Rewritten — `paths.session-paths-denied`
+
+Two `Read` calls, **byte-identical 207-character paths**: the first fails *"is a VM path"*, the second succeeds 4.2 s later. Host **birthtime** precedes the failing read by 1.9 s — birthtime, not mtime, because FUSE can back-stamp mtime while birthtime cannot be set by userspace on APFS. That excludes write-propagation delay.
+
+The error names the wrong cause and its advice makes things worse: the path was already the host path. **Retry; do not rewrite the path.** Mechanism is marked inference; the window is n=1.
+
+### Corrects Ch35/L122
+
+*"Rewrites outbound messages only"* is falsified as a behavioural summary. A host-form write succeeded inside the VM while `/var/folders` and `/tmp` host paths did not resolve **in the same session** — inbound translation exists and is selective. Whether the `K6-cmJAJ` index or a separate mechanism performs it is **untraced**, and said so.
+
+### New schema — an optional `lane` on author-facts
+
+Forced by the first direct remote-sandbox observation, which showed `shell.runs-as-its-own-user` **false** there (`uid=0`, no per-session user). Values `local | remote | both`; **absent means never-lane-scoped** — an unknown, not a claim of universality — and renders no badge. 14 of 53 facts are scoped; the other 39 are the audit's own finding.
+
+### Fresh fcache
+
+`9d75909785dc344e` → **`d17cdf8e7f6da102`**, 241 → 240 gates, three membership changes: `resolveCloudBranch` (`3123045134`) absent → **force-ON**; `vcsSdkEventsEnabled` (`1311049725`) and `sessionWatcherPool` (`2678393595`) served-off → **absent**, which per L141 axis 2 is *not* off.
+
+### What this release deliberately does not claim
+
+L146 does **not** claim concurrency. 529 session directories show the namespace has *held* hundreds of sessions, not that they run at once — no process, mount or timestamp check was made against a sibling. Ch31/L117's multiplexing inference is given a scale, not upgraded to confirmed.
+
+`registry.as_of.cli` moves 2.1.217 → 2.1.221. Per repo convention `as_of` is reconciliation bookkeeping, **not** per-entry re-derivation. Actually re-observed this pass: all 45 numeric gate entries against the fresh decode, and the 6 corrected facts against live probes. Everything else was carried forward.
+
+Chapter 40 was adversarially reviewed before landing and narrowed on **14 of 16** findings — including dropping "concurrent" from its own title, and adding the lane scoping it had itself omitted. Two findings were answerable with evidence already in hand.
+
 ## v2.35.2 — 2026-08-05 (this fork) — `bubble`: the seventh permission mode you can never select
 
 **142 lessons / 39 chapters** (unchanged). Closes the lead v2.35.1 recorded as untraced.

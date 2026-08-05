@@ -207,6 +207,10 @@ function scanForDisclosure(text, label) {
 
 const AUTHOR_FACT_TIERS = ['measured', 'binary', 'inference'];
 const AUTHOR_FACT_DURABILITY = ['durable', 'volatile'];
+// Optional. Absent means the fact was not lane-scoped when written -- which the
+// 2026-08 audit found is the case for most of them, and is NOT a claim that it
+// holds in both. Set it only where a lane was actually established.
+const AUTHOR_FACT_LANES = ['local', 'remote', 'both'];
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 /**
@@ -287,6 +291,9 @@ function validateAuthorFacts(stateDir, lessonIds, registry) {
     }
     if (ft.page && !slugs.has(ft.page)) errors.push(`${label}: page "${ft.page}" is not a declared page`);
     if (ft.tier && !AUTHOR_FACT_TIERS.includes(ft.tier)) errors.push(`${label}: unknown tier "${ft.tier}"`);
+    if (ft.lane !== undefined && !AUTHOR_FACT_LANES.includes(ft.lane)) {
+      errors.push(`${label}: unknown lane "${ft.lane}" (expected one of ${AUTHOR_FACT_LANES.join(', ')})`);
+    }
     if (ft.durability && !AUTHOR_FACT_DURABILITY.includes(ft.durability)) {
       errors.push(`${label}: unknown durability "${ft.durability}"`);
     }

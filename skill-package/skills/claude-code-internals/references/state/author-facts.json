@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "verified_against": {
-    "cli": "2.1.217",
+    "cli": "2.1.221",
     "desktop_asar": "1.25927.0",
-    "fcache_content16": "9d75909785dc344e",
+    "fcache_content16": "d17cdf8e7f6da102",
     "observed_at": "2026-08-05"
   },
   "pages": [
@@ -98,6 +98,7 @@
       "detail": "Connected folders appear as their own mounts alongside the outputs location. Permissions are tracked per mount, so a capability granted for one does not extend to another. A skill that assumes one uniform writable area will be surprised the first time it touches a connected folder.",
       "tier": "measured",
       "durability": "durable",
+      "lane": "local",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
@@ -116,6 +117,7 @@
       "detail": "Connecting a project and connecting a folder are different actions producing different results. A session with a project attached and no folder attached has no folder mount at all, and a skill that looks for one will find nothing. A connected project is also mounted read-only, while a connected folder is writable, so a project is a source to read from rather than somewhere to put output.",
       "tier": "measured",
       "durability": "durable",
+      "lane": "local",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
@@ -134,6 +136,7 @@
       "detail": "Your skill's shell commands and its file-reading and file-writing tools operate on the same underlying scratch space, but the shell reports paths in one form while operating on another — output you read back has already been rewritten before you see it. A relative filename is correct regardless. An absolute path copied out of shell output is not reliably the form the file tools want.",
       "tier": "measured",
       "durability": "durable",
+      "lane": "local",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
@@ -171,6 +174,7 @@
       "detail": "A file written by shell commands is not always readable by the file tools immediately. The read fails with a message stating that your path is a VM path and telling you to use the host path — while the path already is the host path and the identical call succeeds seconds later. The message names the wrong cause, so the natural fix makes things worse. Absolute paths in the session's own VM form are genuinely rejected by the file tools and are not rewritten for you, which is why relative filenames remain the safe habit; but that is a different failure from this one.",
       "tier": "measured",
       "durability": "durable",
+      "lane": "local",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
@@ -209,6 +213,7 @@
       "detail": "Uploaded files are mounted read-only. Attempting to write there fails. Deliverables belong in the outputs location, which is writable and is also what the delivery mechanisms operate on.",
       "tier": "measured",
       "durability": "durable",
+      "lane": "local",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
@@ -317,6 +322,7 @@
       "detail": "On the remote lane the filesystem is discarded at session end. On the local lane undelivered files are hidden from the user rather than destroyed, and can in principle be surfaced on a later turn — but a skill should not depend on that difference. Deliver within the turn that produces the file.",
       "tier": "measured",
       "durability": "durable",
+      "lane": "remote",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
@@ -334,6 +340,7 @@
       "detail": "Cowork sessions run either on the user's own machine or on remote infrastructure. The lanes differ in where the filesystem lives, whether it survives the session, and how a file reaches the user. Which lane a session uses depends on how it was created and on account configuration, neither of which a skill can control.",
       "tier": "measured",
       "durability": "durable",
+      "lane": "both",
       "volatile_dependency": true,
       "sources": {
         "lessons": [
@@ -500,6 +507,7 @@
       "detail": "The sandbox ships a large preinstalled stack, and runtime installs do succeed: a user-scoped Python install and a project-local Node install both work, and the installed package imports normally. A global install does not take effect. Reachability of package sources is a matter of session configuration that has changed between releases, so put an install on a path that degrades gracefully rather than making it a prerequisite. An earlier version of this rule said installs would fail or hang; that was an inference from the network constraints and it was wrong.",
       "tier": "measured",
       "durability": "durable",
+      "lane": "local",
       "volatile_dependency": true,
       "sources": {
         "lessons": [
@@ -520,6 +528,7 @@
       "detail": "The environment your shell commands run in comes with a substantial set of Python packages already installed — data, document, and imaging libraries among them. Skills have shipped workarounds and portability warnings for a scarcity that is not there. Check for what you need before vendoring it or degrading.",
       "tier": "measured",
       "durability": "durable",
+      "lane": "local",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
@@ -539,6 +548,7 @@
       "detail": "In the local sandbox each session runs as its own operating-system user: sibling sessions are visible by name but their contents are refused, and the session namespace holds hundreds of entries. In the remote sandbox there is no per-session user at all and commands run as root. Either way, anything your skill needs must be inside the session or fetched into it — but identity itself is not a stable thing to branch on.",
       "tier": "measured",
       "durability": "durable",
+      "lane": "both",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
@@ -560,6 +570,7 @@
       "detail": "The shell your skill's commands run in does not inherit the host environment. Variables set in user or managed settings do not appear, and neither do exports written by hooks. Configuration has to travel in the command itself, in a file the skill writes, or through a mechanism designed to cross that boundary.",
       "tier": "measured",
       "durability": "durable",
+      "lane": "local",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
@@ -584,6 +595,24 @@
         "lessons": [
           116,
           124
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "verified": "2026-08-05",
+      "caveats": []
+    },
+    {
+      "id": "shell.home-is-the-session",
+      "page": "shell-commands",
+      "rule": "Do not treat the home directory as a private place that outlives the session.",
+      "detail": "In the local sandbox the home directory is the session directory itself, not a separate per-user home, and it goes away with the session. Writing there is fine for scratch, but nothing put there is delivered, carried to the next session, or visible to anyone. Deliverables belong in the outputs location.",
+      "tier": "measured",
+      "durability": "durable",
+      "lane": "local",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          146
         ],
         "state_page": "cowork-architecture"
       },
@@ -770,6 +799,7 @@
       "detail": "The plugin-root token expands differently depending on which consumer expands it and which execution lane the session is in. Expanded for one consumer it names a location the other cannot reach. Reading plugin files through the file tools with the token is reliable; executing a script by that path is not. For execution, locate the plugin's mounted directory at runtime.",
       "tier": "binary",
       "durability": "durable",
+      "lane": "local",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
@@ -860,13 +890,14 @@
       "id": "subagents.tolerate-limits",
       "page": "sub-agents",
       "rule": "Write sub-agent fan-out so that a dispatch being queued or refused is handled, not fatal.",
-      "detail": "Concurrency and per-session limits are enforced, and the numbers have changed between releases. A skill that dispatches a fixed wide fan-out and assumes every one starts immediately will behave differently across versions. Treat parallelism as an optimisation, not a requirement.",
+      "detail": "Concurrency and per-session limits are enforced, and the numbers have changed between releases. A dispatch can also be refused outright before it starts, by a classifier rather than a limit — observed refusing one dispatch and accepting an equivalent one the same day, so a refusal is possible and not reliably reproducible. A skill that dispatches a fixed wide fan-out and assumes every one starts will behave differently across versions and across runs. Treat parallelism as an optimisation, not a requirement, and handle a dispatch that never starts.",
       "tier": "binary",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          134
+          134,
+          146
         ],
         "state_page": "cowork-architecture"
       },
@@ -1023,6 +1054,7 @@
       "detail": "Remote sessions were observed running a range of agent builds distinct from the installed application and from the local agent. This is why remote-lane behaviour cannot be pinned by the version numbers on this page alone.",
       "tier": "measured",
       "durability": "volatile",
+      "lane": "remote",
       "volatile_dependency": false,
       "sources": {
         "lessons": [

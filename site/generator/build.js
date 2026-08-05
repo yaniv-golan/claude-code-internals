@@ -51,6 +51,15 @@ const TIER_LABEL = {
   binary: 'From binary',
   inference: 'Inference',
 };
+// Reader-facing wording for the optional `lane` field. Absent means the fact was
+// never lane-scoped -- deliberately rendered as nothing rather than "both", since
+// unscoped is an unknown, not a claim of universality.
+const LANE_LABEL = {
+  local: 'Local sandbox',
+  remote: 'Remote sandbox',
+  both: 'Both sandboxes',
+};
+
 const TIER_TITLE = {
   measured: 'Observed live, with controls where noted',
   binary: 'Read from a shipped artifact; behaviour not exercised',
@@ -174,7 +183,8 @@ function factsFor(doc, slug) {
 
 function renderFactMd(f) {
   const out = [`### ${f.rule}`, ''];
-  out.push(`*${TIER_LABEL[f.tier]}*${f.volatile_dependency ? ' · *Depends on server-side configuration — can change without a version bump*' : ''}`, '');
+  const lane = f.lane ? ` · *${LANE_LABEL[f.lane]}*` : '';
+  out.push(`*${TIER_LABEL[f.tier]}*${lane}${f.volatile_dependency ? ' · *Depends on server-side configuration — can change without a version bump*' : ''}`, '');
   out.push(f.detail, '');
   for (const c of f.caveats || []) out.push(`> ${CAVEAT_LABEL} ${c}`, '');
   return out;
@@ -276,7 +286,7 @@ function pageHtml(doc, page, registry, depth) {
     for (const f of facts) {
       body.push('<section class="fact">');
       body.push(`<h3>${inlineHtml(f.rule)}</h3>`);
-      body.push(`<p class="badges">${badge(f)}${f.volatile_dependency ? volatileBadge(up) : ''}</p>`);
+      body.push(`<p class="badges">${badge(f)}${laneBadge(f)}${f.volatile_dependency ? volatileBadge(up) : ''}</p>`);
       body.push(`<p>${inlineHtml(f.detail)}</p>`);
       for (const c of f.caveats || []) body.push(`<p class="caveat"><strong>${CAVEAT_LABEL}</strong> ${inlineHtml(c)}</p>`);
       body.push('</section>');
@@ -305,6 +315,12 @@ function badge(f) {
   // Links to the on-page legend: a title= tooltip is invisible on touch devices,
   // and the tier is how a reader decides how much weight to give the claim.
   return `<a class="tier tier-${f.tier}" href="#tiers" title="${esc(TIER_TITLE[f.tier])}">${TIER_LABEL[f.tier]}</a>`;
+}
+function laneBadge(f) {
+  // Rendered only when `lane` is set. An unscoped fact gets no badge at all --
+  // absence is an unknown, and a "Both sandboxes" default would assert more than
+  // the source material does. Mirrors the markdown renderer; keep the two together.
+  return f.lane ? ` <span class="tier tier-lane">${LANE_LABEL[f.lane]}</span>` : '';
 }
 function volatileBadge(up) {
   return ` <a class="tier tier-volatile" href="${up}what-can-change-under-you/">Can change without a version bump</a>`;
@@ -357,6 +373,9 @@ h3 { font-size:1rem; margin:0 0 .35rem; }
 .tier-binary { color:var(--accent); border-color:var(--accent); }
 .tier-inference { color:var(--warn); border-color:var(--warn); }
 .tier-volatile { color:var(--warn); border-color:var(--warn); }
+/* Lane is scope, not confidence -- deliberately muted so it never competes
+   with the tier badge a reader uses to weigh the claim. */
+.tier-lane { color:var(--muted); border-color:var(--line); }
 .caveat { color:var(--muted); font-size:.92rem; border-left:2px solid var(--line); padding-left:.75rem; }
 .muted { color:var(--muted); }
 table { border-collapse:collapse; width:100%; font-size:.92rem; }

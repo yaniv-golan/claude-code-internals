@@ -217,6 +217,47 @@ test('caveats are labelled identically in Markdown and HTML', () => {
   assert.strictEqual(htmlCount, mdCount, 'HTML and Markdown disagree on caveat count/label');
 });
 
+test('lane scope is labelled identically in Markdown and HTML', () => {
+  // Same divergence class as caveats, and it recurred: the lane badge was added
+  // to the Markdown renderer first and the HTML path silently emitted nothing,
+  // because HTML builds from its own badge helpers rather than from the .md.
+  const { out } = buildOnce();
+  const facts = JSON.parse(fs.readFileSync(
+    path.join(__dirname, '../../../skill-package/skills/claude-code-internals/references/state/author-facts.json'), 'utf8'));
+  const LANES = /Local sandbox|Remote sandbox|Both sandboxes/g;
+  let mdTotal = 0, htmlTotal = 0;
+  for (const p of facts.pages) {
+    if (p.slug === 'index' || p.slug === 'current-state') continue;
+    const md = fs.readFileSync(path.join(out, SECTION, `${p.slug}.md`), 'utf8');
+    const html = fs.readFileSync(path.join(out, SECTION, p.slug, 'index.html'), 'utf8');
+    const m = (md.match(LANES) || []).length;
+    const h = (html.match(LANES) || []).length;
+    assert.strictEqual(h, m, `${p.slug}: HTML has ${h} lane labels, Markdown has ${m}`);
+    mdTotal += m; htmlTotal += h;
+  }
+  const expected = facts.facts.filter(f => f.lane && f.page !== 'current-state').length;
+  assert.strictEqual(mdTotal, expected, `expected ${expected} lane labels, rendered ${mdTotal}`);
+  assert.strictEqual(htmlTotal, expected);
+});
+
+test('an unscoped fact renders no lane badge', () => {
+  // Absence must stay silent. Defaulting to "Both sandboxes" would assert a
+  // scope the source material never established -- the failure this field exists
+  // to prevent.
+  const { out } = buildOnce();
+  const facts = JSON.parse(fs.readFileSync(
+    path.join(__dirname, '../../../skill-package/skills/claude-code-internals/references/state/author-facts.json'), 'utf8'));
+  const unscoped = facts.facts.filter(f => !f.lane && f.page !== 'current-state');
+  assert.ok(unscoped.length > 0, 'fixture should have unscoped facts');
+  for (const f of unscoped.slice(0, 5)) {
+    const html = fs.readFileSync(path.join(out, SECTION, f.page, 'index.html'), 'utf8');
+    const i = html.indexOf(f.rule.slice(0, 40));
+    assert.ok(i > 0, `rule not found for ${f.id}`);
+    const block = html.slice(i, i + 400);
+    assert.ok(!/tier-lane/.test(block), `${f.id} rendered a lane badge but has no lane`);
+  }
+});
+
 test('every page offers a way to report an error', () => {
   const { out } = buildOnce();
   for (const f of htmlFiles(out)) {

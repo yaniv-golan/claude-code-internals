@@ -1,7 +1,7 @@
 ---
 domain: command-surface
 title: Command surface (current)
-as_of_cli: 2.1.217
+as_of_cli: 2.1.221
 sources: [111, 112, 135]
 updated: 2026-07-22
 ---

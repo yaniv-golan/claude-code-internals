@@ -1,7 +1,7 @@
 ---
 domain: cowork-permissions
 title: Cowork permission stack (current)
-as_of_cli: 2.1.217
+as_of_cli: 2.1.221
 as_of_desktop: 1.22209.0
 sources: [89, 107, 108, 109, 115, 121, 122, 124, 128]
 updated: 2026-07-17

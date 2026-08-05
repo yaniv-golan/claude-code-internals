@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "as_of": {
-    "cli": "2.1.217",
+    "cli": "2.1.221",
     "desktop_asar": "1.25927.0",
     "in_vm_elf": "2.1.197",
     "fcache_capture": {
-      "content16": "9d75909785dc344e",
-      "embedded_timestamp": 1785910109684,
-      "feature_count": 241,
+      "content16": "d17cdf8e7f6da102",
+      "embedded_timestamp": 1785956812984,
+      "feature_count": 240,
       "observed_at": "2026-08-05"
     },
     "agent_elf_parity_check": "2.1.221",
@@ -32,7 +32,7 @@
       "status": "live",
       "first_seen": "2.1.116",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Required env-quad var for OIDC Federation auth: the federation rule id from the Anthropic console.",
       "provenance": [
         {
@@ -47,7 +47,7 @@
       "status": "live",
       "first_seen": "2.1.116",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Required env-quad var for OIDC Federation auth: the target organization id.",
       "provenance": [
         {
@@ -62,7 +62,7 @@
       "status": "live",
       "first_seen": "2.1.116",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Inline identity token (JWT) for OIDC Federation auth; alternative to ANTHROPIC_IDENTITY_TOKEN_FILE.",
       "provenance": [
         {
@@ -77,7 +77,7 @@
       "status": "live",
       "first_seen": "2.1.116",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Path to a rotating identity-token file for OIDC Federation auth.",
       "provenance": [
         {
@@ -92,7 +92,7 @@
       "status": "live",
       "first_seen": "2.1.116",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Optional service-account id for OIDC Federation auth.",
       "provenance": [
         {
@@ -107,7 +107,7 @@
       "status": "live",
       "first_seen": "2.1.116",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Optional auth-scope override for OIDC Federation auth.",
       "provenance": [
         {
@@ -122,7 +122,7 @@
       "status": "live",
       "first_seen": "2.1.116",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Overrides the config-directory root used for profile-based auth config (configs/, credentials/).",
       "provenance": [
         {
@@ -137,7 +137,7 @@
       "status": "live",
       "first_seen": "2.1.116",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Selects the active profile within the config dir; falls back to <config_dir>/active_config then \"default\".",
       "provenance": [
         {
@@ -152,7 +152,7 @@
       "status": "live",
       "first_seen": "2.1.116",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Lowest-priority HTTP proxy fallback, below HTTP_PROXY/http_proxy; propagated to ~15 downstream toolchains (npm, docker, JAVA_TOOL_OPTIONS, gcloud, etc.) for spawned children.",
       "provenance": [
         {
@@ -167,7 +167,7 @@
       "status": "live",
       "first_seen": "2.1.116",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Lowest-priority HTTPS proxy fallback, below HTTPS_PROXY/https_proxy.",
       "provenance": [
         {
@@ -182,7 +182,7 @@
       "status": "live",
       "first_seen": "2.1.116",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Alias for CLAUDE_CODE_SIMPLE; when truthy, replaces the full system prompt with a skeletal CWD/Date-only prompt.",
       "provenance": [
         {
@@ -197,7 +197,7 @@
       "status": "live",
       "first_seen": "2.1.116",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Enables a retry watchdog on API 429s; strictly gated to Linux + CLAUDE_CODE_ENTRYPOINT=\"remote\" (CCR/daemon workers, not local dev machines).",
       "provenance": [
         {
@@ -212,7 +212,7 @@
       "status": "live",
       "first_seen": "2.1.117",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Truthy env override that force-enables /fork ahead of the tengu_copper_fox GB flag (default false); non-interactive sessions never see /fork regardless.",
       "provenance": [
         {
@@ -227,7 +227,7 @@
       "status": "live",
       "first_seen": "2.1.117",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Overrides the reported rate-limit tier on the client-constructed OAuth token object (client-side only; server remains authoritative).",
       "provenance": [
         {
@@ -242,7 +242,7 @@
       "status": "live",
       "first_seen": "2.1.117",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Overrides the reported subscription type on the client-constructed OAuth token object; test-hook surface for Pro-trial/subscription UI.",
       "provenance": [
         {
@@ -257,7 +257,7 @@
       "status": "live",
       "first_seen": "2.1.117",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Single-use session id for the bridge reattach handshake; read once and deleted from process.env so it does not leak into grandchildren.",
       "provenance": [
         {
@@ -276,7 +276,7 @@
       "status": "live",
       "first_seen": "2.1.117",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Single-use sequence number to replay from on bridge reattach; read once and deleted from process.env.",
       "provenance": [
         {
@@ -294,7 +294,7 @@
       "status": "removed",
       "first_seen": null,
       "removed_in": "2.1.118",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Removed in v2.1.118; agent/team display context is now derived from session state (standaloneAgentContext) instead of an env override.",
       "provenance": [
         {
@@ -309,7 +309,7 @@
       "status": "removed",
       "first_seen": null,
       "removed_in": "2.1.118",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Removed alongside CLAUDE_CODE_AGENT_NAME in v2.1.118.",
       "provenance": [
         {
@@ -324,7 +324,7 @@
       "status": "live",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Session-kind discriminator: \"bg\" | \"daemon\" | \"daemon-worker\" | unset (interactive). The canonical Cowork/background-session detector; there is no literal \"cowork\" string in the bundle.",
       "provenance": [
         {
@@ -339,7 +339,7 @@
       "status": "live",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Stable session identifier for cross-process correlation.",
       "provenance": [
         {
@@ -354,7 +354,7 @@
       "status": "live",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Human-readable session name shown in the agents/Fleet view list.",
       "provenance": [
         {
@@ -369,7 +369,7 @@
       "status": "live",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Path to the session log file.",
       "provenance": [
         {
@@ -384,7 +384,7 @@
       "status": "live",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Background-isolation mode; value \"worktree\" triggers runtime system-prompt rewriting instructing the agent to call EnterWorktree before editing.",
       "provenance": [
         {
@@ -399,7 +399,7 @@
       "status": "live",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Unix-socket path for daemon<->worker IPC; used to send shutdown signals to idle/retired workers (tengu_bg_retired).",
       "provenance": [
         {
@@ -417,7 +417,7 @@
       "status": "live",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Records where a background session was spawned from (set by the daemon when dispatching workers).",
       "provenance": [
         {
@@ -432,7 +432,7 @@
       "status": "live",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Per-job state directory: worktree, transcript, and PTY recording all live here.",
       "provenance": [
         {
@@ -447,7 +447,7 @@
       "status": "live",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "File path for terminal-stream recording via the internal --bg-pty-host <sock> <cols> <rows> -- <file> argv mode.",
       "provenance": [
         {
@@ -462,7 +462,7 @@
       "status": "live",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Agent identifier set when running as a Fleet/agent-view-tracked agent.",
       "provenance": [
         {
@@ -477,7 +477,7 @@
       "status": "live",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Pre-selected agent id to highlight in the agents (Fleet) view; set when the left-arrow keybinding spawns a child \"claude agents\" process.",
       "provenance": [
         {
@@ -492,7 +492,7 @@
       "status": "live",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Internal agent identity for the Claude Code instance, parallel to the agent-config concept.",
       "provenance": [
         {
@@ -507,7 +507,7 @@
       "status": "live",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "UI privacy knob: when truthy, blanks the cwd field in the status-line/header display (does not affect actual cwd). Useful for screensharing.",
       "provenance": [
         {
@@ -522,7 +522,7 @@
       "status": "removed",
       "first_seen": "2.1.119",
       "removed_in": "2.1.217",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "REMOVED by 2.1.217. Was Ch21/L90's debugging-discipline injection (reproduce->fix->re-observe) + tengu_sparrow_ledger; the /verify + /code-review skills stopped auto-running at 2.1.215 and this env-injected prompt is gone.",
       "provenance": [
         {
@@ -540,7 +540,7 @@
       "status": "live",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Manual override for classifier-summary engine selection: truthy -> \"llm\", falsy -> \"heuristic\"; bypasses GB-flag-driven default.",
       "provenance": [
         {
@@ -555,7 +555,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Internal function-calling overrides; no user-facing surface as of v2.1.119.",
       "provenance": [
         {
@@ -570,7 +570,7 @@
       "status": "live",
       "first_seen": "2.1.120",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Daemon cold-start mode: \"transient\" (silent on-demand, default) or \"ask\" (prompt before starting). There is no persistent/installed mode in v2.1.120.",
       "provenance": [
         {
@@ -585,7 +585,7 @@
       "status": "live",
       "first_seen": "2.1.120",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Manual override forcing all leanable prompt sections (per-section, distinct from wholesale CLAUDE_CODE_SIMPLE) to their slim variants regardless of GB-flag rollout state.",
       "provenance": [
         {
@@ -600,7 +600,7 @@
       "status": "live",
       "first_seen": "2.1.120",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Cowork's memory-injection bypass: when set and auto-memory is enabled, wholesale replaces the entire memory pipeline output with the env var's content (no team memory, no MEMORY.md index).",
       "provenance": [
         {
@@ -615,7 +615,7 @@
       "status": "live",
       "first_seen": "2.1.118",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Additive Cowork memory-guidance hint, pre-existing since v2.1.118; sibling of the replace-form CLAUDE_COWORK_MEMORY_GUIDELINES added in v2.1.120. Its value is sourced from GrowthBook string-config gate 2860753854 (default: a hardcoded \"## Sensitive personal information...\" PII-handling block) -- see gate.2860753854 (v2.23.0 addendum).",
       "provenance": [
         {
@@ -637,7 +637,7 @@
       "status": "live",
       "first_seen": "2.1.120",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Daemon-set timestamp on auto-relaunched workers; rate-limited to agents unfocused >=1h and >=6h since the last relaunch.",
       "provenance": [
         {
@@ -652,7 +652,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Tri-state availability override for Dynamic Workflows (the Workflow tool): truthy pulls from tengu_workflows_enabled, explicit-false disables, unset falls through to Statsig+plan default.",
       "provenance": [
         {
@@ -667,7 +667,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Hard kill switch for Dynamic Workflows, checked before org policy/availability.",
       "provenance": [
         {
@@ -682,7 +682,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Enables the coordinator dispatch role (worker-team orchestration, TeamCreate/TeamDelete); remote/headless-gated.",
       "provenance": [
         {
@@ -697,7 +697,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Global effort-tier pin overriding the per-model default (low|medium|high|xhigh|max), clamped to model capability.",
       "provenance": [
         {
@@ -712,7 +712,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Truthy downgrades Opus 4.8 to Opus 4.6 (the inverse direction of the older 4.6->4.7 fast-mode var).",
       "provenance": [
         {
@@ -727,7 +727,7 @@
       "status": "removed",
       "first_seen": null,
       "removed_in": "2.1.217",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "REMOVED by 2.1.217 along with CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE. The per-model fast-mode surface (Ch27/L110) is retired; fast mode is now model-agnostic.",
       "provenance": [
         {
@@ -747,7 +747,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Byte-level stream idle-watchdog timeout, default 300000ms via Statsig, clamped [10000, 1800000]; takes precedence over the legacy CLAUDE_STREAM_IDLE_TIMEOUT_MS.",
       "provenance": [
         {
@@ -762,7 +762,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Kill/force switch for the byte-level idle watchdog (on by default for SSE).",
       "provenance": [
         {
@@ -777,7 +777,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Opt-in byte watchdog for the Bedrock eventstream transport (off by default, unlike SSE).",
       "provenance": [
         {
@@ -792,7 +792,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Consecutive Stop-hook block override ceiling, default 8; <=0 disables the cap.",
       "provenance": [
         {
@@ -807,7 +807,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Required to enable auto permission mode on non-first-party/non-anthropicAws providers (first-party has it always available).",
       "provenance": [
         {
@@ -822,7 +822,7 @@
       "status": "disabled",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Present only in the env-name allowlist and never actually read; does NOT select the new Cloud-gateway OAuth provider (that is chosen via /login). Dead/reserved.",
       "provenance": [
         {
@@ -837,7 +837,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Pure-env truthy gate (default OFF) enabling org-managed skills reconcile from Console, with a 10-minute re-sync.",
       "provenance": [
         {
@@ -852,7 +852,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Pure-env truthy gate (default OFF) enabling org-managed plugins reconcile from Console, plus MCP reconcile.",
       "provenance": [
         {
@@ -867,7 +867,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "MCP-reconcile timeout bound for org-managed plugin sync, default 10000ms; tengu_plugins_sync_mcp_skipped fires only when explicitly set to 0.",
       "provenance": [
         {
@@ -882,7 +882,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Plugin-install timeout bound for org-managed plugin sync, default 30000ms.",
       "provenance": [
         {
@@ -897,7 +897,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Skills-sync startup-wait bound for org-managed skills sync, default 5000ms.",
       "provenance": [
         {
@@ -912,7 +912,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Suppresses the dark-launched built-in \"claude-code-docs\" CLI-as-skill (registerClaudeCodeSkill, default off via tengu_birch_kettle).",
       "provenance": [
         {
@@ -927,7 +927,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Capability flag: an embedding host (Desktop, VS Code, local-agent) supplies a getOAuthToken callback for SDK-embedded sessions.",
       "provenance": [
         {
@@ -942,7 +942,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Capability flag: an embedding host supplies a getHostAuthToken callback; covers a narrower entrypoint set than OAuth refresh (excludes claude-vscode).",
       "provenance": [
         {
@@ -957,7 +957,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Names the env var holding the host-managed auth token, default ANTHROPIC_AUTH_TOKEN; its presence flips managedByHost.",
       "provenance": [
         {
@@ -972,7 +972,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Overrides the default 30000ms timeout on the host_auth_token_refresh / oauth_token_refresh control-request RPCs.",
       "provenance": [
         {
@@ -987,7 +987,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Single-use on-disk credential handoff for background workers: path is read, the env var deleted, and the file unlinked after installing {accessToken, scopes, subscriptionType, rateLimitTier}.",
       "provenance": [
         {
@@ -1002,7 +1002,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Workspace-disambiguation var read in OIDC env-quad mode alongside organization_id/federation_rule_id. NOT the Cowork Spaces id, despite the name overlap.",
       "provenance": [
         {
@@ -1021,7 +1021,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Relocates secure credential storage away from the default ~/.claude.",
       "provenance": [
         {
@@ -1036,7 +1036,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Truthy forces managedByHost auth mode even without CLAUDE_CODE_HOST_AUTH_ENV_VAR being set.",
       "provenance": [
         {
@@ -1051,7 +1051,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Disables the \"agent view\" (renamed from CLAUDE_CODE_DISABLE_AGENTS_FLEET/\"Fleet view\"); the underlying `claude agents` command behavior is unchanged, only naming.",
       "provenance": [
         {
@@ -1066,7 +1066,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "One-shot marker set around the Fleet->agent-view rename migration.",
       "provenance": [
         {
@@ -1081,7 +1081,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "JSON {allow[],deny[]} injected as session-scoped alwaysAllow/alwaysDenyRules for bg sessions only (SESSION_KIND===\"bg\"); user-configured, not a hardcoded always-ask list.",
       "provenance": [
         {
@@ -1100,7 +1100,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "macOS one-shot marker for native self-respawn after a TCC (privacy permission) disclaim.",
       "provenance": [
         {
@@ -1115,7 +1115,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "When set, an uncaught exception triggers a clean exit instead of a crash dump, for a supervising process to restart.",
       "provenance": [
         {
@@ -1130,7 +1130,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Records the process spawn timestamp (ms).",
       "provenance": [
         {
@@ -1145,7 +1145,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "PTY host executable path used by the internal --bg-pty-host argv mode.",
       "provenance": [
         {
@@ -1160,7 +1160,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "PTY orphan-check polling interval, default 2000ms.",
       "provenance": [
         {
@@ -1175,7 +1175,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Restricts bridge reattach to outbound-only connections.",
       "provenance": [
         {
@@ -1190,7 +1190,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Force-enables the /loop keepalive fallback wakeup (over the tengu_kairos_loop_keepalive Statsig default false); strictly subordinate to dynamic-loop mode.",
       "provenance": [
         {
@@ -1205,7 +1205,7 @@
       "status": "removed",
       "first_seen": null,
       "removed_in": "2.1.159",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "The interactive \"interview\" phase on entering plan mode is fully removed in v2.1.159, along with its two telemetry flags.",
       "provenance": [
         {
@@ -1220,7 +1220,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "JSON array mounting multiple team-memory stores (path string or {path, mode: rw|ro, mount}); duplicate mounts throw.",
       "provenance": [
         {
@@ -1235,7 +1235,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Propagates a memory-off state into background child sessions.",
       "provenance": [
         {
@@ -1250,7 +1250,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Hard on/off override for the PEWTER_OWL gate layer over the internal SendUserMessage/Brief tool (off-override beats all; force-on also supported).",
       "provenance": [
         {
@@ -1265,7 +1265,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "The activation marker for Cowork mode; selected by this env var, not a CLI flag (--cowork itself is rejected at agent-invocation time, plugin-scope only). Visibility caveat (L116): under host-loop this var lives on the HOST-side agent process only -- a skill's shell commands run in the sealed-env VM (mcp__workspace__bash) and do not see it, so a bare env check false-negatives in production Cowork; it is also the switch that force-disables inline skill-shell execution (q5n/disableSkillShellExecution).",
       "provenance": [
         {
@@ -1283,7 +1283,7 @@
       "status": "disabled",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Do NOT set: flips the agent user-settings file to cowork_settings.json and plugin cache to cowork_plugins/ -- files the Desktop host never populates. The real Desktop never sets it; toggling it is an active bug, not a working switch.",
       "provenance": [
         {
@@ -1298,7 +1298,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Bypasses the per-model effort allowlist (effort is otherwise limited to fable-5/mythos-5/opus-4-8/opus-4-7 + select models).",
       "provenance": [
         {
@@ -1316,7 +1316,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Gates appendSubagentSystemPrompt on the initialize control-request (subagent system-prompt append). Set unconditionally to \"1\" in every Cowork spawn env (Desktop-side) -- and this is REQUIRED, not just sufficient: consumption requires BOTH the env var AND initialize.appendSubagentSystemPrompt (pt(process.env.CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT)&&r.options.appendSubagentSystemPrompt). The CLI's own self-set helper (YRp) that flips this env var on has exactly one call site -- the hidden --append-subagent-system-prompt CLI flag path -- it is NOT invoked by the initialize handler itself. So an SDK/driver that sends the option over initialize without independently setting the env var in the agent's process env gets no append.",
       "provenance": [
         {
@@ -1335,7 +1335,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Combined with CLAUDE_CODE_REMOTE_HERMETIC_MODE, triggers the ap5()/xB8() filter that drops non-SDK --mcp-config servers in hermetic-remote mode; also gates several CCR-era flags (tengu_ccr_post_turn_summary, retry watchdog).",
       "provenance": [
         {
@@ -1354,7 +1354,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Paired with CLAUDE_CODE_REMOTE; both required for xB8() hermetic-remote mode, which drops non-SDK --mcp-config servers.",
       "provenance": [
         {
@@ -1369,7 +1369,7 @@
       "status": "live",
       "first_seen": "1.12603.1",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "The Desktop's VM-env builder rtA() sets this to the session OAuth token for a spawned Cowork agent; ANTHROPIC_API_KEY/AUTH_TOKEN/CUSTOM_HEADERS are deleted (not blanked) alongside it, so the final env has no API-key vars at all.",
       "provenance": [
         {
@@ -1384,7 +1384,7 @@
       "status": "live",
       "first_seen": "1.12603.1",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "CCR worker epoch (int) passed in by the host; a stale end_session (reason:\"archived\") is ignored when epoch>1 so a prior lifecycle cannot kill a reattached worker. Missing/NaN throws \"missing_epoch\".",
       "provenance": [
         {
@@ -1402,7 +1402,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Stops selecting/routing to [1m]-tagged models, for proxies/gateways without 1M-context support.",
       "provenance": [
         {
@@ -1417,7 +1417,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Suppresses adaptive (extended) thinking even on supporting models (opus-4-6/sonnet-4-6).",
       "provenance": [
         {
@@ -1432,7 +1432,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Disables the silent old-alias -> canonical-model-ID remap; sends the exact model string as given.",
       "provenance": [
         {
@@ -1447,7 +1447,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Overrides the model used for the background classifier/summarizer that produces post-turn summaries for Cowork Desktop.",
       "provenance": [
         {
@@ -1462,7 +1462,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Overrides the model auto-mode selects.",
       "provenance": [
         {
@@ -1477,7 +1477,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Fable-5 model-family override quartet (+ _NAME, _DESCRIPTION, _SUPPORTED_CAPABILITIES), matching the existing OPUS/SONNET/HAIKU pattern; in the managed-settings propagation allowlist so org policy reaches subagents.",
       "provenance": [
         {
@@ -1492,7 +1492,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Deployment-type tag: byoc | anthropic_cloud | bridge; drives the classifier-summary surface map (byoc adds \"ccr\", bridge adds \"bridge\"). CONFIRMED mechanism (L119): the \"bridge\" value is set exclusively by the agent's OWN claude remote-control bridge worker (a poll/ack/stop client against /v1/environments/{id}/work) when it spawns a child CLI process to run a claimed work item -- the Desktop never assigns this value itself (0 spawn-env assignments found in either Desktop build). A Desktop-hosted bridge session reaches the same \"bridge\" classifier surface via a separate signal, the in-process flag replBridgeActive (qR()), not this env var -- the surface map ORs both. byoc/anthropic_cloud are sibling environment-PROVIDER kinds of the same /v1/environment_providers API and feed the \"ccr\" surface, not \"bridge\".",
       "provenance": [
         {
@@ -1511,7 +1511,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Under ENVIRONMENT_KIND=byoc, Datadog telemetry is suppressed unless this is also set.",
       "provenance": [
         {
@@ -1526,7 +1526,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Pipe-separated host folders the Desktop injects (userSelectedFolders.join(\"|\")); the agent emits them as workspace.host_paths telemetry. Host-side source is a Cowork Space's folder set (Ch26/L109).",
       "provenance": [
         {
@@ -1545,7 +1545,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Part of the bg/Cowork auth handshake carrying host->worker claim auth; deleted from process.env immediately after read (single-use).",
       "provenance": [
         {
@@ -1560,7 +1560,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Part of the bg/Cowork auth handshake carrying the socket-tokens path; deleted from process.env immediately after read.",
       "provenance": [
         {
@@ -1575,7 +1575,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Rendezvous-socket auth token for the bg/Cowork handshake; single-use, deleted after read.",
       "provenance": [
         {
@@ -1590,7 +1590,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "PTY-socket auth token for the bg/Cowork handshake; single-use, deleted after read.",
       "provenance": [
         {
@@ -1605,7 +1605,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Startup-watchdog timeout for hung bg workers, default 45000ms; firing kills the worker.",
       "provenance": [
         {
@@ -1620,7 +1620,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Injects the Cowork memory index as a raw string (non-empty = use directly, empty = disable, unset = use file path); sibling of CLAUDE_COWORK_MEMORY_GUIDELINES.",
       "provenance": [
         {
@@ -1639,7 +1639,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Gates the XAA (Cross-App Authentication, SEP-990) OIDC flow for MCP OAuth; without it, any oauth.xaa server config throws.",
       "provenance": [
         {
@@ -1654,7 +1654,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Injects a trusted-device token directly, skipping proactive device-trust enrollment.",
       "provenance": [
         {
@@ -1669,7 +1669,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Bash-tool subprocesses get an empty base env (only SHELL/GIT_EDITOR/CLAUDECODE=1) instead of inheriting process.env; hermetic shell mode.",
       "provenance": [
         {
@@ -1684,7 +1684,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Appended as client-app/<val> in the User-Agent/x-app header for Agent SDK integrations.",
       "provenance": [
         {
@@ -1699,7 +1699,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Appended as agent-sdk/<val> in the User-Agent header.",
       "provenance": [
         {
@@ -1714,7 +1714,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Suppresses the tool-name prefix for MCP tools on sdk-type connections.",
       "provenance": [
         {
@@ -1729,7 +1729,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "With the multi-agent fork gate, returns an empty built-in-agents list for SDK integrations.",
       "provenance": [
         {
@@ -1744,7 +1744,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Overrides the Dynamic-Workflow (plan-v2) main parallel-agent count (default tier-based: enterprise/team 3, else 1).",
       "provenance": [
         {
@@ -1759,7 +1759,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Overrides the Dynamic-Workflow explore parallel-agent count; L108 shorthand renders this as CLAUDE_CODE_PLAN_V2_..._EXPLORE_AGENT_COUNT while L111 gives the standalone name -- treat as the same explore-fan-out override, exact full identifier unconfirmed.",
       "provenance": [
         {
@@ -1777,7 +1777,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Triggers cold compaction (discard the whole in-flight conversation) instead of normal summary-preserving autocompact.",
       "provenance": [
         {
@@ -1792,7 +1792,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Appends {after_last_compact:true} to the skill/plugin-registry API query (skill sync after compaction).",
       "provenance": [
         {
@@ -1807,7 +1807,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Three-way toggle for Git guidance in the system prompt (truthy=off, falsy-string=force-on, unset=policy default).",
       "provenance": [
         {
@@ -1822,7 +1822,7 @@
       "status": "live",
       "first_seen": "1.12603.1",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Desktop-only: overrides the claude.ai base URL (staging/localhost detection); explicitly stripped before spawning the agent.",
       "provenance": [
         {
@@ -1837,7 +1837,7 @@
       "status": "live",
       "first_seen": "1.12603.1",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Desktop-only: a signed JWT (verified against an embedded public key) injecting extra HTTP headers into API requests; rejected tokens just warn.",
       "provenance": [
         {
@@ -1852,7 +1852,7 @@
       "status": "live",
       "first_seen": "1.12603.1",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Desktop-only: a signed JWT overriding the auto-updater config (server URL/channel).",
       "provenance": [
         {
@@ -1867,7 +1867,7 @@
       "status": "live",
       "first_seen": "1.12603.1",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Desktop-only: \"=1\" enables the local-frame-shell render path (embedded webviews; alters link-click handling and CSP for sub-frames).",
       "provenance": [
         {
@@ -1882,7 +1882,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Gates the agent-side Tasks tool family (TaskCreate/TaskList/TaskGet/TaskUpdate/TaskStop/TaskOutput), decision fn vv(); pairs with CLAUDE_CODE_TASK_LIST_ID (D$()). Behind the force-ON tasks_tab experiment (gate 364911507).",
       "provenance": [
         {
@@ -1898,7 +1898,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Pins the persistent task-list id for the Tasks tool family; same insider-experiment posture as CLAUDE_CODE_ENABLE_TASKS.",
       "provenance": [
         {
@@ -1913,7 +1913,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "When truthy, auto-moves long-running work to a background task after ~120s (Rbm()).",
       "provenance": [
         {
@@ -1928,7 +1928,7 @@
       "status": "live",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Disables background subagents. Effects (v2.1.198): removes run_in_background from the Task tool's model-facing schema (fLo's sJt branch) so subagents run synchronously; suppresses the \"run_in_background: true\" hint; makes SendMessage-resume of a stopped agent run to completion inline instead of resuming in the background. Set to \"1\" in the env block of the MAIN Cowork local-agent spawn (asar 1.18286.0) -- i.e. every Cowork session, alongside CLAUDE_CODE_DISABLE_AGENTS_FLEET.",
       "provenance": [
         {
@@ -1947,7 +1947,7 @@
       "status": "live",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Keeps a session's status as \"not idle\" while its background tasks are still running.",
       "provenance": [
         {
@@ -1962,7 +1962,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Enables SDK file checkpointing/rewind (the rewind_files control-request + file_snapshot system message); overridden off by CLAUDE_CODE_DISABLE_FILE_CHECKPOINTING.",
       "provenance": [
         {
@@ -1977,7 +1977,7 @@
       "status": "live",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Kill switch overriding CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING.",
       "provenance": [
         {
@@ -1992,7 +1992,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Enables the remote/away recap path, pairing with the away_summary control-protocol subtype; extends the L101 proactive-away-summary feature to the remote/Cowork surface.",
       "provenance": [
         {
@@ -2007,7 +2007,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Enables the Claude Design MCP server backing /design; gated off by default alongside pNe() and the other ENABLE_DESIGN_* vars.",
       "provenance": [
         {
@@ -2022,7 +2022,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Enables /design-sync (push design-system components to claude.ai/design).",
       "provenance": [
         {
@@ -2037,7 +2037,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "OAuth client id used by the /design-login flow.",
       "provenance": [
         {
@@ -2052,7 +2052,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Force enable/disable the Artifact tool in otherwise-excluded entrypoints; master reachability is still the tengu_cobalt_plinth GB flag (default false).",
       "provenance": [
         {
@@ -2067,7 +2067,7 @@
       "status": "live",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Kill switch for the Artifact tool (pairs with the disableArtifact setting).",
       "provenance": [
         {
@@ -2082,7 +2082,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Artifacts upload API base URL; stripped from child-process environments.",
       "provenance": [
         {
@@ -2097,7 +2097,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Chooses the inline direct-upload lane vs redeploy for Artifacts (tengu_cobalt_plinth_direct).",
       "provenance": [
         {
@@ -2112,7 +2112,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Suppresses auto-opening the surfaced Artifact frame.",
       "provenance": [
         {
@@ -2127,7 +2127,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Enables the dark-launched Launch Composer prompt-composer UI (not in the official changelog).",
       "provenance": [
         {
@@ -2142,7 +2142,7 @@
       "status": "live",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Disables Launch Composer.",
       "provenance": [
         {
@@ -2157,7 +2157,7 @@
       "status": "live",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Disables the auto-memory \"bulk inflate\" knowledge-base load path.",
       "provenance": [
         {
@@ -2172,7 +2172,7 @@
       "status": "live",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Disables periodic re-sync of the memory-store knowledge base.",
       "provenance": [
         {
@@ -2187,7 +2187,7 @@
       "status": "live",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Forces the memory-evaluation pass.",
       "provenance": [
         {
@@ -2202,7 +2202,7 @@
       "status": "live",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Forces the L90 Approve/Reject memory-write survey dialog to appear.",
       "provenance": [
         {
@@ -2217,7 +2217,7 @@
       "status": "live",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Toggles knowledge-base cohesion fixes in the memory pipeline.",
       "provenance": [
         {
@@ -2232,7 +2232,7 @@
       "status": "live",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Opts out of the refusal->fallback model path (the model_refusal_fallback control-subtype family).",
       "provenance": [
         {
@@ -2247,7 +2247,7 @@
       "status": "removed",
       "first_seen": null,
       "removed_in": "2.1.198",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Removed in the v2.1.160-198 CLI content refresh.",
       "provenance": [
         {
@@ -2262,7 +2262,7 @@
       "status": "removed",
       "first_seen": null,
       "removed_in": "2.1.198",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Removed in the v2.1.160-198 CLI content refresh.",
       "provenance": [
         {
@@ -2277,7 +2277,7 @@
       "status": "removed",
       "first_seen": null,
       "removed_in": "2.1.198",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Removed in the v2.1.160-198 refresh; was the machinery behind the earlier /team-onboarding command.",
       "provenance": [
         {
@@ -2292,7 +2292,7 @@
       "status": "live",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "New settings-backed disableBundledSkills toggle.",
       "provenance": [
         {
@@ -2307,7 +2307,7 @@
       "status": "live",
       "first_seen": "2.1.195",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Disables mouse-click handling in the TUI.",
       "provenance": [
         {
@@ -2322,7 +2322,7 @@
       "status": "live",
       "first_seen": "2.1.181",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Presence-file path used to suppress mobile push notifications when a local client is active.",
       "provenance": [
         {
@@ -2337,7 +2337,7 @@
       "status": "live",
       "first_seen": "2.1.169",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Env equivalent of --safe-mode: starts the session with all customizations disabled (the same I5() safe mode that drops --mcp-config).",
       "provenance": [
         {
@@ -2356,7 +2356,7 @@
       "status": "live",
       "first_seen": "2.1.117",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Spawns a background subagent inheriting the full parent conversation (kind:\"fork\"); interactive-only, gated by CLAUDE_CODE_FORK_SUBAGENT env override or the tengu_copper_fox GB flag. Confirmed live since v2.1.117 in the L89 status table.",
       "provenance": [
         {
@@ -2374,7 +2374,7 @@
       "status": "live",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Configures the auto-compact window size ([auto|<tokens>]). Removed in v2.1.117, then re-introduced token-count-parameterized and unconditionally live in v2.1.119.",
       "provenance": [
         {
@@ -2392,7 +2392,7 @@
       "status": "removed",
       "first_seen": null,
       "removed_in": "2.1.117",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Set a session-only Stop hook with a quick prompt; already disabled (isEnabled:()=>false) before removal, gone entirely (with its telemetry) in v2.1.117.",
       "provenance": [
         {
@@ -2407,7 +2407,7 @@
       "status": "live",
       "first_seen": "2.1.116",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Gains a second, non-interactive registration (supportsNonInteractive:true) alongside the pre-existing interactive menu, enabling `claude -p \"/model sonnet\" ...` scripting.",
       "provenance": [
         {
@@ -2422,7 +2422,7 @@
       "status": "live",
       "first_seen": "2.1.118",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Absorbs /cost and /stats as aliases; gains dual registrations (interactive ink dashboard vs supportsNonInteractive headless cost+duration string).",
       "provenance": [
         {
@@ -2437,7 +2437,7 @@
       "status": "renamed",
       "first_seen": null,
       "removed_in": "2.1.118",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Standalone registration deleted in v2.1.118; folded into /usage as an alias (still resolves for scripts).",
       "provenance": [
         {
@@ -2453,7 +2453,7 @@
       "status": "renamed",
       "first_seen": null,
       "removed_in": "2.1.118",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Standalone registration deleted in v2.1.118; folded into /usage as an alias.",
       "provenance": [
         {
@@ -2469,7 +2469,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Description \"deremoted\" from \"Spawn a remote Claude Code session...\" to \"Monitor and autofix any issues with the current PR\" in v2.1.118, continuing the Remote Workflow sunset framing.",
       "provenance": [
         {
@@ -2484,7 +2484,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.118",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Options shown when the Pro plan Claude Code trial has ended; isEnabled:()=>false, currently inert.",
       "provenance": [
         {
@@ -2499,7 +2499,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Alias /bg; forks the current main session into the background as a kind:\"fork\" subagent. Per-command isEnabled is always true but the master command-resolver array only includes it when tengu_slate_meadow (default false) is on -- live for Claude Max/Cowork accounts, \"Unknown command\" otherwise.",
       "provenance": [
         {
@@ -2514,7 +2514,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Stops the current background session (transcript+worktree kept); isEnabled only true when SESSION_KIND===\"bg\", which is itself reachable only via the tengu_slate_meadow-gated /background.",
       "provenance": [
         {
@@ -2529,7 +2529,7 @@
       "status": "kill-switched",
       "first_seen": "2.1.119",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Ink TUI for managing assistant/scheduled/remote-control services; the gate function is a hardcoded `function OqH(){return false}` (not a flippable GB flag), so it is \"Unknown command\" for everyone in v2.1.119 and v2.1.120.",
       "provenance": [
         {
@@ -2547,7 +2547,7 @@
       "status": "live",
       "first_seen": "2.1.117",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Create/update/list/run scheduled agents; terminology shifted \"triggers\"->\"routines\" and gained one-time scheduling in v2.1.117; the conditional description was collapsed to a single cron-only string in v2.1.120 (functionality unchanged, description simplified only).",
       "provenance": [
         {
@@ -2568,7 +2568,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Run-history browser for Dynamic Workflows (local-jsx, isEnabled:()=>AW()); AW() defaults ON for non-pro/unauthenticated, OFF for pro accounts.",
       "provenance": [
         {
@@ -2583,7 +2583,7 @@
       "status": "removed",
       "first_seen": null,
       "removed_in": "2.1.159",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Removed as a builtin in v2.1.159; migrated to the commit-commands plugin.",
       "provenance": [
         {
@@ -2598,7 +2598,7 @@
       "status": "removed",
       "first_seen": null,
       "removed_in": "2.1.159",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Removed as a builtin in v2.1.159; migrated to the commit-commands plugin.",
       "provenance": [
         {
@@ -2613,7 +2613,7 @@
       "status": "renamed",
       "first_seen": null,
       "removed_in": "2.1.159",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Renamed to /usage-credits; kept as a hidden alias so old scripts keep working.",
       "provenance": [
         {
@@ -2629,7 +2629,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "New name for the rename of /extra-usage (kept as a hidden alias).",
       "provenance": [
         {
@@ -2644,7 +2644,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "New terminal-gated command to set scroll speed (tengu_scroll_speed_set).",
       "provenance": [
         {
@@ -2659,7 +2659,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Break reminders / quiet hours; isEnabled:()=>false, dark-launched.",
       "provenance": [
         {
@@ -2674,7 +2674,7 @@
       "status": "dark-launched",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Not removed (an earlier diff flagged it as removed due to a dynamic-ternary description change); exists dark-launched, surfaced today only via the idle-time \"control this session from your phone\" upsell toast.",
       "provenance": [
         {
@@ -2689,7 +2689,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "NOT removed: reclassified from a `name:\"dream\"` command registration to a built-in routine (clustered with /catch-up, /morning-checkin on a cron), so the diff tool flagged a false \"removal\".",
       "provenance": [
         {
@@ -2704,7 +2704,7 @@
       "status": "live",
       "first_seen": "2.1.169",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Moves the session to a new working directory without breaking the prompt cache.",
       "provenance": [
         {
@@ -2719,7 +2719,7 @@
       "status": "live",
       "first_seen": "2.1.191",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Gains the ability to resume a conversation from before a /clear was run, in addition to its existing checkpoint/undo aliases.",
       "provenance": [
         {
@@ -2734,7 +2734,7 @@
       "status": "live",
       "first_seen": "2.1.181",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Gains a [key=value] argument form letting any setting be set directly from the prompt.",
       "provenance": [
         {
@@ -2749,7 +2749,7 @@
       "status": "removed",
       "first_seen": null,
       "removed_in": "2.1.198",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Removed in the v2.1.160-198 CLI content refresh.",
       "provenance": [
         {
@@ -2764,7 +2764,7 @@
       "status": "removed",
       "first_seen": null,
       "removed_in": "2.1.198",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Removed in the v2.1.160-198 CLI content refresh.",
       "provenance": [
         {
@@ -2779,7 +2779,7 @@
       "status": "removed",
       "first_seen": null,
       "removed_in": "2.1.198",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Removed in the v2.1.160-198 CLI content refresh.",
       "provenance": [
         {
@@ -2794,7 +2794,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Hub for Claude Design (claude.ai/design): create/import/export/sync/login; grants or revokes agent access to Design projects. Dark-launched, absent from the official CHANGELOG.",
       "provenance": [
         {
@@ -2809,7 +2809,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Pushes design-system components to claude.ai/design; isEnabled:pNe (off by default).",
       "provenance": [
         {
@@ -2824,7 +2824,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Authorizes design-system access for /design-sync via an OAuth flow.",
       "provenance": [
         {
@@ -2839,7 +2839,7 @@
       "status": "disabled",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Publishes a plan as a shareable Artifact; hard-disabled via isEnabled:v5e (function always returns false) -- reports \"plan-artifact slot not registered.\"",
       "provenance": [
         {
@@ -2854,7 +2854,7 @@
       "status": "live",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Shows which loaded skills are unused and costing context; isEnabled:()=>true, live despite being absent from the official CHANGELOG.",
       "provenance": [
         {
@@ -2869,7 +2869,7 @@
       "status": "renamed",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Renamed to /pause-memory (kept as an alias, not deleted) in the v2.1.160-198 CLI content refresh.",
       "provenance": [
         {
@@ -2885,7 +2885,7 @@
       "status": "live",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Pauses automemory for the session; aliases include memory-pause and toggle-memory (the rename target of the removed /toggle-memory name).",
       "provenance": [
         {
@@ -2900,7 +2900,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "userInvocable:false; isEnabled only when CLAUDE_CODE_ENTRYPOINT===\"remote_cowork\" -- an internal, non-user-facing command.",
       "provenance": [
         {
@@ -2915,7 +2915,7 @@
       "status": "live",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Requires a workspace context (requires:{workspace:true}); not a GB-flag dark launch, just conditionally available.",
       "provenance": [
         {
@@ -2930,7 +2930,7 @@
       "status": "dark-launched",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "CLI-plugin credential broker master gate -- OFF in live fcache captures 2026-06, 2026-07-02, and 2026-07-11; when off, renderer strips plugin.json `clis` and PKr returns oauth_disabled. Custom-3p deployment mode hardcodes this gate ON via a hardcodedMainGrowthBookFeatures table (uOt), bypassing GrowthBook entirely -- the cli_plugin credential broker (Ch23/L106) is LIVE in custom-3p deployments while still dark on consumer GrowthBook.",
       "provenance": [
         {
@@ -2950,7 +2950,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -2960,7 +2960,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Decides host-loop vs VM-loop execution for Cowork sessions (successor decision fn Pm(), formerly f_()->cPt()->dt(this)); ON (force) in the live fcache (2026-07-11 recapture: ruleId fr_mnqhxsok), so production Cowork runs host-loop -- only requireCoworkFullVmSandbox orgs (or the local forceDisableHostLoop kill switch) get VM-loop. RESUME-STICKY: the decision is consulted only at fresh session start; a resumed session keeps its PERSISTED hostLoopMode rather than re-evaluating, and if org policy flips to requireFullVmSandbox mid-lifetime, resuming a session created host-loop throws a verbatim error (\"This session was created before your organization required the VM sandbox. It cannot be resumed under the current policy. Please start a new session.\") rather than silently switching loops. The CLAUDE_FORCE_HOST_LOOP=1 dev-override escape is now additionally gated on globalThis.isDeveloperApprovedDevUrlOverrideEnabled -- dead on stock installs. Custom-3p deployments hardcode this gate ON via the uOt table, alongside 2307090146 (cli_plugin) and several others, bypassing GrowthBook.",
       "provenance": [
         {
@@ -2979,7 +2979,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -2989,7 +2989,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Whitelists claude-fable-5 (+ the [1m] variant) as selectable in Desktop/Cowork; ON (force). By the 2026-07-02 capture this makes Fable 5 the live production Cowork model.",
       "provenance": [
         {
@@ -3004,7 +3004,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "9d75909785dc344e",
+        "at": "d17cdf8e7f6da102",
         "served_keys": [
           "alwaysLoad",
           "enabled"
@@ -3018,7 +3018,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Routes Cowork sessions through the SDK-based bridge transport (Bfn/Rfn at the 1.18286.0-era baseline; re-verified against 1.19367.0 under fresh minified names Fhi/Thi/Vtr -- same mechanism, symbol names are unstable across builds) instead of the legacy CCR HTTP transport; ON (force), the current production transport path. L119 confirmed call chain: bridge poll->bind->connectSessionTransport(t,r)->gate check, selecting the SDK adapter for exactly the bridge sessions handleSessionWork binds -- not an unrelated homonym of the \"bridge\" concept.",
       "provenance": [
         {
@@ -3034,7 +3034,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -3044,7 +3044,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Master Cowork tuning gate: sessionsBridgePollBlockMs, sessionsBridgePollIntervalMs (L119: previously undocumented key, paired with a live config-change subscription that kicks the sleeping bridge poller when the gate value changes), coworkNativeFilePreview, coworkWebFetchViaApi, coworkWebFetchPrompt, workspaceBashWaitLonger. ON (force); the in-VM agent itself also reads this gate for web_fetch routing.",
       "provenance": [
         {
@@ -3063,7 +3063,7 @@
         "present": true,
         "source": "experiment",
         "on": true,
-        "at": "9d75909785dc344e",
+        "at": "d17cdf8e7f6da102",
         "served_keys": [
           "coworkNativeFilePreview",
           "coworkWebFetchDedup",
@@ -3083,7 +3083,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "{perTask:1, global:3} -- CORRECTED (v2.22.1): caps concurrently-active Cowork scheduled/cron-task sessions (class L9t, logPrefix [ScheduledTasks]/[CCDScheduledTasks]) -- at most 1 live session per scheduled task, at most 3 scheduled-task sessions globally; exceeding either skips the dispatch (recordSkipAndEmit) with no model-visible effect. It is NOT an in-conversation Task-tool sub-agent dispatch cap (originally mislabeled as one) -- the Desktop caps Task-tool fan-out nowhere. ON (force).",
       "provenance": [
         {
@@ -3098,7 +3098,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "9d75909785dc344e",
+        "at": "d17cdf8e7f6da102",
         "served_keys": [
           "global",
           "perTask"
@@ -3112,7 +3112,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "categories:[api_prompt_too_long, process_already_running, api_model_not_found, api_request_too_large] are auto-retried; ON (force). Note api_model_not_found being auto-retried can mask model unavailability.",
       "provenance": [
         {
@@ -3124,7 +3124,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "9d75909785dc344e",
+        "at": "d17cdf8e7f6da102",
         "served_keys": [
           "categories",
           "enabled"
@@ -3138,7 +3138,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Master Cowork-plugin sync gate: startup syncPlugins(), per-session manifest load, enabled-state backfill. ON (force); OFF would show enabled_state_source:\"sparkplug-off\".",
       "provenance": [
         {
@@ -3150,7 +3150,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -3160,7 +3160,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Registers /rc as an alias for /remote-control, adds replay-user-messages to spawn extraArgs, and expands the OAuth scope to user:sessions:claude_code. ON (force).",
       "provenance": [
         {
@@ -3172,7 +3172,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -3182,7 +3182,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Desktop-side artifacts gate: getAllWithDiskStatus(), askClaude() inference, the artifacts tool list. ON (force); distinct from the CLI's own tengu_cobalt_plinth Artifacts flag (the string coworkArtifacts is absent from the CLI bundle).",
       "provenance": [
         {
@@ -3198,7 +3198,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -3208,7 +3208,7 @@
       "status": "dark-launched",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "A named \"Kappa\" skill variant plus project-mounting for non-session-typed clients; OFF (default) for the standard client.",
       "provenance": [
         {
@@ -3223,7 +3223,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -3233,7 +3233,7 @@
       "status": "dark-launched",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "{tasks_tab:{enabled:true, split:1, salt:\"tasks_v1\", insiderForce:\"treatment\"}} -- force-treatment for insiders only, dark-launched to the general population. The same experiment bundle force-treats echo_unified_login.",
       "provenance": [
         {
@@ -3245,7 +3245,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "9d75909785dc344e",
+        "at": "d17cdf8e7f6da102",
         "served_keys": [
           "chat_threads",
           "delegation",
@@ -3290,7 +3290,7 @@
       "status": "dark-launched",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "isEnabled gate for /design-sync and the wider Claude Design feature (claude.ai/design); off by default alongside the CLAUDE_CODE_ENABLE_DESIGN_* env vars.",
       "provenance": [
         {
@@ -3306,7 +3306,7 @@
       "status": "dark-launched",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "The CLI's own master gate for the Artifact tool / claude.ai/code/artifact publishing; default false (Rpa() short-circuits when off). Parallel to, and independent from, Desktop's coworkArtifacts gate (2940196192).",
       "provenance": [
         {
@@ -3322,7 +3322,7 @@
       "status": "live",
       "first_seen": "2.1.116",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Sent when OIDC Federation auth mode is active; the only API beta string added in v2.1.116.",
       "provenance": [
         {
@@ -3337,7 +3337,7 @@
       "status": "live",
       "first_seen": "2.1.118",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Prompt-cache diagnostics beta; sent opt-in for allowlisted accounts, gracefully dropped (and the decision persisted) if the server rejects it.",
       "provenance": [
         {
@@ -3352,7 +3352,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Pre-existing beta token (predates v2.1.159) newly injected by third-party-provider auto mode when CLAUDE_CODE_ENABLE_AUTO_MODE is set.",
       "provenance": [
         {
@@ -3367,7 +3367,7 @@
       "status": "live",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "In the default Betas=[...] array; sent by default (not GB-gated) as of v2.1.198.",
       "provenance": [
         {
@@ -3382,7 +3382,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "GB-gated (sb(\"server_side_fallback\",...)); server side of the L110 fallbackModel chain, letting the server transparently fall back to another model.",
       "provenance": [
         {
@@ -3397,7 +3397,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "GB-gated (sb(\"fallback_credit\",...)); accounts for credit when the server-side-fallback beta substitutes a model.",
       "provenance": [
         {
@@ -3412,7 +3412,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "GB-gated (sb(\"prompt_caching_evict\",...)); enables server-side cache eviction, pairing with the earlier cache-diagnosis beta.",
       "provenance": [
         {
@@ -3427,7 +3427,7 @@
       "status": "live",
       "first_seen": "1.9659.4",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "The first control_request the driver sends, before the user turn; carries systemPrompt, appendSubagentSystemPrompt, hooks, and sdkMcpServers.",
       "provenance": [
         {
@@ -3446,7 +3446,7 @@
       "status": "live",
       "first_seen": "1.9659.4",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Baseline control-request dispatcher subtype for permission prompts; requires --permission-prompt-tool stdio on the driver side or AskUserQuestion is silently auto-dismissed.",
       "provenance": [
         {
@@ -3464,7 +3464,7 @@
       "status": "live",
       "first_seen": "1.9659.4",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Control-request wire shape (2.1.197): {subtype:\"hook_callback\", callback_id, input, tool_use_id?}; input is the shared hook-input object (Ad()). A PreToolUse hook deny bypasses canUseTool and surfaces as an is_error tool_result.",
       "provenance": [
         {
@@ -3483,7 +3483,7 @@
       "status": "live",
       "first_seen": "1.9659.4",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Tunnels JSON-RPC for an SDK-declared MCP server out to the driver; the driver replies with {mcp_response:{jsonrpc, id, result}} -- the driver IS the MCP server.",
       "provenance": [
         {
@@ -3501,7 +3501,7 @@
       "status": "live",
       "first_seen": "1.9659.4",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Host-delegated OAuth token refresh RPC; response.accessToken. Default 30000ms timeout.",
       "provenance": [
         {
@@ -3519,7 +3519,7 @@
       "status": "live",
       "first_seen": "1.9659.4",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Host-delegated generic auth-token refresh RPC (sibling of oauth_token_refresh); response.authToken.",
       "provenance": [
         {
@@ -3537,7 +3537,7 @@
       "status": "live",
       "first_seen": "1.9659.4",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Routes an MCP server's elicitation/create request to onElicitation({serverName, message, mode, url, elicitationId, requestedSchema, ...}); the {action, content} result returns privately to the server, never entering the chat.",
       "provenance": [
         {
@@ -3552,7 +3552,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Host->VM: invoke any subprocess MCP tool by fully-qualified name (mcp__server__tool) through the control channel, bypassing the model turn. Explicitly documented as having no permission check (control channel is trusted).",
       "provenance": [
         {
@@ -3567,7 +3567,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "VM->host: ask the host to render a tool-driven blocking dialog and return the choice; replaces the older setToolJSX/onDone pattern. ~6s auto-cancel; part of the async-park (Uv1) dispatcher set.",
       "provenance": [
         {
@@ -3586,7 +3586,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Host->VM: add a working-directory root at runtime (must be a subdir of cwd); can carry reload_claude_md/reload_plugins/reload_skills sub-flags. Runtime hook behind multi-repo workflows.",
       "provenance": [
         {
@@ -3605,7 +3605,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Host->VM (CCR): stages a host file into the remote container filestore via stageFile(); companion system message files_persisted.",
       "provenance": [
         {
@@ -3624,7 +3624,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Host->VM (CCR): terminates the worker; a reason:\"archived\" end_session is ignored when CLAUDE_CODE_WORKER_EPOCH>1 so a prior lifecycle cannot kill a reattached worker.",
       "provenance": [
         {
@@ -3639,7 +3639,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Host->VM: fetch the remote container's formatted session cost (same text /usage prints) so a thin client shows real cost.",
       "provenance": [
         {
@@ -3654,7 +3654,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Host->VM: returns {version, buildTime} so /version in --remote mode shows both client and remote CLI versions.",
       "provenance": [
         {
@@ -3669,7 +3669,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "VM<->host: LLM-driven session titling: {description, persist?} -> {title}.",
       "provenance": [
         {
@@ -3684,7 +3684,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Host->VM: control-channel entry point for /ultrareview: {args, confirm} -> injects the command plus a session-URL status message, with graceful fallback if blocked.",
       "provenance": [
         {
@@ -3699,7 +3699,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "VM->host: a free-form inline question -> {response, synthetic} (synthetic:true when auto-accepted).",
       "provenance": [
         {
@@ -3714,7 +3714,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "type:\"system\" message: {mcp_server_name, elicitation_id} -- signals a URL-mode elicitation completed. Skipped by the headless output filter.",
       "provenance": [
         {
@@ -3729,7 +3729,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "type:\"system\" message: {files:[{filename,file_id}], failed, processed_at} -- companion to the stage_file request.",
       "provenance": [
         {
@@ -3744,7 +3744,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "type:\"system\" message: {content} -- slash-command output (e.g. /voice, /usage) piped through the SDK stream.",
       "provenance": [
         {
@@ -3759,7 +3759,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "type:\"system\" message: {ttft_ms, otps, ...} -- per-turn latency metrics.",
       "provenance": [
         {
@@ -3774,7 +3774,7 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "type:\"system\" message: {content} -- rendered thinking text.",
       "provenance": [
         {
@@ -3789,7 +3789,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Rolls files back to a prior user-message checkpoint: {subtype:\"rewind_files\", user_message_id, dry_run}; dry_run previews without writing. Gated by CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING.",
       "provenance": [
         {
@@ -3804,7 +3804,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "System message recording a checkpoint: {subtype:\"file_snapshot\", content:\"File snapshot\", level:\"info\", isMeta:true}. Same gating as rewind_files.",
       "provenance": [
         {
@@ -3819,7 +3819,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Pairs with CLAUDE_CODE_ENABLE_REMOTE_RECAP; extends the L101 proactive-away-summary feature to the remote/Cowork surface.",
       "provenance": [
         {
@@ -3834,7 +3834,7 @@
       "status": "live",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "type:\"system\" message the agent emits when a Desktop-scheduled (cron or watcher) task fires; the transcript renderer prints it as a dim status line. Scheduling/watching lives host-side; the agent only receives and surfaces the fire event.",
       "provenance": [
         {
@@ -3849,7 +3849,7 @@
       "status": "live",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Consolidated entry for the task_started/task_progress/task_updated/task_notification/background_tasks_changed/thinking_tokens control-protocol family, plus the CLAUDE_CODE_ENABLE_TASKS-gated Tasks-tool-specific siblings background_tasks/task_summary/stop_task. task_started ITSELF is emitted unconditionally for any task-shaped dispatch -- confirmed for regular Task/Agent sub-agent calls, not just the Tasks tool: {type:\"system\",subtype:\"task_started\",task_id,tool_use_id,description,subagent_type:<RESOLVED agent type, includes the general-purpose fallback>,task_type,workflow_name,prompt}. A stream consumer gets exact resolved sub-agent types (including the type-less-dispatch fallback to built-in general-purpose) without parsing dispatch tool_use inputs. Status promoted to live on this basis; the Tasks-tool-specific siblings (background_tasks, task_summary, stop_task) remain tied to CLAUDE_CODE_ENABLE_TASKS, now confirmed unconditional in the Cowork spawn env, and the tasks_tab insider experiment (gate 364911507, force-ON).",
       "provenance": [
         {
@@ -3868,7 +3868,7 @@
       "status": "live",
       "first_seen": "2.1.205",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "type:\"system\" subtype emitted for automatic PRE-ASK denials only: {tool_name,tool_use_id,agent_id,decision_reason_type,decision_reason,message}. agent_id is schema-documented as the sub-agent discriminator (\"Subagent ID when the denied tool call originated inside a subagent. Mirrors can_use_tool for host-side routing.\"). Scope is gated by IQo(e){return e.decideLocation===\"pre-ask\"} -- fires ONLY for automatic rule/mode/classifier denials evaluated agent-locally before the host is ever asked. Does NOT fire for interactive can_use_tool asks the host answers deny, and does NOT fire for PreToolUse-hook denials (those surface as an is_error tool_result instead). Carries no tool_input/path field. Consequence for Cowork: the host-loop path-gate (PreToolUse hook + canUseTool wrapper) never produces this event -- a corroborating source for pre-ask denials only, never the sole source of path-denial observability.",
       "provenance": [
         {
@@ -3883,7 +3883,7 @@
       "status": "live",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "The agent surfaces memory recall/save events to the host -- the UI-facing side of the L90 memory-write Approve/Reject survey.",
       "provenance": [
         {
@@ -3898,7 +3898,7 @@
       "status": "live",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Consolidated entry for model_fallback, model_consent_fallback, model_refusal_fallback, model_refusal_no_fallback -- pairs with the L110 fallbackModel setting and the L113 server-side-fallback/fallback-credit betas; CLAUDE_CODE_DISABLE_REFUSAL_FALLBACK opts out of the refusal branch.",
       "provenance": [
         {
@@ -3916,7 +3916,7 @@
       "status": "live",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "type:\"system\" subtype string for micro-compaction, sibling of compact_boundary — but ASYMMETRIC: in the in-VM ELF 2.1.197 (identical host CLI 2.1.201) compact_boundary has 8 subtype:\"compact_boundary\" stream-emit producer sites, while microcompact_boundary has 0 — its only two occurrences are a string-table constant and one Ink TUI renderer case that renders nothing (if(subtype===\"microcompact_boundary\")return null). So micro-compaction is render-only and suppressed, NOT serialized into stream-json. A stream/headless compaction_occurred signal should key on compact_boundary; keying on microcompact_boundary catches nothing on this evidence.",
       "provenance": [
         {
@@ -3934,7 +3934,7 @@
       "status": "live",
       "first_seen": "1.17377.2",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "New Desktop IPC interface (24 validated methods) organizing projects/folders/links/remote-sessions into a Space, with per-space auto-memory (getAutoMemoryDir/readSpaceMemoryIndex) and auto-organization (classifySessions/setAutoDescription/summarizeSpace). Did not exist at the Ch24/L107 baseline. UI reachability (coworkTabEnabled) is a separate server-side gate from the interface's presence.",
       "provenance": [
         {
@@ -3949,7 +3949,7 @@
       "status": "live",
       "first_seen": "1.17377.2",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "New Desktop IPC interface (9 validated methods) driving cron and watched tasks that fire agent sessions on a timer/trigger; tasks carry Chrome permissions. Governed by gates scheduledTasksWakeEnabled/scheduledTaskStaleReapEnabled/coworkScheduledTasksEnabled/ccdScheduledTasksEnabled.",
       "provenance": [
         {
@@ -3964,7 +3964,7 @@
       "status": "dark-launched",
       "first_seen": "1.11847.5",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Preload IPC namespace (mainView.js) exposing setPluginEnvVars/getPluginCliStatus/getPluginOAuthStatus/setPluginOAuthClient/startPluginOAuthFlow/revokePluginOAuth/getPluginShimOps/getPluginCliBatch for the clis.*.env credential broker; functionally dark, since the runtime chokepoint PKr returns oauth_disabled while gate 2307090146 (cli_plugin) is off.",
       "provenance": [
         {
@@ -3979,7 +3979,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Runs a deterministic multi-agent JS script with journal-resume and a 1000-agent hard cap; gated by AW(), which defaults ON for non-pro/unauthenticated accounts and OFF for pro.",
       "provenance": [
         {
@@ -3994,7 +3994,7 @@
       "status": "removed",
       "first_seen": null,
       "removed_in": "2.1.178",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Coordinator-mode worker-team management tool; removed in v2.1.178 -- every session now has one implicit team.",
       "provenance": [
         {
@@ -4012,7 +4012,7 @@
       "status": "removed",
       "first_seen": null,
       "removed_in": "2.1.178",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Coordinator-mode worker-team management tool; removed alongside TeamCreate in v2.1.178.",
       "provenance": [
         {
@@ -4030,7 +4030,7 @@
       "status": "renamed",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Internal, non-user-invokable \"send a visible message to the user\" tool; renamed to SendUserMessage back in v2.1.138 (predates this chapter's v2.1.159 scope) with Brief kept as an alias. v2.1.159 adds the PEWTER_OWL gate layer on top, not a further rename.",
       "provenance": [
         {
@@ -4046,7 +4046,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Part of the deferred Tasks tool family (with TaskList/TaskGet/TaskUpdate/TaskStop/TaskOutput); gated by CLAUDE_CODE_ENABLE_TASKS and the force-ON tasks_tab insider experiment (gate 364911507).",
       "provenance": [
         {
@@ -4061,7 +4061,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Part of the deferred Tasks tool family; see tool.TaskCreate for gating.",
       "provenance": [
         {
@@ -4076,7 +4076,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Part of the deferred Tasks tool family; see tool.TaskCreate for gating.",
       "provenance": [
         {
@@ -4091,7 +4091,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Part of the deferred Tasks tool family; see tool.TaskCreate for gating.",
       "provenance": [
         {
@@ -4106,7 +4106,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Part of the deferred Tasks tool family; see tool.TaskCreate for gating.",
       "provenance": [
         {
@@ -4121,7 +4121,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.197",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Part of the deferred Tasks tool family; see tool.TaskCreate for gating.",
       "provenance": [
         {
@@ -4136,7 +4136,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Backs /design-sync (push design-system components to claude.ai/design); gated off by default (pNe()).",
       "provenance": [
         {
@@ -4151,7 +4151,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.198",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Publishes a shareable web page to https://claude.ai/code/artifact/<slug>; master gate is the GrowthBook flag tengu_cobalt_plinth (default false). Excludes local-agent/claude-coworker* entrypoints even when on.",
       "provenance": [
         {
@@ -4166,7 +4166,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "The 30th entry in the master hook-event array; fires as an assistant message streams (and once when complete) and can rewrite the on-screen delta via hookSpecificOutput.displayContent WITHOUT changing the stored transcript. Config-gated only (no Statsig flag) -- disabled unless a hook is configured. Earlier chapter counts of \"27\"/\"19\" were diff-tool undercounts, not real historical totals.",
       "provenance": [
         {
@@ -4181,7 +4181,7 @@
       "status": "dark-launched",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Gates a browser-preview-related feature; guard requires this gate AND sessionType===\"ccd\" AND not-SSH. Found riding in the same hardcodedMainGrowthBookFeatures force-on table as cli_plugin (2307090146), scoped to the 3p/CCD deployment class only.",
       "provenance": [
         {
@@ -4193,7 +4193,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -4203,7 +4203,7 @@
       "status": "dark-launched",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Gates canSaveSkill. Same force-on table as cli_plugin (2307090146), 3p/CCD-class only.",
       "provenance": [
         {
@@ -4215,7 +4215,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -4225,7 +4225,7 @@
       "status": "dark-launched",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Gates whether CLAUDE_COWORK_MEMORY_GUIDELINES (lesson 90) is constructed at spawn time at all. Same force-on table as cli_plugin (2307090146), 3p/CCD-class only.",
       "provenance": [
         {
@@ -4237,7 +4237,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -4247,7 +4247,7 @@
       "status": "live",
       "first_seen": "1.18286.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Set from Desktop settings (askUserQuestion.previewFormat) at Cowork session spawn; the settings->env wiring behind lesson 107's AskUserQuestion reachability documentation.",
       "provenance": [
         {
@@ -4262,7 +4262,7 @@
       "status": "live",
       "first_seen": "1.18286.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Set unconditionally to \"true\" in the main Cowork spawn env. Not previously named as its own enable-flag; lesson 107 only documented --permission-prompt-tool stdio as the mechanism keeping AskUserQuestion from being silently auto-dismissed.",
       "provenance": [
         {
@@ -4277,7 +4277,7 @@
       "status": "live",
       "first_seen": "1.18286.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Fallback set to \"1\" in the Cowork spawn env when no memory path is resolvable; sibling of CLAUDE_COWORK_MEMORY_PATH_OVERRIDE.",
       "provenance": [
         {
@@ -4292,7 +4292,7 @@
       "status": "live",
       "first_seen": "1.18286.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "The concrete env-var wiring between lesson 109's CoworkSpaces.getAutoMemoryDir (Space-scoped auto-memory directory) and the agent's Cowork spawn env.",
       "provenance": [
         {
@@ -4311,7 +4311,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Two distinct meanings under one name. CLI-side (lesson 38): the AGENT_TRIGGERS/tengu_kairos_cron kill switch. Desktop-side (lesson 114): a session-scoped `disableCron` setting set at Cowork session spawn (`A.disableCron?\"1\":\"\"`), forced true in background/ephemeral spawn helpers -- plausibly what keeps lesson 109's Scheduled Tasks from firing inside ephemeral/non-interactive Cowork spawns. Do not conflate the two.",
       "provenance": [
         {
@@ -4330,7 +4330,7 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Lesson 100 documented this only as the old, renamed-away name for CLAUDE_CODE_DISABLE_AGENT_VIEW (Fleet view -> agent view rename). Still live, set to \"1\" alongside CLAUDE_CODE_DISABLE_BACKGROUND_TASKS -- but L115 corrects L114's siting: in asar 1.18286.0 each var appears exactly once, in the MAIN Cowork local-agent spawn env builder (the block that sets CLAUDE_CODE_IS_COWORK=1), not a narrower Tasks-tool-child spawn path. Fleet/agent-view and backgrounding are suppressed for every Cowork session.",
       "provenance": [
         {
@@ -4354,7 +4354,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Promoted from speculative to confirmed. Lesson 46 catalogued this only as an unreleased precedence-order entry with no evidence anything set it. Lesson 114 confirms it is genuinely wired in the Desktop Cowork spawn path, reading a real defaultSubagentModel settings field. Full mechanism (L124): Desktop injects it CONDITIONALLY -- only when server-side YukonSilverConfig.defaultSubagentModel (IPC setYukonSilverConfig) is not the \"inherit\" sentinel; when \"inherit\", the env var is omitted entirely (by default a Cowork Task sub-agent runs the same model as the main loop). Agent-side resolution precedence: this env var (unless \"inherit\") -> the Agent-tool dispatch's own model param -> the sub-agent's frontmatter model: -> inherit the main-loop model (default). An unrecognized env value fails an availableModels-allowlist check and WARNS + falls back to inherit -- it does NOT fall through to the tool-param/frontmatter steps (telemetry subagent_model_resolve/override_dropped). Fork dispatches force-inherit: the Agent-tool never forwards its own model param on a fork call (model:B?void 0:m), so a fork always resolves via frontmatter/inherit regardless of this env var.",
       "provenance": [
         {
@@ -4378,7 +4378,7 @@
       "status": "live",
       "first_seen": "1.18286.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "A 5th scheduled-tasks tool alongside lesson 109's CREATE/UPDATE/START_WATCHING/STOP_WATCHING. List-only, lower-privilege; confirmed NOT part of the 8-tool Desktop forced-ask matcher.",
       "provenance": [
         {
@@ -4393,7 +4393,7 @@
       "status": "live",
       "first_seen": "1.18286.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "A cowork-namespaced MCP tool found in the same string-table region as save_skill/launch_code_session; not in the 8-tool forced-ask matcher.",
       "provenance": [
         {
@@ -4408,7 +4408,7 @@
       "status": "live",
       "first_seen": "1.18286.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "A cowork-namespaced MCP tool found alongside propose_skills/present_files; not in the 8-tool forced-ask matcher.",
       "provenance": [
         {
@@ -4423,7 +4423,7 @@
       "status": "live",
       "first_seen": "1.18286.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Promotes a scratchpad file to the outputs/artifacts area (log line: \"[present_files] Promoted scratchpad file...\"); not in the 8-tool forced-ask matcher.",
       "provenance": [
         {
@@ -4438,7 +4438,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Messaging tool that doubles as the subagent RESUME path: sending to a completed/stopped background agent's agentId (format a...-...) calls dfe/resumeAgentBackground, which reloads the disk transcript and continues the agent with the new prompt (tool result carries resumedAgentId; agents stopped by the user are refused). Default-enabled in the plain CLI (no isEnabled of its own); the il() agent-teams gate only shapes its structured-message schema. In Cowork it is ABSENT from the Desktop spawn's explicit tools:/allowedTools: lists, making resume unreachable there.",
       "provenance": [
         {
@@ -4453,7 +4453,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Subagent dispatch. Input schema (THm/SHm/fLo): description, prompt, subagent_type, model, run_in_background, name, team_name (deprecated), mode, isolation, cwd -- NO resume parameter; every call spawns a fresh agent (tengu_agent_tool_selected is_resume:false). run_in_background is omitted from the schema when CLAUDE_CODE_DISABLE_BACKGROUND_TASKS is set or the fork experiment (PX()) is active; cwd is always omitted model-facing (Task input schema .omit({cwd:!0})). Continuation lives elsewhere: SendMessage resume (tool.SendMessage), subagent_type 'fork' (inherits full conversation context), Workflow resumeFromRunId. Type-less dispatch (subagent_type omitted) falls back to the built-in general-purpose type with tools:[\"*\"] -- the FULL wildcard tool surface, including mcp__workspace__bash in Cowork host-loop; production audit-log evidence shows this fallback firing routinely (113 of 509 real dispatches across 39 sessions on one machine carried no subagent_type at all). Depth cap 5 (NMr host / BLr in-VM), enforced by hiding the Agent/Task tool itself from a sub-agent's own composed toolset once agentDepth>=5; no Task-specific fan-out/concurrency cap exists anywhere in either binary -- the only bound on parallel sub-agent starts is the generic env.CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY scheduler window.",
       "provenance": [
         {
@@ -4472,7 +4472,7 @@
       "status": "live",
       "first_seen": "2.1.205",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Generic per-turn tool-scheduler concurrency window: CQg(){let e=parseInt(process.env.CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY||\"\",10);return e>0?e:10} -- default 10, keyed on each tool's isConcurrencySafe; the scheduler queues excess calls rather than refusing them. This is the ONLY thing bounding parallel sub-agent starts -- no Task-specific fan-out cap exists anywhere in the binary (the 25-agent/1.5M-token workflowSize figure is prompt guidance/telemetry only, not enforcement).",
       "provenance": [
         {
@@ -4487,7 +4487,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Set to \"1\" (with CLAUDE_CODE_SESSION_ID and CLAUDE_CODE_CHILD_SESSION, +AI_AGENT from agent contexts) on every Bash-tool subprocess by the shell-env injector (bmt) and the shell-snapshot spawner -- the deliberate contract marker a script uses to detect it is running under the Claude Code CLI. NOT visible in the Cowork host-loop VM shell (mcp__workspace__bash, sealed env); there the /sessions/<id> path signature is the discriminator. See L116 for the full detection recipe.",
       "provenance": [
         {
@@ -4502,7 +4502,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "The CLI's own surface classifier, normalized at boot (cvs: local_agent->local-agent, mcp serve->mcp, CLAUDE_CODE_ACTION->claude-code-github-action, default cli/sdk-cli). Recognized values as of 2.1.198 (c2u): cli, mcp, sdk-cli, sdk-ts, sdk-py, bench, claude-vscode, claude-code-github-action, local-agent, local_agent, claude-desktop, remote, remote_baku, remote_cowork, remote_trigger, remote_desktop, remote_mobile, claude_in_slack, claude-in-slack, claude-in-teams, claude-desktop-3p, claude-security, ssh-remote. Desktop family subset u2u = {claude-desktop, claude-desktop-3p, local-agent}; Desktop Cowork spawns with local-agent, cloud Cowork workers with remote_cowork. Treat unknown values as 'Claude Code, unspecified surface' -- the set grows release to release.",
       "provenance": [
         {
@@ -4520,7 +4520,7 @@
       "status": "dark-launched",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Governs whether the system prompt tells the agent about the `.host-home` mount name and its path-translation semantics. `.host-home` is not a real bind mount -- Ch31/L117's rootfs mount-unit inventory found no corresponding systemd unit -- it's a synthetic index resolved by ece()/uCe() that lets the agent reference absolute host paths (e.g. `/sessions/<id>/mnt/.host-home/<sub>` <-> a real host path) without the host home directory ever being shared. Not present in the pinned fcache snapshot for the standard client.",
       "provenance": [
         {
@@ -4536,7 +4536,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -4546,7 +4546,7 @@
       "status": "dark-launched",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Gates ONLY whether server-delivered (\"starling\", via the renderer's spSectionPrompts record) section text may override the hardcoded system-prompt sections -- including subagent_env_hl/subagent_env_vm (the Cowork sub-agent environment-append text, see env.CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT). resolveSection/krt: if(!$t(\"124685897\"))return r (hardcoded fallback). Does NOT gate the append feature itself, which is env-var-gated independently. OFF (defaultValue) in the 2026-07-11 fcache -- the hardcoded texts ship.",
       "provenance": [
         {
@@ -4558,7 +4558,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -4568,7 +4568,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "A GrowthBook string-config gate (not boolean): IWt() returns dE(\"2860753854\",\"\") if non-empty, else a hardcoded default block (\"## Sensitive personal information...\" PII-handling guidance) used as the value of CLAUDE_CODE_MEMORY_EXTRA_GUIDELINES's sibling env, CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES. ON (force) in this installation's fcache, but the practical effect is identical to the hardcoded default (inert unless Anthropic pushes a remote override).",
       "provenance": [
         {
@@ -4580,7 +4580,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -4590,7 +4590,7 @@
       "status": "dark-launched",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Controls whether the Desktop injects MCP_CONNECTION_NONBLOCKING:\"0\" and MCP_CONNECT_TIMEOUT_MS:\"10000\" into the Cowork spawn env, and (separately, same gate) whether the Desktop pre-builds local MCP servers for the session. OFF (defaultValue) at the 2026-07-11 fcache recapture -- the injected values are NOT currently applied in production. The \"0\"/\"10000\" figures themselves are unchanged from the v2.23.0 capture; an earlier draft's \"polarity change vs v2.23.0\" claim was wrong and is withdrawn.",
       "provenance": [
         {
@@ -4606,7 +4606,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -4616,7 +4616,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Controls CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES in the Cowork spawn env -- \"true\" when on, \"\" when off (the key is always present, never omitted).",
       "provenance": [
         {
@@ -4628,7 +4628,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -4638,7 +4638,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Controls CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING:\"1\" in the Cowork spawn env. ON (force) in this installation's fcache.",
       "provenance": [
         {
@@ -4650,7 +4650,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -4660,7 +4660,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Controls whether CLAUDE_CODE_OAUTH_SCOPES (a host-derived OAuth scope string) is injected into the Cowork spawn env; also separately gates a system-prompt build-cache field (builtSystemPrompt) check on the same code path.",
       "provenance": [
         {
@@ -4672,7 +4672,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -4682,7 +4682,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Controls CLAUDE_CODE_SKIP_PRECOMPACT_LOAD:\"1\" in the Cowork spawn env.",
       "provenance": [
         {
@@ -4694,7 +4694,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -4704,7 +4704,7 @@
       "status": "dark-launched",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Controls ENABLE_TOOL_SEARCH:\"auto\" in the Cowork spawn env. OFF (dark, absent from a standard fcache) -- pinned in the emulator project's DARK_GATES allowlist so an absent-to-present flip surfaces as a visible diff. CONFIRMED (2026-07-11 recapture): still absent from the live fcache, AND absent from the agent binary entirely -- this gate does not exist agent-side. ToolSearch enablement is env/provider-driven (see env.ENABLE_TOOL_SEARCH), not gate-driven; the Desktop's conditional ...isFeatureEnabled(\"1129419822\")&&{ENABLE_TOOL_SEARCH:\"auto\"} injection is structurally dead today -- no rule to turn it on exists.",
       "provenance": [
         {
@@ -4720,7 +4720,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -4730,7 +4730,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Cowork spawn-env var, set to \"0\" when gate 434204418 is on; pairs with MCP_CONNECT_TIMEOUT_MS.",
       "provenance": [
         {
@@ -4745,7 +4745,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Cowork spawn-env var, set to \"10000\" when gate 434204418 is on; pairs with MCP_CONNECTION_NONBLOCKING.",
       "provenance": [
         {
@@ -4760,7 +4760,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Cowork spawn-env var gated by 66187241 -- \"true\" when on, \"\" when off.",
       "provenance": [
         {
@@ -4775,7 +4775,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Cowork spawn-env var gated by 714014285 -- \"1\" when on (force-ON in this installation's fcache).",
       "provenance": [
         {
@@ -4790,7 +4790,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Cowork spawn-env var gated by 1936081873, set to a host-derived OAuth scope string when on.",
       "provenance": [
         {
@@ -4805,7 +4805,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Cowork spawn-env var gated by 4153934152 -- \"1\" when on.",
       "provenance": [
         {
@@ -4820,7 +4820,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Full agent-side semantics (L124), correcting/extending the L108 'Desktop injects auto via a dark gate' framing: unset -> mode \"tst\" (ON for first-party -- MORE aggressive than \"auto\"); \"auto\" or \"auto:N\" -> mode \"tst-auto\", tool search deferred until deferred-tool token mass crosses a context-proportional threshold (default N=10, i.e. 10% of context: wxd = Math.floor(contextTokens * 10/100), char-count fallback threshold x2.5); any other falsy-ish value -> mode \"standard\" = tool search DISABLED (a naming trap -- \"standard\" sounds like a default, not off). Also force-disabled to \"standard\" by CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS or a HIPAA workspace (F_t()). Model support additionally gated by tme minus tengu_tool_search_unsupported_models. The Desktop's own conditional injection of ENABLE_TOOL_SEARCH:\"auto\" via gate 1129419822 (L108) is confirmed DEAD: the gate is absent from both the live fcache and the agent binary -- ToolSearch enablement in Cowork today is purely the agent's own default (\"tst\", ON), not gate-driven. Status promoted to live to reflect that the var (and ToolSearch itself) functions by default without needing the gate.",
       "provenance": [
         {
@@ -4839,7 +4839,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Template token + injected env var resolving to the plugin's own --plugin-dir (agent sets CLAUDE_PLUGIN_ROOT: t.path). Under Cowork the Desktop picks the dir per mode: Ei = isHostLoopModeEnabled ? qX(installPath) : sdkPath. Host-loop (production) => host-side claude-hostloop-plugins/<hash> staging path, accepted by host file tools (Read/Edit/Glob/Grep) but useless to in-VM bash (mcp__workspace__bash), which must use the VM mount /sessions/<id>/mnt/.local-plugins|.remote-plugins/... instead. VM-loop (requireCoworkFullVmSandbox orgs, whole agent in-VM) => sdkPath = that VM mount, so bash ${CLAUDE_PLUGIN_ROOT}/x.sh works. Decisive: claude-hostloop-plugins is absent from both agent binaries (host CLI 2.1.201, in-VM ELF 2.1.197), present only in app.asar, so L89's 'host-side EVERYWHERE' is host-loop-only. Host-loop qX mechanics: space-triggered (returns the raw install path unless it contains a space) and deterministic (sha256(installPath).slice(0,16), stable across invocations/sessions/reboots). Third minor site: injected into a plugin-owned MCP server's headersHelper exec env. Host-loop mechanics live-confirmed 2026-07-07 (exact sha256(installPath)[:16] match + cross-session stability via docs/internal/cowork-pluginroot-probe); VM-loop resolution static-derived from the branch.",
       "provenance": [
         {
@@ -4854,7 +4854,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "anthropic-beta header sent with claude.ai cloud-session-creation requests (teleportToCloud's POST /v1/sessions, and the bridge-session ingress-token exchange); present byte-similarly in Desktop 1.18286.2 and 1.19367.0, so not new to either build -- confirmed used at two independent POST call sites. Paired with anthropic-client-feature: ccr and x-organization-uuid.",
       "provenance": [
         {
@@ -4869,7 +4869,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "95 methods total, ZERO diff between Desktop 1.18286.2 and 1.19367.0 (direct sorted-set comparison). This entry catalogs specifically its bridge-session-worker subset, confirmed via real ipcRenderer channel-string evidence: consent/scope (getBridgeConsent, getSessionsBridgeEnabled, addTrustedFolder, grantRemoteSessionFolders, browseAndGrantRemoteSessionFolder, grantRemoteSessionFolder, clearRemoteSessionFolderGrants), permission gating (onBridgePermissionPreflight event + respondBridgePermissionPreflight invoke -- same shape as local onToolPermissionRequest/respondToToolPermission but remote-initiated), and session control (kickBridgePoll, abandonBridgeEnvironment). See ipc.LocalSessions_cloudTeleport for the sibling findLocalSessionIdForBridgeId method, which lives on LocalSessions instead.",
       "provenance": [
         {
@@ -4884,7 +4884,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Scoped subset of the pre-existing LocalSessions interface: teleportToCloud(sessionId, environmentId) re-hosts a local session to the cloud via checkReadiness (remote-session rejection -- generalized in 1.19367.0 from an sshConfig-only check to a broader remoteTarget check, the one genuine NEW-vs-OLD code delta found in this investigation -- plus OAuth-token presence and clean-working-tree checks) -> pushBranch (progress pushing_branch) -> stop local session -> generateTranscriptSummary (progress generating_summary) -> POST ${claudeAiUrl}/v1/sessions (progress creating_session; beta ccr-byoc-2025-07-29) -> returns {sessionId, title, url, summary} where url is an ABSOLUTE https://claude.ai/code/<id>. getTeleportReadiness runs the same three gated checks standalone. findLocalSessionIdForBridgeId(e) resolves via r.findSessionIdByBridgeSessionId(e)??null. childKind discriminator (\"cloud\"|\"local\") is validated only as a string client-side, not as an enum.",
       "provenance": [
         {
@@ -4899,7 +4899,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "setEffort/setExtendedThinking (also on LocalAgentModeSessions)/getEffort/getDefaultEffort/setFastMode. Spawn-time resolution is settings-file-driven, NOT CLAUDE_CODE_EFFORT_LEVEL-backed (corrects L114): effort = qgi(effortOverride, A1e(model)=settings.effortByModel[model], E2t()=settings.effort||\"medium\"); extended thinking = zgi(enabled, override, killSwitch) yielding maxThinkingTokens strictly 31999 or 0 (NX=31999), never an arbitrary budget. Four per-model effort classes: literal picker models (s1r map), no-picker models (still emit --effort medium), fable/mythos regex-default class (o1r/i1r, disallowThinkingDisabled:true), unknown models (no config). Delivered exclusively as CLI flags (--effort <level>, --max-thinking-tokens <N> / --thinking disabled); CLAUDE_EFFORT and MAX_THINKING_TOKENS are no-ops as env vars at spawn. Live-session setEffort calls query.applyFlagSettings({effortLevel}); live-session setExtendedThinking calls query.setMaxThinkingTokens(enabled?31999:0) -- first concrete payload shapes for the apply_flag_settings / set_max_thinking_tokens control-protocol subtypes.",
       "provenance": [
         {
@@ -4917,7 +4917,7 @@
       "status": "dark-launched",
       "first_seen": "1.22209.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Drives iOS Simulator (attach/launch/screenshot/tap/swipe/touch_path/text/button/open_url/detach) after an xcodebuild install. Structurally CCD-session-only (isEnabled requires sessionType===\"ccd\", never \"cowork\"/\"cowork-remote\") plus per-platform gate 3577536076 (code default false) plus org policy disableMobileSimulatorTools plus a user app preference -- cannot reach any Cowork agent's tool list, VM-sandboxed or not. No live fcache decode performed this pass; \"dark-launched\" reflects the code-level default and the session-type structural exclusion, not a fresh gate read.",
       "provenance": [
         {
@@ -4932,7 +4932,7 @@
       "status": "dark-launched",
       "first_seen": "1.22209.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Drives an Android emulator (same action-enum shape as the iOS tool, screenshot-pixel coordinates, launch requires bundle_id, open_url via `am start`). Same structural CCD-session-only exclusion as claude_code_ios_simulator, per-platform gate 1403324732 (code default false). No live fcache decode performed this pass.",
       "provenance": [
         {
@@ -4947,7 +4947,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.215",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Native agent skill-discovery tool (CamelCase), compiled into the CLI binary; gated by vLt/Vne (CLAUDE_CODE_REMOTE necessary at 2.1.215, sufficient-not-necessary at 2.1.217). NEVER rendered in real Cowork init.tools across 2.1.165-2.1.209 — the model uses the SDK-MCP mcp__skills__* server instead.",
       "provenance": [
         {
@@ -4962,7 +4962,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.215",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Native agent skill-suggestion tool; shouldDefer=!pdd() and prompt body both keyed on tengu_saddle_lantern (proactive when on). Same vLt gate as ListSkills; not rendered in real Cowork.",
       "provenance": [
         {
@@ -4977,7 +4977,7 @@
       "status": "live",
       "first_seen": "1.22209.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Desktop SDK-MCP skill-listing tool delivered over the control protocol (sdkMcpServers/mcp_message). CONFIRMED present in real Cowork init.tools across 10+ sessions (2.1.165-2.1.209) — this, not native ListSkills, is what the model sees.",
       "provenance": [
         {
@@ -4992,7 +4992,7 @@
       "status": "live",
       "first_seen": "1.22209.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Desktop SDK-MCP skill-suggestion tool; advisory/zero-side-effect (searchAddableSkills, .slice(0,15), mapped to {name,description,skill_id,is_user_created}). THREE states: absent (245679952 off) / base (live default: {keywords,context_label}, required:[], NO trigger) / proactive (1598976391 on: +trigger). Presence is GATE-driven, not version-keyed. Confirmed in real Cowork init.tools.",
       "provenance": [
         {
@@ -5007,7 +5007,7 @@
       "status": "live",
       "first_seen": "2.1.216",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "type:system stream subtype; emitted by izr() when a gh-pr-create github URL is observed in Bash output. SDK-native replacement for gh-pr-create regex scraping. Emit floor 2.1.216; Desktop consumption floored at 2.1.217 (cliSupportsVcsSdkEvents).",
       "provenance": [
         {
@@ -5022,7 +5022,7 @@
       "status": "live",
       "first_seen": "2.1.216",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "type:system stream subtype; emitted by hlo() per observed commit/push/merge/rebase, kind strict-enum agent-side (host consumer defaults 'unknown'). Git-operation-driven, not per-run; ungated agent-side.",
       "provenance": [
         {
@@ -5037,7 +5037,7 @@
       "status": "live",
       "first_seen": "1.22209.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "suggestSkillsEnabled — gates whether the Desktop SDK-MCP 'skills' server exposes suggest_skills. OFF => Zo() strips the tool AND rewrites list_skills's description; list_skills still renders. Live on/force (ruleId fr_movyeduu, fcache 2026-07-24).",
       "provenance": [
         {
@@ -5049,7 +5049,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5059,7 +5059,7 @@
       "status": "dark-launched",
       "first_seen": "1.24012.1",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "proactiveSkillSuggestEnabled — only evaluated when 245679952 passed (conjunction: pt && isFeatureEnabled). ON => ti() swaps suggest_skills's description to `ei` and injects trigger:Lr into properties (required stays []). Live off/defaultValue (fcache 2026-07-24), so proactive mode is inert. Stickiness is keyed to the built-system-prompt cache via ft(): a mid-session MODEL SWITCH re-reads both gates, and the sticky-branch fallback is `?? false`, not the gate value.",
       "provenance": [
         {
@@ -5071,7 +5071,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5081,7 +5081,7 @@
       "status": "dark-launched",
       "first_seen": "1.24012.1",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "NEW. Would enable MCP-contributed skills (getMcpSkillSources / io.modelcontextprotocol/skills extension). Dead code today: getMcpSkillSources has one occurrence (definition), zero callers; not present in the pinned fcache snapshot. Tripwire: occurrence count > 1.",
       "provenance": [
         {
@@ -5093,7 +5093,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5103,22 +5103,26 @@
       "status": "dark-launched",
       "first_seen": "1.24012.1",
       "removed_in": null,
-      "as_of": "2.1.217",
-      "summary": "NEW. Desktop-side consumption gate for the VCS SDK events; paired with cliSupportsVcsSdkEvents version floor isPinnedCliAtLeast('2.1.217'). Absent from CLI bundle (agent emit is ungated).",
+      "as_of": "2.1.221",
+      "summary": "NEW. Desktop-side consumption gate for the VCS SDK events; paired with cliSupportsVcsSdkEvents version floor isPinnedCliAtLeast('2.1.217'). Absent from CLI bundle (agent emit is ungated). STATE CHANGE at fcache d17cdf8e7f6da102 (2026-08-05): the key is now ABSENT from the snapshot, where it was previously served with source=defaultValue/on=false. Per L141 axis 2, absent does NOT mean off — an unserved key runs on its code default, which was not read for this gate.",
       "provenance": [
         {
           "lesson": 130
         },
         {
           "lesson": 131
+        },
+        {
+          "lesson": 141,
+          "note": "served(defaultValue,off) -> absent between fcache 9d75909785dc344e and d17cdf8e7f6da102"
         }
       ],
       "namespace": "desktop_fcache",
       "observed": {
-        "present": true,
-        "source": "defaultValue",
-        "on": false,
-        "at": "9d75909785dc344e"
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5128,7 +5132,7 @@
       "status": "dark-launched",
       "first_seen": "1.24012.1",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "NEW. Swaps SDK OAuth refresh from a refresher-object to clearTokenCache-then-resolveSdkOauthToken. Live-lane auth only.",
       "provenance": [
         {
@@ -5140,7 +5144,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5150,7 +5154,7 @@
       "status": "dark-launched",
       "first_seen": "1.24012.1",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "NEW. CCD counterpart of 1549258603: expireForConfig(getCcdOauthConfig)-then-readCcd. Live-lane auth only.",
       "provenance": [
         {
@@ -5162,7 +5166,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5172,7 +5176,7 @@
       "status": "removed",
       "first_seen": "1.22209.0",
       "removed_in": "1.24012.1",
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Was the isEnabled gate for the 'morning' bundled skill. REMOVED in 1.24012.1 along with the skill; bundled-skills set went {morning,schedule,setup-cowork} -> {schedule,setup-cowork}.",
       "provenance": [
         {
@@ -5184,7 +5188,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5194,7 +5198,7 @@
       "status": "live",
       "first_seen": "2.1.217",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Caps concurrently-running sub-agents; default 20 (DUg) via KEu(). Enforced on Task dispatch (taskRegistry.getConcurrentSubagents); over-cap throws a model-visible 'Do not retry' error, telemetry subagent_concurrency_cap; bypass gate tengu_amber_kestrel. CORRECTS Ch35/L121's 'no fan-out cap'.",
       "provenance": [
         {
@@ -5209,7 +5213,7 @@
       "status": "live",
       "first_seen": "2.1.212",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Per-session total sub-agent spawn cap; default 200 (HUg) via YEu(). taskRegistry.getTotalAgentSpawns >= cap throws, telemetry subagent_count_cap.",
       "provenance": [
         {
@@ -5224,7 +5228,7 @@
       "status": "live",
       "first_seen": "2.1.212",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Session-wide WebSearch call cap; default 200 (OUg) via JEu().",
       "provenance": [
         {
@@ -5239,7 +5243,7 @@
       "status": "live",
       "first_seen": "2.1.217",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Sub-agent nesting depth; env override else gate tengu_hazel_trellis, fallback DEu=1. 2.1.217 made nesting OFF by default (depth 1); Ch35/L121's depth-5 (NMr/BLr) remains the hard ceiling.",
       "provenance": [
         {
@@ -5254,7 +5258,7 @@
       "status": "live",
       "first_seen": "2.1.217",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Selects the An()=='anthropicAws' provider path — CLI side of 'Claude Platform on AWS' (Anthropic-operated first-party API on AWS), distinct from BYOC bedrock.",
       "provenance": [
         {
@@ -5269,7 +5273,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.217",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Selects An()=='anthropicGoogleCloud' — CLI side of 'Claude Platform on Google Cloud' (first-party on GCP), distinct from BYOC vertex; carries ANTHROPIC_GOOGLE_CLOUD_{BASE_URL,LOCATION,PROJECT,WORKSPACE_ID}. Dark: not named in the official changelog.",
       "provenance": [
         {
@@ -5284,7 +5288,7 @@
       "status": "live",
       "first_seen": "2.1.217",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Opt-out of the fallbackModel 3-chain (Ch27/L110); paired with CLAUDE_CODE_REFUSAL_FALLBACK_CATCH_ALL.",
       "provenance": [
         {
@@ -5299,7 +5303,7 @@
       "status": "live",
       "first_seen": "2.1.217",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Agent proxies the gh CLI for sub-processes (paired with CLAUDE_CODE_AGENT_PROXY_GIT_CONFIG). Same fleet/PR territory as Ch37/L130 VCS SDK events + the Managed Agents fleet.",
       "provenance": [
         {
@@ -5314,7 +5318,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.217",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Experimental observer-agent class (paired with CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS). Real read, absent from the official changelog.",
       "provenance": [
         {
@@ -5329,7 +5333,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.217",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Disables org-scoped memory. Real read, undocumented in the changelog; extends Ch27/L113 knowledge-base evolution.",
       "provenance": [
         {
@@ -5344,7 +5348,7 @@
       "status": "live",
       "first_seen": "2.1.212",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "'Send a subagent off with your full context; its result comes back here' (argumentHint <task>, isEnabled ()=>!Hb()). Replaces the old in-session /fork subagent (which was redesigned to copy the conversation into a new background session).",
       "provenance": [
         {
@@ -5359,7 +5363,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.217",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "'Browse your published and shared artifacts' (isEnabled ()=>H2()). CLI face of Ch27/L112 Artifacts; absent from the official changelog.",
       "provenance": [
         {
@@ -5374,7 +5378,7 @@
       "status": "dark-launched",
       "first_seen": "2.1.217",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "'Import config from another AI coding agent' (argumentHint [codex|gemini] [--dry-run], immediate, isEnabled Zxe). Absent from the official changelog.",
       "provenance": [
         {
@@ -5389,7 +5393,7 @@
       "status": "live",
       "first_seen": "2.1.217",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "API beta header QC('per_message_effort',...) behind headless/SDK mid-turn set_model/effort control (changelog 2.1.200/2.1.212). Replaces summarize-connector-text-2026-03-13 in the net beta delta.",
       "provenance": [
         {
@@ -5404,7 +5408,7 @@
       "status": "live",
       "first_seen": "1.22209.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Desktop SDK-MCP: render installed plugins as a widget. inputSchema {keywords[], context_label} required:[]; context_label is display-only and does not filter. Server isEnabled: sessionType==='cowork' && pluginsEnabled!==false. In allowedTools.",
       "provenance": [
         {
@@ -5419,7 +5423,7 @@
       "status": "live",
       "first_seen": "1.22209.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Desktop SDK-MCP: search installable plugins. REQUIRED userIntent (natural language, verbatim/lightly paraphrased, NOT pre-tokenized) + optional keywords[], includeInstalled, trigger (shared Lr enum user_asked|proactive — UNGATED here, unlike suggest_skills). In allowedTools.",
       "provenance": [
         {
@@ -5434,7 +5438,7 @@
       "status": "live",
       "first_seen": "1.22209.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Desktop SDK-MCP: render an inline plugin install card. REQUIRED contextLabel (3-5 words) + plugins[] (each REQUIRED pluginName/pluginId/description, optional backendId/skills[]). In allowedTools.",
       "provenance": [
         {
@@ -5449,7 +5453,7 @@
       "status": "live",
       "first_seen": "1.22209.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Desktop SDK-MCP: search the MCP connector registry (searchDirectoryServers, .slice(0,10)). Server isEnabled: getDeploymentMode().type!=='3p' — the only discovery server NOT scoped to the cowork lane. In allowedTools.",
       "provenance": [
         {
@@ -5464,7 +5468,7 @@
       "status": "live",
       "first_seen": "1.22209.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Desktop SDK-MCP: suggest connectors to install/reconnect. REQUIRED uuids[] (directoryUuid, or the UUID portion of mcp__{uuid}__{tool} when reconnecting a failed tool) + optional keywords[] (single brand-stripped lowercase noun; renders as 'For your {keyword}'). In allowedTools.",
       "provenance": [
         {
@@ -5479,7 +5483,7 @@
       "status": "live",
       "first_seen": "1.22209.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Desktop SDK-MCP: list installed connectors; inputSchema {keywords[]} required:[]. In allowedTools.",
       "provenance": [
         {
@@ -5494,7 +5498,7 @@
       "status": "live",
       "first_seen": "1.19367.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Desktop SDK-MCP: render a role-picker chip row during Cowork onboarding; call with NO args (role/dismissed are 'populated by the permission flow'). Fifth discovery server (serverName qr='cowork-onboarding'), isEnabled sessionType==='cowork' && isFeatureEnabled('2114777685') (force-ON live). Rendered in 1264 real init.tools records since agent 2.1.92. NOT in allowedTools — routed through the permission prompt.",
       "provenance": [
         {
@@ -5509,7 +5513,7 @@
       "status": "live",
       "first_seen": "1.24012.1",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Gates the fifth SDK-MCP discovery server 'cowork-onboarding' (tool show_onboarding_role_picker) alongside sessionType==='cowork'. Live on/force (ruleId fr_mnj0h9xm, fcache 2026-07-24). Distinct from L131's four new-but-fcache-absent gate ids.",
       "provenance": [
         {
@@ -5521,7 +5525,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5531,7 +5535,7 @@
       "status": "dark-launched",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Gates ensureCorrectAppOwnership() on the Desktop update check. Enterprise autoUpdate.disabled is evaluated first and wins.",
       "provenance": [
         {
@@ -5543,7 +5547,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5553,7 +5557,7 @@
       "status": "dark-launched",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "pressureEviction on the NEW CliGovernor class: memory-pressure-driven session eviction via pauseSession(id,\"governor_evict\"). Siblings: 2724639973 (evictionEnabled), 1032963206 (throttleEnabled).",
       "provenance": [
         {
@@ -5565,7 +5569,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5575,19 +5579,23 @@
       "status": "dark-launched",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
-      "summary": "Session watcher pool, held via a LIVE gate subscription (.ja) whose handler calls disposeAll() when the gate goes false. Evidence that gate state is not boot-fixed.",
+      "as_of": "2.1.221",
+      "summary": "Session watcher pool, held via a LIVE gate subscription (.ja) whose handler calls disposeAll() when the gate goes false. Evidence that gate state is not boot-fixed. STATE CHANGE at fcache d17cdf8e7f6da102 (2026-08-05): the key is now ABSENT from the snapshot, where it was previously served with source=defaultValue/on=false. Per L141 axis 2, absent does NOT mean off — an unserved key runs on its code default, which was not read for this gate.",
       "provenance": [
         {
           "lesson": 141
+        },
+        {
+          "lesson": 141,
+          "note": "served(defaultValue,off) -> absent between fcache 9d75909785dc344e and d17cdf8e7f6da102"
         }
       ],
       "namespace": "desktop_fcache",
       "observed": {
-        "present": true,
-        "source": "defaultValue",
-        "on": false,
-        "at": "9d75909785dc344e"
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5597,7 +5605,7 @@
       "status": "dark-launched",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "desktop_launch_preview_file_access_prompt decision path, including an admin_policy_deny outcome.",
       "provenance": [
         {
@@ -5609,7 +5617,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5619,7 +5627,7 @@
       "status": "dark-launched",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Stall-sampler profiler (samplingIntervalUs 1000, maxFrames 8, timeMs 30000), live-subscribed.",
       "provenance": [
         {
@@ -5631,7 +5639,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5641,7 +5649,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "VALUE config (read via .Ta, not boolean): {model, max_tokens_per_item, classify_prompt}, defaulting to claude-haiku-4-5-20251001. Server-driven config for Ch26/L109 classifySessions / setAutoDescription.",
       "provenance": [
         {
@@ -5653,7 +5661,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "9d75909785dc344e",
+        "at": "d17cdf8e7f6da102",
         "served_keys": [
           "classify_prompt",
           "max_tokens_per_item",
@@ -5669,7 +5677,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "The Desktop yukonSilver capability probe: platform must be darwin or win32, then this gate -> {status:\"supported\"|\"unavailable\"}. One input to Cowork LANE availability; the lane decision itself is claude.ai-renderer-side and cannot be read from the fcache.",
       "provenance": [
         {
@@ -5681,7 +5689,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5691,7 +5699,7 @@
       "status": "dark-launched",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Arms a 1p-direct-mcp pool for MDM-managed Microsoft 365 MCP servers; logs \"[1p-direct-mcp] GrowthBook gate off\" when disabled. Variable-bound at its call site (let a=`4074604942`; t(a)), so call-site-anchored greps miss it.",
       "provenance": [
         {
@@ -5703,7 +5711,7 @@
         "present": true,
         "source": "force",
         "on": false,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5713,7 +5721,7 @@
       "status": "dark-launched",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Guards mobile-channel remote session control: if (channel===\"mobile\" && !gate) throw \"Remote session control is disabled\".",
       "provenance": [
         {
@@ -5725,29 +5733,33 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
       "id": "gate.3123045134",
       "kind": "gate",
       "name": "resolveCloudBranch",
-      "status": "dark-launched",
+      "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
-      "summary": "Guards resolveCloudBranch({folder}); additionally requires the folder to be trusted.",
+      "as_of": "2.1.221",
+      "summary": "Guards resolveCloudBranch({folder}); additionally requires the folder to be trusted. STATE CHANGE at fcache d17cdf8e7f6da102 (2026-08-05): previously ABSENT from the snapshot, now present with source=force, on=true. First observed transition of this gate from unserved to force-ON.",
       "provenance": [
         {
           "lesson": 138
+        },
+        {
+          "lesson": 141,
+          "note": "absent -> force-ON between fcache 9d75909785dc344e and d17cdf8e7f6da102"
         }
       ],
       "namespace": "desktop_fcache",
       "observed": {
-        "present": false,
-        "source": null,
-        "on": null,
-        "at": "9d75909785dc344e"
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5757,7 +5769,7 @@
       "status": "dark-launched",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "maybeGenerateAwayRecap -- the gate id behind Ch26/L109 CLAUDE_CODE_ENABLE_REMOTE_RECAP / away_summary.",
       "provenance": [
         {
@@ -5769,7 +5781,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5779,7 +5791,7 @@
       "status": "dark-launched",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Plugin bin/ stub hardening: when ON, author-supplied bin/ stubs throw instead of warning (\"will become a hard error\").",
       "provenance": [
         {
@@ -5791,7 +5803,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       }
     },
     {
@@ -5801,7 +5813,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Always set in the Cowork local-agent spawn env: `lam_session_type:<sessionType|chat>`.",
       "provenance": [
         {
@@ -5816,7 +5828,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Always set in the Cowork spawn env (value from a Desktop-side resolver).",
       "provenance": [
         {
@@ -5831,7 +5843,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Set to \"1\" conditionally in the Cowork spawn env.",
       "provenance": [
         {
@@ -5846,7 +5858,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Set to \"1\" unconditionally in the Cowork spawn env.",
       "provenance": [
         {
@@ -5861,7 +5873,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Set to \"1\" only when sessionType===\"agent\".",
       "provenance": [
         {
@@ -5876,7 +5888,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Set to \"1\" only when sessionType===\"agent\".",
       "provenance": [
         {
@@ -5891,7 +5903,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Set to \"1\" when gate 451382573 passes, inside the sessionType===\"agent\" branch.",
       "provenance": [
         {
@@ -5906,7 +5918,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Set to \"1\" unconditionally -- Cowork disables microcompact outright (cf. Ch32/L118 microcompact_boundary).",
       "provenance": [
         {
@@ -5921,7 +5933,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Set to \"1\" unconditionally in the Cowork spawn env.",
       "provenance": [
         {
@@ -5936,7 +5948,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Set to process.platform in the Cowork spawn env.",
       "provenance": [
         {
@@ -5951,7 +5963,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Set conditionally from a Desktop resolver; cf. L89 autoCompactWindow.",
       "provenance": [
         {
@@ -5966,7 +5978,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Identity quad, set when accountId + email + orgId are all present.",
       "provenance": [
         {
@@ -5981,7 +5993,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Identity quad, set when accountId + email + orgId are all present.",
       "provenance": [
         {
@@ -5996,7 +6008,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Identity quad, set when accountId + email + orgId are all present.",
       "provenance": [
         {
@@ -6011,7 +6023,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Identity quad; additionally requires accountTaggedId.",
       "provenance": [
         {
@@ -6026,7 +6038,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Set for project-scoped Cowork sessions.",
       "provenance": [
         {
@@ -6041,7 +6053,7 @@
       "status": "live",
       "first_seen": "1.25927.0",
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Set to \"1\" alongside CLAUDE_PROJECT_UUID for project-scoped Cowork sessions.",
       "provenance": [
         {
@@ -6056,7 +6068,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Value gate supplying the official plugin marketplace source read by the [VMCLIRunner] plugin-management path: key `repo` (code default null, so the served value is load-bearing) and `repoCCD` (code default \"anthropics/claude-plugins-official\"). Live value {displayName:\"Anthropic & Partners\", repo:\"anthropics/knowledge-work-plugins\", repoCCD:\"anthropics/claude-plugins-official\"}.",
       "provenance": [
         {
@@ -6068,7 +6080,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "9d75909785dc344e"
+        "at": "d17cdf8e7f6da102"
       },
       "served_keys": [
         "displayName",
@@ -6083,7 +6095,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.217",
+      "as_of": "2.1.221",
       "summary": "Set to \"1\" in the [VMCLIRunner] spawn env for the short-lived in-VM `claude` plugin-management invocation (alongside CLAUDE_CONFIG_DIR=/sessions/cli-<8hex>/mnt/.claude and CLAUDE_CODE_HOST_PLATFORM).",
       "provenance": [
         {

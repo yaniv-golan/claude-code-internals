@@ -245,3 +245,43 @@ test('observable but NOT referenceable stays blocked', () => {
     assert.ok(scanForDisclosure(s, 'probe').failures.some(f => /never-publish/.test(f)), s);
   }
 });
+
+// --- optional lane scope ------------------------------------------------
+//
+// Added by the 2026-08 audit, whose first direct remote-sandbox observation
+// falsified a fact published with no lane qualifier. The field is OPTIONAL on
+// purpose: absent means "never lane-scoped", which is an unknown, not a claim
+// that the fact holds everywhere. A required field would have forced 52 facts
+// to assert a scope nobody had established.
+
+test('a valid lane value passes', () => {
+  for (const lane of ['local', 'remote', 'both']) {
+    const { dir } = fixture({
+      facts: [{
+        id: 'demo.one', page: 'demo', rule: 'R.', detail: 'D.', tier: 'measured',
+        durability: 'durable', lane, volatile_dependency: false,
+        sources: { lessons: [139], state_page: 'cowork-architecture' },
+        verified: '2026-08-05', caveats: [],
+      }],
+    });
+    assert.deepStrictEqual(validateAuthorFacts(dir, LESSONS, REGISTRY), [], `lane=${lane}`);
+  }
+});
+
+test('an unknown lane is an error', () => {
+  const { dir } = fixture({
+    facts: [{
+      id: 'demo.one', page: 'demo', rule: 'R.', detail: 'D.', tier: 'measured',
+      durability: 'durable', lane: 'host-loop', volatile_dependency: false,
+      sources: { lessons: [139], state_page: 'cowork-architecture' },
+      verified: '2026-08-05', caveats: [],
+    }],
+  });
+  const errs = validateAuthorFacts(dir, LESSONS, REGISTRY);
+  assert.ok(errs.some(e => /unknown lane/.test(e)), errs.join('; '));
+});
+
+test('an absent lane is not an error', () => {
+  const { dir } = fixture();
+  assert.deepStrictEqual(validateAuthorFacts(dir, LESSONS, REGISTRY), []);
+});
