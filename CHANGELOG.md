@@ -1,5 +1,16 @@
 # Changelog
 
+## v2.35.0 — 2026-08-05 (this fork) — EXTENDS Ch39/L139: a third mount-construction site, and a scoped backtick rule
+
+**142 lessons / 39 chapters** (unchanged). From the emulator project's reply to v2.34.0 — which conceded the `isBridgeSession` population error in full and independently confirmed every table correction — re-verified first-party against `app.asar` 1.25927.0.
+
+- **NEW — a third construction site, `[VMCLIRunner]`.** `async function xe(e,n)` spawns a short-lived in-VM `claude <args>` for **plugin management** with its own two-mount set: `.claude` `rw` + **`.claude/cowork_plugins` `rwd`** (installs must write there). 30 s default timeout, SIGTERM on expiry surfacing as **`exitCode 143`**; env `CLAUDE_CONFIG_DIR=/sessions/cli-<8hex>/mnt/.claude`, `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1`, `CLAUDE_CODE_HOST_PLATFORM`. **It belongs to neither session builder and must not be merged into a session mount table** — the mount-mode literal alone reads as a session fact, and only the enclosing function reveals otherwise.
+- **`cli-<8 hex>` is a SECOND session-slug namespace**, confirmed by the path-rewrite regex `/\/sessions\/cli-[0-9a-f]{8}\/mnt\/\.claude/g`. Ch31/L117 and L140's `<adjective>-<adjective>-<noun>` is the **interactive-session** namespace, not the only one — a slug parser assuming the Docker-style form will fail on these.
+- **Bidirectional host↔VM rewriting of config file *contents*** (`host-to-vm` before spawn, `vm-to-host` in a `finally`). Distinct from tool-path translation: Ch35/L122's "`/sessions/…` is never translated" still holds for file tools.
+- **CORRECTS v2.34.0's own backtick caveat**, which was stated too broadly. The quote-style drift bites **plain string literals only** — `` mode:`ro` `` returns **zero** on 1.24012.1, where it is `mode:"ro"` — while **interpolation forces backticks in every build**, so a template literal is quote-stable across the range (`` `.projects/${x.uuid}` `` matched 1.22209.0 / 1.24012.1 / 1.25927.0 unchanged). The same grep session had demonstrated both halves. Practical rule: **anchor on an interpolated fragment when one exists; treat a plain-literal anchor as version-scoped.**
+- **Registry +2:** `gate.3758515526` (official plugin-marketplace source; keys `repo`/`repoCCD`, live value `repo:"anthropics/knowledge-work-plugins"` where the **code** default is `null`, so the served value is load-bearing; `on`/`defaultValue` at snapshot `9d75909785dc344e`) and `env.CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC`.
+- **Live re-confirmation of L141.** The fresh fcache decode gave **identical `content16` and `feature_count`** to the pinned snapshot while the **embedded timestamp advanced** — a refetch with no content change, which is exactly the "timestamp is fetch metadata, never identity" rule the lesson asserts.
+
 ## v2.34.0 — 2026-08-05 (this fork) — EXTENDS Ch39/L139+L140: Cowork mount-mode construction, and what `isBridgeSession` actually selects
 
 **142 lessons / 39 chapters** (unchanged — L139/L140 already own this subject, so this ships as two `## ADDENDUM` blocks, not a new lesson). Prompted by the `claude-cowork-headless-emulator` project, then **re-derived first-party** against the same baseline (`app.asar` **1.25927.0**, inside `.vite/build`, with a positive control on `fileDeleteApprovedMounts` run before any absence claim).

@@ -4036,7 +4036,7 @@
       "lesson_number": "139",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
       "startLine": 91,
-      "endLine": 206,
+      "endLine": 239,
       "keywords": [
         "cowork-delete-semantics",
         "unlink-rmdir-denied",
@@ -4077,7 +4077,20 @@
         "older-asar-rosetta-stone",
         "quote-style-drift",
         "guestCompatibleRootPath",
-        "toGuestCompatibleMountName"
+        "toGuestCompatibleMountName",
+        "VMCLIRunner",
+        "third-construction-site",
+        "cli-slug-namespace",
+        "cowork_plugins-rwd",
+        "plugin-management-invocation",
+        "host-to-vm-path-rewrite",
+        "vm-to-host-rewrite",
+        "gate-3758515526",
+        "official-plugin-marketplace",
+        "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC",
+        "exit-code-143",
+        "template-literal-quote-stable",
+        "plain-literal-version-scoped"
       ]
     },
     {
@@ -4085,8 +4098,8 @@
       "title": "VM Multiplexing Confirmed, Isolation Holds, and the Real Mount Inventory",
       "lesson_number": "140",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 207,
-      "endLine": 271,
+      "startLine": 240,
+      "endLine": 304,
       "keywords": [
         "vm-multiplexing-confirmed",
         "shared-vm-guest",
@@ -4124,8 +4137,8 @@
       "title": "Snapshot Discipline: the fcache Is a Moving Target with Two Absence Axes",
       "lesson_number": "141",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 272,
-      "endLine": 350,
+      "startLine": 305,
+      "endLine": 383,
       "keywords": [
         "fcache-snapshot-identity",
         "fcache-content-hash",
@@ -4163,8 +4176,8 @@
       "title": "coworkSyspromptMap: a Server-Driven Prompt REPLACE Channel",
       "lesson_number": "142",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 351,
-      "endLine": 386,
+      "startLine": 384,
+      "endLine": 419,
       "keywords": [
         "coworkSyspromptMap",
         "system-prompt-patch-channel",
@@ -14474,6 +14487,45 @@
     ],
     "mcpb-cache-submount": [
       140
+    ],
+    "VMCLIRunner": [
+      139
+    ],
+    "third-construction-site": [
+      139
+    ],
+    "cli-slug-namespace": [
+      139
+    ],
+    "cowork_plugins-rwd": [
+      139
+    ],
+    "plugin-management-invocation": [
+      139
+    ],
+    "host-to-vm-path-rewrite": [
+      139
+    ],
+    "vm-to-host-rewrite": [
+      139
+    ],
+    "gate-3758515526": [
+      139
+    ],
+    "official-plugin-marketplace": [
+      139
+    ],
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": [
+      139
+    ],
+    "exit-code-143": [
+      139
+    ],
+    "template-literal-quote-stable": [
+      139
+    ],
+    "plain-literal-version-scoped": [
+      139
     ]
   }
 }

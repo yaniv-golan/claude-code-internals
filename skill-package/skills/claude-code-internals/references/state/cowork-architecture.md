@@ -503,6 +503,17 @@ plus a `rw` `<pluginMount>/.mcpb-cache`. A **project attachment is therefore not
 not merely delete-denied. Host-loop modes are recomputed **per bash call** (`computeBashMounts`), not
 only at spawn.
 
+**A third construction site, which is NOT a session mount.** `[VMCLIRunner]` spawns a short-lived
+in-VM `claude <args>` for **plugin management** (30 s default timeout, SIGTERM → `exitCode 143`) with
+its own two-mount set: `.claude` `rw` + **`.claude/cowork_plugins` `rwd`** (installs must write), env
+`CLAUDE_CONFIG_DIR=/sessions/cli-<8hex>/mnt/.claude` + `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1` +
+`CLAUDE_CODE_HOST_PLATFORM`. Never merge these into a session mount table. Two consequences:
+**`cli-<8 hex>` is a second session-slug namespace** — Ch31/L117's `<adjective>-<adjective>-<noun>`
+is the *interactive* namespace, not the only one — and this path does a **bidirectional host↔VM
+rewrite of config file contents** (`host-to-vm` before spawn, `vm-to-host` in a `finally`), which is
+distinct from tool-path translation (Ch35/L122's "`/sessions/…` is never translated" still holds for
+file tools). Marketplace source comes from gate `3758515526`.
+
 **⚠️ `isBridgeSession` ≠ `environment_kind:"bridge"`.** It is `sessionType === "agent"` on the
 Desktop session record — a different namespace from L138's lane oracle. When true, approvals are
 **inert at mount time** (everything resolver-driven becomes `rw`). Observed frequency on the

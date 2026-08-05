@@ -6036,6 +6036,48 @@
           "lesson": 141
         }
       ]
+    },
+    {
+      "id": "gate.3758515526",
+      "kind": "gate",
+      "name": "3758515526 (official plugin marketplace repo)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Value gate supplying the official plugin marketplace source read by the [VMCLIRunner] plugin-management path: key `repo` (code default null, so the served value is load-bearing) and `repoCCD` (code default \"anthropics/claude-plugins-official\"). Live value {displayName:\"Anthropic & Partners\", repo:\"anthropics/knowledge-work-plugins\", repoCCD:\"anthropics/claude-plugins-official\"}.",
+      "provenance": [
+        {
+          "lesson": 139
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": true,
+        "at": "9d75909785dc344e"
+      },
+      "served_keys": [
+        "displayName",
+        "repo",
+        "repoCCD"
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Set to \"1\" in the [VMCLIRunner] spawn env for the short-lived in-VM `claude` plugin-management invocation (alongside CLAUDE_CONFIG_DIR=/sessions/cli-<8hex>/mnt/.claude and CLAUDE_CODE_HOST_PLATFORM).",
+      "provenance": [
+        {
+          "lesson": 139
+        }
+      ]
     }
   ]
 }

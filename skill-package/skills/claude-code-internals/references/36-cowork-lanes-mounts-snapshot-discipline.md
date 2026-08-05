@@ -190,6 +190,35 @@ Everything outside the first row is a hardcoded literal — no approval state re
 
 The `.claude` split is structural, and it is why L140's `/proc/mounts` inventory (a host-loop session) shows two `.claude/*` mounts and no bare `.claude`. The **auto-memory dir is the only mount whose hardcoded mode differs by lane**; the likely reason (**inference**) is that under host-loop the agent loop runs host-side and writes memory through the host FS, so the VM only needs to read it — note the VM-loop builder separately grants `Edit(/<memdir>/**)`/`Write(/<memdir>/**)` via `allowedTools`.
 
+### A THIRD construction site — `[VMCLIRunner]`, and it is NOT a session mount
+
+There is a third place that builds a mount set, and it belongs to neither builder above. Relayed by the emulator project with its scope already attached, then verified first-party (`index.chunk-j7zghOJ6.js`):
+
+```js
+async function xe(e,n){
+  let r=n.timeout??3e4,
+      i=`cli-${(0,E.randomUUID)()}`,          // process id
+      s=`cli-${i.slice(4,12)}`,               // session slug — cli- + 8 hex
+      c=`/sessions/${s}/mnt/.claude`;         // → CLAUDE_CONFIG_DIR
+  …
+  let o={[a.a(`.claude`)]:{path:r,mode:`rw`},
+         [a.a(`.claude/cowork_plugins`)]:{path:y,mode:`rwd`}},
+      d={...n.env, CLAUDE_CONFIG_DIR:c,
+         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC:`1`,
+         CLAUDE_CODE_HOST_PLATFORM:process.platform};
+  await l.spawn(i,s,`claude`,e,void 0,d,o,!1,n.allowedDomains,!0);
+```
+
+A short-lived `claude <args>` invocation in the VM for **plugin management**, 30 s default timeout, SIGTERM on expiry surfacing as `exitCode 143`. `cowork_plugins` is `rwd` because installs must write there. **These two mounts never appear in a Cowork session's mount set** — do not merge them into the table above. (The emulator project caught the scope itself by reading the enclosing function before writing it up; the mount-mode literal alone would have read as a session fact.)
+
+Two things this pins beyond the mounts:
+
+**A second session-slug namespace.** `cli-<8 hex>` — confirmed by the path-rewrite regex `/\/sessions\/cli-[0-9a-f]{8}\/mnt\/\.claude/g`. **Ch31/L117 and L140's `<adjective>-<adjective>-<noun>` format is the *interactive-session* namespace, not the only one.** A slug parser that assumes the Docker-style form will fail on these.
+
+**Host↔VM path rewriting is a real, bidirectional pass.** `Z(files, hostPath, vmPath, dir)` runs `host-to-vm` before spawn and `vm-to-host` in a `finally`, rewriting `./mnt/.claude`, `mnt/.claude` and the `cli-` path regex through the config files. Config written by the in-VM `claude` comes back with host paths restored — relevant to Ch35/L122's "`/sessions/…` is never translated for file tools", which remains true for *tool* paths; this is a separate, file-content-level rewrite.
+
+Adjacent, from the same function's neighbourhood: gate **`3758515526`** supplies the official plugin marketplace repo (`repo` / `repoCCD`, live value `{displayName:"Anthropic & Partners", repo:"anthropics/knowledge-work-plugins", repoCCD:"anthropics/claude-plugins-official"}`, `on:true` `source:defaultValue` at snapshot `9d75909785dc344e`) — note the code default for `repo` is `null`, so the served value is load-bearing.
+
 ### CORRECTION to this lesson's own wording
 
 "Spawn-time restore" was wrong for host-loop. `ht` is wired as **`computeBashMounts`** and runs **per bash call** with a live `k()` — matching Ch35/L122's "recomputed per bash call".
@@ -200,7 +229,11 @@ This does **not** close the inference gap flagged above. The probe observed the 
 
 1.25927.0 is fully minified; builds **≤1.24012.1 retain real identifier names** (`guestCompatibleRootPath`, `toGuestCompatibleMountName`, `AUTO_MEMORY_MOUNT*`) and quote strings with `"` rather than backticks. Read the older build to name what the current one hides.
 
-The quote change is a trap in its own right: a backtick-anchored pattern silently misses older builds — a sibling of L141's backtick-minifier trap, in the opposite direction. Both facts in this addendum verify identically in 1.22209.0 and 1.24012.1, so **neither is new**.
+The quote change is a trap in its own right, but **only for plain string literals**. A backtick-anchored pattern silently misses older builds when the literal has no interpolation — `mode:` was the live case here: `` mode:`ro` `` matches 1.25927.0 and returns **zero** on 1.24012.1, where it is `mode:"ro"`.
+
+**Interpolation forces backticks in every build**, minifier preference notwithstanding, so a template literal is quote-stable across the whole version range: `` `.projects/${x.uuid}` `` matched 1.22209.0, 1.24012.1 and 1.25927.0 unchanged. The same grep session demonstrated both halves — one pattern version-fragile, the other not — which is the practical rule: **anchor on an interpolated fragment when you have one, and treat a plain-literal anchor as version-scoped.** (Correction credit: the emulator project, whose `checkMountModeFacts` is anchored on the interpolated form and is therefore unaffected.)
+
+Both facts in this addendum verify identically in 1.22209.0 and 1.24012.1, so **neither is new**.
 
 ---
 
