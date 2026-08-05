@@ -206,6 +206,9 @@ function renderPageMd(doc, page, registry) {
       for (const f of fs_) out.push(`- [**${f.rule}**](${p.slug}.md) *(${TIER_LABEL[f.tier]})*`);
       out.push('');
     }
+    // A reader who just went through every rule is the one asking how to check
+    // them. This is the only page where that question is unavoidable.
+    out.push(...toolsMd((doc.tools || []).filter(t => t.slug === 'verify'), 'Checking your own skill against these'));
   } else if (page.slug === 'current-state') {
     out.push(...renderCurrentStateMd(doc, registry));
   } else if (page.slug === 'index') {
@@ -215,6 +218,7 @@ function renderPageMd(doc, page, registry) {
       out.push(`- **${p.title}** — ${p.summary.split('. ')[0]}.`);
     }
     out.push('');
+    out.push(...toolsMd(doc.tools || [], 'Where this fits in your workflow'));
   } else {
     for (const f of facts) out.push(...renderFactMd(f));
   }
@@ -277,6 +281,7 @@ function pageHtml(doc, page, registry, depth) {
         `<li><a class="rule-link" href="${up}${p.slug}/#${factAnchor(f)}"><strong>${inlineHtml(f.rule)}</strong></a> ${badge(f)}</li>`);
       body.push('</ul>');
     }
+    body.push(...toolsHtml((doc.tools || []).filter(t => t.slug === 'verify'), 'Checking your own skill against these'));
   } else if (page.slug === 'current-state') {
     body.push(mdTablesToHtml(renderCurrentStateMd(doc, registry).join('\n')));
   } else if (page.slug === 'index') {
@@ -286,6 +291,7 @@ function pageHtml(doc, page, registry, depth) {
       body.push(`<li><a href="${up}${p.slug}/">${esc(p.title)}</a><br><span class="muted">${inlineHtml(p.summary.split('. ')[0])}.</span></li>`);
     }
     body.push('</ul>');
+    body.push(...toolsHtml(doc.tools || [], 'Where this fits in your workflow'));
   } else {
     for (const f of facts) {
       body.push('<section class="fact">');
@@ -357,6 +363,38 @@ function jsonLd({ title, description, canonical, verified }) {
     });
   }
   return JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
+}
+
+/**
+ * Tool pointers. These are the same author's projects and are NOT findings:
+ * they carry no tier and no verified date, and are labelled so a reader can see
+ * the difference at a glance. Placement is by reader moment, not by category --
+ * the two tools answer different questions and are shown where those questions
+ * arise, rather than collected into a "links" section nobody reads.
+ */
+const TOOLS_NOTE = 'Same author as this site, and not part of the verified material above.';
+
+function toolsMd(tools, heading) {
+  if (!tools.length) return [];
+  const out = [`## ${heading}`, ''];
+  for (const t of tools) {
+    out.push(`**${t.when} — [${t.name}](${t.url})**`, '', `${t.what} ${t.why}`, '');
+  }
+  out.push(`*${TOOLS_NOTE}*`, '');
+  return out;
+}
+
+function toolsHtml(tools, heading) {
+  if (!tools.length) return [];
+  const out = [`<h2>${esc(heading)}</h2>`];
+  for (const t of tools) {
+    out.push('<section class="tool">',
+      `<h3><span class="when">${esc(t.when)}</span> <a href="${t.url}">${esc(t.name)}</a></h3>`,
+      `<p>${inlineHtml(t.what)} ${inlineHtml(t.why)}</p>`,
+      '</section>');
+  }
+  out.push(`<p class="muted tool-note">${esc(TOOLS_NOTE)}</p>`);
+  return out;
 }
 
 function factAnchor(f) {
@@ -438,6 +476,14 @@ h3 { font-size:1rem; margin:0 0 .35rem; }
 .rules li { margin:.35rem 0; }
 .rule-link { color:inherit; text-decoration:none; border-bottom:1px solid var(--line); }
 .rule-link:hover { border-bottom-color:var(--accent); color:var(--accent); }
+/* Tool pointers must not read as findings. No tier badge, muted rule above,
+   and the reader-moment label carries the weight instead of the project name. */
+.tool { border-left:2px solid var(--line); padding-left:.9rem; margin:1rem 0; }
+.tool h3 { font-size:1rem; margin:0 0 .3rem; }
+.tool .when { color:var(--muted); font-weight:400; }
+.tool .when::after { content:' · '; }
+.tool p { margin:.2rem 0 0; }
+.tool-note { font-size:.86rem; margin-top:.9rem; }
 .caveat { color:var(--muted); font-size:.92rem; border-left:2px solid var(--line); padding-left:.75rem; }
 .muted { color:var(--muted); }
 table { border-collapse:collapse; width:100%; font-size:.92rem; }

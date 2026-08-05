@@ -90,6 +90,24 @@
       "open_questions": []
     }
   ],
+  "tools": [
+    {
+      "slug": "start",
+      "name": "skill-creator-plus",
+      "url": "https://github.com/yaniv-golan/skill-creator-plus",
+      "when": "Starting a skill",
+      "what": "Anthropic's skill-creator, extended with Cowork support.",
+      "why": "Many of the rules on this site are already handled by what it scaffolds, so a skill built with it starts on the right side of most of them."
+    },
+    {
+      "slug": "verify",
+      "name": "cowork-harness",
+      "url": "https://github.com/yaniv-golan/cowork-harness",
+      "when": "Checking a skill you already have",
+      "what": "A scriptable harness for the runtime behaviour described here.",
+      "why": "Every rule on this site raises the same question — does mine do this? — and clicking through a real session to find out is slow and easy to get wrong. This exercises the same behaviour directly and repeatably."
+    }
+  ],
   "facts": [
     {
       "id": "paths.connected-folders-are-mounts",

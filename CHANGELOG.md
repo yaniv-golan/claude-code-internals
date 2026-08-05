@@ -1,5 +1,27 @@
 # Changelog
 
+## v2.36.6 — 2026-08-06 (this fork) — point at the tooling, where the reader needs it
+
+Implements Fix F from the content-pass plan. It survived two plan revisions and was never built: the site pointed at neither tool.
+
+### Placement is by reader moment, not by category
+
+The two tools answer different questions, so they do not belong in one "Tools" list.
+
+**`skill-creator-plus`** is for someone who *hasn't written the skill yet*. At the end of a topic page it is useless — they have already made the mistake. It sits at the **entry point**.
+
+**`cowork-harness`** answers the question every rule on this site provokes and the site previously left hanging: *"does mine do this?"* It sits where a reader has just finished the rules — the **index** and the **contract page**.
+
+Neither appears on a topic page, where it would compete with that page's *"What is not established"* section. Neither is in the footer.
+
+Headings follow the moment rather than being reused: *"Where this fits in your workflow"* at the entry point, *"Checking your own skill against these"* after 52 rules.
+
+### Pointers, not findings
+
+Per the plan's own rev-2 correction, the blurbs are **data** — a validated `tools` array in `author-facts.json` — not hand-written template strings. And they are explicitly not findings: **no tier badge, no verified date**, muted styling, and same-author disclosure on every rendering. On a site where every claim carries a tier and a date, an untiered block that looked like a finding would erode exactly the trust the tiers buy.
+
+Three tests pin the placement (both at the entry point, harness only on the contract page, **neither on any topic page**), the no-tier-badge rule, and Markdown/HTML parity.
+
 ## v2.36.5 — 2026-08-06 (this fork) — search discoverability
 
 **No fact changes.** An audit of the published site found the content-side foundations already strong and four mechanical gaps.

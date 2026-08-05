@@ -280,6 +280,25 @@ function validateAuthorFacts(stateDir, lessonIds, registry) {
   }
 
   const ids = new Set();
+  // `tools` — pointers to related projects, not findings. Validated for shape so
+  // a broken link or a missing blurb cannot reach the site, but deliberately
+  // carries no tier or verified date: it is not a claim about product behaviour.
+  if (doc.tools !== undefined) {
+    if (!Array.isArray(doc.tools)) {
+      errors.push('author-facts: tools must be an array');
+    } else {
+      doc.tools.forEach((t, i) => {
+        const label = `author-facts.tools[${i}]`;
+        for (const f of ['slug', 'name', 'url', 'when', 'what', 'why']) {
+          if (typeof t[f] !== 'string' || !t[f].trim()) errors.push(`${label}: ${f} is required`);
+        }
+        if (typeof t.url === 'string' && !/^https:\/\//.test(t.url)) {
+          errors.push(`${label}: url must be absolute https`);
+        }
+      });
+    }
+  }
+
   for (const ft of facts) {
     const label = `author-facts fact ${ft.id || '(unnamed)'}`;
     for (const f of ['id', 'page', 'rule', 'detail', 'tier', 'durability', 'sources', 'verified']) {

@@ -347,6 +347,66 @@ test('the 404 page is noindex', () => {
   assert.match(html, /name="robots" content="noindex/);
 });
 
+test('tool pointers appear at the reader moment, not everywhere', () => {
+  // Placement is the point: the scaffolding tool is for someone who has not
+  // written the skill yet, so it belongs at the entry point; the harness answers
+  // "does mine do this?", so it belongs where a reader has just finished the
+  // rules. Neither belongs on a topic page, where it would compete with the
+  // "What is not established" section.
+  const { out } = buildOnce();
+  const facts = JSON.parse(fs.readFileSync(
+    path.join(__dirname, '../../../skill-package/skills/claude-code-internals/references/state/author-facts.json'), 'utf8'));
+  const tools = facts.tools || [];
+  assert.ok(tools.length >= 2, 'expected tool pointers in the data layer');
+  const start = tools.find(t => t.slug === 'start').name;
+  const verify = tools.find(t => t.slug === 'verify').name;
+
+  const index = fs.readFileSync(path.join(out, SECTION, 'index.html'), 'utf8');
+  assert.ok(index.includes(start) && index.includes(verify), 'index should carry both');
+
+  const contract = fs.readFileSync(path.join(out, SECTION, 'contract', 'index.html'), 'utf8');
+  assert.ok(contract.includes(verify), 'contract should carry the harness');
+  assert.ok(!contract.includes(start), 'contract should NOT carry the scaffolding tool');
+
+  for (const p of facts.pages) {
+    if (['index', 'contract'].includes(p.slug)) continue;
+    const html = fs.readFileSync(path.join(out, SECTION, p.slug, 'index.html'), 'utf8');
+    for (const t of tools) {
+      assert.ok(!html.includes(t.url), `${p.slug} should not promote ${t.name}`);
+    }
+  }
+});
+
+test('tool pointers are disclosed and carry no tier badge', () => {
+  // On a site where every claim has a tier and a date, an untiered block that
+  // looks like a finding would erode exactly the trust the tiers buy.
+  const { out } = buildOnce();
+  for (const rel of [`${SECTION}/index.html`, `${SECTION}/contract/index.html`]) {
+    const html = fs.readFileSync(path.join(out, rel), 'utf8');
+    const m = html.match(/<section class="tool">[\s\S]*?<\/section>/g) || [];
+    assert.ok(m.length > 0, `${rel} has no tool section`);
+    for (const block of m) {
+      assert.ok(!/class="tier/.test(block), `${rel}: tool block must not carry a tier badge`);
+    }
+    assert.match(html, /Same author as this site/, `${rel} must disclose authorship`);
+  }
+});
+
+test('tool pointers render identically in Markdown and HTML', () => {
+  const { out } = buildOnce();
+  const facts = JSON.parse(fs.readFileSync(
+    path.join(__dirname, '../../../skill-package/skills/claude-code-internals/references/state/author-facts.json'), 'utf8'));
+  for (const [md, html, n] of [[`${SECTION}/index.md`, `${SECTION}/index.html`, (facts.tools || []).length],
+                               [`${SECTION}/contract.md`, `${SECTION}/contract/index.html`, 1]]) {
+    const m = fs.readFileSync(path.join(out, md), 'utf8');
+    const h = fs.readFileSync(path.join(out, html), 'utf8');
+    for (const t of facts.tools || []) {
+      assert.strictEqual(m.includes(t.url), h.includes(t.url), `${md} and ${html} disagree on ${t.name}`);
+    }
+    assert.strictEqual((h.match(/<section class="tool">/g) || []).length, n);
+  }
+});
+
 test('every page offers a way to report an error', () => {
   const { out } = buildOnce();
   for (const f of htmlFiles(out)) {
