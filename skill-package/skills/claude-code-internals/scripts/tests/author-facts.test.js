@@ -21,7 +21,7 @@ const LEAKS = [
   ['server-flag id', 'the flag 1598976391 controls this'],
   ['raw epoch', 'stamped 1785910109684 at capture'],
   ['cli flag name', 'gated behind tengu_saddle_lantern'],
-  ['namespaced tool', 'call mcp__cowork__present_files first'],
+  ['namespaced tool', 'the mcp__skills__list_skills tool enumerates them'],
   ['internal tool', 'internal__remote_devices does the commit'],
   ['camelCase internal', 'the fileDeleteApprovedMounts list is persisted'],
   ['camelCase internal 2', 'true when hostLoopMode is set'],
@@ -222,4 +222,26 @@ test('plumbing a skill must never call is blocked even though it is a tool name'
 test('widening the allowlist did not open the whole namespace', () => {
   const { failures } = scanForDisclosure('the mcp__skills__list_skills tool enumerates them', 'probe');
   assert.ok(failures.length > 0, 'only observable session tools are allowlisted, not all namespaced names');
+});
+
+// --- the two-clause criterion -------------------------------------------
+//
+// Clause 1 (observable) alone was incoherent: it admitted the session shell
+// tool while banning the presentation tool from the same tool list, and could
+// not justify banning permission tools that are equally observable. Clause 2
+// (referenceable by a skill) is what separates them.
+
+test('observable AND referenceable names are publishable', () => {
+  for (const s of ['mcp__cowork__present_files', 'SendUserFile', 'mcp__workspace__bash',
+                   'set when_to_use in your frontmatter']) {
+    assert.deepStrictEqual(scanForDisclosure(s, 'probe').failures, [], `should pass: ${s}`);
+  }
+});
+
+test('observable but NOT referenceable stays blocked', () => {
+  // A skill must not call these: the agent self-escalates to them. Clause 1
+  // passes (they are in the tool list); clause 2 fails.
+  for (const s of ['call allow_cowork_file_delete', 'call request_cowork_directory']) {
+    assert.ok(scanForDisclosure(s, 'probe').failures.some(f => /never-publish/.test(f)), s);
+  }
 });

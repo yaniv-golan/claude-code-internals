@@ -104,9 +104,26 @@ Algorithm:
 >   kept greedily while budget remains, and whatever does not fit is reported in
 >   `budgetTruncatedSkills` and rendered name-only.
 >
-> So the failure is **partial and priority-ordered, not global**: one runaway description now pushes
-> the *lowest-priority* skills to name-only rather than stripping descriptions from all of them. The
-> tunables `skillListingBudgetFraction` and `skillListingMaxDescChars` both survive, as does the
+> So the failure is **partial, not global**. Beyond that, the first version of this correction said it
+> "pushes the *lowest-priority* skills to name-only" — **that was also wrong**. Re-verified against
+> 2.1.221:
+>
+> - The keep-loop is **first-fit greedy with no break**: an entry whose description exceeds the
+>   remaining budget is skipped and the loop continues. So a *high*-priority skill with a long
+>   description can lose its description while a *lower*-priority one with a short description keeps
+>   it. Which skills go name-only is a joint function of priority **and** description length.
+> - **Priority is usage-recency, and it is zero for a never-used skill**:
+>   `usageCount × max(0.5^(daysSinceUse/7), 0.1)`, returning `0` when there is no usage record. The
+>   consequence that matters to a skill author: **a newly installed skill is the first to lose its
+>   description under budget pressure** — precisely when the model most needs that description to
+>   decide whether to invoke it at all.
+> - A single runaway description is **bounded**: the per-skill cap is applied before budget
+>   accounting, so one description can crowd out neighbours no more than any other maximal-length one.
+> - A near-global state does still exist — when protected entries plus bare names alone exceed the
+>   budget, every non-bundled skill goes name-only. It is no longer triggerable by one runaway
+>   description, but "no global mode" would be stronger than the code supports.
+>
+> The tunables `skillListingBudgetFraction` and `skillListingMaxDescChars` both survive, as does the
 > `SLASH_COMMAND_TOOL_CHAR_BUDGET` env override.
 >
 > **Methodology note:** this was caught by a maintainer's doubt, not by any check. Nothing in this

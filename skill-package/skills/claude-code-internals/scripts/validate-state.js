@@ -64,29 +64,37 @@ function parseFrontmatter(text) {
 /**
  * Words that legitimately look like internal identifiers in author-facing prose.
  *
- * THE CRITERION, so this list stays principled rather than growing by drift:
- * **can a reader observe this name in their own session?** A tool the model is
- * given appears in that session's tool list — publishing it discloses nothing,
- * it only saves the reader from having to go look. A name they cannot observe
- * (Desktop plumbing, feature-flag ids, minified symbols, config field names)
- * stays out regardless of how useful it might seem.
+ * THE CRITERION — TWO clauses, both required. An earlier single-clause version
+ * ("can a reader observe this?") was incoherent: it admitted the session shell
+ * tool while the list still banned the presentation tool from the same tool
+ * list, and it could not justify banning permission tools that are equally
+ * observable.
+ *
+ *   1. **Observable** — the reader can see this name in their own session.
+ *   2. **Referenceable by a skill** — a skill may legitimately name or test for
+ *      it. Permission tools the *agent* self-escalates to, and Desktop plumbing,
+ *      fail this clause even though clause 1 passes.
+ *
+ * Anything failing either clause stays out regardless of how useful it seems.
  *
  * Rule 3 conflated "namespaced" with "internal". Those are different: some
  * namespaced tools are handed to the model and are therefore author-facing,
  * while `internal__*` really is plumbing a skill must never call.
  */
 const DISCLOSURE_ALLOWLIST = new Set([
-  // Delivery tools an author capability-checks. Anthropic's own bundled
-  // skill-authoring guidance names these inside a check, and the check is what
-  // provides portability — the names are what make it actionable.
-  'present_files', 'send_user_file', 'sendUserFile',
-  // Session tools that appear in the model's tool list. Needed verbatim by the
-  // runtime-detection page, whose whole purpose is Cowork-specific detection:
-  // an author who has decided they need to branch on runtime cannot act on a
-  // paraphrase of the thing they must test for.
+  // Delivery tools an author capability-checks. Anthropic's Cowork-staged
+  // skill-creator names these inside a check; the check provides portability,
+  // the names make it actionable. Both bare and namespaced spellings, because
+  // the namespaced form is what a local-lane reader actually sees.
+  'present_files', 'mcp__cowork__present_files',
+  'SendUserFile', 'send_user_file', 'sendUserFile',
+  // Session tools in the model's tool list. Needed verbatim by the runtime-
+  // detection page, whose purpose is Cowork-specific detection: an author who
+  // has decided they need it cannot act on a paraphrase.
   'mcp__workspace__bash', 'mcp__workspace__web_fetch',
-  // ordinary hyphen/underscore prose that may appear in examples
-  'skill_md', 'claude_md',
+  // Public skill frontmatter fields. These are documented surface, and a worked
+  // example that shows frontmatter must be able to print them.
+  'when_to_use', 'allowed_tools', 'disable_model_invocation', 'user_invocable',
 ]);
 
 /**
@@ -95,6 +103,8 @@ const DISCLOSURE_ALLOWLIST = new Set([
  * that widening the allowlist above can never accidentally admit these.
  */
 const DISCLOSURE_NEVER = [
+  // Fails clause 2: plumbing, or a permission tool the AGENT self-escalates to.
+  // A skill naming any of these is doing something it should not.
   'device_commit_files',
   'allow_cowork_file_delete',
   'request_cowork_directory',
