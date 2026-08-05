@@ -87,7 +87,31 @@ Algorithm:
 5. If `f < 20` → **all truncatable skills collapse to `- ${name}`** (name-only mode, globally).
 6. Otherwise → each description truncated to `f` characters via `t7(desc, f)`.
 
-**Skills never disappear from the listing.** The failure mode when frontmatter bloats is silent global collapse to name-only -- every skill loses its description at once, and the model has nothing but names to choose from. One runaway `when_to_use` can trigger this for every skill in the listing.
+**Skills never disappear from the listing.**
+
+> ### ⚠️ CORRECTED 2026-08-05 — the global-collapse failure mode no longer exists
+>
+> This lesson previously stated: *"the failure mode when frontmatter bloats is silent global collapse
+> to name-only -- every skill loses its description at once… One runaway `when_to_use` can trigger
+> this for every skill in the listing."* **Withdrawn.**
+>
+> L11 is inherited content (markdown.engineering, **v2.1.88**) that had never been re-verified. Read
+> first-party against the Desktop-managed agent **2.1.221**, the algorithm has been replaced. There is
+> no `f < 20` threshold and no global name-only mode. The current function returns one of two modes:
+>
+> - **`budgetMode: "fits"`** — everything fits; nothing is truncated.
+> - **`budgetMode: "priority"`** — entries are sorted by a caller-supplied priority, descriptions are
+>   kept greedily while budget remains, and whatever does not fit is reported in
+>   `budgetTruncatedSkills` and rendered name-only.
+>
+> So the failure is **partial and priority-ordered, not global**: one runaway description now pushes
+> the *lowest-priority* skills to name-only rather than stripping descriptions from all of them. The
+> tunables `skillListingBudgetFraction` and `skillListingMaxDescChars` both survive, as does the
+> `SLASH_COMMAND_TOOL_CHAR_BUDGET` env override.
+>
+> **Methodology note:** this was caught by a maintainer's doubt, not by any check. Nothing in this
+> repo re-verifies inherited L1–L50 content against current binaries, so other claims of that vintage
+> should be treated as unverified until read first-party.
 
 Tunables (in settings):
 - `skillListingBudgetFraction` -- fraction of context window for budget
