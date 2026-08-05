@@ -1,12 +1,12 @@
 {
-  "skill_version": "2.36.3",
+  "skill_version": "2.36.4",
   "captured_version": "2.1.221",
   "captured_date": "2026-08-05",
   "source": "https://www.markdown.engineering/learn-claude-code/",
-  "verified_against_binary": "v2.36.3 closes the one gap left by v2.36.2's clarity pass. That pass put the preinstalled inventory into the package-install rule, then moved it out to resolve a duplication with the neighbouring 'ships a large preinstalled stack' rule -- leaving the rule that says 'Prefer what is preinstalled' with no statement of what is preinstalled, and no pointer to the adjacent rule that had the numbers. A reader checking the ten items found it. The rule now names the stack in its own first sentence (Python 3.10.12, ~149 packages, pandas/numpy/PIL/openpyxl), duplicating one clause across two adjacent rules on purpose: a rule a reader can act on without reading its neighbour is worth a repeated sentence. No fact, tier, caveat or evidence date changed.",
+  "verified_against_binary": "v2.36.4 makes the contract page's own promise true. That page says 'Each rule links to the page that explains it'; it did not. Every list item did contain an <a>, which is why a naive count said 52/52 -- but the link was the TIER BADGE pointing at the on-page legend. The only navigation to an explanation was the section heading, so a reader met 52 bold one-liners with nothing to click through to. Each rule is now a link to its own explanation: HTML deep-links to a per-fact anchor, Markdown links to the explaining page (markdown has no stable fragment ids). Anchors are derived from the FACT ID, never the rule text -- ten rules were reworded across v2.36.1-3, and a prose-derived anchor would break every inbound link on each rewrite. The build's existing fragment gate validates all 52 deep links; three tests pin the count parity across both formats, the anchor resolution, and the id-not-prose derivation. No fact changes.",
   "lessons_count": 146,
   "chapters_count": 40,
   "total_size_kb": 2780,
   "keywords_indexed": 3341,
-  "note": "Also worth recording for future passes: of the ten reader questions answered in v2.36.2, only three were fixed in the RULE heading; six were fixed in the detail beneath, so a reader scanning headings still meets the original wording. That is a deliberate limit of this format, not an oversight -- but it means heading text carries more weight than its length suggests."
+  "note": "Design note: the contract page is deliberately NOT expandable. Its stated contract is 'generated from the rules on every other page, with no additional prose ... this page cannot disagree with the others'. Inlining details would duplicate the whole site and reintroduce exactly the drift the page exists to rule out. Linking is the fix; expanding is not."
 }

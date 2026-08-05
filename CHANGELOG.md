@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.36.4 — 2026-08-06 (this fork) — the contract page now links to its explanations
+
+**No fact changes.** The contract page's own summary promises *"Each rule links to the page that explains it."* It did not.
+
+Every list item *did* contain an `<a>` — which is why a naive count reported 52/52 — but that link was the **tier badge**, pointing at the on-page legend. The only route to an explanation was the section heading, so a reader met **52 bold one-liners with nothing to click through to**.
+
+Each rule is now a link to its own explanation: HTML deep-links to a per-fact anchor, Markdown links to the explaining page (Markdown has no stable fragment ids).
+
+Anchors are derived from the **fact id, never the rule text** — ten rules were reworded across v2.36.1–3, and a prose-derived anchor would break every inbound link on each rewrite. The build's existing fragment gate validates all 52 deep links, and three tests pin count parity across both formats, anchor resolution, and the id-not-prose derivation.
+
+### Why not expandable
+
+The page's stated contract is *"generated from the rules on every other page, with no additional prose … this page cannot disagree with the others."* Inlining details would duplicate the whole site and reintroduce exactly the drift the page exists to rule out. **Linking is the fix; expanding is not.**
+
 ## v2.36.3 — 2026-08-06 (this fork) — the preinstalled rule now says what is preinstalled
 
 **No fact changes.** Closes the one gap left by v2.36.2.

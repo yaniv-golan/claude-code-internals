@@ -200,7 +200,7 @@ function renderPageMd(doc, page, registry) {
       const fs_ = factsFor(doc, p.slug).filter(f => f.durability === 'durable');
       if (!fs_.length) continue;
       out.push(`## ${p.title}`, '');
-      for (const f of fs_) out.push(`- **${f.rule}** *(${TIER_LABEL[f.tier]})*`);
+      for (const f of fs_) out.push(`- [**${f.rule}**](${p.slug}.md) *(${TIER_LABEL[f.tier]})*`);
       out.push('');
     }
   } else if (page.slug === 'current-state') {
@@ -270,7 +270,8 @@ function pageHtml(doc, page, registry, depth) {
       const fs_ = factsFor(doc, p.slug).filter(f => f.durability === 'durable');
       if (!fs_.length) continue;
       body.push(`<h2><a href="${up}${p.slug}/">${esc(p.title)}</a></h2><ul class="rules">`);
-      for (const f of fs_) body.push(`<li><strong>${inlineHtml(f.rule)}</strong> ${badge(f)}</li>`);
+      for (const f of fs_) body.push(
+        `<li><a class="rule-link" href="${up}${p.slug}/#${factAnchor(f)}"><strong>${inlineHtml(f.rule)}</strong></a> ${badge(f)}</li>`);
       body.push('</ul>');
     }
   } else if (page.slug === 'current-state') {
@@ -285,7 +286,7 @@ function pageHtml(doc, page, registry, depth) {
   } else {
     for (const f of facts) {
       body.push('<section class="fact">');
-      body.push(`<h3>${inlineHtml(f.rule)}</h3>`);
+      body.push(`<h3 id="${factAnchor(f)}">${inlineHtml(f.rule)}</h3>`);
       body.push(`<p class="badges">${badge(f)}${laneBadge(f)}${f.volatile_dependency ? volatileBadge(up) : ''}</p>`);
       body.push(`<p>${inlineHtml(f.detail)}</p>`);
       for (const c of f.caveats || []) body.push(`<p class="caveat"><strong>${CAVEAT_LABEL}</strong> ${inlineHtml(c)}</p>`);
@@ -315,6 +316,14 @@ function badge(f) {
   // Links to the on-page legend: a title= tooltip is invisible on touch devices,
   // and the tier is how a reader decides how much weight to give the claim.
   return `<a class="tier tier-${f.tier}" href="#tiers" title="${esc(TIER_TITLE[f.tier])}">${TIER_LABEL[f.tier]}</a>`;
+}
+/**
+ * Stable per-fact anchor. Derived from the fact id, NOT the rule text: rule
+ * wording gets revised (v2.36.1-3 rewrote ten of them) and an anchor built from
+ * prose would silently break every inbound link when that happens.
+ */
+function factAnchor(f) {
+  return 'fact-' + f.id.replace(/[^a-z0-9]+/gi, '-').toLowerCase();
 }
 function laneBadge(f) {
   // Rendered only when `lane` is set. An unscoped fact gets no badge at all --
@@ -376,6 +385,11 @@ h3 { font-size:1rem; margin:0 0 .35rem; }
 /* Lane is scope, not confidence -- deliberately muted so it never competes
    with the tier badge a reader uses to weigh the claim. */
 .tier-lane { color:var(--muted); border-color:var(--line); }
+/* The contract is a checklist of 50+ one-liners; without an affordance it
+   reads as a wall of text with nothing to click. */
+.rules li { margin:.35rem 0; }
+.rule-link { color:inherit; text-decoration:none; border-bottom:1px solid var(--line); }
+.rule-link:hover { border-bottom-color:var(--accent); color:var(--accent); }
 .caveat { color:var(--muted); font-size:.92rem; border-left:2px solid var(--line); padding-left:.75rem; }
 .muted { color:var(--muted); }
 table { border-collapse:collapse; width:100%; font-size:.92rem; }

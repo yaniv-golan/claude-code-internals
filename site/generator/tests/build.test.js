@@ -258,6 +258,48 @@ test('an unscoped fact renders no lane badge', () => {
   }
 });
 
+test('every contract rule links to the page that explains it', () => {
+  // The contract page's own summary promises this. Before v2.36.4 it was false:
+  // the only <a> in each list item was the tier badge pointing at the legend, so
+  // a reader saw 52 bold one-liners with nothing to click through to.
+  const { out } = buildOnce();
+  const facts = JSON.parse(fs.readFileSync(
+    path.join(__dirname, '../../../skill-package/skills/claude-code-internals/references/state/author-facts.json'), 'utf8'));
+  const durable = facts.facts.filter(f => f.durability === 'durable');
+  const html = fs.readFileSync(path.join(out, SECTION, 'contract', 'index.html'), 'utf8');
+  const md = fs.readFileSync(path.join(out, SECTION, 'contract.md'), 'utf8');
+  const linked = (html.match(/class="rule-link"/g) || []).length;
+  assert.strictEqual(linked, durable.length, `HTML: ${linked} rule links for ${durable.length} rules`);
+  const mdLinked = (md.match(/^- \[\*\*/gm) || []).length;
+  assert.strictEqual(mdLinked, durable.length, `Markdown: ${mdLinked} rule links for ${durable.length} rules`);
+});
+
+test('every contract deep link resolves to a real anchor', () => {
+  // Gate 4 already checks fragments at build time; this pins it against a future
+  // refactor that stops emitting the ids while still emitting the links.
+  const { out } = buildOnce();
+  const html = fs.readFileSync(path.join(out, SECTION, 'contract', 'index.html'), 'utf8');
+  const links = [...html.matchAll(/class="rule-link" href="\.\.\/([^/]+)\/#([^"]+)"/g)];
+  assert.ok(links.length > 0, 'no rule links found');
+  for (const [, slug, frag] of links) {
+    const target = path.join(out, SECTION, slug, 'index.html');
+    assert.ok(fs.existsSync(target), `missing page ${slug}`);
+    assert.ok(fs.readFileSync(target, 'utf8').includes(`id="${frag}"`), `${slug} has no anchor #${frag}`);
+  }
+});
+
+test('fact anchors are derived from the fact id, not the rule text', () => {
+  // Rule wording is revised often -- ten rules were reworded across v2.36.1-3.
+  // An anchor built from prose would break every inbound link on each rewrite.
+  const { out } = buildOnce();
+  const facts = JSON.parse(fs.readFileSync(
+    path.join(__dirname, '../../../skill-package/skills/claude-code-internals/references/state/author-facts.json'), 'utf8'));
+  const f = facts.facts.find(x => x.page === 'files-and-paths');
+  const html = fs.readFileSync(path.join(out, SECTION, 'files-and-paths', 'index.html'), 'utf8');
+  const expected = 'fact-' + f.id.replace(/[^a-z0-9]+/gi, '-').toLowerCase();
+  assert.ok(html.includes(`id="${expected}"`), `expected anchor ${expected}`);
+});
+
 test('every page offers a way to report an error', () => {
   const { out } = buildOnce();
   for (const f of htmlFiles(out)) {
