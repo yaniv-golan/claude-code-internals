@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.36.3 — 2026-08-06 (this fork) — the preinstalled rule now says what is preinstalled
+
+**No fact changes.** Closes the one gap left by v2.36.2.
+
+That pass added the preinstalled inventory to the package-install rule, then moved it out to resolve a duplication with the neighbouring *"ships a large preinstalled stack"* rule. The result: a rule reading **"Prefer what is preinstalled"** whose detail said *"check what is already there first"* and never said what was there, with no pointer to the adjacent rule holding the numbers. A reader checking the ten items found it immediately.
+
+The rule now names the stack in its own first sentence — Python 3.10.12, ~149 packages, `pandas`, `numpy`, `PIL`, `openpyxl` — duplicating one clause across two adjacent rules deliberately. **A rule a reader can act on without reading its neighbour is worth a repeated sentence.**
+
+### Noted for future passes
+
+Of the ten reader questions v2.36.2 answered, only **three** were fixed in the rule *heading*; the other six were fixed in the detail beneath. A reader scanning headings still meets the original wording. That is a limit of the format rather than an oversight — but it means heading text carries more weight than its length suggests.
+
 ## v2.36.2 — 2026-08-06 (this fork) — say the noun
 
 **No fact changes.** Every claim, tier, caveat and evidence date is unchanged from v2.36.1. This is a clarity pass, prompted by a reader working through the published pages and asking, nine times, what a sentence actually meant.

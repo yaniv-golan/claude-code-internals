@@ -504,7 +504,7 @@
       "id": "shell.no-package-installs",
       "page": "shell-commands",
       "rule": "Prefer what is preinstalled, and never install globally. A user-scoped or project-local install works, but treat it as a fallback.",
-      "detail": "Check what is already there first. If you do need something else, a user-scoped Python install (`pip install --user`) and a project-local Node install (`npm install`) both succeed, and the package imports normally afterwards. A global install does not take effect — `npm install -g` in particular leaves nothing behind. Which package sources are reachable is session configuration that has changed between releases, so put any install on a path that degrades gracefully rather than making it a prerequisite. An earlier version of this rule said installs would fail or hang; that was an inference from the network constraints and it was wrong.",
+      "detail": "Check what is already there first: the sandbox ships Python 3.10.12 with roughly 149 packages, including `pandas`, `numpy`, `PIL` and `openpyxl`. If you do need something else, a user-scoped Python install (`pip install --user`) and a project-local Node install (`npm install`) both succeed, and the package imports normally afterwards. A global install does not take effect — `npm install -g` in particular leaves nothing behind. Which package sources are reachable is session configuration that has changed between releases, so put any install on a path that degrades gracefully rather than making it a prerequisite. An earlier version of this rule said installs would fail or hang; that was an inference from the network constraints and it was wrong.",
       "tier": "measured",
       "durability": "durable",
       "lane": "local",
