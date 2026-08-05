@@ -1,5 +1,38 @@
 # Changelog
 
+## v2.36.5 — 2026-08-06 (this fork) — search discoverability
+
+**No fact changes.** An audit of the published site found the content-side foundations already strong and four mechanical gaps.
+
+### Already good, left alone
+
+Unique **question-shaped H1s** — *"Why did my skill's output never reach the user?"* — which match how an author actually searches. Unique titles and meta descriptions, `lang`, viewport, inline CSS (fast by construction), clean URLs, and the 52 internal rule links added in v2.36.4.
+
+### Added
+
+| gap | fix |
+|---|---|
+| no `sitemap.xml` | generated from the same page loop that emits the pages |
+| no `robots.txt` | `Allow: /`, `Disallow: /static/`, sitemap pointer |
+| no canonical | absolute canonical on every indexable page |
+| no social / structured data | Open Graph, Twitter card, JSON-LD |
+
+Sitemap and robots come from the **same `doc.pages` loop** as the pages themselves, so a page cannot exist without appearing in the sitemap — and a test asserts the count matches.
+
+Canonical points at the apex, which is correct because both `www` and the `github.io` origin already 301 there. **Checked, not assumed.**
+
+### Two deliberate choices
+
+**Structured data is `TechArticle` + `BreadcrumbList`, not `FAQPage`.** The pages are literally question-shaped, so FAQ markup is tempting — but Google restricted FAQ rich results to a narrow set of authoritative sites in 2023, so marking these up as FAQ would claim a result they will not receive.
+
+**The `.md` twins stay crawlable.** They are the LLM-facing copy, and blocking them would defeat the point of `llms.txt`. Every HTML page now declares itself canonical, so they cannot split ranking.
+
+`404.html` is `noindex,follow`; `/static/` is disallowed.
+
+### Also fixed
+
+A real bug in the build's own link gate: it resolved **root-absolute** hrefs against each page's directory, so `/favicon.svg` was reported missing from every page. The gate caught my first attempt, which is what it is for.
+
 ## v2.36.4 — 2026-08-06 (this fork) — the contract page now links to its explanations
 
 **No fact changes.** The contract page's own summary promises *"Each rule links to the page that explains it."* It did not.

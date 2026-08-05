@@ -28,6 +28,9 @@ const { scanForDisclosure } = require('../../skill-package/skills/claude-code-in
 
 const SITE_URL = process.env.SITE_URL || 'https://ccinternals.dev';
 const SECTION = 'cowork';
+// Absolute origin, needed for canonical/og/sitemap URLs. Matches site/dist/CNAME;
+// the apex is canonical because www and the github.io origin both 301 to it.
+const ORIGIN = 'https://ccinternals.dev';
 const CUSTOM_DOMAIN = 'ccinternals.dev';
 
 // Freshness bands, in days since the capture the facts were verified against.
@@ -309,6 +312,7 @@ function pageHtml(doc, page, registry, depth) {
     up,
     verified: doc.verified_against.observed_at,
     slug: page.slug,
+    canonical: page.slug === 'index' ? `/${SECTION}/` : `/${SECTION}/${page.slug}/`,
   });
 }
 
@@ -322,6 +326,39 @@ function badge(f) {
  * wording gets revised (v2.36.1-3 rewrote ten of them) and an anchor built from
  * prose would silently break every inbound link when that happens.
  */
+/**
+ * TechArticle + BreadcrumbList. Deliberately NOT FAQPage: since 2023 Google
+ * restricts FAQ rich results to a narrow set of authoritative sites, so marking
+ * these pages up as FAQ would add weight for a result they will not receive.
+ * TechArticle is the honest type and carries the freshness signal.
+ */
+function jsonLd({ title, description, canonical, verified }) {
+  const url = ORIGIN + canonical;
+  const isHome = canonical === `/${SECTION}/`;
+  const graph = [{
+    '@type': 'TechArticle',
+    '@id': url + '#article',
+    headline: title,
+    description,
+    url,
+    inLanguage: 'en',
+    isAccessibleForFree: true,
+    ...(verified ? { dateModified: verified } : {}),
+    author: { '@type': 'Person', name: 'Yaniv Golan', url: 'https://github.com/yaniv-golan' },
+    publisher: { '@type': 'Person', name: 'Yaniv Golan', url: 'https://github.com/yaniv-golan' },
+  }];
+  if (!isHome) {
+    graph.push({
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Claude Cowork for Skill Authors', item: `${ORIGIN}/${SECTION}/` },
+        { '@type': 'ListItem', position: 2, name: title, item: url },
+      ],
+    });
+  }
+  return JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
+}
+
 function factAnchor(f) {
   return 'fact-' + f.id.replace(/[^a-z0-9]+/gi, '-').toLowerCase();
 }
@@ -356,7 +393,7 @@ function mdTablesToHtml(md) {
   return out.join('\n');
 }
 
-function shell({ title, description, body, mdHref, up, verified, slug }) {
+function shell({ title, description, body, mdHref, up, verified, slug, canonical }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -364,7 +401,18 @@ function shell({ title, description, body, mdHref, up, verified, slug }) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)} — Claude Cowork for Skill Authors</title>
 <meta name="description" content="${esc(description)}">
+<link rel="canonical" href="${ORIGIN}${canonical}">
 <link rel="alternate" type="text/markdown" href="${mdHref}">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Claude Cowork for Skill Authors">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(description)}">
+<meta property="og:url" content="${ORIGIN}${canonical}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(description)}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">${jsonLd({ title, description, canonical, verified })}</script>
 <style>
 :root { color-scheme: light dark; --fg:#111; --muted:#666; --line:#ddd; --accent:#0b62d6; --warn:#8a5a00; --bad:#a11; }
 @media (prefers-color-scheme: dark) { :root { --fg:#e6e6e6; --muted:#9aa; --line:#333; --accent:#6aa9ff; --warn:#e0a83a; --bad:#ff8080; } }
@@ -465,6 +513,35 @@ function build(outDir) {
     }
   }
 
+  // sitemap/robots/favicon — generated from the same doc.pages loop above, so a
+  // new page cannot be added without appearing in the sitemap.
+  const urls = doc.pages.map(pg => ({
+    loc: ORIGIN + (pg.slug === 'index' ? `/${SECTION}/` : `/${SECTION}/${pg.slug}/`),
+    // The contract page changes whenever any rule does; topic pages less often.
+    priority: pg.slug === 'index' ? '1.0' : pg.slug === 'contract' ? '0.9' : '0.8',
+  }));
+  urls.unshift({ loc: ORIGIN + '/', priority: '0.7' });
+  write('sitemap.xml',
+    '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    urls.map(u => `  <url><loc>${u.loc}</loc><lastmod>${doc.verified_against.observed_at}</lastmod>` +
+                  `<priority>${u.priority}</priority></url>`).join('\n') +
+    '\n</urlset>\n');
+
+  // The .md twins stay crawlable on purpose: they are the LLM-facing copy, and
+  // every HTML page declares itself canonical, so they cannot split ranking.
+  write('robots.txt',
+    'User-agent: *\n' +
+    'Allow: /\n' +
+    'Disallow: /static/\n' +
+    `Sitemap: ${ORIGIN}/sitemap.xml\n`);
+
+  write('favicon.svg',
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">' +
+    '<rect width="64" height="64" rx="12" fill="#0b62d6"/>' +
+    '<text x="32" y="44" font-family="system-ui,sans-serif" font-size="34" font-weight="700" ' +
+    'fill="#fff" text-anchor="middle">cw</text></svg>\n');
+
   // published facts.json — a projection, not a copy
   const pub = {
     schema_version: 1,
@@ -541,6 +618,24 @@ function build(outDir) {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Claude Code Internals — how Claude Code and Cowork actually behave</title>
 <meta name="description" content="Unofficial reference for skill authors, derived from shipped binaries and live sessions, stamped with the build each claim was verified against.">
+<link rel="canonical" href="${ORIGIN}/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Claude Code Internals">
+<meta property="og:title" content="Claude Code Internals — how Claude Code and Cowork actually behave">
+<meta property="og:description" content="Unofficial reference for skill authors, derived from shipped binaries and live sessions, stamped with the build each claim was verified against.">
+<meta property="og:url" content="${ORIGIN}/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Claude Code Internals — how Claude Code and Cowork actually behave">
+<meta name="twitter:description" content="Unofficial reference for skill authors, derived from shipped binaries and live sessions, stamped with the build each claim was verified against.">
+<script type="application/ld+json">${JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Claude Code Internals',
+  url: ORIGIN + '/',
+  inLanguage: 'en',
+  author: { '@type': 'Person', name: 'Yaniv Golan', url: 'https://github.com/yaniv-golan' },
+})}</script>
 <style>
 :root { color-scheme: light dark; --fg:#111; --muted:#666; --line:#ddd; --accent:#0b62d6; --warn:#8a5a00; --bad:#a11; }
 @media (prefers-color-scheme: dark) { :root { --fg:#e6e6e6; --muted:#9aa; --line:#333; --accent:#6aa9ff; --warn:#e0a83a; --bad:#ff8080; } }
@@ -596,6 +691,8 @@ ${AGE_SCRIPT}
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Not found — Claude Code Internals</title>
+<meta name="robots" content="noindex,follow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <style>body{font:16px/1.6 system-ui,-apple-system,sans-serif;max-width:34rem;margin:14vh auto;padding:0 1.25rem;color-scheme:light dark}h1{font-size:1.3rem}</style>
 </head><body>
 <h1>That page isn't here</h1>
@@ -635,7 +732,12 @@ ${AGE_SCRIPT}
       if (!rawPath) {
         targetRel = rel;                                // same-document fragment
       } else {
-        targetRel = path.normalize(path.join(base, rawPath));
+        // A leading slash is site-root-relative, not page-relative. Without this
+        // the gate resolved /favicon.svg against each page's own directory and
+        // reported a missing file for a link that was correct.
+        targetRel = rawPath.startsWith('/')
+          ? path.normalize(rawPath.slice(1))
+          : path.normalize(path.join(base, rawPath));
         if (rawPath.endsWith('/') || !path.extname(rawPath)) {
           targetRel = path.join(targetRel, 'index.html');
         }

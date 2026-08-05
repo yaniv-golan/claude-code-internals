@@ -300,6 +300,53 @@ test('fact anchors are derived from the fact id, not the rule text', () => {
   assert.ok(html.includes(`id="${expected}"`), `expected anchor ${expected}`);
 });
 
+test('sitemap lists every generated page and nothing else', () => {
+  // The drift risk: a page added to author-facts.json but missing from the
+  // sitemap is invisible to crawlers, and nothing else would notice.
+  const { out } = buildOnce();
+  const facts = JSON.parse(fs.readFileSync(
+    path.join(__dirname, '../../../skill-package/skills/claude-code-internals/references/state/author-facts.json'), 'utf8'));
+  const xml = fs.readFileSync(path.join(out, 'sitemap.xml'), 'utf8');
+  const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
+  for (const p of facts.pages) {
+    const want = p.slug === 'index' ? `/${SECTION}/` : `/${SECTION}/${p.slug}/`;
+    assert.ok(locs.some(l => l.endsWith(want)), `sitemap missing ${want}`);
+  }
+  assert.strictEqual(locs.length, facts.pages.length + 1, 'sitemap should hold every page plus the root');
+  for (const l of locs) assert.ok(l.startsWith('https://'), `sitemap loc not absolute: ${l}`);
+});
+
+test('robots.txt points at the sitemap and keeps the markdown crawlable', () => {
+  const { out } = buildOnce();
+  const robots = fs.readFileSync(path.join(out, 'robots.txt'), 'utf8');
+  assert.match(robots, /^Sitemap: https:\/\/.+\/sitemap\.xml$/m);
+  // The .md twins are the LLM-facing copy; blocking them would defeat llms.txt.
+  assert.ok(!/Disallow:.*\.md/.test(robots), 'markdown must stay crawlable');
+});
+
+test('every indexable page declares its own canonical URL', () => {
+  const { out } = buildOnce();
+  const facts = JSON.parse(fs.readFileSync(
+    path.join(__dirname, '../../../skill-package/skills/claude-code-internals/references/state/author-facts.json'), 'utf8'));
+  for (const p of facts.pages) {
+    const rel = p.slug === 'index' ? `${SECTION}/index.html` : `${SECTION}/${p.slug}/index.html`;
+    const html = fs.readFileSync(path.join(out, rel), 'utf8');
+    const m = html.match(/<link rel="canonical" href="([^"]+)"/);
+    assert.ok(m, `${rel} has no canonical`);
+    const want = p.slug === 'index' ? `/${SECTION}/` : `/${SECTION}/${p.slug}/`;
+    assert.ok(m[1].startsWith('https://') && m[1].endsWith(want), `${rel} canonical is ${m[1]}`);
+    assert.match(html, /property="og:title"/, `${rel} has no og:title`);
+    assert.match(html, /application\/ld\+json/, `${rel} has no structured data`);
+  }
+});
+
+test('the 404 page is noindex', () => {
+  // It is reachable at every bad URL; indexing it would put a dead end in results.
+  const { out } = buildOnce();
+  const html = fs.readFileSync(path.join(out, '404.html'), 'utf8');
+  assert.match(html, /name="robots" content="noindex/);
+});
+
 test('every page offers a way to report an error', () => {
   const { out } = buildOnce();
   for (const f of htmlFiles(out)) {

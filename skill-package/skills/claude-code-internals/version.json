@@ -1,12 +1,12 @@
 {
-  "skill_version": "2.36.4",
+  "skill_version": "2.36.5",
   "captured_version": "2.1.221",
   "captured_date": "2026-08-05",
   "source": "https://www.markdown.engineering/learn-claude-code/",
-  "verified_against_binary": "v2.36.4 makes the contract page's own promise true. That page says 'Each rule links to the page that explains it'; it did not. Every list item did contain an <a>, which is why a naive count said 52/52 -- but the link was the TIER BADGE pointing at the on-page legend. The only navigation to an explanation was the section heading, so a reader met 52 bold one-liners with nothing to click through to. Each rule is now a link to its own explanation: HTML deep-links to a per-fact anchor, Markdown links to the explaining page (markdown has no stable fragment ids). Anchors are derived from the FACT ID, never the rule text -- ten rules were reworded across v2.36.1-3, and a prose-derived anchor would break every inbound link on each rewrite. The build's existing fragment gate validates all 52 deep links; three tests pin the count parity across both formats, the anchor resolution, and the id-not-prose derivation. No fact changes.",
+  "verified_against_binary": "v2.36.5 is a discoverability pass on the published site. No fact changes. Audit found the content-side foundations already strong -- unique question-shaped H1s that match how authors actually search, unique titles and meta descriptions, lang, viewport, inline CSS, clean URLs -- and four mechanical gaps: no sitemap.xml, no robots.txt, no canonical, no social or structured-data tags. All four are now generated. Sitemap and robots are emitted from the same doc.pages loop that emits the pages, so a new page cannot exist without appearing in the sitemap; a test asserts the count. Canonical points at the apex, which is correct because both www and the github.io origin already 301 there (checked, not assumed). Structured data is TechArticle + BreadcrumbList, deliberately NOT FAQPage: Google has restricted FAQ rich results to a narrow set of authoritative sites since 2023, so FAQ markup would claim a result these pages will not get. The .md twins stay crawlable on purpose -- they are the LLM-facing copy and every HTML page now declares itself canonical, so they cannot split ranking. 404 is noindex; /static/ is disallowed. Also fixed a real bug in the build's own link gate, which resolved root-absolute hrefs against each page's directory and reported /favicon.svg as missing from every page.",
   "lessons_count": 146,
   "chapters_count": 40,
   "total_size_kb": 2780,
   "keywords_indexed": 3341,
-  "note": "Design note: the contract page is deliberately NOT expandable. Its stated contract is 'generated from the rules on every other page, with no additional prose ... this page cannot disagree with the others'. Inlining details would duplicate the whole site and reintroduce exactly the drift the page exists to rule out. Linking is the fix; expanding is not."
+  "note": "Not done, and deliberately: no OG image (a summary card without one is honest for a text reference; a generated image is a maintenance burden that adds nothing to ranking), and no analytics."
 }
