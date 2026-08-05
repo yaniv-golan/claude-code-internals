@@ -1,7 +1,7 @@
 {
   "generated": "2026-07-24",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 142,
+  "total_lessons": 146,
   "lessons": [
     {
       "id": 1,
@@ -4204,6 +4204,99 @@
         "sessions_api-channel",
         "preset-plus-append-is-wrong",
         "server-side-prompt-override"
+      ]
+    },
+    {
+      "id": 143,
+      "title": "The File Tools Lag the Shell, and the Error Blames Your Path",
+      "lesson_number": "143",
+      "file": "37-cowork-probe-corrections.md",
+      "startLine": 18,
+      "endLine": 65,
+      "keywords": [
+        "read-after-write",
+        "file-tool-lag",
+        "is-a-VM-path",
+        "birthtime-vs-mtime",
+        "retry-not-rewrite",
+        "misleading-error-message",
+        "path-gate-staleness",
+        "file-index-worker",
+        "session-paths-denied-correction",
+        "byte-identical-path",
+        "transient-denial",
+        "shell-write-then-read"
+      ]
+    },
+    {
+      "id": 144,
+      "title": "mcp__workspace__bash Translates Paths in BOTH Directions",
+      "lesson_number": "144",
+      "file": "37-cowork-probe-corrections.md",
+      "startLine": 66,
+      "endLine": 114,
+      "keywords": [
+        "bidirectional-path-translation",
+        "inbound-translation",
+        "outbound-translation",
+        "host-to-VM-rewrite",
+        "VM-to-host-rewrite",
+        "mount-target-only",
+        "K6-cmJAJ",
+        "L122-correction",
+        "octal-escaped-spaces",
+        "proc-mounts-count",
+        "within-record-mixture",
+        "count-cannot-be-confabulated",
+        "claude-hostloop-plugins-unreachable"
+      ]
+    },
+    {
+      "id": 145,
+      "title": "Egress Is Filtered by Destination, So Package Installs Work",
+      "lesson_number": "145",
+      "file": "37-cowork-probe-corrections.md",
+      "startLine": 115,
+      "endLine": 155,
+      "keywords": [
+        "egress-allowlist",
+        "package-install-works",
+        "pip-install-user",
+        "npm-install-local",
+        "npm-install-global-fails",
+        "no-package-installs-falsified",
+        "pypi-reachable",
+        "webFetchAllowedUrls",
+        "preinstalled-python-stack",
+        "inference-tier-failure",
+        "derived-claim-untested",
+        "curl-000-vs-200"
+      ]
+    },
+    {
+      "id": 146,
+      "title": "529 Sessions in One Namespace, and the Isolation That Holds Them Apart",
+      "lesson_number": "146",
+      "file": "37-cowork-probe-corrections.md",
+      "startLine": 156,
+      "endLine": 210,
+      "keywords": [
+        "529-sessions",
+        "session-namespace-scale",
+        "per-session-unix-user",
+        "cross-session-denied",
+        "remote-lane-is-root",
+        "lane-scoping",
+        "HOME-is-session-root",
+        "project-mounts-read-only",
+        "projects-uuid-mount",
+        "subagent-same-containment",
+        "classifier-dispatch-refusal",
+        "non-deterministic-refusal",
+        "plugin-zip-validator",
+        "RemotePluginSync",
+        "hooks-strip",
+        "find-L-symlink-trap"
       ]
     }
   ],
@@ -8866,7 +8959,8 @@
       106
     ],
     "egress-allowlist": [
-      106
+      106,
+      145
     ],
     "network-allowlist": [
       106
@@ -9783,7 +9877,8 @@
       117
     ],
     "per-session-unix-user": [
-      117
+      117,
+      146
     ],
     "oneshot-job-spawn": [
       117
@@ -14267,7 +14362,8 @@
       140
     ],
     "projects-uuid-mount": [
-      140
+      140,
+      146
     ],
     "userselectedprojectuuids": [
       140
@@ -14510,7 +14606,8 @@
       139
     ],
     "vm-to-host-rewrite": [
-      139
+      139,
+      144
     ],
     "gate-3758515526": [
       139
@@ -14550,6 +14647,153 @@
     ],
     "fork-worker-agent-mode": [
       25
+    ],
+    "read-after-write": [
+      143
+    ],
+    "file-tool-lag": [
+      143
+    ],
+    "is-a-vm-path": [
+      143
+    ],
+    "birthtime-vs-mtime": [
+      143
+    ],
+    "retry-not-rewrite": [
+      143
+    ],
+    "misleading-error-message": [
+      143
+    ],
+    "path-gate-staleness": [
+      143
+    ],
+    "file-index-worker": [
+      143
+    ],
+    "session-paths-denied-correction": [
+      143
+    ],
+    "byte-identical-path": [
+      143
+    ],
+    "transient-denial": [
+      143
+    ],
+    "shell-write-then-read": [
+      143
+    ],
+    "bidirectional-path-translation": [
+      144
+    ],
+    "inbound-translation": [
+      144
+    ],
+    "outbound-translation": [
+      144
+    ],
+    "host-to-vm-rewrite": [
+      144
+    ],
+    "mount-target-only": [
+      144
+    ],
+    "k6-cmjaj": [
+      144
+    ],
+    "l122-correction": [
+      144
+    ],
+    "octal-escaped-spaces": [
+      144
+    ],
+    "proc-mounts-count": [
+      144
+    ],
+    "within-record-mixture": [
+      144
+    ],
+    "count-cannot-be-confabulated": [
+      144
+    ],
+    "claude-hostloop-plugins-unreachable": [
+      144
+    ],
+    "package-install-works": [
+      145
+    ],
+    "pip-install-user": [
+      145
+    ],
+    "npm-install-local": [
+      145
+    ],
+    "npm-install-global-fails": [
+      145
+    ],
+    "no-package-installs-falsified": [
+      145
+    ],
+    "pypi-reachable": [
+      145
+    ],
+    "webfetchallowedurls": [
+      145
+    ],
+    "preinstalled-python-stack": [
+      145
+    ],
+    "inference-tier-failure": [
+      145
+    ],
+    "derived-claim-untested": [
+      145
+    ],
+    "curl-000-vs-200": [
+      145
+    ],
+    "529-sessions": [
+      146
+    ],
+    "session-namespace-scale": [
+      146
+    ],
+    "cross-session-denied": [
+      146
+    ],
+    "remote-lane-is-root": [
+      146
+    ],
+    "lane-scoping": [
+      146
+    ],
+    "home-is-session-root": [
+      146
+    ],
+    "project-mounts-read-only": [
+      146
+    ],
+    "subagent-same-containment": [
+      146
+    ],
+    "classifier-dispatch-refusal": [
+      146
+    ],
+    "non-deterministic-refusal": [
+      146
+    ],
+    "plugin-zip-validator": [
+      146
+    ],
+    "remotepluginsync": [
+      146
+    ],
+    "hooks-strip": [
+      146
+    ],
+    "find-l-symlink-trap": [
+      146
     ]
   }
 }

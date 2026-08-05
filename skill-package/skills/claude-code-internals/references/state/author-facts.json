@@ -113,13 +113,14 @@
       "id": "paths.projects-differ-from-folders",
       "page": "files-and-paths",
       "rule": "Do not assume a connected project gives you a folder mount. It does not.",
-      "detail": "Connecting a project and connecting a folder are different actions producing different results. A session with a project attached and no folder attached has no folder mount at all, and a skill that looks for one will find nothing.",
+      "detail": "Connecting a project and connecting a folder are different actions producing different results. A session with a project attached and no folder attached has no folder mount at all, and a skill that looks for one will find nothing. A connected project is also mounted read-only, while a connected folder is writable, so a project is a source to read from rather than somewhere to put output.",
       "tier": "measured",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          140
+          140,
+          146
         ],
         "state_page": "cowork-architecture"
       },
@@ -130,14 +131,15 @@
       "id": "paths.relative-filenames",
       "page": "files-and-paths",
       "rule": "Write files using bare or relative filenames, not absolute paths.",
-      "detail": "Your skill's shell commands and its file-reading and file-writing tools operate on the same underlying scratch space, but each refers to it by a different absolute path. A relative filename is correct for both. An absolute path is correct for at most one of them, and which one changes between configurations.",
+      "detail": "Your skill's shell commands and its file-reading and file-writing tools operate on the same underlying scratch space, but the shell reports paths in one form while operating on another — output you read back has already been rewritten before you see it. A relative filename is correct regardless. An absolute path copied out of shell output is not reliably the form the file tools want.",
       "tier": "measured",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
           122,
-          139
+          139,
+          144
         ],
         "state_page": "cowork-architecture"
       },
@@ -165,19 +167,22 @@
     {
       "id": "paths.session-paths-denied",
       "page": "files-and-paths",
-      "rule": "Never pass an absolute session path to the file tools. It is denied, not translated.",
-      "detail": "When a skill discovers an absolute path from shell output and hands it to a file-reading or file-writing tool, the call is rejected. Nothing rewrites it into the form those tools expect. This is the most common way a skill that works in the CLI fails in Cowork, and the error does not point at the path form as the cause.",
+      "rule": "If a file-tool read fails right after you wrote the file in the shell, retry it. Do not rewrite the path.",
+      "detail": "A file written by shell commands is not always readable by the file tools immediately. The read fails with a message stating that your path is a VM path and telling you to use the host path — while the path already is the host path and the identical call succeeds seconds later. The message names the wrong cause, so the natural fix makes things worse. Absolute paths in the session's own VM form are genuinely rejected by the file tools and are not rewritten for you, which is why relative filenames remain the safe habit; but that is a different failure from this one.",
       "tier": "measured",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          122
+          122,
+          143
         ],
         "state_page": "cowork-architecture"
       },
       "verified": "2026-08-05",
-      "caveats": []
+      "caveats": [
+        "The delay was observed once, at under two seconds failing and about six seconds succeeding; it is not characterised or known to be bounded."
+      ]
     },
     {
       "id": "paths.skills-are-a-read-only-mount",
@@ -470,40 +475,42 @@
       "id": "shell.no-arbitrary-network",
       "page": "shell-commands",
       "rule": "Do not rely on arbitrary outbound network access from shell commands.",
-      "detail": "Fetching over the network happens through a dedicated capability with its own routing and allow rules, not through unrestricted sockets from the shell. Write skills that use the fetch capability when it exists and state a clear limitation when it does not, rather than shelling out to a network client and assuming it works.",
-      "tier": "binary",
+      "detail": "Outbound access from the shell is filtered by destination rather than absent: some hosts answer and others do not, and the session carries a URL allowlist. Fetching is also available as a dedicated capability with its own routing. Write skills that use the fetch capability when it exists and state a clear limitation when it does not, rather than shelling out to a network client and assuming any host is reachable.",
+      "tier": "measured",
       "durability": "durable",
       "volatile_dependency": true,
       "sources": {
         "lessons": [
           108,
-          138
+          138,
+          145
         ],
         "state_page": "cowork-architecture"
       },
       "verified": "2026-08-05",
       "caveats": [
-        "Routing for fetching has changed across releases and is configuration-dependent."
+        "Routing for fetching has changed across releases and is configuration-dependent.",
+        "Which destinations are permitted was sampled, not enumerated."
       ]
     },
     {
       "id": "shell.no-package-installs",
       "page": "shell-commands",
-      "rule": "Do not plan on installing packages at runtime.",
-      "detail": "Outbound network access is constrained, so a skill whose first step is a package install will fail or hang in a way that looks like a bug in your skill. Use what is present, vendor what is small, and state the limitation when neither is possible.",
-      "tier": "inference",
+      "rule": "Prefer what is preinstalled, and never install globally. A user-scoped or project-local install works, but treat it as a fallback.",
+      "detail": "The sandbox ships a large preinstalled stack, and runtime installs do succeed: a user-scoped Python install and a project-local Node install both work, and the installed package imports normally. A global install does not take effect. Reachability of package sources is a matter of session configuration that has changed between releases, so put an install on a path that degrades gracefully rather than making it a prerequisite. An earlier version of this rule said installs would fail or hang; that was an inference from the network constraints and it was wrong.",
+      "tier": "measured",
       "durability": "durable",
       "volatile_dependency": true,
       "sources": {
         "lessons": [
-          108,
-          117
+          145
         ],
         "state_page": "cowork-architecture"
       },
       "verified": "2026-08-05",
       "caveats": [
-        "Follows from the egress constraints rather than a direct install attempt; routing is configuration-dependent."
+        "Which package sources are reachable is configuration-dependent and can change between releases.",
+        "Whether these installs fetched from a public registry or a local cache was not distinguished; only that the install step succeeded."
       ]
     },
     {
@@ -528,20 +535,22 @@
     {
       "id": "shell.runs-as-its-own-user",
       "page": "shell-commands",
-      "rule": "Do not expect to read or write anything outside your own session.",
-      "detail": "Each session runs as its own operating-system user with its own identity, and other sessions' data is not readable even though the machine may be shared. Anything your skill needs must be inside the session or fetched into it.",
+      "rule": "Do not expect to read or write anything outside your own session, and do not rely on the identity your shell runs as.",
+      "detail": "In the local sandbox each session runs as its own operating-system user: sibling sessions are visible by name but their contents are refused, and the session namespace holds hundreds of entries. In the remote sandbox there is no per-session user at all and commands run as root. Either way, anything your skill needs must be inside the session or fetched into it — but identity itself is not a stable thing to branch on.",
       "tier": "measured",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          140
+          140,
+          146
         ],
         "state_page": "cowork-architecture"
       },
       "verified": "2026-08-05",
       "caveats": [
-        "Verified by attempting cross-session reads, which were refused."
+        "Verified by attempting cross-session reads in the local sandbox, which were refused.",
+        "The two sandboxes differ: per-session user locally, root remotely. Directory listings show scale, not how many sessions are running at once."
       ]
     },
     {

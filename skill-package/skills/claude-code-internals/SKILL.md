@@ -37,7 +37,7 @@ first-party against this installation's own `app.asar` **1.18286.0** before bein
 If `$argument` is empty or just whitespace, print this index and ask what the user wants to know:
 
 ```
-Available topics (142 lessons across 38 chapters):
+Available topics (146 lessons across 40 chapters):
   Boot & Core:    boot sequence, query engine, state management, system prompt, architecture overview
   Tools:          tool system, bash tool, file tools, search tools, MCP system
   Agents & AI:    skills system, agent system, coordinator mode, teams/swarm
