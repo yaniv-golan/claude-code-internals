@@ -340,7 +340,7 @@ Desktop ships **bundled skills** at `resources/bundled-skills` under a
 (`morning` was removed this release, gate `3214976288` gone). MCP-contributed
 skills (`getMcpSkillSources`, gate `278625510`, extension
 `io.modelcontextprotocol/skills`) are **dead code** today: one occurrence, zero
-callers, gate absent from fcache, and the boot MCP handshake advertises only
+callers, gate not present in the pinned fcache snapshot, and the boot MCP handshake advertises only
 `io.modelcontextprotocol/ui`. Tripwire: `getMcpSkillSources` occurrence count
 rising above 1. Full trace: `references/34-skill-discovery-vcs-events-
 containment.md` (Chapter 37, L129/L131).

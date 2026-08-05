@@ -2,10 +2,15 @@
   "schema_version": 1,
   "as_of": {
     "cli": "2.1.217",
-    "desktop_asar": "1.24012.1",
+    "desktop_asar": "1.25927.0",
     "in_vm_elf": "2.1.197",
-    "fcache_capture": "2026-07-24",
-    "agent_elf_parity_check": "2.1.217"
+    "fcache_capture": {
+      "content16": "9d75909785dc344e",
+      "embedded_timestamp": 1785910109684,
+      "feature_count": 241,
+      "observed_at": "2026-08-05"
+    },
+    "agent_elf_parity_check": "2.1.221"
   },
   "entries": [
     {
@@ -2927,7 +2932,14 @@
           "lesson": 124,
           "note": "custom-3p uOt hardcode table forces this ON outside GrowthBook; consumer GrowthBook still OFF at 2026-07-11 recapture"
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.1143815894",
@@ -2949,7 +2961,14 @@
           "lesson": 124,
           "note": "resume-sticky semantics + verbatim policy-flip error; CLAUDE_FORCE_HOST_LOOP now dev-override-gated; custom-3p uOt hardcode"
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.3045399524",
@@ -2967,7 +2986,18 @@
         {
           "lesson": 109
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "9d75909785dc344e",
+        "served_keys": [
+          "alwaysLoad",
+          "enabled"
+        ]
+      }
     },
     {
       "id": "gate.583857784",
@@ -2986,7 +3016,14 @@
           "lesson": 119,
           "note": "re-confirmed against 1.19367.0 with fresh symbol names; call chain traced to handleSessionWork/connectSessionTransport"
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.1978029737",
@@ -3008,7 +3045,24 @@
           "lesson": 119,
           "note": "adds sessionsBridgePollIntervalMs key"
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "experiment",
+        "on": true,
+        "at": "9d75909785dc344e",
+        "served_keys": [
+          "coworkNativeFilePreview",
+          "coworkWebFetchDedup",
+          "coworkWebFetchDedupMaxEntries",
+          "coworkWebFetchDedupTtlMs",
+          "coworkWebFetchPrompt",
+          "coworkWebFetchViaApi",
+          "sessionsBridgePollBlockMs",
+          "workspaceBashWaitLonger"
+        ]
+      }
     },
     {
       "id": "gate.1648655587",
@@ -3026,7 +3080,18 @@
         {
           "lesson": 109
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "9d75909785dc344e",
+        "served_keys": [
+          "global",
+          "perTask"
+        ]
+      }
     },
     {
       "id": "gate.1893165035",
@@ -3041,7 +3106,18 @@
         {
           "lesson": 108
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "9d75909785dc344e",
+        "served_keys": [
+          "categories",
+          "enabled"
+        ]
+      }
     },
     {
       "id": "gate.2340532315",
@@ -3056,7 +3132,14 @@
         {
           "lesson": 108
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.2392971184",
@@ -3071,7 +3154,14 @@
         {
           "lesson": 108
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.2940196192",
@@ -3090,7 +3180,14 @@
           "lesson": 112,
           "note": "contrasted with the CLI's own tengu_cobalt_plinth"
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.123929380",
@@ -3108,7 +3205,14 @@
         {
           "lesson": 109
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.364911507",
@@ -3123,7 +3227,49 @@
         {
           "lesson": 109
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "9d75909785dc344e",
+        "served_keys": [
+          "chat_threads",
+          "delegation",
+          "dictation",
+          "dismiss_feedback",
+          "dismiss_feedback_v2",
+          "drafting",
+          "echo_antique_cli",
+          "echo_ditto_direct",
+          "echo_intent_engine",
+          "echo_kill_switch",
+          "echo_ocr_helper_transport",
+          "echo_plugins",
+          "echo_task_context_bootstrap",
+          "echo_task_suggestions",
+          "echo_tomo",
+          "echo_tomo_rename",
+          "echo_tomo_toast",
+          "echo_unified_login",
+          "extraction_v2",
+          "gps_associate",
+          "idle_loop_gating",
+          "ie_morning",
+          "intent_research",
+          "low_profile",
+          "morning_review",
+          "morning_review_v2",
+          "notch_shell",
+          "notif_pacing",
+          "notifications_v3",
+          "screen_graduation",
+          "silent_auto_update",
+          "tasks_tab",
+          "update_install_gate"
+        ]
+      }
     },
     {
       "id": "gate.pNe",
@@ -3138,7 +3284,8 @@
         {
           "lesson": 112
         }
-      ]
+      ],
+      "namespace": "cli_growthbook"
     },
     {
       "id": "gate.tengu_cobalt_plinth",
@@ -3153,7 +3300,8 @@
         {
           "lesson": 112
         }
-      ]
+      ],
+      "namespace": "cli_growthbook"
     },
     {
       "id": "beta.oidc-federation-2026-04-01",
@@ -4027,7 +4175,14 @@
         {
           "lesson": 114
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": true,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.3246569822",
@@ -4042,7 +4197,14 @@
         {
           "lesson": 114
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.1696890383",
@@ -4057,7 +4219,14 @@
         {
           "lesson": 114
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "env.CLAUDE_CODE_QUESTION_PREVIEW_FORMAT",
@@ -4340,7 +4509,7 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.217",
-      "summary": "Governs whether the system prompt tells the agent about the `.host-home` mount name and its path-translation semantics. `.host-home` is not a real bind mount -- Ch31/L117's rootfs mount-unit inventory found no corresponding systemd unit -- it's a synthetic index resolved by ece()/uCe() that lets the agent reference absolute host paths (e.g. `/sessions/<id>/mnt/.host-home/<sub>` <-> a real host path) without the host home directory ever being shared. OFF (dark, absent from fcache) for the standard client.",
+      "summary": "Governs whether the system prompt tells the agent about the `.host-home` mount name and its path-translation semantics. `.host-home` is not a real bind mount -- Ch31/L117's rootfs mount-unit inventory found no corresponding systemd unit -- it's a synthetic index resolved by ece()/uCe() that lets the agent reference absolute host paths (e.g. `/sessions/<id>/mnt/.host-home/<sub>` <-> a real host path) without the host home directory ever being shared. Not present in the pinned fcache snapshot for the standard client.",
       "provenance": [
         {
           "lesson": 108
@@ -4349,7 +4518,14 @@
           "lesson": 117,
           "note": "explains the .host-home mount-name reservation structurally"
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.124685897",
@@ -4364,7 +4540,14 @@
         {
           "lesson": 123
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.2860753854",
@@ -4379,7 +4562,14 @@
         {
           "lesson": 108
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": true,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.434204418",
@@ -4398,7 +4588,14 @@
           "lesson": 124,
           "note": "reconfirmed OFF (defaultValue) at 2026-07-11; values 0/10000 unchanged from v2.23.0, not a polarity flip"
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.66187241",
@@ -4413,7 +4610,14 @@
         {
           "lesson": 108
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.714014285",
@@ -4428,7 +4632,14 @@
         {
           "lesson": 108
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.1936081873",
@@ -4443,7 +4654,14 @@
         {
           "lesson": 108
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.4153934152",
@@ -4458,7 +4676,14 @@
         {
           "lesson": 108
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.1129419822",
@@ -4477,7 +4702,14 @@
           "lesson": 124,
           "note": "reconfirmed absent from fcache and confirmed absent agent-side entirely; ToolSearch is env/provider-driven not gate-driven"
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "env.MCP_CONNECTION_NONBLOCKING",
@@ -4799,7 +5031,14 @@
         {
           "lesson": 129
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.1598976391",
@@ -4814,7 +5053,14 @@
         {
           "lesson": 129
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.278625510",
@@ -4824,12 +5070,19 @@
       "first_seen": "1.24012.1",
       "removed_in": null,
       "as_of": "2.1.217",
-      "summary": "NEW. Would enable MCP-contributed skills (getMcpSkillSources / io.modelcontextprotocol/skills extension). Dead code today: getMcpSkillSources has one occurrence (definition), zero callers; ABSENT from fcache (unevaluated, not confirmed-off). Tripwire: occurrence count > 1.",
+      "summary": "NEW. Would enable MCP-contributed skills (getMcpSkillSources / io.modelcontextprotocol/skills extension). Dead code today: getMcpSkillSources has one occurrence (definition), zero callers; not present in the pinned fcache snapshot. Tripwire: occurrence count > 1.",
       "provenance": [
         {
           "lesson": 131
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.1311049725",
@@ -4839,7 +5092,7 @@
       "first_seen": "1.24012.1",
       "removed_in": null,
       "as_of": "2.1.217",
-      "summary": "NEW. Desktop-side consumption gate for the VCS SDK events; paired with cliSupportsVcsSdkEvents version floor isPinnedCliAtLeast('2.1.217'). Absent from CLI bundle (agent emit is ungated). ABSENT from fcache.",
+      "summary": "NEW. Desktop-side consumption gate for the VCS SDK events; paired with cliSupportsVcsSdkEvents version floor isPinnedCliAtLeast('2.1.217'). Absent from CLI bundle (agent emit is ungated).",
       "provenance": [
         {
           "lesson": 130
@@ -4847,7 +5100,14 @@
         {
           "lesson": 131
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.1549258603",
@@ -4857,12 +5117,19 @@
       "first_seen": "1.24012.1",
       "removed_in": null,
       "as_of": "2.1.217",
-      "summary": "NEW. Swaps SDK OAuth refresh from a refresher-object to clearTokenCache-then-resolveSdkOauthToken. Live-lane auth only. ABSENT from fcache.",
+      "summary": "NEW. Swaps SDK OAuth refresh from a refresher-object to clearTokenCache-then-resolveSdkOauthToken. Live-lane auth only.",
       "provenance": [
         {
           "lesson": 131
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.3705360580",
@@ -4872,12 +5139,19 @@
       "first_seen": "1.24012.1",
       "removed_in": null,
       "as_of": "2.1.217",
-      "summary": "NEW. CCD counterpart of 1549258603: expireForConfig(getCcdOauthConfig)-then-readCcd. Live-lane auth only. ABSENT from fcache.",
+      "summary": "NEW. CCD counterpart of 1549258603: expireForConfig(getCcdOauthConfig)-then-readCcd. Live-lane auth only.",
       "provenance": [
         {
           "lesson": 131
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "gate.3214976288",
@@ -4892,7 +5166,14 @@
         {
           "lesson": 131
         }
-      ]
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "9d75909785dc344e"
+      }
     },
     {
       "id": "env.CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS",
@@ -5221,6 +5502,538 @@
       "provenance": [
         {
           "lesson": 129
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "9d75909785dc344e"
+      }
+    },
+    {
+      "id": "gate.1131777852",
+      "kind": "gate",
+      "name": "updaterAppOwnership",
+      "status": "dark-launched",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Gates ensureCorrectAppOwnership() on the Desktop update check. Enterprise autoUpdate.disabled is evaluated first and wins.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "9d75909785dc344e"
+      }
+    },
+    {
+      "id": "gate.2039376689",
+      "kind": "gate",
+      "name": "pressureEvictionEnabled",
+      "status": "dark-launched",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "pressureEviction on the NEW CliGovernor class: memory-pressure-driven session eviction via pauseSession(id,\"governor_evict\"). Siblings: 2724639973 (evictionEnabled), 1032963206 (throttleEnabled).",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "9d75909785dc344e"
+      }
+    },
+    {
+      "id": "gate.2678393595",
+      "kind": "gate",
+      "name": "sessionWatcherPool",
+      "status": "dark-launched",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Session watcher pool, held via a LIVE gate subscription (.ja) whose handler calls disposeAll() when the gate goes false. Evidence that gate state is not boot-fixed.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "9d75909785dc344e"
+      }
+    },
+    {
+      "id": "gate.3436441689",
+      "kind": "gate",
+      "name": "launchPreviewFileAccess",
+      "status": "dark-launched",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "desktop_launch_preview_file_access_prompt decision path, including an admin_policy_deny outcome.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "9d75909785dc344e"
+      }
+    },
+    {
+      "id": "gate.3796647113",
+      "kind": "gate",
+      "name": "stallSampler",
+      "status": "dark-launched",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Stall-sampler profiler (samplingIntervalUs 1000, maxFrames 8, timeMs 30000), live-subscribed.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "9d75909785dc344e"
+      }
+    },
+    {
+      "id": "gate.4185841952",
+      "kind": "gate",
+      "name": "sessionClassifyConfig",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "VALUE config (read via .Ta, not boolean): {model, max_tokens_per_item, classify_prompt}, defaulting to claude-haiku-4-5-20251001. Server-driven config for Ch26/L109 classifySessions / setAutoDescription.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": true,
+        "at": "9d75909785dc344e",
+        "served_keys": [
+          "classify_prompt",
+          "max_tokens_per_item",
+          "model",
+          "summarize_prompt"
+        ]
+      }
+    },
+    {
+      "id": "gate.4116586025",
+      "kind": "gate",
+      "name": "yukonSilverCapabilityProbe",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "The Desktop yukonSilver capability probe: platform must be darwin or win32, then this gate -> {status:\"supported\"|\"unavailable\"}. One input to Cowork LANE availability; the lane decision itself is claude.ai-renderer-side and cannot be read from the fcache.",
+      "provenance": [
+        {
+          "lesson": 138
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "9d75909785dc344e"
+      }
+    },
+    {
+      "id": "gate.4074604942",
+      "kind": "gate",
+      "name": "1pDirectMcpPool",
+      "status": "dark-launched",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Arms a 1p-direct-mcp pool for MDM-managed Microsoft 365 MCP servers; logs \"[1p-direct-mcp] GrowthBook gate off\" when disabled. Variable-bound at its call site (let a=`4074604942`; t(a)), so call-site-anchored greps miss it.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": false,
+        "at": "9d75909785dc344e"
+      }
+    },
+    {
+      "id": "gate.2216414644",
+      "kind": "gate",
+      "name": "mobileRemoteSessionControl",
+      "status": "dark-launched",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Guards mobile-channel remote session control: if (channel===\"mobile\" && !gate) throw \"Remote session control is disabled\".",
+      "provenance": [
+        {
+          "lesson": 138
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "9d75909785dc344e"
+      }
+    },
+    {
+      "id": "gate.3123045134",
+      "kind": "gate",
+      "name": "resolveCloudBranch",
+      "status": "dark-launched",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Guards resolveCloudBranch({folder}); additionally requires the folder to be trusted.",
+      "provenance": [
+        {
+          "lesson": 138
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "9d75909785dc344e"
+      }
+    },
+    {
+      "id": "gate.3976799455",
+      "kind": "gate",
+      "name": "awayRecap",
+      "status": "dark-launched",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "maybeGenerateAwayRecap -- the gate id behind Ch26/L109 CLAUDE_CODE_ENABLE_REMOTE_RECAP / away_summary.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "9d75909785dc344e"
+      }
+    },
+    {
+      "id": "gate.2140326016",
+      "kind": "gate",
+      "name": "pluginBinStubHardening",
+      "status": "dark-launched",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Plugin bin/ stub hardening: when ON, author-supplied bin/ stubs throw instead of warning (\"will become a hard error\").",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "9d75909785dc344e"
+      }
+    },
+    {
+      "id": "env.CLAUDE_CODE_TAGS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_TAGS",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Always set in the Cowork local-agent spawn env: `lam_session_type:<sessionType|chat>`.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ]
+    },
+    {
+      "id": "env.MCP_TOOL_TIMEOUT",
+      "kind": "env-var",
+      "name": "MCP_TOOL_TIMEOUT",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Always set in the Cowork spawn env (value from a Desktop-side resolver).",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Set to \"1\" conditionally in the Cowork spawn env.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ]
+    },
+    {
+      "id": "env.ENABLE_PROMPT_CACHING_1H",
+      "kind": "env-var",
+      "name": "ENABLE_PROMPT_CACHING_1H",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Set to \"1\" unconditionally in the Cowork spawn env.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_BRIEF",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_BRIEF",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Set to \"1\" only when sessionType===\"agent\".",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_BRIEF_UPLOAD",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_BRIEF_UPLOAD",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Set to \"1\" only when sessionType===\"agent\".",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ]
+    },
+    {
+      "id": "env.DISABLE_BRIEF_MODE_STOP_HOOK",
+      "kind": "env-var",
+      "name": "DISABLE_BRIEF_MODE_STOP_HOOK",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Set to \"1\" when gate 451382573 passes, inside the sessionType===\"agent\" branch.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ]
+    },
+    {
+      "id": "env.DISABLE_MICROCOMPACT",
+      "kind": "env-var",
+      "name": "DISABLE_MICROCOMPACT",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Set to \"1\" unconditionally -- Cowork disables microcompact outright (cf. Ch32/L118 microcompact_boundary).",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_TERMINAL_TITLE",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_TERMINAL_TITLE",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Set to \"1\" unconditionally in the Cowork spawn env.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_HOST_PLATFORM",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_HOST_PLATFORM",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Set to process.platform in the Cowork spawn env.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_AUTO_COMPACT_WINDOW",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_AUTO_COMPACT_WINDOW",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Set conditionally from a Desktop resolver; cf. L89 autoCompactWindow.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ACCOUNT_UUID",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ACCOUNT_UUID",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Identity quad, set when accountId + email + orgId are all present.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_USER_EMAIL",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_USER_EMAIL",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Identity quad, set when accountId + email + orgId are all present.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ORGANIZATION_UUID",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ORGANIZATION_UUID",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Identity quad, set when accountId + email + orgId are all present.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ACCOUNT_TAGGED_ID",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ACCOUNT_TAGGED_ID",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Identity quad; additionally requires accountTaggedId.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_PROJECT_UUID",
+      "kind": "env-var",
+      "name": "CLAUDE_PROJECT_UUID",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Set for project-scoped Cowork sessions.",
+      "provenance": [
+        {
+          "lesson": 141
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_PROJECT_TOOL",
+      "kind": "env-var",
+      "name": "CLAUDE_PROJECT_TOOL",
+      "status": "live",
+      "first_seen": "1.25927.0",
+      "removed_in": null,
+      "as_of": "2.1.217",
+      "summary": "Set to \"1\" alongside CLAUDE_PROJECT_UUID for project-scoped Cowork sessions.",
+      "provenance": [
+        {
+          "lesson": 141
         }
       ]
     }

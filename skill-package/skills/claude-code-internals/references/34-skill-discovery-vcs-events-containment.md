@@ -152,6 +152,55 @@ with `function ft(r,e){return r?.builtSystemPrompt!==void 0 && (e===void 0 || r.
 
 Also confirmed here: `1598976391` is only consulted when the first gate passed (`pt && …`), so the two gates are a conjunction, never independent.
 
+### ADDENDUM 2026-08-05 — the gate is now ON, and it has a THIRD effect
+
+Re-verified first-party against **Desktop 1.25927.0** and fcache **`9d75909785dc344e`**.
+
+**1. `1598976391` is now `on/force` (`ruleId fr_msdcdhx0`).** The claims above that the proactive
+plumbing "is inert today" and reads `off/default` were true of the 2026-07-24 snapshot only. This is a
+**server-side flip**, not a build change — same provenance class as `canSaveSkill` `3246569822`, which
+is also now `on/force` (`fr_mrz4imok`). The conjunction, the write-back stickiness and the `?? false`
+sticky-branch fallback all re-confirm verbatim at 1.25927.0:
+
+```js
+mt = pt ? ft?.suggestSkillsEnabled ?? !1 : f.ka(`245679952`);                 ft && (ft.suggestSkillsEnabled = mt);
+$  = pt ? ft?.proactiveSkillSuggestEnabled ?? !1 : mt && f.ka(`1598976391`);  ft && (ft.proactiveSkillSuggestEnabled = $);
+```
+
+**2. The gate has a third effect this chapter does not describe: it rewrites the system prompt.**
+L129 says the gate swaps `suggest_skills`'s description and injects `trigger`. It *also* selects the
+guidance text inside the generated `<skills_instructions>` block, via
+`generateSkillsSystemPrompt(…)`'s **13th parameter** — confirmed by name from the builder's own
+destructure (`proactiveSkillSuggestEnabled: k=!1`). The once-per-conversation dedup rule lives in the
+proactive branch and **does not exist at all when the gate is off**:
+
+- proactive: *"When a task is one a skill could make repeatable … **Suggest at most once per
+  conversation unless the user engages.**"*
+- non-proactive: *"If they ask you to recommend skills, or ask for skills for a domain they have
+  nothing installed for, call …"*
+
+It also toggles `" with keywords from the task"` on the `suggest_skills`/`search_plugins` phrase. So
+flipping this gate changes **tool set, tool description, and prompt text** — three surfaces, not two.
+
+**3. `trigger` has THREE reachable states, not two.** The validator is
+`function Ti(e){return e===\`user_asked\`||e===\`proactive\`?e:void 0}` and `trigger` is optional
+(`required: []`), so **omission is reachable and behaves distinctly** from `user_asked` — it suppresses
+the trigger-forwarding clause while keeping the rest of the non-proactive wording.
+
+**4. NEW 14th parameter, `orgSkillCreationBlocked`** (1.24012.1 had 13). It selects the refusal text
+when skill creation is unavailable: *"your organization has turned off skill creation in this app"*
+(org policy) versus *"you can't do that here and point the user to Settings > Capabilities"*
+(local/settings). Pairs with `canSaveSkill`.
+
+**5. Undocumented category — a bundled skill can be hidden but still invocable.** The 12th parameter
+drives `if (h && r.name === H) continue`, which omits a skill from `<available_skills>` while leaving it
+callable: *"The docx skill is deliberately not listed but remains invocable by name — use it only for
+Word comment authoring, which doc_* does not cover."*
+
+**Snapshot discipline:** gate states in this lesson are stamped to a snapshot. The authoritative
+per-gate record is `state/registry.json`'s `observed: {present, source, on, at}`; see the amended
+gate-state section below for why a date is not a snapshot identifier.
+
 ---
 
 # LESSON 130 — VCS SDK EVENTS
@@ -312,7 +361,50 @@ Both swap a refresher-object for a clear-cache-then-re-resolve path; live-lane a
 
 ## Gate-state correction from the live fcache
 
-Four of the new gate ids — `278625510`, `1311049725` (L130), `1549258603`, `3705360580` — are **ABSENT from the fcache** (never evaluated), even though all four are newly *present in the asar*. Absent ≠ evaluated-and-off; "dark" conflates the two, and the precise state here is "present in code, unevaluated in this capture." `1598976391` (`0→1` in asar) evaluates `off/default`; `245679952` (`1→1`, pre-existing) `on/force`.
+> **AMENDED 2026-08-05 (Desktop 1.25927.0, fcache `9d75909785dc344e`). Two of the four claims below
+> have rotted, and the "absent" framing itself was too strong. Read the amendment first.**
+
+**Original claim (fcache snapshot 2026-07-24):** four of the new gate ids — `278625510`,
+`1311049725` (L130), `1549258603`, `3705360580` — are absent from the fcache, even though all four are
+newly *present in the asar*.
+
+**Amendment.** Re-checked against a later snapshot, **only two still hold**:
+
+| Gate | 2026-07-24 | fcache `9d75909785dc344e` (2026-08-05) |
+|---|---|---|
+| `278625510` (MCP-skills ext) | absent | absent — holds |
+| `3214976288` (`morning`) | absent | absent — holds |
+| `1311049725` (VCS-events consumption, **L130**) | absent | **present, `defaultValue`, off** |
+| `1549258603` (SDK OAuth refresh) | absent | **present, `defaultValue`, off** |
+| `3705360580` (CCD OAuth refresh) | absent | **present, `defaultValue`, off** |
+
+**Why this happened, and the rule that replaces it.** The fcache is refetched irregularly — measured at
+3.7, 4.0, 9.0 and 20.8-minute intervals in one 30-minute window — and its *membership* churns
+**count-neutrally** (one id added, one removed, total unchanged at 241). So **"absent from the fcache"
+is a property of a snapshot, never of a gate**, and equal feature counts do not imply equal payloads.
+A snapshot must be identified by a content hash (sha256 over the canonicalised `features` object), not
+by a date or a whole-file hash — the latter tracks the *fetch* and changes on every refetch even when
+nothing did.
+
+Use this three-state vocabulary instead of absent/present:
+
+| state | meaning |
+|---|---|
+| **absent** | not in the payload — unevaluated *in that snapshot* |
+| **present + `defaultValue`** | evaluated; no server rule matched, so the coded default applies |
+| **present + `force`** | a server rule actively matched |
+
+Note that `defaultValue`-off is much closer to the original "unevaluated" reading than `force`-off is,
+so this is an **amendment, not a reversal**: the practical upshot (no server rule is driving these) was
+right; the mechanism was not.
+
+The authoritative per-gate state now lives in `state/registry.json` as a structured
+`observed: {present, source, on, at}` stamped with the snapshot's `content16`, and
+`validate-state.js` **rejects fcache-absence claims written in prose**.
+
+`1598976391` (`0→1` in asar) evaluated `off/default` at the 2026-07-24 snapshot; **at
+`9d75909785dc344e` it is `on/force`** (see the L129 amendment). `245679952` (`1→1`, pre-existing)
+remains `on/force`.
 
 ---
 
@@ -360,8 +452,8 @@ If 1.24012.x moves real Desktop sessions' transcripts into the VM, **the host-si
 | `vcs_state_changed` | control-subtype | CLI 2.1.216+ | commit/push/merge/rebase event (`hlo`); strict `kind` enum agent-side |
 | `cliSupportsVcsSdkEvents` = `isPinnedCliAtLeast("2.1.217")` | capability | asar only | Desktop consumption floor (one-version blind window vs the 2.1.216 emit floor) |
 | `getMcpSkillSources` | fn | asar (NEW) | Dead code (1 occurrence, 0 callers); gate `278625510`; MCP-skills extension `io.modelcontextprotocol/skills` (L131) |
-| `278625510` / `1311049725` / `1549258603` / `3705360580` | gate ids | asar (NEW) | MCP-skills ext / VCS-events consumption / SDK & CCD OAuth-refresh; all **absent from fcache** (unevaluated, not confirmed-off) |
-| `1598976391` (`proactiveSkillSuggestEnabled`) / `245679952` (`suggestSkillsEnabled`) | gate ids | asar + fcache | proactive off/default; suggest on/force (L129) |
+| `278625510` / `1311049725` / `1549258603` / `3705360580` | gate ids | asar (NEW) | MCP-skills ext / VCS-events consumption / SDK & CCD OAuth-refresh. **State is snapshot-bound — see the amended gate-state section**: at `9d75909785dc344e` only `278625510` is absent; the other three read present/`defaultValue`/off |
+| `1598976391` (`proactiveSkillSuggestEnabled`) / `245679952` (`suggestSkillsEnabled`) | gate ids | asar + fcache | **snapshot-bound**: at `9d75909785dc344e` both are `on/force` (proactive was `off/default` at 2026-07-24 — see the L129 addendum) |
 | `3214976288` | gate id | asar (REMOVED) | Was the `morning` bundled-skill `isEnabled`; skill removed this release (L131) |
 | `coworkTokens` | config key | asar (NEW) | Usage accounting `{chatTokens,coworkTokens,codeTokens}`; Desktop UI only |
 | `harnessCwd` / `clearHarnessMoveState` | fields | asar (NEW) | CLI runtime cwd after `EnterWorktree`/`ExitWorktree` — **not** a test "harness" (naming trap) |
@@ -372,7 +464,7 @@ If 1.24012.x moves real Desktop sessions' transcripts into the VM, **the host-si
 - **To reason about which skill-discovery tools a Cowork model has, read the `system/init` `tools` array — never the model's self-description.** The model confabulates tool names; the init record is ground truth. On host-loop builds this record is recoverable from `local-agent-mode-sessions/**/audit.jsonl`.
 - **The discovery capability the model uses is SDK-MCP (`mcp__skills__*`), not the native `ListSkills`/etc.** Anything that models "what tools does a Cowork skill-discovery flow have" must model the SDK-MCP servers arriving over the control protocol (Ch24/L107), not the native agent tools — those are `vLt`-gated and never render.
 - **VCS SDK events exist from agent 2.1.216, but only fire on real git operations.** Don't expect `code_change_published`/`vcs_state_changed` on a turn that does no PR-create/commit/push/merge/rebase, and don't gate their existence on 2.1.217 (that's the Desktop *consumption* floor).
-- **Don't build on `getMcpSkillSources` / MCP-contributed skills — it's dead code today** (zero callers, gate unevaluated, extension not advertised on the wire).
+- **Don't build on `getMcpSkillSources` / MCP-contributed skills — it's dead code today** (zero callers, gate absent from the pinned snapshot, extension not advertised on the wire).
 - **On Desktop 1.24012.x, do not assume a Cowork session leaves a host-side transcript.** A fresh 1.24012.1 session here left none; whether that's a VM-loop shift or a path change is unconfirmed, but the L129 disk-recovery path may not hold on newer builds — verify where a build writes before relying on it.
 
 **Cross-references.** Ch24/L107 (SDK servers over the control protocol; `f_()` host-loop/VM-loop decision) — L129's delivery channel and L132's loop-mode question · Ch30/L116 (entrypoint taxonomy `c2u`/`u2u`/`d2u`) — L129's `ekl`/`vth`/`LZe` · Ch31/L117 (VM rootfs forensics) — L132's fallback verification path if host transcripts go dark · Ch23/L106 + Ch35/L124 (stream-subtype inventories) — L130's `system`-subtype set · Ch36/L128 (scheduled-task auto-approve gates) — L131's `mcp__scheduled-tasks__*` allowlist entry · Ch27/L110 (model landscape) — the CLI content gap v2.1.198→2.1.217 is deferred to a separate future chapter, not folded here.

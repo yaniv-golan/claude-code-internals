@@ -2,9 +2,9 @@
 domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.217
-as_of_desktop: 1.24012.1
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 121, 122, 124, 125, 126, 132, 134]
-updated: 2026-07-22
+as_of_desktop: 1.25927.0
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140]
+updated: 2026-08-05
 ---
 
 # Cowork runtime architecture (current)
@@ -444,3 +444,53 @@ and `requireCoworkFullVmSandbox` (the `f_()` override) is not fcache-readable.
 and future `init.tools` checks need live `rootfs.img` forensics (Ch31). Verify
 where a build writes before relying on the recovery path. Full detail: Chapter
 37, L132, `references/34-skill-discovery-vcs-events-containment.md`.
+
+## Execution lanes (L138)
+
+Cowork runs in **two structurally different lanes**. The discriminator on a session record is
+`environment_kind`, never the id prefix:
+
+| `environment_kind` | `config.origin` | lane |
+|---|---|---|
+| `bridge` | `claude_code_cli` | locally-executing session registered for watch/remote-control (Ch33/L119) |
+| `anthropic_cloud` | `desktop_app` | **remote Cowork** — agent loop + execution on Anthropic servers |
+
+**`cse_<ULID>` is NOT a lane oracle** — it is the id space for any server-registered Claude Code
+session, local ones included.
+
+Lane *selection* happens in claude.ai renderer code (statsig `yukon_silver` family + org bit +
+Desktop's capability probe, **gate `4116586025`**). Desktop main has no lane branch, so **no fcache
+gate can hold the decision**. `1143815894` (host-loop vs VM-loop) is a *within-local-lane* axis.
+
+Remote lane specifics: cwd `/home/claude`; delivery via `SendUserFile` →
+`internal__remote-devices__device_commit_files` (**delivery is an act, not a location**); local MCP
+servers cannot cross the boundary; the filesystem **is discarded** at session end (local only *hides*
+it — `archiveSession` deletes just `["uploads","uploads-tmp","doc-export-out"]` and does not fire at
+ordinary session end); host files reachable only via `device_request_folder_access` +
+`remoteSessionFolderGrants`, and only while the Desktop app is open. `container_cc_version` (observed
+2.1.204–2.1.216) is a **separate version axis** from the host CLI and the Desktop-managed agent.
+
+## Mount model and delete policy (L139, L140)
+
+All mounts appear at `/sessions/<slug>/mnt/…` — the host-path strings visible in `/proc/mounts` are
+**not usable VM paths**. A typical session carries **29** fuse mounts:
+
+`outputs` (rw) · `uploads` (**ro**) · each connected folder · `.claude/projects` · `.claude/skills`
+(separate mounts) · `.projects/<uuid>` · `.local-plugins/cache/<marketplace>/<plugin>/<version>`
+(version-pinned) · `.remote-plugins/plugin_<id>`
+
+**Project-connect ≠ folder-connect**: a project produces a `.projects/<uuid>` mount and populates
+`userSelectedProjectUuids`; a folder produces `/mnt/<name>` and populates `userSelectedFolders` +
+`resolvedFolderKinds`. A project-only session shows an **empty `userSelectedFolders`**.
+
+**Delete policy — every mount, not just `outputs`:** `unlink` and `rmdir` are denied (EPERM);
+`truncate`/`O_TRUNC`, rename-within and rename-onto-existing are **permitted**; cross-device rename
+gives EXDEV. Approval via `mcp__cowork__allow_cowork_file_delete` is **strictly per-mount**, takes
+effect live in already-open shells, and involves **no remount**. Persisted as
+`fileDeleteApprovedMounts` and re-applied at spawn; under host-loop the handler early-returns without
+calling `mountPath`. The VM-loop `mountPath(…,"rwd")` path is **untested**.
+
+**Multiplexing:** multiple sessions share one VM guest and one mount namespace (a session sees other
+slugs' mounts in `/proc/mounts`), but **isolation holds** — cross-session reads return EACCES; session
+dirs are `drwxr-x---` `nobody:nogroup` and each session runs as its own `coworkd` uid. `/sessions/` is
+a persistent shared volume (522 dirs enumerable from any session).

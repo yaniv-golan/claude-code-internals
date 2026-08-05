@@ -1,7 +1,7 @@
 {
   "generated": "2026-07-24",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 137,
+  "total_lessons": 142,
   "lessons": [
     {
       "id": 1,
@@ -3636,7 +3636,7 @@
       "lesson_number": "129",
       "file": "34-skill-discovery-vcs-events-containment.md",
       "startLine": 20,
-      "endLine": 156,
+      "endLine": 205,
       "keywords": [
         "skill-discovery-tools",
         "plugin-discovery-tools",
@@ -3697,7 +3697,14 @@
         "gate-driven-not-version-keyed",
         "427-audit-jsonl-corpus",
         "rg-skips-hidden-vite-build",
-        "positive-control-before-absent-claim"
+        "positive-control-before-absent-claim",
+        "orgSkillCreationBlocked",
+        "generateSkillsSystemPrompt",
+        "suggest-at-most-once-per-conversation",
+        "trigger-omitted",
+        "hidden-but-invocable-skill",
+        "docx-skill-not-listed",
+        "gate-1598976391-on-force"
       ]
     },
     {
@@ -3705,8 +3712,8 @@
       "title": "VCS SDK Events: Emit Floor 2.1.216, Git-Operation-Driven, Ungated Agent-Side",
       "lesson_number": "130",
       "file": "34-skill-discovery-vcs-events-containment.md",
-      "startLine": 157,
-      "endLine": 254,
+      "startLine": 206,
+      "endLine": 303,
       "keywords": [
         "vcs-sdk-events",
         "code_change_published",
@@ -3742,7 +3749,8 @@
         "multi-forge-provider",
         "outcomes-success-condition",
         "fleet-view-pr-tracking",
-        "event-driven-orchestration"
+        "event-driven-orchestration",
+        "gate-1311049725-present-defaultValue"
       ]
     },
     {
@@ -3750,8 +3758,8 @@
       "title": "Desktop 1.22209.0 -> 1.24012.1 asar Delta",
       "lesson_number": "131",
       "file": "34-skill-discovery-vcs-events-containment.md",
-      "startLine": 255,
-      "endLine": 318,
+      "startLine": 304,
+      "endLine": 410,
       "keywords": [
         "asar-diff",
         "1.24012.1",
@@ -3788,7 +3796,13 @@
         "allowedTools-9-vs-13",
         "rendered-but-not-pre-approved",
         "mutating-scheduled-tasks-tools",
-        "13-declared-9-pre-approved-4-prompted"
+        "13-declared-9-pre-approved-4-prompted",
+        "fcache-snapshot-identity",
+        "fcache-content-hash",
+        "fcache-membership-churn",
+        "absent-is-snapshot-bound",
+        "three-state-gate-taxonomy",
+        "defaultValue-vs-force"
       ]
     },
     {
@@ -3796,8 +3810,8 @@
       "title": "LEAD: 1.24012.1 May Move Cowork Session State Off the Host",
       "lesson_number": "132",
       "file": "34-skill-discovery-vcs-events-containment.md",
-      "startLine": 319,
-      "endLine": 378,
+      "startLine": 411,
+      "endLine": 470,
       "keywords": [
         "session-containment",
         "vm-loop-shift",
@@ -3972,6 +3986,183 @@
         "multi-agent-orchestration-vocabulary",
         "cli-content-baseline-2.1.217"
       ]
+    },
+    {
+      "id": 138,
+      "title": "Two Execution Lanes: bridge vs anthropic_cloud, and Why cse_ Is Not the Oracle",
+      "lesson_number": "138",
+      "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
+      "startLine": 19,
+      "endLine": 90,
+      "keywords": [
+        "cowork-remote-lane",
+        "cowork-local-lane",
+        "environment_kind",
+        "anthropic_cloud",
+        "bridge-environment-kind",
+        "cse-not-a-lane-oracle",
+        "config-origin",
+        "claude_code_cli-origin",
+        "desktop_app-origin",
+        "remote_cowork",
+        "container_cc_version",
+        "sixth-artifact-class",
+        "environment_id",
+        "managed-agents-environments",
+        "post_turn_summary-schema",
+        "status_category",
+        "need_input",
+        "review_ready",
+        "yukon_silver",
+        "4116586025",
+        "yukonSilver-capability-probe",
+        "lane-selection-renderer-side",
+        "LocalAgentModeSessions-start",
+        "device_commit_files",
+        "SendUserFile-remote",
+        "present_files-local",
+        "delivery-is-an-act-not-a-location",
+        "archiveSession",
+        "remoteSessionFolderGrants",
+        "device_request_folder_access",
+        "chromium-cache-artifact-class",
+        "Cache_Data",
+        "cowork-lane-oracle"
+      ]
+    },
+    {
+      "id": 139,
+      "title": "Delete Semantics: Per-Mount FUSE Policy, unlink and rmdir Only",
+      "lesson_number": "139",
+      "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
+      "startLine": 91,
+      "endLine": 149,
+      "keywords": [
+        "cowork-delete-semantics",
+        "unlink-rmdir-denied",
+        "truncate-permitted",
+        "rename-within-permitted",
+        "rename-onto-existing",
+        "EXDEV",
+        "fileDeleteApprovedMounts",
+        "allow_cowork_file_delete",
+        "per-mount-approval",
+        "no-remount",
+        "mountPath-rwd",
+        "isHostLoopMode-early-return",
+        "mountFolderForSession-deferred",
+        "request_cowork_directory",
+        "spawn-time-mode-selector",
+        "MountConfig",
+        "swift_addon",
+        "fuse-default_permissions",
+        "delete-not-outputs-specific",
+        "connected-folder-delete",
+        "session-json-is-memory-projection",
+        "void-test",
+        "forced-ask-matcher-behavioural",
+        "cowork-rm-operation-not-permitted"
+      ]
+    },
+    {
+      "id": 140,
+      "title": "VM Multiplexing Confirmed, Isolation Holds, and the Real Mount Inventory",
+      "lesson_number": "140",
+      "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
+      "startLine": 150,
+      "endLine": 198,
+      "keywords": [
+        "vm-multiplexing-confirmed",
+        "shared-vm-guest",
+        "shared-mount-namespace",
+        "cross-session-isolation",
+        "coworkd-per-session-uid",
+        "522-session-dirs",
+        "sessiondata-img",
+        "persistent-shared-volume",
+        "mount-inventory-29",
+        "uploads-read-only",
+        "outputs-rw",
+        "claude-projects-mount",
+        "claude-skills-mount",
+        "projects-uuid-mount",
+        "userSelectedProjectUuids",
+        "project-vs-folder-connect",
+        "resolvedFolderKinds",
+        "local-plugins-version-pinned",
+        "remote-plugins-plugin-id",
+        "claude-hostloop-plugins",
+        "agent-reported-paths-not-evidence",
+        "grep-count-corroboration"
+      ]
+    },
+    {
+      "id": 141,
+      "title": "Snapshot Discipline: the fcache Is a Moving Target with Two Absence Axes",
+      "lesson_number": "141",
+      "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
+      "startLine": 199,
+      "endLine": 277,
+      "keywords": [
+        "fcache-snapshot-identity",
+        "fcache-content-hash",
+        "content16",
+        "fcache-membership-churn",
+        "count-neutral-churn",
+        "absent-is-snapshot-bound",
+        "refetch-irregular-not-periodic",
+        "four-state-gate-taxonomy",
+        "key-level-absence",
+        "key-absent-not-off",
+        "Ea-accessor",
+        "Ta-accessor",
+        "Ma-accessor",
+        "ja-accessor",
+        "ka-accessor",
+        "gate-client-api",
+        "bashHostOnlyIntercept",
+        "scheduledTaskStaleReapEnabled",
+        "served_keys",
+        "quoted-literal-anchor",
+        "backtick-minifier-trap",
+        "extraction-pattern-must-be-published",
+        "observed-schema",
+        "gate-namespace",
+        "desktop_fcache",
+        "cli_growthbook",
+        "cowork-spawn-env-refresh",
+        "DISABLE_MICROCOMPACT",
+        "CLAUDE_CODE_BRIEF"
+      ]
+    },
+    {
+      "id": 142,
+      "title": "coworkSyspromptMap: a Server-Driven Prompt REPLACE Channel",
+      "lesson_number": "142",
+      "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
+      "startLine": 278,
+      "endLine": 313,
+      "keywords": [
+        "coworkSyspromptMap",
+        "system-prompt-patch-channel",
+        "sp_variant_replace",
+        "sp_variant_append",
+        "sp_variant_resolved",
+        "SP_VARIANTS",
+        "promptCacheBoundary",
+        "replace-mode",
+        "append-mode",
+        "no-prepend-mode",
+        "key-name-grammar",
+        "resolution-status-machine",
+        "missing_boundary",
+        "invalid_entry",
+        "per-model-variants",
+        "spSectionPrompts",
+        "sessions_api-channel",
+        "preset-plus-append-is-wrong",
+        "server-side-prompt-override"
+      ]
     }
   ],
   "keyword_map": {
@@ -3992,7 +4183,8 @@
       107
     ],
     "2307090146": [
-      106
+      106,
+      114
     ],
     "boot": [
       1,
@@ -4100,7 +4292,8 @@
       33
     ],
     "autocompact": [
-      56
+      56,
+      2
     ],
     "query-loop": [
       2
@@ -4122,7 +4315,8 @@
     ],
     "token-budget": [
       2,
-      28
+      28,
+      91
     ],
     "exponential-backoff": [
       2,
@@ -4485,10 +4679,13 @@
       14
     ],
     "subagent": [
-      12
+      12,
+      54
     ],
     "fork": [
-      87
+      87,
+      12,
+      54
     ],
     "async-agent": [
       12
@@ -4534,7 +4731,8 @@
       13
     ],
     "coordinator-mode": [
-      13
+      13,
+      92
     ],
     "research-synthesis-implement-verify": [
       13
@@ -4589,7 +4787,8 @@
     ],
     "team-memory": [
       15,
-      62
+      62,
+      102
     ],
     "session-memory": [
       15,
@@ -4681,7 +4880,9 @@
       24
     ],
     "commands": [
-      18
+      18,
+      11,
+      57
     ],
     "registration": [
       18,
@@ -4723,7 +4924,8 @@
     ],
     "onboarding": [
       60,
-      61
+      61,
+      19
     ],
     "launcher-pattern": [
       19
@@ -4788,7 +4990,8 @@
       21
     ],
     "keybindings": [
-      22
+      22,
+      21
     ],
     "keyboard": [
       22
@@ -4817,7 +5020,8 @@
       50
     ],
     "alt-screen": [
-      23
+      23,
+      81
     ],
     "mouse-tracking": [
       23
@@ -4873,7 +5077,8 @@
       25
     ],
     "auto-mode": [
-      25
+      25,
+      96
     ],
     "bypass": [
       25
@@ -4949,7 +5154,8 @@
     ],
     "resume": [
       27,
-      50
+      50,
+      69
     ],
     "cloud-sync": [
       27
@@ -5156,14 +5362,16 @@
       34
     ],
     "remote-control": [
-      58
+      58,
+      34
     ],
     "ccr": [
       34,
       37
     ],
     "jwt": [
-      34
+      34,
+      97
     ],
     "bridge-v1-v2": [
       34
@@ -5217,7 +5425,8 @@
       36
     ],
     "branch": [
-      54
+      54,
+      36
     ],
     "commit-tracking": [
       36
@@ -5318,7 +5527,8 @@
       39
     ],
     "buddy": [
-      56
+      56,
+      40
     ],
     "tamagotchi": [
       40
@@ -5401,7 +5611,8 @@
     "kairos": [
       43,
       67,
-      101
+      101,
+      79
     ],
     "autonomous": [
       43
@@ -5414,13 +5625,15 @@
     ],
     "proactive": [
       43,
-      65
+      65,
+      79
     ],
     "tick-loop": [
       43
     ],
     "brief-tool": [
-      43
+      43,
+      103
     ],
     "push-notification": [
       43
@@ -5499,7 +5712,8 @@
       46
     ],
     "fast-mode": [
-      46
+      46,
+      58
     ],
     "model-selection": [
       46
@@ -5518,7 +5732,8 @@
       46
     ],
     "subagent-model": [
-      46
+      46,
+      124
     ],
     "bedrock": [
       46,
@@ -5643,7 +5858,8 @@
     ],
     "session-resume": [
       50,
-      27
+      27,
+      55
     ],
     "loading-state": [
       50
@@ -5670,7 +5886,8 @@
       50
     ],
     "effort": [
-      51
+      51,
+      93
     ],
     "reasoning-budget": [
       51
@@ -5907,7 +6124,8 @@
       67
     ],
     "kairos-loop-dynamic": [
-      67
+      67,
+      101
     ],
     "loops-command": [
       67
@@ -5935,7 +6153,8 @@
       65,
       66,
       67,
-      68
+      68,
+      69
     ],
     "gating": [
       62,
@@ -6084,7 +6303,8 @@
       73
     ],
     "byte-watchdog": [
-      74
+      74,
+      94
     ],
     "stream-watchdog": [
       74
@@ -6111,7 +6331,8 @@
       75
     ],
     "repl_main_thread": [
-      75
+      75,
+      80
     ],
     "query-source": [
       75
@@ -6127,7 +6348,8 @@
     ],
     "managed-agents-2026-04-01": [
       76,
-      130
+      130,
+      119
     ],
     "CLAUDE_API_SKILL_DESCRIPTION": [
       76
@@ -6161,10 +6383,12 @@
       76
     ],
     "ccr-v2": [
-      73
+      73,
+      77
     ],
     "cloud-code-runner": [
-      73
+      73,
+      77
     ],
     "CLAUDE_CODE_USE_CCR_V2": [
       73
@@ -6267,7 +6491,8 @@
       85
     ],
     "ccr-byoc-2025-07-29": [
-      77
+      77,
+      119
     ],
     "jA5": [
       77
@@ -6585,7 +6810,8 @@
       78,
       80,
       81,
-      84
+      84,
+      86
     ],
     "kill-switch-env-var": [
       78,
@@ -6656,7 +6882,8 @@
       85
     ],
     "ya5": [
-      85
+      85,
+      77
     ],
     "ccr-v2-sunset": [
       85
@@ -6668,7 +6895,8 @@
       85
     ],
     "claude_bg_backend": [
-      85
+      85,
+      89
     ],
     "bq4": [
       85
@@ -6710,7 +6938,8 @@
       85
     ],
     "ja5": [
-      85
+      85,
+      77
     ],
     "fullscreen-margin": [
       85
@@ -7354,7 +7583,8 @@
       89
     ],
     "fork-subagent": [
-      89
+      89,
+      87
     ],
     "fork-reuse": [
       89
@@ -7597,10 +7827,12 @@
       89
     ],
     "tengu_autocompact_command": [
-      89
+      89,
+      87
     ],
     "tengu_autocompact_dialog_opened": [
-      89
+      89,
+      87
     ],
     "tengu_fleetview_opened": [
       89
@@ -8133,7 +8365,8 @@
       93
     ],
     "xhigh": [
-      93
+      93,
+      120
     ],
     "ladder": [
       93
@@ -8586,7 +8819,9 @@
       106
     ],
     "dark-launch": [
-      106
+      106,
+      86,
+      104
     ],
     "cowork-plugin-oauth": [
       106
@@ -8643,7 +8878,9 @@
       107
     ],
     "claude_code_is_cowork": [
-      107
+      107,
+      89,
+      116
     ],
     "cowork-mode-env": [
       107
@@ -8722,10 +8959,14 @@
       107
     ],
     "appendsubagentsystemprompt": [
-      107
+      107,
+      83,
+      123
     ],
     "claude_code_enable_append_subagent_prompt": [
-      107
+      107,
+      83,
+      123
     ],
     "sdk-control-protocol": [
       107
@@ -8779,13 +9020,15 @@
       108
     ],
     "claude_code_environment_kind": [
-      108
+      108,
+      119
     ],
     "byoc": [
       108
     ],
     "anthropic_cloud": [
-      108
+      108,
+      138
     ],
     "claude_code_worker_epoch": [
       108
@@ -8872,10 +9115,12 @@
       108
     ],
     "gate-583857784": [
-      108
+      108,
+      119
     ],
     "gate-1978029737": [
-      108
+      108,
+      119
     ],
     "gate-1648655587": [
       108
@@ -8900,7 +9145,8 @@
       108
     ],
     "coworkwebfetchviaapi": [
-      108
+      108,
+      109
     ],
     "coworkartifacts": [
       108
@@ -9086,7 +9332,8 @@
       109
     ],
     "set_max_thinking_tokens": [
-      109
+      109,
+      120
     ],
     "get_context_usage": [
       109
@@ -9232,7 +9479,8 @@
       117
     ],
     "mnt-.claude-skills.mount": [
-      109
+      109,
+      117
     ],
     "vm-mount-verification": [
       109
@@ -10024,7 +10272,9 @@
       129
     ],
     "claude_code_remote": [
-      129
+      129,
+      83,
+      86
     ],
     "tengu_saddle_lantern": [
       129
@@ -10063,7 +10313,8 @@
       129
     ],
     "teleport-org": [
-      129
+      129,
+      98
     ],
     "auth-teleport-org": [
       129
@@ -10072,7 +10323,10 @@
       129
     ],
     "claude-cowork-headless-emulator": [
-      129
+      129,
+      118,
+      119,
+      120
     ],
     "audit-jsonl-corpus": [
       129
@@ -10585,7 +10839,8 @@
       137
     ],
     "codename-flags": [
-      137
+      137,
+      104
     ],
     "alder_wicket": [
       137
@@ -10709,6 +10964,3424 @@
     ],
     "zero-within-version-splits": [
       129
+    ],
+    "pretooluse-bypasses-canusetool": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      32
+    ],
+    "hook-independent-enforcement": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      32
+    ],
+    "hook-input-contract": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      32
+    ],
+    "permissiondecision": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      32
+    ],
+    "hook_callback-fields": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      32
+    ],
+    "allowlist-hook-still-fires": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      32
+    ],
+    "agent_id-agent_type-hook": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "is_error-tool-result": [
+      6,
+      32
+    ],
+    "progress-message": [
+      11
+    ],
+    "skill-overrides": [
+      11
+    ],
+    "state-machine": [
+      21
+    ],
+    "effortlevel": [
+      51,
+      120
+    ],
+    "thinking": [
+      51
+    ],
+    "rollback": [
+      52
+    ],
+    "snapshot": [
+      52,
+      69
+    ],
+    "claude-ai": [
+      53
+    ],
+    "web-session": [
+      53
+    ],
+    "git-validation": [
+      53
+    ],
+    "isolation": [
+      54
+    ],
+    "resume-threshold": [
+      55
+    ],
+    "gleaming-fair": [
+      55
+    ],
+    "claude_code_execpath": [
+      58
+    ],
+    "askuserquestion": [
+      59
+    ],
+    "multiselect": [
+      59
+    ],
+    "claude_code_use_mantle": [
+      61
+    ],
+    "claude_code_sandboxed": [
+      61
+    ],
+    "claude_code_mcp_allowlist_env": [
+      61
+    ],
+    "rw8": [
+      61,
+      89
+    ],
+    "og8": [
+      61,
+      89
+    ],
+    "ilh": [
+      61,
+      89
+    ],
+    "lu5": [
+      61,
+      89
+    ],
+    "isenabled": [
+      62
+    ],
+    "claude_code_perforce_mode": [
+      63
+    ],
+    "claude_code_script_caps": [
+      63
+    ],
+    "anthropic_custom_model_option_supported_capabilities": [
+      64
+    ],
+    "claude_code_max_context_tokens": [
+      64
+    ],
+    "claude_code_cert_store": [
+      66
+    ],
+    "node_extra_ca_certs": [
+      66
+    ],
+    "mtls": [
+      66
+    ],
+    "schedulewakeup": [
+      67
+    ],
+    "recurringmaxagems": [
+      67
+    ],
+    "claude_code_sdk_has_oauth_refresh": [
+      68
+    ],
+    "feature-flag": [
+      68,
+      86
+    ],
+    "nqq": [
+      68
+    ],
+    "e_": [
+      68
+    ],
+    "sigkill": [
+      68
+    ],
+    "yqq": [
+      68
+    ],
+    "contextcollapse": [
+      69
+    ],
+    "commit": [
+      69
+    ],
+    "session-jsonl": [
+      69
+    ],
+    "persistence": [
+      69
+    ],
+    "sl5": [
+      69
+    ],
+    "tl5": [
+      69
+    ],
+    "recordcontextcollapsecommit": [
+      69
+    ],
+    "recordcontextcollapsesnapshot": [
+      69
+    ],
+    "streamidletimeouterror": [
+      70
+    ],
+    "claude_code_disable_nonstreaming_fallback": [
+      70
+    ],
+    "clientdatacache": [
+      71
+    ],
+    "claude_code_enable_away_summary": [
+      72
+    ],
+    "awaysummaryenabled": [
+      72
+    ],
+    "claude_code_repo_checkouts": [
+      73
+    ],
+    "claude_code_base_refs": [
+      73
+    ],
+    "claude_code_use_ccr_v2": [
+      73
+    ],
+    "tq1": [
+      73
+    ],
+    "fs-watchfile": [
+      73
+    ],
+    "claude_enable_byte_watchdog": [
+      74
+    ],
+    "claude_code_repl": [
+      75
+    ],
+    "claude_repl_variant": [
+      75
+    ],
+    "zu5": [
+      76
+    ],
+    "skill_model_vars": [
+      76
+    ],
+    "claude_code_disable_claude_api_skill": [
+      76
+    ],
+    "claude_api_skill_description": [
+      76
+    ],
+    "claude_internal_assistant_team_name": [
+      76
+    ],
+    "claude_code_resume_from_session": [
+      76
+    ],
+    "claude_code_ultrareview_preflight_fixture": [
+      76
+    ],
+    "hs9": [
+      76
+    ],
+    "ov9": [
+      76
+    ],
+    "claude_code_disable_advisor_tool": [
+      78
+    ],
+    "claude_code_enable_experimental_advisor_tool": [
+      78
+    ],
+    "byh": [
+      78
+    ],
+    "pushnotification": [
+      79
+    ],
+    "disabledreason": [
+      79
+    ],
+    "localsent": [
+      79
+    ],
+    "hasfocus": [
+      79
+    ],
+    "ye5": [
+      80
+    ],
+    "sf7": [
+      80
+    ],
+    "st9": [
+      80
+    ],
+    "claude_code_fullscreen": [
+      81
+    ],
+    "claude_code_no_flicker": [
+      81
+    ],
+    "qq": [
+      81
+    ],
+    "proxyauthhelper": [
+      82
+    ],
+    "claude_code_proxy_authenticate": [
+      82
+    ],
+    "qp_": [
+      82
+    ],
+    "apikeyhelper": [
+      82
+    ],
+    "awsauthrefresh": [
+      82
+    ],
+    "claude_code_system_prompt_gb_feature": [
+      83
+    ],
+    "claude_slow_first_byte_ms": [
+      84
+    ],
+    "claude_code_enable_background_plugin_refresh": [
+      84
+    ],
+    "externaleditorcontext": [
+      84
+    ],
+    "prstatusfooterenabled": [
+      84
+    ],
+    "mcp-call-watchdog": [
+      85
+    ],
+    "mcp-transport-watchdog": [
+      85
+    ],
+    "daemon-mode": [
+      85
+    ],
+    "sighup_ignored_bg": [
+      85
+    ],
+    "orphan-detector": [
+      85
+    ],
+    "update-command-iteration": [
+      85
+    ],
+    "tengu_remote_workflow_spawner_started": [
+      85
+    ],
+    "tengu_remote_workflow_spawner_result": [
+      85
+    ],
+    "submit-feedback-dialog": [
+      85
+    ],
+    "bug-report-dialog": [
+      85
+    ],
+    "feedback-submission": [
+      85
+    ],
+    "message-timestamps": [
+      85
+    ],
+    "stall-watchdog-hierarchy": [
+      85
+    ],
+    "tengu_sdk_stall": [
+      85
+    ],
+    "transport-dropped-mid-call": [
+      85
+    ],
+    "active_tasks-refusal": [
+      85
+    ],
+    "transcript_path_drift": [
+      85
+    ],
+    "v2.1.114": [
+      86
+    ],
+    "v2.1.115": [
+      86
+    ],
+    "v2.1.116": [
+      86
+    ],
+    "oidc-federation": [
+      86
+    ],
+    "oidc_federation": [
+      86
+    ],
+    "oidc-federation-2026-04-01": [
+      86
+    ],
+    "enterprise-auth": [
+      86
+    ],
+    "identity-token": [
+      86
+    ],
+    "federation-rule": [
+      86
+    ],
+    "service-account": [
+      86
+    ],
+    "anthropic_federation_rule_id": [
+      86
+    ],
+    "anthropic_organization_id": [
+      86
+    ],
+    "anthropic_identity_token": [
+      86
+    ],
+    "anthropic_identity_token_file": [
+      86
+    ],
+    "anthropic_service_account_id": [
+      86
+    ],
+    "anthropic_scope": [
+      86
+    ],
+    "anthropic_config_dir": [
+      86
+    ],
+    "anthropic_profile": [
+      86
+    ],
+    "env-quad": [
+      86,
+      99
+    ],
+    "credentials-file": [
+      86
+    ],
+    "config-dir": [
+      86
+    ],
+    "active_config": [
+      86
+    ],
+    "profile": [
+      86
+    ],
+    "user_oauth": [
+      86
+    ],
+    "pf_": [
+      86
+    ],
+    "bf_": [
+      86,
+      90
+    ],
+    "hm8": [
+      86
+    ],
+    "eu8": [
+      86
+    ],
+    "kgk": [
+      86
+    ],
+    "uw4": [
+      86
+    ],
+    "claude_code_http_proxy": [
+      86
+    ],
+    "claude_code_https_proxy": [
+      86
+    ],
+    "proxy-fallback": [
+      86
+    ],
+    "za9": [
+      86
+    ],
+    "java_tool_options": [
+      86
+    ],
+    "cloudsdk_proxy": [
+      86
+    ],
+    "global_agent_http_proxy": [
+      86
+    ],
+    "npm_config_proxy": [
+      86
+    ],
+    "docker-proxy": [
+      86
+    ],
+    "downstream-proxy-propagation": [
+      86
+    ],
+    "model-slash-headless": [
+      86
+    ],
+    "supportsnoninteractive": [
+      86,
+      88
+    ],
+    "claude-p-model": [
+      86
+    ],
+    "claude_code_simple_system_prompt": [
+      86
+    ],
+    "claude_code_simple": [
+      86
+    ],
+    "slim-prompt": [
+      86
+    ],
+    "simple-system-prompt": [
+      86
+    ],
+    "tx": [
+      86
+    ],
+    "$j8": [
+      86
+    ],
+    "claude_code_retry_watchdog": [
+      86
+    ],
+    "retry-watchdog": [
+      86
+    ],
+    "remote-entrypoint": [
+      86
+    ],
+    "claude_code_entrypoint-remote": [
+      86
+    ],
+    "f1k": [
+      86
+    ],
+    "diff-artifact": [
+      86
+    ],
+    "tengu": [
+      86
+    ],
+    "tengu_ccr_post_turn_summary": [
+      86
+    ],
+    "tengu_doorbell_agave": [
+      86
+    ],
+    "tengu_gouda_loop": [
+      86
+    ],
+    "tengu_mcp_concurrent_connect": [
+      86
+    ],
+    "tengu_mcp_resource_templates_fetched": [
+      86
+    ],
+    "tengu_rc_upsell_notification_shown": [
+      86
+    ],
+    "tengu_remote_attach_session": [
+      86
+    ],
+    "tengu_ultraplan_plan_ready": [
+      86
+    ],
+    "tengu_tool_use_isolation_latch_denied": [
+      86
+    ],
+    "tengu_cli_flags": [
+      86
+    ],
+    "tengu_keybinding_fired": [
+      86
+    ],
+    "tengu_scroll_arrows_detected": [
+      86
+    ],
+    "tool-use-isolation-latch": [
+      86
+    ],
+    "enforce_web_search_mcp_isolation": [
+      86
+    ],
+    "mcp-concurrent-connect": [
+      86
+    ],
+    "mcp-resource-templates": [
+      86
+    ],
+    "resources-templates-list": [
+      86
+    ],
+    "closed-issue-notice": [
+      86
+    ],
+    "remote-control-upsell": [
+      86
+    ],
+    "remote-attach-session": [
+      86
+    ],
+    "ultraplan-plan-ready": [
+      86
+    ],
+    "pa_": [
+      86
+    ],
+    "s_": [
+      86
+    ],
+    "qk": [
+      86
+    ],
+    "fork-command": [
+      87
+    ],
+    "background-agent": [
+      87
+    ],
+    "background-subagent": [
+      87
+    ],
+    "inherit-conversation": [
+      87
+    ],
+    "forksparentcontext": [
+      87
+    ],
+    "forkcontextmessages": [
+      87
+    ],
+    "fork-experiment": [
+      87
+    ],
+    "claude_code_fork_subagent": [
+      87,
+      115
+    ],
+    "claude_bridge_reattach_session": [
+      87,
+      89
+    ],
+    "claude_bridge_reattach_seq": [
+      87,
+      89
+    ],
+    "bridge-reattach": [
+      87
+    ],
+    "prespawn": [
+      87
+    ],
+    "iv": [
+      87
+    ],
+    "sj9": [
+      87,
+      88
+    ],
+    "gr": [
+      87
+    ],
+    "sz1": [
+      87
+    ],
+    "v75": [
+      87
+    ],
+    "h$7": [
+      87
+    ],
+    "implicit-fork": [
+      87
+    ],
+    "fork-keybinding": [
+      87
+    ],
+    "f-chord": [
+      87
+    ],
+    "fork started processing in background": [
+      87
+    ],
+    "context-fork": [
+      87
+    ],
+    "skill-context-fork": [
+      87
+    ],
+    "claude_code_rate_limit_tier": [
+      87
+    ],
+    "claude_code_subscription_type": [
+      87
+    ],
+    "rate-limit-tier": [
+      87
+    ],
+    "subscription-type": [
+      87
+    ],
+    "ratelimittier": [
+      87
+    ],
+    "subscriptiontype": [
+      87
+    ],
+    "oauth-token-override": [
+      87
+    ],
+    "one-time-schedule": [
+      87
+    ],
+    "autocompact-removed": [
+      87
+    ],
+    "stop-hook-removed": [
+      87
+    ],
+    "tengu_stop_hook_command": [
+      87
+    ],
+    "tengu_stop_hook_removed": [
+      87
+    ],
+    "advisor-strip-retry": [
+      87
+    ],
+    "retry-advisor-strip": [
+      87
+    ],
+    "byte-watchdog-late": [
+      87
+    ],
+    "tengu_tussock_oriole": [
+      87
+    ],
+    "tengu_amber_redwood2": [
+      87
+    ],
+    "tengu_mcp_concurrent_connect-removed": [
+      87
+    ],
+    "v2.1.117-removed": [
+      87
+    ],
+    "v2.1.117-added": [
+      87
+    ],
+    "c75": [
+      87
+    ],
+    "id5": [
+      87
+    ],
+    "_d_": [
+      87
+    ],
+    "guh": [
+      87
+    ],
+    "quh": [
+      87
+    ],
+    "gc": [
+      87
+    ],
+    "fork-name-generation": [
+      87
+    ],
+    "fork-dark-launch": [
+      87
+    ],
+    "cannot-fork-before-first-turn": [
+      87
+    ],
+    "fork-guard": [
+      87
+    ],
+    "fork-three-paths": [
+      87
+    ],
+    "fork-async-vs-sync": [
+      87
+    ],
+    "fork-backgrounded": [
+      87
+    ],
+    "fork-inline": [
+      87
+    ],
+    "context-fork-dispatch": [
+      87
+    ],
+    "fork-tool-inheritance": [
+      87
+    ],
+    "useexacttools": [
+      87
+    ],
+    "replhydration-fork": [
+      87
+    ],
+    "replay-log-fork": [
+      87
+    ],
+    "usage-aliases": [
+      88
+    ],
+    "cost-alias": [
+      88
+    ],
+    "stats-alias": [
+      88
+    ],
+    "thinclientdispatch": [
+      88
+    ],
+    "control-request": [
+      88
+    ],
+    "requires-ink": [
+      88
+    ],
+    "s8": [
+      88
+    ],
+    "autofix-pr-deremoted": [
+      88
+    ],
+    "tengu_pro_trial_expired_choice": [
+      88
+    ],
+    "prompt-cache-diagnostics": [
+      88
+    ],
+    "server-reject-beta": [
+      88
+    ],
+    "ud_": [
+      88
+    ],
+    "frontmatter-shadow": [
+      88
+    ],
+    "shadow-validator": [
+      88
+    ],
+    "shadow-validation": [
+      88
+    ],
+    "unrecognized_keys": [
+      88
+    ],
+    "zj9": [
+      88
+    ],
+    "pjh": [
+      88
+    ],
+    "qt1": [
+      88
+    ],
+    "gj9": [
+      88
+    ],
+    "gj9-dedup": [
+      88
+    ],
+    "to1": [
+      88
+    ],
+    "eo1": [
+      88
+    ],
+    "ht1": [
+      88
+    ],
+    "_t1": [
+      88
+    ],
+    "gyh": [
+      88
+    ],
+    "nm": [
+      88
+    ],
+    "z__": [
+      88
+    ],
+    "cz8": [
+      88
+    ],
+    "primary-schema": [
+      88
+    ],
+    "no-primary-schema": [
+      88
+    ],
+    "imperative-extraction": [
+      88
+    ],
+    "shadow-schema-table": [
+      88
+    ],
+    "skill-shadow-schema": [
+      88
+    ],
+    "agent-shadow-schema": [
+      88
+    ],
+    "output-style-shadow-schema": [
+      88
+    ],
+    "command-shadow-schema": [
+      88
+    ],
+    "progressmessage": [
+      88
+    ],
+    "progressmessage-drift": [
+      88
+    ],
+    "allowedtools-camelcase": [
+      88
+    ],
+    "argumenthint-camelcase": [
+      88
+    ],
+    "disablemodelinvocation-camelcase": [
+      88
+    ],
+    "userinvocable-camelcase": [
+      88
+    ],
+    "frontmatter-drift": [
+      88
+    ],
+    "kebab-vs-camel": [
+      88
+    ],
+    "context-enum": [
+      88
+    ],
+    "strict-zod": [
+      88
+    ],
+    "zod-strict": [
+      88
+    ],
+    "safeparse": [
+      88
+    ],
+    "unrecognized-keys-code": [
+      88
+    ],
+    "invalid-enum-value": [
+      88
+    ],
+    "skill-frontmatter-validation": [
+      88
+    ],
+    "plugin-frontmatter-validation": [
+      88
+    ],
+    "zod-shadow": [
+      88
+    ],
+    "strict-frontmatter-mode": [
+      88
+    ],
+    "wif-oauth-lock": [
+      88
+    ],
+    "wif-user-oauth-lock": [
+      88
+    ],
+    "oauth-refresh-race": [
+      88
+    ],
+    "credentials-file-lock": [
+      88
+    ],
+    "multi-process-credentials": [
+      88
+    ],
+    "claude_code_agent_name": [
+      88
+    ],
+    "claude_code_team_name": [
+      88
+    ],
+    "agent-name-removed": [
+      88
+    ],
+    "team-name-removed": [
+      88
+    ],
+    "tengu_ember_trail": [
+      88
+    ],
+    "tengu_mocha_barista": [
+      88
+    ],
+    "tengu_orchid_mantis": [
+      88
+    ],
+    "tengu_slate_kestrel": [
+      88
+    ],
+    "terminal-probe": [
+      88
+    ],
+    "dom-keybindings": [
+      88
+    ],
+    "warm-resume-hint": [
+      88
+    ],
+    "marble-origami-warm": [
+      88
+    ],
+    "tengu_ccr_post_turn_summary-removed": [
+      88
+    ],
+    "tengu_config_tool_changed-removed": [
+      88
+    ],
+    "tengu_vscode_cc_auth-removed": [
+      88
+    ],
+    "v2.1.118-removed": [
+      88
+    ],
+    "v2.1.118-added": [
+      88
+    ],
+    "vk4": [
+      88
+    ],
+    "gv_": [
+      88
+    ],
+    "ry": [
+      88
+    ],
+    "e5": [
+      88
+    ],
+    "elocked": [
+      88
+    ],
+    "credentials-dir-lock": [
+      88
+    ],
+    "directory-lock": [
+      88
+    ],
+    "mkdir-mutex": [
+      88
+    ],
+    "oncompromised": [
+      88
+    ],
+    "symbol.asyncdispose": [
+      88
+    ],
+    "lock-retry-budget": [
+      88
+    ],
+    "tengu_oauth_token_refresh_race_recovered": [
+      88
+    ],
+    "agent-stop-hook": [
+      88
+    ],
+    "agent-hook": [
+      88
+    ],
+    "ai-verification-hook": [
+      88
+    ],
+    "hook-agent": [
+      88
+    ],
+    "structured-output-hook": [
+      88
+    ],
+    "hook-50-turns": [
+      88
+    ],
+    "hook-60s-timeout": [
+      88
+    ],
+    "hookconfig.timeout": [
+      88
+    ],
+    "hookconfig.prompt": [
+      88
+    ],
+    "hookconfig.model": [
+      88
+    ],
+    "verify-stop-condition": [
+      88
+    ],
+    "hook-system-prompt": [
+      88
+    ],
+    "dontask-hook": [
+      88
+    ],
+    "auto-allow-transcript-read": [
+      88
+    ],
+    "ak6": [
+      88
+    ],
+    "gx": [
+      88
+    ],
+    "ys7": [
+      88
+    ],
+    "ca_": [
+      88
+    ],
+    "claude_code_session_kind": [
+      89
+    ],
+    "claude_code_session_id": [
+      89,
+      116
+    ],
+    "claude_code_session_name": [
+      89
+    ],
+    "claude_code_session_log": [
+      89
+    ],
+    "claude_code_agent": [
+      89
+    ],
+    "claude_bg_rendezvous_sock": [
+      89
+    ],
+    "claude_bg_isolation": [
+      89
+    ],
+    "claude_bg_bg_info": [
+      89
+    ],
+    "claude_bg_lease": [
+      89
+    ],
+    "claude_pty_record": [
+      89
+    ],
+    "claude_agents_auto_relaunched_at": [
+      89
+    ],
+    "claude_agents_select": [
+      89
+    ],
+    "claude_code_hide_cwd": [
+      89
+    ],
+    "claude_code_fleet_view": [
+      89
+    ],
+    "t1h": [
+      89
+    ],
+    "vk": [
+      89
+    ],
+    "uc_": [
+      89
+    ],
+    "ba3": [
+      89
+    ],
+    "enterworktree-forced": [
+      89
+    ],
+    "notifymetadatachanged": [
+      89
+    ],
+    "is7": [
+      89
+    ],
+    "rs7": [
+      89
+    ],
+    "os7": [
+      89
+    ],
+    "as7": [
+      89
+    ],
+    "jy5": [
+      89
+    ],
+    "remotecontrol-service": [
+      89
+    ],
+    "isagentsfleetenabled": [
+      89
+    ],
+    "mergestatestatus": [
+      89
+    ],
+    "prurltemplate": [
+      89
+    ],
+    "tw8": [
+      89
+    ],
+    "jl_": [
+      89
+    ],
+    "gn9": [
+      89
+    ],
+    "r3h": [
+      89
+    ],
+    "f_8": [
+      89
+    ],
+    "sz": [
+      89
+    ],
+    "z9": [
+      89
+    ],
+    "ih": [
+      89
+    ],
+    "dq": [
+      89
+    ],
+    "isasync": [
+      89
+    ],
+    "lfh": [
+      89
+    ],
+    "bash-stripped": [
+      89
+    ],
+    "write-edit-survives-filter": [
+      89
+    ],
+    "bash-not-in-jl_": [
+      89
+    ],
+    "taskstop": [
+      89
+    ],
+    "skill": [
+      89
+    ],
+    "validtools": [
+      89
+    ],
+    "invalidtools": [
+      89,
+      121
+    ],
+    "unavailabletools": [
+      89
+    ],
+    "resolvedtools": [
+      89
+    ],
+    "allowedagenttypes": [
+      89
+    ],
+    "k-false-default": [
+      89
+    ],
+    "anthropic-changelog-cross-check": [
+      89
+    ],
+    "claude_plugin_root": [
+      89
+    ],
+    "plugin-root-resolution": [
+      89,
+      107
+    ],
+    "plugin-root-host-side": [
+      89
+    ],
+    "in-vm-plugin-root": [
+      89
+    ],
+    "remote-plugins-mount": [
+      89
+    ],
+    "local-plugins-cache": [
+      89
+    ],
+    "mnt-remote-plugins": [
+      89
+    ],
+    "host-vm-boundary": [
+      89,
+      116
+    ],
+    "host-loop-staging": [
+      89
+    ],
+    "coworkroot-probe": [
+      89
+    ],
+    "hook-side-effects": [
+      89
+    ],
+    "sessionstart-export-not-propagated": [
+      89
+    ],
+    "hook-env-not-in-vm": [
+      89
+    ],
+    "plugin-script-invocation-cowork": [
+      89
+    ],
+    "cowork-skill-author-guidance": [
+      89
+    ],
+    "vm-loop-plugin-root": [
+      89,
+      107
+    ],
+    "space-triggered-staging": [
+      89,
+      107
+    ],
+    "sha256-staging": [
+      89
+    ],
+    "ishostloopmodeenabled": [
+      89,
+      107
+    ],
+    "sdkpath": [
+      89,
+      107
+    ],
+    "plugin-root-vm-vs-host": [
+      89
+    ],
+    "mcpservers-cowork": [
+      89
+    ],
+    "sessionenv": [
+      89,
+      99
+    ],
+    "ucr": [
+      89,
+      99
+    ],
+    "coworkspace": [
+      89
+    ],
+    "automountfolders": [
+      89
+    ],
+    "ccdfolderpath": [
+      89
+    ],
+    "projectlocal": [
+      89
+    ],
+    "localagentmodetrustedfolders": [
+      89
+    ],
+    "getclaudeconfigdir": [
+      89
+    ],
+    "remotemcpservers": [
+      89
+    ],
+    "coworkuserfilespath": [
+      89
+    ],
+    "build_time": [
+      90
+    ],
+    "git_sha": [
+      90
+    ],
+    "version-literal": [
+      90
+    ],
+    "claude_code_daemon_cold_start": [
+      90
+    ],
+    "xqh": [
+      90
+    ],
+    "auto_relaunch_unfocused_ms": [
+      90
+    ],
+    "auto_relaunch_min_interval_ms": [
+      90
+    ],
+    "syk": [
+      90
+    ],
+    "claude_code_lean_prompt": [
+      90
+    ],
+    "ck8": [
+      90
+    ],
+    "opus-4.7-only": [
+      90
+    ],
+    "claude_code_simple-not-lean": [
+      90
+    ],
+    "claude_effort": [
+      90,
+      93
+    ],
+    "_i": [
+      90
+    ],
+    "rph": [
+      90
+    ],
+    "jih": [
+      90
+    ],
+    "_fork_subagentm-artifact": [
+      90
+    ],
+    "js-context-anchor": [
+      90
+    ],
+    "claude_cowork_memory_guidelines": [
+      90
+    ],
+    "claude_cowork_memory_extra_guidelines": [
+      90
+    ],
+    "claude_cowork_memory_path_override": [
+      90,
+      114
+    ],
+    "extraguidelines": [
+      90
+    ],
+    "cowork-memory-escape-hatch": [
+      90
+    ],
+    "sonnet-4.6-summary": [
+      90
+    ],
+    "claude_code_verify_prompt": [
+      90
+    ],
+    "bundle-now-embeds-version-literally": [
+      90
+    ],
+    "cowork-runtime-refinement": [
+      90
+    ],
+    "sub-agent-tool-grant-filtering-cross-ref": [
+      90
+    ],
+    "cowork-async-dispatch-cross-ref": [
+      90
+    ],
+    "dynamic-workflows": [
+      91
+    ],
+    "workflow-tool": [
+      91
+    ],
+    "workflows-command": [
+      91
+    ],
+    "agent-cap": [
+      91
+    ],
+    "journal-resume": [
+      91
+    ],
+    "workflow-keyword": [
+      91
+    ],
+    "aw-gate": [
+      91
+    ],
+    "sub-agent-fanout": [
+      91
+    ],
+    "claude_code_coordinator_mode": [
+      92
+    ],
+    "coordinator-panel": [
+      92
+    ],
+    "worker-team": [
+      92
+    ],
+    "dispatch-role": [
+      92
+    ],
+    "opus-4-8": [
+      93
+    ],
+    "claude-opus-4-8": [
+      93
+    ],
+    "max-effort": [
+      93
+    ],
+    "effort-ladder": [
+      93
+    ],
+    "claude_code_effort_level": [
+      93
+    ],
+    "fast-mode-override": [
+      93
+    ],
+    "model-fallback": [
+      93
+    ],
+    "launch-banner": [
+      93
+    ],
+    "streaming-tool-execution": [
+      94
+    ],
+    "streaming-ga": [
+      94
+    ],
+    "claude_byte_stream_idle_timeout_ms": [
+      94
+    ],
+    "stale-connection-retry": [
+      94
+    ],
+    "watchdog-retry": [
+      94
+    ],
+    "gate-deleted": [
+      94
+    ],
+    "messagedisplay-hook": [
+      95
+    ],
+    "hook-event-types": [
+      95
+    ],
+    "30-hooks": [
+      95
+    ],
+    "master-hook-array": [
+      95
+    ],
+    "stop-hook-block-cap": [
+      95
+    ],
+    "hook-count": [
+      95
+    ],
+    "auto-mode-default": [
+      96
+    ],
+    "claude_code_enable_auto_mode": [
+      96
+    ],
+    "auto-default-nudge": [
+      96
+    ],
+    "untrusted-source-guard": [
+      96
+    ],
+    "repo-spoof": [
+      96
+    ],
+    "afk-mode": [
+      96
+    ],
+    "defaultmode-auto": [
+      96
+    ],
+    "cloud-gateway": [
+      97
+    ],
+    "gateway-provider": [
+      97
+    ],
+    "gatewayauth": [
+      97
+    ],
+    "idp-refresh": [
+      97
+    ],
+    "claude_code_use_gateway": [
+      97
+    ],
+    "oauth-gateway": [
+      97
+    ],
+    "login-gateway": [
+      97
+    ],
+    "skills-sync": [
+      98
+    ],
+    "plugins-sync": [
+      98
+    ],
+    "claude_code_sync_skills": [
+      98
+    ],
+    "claude_code_sync_plugins": [
+      98
+    ],
+    "claude-code-docs": [
+      98
+    ],
+    "tengu_birch_kettle": [
+      98
+    ],
+    "mcp-reconcile": [
+      98
+    ],
+    "org-managed": [
+      98
+    ],
+    "reload-skills": [
+      98
+    ],
+    "host-auth": [
+      99
+    ],
+    "host-auth-refresh": [
+      99
+    ],
+    "claude_code_sdk_has_host_auth_refresh": [
+      99
+    ],
+    "claude_code_host_auth_env_var": [
+      99
+    ],
+    "claude_bg_auth_snapshot_path": [
+      99
+    ],
+    "anthropic_workspace_id": [
+      99
+    ],
+    "credential-refresh": [
+      99
+    ],
+    "binary-takeover": [
+      100
+    ],
+    "tengu_bg_binary_takeover": [
+      100
+    ],
+    "self-upgrade": [
+      100
+    ],
+    "spawn-fallback": [
+      100
+    ],
+    "agent-view": [
+      100
+    ],
+    "claude_code_disable_agent_view": [
+      100
+    ],
+    "fleet-rename": [
+      100
+    ],
+    "bridge-attestation": [
+      100
+    ],
+    "bg-permission-rules": [
+      100
+    ],
+    "tcc-disclaim": [
+      100
+    ],
+    "supervised": [
+      100
+    ],
+    "cowork-three-root": [
+      100
+    ],
+    "host-loop": [
+      100
+    ],
+    "loop-keepalive": [
+      101
+    ],
+    "claude_code_loop_keepalive": [
+      101
+    ],
+    "loop-pacing": [
+      101
+    ],
+    "dream-routine": [
+      101
+    ],
+    "dream-not-removed": [
+      101
+    ],
+    "aged-out": [
+      101
+    ],
+    "plan-interview-removed": [
+      102
+    ],
+    "claude_memory_stores": [
+      102
+    ],
+    "command-churn": [
+      102
+    ],
+    "commit-removed": [
+      102
+    ],
+    "usage-credits": [
+      102
+    ],
+    "scroll-speed": [
+      102
+    ],
+    "spend-limit-nudge": [
+      102
+    ],
+    "startup-notice": [
+      102
+    ],
+    "fotw": [
+      102
+    ],
+    "pewter-owl": [
+      103
+    ],
+    "claude_code_pewter_owl": [
+      103
+    ],
+    "tengu_pewter_owl_model": [
+      103
+    ],
+    "internal-output-channel": [
+      103
+    ],
+    "messaging-tool": [
+      103
+    ],
+    "gb-flags": [
+      104
+    ],
+    "cedar_hollow": [
+      104
+    ],
+    "amber_lattice": [
+      104
+    ],
+    "cinder_plover": [
+      104
+    ],
+    "cobalt_thicket": [
+      104
+    ],
+    "prompt-copy-override": [
+      104
+    ],
+    "statsig-flags": [
+      104
+    ],
+    "artifact-webview": [
+      105
+    ],
+    "no-callback-artifact": [
+      105
+    ],
+    "html-artifact-cowork": [
+      105
+    ],
+    "client-side-download-fails": [
+      105
+    ],
+    "getimagineserverdef": [
+      105
+    ],
+    "onelicitation": [
+      105
+    ],
+    "requestedschema": [
+      105
+    ],
+    "setpluginenvvars": [
+      106
+    ],
+    "envvar": [
+      106
+    ],
+    "safestorage": [
+      106
+    ],
+    "vkr": [
+      106
+    ],
+    "pkr": [
+      106
+    ],
+    "classifyinner": [
+      106
+    ],
+    "clipluginbridge": [
+      106
+    ],
+    "gxr": [
+      106
+    ],
+    "pje": [
+      106
+    ],
+    "xd": [
+      106
+    ],
+    "isfeatureenabled": [
+      106
+    ],
+    "hardcodedmaingrowthbookfeatures": [
+      106,
+      124
+    ],
+    "getpluginclistatus": [
+      106
+    ],
+    "host-loop-shared-scratch": [
+      107
+    ],
+    "bash-vs-read-edit-paths": [
+      107
+    ],
+    "two-path-namespaces": [
+      107
+    ],
+    "use-bare-filenames": [
+      107
+    ],
+    "sessions-path-deny": [
+      107
+    ],
+    "claude_plugin_root-host-loop": [
+      107
+    ],
+    "claude-hostloop-plugins": [
+      107,
+      117,
+      140
+    ],
+    "plugin-reference-path": [
+      107
+    ],
+    "script-vs-reference-path": [
+      107
+    ],
+    "hook_callback-wire-shape": [
+      108
+    ],
+    "hook-input-ad": [
+      108
+    ],
+    "tool_use_id-top-level": [
+      108
+    ],
+    "effort-level-hook": [
+      108
+    ],
+    "mcp_connection_nonblocking": [
+      108
+    ],
+    "mcp_connect_timeout_ms": [
+      108
+    ],
+    "claude_code_emit_tool_use_summaries": [
+      108
+    ],
+    "claude_code_enable_fine_grained_tool_streaming": [
+      108
+    ],
+    "claude_code_oauth_scopes": [
+      108
+    ],
+    "claude_code_skip_precompact_load": [
+      108
+    ],
+    "enable_tool_search": [
+      108,
+      124
+    ],
+    "coworkspaces": [
+      109
+    ],
+    "addprojecttospace": [
+      109
+    ],
+    "addfoldertospace": [
+      109
+    ],
+    "createspacefolder": [
+      109
+    ],
+    "copyfilestospacefolder": [
+      109
+    ],
+    "classifysessions": [
+      109
+    ],
+    "summarizespace": [
+      109
+    ],
+    "getautomemorydir": [
+      109
+    ],
+    "readspacememoryindex": [
+      109
+    ],
+    "setautodescription": [
+      109
+    ],
+    "setremotesessionspace": [
+      109
+    ],
+    "coworkscheduledtasks": [
+      109
+    ],
+    "ccdscheduledtasks": [
+      109
+    ],
+    "createscheduledtask": [
+      109
+    ],
+    "getwatcherhistory": [
+      109
+    ],
+    "cronexpression": [
+      109
+    ],
+    "clearchromepermissions": [
+      109
+    ],
+    "scheduledtaskswakeenabled": [
+      109
+    ],
+    "claude_code_enable_tasks": [
+      109
+    ],
+    "claude_code_task_list_id": [
+      109
+    ],
+    "claude_auto_background_tasks": [
+      109
+    ],
+    "claude_code_disable_background_tasks": [
+      109,
+      115
+    ],
+    "claude_code_bg_tasks_report_running": [
+      109
+    ],
+    "claude_code_enable_sdk_file_checkpointing": [
+      109
+    ],
+    "claude_code_disable_file_checkpointing": [
+      109
+    ],
+    "claude_code_enable_remote_recap": [
+      109
+    ],
+    "claude_config_dir-host-loop": [
+      109
+    ],
+    "clisessionid": [
+      109
+    ],
+    "library-logs-claude": [
+      109
+    ],
+    "persistsession-false": [
+      109
+    ],
+    "claude_code_force_session_persistence": [
+      109
+    ],
+    "claude_code_child_session": [
+      109,
+      116
+    ],
+    "cleanupperioddays": [
+      109
+    ],
+    "taskcreate-result-format": [
+      109
+    ],
+    "task-created-successfully": [
+      109
+    ],
+    "nom-regex": [
+      109
+    ],
+    "taskupdate-schema": [
+      109
+    ],
+    "deleted-task-status": [
+      109
+    ],
+    "fallbackmodel": [
+      110
+    ],
+    "enforceavailablemodels": [
+      110
+    ],
+    "tool-param-value-permission": [
+      111
+    ],
+    "sandbox.allowappleevents": [
+      111
+    ],
+    "automode.classifyallshell": [
+      111
+    ],
+    "claude_code_safe_mode": [
+      111
+    ],
+    "agentdepth": [
+      111
+    ],
+    "teamcreate-removed": [
+      111
+    ],
+    "disablebundledskills": [
+      111
+    ],
+    "claude_code_disable_mouse_clicks": [
+      111
+    ],
+    "designsync": [
+      112
+    ],
+    "claude_code_enable_design_mcp": [
+      112
+    ],
+    "artifact-tool": [
+      112
+    ],
+    "claude_code_artifact": [
+      112
+    ],
+    "claude_code_force_memory_survey": [
+      113
+    ],
+    "claude_code_kb_cohesion_fixes": [
+      113
+    ],
+    "claude_code_disable_refusal_fallback": [
+      113
+    ],
+    "cli_plugin-recheck": [
+      114
+    ],
+    "effort-spawn-correction": [
+      114
+    ],
+    "localsessions-ipc": [
+      114
+    ],
+    "seteffort": [
+      114,
+      120
+    ],
+    "claude_code_subagent_model": [
+      114,
+      124
+    ],
+    "claude_code_disable_cron-desktop-sense": [
+      114
+    ],
+    "claude_code_question_preview_format": [
+      114
+    ],
+    "claude_code_enable_ask_user_question_tool": [
+      114
+    ],
+    "mcp_list_scheduled_tasks": [
+      114
+    ],
+    "mcp__cowork__propose_skills": [
+      114
+    ],
+    "mcp__cowork__send_user_message": [
+      114
+    ],
+    "mcp__cowork__present_files": [
+      114
+    ],
+    "no-byte-diff-baseline": [
+      114
+    ],
+    "desktop-re-verification": [
+      114
+    ],
+    "sendmessage-resume": [
+      115
+    ],
+    "resumedagentid": [
+      115
+    ],
+    "resumeagentbackground": [
+      115
+    ],
+    "dfe": [
+      115
+    ],
+    "agent-stopped": [
+      115
+    ],
+    "agent-evicted": [
+      115
+    ],
+    "agent-stopped-by-user": [
+      115
+    ],
+    "stoppedbyuser": [
+      115
+    ],
+    "resumeinprocessteammate": [
+      115
+    ],
+    "subagent_type-fork": [
+      115
+    ],
+    "run_in_background-omitted": [
+      115
+    ],
+    "cowork-tools-list": [
+      115
+    ],
+    "transcript-resume": [
+      115
+    ],
+    "invocationkind-resume": [
+      115
+    ],
+    "is_resume": [
+      115
+    ],
+    "l114-correction": [
+      115
+    ],
+    "main-cowork-spawn-env": [
+      115
+    ],
+    "capability-detection": [
+      115
+    ],
+    "sendmessage-tool-presence": [
+      115
+    ],
+    "skill-runtime-detection": [
+      116
+    ],
+    "claudecode": [
+      116
+    ],
+    "claude_code_entrypoint": [
+      116
+    ],
+    "local-agent": [
+      116
+    ],
+    "remote_cowork": [
+      116,
+      138
+    ],
+    "claude-desktop-entrypoint": [
+      116
+    ],
+    "ai_agent": [
+      116
+    ],
+    "vm-env-scrub": [
+      116
+    ],
+    "/sessions": [
+      116
+    ],
+    "mcp__workspace__bash": [
+      116
+    ],
+    "disableskillshellexecution": [
+      116
+    ],
+    "inline-shell-disabled-cowork": [
+      116
+    ],
+    "q5n": [
+      116
+    ],
+    "bmt": [
+      116
+    ],
+    "cvs": [
+      116
+    ],
+    "c2u": [
+      116
+    ],
+    "u2u": [
+      116
+    ],
+    "d2u": [
+      116
+    ],
+    "jx": [
+      116
+    ],
+    "xga": [
+      116
+    ],
+    "avs": [
+      116
+    ],
+    "jbo": [
+      116
+    ],
+    "mgn-allowlist-gone": [
+      116
+    ],
+    "allowlist-drift": [
+      116
+    ],
+    "hook-export-not-visible": [
+      116
+    ],
+    "uname-ambiguous": [
+      116
+    ],
+    "claude_plugin_root-host-side": [
+      116
+    ],
+    "detect_runtime-recipe": [
+      116
+    ],
+    "execution-context": [
+      116
+    ],
+    "elsewhere-detection": [
+      116
+    ],
+    "cursor-detection": [
+      116
+    ],
+    "harness-detection": [
+      116
+    ],
+    "v2.1.198": [
+      116
+    ],
+    "1.18286.0": [
+      116
+    ],
+    "vm_bundles": [
+      117
+    ],
+    "raw-disk-image-forensics": [
+      117
+    ],
+    "systemd-journald": [
+      117
+    ],
+    "mount-inventory": [
+      117
+    ],
+    "mnt-uploads.mount": [
+      117
+    ],
+    "mnt-.claude.mount": [
+      117
+    ],
+    "mnt-.claude-projects.mount": [
+      117
+    ],
+    "connected-folder-mount": [
+      117
+    ],
+    "no-tmp-mount": [
+      117
+    ],
+    "session-slug-format": [
+      117
+    ],
+    "docker-style-slug": [
+      117
+    ],
+    "zealous-vigilant-einstein": [
+      117
+    ],
+    "coworkd-process-manager": [
+      117
+    ],
+    "uid-gid-per-session": [
+      117
+    ],
+    "deck-review-skill": [
+      117
+    ],
+    "vm-multiplexing": [
+      117
+    ],
+    "session-to-vm-multiplexing": [
+      117
+    ],
+    "ripgrep-vs-grep-performance": [
+      117
+    ],
+    "rg-multi-gb-scan": [
+      117
+    ],
+    "filedeleteapprovedmounts-explained": [
+      117
+    ],
+    "why-outputs-is-shared-but-home-is-not": [
+      117
+    ],
+    "skill-scope-attribution": [
+      118
+    ],
+    "activeskill": [
+      118
+    ],
+    "spawnedbyskill": [
+      118
+    ],
+    "attribution-bundle": [
+      118
+    ],
+    "sticky-skill-window": [
+      118
+    ],
+    "no-pop-skill-scope": [
+      118
+    ],
+    "inline-vs-fork-skill": [
+      118
+    ],
+    "fork-skill-restore": [
+      118
+    ],
+    "querysource": [
+      118
+    ],
+    "activemcpserver": [
+      118
+    ],
+    "activemcptool": [
+      118
+    ],
+    "w1e-skill-id-normalizer": [
+      118
+    ],
+    "ypm-fork-runner": [
+      118
+    ],
+    "skill_invoke_fork_recursion": [
+      118
+    ],
+    "fork-recursion-guard": [
+      118
+    ],
+    "tool-use-meta-schema": [
+      118
+    ],
+    "display-name": [
+      118
+    ],
+    "server_display_name": [
+      118
+    ],
+    "icon_url": [
+      118
+    ],
+    "per-tool_use-stream-contract": [
+      118
+    ],
+    "stream-json-envelope": [
+      118
+    ],
+    "supersedes": [
+      118
+    ],
+    "skill_progress": [
+      118
+    ],
+    "agent_progress": [
+      118
+    ],
+    "fork-skill-parent-id": [
+      118
+    ],
+    "fork-skill-exact-attribution": [
+      118
+    ],
+    "toolcounts-undercount-fork-skill": [
+      118
+    ],
+    "attribution-not-in-stream": [
+      118
+    ],
+    "attribution-on-api-request": [
+      118
+    ],
+    "compact_boundary": [
+      118
+    ],
+    "micro-compaction-subtype": [
+      118
+    ],
+    "return-null-subtype": [
+      118
+    ],
+    "skill-to-tool-attribution": [
+      118
+    ],
+    "tool-skill-mapping": [
+      118
+    ],
+    "cowork-stream-contract": [
+      118
+    ],
+    "host-cli-2.1.201": [
+      118
+    ],
+    "skill-runtime-scope": [
+      118
+    ],
+    "dispatch-scoped-envelope-fields": [
+      118
+    ],
+    "per-message-usage": [
+      118
+    ],
+    "service_tier": [
+      118
+    ],
+    "inference_geo": [
+      118
+    ],
+    "init-message-fields": [
+      118
+    ],
+    "init-agents-field": [
+      118
+    ],
+    "skills-bare-names": [
+      118
+    ],
+    "availableskills-names-only": [
+      118
+    ],
+    "cloud-tasks": [
+      119
+    ],
+    "teleporttocloud": [
+      119
+    ],
+    "getteleportreadiness": [
+      119
+    ],
+    "teleport-to-cloud": [
+      119
+    ],
+    "cloud-session-teleport": [
+      119
+    ],
+    "bridge-session": [
+      119
+    ],
+    "bridge-session-worker": [
+      119
+    ],
+    "workpoller": [
+      119
+    ],
+    "environmentworker": [
+      119
+    ],
+    "environments-work-poller": [
+      119
+    ],
+    "pollforwork": [
+      119
+    ],
+    "handlework": [
+      119
+    ],
+    "handlesessionwork": [
+      119
+    ],
+    "work_type": [
+      119
+    ],
+    "healthcheck-work-type": [
+      119
+    ],
+    "session-work-type": [
+      119
+    ],
+    "claude-remote-control": [
+      119
+    ],
+    "remote-control-bridge-worker": [
+      119
+    ],
+    "environment_kind-bridge": [
+      119
+    ],
+    "isbridge": [
+      119
+    ],
+    "replbridgeactive": [
+      119
+    ],
+    "sessionsource-remote-control": [
+      119
+    ],
+    "bridge-vs-byoc-vs-anthropic_cloud": [
+      119
+    ],
+    "bridge-sdk-adapter-transport": [
+      119
+    ],
+    "sessionsbridgepollintervalms": [
+      119
+    ],
+    "sessionsbridgepollblockms": [
+      119
+    ],
+    "getbridgeconsent": [
+      119
+    ],
+    "grantremotesessionfolder": [
+      119
+    ],
+    "grantremotesessionfolders": [
+      119
+    ],
+    "browseandgrantremotesessionfolder": [
+      119
+    ],
+    "clearremotesessionfoldergrants": [
+      119
+    ],
+    "onbridgepermissionpreflight": [
+      119
+    ],
+    "respondbridgepermissionpreflight": [
+      119
+    ],
+    "kickbridgepoll": [
+      119
+    ],
+    "abandonbridgeenvironment": [
+      119
+    ],
+    "findlocalsessionidforbridgeid": [
+      119
+    ],
+    "localagentmodesessions": [
+      119
+    ],
+    "childkind": [
+      119
+    ],
+    "pushbranch": [
+      119
+    ],
+    "generatetranscriptsummary": [
+      119
+    ],
+    "pushing_branch": [
+      119
+    ],
+    "generating_summary": [
+      119
+    ],
+    "creating_session": [
+      119
+    ],
+    "ipc-surface-diff": [
+      119
+    ],
+    "claude.web interfaces": [
+      119
+    ],
+    "app.asar 1.19367.0": [
+      119,
+      120
+    ],
+    "app.asar 1.18286.2": [
+      119
+    ],
+    "cloud environment provider": [
+      119
+    ],
+    "environment_providers cloud create": [
+      119
+    ],
+    "anthropic-beta ccr-byoc": [
+      119
+    ],
+    "anthropic-worker-id": [
+      119
+    ],
+    "reclaim_older_than_ms": [
+      119
+    ],
+    "worker heartbeat": [
+      119
+    ],
+    "reasoning-config": [
+      120
+    ],
+    "extended-thinking": [
+      120
+    ],
+    "effort-config": [
+      120
+    ],
+    "extended-thinking-boolean": [
+      120
+    ],
+    "maxthinkingtokens": [
+      120
+    ],
+    "31999-or-0": [
+      120
+    ],
+    "zgi-spawn-resolver": [
+      120
+    ],
+    "a2t-kill-switch": [
+      120
+    ],
+    "setextendedthinking": [
+      120
+    ],
+    "localagentmodesessions.setextendedthinking": [
+      120
+    ],
+    "qgi-effort-resolver": [
+      120
+    ],
+    "a1e-per-model-effort": [
+      120
+    ],
+    "e2t-flat-effort-default": [
+      120
+    ],
+    "effortbymodel": [
+      120
+    ],
+    "effort-medium-fallback": [
+      120
+    ],
+    "bgr-effort-set": [
+      120
+    ],
+    "s1r-model-config-map": [
+      120
+    ],
+    "o1r-fable-mythos-regex": [
+      120
+    ],
+    "i1r-regex-default-config": [
+      120
+    ],
+    "disallowthinkingdisabled": [
+      120
+    ],
+    "four-effort-classes": [
+      120
+    ],
+    "no-effort-model": [
+      120
+    ],
+    "extra-alias-xhigh": [
+      120
+    ],
+    "claude_code_effort_level-corrected": [
+      120
+    ],
+    "getdefaulteffort-two-implementations": [
+      120
+    ],
+    "localsessions-vs-localagentmodesessions": [
+      120
+    ],
+    "geteffort": [
+      120
+    ],
+    "setfastmode": [
+      120
+    ],
+    "applyflagsettings": [
+      120
+    ],
+    "apply_flag_settings-payload": [
+      120
+    ],
+    "reasoning-config-fidelity-plan": [
+      120
+    ],
+    "--effort flag": [
+      120
+    ],
+    "--max-thinking-tokens flag": [
+      120
+    ],
+    "--thinking disabled": [
+      120
+    ],
+    "claude_effort-env-noop": [
+      120
+    ],
+    "max_thinking_tokens-env-absent": [
+      120
+    ],
+    "subagent-tools": [
+      121
+    ],
+    "sub-agent-tool-composition": [
+      121
+    ],
+    "gy-algorithm": [
+      121
+    ],
+    "tool-composition": [
+      121
+    ],
+    "general-purpose-fallback": [
+      121
+    ],
+    "type-less-dispatch": [
+      121
+    ],
+    "toolaliases": [
+      121
+    ],
+    "tool-alias": [
+      121
+    ],
+    "workspace-bash-alias": [
+      121
+    ],
+    "fan-out-cap": [
+      121
+    ],
+    "concurrency-cap": [
+      121
+    ],
+    "claude_code_max_tool_use_concurrency": [
+      121
+    ],
+    "depth-limit": [
+      121
+    ],
+    "nesting-limit": [
+      121
+    ],
+    "workflowsize": [
+      121
+    ],
+    "plugin-agent-mcpservers": [
+      121
+    ],
+    "host_loop_safe_builtin_tools": [
+      121
+    ],
+    "host_loop_excluded_builtin_tools": [
+      121
+    ],
+    "disallowedtools-doc-bug": [
+      121
+    ],
+    "subagent-cwd": [
+      122
+    ],
+    "outputs-path": [
+      122
+    ],
+    "outputs-directory": [
+      122
+    ],
+    "sessions-denied": [
+      122
+    ],
+    "vm-path-denied": [
+      122
+    ],
+    "path-containment-subagent": [
+      122
+    ],
+    "subagent-hooks": [
+      122
+    ],
+    "agent_id-hook": [
+      122
+    ],
+    "filedeleteapprovedmounts": [
+      122,
+      139
+    ],
+    "uploads-read-only": [
+      122,
+      140
+    ],
+    "mount-mode-rw-rwd": [
+      122
+    ],
+    "claude_plugin_root-subagent": [
+      122
+    ],
+    "getstoragedir": [
+      122
+    ],
+    "sessiondirpaths": [
+      122
+    ],
+    "in-process-execution": [
+      122
+    ],
+    "append-subagent-prompt": [
+      123
+    ],
+    "buildsubagentenvironmentprompt": [
+      123
+    ],
+    "hostloopmode": [
+      123
+    ],
+    "sp_section_keys": [
+      123
+    ],
+    "gate-124685897": [
+      123
+    ],
+    "starling-override": [
+      123
+    ],
+    "model-resolution-chain": [
+      124
+    ],
+    "yukonsilver": [
+      124
+    ],
+    "yukonsilverconfig": [
+      124
+    ],
+    "toolsearch-enablement": [
+      124
+    ],
+    "tst-mode": [
+      124
+    ],
+    "resolvedmodel": [
+      124
+    ],
+    "tooluseresult": [
+      124
+    ],
+    "fcache-gzip": [
+      124
+    ],
+    "fcache-format": [
+      124
+    ],
+    "resume-stickiness": [
+      124
+    ],
+    "run_in_background-default": [
+      124
+    ],
+    "background-by-default-polarity-flip": [
+      124
+    ],
+    "uot": [
+      124
+    ],
+    "custom-3p-gates": [
+      124
+    ],
+    "pm-host-loop": [
+      124
+    ],
+    "host-loop-vm-loop-decision-function": [
+      124
+    ],
+    "claude_sim_sandbox": [
+      125
+    ],
+    "disablemobilesimulatortools": [
+      125
+    ],
+    "buildremotegrandprixtools": [
+      127
+    ],
+    "coworkautomodealwaysallowoverride": [
+      128
+    ],
+    "scheduledtasktoolsapprovablebyautomode": [
+      128
+    ],
+    "trybeginsleepautoresume": [
+      128
+    ],
+    "otlptracesenabled": [
+      128
+    ],
+    "claude_code_enhanced_telemetry_beta": [
+      128
+    ],
+    "otel_traces_exporter": [
+      128
+    ],
+    "dxt_signature_required": [
+      128
+    ],
+    "internalmcpservermanager": [
+      129
+    ],
+    "isenabled-predicate": [
+      129
+    ],
+    "sessiontype-cowork": [
+      129
+    ],
+    "builtsystempromptmodel": [
+      129
+    ],
+    "orgskillcreationblocked": [
+      129
+    ],
+    "generateskillssystemprompt": [
+      129
+    ],
+    "suggest-at-most-once-per-conversation": [
+      129
+    ],
+    "trigger-omitted": [
+      129
+    ],
+    "hidden-but-invocable-skill": [
+      129
+    ],
+    "docx-skill-not-listed": [
+      129
+    ],
+    "gate-1598976391-on-force": [
+      129
+    ],
+    "gate-1311049725-present-defaultvalue": [
+      130
+    ],
+    "allowedtools-9-vs-13": [
+      131
+    ],
+    "fcache-snapshot-identity": [
+      131,
+      141
+    ],
+    "fcache-content-hash": [
+      131,
+      141
+    ],
+    "fcache-membership-churn": [
+      131,
+      141
+    ],
+    "absent-is-snapshot-bound": [
+      131,
+      141
+    ],
+    "three-state-gate-taxonomy": [
+      131
+    ],
+    "defaultvalue-vs-force": [
+      131
+    ],
+    "cowork-remote-lane": [
+      138
+    ],
+    "cowork-local-lane": [
+      138
+    ],
+    "environment_kind": [
+      138
+    ],
+    "bridge-environment-kind": [
+      138
+    ],
+    "cse-not-a-lane-oracle": [
+      138
+    ],
+    "config-origin": [
+      138
+    ],
+    "claude_code_cli-origin": [
+      138
+    ],
+    "desktop_app-origin": [
+      138
+    ],
+    "container_cc_version": [
+      138
+    ],
+    "sixth-artifact-class": [
+      138
+    ],
+    "environment_id": [
+      138
+    ],
+    "managed-agents-environments": [
+      138
+    ],
+    "post_turn_summary-schema": [
+      138
+    ],
+    "status_category": [
+      138
+    ],
+    "need_input": [
+      138
+    ],
+    "review_ready": [
+      138
+    ],
+    "yukon_silver": [
+      138
+    ],
+    "4116586025": [
+      138
+    ],
+    "yukonsilver-capability-probe": [
+      138
+    ],
+    "lane-selection-renderer-side": [
+      138
+    ],
+    "localagentmodesessions-start": [
+      138
+    ],
+    "device_commit_files": [
+      138
+    ],
+    "senduserfile-remote": [
+      138
+    ],
+    "present_files-local": [
+      138
+    ],
+    "delivery-is-an-act-not-a-location": [
+      138
+    ],
+    "archivesession": [
+      138
+    ],
+    "remotesessionfoldergrants": [
+      138
+    ],
+    "device_request_folder_access": [
+      138
+    ],
+    "chromium-cache-artifact-class": [
+      138
+    ],
+    "cache_data": [
+      138
+    ],
+    "cowork-lane-oracle": [
+      138
+    ],
+    "cowork-delete-semantics": [
+      139
+    ],
+    "unlink-rmdir-denied": [
+      139
+    ],
+    "truncate-permitted": [
+      139
+    ],
+    "rename-within-permitted": [
+      139
+    ],
+    "rename-onto-existing": [
+      139
+    ],
+    "exdev": [
+      139
+    ],
+    "allow_cowork_file_delete": [
+      139
+    ],
+    "per-mount-approval": [
+      139
+    ],
+    "no-remount": [
+      139
+    ],
+    "mountpath-rwd": [
+      139
+    ],
+    "ishostloopmode-early-return": [
+      139
+    ],
+    "mountfolderforsession-deferred": [
+      139
+    ],
+    "request_cowork_directory": [
+      139
+    ],
+    "spawn-time-mode-selector": [
+      139
+    ],
+    "mountconfig": [
+      139
+    ],
+    "swift_addon": [
+      139
+    ],
+    "fuse-default_permissions": [
+      139
+    ],
+    "delete-not-outputs-specific": [
+      139
+    ],
+    "connected-folder-delete": [
+      139
+    ],
+    "session-json-is-memory-projection": [
+      139
+    ],
+    "void-test": [
+      139
+    ],
+    "forced-ask-matcher-behavioural": [
+      139
+    ],
+    "cowork-rm-operation-not-permitted": [
+      139
+    ],
+    "vm-multiplexing-confirmed": [
+      140
+    ],
+    "shared-vm-guest": [
+      140
+    ],
+    "shared-mount-namespace": [
+      140
+    ],
+    "cross-session-isolation": [
+      140
+    ],
+    "coworkd-per-session-uid": [
+      140
+    ],
+    "522-session-dirs": [
+      140
+    ],
+    "sessiondata-img": [
+      140
+    ],
+    "persistent-shared-volume": [
+      140
+    ],
+    "mount-inventory-29": [
+      140
+    ],
+    "outputs-rw": [
+      140
+    ],
+    "claude-projects-mount": [
+      140
+    ],
+    "claude-skills-mount": [
+      140
+    ],
+    "projects-uuid-mount": [
+      140
+    ],
+    "userselectedprojectuuids": [
+      140
+    ],
+    "project-vs-folder-connect": [
+      140
+    ],
+    "resolvedfolderkinds": [
+      140
+    ],
+    "local-plugins-version-pinned": [
+      140
+    ],
+    "remote-plugins-plugin-id": [
+      140
+    ],
+    "agent-reported-paths-not-evidence": [
+      140
+    ],
+    "grep-count-corroboration": [
+      140
+    ],
+    "content16": [
+      141
+    ],
+    "count-neutral-churn": [
+      141
+    ],
+    "refetch-irregular-not-periodic": [
+      141
+    ],
+    "four-state-gate-taxonomy": [
+      141
+    ],
+    "key-level-absence": [
+      141
+    ],
+    "key-absent-not-off": [
+      141
+    ],
+    "ea-accessor": [
+      141
+    ],
+    "ta-accessor": [
+      141
+    ],
+    "ma-accessor": [
+      141
+    ],
+    "ja-accessor": [
+      141
+    ],
+    "ka-accessor": [
+      141
+    ],
+    "gate-client-api": [
+      141
+    ],
+    "bashhostonlyintercept": [
+      141
+    ],
+    "scheduledtaskstalereapenabled": [
+      141
+    ],
+    "served_keys": [
+      141
+    ],
+    "quoted-literal-anchor": [
+      141
+    ],
+    "backtick-minifier-trap": [
+      141
+    ],
+    "extraction-pattern-must-be-published": [
+      141
+    ],
+    "observed-schema": [
+      141
+    ],
+    "gate-namespace": [
+      141
+    ],
+    "desktop_fcache": [
+      141
+    ],
+    "cli_growthbook": [
+      141
+    ],
+    "cowork-spawn-env-refresh": [
+      141
+    ],
+    "disable_microcompact": [
+      141
+    ],
+    "claude_code_brief": [
+      141
+    ],
+    "coworksyspromptmap": [
+      142
+    ],
+    "system-prompt-patch-channel": [
+      142
+    ],
+    "sp_variant_replace": [
+      142
+    ],
+    "sp_variant_append": [
+      142
+    ],
+    "sp_variant_resolved": [
+      142
+    ],
+    "sp_variants": [
+      142
+    ],
+    "promptcacheboundary": [
+      142
+    ],
+    "replace-mode": [
+      142
+    ],
+    "append-mode": [
+      142
+    ],
+    "no-prepend-mode": [
+      142
+    ],
+    "key-name-grammar": [
+      142
+    ],
+    "resolution-status-machine": [
+      142
+    ],
+    "missing_boundary": [
+      142
+    ],
+    "invalid_entry": [
+      142
+    ],
+    "per-model-variants": [
+      142
+    ],
+    "spsectionprompts": [
+      142
+    ],
+    "sessions_api-channel": [
+      142
+    ],
+    "preset-plus-append-is-wrong": [
+      142
+    ],
+    "server-side-prompt-override": [
+      142
     ]
   }
 }

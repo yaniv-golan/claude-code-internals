@@ -52,6 +52,83 @@ function parseFrontmatter(text) {
   return fm;
 }
 
+const GATE_NAMESPACES = ['desktop_fcache', 'cli_growthbook'];
+const GATE_SOURCES = ['force', 'defaultValue', 'experiment', 'override', null];
+// Prose that ossifies a timestamped observation into a property. fcache membership
+// churns between reads, so "absent" is only ever true *of a snapshot*. Record it in
+// the structured `observed` field (present/source/on/at) instead.
+const BANNED_GATE_PROSE = /\babsent from (?:the )?fcache\b|\bnot in the fcache\b|\bunevaluated\b/i;
+
+/**
+ * Gate entries carry two namespaces that are NOT interchangeable: Desktop numeric
+ * GrowthBook ids (checkable against the fcache) and CLI GrowthBook flags (which are
+ * not fcache keys at all, so an fcache lookup on them is a category error).
+ */
+function validateGate(entry, label, fc) {
+  const errors = [];
+  const ns = entry.namespace;
+  if (!ns) {
+    errors.push(`${label}: gate entries require "namespace" (${GATE_NAMESPACES.join('|')})`);
+  } else if (!GATE_NAMESPACES.includes(ns)) {
+    errors.push(`${label}: unknown gate namespace "${ns}"`);
+  }
+  const numericId = /^gate\.\d+$/.test(entry.id || '');
+  if (ns === 'desktop_fcache' && !numericId) {
+    errors.push(`${label}: namespace desktop_fcache requires a numeric gate id`);
+  }
+  if (ns === 'cli_growthbook' && numericId) {
+    errors.push(`${label}: numeric gate ids are Desktop fcache keys, not CLI flags`);
+  }
+
+  if (ns === 'desktop_fcache') {
+    const o = entry.observed;
+    if (!o || typeof o !== 'object') {
+      errors.push(`${label}: desktop_fcache gates require "observed" {present, source, on, at}`);
+    } else {
+      if (typeof o.present !== 'boolean') errors.push(`${label}: observed.present must be boolean`);
+      if (!GATE_SOURCES.includes(o.source === undefined ? null : o.source)) {
+        errors.push(`${label}: observed.source "${o.source}" not one of ${GATE_SOURCES.filter(Boolean).join('|')}|null`);
+      }
+      if (o.present === false && (o.source !== null || o.on !== null)) {
+        errors.push(`${label}: observed.present=false requires source=null and on=null`);
+      }
+      if (o.present === true && typeof o.on !== 'boolean') {
+        errors.push(`${label}: observed.present=true requires boolean observed.on`);
+      }
+      // An observation is meaningless without the snapshot it was made against.
+      if (!o.at) errors.push(`${label}: observed.at missing (must name an fcache content16)`);
+      else if (fc && fc.content16 && o.at !== fc.content16) {
+        errors.push(`${label}: observed.at "${o.at}" does not match as_of.fcache_capture.content16 "${fc.content16}" — re-observe or restamp`);
+      }
+      // Value gates (those served an object) carry a second, independent axis: a key
+      // inside the value may be absent while the gate itself is present and on. The
+      // code then applies its own per-call default, which is SOMETIMES TRUE (measured:
+      // 1978029737 serves 8 of 21 requested keys; bashHostOnlyIntercept and
+      // scheduledTaskStaleReapEnabled both default true while unserved). So a served-key
+      // list is never an enabled-behaviour inventory, and "key absent => off" is invalid.
+      if (o.served_keys !== undefined) {
+        if (!Array.isArray(o.served_keys) || o.served_keys.some(k => typeof k !== 'string')) {
+          errors.push(`${label}: observed.served_keys must be an array of strings`);
+        } else if (o.present !== true) {
+          errors.push(`${label}: observed.served_keys requires observed.present=true`);
+        } else {
+          const sorted = [...o.served_keys].sort();
+          if (o.served_keys.some((k, i) => k !== sorted[i])) {
+            errors.push(`${label}: observed.served_keys must be sorted (stable diffs)`);
+          }
+        }
+      }
+    }
+  } else if (entry.observed !== undefined) {
+    errors.push(`${label}: cli_growthbook gates are not fcache keys and must not carry "observed"`);
+  }
+
+  if (typeof entry.summary === 'string' && BANNED_GATE_PROSE.test(entry.summary)) {
+    errors.push(`${label}: summary asserts fcache absence in prose — record it in "observed" instead (membership churns between reads)`);
+  }
+  return errors;
+}
+
 /** Validate the state layer under refsDir. Returns an array of error strings. */
 function validate(refsDir) {
   const errors = [];
@@ -79,6 +156,27 @@ function validate(refsDir) {
     if (!registry.as_of || typeof registry.as_of.cli !== 'string') {
       errors.push('registry.json: as_of.cli missing');
     }
+    // fcache_capture must identify a *snapshot*, not merely a date. The payload is
+    // refetched irregularly (measured 3.7-20.8 min apart) and its membership can change
+    // count-neutrally, so a date cannot distinguish two different payloads. content16 is
+    // sha256 over the canonicalised features object; the embedded timestamp is fetch
+    // metadata only and must never be used as identity.
+    const fc = registry.as_of && registry.as_of.fcache_capture;
+    if (fc === undefined) {
+      errors.push('registry.json: as_of.fcache_capture missing');
+    } else if (typeof fc !== 'object' || fc === null || Array.isArray(fc)) {
+      errors.push('registry.json: as_of.fcache_capture must be an object {content16, embedded_timestamp, feature_count} — a bare date cannot identify a snapshot');
+    } else {
+      if (!/^[0-9a-f]{16}$/.test(fc.content16 || '')) {
+        errors.push('registry.json: as_of.fcache_capture.content16 must be 16 lowercase hex chars');
+      }
+      if (typeof fc.embedded_timestamp !== 'number') {
+        errors.push('registry.json: as_of.fcache_capture.embedded_timestamp must be a number');
+      }
+      if (typeof fc.feature_count !== 'number') {
+        errors.push('registry.json: as_of.fcache_capture.feature_count must be a number');
+      }
+    }
     if (registry.entries !== undefined && !Array.isArray(registry.entries)) {
       errors.push('registry.json: entries must be an array');
     }
@@ -103,6 +201,7 @@ function validate(refsDir) {
       for (const p of Array.isArray(entry.provenance) ? entry.provenance : []) {
         if (!lessonIds.has(p.lesson)) errors.push(`${label}: provenance lesson ${p.lesson} not in topic-index.json`);
       }
+      if (entry.kind === 'gate') errors.push(...validateGate(entry, label, fc));
     }
   }
 
