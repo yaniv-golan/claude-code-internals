@@ -96,16 +96,16 @@
       "name": "skill-creator-plus",
       "url": "https://github.com/yaniv-golan/skill-creator-plus",
       "when": "Starting a skill",
-      "what": "Anthropic's skill-creator, extended with Cowork support.",
-      "why": "Many of the rules on this site are already handled by what it scaffolds, so a skill built with it starts on the right side of most of them."
+      "what": "A skill for building skills: draft, run evals against a baseline, review the results, iterate. Based on Anthropic's skill-creator and substantially reworked since.",
+      "why": "Its runtime reference encodes several of the rules documented here — including the two-sandbox delivery split and the fact that a rendered page has no way to send anything back — so a skill scaffolded with it starts on the right side of them."
     },
     {
       "slug": "verify",
       "name": "cowork-harness",
       "url": "https://github.com/yaniv-golan/cowork-harness",
       "when": "Checking a skill you already have",
-      "what": "A scriptable harness for the runtime behaviour described here.",
-      "why": "Every rule on this site raises the same question — does mine do this? — and clicking through a real session to find out is slow and easy to get wrong. This exercises the same behaviour directly and repeatably."
+      "what": "Runs a skill against Cowork's runtime contract from scenario files — including whether it triggers at all, how it behaves in each sandbox, and whether its output actually gets delivered. Has a replay mode that runs in CI.",
+      "why": "Every rule here raises the same question — does mine do this? — and clicking through a real session to find out is slow, and easy to get wrong in exactly the ways this site documents."
     }
   ],
   "facts": [
