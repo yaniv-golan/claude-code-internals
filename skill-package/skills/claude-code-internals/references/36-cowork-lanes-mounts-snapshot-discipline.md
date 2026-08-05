@@ -127,7 +127,7 @@ if (e.isHostLoopMode) { e.setFileDeleteApprovedForMount(r.name); log("… (host-
 
 Under host-loop — **production's default** (`1143815894` force-ON) — the early return fires and `mountPath` never runs, yet enforcement changes. `mountFolderForSession` shows the same shape (logs *"Queued for next resume"*, returns `{ok:true, mode:"host-loop"}`), **but `request_cowork_directory` does NOT defer** — it mounted a folder immediately mid-session. Two mount routes, different host-loop behaviour.
 
-**Spawn-time restore** (the other consumer): `(name, approvedList, flag) => flag ? "rw" : approvedList?.includes(name) ? "rwd" : "rw"`.
+**The other consumer** — the mount-mode resolver: `(name, approvedList, flag) => flag ? "rw" : approvedList?.includes(name) ? "rwd" : "rw"`. `flag` is named, and the "spawn-time" framing corrected, in the addendum below.
 
 ## Mechanism: established vs inference
 
@@ -144,6 +144,63 @@ Native side: `swift_addon.node` exports `ClaudeSwift.MountConfig{path, mode: Str
 The tool's own description instructs the model: *"call this tool whenever a delete operation (such as `rm`) fails with 'Operation not permitted', rather than telling the user it is impossible."* Expect an agent to self-escalate on the first EPERM.
 
 The approval dialog scopes the grant to a **named mount** (*"in your **outputs** folder"*) and warns *"Once allowed, this permission can't be revoked without starting a new task."* It fired under `permissionMode: auto` — a **behavioural confirmation of Ch24/L107's forced-ask matcher**, which lists `allow_cowork_file_delete` and `request_cowork_directory` among the always-ask tools.
+
+## ADDENDUM — mount-mode CONSTRUCTION, and what `isBridgeSession` actually selects
+
+Prompted by the `claude-cowork-headless-emulator` project, then re-derived first-party against the same baseline (`app.asar` **1.25927.0**, inside `.vite/build`, positive control on `fileDeleteApprovedMounts` run first).
+
+The resolver quoted above is real, and its third argument is **`isBridgeSession`**:
+
+```js
+function M(e,t,n){return n?`rw`:t?.includes(e)?`rwd`:`rw`}   // index.chunk-BJmJz5fh.js
+```
+
+Both mount builders pass it:
+
+- **VM-loop** (`Jo`) destructures `isBridgeSession:h` → `mode:H.l(name, T?.fileDeleteApprovedMounts, h)`
+- **host-loop** (`ht`) is called `ht(re(),ie(),S,C,x,k(),A,N,be,P,xe)` — arg 6 `k()` = `getFileDeleteApprovedMounts()`, arg 7 `A` = `isBridgeSession` → `mode:S.l(name,o,s)`
+
+**So in a bridge session `fileDeleteApprovedMounts` is ignored at mount time and every resolver-driven mount gets `rw`** — approval can never yield `rwd` there.
+
+### ⚠️ `isBridgeSession` is NOT L138's `environment_kind:"bridge"`
+
+```js
+isBridgeSession(e){ return this.sessions.get(e)?.sessionType === E.mt }   // E.mt === "agent"
+```
+
+Two different namespaces that share a word. L138's 1598 `bridge` records are **server-side** records for locally-executing sessions — 471 of them `origin:"claude_code_cli"`, plain CLI runs that never reach this Desktop builder. Using that count to size the bridge-`rw` population is the same error class as counting `cse_` ids to size the cloud lane (L138).
+
+First-party count over **every** persisted Cowork session record on the capturing machine (`local_*.json`, n=469): **375** no `sessionType` · **86** `scheduled` · **8** `dispatch_child` · **0** `agent`.
+
+**Persistence control:** `agent` and `dispatch_child` are both "hidden" session types (`e==="agent"||e==="dispatch_child"`), and `dispatch_child` *does* persist — so the zero is a real absence, not a write-path artifact. **The bridge-`rw` branch has never fired on this machine.** Document it as a condition, not as a common one.
+
+### Only two mounts are resolver-driven — and the two builders differ
+
+| mount | host-loop (`ht`) | VM-loop (`Jo`) |
+|---|---|---|
+| `outputs`, each connected folder | **resolver** | **resolver** |
+| `.claude` (whole dir) | — | **`rwd`** |
+| `.claude/projects` | `ro` | — |
+| `.claude/skills`, `uploads`, plugin mounts, `.projects/<uuid>` | `ro` | `ro` |
+| auto-memory dir | **`ro`** | **`rwd`** |
+| `<pluginMount>/.mcpb-cache` (only if it exists) | — | **`rw`** |
+| `.artifacts/<id>`, `.scheduled/<id>` | — | `ro` |
+
+Everything outside the first row is a hardcoded literal — no approval state reaches it.
+
+The `.claude` split is structural, and it is why L140's `/proc/mounts` inventory (a host-loop session) shows two `.claude/*` mounts and no bare `.claude`. The **auto-memory dir is the only mount whose hardcoded mode differs by lane**; the likely reason (**inference**) is that under host-loop the agent loop runs host-side and writes memory through the host FS, so the VM only needs to read it — note the VM-loop builder separately grants `Edit(/<memdir>/**)`/`Write(/<memdir>/**)` via `allowedTools`.
+
+### CORRECTION to this lesson's own wording
+
+"Spawn-time restore" was wrong for host-loop. `ht` is wired as **`computeBashMounts`** and runs **per bash call** with a live `k()` — matching Ch35/L122's "recomputed per bash call".
+
+This does **not** close the inference gap flagged above. The probe observed the flip inside an **already-open** shell, which a per-bash-call recompute cannot explain. These are two distinct mechanisms, and the live-flag inference still stands for the observed case.
+
+### METHODOLOGY — an older asar is a Rosetta stone for a newer one
+
+1.25927.0 is fully minified; builds **≤1.24012.1 retain real identifier names** (`guestCompatibleRootPath`, `toGuestCompatibleMountName`, `AUTO_MEMORY_MOUNT*`) and quote strings with `"` rather than backticks. Read the older build to name what the current one hides.
+
+The quote change is a trap in its own right: a backtick-anchored pattern silently misses older builds — a sibling of L141's backtick-minifier trap, in the opposite direction. Both facts in this addendum verify identically in 1.22209.0 and 1.24012.1, so **neither is new**.
 
 ---
 
@@ -193,6 +250,22 @@ Two consecutive probes reported `outputs` as mounted at the **host** path (`/Use
 The artifact survived one retraction and reappeared in weaker form ("the two mount kinds use different conventions") before being killed.
 
 **The rule: corroborate any agent-reported path with a command whose COUNT cannot be confabulated** — a zero-line `grep -F` on the disputed fragment. Prose describing a path is not evidence that the path exists.
+
+## ADDENDUM — this inventory is the RUNTIME view; the modes come from the builder
+
+The table above is what a live host-loop session shows in `/proc/mounts`. The **construction** side (per-builder mode table) lives in L139's addendum. Three things it adds to this inventory:
+
+**`.projects/<uuid>` is constructed `ro`**, in both builders, hardcoded:
+
+```js
+...y.reduce((e,t)=>(t.hostPath&&(e[d.a(`.projects/${t.uuid}`)]={path:d.i(t.hostPath),mode:`ro`}),e),{})
+```
+
+So a **project attachment is not writable at all** — it is not "writable but delete-denied", and it sits outside the delete-denied class entirely, since delete-denial is only meaningful on a writable mount.
+
+**Two mount classes are missing from the 29 because only the VM-loop builder emits them:** `.artifacts/<id>` and `.scheduled/<id>`, both `ro`. A host-loop `/proc/mounts` capture can never show them.
+
+**One `rw` sub-mount exists inside a `ro` parent:** `<pluginMount>/.mcpb-cache`, created only when that directory is present on the host — so "plugin mounts are read-only" is true only of the plugin root.
 
 ---
 

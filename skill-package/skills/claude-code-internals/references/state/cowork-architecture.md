@@ -476,8 +476,11 @@ All mounts appear at `/sessions/<slug>/mnt/…` — the host-path strings visibl
 **not usable VM paths**. A typical session carries **29** fuse mounts:
 
 `outputs` (rw) · `uploads` (**ro**) · each connected folder · `.claude/projects` · `.claude/skills`
-(separate mounts) · `.projects/<uuid>` · `.local-plugins/cache/<marketplace>/<plugin>/<version>`
+(separate mounts) · `.projects/<uuid>` (**ro**) · `.local-plugins/cache/<marketplace>/<plugin>/<version>`
 (version-pinned) · `.remote-plugins/plugin_<id>`
+
+That is the **host-loop runtime** view. The VM-loop builder additionally emits `.artifacts/<id>` and
+`.scheduled/<id>` (both `ro`), which no host-loop `/proc/mounts` capture can show.
 
 **Project-connect ≠ folder-connect**: a project produces a `.projects/<uuid>` mount and populates
 `userSelectedProjectUuids`; a folder produces `/mnt/<name>` and populates `userSelectedFolders` +
@@ -487,8 +490,24 @@ All mounts appear at `/sessions/<slug>/mnt/…` — the host-path strings visibl
 `truncate`/`O_TRUNC`, rename-within and rename-onto-existing are **permitted**; cross-device rename
 gives EXDEV. Approval via `mcp__cowork__allow_cowork_file_delete` is **strictly per-mount**, takes
 effect live in already-open shells, and involves **no remount**. Persisted as
-`fileDeleteApprovedMounts` and re-applied at spawn; under host-loop the handler early-returns without
+`fileDeleteApprovedMounts`; under host-loop the handler early-returns without
 calling `mountPath`. The VM-loop `mountPath(…,"rwd")` path is **untested**.
+
+**Mount MODE construction (L139 addendum).** Only **two** mounts get their mode from the resolver
+`(name, approvedList, isBridgeSession) => isBridgeSession ? "rw" : approvedList?.includes(name) ? "rwd" : "rw"`
+— `outputs` and each connected folder. Everything else is a hardcoded literal that no approval state
+reaches: `uploads`, `.claude/skills`, plugin mounts and **`.projects/<uuid>`** are `ro` in both
+builders; host-loop adds `.claude/projects` `ro` and auto-memory `ro`; VM-loop instead mounts
+`.claude` whole as `rwd`, auto-memory as `rwd`, and adds `.artifacts/<id>` / `.scheduled/<id>` (`ro`)
+plus a `rw` `<pluginMount>/.mcpb-cache`. A **project attachment is therefore not writable at all**,
+not merely delete-denied. Host-loop modes are recomputed **per bash call** (`computeBashMounts`), not
+only at spawn.
+
+**⚠️ `isBridgeSession` ≠ `environment_kind:"bridge"`.** It is `sessionType === "agent"` on the
+Desktop session record — a different namespace from L138's lane oracle. When true, approvals are
+**inert at mount time** (everything resolver-driven becomes `rw`). Observed frequency on the
+capturing machine: **0 of 469** persisted session records (375 no type, 86 `scheduled`,
+8 `dispatch_child`); `dispatch_child` is also a hidden type and does persist, so the zero is real.
 
 **Multiplexing:** multiple sessions share one VM guest and one mount namespace (a session sees other
 slugs' mounts in `/proc/mounts`), but **isolation holds** — cross-session reads return EACCES; session

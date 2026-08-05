@@ -4036,7 +4036,7 @@
       "lesson_number": "139",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
       "startLine": 91,
-      "endLine": 149,
+      "endLine": 206,
       "keywords": [
         "cowork-delete-semantics",
         "unlink-rmdir-denied",
@@ -4061,7 +4061,23 @@
         "session-json-is-memory-projection",
         "void-test",
         "forced-ask-matcher-behavioural",
-        "cowork-rm-operation-not-permitted"
+        "cowork-rm-operation-not-permitted",
+        "mount-mode-resolver",
+        "isBridgeSession",
+        "sessionType-agent",
+        "bridge-session-rw",
+        "approval-inert-at-mount-time",
+        "hardcoded-mount-modes",
+        "computeBashMounts",
+        "recomputed-per-bash-call",
+        "auto-memory-mount-mode",
+        "mcpb-cache-rw",
+        "claude-whole-dir-rwd",
+        "builder-mode-table",
+        "older-asar-rosetta-stone",
+        "quote-style-drift",
+        "guestCompatibleRootPath",
+        "toGuestCompatibleMountName"
       ]
     },
     {
@@ -4069,8 +4085,8 @@
       "title": "VM Multiplexing Confirmed, Isolation Holds, and the Real Mount Inventory",
       "lesson_number": "140",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 150,
-      "endLine": 198,
+      "startLine": 207,
+      "endLine": 271,
       "keywords": [
         "vm-multiplexing-confirmed",
         "shared-vm-guest",
@@ -4093,7 +4109,14 @@
         "remote-plugins-plugin-id",
         "claude-hostloop-plugins",
         "agent-reported-paths-not-evidence",
-        "grep-count-corroboration"
+        "grep-count-corroboration",
+        "projects-uuid-read-only",
+        "project-attachment-not-writable",
+        "artifacts-mount",
+        "scheduled-mount",
+        "vm-loop-only-mounts",
+        "runtime-vs-construction-view",
+        "mcpb-cache-submount"
       ]
     },
     {
@@ -4101,8 +4124,8 @@
       "title": "Snapshot Discipline: the fcache Is a Moving Target with Two Absence Axes",
       "lesson_number": "141",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 199,
-      "endLine": 277,
+      "startLine": 272,
+      "endLine": 350,
       "keywords": [
         "fcache-snapshot-identity",
         "fcache-content-hash",
@@ -4140,8 +4163,8 @@
       "title": "coworkSyspromptMap: a Server-Driven Prompt REPLACE Channel",
       "lesson_number": "142",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 278,
-      "endLine": 313,
+      "startLine": 351,
+      "endLine": 386,
       "keywords": [
         "coworkSyspromptMap",
         "system-prompt-patch-channel",
@@ -14382,6 +14405,75 @@
     ],
     "server-side-prompt-override": [
       142
+    ],
+    "mount-mode-resolver": [
+      139
+    ],
+    "isBridgeSession": [
+      139
+    ],
+    "sessionType-agent": [
+      139
+    ],
+    "bridge-session-rw": [
+      139
+    ],
+    "approval-inert-at-mount-time": [
+      139
+    ],
+    "hardcoded-mount-modes": [
+      139
+    ],
+    "computeBashMounts": [
+      139
+    ],
+    "recomputed-per-bash-call": [
+      139
+    ],
+    "auto-memory-mount-mode": [
+      139
+    ],
+    "mcpb-cache-rw": [
+      139
+    ],
+    "claude-whole-dir-rwd": [
+      139
+    ],
+    "builder-mode-table": [
+      139
+    ],
+    "older-asar-rosetta-stone": [
+      139
+    ],
+    "quote-style-drift": [
+      139
+    ],
+    "guestCompatibleRootPath": [
+      139
+    ],
+    "toGuestCompatibleMountName": [
+      139
+    ],
+    "projects-uuid-read-only": [
+      140
+    ],
+    "project-attachment-not-writable": [
+      140
+    ],
+    "artifacts-mount": [
+      140
+    ],
+    "scheduled-mount": [
+      140
+    ],
+    "vm-loop-only-mounts": [
+      140
+    ],
+    "runtime-vs-construction-view": [
+      140
+    ],
+    "mcpb-cache-submount": [
+      140
     ]
   }
 }
