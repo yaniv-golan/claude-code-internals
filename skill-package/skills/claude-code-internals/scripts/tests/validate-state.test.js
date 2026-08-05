@@ -25,7 +25,16 @@ function makeFixture() {
   }));
   fs.writeFileSync(path.join(dir, 'state', 'registry.json'), JSON.stringify({
     schema_version: 1,
-    as_of: { cli: '2.1.198', desktop_asar: '1.17377.2', in_vm_elf: '2.1.197', fcache_capture: '2026-07-02' },
+    as_of: {
+      cli: '2.1.198', desktop_asar: '1.17377.2', in_vm_elf: '2.1.197',
+      // fcache_capture identifies a SNAPSHOT, not a date: membership churns between
+      // refetches, so a date cannot distinguish two payloads. content16 is sha256 over
+      // the canonicalised features object.
+      fcache_capture: {
+        content16: '0123456789abcdef', embedded_timestamp: 1785910109684,
+        feature_count: 241, observed_at: '2026-07-02',
+      },
+    },
     entries: [
       {
         id: 'env.CLAUDE_CODE_ENABLE_TASKS',
