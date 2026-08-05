@@ -177,6 +177,25 @@ function validate(refsDir) {
         errors.push('registry.json: as_of.fcache_capture.feature_count must be a number');
       }
     }
+    // The cloud container runs its own agent build, independent of cli/desktop_asar — remote-lane
+    // claims are governed by THAT axis. We do not hold the artifact; these are version strings
+    // observed in session API traffic, so it is an observation range, not a pin. Optional (older
+    // captures predate the axis), but typed when present so it cannot rot into free text.
+    const cc = registry.as_of && registry.as_of.container_cc_version_observed;
+    if (cc !== undefined) {
+      if (typeof cc !== 'object' || cc === null || Array.isArray(cc)) {
+        errors.push('registry.json: as_of.container_cc_version_observed must be an object {newest, range, note}');
+      } else {
+        if (typeof cc.newest !== 'string') {
+          errors.push('registry.json: as_of.container_cc_version_observed.newest must be a version string');
+        }
+        if (!Array.isArray(cc.range) || cc.range.some(v => typeof v !== 'string')) {
+          errors.push('registry.json: as_of.container_cc_version_observed.range must be an array of version strings');
+        } else if (cc.newest && !cc.range.includes(cc.newest)) {
+          errors.push(`registry.json: as_of.container_cc_version_observed.newest "${cc.newest}" is not present in range`);
+        }
+      }
+    }
     if (registry.entries !== undefined && !Array.isArray(registry.entries)) {
       errors.push('registry.json: entries must be an array');
     }

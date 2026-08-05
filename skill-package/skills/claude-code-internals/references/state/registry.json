@@ -10,7 +10,19 @@
       "feature_count": 241,
       "observed_at": "2026-08-05"
     },
-    "agent_elf_parity_check": "2.1.221"
+    "agent_elf_parity_check": "2.1.221",
+    "container_cc_version_observed": {
+      "newest": "2.1.216",
+      "range": [
+        "2.1.204",
+        "2.1.207",
+        "2.1.210",
+        "2.1.211",
+        "2.1.212",
+        "2.1.216"
+      ],
+      "note": "Cloud-container agent versions seen in session API traffic; not an artifact we hold. Remote-lane claims are governed by this axis, NOT by cli/desktop_asar."
+    }
   },
   "entries": [
     {
