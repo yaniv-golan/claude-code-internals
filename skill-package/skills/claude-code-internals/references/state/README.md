@@ -51,3 +51,34 @@ Rules:
 3. `node scripts/validate-state.js` must pass before every commit that
    touches this directory. `node scripts/state.js --audit` shows what has
    not been reconciled to the newest baseline.
+
+---
+
+## Reviewing a change to `author-facts.json`
+
+These facts are **published** at ccinternals.dev. The validator enforces schema, provenance,
+version coupling and the disclosure shape-rules; it cannot enforce the five below. Apply them by
+hand to every change.
+
+(Recorded here rather than only in a planning document because `docs/internal/` and `CLAUDE.md`
+are both gitignored — a process rule that is not versioned is not a process rule.)
+
+1. **Is every `rule` phrased as what the author should DO?** Not how the product is implemented.
+   "Do not pass an absolute session path to the file tools" — not "the path gate rejects
+   `/sessions` prefixes".
+2. **Does any `detail` only make sense if you know an internal name?** If removing the internal
+   concept makes the sentence meaningless, rewrite it as observable behaviour. The reader cannot
+   see the mechanism; they can only see what happens.
+3. **Does `tier` match what the source lesson actually claims?** A fact may never assert a
+   stronger tier than its source. `measured` means someone observed it in a live session;
+   `binary` means it was read out of a shipped artifact and the behaviour was not exercised;
+   `inference` means the source says so. When in doubt, weaken it.
+4. **Was this measured only in the default configuration?** Locked-down organisations take
+   different code paths in several places. If the evidence is single-configuration, say so in a
+   caveat or move it to the page's open questions — do not let it read as universal.
+5. **For anything derived from prompt or dialog text: is the behaviour described rather than the
+   wording reproduced?** Short user-visible dialog strings the user themselves sees are UI text
+   and may be quoted briefly. Prompt bodies may not be reproduced at all.
+
+A sixth, mechanical but easy to forget: run `node site/generator/build.js` and
+`node site/generator/lint-disclosure.js` before pushing. The site build is a gate, not a preview.

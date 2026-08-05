@@ -88,9 +88,20 @@ function fixture(overrides = {}) {
     ],
     ...overrides,
   };
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'af-'));
+  const dir = mkStateDir('af-');
   fs.writeFileSync(path.join(dir, 'author-facts.json'), JSON.stringify(doc, null, 2));
   return { dir, doc };
+}
+
+/**
+ * A state dir with the one page the fixture facts cite. sources.state_page is
+ * validated against the *.md files actually present (domain == filename), so a
+ * bare temp dir would fail the fixture for the right reason at the wrong time.
+ */
+function mkStateDir(prefix) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
+  fs.writeFileSync(path.join(dir, 'cowork-architecture.md'), '---\ndomain: cowork-architecture\n---\n');
+  return dir;
 }
 
 const REGISTRY = {
@@ -128,7 +139,7 @@ test('verified_against drifting from registry as_of is an error', () => {
 test('a volatile fact on a content page is an error (quarantine)', () => {
   const { doc } = fixture();
   doc.facts[0].durability = 'volatile';
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'af-vol-'));
+  const dir = mkStateDir('af-vol-');
   fs.writeFileSync(path.join(dir, 'author-facts.json'), JSON.stringify(doc, null, 2));
   const errs = validateAuthorFacts(dir, LESSONS, REGISTRY);
   assert.ok(errs.some(e => /volatile facts may only appear/.test(e)), errs.join('\n'));
@@ -137,7 +148,7 @@ test('a volatile fact on a content page is an error (quarantine)', () => {
 test('a fact citing an unknown lesson is an error', () => {
   const { doc } = fixture();
   doc.facts[0].sources.lessons = [9999];
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'af-lesson-'));
+  const dir = mkStateDir('af-lesson-');
   fs.writeFileSync(path.join(dir, 'author-facts.json'), JSON.stringify(doc, null, 2));
   const errs = validateAuthorFacts(dir, LESSONS, REGISTRY);
   assert.ok(errs.some(e => /not in topic-index/.test(e)), errs.join('\n'));
@@ -146,7 +157,7 @@ test('a fact citing an unknown lesson is an error', () => {
 test('a fact whose page does not exist is an error', () => {
   const { doc } = fixture();
   doc.facts[0].page = 'nope';
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'af-page-'));
+  const dir = mkStateDir('af-page-');
   fs.writeFileSync(path.join(dir, 'author-facts.json'), JSON.stringify(doc, null, 2));
   const errs = validateAuthorFacts(dir, LESSONS, REGISTRY);
   assert.ok(errs.some(e => /is not a declared page/.test(e)), errs.join('\n'));
@@ -155,7 +166,7 @@ test('a fact whose page does not exist is an error', () => {
 test('published prose containing an internal identifier is an error', () => {
   const { doc } = fixture();
   doc.facts[0].detail = 'The hostLoopMode field decides this.';
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'af-leak-'));
+  const dir = mkStateDir('af-leak-');
   fs.writeFileSync(path.join(dir, 'author-facts.json'), JSON.stringify(doc, null, 2));
   const errs = validateAuthorFacts(dir, LESSONS, REGISTRY);
   assert.ok(errs.some(e => /camelcase-internal/.test(e)), errs.join('\n'));
@@ -164,7 +175,7 @@ test('published prose containing an internal identifier is an error', () => {
 test('an unknown tier is an error', () => {
   const { doc } = fixture();
   doc.facts[0].tier = 'vibes';
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'af-tier-'));
+  const dir = mkStateDir('af-tier-');
   fs.writeFileSync(path.join(dir, 'author-facts.json'), JSON.stringify(doc, null, 2));
   const errs = validateAuthorFacts(dir, LESSONS, REGISTRY);
   assert.ok(errs.some(e => /unknown tier/.test(e)), errs.join('\n'));
@@ -173,8 +184,17 @@ test('an unknown tier is an error', () => {
 test('a content page with no facts is an error', () => {
   const { doc } = fixture();
   doc.pages.push({ slug: 'orphan', title: 'Orphan', summary: 'x', open_questions: [] });
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'af-orphan-'));
+  const dir = mkStateDir('af-orphan-');
   fs.writeFileSync(path.join(dir, 'author-facts.json'), JSON.stringify(doc, null, 2));
   const errs = validateAuthorFacts(dir, LESSONS, REGISTRY);
   assert.ok(errs.some(e => /has no facts/.test(e)), errs.join('\n'));
+});
+
+test('a fact citing a nonexistent state page is an error', () => {
+  const { doc } = fixture();
+  doc.facts[0].sources.state_page = 'no-such-page';
+  const dir = mkStateDir('af-sp-');
+  fs.writeFileSync(path.join(dir, 'author-facts.json'), JSON.stringify(doc, null, 2));
+  const errs = validateAuthorFacts(dir, LESSONS, REGISTRY);
+  assert.ok(errs.some(e => /is not an existing state page/.test(e)), errs.join('\n'));
 });

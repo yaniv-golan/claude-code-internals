@@ -384,7 +384,7 @@ ul.pages li { margin-bottom:.75rem; }
   <a href="${mdHref}">This page as Markdown</a>
 </nav>
 <div class="expired-banner" data-verified="${esc(verified)}"></div>
-<p class="freshline">${freshnessBadge(verified)} — what was checked, and when; not a guarantee it is still true.</p>
+<p class="freshline">${freshnessBadge(verified)} What was checked, and when — not a guarantee it is still true.</p>
 ${body}
 ${tierLegend()}
 <footer>
@@ -443,6 +443,15 @@ function build(outDir) {
       current_state_url: `${SITE_URL}/${SECTION}/current-state/`,
     },
     disclaimer: 'This documentation does not detect product changes. It records what was verified on a date against a build.',
+    // Deliberately NOT a precomputed age or band. A value baked at build time
+    // freezes on the deploy date and reads "fresh" forever — the defect this
+    // project already shipped once in the rendered badge. Consumers get the
+    // date and the thresholds and compute age at read time.
+    staleness: {
+      verified: doc.verified_against.observed_at,
+      compute: 'age = today - verified; do not cache a precomputed band',
+      bands_days: { fresh: BAND_FRESH, aging: BAND_AGING },
+    },
     tiers: TIER_TITLE,
     facts: doc.facts.filter(f => f.durability === 'durable').map(f => ({
       id: f.id,

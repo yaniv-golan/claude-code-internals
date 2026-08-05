@@ -172,6 +172,12 @@ function validateAuthorFacts(stateDir, lessonIds, registry) {
   const p = path.join(stateDir, 'author-facts.json');
   if (!fs.existsSync(p)) return errors;
 
+  // Domain == filename for state pages (see this directory's README).
+  const statePageDomains = new Set(
+    fs.readdirSync(stateDir)
+      .filter(f => f.endsWith('.md') && f !== 'README.md')
+      .map(f => f.replace(/\.md$/, '')));
+
   let doc;
   try {
     doc = JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -247,6 +253,11 @@ function validateAuthorFacts(stateDir, lessonIds, registry) {
     }
     if (!Array.isArray(src.lessons) || !src.lessons.length) {
       errors.push(`${label}: sources.lessons must be a non-empty array`);
+    }
+    // A typo here was silently accepted before: the canonical page a fact
+    // restates must actually exist, or its provenance points at nothing.
+    if (src.state_page !== undefined && !statePageDomains.has(src.state_page)) {
+      errors.push(`${label}: sources.state_page "${src.state_page}" is not an existing state page`);
     }
     // Quarantine: volatile facts may exist, but never on a content page.
     if (ft.durability === 'volatile' && ft.page !== 'current-state') {
