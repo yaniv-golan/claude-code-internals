@@ -76,7 +76,9 @@ const TIER_TITLE = {
  * UPGRADES this (appends the age, sets the band); it never creates it.
  */
 function freshnessBadge(verified) {
-  return `<span class="fresh" data-verified="${esc(verified)}">Verified ${esc(verified)}</span>`;
+  // Dot + date. AGE_SCRIPT appends "· N days ago" and recolours the dot; without
+  // scripting the date still stands on its own.
+  return `<span class="dot" data-dot></span><span class="fresh" data-verified="${esc(verified)}">Verified ${esc(verified)}</span>`;
 }
 
 /**
@@ -103,8 +105,11 @@ const AGE_SCRIPT = `<script>
   var els = document.querySelectorAll('.fresh[data-verified]');
   for (var i = 0; i < els.length; i++) {
     var el = els[i], n = days(el.dataset.verified);
-    el.className = 'fresh ' + (n <= ${BAND_FRESH} ? '' : (n <= ${BAND_AGING} ? 'aging' : 'expired'));
-    el.textContent = el.textContent + ' \u00b7 ' + n + ' day' + (n === 1 ? '' : 's') + ' ago';
+    var band = n <= ${BAND_FRESH} ? '' : (n <= ${BAND_AGING} ? 'aging' : 'expired');
+    el.className = 'fresh ' + band;
+    var dot = el.parentNode.querySelector('[data-dot]');
+    if (dot) dot.className = 'dot ' + band;
+    el.textContent = el.textContent + ' \u00b7 ' + (n === 0 ? 'today' : n + ' day' + (n === 1 ? '' : 's') + ' ago');
   }
   var banners = document.querySelectorAll('.expired-banner[data-verified]');
   for (var j = 0; j < banners.length; j++) {
@@ -114,6 +119,100 @@ const AGE_SCRIPT = `<script>
       b.textContent = 'Last verified ' + m + ' days ago. Treat every detail as unverified.';
     }
   }
+})();
+</script>`;
+
+
+// Theme toggle and the contract page's filters, ticks and copy. Everything here
+// is an enhancement: the pages are complete and readable with scripting off,
+// and every rule is present in the DOM before any filter runs.
+const UI_SCRIPT = `<script>
+(function () {
+  var root = document.documentElement;
+  function current() {
+    return root.getAttribute('data-t') ||
+      (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  }
+  var btn = document.querySelector('[data-theme-toggle]');
+  function label() { if (btn) btn.textContent = current() === 'dark' ? 'light' : 'dark'; }
+  label();
+  if (btn) btn.addEventListener('click', function () {
+    var next = current() === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-t', next);
+    try { localStorage.setItem('ccitheme', next); } catch (e) {}
+    label();
+  });
+
+  var list = document.querySelector('[data-contract]');
+  if (!list) return;
+  var rules = [].slice.call(list.querySelectorAll('.crule'));
+  var counter = document.querySelector('[data-count]');
+  var total = rules.length;
+  var on = { tier: [], sev: [] };
+
+  function apply() {
+    var shown = 0;
+    rules.forEach(function (r) {
+      var okT = !on.tier.length || on.tier.indexOf(r.dataset.tier) > -1;
+      var okS = !on.sev.length || on.sev.indexOf(r.dataset.sev) > -1;
+      var vis = okT && okS;
+      r.classList.toggle('hide', !vis);
+      if (vis) shown++;
+    });
+    [].forEach.call(list.querySelectorAll('.cgroup'), function (g) {
+      var any = g.querySelector('.crule:not(.hide)');
+      g.style.display = any ? '' : 'none';
+    });
+    if (counter) counter.textContent = 'showing ' + shown + ' of ' + total;
+  }
+  [].forEach.call(document.querySelectorAll('[data-filter]'), function (b) {
+    b.addEventListener('click', function () {
+      var kind = b.dataset.filter, val = b.dataset.value, cur = on[kind];
+      var i = cur.indexOf(val);
+      if (i > -1) cur.splice(i, 1); else cur.push(val);
+      b.setAttribute('aria-pressed', i > -1 ? 'false' : 'true');
+      apply();
+    });
+  });
+
+  var KEY = 'ccichecks';
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
+  function persist() { try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {} }
+  rules.forEach(function (r) {
+    var box = r.querySelector('input');
+    if (!box) return;
+    if (saved[r.dataset.id]) box.checked = true;
+    box.addEventListener('change', function () {
+      if (box.checked) saved[r.dataset.id] = 1; else delete saved[r.dataset.id];
+      persist();
+    });
+  });
+  var reset = document.querySelector('[data-reset]');
+  if (reset) reset.addEventListener('click', function () {
+    saved = {}; persist();
+    rules.forEach(function (r) { var b = r.querySelector('input'); if (b) b.checked = false; });
+  });
+
+  var copy = document.querySelector('[data-copy]');
+  if (copy) copy.addEventListener('click', function () {
+    var out = [];
+    [].forEach.call(list.querySelectorAll('.cgroup'), function (g) {
+      if (g.style.display === 'none') return;
+      var lines = [];
+      [].forEach.call(g.querySelectorAll('.crule:not(.hide)'), function (r) {
+        var box = r.querySelector('input');
+        lines.push('- [' + (box && box.checked ? 'x' : ' ') + '] ' + r.dataset.rule +
+          ' \\\`' + r.dataset.tier + '\\\`' + (r.dataset.sev ? ' \\\`' + r.dataset.sev.toUpperCase() + '\\\`' : ''));
+      });
+      if (lines.length) out.push('## ' + g.dataset.title + '\\n' + lines.join('\\n'));
+    });
+    var text = out.join('\\n\\n');
+    if (navigator.clipboard) navigator.clipboard.writeText(text);
+    var was = copy.textContent;
+    copy.textContent = 'copied \\u2713';
+    setTimeout(function () { copy.textContent = was; }, 1600);
+  });
 })();
 </script>`;
 
@@ -187,7 +286,8 @@ function factsFor(doc, slug) {
 function renderFactMd(f) {
   const out = [`### ${f.rule}`, ''];
   const lane = f.lane ? ` · *${LANE_LABEL[f.lane]}*` : '';
-  out.push(`*${TIER_LABEL[f.tier]}*${lane}${f.volatile_dependency ? ' · *Depends on server-side configuration — can change without a version bump*' : ''}`, '');
+  const sev = f.severity ? ` · *${SEV_MEANS[f.severity]}*` : '';
+  out.push(`*${TIER_LABEL[f.tier]}*${sev}${lane}${f.volatile_dependency ? ' · *Depends on server-side configuration — can change without a version bump*' : ''}`, '');
   out.push(f.detail, '');
   for (const c of f.caveats || []) out.push(`> ${CAVEAT_LABEL} ${c}`, '');
   return out;
@@ -203,7 +303,7 @@ function renderPageMd(doc, page, registry) {
       const fs_ = factsFor(doc, p.slug).filter(f => f.durability === 'durable');
       if (!fs_.length) continue;
       out.push(`## ${p.title}`, '');
-      for (const f of fs_) out.push(`- [**${f.rule}**](${p.slug}.md) *(${TIER_LABEL[f.tier]})*`);
+      for (const f of fs_) out.push(`- [**${f.rule}**](${p.slug}.md) *(${TIER_LABEL[f.tier]}${f.severity ? ' · ' + SEV_LABEL[f.severity] : ''})*`);
       out.push('');
     }
     // A reader who just went through every rule is the one asking how to check
@@ -263,57 +363,203 @@ function renderCurrentStateMd(doc, registry) {
 
 // --- HTML ------------------------------------------------------------------
 
+const SEV_LABEL = { silent: 'SILENT', loud: 'LOUD', friction: 'FRICTION' };
+const SEV_MEANS = {
+  silent: 'Breaks silently',
+  loud: 'Fails loudly',
+  friction: 'Costs friction',
+};
+
+/** Severity is editorial: what the mistake costs you, not how the rule was checked. */
+function sevChip(f) {
+  if (!f.severity) return '';
+  return `<span class="chip sev sev-${f.severity}" title="${esc(SEV_MEANS[f.severity])}">` +
+         `<i></i>${SEV_LABEL[f.severity]}</span>`;
+}
+
+/** First sentence of a rule — short enough for a table of contents, and never invented. */
+function shortRule(rule) {
+  const m = rule.match(/^[^.]+\./);
+  return (m ? m[0] : rule).replace(/\.$/, '');
+}
+
+function homeBody(doc, up) {
+  const durable = doc.facts.filter(f => f.durability === 'durable');
+  const topics = doc.pages.filter(p => p.blurb && p.slug !== 'current-state');
+  const b = [];
+  b.push('<main>');
+  b.push('<div style="max-width:720px">',
+    `<h1>${esc(doc.pages.find(p => p.slug === 'index').title)}</h1>`,
+    `<p class="lede">${inlineHtml(doc.pages.find(p => p.slug === 'index').summary.split('. ').slice(0, 2).join('. '))}.</p>`,
+    `<p class="sub">Derived from shipped binaries and live sessions. This site does not detect product changes.</p>`,
+    '</div>');
+
+  if ((doc.router || []).length) {
+    b.push('<section class="block">',
+      '<div class="secthead"><h2 class="sect">Start from the symptom</h2>',
+      '<span class="note">What you saw → why → what to do instead</span></div>',
+      '<div class="router">');
+    for (const r of doc.router) {
+      b.push(`<a href="${up}${r.page}/">`,
+        `<div class="sym">${inlineHtml(r.symptom)}</div>`,
+        `<div class="why">${inlineHtml(r.why)}</div>`,
+        `<div class="fix">${inlineHtml(r.fix)}</div>`, '</a>');
+    }
+    b.push('</div></section>');
+  }
+
+  b.push('<section class="twocol"><div>',
+    '<h2 style="margin:0 0 4px;font-size:22px;font-weight:700;letter-spacing:-.02em">The five that break the most skills</h2>',
+    '<p style="margin:0 0 20px;font-size:14.5px;color:var(--fg3)">If you read nothing else.</p>',
+    '<ol class="top5">');
+  (doc.top5 || []).forEach((t, i) => {
+    b.push('<li>', `<span class="n">${String(i + 1).padStart(2, '0')}</span>`,
+      `<div><div class="r"><a href="${up}${t.page}/" style="color:inherit">${inlineHtml(t.rule)}</a></div>`,
+      `<div class="w">${inlineHtml(t.why)}</div></div>`, '</li>');
+  });
+  b.push('</ol></div>');
+
+  b.push('<div class="legend" id="tiers">',
+    '<h3>How to read the labels</h3>',
+    '<div class="t">Confidence — how we know</div>',
+    '<div class="badges" style="padding:0 0 6px">',
+    '<span class="chip">MEASURED</span><span class="chip">FROM BINARY</span><span class="chip">INFERENCE</span>',
+    '</div>',
+    '<div class="d">Neutral on purpose. Provenance is not severity.</div>',
+    '<hr>',
+    '<div class="t">Severity — what it costs you</div>',
+    '<div class="sevkey">');
+  for (const k of ['silent', 'loud', 'friction']) {
+    b.push(`<span><i style="background:var(--sev${k === 'silent' ? 1 : k === 'loud' ? 2 : 3})"></i>${SEV_MEANS[k]}</span>`);
+  }
+  b.push('</div>',
+    '<div class="d" style="margin-top:8px">Editorial, not measured — a judgement about consequence.</div>',
+    '</div></section>');
+
+  b.push('<section class="block">',
+    `<h2 class="sect" style="margin-bottom:20px">${topics.length} failure modes, one page each</h2>`,
+    '<div class="pagegrid">');
+  for (const p of topics) {
+    const n = doc.facts.filter(f => f.page === p.slug && f.durability === 'durable').length;
+    b.push(`<a href="${up}${p.slug}/"><div class="t"><div class="ttl">${esc(p.title)}</div>`,
+      `<span class="c">${n} rules</span></div>`,
+      `<div class="b">${inlineHtml(p.blurb)}</div></a>`);
+  }
+  b.push('</div></section>');
+
+  b.push('<section class="block">',
+    '<div class="secthead" style="border-bottom:0;padding-bottom:0;margin-bottom:18px">',
+    '<h2 class="sect">Where this fits in your workflow</h2>',
+    `<span class="note">${esc(TOOLS_NOTE)}</span></div>`,
+    '<div class="tools">');
+  for (const t of doc.tools || []) {
+    b.push('<div class="tool">', `<div class="when">${esc(t.when)}</div>`,
+      `<a class="nm" href="${t.url}">${esc(t.name)}</a>`,
+      `<p>${inlineHtml(t.what)} ${inlineHtml(t.why)}</p>`, '</div>');
+  }
+  b.push('</div></section>');
+  b.push(`<p class="sub" style="margin-top:44px">${durable.length} rules in total · <a href="${up}contract/">see them all on one page</a></p>`);
+  b.push('</main>');
+  return b.join('\n');
+}
+
+function topicBody(doc, page, up) {
+  const facts = factsFor(doc, page.slug);
+  const b = ['<main class="topic">', '<article>'];
+  b.push(`<div class="kicker">${esc(page.nav_group || '')} · ${facts.length} rule${facts.length === 1 ? '' : 's'}</div>`);
+  b.push(`<h1>${esc(page.title)}</h1>`);
+  b.push(`<p class="lede">${inlineHtml(page.summary)}</p>`);
+  b.push('<div class="facts">');
+  for (const f of facts) {
+    b.push('<section class="fact">',
+      '<div class="facthead">',
+      `<h2 id="${factAnchor(f)}">${inlineHtml(f.rule)}</h2>`,
+      `<div class="badges">${sevChip(f)}${badge(f, up)}${laneBadge(f)}${f.volatile_dependency ? volatileBadge(up) : ''}</div>`,
+      '</div>',
+      `<p>${inlineHtml(f.detail)}</p>`);
+    for (const c of f.caveats || []) {
+      b.push(`<div class="caveat"><strong>${CAVEAT_LABEL}</strong> ${inlineHtml(c)}</div>`);
+    }
+    b.push('</section>');
+  }
+  b.push('</div>');
+  if ((page.open_questions || []).length) {
+    b.push('<section class="notest"><h2>What is not established</h2><ul>');
+    for (const q of page.open_questions) b.push(`<li>${inlineHtml(q)}</li>`);
+    b.push('</ul></section>');
+  }
+  b.push('</article>');
+  b.push('<nav class="toc"><div class="navlabel">On this page</div>');
+  for (const f of facts) b.push(`<a href="#${factAnchor(f)}">${esc(shortRule(f.rule))}</a>`);
+  b.push(`<div class="all"><a href="${up}contract/">All ${doc.facts.filter(f => f.durability === 'durable').length} rules →</a></div>`);
+  b.push('</nav></main>');
+  return b.join('\n');
+}
+
+function contractBody(doc, page, up) {
+  const durable = doc.facts.filter(f => f.durability === 'durable');
+  const harness = (doc.tools || []).find(t => t.slug === 'verify');
+  const b = ['<main class="wide">'];
+  b.push('<div class="ctop"><div style="max-width:640px">',
+    `<h1>${esc(page.title)}</h1>`,
+    `<p class="lede" style="font-size:16.5px">${inlineHtml(page.summary)}</p></div>`,
+    '<div class="cbtns">',
+    '<button type="button" data-copy>copy as markdown</button>',
+    '<button type="button" data-reset>reset ticks</button>',
+    '</div></div>');
+  if (harness) {
+    b.push('<div class="harness">',
+      `<span class="s">Rather not tick these by hand? <a href="${harness.url}" style="font-family:var(--mono);font-weight:600">${esc(harness.name)}</a> ${inlineHtml(harness.what)}</span>`,
+      `<span class="n">${esc(TOOLS_NOTE)}</span></div>`);
+  }
+  b.push('<div class="filters">',
+    '<span class="lbl">Confidence</span><div class="set">');
+  for (const [k, v] of [['measured', 'MEASURED'], ['binary', 'FROM BINARY'], ['inference', 'INFERENCE']]) {
+    b.push(`<button type="button" data-filter="tier" data-value="${k}" aria-pressed="false">${v}</button>`);
+  }
+  b.push('</div><span class="sep"></span><span class="lbl">Severity</span><div class="set">');
+  for (const k of ['silent', 'loud', 'friction']) {
+    b.push(`<button type="button" data-filter="sev" data-value="${k}" aria-pressed="false">${SEV_LABEL[k]}</button>`);
+  }
+  b.push('</div>', `<span class="count" data-count>showing ${durable.length} of ${durable.length}</span>`, '</div>');
+
+  b.push('<div class="cols" data-contract>');
+  for (const p of doc.pages) {
+    const fs_ = factsFor(doc, p.slug).filter(f => f.durability === 'durable');
+    if (!fs_.length) continue;
+    b.push(`<section class="cgroup" data-title="${esc(p.title)}">`,
+      `<div class="h"><a href="${up}${p.slug}/">${esc(p.title)}</a><span class="c">${fs_.length} rules</span></div>`,
+      '<div>');
+    for (const f of fs_) {
+      b.push(`<label class="crule" data-id="${esc(f.id)}" data-tier="${esc(f.tier)}" data-sev="${esc(f.severity || '')}" data-rule="${esc(f.rule)}">`,
+        '<input type="checkbox">',
+        '<div>',
+        `<div class="t"><a class="rule-link" href="${up}${p.slug}/#${factAnchor(f)}">${inlineHtml(f.rule)}</a></div>`,
+        `<div class="m">${sevChip(f)}<span class="chip">${TIER_LABEL[f.tier]}</span><span class="d">${esc(f.verified)}</span></div>`,
+        '</div></label>');
+    }
+    b.push('</div></section>');
+  }
+  b.push('</div></main>');
+  return b.join('\n');
+}
+
 function pageHtml(doc, page, registry, depth) {
   const up = depth === 0 ? '' : '../';
-  const facts = factsFor(doc, page.slug);
-  const body = [];
-
-  body.push(`<h1>${esc(page.title)}</h1>`);
-  body.push(`<p class="summary">${inlineHtml(page.summary)}</p>`);
-
-  if (page.slug === 'contract') {
-    body.push('<p>Every rule on the site, grouped by the page that explains it. Generated — this page cannot disagree with the others.</p>');
-    for (const p of doc.pages) {
-      const fs_ = factsFor(doc, p.slug).filter(f => f.durability === 'durable');
-      if (!fs_.length) continue;
-      body.push(`<h2><a href="${up}${p.slug}/">${esc(p.title)}</a></h2><ul class="rules">`);
-      for (const f of fs_) body.push(
-        `<li><a class="rule-link" href="${up}${p.slug}/#${factAnchor(f)}"><strong>${inlineHtml(f.rule)}</strong></a> ${badge(f)}</li>`);
-      body.push('</ul>');
-    }
-    body.push(...toolsHtml((doc.tools || []).filter(t => t.slug === 'verify'), 'Checking your own skill against these'));
-  } else if (page.slug === 'current-state') {
-    body.push(mdTablesToHtml(renderCurrentStateMd(doc, registry).join('\n')));
-  } else if (page.slug === 'index') {
-    body.push('<h2>Pages</h2><ul class="pages">');
-    for (const p of doc.pages) {
-      if (p.slug === 'index') continue;
-      body.push(`<li><a href="${up}${p.slug}/">${esc(p.title)}</a><br><span class="muted">${inlineHtml(p.summary.split('. ')[0])}.</span></li>`);
-    }
-    body.push('</ul>');
-    body.push(...toolsHtml(doc.tools || [], 'Where this fits in your workflow'));
-  } else {
-    for (const f of facts) {
-      body.push('<section class="fact">');
-      body.push(`<h3 id="${factAnchor(f)}">${inlineHtml(f.rule)}</h3>`);
-      body.push(`<p class="badges">${badge(f)}${laneBadge(f)}${f.volatile_dependency ? volatileBadge(up) : ''}</p>`);
-      body.push(`<p>${inlineHtml(f.detail)}</p>`);
-      for (const c of f.caveats || []) body.push(`<p class="caveat"><strong>${CAVEAT_LABEL}</strong> ${inlineHtml(c)}</p>`);
-      body.push('</section>');
-    }
-  }
-
-  if ((page.open_questions || []).length) {
-    body.push('<h2>What is not established</h2><ul class="open">');
-    for (const q of page.open_questions) body.push(`<li>${inlineHtml(q)}</li>`);
-    body.push('</ul>');
-  }
+  let body;
+  if (page.slug === 'index') body = homeBody(doc, up);
+  else if (page.slug === 'contract') body = contractBody(doc, page, up);
+  else if (page.slug === 'current-state') {
+    body = ['<main>', `<h1>${esc(page.title)}</h1>`, `<p class="lede">${inlineHtml(page.summary)}</p>`,
+      mdTablesToHtml(renderCurrentStateMd(doc, registry).join('\n')), '</main>'].join('\n');
+  } else body = topicBody(doc, page, up);
 
   const mdHref = page.slug === 'index' ? 'index.md' : `${up}${page.slug}.md`;
   return shell({
+    doc,
     title: page.title,
     description: page.summary.split('. ')[0] + '.',
-    body: body.join('\n'),
+    body,
     mdHref,
     up,
     verified: doc.verified_against.observed_at,
@@ -322,10 +568,12 @@ function pageHtml(doc, page, registry, depth) {
   });
 }
 
-function badge(f) {
-  // Links to the on-page legend: a title= tooltip is invisible on touch devices,
-  // and the tier is how a reader decides how much weight to give the claim.
-  return `<a class="tier tier-${f.tier}" href="#tiers" title="${esc(TIER_TITLE[f.tier])}">${TIER_LABEL[f.tier]}</a>`;
+function badge(f, up) {
+  // Links to the legend, which now lives once on the entry page rather than being
+  // repeated below every page. A title= tooltip is invisible on touch devices, and
+  // the tier is how a reader decides how much weight to give the claim.
+  const href = up === undefined ? '#tiers' : `${up}#tiers`;
+  return `<a class="chip tier-${f.tier}" href="${href}" title="${esc(TIER_TITLE[f.tier])}">${TIER_LABEL[f.tier]}</a>`;
 }
 /**
  * Stable per-fact anchor. Derived from the fact id, NOT the rule text: rule
@@ -431,7 +679,36 @@ function mdTablesToHtml(md) {
   return out.join('\n');
 }
 
-function shell({ title, description, body, mdHref, up, verified, slug, canonical }) {
+function navHtml(doc, up, slug) {
+  // Grouped by nav_group, in page order. Groups come from the data so a new page
+  // joins the sidebar without touching this function.
+  const order = [];
+  const byGroup = new Map();
+  for (const p of doc.pages) {
+    if (!p.nav_group) continue;
+    if (!byGroup.has(p.nav_group)) { byGroup.set(p.nav_group, []); order.push(p.nav_group); }
+    byGroup.get(p.nav_group).push(p);
+  }
+  const link = (p, cls) => {
+    const href = p.slug === 'index' ? up : `${up}${p.slug}/`;
+    const on = p.slug === slug ? ' aria-current="page"' : '';
+    return `<a class="${cls}" href="${href}"${on}>${esc(p.nav_label || p.title)}</a>`;
+  };
+  const out = ['<nav class="side">', '<div class="navtop">',
+    `<a class="nav-1" href="${up}"${slug === 'index' ? ' aria-current="page"' : ''}>Start here</a>`,
+    `<a class="nav-1" href="${up}contract/"${slug === 'contract' ? ' aria-current="page"' : ''}>The contract` +
+    ` <span class="navcount">${doc.facts.filter(f => f.durability === 'durable').length}</span></a>`,
+    '</div>'];
+  for (const g of order) {
+    out.push(`<div class="navgroup"><div class="navlabel">${esc(g)}</div>`);
+    for (const p of byGroup.get(g)) out.push(link(p, 'nav-2'));
+    out.push('</div>');
+  }
+  out.push('</nav>');
+  return out.join('\n');
+}
+
+function shell({ doc, title, description, body, mdHref, up, verified, slug, canonical, wide }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -451,82 +728,234 @@ function shell({ title, description, body, mdHref, up, verified, slug, canonical
 <meta name="twitter:description" content="${esc(description)}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script type="application/ld+json">${jsonLd({ title, description, canonical, verified })}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300..800;1,400..600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root { color-scheme: light dark; --fg:#111; --muted:#666; --line:#ddd; --accent:#0b62d6; --warn:#8a5a00; --bad:#a11; }
-@media (prefers-color-scheme: dark) { :root { --fg:#e6e6e6; --muted:#9aa; --line:#333; --accent:#6aa9ff; --warn:#e0a83a; --bad:#ff8080; } }
-body { font:16px/1.65 system-ui,-apple-system,sans-serif; max-width:46rem; margin:0 auto; padding:2rem 1.25rem 5rem; color:var(--fg); }
-nav { display:flex; gap:1rem; flex-wrap:wrap; font-size:.9rem; border-bottom:1px solid var(--line); padding-bottom:.75rem; margin-bottom:1.5rem; }
-a { color:var(--accent); }
-h1 { font-size:1.6rem; line-height:1.25; margin:0 0 1rem; }
-h2 { font-size:1.15rem; margin:2.25rem 0 .5rem; }
-h3 { font-size:1rem; margin:0 0 .35rem; }
-.summary { font-size:1.05rem; border-left:3px solid var(--accent); padding-left:1rem; }
-.fact { border-top:1px solid var(--line); padding-top:1.25rem; margin-top:1.5rem; }
-.badges { margin:.2rem 0 .6rem; }
-.tier { font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; border:1px solid var(--line); border-radius:3px; padding:.1rem .4rem; text-decoration:none; }
-.tier-measured { color:#0a7; border-color:#0a7; }
-.tier-binary { color:var(--accent); border-color:var(--accent); }
-.tier-inference { color:var(--warn); border-color:var(--warn); }
-.tier-volatile { color:var(--warn); border-color:var(--warn); }
-/* Lane is scope, not confidence -- deliberately muted so it never competes
-   with the tier badge a reader uses to weigh the claim. */
-.tier-lane { color:var(--muted); border-color:var(--line); }
-/* The contract is a checklist of 50+ one-liners; without an affordance it
-   reads as a wall of text with nothing to click. */
-.rules li { margin:.35rem 0; }
-.rule-link { color:inherit; text-decoration:none; border-bottom:1px solid var(--line); }
-.rule-link:hover { border-bottom-color:var(--accent); color:var(--accent); }
-/* Tool pointers must not read as findings. No tier badge, muted rule above,
-   and the reader-moment label carries the weight instead of the project name. */
-.tool { border-left:2px solid var(--line); padding-left:.9rem; margin:1rem 0; }
-.tool h3 { font-size:1rem; margin:0 0 .3rem; }
-.tool .when { color:var(--muted); font-weight:400; }
-.tool .when::after { content:' · '; }
-.tool p { margin:.2rem 0 0; }
-.tool-note { font-size:.86rem; margin-top:.9rem; }
-.caveat { color:var(--muted); font-size:.92rem; border-left:2px solid var(--line); padding-left:.75rem; }
-.muted { color:var(--muted); }
-table { border-collapse:collapse; width:100%; font-size:.92rem; }
-td,th { border:1px solid var(--line); padding:.35rem .6rem; text-align:left; }
-code { font-size:.9em; background:rgba(127,127,127,.14); padding:.05rem .3rem; border-radius:3px; }
-footer { margin-top:3rem; border-top:1px solid var(--line); padding-top:1rem; font-size:.88rem; color:var(--muted); }
-.fresh { display:inline-block; font-size:.8rem; padding:.15rem .5rem; border-radius:3px; border:1px solid var(--line); }
-.fresh.aging { color:var(--warn); border-color:var(--warn); }
-.fresh.expired { color:var(--bad); border-color:var(--bad); font-weight:600; }
-.freshline { margin:0 0 1.5rem; font-size:.9rem; color:var(--muted); }
-.expired-banner { display:none; border:1px solid var(--bad); color:var(--bad); padding:.75rem 1rem; border-radius:4px; margin-bottom:1.5rem; }
-details.legend { border:1px solid var(--line); border-radius:4px; padding:.6rem .9rem; margin:1.5rem 0; font-size:.9rem; }
-details.legend summary { cursor:pointer; font-weight:600; }
-details.legend dt { margin-top:.5rem; font-weight:600; }
-details.legend dd { margin:0 0 .1rem; color:var(--muted); }
-ul.pages li { margin-bottom:.75rem; }
+:root{
+--bg:oklch(0.99 0 0);--panel:oklch(0.972 0 0);--sunk:oklch(0.955 0 0);
+--fg:oklch(0.17 0 0);--fg2:oklch(0.42 0 0);--fg3:oklch(0.6 0 0);
+--line:oklch(0.895 0 0);--line2:oklch(0.94 0 0);
+--accent:oklch(0.45 0.11 155);--accent-soft:oklch(0.955 0.028 155);
+--sev1:oklch(0.5 0.16 25);--sev1b:oklch(0.86 0.06 25);
+--sev2:oklch(0.52 0.11 70);--sev2b:oklch(0.87 0.06 70);
+--sev3:oklch(0.5 0 0);--sev3b:oklch(0.86 0 0);
+--codebg:oklch(0.965 0.004 155);
+--bad:oklch(0.5 0.16 25);
+--mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+html[data-t="dark"]{
+--bg:oklch(0.17 0 0);--panel:oklch(0.208 0 0);--sunk:oklch(0.235 0 0);
+--fg:oklch(0.955 0 0);--fg2:oklch(0.755 0 0);--fg3:oklch(0.6 0 0);
+--line:oklch(0.31 0 0);--line2:oklch(0.255 0 0);
+--accent:oklch(0.79 0.14 155);--accent-soft:oklch(0.28 0.045 155);
+--sev1:oklch(0.74 0.14 25);--sev1b:oklch(0.38 0.09 25);
+--sev2:oklch(0.8 0.11 75);--sev2b:oklch(0.38 0.07 75);
+--sev3:oklch(0.68 0 0);--sev3b:oklch(0.34 0 0);
+--codebg:oklch(0.215 0 0);--bad:oklch(0.74 0.14 25);
+}
+/* Dark by system preference until the reader chooses; the toggle then wins by
+   stamping data-t on <html>, which is set before first paint to avoid a flash. */
+@media (prefers-color-scheme: dark){
+html:not([data-t="light"]){
+--bg:oklch(0.17 0 0);--panel:oklch(0.208 0 0);--sunk:oklch(0.235 0 0);
+--fg:oklch(0.955 0 0);--fg2:oklch(0.755 0 0);--fg3:oklch(0.6 0 0);
+--line:oklch(0.31 0 0);--line2:oklch(0.255 0 0);
+--accent:oklch(0.79 0.14 155);--accent-soft:oklch(0.28 0.045 155);
+--sev1:oklch(0.74 0.14 25);--sev1b:oklch(0.38 0.09 25);
+--sev2:oklch(0.8 0.11 75);--sev2b:oklch(0.38 0.07 75);
+--sev3:oklch(0.68 0 0);--sev3b:oklch(0.34 0 0);
+--codebg:oklch(0.215 0 0);--bad:oklch(0.74 0.14 25);
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:'Public Sans',ui-sans-serif,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;text-wrap:pretty}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+code{font-family:var(--mono);font-size:.92em}
+::selection{background:var(--accent-soft)}
+input[type=checkbox]{accent-color:var(--accent)}
+.layout{display:flex;align-items:flex-start;min-height:100vh}
+/* Sidebar */
+aside{position:sticky;top:0;flex:0 0 272px;height:100vh;overflow:auto;padding:26px 20px 28px;border-right:1px solid var(--line);background:var(--panel)}
+.brand{display:flex;flex-direction:column;gap:2px;margin-bottom:26px}
+.brand .dom{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
+.brand .name{font-size:19px;font-weight:700;letter-spacing:-.02em;color:var(--fg)}
+nav.side{display:flex;flex-direction:column;gap:22px}
+.navtop{display:flex;flex-direction:column;gap:1px}
+.navgroup{display:flex;flex-direction:column;gap:6px}
+.navlabel{padding:0 12px;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.nav-1,.nav-2{position:relative;display:block;border-radius:7px;text-decoration:none}
+.nav-1{padding:7px 12px;font-size:14.5px;font-weight:600;color:var(--fg)}
+.nav-2{padding:6px 12px;font-size:14px;color:var(--fg2)}
+.nav-1:hover,.nav-2:hover{background:var(--sunk);text-decoration:none}
+[aria-current="page"]{background:var(--accent-soft)!important;color:var(--fg)}
+[aria-current="page"]::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:2px;border-radius:2px;background:var(--accent)}
+.navcount{font-family:var(--mono);font-size:10.5px;font-weight:500;color:var(--fg3)}
+.sidefoot{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.5;color:var(--fg3)}
+.sidefoot a{color:var(--fg2)}
+/* Column + header */
+.col{flex:1;min-width:0}
+header.bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:12px 40px;border-bottom:1px solid var(--line);background:var(--bg)}
+.stamp{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;color:var(--fg2)}
+.dot{display:inline-block;width:7px;height:7px;border-radius:99px;background:var(--accent)}
+.dot.aging{background:var(--sev2)}.dot.expired{background:var(--bad)}
+.baractions{display:flex;align-items:center;gap:8px}
+.baractions a{font-family:var(--mono);font-size:12px;color:var(--fg2)}
+.sep{width:1px;height:16px;background:var(--line)}
+button.tt{display:flex;align-items:center;gap:7px;padding:5px 11px;border:1px solid var(--line);border-radius:99px;background:transparent;color:var(--fg2);font-family:var(--mono);font-size:11.5px;cursor:pointer}
+button.tt:hover{border-color:var(--fg3)}
+main{padding:56px 40px 80px;max-width:1000px}
+main.wide{max-width:1180px;padding-top:48px}
+main.topic{display:grid;grid-template-columns:minmax(0,712px) 208px;gap:56px;max-width:none}
+/* Typography */
+h1{margin:0 0 18px;font-size:40px;line-height:1.1;font-weight:800;letter-spacing:-.03em}
+main.topic h1{font-size:36px;line-height:1.12;letter-spacing:-.028em}
+.lede{margin:0 0 14px;font-size:18.5px;line-height:1.55;color:var(--fg2)}
+.sub{margin:0;font-size:15px;line-height:1.6;color:var(--fg3)}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);margin-bottom:14px}
+h2.sect{margin:0;font-size:15px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;font-family:var(--mono)}
+.secthead{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--fg)}
+.secthead .note{font-size:13px;color:var(--fg3)}
+section.block{margin-top:52px}
+/* Symptom router */
+.router a{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:22px;padding:18px 0;border-bottom:1px solid var(--line2);color:var(--fg);text-decoration:none}
+.router a:hover{background:var(--panel);text-decoration:none}
+.router .sym{font-family:var(--mono);font-size:13.5px;line-height:1.5;font-weight:500}
+.router .why{font-size:14px;line-height:1.5;color:var(--fg2)}
+.router .fix{font-size:14px;line-height:1.5;color:var(--fg);font-weight:600}
+/* Top 5 + legend */
+.twocol{margin-top:52px;display:grid;grid-template-columns:1.25fr 1fr;gap:44px}
+ol.top5{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px}
+ol.top5 li{display:grid;grid-template-columns:26px 1fr;gap:12px}
+ol.top5 .n{font-family:var(--mono);font-size:12.5px;color:var(--fg3);padding-top:3px}
+ol.top5 .r{font-size:16px;line-height:1.4;font-weight:650;color:var(--fg)}
+ol.top5 .w{margin-top:3px;font-size:14px;line-height:1.5;color:var(--fg2)}
+.legend{padding:22px;border:1px solid var(--line);border-radius:10px;background:var(--panel);align-self:start}
+.legend h3{margin:0 0 12px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.legend .t{font-size:13.5px;font-weight:650;margin-bottom:5px}
+.legend .d{font-size:13px;line-height:1.5;color:var(--fg3)}
+.legend hr{border:0;height:1px;background:var(--line);margin:14px 0}
+.sevkey{display:flex;flex-direction:column;gap:5px}
+.sevkey span{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--fg2)}
+.sevkey i{width:6px;height:6px;border-radius:99px;display:inline-block}
+/* Page grid */
+.pagegrid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line2);border:1px solid var(--line2)}
+.pagegrid a{display:block;padding:20px;background:var(--bg);color:var(--fg);text-decoration:none}
+.pagegrid a:hover{background:var(--panel);text-decoration:none}
+.pagegrid .t{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.pagegrid .ttl{font-size:16.5px;font-weight:650;line-height:1.3}
+.pagegrid .c{font-family:var(--mono);font-size:11px;color:var(--fg3);white-space:nowrap}
+.pagegrid .b{margin-top:6px;font-size:14px;line-height:1.5;color:var(--fg2)}
+/* Facts */
+.facts{display:flex;flex-direction:column;gap:40px}
+.fact h2{margin:0;flex:1 1 340px;font-size:22px;line-height:1.28;font-weight:700;letter-spacing:-.018em;scroll-margin-top:80px}
+.facthead{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.badges{display:flex;gap:6px;align-items:center;padding-top:5px;flex-wrap:wrap}
+.fact p{margin:12px 0 0;font-size:16px;line-height:1.62;color:var(--fg2)}
+.chip{padding:2px 8px;border:1px solid var(--line);border-radius:4px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--fg2);text-decoration:none;white-space:nowrap}
+.chip:hover{text-decoration:none;border-color:var(--fg3)}
+.sev{display:inline-flex;align-items:center;gap:6px}
+.sev i{width:5px;height:5px;border-radius:99px;display:inline-block}
+.sev-silent{border-color:var(--sev1b);color:var(--sev1)}.sev-silent i{background:var(--sev1)}
+.sev-loud{border-color:var(--sev2b);color:var(--sev2)}.sev-loud i{background:var(--sev2)}
+.sev-friction{border-color:var(--sev3b);color:var(--sev3)}.sev-friction i{background:var(--sev3)}
+.chip.lane{color:var(--fg3);border-style:dashed}
+.caveat{margin-top:14px;padding-left:14px;border-left:2px solid var(--line);font-size:14.5px;line-height:1.55;color:var(--fg3)}
+.caveat strong{font-weight:650;color:var(--fg2)}
+.notest{margin-top:48px;padding:22px;border:1px dashed var(--line);border-radius:10px}
+.notest h2{margin:0 0 10px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.notest li{font-size:15px;line-height:1.6;color:var(--fg2);margin-bottom:6px}
+.notest ul{margin:0;padding-left:18px}
+/* On this page */
+nav.toc{position:sticky;top:88px;align-self:start;display:flex;flex-direction:column;gap:9px}
+nav.toc .navlabel{padding:0;margin-bottom:2px}
+nav.toc a{font-size:13px;line-height:1.4;color:var(--fg2)}
+nav.toc .all{margin-top:6px;padding-top:12px;border-top:1px solid var(--line)}
+/* Tools */
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.tool{padding:22px;border:1px dashed var(--line);border-radius:10px}
+.tool .when{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.tool a.nm{display:block;margin:7px 0 10px;font-family:var(--mono);font-size:17px;font-weight:600;letter-spacing:-.01em}
+.tool p{margin:0;font-size:14.5px;line-height:1.6;color:var(--fg2)}
+.tool-note{font-size:13px;color:var(--fg3)}
+/* Contract */
+.ctop{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;flex-wrap:wrap}
+.cbtns{display:flex;gap:8px}
+.cbtns button{padding:8px 14px;border:1px solid var(--line);border-radius:7px;background:var(--panel);color:var(--fg);font-family:var(--mono);font-size:12px;cursor:pointer}
+.cbtns button:hover{border-color:var(--fg3)}
+.harness{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:18px;padding:12px 16px;border:1px dashed var(--line);border-radius:8px}
+.harness .s{font-size:14.5px;line-height:1.5;color:var(--fg2)}
+.harness .n{font-size:13px;color:var(--fg3);margin-left:auto}
+.filters{position:sticky;top:41px;z-index:4;display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:26px 0 8px;padding:12px 0;border-top:1px solid var(--fg);border-bottom:1px solid var(--line);background:var(--bg)}
+.filters .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
+.filters .set{display:flex;gap:6px}
+.filters button{padding:3px 9px;border:1px solid var(--line);border-radius:5px;background:transparent;color:var(--fg3);font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--fg);color:var(--fg)}
+.count{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--fg2)}
+.cols{column-count:2;column-gap:48px;margin-top:22px}
+.cgroup{break-inside:avoid;margin:0 0 30px}
+.cgroup .h{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+.cgroup .h a{font-size:16px;font-weight:700;line-height:1.3;letter-spacing:-.012em;color:var(--fg)}
+.cgroup .h .c{font-family:var(--mono);font-size:11px;color:var(--fg3);white-space:nowrap}
+.crule{display:grid;grid-template-columns:18px 1fr;gap:10px;padding:9px 0;border-top:1px solid var(--line2);cursor:pointer}
+.crule input{margin:4px 0 0;width:14px;height:14px}
+.crule .t{font-size:14.5px;line-height:1.45;font-weight:550;color:var(--fg)}
+.crule .m{display:flex;align-items:center;gap:6px;margin-top:5px;flex-wrap:wrap}
+.crule .m .chip{font-size:9.5px;padding:1px 6px;color:var(--fg3)}
+.crule .m .d{font-family:var(--mono);font-size:9.5px;color:var(--fg3);margin-left:auto}
+.crule.hide{display:none}
+/* Tables, code, footer */
+table{border-collapse:collapse;width:100%;font-size:14px;margin-top:14px}
+td,th{border:1px solid var(--line);padding:7px 10px;text-align:left}
+th{background:var(--panel);font-size:12px;text-transform:uppercase;letter-spacing:.06em;font-family:var(--mono);color:var(--fg3);font-weight:600}
+footer.site{padding:20px 40px 40px;border-top:1px solid var(--line);font-size:13px;line-height:1.6;color:var(--fg3)}
+footer.site a{color:var(--fg2)}
+.expired-banner{display:none;margin:0 40px 20px;border:1px solid var(--bad);color:var(--bad);padding:.75rem 1rem;border-radius:6px}
+@media (max-width:960px){
+aside{display:none}
+main,main.wide{padding:32px 20px 64px}
+main.topic{display:block;padding:32px 20px 64px}
+nav.toc{display:none}
+.twocol,.pagegrid,.tools,.cols{display:block;column-count:1}
+.twocol>*+*,.tools>*+*{margin-top:20px}
+.router a{grid-template-columns:1fr;gap:6px}
+header.bar{padding:12px 20px}
+h1{font-size:30px}
+}
 </style>
+<script>(function(){try{var t=localStorage.getItem('ccitheme');if(t)document.documentElement.setAttribute('data-t',t);}catch(e){}})();</script>
 </head>
 <body>
-<nav>
-  <a href="${up}">Start here</a>
-  <a href="${up}contract/">The contract</a>
-  <a href="${up}what-can-change-under-you/">What can change</a>
-  <a href="${up}current-state/">Verified against</a>
-  <a href="${mdHref}">This page as Markdown</a>
-</nav>
+<div class="layout">
+<aside>
+  <div class="brand">
+    <div class="dom">ccinternals.dev</div>
+    <div class="name">Cowork for skill authors</div>
+  </div>
+  ${navHtml(doc, up, slug)}
+  <div class="sidefoot">Unofficial. Not affiliated with Anthropic. <a href="https://github.com/yaniv-golan/claude-code-internals/issues">Open an issue</a></div>
+</aside>
+<div class="col">
+<header class="bar">
+  <div class="stamp">${freshnessBadge(verified)}</div>
+  <div class="baractions">
+    <a href="${mdHref}">view as .md</a>
+    <span class="sep"></span>
+    <button class="tt" type="button" data-theme-toggle aria-label="Toggle colour theme">dark</button>
+  </div>
+</header>
 <div class="expired-banner" data-verified="${esc(verified)}"></div>
-<p class="freshline">${freshnessBadge(verified)} What was checked, and when — not a guarantee it is still true.</p>
 ${body}
-${tierLegend()}
-<footer>
-<p><strong>Unofficial.</strong> Not affiliated with Anthropic. Derived from shipped binaries and live
-sessions, then stamped with the build it was checked against.
-<strong>This documentation does not detect product changes</strong> — behaviour served from Anthropic's
-side can change at any time, with no version bump and no signal here.</p>
-<p><strong>Found something wrong?</strong>
-<a href="https://github.com/yaniv-golan/claude-code-internals/issues">Open an issue</a> — corrections
-are the cheapest way this stays accurate.</p>
-<p>By <a href="https://github.com/yaniv-golan">Yaniv Golan</a> · part of the
-<a href="https://github.com/yaniv-golan/claude-code-internals">Claude Code Internals</a> project ·
-<a href="${up}facts.json">facts.json</a> · <a href="${up}../llms.txt">llms.txt</a></p>
+<footer class="site">
+Unofficial · not affiliated with Anthropic · behaviour served from Anthropic's side can change with no
+version bump and no signal here · <a href="https://github.com/yaniv-golan/claude-code-internals/issues">open an issue</a>
+· by <a href="https://github.com/yaniv-golan">Yaniv Golan</a>
+· <a href="${up}facts.json">facts.json</a> · <a href="${up}../llms.txt">llms.txt</a>
 </footer>
+</div>
+</div>
 ${AGE_SCRIPT}
+${UI_SCRIPT}
 </body>
 </html>
 `;

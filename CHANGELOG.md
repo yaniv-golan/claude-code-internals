@@ -1,5 +1,36 @@
 # Changelog
 
+## v2.37.0 — 2026-08-06 (this fork) — site redesign, and a severity axis
+
+**No rule changed.** Every rule's wording, confidence tier, caveats and verification date are as they were. This is a redesign of how they are presented, implemented from a Claude Design project.
+
+### Layout
+
+A grouped sidebar (Filesystem / Runtime / Extending / Stability), a sticky header carrying the verification stamp and a light/dark toggle, and three page types:
+
+- **Entry page** — starts from the symptom: *what you saw → why → what to do instead*, then the five rules that break the most skills, then one card per failure mode.
+- **Topic pages** — each rule is its own anchored section with its labels beside the heading, and an on-page contents column.
+- **The contract** — filter by confidence or severity, tick rules off against your own skill, and copy the result as Markdown. Ticks survive a reload.
+
+### New: severity
+
+A second axis, separate from confidence:
+
+| | answers |
+|---|---|
+| **Confidence** — measured / from binary / inference | how we know |
+| **Severity** — silent / loud / friction | what the mistake costs you |
+
+**Breaks silently** is the one that matters: 24 of the 52 rules fail with no error at all. Severity is **editorial** — a judgement about consequence, not a measurement — and is labelled and styled as such. A test asserts the two vocabularies can never collide.
+
+### Content fix
+
+The entry page claimed **seven** failure modes and listed seven, while eight topic pages exist. The missing one was *what can change without any version bump* — the page most likely to matter after you have shipped. Corrected to eight.
+
+### Note
+
+The design brings one external dependency: Google Fonts. Until now the site made no third-party requests. Loading uses `display=swap` behind a full system-font fallback, so pages are readable before the fonts arrive — but it is a real change to a site whose other property is being self-contained. Reverting to the system stack is a one-line edit.
+
 ## v2.36.6 — 2026-08-06 (this fork) — tooling pointers
 
 **146 lessons / 40 chapters** (unchanged). No fact changes.

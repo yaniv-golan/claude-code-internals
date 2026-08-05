@@ -10,7 +10,7 @@
     {
       "slug": "index",
       "title": "Writing skills that survive Cowork",
-      "summary": "Claude Cowork runs your skill in a sandbox with rules that differ from the Claude Code CLI in ways that will silently break an otherwise-correct skill. This site covers the seven failure modes that actually show up: wrong path forms, deliverables that vanish on delivery, delete calls that fail with a permission error, a shell that cannot see your environment, runtime detection that reports the wrong answer, plugin paths that resolve differently per consumer, and sub-agent assumptions that do not hold. Every claim is derived from shipped binaries and live sessions, and is stamped with the build it was checked against. Start with the contract page if you want the short version.",
+      "summary": "Claude Cowork runs your skill in a sandbox with rules that differ from the Claude Code CLI in ways that will silently break an otherwise-correct skill. This site covers the eight failure modes that actually show up: wrong path forms, deliverables that vanish on delivery, delete calls that fail with a permission error, a shell that cannot see your environment, runtime detection that reports the wrong answer, plugin paths that resolve differently per consumer, sub-agent assumptions that do not hold, and behaviour that changes with no version bump at all. Every rule is stamped with how it was checked and when.",
       "open_questions": []
     },
     {
@@ -22,6 +22,9 @@
     {
       "slug": "files-and-paths",
       "title": "Where should my skill write files, and which path forms work?",
+      "nav_label": "Files & paths",
+      "nav_group": "Filesystem",
+      "blurb": "Two path forms for one scratch space, and which one each tool accepts.",
       "summary": "Your skill's shell commands and its file tools operate on one shared scratch space, but they refer to it by two different path forms. Write with bare or relative filenames and both will agree. Absolute session paths handed to the file tools are rejected outright rather than translated, which is the single most common way a working skill breaks when moved into Cowork. The uploads location is read-only; the outputs location is where deliverables belong.",
       "open_questions": [
         "The exact path form the shell sees has changed shape across releases. Relative paths have been stable throughout; absolute forms have not. Prefer relative for that reason, not merely for tidiness."
@@ -30,6 +33,9 @@
     {
       "slug": "delivering-outputs",
       "title": "Why did my skill's output never reach the user?",
+      "nav_label": "Delivering outputs",
+      "nav_group": "Filesystem",
+      "blurb": "Two sandboxes that disagree about what delivering a file means.",
       "summary": "Cowork runs in two different sandboxes, and they disagree about what 'delivering a file' means. In one, writing the file to the workspace location is itself the delivery. In the other, the location delivers nothing and the file only reaches the user if your skill presents it — and the session filesystem is discarded when the session ends, so an undelivered file is simply lost. Write the deliverable to a stated path, then present it to the user, and say the path either way.",
       "open_questions": [
         "Which sandbox a given session runs in is decided by the surface it was created from and by account-level configuration. There is no reliable way for a skill to force one, and no documented way to read it directly — check for the tools you need instead."
@@ -38,6 +44,9 @@
     {
       "slug": "deleting-files",
       "title": "Why does deleting a file fail, and what should my skill do?",
+      "nav_label": "Deleting files",
+      "nav_group": "Filesystem",
+      "blurb": "Every mount denies removing a file and removing a directory.",
       "summary": "Every Cowork-mounted directory denies exactly two operations by default: removing a file and removing a directory. Both fail with a permission error. Truncating a file, renaming within the mount, and renaming onto an existing file all succeed — so a file disappearing from its old path is not evidence that anything was deleted. Deletion can be enabled, but only per-mount, only by asking the user, and only for the rest of that session.",
       "open_questions": [
         "This was measured in the default configuration. Organisations that require a fully sandboxed VM take a different internal code path for enabling deletion, and nobody has measured whether it behaves the same way. Treat the approval mechanics, but not the deny-set, as unverified there."
@@ -46,6 +55,9 @@
     {
       "slug": "shell-commands",
       "title": "What does my skill's shell see?",
+      "nav_label": "Shell commands",
+      "nav_group": "Runtime",
+      "blurb": "Sealed environment, no arbitrary network, a large preinstalled stack.",
       "summary": "The shell your skill runs commands in is sealed: environment variables you set on the host do not reach it, and neither do exports written by hooks. The inline shell-execution syntax some skills use in their instructions is disabled in Cowork entirely. The shell tool is also not the same tool as the CLI's, so branching on tool names is a reliable signal where branching on environment variables is not.",
       "open_questions": [
         "Network egress is allowed through a fetch capability rather than arbitrary outbound sockets, and the routing has changed across releases. Assume fetch works and arbitrary sockets do not, and degrade gracefully rather than probing."
@@ -54,6 +66,9 @@
     {
       "slug": "detecting-cowork",
       "title": "How should my skill detect that it is running in Cowork?",
+      "nav_label": "Detecting Cowork",
+      "nav_group": "Runtime",
+      "blurb": "Why the naive check false-negatives, and the ordered recipe that works.",
       "summary": "A naive environment-variable check false-negatives in exactly the configuration that matters most, because the part of your skill that runs shell commands runs somewhere with none of those markers set. Use an ordered recipe instead: check the environment marker, then the working-directory signature, then the CLI marker. For behaviour rather than reporting, branch on which tools exist — that is the most durable signal available to a skill.",
       "open_questions": [
         "Runtime markers are set by the host at spawn time and have been added and removed across releases. The ordering below degrades safely: a later check never contradicts an earlier one, it only adds coverage."
@@ -62,6 +77,9 @@
     {
       "slug": "plugins-and-plugin-root",
       "title": "Will my plugin's hooks and scripts run in Cowork?",
+      "nav_label": "Plugins & plugin root",
+      "nav_group": "Extending",
+      "blurb": "Hooks do fire. Plugin root resolves differently per consumer.",
       "summary": "Yes — plugin hooks do fire in Cowork. The determinant is where the plugin was installed from: a plugin installed through the Cowork application is visible to Cowork sessions, and one installed through the CLI's own path is not, because they occupy different namespaces. The plugin-root token resolves differently depending on which consumer expands it, so use it for file-tool reads and discover the mounted path at runtime for anything you shell out to.",
       "open_questions": [
         "Plugin-root resolution differs between the two sandboxes. The guidance below is written to be correct in both, at the cost of being less direct than hardcoding a path would be."
@@ -70,6 +88,9 @@
     {
       "slug": "sub-agents",
       "title": "What changes when my skill dispatches sub-agents?",
+      "nav_label": "Sub-agents",
+      "nav_group": "Runtime",
+      "blurb": "Same containment as the main thread. Self-contained prompts only.",
       "summary": "Sub-agents run under the same containment as the main thread — they are not a way to escape a path restriction or a permission prompt. A finished sub-agent cannot be resumed in Cowork, so recovery means dispatching a fresh one with the context restated. If you dispatch without naming an agent type you get a general-purpose agent holding the full tool surface, which is rarely what a skill intends.",
       "open_questions": [
         "Fan-out limits are enforced and have changed between releases. Write skills that tolerate a dispatch being queued or refused rather than assuming unlimited parallelism."
@@ -78,6 +99,9 @@
     {
       "slug": "what-can-change-under-you",
       "title": "What can change without any version bump?",
+      "nav_label": "What can change under you",
+      "nav_group": "Stability",
+      "blurb": "Served, not shipped: what moves with no version bump and no signal.",
       "summary": "A large amount of Cowork's behaviour is served from the operator's side rather than shipped in the application, which means it can change with no new version, no release note, and no signal to your skill. Tool availability, prompt guidance, and some defaults are all in this category, and at least one of them has been observed changing mid-session. Write skills that detect capabilities at the moment of use and degrade in a stated way, rather than skills that assume a surface.",
       "open_questions": [
         "This site does not detect product changes. It records what was verified on a date against a build. Anything on this page can be true today and false tomorrow with nothing observable in between."
@@ -86,6 +110,9 @@
     {
       "slug": "current-state",
       "title": "What this was verified against",
+      "nav_label": "Verified against",
+      "nav_group": "Stability",
+      "blurb": "The exact artifacts every rule on this site was checked against.",
       "summary": "Everything on this site was checked against the specific artifacts recorded here. This is the only page that names versions or capture identity, deliberately: those are the fastest-rotting facts and quarantining them keeps them from leaking into guidance that outlives them.",
       "open_questions": []
     }
@@ -115,6 +142,7 @@
       "rule": "Treat a folder the user connected as a separate mount with its own rules, not as part of the workspace.",
       "detail": "Connected folders appear as their own mounts alongside the outputs location. Permissions are tracked per mount, so a capability granted for one does not extend to another. A skill that assumes one uniform writable area will be surprised the first time it touches a connected folder.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "lane": "local",
       "volatile_dependency": false,
@@ -134,6 +162,7 @@
       "rule": "Do not assume a connected project gives you a folder mount. It does not.",
       "detail": "Connecting a project and connecting a folder are different actions producing different results. A session with a project attached and no folder attached has no folder mount at all, and a skill that looks for one will find nothing. A connected project is also mounted read-only, while a connected folder is writable, so a project is a source to read from rather than somewhere to put output.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "lane": "local",
       "volatile_dependency": false,
@@ -153,6 +182,7 @@
       "rule": "Write files using bare or relative filenames, not absolute paths.",
       "detail": "Your skill's shell commands and its file-reading and file-writing tools operate on the same underlying scratch space, but each names it with a different absolute path, and the file tools reject the shell's form. A relative filename is correct for both. An absolute path copied out of shell output is the wrong form for the file tools.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "lane": "local",
       "volatile_dependency": false,
@@ -173,6 +203,7 @@
       "rule": "Do not leave anything you want the user to see in the working directory alone.",
       "detail": "The directory your skill works in is a scratch space the user does not see. Files there are not presented, not listed, and in one sandbox not retained. Producing a file is a separate act from delivering it, and the working directory is on the wrong side of that line.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -191,6 +222,7 @@
       "rule": "Never pass an absolute session path to the file tools. It is denied, not translated.",
       "detail": "Your shell commands print absolute paths that look like `/sessions/<session-name>/mnt/outputs/report.pdf`. If you hand one of those to a file-reading or file-writing tool, the call is refused — the check is a literal prefix test on `/sessions/`, so the same path is refused every time and retrying cannot help. Nothing rewrites it into the form those tools want. Write `report.pdf` instead: a bare or relative filename is correct for both the shell and the file tools. The error text blames the path form, which is right in this case, but the same message appears for other causes too, so read it as \"this tool cannot take this path\" rather than as a diagnosis.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "lane": "local",
       "volatile_dependency": false,
@@ -212,6 +244,7 @@
       "rule": "Treat your own skill's files as read-only at runtime.",
       "detail": "A skill's own directory is made available to the session as a mount you should not expect to write back to. Generate into the outputs location instead. A skill that rewrites its own files to keep state will not carry that state anywhere useful.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -230,6 +263,7 @@
       "rule": "Treat the uploads location as read-only and write everything to the outputs location.",
       "detail": "Uploaded files are mounted read-only. Attempting to write there fails. Deliverables belong in the outputs location, which is writable and is also what the delivery mechanisms operate on.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "lane": "local",
       "volatile_dependency": false,
@@ -248,6 +282,7 @@
       "rule": "Do not rely on writing a file to a directory as the act of delivering it.",
       "detail": "In one sandbox the workspace location is itself the delivery channel and writing there is enough. In the other it delivers nothing: the file exists only inside a session filesystem that is discarded when the session ends, and the user never sees it. A skill written against the first behaviour loses its deliverables silently in the second — no error, no warning, just nothing.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -265,6 +300,7 @@
       "rule": "Write the deliverable to a stated path, then present it to the user. If you cannot present it, say where it is.",
       "detail": "Producing the file and delivering it are two separate acts. Instruct your skill to present the finished file to the user rather than naming a specific tool to do it with: which delivery mechanism exists depends on the sandbox and on the product your skill is running in, and a skill that names one tool breaks everywhere that tool is absent. Always state the path as well, so the work is recoverable if presentation is unavailable.",
       "tier": "binary",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": true,
       "sources": {
@@ -284,6 +320,7 @@
       "rule": "State the path of what you produced even when a delivery tool worked.",
       "detail": "It costs one sentence and it is the only part of your output that survives every sandbox, every tool-surface change, and a user reading a transcript later. If delivery silently failed, the stated path is the difference between a recoverable result and a lost one.",
       "tier": "inference",
+      "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -303,6 +340,7 @@
       "rule": "Never call a tool that writes to the user's own disk from inside a skill.",
       "detail": "Committing files onto the user's machine is infrastructure the agent and the user negotiate through folder-connection consent, not something a skill should reach for. No first-party skill names such a tool. Present the file and let the delivery path be decided outside your skill.",
       "tier": "binary",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -320,6 +358,7 @@
       "rule": "Do not hand-copy files into the outputs location before presenting them.",
       "detail": "The tool that presents files to the user copies what you give it out of the scratch space for you. Copying first and then presenting the copy produces duplicates and obscures which file is the deliverable.",
       "tier": "binary",
+      "severity": "friction",
       "durability": "durable",
       "volatile_dependency": true,
       "sources": {
@@ -339,6 +378,7 @@
       "rule": "Assume the session filesystem does not outlive the session.",
       "detail": "In the remote sandbox the filesystem is discarded at session end. In the local sandbox undelivered files are hidden from the user rather than destroyed, and can in principle be surfaced on a later turn — but a skill should not depend on that difference. Deliver within the turn that produces the file.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "lane": "remote",
       "volatile_dependency": false,
@@ -357,6 +397,7 @@
       "rule": "Assume your skill may run in either sandbox, and never assume which one.",
       "detail": "A Cowork session runs in one of two sandboxes: a local one on the user's own machine, or a remote one on Anthropic's infrastructure. They differ in where the filesystem lives, whether it survives the session, and how a file reaches the user. Which one a session gets depends on how it was created and on account configuration, neither of which a skill can control or reliably detect — so write for both.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "lane": "both",
       "volatile_dependency": true,
@@ -377,6 +418,7 @@
       "rule": "Treat needing a delete as a design smell, because getting one interrupts the user.",
       "detail": "Enabling deletion requires a prompt the user must accept, and it is presented as irreversible for the remainder of the session. It also fires regardless of how permissive the session's permission mode is. A skill that routinely needs deletions will routinely interrupt its user, so prefer writing new files over rewriting in place.",
       "tier": "measured",
+      "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -394,6 +436,7 @@
       "rule": "Do not assume that approval to delete in one location applies anywhere else.",
       "detail": "Approval is granted per mount. Enabling deletion for the outputs location leaves a connected folder still denied, in the same shell and in later ones. A skill that gets one approval and then assumes free rein across the workspace will fail on the second mount it touches.",
       "tier": "measured",
+      "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -413,6 +456,7 @@
       "rule": "Do not move files between mounts with a rename. Copy, then verify.",
       "detail": "The outputs location is a genuinely separate device from the rest of the session filesystem, so renaming across that boundary fails with a cross-device error rather than falling back to a copy. Shell tools usually degrade to copy-then-delete on their own — and the delete half will then hit the permission denial.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -430,6 +474,7 @@
       "rule": "Expect removing a file or a directory to fail with a permission error on every Cowork mount.",
       "detail": "The denied set is exactly those two operations. This is not specific to the outputs location — a freshly connected folder behaves identically. The failure is a permission error, not a missing-file error, and it happens even though the same directory is writable.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -449,6 +494,7 @@
       "rule": "Expect the agent to ask for delete permission on its own the first time a removal fails.",
       "detail": "The permission tool's own description instructs the agent to request approval whenever a removal fails, rather than reporting it as impossible. So a skill that merely attempts a delete may cause a prompt it never asked for. If you do not want that, do not attempt removals.",
       "tier": "binary",
+      "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -466,6 +512,7 @@
       "rule": "Do not treat a file vanishing from its old path as evidence that it was deleted.",
       "detail": "Truncating a file to zero length, renaming it within the mount, and renaming it onto an existing file all succeed. The last of those destroys whatever was at the destination. So content can be emptied and paths can be reused without any delete having occurred, and a check based on 'the old path is gone' will report deletions that did not happen.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -483,6 +530,7 @@
       "rule": "Do not use the inline shell-execution syntax in skill instructions and expect it to run.",
       "detail": "The syntax that lets a skill embed a command in its own instructions and have the result substituted is disabled in Cowork. It fails quietly rather than erroring, so a skill that relies on it to gather context gets an empty result and carries on with wrong assumptions.",
       "tier": "binary",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": true,
       "sources": {
@@ -502,6 +550,7 @@
       "rule": "Do not rely on arbitrary outbound network access from shell commands.",
       "detail": "Outbound access from the shell is filtered by destination rather than absent: some hosts answer and others do not, and the session carries a URL allowlist. Fetching is also available as a dedicated capability with its own routing. Write skills that use the fetch capability when it exists and state a clear limitation when it does not, rather than shelling out to a network client and assuming any host is reachable.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "volatile_dependency": true,
       "sources": {
@@ -524,6 +573,7 @@
       "rule": "Prefer what is preinstalled, and never install globally. A user-scoped or project-local install works, but treat it as a fallback.",
       "detail": "Check what is already there first: the sandbox ships Python 3.10.12 with roughly 149 packages, including `pandas`, `numpy`, `PIL` and `openpyxl`. If you do need something else, a user-scoped Python install (`pip install --user`) and a project-local Node install (`npm install`) both succeed, and the package imports normally afterwards. A global install does not take effect — `npm install -g` in particular leaves nothing behind. Which package sources are reachable is session configuration that has changed between releases, so put any install on a path that degrades gracefully rather than making it a prerequisite. An earlier version of this rule said installs would fail or hang; that was an inference from the network constraints and it was wrong.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "lane": "local",
       "volatile_dependency": true,
@@ -545,6 +595,7 @@
       "rule": "Do not assume the sandbox has no third-party libraries. It ships a large preinstalled stack.",
       "detail": "The environment your shell commands run in ships Python 3.10.12 with roughly 149 packages already installed — `pandas`, `numpy`, `PIL` and `openpyxl` among them, alongside other data, document and imaging libraries. Skills have shipped workarounds and portability warnings for a scarcity that is not there. Check for what you need at runtime before vendoring it or degrading: the exact set belongs to the shipped image and can change with it, so test rather than rely on this list.",
       "tier": "measured",
+      "severity": "friction",
       "durability": "durable",
       "lane": "local",
       "volatile_dependency": false,
@@ -565,6 +616,7 @@
       "rule": "Do not expect to read or write anything outside your own session, and do not rely on the identity your shell runs as.",
       "detail": "In the local sandbox each session runs as its own operating-system user: sibling sessions are visible by name but their contents are refused, and the session namespace holds hundreds of entries. In the remote sandbox there is no per-session user at all and commands run as root. Either way, anything your skill needs must be inside the session or fetched into it — but identity itself is not a stable thing to branch on.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "lane": "both",
       "volatile_dependency": false,
@@ -587,6 +639,7 @@
       "rule": "Do not pass configuration to your skill's shell commands through the environment.",
       "detail": "The shell your commands run in does not inherit the host environment: variables set in user or managed settings do not appear there, and neither do exports written by a hook. Only a couple of `CLAUDE_*` variables are present. Pass configuration one of three ways instead — put the value literally in the command string, write it to a file and have the command read that file, or pass it as an argument to a script your skill invokes.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "lane": "local",
       "volatile_dependency": false,
@@ -607,6 +660,7 @@
       "rule": "Do not assume the shell tool has the same name it has in the CLI.",
       "detail": "The tool your skill uses to run commands in Cowork is a different tool from the CLI's, with a different name. This matters if your skill's instructions name tools explicitly, and it is also useful: the tool surface is a more reliable indicator of where you are running than the environment is.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -625,6 +679,7 @@
       "rule": "Do not treat the home directory as a private place that outlives the session.",
       "detail": "In the local sandbox the home directory is the session directory itself, not a separate per-user home, and it goes away with the session. Writing there is fine for scratch, but nothing put there is delivered, carried to the next session, or visible to anyone. Deliverables belong in the outputs location.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "lane": "local",
       "volatile_dependency": false,
@@ -643,6 +698,7 @@
       "rule": "For behaviour rather than reporting, branch on which tools exist instead of on the environment.",
       "detail": "The tool surface is the most durable runtime signal available to a skill: it determines what the skill can actually do, it is visible without running a shell, and it stays correct when environment variables are added or removed. Concretely, the shell tool has a different name in Cowork than in the CLI — `mcp__workspace__bash` rather than `Bash` — so the presence of the Cowork-flavoured name is the signal. Use environment checks to report where you are; use tool presence to decide what to do.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -660,6 +716,7 @@
       "rule": "Do not hard-fail when a runtime marker is missing. Fall through to the next check.",
       "detail": "A runtime marker is an environment variable the host sets when it starts your session — `CLAUDE_CODE_IS_COWORK` and `CLAUDECODE` are the two that matter. Which markers are set has changed across releases, and they are absent entirely from the shell context. A detection routine that treats one missing variable as proof of a runtime will be wrong the next time the spawn contract changes. Order the checks so each one only adds coverage.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": true,
       "sources": {
@@ -677,6 +734,7 @@
       "rule": "Do not detect Cowork with a bare environment-variable check.",
       "detail": "A skill spans two execution contexts. The part that runs shell commands runs in a sealed context with none of the usual markers set, so a bare environment check returns 'not Cowork' in precisely the production configuration you most needed to detect. The failure is silent and produces confidently wrong behaviour.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -694,6 +752,7 @@
       "rule": "Detect the runtime with an ordered sequence of checks, not a single environment test.",
       "detail": "Run three checks in order. First, is `CLAUDE_CODE_IS_COWORK` set — if so you are in Cowork. Otherwise, is the working directory under `/sessions/` — that catches the shell context, where the marker is absent. Otherwise, is `CLAUDECODE` set — that is the CLI. Each step only adds coverage and a later one never contradicts an earlier one, so a missing marker should fall through rather than fail.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -711,6 +770,7 @@
       "rule": "Remember your skill spans two execution contexts, and test the one you are actually in.",
       "detail": "Your skill's instructions and its file-reading and file-writing tools run in one place — call it the agent context. The shell commands it issues run somewhere else, with a different environment and a different view of the filesystem. In Cowork the agent context sees `CLAUDE_CODE_IS_COWORK` and host-form paths, while the shell context sees neither and works under `/sessions/`. A check performed in one tells you very little about the other, which is why a single probe produces confident wrong answers.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -729,6 +789,7 @@
       "rule": "Do not use a hook to export environment variables for your skill's shell commands.",
       "detail": "Hooks run, but the environment they modify is not the environment those commands see. This is a common way a plugin appears broken in Cowork while working in the CLI: the hook fires, the export succeeds, and the value is simply absent downstream.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -747,6 +808,7 @@
       "rule": "Expect plugin hooks to fire in Cowork.",
       "detail": "Hooks shipped by a plugin do run. An earlier belief that they were disabled was wrong; the real determinant is installation namespace, not hook support.",
       "tier": "measured",
+      "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -764,6 +826,7 @@
       "rule": "Install a plugin through the Cowork application if you want Cowork sessions to see it.",
       "detail": "Plugins installed through the CLI's own installation path land in a namespace that Cowork sessions never read, so the plugin appears installed and is simply invisible. This is the usual explanation for 'my plugin works in the CLI but not in Cowork'.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -781,6 +844,7 @@
       "rule": "Do not write into your plugin's own directory at runtime.",
       "detail": "Plugin content is mounted for reading. Treat everything shipped with the plugin as immutable during a session and put generated state in the outputs location.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -798,6 +862,7 @@
       "rule": "Expect plugin files to be present as a mounted directory, and find it rather than hardcoding it.",
       "detail": "Plugin content is made available to the session as its own mount. The exact location embeds identifiers that vary per plugin and per install source, and the shape has changed across releases, so discovery at runtime is the only stable approach.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -816,6 +881,7 @@
       "rule": "Use `${CLAUDE_PLUGIN_ROOT}` for file-tool reads, and discover the mounted path at runtime for anything you execute.",
       "detail": "`${CLAUDE_PLUGIN_ROOT}` is a token that expands to your plugin's directory — but it expands differently depending on what expands it and which sandbox the session is in, and one expansion names a location the other cannot reach. Reading your plugin's files through the file tools with the token is reliable. Executing a script by that path is not: in the local sandbox the token resolves to a host staging directory that the shell cannot see. For anything you execute, locate the plugin's mounted directory at runtime instead of hardcoding a path.",
       "tier": "binary",
+      "severity": "silent",
       "durability": "durable",
       "lane": "local",
       "volatile_dependency": false,
@@ -837,6 +903,7 @@
       "rule": "Always name the agent type when dispatching a sub-agent.",
       "detail": "Omitting the type yields a general-purpose agent holding the full tool surface, including the shell. If your intent was a constrained helper — a reader, a summariser — you have instead created something with more capability than the task needs, and the dispatch will look correct in every log.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -856,6 +923,7 @@
       "rule": "Do not plan to resume a finished sub-agent. Dispatch a fresh one with the context restated.",
       "detail": "In Cowork a completed or stopped sub-agent cannot be continued — the mechanism that does this elsewhere is not available. Recovery and follow-up work therefore mean a new dispatch carrying whatever context it needs, so design sub-agent prompts to be self-contained.",
       "tier": "binary",
+      "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -873,6 +941,7 @@
       "rule": "Do not use a sub-agent to get around a path restriction or a permission prompt.",
       "detail": "Sub-agents run under the same containment as the main thread. The path rules apply identically inside them, and the permission machinery fires there too. Dispatching a sub-agent changes what work happens in parallel; it does not change what is allowed.",
       "tier": "measured",
+      "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -890,6 +959,7 @@
       "rule": "Put everything a sub-agent needs in its prompt. It cannot ask you for more.",
       "detail": "Because a finished sub-agent cannot be resumed, a dispatch that omits context cannot be topped up — it can only be redone. Restating context is cheaper than a failed dispatch, and it is the only recovery mechanism available.",
       "tier": "inference",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -910,6 +980,7 @@
       "rule": "Write sub-agent fan-out so that a dispatch being queued or refused is handled, not fatal.",
       "detail": "Concurrency and per-session limits are enforced, and the numbers have changed between releases. A dispatch can also be refused outright before it starts, by a classifier rather than a limit — observed refusing one dispatch and accepting an equivalent one the same day, so a refusal is possible and not reliably reproducible. A skill that dispatches a fixed wide fan-out and assumes every one starts will behave differently across versions and across runs. Treat parallelism as an optimisation, not a requirement, and handle a dispatch that never starts.",
       "tier": "binary",
+      "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -928,6 +999,7 @@
       "rule": "Write sub-agent prompts with relative paths, exactly as you would the main thread.",
       "detail": "A sub-agent starts in the session's own working area, not in a private one. The same path rules apply, and absolute session paths handed to file tools are rejected there for the same reason.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -945,6 +1017,7 @@
       "rule": "Detect capabilities at the moment you use them, and state a clear fallback when they are missing.",
       "detail": "This is the single defensive pattern that survives everything else on this page. A skill that checks for the tool it needs, uses it if present, and says plainly what it could not do otherwise will keep working across sandbox changes, served-configuration flips, and version bumps. A skill that assumes a surface breaks silently on all three.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -963,6 +1036,7 @@
       "rule": "Do not assume configuration is fixed for the lifetime of a session.",
       "detail": "At least some served configuration is subscribed to rather than read once, so it can change while a session is running and the application reacts. A skill that reads a capability at the start of a long task and caches the answer can be wrong by the end of it.",
       "tier": "binary",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -980,6 +1054,7 @@
       "rule": "Never write a skill that depends on the exact wording of the system prompt.",
       "detail": "The instructions a Cowork session runs with can be patched from the operator's side, including a mode that replaces the computed instructions wholesale rather than adding to them. So a model of the session prompt as 'the standard preset plus my additions' can be wrong at any time, with no local artifact changing. Depend on behaviour you can observe, not on text you expect to be present.",
       "tier": "binary",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": true,
       "sources": {
@@ -999,6 +1074,7 @@
       "rule": "Do not treat 'the version has not changed' as evidence that behaviour has not changed.",
       "detail": "Behaviour governed from the operator's side changes with no new version, no release note, and nothing observable locally. This has been directly observed: a capability that was off in one week's capture was on in the next, with no application update in between.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -1016,6 +1092,7 @@
       "rule": "Assume tool availability and defaults are served to the session, not shipped in the application.",
       "detail": "A meaningful part of what a session offers is decided on the operator's side at spawn time. Two sessions on the same application version can therefore present different tools and different defaults. Nothing about the installed version tells you what a given session will look like.",
       "tier": "measured",
+      "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -1033,6 +1110,7 @@
       "rule": "Write down which behaviours your skill depends on, in the skill itself.",
       "detail": "When something changes underneath you, the cost of diagnosis is dominated by not knowing what was assumed. A short stated list of dependencies — this needs a delivery tool, this needs shell access, this assumes files persist within the turn — turns a silent failure into an obvious one.",
       "tier": "inference",
+      "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -1053,6 +1131,7 @@
       "rule": "Do not hardcode a tool name your skill merely hopes is present.",
       "detail": "Tool surfaces have changed across releases: names differ between runtimes, tools have been added and withdrawn, and which ones a session gets is decided when it starts. Name a tool only after checking it exists, and say what you will do if it does not.",
       "tier": "measured",
+      "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
@@ -1082,6 +1161,83 @@
       },
       "verified": "2026-08-05",
       "caveats": []
+    }
+  ],
+  "router": [
+    {
+      "page": "files-and-paths",
+      "symptom": "Tool refused the path your shell just printed",
+      "why": "The file tools reject the shell’s absolute form outright — a literal prefix test, not a translation.",
+      "fix": "Pass a bare filename."
+    },
+    {
+      "page": "delivering-outputs",
+      "symptom": "Your file exists, the user never saw it",
+      "why": "The working directory is a scratch space that is never presented or listed.",
+      "fix": "Present it, and state the path."
+    },
+    {
+      "page": "deleting-files",
+      "symptom": "rm / rmdir fails with a permission error",
+      "why": "Every Cowork mount denies exactly those two operations by default.",
+      "fix": "Design so no delete is needed."
+    },
+    {
+      "page": "deleting-files",
+      "symptom": "Moving a file between mounts fails",
+      "why": "A rename cannot cross a mount boundary.",
+      "fix": "Copy, then verify."
+    },
+    {
+      "page": "shell-commands",
+      "symptom": "Your env var is empty inside the shell",
+      "why": "The shell is sealed: host exports and hook exports do not reach it.",
+      "fix": "Pass config as arguments."
+    },
+    {
+      "page": "detecting-cowork",
+      "symptom": "Detection reports “not Cowork” inside Cowork",
+      "why": "The part of your skill running shell commands has none of those markers set.",
+      "fix": "Use ordered checks; branch on tools."
+    },
+    {
+      "page": "shell-commands",
+      "symptom": "A global install fails or disappears",
+      "why": "Global installs do not take effect, and nothing persists past the session.",
+      "fix": "Prefer the preinstalled stack."
+    },
+    {
+      "page": "what-can-change-under-you",
+      "symptom": "A tool name from the CLI does not exist",
+      "why": "Tool surfaces are served to the session, not shipped in the app.",
+      "fix": "Check it exists before naming it."
+    }
+  ],
+  "top5": [
+    {
+      "page": "files-and-paths",
+      "rule": "Write with bare or relative filenames.",
+      "why": "Absolute session paths are denied by the file tools every single time."
+    },
+    {
+      "page": "delivering-outputs",
+      "rule": "Producing a file is not delivering it.",
+      "why": "Write to a stated path, present it, and name the path anyway."
+    },
+    {
+      "page": "shell-commands",
+      "rule": "Never pass configuration through the environment.",
+      "why": "The shell your skill runs in is sealed — including from your own hooks."
+    },
+    {
+      "page": "detecting-cowork",
+      "rule": "Detect the runtime with ordered checks.",
+      "why": "A bare environment-variable check false-negatives where it matters most."
+    },
+    {
+      "page": "what-can-change-under-you",
+      "rule": "Detect capabilities at the moment you use them.",
+      "why": "The surface is served, not shipped. It can change mid-session."
     }
   ]
 }

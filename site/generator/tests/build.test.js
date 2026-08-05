@@ -171,7 +171,7 @@ test('each page carries exactly one freshness badge, before the footer', () => {
     const n = (html.match(/class="fresh" data-verified=/g) || []).length;
     if (rel === 'index.html') { assert.ok(n >= 1); continue; }
     assert.strictEqual(n, 1, `${rel} should have exactly one badge, has ${n}`);
-    assert.ok(html.indexOf('class="fresh"') < html.indexOf('<footer>'), `${rel}: badge is not above the footer`);
+    assert.ok(html.indexOf('class="fresh"') < html.indexOf('<footer class="site">'), `${rel}: badge is not above the footer`);
   }
 });
 
@@ -196,12 +196,16 @@ test('every fragment link resolves to an id in its target document', () => {
 });
 
 test('pages that render badges link them to the legend', () => {
+  // The legend is no longer repeated under every page -- it lives once, on the
+  // entry page. Badges therefore cross-link to it, and the assertion is that the
+  // target exists there rather than on the linking page.
   const { out } = buildOnce();
+  const entry = fs.readFileSync(path.join(out, SECTION, 'index.html'), 'utf8');
+  assert.match(entry, /id="tiers"/, 'the entry page must carry the one legend');
   for (const f of htmlFiles(out)) {
     const html = fs.readFileSync(f, 'utf8');
-    if (!/class="tier tier-/.test(html)) continue;   // index and current-state render none
-    assert.match(html, /href="#tiers"/, `${path.relative(out, f)} has badges but no legend link`);
-    assert.match(html, /id="tiers"/, `${path.relative(out, f)} links a legend it does not contain`);
+    if (!/class="chip tier-/.test(html)) continue;
+    assert.match(html, /href="(?:\.\.\/)?#tiers"/, `${path.relative(out, f)} has badges but no legend link`);
   }
 });
 
@@ -377,33 +381,105 @@ test('tool pointers appear at the reader moment, not everywhere', () => {
   }
 });
 
-test('tool pointers are disclosed and carry no tier badge', () => {
-  // On a site where every claim has a tier and a date, an untiered block that
-  // looks like a finding would erode exactly the trust the tiers buy.
-  const { out } = buildOnce();
-  for (const rel of [`${SECTION}/index.html`, `${SECTION}/contract/index.html`]) {
-    const html = fs.readFileSync(path.join(out, rel), 'utf8');
-    const m = html.match(/<section class="tool">[\s\S]*?<\/section>/g) || [];
-    assert.ok(m.length > 0, `${rel} has no tool section`);
-    for (const block of m) {
-      assert.ok(!/class="tier/.test(block), `${rel}: tool block must not carry a tier badge`);
-    }
-    assert.match(html, /Same author as this site/, `${rel} must disclose authorship`);
-  }
-});
-
-test('tool pointers render identically in Markdown and HTML', () => {
+test('tool pointers are disclosed and never look like findings', () => {
+  // Asserted on behaviour, not markup: the cards were <section> before this
+  // redesign and are <div> after, and the contract page now carries a one-line
+  // callout rather than a card. What must not change is that a pointer is
+  // disclosed and never wears a confidence badge.
   const { out } = buildOnce();
   const facts = JSON.parse(fs.readFileSync(
     path.join(__dirname, '../../../skill-package/skills/claude-code-internals/references/state/author-facts.json'), 'utf8'));
-  for (const [md, html, n] of [[`${SECTION}/index.md`, `${SECTION}/index.html`, (facts.tools || []).length],
-                               [`${SECTION}/contract.md`, `${SECTION}/contract/index.html`, 1]]) {
+  for (const rel of [`${SECTION}/index.html`, `${SECTION}/contract/index.html`]) {
+    const html = fs.readFileSync(path.join(out, rel), 'utf8');
+    assert.match(html, /Same author as this site/, `${rel} must disclose authorship`);
+    for (const t of facts.tools || []) {
+      const i = html.indexOf(t.url);
+      if (i < 0) continue;
+      // no confidence badge anywhere in the block the link sits in
+      const around = html.slice(Math.max(0, i - 500), i + 900);
+      assert.ok(!/class="chip tier-/.test(around), `${rel}: ${t.name} sits next to a confidence badge`);
+    }
+  }
+});
+
+test('tool pointers appear in both formats wherever they appear at all', () => {
+  const { out } = buildOnce();
+  const facts = JSON.parse(fs.readFileSync(
+    path.join(__dirname, '../../../skill-package/skills/claude-code-internals/references/state/author-facts.json'), 'utf8'));
+  for (const [md, html] of [[`${SECTION}/index.md`, `${SECTION}/index.html`],
+                            [`${SECTION}/contract.md`, `${SECTION}/contract/index.html`]]) {
     const m = fs.readFileSync(path.join(out, md), 'utf8');
     const h = fs.readFileSync(path.join(out, html), 'utf8');
     for (const t of facts.tools || []) {
-      assert.strictEqual(m.includes(t.url), h.includes(t.url), `${md} and ${html} disagree on ${t.name}`);
+      assert.strictEqual(m.includes(t.url), h.includes(t.url),
+        `${md} and ${html} disagree on whether ${t.name} is present`);
     }
-    assert.strictEqual((h.match(/<section class="tool">/g) || []).length, n);
+  }
+});
+
+test('severity is rendered in both formats and never as a confidence tier', () => {
+  // Severity is editorial -- what the mistake costs -- and confidence is how the
+  // rule was checked. Collapsing the two would let a judgement inherit the weight
+  // of a measurement, which is the one thing the tier system exists to prevent.
+  const { out } = buildOnce();
+  const facts = JSON.parse(fs.readFileSync(
+    path.join(__dirname, '../../../skill-package/skills/claude-code-internals/references/state/author-facts.json'), 'utf8'));
+  const withSev = facts.facts.filter(f => f.severity);
+  assert.ok(withSev.length > 0, 'expected severities in the data');
+  for (const f of withSev) {
+    assert.ok(['silent', 'loud', 'friction'].includes(f.severity), `${f.id}: bad severity ${f.severity}`);
+    assert.ok(!['measured', 'binary', 'inference'].includes(f.severity), `${f.id}: severity collides with a tier`);
+  }
+  const html = fs.readFileSync(path.join(out, SECTION, 'files-and-paths', 'index.html'), 'utf8');
+  const md = fs.readFileSync(path.join(out, SECTION, 'files-and-paths.md'), 'utf8');
+  const n = facts.facts.filter(f => f.page === 'files-and-paths' && f.severity).length;
+  assert.strictEqual((html.match(/class="chip sev sev-/g) || []).length, n, 'HTML severity count');
+  assert.strictEqual((md.match(/Breaks silently|Fails loudly|Costs friction/g) || []).length, n, 'Markdown severity count');
+});
+
+test('the contract carries the data the filters need on every rule', () => {
+  // Filtering is client-side over rules already present in the DOM. Without these
+  // attributes the page still reads correctly but every filter silently matches
+  // nothing -- a failure with no visible symptom.
+  const { out } = buildOnce();
+  const facts = JSON.parse(fs.readFileSync(
+    path.join(__dirname, '../../../skill-package/skills/claude-code-internals/references/state/author-facts.json'), 'utf8'));
+  const durable = facts.facts.filter(f => f.durability === 'durable');
+  const html = fs.readFileSync(path.join(out, SECTION, 'contract', 'index.html'), 'utf8');
+  const rows = [...html.matchAll(/<label class="crule" data-id="([^"]+)" data-tier="([^"]*)" data-sev="([^"]*)"/g)];
+  assert.strictEqual(rows.length, durable.length, `${rows.length} contract rows for ${durable.length} rules`);
+  for (const [, id, tier, sev] of rows) {
+    const f = durable.find(x => x.id === id);
+    assert.ok(f, `contract row ${id} matches no fact`);
+    assert.strictEqual(tier, f.tier);
+    assert.strictEqual(sev, f.severity || '');
+  }
+  for (const kind of ['tier', 'sev']) {
+    assert.ok(html.includes(`data-filter="${kind}"`), `no ${kind} filter buttons`);
+  }
+});
+
+test('the sidebar lists every page, grouped, with the current page marked', () => {
+  const { out } = buildOnce();
+  const facts = JSON.parse(fs.readFileSync(
+    path.join(__dirname, '../../../skill-package/skills/claude-code-internals/references/state/author-facts.json'), 'utf8'));
+  const grouped = facts.pages.filter(p => p.nav_group);
+  assert.ok(grouped.length > 0, 'expected nav groups in the data');
+  for (const p of facts.pages) {
+    const rel = p.slug === 'index' ? `${SECTION}/index.html` : `${SECTION}/${p.slug}/index.html`;
+    const html = fs.readFileSync(path.join(out, rel), 'utf8');
+    for (const g of grouped) {
+      // Labels are HTML-escaped on the way out ("Files & paths" -> "Files &amp; paths"),
+      // so compare against the escaped form rather than the source string.
+      const label = (g.nav_label || g.title)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      assert.ok(html.includes(`>${label}<`), `${rel}: sidebar is missing ${g.slug}`);
+    }
+    // Scoped to <aside>: the stylesheet also contains [aria-current="page"]
+    // selectors, and a whole-document count picks those up too.
+    const aside = (html.match(/<aside>[\s\S]*?<\/aside>/) || [''])[0];
+    assert.strictEqual((aside.match(/aria-current="page"/g) || []).length, 1,
+      `${rel} should mark exactly one nav entry as current`);
   }
 });
 
