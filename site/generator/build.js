@@ -40,6 +40,12 @@ const BAND_AGING = 90;
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const STATE_DIR = path.join(REPO_ROOT, 'skill-package/skills/claude-code-internals/references/state');
 
+// Consumed by both the markdown and the HTML renderer. The two diverged once
+// (md labelled caveats, HTML did not); a shared constant is what stops that
+// recurring, since "rendered from the same fact objects" guarantees content
+// parity, not chrome parity.
+const CAVEAT_LABEL = 'Caveat:';
+
 const TIER_LABEL = {
   measured: 'Measured',
   binary: 'From binary',
@@ -50,6 +56,54 @@ const TIER_TITLE = {
   binary: 'Read from a shipped artifact; behaviour not exercised',
   inference: 'Stated inference — see caveats',
 };
+
+/**
+ * The freshness badge. The date is SERVER-RENDERED: an empty span filled by
+ * script means no date at all with JS off, in reader mode, or in a text
+ * browser — which is precisely the arrival this badge exists for. The script
+ * UPGRADES this (appends the age, sets the band); it never creates it.
+ */
+function freshnessBadge(verified) {
+  return `<span class="fresh" data-verified="${esc(verified)}">Verified ${esc(verified)}</span>`;
+}
+
+/**
+ * Tier legend. Rendered `open`: a collapsed <details> is not auto-expanded by
+ * most browsers when targeted via #tiers, so a badge link would land a reader
+ * on a closed summary and require a second tap for a load-bearing signal.
+ */
+function tierLegend() {
+  return `<details class="legend" id="tiers" open>
+<summary>What the confidence labels mean</summary>
+<dl>
+<dt>Measured</dt><dd>Observed live in a real session, with a control where noted.</dd>
+<dt>From binary</dt><dd>Read out of a shipped artifact; the behaviour was not exercised.</dd>
+<dt>Inference</dt><dd>Stated as inference in the source material — read the caveats.</dd>
+</dl>
+</details>`;
+}
+
+// Shared by every page. Upgrades server-rendered badges; degrades to the
+// plain date when scripting is unavailable.
+const AGE_SCRIPT = `<script>
+(function () {
+  function days(d) { return Math.floor((Date.now() - Date.parse(d + 'T00:00:00Z')) / 864e5); }
+  var els = document.querySelectorAll('.fresh[data-verified]');
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i], n = days(el.dataset.verified);
+    el.className = 'fresh ' + (n <= ${BAND_FRESH} ? '' : (n <= ${BAND_AGING} ? 'aging' : 'expired'));
+    el.textContent = el.textContent + ' \u00b7 ' + n + ' day' + (n === 1 ? '' : 's') + ' ago';
+  }
+  var banners = document.querySelectorAll('.expired-banner[data-verified]');
+  for (var j = 0; j < banners.length; j++) {
+    var b = banners[j], m = days(b.dataset.verified);
+    if (m > ${BAND_AGING}) {
+      b.style.display = 'block';
+      b.textContent = 'Last verified ' + m + ' days ago. Treat every detail as unverified.';
+    }
+  }
+})();
+</script>`;
 
 function die(msg) {
   console.error(`build.js: ${msg}`);
@@ -122,7 +176,7 @@ function renderFactMd(f) {
   const out = [`### ${f.rule}`, ''];
   out.push(`*${TIER_LABEL[f.tier]}*${f.volatile_dependency ? ' · *Depends on server-side configuration — can change without a version bump*' : ''}`, '');
   out.push(f.detail, '');
-  for (const c of f.caveats || []) out.push(`> Caveat: ${c}`, '');
+  for (const c of f.caveats || []) out.push(`> ${CAVEAT_LABEL} ${c}`, '');
   return out;
 }
 
@@ -224,7 +278,7 @@ function pageHtml(doc, page, registry, depth) {
       body.push(`<h3>${inlineHtml(f.rule)}</h3>`);
       body.push(`<p class="badges">${badge(f)}${f.volatile_dependency ? volatileBadge(up) : ''}</p>`);
       body.push(`<p>${inlineHtml(f.detail)}</p>`);
-      for (const c of f.caveats || []) body.push(`<p class="caveat">${inlineHtml(c)}</p>`);
+      for (const c of f.caveats || []) body.push(`<p class="caveat"><strong>${CAVEAT_LABEL}</strong> ${inlineHtml(c)}</p>`);
       body.push('</section>');
     }
   }
@@ -248,7 +302,9 @@ function pageHtml(doc, page, registry, depth) {
 }
 
 function badge(f) {
-  return `<span class="tier tier-${f.tier}" title="${esc(TIER_TITLE[f.tier])}">${TIER_LABEL[f.tier]}</span>`;
+  // Links to the on-page legend: a title= tooltip is invisible on touch devices,
+  // and the tier is how a reader decides how much weight to give the claim.
+  return `<a class="tier tier-${f.tier}" href="#tiers" title="${esc(TIER_TITLE[f.tier])}">${TIER_LABEL[f.tier]}</a>`;
 }
 function volatileBadge(up) {
   return ` <a class="tier tier-volatile" href="${up}what-can-change-under-you/">Can change without a version bump</a>`;
@@ -307,14 +363,19 @@ table { border-collapse:collapse; width:100%; font-size:.92rem; }
 td,th { border:1px solid var(--line); padding:.35rem .6rem; text-align:left; }
 code { font-size:.9em; background:rgba(127,127,127,.14); padding:.05rem .3rem; border-radius:3px; }
 footer { margin-top:3rem; border-top:1px solid var(--line); padding-top:1rem; font-size:.88rem; color:var(--muted); }
-#fresh { display:inline-block; font-size:.8rem; padding:.15rem .5rem; border-radius:3px; border:1px solid var(--line); }
-#fresh.aging { color:var(--warn); border-color:var(--warn); }
-#fresh.expired { color:var(--bad); border-color:var(--bad); font-weight:600; }
-#expired-banner { display:none; border:1px solid var(--bad); color:var(--bad); padding:.75rem 1rem; border-radius:4px; margin-bottom:1.5rem; }
+.fresh { display:inline-block; font-size:.8rem; padding:.15rem .5rem; border-radius:3px; border:1px solid var(--line); }
+.fresh.aging { color:var(--warn); border-color:var(--warn); }
+.fresh.expired { color:var(--bad); border-color:var(--bad); font-weight:600; }
+.freshline { margin:0 0 1.5rem; font-size:.9rem; color:var(--muted); }
+.expired-banner { display:none; border:1px solid var(--bad); color:var(--bad); padding:.75rem 1rem; border-radius:4px; margin-bottom:1.5rem; }
+details.legend { border:1px solid var(--line); border-radius:4px; padding:.6rem .9rem; margin:1.5rem 0; font-size:.9rem; }
+details.legend summary { cursor:pointer; font-weight:600; }
+details.legend dt { margin-top:.5rem; font-weight:600; }
+details.legend dd { margin:0 0 .1rem; color:var(--muted); }
 ul.pages li { margin-bottom:.75rem; }
 </style>
 </head>
-<body data-verified="${esc(verified)}">
+<body>
 <nav>
   <a href="${up}">Start here</a>
   <a href="${up}contract/">The contract</a>
@@ -322,34 +383,23 @@ ul.pages li { margin-bottom:.75rem; }
   <a href="${up}current-state/">Verified against</a>
   <a href="${mdHref}">This page as Markdown</a>
 </nav>
-<div id="expired-banner"></div>
+<div class="expired-banner" data-verified="${esc(verified)}"></div>
+<p class="freshline">${freshnessBadge(verified)} — what was checked, and when; not a guarantee it is still true.</p>
 ${body}
+${tierLegend()}
 <footer>
-<p><span id="fresh"></span></p>
 <p><strong>Unofficial.</strong> Not affiliated with Anthropic. Derived from shipped binaries and live
 sessions, then stamped with the build it was checked against.
 <strong>This documentation does not detect product changes</strong> — behaviour served from Anthropic's
 side can change at any time, with no version bump and no signal here.</p>
-<p>Part of the <a href="https://github.com/yaniv-golan/claude-code-internals">Claude Code Internals</a>
-project · <a href="${up}facts.json">facts.json</a> · <a href="${up}../llms.txt">llms.txt</a></p>
+<p><strong>Found something wrong?</strong>
+<a href="https://github.com/yaniv-golan/claude-code-internals/issues">Open an issue</a> — corrections
+are the cheapest way this stays accurate.</p>
+<p>By <a href="https://github.com/yaniv-golan">Yaniv Golan</a> · part of the
+<a href="https://github.com/yaniv-golan/claude-code-internals">Claude Code Internals</a> project ·
+<a href="${up}facts.json">facts.json</a> · <a href="${up}../llms.txt">llms.txt</a></p>
 </footer>
-<script>
-// Age is computed on load, not at build time: a static page built on day 10
-// would otherwise still claim "fresh" on day 200.
-(function () {
-  var d = document.body.dataset.verified, el = document.getElementById('fresh');
-  if (!d || !el) return;
-  var days = Math.floor((Date.now() - Date.parse(d + 'T00:00:00Z')) / 864e5);
-  var band = days <= ${BAND_FRESH} ? '' : (days <= ${BAND_AGING} ? 'aging' : 'expired');
-  el.className = band;
-  el.textContent = 'Verified ' + d + ' · ' + days + ' day' + (days === 1 ? '' : 's') + ' ago';
-  if (band === 'expired') {
-    var b = document.getElementById('expired-banner');
-    b.style.display = 'block';
-    b.textContent = 'This page was last verified ' + days + ' days ago. Treat every detail as unverified.';
-  }
-})();
-</script>
+${AGE_SCRIPT}
 </body>
 </html>
 `;
@@ -432,20 +482,83 @@ function build(outDir) {
     `- [facts.json](${SITE_URL}/${SECTION}/facts.json): every published rule with confidence tier and caveats.`, '');
   write('llms.txt', llms.join('\n'));
 
-  // root index — the site is project-level; sections live underneath
+  // root index — a destination in its own right. Per-section dates rather than
+  // one site-wide badge: the verification date belongs to a section's facts, so
+  // a single site date would be a category error the moment a second section
+  // exists. NOTE: there is no section registry yet — this enumerates what the
+  // generator knows about, which is one section.
+  const sections = [{
+    slug: SECTION,
+    title: 'Cowork for skill authors',
+    blurb: 'What your skill can rely on inside Claude Cowork — paths, file delivery, deletes, the shell, runtime detection, plugins and sub-agents.',
+    verified: doc.verified_against.observed_at,
+  }];
+  const oldest = sections.map(x => x.verified).sort()[0];
   write('index.html', `<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Claude Code Internals</title>
-<meta name="description" content="Unofficial reference derived from shipped binaries and live sessions.">
-<style>body{font:16px/1.6 system-ui,-apple-system,sans-serif;max-width:40rem;margin:12vh auto;padding:0 1.25rem;color-scheme:light dark}h1{font-size:1.35rem}li{margin:.6rem 0}.muted{opacity:.7;font-size:.9rem}</style>
+<title>Claude Code Internals — how Claude Code and Cowork actually behave</title>
+<meta name="description" content="Unofficial reference for skill authors, derived from shipped binaries and live sessions, stamped with the build each claim was verified against.">
+<style>
+:root { color-scheme: light dark; --fg:#111; --muted:#666; --line:#ddd; --accent:#0b62d6; --warn:#8a5a00; --bad:#a11; }
+@media (prefers-color-scheme: dark) { :root { --fg:#e6e6e6; --muted:#9aa; --line:#333; --accent:#6aa9ff; --warn:#e0a83a; --bad:#ff8080; } }
+body { font:16px/1.65 system-ui,-apple-system,sans-serif; max-width:44rem; margin:0 auto; padding:3rem 1.25rem 5rem; color:var(--fg); }
+a { color:var(--accent); }
+h1 { font-size:1.55rem; margin:0 0 .75rem; }
+h2 { font-size:1.1rem; margin:2.5rem 0 .75rem; }
+.lede { font-size:1.05rem; }
+.section { border:1px solid var(--line); border-radius:6px; padding:1.1rem 1.25rem; margin:1rem 0; }
+.section h3 { margin:0 0 .35rem; font-size:1.05rem; }
+.muted { color:var(--muted); font-size:.9rem; }
+.fresh { display:inline-block; font-size:.8rem; padding:.15rem .5rem; border-radius:3px; border:1px solid var(--line); }
+.fresh.aging { color:var(--warn); border-color:var(--warn); }
+.fresh.expired { color:var(--bad); border-color:var(--bad); font-weight:600; }
+.expired-banner { display:none; border:1px solid var(--bad); color:var(--bad); padding:.75rem 1rem; border-radius:4px; margin-bottom:1.5rem; }
+footer { margin-top:3rem; border-top:1px solid var(--line); padding-top:1rem; font-size:.88rem; color:var(--muted); }
+</style>
 </head><body>
+<div class="expired-banner" data-verified="${oldest}"></div>
 <h1>Claude Code Internals</h1>
-<p>Unofficial reference derived from shipped binaries and live sessions.</p>
-<ul>
-  <li><a href="${SECTION}/">Cowork for skill authors</a> — what your skill can rely on inside Claude Cowork.</li>
-</ul>
-<p class="muted">Not affiliated with Anthropic. Machine-readable index at <a href="llms.txt">/llms.txt</a>.</p>
+<p class="lede">An unofficial reference for people writing Claude skills. Every claim here is derived
+from shipped binaries and live sessions, and carries the build it was checked against and how
+confident that check was.</p>
+<p>Claude Cowork runs your skill in a sandbox whose rules differ from the Claude Code CLI in ways that
+silently break otherwise-correct skills — files that never reach the user, deletes that fail, a shell
+that cannot see your environment. This documents those differences.</p>
+<h2>Sections</h2>
+${sections.map(x => `<div class="section">
+<h3><a href="${x.slug}/">${esc(x.title)}</a></h3>
+<p>${esc(x.blurb)}</p>
+<p>${freshnessBadge(x.verified)}</p>
+</div>`).join('\n')}
+<h2>What this is not</h2>
+<p><strong>Not official, and not affiliated with Anthropic.</strong> It is reverse-engineered from
+shipped software. <strong>It does not detect product changes</strong> — behaviour served from
+Anthropic's side can change at any time, with no version bump and no signal here. Claims are stamped
+with a date and a confidence label so you can judge how much weight to give them.</p>
+<footer>
+<p><strong>Found something wrong?</strong>
+<a href="https://github.com/yaniv-golan/claude-code-internals/issues">Open an issue</a> — corrections
+are the cheapest way this stays accurate.</p>
+<p>By <a href="https://github.com/yaniv-golan">Yaniv Golan</a> · source on
+<a href="https://github.com/yaniv-golan/claude-code-internals">GitHub</a> ·
+machine-readable index at <a href="llms.txt">/llms.txt</a></p>
+</footer>
+${AGE_SCRIPT}
+</body></html>
+`);
+
+  // 404 — a cold arrival on a stale or mistyped URL otherwise gets GitHub's
+  // default page with no route back into the site.
+  write('404.html', `<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Not found — Claude Code Internals</title>
+<style>body{font:16px/1.6 system-ui,-apple-system,sans-serif;max-width:34rem;margin:14vh auto;padding:0 1.25rem;color-scheme:light dark}h1{font-size:1.3rem}</style>
+</head><body>
+<h1>That page isn't here</h1>
+<p>It may have moved, or the URL may be from an older version of this site.</p>
+<p><a href="/">Start from the top</a> · <a href="/${SECTION}/">Cowork for skill authors</a></p>
 </body></html>
 `);
 
@@ -459,23 +572,44 @@ function build(outDir) {
     }
   }
 
-  // gate 4 — every internal link must have a target in the emitted set
+  // gate 4 — every internal link must resolve, INCLUDING fragments.
+  //
+  // The previous regex was /href="([^"#:]+)"/ — it excluded '#', so it skipped
+  // same-page anchors AND cross-page fragments like `contract/#tiers`. Badge
+  // links would have pointed at nothing with no gate noticing. Resolve the path
+  // part against the emitted set, then the fragment against that document.
   const linkErrors = [];
+  const idsOf = (abs) => new Set(
+    [...fs.readFileSync(abs, 'utf8').matchAll(/\sid="([^"]+)"/g)].map(m => m[1]));
   for (const rel of emitted) {
     if (!rel.endsWith('.html')) continue;
     const html = fs.readFileSync(path.join(outDir, rel), 'utf8');
     const base = path.dirname(rel);
-    for (const m of html.matchAll(/href="([^"#:]+)"/g)) {
+    for (const m of html.matchAll(/href="([^"]+)"/g)) {
       const href = m[1];
-      if (href.startsWith('http') || href.startsWith('mailto:')) continue;
-      let target = path.normalize(path.join(base, href));
-      if (href.endsWith('/') || !path.extname(href)) target = path.join(target, 'index.html');
-      if (!fs.existsSync(path.join(outDir, target))) {
-        linkErrors.push(`${rel} -> ${href} (resolved ${target})`);
+      if (/^[a-z][a-z0-9+.-]*:/i.test(href)) continue; // external scheme
+      const [rawPath, frag] = href.split('#');
+      let targetRel;
+      if (!rawPath) {
+        targetRel = rel;                                // same-document fragment
+      } else {
+        targetRel = path.normalize(path.join(base, rawPath));
+        if (rawPath.endsWith('/') || !path.extname(rawPath)) {
+          targetRel = path.join(targetRel, 'index.html');
+        }
+        if (!fs.existsSync(path.join(outDir, targetRel))) {
+          linkErrors.push(`${rel} -> ${href} (no such target: ${targetRel})`);
+          continue;
+        }
+      }
+      if (frag && targetRel.endsWith('.html')) {
+        if (!idsOf(path.join(outDir, targetRel)).has(frag)) {
+          linkErrors.push(`${rel} -> ${href} (no id="${frag}" in ${targetRel})`);
+        }
       }
     }
   }
-  if (linkErrors.length) die(`gate 4: ${linkErrors.length} broken internal link(s):\n  ${linkErrors.join('\n  ')}`);
+  if (linkErrors.length) die(`gate 4: ${linkErrors.length} broken link(s):\n  ${linkErrors.join('\n  ')}`);
 
   // gate 5 — disclosure lint over the published PROSE of everything emitted.
   // HTML is stripped of <script>/<style>/tags first: the risk is an internal
