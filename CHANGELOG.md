@@ -1,201 +1,91 @@
 # Changelog
 
-## v2.36.6 — 2026-08-06 (this fork) — point at the tooling, where the reader needs it
+## v2.36.6 — 2026-08-06 (this fork) — tooling pointers
 
-Implements Fix F from the content-pass plan. It survived two plan revisions and was never built: the site pointed at neither tool.
+**146 lessons / 40 chapters** (unchanged). No fact changes.
 
-### Placement is by reader moment, not by category
+The site now points at two related projects, placed where each is useful rather than collected into a link list:
 
-The two tools answer different questions, so they do not belong in one "Tools" list.
+- **[skill-creator-plus](https://github.com/yaniv-golan/skill-creator-plus)** — Anthropic's skill-creator extended with Cowork support, on the entry page, for someone who has not written the skill yet.
+- **[cowork-harness](https://github.com/yaniv-golan/cowork-harness)** — a scriptable harness for the runtime behaviour documented here, on the entry page and the contract page, where a reader has just finished the rules and is asking whether their own skill is affected.
 
-**`skill-creator-plus`** is for someone who *hasn't written the skill yet*. At the end of a topic page it is useless — they have already made the mistake. It sits at the **entry point**.
-
-**`cowork-harness`** answers the question every rule on this site provokes and the site previously left hanging: *"does mine do this?"* It sits where a reader has just finished the rules — the **index** and the **contract page**.
-
-Neither appears on a topic page, where it would compete with that page's *"What is not established"* section. Neither is in the footer.
-
-Headings follow the moment rather than being reused: *"Where this fits in your workflow"* at the entry point, *"Checking your own skill against these"* after 52 rules.
-
-### Pointers, not findings
-
-Per the plan's own rev-2 correction, the blurbs are **data** — a validated `tools` array in `author-facts.json` — not hand-written template strings. And they are explicitly not findings: **no tier badge, no verified date**, muted styling, and same-author disclosure on every rendering. On a site where every claim carries a tier and a date, an untiered block that looked like a finding would erode exactly the trust the tiers buy.
-
-Three tests pin the placement (both at the entry point, harness only on the contract page, **neither on any topic page**), the no-tier-badge rule, and Markdown/HTML parity.
+Neither appears on a topic page. Both are marked as pointers, not findings: no confidence tier, no verification date, and same-author disclosure wherever they render. Blurbs live in `author-facts.json` and are shape-validated like everything else on the site.
 
 ## v2.36.5 — 2026-08-06 (this fork) — search discoverability
 
-**No fact changes.** An audit of the published site found the content-side foundations already strong and four mechanical gaps.
+**146 lessons / 40 chapters** (unchanged). No fact changes.
 
-### Already good, left alone
+**Added:** `sitemap.xml` (generated from the page list, so it cannot fall behind), `robots.txt`, absolute canonical URLs on every indexable page, Open Graph and Twitter card tags, and JSON-LD.
 
-Unique **question-shaped H1s** — *"Why did my skill's output never reach the user?"* — which match how an author actually searches. Unique titles and meta descriptions, `lang`, viewport, inline CSS (fast by construction), clean URLs, and the 52 internal rule links added in v2.36.4.
+Structured data is `TechArticle` + `BreadcrumbList`. Not `FAQPage`, despite the pages being question-shaped: Google restricted FAQ rich results to a narrow set of authoritative sites in 2023, so the markup would claim a result these pages will not receive.
 
-### Added
+The `.md` twin of each page stays crawlable — it is the LLM-facing copy — and canonical tags on the HTML prevent the two from competing. `404.html` is `noindex,follow`; `/static/` is disallowed.
 
-| gap | fix |
+**Fixed:** the build's internal link checker resolved root-absolute `href`s against each page's own directory instead of the site root, reporting valid links as broken.
+
+## v2.36.4 — 2026-08-06 (this fork) — contract page links to its explanations
+
+**146 lessons / 40 chapters** (unchanged). No fact changes.
+
+The contract page lists every rule on the site and states that each links to the page explaining it. It did not: the only link on each row was the confidence badge, pointing at the legend. Each rule is now a link — HTML deep-links to a per-rule anchor, Markdown links to the explaining page.
+
+Anchors derive from the internal rule id rather than its wording, so rewording a rule does not break inbound links.
+
+The page remains a generated index with no prose of its own. Inlining explanations would duplicate the rest of the site and reintroduce the drift the page exists to prevent.
+
+## v2.36.3 — 2026-08-06 (this fork) — the preinstalled rule names the stack
+
+**146 lessons / 40 chapters** (unchanged). No fact changes.
+
+*"Prefer what is preinstalled"* did not say what is preinstalled. It now opens with the measured inventory — Python 3.10.12, roughly 149 packages, including `pandas`, `numpy`, `PIL` and `openpyxl` — repeating one clause from the neighbouring rule so that either can be acted on alone.
+
+## v2.36.2 — 2026-08-06 (this fork) — rules name the identifier they depend on
+
+**146 lessons / 40 chapters** (unchanged). No fact changes.
+
+Ten rules described a behaviour without naming the thing an author has to type. Across all 11 pages the site named no environment variable, no path shape, and no tool. Now:
+
+| rule | now names |
 |---|---|
-| no `sitemap.xml` | generated from the same page loop that emits the pages |
-| no `robots.txt` | `Allow: /`, `Disallow: /static/`, sitemap pointer |
-| no canonical | absolute canonical on every indexable page |
-| no social / structured data | Open Graph, Twitter card, JSON-LD |
+| plugin root | `${CLAUDE_PLUGIN_ROOT}` |
+| runtime detection | `CLAUDE_CODE_IS_COWORK`, a working directory under `/sessions/`, then `CLAUDECODE`, in that order |
+| "runtime marker" | defined — an environment variable the host sets at session start |
+| tool-presence check | `mcp__workspace__bash` in Cowork, `Bash` in the CLI |
+| two execution contexts | named: the agent context and the shell context |
+| session paths | the shape being refused: `/sessions/<session-name>/mnt/outputs/report.pdf` |
+| sealed environment | the three ways in: command string, file, script argument |
 
-Sitemap and robots come from the **same `doc.pages` loop** as the pages themselves, so a page cannot exist without appearing in the sitemap — and a test asserts the count matches.
+**Changed the other way:** delivery guidance now says *present the file to the user* rather than naming a delivery tool. Naming one pins a skill to a single runtime.
 
-Canonical points at the apex, which is correct because both `www` and the `github.io` origin already 301 there. **Checked, not assumed.**
+**Vocabulary:** prose said "lane" where the badges said "sandbox". "lane" is gone from every rule, page summary and open question.
 
-### Two deliberate choices
+## v2.36.1 — 2026-08-05 (this fork) — retraction: two claims from v2.36.0 withdrawn
 
-**Structured data is `TechArticle` + `BreadcrumbList`, not `FAQPage`.** The pages are literally question-shaped, so FAQ markup is tempting — but Google restricted FAQ rich results to a narrow set of authoritative sites in 2023, so marking these up as FAQ would claim a result they will not receive.
+**146 lessons / 40 chapters** (unchanged).
 
-**The `.md` twins stay crawlable.** They are the LLM-facing copy, and blocking them would defeat the point of `llms.txt`. Every HTML page now declares itself canonical, so they cannot split ranking.
+The Desktop's per-session `audit.jsonl` rewrites VM paths to their host equivalents. Across the on-disk corpus, 16,640 tool calls appear in both that record and the agent's own transcript; 757 disagree, and every one of those is a `/Users/…` path in the audit record against `/sessions/…` in the transcript. Two claims derived from the audit record were wrong.
 
-`404.html` is `noindex,follow`; `/static/` is disallowed.
+**Withdrawn — the read-after-write delay.** The two reads that appeared identical in the audit record were, in the agent's transcript, a VM-form path (refused) followed by a host-form path (accepted). Two different calls behaving as documented. There is no delay and nothing to retry.
 
-### Also fixed
+**Withdrawn — inbound path translation.** The command sent was `/sessions/busy-eager-bell/mnt/outputs/k4m2.txt`. No host path was ever passed to the shell. Chapter 35's "outbound only" description stands.
 
-A real bug in the build's own link gate: it resolved **root-absolute** hrefs against each page's directory, so `/favicon.svg` was reported missing from every page. The gate caught my first attempt, which is what it is for.
+**Restored — never pass an absolute session path to the file tools.** The original rule was correct. v2.36.0 replaced it with advice to retry the call, which would loop indefinitely: the check is a plain prefix test on `/sessions/`, identical across three Desktop builds and reached with the unmodified tool input, so the same path is refused every time.
 
-## v2.36.4 — 2026-08-06 (this fork) — the contract page now links to its explanations
+Unaffected: the package-install and multiplexing findings, neither of which depends on path form.
 
-**No fact changes.** The contract page's own summary promises *"Each rule links to the page that explains it."* It did not.
+## v2.36.0 — 2026-08-05 (this fork) — fact-verification audit; 2.1.221 baseline
 
-Every list item *did* contain an `<a>` — which is why a naive count reported 52/52 — but that link was the **tier badge**, pointing at the on-page legend. The only route to an explanation was the section heading, so a reader met **52 bold one-liners with nothing to click through to**.
+**146 lessons / 40 chapters.** Chapter 40 (L143–L146) records a pass that re-checked the published rules against current artifacts: host agent 2.1.221, Desktop `app.asar` 1.25927.0, a fresh GrowthBook `fcache` decode, and four live Cowork sessions.
 
-Each rule is now a link to its own explanation: HTML deep-links to a per-fact anchor, Markdown links to the explaining page (Markdown has no stable fragment ids).
+**Falsified — "do not install packages at runtime".** A user-scoped `pip install --user` and a project-local `npm install` both succeed and import normally; a global install does not take effect. The rule was an inference from the network constraints, and the inference does not hold: egress is filtered by destination rather than absent, and the package registries answer. Whether these installs fetched from a registry or a local cache was not distinguished.
 
-Anchors are derived from the **fact id, never the rule text** — ten rules were reworded across v2.36.1–3, and a prose-derived anchor would break every inbound link on each rewrite. The build's existing fragment gate validates all 52 deep links, and three tests pin count parity across both formats, anchor resolution, and the id-not-prose derivation.
+**Measured:** the guest ships Python 3.10.12 with ~149 packages. `/sessions` held 529 session directories on one guest, with cross-session access refused; whether those sessions were concurrent was not established. A connected project mounts read-only, a connected folder read-write. `$HOME` is the session root.
 
-### Why not expandable
+**Remote sandbox, first direct observation:** `uid=0`, no per-session user, a different filesystem layout. This falsified a rule published without a sandbox qualifier, so author-facts gained an optional `lane` field — absent means the rule was never scoped, not that it holds everywhere.
 
-The page's stated contract is *"generated from the rules on every other page, with no additional prose … this page cannot disagree with the others."* Inlining details would duplicate the whole site and reintroduce exactly the drift the page exists to rule out. **Linking is the fix; expanding is not.**
+**GrowthBook capture:** content hash `9d75909785dc344e` → `d17cdf8e7f6da102`, 241 → 240 flags. `resolveCloudBranch` moved from absent to force-on; `vcsSdkEventsEnabled` and `sessionWatcherPool` left the snapshot entirely, which is not the same as being off.
 
-## v2.36.3 — 2026-08-06 (this fork) — the preinstalled rule now says what is preinstalled
-
-**No fact changes.** Closes the one gap left by v2.36.2.
-
-That pass added the preinstalled inventory to the package-install rule, then moved it out to resolve a duplication with the neighbouring *"ships a large preinstalled stack"* rule. The result: a rule reading **"Prefer what is preinstalled"** whose detail said *"check what is already there first"* and never said what was there, with no pointer to the adjacent rule holding the numbers. A reader checking the ten items found it immediately.
-
-The rule now names the stack in its own first sentence — Python 3.10.12, ~149 packages, `pandas`, `numpy`, `PIL`, `openpyxl` — duplicating one clause across two adjacent rules deliberately. **A rule a reader can act on without reading its neighbour is worth a repeated sentence.**
-
-### Noted for future passes
-
-Of the ten reader questions v2.36.2 answered, only **three** were fixed in the rule *heading*; the other six were fixed in the detail beneath. A reader scanning headings still meets the original wording. That is a limit of the format rather than an oversight — but it means heading text carries more weight than its length suggests.
-
-## v2.36.2 — 2026-08-06 (this fork) — say the noun
-
-**No fact changes.** Every claim, tier, caveat and evidence date is unchanged from v2.36.1. This is a clarity pass, prompted by a reader working through the published pages and asking, nine times, what a sentence actually meant.
-
-### The defect
-
-The site named **no concrete identifier anywhere**. Across all 11 pages: zero mentions of the plugin-root token, zero of the detection environment variables, zero of the session path shape, zero of the shell tool's Cowork name. Rules told an author what to do while withholding what the thing *is* — advice you can agree with and not act on.
-
-Root cause was mine: the project's portability instruction — *don't hard-code delivery tool names, because that pins a skill to one runtime* — had been over-generalised into *name nothing*. Those are different concerns. The scope is now confirmed as **delivery tools only**.
-
-### Ten rules now name the thing
-
-- `${CLAUDE_PLUGIN_ROOT}` — the rule was unusable without it
-- the ordered detection sequence: `CLAUDE_CODE_IS_COWORK`, then a working directory under `/sessions/`, then `CLAUDECODE`
-- "runtime marker" defined — an environment variable the host sets when it starts your session
-- the shell tool named on both sides: `mcp__workspace__bash` in Cowork, `Bash` in the CLI
-- the two execution contexts named: the **agent context** and the **shell context**
-- the session path shape shown: `/sessions/<session-name>/mnt/outputs/report.pdf`
-- three concrete ways to get configuration into a sealed shell: in the command string, via a file, or as a script argument
-- the preinstalled inventory published: **Python 3.10.12, ~149 packages**, including `pandas`, `numpy`, `PIL`, `openpyxl`
-
-### One rule moved the other way
-
-Delivery guidance goes back to the general instruction — **"present it to the user"** — replacing *"present it with whichever delivery tool the session offers"*, which managed to be both vague and still tool-shaped. Naming a delivery tool is exactly the thing that breaks portability.
-
-### Vocabulary
-
-The prose said "lane" while the badges said "sandbox" — two vocabularies for one concept, and "lane" was defined nowhere. It is now gone from every rule, detail, caveat, page summary and open question. The `lane` schema field keeps its name; it is internal.
-
-Disclosure lint stays clean: the identifiers now published were already on its two-clause allowlist and had simply never been used in prose.
-
-## v2.36.1 — 2026-08-05 (this fork) — retraction: `audit.jsonl` is a translated projection
-
-**146 lessons / 40 chapters** (unchanged; L143 and L144 rewritten in place). This release retracts two claims published in v2.36.0 hours earlier and restores a fact that release wrongly rewrote.
-
-### Root cause
-
-v2.36.0 said, repeatedly, that its evidence was read *"first-party from each session's own on-disk `audit.jsonl` rather than from the pasted transcript."* That record is a **translated projection**. Across the whole corpus:
-
-| | count |
-|---|---|
-| `tool_use` ids in both `audit.jsonl` and the agent transcript | **16,640** |
-| inputs identical | 15,883 |
-| inputs differ | **757** |
-| differences that are audit `/Users/…` vs transcript `/sessions/…` | **757 — all of them** |
-
-### Retracted
-
-**The read-after-write race does not exist.** The two `Read` calls that appeared byte-identical in `audit.jsonl` were, in the agent's own transcript, a VM-form path (denied) followed by a host-form path (succeeded) — two different calls, behaving exactly as documented. No race, no index lag, and nothing to retry.
-
-**Inbound host→VM path translation does not exist.** The agent sent `echo hello-K4M2 > /sessions/busy-eager-bell/mnt/outputs/k4m2.txt` — the VM form. It never sent a host path. **Ch35/L122's "rewrites outbound messages only" stands**; v2.36.0's correction of it is withdrawn.
-
-### Restored — `paths.session-paths-denied`
-
-The original wording was right. v2.36.0 replaced it with *"retry; do not rewrite the path"*, which would have sent an author into an **unbounded retry loop**. The Desktop gate is a pure prefix test, one site, identical across `app.asar` 1.22209.0 / 1.24012.1 / 1.25927.0, absent from the agent bundles, reached from two call sites that both pass the **raw** tool input:
-
-```js
-if (typeof i === 'string' && (i === '/sessions' || i.startsWith('/sessions/')))
-  return { behavior: 'deny', message: `\`${i}\` is a VM path. …` };
-```
-
-A `/Users/` path cannot reach that branch — which is what proved the record wrong. No amount of re-reading the record would have revealed it.
-
-### Unaffected
-
-**L145** (package installs succeed; egress is filtered by destination) — about pip and npm, not path form. **L146** (529 directories, per-session uid, lane scoping) — no path-form dependency.
-
-### The lesson
-
-*First-party* is not a synonym for *authoritative*. A record maintained by the component under study is not a neutral observer: **ask what the artifact is for.** The audit log exists to show a human what happened in terms they can act on, so it speaks in host paths by design. Chapter 40's L143 and L144 are now about the two records and which is authoritative for which question.
-
-## v2.36.0 — 2026-08-05 (this fork) — the fact-verification audit: one falsified, one rewritten, one lesson corrected
-
-**146 lessons / 40 chapters.** A one-time audit re-checked the published author-facts against current artifacts instead of against the corpus that produced them. Chapter 40 (L143–L146) is what it found.
-
-Evidence base: host agent **2.1.221**, Desktop `app.asar` **1.25927.0**, a fresh gzip-wrapped GrowthBook `fcache` decode, and **four live Cowork probes** — with every timing, count and exit status read first-party from each session's own on-disk `audit.jsonl`. That mattered: the pasted transcript and the record disagreed in at least three places.
-
-### Falsified — `shell.no-package-installs`
-
-`pip install --user` and a project-local `npm install` both succeed and the packages import; a **global** install does not take effect. The fact was `inference`-tier, derived from the egress constraint. The premise holds and the conclusion never followed:
-
-```
-curl https://example.com      → 000
-curl https://pypi.org/simple/ → 200
-```
-
-Egress is filtered **by destination**, and the registries answer. Whether these installs fetched from a registry or a local cache was **not** distinguished — the falsification does not depend on it.
-
-> An `inference`-tier fact is a hypothesis with a citation. This one survived multiple releases because its premise was repeatedly re-verified while its conclusion never was. Test the *derived* claim, not the claim it was derived from.
-
-### Rewritten — `paths.session-paths-denied`
-
-Two `Read` calls, **byte-identical 207-character paths**: the first fails *"is a VM path"*, the second succeeds 4.2 s later. Host **birthtime** precedes the failing read by 1.9 s — birthtime, not mtime, because FUSE can back-stamp mtime while birthtime cannot be set by userspace on APFS. That excludes write-propagation delay.
-
-The error names the wrong cause and its advice makes things worse: the path was already the host path. **Retry; do not rewrite the path.** Mechanism is marked inference; the window is n=1.
-
-### Corrects Ch35/L122
-
-*"Rewrites outbound messages only"* is falsified as a behavioural summary. A host-form write succeeded inside the VM while `/var/folders` and `/tmp` host paths did not resolve **in the same session** — inbound translation exists and is selective. Whether the `K6-cmJAJ` index or a separate mechanism performs it is **untraced**, and said so.
-
-### New schema — an optional `lane` on author-facts
-
-Forced by the first direct remote-sandbox observation, which showed `shell.runs-as-its-own-user` **false** there (`uid=0`, no per-session user). Values `local | remote | both`; **absent means never-lane-scoped** — an unknown, not a claim of universality — and renders no badge. 14 of 53 facts are scoped; the other 39 are the audit's own finding.
-
-### Fresh fcache
-
-`9d75909785dc344e` → **`d17cdf8e7f6da102`**, 241 → 240 gates, three membership changes: `resolveCloudBranch` (`3123045134`) absent → **force-ON**; `vcsSdkEventsEnabled` (`1311049725`) and `sessionWatcherPool` (`2678393595`) served-off → **absent**, which per L141 axis 2 is *not* off.
-
-### What this release deliberately does not claim
-
-L146 does **not** claim concurrency. 529 session directories show the namespace has *held* hundreds of sessions, not that they run at once — no process, mount or timestamp check was made against a sibling. Ch31/L117's multiplexing inference is given a scale, not upgraded to confirmed.
-
-`registry.as_of.cli` moves 2.1.217 → 2.1.221. Per repo convention `as_of` is reconciliation bookkeeping, **not** per-entry re-derivation. Actually re-observed this pass: all 45 numeric gate entries against the fresh decode, and the 6 corrected facts against live probes. Everything else was carried forward.
-
-Chapter 40 was adversarially reviewed before landing and narrowed on **14 of 16** findings — including dropping "concurrent" from its own title, and adding the lane scoping it had itself omitted. Two findings were answerable with evidence already in hand.
+Registry baseline moves to CLI 2.1.221.
 
 ## v2.35.2 — 2026-08-05 (this fork) — `bubble`: the seventh permission mode you can never select
 
