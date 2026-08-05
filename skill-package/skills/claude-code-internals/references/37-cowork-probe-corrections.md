@@ -1,114 +1,106 @@
-Updated: 2026-08-05 | Source: **four live Cowork probes** run by the operator on this installation (host agent **2.1.221**, Desktop `app.asar` **1.25927.0**), plus first-party reads of each session's own on-disk `audit.jsonl` and host-side session records, plus `app.asar` 1.25927.0 for the plugin-install surface. Sessions: `tender-inspiring-mendel` (`local_33f9bc8e…`, probe 1), `gallant-sleepy-clarke` (`local_01dc2a61…`, probe 2), `busy-eager-bell` (`local_1fdd9e8c…`, probe 3), and one **remote-lane** session (probe 4). Historical corroboration from the on-disk session corpus is cited per claim. **Tier discipline:** every timing, count and exit status below is read from the persisted `tool_use`/`tool_result` pairs on disk, not from the pasted transcript — a distinction that mattered, because the pasted transcript and the record disagreed in at least three places (a mangled org UUID, a truncated sub-agent `pwd`, and a mislabelled path form). Claims that remain inference are marked inline. This chapter is the output of the 2026-08 fact-verification audit, whose remit was to re-check the 52 published author-facts against current artifacts rather than to find new material; L143–L145 are what that re-checking turned up.
+Updated: 2026-08-05 | Source: **four live Cowork probes** run by the operator on this installation (host agent **2.1.221**, Desktop `app.asar` **1.25927.0**), the agent's own per-session transcripts under `.claude/projects/`, the Desktop's per-session `audit.jsonl`, and `app.asar` 1.25927.0 (plus 1.24012.1 and 1.22209.0 for the path-gate comparison). Sessions: `tender-inspiring-mendel` (`local_33f9bc8e…`, probe 1), `gallant-sleepy-clarke` (`local_01dc2a61…`, probe 2), `busy-eager-bell` (`local_1fdd9e8c…`, probe 3), and one **remote-lane** session (probe 4).
 
-**Prior-lesson corrections landed by this chapter:** Ch35/L122's behavioural summary *"rewrites outbound messages only"* is **falsified for `mcp__workspace__bash`** — the observed behaviour is bidirectional (L144). The published author-fact `shell.no-package-installs` is **falsified** (L145). The published author-fact `paths.session-paths-denied` is **materially mis-stated** (L143). Ch31/L117's multiplexing inference is **given a scale** — though not, on this evidence, a concurrency claim (L146).
+**Tier discipline, corrected.** v2.36.0 of this chapter claimed its evidence was read *"first-party from each session's own on-disk `audit.jsonl`"* and treated that as authoritative. **It is not, for paths** — `audit.jsonl` is a translated projection (L143), and two published claims were wrong because of it. Both are retracted here. Where this chapter now makes a claim about a path, a command as issued, or a tool result as the model received it, the source is the **agent transcript**, corroborated against the binary that implements the behaviour. Claims that remain inference are marked inline.
 
-# Chapter 40: What Four Live Probes Corrected — Read-After-Write, Path Translation, Egress & Multiplexing
+**Prior-lesson corrections landed by this chapter:** the published author-fact `shell.no-package-installs` is **falsified** (L145). Ch31/L117's multiplexing inference is **given a scale** — though not, on this evidence, a concurrency claim (L146). **Ch35/L122 is NOT corrected** — v2.36.0 claimed it was, and that claim is withdrawn (L143); L122's "rewrites outbound messages only" stands.
+
+**Retracted from v2.36.0 by v2.36.1:** the read-after-write race (there is none), inbound host→VM path translation (the agent never sent a host path), and the rewrite of `paths.session-paths-denied`, which replaced a correct rule with advice that would have sent an author into an unbounded retry loop. The original rule was right.
+
+# Chapter 40: What Four Live Probes Corrected — Two Records, Egress & Multiplexing
 
 ---
 
 ## TABLE OF CONTENTS
 
-143. [Lesson 143 — The File Tools Lag the Shell, and the Error Blames Your Path](#lesson-143----the-file-tools-lag-the-shell)
-144. [Lesson 144 — `mcp__workspace__bash` Translates Paths in BOTH Directions](#lesson-144----translation-is-bidirectional)
+143. [Lesson 143 — `audit.jsonl` Is a Translated Projection](#lesson-143----auditjsonl-is-a-translated-projection)
+144. [Lesson 144 — What the Two Records Are For](#lesson-144----what-the-two-records-are-for)
 145. [Lesson 145 — Egress Is Filtered by Destination, So Package Installs Work](#lesson-145----egress-is-filtered-by-destination)
 146. [Lesson 146 — 529 Sessions in One Namespace, and the Isolation That Holds Them Apart](#lesson-146----529-sessions-in-one-namespace)
 
 ---
 
-# LESSON 143 — THE FILE TOOLS LAG THE SHELL
+# LESSON 143 — `audit.jsonl` IS A TRANSLATED PROJECTION
 
-**A file written by the shell is not immediately readable by the file tools. The read fails with a message that blames your path form — while the path is correct and will work seconds later. The published rule "never pass an absolute session path to the file tools, it is denied not translated" describes this symptom wrongly in both directions.**
+**The Desktop's per-session `audit.jsonl` rewrites VM paths to their host equivalents, in both tool inputs and tool results. The agent's own transcript under `.claude/projects/` is the faithful record. Reading `audit.jsonl` for any question about path form produces confident, wrong answers — this lesson exists because it produced two of them, published in v2.36.0 and retracted here.**
 
 ## The measurement
 
-Session `busy-eager-bell`, agent 2.1.221, host-loop. Both `Read` calls carry **byte-identical `file_path` values, 207 characters**, read from the persisted `tool_use` inputs:
+Every `tool_use` id present in both records, across the whole on-disk corpus:
 
-| t (UTC) | tool | result |
-|---|---|---|
-| 19:35:12.982 | `mcp__workspace__bash` writes the file | **ok** |
-| 19:35:14.873 | `Read` | **is_error** — *"is a VM path"* |
-| 19:35:19.087 | `Read` — **same 207-char path** | **ok**, content returned |
-
-## The file existed host-side before the failing read — by birthtime, not mtime
-
-The host file reports `birth = mtime = ctime = 19:35:12`, **1.9 s before the failing read**.
-
-The distinction matters. `mtime` alone would not settle this: a write crossing the FUSE bridge can carry the *write* time rather than the moment the host inode appeared, and `utimens` can set it after the fact. **Birthtime cannot be set by userspace on APFS** — it is stamped by the kernel at inode creation. So the host inode demonstrably existed before the read that failed, which excludes plain write-propagation delay as the explanation.
-
-The variable is therefore time on the *reader's* side, not path form and not the write.
-
-## The message is actively harmful
-
-The verbatim failure:
-
-> `` `/Users/…/local_1fdd9e8c…/outputs/k4m2.txt` is a VM path. In this session the Read tool runs on the host filesystem, where `/sessions/...` doesn't exist. Use the host path for this file (connected folders are available at their real locations), or use the `bash` tool — which runs inside the VM — to operate on `/sessions/...` paths. ``
-
-The path it rejects **is already the host path**, and the advice is to use the host path. An agent that believes the message rewrites a correct path; the behaviour that actually recovers is to **retry the identical call**. This is a case where following a tool's own error text is the wrong move.
-
-The identical message also appears for a path that was never created at all (probe 1, separate session). Two distinct situations produce it, which is consistent with a generic fallback rather than a syntax diagnosis — though only those two have been observed.
-
-## What the published fact got wrong, in both directions
-
-| published | actual |
+| | count |
 |---|---|
-| "Never pass an absolute session path to the file tools" | A host-form absolute path is **accepted**, once the file is visible |
-| "It is denied, not translated" | True for a `/sessions/…` path; **not** the reason this failure happens |
-| "the error does not point at the path form as the cause" | The error points at path form **as the cause, wrongly** |
+| ids in both records | **16,640** |
+| inputs identical | 15,883 |
+| inputs **differ** | **757** |
+| differences that are audit `/Users/…` vs transcript `/sessions/…` | **757 — all of them** |
 
-**Author rule:** after writing a file with the shell, treat the first file-tool read as retryable. Do not rewrite the path in response to this message.
+There is no other kind of difference. The same `tool_use` id, side by side:
 
-## Mechanism — INFERENCE, not established
+```
+AUDIT : {"command":"cd /Users/yaniv/Library/Application Support/Claude/local-agent-mode-sessions/4…
+CLI   : {"command":"cd /sessions/brave-exciting-gates/mnt/outputs && pip install cairosvg --break-…
+```
 
-A `file-index-worker` ships in the Desktop build, and a path gate consulting an index that lags the write would produce this. **Not traced.** The behaviour is measured; the cause is not. The window is a **single observation** — failed at +1.9 s, succeeded at +6.1 s — and is not characterised, bounded, or known to be constant.
+## What this retracts
+
+**v2.36.0's L143 claimed a read-after-write race.** Two `Read` calls appeared in `audit.jsonl` with byte-identical 207-character host paths, the first failing *"is a VM path"* and the second succeeding 4.2 s later. The agent's own transcript shows what was actually sent:
+
+| call | path the agent actually sent | result |
+|---|---|---|
+| 1 | `/sessions/busy-eager-bell/mnt/outputs/k4m2.txt` | **denied** |
+| 2 | `/Users/…/local_1fdd9e8c…/outputs/k4m2.txt` | **succeeded** |
+
+Two different path forms, behaving exactly as documented. **There is no race, no index lag, and no retry to perform.** The elapsed 4.2 s was the agent composing a second, different call.
+
+**v2.36.0's L144 claimed inbound host→VM translation** on the strength of a host-form write succeeding inside the VM. The transcript shows the agent sent `echo hello-K4M2 > /sessions/busy-eager-bell/mnt/outputs/k4m2.txt` — the VM form. It never sent a host path. **The inbound claim is withdrawn.**
+
+**Ch35/L122 stands.** Its *"the K6-cmJAJ VM↔host index rewrites outbound messages only"* was correct; v2.36.0's correction of it was the error. What the index rewrites is the **host-facing** surface — the audit record and what the user sees — not what the agent sends or receives. The agent works in `/sessions/…` throughout.
+
+## Why the binary settles it and the record could not
+
+The Desktop's path gate is a **pure string prefix test** — one site, identical across `app.asar` 1.22209.0, 1.24012.1 and 1.25927.0, and absent from the agent bundles entirely:
+
+```js
+var Q = ['file_path', 'path'];
+function ut(e, n) {
+  if (m.E.includes(e))                                    // HOST_LOOP_PATH_GATED_BUILTIN_TOOLS
+    for (let r of Q) {
+      let i = n[r];
+      if (typeof i === 'string' && (i === '/sessions' || i.startsWith('/sessions/')))
+        return { behavior: 'deny', message: `\`${i}\` is a VM path. …` };
+    }
+}
+```
+
+Both call sites — a `PreToolUse` hook and `canUseTool` — pass the **raw** tool input. A path beginning `/Users/` cannot reach this branch. So the moment the record showed a host path producing this message, the record had to be wrong; no amount of re-reading it would have revealed that.
+
+> **Method, the hard way.** The v2.36.0 pass stated, repeatedly and prominently, that its evidence was read *"first-party from each session's own on-disk `audit.jsonl` rather than from the pasted transcript."* For path questions that is exactly backwards. A record maintained by the component under study is not a neutral observer, and "first-party" is not a synonym for "authoritative" — **ask what the artifact is for**. The audit log exists to show a human what happened in terms they can act on, so it speaks in host paths by design. Corroborate any path claim against the agent's own transcript, or against the binary that implements the check.
 
 ---
 
-# LESSON 144 — TRANSLATION IS BIDIRECTIONAL
+# LESSON 144 — WHAT THE TWO RECORDS ARE FOR
 
-**`mcp__workspace__bash` rewrites paths in both directions: host→VM on the command it receives, and VM→host on the output it returns. Ch35/L122's "outbound only" summary is falsified for this tool. Host paths resolve inside the VM only where they name a mount target.**
+**A Cowork session writes two independent logs. They disagree by design, and which one is authoritative depends on the question.**
 
-## Outbound — proved inside a single record
+| | `audit.jsonl` | `.claude/projects/<slug>/<id>.jsonl` |
+|---|---|---|
+| written by | the Desktop | the agent |
+| location | session root | under the session's `.claude/` |
+| paths | **translated to host form** | as the agent sent and saw them |
+| carries | `system/init` (tool surface, plugins, skills, model, `permissionMode`), `_audit_hmac` | the conversation, sub-agent transcripts under `…/subagents/` |
+| authoritative for | what the session was *configured* with | what actually *happened*, including every path |
 
-In the VM, in probes 1 and 3 independently:
+Both are first-party. Neither is a substitute for the other.
 
-```
-grep -c .             /proc/mounts  → 55
-grep -cF '/Users/'    /proc/mounts  →  0
-grep -cF '/sessions/' /proc/mounts  → 28
-```
+**Use `audit.jsonl`** for the `system/init` record — the authoritative tool surface (Ch37/L129), the plugin list with staging paths, the resolved model and permission mode. None of that is path-form-sensitive.
 
-Zero host paths in the raw mount table. Yet probe 2's loop over its own `/proc/mounts` printed host paths, and those are stored **raw in the persisted `tool_result`** — **5 host paths alongside 52 `/sessions/…` in one record**. That within-record mixture is the proof: no unrewritten mount table produces both forms at once. So the rewrite happens **in the tool result before persistence**, not at display time.
+**Use the agent transcript** for anything about paths, commands as issued, tool results as the model received them, and sub-agent behaviour.
 
-The counts survive because a number carries no path to match. **General method: when agent-reported paths are in question, corroborate with a command whose output is a count.**
+## The one place the translation is visible without a second record
 
-## Inbound — and it is selective
+The translation maps the **current session's** mounts only. Paths belonging to another session have no mapping and pass through unchanged — which is why a listing of a stranger's directory appears identically in both records while the session's own `outputs` path does not. A mixture of both forms inside a single `audit.jsonl` record is therefore not evidence about the shell; it is the translator's coverage showing through.
 
-The same probe-3 shell, in one command block:
-
-| path given to the VM shell | result |
-|---|---|
-| `/Users/yaniv/…/local_1fdd9e8c…/outputs/k4m2.txt` (**a mount target**) | **write succeeded**, file owned by the session user |
-| `/var/folders/…/claude-hostloop-plugins/<hash>/scripts/` (host staging, **not** a mount target) | `No such file or directory` |
-| `/tmp/coworkprobe/sentinel.txt` (host `/tmp`) | `No such file or directory` |
-
-One session, three host paths, one resolves. The command string is therefore translated host→VM **on the way in**, and only for paths naming something mounted into the session.
-
-**INFERENCE:** that the matcher works by *mount-path prefix* specifically, and that one mechanism performs both directions, is a model fitted to these observations — the inbound evidence is a single successful write plus two negatives. Nothing traces the inbound rewrite to any named component; **L122's claim is about the K6-cmJAJ index, and whether that index or a separate mechanism does the inbound rewrite is untraced.** What is falsified is the behavioural summary "outbound only".
-
-## The outbound failure mode is mechanical, and it explains a prior contradiction
-
-Outbound (`tool_result`) observations only:
-
-| path | translated? |
-|---|---|
-| `…/mnt/outputs`, `…/mnt/uploads` | **yes** |
-| connected folder **without** spaces (2026-07-23, `siteaware-board`) | **yes** |
-| `…/mnt/untitled\040folder\0405` (octal-escaped spaces) | **no** |
-| `.claude/*`, `.projects/*`, `.remote-plugins/*`, `.local-plugins/*` | **no** |
-
-The 2026-08-05 capture record recorded a host-path mountpoint, retracted it, then noted the residue was *"the same artifact, twice"* after a zero-count `grep -F` disproved it. Both the observation and the retraction were correct about what they measured: one translator, seen through paths it did and did not match.
-
-**Author consequence.** `paths.relative-filenames` stands, with a better reason. The shell does not "have a different absolute path for the same place" — it **operates** on one form and **reports** another, so any path copied out of shell output has already been rewritten before you see it.
+**Author consequence.** `paths.relative-filenames` stands, on its original reasoning: the shell and the file tools name the same place differently, and a relative filename is correct for both. The shell operates and reports in `/sessions/…`; the file tools require the host form and **deny** `/sessions/…` outright, exactly as Ch35/L122 documented.
 
 ---
 

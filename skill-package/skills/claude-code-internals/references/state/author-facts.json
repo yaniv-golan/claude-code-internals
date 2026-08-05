@@ -133,7 +133,7 @@
       "id": "paths.relative-filenames",
       "page": "files-and-paths",
       "rule": "Write files using bare or relative filenames, not absolute paths.",
-      "detail": "Your skill's shell commands and its file-reading and file-writing tools operate on the same underlying scratch space, but the shell reports paths in one form while operating on another — output you read back has already been rewritten before you see it. A relative filename is correct regardless. An absolute path copied out of shell output is not reliably the form the file tools want.",
+      "detail": "Your skill's shell commands and its file-reading and file-writing tools operate on the same underlying scratch space, but each names it with a different absolute path, and the file tools reject the shell's form. A relative filename is correct for both. An absolute path copied out of shell output is the wrong form for the file tools.",
       "tier": "measured",
       "durability": "durable",
       "lane": "local",
@@ -170,8 +170,8 @@
     {
       "id": "paths.session-paths-denied",
       "page": "files-and-paths",
-      "rule": "If a file-tool read fails right after you wrote the file in the shell, retry it. Do not rewrite the path.",
-      "detail": "A file written by shell commands is not always readable by the file tools immediately. The read fails with a message stating that your path is a VM path and telling you to use the host path — while the path already is the host path and the identical call succeeds seconds later. The message names the wrong cause, so the natural fix makes things worse. Absolute paths in the session's own VM form are genuinely rejected by the file tools and are not rewritten for you, which is why relative filenames remain the safe habit; but that is a different failure from this one.",
+      "rule": "Never pass an absolute session path to the file tools. It is denied, not translated.",
+      "detail": "When a skill discovers an absolute path from shell output and hands it to a file-reading or file-writing tool, the call is rejected outright — the check is a plain prefix test on the path you pass, so the same path will be refused every time and retrying cannot help. Nothing rewrites it into the form those tools expect. The error text blames the path form, which is correct here, but the same message also appears where the cause is different, so treat it as 'this tool cannot take this path' rather than a diagnosis. Bare or relative filenames avoid the problem entirely.",
       "tier": "measured",
       "durability": "durable",
       "lane": "local",
@@ -185,7 +185,7 @@
       },
       "verified": "2026-08-05",
       "caveats": [
-        "The delay was observed once, at under two seconds failing and about six seconds succeeding; it is not characterised or known to be bounded."
+        "An earlier release of this page told authors to retry such a call rather than change the path. That was wrong and is withdrawn: the denial is deterministic."
       ]
     },
     {

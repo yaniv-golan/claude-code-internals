@@ -1,5 +1,45 @@
 # Changelog
 
+## v2.36.1 — 2026-08-05 (this fork) — retraction: `audit.jsonl` is a translated projection
+
+**146 lessons / 40 chapters** (unchanged; L143 and L144 rewritten in place). This release retracts two claims published in v2.36.0 hours earlier and restores a fact that release wrongly rewrote.
+
+### Root cause
+
+v2.36.0 said, repeatedly, that its evidence was read *"first-party from each session's own on-disk `audit.jsonl` rather than from the pasted transcript."* That record is a **translated projection**. Across the whole corpus:
+
+| | count |
+|---|---|
+| `tool_use` ids in both `audit.jsonl` and the agent transcript | **16,640** |
+| inputs identical | 15,883 |
+| inputs differ | **757** |
+| differences that are audit `/Users/…` vs transcript `/sessions/…` | **757 — all of them** |
+
+### Retracted
+
+**The read-after-write race does not exist.** The two `Read` calls that appeared byte-identical in `audit.jsonl` were, in the agent's own transcript, a VM-form path (denied) followed by a host-form path (succeeded) — two different calls, behaving exactly as documented. No race, no index lag, and nothing to retry.
+
+**Inbound host→VM path translation does not exist.** The agent sent `echo hello-K4M2 > /sessions/busy-eager-bell/mnt/outputs/k4m2.txt` — the VM form. It never sent a host path. **Ch35/L122's "rewrites outbound messages only" stands**; v2.36.0's correction of it is withdrawn.
+
+### Restored — `paths.session-paths-denied`
+
+The original wording was right. v2.36.0 replaced it with *"retry; do not rewrite the path"*, which would have sent an author into an **unbounded retry loop**. The Desktop gate is a pure prefix test, one site, identical across `app.asar` 1.22209.0 / 1.24012.1 / 1.25927.0, absent from the agent bundles, reached from two call sites that both pass the **raw** tool input:
+
+```js
+if (typeof i === 'string' && (i === '/sessions' || i.startsWith('/sessions/')))
+  return { behavior: 'deny', message: `\`${i}\` is a VM path. …` };
+```
+
+A `/Users/` path cannot reach that branch — which is what proved the record wrong. No amount of re-reading the record would have revealed it.
+
+### Unaffected
+
+**L145** (package installs succeed; egress is filtered by destination) — about pip and npm, not path form. **L146** (529 directories, per-session uid, lane scoping) — no path-form dependency.
+
+### The lesson
+
+*First-party* is not a synonym for *authoritative*. A record maintained by the component under study is not a neutral observer: **ask what the artifact is for.** The audit log exists to show a human what happened in terms they can act on, so it speaks in host paths by design. Chapter 40's L143 and L144 are now about the two records and which is authoritative for which question.
+
 ## v2.36.0 — 2026-08-05 (this fork) — the fact-verification audit: one falsified, one rewritten, one lesson corrected
 
 **146 lessons / 40 chapters.** A one-time audit re-checked the published author-facts against current artifacts instead of against the corpus that produced them. Chapter 40 (L143–L146) is what it found.

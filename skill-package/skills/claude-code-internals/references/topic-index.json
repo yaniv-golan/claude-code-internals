@@ -4208,47 +4208,42 @@
     },
     {
       "id": 143,
-      "title": "The File Tools Lag the Shell, and the Error Blames Your Path",
+      "title": "audit.jsonl Is a Translated Projection, and the Agent Transcript Is the Faithful Record",
       "lesson_number": "143",
       "file": "37-cowork-probe-corrections.md",
-      "startLine": 18,
-      "endLine": 65,
+      "startLine": 22,
+      "endLine": 80,
       "keywords": [
-        "read-after-write",
-        "file-tool-lag",
-        "is-a-VM-path",
-        "birthtime-vs-mtime",
-        "retry-not-rewrite",
-        "misleading-error-message",
-        "path-gate-staleness",
-        "file-index-worker",
-        "session-paths-denied-correction",
-        "byte-identical-path",
-        "transient-denial",
-        "shell-write-then-read"
+        "audit-jsonl-translated",
+        "agent-transcript-authoritative",
+        "claude-projects-transcript",
+        "path-translation-projection",
+        "two-records",
+        "retraction",
+        "no-read-after-write-race",
+        "VM-path-denial-is-deterministic",
+        "pure-prefix-test",
+        "HOST_LOOP_PATH_GATED_BUILTIN_TOOLS",
+        "canUseTool-hostloop",
+        "first-party-is-not-authoritative",
+        "ask-what-the-artifact-is-for"
       ]
     },
     {
       "id": 144,
-      "title": "mcp__workspace__bash Translates Paths in BOTH Directions",
+      "title": "What the Two Records Are For",
       "lesson_number": "144",
       "file": "37-cowork-probe-corrections.md",
-      "startLine": 66,
-      "endLine": 114,
+      "startLine": 81,
+      "endLine": 106,
       "keywords": [
-        "bidirectional-path-translation",
-        "inbound-translation",
-        "outbound-translation",
-        "host-to-VM-rewrite",
-        "VM-to-host-rewrite",
-        "mount-target-only",
-        "K6-cmJAJ",
-        "L122-correction",
-        "octal-escaped-spaces",
-        "proc-mounts-count",
-        "within-record-mixture",
-        "count-cannot-be-confabulated",
-        "claude-hostloop-plugins-unreachable"
+        "audit-jsonl-vs-transcript",
+        "system-init-authoritative",
+        "subagent-transcripts",
+        "record-selection",
+        "translation-covers-current-session-only",
+        "path-questions-use-transcript",
+        "tool-surface-use-audit"
       ]
     },
     {
@@ -4256,8 +4251,8 @@
       "title": "Egress Is Filtered by Destination, So Package Installs Work",
       "lesson_number": "145",
       "file": "37-cowork-probe-corrections.md",
-      "startLine": 115,
-      "endLine": 155,
+      "startLine": 107,
+      "endLine": 147,
       "keywords": [
         "egress-allowlist",
         "package-install-works",
@@ -4278,8 +4273,8 @@
       "title": "529 Sessions in One Namespace, and the Isolation That Holds Them Apart",
       "lesson_number": "146",
       "file": "37-cowork-probe-corrections.md",
-      "startLine": 156,
-      "endLine": 210,
+      "startLine": 148,
+      "endLine": 203,
       "keywords": [
         "529-sessions",
         "session-namespace-scale",
@@ -14794,6 +14789,66 @@
     ],
     "find-l-symlink-trap": [
       146
+    ],
+    "audit-jsonl-translated": [
+      143
+    ],
+    "agent-transcript-authoritative": [
+      143
+    ],
+    "claude-projects-transcript": [
+      143
+    ],
+    "path-translation-projection": [
+      143
+    ],
+    "two-records": [
+      143
+    ],
+    "retraction": [
+      143
+    ],
+    "no-read-after-write-race": [
+      143
+    ],
+    "vm-path-denial-is-deterministic": [
+      143
+    ],
+    "pure-prefix-test": [
+      143
+    ],
+    "host_loop_path_gated_builtin_tools": [
+      143
+    ],
+    "canusetool-hostloop": [
+      143
+    ],
+    "first-party-is-not-authoritative": [
+      143
+    ],
+    "ask-what-the-artifact-is-for": [
+      143
+    ],
+    "audit-jsonl-vs-transcript": [
+      144
+    ],
+    "system-init-authoritative": [
+      144
+    ],
+    "subagent-transcripts": [
+      144
+    ],
+    "record-selection": [
+      144
+    ],
+    "translation-covers-current-session-only": [
+      144
+    ],
+    "path-questions-use-transcript": [
+      144
+    ],
+    "tool-surface-use-audit": [
+      144
     ]
   }
 }
