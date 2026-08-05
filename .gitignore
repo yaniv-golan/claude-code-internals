@@ -19,3 +19,6 @@ docs/internal/
 # Release build artifact (built by .github/workflows/release.yml; must NOT be tracked —
 # a tracked copy makes `zip -r` APPEND stale files into every release asset)
 /claude-code-internals.zip
+
+# Generated site output — built in CI, never committed
+/site/dist/

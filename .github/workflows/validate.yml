@@ -20,3 +20,11 @@ jobs:
           out=$(node skill-package/skills/claude-code-internals/scripts/state.js --audit)
           echo "$out"
           echo "$out" | grep -q "everything reconciled to baseline"
+      # Build the public site at PR time, not only at deploy. Without this a
+      # template edit or a broken cross-link passes review and turns main red.
+      - name: Site generator tests
+        run: node --test 'site/generator/tests/*.test.js'
+      - name: Site build (no deploy)
+        run: node site/generator/build.js --out "$RUNNER_TEMP/site-dist"
+      - name: Disclosure lint over built output
+        run: node site/generator/lint-disclosure.js "$RUNNER_TEMP/site-dist"

@@ -52,6 +52,222 @@ function parseFrontmatter(text) {
   return fm;
 }
 
+// ---------------------------------------------------------------------------
+// Publication disclosure rules (shared with site/generator/lint-disclosure.js)
+//
+// Shape-first, NOT a denylist. A denylist enumerates leaks we already know
+// about; the leak that matters is an internal name nobody has seen yet, copied
+// out of a state page while paraphrasing. So the primary rules match the SHAPE
+// of internal identifiers, with denylists only where shape cannot discriminate.
+// ---------------------------------------------------------------------------
+
+/** Words that legitimately look like internal identifiers in author-facing prose. */
+const DISCLOSURE_ALLOWLIST = new Set([
+  // author-facing tool names a skill author genuinely needs
+  'present_files', 'send_user_file', 'sendUserFile',
+  // ordinary hyphen/underscore prose that may appear in examples
+  'skill_md', 'claude_md',
+]);
+
+const DISCLOSURE_RULES = [
+  {
+    id: 'numeric-id',
+    // Gate ids and raw epoch-ms. Versions are unaffected: dots break the run.
+    re: /\b\d{8,}\b/g,
+    why: 'looks like a server-flag id or a raw epoch timestamp',
+    severity: 'fail',
+  },
+  {
+    id: 'cli-flag-name',
+    re: /\btengu_[a-z0-9_]+/gi,
+    why: 'CLI feature-flag name',
+    severity: 'fail',
+  },
+  {
+    id: 'internal-tool-name',
+    re: /\b(?:internal__[a-z_]+|mcp__[a-z_]+__[a-z_]+)/gi,
+    why: 'internal or namespaced tool name',
+    severity: 'fail',
+  },
+  {
+    id: 'camelcase-internal',
+    // The dominant leak class. >=12 chars and >=3 humps, e.g. the mount-approval
+    // and loop-mode field names carried across from a state page.
+    re: /\b[a-z]+(?:[A-Z][a-z0-9]+){2,}\b/g,
+    why: 'camelCase identifier — describe the behaviour, not the field name',
+    severity: 'fail',
+    minLength: 12,
+  },
+  {
+    id: 'snake-case-internal',
+    re: /\b[a-z]+(?:_[a-z0-9]+){2,}\b/g,
+    why: 'snake_case identifier — describe the behaviour, not the symbol',
+    severity: 'fail',
+  },
+  {
+    id: 'minified-symbol',
+    // Shape cannot tell a minified symbol from prose, so this one stays curated.
+    re: /\b(?:Pm|uOt|qX|p5e|h5e|g5e|w5e|IeA|vZe|Nen|wjt|Abt|GY|ece|uCe|Ypm|W1e)\(/g,
+    why: 'minified symbol from a shipped bundle',
+    severity: 'fail',
+  },
+  {
+    id: 'infra-naming',
+    re: /\b(?:growthbook|fcache|statsig)\b/gi,
+    why: 'flag-infrastructure naming that only makes sense alongside ids',
+    severity: 'fail',
+  },
+];
+
+const QUOTE_SPAN_WORD_LIMIT = 15;
+const QUOTE_PAGE_WORD_BUDGET = 40;
+
+/**
+ * Scan author-facing text for content that must not be published.
+ * Returns {failures: [...], flags: [...]}; callers decide how to report.
+ */
+function scanForDisclosure(text, label) {
+  const failures = [];
+  const flags = [];
+  if (typeof text !== 'string' || !text) return { failures, flags };
+
+  for (const rule of DISCLOSURE_RULES) {
+    rule.re.lastIndex = 0;
+    let m;
+    while ((m = rule.re.exec(text)) !== null) {
+      const hit = m[0];
+      if (DISCLOSURE_ALLOWLIST.has(hit)) continue;
+      if (rule.minLength && hit.length < rule.minLength) continue;
+      failures.push(`${label}: "${hit}" — ${rule.why} [${rule.id}]`);
+    }
+  }
+
+  // Quoted-span heuristic: catches verbatim prompt fragments, including the
+  // split-into-two-short-spans evasion, via a cumulative budget.
+  let quotedWords = 0;
+  for (const m of text.matchAll(/[“"]([^”"]{2,})[”"]/g)) {
+    const words = m[1].trim().split(/\s+/).length;
+    quotedWords += words;
+    if (words > QUOTE_SPAN_WORD_LIMIT) {
+      flags.push(`${label}: quoted span of ${words} words — verify it is UI text, not prompt body`);
+    }
+  }
+  if (quotedWords > QUOTE_PAGE_WORD_BUDGET) {
+    flags.push(`${label}: ${quotedWords} quoted words total — over the per-item budget`);
+  }
+  return { failures, flags };
+}
+
+const AUTHOR_FACT_TIERS = ['measured', 'binary', 'inference'];
+const AUTHOR_FACT_DURABILITY = ['durable', 'volatile'];
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+/**
+ * Validate references/state/author-facts.json — the sole source of published
+ * prose for the public site. Skipped silently when absent so that reduced test
+ * fixtures stay valid; the site build hard-fails on a missing file instead.
+ */
+function validateAuthorFacts(stateDir, lessonIds, registry) {
+  const errors = [];
+  const p = path.join(stateDir, 'author-facts.json');
+  if (!fs.existsSync(p)) return errors;
+
+  let doc;
+  try {
+    doc = JSON.parse(fs.readFileSync(p, 'utf8'));
+  } catch (e) {
+    return [`author-facts.json unreadable: ${e.message}`];
+  }
+
+  if (doc.schema_version !== 1) errors.push('author-facts.json: schema_version must be 1');
+
+  // The coupling that makes "no published claim silently outlives its capture"
+  // mechanical rather than aspirational.
+  const va = doc.verified_against || {};
+  const as = (registry && registry.as_of) || {};
+  const fc = as.fcache_capture || {};
+  const expect = {
+    cli: as.cli,
+    desktop_asar: as.desktop_asar,
+    fcache_content16: fc.content16,
+    observed_at: fc.observed_at,
+  };
+  for (const [k, want] of Object.entries(expect)) {
+    if (want === undefined) continue;
+    if (va[k] !== want) {
+      errors.push(`author-facts.json: verified_against.${k} "${va[k]}" != registry as_of "${want}" — re-verify the facts or restamp`);
+    }
+  }
+
+  const pages = Array.isArray(doc.pages) ? doc.pages : [];
+  const facts = Array.isArray(doc.facts) ? doc.facts : [];
+  if (!pages.length) errors.push('author-facts.json: pages must be a non-empty array');
+  if (!facts.length) errors.push('author-facts.json: facts must be a non-empty array');
+
+  const slugs = new Set();
+  for (const pg of pages) {
+    const label = `author-facts page ${pg.slug || '(unnamed)'}`;
+    for (const f of ['slug', 'title', 'summary']) {
+      if (!pg[f]) errors.push(`${label}: missing "${f}"`);
+    }
+    if (pg.slug) {
+      if (slugs.has(pg.slug)) errors.push(`${label}: duplicate slug`);
+      slugs.add(pg.slug);
+      if (!/^[a-z0-9-]+$/.test(pg.slug)) errors.push(`${label}: slug must be lowercase kebab-case`);
+    }
+    const scan = scanForDisclosure(pg.summary, `${label} summary`);
+    errors.push(...scan.failures);
+    for (const q of pg.open_questions || []) {
+      errors.push(...scanForDisclosure(q, `${label} open_question`).failures);
+    }
+  }
+
+  const ids = new Set();
+  for (const ft of facts) {
+    const label = `author-facts fact ${ft.id || '(unnamed)'}`;
+    for (const f of ['id', 'page', 'rule', 'detail', 'tier', 'durability', 'sources', 'verified']) {
+      if (ft[f] === undefined || ft[f] === '') errors.push(`${label}: missing "${f}"`);
+    }
+    if (ft.id) {
+      if (ids.has(ft.id)) errors.push(`${label}: duplicate id`);
+      ids.add(ft.id);
+    }
+    if (ft.page && !slugs.has(ft.page)) errors.push(`${label}: page "${ft.page}" is not a declared page`);
+    if (ft.tier && !AUTHOR_FACT_TIERS.includes(ft.tier)) errors.push(`${label}: unknown tier "${ft.tier}"`);
+    if (ft.durability && !AUTHOR_FACT_DURABILITY.includes(ft.durability)) {
+      errors.push(`${label}: unknown durability "${ft.durability}"`);
+    }
+    if (typeof ft.volatile_dependency !== 'boolean') {
+      errors.push(`${label}: volatile_dependency must be boolean`);
+    }
+    if (ft.verified && !ISO_DATE.test(ft.verified)) errors.push(`${label}: verified must be YYYY-MM-DD`);
+    const src = ft.sources || {};
+    for (const l of Array.isArray(src.lessons) ? src.lessons : []) {
+      if (!lessonIds.has(l)) errors.push(`${label}: sources.lesson ${l} not in topic-index.json`);
+    }
+    if (!Array.isArray(src.lessons) || !src.lessons.length) {
+      errors.push(`${label}: sources.lessons must be a non-empty array`);
+    }
+    // Quarantine: volatile facts may exist, but never on a content page.
+    if (ft.durability === 'volatile' && ft.page !== 'current-state') {
+      errors.push(`${label}: volatile facts may only appear on the current-state page`);
+    }
+    for (const field of ['rule', 'detail']) {
+      errors.push(...scanForDisclosure(ft[field], `${label} ${field}`).failures);
+    }
+    for (const c of ft.caveats || []) {
+      errors.push(...scanForDisclosure(c, `${label} caveat`).failures);
+    }
+  }
+
+  // Every content page must carry at least one fact, or it renders empty.
+  for (const slug of slugs) {
+    if (slug === 'index' || slug === 'contract' || slug === 'current-state') continue;
+    if (!facts.some(f => f.page === slug)) errors.push(`author-facts.json: page "${slug}" has no facts`);
+  }
+  return errors;
+}
+
 const GATE_NAMESPACES = ['desktop_fcache', 'cli_growthbook'];
 const GATE_SOURCES = ['force', 'defaultValue', 'experiment', 'override', null];
 // Prose that ossifies a timestamped observation into a property. fcache membership
@@ -224,6 +440,9 @@ function validate(refsDir) {
     }
   }
 
+  // --- author-facts.json (published-site source) ---
+  if (registry) errors.push(...validateAuthorFacts(stateDir, lessonIds, registry));
+
   // --- state pages ---
   let pageFiles = [];
   try {
@@ -264,7 +483,13 @@ function validate(refsDir) {
   return errors;
 }
 
-module.exports = { validate, parseFrontmatter, KINDS, STATUSES };
+module.exports = {
+  validate, parseFrontmatter, KINDS, STATUSES,
+  // shared with site/generator/lint-disclosure.js so PR-time and build-time
+  // enforcement can never drift apart
+  scanForDisclosure, DISCLOSURE_RULES, DISCLOSURE_ALLOWLIST,
+  validateAuthorFacts,
+};
 
 if (require.main === module) {
   const argv = process.argv.slice(2);

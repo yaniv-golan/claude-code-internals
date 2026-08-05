@@ -5,7 +5,15 @@ on:
     branches: [main]
     paths:
       - 'site/**'
+      - 'skill-package/skills/claude-code-internals/references/state/**'
+      - 'skill-package/skills/claude-code-internals/references/topic-index.json'
+      - 'skill-package/skills/claude-code-internals/scripts/validate-state.js'
   workflow_dispatch:
+  # Maintainer alarm for repo-internal inconsistency ONLY. This cannot detect
+  # product changes and must not be described as if it can — it runs the gates
+  # without deploying, so a red X here means our own files disagree.
+  schedule:
+    - cron: '0 6 * * 1'
 
 permissions:
   contents: read
@@ -25,11 +33,37 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Gate 1 — schema, provenance, and the verified_against coupling that
+      # stops a published claim outliving the capture it was made against.
+      - name: State-layer integrity
+        run: node skill-package/skills/claude-code-internals/scripts/validate-state.js
+
+      # Gate 2 — same grep validate.yml uses; reused rather than reinvented.
+      - name: State-layer reconciliation
+        run: |
+          out=$(node skill-package/skills/claude-code-internals/scripts/state.js --audit)
+          echo "$out"
+          echo "$out" | grep -q "everything reconciled to baseline"
+
+      # Gate 3 — the generator's own gates: version coupling, referential
+      # integrity, the volatile quarantine, link integrity, disclosure lint.
+      # Staleness never fails the build: an expired site must stay deployable,
+      # or the expired notice itself could never ship.
+      - name: Build site
+        run: node site/generator/build.js
+
       - uses: actions/configure-pages@v5
+        if: github.event_name != 'schedule'
 
       - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'schedule'
         with:
-          path: site/
+          path: site/dist
 
       - id: deployment
+        if: github.event_name != 'schedule'
         uses: actions/deploy-pages@v4
