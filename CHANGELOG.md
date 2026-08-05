@@ -1,5 +1,36 @@
 # Changelog
 
+## v2.36.2 — 2026-08-06 (this fork) — say the noun
+
+**No fact changes.** Every claim, tier, caveat and evidence date is unchanged from v2.36.1. This is a clarity pass, prompted by a reader working through the published pages and asking, nine times, what a sentence actually meant.
+
+### The defect
+
+The site named **no concrete identifier anywhere**. Across all 11 pages: zero mentions of the plugin-root token, zero of the detection environment variables, zero of the session path shape, zero of the shell tool's Cowork name. Rules told an author what to do while withholding what the thing *is* — advice you can agree with and not act on.
+
+Root cause was mine: the project's portability instruction — *don't hard-code delivery tool names, because that pins a skill to one runtime* — had been over-generalised into *name nothing*. Those are different concerns. The scope is now confirmed as **delivery tools only**.
+
+### Ten rules now name the thing
+
+- `${CLAUDE_PLUGIN_ROOT}` — the rule was unusable without it
+- the ordered detection sequence: `CLAUDE_CODE_IS_COWORK`, then a working directory under `/sessions/`, then `CLAUDECODE`
+- "runtime marker" defined — an environment variable the host sets when it starts your session
+- the shell tool named on both sides: `mcp__workspace__bash` in Cowork, `Bash` in the CLI
+- the two execution contexts named: the **agent context** and the **shell context**
+- the session path shape shown: `/sessions/<session-name>/mnt/outputs/report.pdf`
+- three concrete ways to get configuration into a sealed shell: in the command string, via a file, or as a script argument
+- the preinstalled inventory published: **Python 3.10.12, ~149 packages**, including `pandas`, `numpy`, `PIL`, `openpyxl`
+
+### One rule moved the other way
+
+Delivery guidance goes back to the general instruction — **"present it to the user"** — replacing *"present it with whichever delivery tool the session offers"*, which managed to be both vague and still tool-shaped. Naming a delivery tool is exactly the thing that breaks portability.
+
+### Vocabulary
+
+The prose said "lane" while the badges said "sandbox" — two vocabularies for one concept, and "lane" was defined nowhere. It is now gone from every rule, detail, caveat, page summary and open question. The `lane` schema field keeps its name; it is internal.
+
+Disclosure lint stays clean: the identifiers now published were already on its two-clause allowlist and had simply never been used in prose.
+
 ## v2.36.1 — 2026-08-05 (this fork) — retraction: `audit.jsonl` is a translated projection
 
 **146 lessons / 40 chapters** (unchanged; L143 and L144 rewritten in place). This release retracts two claims published in v2.36.0 hours earlier and restores a fact that release wrongly rewrote.

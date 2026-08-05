@@ -30,9 +30,9 @@
     {
       "slug": "delivering-outputs",
       "title": "Why did my skill's output never reach the user?",
-      "summary": "Cowork runs in two different execution lanes, and they disagree about what 'delivering a file' means. In one, writing the file to the workspace location is itself the delivery. In the other, the location delivers nothing and the file only reaches the user if your skill calls a delivery tool — and the session filesystem is discarded when the session ends, so an undelivered file is simply lost. Write the deliverable to a stated path, then present it with whichever delivery tool the session actually offers, and say the path if there is none.",
+      "summary": "Cowork runs in two different sandboxes, and they disagree about what 'delivering a file' means. In one, writing the file to the workspace location is itself the delivery. In the other, the location delivers nothing and the file only reaches the user if your skill presents it — and the session filesystem is discarded when the session ends, so an undelivered file is simply lost. Write the deliverable to a stated path, then present it to the user, and say the path either way.",
       "open_questions": [
-        "Which lane a given session runs in is decided by the surface it was created from and by account-level configuration. There is no reliable way for a skill to force a lane, and no documented way to read it directly — detect the available tools instead."
+        "Which sandbox a given session runs in is decided by the surface it was created from and by account-level configuration. There is no reliable way for a skill to force one, and no documented way to read it directly — check for the tools you need instead."
       ]
     },
     {
@@ -64,7 +64,7 @@
       "title": "Will my plugin's hooks and scripts run in Cowork?",
       "summary": "Yes — plugin hooks do fire in Cowork. The determinant is where the plugin was installed from: a plugin installed through the Cowork application is visible to Cowork sessions, and one installed through the CLI's own path is not, because they occupy different namespaces. The plugin-root token resolves differently depending on which consumer expands it, so use it for file-tool reads and discover the mounted path at runtime for anything you shell out to.",
       "open_questions": [
-        "Plugin-root resolution differs between the two execution lanes. The guidance below is written to be correct in both, at the cost of being less direct than hardcoding a path would be."
+        "Plugin-root resolution differs between the two sandboxes. The guidance below is written to be correct in both, at the cost of being less direct than hardcoding a path would be."
       ]
     },
     {
@@ -153,7 +153,7 @@
       "id": "paths.scratch-is-not-delivered",
       "page": "files-and-paths",
       "rule": "Do not leave anything you want the user to see in the working directory alone.",
-      "detail": "The directory your skill works in is a scratch space the user does not see. Files there are not presented, not listed, and on one lane not retained. Producing a file is a separate act from delivering it, and the working directory is on the wrong side of that line.",
+      "detail": "The directory your skill works in is a scratch space the user does not see. Files there are not presented, not listed, and in one sandbox not retained. Producing a file is a separate act from delivering it, and the working directory is on the wrong side of that line.",
       "tier": "measured",
       "durability": "durable",
       "volatile_dependency": false,
@@ -171,7 +171,7 @@
       "id": "paths.session-paths-denied",
       "page": "files-and-paths",
       "rule": "Never pass an absolute session path to the file tools. It is denied, not translated.",
-      "detail": "When a skill discovers an absolute path from shell output and hands it to a file-reading or file-writing tool, the call is rejected outright — the check is a plain prefix test on the path you pass, so the same path will be refused every time and retrying cannot help. Nothing rewrites it into the form those tools expect. The error text blames the path form, which is correct here, but the same message also appears where the cause is different, so treat it as 'this tool cannot take this path' rather than a diagnosis. Bare or relative filenames avoid the problem entirely.",
+      "detail": "Your shell commands print absolute paths that look like `/sessions/<session-name>/mnt/outputs/report.pdf`. If you hand one of those to a file-reading or file-writing tool, the call is refused — the check is a literal prefix test on `/sessions/`, so the same path is refused every time and retrying cannot help. Nothing rewrites it into the form those tools want. Write `report.pdf` instead: a bare or relative filename is correct for both the shell and the file tools. The error text blames the path form, which is right in this case, but the same message appears for other causes too, so read it as \"this tool cannot take this path\" rather than as a diagnosis.",
       "tier": "measured",
       "durability": "durable",
       "lane": "local",
@@ -228,7 +228,7 @@
       "id": "delivery.act-not-location",
       "page": "delivering-outputs",
       "rule": "Do not rely on writing a file to a directory as the act of delivering it.",
-      "detail": "In one lane the workspace location is itself the delivery channel and writing there is enough. In the other it delivers nothing: the file exists only inside a session filesystem that is discarded when the session ends, and the user never sees it. A skill written against the first behaviour loses its deliverables silently in the second — no error, no warning, just nothing.",
+      "detail": "In one sandbox the workspace location is itself the delivery channel and writing there is enough. In the other it delivers nothing: the file exists only inside a session filesystem that is discarded when the session ends, and the user never sees it. A skill written against the first behaviour loses its deliverables silently in the second — no error, no warning, just nothing.",
       "tier": "measured",
       "durability": "durable",
       "volatile_dependency": false,
@@ -244,8 +244,8 @@
     {
       "id": "delivery.capability-conditional",
       "page": "delivering-outputs",
-      "rule": "Write the deliverable to a stated path, then present it with whichever delivery tool the session offers; if none exists, state the path and stop.",
-      "detail": "This is the pattern Anthropic's own bundled skill-authoring guidance uses, phrased as a capability check rather than a fixed tool name. Check what is available at the moment of use — the tool that presents files differs between lanes — and degrade to naming the path rather than failing. Do not hardcode one tool name and assume it exists.",
+      "rule": "Write the deliverable to a stated path, then present it to the user. If you cannot present it, say where it is.",
+      "detail": "Producing the file and delivering it are two separate acts. Instruct your skill to present the finished file to the user rather than naming a specific tool to do it with: which delivery mechanism exists depends on the sandbox and on the product your skill is running in, and a skill that names one tool breaks everywhere that tool is absent. Always state the path as well, so the work is recoverable if presentation is unavailable.",
       "tier": "binary",
       "durability": "durable",
       "volatile_dependency": true,
@@ -264,7 +264,7 @@
       "id": "delivery.name-the-path-anyway",
       "page": "delivering-outputs",
       "rule": "State the path of what you produced even when a delivery tool worked.",
-      "detail": "It costs one sentence and it is the only part of your output that survives every lane, every tool-surface change, and a user reading a transcript later. If delivery silently failed, the stated path is the difference between a recoverable result and a lost one.",
+      "detail": "It costs one sentence and it is the only part of your output that survives every sandbox, every tool-surface change, and a user reading a transcript later. If delivery silently failed, the stated path is the difference between a recoverable result and a lost one.",
       "tier": "inference",
       "durability": "durable",
       "volatile_dependency": false,
@@ -276,7 +276,7 @@
       },
       "verified": "2026-08-05",
       "caveats": [
-        "Reasoned from the lane split rather than measured; the cost is one sentence either way."
+        "Reasoned from the two-sandbox split rather than measured; the cost is one sentence either way."
       ]
     },
     {
@@ -319,7 +319,7 @@
       "id": "delivery.remote-filesystem-discarded",
       "page": "delivering-outputs",
       "rule": "Assume the session filesystem does not outlive the session.",
-      "detail": "On the remote lane the filesystem is discarded at session end. On the local lane undelivered files are hidden from the user rather than destroyed, and can in principle be surfaced on a later turn — but a skill should not depend on that difference. Deliver within the turn that produces the file.",
+      "detail": "In the remote sandbox the filesystem is discarded at session end. In the local sandbox undelivered files are hidden from the user rather than destroyed, and can in principle be surfaced on a later turn — but a skill should not depend on that difference. Deliver within the turn that produces the file.",
       "tier": "measured",
       "durability": "durable",
       "lane": "remote",
@@ -336,8 +336,8 @@
     {
       "id": "delivery.two-lanes",
       "page": "delivering-outputs",
-      "rule": "Assume your skill may run in either of two lanes, and never assume which one.",
-      "detail": "Cowork sessions run either on the user's own machine or on remote infrastructure. The lanes differ in where the filesystem lives, whether it survives the session, and how a file reaches the user. Which lane a session uses depends on how it was created and on account configuration, neither of which a skill can control.",
+      "rule": "Assume your skill may run in either sandbox, and never assume which one.",
+      "detail": "A Cowork session runs in one of two sandboxes: a local one on the user's own machine, or a remote one on Anthropic's infrastructure. They differ in where the filesystem lives, whether it survives the session, and how a file reaches the user. Which one a session gets depends on how it was created and on account configuration, neither of which a skill can control or reliably detect — so write for both.",
       "tier": "measured",
       "durability": "durable",
       "lane": "both",
@@ -350,7 +350,7 @@
       },
       "verified": "2026-08-05",
       "caveats": [
-        "Lane availability is rolled out per account, so two users running the same skill can be in different lanes."
+        "Sandbox availability is rolled out per account, so two users running the same skill can be in different sandboxes."
       ]
     },
     {
@@ -504,7 +504,7 @@
       "id": "shell.no-package-installs",
       "page": "shell-commands",
       "rule": "Prefer what is preinstalled, and never install globally. A user-scoped or project-local install works, but treat it as a fallback.",
-      "detail": "The sandbox ships a large preinstalled stack, and runtime installs do succeed: a user-scoped Python install and a project-local Node install both work, and the installed package imports normally. A global install does not take effect. Reachability of package sources is a matter of session configuration that has changed between releases, so put an install on a path that degrades gracefully rather than making it a prerequisite. An earlier version of this rule said installs would fail or hang; that was an inference from the network constraints and it was wrong.",
+      "detail": "Check what is already there first. If you do need something else, a user-scoped Python install (`pip install --user`) and a project-local Node install (`npm install`) both succeed, and the package imports normally afterwards. A global install does not take effect — `npm install -g` in particular leaves nothing behind. Which package sources are reachable is session configuration that has changed between releases, so put any install on a path that degrades gracefully rather than making it a prerequisite. An earlier version of this rule said installs would fail or hang; that was an inference from the network constraints and it was wrong.",
       "tier": "measured",
       "durability": "durable",
       "lane": "local",
@@ -525,7 +525,7 @@
       "id": "shell.python-stack-is-preinstalled",
       "page": "shell-commands",
       "rule": "Do not assume the sandbox has no third-party libraries. It ships a large preinstalled stack.",
-      "detail": "The environment your shell commands run in comes with a substantial set of Python packages already installed — data, document, and imaging libraries among them. Skills have shipped workarounds and portability warnings for a scarcity that is not there. Check for what you need before vendoring it or degrading.",
+      "detail": "The environment your shell commands run in ships Python 3.10.12 with roughly 149 packages already installed — `pandas`, `numpy`, `PIL` and `openpyxl` among them, alongside other data, document and imaging libraries. Skills have shipped workarounds and portability warnings for a scarcity that is not there. Check for what you need at runtime before vendoring it or degrading: the exact set belongs to the shipped image and can change with it, so test rather than rely on this list.",
       "tier": "measured",
       "durability": "durable",
       "lane": "local",
@@ -567,7 +567,7 @@
       "id": "shell.sealed-environment",
       "page": "shell-commands",
       "rule": "Do not pass configuration to your skill's shell commands through the environment.",
-      "detail": "The shell your skill's commands run in does not inherit the host environment. Variables set in user or managed settings do not appear, and neither do exports written by hooks. Configuration has to travel in the command itself, in a file the skill writes, or through a mechanism designed to cross that boundary.",
+      "detail": "The shell your commands run in does not inherit the host environment: variables set in user or managed settings do not appear there, and neither do exports written by a hook. Only a couple of `CLAUDE_*` variables are present. Pass configuration one of three ways instead — put the value literally in the command string, write it to a file and have the command read that file, or pass it as an argument to a script your skill invokes.",
       "tier": "measured",
       "durability": "durable",
       "lane": "local",
@@ -623,7 +623,7 @@
       "id": "detect.branch-on-tools",
       "page": "detecting-cowork",
       "rule": "For behaviour rather than reporting, branch on which tools exist instead of on the environment.",
-      "detail": "The tool surface is the most durable runtime signal available to a skill: it is what actually determines what the skill can do, it is visible without a shell, and it stays correct when environment markers are added or removed. Use environment detection to report where you are; use capability detection to decide what to do.",
+      "detail": "The tool surface is the most durable runtime signal available to a skill: it determines what the skill can actually do, it is visible without running a shell, and it stays correct when environment variables are added or removed. Concretely, the shell tool has a different name in Cowork than in the CLI — `mcp__workspace__bash` rather than `Bash` — so the presence of the Cowork-flavoured name is the signal. Use environment checks to report where you are; use tool presence to decide what to do.",
       "tier": "measured",
       "durability": "durable",
       "volatile_dependency": false,
@@ -640,7 +640,7 @@
       "id": "detect.markers-come-and-go",
       "page": "detecting-cowork",
       "rule": "Do not hard-fail when a runtime marker is missing. Fall through to the next check.",
-      "detail": "Markers are set by the host at spawn time and have been added and removed across releases. A detection routine that treats one missing variable as proof of a runtime will be wrong the next time the spawn contract changes. Order the checks so each one only adds coverage.",
+      "detail": "A runtime marker is an environment variable the host sets when it starts your session — `CLAUDE_CODE_IS_COWORK` and `CLAUDECODE` are the two that matter. Which markers are set has changed across releases, and they are absent entirely from the shell context. A detection routine that treats one missing variable as proof of a runtime will be wrong the next time the spawn contract changes. Order the checks so each one only adds coverage.",
       "tier": "measured",
       "durability": "durable",
       "volatile_dependency": true,
@@ -674,7 +674,7 @@
       "id": "detect.ordered-recipe",
       "page": "detecting-cowork",
       "rule": "Detect the runtime with an ordered sequence of checks, not a single environment test.",
-      "detail": "Check the Cowork environment marker first; if it is set you are in Cowork. Otherwise check whether the working directory matches the session-path signature, which catches the case where your skill's shell commands run somewhere the marker is absent. Otherwise check the CLI's own marker. Each step only adds coverage — a later one never contradicts an earlier one.",
+      "detail": "Run three checks in order. First, is `CLAUDE_CODE_IS_COWORK` set — if so you are in Cowork. Otherwise, is the working directory under `/sessions/` — that catches the shell context, where the marker is absent. Otherwise, is `CLAUDECODE` set — that is the CLI. Each step only adds coverage and a later one never contradicts an earlier one, so a missing marker should fall through rather than fail.",
       "tier": "measured",
       "durability": "durable",
       "volatile_dependency": false,
@@ -691,7 +691,7 @@
       "id": "detect.two-contexts",
       "page": "detecting-cowork",
       "rule": "Remember your skill spans two execution contexts, and test the one you are actually in.",
-      "detail": "Part of a skill runs where the agent runs; the shell commands it issues run somewhere else with a different environment and a different filesystem view. A check performed in one tells you little about the other, which is why a single probe gives confident wrong answers.",
+      "detail": "Your skill's instructions and its file-reading and file-writing tools run in one place — call it the agent context. The shell commands it issues run somewhere else, with a different environment and a different view of the filesystem. In Cowork the agent context sees `CLAUDE_CODE_IS_COWORK` and host-form paths, while the shell context sees neither and works under `/sessions/`. A check performed in one tells you very little about the other, which is why a single probe produces confident wrong answers.",
       "tier": "measured",
       "durability": "durable",
       "volatile_dependency": false,
@@ -795,8 +795,8 @@
     {
       "id": "plugins.plugin-root-per-consumer",
       "page": "plugins-and-plugin-root",
-      "rule": "Use the plugin-root token for file-tool reads, and discover the mounted path at runtime for anything you execute.",
-      "detail": "The plugin-root token expands differently depending on which consumer expands it and which execution lane the session is in. Expanded for one consumer it names a location the other cannot reach. Reading plugin files through the file tools with the token is reliable; executing a script by that path is not. For execution, locate the plugin's mounted directory at runtime.",
+      "rule": "Use `${CLAUDE_PLUGIN_ROOT}` for file-tool reads, and discover the mounted path at runtime for anything you execute.",
+      "detail": "`${CLAUDE_PLUGIN_ROOT}` is a token that expands to your plugin's directory — but it expands differently depending on what expands it and which sandbox the session is in, and one expansion names a location the other cannot reach. Reading your plugin's files through the file tools with the token is reliable. Executing a script by that path is not: in the local sandbox the token resolves to a host staging directory that the shell cannot see. For anything you execute, locate the plugin's mounted directory at runtime instead of hardcoding a path.",
       "tier": "binary",
       "durability": "durable",
       "lane": "local",
@@ -810,7 +810,7 @@
       },
       "verified": "2026-08-05",
       "caveats": [
-        "Resolution differs between the two execution lanes; this rule is written to be correct in both."
+        "Resolution differs between the two sandboxes; this rule is written to be correct in both."
       ]
     },
     {
@@ -925,7 +925,7 @@
       "id": "change.detect-at-use",
       "page": "what-can-change-under-you",
       "rule": "Detect capabilities at the moment you use them, and state a clear fallback when they are missing.",
-      "detail": "This is the single defensive pattern that survives everything else on this page. A skill that checks for the tool it needs, uses it if present, and says plainly what it could not do otherwise will keep working across lane changes, served-configuration flips, and version bumps. A skill that assumes a surface breaks silently on all three.",
+      "detail": "This is the single defensive pattern that survives everything else on this page. A skill that checks for the tool it needs, uses it if present, and says plainly what it could not do otherwise will keep working across sandbox changes, served-configuration flips, and version bumps. A skill that assumes a surface breaks silently on all three.",
       "tier": "measured",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1050,8 +1050,8 @@
     {
       "id": "state.container-agent-range",
       "page": "current-state",
-      "rule": "The remote lane runs its own agent build, independent of the local application version.",
-      "detail": "Remote sessions were observed running a range of agent builds distinct from the installed application and from the local agent. This is why remote-lane behaviour cannot be pinned by the version numbers on this page alone.",
+      "rule": "The remote sandbox runs its own agent build, independent of the local application version.",
+      "detail": "Remote sessions were observed running a range of agent builds distinct from the installed application and from the local agent. This is why remote-sandbox behaviour cannot be pinned by the version numbers on this page alone.",
       "tier": "measured",
       "durability": "volatile",
       "lane": "remote",
