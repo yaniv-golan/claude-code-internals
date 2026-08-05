@@ -230,7 +230,7 @@
       "lesson_number": "03",
       "file": "02-agents-intelligence-interface.md",
       "startLine": 7,
-      "endLine": 336,
+      "endLine": 337,
       "keywords": [
         "skills",
         "skill-md",
@@ -246,8 +246,8 @@
       "title": "Agent System",
       "lesson_number": "05",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 215,
-      "endLine": 484,
+      "startLine": 338,
+      "endLine": 608,
       "keywords": [
         "agents",
         "subagent",
@@ -261,8 +261,8 @@
       "title": "Coordinator Mode",
       "lesson_number": "21",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 486,
-      "endLine": 640,
+      "startLine": 609,
+      "endLine": 764,
       "keywords": [
         "coordinator",
         "dispatcher",
@@ -276,8 +276,8 @@
       "title": "Teams & Swarm",
       "lesson_number": "22",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 642,
-      "endLine": 907,
+      "startLine": 765,
+      "endLine": 1031,
       "keywords": [
         "swarm",
         "teams",
@@ -291,8 +291,8 @@
       "title": "Memory System",
       "lesson_number": "08",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 909,
-      "endLine": 1074,
+      "startLine": 1032,
+      "endLine": 1198,
       "keywords": [
         "memory",
         "auto-memory",
@@ -306,8 +306,8 @@
       "title": "Auto Memory & Dreams",
       "lesson_number": "40",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1076,
-      "endLine": 1232,
+      "startLine": 1199,
+      "endLine": 1356,
       "keywords": [
         "dreams",
         "consolidation",
@@ -321,8 +321,8 @@
       "title": "Ink Renderer",
       "lesson_number": "11",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1234,
-      "endLine": 1425,
+      "startLine": 1357,
+      "endLine": 1549,
       "keywords": [
         "ink",
         "renderer",
@@ -336,8 +336,8 @@
       "title": "Commands System",
       "lesson_number": "13",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1427,
-      "endLine": 1585,
+      "startLine": 1550,
+      "endLine": 1709,
       "keywords": [
         "commands",
         "slash-commands",
@@ -351,8 +351,8 @@
       "title": "Dialog UI",
       "lesson_number": "35",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1587,
-      "endLine": 1746,
+      "startLine": 1710,
+      "endLine": 1870,
       "keywords": [
         "dialog",
         "ui",
@@ -366,8 +366,8 @@
       "title": "Notification System",
       "lesson_number": "30",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1748,
-      "endLine": 1976,
+      "startLine": 1871,
+      "endLine": 2100,
       "keywords": [
         "notifications",
         "toast",
@@ -382,7 +382,7 @@
       "lesson_number": "31",
       "file": "03-interface-infrastructure.md",
       "startLine": 6,
-      "endLine": 388,
+      "endLine": 389,
       "keywords": [
         "vim",
         "keybindings",
@@ -397,7 +397,7 @@
       "lesson_number": "33",
       "file": "03-interface-infrastructure.md",
       "startLine": 390,
-      "endLine": 433,
+      "endLine": 434,
       "keywords": [
         "keybindings",
         "keyboard",
@@ -412,7 +412,7 @@
       "lesson_number": "42",
       "file": "03-interface-infrastructure.md",
       "startLine": 435,
-      "endLine": 518,
+      "endLine": 519,
       "keywords": [
         "fullscreen",
         "alt-screen",
@@ -427,7 +427,7 @@
       "lesson_number": "41",
       "file": "03-interface-infrastructure.md",
       "startLine": 520,
-      "endLine": 641,
+      "endLine": 642,
       "keywords": [
         "theme",
         "styling",
@@ -441,8 +441,8 @@
       "title": "Permissions System",
       "lesson_number": "06",
       "file": "03-interface-infrastructure.md",
-      "startLine": 721,
-      "endLine": 897,
+      "startLine": 643,
+      "endLine": 720,
       "keywords": [
         "permissions",
         "allow-deny-ask",
@@ -457,7 +457,7 @@
       "lesson_number": "16",
       "file": "03-interface-infrastructure.md",
       "startLine": 721,
-      "endLine": 897,
+      "endLine": 898,
       "keywords": [
         "settings",
         "configuration",
@@ -472,7 +472,7 @@
       "lesson_number": "29",
       "file": "03-interface-infrastructure.md",
       "startLine": 899,
-      "endLine": 950,
+      "endLine": 951,
       "keywords": [
         "session",
         "jsonl",
@@ -487,7 +487,7 @@
       "lesson_number": "15",
       "file": "03-interface-infrastructure.md",
       "startLine": 952,
-      "endLine": 1040,
+      "endLine": 1041,
       "keywords": [
         "compaction",
         "context-window",
@@ -502,7 +502,7 @@
       "lesson_number": "32",
       "file": "03-interface-infrastructure.md",
       "startLine": 1042,
-      "endLine": 1255,
+      "endLine": 1256,
       "keywords": [
         "analytics",
         "telemetry",
@@ -517,7 +517,7 @@
       "lesson_number": "34",
       "file": "03-interface-infrastructure.md",
       "startLine": 1257,
-      "endLine": 1322,
+      "endLine": 1323,
       "keywords": [
         "migration",
         "idempotent",
@@ -689,7 +689,7 @@
       "lesson_number": "Ultraplan",
       "file": "05-unreleased-bigpicture.md",
       "startLine": 5,
-      "endLine": 329,
+      "endLine": 330,
       "keywords": [
         "ultraplan",
         "remote-planning",
@@ -706,7 +706,7 @@
       "lesson_number": "Entrypoints",
       "file": "05-unreleased-bigpicture.md",
       "startLine": 331,
-      "endLine": 584,
+      "endLine": 585,
       "keywords": [
         "entrypoints",
         "sdk",
@@ -721,7 +721,7 @@
       "lesson_number": "KAIROS",
       "file": "05-unreleased-bigpicture.md",
       "startLine": 586,
-      "endLine": 763,
+      "endLine": 778,
       "keywords": [
         "kairos",
         "daemon",
@@ -735,8 +735,8 @@
       "title": "Cost Analytics & Observability",
       "lesson_number": "Cost",
       "file": "05-unreleased-bigpicture.md",
-      "startLine": 765,
-      "endLine": 970,
+      "startLine": 779,
+      "endLine": 985,
       "keywords": [
         "cost",
         "analytics",
@@ -750,8 +750,8 @@
       "title": "Desktop App Integration",
       "lesson_number": "Desktop",
       "file": "05-unreleased-bigpicture.md",
-      "startLine": 972,
-      "endLine": 1100,
+      "startLine": 986,
+      "endLine": 1115,
       "keywords": [
         "desktop",
         "ide",
@@ -765,8 +765,8 @@
       "title": "Model System",
       "lesson_number": "Model",
       "file": "05-unreleased-bigpicture.md",
-      "startLine": 1102,
-      "endLine": 1285,
+      "startLine": 1116,
+      "endLine": 1300,
       "keywords": [
         "model",
         "provider",
@@ -780,8 +780,8 @@
       "title": "Sandbox & Security",
       "lesson_number": "Sandbox",
       "file": "05-unreleased-bigpicture.md",
-      "startLine": 1287,
-      "endLine": 1417,
+      "startLine": 1301,
+      "endLine": 1432,
       "keywords": [
         "sandbox",
         "security",
@@ -795,8 +795,8 @@
       "title": "Message Processing Pipeline",
       "lesson_number": "Messages",
       "file": "05-unreleased-bigpicture.md",
-      "startLine": 1419,
-      "endLine": 1535,
+      "startLine": 1433,
+      "endLine": 1550,
       "keywords": [
         "messages",
         "pipeline",
@@ -810,8 +810,8 @@
       "title": "Task System",
       "lesson_number": "Tasks",
       "file": "05-unreleased-bigpicture.md",
-      "startLine": 1537,
-      "endLine": 1671,
+      "startLine": 1551,
+      "endLine": 1686,
       "keywords": [
         "tasks",
         "background-tasks",
@@ -825,8 +825,8 @@
       "title": "REPL & Screen",
       "lesson_number": "REPL",
       "file": "05-unreleased-bigpicture.md",
-      "startLine": 1673,
-      "endLine": 1886,
+      "startLine": 1687,
+      "endLine": 1900,
       "keywords": [
         "repl",
         "screen",
@@ -931,7 +931,7 @@
       "lesson_number": "57",
       "file": "07-verified-new-v2.1.92.md",
       "startLine": 18,
-      "endLine": 135,
+      "endLine": 136,
       "keywords": [
         "setup-bedrock",
         "stop-hook",
@@ -946,7 +946,7 @@
       "lesson_number": "58",
       "file": "07-verified-new-v2.1.92.md",
       "startLine": 137,
-      "endLine": 371,
+      "endLine": 269,
       "keywords": [
         "env-vars",
         "CLAUDE_CODE_EXECPATH",
@@ -960,8 +960,8 @@
       "title": "AskUserQuestionTool",
       "lesson_number": "59",
       "file": "07-verified-new-v2.1.92.md",
-      "startLine": 264,
-      "endLine": 365,
+      "startLine": 270,
+      "endLine": 371,
       "keywords": [
         "AskUserQuestion",
         "ask-user",
@@ -2769,8 +2769,8 @@
       "title": "Cowork/Desktop Environment Variables, Production GrowthBook Gates & the Extended Control-Protocol Surface (app.asar 1.12603.1 / in-VM ELF 2.1.170 / live fcache)",
       "lesson_number": "108",
       "file": "22-cowork-env-gates-protocol.md",
-      "startLine": 21,
-      "endLine": 193,
+      "startLine": 37,
+      "endLine": 221,
       "keywords": [
         "cowork-env-vars",
         "desktop-env-vars",
@@ -3203,7 +3203,7 @@
       "title": "VM Rootfs Forensics: The Mount Inventory, Session-Slug Format, and coworkd",
       "lesson_number": "117",
       "file": "28-vm-rootfs-forensics.md",
-      "startLine": 17,
+      "startLine": 13,
       "endLine": 192,
       "keywords": [
         "vm-rootfs-forensics",

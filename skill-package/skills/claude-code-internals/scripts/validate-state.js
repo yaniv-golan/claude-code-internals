@@ -498,6 +498,30 @@ function validate(refsDir) {
     }
   }
 
+  // --- lesson bounds ---
+  // CLAUDE.md documents that inserting lines invalidates topic-index bounds and
+  // that NOTHING validates them, so fetch-lesson.js silently returns the wrong
+  // slice. That warning held: 20 lessons were pointing at the wrong line, one
+  // set of them off by 123. startLine is unambiguous — it must land on the
+  // lesson's own heading — so check it mechanically rather than by discipline.
+  try {
+    const ti = JSON.parse(fs.readFileSync(topicIndexPath, 'utf8'));
+    const HDR = /^#{1,2} LESSON\s+\d+/i;
+    for (const l of ti.lessons || []) {
+      const lf = path.join(refsDir, l.file);
+      // Absent lesson file => reduced test fixture, not drift. Same precedent as
+      // author-facts.json: skip silently rather than fail a fixture for the
+      // right reason at the wrong time. (Third validator rule to trip this.)
+      if (!fs.existsSync(lf)) continue;
+      const line = fs.readFileSync(lf, 'utf8').split('\n')[l.startLine - 1];
+      if (line === undefined || !HDR.test(line)) {
+        errors.push(`topic-index: L${l.id} startLine ${l.startLine} in ${l.file} is not a LESSON heading — bounds have drifted; re-derive them`);
+      }
+    }
+  } catch (e) {
+    errors.push(`topic-index bounds check failed: ${e.message}`);
+  }
+
   // --- author-facts.json (published-site source) ---
   if (registry) errors.push(...validateAuthorFacts(stateDir, lessonIds, registry));
 
