@@ -97,6 +97,15 @@ function tierLegend() {
 </details>`;
 }
 
+// Cloudflare Web Analytics. Installed manually, not auto-injected: the domain
+// sits on Cloudflare's nameservers but the A record is DNS-only (see
+// docs/internal/2026-08-06-site-analytics-options.md), so no request ever
+// passes through the proxy for it to rewrite. The token is public by design —
+// it ships in the page source — so it lives here rather than in a secret.
+// Measures human page views only; agent fetches of the .md/llms.txt views run
+// no JS and are structurally invisible to this or any beacon.
+const ANALYTICS = `<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "01ffdc264135441081693c71d3b334ff"}'></script>`;
+
 // Shared by every page. Upgrades server-rendered badges; degrades to the
 // plain date when scripting is unavailable.
 const AGE_SCRIPT = `<script>
@@ -968,6 +977,7 @@ h1{font-size:30px}
 }
 </style>
 <script>(function(){try{var t=localStorage.getItem('ccitheme');if(t)document.documentElement.setAttribute('data-t',t);}catch(e){}})();</script>
+${ANALYTICS}
 </head>
 <body>
 <div class="layout">
@@ -1176,6 +1186,7 @@ h2 { font-size:1.1rem; margin:2.5rem 0 .75rem; }
 .expired-banner { display:none; border:1px solid var(--bad); color:var(--bad); padding:.75rem 1rem; border-radius:4px; margin-bottom:1.5rem; }
 footer { margin-top:3rem; border-top:1px solid var(--line); padding-top:1rem; font-size:.88rem; color:var(--muted); }
 </style>
+${ANALYTICS}
 </head><body>
 <div class="expired-banner" data-verified="${oldest}"></div>
 <h1>Claude Code Internals</h1>
@@ -1217,6 +1228,7 @@ ${AGE_SCRIPT}
 <meta name="robots" content="noindex,follow">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <style>body{font:16px/1.6 system-ui,-apple-system,sans-serif;max-width:34rem;margin:14vh auto;padding:0 1.25rem;color-scheme:light dark}h1{font-size:1.3rem}</style>
+${ANALYTICS}
 </head><body>
 <h1>That page isn't here</h1>
 <p>It may have moved, or the URL may be from an older version of this site.</p>
