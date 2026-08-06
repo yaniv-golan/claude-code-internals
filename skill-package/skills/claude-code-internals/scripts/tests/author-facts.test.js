@@ -322,3 +322,48 @@ test('numeric comparisons are not positional references', () => {
   assert.deepStrictEqual(
     validateAuthorFacts(dir, LESSONS, REGISTRY).filter(e => /positional reference/.test(e)), []);
 });
+
+// --- facts may not point at their container ------------------------------
+//
+// A fact renders in at least four places: its topic page, the contract page,
+// the Markdown twin, and facts.json, which has no pages at all. "See this
+// page's open question" resolves in one of those. On the contract page it is
+// actively wrong, because all 52 rules sit together there. Page-level prose is
+// exempt: a summary or open question renders in exactly one place.
+
+test('fact-level prose may not reference its page', () => {
+  for (const detail of [
+    "Measured in the default configuration; see this page's open question.",
+    'This is the pattern that survives everything else on this page.',
+  ]) {
+    const { dir } = fixture({
+      facts: [{
+        id: 'demo.one', page: 'demo', rule: 'R.', detail, tier: 'measured',
+        durability: 'durable', volatile_dependency: false,
+        sources: { lessons: [139], state_page: 'cowork-architecture' },
+        verified: '2026-08-05', caveats: [],
+      }],
+    });
+    const errs = validateAuthorFacts(dir, LESSONS, REGISTRY);
+    assert.ok(errs.some(e => /container reference/.test(e)), `should have been caught: ${detail}`);
+  }
+});
+
+test('page-level prose may reference its page, and any prose may reference the site', () => {
+  const { dir } = fixture({
+    pages: [
+      { slug: 'demo', title: 'Demo page', summary: 'A summary.',
+        open_questions: ['Anything on this page can be true today and false tomorrow.'] },
+      { slug: 'current-state', title: 'State', summary: 'Versions.', open_questions: [] },
+    ],
+    facts: [{
+      id: 'demo.one', page: 'demo', rule: 'R.',
+      detail: 'Drawn from the failure modes on this site rather than a measurement.',
+      tier: 'measured', durability: 'durable', volatile_dependency: false,
+      sources: { lessons: [139], state_page: 'cowork-architecture' },
+      verified: '2026-08-05', caveats: [],
+    }],
+  });
+  assert.deepStrictEqual(
+    validateAuthorFacts(dir, LESSONS, REGISTRY).filter(e => /container reference/.test(e)), []);
+});

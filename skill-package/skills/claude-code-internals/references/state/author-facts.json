@@ -82,7 +82,7 @@
       "blurb": "Hooks do fire. Plugin root resolves differently per consumer.",
       "summary": "Yes — plugin hooks do fire in Cowork. The determinant is where the plugin was installed from: a plugin installed through the Cowork application is visible to Cowork sessions, and one installed through the CLI's own path is not, because they occupy different namespaces. The plugin-root token resolves differently depending on which consumer expands it, so use it for file-tool reads and discover the mounted path at runtime for anything you shell out to.",
       "open_questions": [
-        "Plugin-root resolution differs between the two sandboxes. The rule on this page is written to be correct in both, at the cost of being less direct than a sandbox-specific answer would be."
+        "Plugin-root resolution differs between the two sandboxes. The plugin-root rule is written to be correct in both, at the cost of being less direct than a sandbox-specific answer would be."
       ]
     },
     {
@@ -235,7 +235,7 @@
       },
       "verified": "2026-08-05",
       "caveats": [
-        "An earlier release of this page told authors to retry such a call rather than change the path. That was wrong and is withdrawn: the denial is deterministic."
+        "An earlier release of this rule told authors to retry such a call rather than change the path. That was wrong and is withdrawn: the denial is deterministic."
       ]
     },
     {
@@ -485,7 +485,7 @@
       },
       "verified": "2026-08-05",
       "caveats": [
-        "Measured in the default configuration; see this page's open question about fully sandboxed organisations."
+        "Measured in the default configuration. Organisations that require a fully sandboxed VM take a different internal code path for enabling deletion, and it has not been measured there."
       ]
     },
     {
@@ -1015,7 +1015,7 @@
       "id": "change.detect-at-use",
       "page": "what-can-change-under-you",
       "rule": "Detect capabilities at the moment you use them, and state a clear fallback when they are missing.",
-      "detail": "This is the single defensive pattern that survives everything else on this page. A skill that checks for the tool it needs, uses it if present, and says plainly what it could not do otherwise will keep working across sandbox changes, served-configuration flips, and version bumps. A skill that assumes a surface breaks silently on all three.",
+      "detail": "This is the one defensive pattern that survives every kind of change described here. A skill that checks for the tool it needs, uses it if present, and says plainly what it could not do otherwise will keep working across sandbox changes, served-configuration flips, and version bumps. A skill that assumes a surface breaks silently on all three.",
       "tier": "measured",
       "severity": "silent",
       "durability": "durable",
@@ -1148,7 +1148,7 @@
       "id": "state.container-agent-range",
       "page": "current-state",
       "rule": "The remote sandbox runs its own agent build, independent of the local application version.",
-      "detail": "Remote sessions were observed running a range of agent builds distinct from the installed application and from the local agent. This is why remote-sandbox behaviour cannot be pinned by the version numbers on this page alone.",
+      "detail": "Remote sessions were observed running a range of agent builds distinct from the installed application and from the local agent. This is why remote-sandbox behaviour cannot be pinned by the CLI and Desktop versions this site records.",
       "tier": "measured",
       "durability": "volatile",
       "lane": "remote",

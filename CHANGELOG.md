@@ -1,5 +1,25 @@
 # Changelog
 
+## v2.37.2 — 2026-08-06 (this fork) — facts no longer point at the page they happen to be on
+
+**No fact changed.** Completes the sweep started in v2.37.1, across six families of context assumption. Most were false positives — every *"the next"* was *"the next session"* or *"the next check"*, not navigation; time-relative and first-person wording did not appear at all.
+
+Five real defects, all one kind: **fact-level prose pointing at its container.**
+
+A fact renders in at least four places — its topic page, the contract page, the Markdown twin, and `facts.json`, which has no pages at all. *"See this page's open question"* resolves in one of them. On the contract page it is actively wrong, because all 52 rules sit together there — and that page renders no caveats at all, so the pointer was invisible exactly where it would have misled.
+
+| rule | was | now |
+|---|---|---|
+| `delete.deny-set` | *"see this page's open question"* | states the unmeasured case outright |
+| `change.detect-at-use` | *"survives everything else on this page"* | *"survives every kind of change described here"* |
+| `state.container-agent-range` | *"the version numbers on this page"* | names the versions |
+| `paths.session-paths-denied` | *"an earlier release of this page"* | *"of this rule"* |
+| plugins open question | *"the rule on this page"* (six rules there) | names the plugin-root rule |
+
+### The rule that now enforces it
+
+Fact-level prose may not say "this page". Page-level prose — summaries, blurbs, open questions — renders in exactly one place, so it may, and does. *"This site"* is allowed everywhere: the site is one referent in every rendering.
+
 ## v2.37.1 — 2026-08-06 (this fork) — prose no longer encodes its own position
 
 **No fact changed.** Three published strings referred to where they sat on the page. All three are rewritten, and a check now rejects the pattern.

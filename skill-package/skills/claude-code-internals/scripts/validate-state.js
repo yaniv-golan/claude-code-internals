@@ -237,6 +237,28 @@ const AUTHOR_FACT_LANES = ['local', 'remote', 'both'];
  * on its page. Comparisons ("above 1,024 chars") are allowed; bare positional
  * references are not.
  */
+/**
+ * A FACT travels: the same string renders on its topic page, on the contract
+ * page, in the Markdown twin, and in facts.json, which has no pages at all. So
+ * fact-level prose may not point at its container ("this page's open question",
+ * "everything else on this page") -- the referent is absent in most renderings,
+ * and on the contract page it names the wrong thing, since all 52 rules sit
+ * together there.
+ *
+ * PAGE-level prose (summary, blurb, open questions) renders in exactly one
+ * place, so "this page" is correct there and is deliberately allowed. "This
+ * site" is allowed everywhere: the site is one referent in every rendering.
+ */
+const CONTAINER_RE = /\bth(?:is|e)\s+page\b(?!\s+that\s+explains)/i;
+function scanContainer(text) {
+  if (typeof text !== 'string') return null;
+  const m = CONTAINER_RE.exec(text);
+  if (!m) return null;
+  const at = Math.max(0, m.index - 40);
+  return `container reference "${m[0]}" in fact-level prose — a fact also renders on the contract page, ` +
+         `in Markdown and in facts.json, where that referent does not exist: …${text.slice(at, m.index + 55)}…`;
+}
+
 const POSITIONAL_RE = /\b(above|below)\b(?!\s+(?:\d|a\s+\d|the\s+\d))/i;
 function scanPositional(text) {
   if (typeof text !== 'string') return null;
@@ -317,6 +339,13 @@ function validateAuthorFacts(stateDir, lessonIds, registry) {
   for (const [label, text] of positionalTargets(doc)) {
     const bad = scanPositional(text);
     if (bad) errors.push(`${label}: ${bad}`);
+  }
+  for (const f of doc.facts || []) {
+    for (const [what, text] of [['rule', f.rule], ['detail', f.detail],
+                                ...(f.caveats || []).map((c, i) => [`caveats[${i}]`, c])]) {
+      const bad = scanContainer(text);
+      if (bad) errors.push(`author-facts.${f.id}.${what}: ${bad}`);
+    }
   }
 
   // `tools` — pointers to related projects, not findings. Validated for shape so
