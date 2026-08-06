@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.37.4 — 2026-08-06 (this fork) — mobile navigation
+
+**Fixed.** On a phone the site had no navigation at all. The breakpoint hid the sidebar *and* the on-page contents, and the sidebar is the only navigation the site has — so every page was a dead end. Measured in a 390px viewport: **0 links reachable**.
+
+The sidebar now becomes a horizontally scrollable strip of the same links above the content. No duplicate markup, no JavaScript, current page still marked. Same measurement now: **12 links reachable**.
+
+A test asserts the breakpoint never hides the sidebar again.
+
+### On link colours differing between phone and desktop
+
+Investigated: **there is no width-dependent colour rule anywhere in the stylesheet.** Enumerating every rule inside every `max-width` block via the CSSOM returns an empty list.
+
+The difference is **theme, not viewport**. The accent is `oklch(0.45 0.11 155)` in light and `oklch(0.79 0.14 155)` in dark. Theme is stored per device in `localStorage`, and otherwise follows that device's own system preference — so a phone in dark mode and a desktop in light mode legitimately disagree. Working as designed, though worth knowing the toggle does not follow you between devices.
+
 ## v2.37.3 — 2026-08-06 (this fork) — three data-model fixes, no restructure
 
 **Nothing a reader sees has changed** — the built pages are byte-identical. This is the data model.

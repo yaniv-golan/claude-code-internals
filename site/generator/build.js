@@ -919,7 +919,24 @@ footer.site{padding:20px 40px 40px;border-top:1px solid var(--line);font-size:13
 footer.site a{color:var(--fg2)}
 .expired-banner{display:none;margin:0 40px 20px;border:1px solid var(--bad);color:var(--bad);padding:.75rem 1rem;border-radius:6px}
 @media (max-width:960px){
-aside{display:none}
+/* The design is a fixed desktop composition with no breakpoints, so mobile
+   behaviour is ours to decide. The first attempt hid the sidebar outright,
+   which left a phone reader with no route to any other page -- the sidebar was
+   the only navigation on the site. It now becomes a horizontally scrollable
+   strip of the same links, above the content: no duplicate markup, no
+   JavaScript, and the current page stays marked. */
+.layout{flex-direction:column}
+aside{position:static;flex:none;width:100%;height:auto;overflow:visible;
+      border-right:0;border-bottom:1px solid var(--line);padding:14px 20px 10px}
+.brand{margin-bottom:10px}
+nav.side{flex-direction:row;gap:8px;overflow-x:auto;padding-bottom:6px;
+         scrollbar-width:none;-webkit-overflow-scrolling:touch}
+nav.side::-webkit-scrollbar{display:none}
+.navtop,.navgroup{flex-direction:row;align-items:center;gap:8px}
+.navlabel{display:none}
+.nav-1,.nav-2{white-space:nowrap;padding:6px 11px;border:1px solid var(--line);border-radius:999px;font-size:13.5px}
+[aria-current="page"]::before{display:none}
+.sidefoot{display:none}
 main,main.wide{padding:32px 20px 64px}
 main.topic{display:block;padding:32px 20px 64px}
 nav.toc{display:none}

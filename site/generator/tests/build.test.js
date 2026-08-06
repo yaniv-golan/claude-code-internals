@@ -483,6 +483,21 @@ test('the sidebar lists every page, grouped, with the current page marked', () =
   }
 });
 
+test('navigation survives the mobile breakpoint', () => {
+  // The imported design has no breakpoints at all, so mobile behaviour was ours
+  // to choose -- and the first choice hid the sidebar outright, leaving a phone
+  // reader with no route to any other page. Verified in a real 390px viewport
+  // before this test was written: 12 links reachable, up from 0.
+  const { out } = buildOnce();
+  const html = fs.readFileSync(path.join(out, SECTION, 'files-and-paths', 'index.html'), 'utf8');
+  const block = (html.match(/@media \(max-width:960px\)\{[\s\S]*?\n\}/) || [''])[0];
+  assert.ok(block, 'the mobile breakpoint is missing entirely');
+  assert.ok(!/\baside\{[^}]*display:none/.test(block),
+    'the mobile breakpoint hides the sidebar, which is the only navigation on the site');
+  assert.match(block, /nav\.side\{[^}]*overflow-x:auto/,
+    'the mobile nav must scroll horizontally rather than wrap or clip');
+});
+
 test('every page offers a way to report an error', () => {
   const { out } = buildOnce();
   for (const f of htmlFiles(out)) {
