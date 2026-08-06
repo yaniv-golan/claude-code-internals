@@ -428,3 +428,43 @@ test('field_semantics must classify every field in use, with severity editorial'
   });
   assert.ok(validateAuthorFacts(misfiled, LESSONS, REGISTRY).some(e => /classified editorial/.test(e)));
 });
+
+// --- retractions belong in caveats ---------------------------------------
+//
+// `detail` is what an author reads to decide what to do. A note about what an
+// earlier version of this site said is release history: it reaches only someone
+// who read the old version, and it is worth publishing at all only when a reader
+// could still act wrongly on the withdrawn advice. Then it is a qualification,
+// which is what caveats are for.
+
+test('a retraction in detail is rejected', () => {
+  for (const detail of [
+    'Use what is there. An earlier version of this rule said installs would fail or hang.',
+    'This rule said otherwise previously.',
+  ]) {
+    const { dir } = fixture({
+      facts: [{
+        id: 'demo.one', page: 'demo', rule: 'R.', detail, tier: 'measured',
+        durability: 'durable', volatile_dependency: false,
+        sources: { lessons: [139], state_page: 'cowork-architecture' }, caveats: [],
+      }],
+    });
+    assert.ok(validateAuthorFacts(dir, LESSONS, REGISTRY).some(e => /retraction/.test(e)),
+      `should have been caught: ${detail}`);
+  }
+});
+
+test('the same retraction is fine in caveats, and correcting a belief is not a retraction', () => {
+  const { dir } = fixture({
+    facts: [{
+      id: 'demo.one', page: 'demo', rule: 'R.',
+      // aimed at a belief the reader may hold independently — that is content
+      detail: 'Hooks do run. If you have heard otherwise, the determinant is installation namespace.',
+      tier: 'measured', durability: 'durable', volatile_dependency: false,
+      sources: { lessons: [139], state_page: 'cowork-architecture' },
+      caveats: ['An earlier release of this rule told authors to retry. That is withdrawn.'],
+    }],
+  });
+  assert.deepStrictEqual(
+    validateAuthorFacts(dir, LESSONS, REGISTRY).filter(e => /retraction/.test(e)), []);
+});

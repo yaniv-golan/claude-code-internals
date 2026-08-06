@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.37.6 — 2026-08-06 (this fork) — a retraction that was not earning its place
+
+Three retraction notes existed, in two different fields. Sorted by what each does for someone reading *now*:
+
+| rule | verdict |
+|---|---|
+| `paths.session-paths-denied` | **keep** — protective. The withdrawn advice was "retry", which loops forever against a deterministic denial. Already in `caveats`. |
+| `plugins.hooks-do-fire` | **reword** — it corrects a belief a reader can arrive holding ("hooks are disabled in Cowork"). That is content, not release history, so it now addresses the belief rather than our old text. |
+| `shell.no-package-installs` | **remove** — it corrected only our own previous wording, and explained the reasoning failure while doing it. |
+
+The removed sentence — *"An earlier version of this rule said installs would fail or hang; that was an inference from the network constraints and it was wrong"* — told a reader nothing they could act on. The rewritten guidance already says user-scoped installs work. Release history belongs in this file.
+
+A new rule rejects retraction phrasing in `detail` while allowing it in `caveats`, where it renders as the qualification it is.
+
+**Open:** retraction notes have no lifecycle. The one remaining will sit indefinitely, long after nobody could still be acting on the advice it withdraws.
+
 ## v2.37.5 — 2026-08-06 (this fork) — the filter bar no longer collides with the header
 
 The contract page's filter bar was pinned at a hardcoded `top:41px` — the desktop header height. The header is sticky and its real height varies: it wraps to two lines on a narrow screen (**measured 56px** at a 390px viewport), and the freshness stamp lengthens as the capture ages, so *"1 day ago"* becoming *"127 days ago"* can rewrap it at any width.

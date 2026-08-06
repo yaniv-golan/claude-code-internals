@@ -249,6 +249,28 @@ const AUTHOR_FACT_LANES = ['local', 'remote', 'both'];
  * place, so "this page" is correct there and is deliberately allowed. "This
  * site" is allowed everywhere: the site is one referent in every rendering.
  */
+/**
+ * A retraction belongs in `caveats`, never in `detail`.
+ *
+ * `detail` is what an author reads to decide what to do; a note about what an
+ * EARLIER VERSION OF THIS SITE said is release history, and only reaches someone
+ * who read the old version. It is worth publishing at all only when a reader
+ * could still act wrongly on the withdrawn advice -- and then it is a
+ * qualification, which is what `caveats` is for and where it renders distinctly.
+ *
+ * Correcting a belief a reader may hold independently ("hooks are disabled in
+ * Cowork") is not a retraction: write it as content, aimed at the belief.
+ */
+const RETRACTION_RE = /\b(an earlier (version|release)|previously said|used to say|we (?:said|claimed)|this (?:page|rule) (?:said|told))\b/i;
+function scanRetraction(text) {
+  if (typeof text !== 'string') return null;
+  const m = RETRACTION_RE.exec(text);
+  if (!m) return null;
+  const at = Math.max(0, m.index - 40);
+  return `retraction "${m[0]}" in detail — put it in caveats, and only if a reader ` +
+         `could still act on the withdrawn advice: …${text.slice(at, m.index + 60)}…`;
+}
+
 const CONTAINER_RE = /\bth(?:is|e)\s+page\b(?!\s+that\s+explains)/i;
 function scanContainer(text) {
   if (typeof text !== 'string') return null;
@@ -345,6 +367,10 @@ function validateAuthorFacts(stateDir, lessonIds, registry) {
                                 ...(f.caveats || []).map((c, i) => [`caveats[${i}]`, c])]) {
       const bad = scanContainer(text);
       if (bad) errors.push(`author-facts.${f.id}.${what}: ${bad}`);
+      if (what === 'detail') {
+        const r = scanRetraction(text);
+        if (r) errors.push(`author-facts.${f.id}.${what}: ${r}`);
+      }
     }
   }
 
