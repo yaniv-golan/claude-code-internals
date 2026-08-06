@@ -210,7 +210,41 @@ const AUTHOR_FACT_DURABILITY = ['durable', 'volatile'];
 // Optional. Absent means the fact was not lane-scoped when written -- which the
 // 2026-08 audit found is the case for most of them, and is NOT a claim that it
 // holds in both. Set it only where a lane was actually established.
+/** Every prose string that reaches a reader, with a label for the error message. */
+function positionalTargets(doc) {
+  const out = [];
+  for (const f of doc.facts || []) {
+    out.push([`author-facts.${f.id}.rule`, f.rule], [`author-facts.${f.id}.detail`, f.detail]);
+    (f.caveats || []).forEach((c, i) => out.push([`author-facts.${f.id}.caveats[${i}]`, c]));
+  }
+  for (const p of doc.pages || []) {
+    out.push([`author-facts.page.${p.slug}.summary`, p.summary], [`author-facts.page.${p.slug}.blurb`, p.blurb]);
+    (p.open_questions || []).forEach((q, i) => out.push([`author-facts.page.${p.slug}.open_questions[${i}]`, q]));
+  }
+  for (const t of doc.tools || []) out.push([`author-facts.tools.${t.slug}.what`, t.what], [`author-facts.tools.${t.slug}.why`, t.why]);
+  for (const r of doc.router || []) out.push(['author-facts.router', `${r.symptom} ${r.why} ${r.fix}`]);
+  for (const t of doc.top5 || []) out.push(['author-facts.top5', `${t.rule} ${t.why}`]);
+  return out.filter(([, v]) => typeof v === 'string');
+}
+
 const AUTHOR_FACT_LANES = ['local', 'remote', 'both'];
+
+/**
+ * Published prose must not encode its own position on a page. The same string is
+ * rendered on a topic page, on the contract page, in the Markdown twin and in
+ * facts.json for other consumers -- "the ordering below" is true in at most one
+ * of those and was in fact true in none: the box it sat in has always been last
+ * on its page. Comparisons ("above 1,024 chars") are allowed; bare positional
+ * references are not.
+ */
+const POSITIONAL_RE = /\b(above|below)\b(?!\s+(?:\d|a\s+\d|the\s+\d))/i;
+function scanPositional(text) {
+  if (typeof text !== 'string') return null;
+  const m = POSITIONAL_RE.exec(text);
+  if (!m) return null;
+  const at = Math.max(0, m.index - 40);
+  return `positional reference "${m[1]}" — say what you mean without relying on layout: …${text.slice(at, m.index + 50)}…`;
+}
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 /**
@@ -280,6 +314,11 @@ function validateAuthorFacts(stateDir, lessonIds, registry) {
   }
 
   const ids = new Set();
+  for (const [label, text] of positionalTargets(doc)) {
+    const bad = scanPositional(text);
+    if (bad) errors.push(`${label}: ${bad}`);
+  }
+
   // `tools` — pointers to related projects, not findings. Validated for shape so
   // a broken link or a missing blurb cannot reach the site, but deliberately
   // carries no tier or verified date: it is not a claim about product behaviour.

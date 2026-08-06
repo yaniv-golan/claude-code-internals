@@ -71,7 +71,7 @@
       "blurb": "Why the naive check false-negatives, and the ordered recipe that works.",
       "summary": "A naive environment-variable check false-negatives in exactly the configuration that matters most, because the part of your skill that runs shell commands runs somewhere with none of those markers set. Use an ordered recipe instead: check the environment marker, then the working-directory signature, then the CLI marker. For behaviour rather than reporting, branch on which tools exist — that is the most durable signal available to a skill.",
       "open_questions": [
-        "Runtime markers are set by the host at spawn time and have been added and removed across releases. The ordering below degrades safely: a later check never contradicts an earlier one, it only adds coverage."
+        "Runtime markers are set by the host at spawn time and have been added and removed across releases. An ordered sequence of checks degrades safely, because a later check never contradicts an earlier one — it only adds coverage."
       ]
     },
     {
@@ -82,7 +82,7 @@
       "blurb": "Hooks do fire. Plugin root resolves differently per consumer.",
       "summary": "Yes — plugin hooks do fire in Cowork. The determinant is where the plugin was installed from: a plugin installed through the Cowork application is visible to Cowork sessions, and one installed through the CLI's own path is not, because they occupy different namespaces. The plugin-root token resolves differently depending on which consumer expands it, so use it for file-tool reads and discover the mounted path at runtime for anything you shell out to.",
       "open_questions": [
-        "Plugin-root resolution differs between the two sandboxes. The guidance below is written to be correct in both, at the cost of being less direct than hardcoding a path would be."
+        "Plugin-root resolution differs between the two sandboxes. The rule on this page is written to be correct in both, at the cost of being less direct than a sandbox-specific answer would be."
       ]
     },
     {

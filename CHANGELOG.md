@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.37.1 — 2026-08-06 (this fork) — prose no longer encodes its own position
+
+**No fact changed.** Three published strings referred to where they sat on the page. All three are rewritten, and a check now rejects the pattern.
+
+| string | problem |
+|---|---|
+| *"The ordering **below** degrades safely"* | sits in a box that is last on its page — nothing is below it |
+| *"The guidance **below** is written to be correct in both"* | same box, same page position |
+| *"not part of the verified material **above**"* | true on the entry page, false on the contract page, where the callout sits before the rules |
+
+Two of the three were wrong **before** the redesign rather than broken by it: that box has always been last. The redesign only made it visible.
+
+### Why it matters beyond three sentences
+
+A fact on this site is a self-contained unit. The same string renders on a topic page, on the contract page, in the Markdown twin, and in `facts.json` for other consumers. Wording that assumes one layout is false in the others — and unreadable to anything consuming the data without a layout at all.
+
+A new validator rule scans every published prose string — rules, details, caveats, page summaries, blurbs, open questions, tool blurbs, router rows, top-5 entries — and rejects bare positional references while allowing numeric comparisons such as *"above 1,024 characters"*. It was checked against all three original wordings before landing.
+
 ## v2.37.0 — 2026-08-06 (this fork) — site redesign, and a severity axis
 
 **No rule changed.** Every rule's wording, confidence tier, caveats and verification date are as they were. This is a redesign of how they are presented, implemented from a Claude Design project.

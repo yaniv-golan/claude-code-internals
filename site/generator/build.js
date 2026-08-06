@@ -620,7 +620,9 @@ function jsonLd({ title, description, canonical, verified }) {
  * the two tools answer different questions and are shown where those questions
  * arise, rather than collected into a "links" section nobody reads.
  */
-const TOOLS_NOTE = 'Same author as this site, and not part of the verified material above.';
+// No positional wording: this note renders after the tools on the entry page and
+// before the rules on the contract page, and appears in the markdown twin too.
+const TOOLS_NOTE = 'Same author as this site, and not part of the verified material.';
 
 function toolsMd(tools, heading) {
   if (!tools.length) return [];

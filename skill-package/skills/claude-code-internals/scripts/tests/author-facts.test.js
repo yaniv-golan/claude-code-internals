@@ -285,3 +285,40 @@ test('an absent lane is not an error', () => {
   const { dir } = fixture();
   assert.deepStrictEqual(validateAuthorFacts(dir, LESSONS, REGISTRY), []);
 });
+
+// --- prose must not encode its own position ------------------------------
+//
+// The same string renders on a topic page, on the contract page, in the
+// Markdown twin, and in facts.json for other consumers. "The ordering below"
+// is true in at most one of those -- and was true in none of them, because the
+// box it sat in has always been last on its page. Found by a reader, not by
+// any check, which is why there is now a check.
+
+test('bare positional references are rejected', () => {
+  for (const prose of [
+    'The ordering below degrades safely.',
+    'The guidance below is written to be correct in both.',
+    'Same author, and not part of the verified material above.',
+  ]) {
+    const { dir } = fixture({
+      pages: [
+        { slug: 'demo', title: 'Demo page', summary: 'A summary.', open_questions: [prose] },
+        { slug: 'current-state', title: 'State', summary: 'Versions.', open_questions: [] },
+      ],
+    });
+    const errs = validateAuthorFacts(dir, LESSONS, REGISTRY);
+    assert.ok(errs.some(e => /positional reference/.test(e)), `should have been caught: ${prose}`);
+  }
+});
+
+test('numeric comparisons are not positional references', () => {
+  // "above 1,024 characters" is a comparison, not a claim about layout.
+  const { dir } = fixture({
+    pages: [
+      { slug: 'demo', title: 'Demo page', summary: 'Descriptions above 1,024 characters are truncated.', open_questions: [] },
+      { slug: 'current-state', title: 'State', summary: 'Versions.', open_questions: [] },
+    ],
+  });
+  assert.deepStrictEqual(
+    validateAuthorFacts(dir, LESSONS, REGISTRY).filter(e => /positional reference/.test(e)), []);
+});
