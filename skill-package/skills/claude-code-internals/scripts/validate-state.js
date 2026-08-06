@@ -348,6 +348,45 @@ function validateAuthorFacts(stateDir, lessonIds, registry) {
     }
   }
 
+  // `router` and `top5` are DERIVED: each row paraphrases one rule in different
+  // words for a different reading moment. Stored as source, a paraphrase drifts
+  // silently when its rule is reworded -- ten rules were reworded in v2.36.2 and
+  // nothing would have noticed. Binding each row to a fact id makes the drift a
+  // build failure instead.
+  // `field_semantics` must actually cover the fields in use, or it becomes a
+  // decorative claim about the schema rather than a description of it.
+  const fsem = doc.field_semantics;
+  if (fsem) {
+    const declared = new Set(Object.values(fsem).flatMap(g => g.fields || []));
+    const used = new Set((doc.facts || []).flatMap(f => Object.keys(f)));
+    for (const k of ['id', 'page']) used.delete(k);   // identity, not a claim
+    for (const k of used) {
+      if (!declared.has(k)) errors.push(`author-facts.field_semantics: field "${k}" is used but not classified`);
+    }
+    if (!(fsem.editorial?.fields || []).includes('severity')) {
+      errors.push('author-facts.field_semantics: severity must be classified editorial — it is a judgement, not a measurement');
+    }
+  }
+
+  const factIds = new Map((doc.facts || []).map(f => [f.id, f]));
+  for (const [key, rows] of [['router', doc.router], ['top5', doc.top5]]) {
+    for (const [i, row] of (Array.isArray(rows) ? rows : []).entries()) {
+      const label = `author-facts.${key}[${i}]`;
+      if (typeof row.fact !== 'string' || !row.fact) {
+        errors.push(`${label}: must name the fact it paraphrases via "fact"`);
+        continue;
+      }
+      const f = factIds.get(row.fact);
+      if (!f) { errors.push(`${label}: fact "${row.fact}" does not exist`); continue; }
+      if (row.page && f.page !== row.page) {
+        errors.push(`${label}: fact "${row.fact}" is on page "${f.page}", not "${row.page}"`);
+      }
+      if (f.durability !== 'durable') {
+        errors.push(`${label}: fact "${row.fact}" is not durable, so it must not be promoted here`);
+      }
+    }
+  }
+
   // `tools` — pointers to related projects, not findings. Validated for shape so
   // a broken link or a missing blurb cannot reach the site, but deliberately
   // carries no tier or verified date: it is not a claim about product behaviour.
@@ -369,7 +408,9 @@ function validateAuthorFacts(stateDir, lessonIds, registry) {
 
   for (const ft of facts) {
     const label = `author-facts fact ${ft.id || '(unnamed)'}`;
-    for (const f of ['id', 'page', 'rule', 'detail', 'tier', 'durability', 'sources', 'verified']) {
+    // `verified` is deliberately absent: it is optional and means an individual
+    // re-check, not the site-wide capture date.
+    for (const f of ['id', 'page', 'rule', 'detail', 'tier', 'durability', 'sources']) {
       if (ft[f] === undefined || ft[f] === '') errors.push(`${label}: missing "${f}"`);
     }
     if (ft.id) {
@@ -387,7 +428,17 @@ function validateAuthorFacts(stateDir, lessonIds, registry) {
     if (typeof ft.volatile_dependency !== 'boolean') {
       errors.push(`${label}: volatile_dependency must be boolean`);
     }
-    if (ft.verified && !ISO_DATE.test(ft.verified)) errors.push(`${label}: verified must be YYYY-MM-DD`);
+    // `verified` is OPTIONAL and means "this fact was individually re-checked on
+    // this date". Absent means "as of the site capture". Every fact carried the
+    // capture date verbatim until v2.37.3, which made the field indistinguishable
+    // from the capture and let a blanket restamp read as re-verification.
+    if (ft.verified !== undefined) {
+      if (!ISO_DATE.test(ft.verified)) errors.push(`${label}: verified must be YYYY-MM-DD`);
+      else if (ft.verified === (registry.as_of?.fcache_capture?.observed_at)) {
+        errors.push(`${label}: verified equals the capture date, so it says nothing — ` +
+          `omit it unless this fact was re-checked on its own`);
+      }
+    }
     const src = ft.sources || {};
     for (const l of Array.isArray(src.lessons) ? src.lessons : []) {
       if (!lessonIds.has(l)) errors.push(`${label}: sources.lesson ${l} not in topic-index.json`);

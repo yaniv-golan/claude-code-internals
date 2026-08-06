@@ -535,7 +535,7 @@ function contractBody(doc, page, up) {
         '<input type="checkbox">',
         '<div>',
         `<div class="t"><a class="rule-link" href="${up}${p.slug}/#${factAnchor(f)}">${inlineHtml(f.rule)}</a></div>`,
-        `<div class="m">${sevChip(f)}<span class="chip">${TIER_LABEL[f.tier]}</span><span class="d">${esc(f.verified)}</span></div>`,
+        `<div class="m">${sevChip(f)}<span class="chip">${TIER_LABEL[f.tier]}</span><span class="d">${esc(factDate(doc, f))}</span></div>`,
         '</div></label>');
     }
     b.push('</div></section>');
@@ -645,6 +645,11 @@ function toolsHtml(tools, heading) {
   }
   out.push(`<p class="muted tool-note">${esc(TOOLS_NOTE)}</p>`);
   return out;
+}
+
+/** A fact's date: its own only if it was individually re-checked, else the capture. */
+function factDate(doc, f) {
+  return f.verified || doc.verified_against.observed_at;
 }
 
 function factAnchor(f) {
@@ -1030,6 +1035,10 @@ function build(outDir) {
       current_state_url: `${SITE_URL}/${SECTION}/current-state/`,
     },
     disclaimer: 'This documentation does not detect product changes. It records what was verified on a date against a build.',
+    // Which fields are claims about the product and which are judgement. Without
+    // this a consumer sees `severity` beside `tier` with nothing saying one was
+    // measured and the other decided.
+    field_semantics: doc.field_semantics,
     // Deliberately NOT a precomputed age or band. A value baked at build time
     // freezes on the deploy date and reads "fresh" forever — the defect this
     // project already shipped once in the rendered badge. Consumers get the
@@ -1047,7 +1056,7 @@ function build(outDir) {
       detail: f.detail,
       tier: f.tier,
       server_flag_dependent: !!f.volatile_dependency,
-      verified: f.verified,
+      verified: factDate(doc, f),
       caveats: f.caveats || [],
     })),
     open_questions: doc.pages.flatMap(p => (p.open_questions || []).map(q => ({

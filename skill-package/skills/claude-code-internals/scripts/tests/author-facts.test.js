@@ -62,6 +62,11 @@ test('quoted-span budget flags but does not fail', () => {
 function fixture(overrides = {}) {
   const doc = {
     schema_version: 1,
+    field_semantics: {
+      measured: { fields: ['tier', 'sources', 'lane', 'verified', 'volatile_dependency', 'durability'], meaning: 'm' },
+      guidance: { fields: ['rule', 'detail', 'caveats'], meaning: 'g' },
+      editorial: { fields: ['severity'], meaning: 'e' },
+    },
     verified_against: {
       cli: '2.1.217',
       desktop_asar: '1.25927.0',
@@ -82,7 +87,6 @@ function fixture(overrides = {}) {
         durability: 'durable',
         volatile_dependency: false,
         sources: { lessons: [139], state_page: 'cowork-architecture' },
-        verified: '2026-08-05',
         caveats: [],
       },
     ],
@@ -260,8 +264,7 @@ test('a valid lane value passes', () => {
       facts: [{
         id: 'demo.one', page: 'demo', rule: 'R.', detail: 'D.', tier: 'measured',
         durability: 'durable', lane, volatile_dependency: false,
-        sources: { lessons: [139], state_page: 'cowork-architecture' },
-        verified: '2026-08-05', caveats: [],
+        sources: { lessons: [139], state_page: 'cowork-architecture' }, caveats: [],
       }],
     });
     assert.deepStrictEqual(validateAuthorFacts(dir, LESSONS, REGISTRY), [], `lane=${lane}`);
@@ -273,8 +276,7 @@ test('an unknown lane is an error', () => {
     facts: [{
       id: 'demo.one', page: 'demo', rule: 'R.', detail: 'D.', tier: 'measured',
       durability: 'durable', lane: 'host-loop', volatile_dependency: false,
-      sources: { lessons: [139], state_page: 'cowork-architecture' },
-      verified: '2026-08-05', caveats: [],
+      sources: { lessons: [139], state_page: 'cowork-architecture' }, caveats: [],
     }],
   });
   const errs = validateAuthorFacts(dir, LESSONS, REGISTRY);
@@ -340,8 +342,7 @@ test('fact-level prose may not reference its page', () => {
       facts: [{
         id: 'demo.one', page: 'demo', rule: 'R.', detail, tier: 'measured',
         durability: 'durable', volatile_dependency: false,
-        sources: { lessons: [139], state_page: 'cowork-architecture' },
-        verified: '2026-08-05', caveats: [],
+        sources: { lessons: [139], state_page: 'cowork-architecture' }, caveats: [],
       }],
     });
     const errs = validateAuthorFacts(dir, LESSONS, REGISTRY);
@@ -360,10 +361,70 @@ test('page-level prose may reference its page, and any prose may reference the s
       id: 'demo.one', page: 'demo', rule: 'R.',
       detail: 'Drawn from the failure modes on this site rather than a measurement.',
       tier: 'measured', durability: 'durable', volatile_dependency: false,
-      sources: { lessons: [139], state_page: 'cowork-architecture' },
-      verified: '2026-08-05', caveats: [],
+      sources: { lessons: [139], state_page: 'cowork-architecture' }, caveats: [],
     }],
   });
   assert.deepStrictEqual(
     validateAuthorFacts(dir, LESSONS, REGISTRY).filter(e => /container reference/.test(e)), []);
+});
+
+// --- the three architecture fixes (v2.37.3) ------------------------------
+
+test('verified may not restate the capture date', () => {
+  // All 53 facts carried the capture date verbatim, so the field was
+  // indistinguishable from the capture and a blanket restamp read as
+  // re-verification. Present now means "re-checked on its own".
+  const { dir } = fixture({
+    facts: [{
+      id: 'demo.one', page: 'demo', rule: 'R.', detail: 'D.', tier: 'measured',
+      durability: 'durable', volatile_dependency: false, verified: '2026-08-05',
+      sources: { lessons: [139], state_page: 'cowork-architecture' }, caveats: [],
+    }],
+  });
+  assert.ok(validateAuthorFacts(dir, LESSONS, REGISTRY).some(e => /says nothing/.test(e)));
+});
+
+test('a fact with no verified date is valid', () => {
+  const { dir } = fixture({
+    facts: [{
+      id: 'demo.one', page: 'demo', rule: 'R.', detail: 'D.', tier: 'measured',
+      durability: 'durable', volatile_dependency: false,
+      sources: { lessons: [139], state_page: 'cowork-architecture' }, caveats: [],
+    }],
+  });
+  assert.deepStrictEqual(validateAuthorFacts(dir, LESSONS, REGISTRY), []);
+});
+
+test('derived rows must name the fact they paraphrase', () => {
+  // router and top5 restate a rule in different words. Ten rules were reworded
+  // in one release; without a binding, a stale paraphrase is invisible.
+  for (const [row, pattern] of [
+    [{ page: 'demo', rule: 'x', why: 'y' }, /must name the fact/],
+    [{ page: 'demo', fact: 'no.such.fact', rule: 'x', why: 'y' }, /does not exist/],
+    [{ page: 'current-state', fact: 'demo.one', rule: 'x', why: 'y' }, /is on page/],
+  ]) {
+    const { dir } = fixture({ top5: [row] });
+    assert.ok(validateAuthorFacts(dir, LESSONS, REGISTRY).some(e => pattern.test(e)),
+      `should have been caught: ${JSON.stringify(row)}`);
+  }
+});
+
+test('field_semantics must classify every field in use, with severity editorial', () => {
+  const { dir: unclassified } = fixture({
+    facts: [{
+      id: 'demo.one', page: 'demo', rule: 'R.', detail: 'D.', tier: 'measured',
+      durability: 'durable', volatile_dependency: false, mood: 'breezy',
+      sources: { lessons: [139], state_page: 'cowork-architecture' }, caveats: [],
+    }],
+  });
+  assert.ok(validateAuthorFacts(unclassified, LESSONS, REGISTRY).some(e => /not classified/.test(e)));
+
+  const { dir: misfiled } = fixture({
+    field_semantics: {
+      measured: { fields: ['tier', 'sources', 'lane', 'verified', 'volatile_dependency', 'durability', 'severity'], meaning: 'm' },
+      guidance: { fields: ['rule', 'detail', 'caveats'], meaning: 'g' },
+      editorial: { fields: [], meaning: 'e' },
+    },
+  });
+  assert.ok(validateAuthorFacts(misfiled, LESSONS, REGISTRY).some(e => /classified editorial/.test(e)));
 });

@@ -1,5 +1,32 @@
 {
   "schema_version": 1,
+  "field_semantics": {
+    "measured": {
+      "fields": [
+        "tier",
+        "sources",
+        "lane",
+        "verified",
+        "volatile_dependency",
+        "durability"
+      ],
+      "meaning": "Properties of the claim: how it was established, against what, and where it applies. Falsifiable."
+    },
+    "guidance": {
+      "fields": [
+        "rule",
+        "detail",
+        "caveats"
+      ],
+      "meaning": "What an author should do about the claim. Derived from it, and revised when it is."
+    },
+    "editorial": {
+      "fields": [
+        "severity"
+      ],
+      "meaning": "A judgement about consequence, not a measurement. Carries no verification date and is not falsifiable by observation."
+    }
+  },
   "verified_against": {
     "cli": "2.1.221",
     "desktop_asar": "1.25927.0",
@@ -153,7 +180,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -173,7 +199,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -194,7 +219,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -213,7 +237,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -233,7 +256,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "An earlier release of this rule told authors to retry such a call rather than change the path. That was wrong and is withdrawn: the denial is deterministic."
       ]
@@ -254,7 +276,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -273,7 +294,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -291,7 +311,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -309,7 +328,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "Which delivery tools exist in a session is served at spawn time and has changed across releases; the capability check is what makes this durable, not the tool names."
       ]
@@ -329,7 +347,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "Reasoned from the two-sandbox split rather than measured; the cost is one sentence either way."
       ]
@@ -349,7 +366,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -367,7 +383,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "Behaviour of the presenting tool is served per session; check that it exists before relying on it."
       ]
@@ -388,7 +403,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -407,7 +421,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "Sandbox availability is rolled out per account, so two users running the same skill can be in different sandboxes."
       ]
@@ -427,7 +440,6 @@
         ],
         "state_page": "cowork-permissions"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -445,7 +457,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "Established with a control: an unapproved connected folder stayed denied while the approved location succeeded."
       ]
@@ -465,7 +476,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -483,7 +493,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "Measured in the default configuration. Organisations that require a fully sandboxed VM take a different internal code path for enabling deletion, and it has not been measured there."
       ]
@@ -503,7 +512,6 @@
         ],
         "state_page": "cowork-permissions"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -521,7 +529,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -539,7 +546,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "Controlled by a setting rather than hardcoded, so the behaviour is configuration-dependent."
       ]
@@ -561,7 +567,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "Routing for fetching has changed across releases and is configuration-dependent.",
         "Which destinations are permitted was sampled, not enumerated."
@@ -583,7 +588,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "Which package sources are reachable is configuration-dependent and can change between releases.",
         "Whether these installs fetched from a public registry or a local cache was not distinguished; only that the install step succeeded."
@@ -605,7 +609,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "Read from the shipped guest image; the exact package set is a property of that image and can change with it."
       ]
@@ -627,7 +630,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "Verified by attempting cross-session reads in the local sandbox, which were refused.",
         "The two sandboxes differ: per-session user locally, root remotely. Directory listings show scale, not how many sessions are running at once."
@@ -649,7 +651,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "Established by a live probe rather than from the binary; the symbol that once documented the boundary has since disappeared from the shipped application."
       ]
@@ -670,7 +671,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -689,7 +689,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -707,7 +706,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -725,7 +723,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -743,7 +740,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -761,7 +757,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -780,7 +775,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -799,7 +793,6 @@
         ],
         "state_page": "plugins-skills-hooks"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -817,7 +810,6 @@
         ],
         "state_page": "plugins-skills-hooks"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -835,7 +827,6 @@
         ],
         "state_page": "plugins-skills-hooks"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -853,7 +844,6 @@
         ],
         "state_page": "plugins-skills-hooks"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -872,7 +862,6 @@
         ],
         "state_page": "plugins-skills-hooks"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -892,7 +881,6 @@
         ],
         "state_page": "plugins-skills-hooks"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "Resolution differs between the two sandboxes; this rule is written to be correct in both."
       ]
@@ -912,7 +900,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "Observed in a large sample of real dispatches, where the type-less form was a substantial fraction of the total."
       ]
@@ -932,7 +919,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -950,7 +936,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -969,7 +954,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "Follows from the no-resume behaviour rather than being separately measured."
       ]
@@ -990,7 +974,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -1008,7 +991,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -1027,7 +1009,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -1045,7 +1026,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -1063,7 +1043,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "The replace mode is the one that matters: it discards the computed instructions rather than appending to them."
       ]
@@ -1083,7 +1062,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -1101,7 +1079,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -1120,7 +1097,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": [
         "Editorial guidance drawn from the failure modes on this site rather than a measurement."
       ]
@@ -1141,7 +1117,6 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     },
     {
@@ -1159,55 +1134,62 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "verified": "2026-08-05",
       "caveats": []
     }
   ],
   "router": [
     {
       "page": "files-and-paths",
+      "fact": "paths.session-paths-denied",
       "symptom": "Tool refused the path your shell just printed",
       "why": "The file tools reject the shell’s absolute form outright — a literal prefix test, not a translation.",
       "fix": "Pass a bare filename."
     },
     {
       "page": "delivering-outputs",
+      "fact": "delivery.act-not-location",
       "symptom": "Your file exists, the user never saw it",
       "why": "The working directory is a scratch space that is never presented or listed.",
       "fix": "Present it, and state the path."
     },
     {
       "page": "deleting-files",
+      "fact": "delete.deny-set",
       "symptom": "rm / rmdir fails with a permission error",
       "why": "Every Cowork mount denies exactly those two operations by default.",
       "fix": "Design so no delete is needed."
     },
     {
       "page": "deleting-files",
+      "fact": "delete.cross-mount-moves-fail",
       "symptom": "Moving a file between mounts fails",
       "why": "A rename cannot cross a mount boundary.",
       "fix": "Copy, then verify."
     },
     {
       "page": "shell-commands",
+      "fact": "shell.sealed-environment",
       "symptom": "Your env var is empty inside the shell",
       "why": "The shell is sealed: host exports and hook exports do not reach it.",
       "fix": "Pass config as arguments."
     },
     {
       "page": "detecting-cowork",
+      "fact": "detect.naive-env-check-false-negatives",
       "symptom": "Detection reports “not Cowork” inside Cowork",
       "why": "The part of your skill running shell commands has none of those markers set.",
       "fix": "Use ordered checks; branch on tools."
     },
     {
       "page": "shell-commands",
+      "fact": "shell.no-package-installs",
       "symptom": "A global install fails or disappears",
       "why": "Global installs do not take effect, and nothing persists past the session.",
       "fix": "Prefer the preinstalled stack."
     },
     {
       "page": "what-can-change-under-you",
+      "fact": "change.served-not-shipped",
       "symptom": "A tool name from the CLI does not exist",
       "why": "Tool surfaces are served to the session, not shipped in the app.",
       "fix": "Check it exists before naming it."
@@ -1216,26 +1198,31 @@
   "top5": [
     {
       "page": "files-and-paths",
+      "fact": "paths.relative-filenames",
       "rule": "Write with bare or relative filenames.",
       "why": "Absolute session paths are denied by the file tools every single time."
     },
     {
       "page": "delivering-outputs",
+      "fact": "delivery.act-not-location",
       "rule": "Producing a file is not delivering it.",
       "why": "Write to a stated path, present it, and name the path anyway."
     },
     {
       "page": "shell-commands",
+      "fact": "shell.sealed-environment",
       "rule": "Never pass configuration through the environment.",
       "why": "The shell your skill runs in is sealed — including from your own hooks."
     },
     {
       "page": "detecting-cowork",
+      "fact": "detect.ordered-recipe",
       "rule": "Detect the runtime with ordered checks.",
       "why": "A bare environment-variable check false-negatives where it matters most."
     },
     {
       "page": "what-can-change-under-you",
+      "fact": "change.detect-at-use",
       "rule": "Detect capabilities at the moment you use them.",
       "why": "The surface is served, not shipped. It can change mid-session."
     }

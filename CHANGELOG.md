@@ -1,5 +1,40 @@
 # Changelog
 
+## v2.37.3 — 2026-08-06 (this fork) — three data-model fixes, no restructure
+
+**Nothing a reader sees has changed** — the built pages are byte-identical. This is the data model.
+
+### What was measured first
+
+| | |
+|---|---|
+| facts | 53 |
+| distinct `verified` values | **1** |
+| top-5 entries that are hand-written paraphrases | **5 of 5** |
+| router rows referencing a fact | **0 of 8** |
+
+### The finding
+
+One record holds four kinds of statement with different epistemics: a **claim** about the product (`tier`, `sources`, `lane`), **guidance** derived from it (`rule`, `detail`, `caveats`), an **editorial judgement** about the guidance (`severity`), and **presentation** — `rule` is at once a heading, a checklist item, link text and a contents seed.
+
+That conflation is why falsifying a *claim* in v2.36.0 forced rewriting the *guidance* in the same unreviewed commit, and why a verification date was being stamped on a field that cannot be verified.
+
+Splitting the record was **rejected**: 53 facts do not justify doubling the record count and the authoring cost.
+
+### The three changes
+
+**`verified` now means something.** Every fact carried the capture date verbatim, so the field said nothing while looking like provenance. It is now optional and means *this fact was individually re-checked on this date*. Renderers derive from the capture and honour a genuine override.
+
+**Derived content names its source.** Every router and top-5 row now binds to the fact it paraphrases, validated for existence, page agreement and durability. Ten rules were reworded in v2.36.2; a stale paraphrase would have been invisible. Four auto-derived bindings were wrong and set by hand — matching a symptom to the rule that *fixes* it is a judgement, not word overlap.
+
+**`field_semantics` declares what kind of thing each field is** — measured, guidance, or editorial — validated to cover every field in use, and published in `facts.json`, where a consumer previously saw `severity` beside `tier` with nothing marking one as opinion.
+
+Six new validator rules, each proven to fire against a real defect and to pass its legitimate counterpart.
+
+### When to revisit
+
+Split claim from guidance when a fact needs a **history** — when the corpus must say *"true at 2.1.217, false at 2.1.221"* rather than replacing the text. The current model has one truth and one date per fact and cannot express that.
+
 ## v2.37.2 — 2026-08-06 (this fork) — facts no longer point at the page they happen to be on
 
 **No fact changed.** Completes the sweep started in v2.37.1, across six families of context assumption. Most were false positives — every *"the next"* was *"the next session"* or *"the next check"*, not navigation; time-relative and first-person wording did not appear at all.
