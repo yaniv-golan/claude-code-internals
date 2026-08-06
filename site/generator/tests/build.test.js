@@ -498,6 +498,23 @@ test('navigation survives the mobile breakpoint', () => {
     'the mobile nav must scroll horizontally rather than wrap or clip');
 });
 
+test('the filter bar clears the header instead of assuming its height', () => {
+  // It was pinned at a hardcoded top:41px -- the desktop header height. On a
+  // phone the header wraps to two lines (measured: 56px), so the filter bar sat
+  // 15px behind it. The height is now measured at runtime, which also covers the
+  // freshness stamp lengthening as the capture ages.
+  const { out } = buildOnce();
+  const html = fs.readFileSync(path.join(out, SECTION, 'contract', 'index.html'), 'utf8');
+  assert.match(html, /\.filters\{position:sticky;top:calc\(var\(--barh\)/,
+    'the filter bar must offset from the measured header height, not a constant');
+  assert.ok(!/\.filters\{position:sticky;top:\d+px/.test(html),
+    'the filter bar still hardcodes a header height');
+  assert.match(html, /--barh:\d+px/, 'a no-JavaScript fallback height must exist');
+  assert.match(html, /ResizeObserver\(setBarH\)/, 'the header height must be re-measured when it changes');
+  assert.match(html, /\.filters::before\{[^}]*background:var\(--bg\)/,
+    'the gap must be painted, or content scrolls through it while both bars are stuck');
+});
+
 test('every page offers a way to report an error', () => {
   const { out } = buildOnce();
   for (const f of htmlFiles(out)) {

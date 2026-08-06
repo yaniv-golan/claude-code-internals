@@ -143,6 +143,18 @@ const UI_SCRIPT = `<script>
     label();
   });
 
+  // Keep --barh in step with the real header: it wraps on narrow screens, and
+  // the freshness stamp lengthens as the capture ages.
+  var bar = document.querySelector('header.bar');
+  if (bar) {
+    var setBarH = function () {
+      document.documentElement.style.setProperty('--barh', bar.offsetHeight + 'px');
+    };
+    setBarH();
+    if (window.ResizeObserver) new ResizeObserver(setBarH).observe(bar);
+    window.addEventListener('resize', setBarH);
+  }
+
   var list = document.querySelector('[data-contract]');
   if (!list) return;
   var rules = [].slice.call(list.querySelectorAll('.crule'));
@@ -750,6 +762,11 @@ function shell({ doc, title, description, body, mdHref, up, verified, slug, cano
 --codebg:oklch(0.965 0.004 155);
 --bad:oklch(0.5 0.16 25);
 --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+/* Height of the sticky header. Measured at runtime because the header wraps
+   to two lines on narrow screens, and because the stamp grows as the capture
+   ages ("1 day ago" becomes "127 days ago"). 41px is the desktop value and
+   the no-JavaScript fallback. */
+--barh:41px;
 }
 html[data-t="dark"]{
 --bg:oklch(0.17 0 0);--panel:oklch(0.208 0 0);--sunk:oklch(0.235 0 0);
@@ -893,7 +910,10 @@ nav.toc .all{margin-top:6px;padding-top:12px;border-top:1px solid var(--line)}
 .harness{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:18px;padding:12px 16px;border:1px dashed var(--line);border-radius:8px}
 .harness .s{font-size:14.5px;line-height:1.5;color:var(--fg2)}
 .harness .n{font-size:13px;color:var(--fg3);margin-left:auto}
-.filters{position:sticky;top:41px;z-index:4;display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:26px 0 8px;padding:12px 0;border-top:1px solid var(--fg);border-bottom:1px solid var(--line);background:var(--bg)}
+.filters{position:sticky;top:calc(var(--barh) + 8px);z-index:4;display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:26px 0 8px;padding:12px 0;border-top:1px solid var(--fg);border-bottom:1px solid var(--line);background:var(--bg)}
+/* The gap between header and filter bar has to be painted, or content scrolls
+   visibly through it while both are stuck. */
+.filters::before{content:'';position:absolute;left:0;right:0;top:-9px;height:9px;background:var(--bg)}
 .filters .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
 .filters .set{display:flex;gap:6px}
 .filters button{padding:3px 9px;border:1px solid var(--line);border-radius:5px;background:transparent;color:var(--fg3);font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;cursor:pointer}

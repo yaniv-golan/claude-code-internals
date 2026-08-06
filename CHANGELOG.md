@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.37.5 — 2026-08-06 (this fork) — the filter bar no longer collides with the header
+
+The contract page's filter bar was pinned at a hardcoded `top:41px` — the desktop header height. The header is sticky and its real height varies: it wraps to two lines on a narrow screen (**measured 56px** at a 390px viewport), and the freshness stamp lengthens as the capture ages, so *"1 day ago"* becoming *"127 days ago"* can rewrap it at any width.
+
+The bar was therefore sitting **15px behind** the header on a phone, which read as the two rules being flush against each other.
+
+The header height is now measured into a `--barh` custom property and kept current by a `ResizeObserver`, with `41px` retained as the no-JavaScript fallback. The bar offsets 8px from it and paints that gap, so content cannot scroll through while both are stuck.
+
+Measured after the fix: 390px viewport, header 56px, **gap exactly 8px**, filter bar fully clear of the header; 1280px, fully clear. A test asserts the offset can never return to a constant.
+
 ## v2.37.4 — 2026-08-06 (this fork) — mobile navigation
 
 **Fixed.** On a phone the site had no navigation at all. The breakpoint hid the sidebar *and* the on-page contents, and the sidebar is the only navigation the site has — so every page was a dead end. Measured in a 390px viewport: **0 links reachable**.
