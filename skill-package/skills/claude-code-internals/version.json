@@ -1,12 +1,12 @@
 {
-  "skill_version": "2.37.6",
-  "captured_version": "2.1.221",
-  "captured_date": "2026-08-05",
+  "skill_version": "2.38.0",
+  "captured_version": "2.1.229",
+  "captured_date": "2026-08-13",
   "source": "https://www.markdown.engineering/learn-claude-code/",
-  "verified_against_binary": "v2.37.6 removes a retraction that was doing no work for a reader, and makes the placement rule enforceable. Three retraction notes existed in two different fields. Sorted by what they actually do for someone reading now: paths.session-paths-denied's is PROTECTIVE and correctly in caveats -- the withdrawn advice was 'retry', which would loop forever against a deterministic denial, so a reader who followed it needs telling. plugins.hooks-do-fire's corrected a belief a reader can arrive holding independently ('hooks are disabled in Cowork'), which is content rather than release history; it is reworded to address the belief instead of our old text. shell.no-package-installs' corrected only our own previous wording, and explained the reasoning failure while doing it -- 'that was an inference from the network constraints'. It told a reader nothing they could act on, because the rewritten guidance already says user-scoped installs work. Removed; the changelog is where release history belongs. New validator rule rejects retraction phrasing in `detail` while allowing it in `caveats`, checked against the exact sentence that prompted this plus three legitimate forms.",
-  "lessons_count": 146,
-  "chapters_count": 40,
-  "total_size_kb": 2780,
-  "keywords_indexed": 3341,
-  "note": "Open, and not addressed: retraction notes have no lifecycle. The one remaining in caveats will sit there indefinitely, long after nobody could still be acting on the advice it withdraws. There is no mechanism to expire one."
+  "verified_against_binary": "v2.38.0 adds Chapter 41 (L147-L152) from Desktop app.asar 1.28929.0 diffed against 1.26832.0 and 13 further local asars back to 1.18286.2, the host-agent Mach-O and in-VM ELF 2.1.227, standalone CLI 2.1.228/2.1.229, and a live fcache decoded 2026-08-13 (254 features). Prompted by the cowork-harness project's 1.28929.0 fidelity-impact doc, then re-derived first-party; two of that document's claims did not survive and one was answered opposite to its stated direction. L147: the model is instructed to collect skill arguments through the visualize tool's elicitation module and explicitly NOT AskUserQuestion, delivered as additionalContext on the Skill PreToolUse hook plus a UserPromptSubmit hook for slash commands, suppressed in sub-agents, gate 286376943 force-ON, answers returning as bullet points in the next user message rather than a tool result -- byte-stable across all 15 local asars, so a standing coverage gap rather than a new feature. L148: the built-* stickiness pattern generalised across four flags. L149: server-delivered session-config booleans as a third gating class invisible to the fcache, and VM-loop-only as a feature class. L150 CORRECTS a mischaracterisation -- gate 3424551112 (OFF) merges Cowork entries into the AGENT's own auto-mode rules via the $defaults sentinel; it is not a client-side harm classifier, and 2051942385 (cicCanUseToolEnabled) is Claude-in-Chrome, an unrelated feature. L151: Desktop writes CLAUDE_CODE_COWORK_FRAME_ARTIFACTS with no consumer before agent 2.1.228 -- the producer shipped before the consumer. L152: four methodology traps, two of which fired during this pass. Also extends L107/L114/L108/L116/L117/L118/L120/L124/L125/L131, adds the site's ninth author-facing failure mode (asking-the-user), and backfills the Chapter 40 reference-table row that v2.37.x omitted.",
+  "lessons_count": 152,
+  "chapters_count": 41,
+  "total_size_kb": 2896,
+  "keywords_indexed": 3430,
+  "note": "Open: the auto-mode rubric's base settings object (I.f()) is unresolved; 50 force-ON gates in the live fcache have no registry entry; sessiondata.img was string-grepped but its shdw container format was not parsed; and Ch37/L132 (host-side transcripts) was not revisited, though sessiondata.img now looks like the place to look. The elicitation finding is binary-tier: the injected instruction was read from the asar, but no live run was observed, so whether a model honours it is unverified."
 }

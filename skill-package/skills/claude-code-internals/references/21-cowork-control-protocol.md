@@ -224,6 +224,47 @@ Four matchers:
 - **`mcp__.*`** — a generic MCP-tool gate via `wjt(session, tool_name)`; a `"block"` decision
   short-circuits before the tool runs.
 
+### ADDENDUM (2026-08-13) — the `Skill` matcher's `additionalContext` is the elicitation injection
+
+The `Skill` bullet above has, since this chapter's original pass, described the hook's payload as a
+black box (`...telemetry+additionalContext...`). Re-derived first-party against Desktop `app.asar`
+**1.28929.0**: the `additionalContext` **is** a per-invocation elicitation/argument-hint instruction,
+built by a resolver the build names outright as `resolveElicitationContext`:
+
+```js
+let st = c.Ht(`286376943`),                          // → imagineElicitationEnabled
+    ct = new Map,                                    // skill name → argumentHint
+    lt = (e,i) => {                                  // → resolveElicitationContext
+      let a = Io(ct,e);
+      if(!a){ r.o.info(`[elicitation] skill not found via=${i}`); return }
+      let {argumentHint:o} = a, s = t.getActiveSession(n);
+      return s && (s.activeSkillThisTurn = {name:e, argumentHint:o}),
+             r.o.info(`[elicitation] hint injected (${o?`with`:`no`} argument-hint) via=${i}`),
+             Lo(e,o)
+    }
+```
+
+- **Gate `286376943` = `imagineElicitationEnabled`, force-ON** in the live 2026-08-13 `fcache` — this
+  is current production behavior on this account, not dormant surface.
+- The injected text tells the model to collect skill arguments via the elicitation module ("the
+  visualize tool's elicitation module — NOT AskUserQuestion") rather than `AskUserQuestion`, quoting
+  the skill's `argument-hint` frontmatter verbatim when present, with an explicit "infer from
+  SKILL.md" fallback when it's absent.
+- **It does not fire inside a sub-agent** — the `PreToolUse` call site gates on `!e.agent_id`:
+
+  ```js
+  D && !e.agent_id
+    ? (e = O(r,`PreToolUse`)) && {hookSpecificOutput:{hookEventName:`PreToolUse`, additionalContext:e}}
+    : {}
+  ```
+- There is a **sibling hook on `UserPromptSubmit`**, matching `/slashcommand`-style invocations
+  (`e.prompt.match(/^\/(\S+)/)`) and injecting the same resolved text through that event instead of
+  `PreToolUse` — so a slash-command skill invocation and a tool-call skill invocation reach the model
+  through two different hook events carrying the same payload shape.
+
+Full verbatim injected message, the byte-stable-since-1.18286.2 dating, and the Desktop-side
+`activeSkillThisTurn` turn-scoped skill scope this injector also sets are in the new **L147**.
+
 None of this replaces the **host-loop tool partition** (`gre`/`PNt`/`BDt`/`QDt`) or the **path-gating
 PreToolUse hook** (`IeA`/`vZe`/`Nen`) below — those are a separate, additional layer verified on the
 CLI/in-VM side. The Desktop injects its own `hooks.PreToolUse` array on top, at spawn time. Also newly

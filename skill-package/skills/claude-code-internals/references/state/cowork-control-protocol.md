@@ -1,10 +1,10 @@
 ---
 domain: cowork-control-protocol
 title: Cowork spawn + stream-json control protocol (current)
-as_of_cli: 2.1.221
-as_of_desktop: 1.24012.1
-sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124, 129, 130]
-updated: 2026-07-22
+as_of_cli: 2.1.229
+as_of_desktop: 1.28929.0
+sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124, 129, 130, 152]
+updated: 2026-08-13
 ---
 
 # Cowork spawn + stream-json control protocol (current)
@@ -65,7 +65,12 @@ external driver) — not the Desktop app's internal IPC.
     `query.setMaxThinkingTokens(enabled?31999:0)` /
     `query.applyFlagSettings({effortLevel})` — the first concrete
     payload shapes confirmed for `set_max_thinking_tokens` /
-    `apply_flag_settings` below.
+    `apply_flag_settings` below. **A second `apply_flag_settings` payload
+    shape** (1.28929.0): `applyFlagSettings({permissions:
+    {additionalDirectories, allow}})`, used by `grantArtifactDirReadAccess()`
+    to push a live, mid-session read-only directory grant under host-loop —
+    see `cowork-architecture.md`'s "Mount model and delete policy" section
+    for the full artifact-mount-vs-native-tool context this payload serves.
   - Full logged argv also carries `--model …`, `--setting-sources=user`,
     `--permission-mode default`, `--allow-dangerously-skip-permissions`,
     and one `--plugin-dir` per enabled plugin.
@@ -328,7 +333,17 @@ chain (`poll → bind → connectSessionTransport → gate check`) is reached
 directly from `handleSessionWork`. Gate `1978029737` (Ch25/L108,
 cowork-runtime-config) gained a previously-undocumented key,
 `sessionsBridgePollIntervalMs`, alongside the already-known
-`sessionsBridgePollBlockMs`. See Ch33/L119 for full grep evidence,
+`sessionsBridgePollBlockMs`. The 2026-08-13 fcache re-decode serves this
+gate's config object with **11 keys total** (up from the 8 previously
+recorded), adding three plugin/skill-sync cadence keys
+(`pluginsFullSyncStalenessMs`, `pluginsSyncIntervalMs`,
+`skillsSyncIntervalMs`). It also supplies a worked methodology example
+(Ch41/L152): the served value for `coworkWebFetchDedupTtlMs` moved from
+900000 to 3600000, while the reader's own code-literal default (used only
+when the key is *absent* from a served payload) is still 900000 — two
+different numbers governing two different code paths; a served-value
+change is never grounds for calling the code-literal default stale. See
+Ch33/L119 for full grep evidence,
 including two items reported as unresolved rather than assumed: no
 `heartbeat` request/response pair was located inside the `/v1/environments/
 {id}/work` family specifically (a separate, pre-existing `POST

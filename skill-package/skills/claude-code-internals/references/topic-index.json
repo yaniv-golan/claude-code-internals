@@ -1,7 +1,7 @@
 {
-  "generated": "2026-07-24",
+  "generated": "2026-08-13",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 146,
+  "total_lessons": 152,
   "lessons": [
     {
       "id": 1,
@@ -2708,7 +2708,7 @@
       "lesson_number": "107",
       "file": "21-cowork-control-protocol.md",
       "startLine": 22,
-      "endLine": 353,
+      "endLine": 394,
       "keywords": [
         "cowork-spawn-contract",
         "stream-json",
@@ -2776,7 +2776,7 @@
       "lesson_number": "108",
       "file": "22-cowork-env-gates-protocol.md",
       "startLine": 37,
-      "endLine": 221,
+      "endLine": 257,
       "keywords": [
         "cowork-env-vars",
         "desktop-env-vars",
@@ -3154,7 +3154,7 @@
       "lesson_number": "116",
       "file": "27-skill-runtime-detection.md",
       "startLine": 19,
-      "endLine": 205,
+      "endLine": 246,
       "keywords": [
         "runtime-detection",
         "detect-cowork",
@@ -3210,7 +3210,7 @@
       "lesson_number": "117",
       "file": "28-vm-rootfs-forensics.md",
       "startLine": 13,
-      "endLine": 192,
+      "endLine": 241,
       "keywords": [
         "vm-rootfs-forensics",
         "rootfs.img",
@@ -3258,7 +3258,7 @@
       "lesson_number": "118",
       "file": "29-skill-scope-stream-contract.md",
       "startLine": 13,
-      "endLine": 263,
+      "endLine": 289,
       "keywords": [
         "skill-scope-attribution",
         "activeSkill",
@@ -3390,7 +3390,7 @@
       "lesson_number": "120",
       "file": "31-desktop-reasoning-config-effort-thinking.md",
       "startLine": 13,
-      "endLine": 134,
+      "endLine": 167,
       "keywords": [
         "reasoning-config",
         "extended-thinking",
@@ -3520,7 +3520,7 @@
       "lesson_number": "124",
       "file": "32-cowork-subagent-execution-model.md",
       "startLine": 244,
-      "endLine": 370,
+      "endLine": 406,
       "keywords": [
         "subagent-model",
         "CLAUDE_CODE_SUBAGENT_MODEL",
@@ -3553,7 +3553,7 @@
       "lesson_number": "125",
       "file": "33-desktop-device-partner-permission-tuning.md",
       "startLine": 16,
-      "endLine": 56,
+      "endLine": 67,
       "keywords": [
         "ios-simulator",
         "android-emulator",
@@ -3575,8 +3575,8 @@
       "title": "remote_devices: the Cowork-Facing Device Bridge",
       "lesson_number": "126",
       "file": "33-desktop-device-partner-permission-tuning.md",
-      "startLine": 59,
-      "endLine": 74,
+      "startLine": 70,
+      "endLine": 85,
       "keywords": [
         "remote_devices",
         "remote-devices-server",
@@ -3594,8 +3594,8 @@
       "title": "grand_prix: the Credential/Browser-Autofill Partner Bridge",
       "lesson_number": "127",
       "file": "33-desktop-device-partner-permission-tuning.md",
-      "startLine": 77,
-      "endLine": 96,
+      "startLine": 88,
+      "endLine": 107,
       "keywords": [
         "grand_prix",
         "grand-prix-bridge",
@@ -3617,8 +3617,8 @@
       "title": "Auto-Mode Tuning, Scheduled-Task Approval, OTLP Tracing & Hardening",
       "lesson_number": "128",
       "file": "33-desktop-device-partner-permission-tuning.md",
-      "startLine": 99,
-      "endLine": 171,
+      "startLine": 110,
+      "endLine": 182,
       "keywords": [
         "tool_approval_default_always_allow",
         "coworkAutoModeAlwaysAllowOverride",
@@ -3765,7 +3765,7 @@
       "lesson_number": "131",
       "file": "34-skill-discovery-vcs-events-containment.md",
       "startLine": 304,
-      "endLine": 410,
+      "endLine": 436,
       "keywords": [
         "asar-diff",
         "1.24012.1",
@@ -3816,8 +3816,8 @@
       "title": "LEAD: 1.24012.1 May Move Cowork Session State Off the Host",
       "lesson_number": "132",
       "file": "34-skill-discovery-vcs-events-containment.md",
-      "startLine": 411,
-      "endLine": 470,
+      "startLine": 437,
+      "endLine": 496,
       "keywords": [
         "session-containment",
         "vm-loop-shift",
@@ -4292,6 +4292,136 @@
         "RemotePluginSync",
         "hooks-strip",
         "find-L-symlink-trap"
+      ]
+    },
+    {
+      "id": 147,
+      "title": "Elicitation Is the Sanctioned Skill-Argument Channel",
+      "lesson_number": "147",
+      "file": "38-cowork-elicitation-flag-classes.md",
+      "startLine": 20,
+      "endLine": 112,
+      "keywords": [
+        "elicitation-skill-arguments",
+        "imagineElicitationEnabled",
+        "gate-286376943",
+        "resolveElicitationContext",
+        "visualize-elicitation-module",
+        "read_me-modules",
+        "show_widget",
+        "not-AskUserQuestion",
+        "skill-argument-collection",
+        "argument-hint-frontmatter",
+        "answers-as-bullet-points",
+        "Skill-PreToolUse-additionalContext",
+        "UserPromptSubmit-slash-command",
+        "subagent-exclusion-agent_id",
+        "skill-invocation-message",
+        "infer-from-SKILL.md"
+      ]
+    },
+    {
+      "id": 148,
+      "title": "The built-* Stickiness Pattern",
+      "lesson_number": "148",
+      "file": "38-cowork-elicitation-flag-classes.md",
+      "startLine": 113,
+      "endLine": 151,
+      "keywords": [
+        "built-tools-stickiness",
+        "frameArtifactsTurnEnabled",
+        "cicCanUseToolEnabled",
+        "cuCanUseToolEnabled",
+        "builtSystemPrompt-cache",
+        "per-turn-flag-cache",
+        "fail-closed-default",
+        "rebuild-predicate",
+        "gate-evaluated-once-per-generation",
+        "sticky-session-flag",
+        "cached-branch-fallback"
+      ]
+    },
+    {
+      "id": 149,
+      "title": "Three Gating Classes, and VM-Loop-Only as a Feature Class",
+      "lesson_number": "149",
+      "file": "38-cowork-elicitation-flag-classes.md",
+      "startLine": 152,
+      "endLine": 198,
+      "keywords": [
+        "session-config-boolean",
+        "frameArtifactsEnabled",
+        "third-gating-class",
+        "invisible-to-fcache",
+        "VM-loop-only-feature",
+        "isHostLoop-gate",
+        "Po-Fo-predicate",
+        "unattended-third-state",
+        "Artifact-spawn-tool",
+        "server-delivered-flag",
+        "no-local-signal"
+      ]
+    },
+    {
+      "id": 150,
+      "title": "Cowork's Additions to the Agent's Auto-Mode Rules",
+      "lesson_number": "150",
+      "file": "38-cowork-elicitation-flag-classes.md",
+      "startLine": 199,
+      "endLine": 261,
+      "keywords": [
+        "autoMode-rubric",
+        "gate-3424551112",
+        "defaults-sentinel",
+        "soft_deny",
+        "allow-carve-outs",
+        "autoMode-environment",
+        "cowork-local-deliverables",
+        "not-a-client-side-classifier",
+        "cicCanUseTool-is-claude-in-chrome",
+        "cicOnceApproved",
+        "once-approved-hosts",
+        "settings-spawn-option",
+        "mnt-auto-memory",
+        "agent-side-judging"
+      ]
+    },
+    {
+      "id": 151,
+      "title": "Desktop Shipped an Env Key Its Own Agent Could Not Read",
+      "lesson_number": "151",
+      "file": "38-cowork-elicitation-flag-classes.md",
+      "startLine": 262,
+      "endLine": 326,
+      "keywords": [
+        "CLAUDE_CODE_COWORK_FRAME_ARTIFACTS",
+        "producer-before-consumer",
+        "agent-2.1.228-consumer-floor",
+        "env-key-no-consumer",
+        "ule-predicate",
+        "claude-coworker-prefix",
+        "session-identity-singleton",
+        "env-strip-helper",
+        "neighbouring-key-inference-trap"
+      ]
+    },
+    {
+      "id": 152,
+      "title": "Four Traps That Fired in One Pass",
+      "lesson_number": "152",
+      "file": "38-cowork-elicitation-flag-classes.md",
+      "startLine": 327,
+      "endLine": 351,
+      "keywords": [
+        "two-numbers-trap",
+        "served-value-vs-code-default",
+        "echo-0-false-negative",
+        "missing-timeout-binary",
+        "positive-control",
+        "rg-counts-lines-not-occurrences",
+        "chunk-family-locator",
+        "per-string-occurrence-count",
+        "methodology-traps"
       ]
     }
   ],
@@ -8808,7 +8938,8 @@
       105
     ],
     "show_widget": [
-      105
+      105,
+      147
     ],
     "getImagineServerDef": [
       105
@@ -14849,6 +14980,213 @@
     ],
     "tool-surface-use-audit": [
       144
+    ],
+    "elicitation-skill-arguments": [
+      147
+    ],
+    "imagineElicitationEnabled": [
+      147
+    ],
+    "gate-286376943": [
+      147
+    ],
+    "resolveElicitationContext": [
+      147
+    ],
+    "visualize-elicitation-module": [
+      147
+    ],
+    "read_me-modules": [
+      147
+    ],
+    "not-AskUserQuestion": [
+      147
+    ],
+    "skill-argument-collection": [
+      147
+    ],
+    "argument-hint-frontmatter": [
+      147
+    ],
+    "answers-as-bullet-points": [
+      147
+    ],
+    "Skill-PreToolUse-additionalContext": [
+      147
+    ],
+    "UserPromptSubmit-slash-command": [
+      147
+    ],
+    "subagent-exclusion-agent_id": [
+      147
+    ],
+    "skill-invocation-message": [
+      147
+    ],
+    "infer-from-SKILL.md": [
+      147
+    ],
+    "built-tools-stickiness": [
+      148
+    ],
+    "frameArtifactsTurnEnabled": [
+      148
+    ],
+    "cicCanUseToolEnabled": [
+      148
+    ],
+    "cuCanUseToolEnabled": [
+      148
+    ],
+    "builtSystemPrompt-cache": [
+      148
+    ],
+    "per-turn-flag-cache": [
+      148
+    ],
+    "fail-closed-default": [
+      148
+    ],
+    "rebuild-predicate": [
+      148
+    ],
+    "gate-evaluated-once-per-generation": [
+      148
+    ],
+    "sticky-session-flag": [
+      148
+    ],
+    "cached-branch-fallback": [
+      148
+    ],
+    "session-config-boolean": [
+      149
+    ],
+    "frameArtifactsEnabled": [
+      149
+    ],
+    "third-gating-class": [
+      149
+    ],
+    "invisible-to-fcache": [
+      149
+    ],
+    "VM-loop-only-feature": [
+      149
+    ],
+    "isHostLoop-gate": [
+      149
+    ],
+    "Po-Fo-predicate": [
+      149
+    ],
+    "unattended-third-state": [
+      149
+    ],
+    "Artifact-spawn-tool": [
+      149
+    ],
+    "server-delivered-flag": [
+      149
+    ],
+    "no-local-signal": [
+      149
+    ],
+    "autoMode-rubric": [
+      150
+    ],
+    "gate-3424551112": [
+      150
+    ],
+    "defaults-sentinel": [
+      150
+    ],
+    "soft_deny": [
+      150
+    ],
+    "allow-carve-outs": [
+      150
+    ],
+    "autoMode-environment": [
+      150
+    ],
+    "cowork-local-deliverables": [
+      150
+    ],
+    "not-a-client-side-classifier": [
+      150
+    ],
+    "cicCanUseTool-is-claude-in-chrome": [
+      150
+    ],
+    "cicOnceApproved": [
+      150
+    ],
+    "once-approved-hosts": [
+      150
+    ],
+    "settings-spawn-option": [
+      150
+    ],
+    "mnt-auto-memory": [
+      150
+    ],
+    "agent-side-judging": [
+      150
+    ],
+    "CLAUDE_CODE_COWORK_FRAME_ARTIFACTS": [
+      151
+    ],
+    "producer-before-consumer": [
+      151
+    ],
+    "agent-2.1.228-consumer-floor": [
+      151
+    ],
+    "env-key-no-consumer": [
+      151
+    ],
+    "ule-predicate": [
+      151
+    ],
+    "claude-coworker-prefix": [
+      151
+    ],
+    "session-identity-singleton": [
+      151
+    ],
+    "env-strip-helper": [
+      151
+    ],
+    "neighbouring-key-inference-trap": [
+      151
+    ],
+    "two-numbers-trap": [
+      152
+    ],
+    "served-value-vs-code-default": [
+      152
+    ],
+    "echo-0-false-negative": [
+      152
+    ],
+    "missing-timeout-binary": [
+      152
+    ],
+    "positive-control": [
+      152
+    ],
+    "rg-counts-lines-not-occurrences": [
+      152
+    ],
+    "chunk-family-locator": [
+      152
+    ],
+    "per-string-occurrence-count": [
+      152
+    ],
+    "methodology-traps": [
+      152
     ]
   }
 }

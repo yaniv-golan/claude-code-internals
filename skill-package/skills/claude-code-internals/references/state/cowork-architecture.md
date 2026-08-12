@@ -1,10 +1,10 @@
 ---
 domain: cowork-architecture
 title: Cowork runtime architecture (current)
-as_of_cli: 2.1.221
-as_of_desktop: 1.25927.0
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140]
-updated: 2026-08-05
+as_of_cli: 2.1.229
+as_of_desktop: 1.28929.0
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151]
+updated: 2026-08-13
 ---
 
 # Cowork runtime architecture (current)
@@ -365,6 +365,27 @@ harness. Content-side, branch on the tool surface: plain `Bash` vs
 is gone from the 1.18286.0 asar — the sealed-env fact rests on the empirical
 probe, not that symbol.
 
+**A new env var joins the identity trio, with a producer/consumer version gap
+(L151).** Desktop 1.28929.0 writes `CLAUDE_CODE_COWORK_FRAME_ARTIFACTS` into
+the local-agent spawn env whenever the frame-artifacts predicate above holds.
+The consumer lands only in standalone CLI **2.1.228+** — it is absorbed into
+the session-identity singleton at boot alongside `CLAUDE_CODE_ENTRYPOINT`/
+`CLAUDE_CODE_CHILD_SESSION`/`CLAUDECODE` (the same trio this recipe is built
+on), with its own case-insensitive strip helper. Every agent binary at or
+before 2.1.227 (host Mach-O, in-VM ELF, standalone CLI) has zero occurrences
+of the key — Desktop shipped the producer a full agent version before any
+consumer existed, the reverse of the usual "the agent already understands
+this env var" assumption; a neighboring key's presence (`CLAUDE_CODE_DISABLE_ARTIFACT`,
+present since earlier) says nothing about whether *this* key is understood.
+Gates a local predicate that **inverts** the `local-agent`/`claude-coworker*`
+entrypoint class this page's detection recipe otherwise treats as one group —
+the agent-side mirror of this page's Artifact-tool/legacy-mount inversion
+above: frame-artifacts on favors the native tool path over the legacy
+chat-relay artifact path. Side finding: **`claude-coworker*` is an entrypoint
+*prefix* family** (`e?.startsWith("claude-coworker")`), not a value belonging
+to any enumerable set — a caveat for anyone trying to express the full
+entrypoint space as a fixed list of strings.
+
 ## Re-verification at Desktop 1.18286.0 (2026-07-04)
 
 All of the above — the host-loop/VM-loop split, the shared-scratch-space
@@ -513,6 +534,43 @@ is the *interactive* namespace, not the only one — and this path does a **bidi
 rewrite of config file contents** (`host-to-vm` before spawn, `vm-to-host` in a `finally`), which is
 distinct from tool-path translation (Ch35/L122's "`/sessions/…` is never translated" still holds for
 file tools). Marketplace source comes from gate `3758515526`.
+
+**Artifact mounts are the suppressed LEGACY path, and host-loop never builds them at all (L149).**
+The native `Artifact` tool and a legacy per-artifact mount set are mutually exclusive, gated by the
+same eligibility predicate `Po(session, {isBridgeSession, isDispatchChild, isHostLoop})` (roughly:
+the server-delivered `frameArtifactsEnabled` session-config boolean is true, and the session is not
+a bridge/dispatch-child/host-loop session and not HIPAA-restricted):
+
+```js
+re = c.Ht(`2940196192`) && !Po(i, {isBridgeSession:f, isDispatchChild:p, isHostLoop:h})
+```
+
+The `CoworkArtifacts` mount collection (gate `2940196192`, one host bind-mount per artifact dir via
+`getArtifactDir(id)`, artifacts with a disk status other than `local`/`cloud-sync` skipped with a
+warning) builds only when `Po` is **false** — i.e. only when the session is *not* eligible for the
+native tool. Frame-artifacts-eligible sessions get the tool and no legacy mounts; ineligible sessions
+get the mounts (if the gate is on) to fill the gap. Because the tool's own eligibility check (`Fo`)
+additionally excludes unattended sessions (`_isUnattended`) while `Po` does not, there are **three**
+reachable states, not two: config-flag-off gets mounts only; config-flag-on + attended gets the tool
+only; config-flag-on + **unattended** gets **neither**.
+
+`frameArtifactsEnabled` itself is a third gating class this skill's fcache-reading methodology
+cannot see at all: it arrives in the server-delivered session-config struct next to `memoryEnabled`/
+`skillsEnabled`/`pluginsEnabled`, never as a GrowthBook gate — there is no local signal, live or
+dark, that reveals its state. `Po`'s `!isHostLoop` term also makes the `Artifact` tool structurally
+**VM-loop-only**: with the host-loop gate (`1143815894`) force-ON for 1p accounts, it is unreachable
+on a standard 1p posture regardless of how the config flag or `2940196192` are set — the same
+"VM-loop-only feature class" as `cowork-permissions.md`'s auto-mode rubric addition (gate
+`3424551112`), which is gated the identical `!hostLoopMode` way.
+
+**Host-loop's own artifact-access mechanism is not a mount at all.** `grantArtifactDirReadAccess()`
+short-circuits for non-host-loop/`chat` sessions; under host-loop it instead appends the artifact
+dir to a per-session `midSessionReadOnlyPaths` list and pushes the change live via
+`applyFlagSettings({permissions:{additionalDirectories, allow}})` — a **second** `applyFlagSettings`
+payload shape alongside `cowork-control-protocol.md`'s `{effortLevel}` one, used here for a
+mid-session read-only grant rather than a settings toggle. No `mnt-artifact*`/`CoworkArtifacts`
+mount unit exists anywhere in the current VM rootfs image (0 occurrences), consistent with
+production being host-loop.
 
 **⚠️ `isBridgeSession` ≠ `environment_kind:"bridge"`.** It is `sessionType === "agent"` on the
 Desktop session record — a different namespace from L138's lane oracle. When true, approvals are

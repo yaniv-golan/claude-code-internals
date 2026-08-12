@@ -406,6 +406,32 @@ The authoritative per-gate state now lives in `state/registry.json` as a structu
 `9d75909785dc344e` it is `on/force`** (see the L129 amendment). `245679952` (`1→1`, pre-existing)
 remains `on/force`.
 
+### ADDENDUM (2026-08-13, fcache 254 features) — the original four "absent" ids, re-checked: half have moved again
+
+This lesson originally recorded **four** gate ids as absent from the fcache
+(`278625510`, `1311049725`, `1549258603`, `3705360580`); the 2026-08-05 amendment above already
+resolved `1311049725`. A fresh capture against Desktop **1.28929.0** (2026-08-13, `254` features)
+re-checks the remaining two OAuth-refresh ids from that original set, plus the two that this lesson's
+own "MCP-skills"/"`morning`" findings are keyed on:
+
+| id | 1.24012.1 original claim | now (2026-08-13) |
+|---|---|---|
+| `1549258603` (SDK OAuth refresh) | absent | **present, `off`/`defaultValue`** |
+| `3705360580` (CCD OAuth refresh) | absent | **present, `off`/`defaultValue`** |
+| `278625510` (`getMcpSkillSources`) | absent | still absent |
+| `3214976288` (`morning` bundled skill) | absent | still absent |
+
+Same transition already recorded once for `1549258603`/`3705360580` at 2026-08-05 — this is a
+**second, independent confirmation**, eight days later, of the same two ids settling into
+`present/defaultValue/off` and staying there, while the other two stay unevaluated. That repetition is
+itself the useful result: it turns this lesson's original principle — *absent from the fcache means
+unevaluated, not off* — from a single worked example into a **vindicated, repeatable** one, and adds a
+sharper corollary. **Absence is a state that expires.** A note that says "gate X is absent from the
+fcache" is only true as of the snapshot it was read from; carry the capture date (or the snapshot's
+content hash, per the rule established above) alongside any absence claim, the same way a presence/state
+claim already must — an undated "absent" ages into a false claim exactly as silently as an undated
+"off" would.
+
 ---
 
 # LESSON 132 — LEAD: 1.24012.1 MAY MOVE COWORK SESSION STATE OFF THE HOST
@@ -454,7 +480,7 @@ If 1.24012.x moves real Desktop sessions' transcripts into the VM, **the host-si
 | `getMcpSkillSources` | fn | asar (NEW) | Dead code (1 occurrence, 0 callers); gate `278625510`; MCP-skills extension `io.modelcontextprotocol/skills` (L131) |
 | `278625510` / `1311049725` / `1549258603` / `3705360580` | gate ids | asar (NEW) | MCP-skills ext / VCS-events consumption / SDK & CCD OAuth-refresh. **State is snapshot-bound — see the amended gate-state section**: at `9d75909785dc344e` only `278625510` is absent; the other three read present/`defaultValue`/off |
 | `1598976391` (`proactiveSkillSuggestEnabled`) / `245679952` (`suggestSkillsEnabled`) | gate ids | asar + fcache | **snapshot-bound**: at `9d75909785dc344e` both are `on/force` (proactive was `off/default` at 2026-07-24 — see the L129 addendum) |
-| `3214976288` | gate id | asar (REMOVED) | Was the `morning` bundled-skill `isEnabled`; skill removed this release (L131) |
+| `3214976288` | gate id | asar (REMOVED) | Was the `morning` bundled-skill `isEnabled`; skill removed this release (L131). Still absent from the fcache as of the 2026-08-13 re-check (see the addendum above) |
 | `coworkTokens` | config key | asar (NEW) | Usage accounting `{chatTokens,coworkTokens,codeTokens}`; Desktop UI only |
 | `harnessCwd` / `clearHarnessMoveState` | fields | asar (NEW) | CLI runtime cwd after `EnterWorktree`/`ExitWorktree` — **not** a test "harness" (naming trap) |
 | `1143815894` | gate id | fcache | Host-loop, `true/force` at 07:48 boot; L132 lead flags this as a boot snapshot, not a live per-session read |

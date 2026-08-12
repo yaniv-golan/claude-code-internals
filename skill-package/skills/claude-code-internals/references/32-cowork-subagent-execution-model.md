@@ -319,6 +319,40 @@ A stream consumer can read exact resolved agent types — including the general-
 
 **`permission_denied` is native wire-level denial attribution — pre-ask denials only.** On a deny the agent emits `{type:"system",subtype:"permission_denied",tool_name,tool_use_id,agent_id:it.agentId,decision_reason_type:Dr.decisionReason?.type,decision_reason:WVr(Dr.decisionReason),message}`, whose schema documents `agent_id` as *"Subagent ID when the denied tool call originated inside a subagent. Mirrors can_use_tool for host-side routing."* The emission is gated by `IQo(e){return e.decideLocation==="pre-ask"}` — verified identically present in the in-VM ELF 2.1.205 (2 occurrences), so this is not a host-only artifact. **Scope**: this fires for automatic rule/mode/classifier denials only — **not** for interactive `can_use_tool` asks answered deny by the host, and **not** for PreToolUse-hook denials (hook denies never reach `canUseTool`; they surface as `is_error` tool_results). It carries no `tool_input` path. Consequence for Cowork: the host-loop **path-gate hook** (Lesson 122) never produces `permission_denied` — this channel corroborates pre-ask denials, never replaces path-denial observability. The `can_use_tool` control request itself carries `decision_reason`/`decision_reason_type` (*"Structured discriminator for why auto-mode escalated..."*) — the exact field the host-loop rewriter keys on.
 
+## ADDENDUM (2026-08-13) — the full `sessionType` enum, and a new sticky-cached gate that excludes two of its members
+
+First-party against Claude.app (Desktop) `app.asar` **1.28929.0**. This chapter's Deltas table above
+discriminates host-loop from VM-loop, and Lesson 125 (Ch36) already keys a structural argument on
+`sessionType==="ccd"` vs `"cowork"`/`"cowork-remote"` — but no lesson anywhere in the skill enumerates
+the type itself. Harvested from every `sessionType===` comparison site across the asar, the full set is:
+
+**`agent`, `ccd`, `chat`, `cowork`, `dispatch_child`, `radar`, `scheduled`.**
+
+Five of these already appear somewhere in the skill (`ccd` — Ch36/L125; `cowork`/`cowork-remote` — Ch36/L126;
+`chat`/`agent`/`scheduled` — scattered spawn-env and IPC references). **`radar` and `dispatch_child` have
+zero coverage anywhere in the skill** — neither has ever been named in a lesson. Anyone extending
+Ch36/L125's `"ccd"`-only structural argument, or reasoning about session-type-gated surface generally,
+should treat this as the reference enum going forward and re-check any future `sessionType===` claim
+against the full seven, not just the ones already documented.
+
+**A new gate rides the same sticky-cache shape as this lesson's `built-*` pattern, and it's session-type
+excluded.** Read two lines below the `frameArtifactsTurnEnabled` site quoted for context:
+
+```js
+P  = N ? (g?.builtTools===void 0 ? c.Ht(`2051942385`) : N.cicCanUseToolEnabled ?? !1) : !1
+ue = N ? (g?.builtTools===void 0 ? (i.sessionType!==`radar` && i.sessionType!==`chat` && c.Ht(`2486083521`))
+                                 : N.cuCanUseToolEnabled ?? !1) : !1
+```
+
+`2486083521` = `cuCanUseToolEnabled` (Computer Use) — **on/force** in the 2026-08-13 fcache (254
+features). It follows the identical per-turn evaluate-once/cache-on-session/`?? !1`-fallback shape as
+`frameArtifactsTurnEnabled` and `cicCanUseToolEnabled` (both new gates from the same 1.28929.0 pass) and
+this lesson's own model/ToolSearch resolution chains — a third confirmed instance of that mechanism,
+not a one-off. Distinct from the two: it is **explicitly excluded for `radar` and `chat` sessions**
+before the gate is even read — the only one of the three with a session-type carve-out baked into the
+predicate itself. Full mechanism, plus the sibling `frameArtifactsTurnEnabled`/`cicCanUseToolEnabled`
+gates and the fail-closed default they share, at Ch38/L148.
+
 ## Methodology
 
 **(a) The fcache is no longer raw JSON.** It is a container with magic `CLF\x01\x00` + 3 bytes + a gzip stream starting at byte 8 (24,863 bytes on disk → 86,779 decompressed in this capture; 207 gates). Decode with `tail -c +9 fcache | gunzip`. Raw `grep`/`strings` — the technique this skill used for every capture through v2.26.0 — **no longer works and will falsely report gates as absent.**
@@ -356,6 +390,8 @@ A stream consumer can read exact resolved agent types — including the general-
 | `uOt` (`hardcodedMainGrowthBookFeatures`) | data | asar | Custom-3p gate table force-ONing `1143815894` + `2307090146` (amends Ch23/L106) |
 | `task_started`/`toolUseResult` envelope/`permission_denied` | stream messages | both agent bundles | Sub-agent observability beyond Ch32/L118's per-`tool_use` contract |
 | `IQo()` | fn | host bundle + VM ELF | `permission_denied` emission gate: `decideLocation==="pre-ask"` only |
+| `sessionType` enum: `agent`,`ccd`,`chat`,`cowork`,`dispatch_child`,`radar`,`scheduled` | data | asar 1.28929.0 | Full set harvested from `sessionType===` sites (2026-08-13); `radar`/`dispatch_child` uncovered elsewhere in the skill |
+| `2486083521` (`cuCanUseToolEnabled`) | gate id, on/force | asar 1.28929.0 | Computer Use permission-mode gate; sticky per-turn cached like `frameArtifactsTurnEnabled`/`cicCanUseToolEnabled`; excluded for `radar`/`chat` sessions (Ch38/L148) |
 
 ## What this means for skill and agent authors
 
@@ -367,4 +403,4 @@ A stream consumer can read exact resolved agent types — including the general-
 - **Don't build resume logic around Task.** Detect the capability (presence of `SendMessage` in the tool list, per Ch29/L115) rather than the product name; in Cowork the only continuation primitives are redo-dispatch and repair-dispatch, plus the new session-level (not sub-agent-level) `mcp__dispatch__send_message`.
 - **For stream-based observability, read `task_started.subagent_type` and `toolUseResult.resolvedModel`/`status`/`prompt`** rather than trying to infer sub-agent identity or model from the dispatching assistant message — those fields are wire-carried specifically for this purpose. Treat `permission_denied` as a corroborating signal for automatic pre-ask denials only, never as a complete path-denial log — the host-loop path-gate hook never emits it.
 
-**Cross-references.** Ch17/L89 + the v2.25.0 lesson (`${CLAUDE_PLUGIN_ROOT}` host-loop vs VM-loop resolution — Lesson 122 confirms file tools never expand the token regardless of loop) · Ch20 (host-loop/VM-loop framing — Lesson 124's `Pm()` is the successor of that chapter's `f_()`) · Ch23/L106 (cli_plugin credential broker — amended by Lesson 124's custom-3p `uOt` finding) · Ch24/L107 (host-loop tool partition, forced-ask hook set — symbols renamed and the set grew, Lesson 121) · Ch25/L108 (gate catalog — several gate values re-confirmed unchanged, Lesson 124) · Ch29/L115 (Task one-shot, `SendMessage` resume, Cowork severing — re-verified with two refinements, Lesson 124) · Ch31/L117 (third-artifact-class methodology — extended here to the Desktop-managed host Mach-O) · Ch32/L118 (per-`tool_use` stream contract — Lesson 124 adds the sibling `task_started`/`toolUseResult`/`permission_denied` channels).
+**Cross-references.** Ch17/L89 + the v2.25.0 lesson (`${CLAUDE_PLUGIN_ROOT}` host-loop vs VM-loop resolution — Lesson 122 confirms file tools never expand the token regardless of loop) · Ch20 (host-loop/VM-loop framing — Lesson 124's `Pm()` is the successor of that chapter's `f_()`) · Ch23/L106 (cli_plugin credential broker — amended by Lesson 124's custom-3p `uOt` finding) · Ch24/L107 (host-loop tool partition, forced-ask hook set — symbols renamed and the set grew, Lesson 121) · Ch25/L108 (gate catalog — several gate values re-confirmed unchanged, Lesson 124) · Ch29/L115 (Task one-shot, `SendMessage` resume, Cowork severing — re-verified with two refinements, Lesson 124) · Ch31/L117 (third-artifact-class methodology — extended here to the Desktop-managed host Mach-O) · Ch32/L118 (per-`tool_use` stream contract — Lesson 124 adds the sibling `task_started`/`toolUseResult`/`permission_denied` channels) · Ch36/L125 (2026-08-13 addendum — the full `sessionType` enum this chapter now records supersets Ch36's `"ccd"`-only structural argument; that argument still holds, `radar`/`dispatch_child` are simply outside its scope) · Ch38/L148 (the `built-*` sticky-cache mechanism generalized, with `cuCanUseToolEnabled`'s session-type exclusion as a concrete instance).

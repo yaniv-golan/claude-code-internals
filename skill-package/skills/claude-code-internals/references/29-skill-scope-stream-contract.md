@@ -95,6 +95,32 @@ So the recursion guard is gated/telemetered by **`tengu_skill_tool_fork_recursio
 (`"…is already executing in this forked context — you are the subagent running it. Execute the
 instructions…"`, confirmed present in the ELF), which Part C shows is hit model-dependently.
 
+### ADDENDUM (2026-08-13) — Desktop keeps its own skill scope, with the OPPOSITE lifetime
+
+First-party against Claude.app (Desktop) `app.asar` **1.28929.0**, found while tracing the elicitation
+skill-argument injector (Ch38/L147's `resolveElicitationContext`/`lt(e,i)`): the Desktop process tracks
+a **second, independent** skill-scope field, separate from the agent-side `activeSkill` documented in
+Part A above:
+
+```js
+let {argumentHint:o} = a, s = t.getActiveSession(n);
+return s && (s.activeSkillThisTurn = {name:e, argumentHint:o}), …
+```
+
+`activeSkillThisTurn = {name, argumentHint}` is set by the injector on a `Skill`-tool invocation or a
+slash-command `UserPromptSubmit`, and is **cleared in three places**: `lam_message_cycle_start` (each
+new user message), `finishTurnCleanup`, and CU-lock release.
+
+This is a direct counterpart to the agent-side `activeSkill` above — same intent (which skill "owns"
+the current context) — but the **opposite lifetime**. The agent's `activeSkill` (Part A) is *sticky,
+most-recent-wins, never popped*: once an inline skill sets it, it stays set until the next `Skill` call
+replaces it, with no "skill exited" signal. The Desktop's `activeSkillThisTurn` is **per-turn and
+explicitly reset three separate ways**. Two skill-scope fields with matching names and opposite
+semantics is exactly the shape that produces a wrong inference if only one side is documented: reading
+only the Desktop field would (wrongly) suggest skill scope always resets each turn; reading only the
+agent field would (wrongly) suggest it never does. Both are real, tracked in different processes, for
+different purposes. See Ch38/L147 for the injector this field is part of.
+
 ## Part B — the per-`tool_use` stream-json contract
 
 The locally-`yield`ed stream objects carry a small envelope: a few **always-present** fields plus
@@ -272,4 +298,6 @@ continuation — this chapter adds the fork-skill `parent_tool_use_id` attributi
 Ch04 (Filesystem hooks `FileChanged`/`CwdChanged` — confirmed by the same emulator plan, via a
 producer-site check, to be watcher→hook-callback payloads (`hook_event_name:"FileChanged"`,
 `file_path`/`event`), with **zero** stream-message producer sites — so file-change events never reach
-the stream envelope this chapter documents).
+the stream envelope this chapter documents) · Ch38/L147 (2026-08-13 — the Desktop-side
+`activeSkillThisTurn` turn-scoped counterpart to this chapter's sticky agent-side `activeSkill`, plus
+the elicitation skill-argument injector it's set from).

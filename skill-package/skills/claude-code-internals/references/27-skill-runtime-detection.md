@@ -105,6 +105,47 @@ Desktop Cowork spawns with `CLAUDE_CODE_ENTRYPOINT:"local-agent"` +
 `remote_cowork` value (`avs()`). Treat unknown values as "Claude Code, unspecified
 surface" — the set grows release to release.
 
+### ADDENDUM (2026-08-13) — `claude-coworker*` is an entrypoint PREFIX family, and a new env key joins the identity trio
+
+Re-derived first-party against standalone-CLI agent **2.1.229** (the CLI baseline this skill pins,
+2.1.221, is now several versions stale — held locally on this machine up to 2.1.229). Two findings that
+bear directly on this lesson's `c2u`/`u2u`/`d2u` entrypoint taxonomy and its detection recipe.
+
+**1. A prefix-matched entrypoint class the value-set model can't express.** Agent 2.1.229 contains:
+
+```js
+function Bgd(e){ return e==="local-agent" || e?.startsWith("claude-coworker")===!0 }
+```
+
+`claude-coworker*` is matched by **prefix**, not by membership in a fixed set. This lesson's `c2u` /
+`u2u` / `d2u` groupings are all enumerated value sets (`{claude-desktop, claude-desktop-3p,
+local-agent}`, etc.) — a prefix family is structurally something a value set cannot express, so any
+detection logic built purely on "is `$CLAUDE_CODE_ENTRYPOINT` a member of this set" will silently
+miss every `claude-coworker*` variant. **This lesson's ordered detection recipe (Part B) needs review**
+against this prefix class before being treated as exhaustive.
+
+**2. `CLAUDE_CODE_COWORK_FRAME_ARTIFACTS` joins the identity trio this recipe is built on.** A new
+session-identity env key, written by Desktop **1.28929.0** and consumed starting at agent **2.1.228**,
+is absorbed into the same boot-time session-identity singleton as `CLAUDE_CODE_ENTRYPOINT` and
+`CLAUDECODE`:
+
+```js
+class jMc { entrypoint; childSession=!1; claudecode=!1; coworkFrameArtifacts=!1;
+            setCoworkFrameArtifacts(e){this.coworkFrameArtifacts=e} … }
+function WMc(e){ WYg(e), $6e.setEntrypoint(Q.CLAUDE_CODE_ENTRYPOINT),
+                 $6e.setChildSession(Boolean(Q.CLAUDE_CODE_CHILD_SESSION)),
+                 $6e.setClaudecode(Boolean(Q.CLAUDECODE)),
+                 $6e.setCoworkFrameArtifacts(Q.CLAUDE_CODE_COWORK_FRAME_ARTIFACTS) }
+RB_ = new Set(["CLAUDE_CODE_ENTRYPOINT","CLAUDE_CODE_IS_COWORK","CLAUDE_CODE_COWORK_FRAME_ARTIFACTS"])
+```
+
+It joins `CLAUDE_CODE_ENTRYPOINT` / `CLAUDE_CODE_IS_COWORK` in the agent's own `RB_` set and is set on
+the boot identity singleton alongside `CLAUDECODE` and `CLAUDE_CODE_CHILD_SESSION` — **the exact trio
+this lesson's Part A/B recipe is already keyed on.** A future revision of the recipe should account for
+it as a fourth signal in that same family, not as an unrelated flag. Full derivation (the producer
+shipping one agent version ahead of its consumer, the `ule()`/`Bgd()` predicate chain, and the
+case-insensitive strip helper) is in the new **L151**.
+
 ### The Cowork VM shell: filesystem signature, not env
 
 With the env scrubbed, the VM shell's unmistakable signals are structural:

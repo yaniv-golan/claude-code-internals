@@ -1,5 +1,26 @@
 # Changelog
 
+## v2.38.0 — 2026-08-13 (this fork) — elicitation, flag-delivery classes, and two corrections
+
+Chapter 41 (L147–L152), from Desktop `app.asar` **1.28929.0** diffed against 1.26832.0 and 13 further local asars back to **1.18286.2**, the host-agent Mach-O and in-VM ELF **2.1.227**, standalone CLI **2.1.228/2.1.229**, and a live `fcache` decoded **2026-08-13** (254 features).
+
+Prompted by the `cowork-harness` project's 1.28929.0 fidelity-impact document, then re-derived first-party. Two of its claims did not survive that re-derivation, and one was answered opposite to its stated direction.
+
+**The finding that matters to a skill author.** On every skill invocation, Cowork injects an instruction telling the model to collect missing arguments through the visualize tool's elicitation module and explicitly **not** through `AskUserQuestion` — with answers returning as bullet points in the next user message rather than as a tool result. It is delivered as `additionalContext` on the `Skill` PreToolUse hook (and a `UserPromptSubmit` hook for slash commands), suppressed inside sub-agents, and gate `286376943` reads force-ON. It is also byte-stable across all fifteen asars on this machine, back past every Desktop chapter this skill has ever written. That makes it **a standing gap in our own coverage, not a new feature** — the honest framing, and the reason it now has a page on the site.
+
+**Two corrections.**
+
+| claim | correction |
+|---|---|
+| "Desktop embeds a client-side harm classifier on the `can_use_tool` path" | Two unrelated features conflated. Gate `3424551112` (**OFF**) merges Cowork entries into the **agent's own** auto-mode rules via a `$defaults` sentinel — judging stays agent-side. `2051942385` (`cicCanUseToolEnabled`) is **Claude-in-Chrome** permission mode. |
+| "the agent has shipped this for a while; Desktop is just listing it" | Reversed. `CLAUDE_CODE_COWORK_FRAME_ARTIFACTS` has **no consumer before agent 2.1.228**; the producer shipped first. The original inference rested on a *neighbouring* key's presence. |
+
+**Also:** the `built-*` stickiness pattern generalised across four flags (L148); server-delivered session-config booleans as a third gating class the fcache structurally cannot show, plus VM-loop-only as a feature class (L149); and four methodology traps (L152), two of which fired during this very pass — a gate-backed read carries **two** numbers (served value vs the reader's code-literal default, live here at 3600000 and `9e5`), and `|| echo 0` silently converts a tool failure into a data point, which fabricated "zero mount units in a Linux disk image" until a positive control caught it.
+
+Extends L107, L108, L114, L116, L117, L118, L120, L124, L125 and L131. Adds the site's ninth author-facing failure mode (`asking-the-user`) and backfills the Chapter 40 reference-table row that v2.37.x omitted.
+
+**Open:** the auto-mode rubric's base settings object is unresolved; 50 force-ON gates in the live fcache have no registry entry; `sessiondata.img` was string-grepped but its `shdw` container format was not parsed. The elicitation finding is binary-tier — the instruction was read from the asar, but no live run was observed, so whether a model honours it is unverified.
+
 ## v2.37.6 — 2026-08-06 (this fork) — a retraction that was not earning its place
 
 Three retraction notes existed, in two different fields. Sorted by what each does for someone reading *now*:

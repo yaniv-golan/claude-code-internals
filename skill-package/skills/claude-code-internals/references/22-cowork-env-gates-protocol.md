@@ -169,7 +169,7 @@ The desktop reads gates via `dt(id)` (→ `.on`) and `Qn(id,key,default)` (→ s
 | `1143815894` | **on** (force) | **Host-loop** (Ch20/L89). `f_()`→`cPt()`→`dt(this)`. Production = host-loop. |
 | `3045399524` | **on** (force) | **Fable model allow** — `{enabled:["claude-fable-5[1m]","claude-fable-5"],alwaysLoad:true}`; whitelists claude-fable-5 (+1M) as selectable in Desktop. |
 | `583857784` | **on** (force) | **Bridge transport SDK adapter** (`Dfn`) — Cowork sessions use the SDK-based transport (`Bfn`) instead of the legacy CCR HTTP transport (`Rfn`). Current production transport path. |
-| `1978029737` | **on** (force) | **Cowork runtime multi-key config** — `sessionsBridgePollBlockMs:30`, `coworkNativeFilePreview:true`, **`coworkWebFetchViaApi:true`**, **`coworkWebFetchPrompt:true`**, `workspaceBashWaitLonger:true` (+ skillsSync/idleGrace/timeouts). Master Cowork tuning gate. |
+| `1978029737` | **on** (force) | **Cowork runtime multi-key config** — `sessionsBridgePollBlockMs:30`, `coworkNativeFilePreview:true`, **`coworkWebFetchViaApi:true`**, **`coworkWebFetchPrompt:true`**, `workspaceBashWaitLonger:true` (+ skillsSync/idleGrace/timeouts). Master Cowork tuning gate. **Grown to 11 keys as of the 2026-08-13 capture — see the addendum immediately below the table.** |
 | `1648655587` | **on** (force) | **Scheduled-task session limiter** (`class L9t`, `logPrefix:"[ScheduledTasks]"`/`"[CCDScheduledTasks]"`) — `{perTask:1, global:3}`. **CORRECTED in v2.22.1**: this table originally mislabeled it a "Task dispatch rate-limiter" implying a per-conversation `Task`-tool sub-agent fan-out cap. It is not. `shouldSkipDispatchForActiveSession` counts only *concurrently-active sessions carrying a `scheduledTaskId`* (i.e. sessions launched by Cowork's cron/scheduled-task feature, Ch26/L109): `perTask:1` ⇒ a given scheduled task never has >1 live session at once; `global:3` ⇒ ≤3 background scheduled-task sessions run concurrently across the whole desktop. On exceed it **skips** the dispatch (`recordSkipAndEmit`) and emits `${prefix}_scheduled_tasks_dispatch_skipped` telemetry — no in-agent-run hook, no model-visible effect. Grepping the same asar for `maxConcurrentSubagents`/`subagentLimit`/`concurrentTaskLimit`/`dispatchLimit` turns up nothing: **the Desktop caps in-conversation `Task`-tool sub-agent dispatch nowhere.** Credit: this correction originated from the independent `claude-cowork-headless-emulator` project's forensic pass (`2026-07-04-d4-dispatch-limiter-forensic.md`, ~95%-confidence adversarial review), re-verified first-party against this installation's own `app.asar` 1.18286.0 before being applied here. |
 | `1893165035` | **on** (force) | **Auto-retry error categories** — `categories:["api_prompt_too_long","process_already_running","api_model_not_found","api_request_too_large"]`. Note `api_model_not_found` is auto-retried (can mask model unavailability). |
 | `2340532315` | **on** (force) | **Plugin sync ("sparkplug")** — startup `syncPlugins()`, per-session manifest load, enabled-state backfill. OFF → `enabled_state_source:"sparkplug-off"`. Master Cowork-plugin gate. |
@@ -179,6 +179,42 @@ The desktop reads gates via `dt(id)` (→ `.on`) and `Qn(id,key,default)` (→ s
 | `2307090146` | **off** (default) | **`cli_plugin`** broker (Ch23/L106). Confirmed off for the standard interactive account (force-on only for the `3p`/CCD class via the `Vdr` map). |
 | `2614807392` | **not present in the pinned snapshot** (see registry `observed`) | **`.host-home` skeleton-path index** (added v2.23.0). Governs whether the agent's system prompt is told about the `.host-home` mount name and the accompanying "paths under `.host-home` correspond to absolute host paths" explanation. `.host-home` is **not a real bind mount** — Ch31/L117's rootfs-forensics mount inventory found no `mnt-.host-home.mount` systemd unit, and this gate explains why: it's a synthetic path-translation trick (`ece()`/`uCe()` convert between `/sessions/<id>/mnt/.host-home/<sub>` and a real absolute host path), letting the agent *reference* host paths in prompts without the whole host home directory being shared. Off by default for the standard client, matching the emulator project's own `DARK_GATES` classification. |
 | `2860753854` | **on** (force, inert-default) | **`CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES` value gate** (added v2.23.0). Unlike every other gate in this table, this is a GrowthBook **string** config, not a boolean: `IWt()` returns `dE("2860753854","")` if non-empty, else falls back to a hardcoded default (`"## Sensitive personal information..."` PII-handling guidance). "On" here means the gate resolves to *some* string (truthy), not that a feature is toggled — the practical effect for a standard install is identical to the hardcoded default until Anthropic pushes a remote override. |
+
+> **ADDENDUM (2026-08-13, fcache `254` features) — `coworkRuntimeConfig` (`1978029737`) has grown from
+> 4 documented keys to 11.** Full served value, this capture:
+>
+> ```json
+> { "coworkNativeFilePreview": true, "coworkWebFetchDedup": true,
+>   "coworkWebFetchDedupMaxEntries": 100, "coworkWebFetchDedupTtlMs": 3600000,
+>   "coworkWebFetchPrompt": true, "coworkWebFetchViaApi": true,
+>   "pluginsFullSyncStalenessMs": 3600000, "pluginsSyncIntervalMs": 1200000,
+>   "sessionsBridgePollBlockMs": 30, "skillsSyncIntervalMs": 1200000,
+>   "workspaceBashWaitLonger": true }
+> ```
+>
+> This table already documented `coworkNativeFilePreview`, `coworkWebFetchViaApi`,
+> `coworkWebFetchPrompt`, `sessionsBridgePollBlockMs`, and `workspaceBashWaitLonger`. **Five keys are
+> new to the skill**: `coworkWebFetchDedup` / `coworkWebFetchDedupMaxEntries` (dedup on, cap 100
+> entries) and — the load-bearing pair for Ch27/L113's skills/plugins-sync work —
+> `skillsSyncIntervalMs` and `pluginsSyncIntervalMs`, **both `1200000` (20 min)**, plus
+> `pluginsFullSyncStalenessMs` at `3600000` (1 h). These are the actual poll/staleness cadences behind
+> the sync mechanism the skill already names but never dated.
+>
+> **`coworkWebFetchDedupTtlMs` is a worked example of a trap worth naming on its own: a gate-backed
+> config read can carry two different numbers, and neither is "the" stale one.** The *served* value
+> above is `3600000`. The asar's reader call for the same key, verified first-party in 1.28929.0, is:
+>
+> ```js
+> …,U=3e4, W=9e5, Ae=100, G=new WeakMap;
+> ttlMs: i.zt(`1978029737`,`coworkWebFetchDedupTtlMs`, W, n.x().int().positive())
+> ```
+>
+> — the code-literal **default** argument `W` is still `9e5` (`900000`). These are not "one true value
+> and one stale copy": the served value governs the key-present path, `W` governs the key-*absent*
+> path, and both are live simultaneously for different consumers. Calling `900000` a stale constant and
+> re-stamping it to `3600000` would be wrong — it would break the fallback a consumer takes when the key
+> is missing. **Rule: before flagging a constant as stale, resolve which path it's actually the default
+> for, not just the served value.** See the fuller methodology writeup at Ch38/L152.
 
 ## Part C — the extended control-protocol surface
 

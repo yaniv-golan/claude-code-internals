@@ -1,10 +1,10 @@
 ---
 domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
-as_of_cli: 2.1.221
-as_of_desktop: 1.24012.1
-sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131]
-updated: 2026-07-24
+as_of_cli: 2.1.229
+as_of_desktop: 1.28929.0
+sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147]
+updated: 2026-08-13
 ---
 
 # Plugins, skills & hooks (current)
@@ -195,6 +195,56 @@ would use to decide what to promote to a documented alias versus reject
 outright. Not covered: `plugin.json`, `mcp.json`, `settings.json`, memory
 files — each has its own dedicated, non-shadow parser.
 
+## Elicitation is the sanctioned skill-argument channel (L147)
+
+Desktop injects a standing instruction into **every skill invocation**
+directing the model to collect missing arguments through the elicitation
+form (`credential-channels.md`'s channel 1), not `AskUserQuestion`. This
+is gated by `286376943` (`imagineElicitationEnabled`), **force-ON** in the
+2026-08-13 fcache — live behavior on this account, not dormant surface.
+
+Delivery is two hook events converging on one resolver:
+
+- The **`Skill` tool's `PreToolUse` hook**, as `additionalContext` — this
+  is what that hook's payload (described only as
+  `[...telemetry+additionalContext...]` in the control-protocol page) IS.
+  **Excludes sub-agents** (`!e.agent_id`): a skill invoked from inside a
+  dispatched sub-agent does not get the injection.
+- **`UserPromptSubmit`**, when the user types a `/slashcommand` — a
+  structurally different call site delivering the same content.
+
+The message tells the model to call the elicitation form's `read_me`
+(`modules:["elicitation"]`) then `show_widget`, to prefer inferring
+context from the conversation over asking, and that **answers return as
+bullet points in the model's next user-turn message, not as a tool
+result** — a skill author scripting or asserting against this flow needs
+to read the following user message, not a `tool_result` block. The
+`argument-hint` frontmatter field is surfaced verbatim when present; a
+skill that omits it gets an explicit "infer from SKILL.md" fallback,
+added at Desktop 1.25927.0 (the message body itself is otherwise
+byte-stable back to the oldest locally-held asar, 1.18286.2 — this is a
+standing gap in prior coverage, not a new feature in this release).
+
+**Byproduct: a Desktop-side, turn-scoped skill scope.** The injector sets
+`activeSkillThisTurn = {name, argumentHint}` on the session, cleared at
+each new user message, `finishTurnCleanup`, and CU-lock release. This is
+the Desktop-side counterpart to this page's `activeSkill` (below), and it
+behaves **oppositely**: `activeSkill` is sticky/no-pop, `activeSkillThisTurn`
+is per-turn and explicitly reset. Two skill scopes with the same name and
+opposite lifetimes — treat them as distinct.
+
+## `save_skill` / `canSaveSkill` is 1p-only
+
+`canSaveSkill` is served by gate `3246569822` (force-ON, listed in the
+same force-on table as `cli_plugin`/`2307090146`, 3p/CCD-class only) —
+but the **consuming resolver** additionally requires the account type be
+1p before it even reads the gate:
+`us(){return c.in().type==="1p"?c.Ht("3246569822"):!1}`. A 3p/CCD account
+gets `canSaveSkill=false` unconditionally, regardless of the gate's own
+force-on state. `save_skill`'s own description states its effect
+directly: the skill description "enters the system prompt of every
+future session" — equivalent to writing to `.claude/skills/`.
+
 ## `activeSkill` scope & attribution (internal, not in the stream)
 
 When a `Skill` tool runs, the agent sets `options.activeSkill` to the
@@ -340,7 +390,8 @@ Desktop ships **bundled skills** at `resources/bundled-skills` under a
 (`morning` was removed this release, gate `3214976288` gone). MCP-contributed
 skills (`getMcpSkillSources`, gate `278625510`, extension
 `io.modelcontextprotocol/skills`) are **dead code** today: one occurrence, zero
-callers, gate not present in the pinned fcache snapshot, and the boot MCP handshake advertises only
+callers, still not present in the 2026-08-13 fcache re-decode (254 features, same
+as the original capture), and the boot MCP handshake advertises only
 `io.modelcontextprotocol/ui`. Tripwire: `getMcpSkillSources` occurrence count
 rising above 1. Full trace: `references/34-skill-discovery-vcs-events-
 containment.md` (Chapter 37, L129/L131).

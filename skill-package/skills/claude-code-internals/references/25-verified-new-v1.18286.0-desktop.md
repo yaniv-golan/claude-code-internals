@@ -153,7 +153,7 @@ passing, which two initial candidates turned out to be — see the note on
 | `MCP_LIST_SCHEDULED_TASKS` | MCP tool | A 5th scheduled-tasks tool, alongside the four (`CREATE`/`UPDATE`/`START_WATCHING`/`STOP_WATCHING`) in Ch26/L109's forced-ask matcher | List-only, lower-privilege — confirmed **not** part of the 8-tool forced-ask set, plausibly an intentional exclusion (read-only ops don't need the same explicit-approval gate as create/update/watch ops). |
 | `mcp__cowork__propose_skills`, `mcp__cowork__send_user_message`, `mcp__cowork__present_files` | MCP tools | Found in the same string-table region as the already-documented `save_skill`/`launch_code_session` | Three more `cowork`-namespaced MCP tools not in the prior chapters. `present_files` has a visible log line, `[present_files] Promoted scratchpad file...`, suggesting it moves a file from the session's scratch space into the outputs/artifacts area. None of the three are in the 8-tool forced-ask matcher. |
 | Gate `2976814254` | GrowthBook gate ID | In the same force-on table as `2307090146`; guard reads `gate(2976814254) && sessionType==="ccd" && !isSSH...` | Gates a browser-preview-related feature, CCD-session-scoped. New to the corpus. |
-| Gate `3246569822` | GrowthBook gate ID | Same force-on table | Gates `canSaveSkill`. New to the corpus. |
+| Gate `3246569822` | GrowthBook gate ID | Same force-on table | Gates `canSaveSkill`. New to the corpus. **Resolver confirmed 1p-only (2026-08-13, asar 1.28929.0): `us(){return c.in().type===\`1p\`?c.Ht(\`3246569822\`):!1}` — for any non-`1p` account type the function short-circuits to `!1` without even reading the gate; the gate itself is force-ON in the 2026-08-13 fcache (254 features).** |
 | Gate `1696890383` | GrowthBook gate ID | Same force-on table | Gates whether `CLAUDE_COWORK_MEMORY_GUIDELINES` (lesson 90) is constructed at all at spawn time. New to the corpus. |
 
 **Scope caveat, explicitly flagged (not asserted as removals):** a handful of `[VM]`/`[ASAR]`-tagged
@@ -181,7 +181,7 @@ uninformative rather than a regression.
 | `CLAUDE_CODE_DISABLE_AUTO_MEMORY` / `CLAUDE_COWORK_MEMORY_PATH_OVERRIDE` | env vars | Cowork session spawn | Concrete wiring for lesson 109's `CoworkSpaces.getAutoMemoryDir` |
 | `MCP_LIST_SCHEDULED_TASKS` | MCP tool | Scheduled Tasks module | List-only 5th tool, excluded from the 8-tool forced-ask matcher |
 | `mcp__cowork__propose_skills` / `send_user_message` / `present_files` | MCP tools | `cowork`-namespaced tool set | New tools, none in the forced-ask matcher |
-| `2976814254` / `3246569822` / `1696890383` | GrowthBook gate IDs | force-on table | CCD browser-preview gate / `canSaveSkill` / `CLAUDE_COWORK_MEMORY_GUIDELINES`-construction gate |
+| `2976814254` / `3246569822` / `1696890383` | GrowthBook gate IDs | force-on table | CCD browser-preview gate / `canSaveSkill` (resolver is 1p-only, `us()` — see Part E; force-ON in the 2026-08-13 fcache) / `CLAUDE_COWORK_MEMORY_GUIDELINES`-construction gate |
 
 ## Methodology note (the transferable lesson)
 
@@ -209,4 +209,5 @@ corrected relationship to the Desktop spawn arg in Part C) · Lesson 100 (Fleet 
 agent view rename — the narrower surviving usage found in Part E) · Ch34/L120
 (`31-desktop-reasoning-config-effort-thinking.md` — further corrects Part C's
 `CLAUDE_CODE_EFFORT_LEVEL` backing-store claim and documents the full effort/thinking spawn
-mechanics).
+mechanics) · 2026-08-13 addendum to Part E (gate `3246569822`/`canSaveSkill`'s 1p-only resolver
+`us()`, verified first-party against asar 1.28929.0, force-ON in that day's fcache).

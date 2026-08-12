@@ -172,6 +172,55 @@ mechanism from `cowork-architecture.md` ("Plugin roots"): the `SCRIPTS` path
 `claude-hostloop-plugins/<hash>` staging directory for an actual marketplace skill
 (`deck-review`), confirming that mechanism end-to-end rather than by code-reading alone.
 
+### Addendum (2026-08-13): a second disk image, and three more `mnt/` dirs without a `.mount` unit
+
+Re-run against the current `vm_bundles/claudevm.bundle/` on this machine (`rootfs.img` re-confirmed at
+10 GiB, GPT + FAT32 ESP + ext4, journald logs intact). Two extensions to this chapter's inventory.
+
+**1. `rootfs.img` is not the only disk image in the bundle.** The bundle also holds
+**`sessiondata.img`** — 10.6 GiB (9.9 G allocated), magic `shdw` — which this chapter never mentioned.
+The split of duties is clean: `rootfs.img` carries the OS and journald, i.e. **every** `.mount` unit in
+Part B's inventory; `sessiondata.img` carries per-session **content** and has **zero** mount units,
+spanning **354 distinct session slugs**. For a future forensic question about session content rather
+than session plumbing, `sessiondata.img` — not `rootfs.img` — is the artifact to grep. Its `shdw`
+container format was **not parsed**, only string-grepped; that remains open.
+
+**2. Three more directories confirmed under `mnt/` with no `.mount` unit at all.** Harvested from both
+images: `mnt/.auto-memory` (the memory directory — corroborates the auto-mode classifier text's own
+description of Cowork's storage model), `mnt/kb` (knowledge base), and `mnt/.skills` (distinct from
+`.claude/skills`) — joining the already-known `.remote-plugins`/`.local-plugins` (L89/v2.12.1) in that
+category. None of these five has a `.mount` unit. This sharpens, rather than contradicts, this
+chapter's own central negative result: Part B used "no `.mount` unit" to conclude home and `/tmp` are
+structurally non-shared. **The same reasoning now has to be applied to `.auto-memory`, `kb`, and
+`.skills`** — a directory living under `mnt/` is not by itself evidence of a bind mount; only a matching
+`.mount` unit is.
+
+**3. The mount-unit inventory, re-run with occurrence counts.** Part B listed unit *names*; this pass
+counted occurrences of each in `rootfs.img`:
+
+```
+1290 mnt-uploads.mount          16 mnt-.claude.mount
+1290 mnt-outputs.mount           6 mnt-ziggie.mount      (user folder)
+ 613 mnt-.claude-skills.mount    6 mnt-Lizo.mount        (user folder)
+ 611 mnt-.claude-projects.mount  4 mnt-output.mount      (user folder)
+  68 mnt-work.mount              4 mnt-Downloads.mount   (user folder)
+```
+
+`mnt-outputs`/`mnt-uploads` dominate (present in essentially every session); `.claude`/`.claude-skills`/
+`.claude-projects` are close behind; user-connected-folder units are comparatively rare, consistent with
+being opt-in per session. **`mnt-artifact*` and `CoworkArtifacts`: 0 occurrences in either image** — no
+artifact mount has ever been created on this machine, consistent with the host-loop gate (`1143815894`)
+being force-ON here and the `Artifact` tool's per-artifact bind mount being structurally VM-loop-only
+(see the new L149, which also documents host-loop's live-grant alternative to a mount).
+
+**Methodology note carried over from this re-run:** the first pass of this re-run reported zero mount
+units and zero `systemd`/`/sessions/` hits — impossible on a 10 GiB Linux image, and it was: the scan
+commands were wrapped in `timeout 300 rg … || echo 0`, `timeout` is not installed on this machine, so
+every command exited 127 without running and the `|| echo 0` fallback silently printed a fabricated
+zero. A `|| echo 0` fallback is indistinguishable from a real measurement; a positive control (a known
+string, `rg -ca "systemd"`, returned 28664 and ran fine) is what caught it. Treat any zero-hit result
+from a wrapped/fallback-guarded command as suspect until reproduced without the fallback.
+
 ## Methodology note (the transferable lesson)
 
 When a Desktop feature's configuration isn't in either of the two "obvious" binaries (`app.asar`,

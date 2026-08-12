@@ -28,16 +28,16 @@
     }
   },
   "verified_against": {
-    "cli": "2.1.221",
-    "desktop_asar": "1.25927.0",
-    "fcache_content16": "d17cdf8e7f6da102",
-    "observed_at": "2026-08-05"
+    "cli": "2.1.229",
+    "desktop_asar": "1.28929.0",
+    "fcache_content16": "b84a0ad7452188d7",
+    "observed_at": "2026-08-13"
   },
   "pages": [
     {
       "slug": "index",
       "title": "Writing skills that survive Cowork",
-      "summary": "Claude Cowork runs your skill in a sandbox with rules that differ from the Claude Code CLI in ways that will silently break an otherwise-correct skill. This site covers the eight failure modes that actually show up: wrong path forms, deliverables that vanish on delivery, delete calls that fail with a permission error, a shell that cannot see your environment, runtime detection that reports the wrong answer, plugin paths that resolve differently per consumer, sub-agent assumptions that do not hold, and behaviour that changes with no version bump at all. Every rule is stamped with how it was checked and when.",
+      "summary": "Claude Cowork runs your skill in a sandbox with rules that differ from the Claude Code CLI in ways that will silently break an otherwise-correct skill. This site covers the nine failure modes that actually show up: wrong path forms, deliverables that vanish on delivery, delete calls that fail with a permission error, a shell that cannot see your environment, runtime detection that reports the wrong answer, plugin paths that resolve differently per consumer, an input prompt the host steers away from, sub-agent assumptions that do not hold, and behaviour that changes with no version bump at all. Every rule is stamped with how it was checked and when.",
       "open_questions": []
     },
     {
@@ -121,6 +121,17 @@
       "summary": "Sub-agents run under the same containment as the main thread — they are not a way to escape a path restriction or a permission prompt. A finished sub-agent cannot be resumed in Cowork, so recovery means dispatching a fresh one with the context restated. If you dispatch without naming an agent type you get a general-purpose agent holding the full tool surface, which is rarely what a skill intends.",
       "open_questions": [
         "Fan-out limits are enforced and have changed between releases. Write skills that tolerate a dispatch being queued or refused rather than assuming unlimited parallelism."
+      ]
+    },
+    {
+      "slug": "asking-the-user",
+      "title": "How should my skill ask the user for missing arguments?",
+      "nav_label": "Asking the user",
+      "nav_group": "Runtime",
+      "blurb": "Cowork steers skills toward the elicitation form, not AskUserQuestion.",
+      "summary": "When your skill is invoked, the host injects an instruction telling the model to collect anything it still needs through an inline elicitation form rather than through AskUserQuestion, and the answers come back as bullet points in the next message instead of as a tool result. Declaring an argument-hint is what makes that path work well. This is a steer, not a wall: AskUserQuestion still exists and still functions.",
+      "open_questions": [
+        "The instruction is injected text, not an enforcement boundary. Whether a model follows it in any given run has not been observed here — only that Cowork sends it, and that the flag delivering it read on at the last capture."
       ]
     },
     {
@@ -712,14 +723,15 @@
       "id": "detect.markers-come-and-go",
       "page": "detecting-cowork",
       "rule": "Do not hard-fail when a runtime marker is missing. Fall through to the next check.",
-      "detail": "A runtime marker is an environment variable the host sets when it starts your session — `CLAUDE_CODE_IS_COWORK` and `CLAUDECODE` are the two that matter. Which markers are set has changed across releases, and they are absent entirely from the shell context. A detection routine that treats one missing variable as proof of a runtime will be wrong the next time the spawn contract changes. Order the checks so each one only adds coverage.",
+      "detail": "A runtime marker is an environment variable the host sets when it starts your session — `CLAUDE_CODE_IS_COWORK` and `CLAUDECODE` are the two that matter. Which markers are set has changed across releases, and they are absent entirely from the shell context. A detection routine that treats one missing variable as proof of a runtime will be wrong the next time the spawn contract changes. Order the checks so each one only adds coverage. The set is still moving: Desktop 1.28929.0 added CLAUDE_CODE_COWORK_FRAME_ARTIFACTS alongside the existing markers, and no agent before 2.1.228 could read it.",
       "tier": "measured",
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": true,
       "sources": {
         "lessons": [
-          116
+          116,
+          151
         ],
         "state_page": "cowork-architecture"
       },
@@ -992,6 +1004,26 @@
         "state_page": "cowork-architecture"
       },
       "caveats": []
+    },
+    {
+      "id": "input.elicitation-over-askuserquestion",
+      "page": "asking-the-user",
+      "rule": "Do not build your skill's argument collection around AskUserQuestion in Cowork.",
+      "detail": "On every skill invocation the host injects an instruction telling the model to gather missing context through the elicitation form — pills, free text, dates, a file dropzone — and explicitly not through AskUserQuestion, which it reserves for one-off clarifications mid-task. The answers arrive as bullet points in the model's next message, not as a tool result, so a skill written to wait for a tool result is waiting for something that will not come. Declaring `argument-hint` in your frontmatter is what makes this path work: the hint is passed through verbatim, and a skill without one leaves the model told to infer what to collect from your SKILL.md.",
+      "tier": "binary",
+      "severity": "friction",
+      "durability": "durable",
+      "volatile_dependency": true,
+      "sources": {
+        "lessons": [
+          147
+        ],
+        "state_page": "plugins-skills-hooks"
+      },
+      "caveats": [
+        "This is a steer, not an enforcement boundary. AskUserQuestion remains callable and functional; what was verified is that Cowork injects the instruction, not that a model obeys it in any particular run.",
+        "Delivery is gated server-side and read on at the 2026-08-13 capture. A session where that flag is off receives no such instruction, and the guidance does not apply."
+      ]
     },
     {
       "id": "change.detect-at-use",

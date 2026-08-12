@@ -1,10 +1,10 @@
 ---
 domain: cowork-permissions
 title: Cowork permission stack (current)
-as_of_cli: 2.1.221
-as_of_desktop: 1.22209.0
-sources: [89, 107, 108, 109, 115, 121, 122, 124, 128]
-updated: 2026-07-17
+as_of_cli: 2.1.229
+as_of_desktop: 1.28929.0
+sources: [89, 107, 108, 109, 115, 121, 122, 124, 128, 148, 150]
+updated: 2026-08-13
 ---
 
 # Cowork permission stack (current)
@@ -178,6 +178,58 @@ set (`.zshrc .zshenv .zprofile .zlogin .bashrc .bash_profile .bash_login
 `lam_folder_grant_refused_protected` — previously a user could grant a
 folder containing these without an explicit block. Full detail: Chapter
 36 / lesson 128.
+
+## Browser/Computer-Use permission gates + Cowork's own auto-mode rule additions (Desktop 1.28929.0)
+
+Two more permission-mode selectors follow the layer-3/layer-4 shape above,
+both **force-ON** in the 2026-08-13 fcache:
+
+- **`2051942385` (`cicCanUseToolEnabled`) selects the permission mode for
+  Claude-in-Chrome browser tool calls** — e.g. it can route a call straight
+  to `skip_all_permission_checks`, or to `ask`/`auto`/`bypassPermissions`
+  depending on `onceApprovedHosts`. Paired with `cicOnceApproved`, a
+  per-session set of once-approved hosts, cleared at `finishTurnCleanup`.
+  A remote-session path hardcodes it to `true`. **Not** a harm classifier —
+  see below for the feature it was previously conflated with.
+- **`2486083521` (`cuCanUseToolEnabled`) is the Computer Use equivalent** —
+  same shape, additionally excluded for `sessionType` `radar`/`chat`.
+
+Both follow a **cache-once-per-build shape** shared with `frameArtifactsTurnEnabled`
+and Ch37/L129's `builtSystemPrompt` stickiness: the gate is read live only on
+the first evaluation of a built-tools/built-prompt generation
+(`g?.builtTools===void 0`); every later call in that generation reads back a
+cached session field (`N.cicCanUseToolEnabled ?? false` /
+`N.cuCanUseToolEnabled ?? false`) instead of re-reading the gate. Both the
+"no active session" and "field never cached" cases resolve to `false` —
+**fail-closed** in both directions. A rebuild condition (model switch, tool-set
+change, at least two others) forces a fresh generation and therefore a fresh
+read of all of these together, not just `builtSystemPrompt`.
+
+**Cowork's own additions to the agent's auto-mode rule set** — gate
+`3424551112`, **OFF (defaultValue)** — merge
+`{autoMode:{environment, soft_deny, allow}}` into the agent's own
+`settings:` spawn option. Each of the three arrays is led by a `$defaults`
+sentinel, meaning these entries **extend** the agent's built-in auto-mode
+rules rather than replace them. **This is not a client-side harm
+classifier on the `can_use_tool` path** — an earlier reading merged this
+gate with `cicCanUseToolEnabled` above into one feature; they are
+unrelated. Judging stays entirely agent-side: the category names carried
+in this payload (PII Data Handling, Data Exfiltration, Irreversible Local
+Destruction, Unauthorized Persistence, Instruction Poisoning, Create
+Unsafe Agents, SUB-AGENT DELEGATION, Session-Created Job Cleanup, Local
+Operations, Self-Modification, Memory Directory, Claude Code Scheduling)
+are the **agent's own existing auto-mode rule names**; Desktop is only
+supplying additional named rules for the agent's classifier to apply, not
+running one itself. Delivery is additionally gated
+`!isChatSession && !hostLoopMode` — on the force-ON host-loop 1p posture
+(gate `1143815894` above) this reaches **nobody**, on top of already
+being off by default. A sibling gate, `4202409342` (a builtin-tool
+auto-mode classifier), was also observed OFF (defaultValue) in the same
+capture; its call site was not traced this pass.
+
+A separate Desktop UI-suggestion gate, `1942781881` (`promptSuggestions`),
+was also observed in this capture — OFF (defaultValue), not otherwise
+detailed.
 
 ## Not part of the stack (adjacent, don't conflate)
 

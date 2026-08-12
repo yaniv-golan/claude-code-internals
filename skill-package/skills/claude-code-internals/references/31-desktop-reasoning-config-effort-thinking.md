@@ -100,6 +100,39 @@ async setEffort(t,r){...this.saveSession(n), n.query && await n.query.applyFlagS
 ```
 `applyFlagSettings` is the SDK wrapper for the **`apply_flag_settings`** control-protocol subtype (already named, without a concrete payload, in Ch26/L109's ~90-subtype inventory and `cowork-spaces-tasks-checkpointing.md`). This confirms its payload shape for the effort case: `{subtype:"apply_flag_settings", settings:{effortLevel:<level>}}`. Combined with Part A's `set_max_thinking_tokens` confirmation, both of this skill's two previously-named-but-unconfirmed mid-session reasoning-override subtypes are now tied to a concrete Desktop call site and payload shape.
 
+### ADDENDUM (2026-08-13) — `applyFlagSettings` has a SECOND payload shape: live path grants, not a settings toggle
+
+Re-derived first-party against Desktop `app.asar` **1.28929.0**. `{effortLevel}` above is not the only
+payload this method carries. A second call site pushes a **permissions** payload instead, to grant an
+`Artifact` tool's output directory read access to an already-running **host-loop** session:
+
+```js
+async grantArtifactDirReadAccess(e,t){
+  let n=this.sessions.get(e);
+  if(!n?.hostLoopMode || n.sessionType===`chat`) return;
+  let i=await _.i(Ee.u.getArtifactDir(t), v.v(), {allowEqual:!1});
+  if(i===!1){ r.o.warn(`[grantArtifactDirReadAccess] Skipped "${t}" — not under Cowork root`); return }
+  let a=n.midSessionReadOnlyPaths??[];
+  a.includes(i) || (n.midSessionReadOnlyPaths=[...a,i], await this.syncHostLoopPermissions(…))
+}
+// syncHostLoopPermissions → applyFlagSettings({permissions:{additionalDirectories:[…], allow:[…]}})
+```
+
+So `applyFlagSettings` carries at least two distinct payload shapes at runtime:
+
+| payload | trigger | effect |
+|---|---|---|
+| `{effortLevel}` | `setEffort` (Part D above) | live reasoning-effort change |
+| `{permissions:{additionalDirectories, allow}}` | `grantArtifactDirReadAccess` → `syncHostLoopPermissions`, only when `hostLoopMode` is true and `sessionType !== "chat"` | grants read access to one artifact's output directory, mid-session |
+
+**This is a capability difference, not just a second payload shape.** The effort case flips a session
+setting; this case is a **live mid-session filesystem-permission grant** — it appends a path to
+`midSessionReadOnlyPaths` and pushes it over the control protocol to a session that is already running,
+with no restart or new session required. It is also the confirmed **host-loop-only** counterpart to the
+VM-loop artifact-delivery mechanism (a `2940196192`-gated per-artifact bind mount) — host-loop sessions
+never get an artifact mount at all; they get this live grant instead. Full detail, including why this
+matters for the `Artifact` tool's two-mechanism split by loop mode, is in the new **L149**.
+
 ## Part E — externally-sourced, not independently re-derived here: the default-effort live-log confirmation
 
 The source plan document ran a **live-log analysis** (not a static grep) against this same owner's real `~/Library/Logs/Claude/cowork_vm_node.log`/`main.log` spawn history across 1290+ real sessions, and concluded the **default emitted effort when nothing is set is a flat `"medium"`**, not the per-model `recommended` value — using `sonnet-4-6` as the disambiguator (its `recommended` is `"low"`, yet 65/65 real spawns showed `medium`) and noting `setEffort` in that history was **only ever called to raise** the level (326× `→high`, 1× `→xhigh`, zero `→medium`/`→low`), consistent with `"medium"` being an untouched fallback rather than an initialized default. **This is relayed from the external project's log analysis, not independently re-verified here** (this installation's own `~/Library/Logs/Claude/` history was not inspected for this lesson) — but it is fully consistent with, and predicted by, the static `E2t()`/`BGr` fallback logic confirmed first-party in Part B.

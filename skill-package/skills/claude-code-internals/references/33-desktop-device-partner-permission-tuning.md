@@ -48,6 +48,17 @@ sessionType === "ccd" && !requireFullVmSandbox() && isIosSimulatorEnabled()
 
 `isIosSimulatorEnabled = Zht(Skn)`, `Zht(e){return Vc(e,!1)===true}` — a `default:false` read. The two gate ids: **`3577536076`** (iOS), **`1403324732`** (Android). Both gate ids were already present in 1.21459.0's manifest per this pass's diff; what's new in 1.22209.0 is the actual tool **implementation** (simctl/adb driving code, the server definitions above) sitting behind them. *(No live fcache decode was performed this pass — "defaults false" is a code-level literal, not a fresh production on/off read; treat as structurally dark-launched, not confirmed off in every deployment.)*
 
+> **CORRECTION (2026-08-13, live fcache decode against Desktop 1.28929.0, 254 features).** This
+> lesson's caveat above ("no live fcache decode was performed") has now been resolved for one of the
+> two gates, and the resolution is a real flip, not a confirmation: **`3577536076` (iOS) is now
+> `on`/`force`** — no longer "defaulting false." **`1403324732` (Android) is still `off`/`defaultValue`
+> — unchanged.** So the iOS simulator tool-group is live-enabled in production on this account, while
+> Android remains dark. **This does not reopen the structural argument below.** The `sessionType==="ccd"`
+> discrimination (a Cowork agent's `sessionType` is `"cowork"`/`"cowork-remote"`, never `"ccd"`) is
+> independent of the per-platform gate and still holds — a Cowork agent cannot see either tool-group no
+> matter how the gate resolves. What changed is only the answer to "is the iOS tool-group live for a
+> `ccd` session," not "can Cowork reach it."
+
 A new Seatbelt sandbox wraps the iOS control sidecar: profile `claude-ios-sim.sb`, env `CLAUDE_SIM_SANDBOX` (default **on** in packaged builds; `=0` is honored only in unpackaged dev builds).
 
 ## New managed setting
@@ -146,7 +157,7 @@ The old interactive MCPB manifest-authoring flow is removed; a new mandatory DXT
 |---|---|---|---|
 | `SIMULATOR_MCP_TOOL_NAME` = `"control"` | tool name | asar `--qQnbF6Q.js` | Single tool per platform for iOS/Android simulator servers |
 | iOS `isEnabled` predicate (`sessionType==="ccd" && !requireFullVmSandbox() && isIosSimulatorEnabled() && !disableMobileSimulatorTools && claudeIosSimulatorAccessEnabled`) | fn | asar `D3da7joD.js` | Structural Cowork exclusion (Lesson 125) |
-| `3577536076` / `1403324732` | gate ids, `default:false` | asar | iOS / Android simulator per-platform enable |
+| `3577536076` / `1403324732` | gate ids, `default:false` in code; **live (2026-08-13, fcache): iOS `on`/`force`, Android still `off`/`defaultValue`** | asar / fcache | iOS / Android simulator per-platform enable |
 | `CLAUDE_SIM_SANDBOX` | env var | asar | Seatbelt sandbox toggle for the iOS sim sidecar (default on, packaged builds) |
 | `disableMobileSimulatorTools` | managed flatKey | asar | Org kill-switch, layered on top of the `isEnabled` chain |
 | `remote-devices` server, UUID `63c20b00-cc9f-44b6-b75f-b541980465b7` | MCP server | asar `DPf0hBOc.js` | Cowork-facing paired-device computer-use bridge (Lesson 126) |
@@ -168,4 +179,4 @@ The old interactive MCPB manifest-authoring flow is removed; a new mandatory DXT
 - **Auto-mode's "always allow" carve-out is a safety feature, not a loosening — read the name skeptically.** `tool_approval_default_always_allow`/gate `4200321681` sounds like it broadens silent approval; the actual logic forces a *re-prompt* for destructive connector tools specifically, and blocks that class from ever being persisted as always-allow. Don't assume a Cowork session under auto mode will silently approve a destructive connector tool call just because auto mode is on.
 - **None of this chapter's three permission-tuning gates or the two new managed settings have a confirmed live on/off state** — this pass diffed code, not a live fcache. Treat status here as "exists in code, default/logic as documented" until a future chapter captures a fresh fcache decode against 1.22209.0 or later.
 
-**Cross-references.** Ch23/L106 (the CLI-plugin credential broker — a different, `clis.*.env` single-CLI-secret channel; `grand_prix` (Lesson 127) is a third, distinct credential-adjacent mechanism, browser-tab-scoped rather than CLI-invocation-scoped) · Ch25/L108 (gate catalog and fcache-decode methodology — this chapter deliberately does not extend that catalog with live on/off states, for lack of a fresh capture) · Ch32/L118 + Ch35/L121–124 (tool composition and the Cowork host-loop tool partition — the simulator/`remote_devices` tool-groups sit *above* that layer, in the server-assembly/`isEnabled` gating this chapter documents, not in `GY`'s per-dispatch composition) · Ch31/L117 (VM rootfs/mount forensics — `remote_devices`' device-registry enrollment is a different, non-mount-based bridge mechanism).
+**Cross-references.** Ch23/L106 (the CLI-plugin credential broker — a different, `clis.*.env` single-CLI-secret channel; `grand_prix` (Lesson 127) is a third, distinct credential-adjacent mechanism, browser-tab-scoped rather than CLI-invocation-scoped) · Ch25/L108 (gate catalog and fcache-decode methodology — this chapter deliberately does not extend that catalog with live on/off states, for lack of a fresh capture; the 2026-08-13 correction above is the first live decode against this chapter's gates) · Ch32/L118 + Ch35/L121–124 (tool composition and the Cowork host-loop tool partition — the simulator/`remote_devices` tool-groups sit *above* that layer, in the server-assembly/`isEnabled` gating this chapter documents, not in `GY`'s per-dispatch composition) · Ch31/L117 (VM rootfs/mount forensics — `remote_devices`' device-registry enrollment is a different, non-mount-based bridge mechanism) · Ch37/L131 (the "absence/state expires" principle this chapter's 2026-08-13 gate flip independently reinforces — a gate's *default* isn't its live state either, not just its *absence*).
