@@ -1059,8 +1059,18 @@ function build(outDir) {
 
   // The .md twins stay crawlable on purpose: they are the LLM-facing copy, and
   // every HTML page declares itself canonical, so they cannot split ranking.
+  //
+  // Content-Signal (contentsignals.org, draft-romm-aipref-contentsignals) is
+  // declared ALL-YES, deliberately. The commonly-suggested default is
+  // `ai-train=no`, and this site does not want it: the whole point of the thing
+  // is that agents and the people writing for them read it, ground answers in
+  // it, and — yes — learn from it. Refusing training while shipping an llms.txt
+  // and a .md twin of every page would be an incoherent pair of signals.
+  // Stating the permission explicitly is more useful than leaving it unstated,
+  // because absence is increasingly read as refusal.
   write('robots.txt',
     'User-agent: *\n' +
+    'Content-Signal: search=yes, ai-input=yes, ai-train=yes\n' +
     'Allow: /\n' +
     'Disallow: /static/\n' +
     `Sitemap: ${ORIGIN}/sitemap.xml\n`);

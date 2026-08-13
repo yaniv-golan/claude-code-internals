@@ -328,6 +328,20 @@ test('robots.txt points at the sitemap and keeps the markdown crawlable', () => 
   assert.ok(!/Disallow:.*\.md/.test(robots), 'markdown must stay crawlable');
 });
 
+test('robots.txt declares Content-Signal, and declares it permissively', () => {
+  const { out } = buildOnce();
+  const robots = fs.readFileSync(path.join(out, 'robots.txt'), 'utf8');
+  const line = robots.match(/^Content-Signal: (.+)$/m);
+  assert.ok(line, 'Content-Signal must be declared — absence now reads as refusal');
+  // Must sit inside a User-agent group, not float above it.
+  assert.match(robots, /^User-agent: \*\nContent-Signal: /m);
+  // All three signals present and permissive. This site wants to be read,
+  // grounded on, and trained from; a `no` here would contradict llms.txt.
+  for (const sig of ['search', 'ai-input', 'ai-train']) {
+    assert.match(line[1], new RegExp(`\\b${sig}=yes\\b`), `${sig} must be yes`);
+  }
+});
+
 test('every indexable page declares its own canonical URL', () => {
   const { out } = buildOnce();
   const facts = JSON.parse(fs.readFileSync(
