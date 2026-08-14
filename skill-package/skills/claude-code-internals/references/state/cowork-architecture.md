@@ -1,10 +1,10 @@
 ---
 domain: cowork-architecture
 title: Cowork runtime architecture (current)
-as_of_cli: 2.1.229
-as_of_desktop: 1.28929.0
+as_of_cli: 2.1.231
+as_of_desktop: 1.30096.1
 sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151]
-updated: 2026-08-13
+updated: 2026-08-14
 ---
 
 # Cowork runtime architecture (current)

@@ -2861,6 +2861,431 @@
     "relevance": 0.6,
     "reason": "meta-view continues the Managed Agents fleet direction"
    }
+  ],
+  "138": [
+   {
+    "id": 124,
+    "relevance": 0.85,
+    "reason": "execution lanes refine the host-loop vs VM-loop split"
+   },
+   {
+    "id": 119,
+    "relevance": 0.8,
+    "reason": "bridge lane is the cloud-task worker path"
+   },
+   {
+    "id": 108,
+    "relevance": 0.7,
+    "reason": "lane selection is gate-driven"
+   }
+  ],
+  "139": [
+   {
+    "id": 122,
+    "relevance": 0.85,
+    "reason": "delete stays mount-mode; this pins the FUSE policy"
+   },
+   {
+    "id": 117,
+    "relevance": 0.8,
+    "reason": "mount inventory is what delete is scoped to"
+   },
+   {
+    "id": 109,
+    "relevance": 0.7,
+    "reason": "fileDeleteApprovedMounts gates mounted paths"
+   }
+  ],
+  "140": [
+   {
+    "id": 117,
+    "relevance": 0.9,
+    "reason": "extends the rootfs mount inventory and confirms multiplexing"
+   },
+   {
+    "id": 146,
+    "relevance": 0.85,
+    "reason": "session namespace scale and isolation"
+   },
+   {
+    "id": 122,
+    "relevance": 0.7,
+    "reason": "session outputs dir is one of these mounts"
+   }
+  ],
+  "141": [
+   {
+    "id": 160,
+    "relevance": 0.85,
+    "reason": "fcache absence axes; declared-but-unconsumed is a third state"
+   },
+   {
+    "id": 124,
+    "relevance": 0.8,
+    "reason": "fcache is gzip-wrapped, capture discipline"
+   },
+   {
+    "id": 131,
+    "relevance": 0.75,
+    "reason": "gates absent from fcache are unevaluated, not off"
+   }
+  ],
+  "142": [
+   {
+    "id": 149,
+    "relevance": 0.85,
+    "reason": "server-delivered config as a gating class"
+   },
+   {
+    "id": 123,
+    "relevance": 0.8,
+    "reason": "prompt append vs prompt replace"
+   },
+   {
+    "id": 116,
+    "relevance": 0.7,
+    "reason": "prompt shaping affects runtime detection"
+   }
+  ],
+  "143": [
+   {
+    "id": 144,
+    "relevance": 0.9,
+    "reason": "the two records and what each is faithful to"
+   },
+   {
+    "id": 118,
+    "relevance": 0.8,
+    "reason": "stream contract vs translated projection"
+   },
+   {
+    "id": 129,
+    "relevance": 0.75,
+    "reason": "init.tools is authoritative, not a projection"
+   }
+  ],
+  "144": [
+   {
+    "id": 143,
+    "relevance": 0.9,
+    "reason": "companion lesson on the same two records"
+   },
+   {
+    "id": 118,
+    "relevance": 0.8,
+    "reason": "per-tool_use envelope"
+   },
+   {
+    "id": 124,
+    "relevance": 0.7,
+    "reason": "stream observability channels"
+   }
+  ],
+  "145": [
+   {
+    "id": 153,
+    "relevance": 0.7,
+    "reason": "runner egress and network allowlists"
+   },
+   {
+    "id": 122,
+    "relevance": 0.65,
+    "reason": "sandbox containment"
+   },
+   {
+    "id": 106,
+    "relevance": 0.6,
+    "reason": "per-CLI network allowlist merging"
+   }
+  ],
+  "146": [
+   {
+    "id": 140,
+    "relevance": 0.9,
+    "reason": "same namespace, isolation evidence"
+   },
+   {
+    "id": 117,
+    "relevance": 0.85,
+    "reason": "per-session users and mounts"
+   },
+   {
+    "id": 122,
+    "relevance": 0.7,
+    "reason": "session-scoped cwd"
+   }
+  ],
+  "147": [
+   {
+    "id": 105,
+    "relevance": 0.85,
+    "reason": "elicitation is the private server-user channel"
+   },
+   {
+    "id": 152,
+    "relevance": 0.7,
+    "reason": "traps from the same pass"
+   },
+   {
+    "id": 118,
+    "relevance": 0.65,
+    "reason": "skill scope and the Skill PreToolUse hook"
+   }
+  ],
+  "148": [
+   {
+    "id": 160,
+    "relevance": 0.85,
+    "reason": "flag-resolution patterns; UTr is the codename analogue"
+   },
+   {
+    "id": 129,
+    "relevance": 0.8,
+    "reason": "model switch invalidates built-prompt stickiness"
+   },
+   {
+    "id": 158,
+    "relevance": 0.8,
+    "reason": "the UTr resolver generalises this"
+   }
+  ],
+  "149": [
+   {
+    "id": 160,
+    "relevance": 0.9,
+    "reason": "gating classes; declared-but-unconsumed extends the taxonomy"
+   },
+   {
+    "id": 141,
+    "relevance": 0.85,
+    "reason": "fcache-invisible config"
+   },
+   {
+    "id": 151,
+    "relevance": 0.75,
+    "reason": "session-config booleans"
+   }
+  ],
+  "150": [
+   {
+    "id": 128,
+    "relevance": 0.85,
+    "reason": "auto-mode gates and permission tuning"
+   },
+   {
+    "id": 159,
+    "relevance": 0.7,
+    "reason": "canUseTool chain is where auto-mode decisions land"
+   },
+   {
+    "id": 107,
+    "relevance": 0.7,
+    "reason": "layered permission model"
+   }
+  ],
+  "151": [
+   {
+    "id": 157,
+    "relevance": 0.95,
+    "reason": "the consumer landed CLI-side"
+   },
+   {
+    "id": 161,
+    "relevance": 0.95,
+    "reason": "the consumer landed agent-side at 2.1.229"
+   },
+   {
+    "id": 160,
+    "relevance": 0.75,
+    "reason": "mirror image: declared-but-unconsumed"
+   }
+  ],
+  "152": [
+   {
+    "id": 162,
+    "relevance": 0.9,
+    "reason": "more diff/extraction traps of the same family"
+   },
+   {
+    "id": 158,
+    "relevance": 0.8,
+    "reason": "registry-vs-bundle sweep as a method"
+   },
+   {
+    "id": 141,
+    "relevance": 0.75,
+    "reason": "absence axes and positive controls"
+   }
+  ],
+  "153": [
+   {
+    "id": 130,
+    "relevance": 0.8,
+    "reason": "git-state observability for the managed fleet"
+   },
+   {
+    "id": 119,
+    "relevance": 0.75,
+    "reason": "cloud tasks and environment work items"
+   },
+   {
+    "id": 108,
+    "relevance": 0.7,
+    "reason": "spawn env contracts"
+   }
+  ],
+  "154": [
+   {
+    "id": 126,
+    "relevance": 0.95,
+    "reason": "the Desktop end of the same device bridge"
+   },
+   {
+    "id": 125,
+    "relevance": 0.75,
+    "reason": "device automation gating"
+   },
+   {
+    "id": 107,
+    "relevance": 0.7,
+    "reason": "MCP over the control protocol"
+   }
+  ],
+  "155": [
+   {
+    "id": 32,
+    "relevance": 0.9,
+    "reason": "the canonical hooks lesson (id 32 / lesson_number 10)"
+   },
+   {
+    "id": 94,
+    "relevance": 0.8,
+    "reason": "prior hook-event count"
+   },
+   {
+    "id": 107,
+    "relevance": 0.75,
+    "reason": "PreToolUse and the Desktop hook config"
+   }
+  ],
+  "156": [
+   {
+    "id": 112,
+    "relevance": 0.9,
+    "reason": "Artifacts dark-launch"
+   },
+   {
+    "id": 105,
+    "relevance": 0.75,
+    "reason": "artifact rendering has no callback"
+   },
+   {
+    "id": 158,
+    "relevance": 0.7,
+    "reason": "gate resolution for artifact comments"
+   }
+  ],
+  "157": [
+   {
+    "id": 151,
+    "relevance": 0.95,
+    "reason": "closes the producer-before-consumer gap"
+   },
+   {
+    "id": 116,
+    "relevance": 0.85,
+    "reason": "session-identity normalizer is the detection struct"
+   },
+   {
+    "id": 161,
+    "relevance": 0.9,
+    "reason": "agent-side counterpart"
+   }
+  ],
+  "158": [
+   {
+    "id": 148,
+    "relevance": 0.85,
+    "reason": "the built-* stickiness pattern this generalises"
+   },
+   {
+    "id": 137,
+    "relevance": 0.8,
+    "reason": "prior codename triage"
+   },
+   {
+    "id": 160,
+    "relevance": 0.8,
+    "reason": "gate states and fcache filtering"
+   }
+  ],
+  "159": [
+   {
+    "id": 122,
+    "relevance": 0.9,
+    "reason": "path-gate hooks and canUseTool inside sub-agents"
+   },
+   {
+    "id": 107,
+    "relevance": 0.85,
+    "reason": "layered permission model"
+   },
+   {
+    "id": 150,
+    "relevance": 0.7,
+    "reason": "auto-mode rules land on the same path"
+   }
+  ],
+  "160": [
+   {
+    "id": 131,
+    "relevance": 0.9,
+    "reason": "gates absent from the fcache are unevaluated"
+   },
+   {
+    "id": 149,
+    "relevance": 0.85,
+    "reason": "gating classes"
+   },
+   {
+    "id": 129,
+    "relevance": 0.7,
+    "reason": "skills extension and the dead gate 278625510"
+   }
+  ],
+  "161": [
+   {
+    "id": 151,
+    "relevance": 0.95,
+    "reason": "the lead this closes"
+   },
+   {
+    "id": 157,
+    "relevance": 0.9,
+    "reason": "CLI-side consumer roles"
+   },
+   {
+    "id": 116,
+    "relevance": 0.7,
+    "reason": "runtime-context struct"
+   }
+  ],
+  "162": [
+   {
+    "id": 152,
+    "relevance": 0.9,
+    "reason": "same family of method traps"
+   },
+   {
+    "id": 158,
+    "relevance": 0.8,
+    "reason": "verification over restamping"
+   },
+   {
+    "id": 117,
+    "relevance": 0.7,
+    "reason": "artifact-class choice and tooling at scale"
+   }
   ]
  }
 }

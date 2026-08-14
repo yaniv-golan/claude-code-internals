@@ -1,10 +1,10 @@
 ---
 domain: cowork-control-protocol
 title: Cowork spawn + stream-json control protocol (current)
-as_of_cli: 2.1.229
-as_of_desktop: 1.28929.0
+as_of_cli: 2.1.231
+as_of_desktop: 1.30096.1
 sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124, 129, 130, 152]
-updated: 2026-08-13
+updated: 2026-08-14
 ---
 
 # Cowork spawn + stream-json control protocol (current)

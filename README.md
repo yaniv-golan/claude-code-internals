@@ -2,7 +2,7 @@
 
 ![Claude Code Internals banner](assets/banner.png)
 
-> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 142 lessons covering every internal subsystem, verified against the v2.1.217 binary and six further artifact classes (the Claude Desktop `app.asar`, the Desktop-managed host agent Mach-O, the Cowork in-VM agent ELF, the golden Cowork VM disk image, the live GrowthBook `fcache`, and Desktop's Chromium HTTP cache), searchable three ways.
+> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 162 lessons covering every internal subsystem, verified against the v2.1.231 binary and six further artifact classes (the Claude Desktop `app.asar`, the Desktop-managed host agent Mach-O, the Cowork in-VM agent ELF, the golden Cowork VM disk image, the live GrowthBook `fcache`, and Desktop's Chromium HTTP cache), searchable three ways.
 >
 > **This is a modified fork** of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals). See [Attribution](#attribution) for what changed.
 
@@ -12,7 +12,7 @@
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-plugin-F97316)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/plugins)
 [![Improved with Skill Creator Plus](https://img.shields.io/badge/Improved_with-Skill_Creator_Plus-4ecdc4?style=flat-square)](https://github.com/yaniv-golan/skill-creator-plus)
 
-**Skill Version:** 2.35.2 | **Captured from:** Claude Code v2.1.217 (+ Claude Desktop app.asar through 1.25927.0 + Desktop-managed host agent Mach-O 2.1.221 + in-VM ELF claude-code-vm/2.1.170 / 2.1.197 / 2.1.205 + the golden Cowork VM disk image `rootfs.img` + live `fcache` decodes + Desktop's Chromium HTTP cache) | **Date:** 2026-08-05 | **License:** MIT
+**Skill Version:** 2.40.0 | **Captured from:** Claude Code v2.1.231 (+ Claude Desktop app.asar through 1.30096.1 + Desktop-managed host agent Mach-O 2.1.229 + in-VM ELF claude-code-vm/2.1.170 / 2.1.197 / 2.1.205 + the golden Cowork VM disk image `rootfs.img` + live `fcache` decodes + Desktop's Chromium HTTP cache) | **Date:** 2026-08-14 | **License:** MIT
 
 ---
 
@@ -121,7 +121,7 @@ Adds a gentle reminder whenever Claude edits `.claude/` config files. Add to `ho
 
 ## What This Is
 
-This is a Claude Code skill containing a complete reverse-engineering of Claude Code's internal architecture, verified against the v2.1.217 binary. **142 detailed lessons across 39 chapters** cover every major subsystem — from the boot sequence to undocumented features found directly in the binary. See [the full chapter table](#whats-inside) for the lesson-by-lesson breakdown.
+This is a Claude Code skill containing a complete reverse-engineering of Claude Code's internal architecture, verified against the v2.1.231 binary. **162 detailed lessons across 43 chapters** cover every major subsystem — from the boot sequence to undocumented features found directly in the binary. See [the full chapter table](#whats-inside) for the lesson-by-lesson breakdown.
 
 The material falls into four strands:
 
@@ -132,7 +132,7 @@ The material falls into four strands:
 
 When you type `/claude-code-internals hooks` or `/claude-code-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
 
-Without this skill, Claude knows *how to use* Claude Code but doesn't know *how Claude Code works internally*. With it, Claude becomes an expert on its own implementation — the query engine's retry logic, all 30 hook event types, the 7-phase permission pipeline, the compaction algorithm, the agent spawn lifecycle, and binary-verified internals of features like `/effort`, `/rewind`, `/teleport`, `/branch`, Dynamic Workflows, the Opus 4.8 effort ladder, the Cowork runtime, and `/fork`.
+Without this skill, Claude knows *how to use* Claude Code but doesn't know *how Claude Code works internally*. With it, Claude becomes an expert on its own implementation — the query engine's retry logic, all 31 hook event types, the 7-phase permission pipeline, the compaction algorithm, the agent spawn lifecycle, and binary-verified internals of features like `/effort`, `/rewind`, `/teleport`, `/branch`, Dynamic Workflows, the Opus 4.8 effort ladder, the Cowork runtime, and `/fork`.
 
 ## Why This Skill Is Useful
 
@@ -235,7 +235,7 @@ brew install jq node
 ```
 /claude-code-internals hooks
 ```
-Returns all 30 hook event types, exit code semantics (0=proceed, 1=proceed+warn, 2=block), command types, configuration format, and the critical detail that hook config is snapshot-captured at startup.
+Returns all 31 hook event types, exit code semantics (0=proceed, 1=proceed+warn, 2=block), command types, configuration format, and the critical detail that hook config is snapshot-captured at startup.
 
 ```
 /claude-code-internals permissions
@@ -272,14 +272,14 @@ Returns the per-mount FUSE delete policy: exactly `unlink` and `rmdir` are denie
 # Source: 04-connectivity-plugins.md L324–456
 
 [full lesson content with type definitions, exit code table,
- all 30 event types, configuration examples...]
+ all 31 event types, configuration examples...]
 ```
 
 ## Getting the Most Out of It
 
 1. **Use it BEFORE configuring anything under `.claude/`.** The skill knows exact formats, valid values, and edge cases.
 2. **Use natural language when keywords don't work.** "what happens when Claude runs out of context space" finds the compaction lesson even without the word "compaction."
-3. **Know its limits.** Core lessons (1–50) were captured from Claude Code v2.1.88. Chapters 9–39 (lessons 51–142) were verified directly against the v2.1.90 through v2.1.217 binaries (plus Claude Desktop `app.asar`, the Desktop-managed host agent, the Cowork in-VM ELF/disk image, and the live `fcache` for the Desktop- and Cowork-specific chapters).
+3. **Know its limits.** Core lessons (1–50) were captured from Claude Code v2.1.88. Chapters 9–43 (lessons 51–162) were verified directly against the v2.1.90 through v2.1.231 binaries (plus Claude Desktop `app.asar`, the Desktop-managed host agent, the Cowork in-VM ELF/disk image, and the live `fcache` for the Desktop- and Cowork-specific chapters).
 
 ## Smart Features
 
@@ -292,7 +292,7 @@ Returns the per-mount FUSE delete policy: exactly `unlink` and `rmdir` are denie
 ```bash
 node scripts/fetch-lesson.js 32          # Hooks System content
 node scripts/fetch-lesson.js 32 --meta   # Metadata only (file, line range)
-node scripts/fetch-lesson.js --list      # All 142 lessons
+node scripts/fetch-lesson.js --list      # All 162 lessons
 ```
 
 ### xref.js — Shell-Safe Cross-Reference Lookup
@@ -322,7 +322,7 @@ bash scripts/diff-versions.sh claude-2.1.88-bundle.js claude-2.1.90-bundle.js
 
 ```bash
 bash scripts/check-version.sh
-# Silent if versions match (reads captured_version from version.json — currently v2.1.217)
+# Silent if versions match (reads captured_version from version.json — currently v2.1.231)
 # Warns if you are running a newer version
 ```
 
@@ -369,7 +369,7 @@ claude-code-internals/
 │   └── skills/
 │       └── claude-code-internals/  The skill itself
 │           ├── SKILL.md            Skill brain (search strategy, lesson index)
-│           ├── version.json        Version tracking (v2.35.2 / v2.1.217)
+│           ├── version.json        Version tracking (v2.40.0 / v2.1.231)
 │           ├── hooks-config.json   PreToolUse hook definition
 │           ├── references/
 │           │   ├── 01-core-architecture-tools.md
@@ -408,6 +408,10 @@ claude-code-internals/
 │           │   ├── 34-skill-discovery-vcs-events-containment.md ← Chapter 37 (cross-artifact)
 │           │   ├── 35-verified-new-v2.1.217.md             ← Chapter 38 (binary-verified)
 │           │   ├── 36-cowork-lanes-mounts-snapshot-discipline.md ← Chapter 39 (cross-artifact)
+│           │   ├── 37-cowork-probe-corrections.md            ← Chapter 40 (live probes)
+│           │   ├── 38-cowork-elicitation-flag-classes.md     ← Chapter 41 (cross-artifact)
+│           │   ├── 39-verified-new-v2.1.231.md               ← Chapter 42 (binary-verified)
+│           │   ├── 40-desktop-automemory-gates-1.30096.1.md  ← Chapter 43 (Desktop asar diff)
 │           │   ├── state/                                  ← mutable "current truth" layer
 │           │   │   ├── README.md
 │           │   │   ├── registry.json       Structured records (env vars, gates, commands, IPC…)
@@ -494,6 +498,10 @@ claude-code-internals/
 | **37** | **`34-skill-discovery-vcs-events-containment.md`** | **Skill/plugin discovery, VCS SDK events & session containment** (L129–L132): the model's real skill-discovery surface is Desktop **SDK-MCP** `mcp__skills__*` over the control protocol, **never** the native `ListSkills`/`SearchSkills` compiled into the CLI — **read `init.tools`; a model self-report of its own tool names is confabulation**. 13 tools / 5 servers, of which only 9 are pre-approved, so **never infer the rendered surface from `allowedTools`**. New `code_change_published`/`vcs_state_changed` system subtypes emit from agent 2.1.216 as the git-state primitive for the Managed Agents fleet |
 | **38** | **`35-verified-new-v2.1.217.md`** | v2.1.198→v2.1.217 CLI content refresh. Provider discriminator now returns **seven** values, two of them dark first-party-on-hyperscaler offerings (L133). **Sub-agent fan-out caps now exist** — concurrent 20, per-session 200, and nesting is **off by default** (`DEu=1`), *correcting* Ch35/L121's "no Task fan-out cap"; the depth-5 finding stands as the ceiling (L134). Command surface +10/−1 with the **`/fork`→`/subtask` split**, hook events still **30**, dark `/import` and `/artifacts` (L135). Feature surfaces + 14 removed env vars (L136). Retired surface, codename triage & confirmed negatives (L137) |
 | **39** | **`36-cowork-lanes-mounts-snapshot-discipline.md`** | **Cowork execution lanes, mount semantics & snapshot discipline** (L138–L142): **two lanes** discriminated by `environment_kind` ∈ {`bridge`, `anthropic_cloud`} — `cse_` is **not** a lane oracle, and lane selection is renderer-side so **no fcache gate can hold it**. Delete policy is exactly `unlink`+`rmdir` on **every** mount, approval is per-mount and live with **no remount**; mount **modes** are constructed per-builder and `.projects/<uuid>` is `ro` (a project attachment is not writable at all). **VM multiplexing confirmed** (isolation holds via per-session `coworkd` uid). The fcache is a **moving target with two absence axes** — snapshot identity must be a content hash, and "key absent ⇒ off" is **false**. `coworkSyspromptMap` is a server-driven prompt **replace** channel |
+| **40** | **`37-cowork-probe-corrections.md`** | **What four live probes corrected** (L143–L146): `audit.jsonl` is a **translated projection**, not the faithful record — the agent transcript is (L143); what each of the two records is actually for (L144); **egress is filtered by destination**, which is why package installs work (L145); and 529 sessions in one namespace with isolation holding (L146) |
+| **41** | **`38-cowork-elicitation-flag-classes.md`** | **Elicitation routing, flag-delivery classes & auto-mode additions** (L147–L152): the model is told to collect skill arguments via the **visualize tool's elicitation module, explicitly NOT `AskUserQuestion`** — byte-stable across 15 asars, so a standing coverage gap (L147). The **`built-*` stickiness pattern** (L148). A **third gating class**: server-delivered session-config booleans the fcache cannot show, plus VM-loop-only as a feature class (L149). **Corrects** a mischaracterisation — gate `3424551112` merges Cowork entries into the *agent's own* auto-mode rules; it is not a client-side harm classifier (L150). Desktop shipped an env key its own agent could not read (L151). Four traps that fired in one pass (L152) |
+| **42** | **`39-verified-new-v2.1.231.md`** | **v2.1.217→v2.1.231 CLI content refresh** (L153–L158). **`claude self-hosted-runner`** turns customer machines into Claude's compute; its 16 `CLAUDE_RUNNER_*` vars are **written, never read** — a producer-side contract indistinguishable from dead code under a grep (L153). **DARK:** the CLI registers as a **remote-controlled device** serving `bash`/`edit`/`glob`/`grep`/`read`/`write` as MCP tools over `wss:` — the CLI end of Ch36/L126 (L154). **`DirectoryAdded` is the 31st hook event**, correcting every "30 events" statement in this skill; its matcher matches `source`, not a path (L155). Artifacts grew comments + an agent responder behind `tengu_teal_corbel` (L156). Dir-sync, cross-session messaging, and L151's loop **closed** (L157). The **`UTr()` codename resolver** + 5 new betas, two dark (L158) |
+| **43** | **`40-desktop-automemory-gates-1.30096.1.md`** | **The auto-memory carve-out, three new gates & a bundle reshuffle** (L159–L162), Desktop **1.28929.0 → 1.30096.1**. The host-loop `canUseTool` chain gained a **fourth link — the first that can ALLOW**: an auto-memory carve-out keyed on `decisionReason` being exactly *"Path is outside allowed working directories"*, dormant in production. **The cross-layer fact:** the CLI emits that reason on an **ask** while the Desktop turns it into a **deny** (L159). Three new gates — `1942337209` is an MCP version-negotiation kill switch with **inverted sense**, and two more are **declared-but-unconsumed**, a third gate state (L160). The frame-artifacts consumer landed agent-side at exactly **2.1.229** — counts do not transfer across artifact classes (L161). The bundle **consolidated** 368→128 chunks, plus the partial-extraction trap (L162) |
 
 </details>
 
@@ -501,9 +509,9 @@ claude-code-internals/
 
 ```json
 {
-  "skill_version": "2.35.2",
-  "captured_version": "2.1.217",
-  "verified_against_binary": "2.1.217",
+  "skill_version": "2.40.0",
+  "captured_version": "2.1.231",
+  "verified_against_binary": "2.1.231",
   "captured_date": "2026-08-05"
 }
 ```
@@ -542,7 +550,7 @@ This repository is a fork of [stuinfla/claude-code-internals](https://github.com
 - The PreToolUse `.claude/` hook (`config-aware-hook.sh`), version check script, and RuFlo index builder
 - The original README documentation and architecture diagrams
 
-**What this fork adds** (v2.2.0–v2.35.2, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
+**What this fork adds** (v2.2.0–v2.40.0, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
 
 - Chapter 9 (Lessons 51–56): binary-verified new features in Claude Code v2.1.90, extracted directly from the Bun SEA binary and verified against official docs
 - Chapter 10 (Lessons 57–59): binary-verified changes in Claude Code v2.1.92 — new commands, removed commands, new env vars, and AskUserQuestionTool documentation
@@ -578,6 +586,10 @@ This repository is a fork of [stuinfla/claude-code-internals](https://github.com
 - Chapter 37 (Lessons 129–132): skill/plugin discovery tools, VCS SDK events and session containment — the model's real discovery surface is Desktop SDK-MCP, never the native CLI tools; read `init.tools`, never a model self-report; `allowedTools` under-reports the rendered surface
 - Chapter 38 (Lessons 133–137): v2.1.198→v2.1.217 CLI content refresh
 - Chapter 39 (Lessons 138–142): Cowork execution lanes, mount semantics and snapshot discipline — two lanes discriminated by `environment_kind`, per-mount delete policy and mount-mode construction, VM multiplexing confirmed with isolation intact, the fcache's two absence axes, and the `coworkSyspromptMap` prompt-replace channel
+- Chapter 40 (Lessons 143–146): what four live probes corrected — `audit.jsonl` as a translated projection rather than the faithful record, what each of the two records is for, egress filtered by destination (so package installs work), and 529 sessions in one namespace with isolation intact
+- Chapter 41 (Lessons 147–152): elicitation as the sanctioned skill-argument channel (explicitly not `AskUserQuestion`), the `built-*` stickiness pattern, a third gating class invisible to the fcache, a corrected auto-mode mischaracterisation, a producer-before-consumer env key, and four method traps
+- Chapter 42 (Lessons 153–158): v2.1.217→v2.1.231 CLI content refresh — self-hosted runners, the dark device bridge, `DirectoryAdded` as the **31st** hook event, artifact comments, dir-sync and cross-session messaging, and the `UTr()` codename resolver
+- Chapter 43 (Lessons 159–162): Desktop 1.30096.1 — the first `allow` in the host-loop `canUseTool` chain (auto-memory carve-out), three new gates including a declared-but-unconsumed state, the frame-artifacts consumer landing agent-side, and bundle consolidation with its extraction traps
 - v2.34.0–v2.35.0 corrections: `isBridgeSession` is `sessionType === "agent"`, **not** L138's `environment_kind:"bridge"` (a namespace collision that invalidated a population estimate); `.projects/<uuid>` mounts read-only; a third mount-construction site (`[VMCLIRunner]`) belonging to neither session builder; and `cli-<8 hex>` as a second session-slug namespace
 - Permission-mode count corrected (v2.35.1–2): `03-interface-infrastructure.md` was headed "Five Permission Modes" while listing six — the live binary (2.1.221) confirms six *settable* modes (`acceptEdits`, `auto`, `bypassPermissions`, `default`, `dontAsk`, `plan`), plus a seventh union member `bubble` that is the sub-agent "let prompts bubble up to the parent" mode and is unreachable from every user-facing surface
 - ULTRAPLAN (L41) status updated: now officially released as research preview

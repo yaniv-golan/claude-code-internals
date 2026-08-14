@@ -1675,6 +1675,130 @@
     137
    ],
    "hint": "CLAUDE_CODE_VERIFY_PROMPT was removed by 2.1.217; the /verify and /code-review skills also stopped auto-running at 2.1.215."
+  },
+  {
+   "pattern": [
+    "how many hook events",
+    "number of hook events",
+    "list of hook events",
+    "all hook event types"
+   ],
+   "lessons": [
+    155,
+    32
+   ],
+   "hint": "There are 31 as of CLI 2.1.219+, not 30 — DirectoryAdded was inserted before MessageDisplay. Any '30 events' phrasing predates 2.1.219."
+  },
+  {
+   "pattern": [
+    "DirectoryAdded hook not firing",
+    "add-dir hook not firing",
+    "directory hook matcher"
+   ],
+   "lessons": [
+    155
+   ],
+   "hint": "Its matcher matches the SOURCE field (slash_command|register_repo_root), not a path — a path-shaped matcher never fires. It also does not re-run for an already-registered directory."
+  },
+  {
+   "pattern": [
+    "DirectoryAdded systemMessage ignored",
+    "hook output not reaching Claude on add-dir"
+   ],
+   "lessons": [
+    155
+   ],
+   "hint": "Hook systemMessage output reaches the model on the /add-dir path only; over the register_repo_root SDK control request everything is debug-logged and silent to the model."
+  },
+  {
+   "pattern": [
+    "self-hosted runner not starting",
+    "spawn-runner hook failing",
+    "CLAUDE_RUNNER_ env empty"
+   ],
+   "lessons": [
+    153
+   ],
+   "hint": "The CLAUDE_RUNNER_* vars are WRITTEN by the orchestrator into your spawn-runner hook's env — the CLI never reads them. Check spawn_last_error / queue_counts.backing_off; pool secrets are deliberately scrubbed from the child env."
+  },
+  {
+   "pattern": [
+    "device bridge not connecting",
+    "remote device tools unavailable",
+    "claude.ai cannot drive my machine"
+   ],
+   "lessons": [
+    154,
+    126
+   ],
+   "hint": "Requires first-party provider (not Bedrock/Vertex/Foundry/gateway), the allow_remote_sessions policy (denied under HIPAA), and both org and account uuids; otherwise it is skipped silently with tengu_device_bridge_skipped."
+  },
+  {
+   "pattern": [
+    "artifact comments not showing",
+    "artifact responder not replying"
+   ],
+   "lessons": [
+    156
+   ],
+   "hint": "Gated by tengu_teal_corbel, default false, overridable by CLAUDE_CODE_ARTIFACT_COMMENTS. Comment authors are typed human vs agent."
+  },
+  {
+   "pattern": [
+    "write denied inside memory directory",
+    "auto-memory path denied",
+    "memory dir could not be prepared"
+   ],
+   "lessons": [
+    159
+   ],
+   "hint": "The host-loop canUseTool chain allows memory-dir paths only when a memory directory is configured, the tool is Read/Write/Edit/MultiEdit, and decisionReason is exactly 'Path is outside allowed working directories'. If the parent cannot be created the link returns an explicit deny."
+  },
+  {
+   "pattern": [
+    "gate not in fcache",
+    "feature flag missing from fcache",
+    "gate absent not off"
+   ],
+   "lessons": [
+    160,
+    131,
+    141
+   ],
+   "hint": "Absent from the fcache means UNEVALUATED, not off. A gate declared only in the client defaults table with no read site is declared-but-unconsumed — the consumer has not shipped yet."
+  },
+  {
+   "pattern": [
+    "asar diff shows many removed files",
+    "asar extraction incomplete",
+    "electron asar extract fails"
+   ],
+   "lessons": [
+    162
+   ],
+   "hint": "Extracting a bare backed-up app.asar (no unpacked sibling) aborts partway AFTER writing files, leaving a partial tree that looks complete. Reconcile extracted bytes against the archive size before trusting any diff."
+  },
+  {
+   "pattern": [
+    "chunk name wrong",
+    "index2 chunk is CLI",
+    "cannot find code in expected chunk"
+   ],
+   "lessons": [
+    162
+   ],
+   "hint": "Desktop 1.30096.1 consolidated .vite/build from 368 chunks to 128; chunk-filename-to-role rules are invalid. Locate code by content, and resolve minified aliases within their own chunk."
+  },
+  {
+   "pattern": [
+    "CLI plugin credential field missing",
+    "clis env not injected",
+    "plugin secret not prompted"
+   ],
+   "lessons": [
+    106
+   ],
+   "hint": "The cli_plugin broker is gated by 2307090146, still OFF (source defaultValue) as of 2026-08-14: the renderer strips the clis block before the UI sees it and the runtime returns oauth_disabled. Live only in custom-3p deployments, which force the gate on."
   }
  ]
 }

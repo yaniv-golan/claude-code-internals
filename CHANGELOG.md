@@ -1,5 +1,79 @@
 # Changelog
 
+## v2.40.0 — 2026-08-14 (this fork) — the first allow, a third kind of gate, and a bundle that halved
+
+Chapter 43 (L159–L162), moving the **Desktop baseline to `app.asar` 1.30096.1** (from 1.28929.0), with the Desktop-managed host agent **2.1.227 → 2.1.229** and a live `fcache` decoded **2026-08-14**.
+
+Prompted by the `cowork-harness` project's 1.30096.1 pass, then re-derived first-party. Both of its headline claims survived intact; one count differs by method; and this pass found two gates and a structural change it did not report.
+
+**The finding.** The host-loop `canUseTool` chain gained a fourth link — and it is **the first one that can return `allow`**. Every earlier link only denied or fell through.
+
+```js
+// 1.28929.0    ft ?? pt ?? original
+// 1.30096.1    Ke ?? await Xe ?? qe ?? original
+```
+
+`Xe` is an auto-memory-directory carve-out: it turns a would-be denial into an allow, substituting realpath-resolved paths into the tool input. It is fenced tightly — a memory directory must be configured (**unset in production, so it is dormant today**), the tool must be Read/Write/Edit/MultiEdit, and the `decisionReason` must be *exactly* `"Path is outside allowed working directories"`. It also carries a `..`/dotfile traversal guard, and it can itself **deny** when a path is inside the memory dir but its parent cannot be prepared.
+
+**What's worth more than the feature.** That same reason string appears in the **CLI** attached to an `ask`, not a deny. So the agent says *ask*, the Desktop converts it to *deny*, and the reason string is the handoff token between the two layers — which is precisely what makes it interceptable. Reason about Cowork permissions from one artifact alone and you will get this backwards in whichever direction you were looking. I did, mid-investigation, before checking the other side.
+
+**A third kind of gate.** Three new gate ids, none removed:
+
+| gate | state |
+|---|---|
+| `1942337209` | MCP version negotiation — a kill switch with **inverted sense**. The predicate is `u && !un()`, so the gate being **off** (its live state) means negotiation is **active**; turning it on removes it. |
+| `3671534883`, `942840715` | **Declared-but-unconsumed** — each appears exactly once, in the client defaults table, with **no read site anywhere and no fcache entry**. |
+
+That last pair does not fit "live" or "dark-launched": dark-launched implies code sitting behind an off switch, and here the switch is declared before any consumer ships. It is the mirror image of Ch41/L151's producer-before-consumer env key, and it is a signal of what is *about* to be built rather than what is hidden.
+
+Polarity was **proven, not assumed**: the same chunk's only other gate read is `getSkillSources(){ if(!t.ld("278625510")) return [] }`, and Ch37/L131 already established that path as dead — the behaviour we documented is what an `isEnabled` reading predicts. Pairing an unknown call with one whose real-world outcome is already on record beats guessing from a name.
+
+**Two method traps, both nearly fatal to the diff.**
+
+| trap | consequence |
+|---|---|
+| `@electron/asar` throws partway through on a **bare backed-up** asar (no `unpacked` sibling) — *after* writing files | Left 413 JS files for one build and 173 for the other, with nothing in the output saying it stopped. Diffing those trees would have invented a large "removed" set. Fixed with a ~20-line extractor that skips `unpacked` entries, then **reconciling extracted bytes against the archive size**. |
+| A numeric-gate regex matching only **quoted** ids | Misses `942840715`, which the minifier emits as an unquoted object key. Two of three new gates were found only after matching both forms and filtering candidates through the live fcache. |
+
+**Also:** the bundle **consolidated** — `.vite/build` went from 368 chunks to 128 with total bytes flat, so any rule mapping a chunk filename to a role is now wrong (this build's Desktop MCP code lives in an `index2.chunk-*`). The frame-artifacts consumer landed agent-side at exactly **2.1.229** (0 at 2.1.227 → 14; the standalone CLI 2.1.231 has 6 — **counts do not transfer** across artifact classes or counting methods). And the asar's tiny env delta (+4/−1) matches Ch42's independent CLI diff on all five names — two artifacts, two ranges, one change seen twice.
+
+Extends L122, L129, L131, L149, L151 and L157.
+
+**Two corrections the reconciliation sweep surfaced.** Gates `1311049725` (Ch37/L130's Desktop-side VCS-SDK-event consumption gate) and `2678393595` (session watcher pool) are absent from **both** asars and from the fcache, so they went before this range — both are now `removed`, and Desktop-side consumption of those events is no longer gate-conditioned. Separately, the CLI diff reported `custom`, `review` and `workshop` as **removed commands**; they were **reclassified, not deleted**. `name:"workshop"` goes 1 → 0 while the bare string goes **30 → 314**, and `workshop` now sits in a skill-name list beside `artifact-design`, `whiteboard`, `prototype` and `code-review`, with its own `.workshop.md`/`.workshop.html` conventions. A slash command that vanishes from the registration table has often just moved surface — check the bare-string count before recording a removal.
+
+**Two follow-ups, done in the same release.** Gate records whose `name` held a human label now carry the convention the numeric gates already used — `"<id> (<label>)"` — which made 11 of them verifiable against the artifacts for the first time and took the audit from 45 to **34**. Three that remain are genuinely out of scope (absent from *both* asars, so they describe an older build) and now say so in their own summaries.
+
+And there is now a **`release-consistency.test.js`** (10 tests) that fails when the repo's release facts disagree. It checks counts against *reality* — the topic index, the semantic index, the chapter headings, and the lesson `startLine`/`endLine` bounds — not merely against each other, so a release that updates every doc to the same wrong number still fails. Writing it immediately paid: it caught **`SKILL.md`'s own opening line still claiming 124 lessons** (the line the model reads when the skill loads), a `50 detailed lessons` claim and two `27 hook event types` claims in the package README that my own greps had missed because I searched for narrower phrasing than the test does. It also surfaced that the legacy corpus uses *three* different lesson-heading conventions and that ten lessons carry a word rather than a number as their `lesson_number`; the check accommodates all of them rather than being weakened to nothing. Verified by negative control — bumping `lessons_count` to a wrong value fails two tests, and restoring it passes all ten.
+
+**Open:** the audit now **reconciles fully** — required, because the site-deploy workflow gates on `state.js --audit` emitting "everything reconciled to baseline" and would have refused to publish otherwise. Getting there was verification, not restamping: 21 removed/renamed records were confirmed still absent from both artifacts, 4 live records that had failed only on label-or-prefix name matching were re-verified present, and 2 gates turned out to be genuinely gone (see above). Two Desktop SDK-MCP tool names are present in the asar but assembled from a prefix, which is why a literal-name sweep missed them. Everything in this chapter is binary-tier, and the carve-out is dormant in production, so its runtime behaviour is unobserved.
+
+## v2.39.0 — 2026-08-14 (this fork) — the CLI caught up, and a hook count that had gone stale
+
+Chapter 42 (L153–L158): the standalone-CLI content refresh **v2.1.217 → v2.1.231**, moving the CLI content baseline off Ch38's 2.1.217. The 2.1.217 baseline was CDN-recovered and sha256-verified (`5840c777fd47115e…`, 250,456,784 bytes matching the manifest); 2.1.231 is the live installed CLI. Cross-checked against the official Anthropic CHANGELOG for 2.1.218–2.1.231, which splits the range cleanly into announced and dark.
+
+Ten releases of Desktop and Cowork work had left the CLI itself unexamined since 2.1.217. It had not been standing still.
+
+**The correction that touches the most pages.** Hook events went **30 → 31**. `DirectoryAdded` (announced 2.1.219) fires after `/add-dir` or the SDK `register_repo_root` control request. This skill has said "all 30 events" since Chapter 21 — in `SKILL.md`, in the plugin description, in the state layer — and every one of those statements was correct through v2.1.217 and is now wrong. Two details a hook author needs and would not guess: its `matcher` matches the **`source`** field, not a path, so a path-shaped matcher never fires; and hook `systemMessage` output reaches the model on the `/add-dir` path only — over `register_repo_root` the identical hook is debug-logged and silent.
+
+**The largest new surface, and the one that best rewards reading the code.** `claude self-hosted-runner` (announced 2.1.224, Team and Enterprise) turns a customer's own machines into where Claude Code sessions run. Its 16 `CLAUDE_RUNNER_*` variables are **written by the CLI and never read by it** — they are the inbound contract for a customer-supplied `spawn-runner` hook, populated from a signed work-order JWT. Under a read-site grep that is indistinguishable from dead code, which is exactly how the diff tool reported them. The orchestrator also scrubs its own pool secrets from the child environment, passes the JWT by **file path** rather than by value, and escalates SIGTERM → SIGKILL → abandon rather than assuming a kill works.
+
+**The dark one.** The CLI can register as a **remote-controlled device** and serve `bash`, `edit`, `glob`, `grep`, `read` and `write` as MCP tools over a `wss:` bridge — the `bash` tool a genuine persistent shell with sentinel-parsed exit codes. Gated on first-party provider, the `allow_remote_sessions` policy (**denied under HIPAA**), and org/account identity. "Device" appears **zero** times in the changelog for this range. This is the CLI end of Ch36/L126's `remote_devices`, whose gating that lesson could not trace.
+
+**Two methodology results, both from being wrong first.**
+
+| what happened | what it means |
+|---|---|
+| `diff-versions.sh` reported `bash`, `edit`, `glob`, `grep`, `read`, `write` as new **slash commands** | They are **tool** registrations on the device MCP server. The extractor matches `name`+`description` pairs and cannot tell the two apart. Open the constructor before reporting a command diff. |
+| A registry-vs-bundle sweep caught **5 stale records** that had survived multiple releases | `ANTHROPIC_FOUNDRY_AUTH_TOKEN` was recorded `removed` while present in **both** bundles — contradicting Ch38/L133's own prose, with nothing coupling the two. Four more were recorded live but absent from both bundles, so they went before this range. |
+
+That sweep is the practice change worth keeping: **`as_of` is a claim, and restamping it is not verification.** For anything name-shaped the check is one substring test against the bundle, so this release stamps a record only on a match, and deliberately leaves Desktop-scoped records at their true, older stamp.
+
+**Also:** Artifacts grew comments, autoreact and an agent responder behind gate `tengu_teal_corbel` (default false), with authors typed **human vs agent** (L156); worker directory sync and cross-session messaging, the latter carrying a Windows-only *second* gate (L157); and the `UTr()` resolver — env → `opus_5_prompt_bundle` → session-config → gate — which collapses the whole codename cluster into one rule (L158). Ch41/L151's producer-before-consumer gap has **closed**: `CLAUDE_CODE_COWORK_FRAME_ARTIFACTS` is now read by the session-identity normalizer.
+
+Extends L108, L112, L116, L126, L129, L133, L137, L148, L149 and L151.
+
+**Open:** `state.js --audit` deliberately does **not** end clean (110 records behind baseline). Those are Desktop-scoped — 51 `desktop_fcache` gates, 6 IPC interfaces, 17 Desktop-only env vars, ~15 Desktop SDK-MCP tools — and no Desktop asar or fcache was captured this pass, so sweeping them forward would assert a verification that did not happen. Relatedly, the absence of `mcp__skills__*`/`mcp__plugins__*` from the CLI bundle is a **positive re-confirmation of Ch37/L129**, not drift. Chapter 42 is binary-tier throughout: nothing was probed at runtime, so the device bridge, dir-sync and org-memory findings are code-reads with no live run behind them. Cowork applicability of L153/L154 was not traced, and the four removed variables carry `removed_in: "<=2.1.217"` because this pass cannot pin the exact version.
+
 ## v2.38.0 — 2026-08-13 (this fork) — elicitation, flag-delivery classes, and two corrections
 
 Chapter 41 (L147–L152), from Desktop `app.asar` **1.28929.0** diffed against 1.26832.0 and 13 further local asars back to **1.18286.2**, the host-agent Mach-O and in-VM ELF **2.1.227**, standalone CLI **2.1.228/2.1.229**, and a live `fcache` decoded **2026-08-13** (254 features).

@@ -1,10 +1,10 @@
 ---
 domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
-as_of_cli: 2.1.229
-as_of_desktop: 1.28929.0
-sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147]
-updated: 2026-08-13
+as_of_cli: 2.1.231
+as_of_desktop: 1.30096.1
+sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155]
+updated: 2026-08-14
 ---
 
 # Plugins, skills & hooks (current)
@@ -152,6 +152,29 @@ deterministic, session-independent staging live. An **uploaded** plugin lands un
 ULID-keyed), while a marketplace install mounts as `.local-plugins/cache/<mp>/<plugin>/<ver>`.
 **VM-loop** resolution remains **static-derived from the branch** (a live VM-loop run needs a
 locked-down org or the `forceDisableHostLoop` Dev-Menu toggle).
+
+## There are 31 hook events, not 30 (L155)
+
+The master hook-event array carries **31** entries as of CLI **2.1.231**. It was 30
+through v2.1.217; `DirectoryAdded` was inserted (announced 2.1.219) between
+`FileChanged` and `MessageDisplay`, so `MessageDisplay` is now the 31st entry rather
+than the 30th. Any "all 30 hook events" phrasing predates 2.1.219.
+
+`DirectoryAdded` fires after `/add-dir` or the SDK `register_repo_root` control request
+registers a new working directory, **after** the sandbox configuration has been refreshed
+— so sandboxed tools and permission state already see the directory, while the hook
+command itself runs unsandboxed. Two things an author will otherwise get wrong:
+
+- **The `matcher` matches `source`, not a path.** `matcherMetadata.fieldToMatch` is
+  `"source"`, values `slash_command` | `register_repo_root`. A path-shaped matcher never
+  fires. The input is `{directory (absolute), source}`.
+- **Hook output only reaches the model on one of the two paths.** Via `/add-dir`, a
+  failure count is summarised to Claude and `systemMessage` output arrives as bounded
+  context (`mode:"task-notification"`, `isMeta`). Via `register_repo_root`, everything is
+  debug-logged only — the same hook is silent to the model.
+
+A directory that is already registered (including a duplicate request) is denied with an
+error, and the registration pipeline and `DirectoryAdded` hooks **do not re-run**.
 
 ## PreToolUse is a second, independent enforcement point
 

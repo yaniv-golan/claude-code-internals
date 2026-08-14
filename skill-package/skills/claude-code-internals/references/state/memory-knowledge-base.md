@@ -1,9 +1,9 @@
 ---
 domain: memory-knowledge-base
 title: Auto-memory → knowledge base (current)
-as_of_cli: 2.1.229
+as_of_cli: 2.1.231
 sources: [90, 108, 109, 113]
-updated: 2026-07-03
+updated: 2026-08-14
 ---
 
 # Auto-memory → knowledge base (current)

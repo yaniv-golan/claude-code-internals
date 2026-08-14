@@ -1,7 +1,7 @@
 {
   "generated": "2026-08-13",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 152,
+  "total_lessons": 162,
   "lessons": [
     {
       "id": 1,
@@ -4423,6 +4423,314 @@
         "per-string-occurrence-count",
         "methodology-traps"
       ]
+    },
+    {
+      "id": 153,
+      "title": "Self-Hosted Runners: Your Own Machines Become Claude's Compute",
+      "lesson_number": "153",
+      "file": "39-verified-new-v2.1.231.md",
+      "startLine": 18,
+      "endLine": 56,
+      "keywords": [
+        "self-hosted-runner",
+        "claude self-hosted-runner",
+        "selfHostedRunnerOrchestratorMain",
+        "orchestrator",
+        "work-order-jwt",
+        "CLAUDE_RUNNER_WORK_ORDER_FILE",
+        "CLAUDE_RUNNER_ORDER_ID",
+        "CLAUDE_RUNNER_POOL_ID",
+        "CLAUDE_RUNNER_SESSION_ID",
+        "CLAUDE_RUNNER_CLIENT_PLATFORM",
+        "SELF_HOSTED_RUNNER_POOL_SECRET",
+        "SELF_HOSTED_RUNNER_ENVIRONMENT_SECRET",
+        "spawn-runner-hook",
+        "secret-scrubbing",
+        "producer-side-env-contract",
+        "self_hosted_runner_list_sessions",
+        "self_hosted_runner_requeue_session",
+        "runner-pool",
+        "capacity",
+        "use-anthropic-git-proxy",
+        "health-port",
+        "base-dir",
+        "SIGTERM-SIGKILL-abandon",
+        "D-state",
+        "team-and-enterprise",
+        "cli_self_hosted_runner_path",
+        "server-supplied-hooks"
+      ]
+    },
+    {
+      "id": 154,
+      "title": "The Device Bridge: the CLI Serves Shell and File Tools to claude.ai",
+      "lesson_number": "154",
+      "file": "39-verified-new-v2.1.231.md",
+      "startLine": 57,
+      "endLine": 91,
+      "keywords": [
+        "device-bridge",
+        "deviceBridge",
+        "createDeviceMcpServer",
+        "deviceInfoProbeTool",
+        "remote-device",
+        "remote_devices",
+        "CLAUDE_REMOTE_TOOLS_BRIDGE_URL",
+        "allow_remote_sessions",
+        "allow_remote_control",
+        "hipaa-denied",
+        "firstParty-only",
+        "wss-origin-validation",
+        "persistent-shell",
+        "__ANT_CMD_DONE__",
+        "sentinel-exit-code",
+        "device-tools-bash-edit-glob-grep-read-write",
+        "list-agents",
+        "tengu_device_bridge_connected",
+        "tengu_device_bridge_skipped",
+        "tengu_device_bash_served",
+        "dark-launched",
+        "slash-command-vs-tool-false-positive",
+        "diff-tool-methodology",
+        "reclassified-not-deleted",
+        "count-is-the-check",
+        "workshop-became-a-skill",
+        "removed-command-false-positive"
+      ]
+    },
+    {
+      "id": 155,
+      "title": "DirectoryAdded, the 31st Hook Event — correcting the 30-events figure",
+      "lesson_number": "155",
+      "file": "39-verified-new-v2.1.231.md",
+      "startLine": 92,
+      "endLine": 129,
+      "keywords": [
+        "DirectoryAdded",
+        "31-hook-events",
+        "hook-event-count",
+        "thirty-one-hooks",
+        "executeDirectoryAddedHooks",
+        "HOOK_EVENT_REGISTRY",
+        "add-dir",
+        "register_repo_root",
+        "matcherMetadata",
+        "fieldToMatch-source",
+        "sandbox-refreshed-before-hook",
+        "systemMessage",
+        "task-notification",
+        "duplicate-directory-no-rerun",
+        "set_cwd",
+        "trust_accepted",
+        "control-protocol-subtype",
+        "hook-failure-asymmetry",
+        "30-events-superseded"
+      ]
+    },
+    {
+      "id": 156,
+      "title": "Artifacts Grew a Backend: Comments, Autoreact, and an Agent Responder",
+      "lesson_number": "156",
+      "file": "39-verified-new-v2.1.231.md",
+      "startLine": 130,
+      "endLine": 167,
+      "keywords": [
+        "artifact-comments",
+        "CLAUDE_CODE_ARTIFACT_COMMENTS",
+        "CLAUDE_CODE_ARTIFACT_COMMENTS_AUTOREACT",
+        "CLAUDE_CODE_ARTIFACT_COMMENT_RESPONDER",
+        "CLAUDE_CODE_ARTIFACT_DB",
+        "CLAUDE_CODE_ARTIFACTS_API_TOKEN",
+        "CLAUDE_CODE_ARTIFACT_ASSET_BASE_URL",
+        "CLAUDE_CODE_ARTIFACT_LIVE_BASE_URL",
+        "CLAUDE_CODE_ARTIFACT_VIEWER_BASE_URL",
+        "tengu_teal_corbel",
+        "tengu_cobalt_plinth_moss",
+        "human-vs-agent-comment-role",
+        "degraded-role",
+        "CLAUDE_CODE_PLAN_ARTIFACTS",
+        "artifacts-dark-launch"
+      ]
+    },
+    {
+      "id": 157,
+      "title": "Remote-Session State: Directory Sync, Cross-Session Messaging, and L151's Closed Loop",
+      "lesson_number": "157",
+      "file": "39-verified-new-v2.1.231.md",
+      "startLine": 168,
+      "endLine": 209,
+      "keywords": [
+        "dir-sync",
+        "startWorkerDirSync",
+        "ccr-dir-sync",
+        "CLAUDE_CODE_DISABLE_DIR_SYNC",
+        "CLAUDE_CODE_DISABLE_WORKING_SYNC",
+        "startSyncedFileSyncer",
+        "CLAUDE_CODE_WORKER_EPOCH",
+        "CLAUDE_CODE_REMOTE_SESSION_ID",
+        "tengu_dir_sync_apply_start",
+        "worker-rehome",
+        "cross-session-messaging",
+        "CLAUDE_CODE_HARBOR_KITE",
+        "tengu_harbor_kite",
+        "tengu_harbor_kite_win",
+        "windows-specific-gate",
+        "CLAUDE_CODE_MESSAGING_SOCKET",
+        "CLAUDE_CODE_MESSAGING_TOKEN",
+        "CLAUDE_CODE_COWORK_FRAME_ARTIFACTS",
+        "coworkFrameArtifacts",
+        "producer-before-consumer-closed",
+        "session-identity-normalizer",
+        "ListAgents-offline-cloud",
+        "cowork-identity-grouping",
+        "case-insensitive-env-scrub",
+        "artifact-class-counts-dont-transfer",
+        "xOt-scrub",
+        "RB_-identity-set"
+      ]
+    },
+    {
+      "id": 158,
+      "title": "The UTr() Codename Resolver, New Betas & Retired Surface",
+      "lesson_number": "158",
+      "file": "39-verified-new-v2.1.231.md",
+      "startLine": 210,
+      "endLine": 262,
+      "keywords": [
+        "UTr-resolver",
+        "codename-flags",
+        "codename-env-override",
+        "opus_5_prompt_bundle",
+        "session-config-object",
+        "CLAUDE_CODE_GORSE_PLOVER",
+        "CLAUDE_CODE_JUNIPER_SUNDIAL",
+        "TURNS_BETWEEN_MAINTENANCE",
+        "CLAUDE_CODE_THRIFTY_SONIC",
+        "CLAUDE_CODE_PARCHMENT_FERN",
+        "CLAUDE_CODE_GAULT_KESTREL",
+        "agent-memory-2026-07-22",
+        "auto-mode-classifier-2026-07-16",
+        "server-side-fallback-2026-07-01",
+        "mcp-tunnels-2026-06-22",
+        "dreaming-2026-04-21",
+        "tengu_org_memory",
+        "tengu_memdir",
+        "goal-proposal",
+        "tengu_propose_goal",
+        "tengu_ultrareview_post",
+        "tengu_dead_probe",
+        "dead-code-probes",
+        "CLAUDE_CODE_USE_CCR_V2-declaration-only",
+        "retired-surface-2.1.231",
+        "confirmed-negatives",
+        "registry-vs-bundle-sweep",
+        "as_of-is-a-claim",
+        "restamping-is-not-verification",
+        "stale-registry-records",
+        "ANTHROPIC_FOUNDRY_AUTH_TOKEN-re-added",
+        "producer-without-consumer",
+        "desktop-sdk-mcp-absent-from-cli",
+        "audit-not-clean-deliberately"
+      ]
+    },
+    {
+      "id": 159,
+      "title": "The First ALLOW in the Host-Loop canUseTool Chain (auto-memory carve-out)",
+      "lesson_number": "159",
+      "file": "40-desktop-automemory-gates-1.30096.1.md",
+      "startLine": 16,
+      "endLine": 65,
+      "keywords": [
+        "auto-memory-carve-out",
+        "canUseTool-fourth-link",
+        "Xe-allow",
+        "host-loop-canUseTool",
+        "autoMemoryHostDir",
+        "Path is outside allowed working directories",
+        "decisionReason-handoff",
+        "ask-becomes-deny",
+        "cross-layer-permission",
+        "traversal-guard",
+        "Je-tool-set",
+        "Read-Write-Edit-MultiEdit",
+        "memory-directory",
+        "updatedInput-realpath",
+        "dormant-when-unset",
+        "1.30096.1"
+      ]
+    },
+    {
+      "id": 160,
+      "title": "Three New Gates, and a Third Gate State: Declared-but-Unconsumed",
+      "lesson_number": "160",
+      "file": "40-desktop-automemory-gates-1.30096.1.md",
+      "startLine": 66,
+      "endLine": 102,
+      "keywords": [
+        "1942337209",
+        "mcp-version-negotiation",
+        "kill-switch-inverted",
+        "versionNegotiation-auto-probe",
+        "t.ld-isEnabled",
+        "278625510",
+        "getSkillSources-dead",
+        "declared-but-unconsumed",
+        "3671534883",
+        "942840715",
+        "defaults-table",
+        "tk-defaultValue",
+        "unquoted-numeric-gate-key",
+        "gate-regex-trap",
+        "fcache-as-filter",
+        "gate-taxonomy",
+        "gate-removed-1311049725",
+        "gate-removed-2678393595",
+        "vanished-gate",
+        "record-by-record-sweep"
+      ]
+    },
+    {
+      "id": 161,
+      "title": "The Frame-Artifacts Consumer Landed Agent-Side (2.1.229)",
+      "lesson_number": "161",
+      "file": "40-desktop-automemory-gates-1.30096.1.md",
+      "startLine": 103,
+      "endLine": 121,
+      "keywords": [
+        "CLAUDE_CODE_COWORK_FRAME_ARTIFACTS",
+        "consumer-landed",
+        "2.1.229",
+        "host-agent-macho",
+        "counts-dont-transfer",
+        "artifact-class",
+        "desktop-and-cli-move-together",
+        "HERON_TALLOW-removed",
+        "cross-artifact-corroboration",
+        "L151-closed"
+      ]
+    },
+    {
+      "id": 162,
+      "title": "Bundle Consolidation, and How to Diff Two Minified asars",
+      "lesson_number": "162",
+      "file": "40-desktop-automemory-gates-1.30096.1.md",
+      "startLine": 122,
+      "endLine": 146,
+      "keywords": [
+        "bundle-consolidation",
+        "vite-build-chunks",
+        "368-to-128",
+        "chunk-name-heuristic-invalid",
+        "index2.chunk",
+        "partial-extraction-trap",
+        "asar-extractor",
+        "unpacked-entries",
+        "reconcile-bytes-against-archive",
+        "minified-name-chunk-local",
+        "resolve-alias-in-chunk",
+        "behavioural-polarity-proof",
+        "asar-diff-method"
+      ]
     }
   ],
   "keyword_map": {
@@ -6095,7 +6403,8 @@
     ],
     "task-notification": [
       49,
-      13
+      13,
+      155
     ],
     "repl": [
       50,
@@ -7186,7 +7495,8 @@
       85
     ],
     "allow_remote_sessions": [
-      85
+      85,
+      154
     ],
     "ctrl backspace": [
       85
@@ -9290,7 +9600,8 @@
       138
     ],
     "claude_code_worker_epoch": [
-      108
+      108,
+      157
     ],
     "claude_code_workspace_host_paths": [
       108
@@ -10379,7 +10690,8 @@
       125
     ],
     "remote_devices": [
-      126
+      126,
+      154
     ],
     "remote-devices-server": [
       126
@@ -10700,7 +11012,8 @@
       131
     ],
     "278625510": [
-      131
+      131,
+      160
     ],
     "io.modelcontextprotocol/skills": [
       131
@@ -11100,7 +11413,8 @@
     ],
     "codename-flags": [
       137,
-      104
+      104,
+      158
     ],
     "alder_wicket": [
       137
@@ -11127,7 +11441,8 @@
       137
     ],
     "confirmed-negatives": [
-      137
+      137,
+      158
     ],
     "meta-view": [
       137
@@ -15187,6 +15502,586 @@
     ],
     "methodology-traps": [
       152
+    ],
+    "self-hosted-runner": [
+      153
+    ],
+    "claude self-hosted-runner": [
+      153
+    ],
+    "selfhostedrunnerorchestratormain": [
+      153
+    ],
+    "orchestrator": [
+      153
+    ],
+    "work-order-jwt": [
+      153
+    ],
+    "claude_runner_work_order_file": [
+      153
+    ],
+    "claude_runner_order_id": [
+      153
+    ],
+    "claude_runner_pool_id": [
+      153
+    ],
+    "claude_runner_session_id": [
+      153
+    ],
+    "claude_runner_client_platform": [
+      153
+    ],
+    "self_hosted_runner_pool_secret": [
+      153
+    ],
+    "self_hosted_runner_environment_secret": [
+      153
+    ],
+    "spawn-runner-hook": [
+      153
+    ],
+    "secret-scrubbing": [
+      153
+    ],
+    "producer-side-env-contract": [
+      153
+    ],
+    "self_hosted_runner_list_sessions": [
+      153
+    ],
+    "self_hosted_runner_requeue_session": [
+      153
+    ],
+    "runner-pool": [
+      153
+    ],
+    "capacity": [
+      153
+    ],
+    "use-anthropic-git-proxy": [
+      153
+    ],
+    "health-port": [
+      153
+    ],
+    "base-dir": [
+      153
+    ],
+    "sigterm-sigkill-abandon": [
+      153
+    ],
+    "d-state": [
+      153
+    ],
+    "team-and-enterprise": [
+      153
+    ],
+    "cli_self_hosted_runner_path": [
+      153
+    ],
+    "server-supplied-hooks": [
+      153
+    ],
+    "device-bridge": [
+      154
+    ],
+    "devicebridge": [
+      154
+    ],
+    "createdevicemcpserver": [
+      154
+    ],
+    "deviceinfoprobetool": [
+      154
+    ],
+    "remote-device": [
+      154
+    ],
+    "claude_remote_tools_bridge_url": [
+      154
+    ],
+    "allow_remote_control": [
+      154
+    ],
+    "hipaa-denied": [
+      154
+    ],
+    "firstparty-only": [
+      154
+    ],
+    "wss-origin-validation": [
+      154
+    ],
+    "persistent-shell": [
+      154
+    ],
+    "__ant_cmd_done__": [
+      154
+    ],
+    "sentinel-exit-code": [
+      154
+    ],
+    "device-tools-bash-edit-glob-grep-read-write": [
+      154
+    ],
+    "list-agents": [
+      154
+    ],
+    "tengu_device_bridge_connected": [
+      154
+    ],
+    "tengu_device_bridge_skipped": [
+      154
+    ],
+    "tengu_device_bash_served": [
+      154
+    ],
+    "dark-launched": [
+      154
+    ],
+    "slash-command-vs-tool-false-positive": [
+      154
+    ],
+    "diff-tool-methodology": [
+      154
+    ],
+    "directoryadded": [
+      155
+    ],
+    "31-hook-events": [
+      155
+    ],
+    "hook-event-count": [
+      155
+    ],
+    "thirty-one-hooks": [
+      155
+    ],
+    "executedirectoryaddedhooks": [
+      155
+    ],
+    "hook_event_registry": [
+      155
+    ],
+    "add-dir": [
+      155
+    ],
+    "register_repo_root": [
+      155
+    ],
+    "matchermetadata": [
+      155
+    ],
+    "fieldtomatch-source": [
+      155
+    ],
+    "sandbox-refreshed-before-hook": [
+      155
+    ],
+    "systemmessage": [
+      155
+    ],
+    "duplicate-directory-no-rerun": [
+      155
+    ],
+    "set_cwd": [
+      155
+    ],
+    "trust_accepted": [
+      155
+    ],
+    "control-protocol-subtype": [
+      155
+    ],
+    "hook-failure-asymmetry": [
+      155
+    ],
+    "30-events-superseded": [
+      155
+    ],
+    "artifact-comments": [
+      156
+    ],
+    "claude_code_artifact_comments": [
+      156
+    ],
+    "claude_code_artifact_comments_autoreact": [
+      156
+    ],
+    "claude_code_artifact_comment_responder": [
+      156
+    ],
+    "claude_code_artifact_db": [
+      156
+    ],
+    "claude_code_artifacts_api_token": [
+      156
+    ],
+    "claude_code_artifact_asset_base_url": [
+      156
+    ],
+    "claude_code_artifact_live_base_url": [
+      156
+    ],
+    "claude_code_artifact_viewer_base_url": [
+      156
+    ],
+    "tengu_teal_corbel": [
+      156
+    ],
+    "tengu_cobalt_plinth_moss": [
+      156
+    ],
+    "human-vs-agent-comment-role": [
+      156
+    ],
+    "degraded-role": [
+      156
+    ],
+    "claude_code_plan_artifacts": [
+      156
+    ],
+    "artifacts-dark-launch": [
+      156
+    ],
+    "dir-sync": [
+      157
+    ],
+    "startworkerdirsync": [
+      157
+    ],
+    "ccr-dir-sync": [
+      157
+    ],
+    "claude_code_disable_dir_sync": [
+      157
+    ],
+    "claude_code_disable_working_sync": [
+      157
+    ],
+    "startsyncedfilesyncer": [
+      157
+    ],
+    "claude_code_remote_session_id": [
+      157
+    ],
+    "tengu_dir_sync_apply_start": [
+      157
+    ],
+    "worker-rehome": [
+      157
+    ],
+    "cross-session-messaging": [
+      157
+    ],
+    "claude_code_harbor_kite": [
+      157
+    ],
+    "tengu_harbor_kite": [
+      157
+    ],
+    "tengu_harbor_kite_win": [
+      157
+    ],
+    "windows-specific-gate": [
+      157
+    ],
+    "claude_code_messaging_socket": [
+      157
+    ],
+    "claude_code_messaging_token": [
+      157
+    ],
+    "claude_code_cowork_frame_artifacts": [
+      157,
+      161
+    ],
+    "coworkframeartifacts": [
+      157
+    ],
+    "producer-before-consumer-closed": [
+      157
+    ],
+    "session-identity-normalizer": [
+      157
+    ],
+    "listagents-offline-cloud": [
+      157
+    ],
+    "utr-resolver": [
+      158
+    ],
+    "codename-env-override": [
+      158
+    ],
+    "opus_5_prompt_bundle": [
+      158
+    ],
+    "session-config-object": [
+      158
+    ],
+    "claude_code_gorse_plover": [
+      158
+    ],
+    "claude_code_juniper_sundial": [
+      158
+    ],
+    "turns_between_maintenance": [
+      158
+    ],
+    "claude_code_thrifty_sonic": [
+      158
+    ],
+    "claude_code_parchment_fern": [
+      158
+    ],
+    "claude_code_gault_kestrel": [
+      158
+    ],
+    "agent-memory-2026-07-22": [
+      158
+    ],
+    "auto-mode-classifier-2026-07-16": [
+      158
+    ],
+    "server-side-fallback-2026-07-01": [
+      158
+    ],
+    "mcp-tunnels-2026-06-22": [
+      158
+    ],
+    "dreaming-2026-04-21": [
+      158
+    ],
+    "tengu_org_memory": [
+      158
+    ],
+    "tengu_memdir": [
+      158
+    ],
+    "goal-proposal": [
+      158
+    ],
+    "tengu_propose_goal": [
+      158
+    ],
+    "tengu_ultrareview_post": [
+      158
+    ],
+    "tengu_dead_probe": [
+      158
+    ],
+    "dead-code-probes": [
+      158
+    ],
+    "claude_code_use_ccr_v2-declaration-only": [
+      158
+    ],
+    "retired-surface-2.1.231": [
+      158
+    ],
+    "registry-vs-bundle-sweep": [
+      158
+    ],
+    "as_of-is-a-claim": [
+      158
+    ],
+    "restamping-is-not-verification": [
+      158
+    ],
+    "stale-registry-records": [
+      158
+    ],
+    "producer-without-consumer": [
+      158
+    ],
+    "desktop-sdk-mcp-absent-from-cli": [
+      158
+    ],
+    "cowork-identity-grouping": [
+      157
+    ],
+    "case-insensitive-env-scrub": [
+      157
+    ],
+    "artifact-class-counts-dont-transfer": [
+      157
+    ],
+    "auto-memory-carve-out": [
+      159
+    ],
+    "canusetool-fourth-link": [
+      159
+    ],
+    "xe-allow": [
+      159
+    ],
+    "host-loop-canusetool": [
+      159
+    ],
+    "automemoryhostdir": [
+      159
+    ],
+    "path is outside allowed working directories": [
+      159
+    ],
+    "decisionreason-handoff": [
+      159
+    ],
+    "ask-becomes-deny": [
+      159
+    ],
+    "cross-layer-permission": [
+      159
+    ],
+    "traversal-guard": [
+      159
+    ],
+    "je-tool-set": [
+      159
+    ],
+    "read-write-edit-multiedit": [
+      159
+    ],
+    "memory-directory": [
+      159
+    ],
+    "updatedinput-realpath": [
+      159
+    ],
+    "dormant-when-unset": [
+      159
+    ],
+    "1.30096.1": [
+      159
+    ],
+    "1942337209": [
+      160
+    ],
+    "mcp-version-negotiation": [
+      160
+    ],
+    "kill-switch-inverted": [
+      160
+    ],
+    "versionnegotiation-auto-probe": [
+      160
+    ],
+    "t.ld-isenabled": [
+      160
+    ],
+    "getskillsources-dead": [
+      160
+    ],
+    "declared-but-unconsumed": [
+      160
+    ],
+    "3671534883": [
+      160
+    ],
+    "942840715": [
+      160
+    ],
+    "defaults-table": [
+      160
+    ],
+    "tk-defaultvalue": [
+      160
+    ],
+    "unquoted-numeric-gate-key": [
+      160
+    ],
+    "gate-regex-trap": [
+      160
+    ],
+    "fcache-as-filter": [
+      160
+    ],
+    "gate-taxonomy": [
+      160
+    ],
+    "consumer-landed": [
+      161
+    ],
+    "2.1.229": [
+      161
+    ],
+    "host-agent-macho": [
+      161
+    ],
+    "counts-dont-transfer": [
+      161
+    ],
+    "artifact-class": [
+      161
+    ],
+    "desktop-and-cli-move-together": [
+      161
+    ],
+    "heron_tallow-removed": [
+      161
+    ],
+    "cross-artifact-corroboration": [
+      161
+    ],
+    "l151-closed": [
+      161
+    ],
+    "bundle-consolidation": [
+      162
+    ],
+    "vite-build-chunks": [
+      162
+    ],
+    "368-to-128": [
+      162
+    ],
+    "chunk-name-heuristic-invalid": [
+      162
+    ],
+    "index2.chunk": [
+      162
+    ],
+    "partial-extraction-trap": [
+      162
+    ],
+    "asar-extractor": [
+      162
+    ],
+    "unpacked-entries": [
+      162
+    ],
+    "reconcile-bytes-against-archive": [
+      162
+    ],
+    "minified-name-chunk-local": [
+      162
+    ],
+    "resolve-alias-in-chunk": [
+      162
+    ],
+    "behavioural-polarity-proof": [
+      162
+    ],
+    "asar-diff-method": [
+      162
+    ],
+    "reclassified-not-deleted": [
+      154
+    ],
+    "workshop-became-a-skill": [
+      154
+    ],
+    "count-is-the-check": [
+      154
+    ],
+    "vanished-gate": [
+      160
+    ],
+    "record-by-record-sweep": [
+      160
     ]
   }
 }

@@ -28,10 +28,12 @@
     }
   },
   "verified_against": {
-    "cli": "2.1.229",
-    "desktop_asar": "1.28929.0",
+    "cli": "2.1.231",
+    "desktop_asar": "1.30096.1",
     "fcache_content16": "b84a0ad7452188d7",
-    "observed_at": "2026-08-13"
+    "observed_at": "2026-08-14",
+    "cli_note": "Re-stamped for the v2.1.217->v2.1.231 CLI refresh (Ch42). The CLI-side diff was scanned for contradictions against these facts and found none; the runtime markers the detect.* facts rely on (CLAUDECODE, CLAUDE_CODE_ENTRYPOINT + local-agent normalisation, CLAUDE_CODE_IS_COWORK) were positively confirmed present in the 2.1.231 bundle. The Cowork-side facts themselves were NOT re-derived this pass; desktop_asar/fcache stamps are unchanged and remain their true provenance.",
+    "desktop_note": "Re-checked against the 1.28929.0 -> 1.30096.1 asar diff (Ch43). The path facts' backing code was verified UNCHANGED term-for-term: Ke (the /sessions-is-a-VM-path deny behind paths.session-paths-denied) is identical to the previous build's ft, and it still runs BEFORE the new auto-memory link, so that fact is if anything better protected. The new canUseTool allow (L159) is narrower than any fact here -- it requires a configured memory directory (unset in production, so dormant), one of Read/Write/Edit/MultiEdit, and a decisionReason of exactly 'Path is outside allowed working directories' -- and contradicts no rule on this page. Delete, shell, detection and plugin facts were untouched by this diff."
   },
   "pages": [
     {

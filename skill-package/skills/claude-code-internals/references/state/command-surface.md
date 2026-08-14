@@ -1,9 +1,9 @@
 ---
 domain: command-surface
 title: Command surface (current)
-as_of_cli: 2.1.229
+as_of_cli: 2.1.231
 sources: [111, 112, 135]
-updated: 2026-07-22
+updated: 2026-08-14
 ---
 
 # Command surface (current)
@@ -109,3 +109,9 @@ a user a dark-launched command is available to them.
   `/background`/`/daemon`/`/stop`/Fleet-view gating is documented in
   L89–L90, which predate this page's sources (L111–L112) — check
   `registry.json`'s `cmd.*` entries for their current status.
+
+## Three commands left the surface by becoming skills (L154)
+
+`custom`, `review` and `workshop` stopped being registered as slash commands between CLI 2.1.217 and 2.1.231 (`name:"workshop"` goes 1 → 0). They were **not removed**: the bare string `workshop` goes 30 → 314 over the same range and `review` goes 1730 → 2271. `workshop` now sits in a skill-name list beside `artifact-design`, `artifact-diagramming`, `artifact-capabilities`, `whiteboard`, `prototype`, `dataviz`, `code-review` and `artifact-pr-review`, with `.workshop.md` / `.workshop.html` file conventions and a `workshopBlessedHashes` set.
+
+The general rule for reading a command diff: a command that disappears from the registration table has often moved to another surface — a skill, or the routines table — so **check the bare-string count before recording a removal**. A name that is an order of magnitude *more* present than before has clearly moved rather than gone.

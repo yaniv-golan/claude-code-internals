@@ -1,9 +1,9 @@
 ---
 domain: model-landscape
 title: Model landscape (current)
-as_of_cli: 2.1.229
+as_of_cli: 2.1.231
 sources: [108, 110, 133]
-updated: 2026-07-22
+updated: 2026-08-14
 ---
 
 # Model landscape (current)
