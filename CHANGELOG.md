@@ -1,5 +1,29 @@
 # Changelog
 
+## v2.43.0 — 2026-08-27 (this fork) — Cowork has its own browser, and a tool that means two things
+
+Chapter 46 (L168–L169), from Desktop `app.asar` **1.37937.1**. **Binary tier: no live probe, and no fcache captured — both new gate ids are named, their production state is unknown.**
+
+**Cowork ships an in-app browser: `mcp__Claude_Browser__*`.** Fourteen tools — `read_page`, `computer`, `form_input`, `navigate`, `find`, `get_page_text`, `javascript_tool`, `read_console_messages`, `read_network_requests`, `resize_window`, `tabs_context`, `tabs_create`, `tabs_select`, `tabs_close`. **Every name is also a Claude-in-Chrome tool name**, so the two surfaces are distinguished only by MCP prefix, and anything matching browser tools by bare name can no longer tell which browser it is driving.
+
+Gated by two gates, a setting, and a session-kind test — `hasInAppBrowser = ML() && Vx('coworkBrowserToolsEnabled') !== false && sessionType !== 'chat'`, where `ML()` requires gates **`3990395613`** and **`17519066`**. Chat mode never receives it. `kL() = !CL || SL` is unresolved and flagged rather than guessed.
+
+**The part with a security shape.** The pane *"keeps its own persistent profile shared across this app's sessions, so the person (or an earlier session) may already be signed in to sites there, and sign-ins Claude completes persist."* A durable cross-session **authenticated** browsing context reachable by an agent, where "never signs out, changes credentials, or acts on an account beyond what the task needs" is **prompt instruction, not an enforced boundary**. Worth reading beside Ch36/L127's credential-channel inventory.
+
+**`preview_start` has two incompatible contracts, chosen by session kind.** `Xhr(pgr, kind)` rewrites the tool on the way out:
+
+| session kind | `preview_start` | rest of the surface |
+|---|---|---|
+| `cowork` | `{ url }` — *"Open the Browser pane at a URL (a fresh browser tab; **no dev server on this surface**)"* | the 14 browser tools |
+| `ccd` + gate | `{ name }` — start a dev server | 4 preview tools + the 14 browser tools |
+| `ccd`, no gate | `{ name }` | the **full 13-tool** dev-server family, no browser |
+
+So **`.claude/launch.json` and the Playwright-shaped `preview_*` family are not a Cowork feature** — Cowork keeps only the name. Same tool, no shared schema field, and the description an author meets first is the one that does not apply to them. The `launch.json` format is recorded verbatim; identifying it with Ch27/L112's dark-launched **Launch Composer** is **inferred**, not established.
+
+The general rule this argues for: **a tool's contract is a property of the surface that served it, not of its name** — the tool-schema form of Ch44/L166's point about prompt text, and a sharper one, since a wrong prompt misleads while a wrong schema cannot execute.
+
+**Method, recorded because it nearly shipped a false claim.** A fixed-size sampling window returned the first 10 of a 14-entry array, making the Cowork branch look as though it served no `tabs_*` tools against a prompt that instructs the model to call them — which would have been a fabricated dangling-reference defect. The tell was a description-override map carrying a key the "absent" list could not explain. **Extract whole arrays by bracket-matching before asserting absence.** Same family as Ch43/L162's partial extraction and Ch44/L166's encoding trap.
+
 ## v2.42.0 — 2026-08-27 (this fork) — the skill re-attachment budget
 
 Chapter 45 (L167). First-party in agent Mach-O **2.1.246**, cross-confirmed at **2.1.247**.

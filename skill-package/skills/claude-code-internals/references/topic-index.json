@@ -1,7 +1,7 @@
 {
   "generated": "2026-08-13",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 167,
+  "total_lessons": 169,
   "lessons": [
     {
       "id": 1,
@@ -4856,6 +4856,58 @@
         "token-estimator-unresolved",
         "skill-vanishes-not-the-big-one",
         "budgetTruncatedSkills"
+      ]
+    },
+    {
+      "id": 168,
+      "title": "Cowork Has Its Own Browser, With a Persistent Signed-In Profile",
+      "lesson_number": "168",
+      "file": "43-cowork-in-app-browser-preview.md",
+      "startLine": 14,
+      "endLine": 69,
+      "keywords": [
+        "in-app-browser",
+        "mcp__Claude_Browser__",
+        "Claude Browser",
+        "browser-surfaces",
+        "coworkPreferredBrowser",
+        "persistent-browser-profile",
+        "signed-in-profile",
+        "gate-17519066",
+        "gate-3990395613",
+        "coworkBrowserToolsEnabled",
+        "tabs_context",
+        "tabs_create",
+        "reads-tab",
+        "mutates-tab",
+        "browser-name-collision",
+        "claude-in-chrome-prefix",
+        "no-localhost-no-file-url",
+        "truncated-window-trap"
+      ]
+    },
+    {
+      "id": 169,
+      "title": "preview_start Has Two Incompatible Contracts, Chosen by Session Kind",
+      "lesson_number": "169",
+      "file": "43-cowork-in-app-browser-preview.md",
+      "startLine": 70,
+      "endLine": 121,
+      "keywords": [
+        "preview_start",
+        "preview-family",
+        "launch.json",
+        "Launch Composer",
+        "dev-server-tools",
+        "dual-contract",
+        "session-kind-branch",
+        "Xhr",
+        "Uhr",
+        "tool-schema-by-surface",
+        "declaration-vs-rendered",
+        "preview_screenshot",
+        "preview_click",
+        "preview_eval"
       ]
     }
   ],
@@ -16433,6 +16485,102 @@
     ],
     "budgetTruncatedSkills": [
       167
+    ],
+    "in-app-browser": [
+      168
+    ],
+    "mcp__Claude_Browser__": [
+      168
+    ],
+    "Claude Browser": [
+      168
+    ],
+    "browser-surfaces": [
+      168
+    ],
+    "coworkPreferredBrowser": [
+      168
+    ],
+    "persistent-browser-profile": [
+      168
+    ],
+    "signed-in-profile": [
+      168
+    ],
+    "gate-17519066": [
+      168
+    ],
+    "gate-3990395613": [
+      168
+    ],
+    "coworkBrowserToolsEnabled": [
+      168
+    ],
+    "tabs_context": [
+      168
+    ],
+    "tabs_create": [
+      168
+    ],
+    "reads-tab": [
+      168
+    ],
+    "mutates-tab": [
+      168
+    ],
+    "browser-name-collision": [
+      168
+    ],
+    "claude-in-chrome-prefix": [
+      168
+    ],
+    "no-localhost-no-file-url": [
+      168
+    ],
+    "truncated-window-trap": [
+      168
+    ],
+    "preview_start": [
+      169
+    ],
+    "preview-family": [
+      169
+    ],
+    "launch.json": [
+      169
+    ],
+    "Launch Composer": [
+      169
+    ],
+    "dev-server-tools": [
+      169
+    ],
+    "dual-contract": [
+      169
+    ],
+    "session-kind-branch": [
+      169
+    ],
+    "Xhr": [
+      169
+    ],
+    "Uhr": [
+      169
+    ],
+    "tool-schema-by-surface": [
+      169
+    ],
+    "declaration-vs-rendered": [
+      169
+    ],
+    "preview_screenshot": [
+      169
+    ],
+    "preview_click": [
+      169
+    ],
+    "preview_eval": [
+      169
     ]
   }
 }
