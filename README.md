@@ -12,7 +12,7 @@
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-plugin-F97316)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/plugins)
 [![Improved with Skill Creator Plus](https://img.shields.io/badge/Improved_with-Skill_Creator_Plus-4ecdc4?style=flat-square)](https://github.com/yaniv-golan/skill-creator-plus)
 
-**Skill Version:** 2.43.1 | **Captured from:** Claude Code v2.1.231 (+ Claude Desktop app.asar through 1.30096.1 + Desktop-managed host agent Mach-O 2.1.229 + in-VM ELF claude-code-vm/2.1.170 / 2.1.197 / 2.1.205 + the golden Cowork VM disk image `rootfs.img` + live `fcache` decodes + Desktop's Chromium HTTP cache) | **Date:** 2026-08-14 | **License:** MIT
+**Skill Version:** 2.43.2 | **Captured from:** Claude Code v2.1.231 (+ Claude Desktop app.asar through 1.30096.1 + Desktop-managed host agent Mach-O 2.1.229 + in-VM ELF claude-code-vm/2.1.170 / 2.1.197 / 2.1.205 + the golden Cowork VM disk image `rootfs.img` + live `fcache` decodes + Desktop's Chromium HTTP cache) | **Date:** 2026-08-14 | **License:** MIT
 
 ---
 
@@ -369,7 +369,7 @@ claude-code-internals/
 │   └── skills/
 │       └── claude-code-internals/  The skill itself
 │           ├── SKILL.md            Skill brain (search strategy, lesson index)
-│           ├── version.json        Version tracking (v2.43.1 / v2.1.231)
+│           ├── version.json        Version tracking (v2.43.2 / v2.1.231)
 │           ├── hooks-config.json   PreToolUse hook definition
 │           ├── references/
 │           │   ├── 01-core-architecture-tools.md
@@ -503,7 +503,7 @@ claude-code-internals/
 | **42** | **`39-verified-new-v2.1.231.md`** | **v2.1.217→v2.1.231 CLI content refresh** (L153–L158). **`claude self-hosted-runner`** turns customer machines into Claude's compute; its 16 `CLAUDE_RUNNER_*` vars are **written, never read** — a producer-side contract indistinguishable from dead code under a grep (L153). **DARK:** the CLI registers as a **remote-controlled device** serving `bash`/`edit`/`glob`/`grep`/`read`/`write` as MCP tools over `wss:` — the CLI end of Ch36/L126 (L154). **`DirectoryAdded` is the 31st hook event**, correcting every "30 events" statement in this skill; its matcher matches `source`, not a path (L155). Artifacts grew comments + an agent responder behind `tengu_teal_corbel` (L156). Dir-sync, cross-session messaging, and L151's loop **closed** (L157). The **`UTr()` codename resolver** + 5 new betas, two dark (L158) |
 | **43** | **`40-desktop-automemory-gates-1.30096.1.md`** | **The auto-memory carve-out, three new gates & a bundle reshuffle** (L159–L162), Desktop **1.28929.0 → 1.30096.1**. The host-loop `canUseTool` chain gained a **fourth link — the first that can ALLOW**: an auto-memory carve-out keyed on `decisionReason` being exactly *"Path is outside allowed working directories"*, dormant in production. **The cross-layer fact:** the CLI emits that reason on an **ask** while the Desktop turns it into a **deny** (L159). Three new gates — `1942337209` is an MCP version-negotiation kill switch with **inverted sense**, and two more are **declared-but-unconsumed**, a third gate state (L160). The frame-artifacts consumer landed agent-side at exactly **2.1.229** — counts do not transfer across artifact classes (L161). The bundle **consolidated** 368→128 chunks, plus the partial-extraction trap (L162) |
 | **44** | **`41-cowork-path-resolution-lanes.md`** | **Path resolution in Cowork — a withdrawal, and the two path forms** (L163–L166): host-loop `mcp__workspace__bash` starts at the **session root**, not outputs, and always did — the shipped prompt was wrong until Desktop 1.32885.1, and this skill copied it; bare filenames for the file tools vs absolute `/sessions/<id>/mnt/outputs/` for bash (**no form works for both**); `outputs/x` doubles and hides; `Write`'s result carries the raw path; Chat mode is a different surface; two greps that lie (a `\uXXXX` re-encoding at 1.32352.0, and a partial `asar extract`). |
-| **45** | **`42-skill-reattach-compaction-budget.md`** | **The skill re-attachment budget** (L167): after compaction, skills are re-attached under **two** caps — 5,000 tokens per skill (truncate) and 25,000 combined (**drop outright**) — spent most-recently-invoked first on post-truncation sizes, so the skill that vanishes is rarely the big one; both mutations are conditionally written back and persist for the session. 19,902 is derived, not a literal; the token estimator is deliberately unresolved. |
+| **45** | **`42-skill-reattach-compaction-budget.md`** | **The skill re-attachment budget** (L167): after compaction, skills are re-attached under **two** caps — 5,000 tokens per skill (truncate) and 25,000 combined (**drop outright**) — spent most-recently-invoked first on post-truncation sizes, so the skill that vanishes is rarely the big one; both mutations are conditionally written back and persist for the session. 19,900 is derived (marker = 100: 98 visible + two leading newlines), not a literal; the token estimator is deliberately unresolved. |
 | **46** | **`43-cowork-in-app-browser-preview.md`** | **Cowork's in-app browser & the `preview_*` family** (L168–L169): a third browser surface at `mcp__Claude_Browser__*` with tool names identical to Claude-in-Chrome's and a **persistent signed-in profile**, behind two gates and barred from Chat mode; and `preview_start`, one name with **two incompatible schemas** — `{url}` opens a tab in Cowork, `{name}` starts a dev server from `.claude/launch.json` elsewhere. |
 
 </details>
@@ -512,7 +512,7 @@ claude-code-internals/
 
 ```json
 {
-  "skill_version": "2.43.1",
+  "skill_version": "2.43.2",
   "captured_version": "2.1.231",
   "verified_against_binary": "2.1.231",
   "captured_date": "2026-08-05"
@@ -553,7 +553,7 @@ This repository is a fork of [stuinfla/claude-code-internals](https://github.com
 - The PreToolUse `.claude/` hook (`config-aware-hook.sh`), version check script, and RuFlo index builder
 - The original README documentation and architecture diagrams
 
-**What this fork adds** (v2.2.0–v2.43.1, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
+**What this fork adds** (v2.2.0–v2.43.2, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
 
 - Chapter 9 (Lessons 51–56): binary-verified new features in Claude Code v2.1.90, extracted directly from the Bun SEA binary and verified against official docs
 - Chapter 10 (Lessons 57–59): binary-verified changes in Claude Code v2.1.92 — new commands, removed commands, new env vars, and AskUserQuestionTool documentation

@@ -44,10 +44,23 @@ for (let [i,a] of s) {
 
 | cap | constant (2.1.246) | unit enforced | what happens |
 |---|---|---|---|
-| per skill | `V3o = 5000` | tokens | content **truncated** to `t*4 − 98` chars, marker appended |
+| per skill | `V3o = 5000` | tokens | content **truncated** to `t*4 − 100` chars, marker appended |
 | all skills combined | `K3o = 25000` | tokens | skill **dropped whole** — stored content set to `""` |
 
-**The character figure is derived arithmetic, not a literal.** `t*4 − Rge.length` = `20000 − 98` = **19,902**. There is no `19902` (or `19900`) anywhere in the bundle for a later reader to grep, so any document stating it must show the derivation or it becomes an unsourceable number. The marker is **98** characters; a widely-repeated 19,900 comes from assuming 100.
+**The character figure is derived arithmetic, not a literal.** `t*4 − Rge.length` = `20000 − 100` = **19,900**. There is no `19900` anywhere in the bundle for a later reader to grep, so any document stating it must show the derivation or it becomes an unsourceable number.
+
+**CORRECTION (2026-08-27, same day).** An earlier version of this lesson gave the marker as 98 characters and the budget as 19,902. **Both were wrong**, and the long-published 19,900 was right all along. Byte-exact from the binary:
+
+```
+b' Rge=`\n\n[... skill content truncated for compaction; use Read on the skill path if you need the full text]'
+literal length: 100
+```
+
+The template literal **opens with two real newline characters**. The visible text is 98; `Rge.length` is **100**.
+
+The method failure is the reusable part, and it is a new species of the traps this skill already collects. The measurement never touched the binary: the marker text was read out of an extraction cleaned with `re.sub(r'[^\x20-\x7e]','',…)` — which **deletes literal newlines** — and the length was then computed from that reconstruction. A second observer, working independently, reached the same 98 by a different route: `grep -o "\[\.\.\. skill content truncated[^]]*\]"`, a pattern anchored on `[` that **structurally cannot** return a leading newline. Two instruments, one blind spot, the same wrong answer — which is precisely why agreement between two derived measurements is not corroboration.
+
+And the wrong answer was *plausible*: it differed from the established figure by exactly 2, which reads as a satisfying small correction rather than a red flag, and it was used to "correct" a number that was already correct. **When a measurement disagrees with an established value by a suspiciously small amount, suspect the instrument before the value** — and measure the artifact, never a cleaned rendering of it.
 
 **The combined budget is consumed by POST-truncation sizes** — `d = xc(u)`, not `xc(a.content)`. A 40,000-token skill contributes its capped 5,000, not its real size. The intuitive reading is the opposite, and it matters: more skills fit than an author expects, so the combined cap bites later and less predictably than the per-skill one.
 

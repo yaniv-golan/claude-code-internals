@@ -4844,7 +4844,7 @@
         "compaction-skill-truncation",
         "per-skill-5000-tokens",
         "combined-25000-budget",
-        "19902-derived",
+        "19900-derived",
         "truncation-marker-98",
         "most-recent-first",
         "skill-zeroed-outright",
@@ -4855,7 +4855,10 @@
         "pin-values-not-names",
         "token-estimator-unresolved",
         "skill-vanishes-not-the-big-one",
-        "budgetTruncatedSkills"
+        "budgetTruncatedSkills",
+        "marker-length-100",
+        "cleaned-rendering-trap",
+        "instrument-before-value"
       ]
     },
     {
@@ -16459,9 +16462,6 @@
     "combined-25000-budget": [
       167
     ],
-    "19902-derived": [
-      167
-    ],
     "truncation-marker-98": [
       167
     ],
@@ -16617,6 +16617,18 @@
     ],
     "cross-artifact-config": [
       169
+    ],
+    "19900-derived": [
+      167
+    ],
+    "marker-length-100": [
+      167
+    ],
+    "cleaned-rendering-trap": [
+      167
+    ],
+    "instrument-before-value": [
+      167
     ]
   }
 }

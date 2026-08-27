@@ -1,5 +1,24 @@
 # Changelog
 
+## v2.43.2 — 2026-08-27 (this fork) — the marker is 100, and 19,900 was right all along
+
+**v2.42.0 corrected a correct number to a wrong one.** L167 gave the truncation marker as 98 characters and the per-skill budget as 19,902. Both are wrong. Byte-exact from the binary:
+
+```
+b' Rge=`\n\n[... skill content truncated for compaction; use Read on the skill path if you need the full text]'
+literal length: 100
+```
+
+The template literal **opens with two real newline characters**. Visible text 98; `Rge.length` **100**; `5000×4 − 100` = **19,900** — the long-published figure, right the whole time.
+
+**How the wrong number was produced, which is the part worth keeping.** The length was never measured from the binary. The marker text was read out of an extraction cleaned with `re.sub(r'[^\x20-\x7e]','',…)` — a filter that **deletes literal newlines** — and the length computed from that reconstruction. Independently, a second party reached the same 98 via `grep -o "\[\.\.\. skill content truncated[^]]*\]"`, a pattern anchored on `[` that **structurally cannot** return a leading newline.
+
+Two different instruments, the same blind spot, the same wrong answer — a concrete instance of the rule L167 itself states: agreement between derived measurements is not corroboration.
+
+And it was *plausible*: off by exactly 2 from the established value, which reads as a satisfying small correction rather than a red flag. **When a measurement disagrees with an established value by a suspiciously small amount, suspect the instrument before the value** — and measure the artifact, never a cleaned rendering of it.
+
+The v2.42.0 entry below is annotated in place rather than rewritten, so the correction trail survives.
+
 ## v2.43.1 — 2026-08-27 (this fork) — Ch46 goes live-confirmed, and loses a tool it never had
 
 Same-day upgrade of Chapter 46 from binary-tier to live-confirmed, plus one correction to what v2.43.0 shipped.
@@ -48,10 +67,10 @@ Chapter 45 (L167). First-party in agent Mach-O **2.1.246**, cross-confirmed at *
 
 | cap | constant | unit | effect |
 |---|---|---|---|
-| per skill | `V3o = 5000` | tokens | **truncates** to `t*4 − 98` = **19,902** chars + marker |
+| per skill | `V3o = 5000` | tokens | **truncates** to `t*4 − 100` = **19,900** chars + marker *(corrected in 2.43.2 — this entry originally said 98/19,902)* |
 | all skills | `K3o = 25000` | tokens | **drops the skill outright** — stored content set to `""` |
 
-**19,902 is derived arithmetic, not a literal** — no such number exists in the bundle to grep, so any doc stating it must show the derivation. The marker is **98** chars; the widely-repeated 19,900 assumes 100.
+**19,900 is derived arithmetic, not a literal** — no such number exists in the bundle to grep, so any doc stating it must show the derivation. The marker is **98** chars; the widely-repeated 19,900 assumes 100.
 
 **The combined budget is consumed by post-truncation sizes** (`d = xc(u)`, not `xc(a.content)`), so a 40,000-token skill contributes its capped 5,000. More skills fit than expected — and because the loop sorts **most-recently-invoked first**, **the skill that silently vanishes is rarely the big one**; it is whichever was invoked least recently when the budget ran out. An author debugging by file size is looking in the wrong place.
 
