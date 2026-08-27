@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.41.2 — 2026-08-27 (this fork) — the description, trimmed and reweighted
+
+Presentation only; no lesson content changed.
+
+**The `SKILL.md` description was 891 chars — the longest of 95 installed skills, against a median of 256.** It is now 583, and reads as prose rather than an index. What went: ~300 chars of parenthetical sub-detail (*"all 31 events, exit-code semantics, firing order"*) that answers questions a reader browsing a listing has not asked yet and adds no trigger surface; and a trailing *"Pass a topic such as…"* that `argument-hint` already says verbatim.
+
+**Claude Cowork is promoted out of the trailing list into its own clause.** It was the last of ten comma-separated items, which badly undersold it: **15 of 41 chapters and 39 of 166 lessons** are Cowork/Desktop, and it is the part documented almost nowhere else. It now names its own subjects — host-loop vs VM-loop, sandbox mounts, path resolution, file delivery, the stream-json control protocol — which is honest weighting *and* better trigger surface for someone searching those terms.
+
+**The version pins are dropped on purpose.** The description said *"verified against CLI v2.1.231, Claude Desktop app.asar 1.30096.1"*. That had to be hand-edited every release, was the field most likely to rot silently, and was already ambiguous the moment a Cowork pass ran against agent 2.1.246 while the CLI content baseline stayed at 2.1.231. It now claims only "the shipping binaries" — a claim that stays true. Specifics live in `version.json`, the README and the skill body. `CLAUDE.md` step 6 is updated so the release checklist no longer tells a future maintainer to edit pins that are not there.
+
+**First-party context for the trim** (agent 2.1.246): `skillListingMaxDescChars` defaults to **1536** — a per-skill truncation cap that 891 did *not* hit. The one that bites is `skillListingBudgetFraction`, default **0.01**: 1% of the context window, shared across every installed skill, with descriptions "shortened to fit" on overflow. Ours was 3.1% of a 28,412-char listing — the largest single contributor, though 95 installed skills are what actually strain that budget.
+
+`plugin.json` and `marketplace.json` are aligned to the same voice, keeping their lesson counts (a marketplace listing is the one place scale is worth stating).
+
 ## v2.41.1 — 2026-08-27 (this fork) — a live sub-agent probe: two confirmations, two new facts
 
 An addendum to Chapter 44's L164 (no new lesson numbers — the count stays 166/44), from a sub-agent probed inside a real host-loop Cowork session.
