@@ -4763,7 +4763,7 @@
       "lesson_number": "164",
       "file": "41-cowork-path-resolution-lanes.md",
       "startLine": 86,
-      "endLine": 162,
+      "endLine": 172,
       "keywords": [
         "two-path-forms",
         "bare-filename-file-tools",
@@ -4784,7 +4784,11 @@
         "private-tmp-scratchpad",
         "agent-injected-scratchpad",
         "scratchpad-taxonomy",
-        "live-subagent-probe"
+        "live-subagent-probe",
+        "CLAUDE_CODE_TMPDIR",
+        "temp-dir-override",
+        "tmpdir-not-scratchpad",
+        "secondary-source-fallacy"
       ]
     },
     {
@@ -4792,8 +4796,8 @@
       "title": "Write's Result Carries the Raw Input",
       "lesson_number": "165",
       "file": "41-cowork-path-resolution-lanes.md",
-      "startLine": 163,
-      "endLine": 185,
+      "startLine": 173,
+      "endLine": 195,
       "keywords": [
         "write-result-raw-path",
         "does-not-absolutize",
@@ -4810,8 +4814,8 @@
       "title": "Surface Separation, and Two Greps That Lie",
       "lesson_number": "166",
       "file": "41-cowork-path-resolution-lanes.md",
-      "startLine": 186,
-      "endLine": 235,
+      "startLine": 196,
+      "endLine": 245,
       "keywords": [
         "surface-separation",
         "chat-mode-prompt",
@@ -16342,6 +16346,18 @@
       164
     ],
     "live-subagent-probe": [
+      164
+    ],
+    "CLAUDE_CODE_TMPDIR": [
+      164
+    ],
+    "temp-dir-override": [
+      164
+    ],
+    "tmpdir-not-scratchpad": [
+      164
+    ],
+    "secondary-source-fallacy": [
       164
     ]
   }

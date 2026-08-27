@@ -152,11 +152,21 @@ So host-loop has **three** distinct not-user-visible write locations, failing in
 |---|---|---|---|
 | `/sessions/<id>`, `/tmp` (the bash cwd) | VM | no | no |
 | `/private/tmp/claude-501/…/scratchpad` | **host** | yes | **no** |
-| `CLAUDE_CODE_TMPDIR` / `CLAUDE_TMPDIR` | **unverified** | ? | ? |
+| `CLAUDE_CODE_TMPDIR` / `CLAUDE_TMPDIR` | **not a third place** — a temp-dir *override*, default `/tmp` (so: row 1) | no | no |
 
 The authoring consequence: *"don't write the deliverable to the scratchpad"* is **under-specified guidance**, because there is more than one scratchpad and the agent is actively *instructed* to prefer the host-side one. A `/sessions/`-prefix heuristic does not catch it — that path is a host path, and it persists, so nothing fails loudly. The durable rule remains L164's: a deliverable goes to a **bare filename** (file tools) or an **absolute outputs path** (bash), and anywhere else is a temporary file by definition.
 
-*(The third row is listed as unverified on purpose: the `CLAUDE_CODE_TMPDIR` identification comes from another project's guidance and was not checked here. It is recorded so the taxonomy is honest about its own gap, not because it is known to be a third distinct place.)*
+**The third row, RESOLVED (2026-08-27, agent Mach-O 2.1.246).** An earlier version of this table listed `CLAUDE_CODE_TMPDIR` as *unverified* on the grounds that the identification came from another project's guidance. That hedge was unnecessary — the answer is one `strings` away, and leaving it open let a downstream project reason from *absence in this skill* to "no independent source exists", which is the same secondary-source fallacy L166 warns about. **20 occurrences of `CLAUDE_CODE_TMPDIR` and 4 of `CLAUDE_TMPDIR`** in agent 2.1.246:
+
+```js
+function k(){ let e = process.env.CLAUDE_CODE_TMPDIR; if (e) return e; return `/tmp` }
+TMPDIR=${CLAUDE_CODE_TMPDIR || CLAUDE_TMPDIR || `/tmp/claude`}   // sandbox runtime env
+"Free up space or set CLAUDE_CODE_TMPDIR to a directory on a filesystem with room."
+```
+
+So it is an **override for the agent's temp directory, defaulting to `/tmp`** — used for the sandbox's `TMPDIR` and for command-output spooling. It is **not** the Cowork session scratchpad, and **not** the host-side `/private/tmp/claude-501/…` block: it is a knob pointing at row 1 by default, not a fourth location.
+
+**The consequence is the part worth carrying:** because it defaults to `/tmp`, anything a skill writes through it under host-loop bash lands in VM-only scratch — invisible to the user *and* to the file tools, exactly as row 1. Guidance that names this variable as "the session scratchpad" is wrong twice over: wrong about what it is, and wrong about implying a fourth failure mode when it collapses into the first.
 
 ---
 

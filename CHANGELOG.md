@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.41.3 — 2026-08-27 (this fork) — two of our own errors, caught downstream
+
+Both found by the `skill-creator-plus` session while reviewing this skill's findings against its own repo. Neither changes a mechanism; both change what this skill *claims*.
+
+**1. An over-claim in v2.41.1's summary, self-contradicting in one sentence.** `version.json` said a sub-agent *"cannot resolve a connected folder's mount name **at all** and must `ls /sessions/<slug>/mnt/`, ask, or guess"* — if it can `ls`, it can resolve. The defensible claim, which L164's body always carried, is **"cannot resolve it from its own prompt"**: a sub-agent is in-process with the parent's cwd and can discover the mount by listing; what it cannot do is read the mapping out of a prompt section it was never given. Corrected in the summary. Worth noting the failure shape: the lesson was right and the summary of it was wrong, so a reader quoting the wrong layer gets a wrong fact.
+
+**2. `CLAUDE_CODE_TMPDIR` is resolved, and the hedge should never have shipped.** L164's scratchpad taxonomy listed it as *unverified*, on the grounds that the identification came from another project's guidance. That was one `strings` away from an answer. In agent Mach-O 2.1.246 — **20 occurrences** of `CLAUDE_CODE_TMPDIR`, 4 of `CLAUDE_TMPDIR`:
+
+```js
+function k(){ let e = process.env.CLAUDE_CODE_TMPDIR; if (e) return e; return `/tmp` }
+TMPDIR=${CLAUDE_CODE_TMPDIR || CLAUDE_TMPDIR || `/tmp/claude`}   // sandbox runtime env
+"Free up space or set CLAUDE_CODE_TMPDIR to a directory on a filesystem with room."
+```
+
+It is a **temp-directory override defaulting to `/tmp`** — feeding the sandbox `TMPDIR` and a disk-full diagnostic. It is **not** the session scratchpad and **not** a fourth location: it collapses into row 1 of the taxonomy. The consequence worth carrying is that because it defaults to `/tmp`, a skill writing through it under host-loop bash lands in VM-only scratch, invisible to the user *and* the file tools.
+
+**Why the hedge was worse than a wrong answer.** Leaving the row open let a downstream project reason from *absence in this skill* to *"no independent source exists, delete it"* — treating this KB as the authority on what exists in a binary it merely describes. That is the same secondary-source fallacy L166 warns about, arriving from the opposite direction. An unverified row in a shipped table is not neutral: someone will read it as evidence.
+
 ## v2.41.2 — 2026-08-27 (this fork) — the description, trimmed and reweighted
 
 Presentation only; no lesson content changed.
