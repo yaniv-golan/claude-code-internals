@@ -177,6 +177,382 @@
   ],
   "facts": [
     {
+      "id": "input.elicitation-over-askuserquestion",
+      "page": "asking-the-user",
+      "rule": "Do not build your skill's argument collection around AskUserQuestion in Cowork.",
+      "detail": "On every skill invocation the host injects an instruction telling the model to gather missing context through the elicitation form — pills, free text, dates, a file dropzone — and explicitly not through AskUserQuestion, which it reserves for one-off clarifications mid-task. The answers arrive as bullet points in the model's next message, not as a tool result, so a skill written to wait for a tool result is waiting for something that will not come. Declaring `argument-hint` in your frontmatter is what makes this path work: the hint is passed through verbatim, and a skill without one leaves the model told to infer what to collect from your SKILL.md.",
+      "tier": "binary",
+      "severity": "friction",
+      "durability": "durable",
+      "volatile_dependency": true,
+      "sources": {
+        "lessons": [
+          147
+        ],
+        "state_page": "plugins-skills-hooks"
+      },
+      "caveats": [
+        "This is a steer, not an enforcement boundary. AskUserQuestion remains callable and functional; what was verified is that Cowork injects the instruction, not that a model obeys it in any particular run.",
+        "Delivery is gated server-side and read on at the 2026-08-13 capture. A session where that flag is off receives no such instruction, and the guidance does not apply."
+      ]
+    },
+    {
+      "id": "state.container-agent-range",
+      "page": "current-state",
+      "rule": "The remote sandbox runs its own agent build, independent of the local application version.",
+      "detail": "Remote sessions were observed running a range of agent builds distinct from the installed application and from the local agent. This is why remote-sandbox behaviour cannot be pinned by the CLI and Desktop versions this site records.",
+      "tier": "measured",
+      "durability": "volatile",
+      "lane": "remote",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          138
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": []
+    },
+    {
+      "id": "delete.approval-interrupts-the-user",
+      "page": "deleting-files",
+      "rule": "Treat needing a delete as a design smell, because getting one interrupts the user.",
+      "detail": "Enabling deletion requires a prompt the user must accept, and it is presented as irreversible for the remainder of the session. It also fires regardless of how permissive the session's permission mode is. A skill that routinely needs deletions will routinely interrupt its user, so prefer writing new files over rewriting in place.",
+      "tier": "measured",
+      "severity": "friction",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          139
+        ],
+        "state_page": "cowork-permissions"
+      },
+      "caveats": []
+    },
+    {
+      "id": "delete.approval-is-per-mount",
+      "page": "deleting-files",
+      "rule": "Do not assume that approval to delete in one location applies anywhere else.",
+      "detail": "Approval is granted per mount. Enabling deletion for the outputs location leaves a connected folder still denied, in the same shell and in later ones. A skill that gets one approval and then assumes free rein across the workspace will fail on the second mount it touches.",
+      "tier": "measured",
+      "severity": "friction",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          139
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": [
+        "Established with a control: an unapproved connected folder stayed denied while the approved location succeeded."
+      ]
+    },
+    {
+      "id": "delete.cross-mount-moves-fail",
+      "page": "deleting-files",
+      "rule": "Do not move files between mounts with a rename. Copy, then verify.",
+      "detail": "The outputs location is a genuinely separate device from the rest of the session filesystem, so renaming across that boundary fails with a cross-device error rather than falling back to a copy. Shell tools usually degrade to copy-then-delete on their own — and the delete half will then hit the permission denial.",
+      "tier": "measured",
+      "severity": "loud",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          139
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": []
+    },
+    {
+      "id": "delete.deny-set",
+      "page": "deleting-files",
+      "rule": "Expect removing a file or a directory to fail with a permission error on every Cowork mount.",
+      "detail": "The denied set is exactly those two operations. This is not specific to the outputs location — a freshly connected folder behaves identically. The failure is a permission error, not a missing-file error, and it happens even though the same directory is writable.",
+      "tier": "measured",
+      "severity": "loud",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          139
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": [
+        "Measured in the default configuration. Organisations that require a fully sandboxed VM take a different internal code path for enabling deletion, and it has not been measured there."
+      ]
+    },
+    {
+      "id": "delete.expect-self-escalation",
+      "page": "deleting-files",
+      "rule": "Expect the agent to ask for delete permission on its own the first time a removal fails.",
+      "detail": "The permission tool's own description instructs the agent to request approval whenever a removal fails, rather than reporting it as impossible. So a skill that merely attempts a delete may cause a prompt it never asked for. If you do not want that, do not attempt removals.",
+      "tier": "binary",
+      "severity": "friction",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          139
+        ],
+        "state_page": "cowork-permissions"
+      },
+      "caveats": []
+    },
+    {
+      "id": "delete.truncate-and-rename-permitted",
+      "page": "deleting-files",
+      "rule": "Do not treat a file vanishing from its old path as evidence that it was deleted.",
+      "detail": "Truncating a file to zero length, renaming it within the mount, and renaming it onto an existing file all succeed. The last of those destroys whatever was at the destination. So content can be emptied and paths can be reused without any delete having occurred, and a check based on 'the old path is gone' will report deletions that did not happen.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          139
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": []
+    },
+    {
+      "id": "delivery.act-not-location",
+      "page": "delivering-outputs",
+      "rule": "Do not rely on writing a file to a directory as the act of delivering it.",
+      "detail": "In one sandbox the workspace location is itself the delivery channel and writing there is enough. In the other it delivers nothing: the file exists only inside a session filesystem that is discarded when the session ends, and the user never sees it. A skill written against the first behaviour loses its deliverables silently in the second — no error, no warning, just nothing.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          138
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": []
+    },
+    {
+      "id": "delivery.capability-conditional",
+      "page": "delivering-outputs",
+      "rule": "Write the deliverable to a stated path, then present it to the user. If you cannot present it, say where it is.",
+      "detail": "Producing the file and delivering it are two separate acts. Instruct your skill to present the finished file to the user rather than naming a specific tool to do it with: which delivery mechanism exists depends on the sandbox and on the product your skill is running in, and a skill that names one tool breaks everywhere that tool is absent. Always state the path as well, so the work is recoverable if presentation is unavailable.",
+      "tier": "binary",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": true,
+      "sources": {
+        "lessons": [
+          138
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": [
+        "Which delivery tools exist in a session is served at spawn time and has changed across releases; the capability check is what makes this durable, not the tool names."
+      ]
+    },
+    {
+      "id": "delivery.name-the-path-anyway",
+      "page": "delivering-outputs",
+      "rule": "State the path of what you produced even when a delivery tool worked.",
+      "detail": "It costs one sentence and it is the only part of your output that survives every sandbox, every tool-surface change, and a user reading a transcript later. If delivery silently failed, the stated path is the difference between a recoverable result and a lost one.",
+      "tier": "inference",
+      "severity": "friction",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          138
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": [
+        "Reasoned from the two-sandbox split rather than measured; the cost is one sentence either way."
+      ]
+    },
+    {
+      "id": "delivery.never-commit-to-disk",
+      "page": "delivering-outputs",
+      "rule": "Never call a tool that writes to the user's own disk from inside a skill.",
+      "detail": "Committing files onto the user's machine is infrastructure the agent and the user negotiate through folder-connection consent, not something a skill should reach for. No first-party skill names such a tool. Present the file and let the delivery path be decided outside your skill.",
+      "tier": "binary",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          138
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": []
+    },
+    {
+      "id": "delivery.no-local-server",
+      "page": "delivering-outputs",
+      "rule": "Do not deliver by starting a local server and opening it. Write a self-contained file and present that.",
+      "detail": "A skill that generates something to look at — a report, a viewer, a chart — is tempted to serve it and open a browser at the address. That does not work here, and the reason survives whichever surfaces happen to be available: anything your shell starts runs where the shell runs, which is not where a viewer would be looking, and a plain file path on disk is not reachable that way either. Write one self-contained file with everything inlined, put it where deliverables belong, and present it. If the surface offers a way to publish a rendered page, that is the better target than a server. Build the interaction so it does not need a round trip back to your skill: a page that asks the person to copy something back into the conversation works, a page that expects to POST its results somewhere does not.",
+      "tier": "measured",
+      "severity": "loud",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          168
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": []
+    },
+    {
+      "id": "delivery.presenting-copies-for-you",
+      "page": "delivering-outputs",
+      "rule": "Do not hand-copy files into the outputs location before presenting them.",
+      "detail": "The tool that presents files to the user copies what you give it out of the scratch space for you. Copying first and then presenting the copy produces duplicates and obscures which file is the deliverable.",
+      "tier": "binary",
+      "severity": "friction",
+      "durability": "durable",
+      "volatile_dependency": true,
+      "sources": {
+        "lessons": [
+          138
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": [
+        "Behaviour of the presenting tool is served per session; check that it exists before relying on it."
+      ]
+    },
+    {
+      "id": "delivery.remote-filesystem-discarded",
+      "page": "delivering-outputs",
+      "rule": "Assume the session filesystem does not outlive the session.",
+      "detail": "In the remote sandbox the filesystem is discarded at session end. In the local sandbox undelivered files are hidden from the user rather than destroyed, and can in principle be surfaced on a later turn — but a skill should not depend on that difference. Deliver within the turn that produces the file.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "lane": "remote",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          138
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": []
+    },
+    {
+      "id": "delivery.two-lanes",
+      "page": "delivering-outputs",
+      "rule": "Assume your skill may run in either sandbox, and never assume which one.",
+      "detail": "A Cowork session runs in one of two sandboxes: a local one on the user's own machine, or a remote one on Anthropic's infrastructure. They differ in where the filesystem lives, whether it survives the session, and how a file reaches the user. Which one a session gets depends on how it was created and on account configuration, neither of which a skill can control or reliably detect — so write for both.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "lane": "both",
+      "volatile_dependency": true,
+      "sources": {
+        "lessons": [
+          138
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": [
+        "Sandbox availability is rolled out per account, so two users running the same skill can be in different sandboxes."
+      ]
+    },
+    {
+      "id": "detect.branch-on-tools",
+      "page": "detecting-cowork",
+      "rule": "For behaviour rather than reporting, branch on which tools exist instead of on the environment.",
+      "detail": "The tool surface is the most durable runtime signal available to a skill: it determines what the skill can actually do, it is visible without running a shell, and it stays correct when environment variables are added or removed. Concretely, the shell tool has a different name in Cowork than in the CLI — `mcp__workspace__bash` rather than `Bash` — so the presence of the Cowork-flavoured name is the signal. Use environment checks to report where you are; use tool presence to decide what to do.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          116
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": []
+    },
+    {
+      "id": "detect.markers-come-and-go",
+      "page": "detecting-cowork",
+      "rule": "Do not hard-fail when a runtime marker is missing. Fall through to the next check.",
+      "detail": "A runtime marker is an environment variable the host sets when it starts your session — `CLAUDE_CODE_IS_COWORK` and `CLAUDECODE` are the two that matter. Which markers are set has changed across releases, and they are absent entirely from the shell context. A detection routine that treats one missing variable as proof of a runtime will be wrong the next time the spawn contract changes. Order the checks so each one only adds coverage. The set is still moving: Desktop 1.28929.0 added CLAUDE_CODE_COWORK_FRAME_ARTIFACTS alongside the existing markers, and no agent before 2.1.228 could read it.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": true,
+      "sources": {
+        "lessons": [
+          116,
+          151
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": []
+    },
+    {
+      "id": "detect.naive-env-check-false-negatives",
+      "page": "detecting-cowork",
+      "rule": "Do not detect Cowork with a bare environment-variable check.",
+      "detail": "A skill spans two execution contexts. The part that runs shell commands runs in a sealed context with none of the usual markers set, so a bare environment check returns 'not Cowork' in precisely the production configuration you most needed to detect. The failure is silent and produces confidently wrong behaviour.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          116
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": []
+    },
+    {
+      "id": "detect.ordered-recipe",
+      "page": "detecting-cowork",
+      "rule": "Detect the runtime with an ordered sequence of checks, not a single environment test.",
+      "detail": "Run three checks in order. First, is `CLAUDE_CODE_IS_COWORK` set — if so you are in Cowork. Otherwise, is the working directory under `/sessions/` — that catches the shell context, where the marker is absent. Otherwise, is `CLAUDECODE` set — that is the CLI. Each step only adds coverage and a later one never contradicts an earlier one, so a missing marker should fall through rather than fail.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          116
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": []
+    },
+    {
+      "id": "detect.two-contexts",
+      "page": "detecting-cowork",
+      "rule": "Remember your skill spans two execution contexts, and test the one you are actually in.",
+      "detail": "Your skill's instructions and its file-reading and file-writing tools run in one place — call it the agent context. The shell commands it issues run somewhere else, with a different environment and a different view of the filesystem. In Cowork the agent context sees `CLAUDE_CODE_IS_COWORK` and host-form paths, while the shell context sees neither and works under `/sessions/`. A check performed in one tells you very little about the other, which is why a single probe produces confident wrong answers.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          116,
+          122
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": []
+    },
+    {
       "id": "paths.connected-folders-are-mounts",
       "page": "files-and-paths",
       "rule": "Treat a folder the user connected as a separate mount with its own rules, not as part of the workspace.",
@@ -314,235 +690,126 @@
       "caveats": []
     },
     {
-      "id": "delivery.act-not-location",
-      "page": "delivering-outputs",
-      "rule": "Do not rely on writing a file to a directory as the act of delivering it.",
-      "detail": "In one sandbox the workspace location is itself the delivery channel and writing there is enough. In the other it delivers nothing: the file exists only inside a session filesystem that is discarded when the session ends, and the user never sees it. A skill written against the first behaviour loses its deliverables silently in the second — no error, no warning, just nothing.",
+      "id": "plugins.hook-exports-do-not-cross",
+      "page": "plugins-and-plugin-root",
+      "rule": "Do not use a hook to export environment variables for your skill's shell commands.",
+      "detail": "Hooks run, but the environment they modify is not the environment those commands see. This is a common way a plugin appears broken in Cowork while working in the CLI: the hook fires, the export succeeds, and the value is simply absent downstream.",
       "tier": "measured",
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          138
+          104,
+          116
         ],
-        "state_page": "cowork-architecture"
+        "state_page": "plugins-skills-hooks"
       },
       "caveats": []
     },
     {
-      "id": "delivery.capability-conditional",
-      "page": "delivering-outputs",
-      "rule": "Write the deliverable to a stated path, then present it to the user. If you cannot present it, say where it is.",
-      "detail": "Producing the file and delivering it are two separate acts. Instruct your skill to present the finished file to the user rather than naming a specific tool to do it with: which delivery mechanism exists depends on the sandbox and on the product your skill is running in, and a skill that names one tool breaks everywhere that tool is absent. Always state the path as well, so the work is recoverable if presentation is unavailable.",
-      "tier": "binary",
-      "severity": "silent",
-      "durability": "durable",
-      "volatile_dependency": true,
-      "sources": {
-        "lessons": [
-          138
-        ],
-        "state_page": "cowork-architecture"
-      },
-      "caveats": [
-        "Which delivery tools exist in a session is served at spawn time and has changed across releases; the capability check is what makes this durable, not the tool names."
-      ]
-    },
-    {
-      "id": "delivery.name-the-path-anyway",
-      "page": "delivering-outputs",
-      "rule": "State the path of what you produced even when a delivery tool worked.",
-      "detail": "It costs one sentence and it is the only part of your output that survives every sandbox, every tool-surface change, and a user reading a transcript later. If delivery silently failed, the stated path is the difference between a recoverable result and a lost one.",
-      "tier": "inference",
-      "severity": "friction",
-      "durability": "durable",
-      "volatile_dependency": false,
-      "sources": {
-        "lessons": [
-          138
-        ],
-        "state_page": "cowork-architecture"
-      },
-      "caveats": [
-        "Reasoned from the two-sandbox split rather than measured; the cost is one sentence either way."
-      ]
-    },
-    {
-      "id": "delivery.never-commit-to-disk",
-      "page": "delivering-outputs",
-      "rule": "Never call a tool that writes to the user's own disk from inside a skill.",
-      "detail": "Committing files onto the user's machine is infrastructure the agent and the user negotiate through folder-connection consent, not something a skill should reach for. No first-party skill names such a tool. Present the file and let the delivery path be decided outside your skill.",
-      "tier": "binary",
-      "severity": "silent",
-      "durability": "durable",
-      "volatile_dependency": false,
-      "sources": {
-        "lessons": [
-          138
-        ],
-        "state_page": "cowork-architecture"
-      },
-      "caveats": []
-    },
-    {
-      "id": "delivery.presenting-copies-for-you",
-      "page": "delivering-outputs",
-      "rule": "Do not hand-copy files into the outputs location before presenting them.",
-      "detail": "The tool that presents files to the user copies what you give it out of the scratch space for you. Copying first and then presenting the copy produces duplicates and obscures which file is the deliverable.",
-      "tier": "binary",
-      "severity": "friction",
-      "durability": "durable",
-      "volatile_dependency": true,
-      "sources": {
-        "lessons": [
-          138
-        ],
-        "state_page": "cowork-architecture"
-      },
-      "caveats": [
-        "Behaviour of the presenting tool is served per session; check that it exists before relying on it."
-      ]
-    },
-    {
-      "id": "delivery.remote-filesystem-discarded",
-      "page": "delivering-outputs",
-      "rule": "Assume the session filesystem does not outlive the session.",
-      "detail": "In the remote sandbox the filesystem is discarded at session end. In the local sandbox undelivered files are hidden from the user rather than destroyed, and can in principle be surfaced on a later turn — but a skill should not depend on that difference. Deliver within the turn that produces the file.",
-      "tier": "measured",
-      "severity": "silent",
-      "durability": "durable",
-      "lane": "remote",
-      "volatile_dependency": false,
-      "sources": {
-        "lessons": [
-          138
-        ],
-        "state_page": "cowork-architecture"
-      },
-      "caveats": []
-    },
-    {
-      "id": "delivery.two-lanes",
-      "page": "delivering-outputs",
-      "rule": "Assume your skill may run in either sandbox, and never assume which one.",
-      "detail": "A Cowork session runs in one of two sandboxes: a local one on the user's own machine, or a remote one on Anthropic's infrastructure. They differ in where the filesystem lives, whether it survives the session, and how a file reaches the user. Which one a session gets depends on how it was created and on account configuration, neither of which a skill can control or reliably detect — so write for both.",
-      "tier": "measured",
-      "severity": "silent",
-      "durability": "durable",
-      "lane": "both",
-      "volatile_dependency": true,
-      "sources": {
-        "lessons": [
-          138
-        ],
-        "state_page": "cowork-architecture"
-      },
-      "caveats": [
-        "Sandbox availability is rolled out per account, so two users running the same skill can be in different sandboxes."
-      ]
-    },
-    {
-      "id": "delete.approval-interrupts-the-user",
-      "page": "deleting-files",
-      "rule": "Treat needing a delete as a design smell, because getting one interrupts the user.",
-      "detail": "Enabling deletion requires a prompt the user must accept, and it is presented as irreversible for the remainder of the session. It also fires regardless of how permissive the session's permission mode is. A skill that routinely needs deletions will routinely interrupt its user, so prefer writing new files over rewriting in place.",
+      "id": "plugins.hooks-do-fire",
+      "page": "plugins-and-plugin-root",
+      "rule": "Expect plugin hooks to fire in Cowork.",
+      "detail": "Hooks shipped by a plugin do run. If you have heard otherwise, the determinant is installation namespace rather than hook support: a plugin installed where Cowork sessions do not look will appear to have no hooks at all.",
       "tier": "measured",
       "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          139
+          104
         ],
-        "state_page": "cowork-permissions"
+        "state_page": "plugins-skills-hooks"
       },
       "caveats": []
     },
     {
-      "id": "delete.approval-is-per-mount",
-      "page": "deleting-files",
-      "rule": "Do not assume that approval to delete in one location applies anywhere else.",
-      "detail": "Approval is granted per mount. Enabling deletion for the outputs location leaves a connected folder still denied, in the same shell and in later ones. A skill that gets one approval and then assumes free rein across the workspace will fail on the second mount it touches.",
-      "tier": "measured",
-      "severity": "friction",
-      "durability": "durable",
-      "volatile_dependency": false,
-      "sources": {
-        "lessons": [
-          139
-        ],
-        "state_page": "cowork-architecture"
-      },
-      "caveats": [
-        "Established with a control: an unapproved connected folder stayed denied while the approved location succeeded."
-      ]
-    },
-    {
-      "id": "delete.cross-mount-moves-fail",
-      "page": "deleting-files",
-      "rule": "Do not move files between mounts with a rename. Copy, then verify.",
-      "detail": "The outputs location is a genuinely separate device from the rest of the session filesystem, so renaming across that boundary fails with a cross-device error rather than falling back to a copy. Shell tools usually degrade to copy-then-delete on their own — and the delete half will then hit the permission denial.",
+      "id": "plugins.install-through-the-app",
+      "page": "plugins-and-plugin-root",
+      "rule": "Install a plugin through the Cowork application if you want Cowork sessions to see it.",
+      "detail": "Plugins installed through the CLI's own installation path land in a namespace that Cowork sessions never read, so the plugin appears installed and is simply invisible. This is the usual explanation for 'my plugin works in the CLI but not in Cowork'.",
       "tier": "measured",
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          139
+          104
         ],
-        "state_page": "cowork-architecture"
+        "state_page": "plugins-skills-hooks"
       },
       "caveats": []
     },
     {
-      "id": "delete.deny-set",
-      "page": "deleting-files",
-      "rule": "Expect removing a file or a directory to fail with a permission error on every Cowork mount.",
-      "detail": "The denied set is exactly those two operations. This is not specific to the outputs location — a freshly connected folder behaves identically. The failure is a permission error, not a missing-file error, and it happens even though the same directory is writable.",
+      "id": "plugins.mounts-are-read-only",
+      "page": "plugins-and-plugin-root",
+      "rule": "Do not write into your plugin's own directory at runtime.",
+      "detail": "Plugin content is mounted for reading. Treat everything shipped with the plugin as immutable during a session and put generated state in the outputs location.",
       "tier": "measured",
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          139
+          140
         ],
-        "state_page": "cowork-architecture"
-      },
-      "caveats": [
-        "Measured in the default configuration. Organisations that require a fully sandboxed VM take a different internal code path for enabling deletion, and it has not been measured there."
-      ]
-    },
-    {
-      "id": "delete.expect-self-escalation",
-      "page": "deleting-files",
-      "rule": "Expect the agent to ask for delete permission on its own the first time a removal fails.",
-      "detail": "The permission tool's own description instructs the agent to request approval whenever a removal fails, rather than reporting it as impossible. So a skill that merely attempts a delete may cause a prompt it never asked for. If you do not want that, do not attempt removals.",
-      "tier": "binary",
-      "severity": "friction",
-      "durability": "durable",
-      "volatile_dependency": false,
-      "sources": {
-        "lessons": [
-          139
-        ],
-        "state_page": "cowork-permissions"
+        "state_page": "plugins-skills-hooks"
       },
       "caveats": []
     },
     {
-      "id": "delete.truncate-and-rename-permitted",
-      "page": "deleting-files",
-      "rule": "Do not treat a file vanishing from its old path as evidence that it was deleted.",
-      "detail": "Truncating a file to zero length, renaming it within the mount, and renaming it onto an existing file all succeed. The last of those destroys whatever was at the destination. So content can be emptied and paths can be reused without any delete having occurred, and a check based on 'the old path is gone' will report deletions that did not happen.",
+      "id": "plugins.plugin-files-are-mounted",
+      "page": "plugins-and-plugin-root",
+      "rule": "Expect plugin files to be present as a mounted directory, and find it rather than hardcoding it.",
+      "detail": "Plugin content is made available to the session as its own mount. The exact location embeds identifiers that vary per plugin and per install source, and the shape has changed across releases, so discovery at runtime is the only stable approach.",
       "tier": "measured",
-      "severity": "silent",
+      "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          139
+          104,
+          140
+        ],
+        "state_page": "plugins-skills-hooks"
+      },
+      "caveats": []
+    },
+    {
+      "id": "plugins.plugin-root-per-consumer",
+      "page": "plugins-and-plugin-root",
+      "rule": "Use `${CLAUDE_PLUGIN_ROOT}` for file-tool reads, and discover the mounted path at runtime for anything you execute.",
+      "detail": "`${CLAUDE_PLUGIN_ROOT}` is a token that expands to your plugin's directory — but it expands differently depending on what expands it and which sandbox the session is in, and one expansion names a location the other cannot reach. Reading your plugin's files through the file tools with the token is reliable. Executing a script by that path is not: in the local sandbox the token resolves to a host staging directory that the shell cannot see. For anything you execute, locate the plugin's mounted directory at runtime instead of hardcoding a path.",
+      "tier": "binary",
+      "severity": "silent",
+      "durability": "durable",
+      "lane": "local",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          104,
+          124
+        ],
+        "state_page": "plugins-skills-hooks"
+      },
+      "caveats": [
+        "Resolution differs between the two sandboxes; this rule is written to be correct in both."
+      ]
+    },
+    {
+      "id": "shell.home-is-the-session",
+      "page": "shell-commands",
+      "rule": "Do not treat the home directory as a private place that outlives the session.",
+      "detail": "In the local sandbox the home directory is the session directory itself, not a separate per-user home, and it goes away with the session. Writing there is fine for scratch, but nothing put there is delivered, carried to the next session, or visible to anyone. Deliverables belong in the outputs location.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "lane": "local",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          146
         ],
         "state_page": "cowork-architecture"
       },
@@ -691,219 +958,6 @@
       "caveats": []
     },
     {
-      "id": "shell.home-is-the-session",
-      "page": "shell-commands",
-      "rule": "Do not treat the home directory as a private place that outlives the session.",
-      "detail": "In the local sandbox the home directory is the session directory itself, not a separate per-user home, and it goes away with the session. Writing there is fine for scratch, but nothing put there is delivered, carried to the next session, or visible to anyone. Deliverables belong in the outputs location.",
-      "tier": "measured",
-      "severity": "silent",
-      "durability": "durable",
-      "lane": "local",
-      "volatile_dependency": false,
-      "sources": {
-        "lessons": [
-          146
-        ],
-        "state_page": "cowork-architecture"
-      },
-      "caveats": []
-    },
-    {
-      "id": "detect.branch-on-tools",
-      "page": "detecting-cowork",
-      "rule": "For behaviour rather than reporting, branch on which tools exist instead of on the environment.",
-      "detail": "The tool surface is the most durable runtime signal available to a skill: it determines what the skill can actually do, it is visible without running a shell, and it stays correct when environment variables are added or removed. Concretely, the shell tool has a different name in Cowork than in the CLI — `mcp__workspace__bash` rather than `Bash` — so the presence of the Cowork-flavoured name is the signal. Use environment checks to report where you are; use tool presence to decide what to do.",
-      "tier": "measured",
-      "severity": "silent",
-      "durability": "durable",
-      "volatile_dependency": false,
-      "sources": {
-        "lessons": [
-          116
-        ],
-        "state_page": "cowork-architecture"
-      },
-      "caveats": []
-    },
-    {
-      "id": "detect.markers-come-and-go",
-      "page": "detecting-cowork",
-      "rule": "Do not hard-fail when a runtime marker is missing. Fall through to the next check.",
-      "detail": "A runtime marker is an environment variable the host sets when it starts your session — `CLAUDE_CODE_IS_COWORK` and `CLAUDECODE` are the two that matter. Which markers are set has changed across releases, and they are absent entirely from the shell context. A detection routine that treats one missing variable as proof of a runtime will be wrong the next time the spawn contract changes. Order the checks so each one only adds coverage. The set is still moving: Desktop 1.28929.0 added CLAUDE_CODE_COWORK_FRAME_ARTIFACTS alongside the existing markers, and no agent before 2.1.228 could read it.",
-      "tier": "measured",
-      "severity": "silent",
-      "durability": "durable",
-      "volatile_dependency": true,
-      "sources": {
-        "lessons": [
-          116,
-          151
-        ],
-        "state_page": "cowork-architecture"
-      },
-      "caveats": []
-    },
-    {
-      "id": "detect.naive-env-check-false-negatives",
-      "page": "detecting-cowork",
-      "rule": "Do not detect Cowork with a bare environment-variable check.",
-      "detail": "A skill spans two execution contexts. The part that runs shell commands runs in a sealed context with none of the usual markers set, so a bare environment check returns 'not Cowork' in precisely the production configuration you most needed to detect. The failure is silent and produces confidently wrong behaviour.",
-      "tier": "measured",
-      "severity": "silent",
-      "durability": "durable",
-      "volatile_dependency": false,
-      "sources": {
-        "lessons": [
-          116
-        ],
-        "state_page": "cowork-architecture"
-      },
-      "caveats": []
-    },
-    {
-      "id": "detect.ordered-recipe",
-      "page": "detecting-cowork",
-      "rule": "Detect the runtime with an ordered sequence of checks, not a single environment test.",
-      "detail": "Run three checks in order. First, is `CLAUDE_CODE_IS_COWORK` set — if so you are in Cowork. Otherwise, is the working directory under `/sessions/` — that catches the shell context, where the marker is absent. Otherwise, is `CLAUDECODE` set — that is the CLI. Each step only adds coverage and a later one never contradicts an earlier one, so a missing marker should fall through rather than fail.",
-      "tier": "measured",
-      "severity": "silent",
-      "durability": "durable",
-      "volatile_dependency": false,
-      "sources": {
-        "lessons": [
-          116
-        ],
-        "state_page": "cowork-architecture"
-      },
-      "caveats": []
-    },
-    {
-      "id": "detect.two-contexts",
-      "page": "detecting-cowork",
-      "rule": "Remember your skill spans two execution contexts, and test the one you are actually in.",
-      "detail": "Your skill's instructions and its file-reading and file-writing tools run in one place — call it the agent context. The shell commands it issues run somewhere else, with a different environment and a different view of the filesystem. In Cowork the agent context sees `CLAUDE_CODE_IS_COWORK` and host-form paths, while the shell context sees neither and works under `/sessions/`. A check performed in one tells you very little about the other, which is why a single probe produces confident wrong answers.",
-      "tier": "measured",
-      "severity": "silent",
-      "durability": "durable",
-      "volatile_dependency": false,
-      "sources": {
-        "lessons": [
-          116,
-          122
-        ],
-        "state_page": "cowork-architecture"
-      },
-      "caveats": []
-    },
-    {
-      "id": "plugins.hook-exports-do-not-cross",
-      "page": "plugins-and-plugin-root",
-      "rule": "Do not use a hook to export environment variables for your skill's shell commands.",
-      "detail": "Hooks run, but the environment they modify is not the environment those commands see. This is a common way a plugin appears broken in Cowork while working in the CLI: the hook fires, the export succeeds, and the value is simply absent downstream.",
-      "tier": "measured",
-      "severity": "silent",
-      "durability": "durable",
-      "volatile_dependency": false,
-      "sources": {
-        "lessons": [
-          104,
-          116
-        ],
-        "state_page": "plugins-skills-hooks"
-      },
-      "caveats": []
-    },
-    {
-      "id": "plugins.hooks-do-fire",
-      "page": "plugins-and-plugin-root",
-      "rule": "Expect plugin hooks to fire in Cowork.",
-      "detail": "Hooks shipped by a plugin do run. If you have heard otherwise, the determinant is installation namespace rather than hook support: a plugin installed where Cowork sessions do not look will appear to have no hooks at all.",
-      "tier": "measured",
-      "severity": "friction",
-      "durability": "durable",
-      "volatile_dependency": false,
-      "sources": {
-        "lessons": [
-          104
-        ],
-        "state_page": "plugins-skills-hooks"
-      },
-      "caveats": []
-    },
-    {
-      "id": "plugins.install-through-the-app",
-      "page": "plugins-and-plugin-root",
-      "rule": "Install a plugin through the Cowork application if you want Cowork sessions to see it.",
-      "detail": "Plugins installed through the CLI's own installation path land in a namespace that Cowork sessions never read, so the plugin appears installed and is simply invisible. This is the usual explanation for 'my plugin works in the CLI but not in Cowork'.",
-      "tier": "measured",
-      "severity": "loud",
-      "durability": "durable",
-      "volatile_dependency": false,
-      "sources": {
-        "lessons": [
-          104
-        ],
-        "state_page": "plugins-skills-hooks"
-      },
-      "caveats": []
-    },
-    {
-      "id": "plugins.mounts-are-read-only",
-      "page": "plugins-and-plugin-root",
-      "rule": "Do not write into your plugin's own directory at runtime.",
-      "detail": "Plugin content is mounted for reading. Treat everything shipped with the plugin as immutable during a session and put generated state in the outputs location.",
-      "tier": "measured",
-      "severity": "loud",
-      "durability": "durable",
-      "volatile_dependency": false,
-      "sources": {
-        "lessons": [
-          140
-        ],
-        "state_page": "plugins-skills-hooks"
-      },
-      "caveats": []
-    },
-    {
-      "id": "plugins.plugin-files-are-mounted",
-      "page": "plugins-and-plugin-root",
-      "rule": "Expect plugin files to be present as a mounted directory, and find it rather than hardcoding it.",
-      "detail": "Plugin content is made available to the session as its own mount. The exact location embeds identifiers that vary per plugin and per install source, and the shape has changed across releases, so discovery at runtime is the only stable approach.",
-      "tier": "measured",
-      "severity": "loud",
-      "durability": "durable",
-      "volatile_dependency": false,
-      "sources": {
-        "lessons": [
-          104,
-          140
-        ],
-        "state_page": "plugins-skills-hooks"
-      },
-      "caveats": []
-    },
-    {
-      "id": "plugins.plugin-root-per-consumer",
-      "page": "plugins-and-plugin-root",
-      "rule": "Use `${CLAUDE_PLUGIN_ROOT}` for file-tool reads, and discover the mounted path at runtime for anything you execute.",
-      "detail": "`${CLAUDE_PLUGIN_ROOT}` is a token that expands to your plugin's directory — but it expands differently depending on what expands it and which sandbox the session is in, and one expansion names a location the other cannot reach. Reading your plugin's files through the file tools with the token is reliable. Executing a script by that path is not: in the local sandbox the token resolves to a host staging directory that the shell cannot see. For anything you execute, locate the plugin's mounted directory at runtime instead of hardcoding a path.",
-      "tier": "binary",
-      "severity": "silent",
-      "durability": "durable",
-      "lane": "local",
-      "volatile_dependency": false,
-      "sources": {
-        "lessons": [
-          104,
-          124
-        ],
-        "state_page": "plugins-skills-hooks"
-      },
-      "caveats": [
-        "Resolution differs between the two sandboxes; this rule is written to be correct in both."
-      ]
-    },
-    {
       "id": "subagents.name-the-type",
       "page": "sub-agents",
       "rule": "Always name the agent type when dispatching a sub-agent.",
@@ -1012,26 +1066,6 @@
         "state_page": "cowork-architecture"
       },
       "caveats": []
-    },
-    {
-      "id": "input.elicitation-over-askuserquestion",
-      "page": "asking-the-user",
-      "rule": "Do not build your skill's argument collection around AskUserQuestion in Cowork.",
-      "detail": "On every skill invocation the host injects an instruction telling the model to gather missing context through the elicitation form — pills, free text, dates, a file dropzone — and explicitly not through AskUserQuestion, which it reserves for one-off clarifications mid-task. The answers arrive as bullet points in the model's next message, not as a tool result, so a skill written to wait for a tool result is waiting for something that will not come. Declaring `argument-hint` in your frontmatter is what makes this path work: the hint is passed through verbatim, and a skill without one leaves the model told to infer what to collect from your SKILL.md.",
-      "tier": "binary",
-      "severity": "friction",
-      "durability": "durable",
-      "volatile_dependency": true,
-      "sources": {
-        "lessons": [
-          147
-        ],
-        "state_page": "plugins-skills-hooks"
-      },
-      "caveats": [
-        "This is a steer, not an enforcement boundary. AskUserQuestion remains callable and functional; what was verified is that Cowork injects the instruction, not that a model obeys it in any particular run.",
-        "Delivery is gated server-side and read on at the 2026-08-13 capture. A session where that flag is off receives no such instruction, and the guidance does not apply."
-      ]
     },
     {
       "id": "change.detect-at-use",
@@ -1160,21 +1194,23 @@
       "caveats": []
     },
     {
-      "id": "state.container-agent-range",
-      "page": "current-state",
-      "rule": "The remote sandbox runs its own agent build, independent of the local application version.",
-      "detail": "Remote sessions were observed running a range of agent builds distinct from the installed application and from the local agent. This is why remote-sandbox behaviour cannot be pinned by the CLI and Desktop versions this site records.",
+      "id": "change.your-own-skill-can-be-cut",
+      "page": "what-can-change-under-you",
+      "rule": "Your skill's own text can be shortened, or dropped entirely, part-way through a session — put what must survive near the top.",
+      "detail": "When a long conversation is compacted, previously-invoked skills are re-attached from a stored copy rather than re-read from disk, and that copy is subject to two separate limits. The first shortens an over-long skill, keeping roughly the first twenty thousand characters and discarding the tail — and the shortened version replaces the stored copy, so a later compaction cannot bring the rest back. The second is a shared budget across every skill invoked in the session: once it is exhausted, a skill that does not fit is not shortened but emptied, and stays gone for the rest of that session. Skills are packed most-recently-used first and counted at their already-shortened size, so the one that disappears is usually not the largest — it is whichever was used least recently when the budget ran out. None of this is announced. Nothing errors, and the file on disk is untouched, so re-reading the skill from its path recovers the full text. Two practical consequences: put load-bearing instructions early and push detail into reference files, which are read on demand rather than carried in this budget; and if a later section of your own skill appears to be missing, say so and re-read the file rather than proceeding on what is left.",
       "tier": "measured",
-      "durability": "volatile",
-      "lane": "remote",
+      "severity": "silent",
+      "durability": "durable",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          138
+          167
         ],
         "state_page": "cowork-architecture"
       },
-      "caveats": []
+      "caveats": [
+        "The exact limits are numbers a future release can change, so treat 'roughly twenty thousand characters' as an order of magnitude rather than a threshold to optimise against. The behaviours — shortened then written back, or emptied outright, both silently — are the durable part."
+      ]
     }
   ],
   "router": [

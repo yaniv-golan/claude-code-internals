@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.43.4 — 2026-08-27 (this fork) — two facts the published author layer was missing
+
+Found by auditing **the site** rather than the lessons. `author-facts.json` — the layer that publishes to ccinternals.dev — had **no presence at all** for the compaction caps: 54 facts, one incidental match, and nothing about a hard, silent limit on the one artifact every skill author writes.
+
+**`change.your-own-skill-can-be-cut`** — on *"What can change without any version bump?"*, because that page is about things that shift under an author mid-session, which is exactly what compaction does to their own text. It covers both limits and how they differ: the per-skill cut keeps roughly the first twenty thousand characters and is **written back**, so a later compaction cannot recover the tail; the shared cross-skill budget **empties a skill outright**, and it stays gone for that session. Skills are packed most-recently-used first at their already-shortened sizes, so **the one that disappears is usually not the largest**. The advice that follows: load-bearing instructions early, detail into reference files, and if a later section of your own skill looks missing, say so and re-read from disk rather than proceeding on what is left.
+
+Exact numbers are given as an order of magnitude with the precision moved to a caveat. The behaviours are durable; the constants are one release from changing, and this layer should not invite optimising against a threshold.
+
+**`delivery.no-local-server`** — on *"Why did my skill's output never reach the user?"*. Serving a generated file and opening a browser at it does not work. Deliberately phrased as the **constraint** — what your shell starts runs where the shell runs, and a file path is not reachable that way — rather than as a capability claim like "there is no browser", so it stays true whether or not the in-app browser gates are on for a given account. Wording converged on with the `skill-creator-plus` session, whose version was better than the one first proposed to them.
+
+Both facts name no tool and no version, per the layer's own discipline.
+
 ## v2.43.3 — 2026-08-27 (this fork) — a third path form, and why no skill needs to derive a host path
 
 Extends Ch44/L164, prompted by a downstream skill scoping its fix around "host detection" that turned out to be unnecessary.
