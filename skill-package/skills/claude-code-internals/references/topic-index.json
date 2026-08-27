@@ -4852,7 +4852,7 @@
       "lesson_number": "167",
       "file": "42-skill-reattach-compaction-budget.md",
       "startLine": 13,
-      "endLine": 87,
+      "endLine": 115,
       "keywords": [
         "skill-reattach-budget",
         "compaction-skill-truncation",
@@ -4872,7 +4872,11 @@
         "budgetTruncatedSkills",
         "marker-length-100",
         "cleaned-rendering-trap",
-        "instrument-before-value"
+        "instrument-before-value",
+        "marker-is-in-band",
+        "truncation-observable",
+        "zeroing-unobservable",
+        "recovery-instruction-scope"
       ]
     },
     {
@@ -16685,6 +16689,18 @@
     ],
     "blind-spot-convergence": [
       166
+    ],
+    "marker-is-in-band": [
+      167
+    ],
+    "truncation-observable": [
+      167
+    ],
+    "zeroing-unobservable": [
+      167
+    ],
+    "recovery-instruction-scope": [
+      167
     ]
   }
 }

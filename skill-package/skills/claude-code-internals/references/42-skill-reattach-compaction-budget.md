@@ -77,6 +77,21 @@ The simple form — *"over-cap skills are truncated, and truncation is permanent
 
 So "permanently" and "outright" are true on the not-in-body path and have an exception on the other. The **disk file is never touched**: `Read` on the skill path recovers the full text, which is exactly what the truncation marker tells the model to do.
 
+## Only ONE of the two failures is observable, and it decides what advice can work
+
+This is the operational difference between the two caps, and it is easy to miss because both are described as "silent".
+
+| | what the model sees | can it notice? |
+|---|---|---|
+| per-skill **truncation** | the content, **with the marker appended** — `o.push({…, content: u})` where `u = oXo(a.content, V3o)` ends in `Rge` | **yes** — the marker is in-band and its own text says *"use Read on the skill path if you need the full text"* |
+| combined-cap **zeroing** | nothing — the over-budget branch `continue`s before the `o.push`, so the skill is absent from the attachment entirely | **no** — there is no marker, no entry, and no baseline to notice an absence against |
+
+The consequence for anyone writing recovery guidance into a skill: **an instruction of the form "if a later section of this file appears to be missing, say so and re-read it from disk" is sound for truncation and cannot fire for zeroing.** In the truncated case the model has an explicit in-band signal telling it exactly that. In the zeroed case the skill simply is not there that turn — and a model has nothing to compare against, because the missing thing is the very instructions that would have told it to look.
+
+Write the recovery instruction anyway; it is the highest-value line available and it covers the case that actually announces itself. But **do not let it read as covering both**, or it becomes the thing it was meant to prevent: apparent coverage over a silent failure. Note also `if (o.length === 0) return null` — when every skill is dropped there is no `invoked_skills` block at all, so the absence is total rather than partial.
+
+*(Question posed by the `creative-problem-solving` session, which asked whether the precondition held before building on it rather than after — the answer changed the shape of its plan.)*
+
 ## Pin values, not names — three builds, three namings
 
 | build | per-skill | combined | source |

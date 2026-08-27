@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.43.7 — 2026-08-27 (this fork) — only one of the two failures announces itself
+
+L167 and its published author-fact both described the two compaction caps as "silent". That is true of the *consequence* and misleading about the *signal*, and the difference decides what recovery advice can work.
+
+| | what the model sees | can it notice? |
+|---|---|---|
+| per-skill **truncation** | the content **with the marker appended** — `o.push({…, content: u})` where `u` ends in the marker | **yes**, and the marker's own text says *"use Read on the skill path if you need the full text"* |
+| combined-cap **zeroing** | nothing — the over-budget branch `continue`s before the push | **no** — no marker, no entry, no baseline to notice an absence against |
+
+**The consequence for anyone writing recovery guidance into a skill:** an instruction like *"if a later section of this file appears to be missing, say so and re-read it from disk"* is **sound for truncation and cannot fire for zeroing**. In the truncated case the model has an explicit in-band signal. In the zeroed case the skill simply is not there — and the missing thing is the very instruction that would have told it to look.
+
+Write it anyway; it is the highest-value line available and it covers the case that announces itself. But do not let it read as covering both, or it becomes the thing it was meant to prevent: **apparent coverage over a silent failure.**
+
+Also recorded: `if (o.length === 0) return null` — when every skill is dropped there is no `invoked_skills` block at all, so the absence is total rather than partial.
+
+Both the lesson and `author-facts.json` are corrected, so ccinternals.dev carries the distinction too. Prompted by the `creative-problem-solving` session asking whether the precondition held *before* building on it.
+
 ## v2.43.6 — 2026-08-27 (this fork) — what could this search have returned?
 
 A cross-cutting addendum to Ch44/L166, naming the class behind **four wrong answers this chapter produced in a single day**:
