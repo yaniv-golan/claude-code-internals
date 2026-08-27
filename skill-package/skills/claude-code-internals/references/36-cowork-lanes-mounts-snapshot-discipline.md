@@ -68,6 +68,7 @@ Desktop main has **no lane branch**: `LocalAgentModeSessions.start` unconditiona
 | | local (`bridge`) | remote (`anthropic_cloud`) |
 |---|---|---|
 | cwd | `/sessions/<slug>` | `/home/claude` |
+<!-- the local-lane cwd here is the shell's, and it predates the 1.32885.1 prompt fix — see Ch44/L163 -->
 | delivery | `mcp__cowork__present_files`; **the `outputs/` directory itself is the channel** | `SendUserFile` → `internal__remote-devices__device_commit_files` — **delivery is an act, not a location** |
 | local MCP servers | available | **cannot cross the boundary** |
 | filesystem at session end | **hidden, not destroyed** — `archiveSession` deletes only `["uploads","uploads-tmp","doc-export-out"]` and does not fire at ordinary session end | **discarded** |

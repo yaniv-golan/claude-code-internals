@@ -1,5 +1,42 @@
 # Changelog
 
+## v2.41.0 — 2026-08-27 (this fork) — a withdrawal: bash never started in outputs
+
+Chapter 44 (L163–L166). **This release retracts a claim this skill published and then repeated across four chapters, both Cowork state pages, `troubleshooting.json`, `cross-references.json`, and — worst — `author-facts.json`, which is direct instruction to skill authors.**
+
+**The withdrawn claim:** that under host-loop Cowork, `mcp__workspace__bash` and the file tools share one working directory, and therefore *"a bare filename is correct for both."*
+
+**What is actually true.** `mcp__workspace__bash` starts at the **session root** `/sessions/<id>`, with and without a connected folder — and always did. That directory, like `/tmp`, exists only inside the Linux environment: invisible to the user *and* to the file tools. A bare filename written from bash goes somewhere nobody can reach, with no error.
+
+**How this skill got it wrong, and how it was caught.** The claim was copied from the Desktop's own system prompt, which was itself wrong. Anthropic corrected that text at `app.asar` **1.32885.1**:
+
+> *"Each bash call starts in `/sessions/<id>`; that directory and `/tmp` exist only inside the Linux environment — fine for scratch, but invisible to the user and to the file tools."*
+
+The decisive evidence was already in this repo: **Ch40's own live probes measured `cwd = /sessions/<slug>` at Desktop 1.25927.0** — *before* the prompt was fixed. So the behaviour never changed; only the text did. The `— cwd` annotation the original claim leaned on marked the **agent's** cwd on the host side of a host→VM mapping row (`n = xe ?? j`, `j` = `{{cwd}}`), never bash's.
+
+**What replaces it (L164): two tool families, two path forms — no form is correct for both.**
+
+| tool | correct form |
+|---|---|
+| `Read`/`Write`/`Edit` | **bare** `report.md` — cwd is the outputs dir, user-visible |
+| `mcp__workspace__bash` | **absolute** `/sessions/<id>/mnt/outputs/…` |
+| file tool given `/sessions/…` | **denied**, never translated |
+
+Also measured: `outputs/x` **doubles** to `outputs/outputs/x` and hides; `<folder>/x` builds a **decoy directory** inside outputs with a success result and no signal; only an absolute path reaches a connected folder. The cause is that `{{cwd}}` and `{{workspaceFolder}}` **collapse onto one path** in host-loop with no folder connected, so the shipped template calls one directory an invisible scratchpad and the deliverables folder in consecutive clauses.
+
+**L165** — `Write`'s result carries the **raw** `file_path`, not a resolved one (`filePath:e`; the derived path goes only to telemetry). Anything reading an absolute path out of a Write result is reading something the agent does not emit. `Dn` collides three ways in the 2.1.246 binary and is deliberately **not** claimed to be the resolver.
+
+**L166** — the "same scratch space" text is **Chat mode's** (`Zo()`), where it is true and enforced by an explicit `cd`. Importing one surface's contract into another is the methodology error behind the whole episode. Lane facts re-derived extraction-free by enumerating all **11** `disallowedTools=[` sites in the raw asar: the disallow+alias pair is **host-loop-only**, so VM-loop keeps built-in `Bash`/`NotebookEdit`/`REPL`/`JavaScript`; `WebFetch` is aliased in **both** loops.
+
+**Two greps that lie — both committed by this pass's own first draft, before an adversarial review caught them:**
+
+1. The bundle switched non-ASCII output to `\uXXXX` escapes at **1.32352.0**, so a raw em-dash grep false-negatives across that boundary and manufactured a phantom "transitional build" that does not exist.
+2. ~~`@electron/asar extract` leaves a partial tree~~ — **this one was our own false alarm, and is withdrawn in the lesson itself.** The archive holds 275 file entries; 265 extracted; the 10 "missing" are exactly the `unpacked: true` natives that live outside the archive by design. The extraction was complete and the "292" was a bad count. What survives: unpacked entries must be subtracted from any completeness check, and a self-updating Desktop makes a live-vs-stored diff look like truncation. The durable rule is to enumerate from the raw archive with `grep -a`, which cannot be partial.
+
+**Scope.** The Desktop baseline **stays at 1.30096.1**: this is a targeted subsystem correction verified against 1.37937.1 and agent 2.1.246, not a baseline refresh. Per-fact provenance carries the newer artifact; `author-facts.json` records the out-of-baseline verification in `desktop_note` rather than restamping. Prompted by the `cowork-harness` project's path-resolution investigation, whose 1.37937.1 `pwd` probes are **relayed corroboration** and labelled as such.
+
+**Both open items closed the same day, first-party.** The probe sessions turned out to be on this machine. Every exact-`pwd` call in the 1589-transcript corpus (6, across 5 sessions) resolves under the **session root**, and each is attributable to a shell tool by name — so Ch40's cwd rows are confirmed bash observations, and the one sub-agent `pwd` is a `Bash` call (`/sessions/<slug>/proof-engine`) that leaves Ch35/L122's agent-cwd fact intact. The doubling and decoy were upgraded from relayed to **artifacts on disk**: `outputs/outputs/d2.md`, `outputs/outputs/e1.md`, and the decoy `outputs/cwtest/e3.md` — with the real connected folder `~/Downloads/cwtest` **empty**.
+
 ## v2.40.0 — 2026-08-14 (this fork) — the first allow, a third kind of gate, and a bundle that halved
 
 Chapter 43 (L159–L162), moving the **Desktop baseline to `app.asar` 1.30096.1** (from 1.28929.0), with the Desktop-managed host agent **2.1.227 → 2.1.229** and a live `fcache` decoded **2026-08-14**.

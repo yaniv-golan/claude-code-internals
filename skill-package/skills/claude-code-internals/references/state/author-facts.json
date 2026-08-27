@@ -33,7 +33,7 @@
     "fcache_content16": "b84a0ad7452188d7",
     "observed_at": "2026-08-14",
     "cli_note": "Re-stamped for the v2.1.217->v2.1.231 CLI refresh (Ch42). The CLI-side diff was scanned for contradictions against these facts and found none; the runtime markers the detect.* facts rely on (CLAUDECODE, CLAUDE_CODE_ENTRYPOINT + local-agent normalisation, CLAUDE_CODE_IS_COWORK) were positively confirmed present in the 2.1.231 bundle. The Cowork-side facts themselves were NOT re-derived this pass; desktop_asar/fcache stamps are unchanged and remain their true provenance.",
-    "desktop_note": "Re-checked against the 1.28929.0 -> 1.30096.1 asar diff (Ch43). The path facts' backing code was verified UNCHANGED term-for-term: Ke (the /sessions-is-a-VM-path deny behind paths.session-paths-denied) is identical to the previous build's ft, and it still runs BEFORE the new auto-memory link, so that fact is if anything better protected. The new canUseTool allow (L159) is narrower than any fact here -- it requires a configured memory directory (unset in production, so dormant), one of Read/Write/Edit/MultiEdit, and a decisionReason of exactly 'Path is outside allowed working directories' -- and contradicts no rule on this page. Delete, shell, detection and plugin facts were untouched by this diff."
+    "desktop_note": "OUT-OF-BASELINE CORRECTION (2026-08-27, Ch44/L163-L166): the files-and-paths page and the paths.relative-filenames fact were corrected against app.asar 1.37937.1 and host agent 2.1.246 -- NEWER than the desktop_asar stamp below, which is deliberately NOT bumped because this was a targeted subsystem pass, not a baseline refresh. The withdrawn claim ('a relative filename is correct for both') was never true: it was copied from a Desktop prompt string that the product itself corrected at 1.32885.1, and this skill's own Ch40 probes had already measured the contradicting value at 1.25927.0. Everything else on this page remains at the stamp below. PRIOR NOTE: Re-checked against the 1.28929.0 -> 1.30096.1 asar diff (Ch43). The path facts' backing code was verified UNCHANGED term-for-term: Ke (the /sessions-is-a-VM-path deny behind paths.session-paths-denied) is identical to the previous build's ft, and it still runs BEFORE the new auto-memory link, so that fact is if anything better protected. The new canUseTool allow (L159) is narrower than any fact here -- it requires a configured memory directory (unset in production, so dormant), one of Read/Write/Edit/MultiEdit, and a decisionReason of exactly 'Path is outside allowed working directories' -- and contradicts no rule on this page. Delete, shell, detection and plugin facts were untouched by this diff."
   },
   "pages": [
     {
@@ -53,10 +53,10 @@
       "title": "Where should my skill write files, and which path forms work?",
       "nav_label": "Files & paths",
       "nav_group": "Filesystem",
-      "blurb": "Two path forms for one scratch space, and which one each tool accepts.",
-      "summary": "Your skill's shell commands and its file tools operate on one shared scratch space, but they refer to it by two different path forms. Write with bare or relative filenames and both will agree. Absolute session paths handed to the file tools are rejected outright rather than translated, which is the single most common way a working skill breaks when moved into Cowork. The uploads location is read-only; the outputs location is where deliverables belong.",
+      "blurb": "The shell and the file tools need DIFFERENT path forms. There is no form correct for both.",
+      "summary": "Your skill's file tools and its shell need DIFFERENT path forms, and getting this wrong fails silently. Use a BARE filename with the file-writing and file-reading tools: their working directory is the outputs location, so the file is immediately visible to the user. Use an ABSOLUTE session path under the outputs mount with the shell: the shell starts in a scratch directory that exists only inside the Linux environment, so a bare filename there is written somewhere the user and the file tools can never see. Handing the shell's absolute form to a file tool is rejected outright rather than translated, which is the most common way a working skill breaks when moved into Cowork. The uploads location is read-only; the outputs location is where deliverables belong.",
       "open_questions": [
-        "The exact path form the shell sees has changed shape across releases. Relative paths have been stable throughout; absolute forms have not. Prefer relative for that reason, not merely for tidiness."
+        "An earlier version of this page said a relative filename was correct for both the shell and the file tools. That was wrong -- it was copied from a product prompt string that was itself wrong, and which the product corrected in a later release. It is withdrawn."
       ]
     },
     {
@@ -217,8 +217,8 @@
     {
       "id": "paths.relative-filenames",
       "page": "files-and-paths",
-      "rule": "Write files using bare or relative filenames, not absolute paths.",
-      "detail": "Your skill's shell commands and its file-reading and file-writing tools operate on the same underlying scratch space, but each names it with a different absolute path, and the file tools reject the shell's form. A relative filename is correct for both. An absolute path copied out of shell output is the wrong form for the file tools.",
+      "rule": "Use a bare filename with the file tools; use an absolute outputs path with the shell. No single form works for both.",
+      "detail": "The file-reading and file-writing tools have their working directory set to the outputs location, so a bare filename lands there and the user can see it immediately. The shell does NOT share that working directory -- it starts in a scratch directory that exists only inside the Linux environment, so the same bare filename written from the shell goes somewhere neither the user nor the file tools can reach, with no error. From the shell, write to the absolute outputs path instead. In the other direction, an absolute path copied out of shell output is the wrong form for the file tools and is rejected every time rather than translated.",
       "tier": "measured",
       "severity": "loud",
       "durability": "durable",
@@ -256,7 +256,7 @@
       "id": "paths.session-paths-denied",
       "page": "files-and-paths",
       "rule": "Never pass an absolute session path to the file tools. It is denied, not translated.",
-      "detail": "Your shell commands print absolute paths that look like `/sessions/<session-name>/mnt/outputs/report.pdf`. If you hand one of those to a file-reading or file-writing tool, the call is refused — the check is a literal prefix test on `/sessions/`, so the same path is refused every time and retrying cannot help. Nothing rewrites it into the form those tools want. Write `report.pdf` instead: a bare or relative filename is correct for both the shell and the file tools. The error text blames the path form, which is right in this case, but the same message appears for other causes too, so read it as \"this tool cannot take this path\" rather than as a diagnosis.",
+      "detail": "Your shell commands print absolute paths that look like `/sessions/<session-name>/mnt/outputs/report.pdf`. If you hand one of those to a file-reading or file-writing tool, the call is refused — the check is a literal prefix test on `/sessions/`, so the same path is refused every time and retrying cannot help. Nothing rewrites it into the form those tools want. Write `report.pdf` instead when you are using a file tool -- a bare filename is correct there. Do not carry that advice back to the shell: the shell needs the absolute outputs path, because its own starting directory is invisible to the user. The error text blames the path form, which is right in this case, but the same message appears for other causes too, so read it as \"this tool cannot take this path\" rather than as a diagnosis.",
       "tier": "measured",
       "severity": "loud",
       "durability": "durable",

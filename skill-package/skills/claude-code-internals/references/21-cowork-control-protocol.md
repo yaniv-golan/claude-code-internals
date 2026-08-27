@@ -300,20 +300,20 @@ Full layer stack, current identifiers (unchanged 1.12603.1 → 1.17377.2 except 
   `HOST_LOOP_PATH_GATED` = `["Read","Write","Edit","Glob","Grep"]` (+`MultiEdit`) get a PreToolUse hook
   (`vZe`/`Nen`) that **denies `/sessions/…` (VM) paths on the host-side file tools** ("VM path on host —
   use the bash tool for `/sessions/` paths") and enforces working-directory scoping.
-- **Why the gate exists: one shared scratch space, two path namespaces (not two filesystems).** `[binary]`
-  The host-loop system prompt (injected host-side by the Desktop `app.asar`, verbatim 1.17377.2) tells the
-  model: *"every call starts in the same working directory: the sandbox's outputs directory, **the same
-  scratch space the Read/Write/Edit tools use**. The sandbox sees this directory at a different path than
-  the file tools do, so **use bare filenames with both**"* — followed by a translation table
-  (`- <host/session path> → <mntRoot>/outputs/  (your outputs directory — cwd)`, plus per-folder /
-  `.claude/skills` / `uploads` rows). So `mcp__workspace__bash` (in-VM, sees the dir at `/mnt/outputs`) and
-  the host-side Read/Write/Edit tools operate on the **same files**, just under different absolute prefixes;
-  a file bash writes is readable by the file tools in the same session. The common failure mode is
-  capturing a **VM-absolute** path (`/sessions/<id>/mnt/outputs/x`) from bash output and feeding it to a
-  host file tool → the path-gate above denies it. The fix is the prompt's own guidance: **relative /
-  bare filenames**, not routing everything through bash (the host is *not* blind to the artifacts — it is
-  the same scratch space). This is *not* a partitioned "artifacts live in the VM, host can't see them"
-  model — that framing is contradicted by the product's own system prompt.
+- **WITHDRAWN — see Ch44/L163. The gate's rationale is real; the "shared scratch space" gloss was not.**
+  `[binary]` This bullet previously quoted the host-loop system prompt (verbatim 1.17377.2) as saying *"every
+  call starts in the same working directory: the sandbox's outputs directory, **the same scratch space the
+  Read/Write/Edit tools use** … **use bare filenames with both**"*, followed by a translation table whose
+  outputs row was annotated `— cwd`. **That prompt text was wrong, and this skill published it as behaviour.**
+  Retained here as history with its stamp, because the correction trail matters: the text shipped until
+  Desktop **1.32885.1**, which replaced it with *"Each bash call starts in `/sessions/<id>`; that directory and
+  `/tmp` exist only inside the Linux environment — fine for scratch, but invisible to the user and to the file
+  tools."* This skill's own Ch40 probes had already measured `cwd = /sessions/<slug>` at 1.25927.0, *before*
+  the text was fixed — so the behaviour never changed. The `— cwd` annotation marked the **agent's** cwd on
+  the host side of a host→VM mapping row, not bash's. **What stands:** the path-gate itself, and the failure
+  mode it catches — capturing a VM-absolute `/sessions/<id>/mnt/outputs/x` from bash output and handing it to
+  a host file tool, which is denied. **What replaces the guidance:** the two tool families need *different*
+  path forms — bare names for Read/Write/Edit, absolute `/sessions/<id>/mnt/outputs/...` for bash (Ch44/L164).
 - **`${CLAUDE_PLUGIN_ROOT}` under host-loop: one token, two namespaces — accepted by host file tools, useless
   for in-VM bash.** `[binary/tested]` The token substitutes to a single value (`m={CLAUDE_PLUGIN_ROOT:t.path,…}`
   in the agent bundle), and under host-loop that resolves **host-side** to `claude-hostloop-plugins/<hash>`
@@ -326,7 +326,8 @@ Full layer stack, current identifiers (unchanged 1.12603.1 → 1.17377.2 except 
     host path is **not present in the guest** → fails. bash must use the **in-VM mount** —
     `/sessions/<id>/mnt/.local-plugins/…` (marketplace) or `/sessions/<id>/mnt/.remote-plugins/plugin_<id>/…`
     (org-remote), discovered at runtime — not the token.
-  - **Outputs** (`report.md`): relative / bare filenames (the shared scratch above).
+  - **Outputs** (`report.md`): bare filenames **for the file tools only**; `mcp__workspace__bash` needs the
+    absolute `/sessions/<id>/mnt/outputs/` form (Ch44/L164 — there is no form correct for both).
   So a blanket "always resolve the token to the VM path" rule is **right for scripts, wrong for reference
   Reads** — the VM path handed to a host file tool is then denied by the gate. The token can't be correct for
   both host file tools and in-VM bash at once; the skill has to pick per consumer. **Live-reconfirm** the exact

@@ -78,19 +78,23 @@ Desktop drives this agent with.
 
 ## Filesystem & mounts
 
-**One shared scratch space, two path namespaces — not two filesystems.**
-Under host-loop, the host-loop system prompt (injected host-side, verbatim
-in app.asar) tells the model: every call starts in the sandbox's outputs
-directory, "the same scratch space the Read/Write/Edit tools use." The
-in-VM shell sees that directory at a different absolute path
-(`/mnt/outputs`) than the host file tools do. A file `mcp__workspace__bash`
-writes is readable by `Read`/`Edit` in the same session — it is the same
-file, just addressed by two different absolute prefixes. The prompt's own
-guidance is to use bare/relative filenames with both tool families, not to
-route everything through bash. Capturing a VM-absolute path
-(`/sessions/<id>/mnt/outputs/x`) from bash output and feeding it to a host
-file tool is the common failure mode — it is denied by the path-gating
-PreToolUse hook (`IeA`/`vZe`/`Nen`; see `cowork-permissions.md` layer 4).
+**Two tool families, two path forms — the shared-scratch claim is WITHDRAWN
+(Ch44/L163).** The host-loop **agent process** has its cwd set to the session
+outputs dir, so a **bare filename** from `Read`/`Write`/`Edit` lands there and
+is immediately user-visible. `mcp__workspace__bash` is a different case: it
+starts at the **session root `/sessions/<id>`**, and that directory (plus
+`/tmp`) exists only inside the Linux environment — invisible to the user *and*
+to the file tools. So a bare filename in bash does **not** reach the same place
+a bare filename in `Write` does. Bash needs the absolute
+`/sessions/<id>/mnt/outputs/...` form; the file tools **reject** that form
+outright (path-gate, `cowork-permissions.md` layer 4). There is no path form
+correct for both.
+
+This skill previously published the opposite, copied from a Desktop prompt
+string that was itself wrong; the prompt was corrected at Desktop 1.32885.1,
+while our own Ch40 probes had already measured the session root at 1.25927.0.
+Verified against `app.asar` 1.37937.1 — **past this page's `as_of_desktop`
+baseline**, and deliberately so (targeted correction, not a baseline refresh).
 
 **VM-side mounts are stood up by the VM image, not the client binaries.**
 Inside the guest, mounts under `/sessions/<id>/mnt/` are created by the VM
@@ -168,8 +172,9 @@ re-verified at Desktop 1.20186.1 / agent 2.1.205):
   a plain context object (`agentId`, `parentAgentId`, `depth`,
   `parentSessionId`, `agentType:"subagent"`, `subagentName`, …), not
   environment variables.
-- **cwd = the session outputs directory, always.** The host agent's `cwd`
-  is set once at spawn to
+- **cwd = the session outputs directory, always — for the AGENT PROCESS.**
+  (`mcp__workspace__bash` starts at the session root instead; Ch44/L163.)
+  The host agent's `cwd` is set once at spawn to
   `local-agent-mode-sessions/<accountId>/<orgId>/local_<sessionId>/outputs`
   (see "Session storage" below). A sub-agent's cwd is the **parent's
   cwd** — cwd is AsyncLocalStorage-scoped with a process-level fallback,
@@ -258,7 +263,7 @@ only). The session config record carries `"hostLoopMode": true`.
                                        #   cliSessionId, cwd, enabledMcpTools,
                                        #   egressAllowedDomains, etc.
     local_<sessionId>/                # the session SANDBOX directory
-      outputs/                        #   agent's working directory (its cwd)
+      outputs/                        #   agent process's cwd (NOT bash's — L163)
       uploads/                        #   user-attached files
       audit.jsonl  +  .audit-key      #   signed per-session audit log
       .claude/                        #   per-session CLAUDE_CONFIG_DIR

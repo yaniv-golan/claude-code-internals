@@ -137,7 +137,7 @@ then `configureHostLoopExecution` (`et(e,o)` in `index.chunk-CS-g0Skn.js`) mutat
 
 # LESSON 122 -- SUB-AGENT FILE-TOOL NAMESPACE
 
-**Sub-agents are in-process async generators sharing the parent's OS process, filesystem containment, and hooks — there is no per-sub-agent sandbox and no per-sub-agent env; the one fact worth internalizing is that the host agent's `cwd` *is* the session outputs directory, so a canonical write is cwd-relative, and `/sessions/...` paths are always denied (never translated) for file tools regardless of whether the caller is the main thread or a sub-agent.**
+**Sub-agents are in-process async generators sharing the parent's OS process, filesystem containment, and hooks — there is no per-sub-agent sandbox and no per-sub-agent env; the one fact worth internalizing is that the host agent's `cwd` *is* the session outputs directory (the **agent process** — `mcp__workspace__bash` starts at the session root instead, Ch44/L163), so a canonical write is cwd-relative, and `/sessions/...` paths are always denied (never translated) for file tools regardless of whether the caller is the main thread or a sub-agent.**
 
 ## In-process execution, zero per-sub-agent env
 
@@ -192,7 +192,15 @@ Production corroboration: real dispatches in the audit corpus carry **relative**
 
 **`uploads/` is read-only twice over**: in-VM mount `mode:"ro"` and host-side `qt()` blocking Write/Edit/MultiEdit (the hardlink warning). Read is allowed (uploads is in the allow-roots). **`outputs/`** is read-write for host file tools (it's cwd + an allow-root); rw (rwd after approval) for VM bash.
 
-**VM bash cwd rule — first-folder-else-outputs.** The workspace-bash execution cwd is `vmCwd = /sessions/<id>/mnt/<vmCwdMountName>`, where `to()` (the mount assembler in `configureHostLoopExecution`'s chunk) picks the mount name: with no connected folders `h` = the outputs mount; otherwise `h` = the **first** derived connected-folder mount, with an `h??(h=a)` outputs fallback (`const g=v(),{mounts:S,vmCwdMountName:k,...}=to(...)`, then `` q=`/sessions/${s}/mnt/${k}` ``). So a script invoked via `mcp__workspace__bash` starts in `/sessions/<id>/mnt/<firstFolder>` when folders are connected, else `/sessions/<id>/mnt/outputs` — which is why cwd-derived "artifacts root" scripts built for VM topology emit `/sessions/...`-absolute paths that the host-side file tools then deny (the exact failure mode the emulator project debugged).
+**VM bash cwd — CORRECTED, see Ch44/L163.** `vmCwd = /sessions/<id>/mnt/<vmCwdMountName>` is still
+computed and still passed to the guest spawn (`to()` picks the mount name: first connected folder, else the
+outputs mount, via an `h??(h=a)` fallback) — but **it is not what the shell observes.** `mcp__workspace__bash`
+starts at the **session root `/sessions/<id>`**, with and without a connected folder, which falsifies the
+former "first-folder-else-outputs" rule in *both* branches. This skill's own Ch40 probes measured the session
+root at Desktop 1.25927.0, and from 1.32885.1 the shipped prompt says so outright. Only the `chat` branch
+prepends an explicit `cd ${vmCwd}`, which is the tell that the spawn argument is not load-bearing. The
+downstream consequence originally recorded here still holds, for a different reason: a cwd-derived "artifacts
+root" computed inside bash yields a `/sessions/...`-absolute path that the host-side file tools then deny.
 
 ## `${CLAUDE_PLUGIN_ROOT}` in sub-agents
 
@@ -218,6 +226,7 @@ Generator `zo` = `exports.buildSubagentEnvironmentPrompt` (`index.chunk-CCRuCFON
 
 > ## Cowork environment
 >
+> [as shipped through Desktop 1.32352.0 — from **1.32885.1** this branch gains a closing sentence: *"Each command starts in `${a}`; anything written outside `${a}/mnt/` (including `/tmp`) stays in that environment and never reaches the user or your file tools."* — Ch44/L163]
 > You are running as a subagent inside a Cowork session on the user's machine. File operations reach the user's real filesystem (working directory `${t??i}`), so only read or write inside folders the user has attached to this session. Shell commands run via `mcp__workspace__bash` in an isolated Linux environment where those folders are mounted under `${i}/mnt/`.
 
 **VM-loop branch (`subagent_env_vm`):**
@@ -397,7 +406,7 @@ gates and the fail-closed default they share, at Ch38/L148.
 
 - **Pin `subagent_type:` literally in every dispatch.** Omitting it does not fail closed — it silently grants `tools:["*"]` via the `general-purpose` fallback, and this fires routinely in real traffic (113/509 dispatches in this machine's own audit corpus). A skill that assumes its sub-agents are scoped down should never rely on "I didn't specify a type" as scoping.
 - **"Shell-free sub-agent" is a real, assertable property — but only when the agent declares an explicit `tools:` list.** Workspace/bash tools are never auto-injected; a runtime `Bash` call alias-resolves to `mcp__workspace__bash`, which then simply isn't in the bound set and fails. The canonical assertion is **absence of `mcp__workspace__bash` (host-loop) and `Bash` (VM-loop)** from the composed toolset — checkable from the dossier's Q1 algorithm or from `task_started.subagent_type` plus the agent definition's own `tools:` frontmatter. For wildcard or omitted `tools:`, the property does not hold by construction.
-- **Write cwd-relative, never `/sessions/...`, from any file tool — main thread or sub-agent.** The agent's `cwd` already *is* the session outputs directory in host-loop; `artifacts/report.md` is both correct and the form real production traffic actually uses. A `/sessions/<id>/mnt/outputs/...` path is denied deterministically, every time, regardless of which agent constructs it — it is never a race or a namespace flip, so a skill or script that resolves an "artifacts root" should return the agent's own cwd, not a VM-side path.
+- **Write cwd-relative, never `/sessions/...`, from any file tool — main thread or sub-agent.** (This rule is about the **file tools**. `mcp__workspace__bash` is the opposite case: it starts at the session root and needs the absolute `/sessions/<id>/mnt/outputs/` form — Ch44/L164.) The agent's `cwd` already *is* the session outputs directory in host-loop; `artifacts/report.md` is both correct and the form real production traffic actually uses. A `/sessions/<id>/mnt/outputs/...` path is denied deterministically, every time, regardless of which agent constructs it — it is never a race or a namespace flip, so a skill or script that resolves an "artifacts root" should return the agent's own cwd, not a VM-side path.
 - **Plugin agents lose more than non-plugin agents.** `permissionMode`, `hooks`, and `mcpServers` are all discarded from plugin-shipped `.claude/agents/`-style definitions with a warning — the extra-tool `mcpServers:` channel (Lesson 121, step 6) only works for non-plugin agent definitions.
 - **A sub-agent's plugin-reference reads work via prompt pre-resolution, not env expansion.** `${CLAUDE_PLUGIN_ROOT}` is baked into the plugin agent's system prompt text at definition-load time; it is never expanded inside a Bash command or a file-tool path argument at call time.
 - **Don't build resume logic around Task.** Detect the capability (presence of `SendMessage` in the tool list, per Ch29/L115) rather than the product name; in Cowork the only continuation primitives are redo-dispatch and repair-dispatch, plus the new session-level (not sub-agent-level) `mcp__dispatch__send_message`.

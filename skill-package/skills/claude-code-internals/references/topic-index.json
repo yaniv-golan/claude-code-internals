@@ -1,7 +1,7 @@
 {
   "generated": "2026-08-13",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 162,
+  "total_lessons": 166,
   "lessons": [
     {
       "id": 1,
@@ -3486,12 +3486,12 @@
         "agent_id-hook",
         "fileDeleteApprovedMounts",
         "uploads-read-only",
-        "first-folder-else-outputs",
         "mount-mode-rw-rwd",
         "CLAUDE_PLUGIN_ROOT-subagent",
         "getStorageDir",
         "sessionDirPaths",
-        "in-process-execution"
+        "in-process-execution",
+        "bash-cwd-session-root-corrected"
       ]
     },
     {
@@ -3499,8 +3499,8 @@
       "title": "The Sub-Agent Prompt Append: subagent_env_hl / subagent_env_vm",
       "lesson_number": "123",
       "file": "32-cowork-subagent-execution-model.md",
-      "startLine": 209,
-      "endLine": 243,
+      "startLine": 217,
+      "endLine": 251,
       "keywords": [
         "subagent_env_hl",
         "subagent_env_vm",
@@ -3519,8 +3519,8 @@
       "title": "Sub-Agent Env/Model, Lifecycle Re-Verification, VM-Loop Deltas, Stream Observability & Methodology",
       "lesson_number": "124",
       "file": "32-cowork-subagent-execution-model.md",
-      "startLine": 244,
-      "endLine": 406,
+      "startLine": 253,
+      "endLine": 415,
       "keywords": [
         "subagent-model",
         "CLAUDE_CODE_SUBAGENT_MODEL",
@@ -4041,8 +4041,8 @@
       "title": "Delete Semantics: Per-Mount FUSE Policy, unlink and rmdir Only",
       "lesson_number": "139",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 109,
-      "endLine": 257,
+      "startLine": 110,
+      "endLine": 258,
       "keywords": [
         "cowork-delete-semantics",
         "unlink-rmdir-denied",
@@ -4104,8 +4104,8 @@
       "title": "VM Multiplexing Confirmed, Isolation Holds, and the Real Mount Inventory",
       "lesson_number": "140",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 258,
-      "endLine": 322,
+      "startLine": 259,
+      "endLine": 323,
       "keywords": [
         "vm-multiplexing-confirmed",
         "shared-vm-guest",
@@ -4143,8 +4143,8 @@
       "title": "Snapshot Discipline: the fcache Is a Moving Target with Two Absence Axes",
       "lesson_number": "141",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 323,
-      "endLine": 401,
+      "startLine": 324,
+      "endLine": 402,
       "keywords": [
         "fcache-snapshot-identity",
         "fcache-content-hash",
@@ -4182,7 +4182,7 @@
       "title": "coworkSyspromptMap: a Server-Driven Prompt REPLACE Channel",
       "lesson_number": "142",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 402,
+      "startLine": 403,
       "endLine": 438,
       "keywords": [
         "coworkSyspromptMap",
@@ -4730,6 +4730,94 @@
         "resolve-alias-in-chunk",
         "behavioural-polarity-proof",
         "asar-diff-method"
+      ]
+    },
+    {
+      "id": 163,
+      "title": "The Bash cwd Was Never the Outputs Directory",
+      "lesson_number": "163",
+      "file": "41-cowork-path-resolution-lanes.md",
+      "startLine": 16,
+      "endLine": 85,
+      "keywords": [
+        "bash-cwd-session-root",
+        "withdrawal",
+        "host-loop-bash-cwd",
+        "session-root",
+        "1.32885.1",
+        "prompt-was-wrong",
+        "shared-scratch-withdrawn",
+        "bare-filenames-with-both-withdrawn",
+        "em-dash-cwd-annotation",
+        "hostCwd",
+        "getOutputsDir",
+        "agent-process-cwd",
+        "mcp__workspace__bash",
+        "Ch40-probe-dating",
+        "first-folder-else-outputs-corrected"
+      ]
+    },
+    {
+      "id": 164,
+      "title": "Two Tool Families, Two Path Forms",
+      "lesson_number": "164",
+      "file": "41-cowork-path-resolution-lanes.md",
+      "startLine": 86,
+      "endLine": 130,
+      "keywords": [
+        "two-path-forms",
+        "bare-filename-file-tools",
+        "absolute-path-bash",
+        "outputs-doubling",
+        "outputs-outputs",
+        "decoy-directory",
+        "connected-folder-absolute",
+        "workspaceFolder",
+        "cwd-token-collapse",
+        "invisible-scratchpad",
+        "path-form-mismatch",
+        "deliverable-invisible"
+      ]
+    },
+    {
+      "id": 165,
+      "title": "Write's Result Carries the Raw Input",
+      "lesson_number": "165",
+      "file": "41-cowork-path-resolution-lanes.md",
+      "startLine": 131,
+      "endLine": 153,
+      "keywords": [
+        "write-result-raw-path",
+        "does-not-absolutize",
+        "filePath-raw-input",
+        "File-created-successfully-at",
+        "VHo",
+        "Dn-collision",
+        "telemetry-derived-path",
+        "tool-result-path"
+      ]
+    },
+    {
+      "id": 166,
+      "title": "Surface Separation, and Two Greps That Lie",
+      "lesson_number": "166",
+      "file": "41-cowork-path-resolution-lanes.md",
+      "startLine": 154,
+      "endLine": 203,
+      "keywords": [
+        "surface-separation",
+        "chat-mode-prompt",
+        "Zo-builder",
+        "cowork-vs-chat",
+        "unicode-escape-encoding-trap",
+        "u2014-escape",
+        "phantom-transitional-build",
+        "partial-extraction-265-292",
+        "raw-asar-grep",
+        "positive-control",
+        "disallowedTools-host-loop-only",
+        "vm-loop-keeps-bash",
+        "webfetch-aliased-both-loops"
       ]
     }
   ],
@@ -10635,9 +10723,6 @@
     "uploads read-only": [
       122
     ],
-    "first-folder-else-outputs": [
-      122
-    ],
     "uOt": [
       124
     ],
@@ -13803,7 +13888,8 @@
       116
     ],
     "mcp__workspace__bash": [
-      116
+      116,
+      163
     ],
     "disableskillshellexecution": [
       116
@@ -15489,7 +15575,8 @@
       152
     ],
     "positive-control": [
-      152
+      152,
+      166
     ],
     "rg-counts-lines-not-occurrences": [
       152
@@ -16082,6 +16169,148 @@
     ],
     "record-by-record-sweep": [
       160
+    ],
+    "bash-cwd-session-root": [
+      163
+    ],
+    "withdrawal": [
+      163
+    ],
+    "host-loop-bash-cwd": [
+      163
+    ],
+    "session-root": [
+      163
+    ],
+    "1.32885.1": [
+      163
+    ],
+    "prompt-was-wrong": [
+      163
+    ],
+    "shared-scratch-withdrawn": [
+      163
+    ],
+    "bare-filenames-with-both-withdrawn": [
+      163
+    ],
+    "em-dash-cwd-annotation": [
+      163
+    ],
+    "hostCwd": [
+      163
+    ],
+    "getOutputsDir": [
+      163
+    ],
+    "agent-process-cwd": [
+      163
+    ],
+    "Ch40-probe-dating": [
+      163
+    ],
+    "first-folder-else-outputs-corrected": [
+      163
+    ],
+    "two-path-forms": [
+      164
+    ],
+    "bare-filename-file-tools": [
+      164
+    ],
+    "absolute-path-bash": [
+      164
+    ],
+    "outputs-doubling": [
+      164
+    ],
+    "outputs-outputs": [
+      164
+    ],
+    "decoy-directory": [
+      164
+    ],
+    "connected-folder-absolute": [
+      164
+    ],
+    "workspaceFolder": [
+      164
+    ],
+    "cwd-token-collapse": [
+      164
+    ],
+    "invisible-scratchpad": [
+      164
+    ],
+    "path-form-mismatch": [
+      164
+    ],
+    "deliverable-invisible": [
+      164
+    ],
+    "write-result-raw-path": [
+      165
+    ],
+    "does-not-absolutize": [
+      165
+    ],
+    "filePath-raw-input": [
+      165
+    ],
+    "File-created-successfully-at": [
+      165
+    ],
+    "VHo": [
+      165
+    ],
+    "Dn-collision": [
+      165
+    ],
+    "telemetry-derived-path": [
+      165
+    ],
+    "tool-result-path": [
+      165
+    ],
+    "surface-separation": [
+      166
+    ],
+    "chat-mode-prompt": [
+      166
+    ],
+    "Zo-builder": [
+      166
+    ],
+    "cowork-vs-chat": [
+      166
+    ],
+    "unicode-escape-encoding-trap": [
+      166
+    ],
+    "u2014-escape": [
+      166
+    ],
+    "phantom-transitional-build": [
+      166
+    ],
+    "partial-extraction-265-292": [
+      166
+    ],
+    "raw-asar-grep": [
+      166
+    ],
+    "disallowedTools-host-loop-only": [
+      166
+    ],
+    "vm-loop-keeps-bash": [
+      166
+    ],
+    "webfetch-aliased-both-loops": [
+      166
+    ],
+    "bash-cwd-session-root-corrected": [
+      124,
+      163
     ]
   }
 }

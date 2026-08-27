@@ -229,7 +229,7 @@ the loop runs host-side and writes host-side.
                                        #   egressAllowedDomains, webFetchAllowedUrls,
                                        #   memoryGuidelinesTemplate, orgCliExecPolicies, emailAddress
     local_<sessionId>/                 # the session SANDBOX directory
-      outputs/                         #   the agent's working directory (its cwd)
+      outputs/                         #   agent process's cwd (NOT bash's — Ch44/L163)
       uploads/                         #   user-attached files
       audit.jsonl  +  .audit-key       #   signed per-session audit log
       .claude/                         #   the per-session CLAUDE_CONFIG_DIR (host-loop)

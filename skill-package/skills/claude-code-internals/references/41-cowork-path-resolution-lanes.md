@@ -1,0 +1,203 @@
+Updated: 2026-08-27 | Source: A **withdrawal**. First-party re-derivation against Desktop `app.asar` **1.37937.1** (raw-`grep -a` enumeration; see the extraction warning in L166) plus the Desktop-managed host agent Mach-O **2.1.246**, a `grep -a` bisection across all **21** archived asars (1.18286.2 → 1.37937.1), and — decisively — **this skill's own Ch40 live probes** (Desktop 1.25927.0 / agent 2.1.221, 2026-08-05). Prompted by the `cowork-harness` project's path-resolution investigation, whose live probes at 1.37937.1 corroborate but are **relayed, not first-party here**. **Does NOT move the Desktop baseline** (still 1.30096.1, Ch43): this is a targeted subsystem correction, not a refresh — per-fact provenance carries 1.37937.1, the global stamp does not. This chapter retracts a claim this skill published and repeated across four chapters, the state layer, and its author-facing guidance.
+
+# Chapter 44: Path Resolution in Cowork — A Withdrawal, and the Two Path Forms
+
+---
+
+## TABLE OF CONTENTS
+
+163. [Lesson 163 — The Bash cwd Was Never the Outputs Directory](#lesson-163--the-bash-cwd-was-never-the-outputs-directory)
+164. [Lesson 164 — Two Tool Families, Two Path Forms](#lesson-164--two-tool-families-two-path-forms)
+165. [Lesson 165 — `Write`'s Result Carries the Raw Input](#lesson-165--writes-result-carries-the-raw-input)
+166. [Lesson 166 — Surface Separation, and Two Greps That Lie](#lesson-166--surface-separation-and-two-greps-that-lie)
+
+---
+
+# LESSON 163 — THE BASH cwd WAS NEVER THE OUTPUTS DIRECTORY
+
+**`mcp__workspace__bash` starts at the session root `/sessions/<id>` under host-loop — with and without a connected folder, and it always did. The Desktop's shipped system prompt claimed it started in the outputs directory until Desktop 1.32885.1 corrected the text. This skill copied that prompt and published it as behaviour. The behaviour never changed; the claim was simply wrong, and it is withdrawn here.**
+
+## What was published, and where it came from
+
+Ch24/L107 quoted the Desktop-injected prompt verbatim and drew the wrong conclusion from it: *"one shared scratch space, two path namespaces"*, with the guidance *"use bare filenames with both"*. That framing propagated to Ch35/L124's `first-folder-else-outputs` rule, to `state/cowork-architecture.md`, to `state/cowork-permissions.md`, to `troubleshooting.json`, and — worst — into `state/author-facts.json`, which is direct instruction to skill authors.
+
+## The measurement that settles it
+
+This skill already held the disproof. Ch40's four live Cowork probes (Desktop **1.25927.0**, host agent **2.1.221**, 2026-08-05) recorded, for the local lane:
+
+| | local VM lane | remote lane |
+|---|---|---|
+| cwd | `/sessions/<slug>` | `/home/claude` |
+
+1.25927.0 is **before** 1.32885.1, and that build still shipped the old prompt text. So the shell was already starting at the session root while the prompt said outputs. `37-cowork-probe-corrections.md:178` adds *"`$HOME` equals the session root — `/sessions/<slug>`"* from the same probes.
+
+**Corroboration — UPGRADED to first-party (2026-08-27).** Initially recorded here as relayed. The probe sessions turned out to live on this machine, so the measurements were re-read directly from the **agent transcripts** under `.claude/projects/` — the faithful record per Ch40/L143, *not* the translated `audit.jsonl`. Every exact-`pwd` tool call found across all 1589 stored transcripts:
+
+| session | tool | `pwd` result |
+|---|---|---|
+| `magical-epic-mccarthy` | `mcp__workspace__bash` | `/sessions/magical-epic-mccarthy` |
+| `friendly-cool-goldberg` (folder connected) | `mcp__workspace__bash` | `/sessions/friendly-cool-goldberg` |
+| `elegant-vibrant-rubin` | `mcp__workspace__bash` | `/sessions/elegant-vibrant-rubin` |
+| `serene-dreamy-wozniak` | built-in `Bash` | `/sessions/serene-dreamy-wozniak` |
+| `compassionate-trusting-dirac` (**sub-agent**) | built-in `Bash` | `/sessions/compassionate-trusting-dirac/proof-engine` |
+
+Six exact `pwd` calls exist in the corpus; the sixth is a duplicate of the first session. **Every one resolves under the session root, none under `outputs`** — including the folder-connected case, which falsifies the `first-folder-else-outputs` rule in *both* of its branches.
+
+## What actually changed at 1.32885.1: the text
+
+Bisected across all 21 archived asars with `grep -a` on the raw archive:
+
+| build | host-loop shell section |
+|---|---|
+| ≤ 1.32352.0 | `` `- ${n} → ${e}/  (your outputs directory${n===M?` — cwd`:``})` `` |
+| ≥ 1.32885.1 | *"Each bash call starts in `/sessions/<id>`; that directory and `/tmp` exist only inside the Linux environment — fine for scratch, but **invisible to the user and to the file tools**. Only the `/sessions/<id>/mnt/` paths above reach the user's computer."* |
+
+There is **no transitional build** — see L166 for the grep that appeared to show one.
+
+## The annotation never described bash
+
+The `— cwd` marker was over-read. The mapping row is `` `- ${n} → ${e}/` `` where `n = xe ?? j` is the **host** path and `e` is the VM path, and the annotation fires on `n === j`, where `j` is the `{{cwd}}` value:
+
+```js
+let A=`/sessions/${e}`, j=C&&ue?ue:A;  …  k=k.replaceAll(`{{cwd}}`,()=>j)
+```
+
+It annotated the **agent's** cwd on the host side of a host→VM mapping row. That statement was true then and is true now. The error was reading a fact about the agent process as a fact about the shell.
+
+## What is unchanged (re-verified, not restamped)
+
+The host-loop **agent-process** cwd **is** the session outputs directory. In the host-loop spawn patch, `e.cwd = d` where `d = hostCwd`, and `hostCwd` resolves to `getOutputsDir(session)`. Independent proof of that identity at the same call site, requiring no assumption about the resolver:
+
+```js
+hostUploadsDir: (0,D.join)((0,D.dirname)(h), `uploads`)   // h === hostCwd
+```
+
+which holds only if `hostCwd` is `uploads`' sibling — i.e. the session's `outputs` dir. Ch35/L122 stands.
+
+## Two questions this lesson opened, both now closed
+
+Both were published as open and were resolved the same day from the on-disk transcript corpus:
+
+- **"Are Ch40's cwd rows bash observations?"** — **Yes.** The table above pins the tool name on every `pwd` call: four are `mcp__workspace__bash`, two are the built-in `Bash` (VM-loop, where it is not disallowed — L166). No `pwd` in the corpus was ever answered by a file tool, which cannot report one.
+- **"Does `37-…:184`'s sub-agent cwd contradict the agent-cwd fact?"** — **No.** The one sub-agent `pwd` in the corpus is a **`Bash`** call returning `/sessions/compassionate-trusting-dirac/proof-engine` — a shell observation under the session root, exactly as this lesson predicts. It says nothing about the agent process's cwd, so Ch35/L122 is untouched.
+
+---
+
+# LESSON 164 — TWO TOOL FAMILIES, TWO PATH FORMS
+
+**There is no single path form that is correct for both `mcp__workspace__bash` and the file tools. A bare filename is correct for Read/Write/Edit and lands in the user-visible outputs directory; a bare filename in bash lands in VM-only scratch the user never sees. Bash needs an absolute `/sessions/<id>/mnt/outputs/...` path — the same form the file tools reject outright.**
+
+This is the practical replacement for the withdrawn "use bare filenames with both".
+
+| | correct form | why |
+|---|---|---|
+| `Read`/`Write`/`Edit` | **bare name** (`report.md`) | cwd is the host outputs dir → immediately user-visible |
+| `mcp__workspace__bash` | **absolute** `/sessions/<id>/mnt/outputs/x` | cwd is the session root; the prompt itself says *"Use absolute paths"* |
+| file tool given `/sessions/...` | **denied**, never translated | the path-gate PreToolUse hook (Ch24/L107) |
+
+## Why the prompt reads as self-contradictory: the tokens collapse
+
+```js
+let M  = hostLoopMode && hostCwd ? hostCwd : `/sessions/${id}`;   // {{cwd}}
+let Ie = hostLoopMode ? (firstFolder ?? hostCwd ?? M)
+                      : (firstMounted ? `${j}/mnt/${name}` : `${j}/mnt/outputs`);  // {{workspaceFolder}}
+```
+
+In **host-loop with no folder connected**, `{{cwd}}` and `{{workspaceFolder}}` render to the *same path*. The shipped template then calls that one directory *"a temporary scratchpad"* users *"are not able to see"* in clause 1, and the place *"to save all final outputs and deliverables"* in clause 2. The ambiguity is not the model's; it is two roles resolving onto one value.
+
+## Measured consequences
+
+**First-party — the artifacts are still on disk.** Initially recorded as relayed; the probe sessions are on this machine and the resulting files were inspected directly (stronger than any transcript, since the filesystem cannot be a translated projection):
+
+| written as | lands at | visible? |
+|---|---|---|
+| `d1.md` | `<session>/outputs/d1.md` | yes |
+| `outputs/d2.md` | `<session>/outputs/**outputs**/d2.md` | **no — doubled** |
+| `./d3.md` | `<session>/outputs/d3.md` | yes (normalised) |
+| `<folder>/e3.md` | `<session>/outputs/<folder>/e3.md` | **no — decoy dir inside outputs** |
+
+Verbatim, from the two probe sessions' own `outputs/` trees as they sit on disk today:
+
+```
+local_bcbaba81…/outputs/d1.md          local_1e451b75…/outputs/e2.md
+local_bcbaba81…/outputs/d3.md          local_1e451b75…/outputs/cwtest/e3.md   <- DECOY
+local_bcbaba81…/outputs/outputs/d2.md  local_1e451b75…/outputs/outputs/e1.md  <- DOUBLED
+```
+
+The second session had `~/Downloads/cwtest` connected. That real folder is **empty** — `e3.md` never reached it. The file-tool root already *is* `outputs`, so a relative `outputs/` prefix nests a second one, and addressing a connected folder by its own name builds a same-named directory inside outputs: the write succeeds, the tool reports success, and the file is nowhere near the folder the user connected. **Only an absolute host path reaches a connected folder.**
+
+---
+
+# LESSON 165 — `Write`'s RESULT CARRIES THE RAW INPUT
+
+**The `Write` tool's result echoes the `file_path` it was given, not a resolved absolute path. Anything that reads an absolute path out of a Write result — a harness assertion, a skill that captures the path for a later step, a doc that promises it — is reading something the agent does not emit.**
+
+First-party in the Desktop-managed host agent Mach-O **2.1.246**. The handler derives a path for filesystem work but returns the raw input in the result record, and the renderer interpolates that field:
+
+```js
+function VHo({file_path:e,content:t},n,r){ … let d=Dn(e), p=jHo(d) …
+  T = {type:"create", filePath: e, …}          // e — the RAW input
+  PR({operation:"write", tool:"FileWriteTool", filePath: d, …})   // d — the derived path
+}
+case "create": return { …, content:`File created successfully at: ${e}` }
+case "update": return { …, content:`The file ${e} has been updated successfully.` }
+```
+
+Both branches carry `e`. The derived path `d` goes only to telemetry.
+
+**Deliberately not claimed:** that `Dn` absolutizes. `grep -a 'function Dn('` returns **three** different `Dn` definitions in this binary — a File/Blob helper, a redaction predicate, and a Windows shell-quote helper — none a path resolver, and the collision was not resolved in this pass. The proven statement is the raw-vs-derived split above, which does not depend on knowing what `Dn` is. (Same minifier-collision class as Ch35/L124's tar-Symbol `_y`.)
+
+Corroborating product bug: Chat mode's own prompt asserts *"Write's result shows the file's full path"* — which this falsifies for that surface too.
+
+---
+
+# LESSON 166 — SURFACE SEPARATION, AND TWO GREPS THAT LIE
+
+**The "same scratch space / bare filenames with both" text is real — it just belongs to Chat mode, a different surface, where it is true and enforced by an explicit `cd`. Reading asar prompt strings without separating surfaces is how a true statement about one product became a false published claim about another.**
+
+## Three surfaces, three contracts
+
+| surface | builder | bash cwd | shared with file tools? |
+|---|---|---|---|
+| Cowork agent task (host-loop) | `host_loop_shell` section | `/sessions/<id>` | **no** |
+| Chat mode | `Zo()` | outputs dir, via an explicit `cd ${vmCwd} 2>/dev/null \|\| { … exit 96; }` | **yes** |
+| remote/cloud lane | — | `/home/claude` | yes (Ch40) |
+
+The `cd` is prepended **only** on the `chat` branch. That the chat path needs an explicit `cd` while `cwd: c.vmCwd` is *also* passed to the guest spawn is the tell that the spawn argument is not load-bearing — and therefore that the pre-1.32885.1 Cowork prompt was wrong rather than describing a since-changed runtime.
+
+## Lane facts, re-derived extraction-free
+
+Enumerating **all 11** `disallowedTools=[` assignment sites by `grep -a` on the raw `.asar`:
+
+- The six-tool disallow + alias pair lives in the **host-loop** patch: `` e.disallowedTools=[...e.disallowedTools??[],...t._y], e.toolAliases={Bash:t.Jy,WebFetch:t.Yy} `` with `_y = ["Bash","PowerShell","NotebookEdit","REPL","JavaScript","WebFetch"]`, `Jy = mcp__workspace__bash`, `Yy = mcp__workspace__web_fetch`.
+- **VM-loop keeps built-in `Bash`, `NotebookEdit`, `REPL`, `JavaScript`** — no other site disallows them.
+- `WebFetch` is aliased in **both** loops; VM-loop reaches it by a separate site gated on `!hostLoopMode && Jx("1978029737","coworkWebFetchViaApi")`.
+
+## The two greps that lie
+
+**1. The `\uXXXX` re-encoding at 1.32352.0.** The bundle switched its non-ASCII output from literal characters to escapes at that build. A raw em-dash grep therefore reports the annotation as *absent* at 1.32352.0 and *present* on both sides of it — manufacturing a "transitional build" that does not exist:
+
+```
+1.30096.1   raw_emdash_lines=987   escaped_u2014_lines=41
+1.32352.0   raw_emdash_lines=7     escaped_u2014_lines=101
+```
+
+Verbatim at 1.32352.0: `` (your outputs directory${n===M?` — cwd`:``}) ``. Grep for **both** encodings, or for an ASCII-only anchor, and run a positive control before any "absent at version X" claim.
+
+**2. Extraction-completeness checks false-alarm — and this lesson's first draft was the false alarm.** It claimed `@electron/asar extract` "leaves a partial tree (265 of 292 entries)". **Withdrawn.** Reading the archive header directly:
+
+```
+archive FILE entries : 275   (45 directory entries, not files)
+extracted on disk    : 265
+missing              :  10   — exactly the 10 entries flagged `unpacked: true`
+```
+
+The ten are native binaries (`*.node`, `spawn-helper`, `github-mcp-server`, `libmsalruntime_arm64.dylib`) which by design live **outside** the archive in a sibling `app.asar.unpacked/` directory. 265 + 10 = 275: the extraction was **complete**. The "292" was a bad count — `asar list | grep -c '\.'` counts dot-containing *directories* too.
+
+**Three variants survive, all producing the same symptom** — an extraction that looks truncated when it is not:
+
+1. **`unpacked: true` entries are never inside the archive.** Any "archive entries vs files on disk" reconciliation must subtract them, or it under-counts by exactly that many.
+2. **The extraction SOURCE decides whether they appear at all**, and this is the sharp one. `@electron/asar extract` copies unpacked natives in from the archive's `app.asar.unpacked/` **sibling directory** — so extracting a *live* `Contents/Resources/app.asar` yields them, while extracting a **bare backed-up `app.asar`** with no sibling cannot. Verified on this machine: `/Applications/Claude.app/Contents/Resources/app.asar.unpacked/` holds exactly the ten natives that the header read reports "missing" from a bare-backup extraction. **The same extractor on the same archive therefore disagrees in *opposite directions* purely by source** — a bare-backup extraction under-counts by 10, a live extraction over-counts against a naive archive listing by the same 10. (Both directions were measured, independently, by this project and by `cowork-harness`, which is how the discrepancy surfaced at all.)
+3. **Desktop self-updates mid-investigation.** Listing a *live* archive against a *stored* extraction compares two different builds — reported by `cowork-harness` when 1.37937.1 became 1.37937.3 underneath them: identical `.js` counts, 143 differing names, indistinguishable from truncation at a glance.
+
+The durable rule is unchanged and is what this chapter actually relied on: **enumerate from the raw archive with `grep -a`**, which needs no extraction and cannot be partial. Ch35/L124's gzip-wrapped fcache and the hidden `.vite/build` directory are the genuine members of the silent-under-return family; this one was operator error, recorded because the false alarm is as instructive as the trap.

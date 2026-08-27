@@ -2447,7 +2447,7 @@
    {
     "id": 89,
     "relevance": 0.85,
-    "reason": "L89 found host-loop's single shared scratch space (bash sees /mnt/outputs, file tools see the session path, same files); L122 pins the exact mechanism -- cwd IS the outputs directory (getStorageDir/sessionDirPaths) -- and confirms /sessions/... is denied, never translated, for file tools"
+    "reason": "L89's 'single shared scratch space' gloss is WITHDRAWN by L163 (bash starts at the session root, not outputs; the prompt it was read from was wrong until 1.32885.1). What survives: L122's mechanism -- the AGENT PROCESS cwd IS the outputs directory (getStorageDir/sessionDirPaths) -- and that /sessions/... is denied, never translated, for file tools"
    },
    {
     "id": 104,

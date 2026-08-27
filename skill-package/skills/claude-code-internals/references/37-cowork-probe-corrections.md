@@ -100,7 +100,7 @@ Both are first-party. Neither is a substitute for the other.
 
 The translation maps the **current session's** mounts only. Paths belonging to another session have no mapping and pass through unchanged — which is why a listing of a stranger's directory appears identically in both records while the session's own `outputs` path does not. A mixture of both forms inside a single `audit.jsonl` record is therefore not evidence about the shell; it is the translator's coverage showing through.
 
-**Author consequence.** `paths.relative-filenames` stands, on its original reasoning: the shell and the file tools name the same place differently, and a relative filename is correct for both. The shell operates and reports in `/sessions/…`; the file tools require the host form and **deny** `/sessions/…` outright, exactly as Ch35/L122 documented.
+**Author consequence — HALF OF THIS WAS WRONG; corrected by Ch44/L163.** What stands, and is reinforced by this chapter's own probes: the shell operates and reports in `/sessions/…`, while the file tools require the host form and **deny** `/sessions/…` outright, exactly as Ch35/L122 documented. What does **not** stand is the clause *"a relative filename is correct for both"* — the two do **not** name the same place. The shell's cwd is the session root (measured in this very chapter, see the lane table under L146), so a relative filename there resolves into VM-only scratch, not into `outputs`. `paths.relative-filenames` has been rewritten accordingly: bare filenames for the file tools, absolute `/sessions/<id>/mnt/outputs/…` for the shell.
 
 ---
 
@@ -172,6 +172,8 @@ Probe 4 observed the remote lane directly and it does not work this way:
 | env vars | 2 `CLAUDE*` | 148 total |
 | `/proc/mounts` | 55 | 22 |
 | root marker | `sessions`, `smol` | `container_info.json`, `old_root` |
+
+**Forward pointer (added 2026-08-27):** the `cwd` row above is load-bearing beyond this chapter. `/sessions/<slug>` was measured here at Desktop **1.25927.0**, while the shipped host-loop prompt still claimed the shell started in the outputs directory — the text was not corrected until **1.32885.1**. This measurement is what dates that prompt as wrong rather than stale, and it is the disproof Ch44/L163 uses to withdraw the "one shared scratch space / bare filenames with both" claim.
 
 **There is no per-session Unix user in the remote lane — the agent is root.** Every identity and isolation statement in this lesson is scoped to the local VM lane. This is the concrete case for lane-scoping author guidance: a fact published without a lane qualifier was false in the other lane on its first direct observation.
 

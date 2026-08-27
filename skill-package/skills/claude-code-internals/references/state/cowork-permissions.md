@@ -97,14 +97,17 @@ lessons (see frontmatter).
    `request_cowork_directory`. **Second enforcement layer**:
    `canUseTool=async(g,S,k)=>xe(g,S)??Qt(g,S,...)??Se(g,S,k)` — a
    conditional wrapper (`Se&&`) that still funnels through the same
-   `/sessions/` deny even on a hook bypass. This exists because host-loop
-   Cowork is **one shared scratch space with two path namespaces, not two
-   filesystems**: the host-loop system prompt tells the model every call
-   starts in "the same scratch space the Read/Write/Edit tools use," just
-   seen at a different absolute path from the VM shell
-   (`mcp__workspace__bash` sees it at `/mnt/outputs`). The fix for a
-   denied path is the prompt's own guidance — bare/relative filenames —
-   not routing everything through bash. **Confirmed to apply to
+   `/sessions/` deny even on a hook bypass. The rationale previously
+   printed here — "one shared scratch space, use bare filenames with
+   both" — is **withdrawn** (Ch44/L163): it was copied from a Desktop
+   prompt string that was wrong, and corrected upstream at 1.32885.1.
+   What the gate actually catches: the **file tools** run host-side with
+   their cwd at the outputs dir, so a `/sessions/...` path handed to them
+   is a VM path on the host and is denied, never translated. The fix for
+   a denied path is a **bare filename** for the file tools — but note
+   `mcp__workspace__bash` needs the *opposite* form (absolute
+   `/sessions/<id>/mnt/outputs/...`), because it starts at the session
+   root. There is no form correct for both. **Confirmed to apply to
    sub-agents identically to the main thread**: hooks are registered
    process-globally with no subagent exclusion, and the hook-input schema
    documents `agent_id` as the subagent discriminator (present only
