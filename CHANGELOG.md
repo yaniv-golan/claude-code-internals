@@ -1,5 +1,26 @@
 # Changelog
 
+## v2.43.6 — 2026-08-27 (this fork) — what could this search have returned?
+
+A cross-cutting addendum to Ch44/L166, naming the class behind **four wrong answers this chapter produced in a single day**:
+
+| wrong answer | instrument | why it could not have been right |
+|---|---|---|
+| "the annotation is absent at 1.32352.0" | raw non-ASCII grep | the bundle re-encoded to `\uXXXX` at that build |
+| "the marker is 98 characters" | `re.sub(r'[^\x20-\x7e]','',…)` then `len()` | the filter deletes the newlines being counted |
+| "the marker is 98 characters" *(independently)* | `grep -o` anchored on `[` | that pattern cannot return a leading newline |
+| "no runtime where the probe misfires is known" | recollection | Chat mode was two lessons below, same file |
+
+**None was a reasoning error.** Each was a **search structurally incapable of returning the disconfirming case**, and each returned a confident, plausible result. Two were reached independently, by different parties with different tools, and agreed — which is why L167's *"agreement between derived sources is not corroboration"* is not a caution about carelessness. Searches sharing a blind spot converge on the same wrong answer **reliably**, and the convergence reads as confirmation.
+
+**One question would have caught all four, asked before believing any negative result: *what could this search have returned?*** Not "did I search carefully" — all four were careful.
+
+Two corollaries the chapter earned the hard way: **"none is known" is a claim about the search, not the world** — a risk statement naming an unknown *future* counterexample is a prompt to hunt a *present* one in material already held, which is where it was, twice. And **a small plausible correction deserves more suspicion than a large implausible one**: both marker measurements landed 2 characters from the established figure, which reads as refinement rather than error.
+
+This generalises past binary archaeology to any absence claim. **Ch37/L129's `system/init`-is-authoritative rule is its positive form:** prefer the record that *enumerates* over the reconstruction that *infers*, because an enumeration can be checked for completeness and an inference cannot.
+
+Formulation contributed by the `skill-creator-plus` session, which reached it while grading its own pending work against it.
+
 ## v2.43.5 — 2026-08-27 (this fork) — the probe is withdrawn; the refutation was two lessons away
 
 **v2.43.3 published a one-line idiom that reintroduces the bug L164 exists to prevent, on a surface documented in the same chapter.**

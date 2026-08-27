@@ -4823,7 +4823,7 @@
       "lesson_number": "166",
       "file": "41-cowork-path-resolution-lanes.md",
       "startLine": 232,
-      "endLine": 281,
+      "endLine": 305,
       "keywords": [
         "surface-separation",
         "chat-mode-prompt",
@@ -4837,7 +4837,13 @@
         "positive-control",
         "disallowedTools-host-loop-only",
         "vm-loop-keeps-bash",
-        "webfetch-aliased-both-loops"
+        "webfetch-aliased-both-loops",
+        "what-could-this-search-have-returned",
+        "structurally-incapable-search",
+        "none-is-known",
+        "plausible-small-correction",
+        "absence-claims",
+        "blind-spot-convergence"
       ]
     },
     {
@@ -16661,6 +16667,24 @@
     ],
     "required-argument-fail-loudly": [
       164
+    ],
+    "what-could-this-search-have-returned": [
+      166
+    ],
+    "structurally-incapable-search": [
+      166
+    ],
+    "none-is-known": [
+      166
+    ],
+    "plausible-small-correction": [
+      166
+    ],
+    "absence-claims": [
+      166
+    ],
+    "blind-spot-convergence": [
+      166
     ]
   }
 }

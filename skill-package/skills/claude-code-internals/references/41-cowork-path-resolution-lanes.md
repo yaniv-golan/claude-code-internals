@@ -279,3 +279,27 @@ The ten are native binaries (`*.node`, `spawn-helper`, `github-mcp-server`, `lib
 3. **Desktop self-updates mid-investigation.** Listing a *live* archive against a *stored* extraction compares two different builds — reported by `cowork-harness` when 1.37937.1 became 1.37937.3 underneath them: identical `.js` counts, 143 differing names, indistinguishable from truncation at a glance.
 
 The durable rule is unchanged and is what this chapter actually relied on: **enumerate from the raw archive with `grep -a`**, which needs no extraction and cannot be partial. Ch35/L124's gzip-wrapped fcache and the hidden `.vite/build` directory are the genuine members of the silent-under-return family; this one was operator error, recorded because the false alarm is as instructive as the trap.
+
+### ADDENDUM — the class these all belong to
+
+This chapter and Ch45/L167 accumulated four distinct wrong answers in a single day, and they share a shape worth naming because it is not the shape people look for.
+
+| wrong answer | instrument | why it could not have been right |
+|---|---|---|
+| "the annotation is absent at 1.32352.0" | raw non-ASCII grep | the bundle re-encoded to `\uXXXX` at that build |
+| "the marker is 98 characters" | `re.sub(r'[^\x20-\x7e]','',…)` then `len()` | the filter deletes the literal newlines being counted |
+| "the marker is 98 characters" *(independently, other party)* | `grep -o` anchored on `[` | a pattern starting at `[` cannot return a leading newline |
+| "no runtime where the probe misfires is known" | recollection | Chat mode was two lessons below, in the same file |
+
+**None of these was a reasoning error.** Each was a **search structurally incapable of returning the disconfirming case**, and each returned a confident, plausible result. Two were reached independently, by different parties using different tools, and agreed — which is why L167's *"agreement between derived sources is not corroboration"* is not a caution about carelessness. Two searches sharing a blind spot converge on the same wrong answer **reliably**, and that convergence reads as confirmation.
+
+**The check that would have caught all four is one question, asked before believing any negative result: *what could this search have returned?*** Not "did I search carefully" — every one of these was careful. A regex anchored on `[`, a filter that strips the very byte class being counted, a memory of material never re-read: each has a set of answers it cannot produce, and if the disconfirming case sits in that set, the search is decorative.
+
+Two corollaries this chapter earned the hard way:
+
+- **"None is known" is a claim about the search, not about the world.** A risk statement naming an unknown *future* counterexample is a prompt to go looking for a present one in material already held — which is exactly where it was, twice.
+- **A small, plausible correction deserves more suspicion than a large implausible one.** Both marker measurements landed 2 characters from an established figure, which reads as a satisfying refinement. A wildly different number would have forced a re-check; being nearly right is what let it through.
+
+This generalises past binary archaeology to any claim of absence — a tool not in a list, a string not in a bundle, a gate not in an fcache, a lane where a rule "does not apply". **Ch37/L129's `system/init`-is-authoritative rule is the positive form of the same idea:** prefer the record that *enumerates* over the reconstruction that *infers*, because an enumeration can be checked for completeness and an inference cannot.
+
+*(Formulation contributed by the `skill-creator-plus` session, which arrived at "neither failure was a reasoning error — both were searches that couldn't have returned the disconfirming case" while grading its own pending work against it.)*
