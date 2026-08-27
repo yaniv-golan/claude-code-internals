@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.43.9 — 2026-08-27 (this fork) — carrying v2.43.8 into the published layer
+
+v2.43.8 changed the lesson only. Two of its findings are author-facing and belonged on ccinternals.dev.
+
+**The reference move now states what it trades.** The page already advised *"push detail into reference files"* — now verified correct about the budget. What it did not say is that the shortened skill body **tells the reader it was cut**, while material that came from a reference and later falls out of the conversation leaves **no such signal**. So the pointer telling the reader those references exist and must be read has to survive near the top of the file, and is doing *more* work after the move than before it. An author following the old wording could trade a marked loss for an unmarked one without being told.
+
+**A reassurance, so authors do not defend against the wrong thing:** the shared limit is counted **per agent**, so dispatching work to sub-agents does not consume the budget the main thread is working within.
+
+Both phrased without naming tools, versions or exact figures, per the layer's discipline.
+
+**Method note.** The gap was found by grepping the published fact for the asymmetry — and getting a **false positive**. The phrase "no marker" *was* present, but from the unrelated truncation-vs-zeroing text added in v2.43.7. A keyword hit is not a coverage check; read the sentence it landed in. Small instance of the same family as L166's addendum, caught this time because the result looked too convenient.
+
 ## v2.43.8 — 2026-08-27 (this fork) — the budget is per agent, and references really are exempt
 
 L167 shipped with one unresolved symbol: `N3n`, the thing that decides *what the budget counts*. Chasing the alias chain (`cqd as N3n`, `Ox as cqd`) resolves it:
