@@ -4763,7 +4763,7 @@
       "lesson_number": "164",
       "file": "41-cowork-path-resolution-lanes.md",
       "startLine": 86,
-      "endLine": 130,
+      "endLine": 162,
       "keywords": [
         "two-path-forms",
         "bare-filename-file-tools",
@@ -4776,7 +4776,15 @@
         "cwd-token-collapse",
         "invisible-scratchpad",
         "path-form-mismatch",
-        "deliverable-invisible"
+        "deliverable-invisible",
+        "subagent-missing-mount-table",
+        "shell-access-section-dangling",
+        "subagent-cannot-resolve-folder",
+        "third-scratch-location",
+        "private-tmp-scratchpad",
+        "agent-injected-scratchpad",
+        "scratchpad-taxonomy",
+        "live-subagent-probe"
       ]
     },
     {
@@ -4784,8 +4792,8 @@
       "title": "Write's Result Carries the Raw Input",
       "lesson_number": "165",
       "file": "41-cowork-path-resolution-lanes.md",
-      "startLine": 131,
-      "endLine": 153,
+      "startLine": 163,
+      "endLine": 185,
       "keywords": [
         "write-result-raw-path",
         "does-not-absolutize",
@@ -4802,8 +4810,8 @@
       "title": "Surface Separation, and Two Greps That Lie",
       "lesson_number": "166",
       "file": "41-cowork-path-resolution-lanes.md",
-      "startLine": 154,
-      "endLine": 203,
+      "startLine": 186,
+      "endLine": 235,
       "keywords": [
         "surface-separation",
         "chat-mode-prompt",
@@ -16311,6 +16319,30 @@
     "bash-cwd-session-root-corrected": [
       124,
       163
+    ],
+    "subagent-missing-mount-table": [
+      164
+    ],
+    "shell-access-section-dangling": [
+      164
+    ],
+    "subagent-cannot-resolve-folder": [
+      164
+    ],
+    "third-scratch-location": [
+      164
+    ],
+    "private-tmp-scratchpad": [
+      164
+    ],
+    "agent-injected-scratchpad": [
+      164
+    ],
+    "scratchpad-taxonomy": [
+      164
+    ],
+    "live-subagent-probe": [
+      164
     ]
   }
 }

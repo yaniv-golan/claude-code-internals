@@ -237,8 +237,8 @@
     {
       "id": "paths.scratch-is-not-delivered",
       "page": "files-and-paths",
-      "rule": "Do not leave anything you want the user to see in the working directory alone.",
-      "detail": "The directory your skill works in is a scratch space the user does not see. Files there are not presented, not listed, and in one sandbox not retained. Producing a file is a separate act from delivering it, and the working directory is on the wrong side of that line.",
+      "rule": "Producing a file is not delivering it — and where your working directory lands differs by lane.",
+      "detail": "Where your working directory lands differs by lane, so do not assume it is either visible or invisible. On the local desktop lane the working directory IS the outputs location, so a file written there with a bare filename is visible to the user immediately. On the remote lane the working directory is a container home directory that is neither surfaced nor retained, and a file left there is lost at session end. Because a skill cannot tell which lane it is on, treat producing and delivering as two separate acts on both: write the file to a stated path, then present it with whatever tool this surface offers for sending files to the user. Note also that 'the scratch directory' is not one place — the agent is separately instructed to use a host-side temporary directory for working files, which survives the session and is never shown to the user, and the shell has its own scratch area that reaches neither the user nor your file tools. Anything outside the outputs location or a connected folder is a temporary file by definition.",
       "tier": "measured",
       "severity": "silent",
       "durability": "durable",
@@ -246,11 +246,15 @@
       "sources": {
         "lessons": [
           122,
-          138
+          138,
+          163,
+          164
         ],
         "state_page": "cowork-architecture"
       },
-      "caveats": []
+      "caveats": [
+        "An earlier release of this rule stated flatly that the directory your skill works in is a scratch space the user does not see. That is true on the remote lane and wrong on the local desktop lane, where the working directory is the outputs location itself. It is withdrawn: neither half holds on both lanes, so write the file to a stated path and present it either way."
+      ]
     },
     {
       "id": "paths.session-paths-denied",
@@ -994,14 +998,16 @@
       "id": "subagents.working-directory",
       "page": "sub-agents",
       "rule": "Write sub-agent prompts with relative paths, exactly as you would the main thread.",
-      "detail": "A sub-agent starts in the session's own working area, not in a private one. The same path rules apply, and absolute session paths handed to file tools are rejected there for the same reason.",
+      "detail": "A sub-agent starts in the session's own working area, not a private one, so the same path rules apply and absolute session paths handed to file tools are rejected there for the same reason. Two limits do not carry over from the main thread, though. Shell commands do not share the file tools' working directory, so a relative path is right for a file tool and wrong for the shell, which needs an absolute path. And a sub-agent is not told how the folders the user connected are named inside the shell environment — the main thread receives that mapping, a sub-agent does not, and the tool description points it at a section of its instructions that it does not have. So if a sub-agent must work inside a folder the user connected, put the resolved path in its prompt. Left to guess, it will address the folder by name and silently create a same-named directory in the outputs location instead.",
       "tier": "measured",
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          122
+          122,
+          163,
+          164
         ],
         "state_page": "cowork-architecture"
       },

@@ -126,6 +126,38 @@ local_bcbaba81…/outputs/outputs/d2.md  local_1e451b75…/outputs/outputs/e1.md
 
 The second session had `~/Downloads/cwtest` connected. That real folder is **empty** — `e3.md` never reached it. The file-tool root already *is* `outputs`, so a relative `outputs/` prefix nests a second one, and addressing a connected folder by its own name builds a same-named directory inside outputs: the write succeeds, the tool reports success, and the file is nowhere near the folder the user connected. **Only an absolute host path reaches a connected folder.**
 
+### ADDENDUM (2026-08-27) — a live sub-agent probe: two confirmations, two new facts
+
+A probe of a **sub-agent inside a real host-loop Cowork session** (`tender-ecstatic-ride`, Desktop 1.37937.1 / agent 2.1.246) confirmed this lesson's two path forms from the product's own text, and surfaced two facts the chapter did not have.
+
+**Confirmations — now live-rendered, not code-read.** The sub-agent's `<env>` block reports its working directory as the session `outputs` directory, confirming both this chapter's agent-cwd fact and Ch35/L122's "a sub-agent's cwd is the parent's cwd" **at runtime, in one observation**. Its Cowork-environment append renders the post-1.32885.1 text with the session resolved — *"Each command starts in `/sessions/tender-ecstatic-ride`; anything written outside `/sessions/tender-ecstatic-ride/mnt/` (including `/tmp`) stays in that environment and never reaches the user or your file tools"* — stating **both** values side by side: file tools at `…/outputs`, bash at the session root. Two further surfaces say the same independently: `mcp__workspace__bash`'s own description instructs *"Use absolute paths"*, and `present_files` states *"Only files under your outputs folder, the uploads folder, or a connected folder can be presented — if a shell command wrote a file elsewhere in its Linux environment, copy it into one of those first"* (the host-loop pass-through of L163).
+
+**NEW — a sub-agent is pointed at a section it structurally cannot have.** The `mcp__workspace__bash` tool description reads:
+
+> *"Your connected folders are mounted under `/sessions/<session>/mnt/` — **the Shell access section of your system prompt** lists the exact path for each folder."*
+
+That section does not exist in a sub-agent's prompt. Three-part proof, first-party:
+
+- the **sub-agent append** (`gs()`) emits only the `${a}/mnt/` **prefix**: *"…those folders are mounted under `${a}/mnt/`"* — no per-folder table;
+- the `host_loop_shell` section carrying the actual `- <host path> → /sessions/<id>/mnt/<name>/` mappings is built in **`ms()`**, the *main* system prompt;
+- nothing appends it for sub-agents — `appendSubagentSystemPrompt` is `gs()`'s output alone.
+
+**Consequence, and it compounds with L164:** only an absolute path reaches a connected folder, and a sub-agent **cannot resolve that folder's mount name from its own prompt**. It must `ls /sessions/<slug>/mnt/`, ask the parent, or guess the basename — and a guess is exactly the silent decoy failure above. A dispatching skill that expects a sub-agent to write into a connected folder must **pass the resolved mount path in the dispatch prompt**. Extends Ch35/L123.
+
+**NEW — a third scratch location, injected by the agent rather than the Desktop.** The probe's prompt carries a `# Scratchpad Directory` block naming `/private/tmp/claude-501/-<slugified-cwd>/<uuid>/scratchpad` and instructing *"Always use this scratchpad directory for temporary files instead of `/tmp`"*. Cross-artifact: that block occurs **4 times in the agent Mach-O 2.1.246 and zero times in the Desktop `app.asar`** — it is a Claude Code harness feature that Cowork inherits because the Cowork agent *is* Claude Code. It is not Cowork-aware, and its path is derived by slugifying the agent's cwd (the outputs dir).
+
+So host-loop has **three** distinct not-user-visible write locations, failing in different ways:
+
+| location | side | survives session end | user sees it |
+|---|---|---|---|
+| `/sessions/<id>`, `/tmp` (the bash cwd) | VM | no | no |
+| `/private/tmp/claude-501/…/scratchpad` | **host** | yes | **no** |
+| `CLAUDE_CODE_TMPDIR` / `CLAUDE_TMPDIR` | **unverified** | ? | ? |
+
+The authoring consequence: *"don't write the deliverable to the scratchpad"* is **under-specified guidance**, because there is more than one scratchpad and the agent is actively *instructed* to prefer the host-side one. A `/sessions/`-prefix heuristic does not catch it — that path is a host path, and it persists, so nothing fails loudly. The durable rule remains L164's: a deliverable goes to a **bare filename** (file tools) or an **absolute outputs path** (bash), and anywhere else is a temporary file by definition.
+
+*(The third row is listed as unverified on purpose: the `CLAUDE_CODE_TMPDIR` identification comes from another project's guidance and was not checked here. It is recorded so the taxonomy is honest about its own gap, not because it is known to be a third distinct place.)*
+
 ---
 
 # LESSON 165 — `Write`'s RESULT CARRIES THE RAW INPUT

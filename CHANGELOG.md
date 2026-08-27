@@ -1,5 +1,29 @@
 # Changelog
 
+## v2.41.1 — 2026-08-27 (this fork) — a live sub-agent probe: two confirmations, two new facts
+
+An addendum to Chapter 44's L164 (no new lesson numbers — the count stays 166/44), from a sub-agent probed inside a real host-loop Cowork session.
+
+**Confirmed, now at runtime rather than from a code read.** The sub-agent's `<env>` block reports its working directory as the session `outputs` dir — L163's agent-cwd fact *and* Ch35/L122's "a sub-agent's cwd is the parent's cwd", in a single observation. Its Cowork append renders the post-1.32885.1 sentence with the session resolved, stating both values side by side. `mcp__workspace__bash` ("Use absolute paths") and `present_files` ("Only files under your outputs folder, the uploads folder, or a connected folder can be presented") say the same independently.
+
+**New: a sub-agent is pointed at a section it structurally cannot have.** The bash tool description tells it *"the Shell access section of your system prompt lists the exact path for each folder."* The sub-agent append emits only the `mnt/` prefix; the section carrying the per-folder mount table is built in the **main** prompt and is never appended for sub-agents. Combined with L164 — only an absolute path reaches a connected folder — **a sub-agent cannot resolve a connected folder's mount name from its own prompt**, and a guessed basename is exactly the silent decoy failure. A dispatching skill must pass the resolved mount path in the dispatch prompt.
+
+**New: a third not-user-visible write location, injected by the agent rather than the Desktop.** The `# Scratchpad Directory` block naming `/private/tmp/claude-501/…/scratchpad` appears **4× in the agent binary and 0× in the Desktop asar** — a Claude Code harness feature Cowork inherits because the Cowork agent *is* Claude Code. It is host-side, survives session end, is invisible to the user, and no `/sessions/` heuristic catches it.
+
+| location | side | survives | user sees it |
+|---|---|---|---|
+| `/sessions/<id>`, `/tmp` (bash cwd) | VM | no | no |
+| `/private/tmp/claude-501/…/scratchpad` | **host** | yes | **no** |
+| `CLAUDE_CODE_TMPDIR` | **unverified** | ? | ? |
+
+So *"don't write the deliverable to the scratchpad"* is under-specified: there is more than one, and the agent is actively instructed to prefer the host-side one. The third row is listed as unverified on purpose rather than asserted.
+
+**And the sweep found the withdrawn claim surviving in a third phrasing — live on ccinternals.dev.** The published author-fact `paths.scratch-is-not-delivered` still read *"the directory your skill works in is a scratch space the user does not see."* It escaped the v2.41.0 sweep because it shares no wording with the phrasings that were corrected. It is **lane-conflated**: true on the remote lane, false on the local desktop lane where the working directory *is* the outputs location. Rewritten lane-honestly, with the retraction in `caveats` where this repo's own validator requires it.
+
+`subagents.working-directory` is qualified for the same reason: relative paths remain right for a sub-agent's file tools, but the shell needs an absolute path, and a sub-agent is never given the mapping for the user's connected folders — so a dispatching skill must put the resolved path in the sub-agent's prompt rather than let it guess a name and create a decoy directory.
+
+Both facts publish to ccinternals.dev, which is generated from `author-facts.json` and carries no hardcoded counts or versions — so the site picks the corrections up on deploy with no manual edit.
+
 ## v2.41.0 — 2026-08-27 (this fork) — a withdrawal: bash never started in outputs
 
 Chapter 44 (L163–L166). **This release retracts a claim this skill published and then repeated across four chapters, both Cowork state pages, `troubleshooting.json`, `cross-references.json`, and — worst — `author-facts.json`, which is direct instruction to skill authors.**
