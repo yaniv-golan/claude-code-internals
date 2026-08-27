@@ -1,5 +1,26 @@
 # Changelog
 
+## v2.43.3 — 2026-08-27 (this fork) — a third path form, and why no skill needs to derive a host path
+
+Extends Ch44/L164, prompted by a downstream skill scoping its fix around "host detection" that turned out to be unnecessary.
+
+**L164's table gave bash only the absolute `/sessions/<id>/mnt/outputs/…` form** — what the tool's own description advises. A **relative `mnt/outputs/…` is equally correct and contains no session id**, because bash's cwd is deterministically the session root and `mnt/` sits directly in it. First-party: a real session's bash `ls -a .` lists `mnt`, and a relative bash write lands in the session root — the same mechanism that produces the scratchpad failure in the first place.
+
+That reduces the two-forms rule to **two constant prefixes**:
+
+| runtime | file-tool prefix | bash prefix |
+|---|---|---|
+| Claude Code CLI | `outputs/` | `outputs/` |
+| Cowork, host-loop | *(bare)* | `mnt/outputs/` |
+
+**So a cross-surface skill needs runtime discrimination, not host-path derivation** — never `/Users/…/local_<id>/outputs`, the session id, or `CLAUDE_CODE_*`. The shell can settle it itself with one fail-safe existence test (`[ -d mnt/outputs ]`) and should **print the branch it took**, which converts this chapter's defining silent-failure property into a visible one.
+
+The residual assumption is stated rather than hidden: the test infers "file tools are rooted at outputs" from "bash sees a `mnt/outputs`". No runtime is known where those diverge, and one greppable line is a better place for that assumption than a paragraph of prose. Sharpening contributed by the adopting project.
+
+The trade-off is recorded too: the relative form depends on bash's cwd staying the session root — and L163 is the record of that value being mis-described for months — while the absolute form costs a `pwd`.
+
+`author-facts.json`'s `paths.relative-filenames` carries the author-facing form, so it reaches ccinternals.dev.
+
 ## v2.43.2 — 2026-08-27 (this fork) — the marker is 100, and 19,900 was right all along
 
 **v2.42.0 corrected a correct number to a wrong one.** L167 gave the truncation marker as 98 characters and the per-skill budget as 19,902. Both are wrong. Byte-exact from the binary:

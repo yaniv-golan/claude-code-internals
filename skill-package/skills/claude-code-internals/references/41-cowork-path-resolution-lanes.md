@@ -95,6 +95,29 @@ This is the practical replacement for the withdrawn "use bare filenames with bot
 | `mcp__workspace__bash` | **absolute** `/sessions/<id>/mnt/outputs/x` | cwd is the session root; the prompt itself says *"Use absolute paths"* |
 | file tool given `/sessions/...` | **denied**, never translated | the path-gate PreToolUse hook (Ch24/L107) |
 
+### ADDENDUM (2026-08-27) — a THIRD correct form, and why no skill needs to derive a host path
+
+The table above gives bash the **absolute** form because that is what the tool's own description advises. It is not the only correct one, and the omission matters in practice: bash's cwd is deterministically `/sessions/<id>` and `mnt/` sits directly in it, so a **relative** `mnt/outputs/report.md` resolves to the same place and **contains no session id**. First-party support: a real session's bash `ls -a .` lists `.bashrc .config mnt tmp …`, and a relative bash write (`printf > probe-b1.md`) lands at `/sessions/<id>/probe-b1.md` — relative resolution from the session root is exactly how the scratchpad failure happens in the first place.
+
+That turns the two-forms rule into **two constant prefixes**, neither of which is a path anyone has to discover:
+
+| runtime | file-tool prefix | bash prefix |
+|---|---|---|
+| Claude Code CLI | `outputs/` | `outputs/` (one cwd, shared) |
+| Cowork, host-loop | *(bare)* | `mnt/outputs/` |
+
+**The consequence is worth more than the form.** A skill that must run on both surfaces needs **runtime discrimination, not host-path derivation** — it never needs `/Users/…/local_<id>/outputs`, the session id, or `CLAUDE_CODE_*`. That is a much weaker requirement than it first appears, and the discrimination can be done by the shell itself with one positive existence test that fails safe:
+
+```bash
+BASE="$([ -d mnt/outputs ] && echo mnt/outputs || echo outputs)"
+```
+
+No mount, no change in behaviour. A script written this way can also **print the branch it took**, which converts the silent-misfire property of this whole failure class into a visible one — the single most useful thing an author can do here, because every bug in this chapter is silent by construction.
+
+**The residual assumption, which the test makes visible rather than removes.** `[ -d mnt/outputs ]` infers *"the file tools are rooted at outputs"* from *"bash can see a `mnt/outputs`"*. Those are two different facts, and a runtime exposing the mount to the shell while rooting the file tools somewhere else would take the wrong branch. **No such runtime is known** — on every surface documented in this chapter the two travel together. The value of the test is not that it eliminates the assumption but that it states it in one greppable line, where the alternative buries the same assumption in prose. *(Sharpening contributed by the `creative-problem-solving` session, which adopted this idiom and narrowed the risk rather than accepting it.)*
+
+**The trade-off, stated so a reader can choose.** The relative form depends on bash's cwd remaining the session root — and L163 is the record of that value being mis-described for months, so it is not immutable. The absolute form depends on obtaining `<id>`, which costs a `pwd`. Prefer relative for portability, absolute when a path must survive being passed between calls or written into a file, and never assume either is correct for the *other* tool family.
+
 ## Why the prompt reads as self-contradictory: the tokens collapse
 
 ```js
