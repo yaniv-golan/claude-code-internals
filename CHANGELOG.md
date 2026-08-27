@@ -1,5 +1,28 @@
 # Changelog
 
+## v2.42.0 — 2026-08-27 (this fork) — the skill re-attachment budget
+
+Chapter 45 (L167). First-party in agent Mach-O **2.1.246**, cross-confirmed at **2.1.247**.
+
+**After auto-compaction, skills are re-attached under two budgets — not one.**
+
+| cap | constant | unit | effect |
+|---|---|---|---|
+| per skill | `V3o = 5000` | tokens | **truncates** to `t*4 − 98` = **19,902** chars + marker |
+| all skills | `K3o = 25000` | tokens | **drops the skill outright** — stored content set to `""` |
+
+**19,902 is derived arithmetic, not a literal** — no such number exists in the bundle to grep, so any doc stating it must show the derivation. The marker is **98** chars; the widely-repeated 19,900 assumes 100.
+
+**The combined budget is consumed by post-truncation sizes** (`d = xc(u)`, not `xc(a.content)`), so a 40,000-token skill contributes its capped 5,000. More skills fit than expected — and because the loop sorts **most-recently-invoked first**, **the skill that silently vanishes is rarely the big one**; it is whichever was invoked least recently when the budget ran out. An author debugging by file size is looking in the wrong place.
+
+**Four conditions that make "truncation is permanent" only sometimes true:** write-back *and* zeroing are both guarded by `!c` (skipped when the content is already in the conversation body); an already-`attachment`ed skill is skipped entirely; and `if (!a.content) continue` is what makes zeroing **persistent for the session** rather than re-evaluated per compaction. The disk file is never touched — `Read` recovers the full text, which is what the truncation marker instructs.
+
+**Pin values, not names.** Constants unchanged across `2.1.222 → 2.1.246 → 2.1.247` while the minified identifiers rotated at every build: `Nvy/$vy` → `V3o/K3o` → `XJo/ZJo`.
+
+**Deliberately not claimed:** the `xc`/`Lc` token estimator is unresolved — three same-named functions sit in that JS region, none a counter, so it is a cross-chunk import. `Math.round(chars/4)` is *consistent* with the `t*4`, not asserted, and calling it "binary-verified" is an over-claim. Nothing operational depends on it.
+
+**Why this lesson cites code and not documentation.** Two independent projects documented this mechanism before this skill had any lesson on it, and **both overstated the same two mutations as unconditional** — one of them inside a lint rule's message, which reaches an author at the moment they are deciding what to change. The finding came from two documents agreeing with each other and disagreeing with the artifact. **Agreement between derived sources is not corroboration; it is frequently the moment before the first check.**
+
 ## v2.41.3 — 2026-08-27 (this fork) — two of our own errors, caught downstream
 
 Both found by the `skill-creator-plus` session while reviewing this skill's findings against its own repo. Neither changes a mechanism; both change what this skill *claims*.

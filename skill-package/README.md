@@ -1,6 +1,6 @@
 # Claude Code Internals
 
-> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 166 lessons covering every internal subsystem, searchable three ways.
+> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 167 lessons covering every internal subsystem, searchable three ways.
 
 **Skill Version:** 2.0.0 | **Captured from:** Claude Code v2.1.88 | **Date:** 2026-03-31 | **License:** MIT
 
@@ -27,7 +27,7 @@
 
 ## What This Is
 
-This is a Claude Code skill (a local knowledge package that Claude Code loads automatically) containing a complete reverse-engineering of Claude Code's internal architecture. 166 detailed lessons cover every major subsystem — from the boot sequence to unreleased features. When you type `/claude-code-internals hooks` or `/claude-code-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
+This is a Claude Code skill (a local knowledge package that Claude Code loads automatically) containing a complete reverse-engineering of Claude Code's internal architecture. 167 detailed lessons cover every major subsystem — from the boot sequence to unreleased features. When you type `/claude-code-internals hooks` or `/claude-code-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
 
 Without this skill, Claude knows *how to use* Claude Code but doesn't know *how Claude Code works internally*. With it, Claude becomes an expert on its own implementation — the query engine's retry logic, the 31 hook event types, the 7-phase permission pipeline, the compaction algorithm, the agent spawn lifecycle, all of it.
 
@@ -122,7 +122,7 @@ This is because Claude's training data doesn't include Claude Code's source code
 | **3. Neural** | Ruflo embeddings | ~6ms | Semantic concepts without keyword overlap | Ruflo (optional) |
 
 - **Layer 1** uses `jq` to search a 494-keyword index mapping terms to exact file:line ranges.
-- **Layer 2** tokenizes your query and computes cosine similarity against pre-built TF-IDF vectors for all 166 lessons. Pure Node.js, no dependencies.
+- **Layer 2** tokenizes your query and computes cosine similarity against pre-built TF-IDF vectors for all 167 lessons. Pure Node.js, no dependencies.
 - **Layer 3** uses MiniLM-L6-v2 sentence embeddings stored in Ruflo's vector database. This is the most powerful layer but **requires Ruflo** — see [RuFlo Integration](#ruflo--ruvector-integration--universal-knowledge-access). Without Ruflo, Layers 1 and 2 still work perfectly.
 
 ### Auto-Trigger Hook
@@ -233,7 +233,7 @@ chmod +x scripts/*.sh scripts/*.js
 # "Unknown skill" instead, Claude Code needs a restart.
 ```
 
-That's it. The zip contains everything — the SKILL.md brain, all 166 lessons, both search indexes, the lookup scripts, the README, and the LICENSE. No npm install, no server, no API keys.
+That's it. The zip contains everything — the SKILL.md brain, all 167 lessons, both search indexes, the lookup scripts, the README, and the LICENSE. No npm install, no server, no API keys.
 
 ### From This Repo
 
@@ -404,7 +404,7 @@ bash scripts/check-version.sh
   | claude-code-internals  |  load   |  RuFlo / RuVector |  query  | Any Ruflo Agent    |
   | skill (LOCAL)     | ------> |  (UNIVERSAL)      | ------> | task_orchestrate   |
   |                   |         |                   |         | Swarms & Workflows |
-  | 166 lessons        |         | 10 cluster embeds |         | OpenClaw           |
+  | 167 lessons        |         | 10 cluster embeds |         | OpenClaw           |
   | 494 keywords      |         | 50 lesson embeds  |         | Other Systems      |
   | TF-IDF vectors    |         | 5 semantic refs   |         |                    |
   |                   |         | 2 routing patterns |         |                    |
@@ -452,7 +452,7 @@ This gives Ruflo precise per-lesson search capability:
 # Store each lesson summary individually
 memory_store  key="lesson-01-boot-sequence"  value="Claude Code boot sequence: CLI arg parsing, config cascade, MCP init..."  namespace=claude-code-internals-lessons
 memory_store  key="lesson-02-query-engine"  value="Query engine: streaming SSE, retry logic, continuation, while loop..."  namespace=claude-code-internals-lessons
-# ... repeat for all 166 lessons
+# ... repeat for all 167 lessons
 ```
 
 ### Step 3: Add AgentDB Semantic References
@@ -495,7 +495,7 @@ agentdb_hierarchical-recall  query="permissions"  namespace=claude-code-internal
 | Namespace | Entries | Purpose | Query Speed |
 |-----------|---------|---------|-------------|
 | `claude-code-internals` | 10 clusters | High-level topic routing | ~6ms |
-| `claude-code-internals-lessons` | 166 lessons | Precise lesson-level search | ~6ms |
+| `claude-code-internals-lessons` | 167 lessons | Precise lesson-level search | ~6ms |
 | `task-routing` | 2 patterns | Auto-consultation by `task_orchestrate` | N/A (routing) |
 | AgentDB references | 5 entries | Semantic router awareness | ~10ms |
 
@@ -543,7 +543,7 @@ claude-code-internals-skill/
 |   |   +-- 04-connectivity-plugins.md
 |   |   +-- 05-unreleased-bigpicture.md
 |   |   +-- topic-index.json        Keyword index (494 entries)
-|   |   +-- semantic-index.json     TF-IDF vectors (166 lessons)
+|   |   +-- semantic-index.json     TF-IDF vectors (167 lessons)
 |   +-- scripts/
 |       +-- lookup.sh               Keyword search (jq)
 |       +-- semantic-search.js      TF-IDF search (Node.js)
@@ -584,7 +584,7 @@ The `claude-code-internals.zip` file is the complete, shareable package. It cont
 | `hooks-config.json` | 1.4KB | PreToolUse hook definition (portable paths) |
 | `references/*.md` | 318KB | 5 lesson files containing all 50 architecture lessons |
 | `references/topic-index.json` | 27KB | 494-keyword lookup index |
-| `references/semantic-index.json` | 677KB | Pre-built TF-IDF vectors for all 166 lessons |
+| `references/semantic-index.json` | 677KB | Pre-built TF-IDF vectors for all 167 lessons |
 | `scripts/lookup.sh` | 1.2KB | Keyword search (requires `jq`) |
 | `scripts/semantic-search.js` | 6.9KB | TF-IDF search (requires Node.js 18+) |
 | `scripts/search.js` | 17KB | **Unified RRF search** — keyword + TF-IDF fused (use this by default) |
