@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.43.8 — 2026-08-27 (this fork) — the budget is per agent, and references really are exempt
+
+L167 shipped with one unresolved symbol: `N3n`, the thing that decides *what the budget counts*. Chasing the alias chain (`cqd as N3n`, `Ox as cqd`) resolves it:
+
+```js
+function Ox(e){ let t = e ?? null, o = new Map;
+  for (let [r,s] of n().invokedSkills.skills()) if (s.agentId === t) o.set(r,s);
+  return o }
+```
+
+**Reference files are exempt — verified, not inferred.** The map is built from a dedicated **`invokedSkills` registry**, populated by *invoking a skill*. It never scans messages and never inspects tool results, so a `references/*.md` pulled in with `Read` is a plain tool result this budget cannot see. Moving prose out of a `SKILL.md` into a reference genuinely removes it from **both** caps, and it does not reappear when the reference is later read.
+
+The caveat stands and matters more than the exemption: reference content still sits in ordinary conversation context and is compacted away with **no marker**, whereas the skill body announces its own truncation. The move converts a *marked* loss into an *unmarked* one.
+
+**The budget is PER AGENT, not per session.** The map filters on `s.agentId === t`, where `null` is the main thread. A sub-agent's invoked skills are budgeted separately, so a fan-out does not spend the main thread's 25,000 tokens. Siblings `Fx` and `Ex` confirm it: the registry is agent-scoped and pruned when an agent exits.
+
+**And a correction to this lesson's own earlier reading:** `N3n(e)` takes an **agentId**, not a message list. Nothing here walks the transcript. That was stated as fact in v2.42.0 on the strength of the call site alone — a reconstruction from context rather than a resolved symbol, which is the habit Ch44/L166's addendum was written about.
+
 ## v2.43.7 — 2026-08-27 (this fork) — only one of the two failures announces itself
 
 L167 and its published author-fact both described the two compaction caps as "silent". That is true of the *consequence* and misleading about the *signal*, and the difference decides what recovery advice can work.

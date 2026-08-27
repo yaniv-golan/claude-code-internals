@@ -77,6 +77,24 @@ The simple form — *"over-cap skills are truncated, and truncation is permanent
 
 So "permanently" and "outright" are true on the not-in-body path and have an exception on the other. The **disk file is never touched**: `Read` on the skill path recovers the full text, which is exactly what the truncation marker tells the model to do.
 
+## What the budget counts — and what it does not
+
+`tXo` opens with `let n = N3n(e)`, and `N3n` resolves through an import alias (`cqd as N3n`, `Ox as cqd`) to:
+
+```js
+function Ox(e){ let t = e ?? null, o = new Map;
+  for (let [r,s] of n().invokedSkills.skills()) if (s.agentId === t) o.set(r,s);
+  return o }
+```
+
+Two facts follow, and neither is guessable from the loop alone.
+
+**Reference files are exempt, verified.** The map is built from a dedicated **`invokedSkills` registry**, populated by *invoking a skill*. It never scans messages and never inspects tool results, so a `references/*.md` you pull in with `Read` is a plain tool result that this budget does not see. Moving prose out of a `SKILL.md` into a reference file therefore genuinely removes it from **both** caps — it does not reappear in the shared budget when the reference is later read. (What it does *not* buy is permanence: reference content sits in ordinary conversation context and is subject to ordinary compaction, with **no marker** when it goes. The skill body announces its own truncation; a compacted-away reference does not. See the observability section below.)
+
+**The budget is PER AGENT, not per session.** The map is filtered by `s.agentId === t`, where `t` is the agent whose attachment is being built and `null` is the main thread. So a sub-agent's invoked skills are budgeted separately from the main thread's, and a fan-out of sub-agents does not spend the main thread's 25,000 tokens. The sibling functions confirm the registry is agent-scoped and pruned on agent exit: `Fx` forgets every entry whose `agentId` is null or absent from the live set, and `Ex` forgets all entries for one agent.
+
+Correcting a natural misreading, which this lesson made before resolving the symbol: `N3n(e)` takes an **agentId**, not a message list. Nothing here walks the transcript.
+
 ## Only ONE of the two failures is observable, and it decides what advice can work
 
 This is the operational difference between the two caps, and it is easy to miss because both are described as "silent".
