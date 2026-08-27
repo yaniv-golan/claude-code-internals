@@ -4864,7 +4864,7 @@
       "lesson_number": "168",
       "file": "43-cowork-in-app-browser-preview.md",
       "startLine": 14,
-      "endLine": 69,
+      "endLine": 81,
       "keywords": [
         "in-app-browser",
         "mcp__Claude_Browser__",
@@ -4883,7 +4883,13 @@
         "browser-name-collision",
         "claude-in-chrome-prefix",
         "no-localhost-no-file-url",
-        "truncated-window-trap"
+        "truncated-window-trap",
+        "gates-force-on",
+        "fcache-2026-08-27",
+        "browser_batch",
+        "init-tools-authoritative",
+        "sixteen-tools",
+        "config-readiness-guard"
       ]
     },
     {
@@ -4891,8 +4897,8 @@
       "title": "preview_start Has Two Incompatible Contracts, Chosen by Session Kind",
       "lesson_number": "169",
       "file": "43-cowork-in-app-browser-preview.md",
-      "startLine": 70,
-      "endLine": 121,
+      "startLine": 82,
+      "endLine": 135,
       "keywords": [
         "preview_start",
         "preview-family",
@@ -4907,7 +4913,10 @@
         "declaration-vs-rendered",
         "preview_screenshot",
         "preview_click",
-        "preview_eval"
+        "preview_eval",
+        "preview-launch-config",
+        "cli-permission-carve-out",
+        "cross-artifact-config"
       ]
     }
   ],
@@ -16580,6 +16589,33 @@
       169
     ],
     "preview_eval": [
+      169
+    ],
+    "gates-force-on": [
+      168
+    ],
+    "fcache-2026-08-27": [
+      168
+    ],
+    "browser_batch": [
+      168
+    ],
+    "init-tools-authoritative": [
+      168
+    ],
+    "sixteen-tools": [
+      168
+    ],
+    "config-readiness-guard": [
+      168
+    ],
+    "preview-launch-config": [
+      169
+    ],
+    "cli-permission-carve-out": [
+      169
+    ],
+    "cross-artifact-config": [
       169
     ]
   }

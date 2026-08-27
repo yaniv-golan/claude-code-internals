@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.43.1 — 2026-08-27 (this fork) — Ch46 goes live-confirmed, and loses a tool it never had
+
+Same-day upgrade of Chapter 46 from binary-tier to live-confirmed, plus one correction to what v2.43.0 shipped.
+
+**Both browser gates are force-ON.** Decoded from the live `fcache` (2026-08-27, 299 features, up from 254 at the v2.40.0 capture): `17519066` and `3990395613` are each `{on:true, source:"force"}`. The in-app browser is **live, not dark** — which v2.43.0 could only record as "state unknown". That is the question a named gate always raises and this one is now answered.
+
+**Correction: the served surface is 16 tools, not 15.** v2.43.0 predicted `preview_start` + 14 by reading `Xhr`'s Cowork branch. Three real sessions' own `system/init` arrays say otherwise — **`browser_batch` is served**, and it is absent from the `W5` definition array the lesson traced, so it is appended by a path the static read did not follow.
+
+The methodological point outlives the count. This chapter reconstructed a rendered surface from a builder function, which is precisely what Ch37/L129 warns against: **`system/init` is authoritative over any reconstruction.** No probe was required — ten sessions already carried the record on disk, so the check was free and should have come first. (`audit.jsonl` is a translated projection for *paths* per Ch40/L143; tool names are unaffected, so it is sound here.)
+
+**`kL()` resolved, and it is not a product condition.** `CL`/`SL` both initialise false and are mutated by an async config loader, so `kL()` reads *"the gate config is not ready"* and `jL()`'s `!kL()` is a **readiness guard**. Gating collapses to: config loaded + both gates on + setting not `false` + not Chat mode.
+
+**`.claude/launch.json` is cross-artifact.** The standalone CLI **2.1.247** carries a write-permission carve-out for it — *"Preview launch config is allowed for writing"*, the same class of exception as `CLAUDE.md` — and enumerates it beside `scheduled_tasks.json`, `CLAUDE.md`, `daemon.json` and `policy-limits.json`. So the CLI recognises, registers and deliberately permits writes to a file whose tool family Cowork does not serve.
+
+The **Launch Composer** identification stays **inferred**. `CLAUDE_CODE_ENABLE_LAUNCH_COMPOSER`/`_DISABLE_` persist at 2.1.247 but only in the env-var export table, with no co-occurrence found. Adjacency in a binary is not a link, and the CLI's own name for the file is *"Preview launch config"* — which is the name to use until something ties them together.
+
 ## v2.43.0 — 2026-08-27 (this fork) — Cowork has its own browser, and a tool that means two things
 
 Chapter 46 (L168–L169), from Desktop `app.asar` **1.37937.1**. **Binary tier: no live probe, and no fcache captured — both new gate ids are named, their production state is unknown.**

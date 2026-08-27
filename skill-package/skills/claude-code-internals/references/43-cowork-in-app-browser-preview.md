@@ -1,4 +1,4 @@
-Updated: 2026-08-27 | Source: First-party read of Desktop `app.asar` **1.37937.1** (extracted; every claim below re-checked against a full-array extraction after a truncated sampling window produced one wrong absence claim mid-investigation — see L168's method note). **Binary tier throughout: no live probe, and no fcache capture this pass, so the two gate ids are named but their production state is UNKNOWN.** Does NOT move the Desktop baseline (still 1.30096.1, Ch43) — targeted subsystem read, per-fact provenance only.
+Updated: 2026-08-27 | Source: First-party read of Desktop `app.asar` **1.37937.1** (extracted; every claim below re-checked against a full-array extraction after a truncated sampling window produced one wrong absence claim mid-investigation — see L168's method note). **Binary tier PLUS live confirmation (added same day): both gates decoded force-ON from the live `fcache` (2026-08-27, 299 features), and the served tool list read from real sessions' own `system/init` records — which corrected the static read by one tool. See the two ADDENDA.** Does NOT move the Desktop baseline (still 1.30096.1, Ch43) — targeted subsystem read, per-fact provenance only.
 
 # Chapter 46: The In-App Browser, and the Tool That Means Two Different Things
 
@@ -19,7 +19,19 @@ Updated: 2026-08-27 | Source: First-party read of Desktop `app.asar` **1.37937.1
 
 Prefix, first-party: `G5 = "Claude Browser"`, `agr = mcp__${G5.replace(/ /g,"_")}__` → **`mcp__Claude_Browser__`**.
 
-The 14 tools (`W5`): `read_page`, `computer`, `form_input`, `navigate`, `find`, `get_page_text`, `javascript_tool`, `read_console_messages`, `read_network_requests`, `resize_window`, `tabs_context`, `tabs_create`, `tabs_select`, `tabs_close`.
+The 14 tools in the definition array (`W5`): `read_page`, `computer`, `form_input`, `navigate`, `find`, `get_page_text`, `javascript_tool`, `read_console_messages`, `read_network_requests`, `resize_window`, `tabs_context`, `tabs_create`, `tabs_select`, `tabs_close`.
+
+**ADDENDUM — what is actually served is SIXTEEN, and the static read undercounted.** Read from three real Cowork sessions' own `system/init` tool arrays (2026-08-27), the authoritative source per Ch37/L129:
+
+```
+browser_batch  computer  find  form_input  get_page_text  javascript_tool  navigate
+preview_start  read_console_messages  read_network_requests  read_page  resize_window
+tabs_close  tabs_context  tabs_create  tabs_select
+```
+
+That is `preview_start` + **15**, not the `preview_start` + 14 predicted by reading `Xhr`'s Cowork branch as `[Uhr(preview_start), ...Ghr]` where `Ghr` derives from `W5`. **`browser_batch` is served and is not in `W5`** — it appears in the `Qhr` tab-targeting map but not in the array this lesson traced, so it is appended by a path the static read did not follow.
+
+The correction is small; the methodological point is not. This lesson predicted a rendered surface from a builder function, and the builder was not the whole story — exactly what Ch37/L129 says about `system/init` being authoritative over any reconstruction. **Read the init record when one exists.** Here ten sessions already carried it on disk, so the check cost nothing and no probe was needed. (`audit.jsonl` is a translated projection for *paths* per Ch40/L143 — tool names are unaffected, so it is a sound source for this particular question.)
 
 **Every one of those names is also a Claude-in-Chrome tool name.** The two surfaces are distinguished *only* by MCP prefix. A skill written against `mcp__claude-in-chrome__*` is a prefix swap from running in the in-app browser — and, less happily, any logic that recognises browser tools by bare name can no longer tell which browser it is driving.
 
@@ -112,7 +124,9 @@ The `launch.json` format the model is told to author, verbatim:
       "runtimeArgs": ["<args>"], "port": <port> } ] }
 ```
 
-This is very likely the **Launch Composer** Ch27/L112 recorded as dark-launched in the CLI on the strength of an env-var pair alone (`CLAUDE_CODE_ENABLE_LAUNCH_COMPOSER` / `_DISABLE_`). Treat the connection as **inferred**: the config file and the tool family are first-party here, the identification with that CLI feature is not.
+**ADDENDUM — `.claude/launch.json` is a cross-artifact config surface, and the CLI has a permission carve-out for it.** The standalone CLI **2.1.247** knows the file by its own name — *"Preview launch config is allowed for writing"* — a write-permission exception in the same class as `CLAUDE.md`, and it enumerates the file alongside `scheduled_tasks.json`, `CLAUDE.md`, `daemon.json` and `policy-limits.json`. So this is not a Desktop-only artifact; the CLI recognises, registers and deliberately permits writes to it.
+
+The identification with Ch27/L112's **Launch Composer** nevertheless stays **inferred**. `CLAUDE_CODE_ENABLE_LAUNCH_COMPOSER` / `_DISABLE_` are both still present at 2.1.247, but only in the env-var export table, with no co-occurrence with `launch.json` found — adjacency in a binary is not a link. The CLI's own name for the file is *"Preview launch config"*, which is the name to use until something ties the two together.
 
 ## Why this is worth a lesson rather than a footnote
 
