@@ -4763,7 +4763,7 @@
       "lesson_number": "164",
       "file": "41-cowork-path-resolution-lanes.md",
       "startLine": 86,
-      "endLine": 195,
+      "endLine": 208,
       "keywords": [
         "two-path-forms",
         "bare-filename-file-tools",
@@ -4792,8 +4792,11 @@
         "relative-mnt-outputs",
         "two-constant-prefixes",
         "runtime-discrimination-not-host-derivation",
-        "fail-safe-existence-test",
-        "print-the-branch"
+        "print-the-branch",
+        "caller-passes-destination",
+        "withdrawn-probe",
+        "chat-mode-doubling",
+        "required-argument-fail-loudly"
       ]
     },
     {
@@ -4801,8 +4804,8 @@
       "title": "Write's Result Carries the Raw Input",
       "lesson_number": "165",
       "file": "41-cowork-path-resolution-lanes.md",
-      "startLine": 196,
-      "endLine": 218,
+      "startLine": 209,
+      "endLine": 231,
       "keywords": [
         "write-result-raw-path",
         "does-not-absolutize",
@@ -4819,8 +4822,8 @@
       "title": "Surface Separation, and Two Greps That Lie",
       "lesson_number": "166",
       "file": "41-cowork-path-resolution-lanes.md",
-      "startLine": 219,
-      "endLine": 268,
+      "startLine": 232,
+      "endLine": 281,
       "keywords": [
         "surface-separation",
         "chat-mode-prompt",
@@ -16644,10 +16647,19 @@
     "runtime-discrimination-not-host-derivation": [
       164
     ],
-    "fail-safe-existence-test": [
+    "print-the-branch": [
       164
     ],
-    "print-the-branch": [
+    "caller-passes-destination": [
+      164
+    ],
+    "withdrawn-probe": [
+      164
+    ],
+    "chat-mode-doubling": [
+      164
+    ],
+    "required-argument-fail-loudly": [
       164
     ]
   }

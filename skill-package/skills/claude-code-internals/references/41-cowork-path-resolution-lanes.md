@@ -106,15 +106,28 @@ That turns the two-forms rule into **two constant prefixes**, neither of which i
 | Claude Code CLI | `outputs/` | `outputs/` (one cwd, shared) |
 | Cowork, host-loop | *(bare)* | `mnt/outputs/` |
 
-**The consequence is worth more than the form.** A skill that must run on both surfaces needs **runtime discrimination, not host-path derivation** — it never needs `/Users/…/local_<id>/outputs`, the session id, or `CLAUDE_CODE_*`. That is a much weaker requirement than it first appears, and the discrimination can be done by the shell itself with one positive existence test that fails safe:
+**The consequence is worth more than the form.** A skill that must run on more than one surface needs **runtime discrimination, not host-path derivation** — it never needs `/Users/…/local_<id>/outputs`, the session id, or `CLAUDE_CODE_*`. That principle stands. **The one-line probe first published here to implement it does not, and is withdrawn.**
 
-```bash
-BASE="$([ -d mnt/outputs ] && echo mnt/outputs || echo outputs)"
-```
+**WITHDRAWN (2026-08-27, same day) — `BASE="$([ -d mnt/outputs ] && echo mnt/outputs || echo outputs)"`.** It reintroduces the doubling bug on Chat mode, silently, and **the refutation was already in this chapter** — L166's own surface table, two lessons below:
 
-No mount, no change in behaviour. A script written this way can also **print the branch it took**, which converts the silent-misfire property of this whole failure class into a visible one — the single most useful thing an author can do here, because every bug in this chapter is silent by construction.
+| surface | bash cwd | `[ -d mnt/outputs ]` | `BASE` resolves to |
+|---|---|---|---|
+| Cowork host-loop | `/sessions/<id>` | true | `…/mnt/outputs` ✓ |
+| **Chat mode** | **the outputs dir** (explicit `cd`) | **false** | **`<outputs>/outputs/…`** ✗ doubled |
+| remote / cloud | `/home/claude` | false | `/home/claude/outputs` (discarded anyway) |
+| Claude Code CLI | the project dir | false | invents `outputs/` in the user's repo |
 
-**The residual assumption, which the test makes visible rather than removes.** `[ -d mnt/outputs ]` infers *"the file tools are rooted at outputs"* from *"bash can see a `mnt/outputs`"*. Those are two different facts, and a runtime exposing the mount to the shell while rooting the file tools somewhere else would take the wrong branch. **No such runtime is known** — on every surface documented in this chapter the two travel together. The value of the test is not that it eliminates the assumption but that it states it in one greppable line, where the alternative buries the same assumption in prose. *(Sharpening contributed by the `creative-problem-solving` session, which adopted this idiom and narrowed the risk rather than accepting it.)*
+On Chat mode the shell is *already inside* the outputs directory, finds no `mnt/outputs` beneath it, and the fallback appends `outputs/` — the exact failure L164 exists to prevent. **The root cause is that the probe has one bit of evidence and three or more surfaces to separate**, and it tests for *the Cowork mount* while assuming everything else is CLI-shaped. Its failure is silent, which by this chapter's own standard is disqualifying. *(Caught by the `skill-creator-plus` session, against this chapter's own table.)*
+
+**The better default is that a script should not self-locate at all.** Taken to its conclusion, "test for the thing you need, not who you are talking to" says the thing a script needs is **a destination**, and the component that knows it is the **caller** — which holds the file tools, has already resolved the workspace, and is the only party that can name a path the user will actually see. So: the caller resolves the destination once and passes it as an absolute argument to every shell command and every dispatch prompt; the script accepts it and **echoes back the resolved path it actually wrote**. No probe, no identity check, and nothing to revise when a lane moves.
+
+Where a script genuinely must run standalone with no caller, make the destination a **required argument and fail loudly when it is absent** — erroring with the reason rather than inventing a directory. That keeps the fail-safe property and drops the silent-wrong branch, which was the probe's real defect.
+
+*(Untested sketch, recorded only because it is the shape a correct probe would have to take: rather than inferring the destination from directory layout, establish it — have the agent write a sentinel with a **file tool**, whose placement is ground truth for where the file tools are rooted, then have one shell call locate that sentinel among a small candidate set. That tests for the actual destination instead of guessing from shape. Not verified on any surface; do not ship it on this lesson's authority.)*
+
+Whatever the mechanism, a script should still **print the destination it resolved**, which converts the silent-misfire property of this whole failure class into a visible one — the single most useful thing an author can do here, because every bug in this chapter is silent by construction.
+
+**On the residual assumption, and why narrowing it was not enough.** The withdrawn probe inferred *"the file tools are rooted at outputs"* from *"bash can see a `mnt/outputs`"* — two different facts. That risk was correctly identified and narrowed by the adopting project as "no such runtime is known", and **that framing was itself too generous**: the counterexample was not an unknown future runtime but Chat mode, already documented two lessons below. A narrowed assumption still fails where it fails; stating an assumption is not the same as checking it against the cases you already hold. Recorded because two sessions reviewed this idiom, one of them sharpened its risk statement, and neither checked it against the table in the same file.
 
 **The trade-off, stated so a reader can choose.** The relative form depends on bash's cwd remaining the session root — and L163 is the record of that value being mis-described for months, so it is not immutable. The absolute form depends on obtaining `<id>`, which costs a `pwd`. Prefer relative for portability, absolute when a path must survive being passed between calls or written into a file, and never assume either is correct for the *other* tool family.
 

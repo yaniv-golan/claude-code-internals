@@ -1,5 +1,30 @@
 # Changelog
 
+## v2.43.5 — 2026-08-27 (this fork) — the probe is withdrawn; the refutation was two lessons away
+
+**v2.43.3 published a one-line idiom that reintroduces the bug L164 exists to prevent, on a surface documented in the same chapter.**
+
+```bash
+BASE="$([ -d mnt/outputs ] && echo mnt/outputs || echo outputs)"   # WITHDRAWN
+```
+
+| surface | bash cwd | test | `BASE` resolves to |
+|---|---|---|---|
+| Cowork host-loop | `/sessions/<id>` | true | `…/mnt/outputs` ✓ |
+| **Chat mode** | **the outputs dir** | **false** | **`<outputs>/outputs/…`** ✗ doubled |
+| remote / cloud | `/home/claude` | false | discarded anyway |
+| Claude Code CLI | project dir | false | invents `outputs/` in the user's repo |
+
+On Chat mode the shell already starts *inside* outputs, finds no nested `mnt/outputs`, and the fallback appends a second level. Silently — which by this chapter's own standard is disqualifying. **L166's surface table, two lessons below in the same file, says so.** Caught by the `skill-creator-plus` session.
+
+**The principle survives; the implementation does not.** Capability over identity, and runtime discrimination rather than host-path derivation, both stand. The probe failed for a different reason: **one bit of evidence against three or more surfaces**, testing for the Cowork mount and assuming everything else was CLI-shaped.
+
+**The better default, now recorded: a script should not self-locate at all.** Taken to its conclusion, "test for the thing you need" says the thing a script needs is a *destination*, and the component that knows it is the **caller** — which holds the file tools, has resolved the workspace, and is the only party that can name a path the user will see. The caller passes an absolute destination to every shell command and dispatch; the script echoes back what it actually wrote. Standalone scripts take it as a **required argument and fail loudly** rather than inventing a directory.
+
+**A second correction, about how this got through.** v2.43.3 recorded the adopting project's narrowing of the probe's residual assumption as *"no such runtime is known"*. That was too generous: the counterexample was not a hypothetical future runtime but Chat mode, already documented in the same file. **Stating an assumption is not checking it against the cases you already hold.** Two sessions reviewed this idiom, one of them sharpened its risk statement, and neither compared it to the table two lessons below.
+
+`author-facts.json` is corrected in the same pass, so ccinternals.dev no longer publishes the withdrawn idiom.
+
 ## v2.43.4 — 2026-08-27 (this fork) — two facts the published author layer was missing
 
 Found by auditing **the site** rather than the lessons. `author-facts.json` — the layer that publishes to ccinternals.dev — had **no presence at all** for the compaction caps: 54 facts, one incidental match, and nothing about a hard, silent limit on the one artifact every skill author writes.
