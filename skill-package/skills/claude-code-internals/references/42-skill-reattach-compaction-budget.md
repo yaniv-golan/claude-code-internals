@@ -91,12 +91,25 @@ Base directory for this skill: <absolute dir>
 
 to the stored content. Truncation is **head-preserving** (`e.slice(0,n) + marker`), so that line survives by construction: it is the first thing in the string and the cut is at the far end. Measured — **586/651** attached entries carry it, **99/101 truncated entries** carry it.
 
-**The exception is the operational part**, and it has *two* members — 65/651 entries in the corpus, 2/101 truncated ones. The split is clean: no path ever appears both with and without the line.
+**The exception is the operational part**, and it is *three* states rather than two. Each path in the corpus is consistently one of them — no path is ever observed both with and without the line — but the predicate is **directory durability**, not source kind, and a first pass here got that wrong by generalising from a prefix.
 
-1. **Single-file commands** — a `commands/*.md` file, whether a plugin's or `.claude/commands/`'s, plus `builtin:` entries. A base directory is resolved only for a `SKILL.md` that owns its folder. The sharpest illustration ships inside one plugin: `superpowers:brainstorming`, a `SKILL.md` in its own directory, carries the line; `superpowers:brainstorm`, the single-file command beside it, never does.
-2. **Bundled skills** — compiled into the binary rather than installed on disk (`artifact-design`, `artifact-diagramming`, `fewer-permission-prompts` in this corpus). These have no base directory because **they have no file to point at**; the recovery instruction is unexecutable for them in principle, not merely unpopulated.
+1. **A durable directory the skill owns** — an installed `SKILL.md` in its own folder (plugin, user, project). Absolute path, still there later. Recovery works. This is 586/651 entries.
+2. **No directory at all** — single-file `commands/*.md` (a plugin's or `.claude/`'s) and some builtins. The recovery instruction cannot fire, but nothing misleads: there is no path to try. The sharpest illustration ships inside one plugin — `superpowers:brainstorming`, a `SKILL.md` owning its folder, carries the line in 81/81 records; `superpowers:brainstorm`, the single-file command beside it, in 0/17.
+3. **A directory that can evaporate** — a **bundled** skill, extracted at runtime under
 
-So the author-facing rule is narrower than "skills are recoverable": **a skill that owns a directory is recoverable; a single-file command is not.** That is precisely the population for which a "re-read the file if a section looks missing" instruction cannot fire — and commands are usually short enough never to reach the cap, which is why the class is easy to miss rather than harmless.
+   ```
+   <tmp>/bundled-skills/<CLI version>/<16 random bytes as hex>/<skill>
+   ```
+
+   built by a root function that memoises `join(tmpdir(), "bundled-skills", VERSION, randomBytes(16).hex)`. The name is **random per run, not a content hash**, and the directory is version-stamped and lives in the temp tree. A real record carries `…/bundled-skills/2.1.181/8543ac…/verify`; on the machine that produced it, that path — and the entire `bundled-skills` root — **no longer exists**.
+
+**State 3 is worse than state 2**, and it is the reason this section is worth its length: the recovery instruction *looks* executable and fails. A model that has just lost 80% of a skill body is handed an absolute path and gets an error, which is a worse position than being handed nothing.
+
+*Inference, flagged as such:* the acute case should be **resume**. Re-attachment inside a live run still resolves, because that run created the directory. But the transcript-replay path re-registers stored content verbatim on resume, and the root is re-randomised per run and stamped with the CLI version — so a resumed session, or one that outlived an upgrade or a temp sweep, should carry a base directory pointing at a directory that is gone. Both halves are verified independently; the failing `Read` has **not** been observed, so this is reasoning from two measurements, not a measurement.
+
+Also unexplained, and left that way: three bundled skills in the corpus (`artifact-design`, `artifact-diagramming`, `fewer-permission-prompts`) carry no base directory at all, while `bundled:verify` does. The prefix does not predict the state, which is precisely the generalisation to avoid.
+
+**So the rule is about durability, not ownership or provenance:** a skill installed in a directory that persists is recoverable; a single-file command has nothing to recover from; a bundled skill's path is valid only for as long as the run that extracted it.
 
 Method note, which is the reusable part: the author checked the `path` field, found an identifier, and concluded the marker's instruction was unexecutable — relaying that to another project before checking it. It was refuted by reading the **content**, a different field entirely. *Verifying that one channel does not carry a thing is not evidence that no channel does.*
 
