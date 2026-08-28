@@ -2277,12 +2277,47 @@ Don't conflate them.
 
 ---
 
-## `CLAUDE_EFFORT` — A Skill Frontmatter Field, NOT an Env Var
+## `CLAUDE_EFFORT` — A Frontmatter Field, a Template Token, and an OUTBOUND Env Var
 
-**Important diff-correction:** v2.1.120's env-var diff initially flagged `CLAUDE_EFFORT` as
-new, but **there is no `process.env.CLAUDE_EFFORT` read anywhere** in the bundle. The diff
-regex picked up the literal string `"CLAUDE_EFFORT"` from a binary string-table dump of the
-template-substitution token. The actual semantics:
+> **CORRECTION (2026-08-28, verified against CLI 2.1.233 / 2.1.246 / 2.1.247 / 2.1.248 / 2.1.250).**
+> This section was headed *"NOT an Env Var"*. That is **wrong**, and the error is instructive
+> because the evidence for it was real: there genuinely is **no read site** — `process.env.CLAUDE_EFFORT`,
+> `a.CLAUDE_EFFORT` and every other read form return **zero** hits in 2.1.250. The lesson drawn from that
+> was too broad. An env var has *two* directions, and only the inbound one was checked.
+>
+> Outbound, it is unambiguously an env var. The Bash/hook child environment is built by one function:
+>
+> ```js
+> function Fke(e){ let t={CLAUDECODE:"1",CLAUDE_CODE_SESSION_ID:e.sessionId,
+>   CLAUDE_CODE_CHILD_SESSION:"1",CLAUDE_PID:String(process.pid)};
+>   … if(e.effortLevel!==void 0) t.CLAUDE_EFFORT=e.effortLevel; … return t }
+> ```
+>
+> `CLAUDE_EFFORT` also sits in the spawn-env key list beside `CLAUDECODE`, `CLAUDE_PID` and
+> `TRACEPARENT`, and — decisively — the CLI's **own hook-input schema** says so in prose:
+> *"effort level for the current turn (e.g., \"low\", \"medium\", \"high\", \"xhigh\", \"max\"), after any
+> silent downgrade for the selected model. Also exposed to hook commands and Bash as the
+> `CLAUDE_EFFORT` env var."* A product that documents a variable in its own schema is not one this
+> skill should be calling absent.
+>
+> **What survives unchanged:** the frontmatter field and the `${CLAUDE_EFFORT}` template token below
+> (still present, still substituted via `mS(model, effort)`), and Ch24/L107's *"`CLAUDE_EFFORT`-as-env
+> is a no-op"* — setting it **inbound** still does nothing, because nothing reads it. The precise
+> statement is **write-only: exported to children, never consumed**.
+>
+> **Dating it:** present in every binary available here, back to 2.1.233. v2.1.120 itself could not be
+> re-checked (that build is long gone from disk), so whether this was already true when the section was
+> written, or landed later, is **unresolved** — the claim is corrected, not back-dated.
+>
+> **The method lesson**, which is the reusable part: the original correction was right that the diff tool
+> had matched a string-table literal, and right that nothing reads the variable. It then concluded "not an
+> env var", which does not follow from either. *Confirming how a symbol is **not** used does not establish
+> that it is unused* — and "is X an env var" is two questions, not one. Same shape as this skill's other
+> instrument traps, except the instrument here was the question.
+
+**The original diff-correction, preserved:** v2.1.120's env-var diff initially flagged `CLAUDE_EFFORT` as
+new, and the diff regex did pick up the literal string `"CLAUDE_EFFORT"` from a binary string-table dump
+of the template-substitution token. The rest of the section's semantics stand:
 
 ### Two surfaces
 

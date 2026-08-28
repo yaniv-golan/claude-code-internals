@@ -4814,7 +4814,7 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.231",
-      "summary": "Template token + injected env var resolving to the plugin's own --plugin-dir (agent sets CLAUDE_PLUGIN_ROOT: t.path). Under Cowork the Desktop picks the dir per mode: Ei = isHostLoopModeEnabled ? qX(installPath) : sdkPath. Host-loop (production) => host-side claude-hostloop-plugins/<hash> staging path, accepted by host file tools (Read/Edit/Glob/Grep) but useless to in-VM bash (mcp__workspace__bash), which must use the VM mount /sessions/<id>/mnt/.local-plugins|.remote-plugins/... instead. VM-loop (requireCoworkFullVmSandbox orgs, whole agent in-VM) => sdkPath = that VM mount, so bash ${CLAUDE_PLUGIN_ROOT}/x.sh works. Decisive: claude-hostloop-plugins is absent from both agent binaries (host CLI 2.1.201, in-VM ELF 2.1.197), present only in app.asar, so L89's 'host-side EVERYWHERE' is host-loop-only. Host-loop qX mechanics: space-triggered (returns the raw install path unless it contains a space) and deterministic (sha256(installPath).slice(0,16), stable across invocations/sessions/reboots). Third minor site: injected into a plugin-owned MCP server's headersHelper exec env. Host-loop mechanics live-confirmed 2026-07-07 (exact sha256(installPath)[:16] match + cross-session stability via docs/internal/cowork-pluginroot-probe); VM-loop resolution static-derived from the branch.",
+      "summary": "PRECISION (2026-08-28, vs CLI 2.1.250 + Desktop app.asar 1.37937.3): this is TWO mechanisms and the distinction is load-bearing. (A) SUBSTITUTION TOKEN -- ${CLAUDE_PLUGIN_ROOT} is text-replaced into plugin-declared definition strings (hook commands, MCP command/args, Monitor commands, permission-rule prefixes) before execution. (B) OUTBOUND ENV VAR into THREE child spawns only: plugin-declared command spawns, MCP stdio servers, and an MCP headersHelper exec env. It is NOT set on the agent's own process environment, so it does NOT reach the Bash tool. Verified: the Bash child env is {...xa() (inherited process env), SHELL, GIT_EDITOR, ...envOverrides, ...sandboxEnv, ...Fke(), ...unset} -- it DOES inherit process env, so the var would pass through if it were there, and it is not; Fke() adds no plugin root. env.CLAUDE_PLUGIN_ROOT has ZERO read sites. In Desktop 1.37937.3 all three occurrences are substitution sites, none an env assignment. CONSEQUENCE, and a correction to how this entry previously read: the note that 'bash ${CLAUDE_PLUGIN_ROOT}/x.sh works' under VM-loop is about a HOOK COMMAND STRING being substituted before execution -- NOT about a model-issued Bash call being able to read $CLAUDE_PLUGIN_ROOT, which it cannot, on any surface checked. A skill needing its own root shell-side must DISCOVER it. Under Cowork the Desktop picks the dir per mode: Ei = isHostLoopModeEnabled ? qX(installPath) : sdkPath. Host-loop => host-side path, accepted by host file tools but unreachable from in-VM bash, which must use the VM mount instead; VM-loop => sdkPath = that VM mount. Decisive: claude-hostloop-plugins is absent from both agent binaries (host CLI 2.1.201, in-VM ELF 2.1.197), present only in app.asar, so L89's 'host-side EVERYWHERE' is host-loop-only. Host-loop qX mechanics, re-confirmed at 1.37937.3: space-triggered (returns the raw install path unless it contains a space) and deterministic (sha256(installPath).slice(0,16), stable across invocations/sessions/reboots). Host-loop mechanics live-confirmed 2026-07-07 via docs/internal/cowork-pluginroot-probe; VM-loop resolution static-derived from the branch. VM MOUNT SHAPES re-derived at 1.37937.3: remote => /sessions/<id>/mnt/.remote-plugins/<plugin id> (tail is exactly the plugin id, so a file-tool-path basename joins the two namespaces); local => /sessions/<id>/mnt/.local-plugins/<guestCompatibleRelative(accountOrgRoot, installPath)> -- a relative-path MIRROR of the host layout, NOT a fixed cache/<marketplace>/<plugin>/<version> depth. Mount-level constants are .auto-memory/.remote-plugins/.local-plugins (plus non-plugin .claude/.projects/uploads/outputs). TRAP: skills are ALSO advertised at /sessions/<id>/mnt/.claude/<...>/<sanitizeSkillName(name)>, which is a SKILL mount and does not contain the plugin's scripts/ -- a name-matched search can succeed there and still be wrong, so match on a sentinel file, never a directory name.",
       "provenance": [
         {
           "lesson": 89
@@ -4874,7 +4874,7 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.231",
-      "summary": "setEffort/setExtendedThinking (also on LocalAgentModeSessions)/getEffort/getDefaultEffort/setFastMode. Spawn-time resolution is settings-file-driven, NOT CLAUDE_CODE_EFFORT_LEVEL-backed (corrects L114): effort = qgi(effortOverride, A1e(model)=settings.effortByModel[model], E2t()=settings.effort||\"medium\"); extended thinking = zgi(enabled, override, killSwitch) yielding maxThinkingTokens strictly 31999 or 0 (NX=31999), never an arbitrary budget. Four per-model effort classes: literal picker models (s1r map), no-picker models (still emit --effort medium), fable/mythos regex-default class (o1r/i1r, disallowThinkingDisabled:true), unknown models (no config). Delivered exclusively as CLI flags (--effort <level>, --max-thinking-tokens <N> / --thinking disabled); CLAUDE_EFFORT and MAX_THINKING_TOKENS are no-ops as env vars at spawn. Live-session setEffort calls query.applyFlagSettings({effortLevel}); live-session setExtendedThinking calls query.setMaxThinkingTokens(enabled?31999:0) -- first concrete payload shapes for the apply_flag_settings / set_max_thinking_tokens control-protocol subtypes. RE-VERIFIED at this baseline: LocalSessions 1562x / LocalAgentModeSessions 640x in asar 1.30096.1; getDefaultEffort 10x, setExtendedThinking 12x.",
+      "summary": "setEffort/setExtendedThinking (also on LocalAgentModeSessions)/getEffort/getDefaultEffort/setFastMode. Spawn-time resolution is settings-file-driven, NOT CLAUDE_CODE_EFFORT_LEVEL-backed (corrects L114): effort = qgi(effortOverride, A1e(model)=settings.effortByModel[model], E2t()=settings.effort||\"medium\"); extended thinking = zgi(enabled, override, killSwitch) yielding maxThinkingTokens strictly 31999 or 0 (NX=31999), never an arbitrary budget. Four per-model effort classes: literal picker models (s1r map), no-picker models (still emit --effort medium), fable/mythos regex-default class (o1r/i1r, disallowThinkingDisabled:true), unknown models (no config). Delivered exclusively as CLI flags (--effort <level>, --max-thinking-tokens <N> / --thinking disabled); CLAUDE_EFFORT and MAX_THINKING_TOKENS are no-ops as INBOUND env vars at spawn (nothing reads them); note CLAUDE_EFFORT is nonetheless exported OUTBOUND to Bash/hook children -- see env.CLAUDE_EFFORT. Live-session setEffort calls query.applyFlagSettings({effortLevel}); live-session setExtendedThinking calls query.setMaxThinkingTokens(enabled?31999:0) -- first concrete payload shapes for the apply_flag_settings / set_max_thinking_tokens control-protocol subtypes. RE-VERIFIED at this baseline: LocalSessions 1562x / LocalAgentModeSessions 640x in asar 1.30096.1; getDefaultEffort 10x, setExtendedThinking 12x.",
       "provenance": [
         {
           "lesson": 120
@@ -6563,6 +6563,27 @@
       ],
       "removed_in": null,
       "as_of": "2.1.231"
+    },
+    {
+      "id": "env.CLAUDE_EFFORT",
+      "kind": "env-var",
+      "name": "CLAUDE_EFFORT",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.231",
+      "summary": "WRITE-ONLY env var: exported to children, never consumed. CORRECTS Ch17/L90's 'a skill frontmatter field, NOT an env var'. Outbound: the Bash/hook child env builder Fke() sets t.CLAUDE_EFFORT=e.effortLevel; the name also sits in the spawn-env key list beside CLAUDECODE/CLAUDE_PID/TRACEPARENT; and the CLI's own hook-input schema documents it -- 'effort level for the current turn (e.g. low, medium, high, xhigh, max), after any silent downgrade for the selected model. Also exposed to hook commands and Bash as the CLAUDE_EFFORT env var.' Inbound: ZERO read sites (process.env.CLAUDE_EFFORT / a.CLAUDE_EFFORT / env.CLAUDE_EFFORT all 0 in 2.1.250), so Ch24/L107's 'CLAUDE_EFFORT-as-env is a no-op' STANDS -- setting it changes nothing. The separate ${CLAUDE_EFFORT} template token (substituted via mS(model,effort) in the skill/command prompt paths) and the effort: frontmatter field are unaffected and still live. Present in every binary on disk back to 2.1.233; v2.1.120 could not be re-checked, so whether L90 was wrong when written or drifted later is UNRESOLVED. Method note: the original 'not an env var' conclusion came from correctly establishing there is no READ site -- an env var has two directions and only one was checked.",
+      "provenance": [
+        {
+          "lesson": 90
+        },
+        {
+          "lesson": 107
+        },
+        {
+          "lesson": 120
+        }
+      ]
     }
   ]
 }
