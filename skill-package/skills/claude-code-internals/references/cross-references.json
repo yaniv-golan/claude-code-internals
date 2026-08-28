@@ -3286,6 +3286,28 @@
     "relevance": 0.7,
     "reason": "artifact-class choice and tooling at scale"
    }
+  ],
+  "167": [
+   {
+    "id": 118,
+    "relevance": 0.8,
+    "reason": "microcompaction boundary is the third caller of the same re-attachment path"
+   },
+   {
+    "id": 162,
+    "relevance": 0.8,
+    "reason": "chunk consolidation is why a bare-name export grep resolves in newer builds and false-negatives in older ones"
+   },
+   {
+    "id": 124,
+    "relevance": 0.7,
+    "reason": "same pin-values-not-minified-names discipline, and per-agent sub-agent scoping"
+   },
+   {
+    "id": 89,
+    "relevance": 0.5,
+    "reason": "skill base directory and plugin root resolution"
+   }
   ]
  }
 }

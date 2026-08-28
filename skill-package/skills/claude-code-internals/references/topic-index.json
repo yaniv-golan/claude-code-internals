@@ -4852,7 +4852,7 @@
       "lesson_number": "167",
       "file": "42-skill-reattach-compaction-budget.md",
       "startLine": 13,
-      "endLine": 133,
+      "endLine": 213,
       "keywords": [
         "skill-reattach-budget",
         "compaction-skill-truncation",
@@ -4880,7 +4880,27 @@
         "invokedSkills-registry",
         "references-exempt-verified",
         "per-agent-budget",
-        "agentId-scoped"
+        "agentId-scoped",
+        "token-estimator-resolved",
+        "chars-over-four",
+        "math-round-length-4",
+        "truncation-trigger-20002",
+        "base-directory-for-this-skill",
+        "skill-path-is-an-identifier",
+        "source-qualified-path",
+        "recovery-channel-is-content",
+        "single-file-command-no-basedir",
+        "file-restore-budget",
+        "five-file-restore-slice",
+        "50000-file-restore-combined",
+        "per-agent-read-file-cache",
+        "read-file-cache-lru",
+        "compact-partial-microcompaction",
+        "three-callers-chunk-local",
+        "follow-the-import-alias",
+        "export-grep-false-negative",
+        "reattach-corpus-269",
+        "grep-sweeps-the-investigation"
       ]
     },
     {
@@ -16716,6 +16736,66 @@
       167
     ],
     "agentId-scoped": [
+      167
+    ],
+    "token-estimator-resolved": [
+      167
+    ],
+    "chars-over-four": [
+      167
+    ],
+    "math-round-length-4": [
+      167
+    ],
+    "truncation-trigger-20002": [
+      167
+    ],
+    "base-directory-for-this-skill": [
+      167
+    ],
+    "skill-path-is-an-identifier": [
+      167
+    ],
+    "source-qualified-path": [
+      167
+    ],
+    "recovery-channel-is-content": [
+      167
+    ],
+    "single-file-command-no-basedir": [
+      167
+    ],
+    "file-restore-budget": [
+      167
+    ],
+    "five-file-restore-slice": [
+      167
+    ],
+    "50000-file-restore-combined": [
+      167
+    ],
+    "per-agent-read-file-cache": [
+      167
+    ],
+    "read-file-cache-lru": [
+      167
+    ],
+    "compact-partial-microcompaction": [
+      167
+    ],
+    "three-callers-chunk-local": [
+      167
+    ],
+    "follow-the-import-alias": [
+      167
+    ],
+    "export-grep-false-negative": [
+      167
+    ],
+    "reattach-corpus-269": [
+      167
+    ],
+    "grep-sweeps-the-investigation": [
       167
     ]
   }

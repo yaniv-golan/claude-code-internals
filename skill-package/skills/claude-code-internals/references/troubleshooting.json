@@ -1799,6 +1799,19 @@
     106
    ],
    "hint": "The cli_plugin broker is gated by 2307090146, still OFF (source defaultValue) as of 2026-08-14: the renderer strips the clis block before the UI sees it and the runtime returns oauth_disabled. Live only in custom-3p deployments, which force the gate on."
+  },
+  {
+   "pattern": [
+    "skill instructions missing mid-session",
+    "skill body cut off after compaction",
+    "skill content truncated for compaction",
+    "a skill stopped following its own rules",
+    "skill silently absent after a long conversation"
+   ],
+   "lessons": [
+    167
+   ],
+   "hint": "Two caps run at compaction (including microcompaction), not one. Over 20,001 characters a skill is TRUNCATED to exactly 20,000 (19,900 + a 100-char marker) and the cut copy is written back; over a 25,000-token combined budget the least-recently-invoked skill is ZEROED with no marker at all. Truncation is the common case and announces itself; zeroing is rare and cannot be detected from inside. Recovery works because the content's first line carries an absolute 'Base directory for this skill:' -- EXCEPT single-file .claude/commands/*.md entries and builtins, which have no directory line. The 'Path:' field is a source-qualified identifier, not a file location."
   }
  ]
 }

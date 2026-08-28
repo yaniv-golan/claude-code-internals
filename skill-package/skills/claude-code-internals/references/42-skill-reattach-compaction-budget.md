@@ -1,6 +1,6 @@
-Updated: 2026-08-27 | Source: First-party read of the Desktop-managed host agent Mach-O **2.1.246**, cross-confirmed at **2.1.247** by the `skill-creator-plus` project, with the same constants traced back to that project's own **2.1.222** read. Anchored deliberately to the **code path**, not to either project's prose: this lesson exists because two independent documentation sets — one of them this skill's — described the mechanism in ways the binary does not support, and each was a downstream approximation that drifted in a different direction. **Does NOT move the Desktop or CLI baseline**: a targeted subsystem read, per-fact provenance only.
+Updated: 2026-08-27 | Source: First-party read of the Desktop-managed host agent Mach-O **2.1.246**, cross-confirmed at **2.1.247** by the `skill-creator-plus` project, with the same constants traced back to that project's own **2.1.222** read. Anchored deliberately to the **code path**, not to either project's prose: this lesson exists because two independent documentation sets — one of them this skill's — described the mechanism in ways the binary does not support, and each was a downstream approximation that drifted in a different direction. **Does NOT move the Desktop or CLI baseline**: a targeted subsystem read, per-fact provenance only. **Extended 2026-08-28** against the standalone CLI **2.1.248** and **2.1.250** plus a corpus of **269 real re-attachment records** on one machine — closing this lesson's one open question (the token estimator), accounting for the three constants it quoted but never explained, and correcting a mistake this lesson's own author made while extending it.
 
-# Chapter 45: The Skill Re-Attachment Budget — Two Caps, and What Survives Them
+# Chapter 45: What Compaction Re-Attaches — The Skill Budget and Its File-Restore Sibling
 
 ---
 
@@ -77,6 +77,24 @@ The simple form — *"over-cap skills are truncated, and truncation is permanent
 
 So "permanently" and "outright" are true on the not-in-body path and have an exception on the other. The **disk file is never touched**: `Read` on the skill path recovers the full text, which is exactly what the truncation marker tells the model to do.
 
+### Which "path" the model actually recovers from (added 2026-08-28)
+
+That sentence is right, but for a reason worth pinning — the obvious reading of it is wrong, and this lesson's author believed the wrong one long enough to publish it to a peer project.
+
+The `path` field that reaches the model is **not** a file location. The loader stores `` `${source}:${name}` `` (bare `name` when `source` is falsy), the attachment carries it verbatim, and the renderer prints `### Skill: <name>` then `Path: <path>`. Across 269 real attachments every value is a source-qualified identifier — `plugin:superpowers:writing-plans`, `builtin:init`, `projectSettings:cowork-harness` — never a path. `source` is a closed enum set by the loaders (`plugin`, `bundled`, `builtin`, `user`, `project`, `projectSettings`, `userSettings`, `policySettings`, `memoryStore`, `mcp`). Nested command names are colon-joined *relative directory segments*, so a value can be path-**derived** without being a path.
+
+Recovery nevertheless works, through a different channel. The loader prepends
+
+```
+Base directory for this skill: <absolute dir>
+```
+
+to the stored content. Truncation is **head-preserving** (`e.slice(0,n) + marker`), so that line survives by construction: it is the first thing in the string and the cut is at the far end. Measured — **586/651** attached entries carry it, **99/101 truncated entries** carry it.
+
+**The exception is the operational part.** An entry with no base-directory line has no recoverable location at all: single-file commands loaded from `.claude/commands/*.md` (a base directory is resolved only for a `SKILL.md` in its own folder) and `builtin:` entries. In the corpus that is 65/651 entries but only 2/101 truncated — small, yet it is precisely the population for which a "re-read the file" recovery instruction *cannot* work. **A skill shipped as a single-file command rather than a `SKILL.md` in its own directory does not get the recovery channel.**
+
+Method note, which is the reusable part: the author checked the `path` field, found an identifier, and concluded the marker's instruction was unexecutable — relaying that to another project before checking it. It was refuted by reading the **content**, a different field entirely. *Verifying that one channel does not carry a thing is not evidence that no channel does.*
+
 ## What the budget counts — and what it does not
 
 `tXo` opens with `let n = N3n(e)`, and `N3n` resolves through an import alias (`cqd as N3n`, `Ox as cqd`) to:
@@ -95,6 +113,26 @@ Two facts follow, and neither is guessable from the loop alone.
 
 Correcting a natural misreading, which this lesson made before resolving the symbol: `N3n(e)` takes an **agentId**, not a message list. Nothing here walks the transcript.
 
+## ADJACENT MECHANISM: the three constants this lesson quoted but never explained
+
+The constants block above carries `5`, `50000` and a second `5000` alongside the two caps. They are **not** part of the skill budget. They belong to the **post-compaction file restore**, assembled by the same function, and they matter here because they qualify the exemption claimed just above.
+
+- **5** — the restore list is sliced to five files
+- **5,000** — a per-file token cap applied while re-reading each one
+- **50,000** — a combined cap across the restored files
+
+The backing store is the read-file cache: an LRU of **5,000 entries / 26,214,400 bytes (25 MiB)**, held per tool-use context.
+
+**"The five most recently read files" is wrong as a summary** — the slice runs *last*, over an already-filtered set. Excluded first: memory files (`User`/`Project`/`Local`/`Managed`/`AutoMem`), the agent's own plan file, and any file whose `Read` still survives in the retained messages (those are subtracted, since the content is already present). A fourth exclusion — pinned memory-directory entries — is applied **only when the caller passes the flag that partial compaction passes**, so *microcompaction restores a different file set than full compaction does*. An author predicting which files come back from recency alone will be wrong.
+
+**What this does to the reference-file guidance.** Reference files remain exempt from both skill caps — that is unchanged and was verified through the registry, not inferred. But they are not therefore *outside every budget*: a `references/*.md` you pulled in with `Read` is a candidate for this restore path, competing for five slots against every other file read, truncated at its own 5,000-token cap. Moving prose out of a skill body moves it into a **different, larger, five-slot** budget rather than out of all of them.
+
+**Scoping the per-agent claim honestly.** The cache is per tool-use context, and every dispatch path currently gives a child either a fresh cache or a copy (a genuine dump-and-reload, not a shared handle) — so a fan-out of sub-agents does not spend the main thread's file-restore budget, matching the skill registry's own agent scoping. But that is a property of **today's callers, not of the mechanism**: the dispatch reads an override slot that would pass a shared reference straight through if a caller supplied one, and the forked-skill path uses that slot (safely, because it constructs a fresh cache to hand over). Treat "never shared" as a current-callers observation. One further path — a merge in the SDK layer — was **not traced**, so this lesson does not claim the resume path is the *only* way entries merge back.
+
+## Three callers, all local to the assembler
+
+The re-attachment runs from exactly three call sites, all inside the assembler's own chunk and never exported from it: reactive compaction, full compaction, and **partial compaction**. That third one is microcompaction (Ch32/L118's `microcompact_boundary`), which matters for how often any of this fires: a survey that counts only full-compaction boundaries undercounts the exposure. A whole-binary grep for the assembler's name also returns an unrelated same-named function in a vendored UI module, plus a separate cross-chunk export of the same three letters — homonyms, not call sites.
+
 ## Only ONE of the two failures is observable, and it decides what advice can work
 
 This is the operational difference between the two caps, and it is easy to miss because both are described as "silent".
@@ -110,6 +148,25 @@ Write the recovery instruction anyway; it is the highest-value line available an
 
 *(Question posed by the `creative-problem-solving` session, which asked whether the precondition held before building on it rather than after — the answer changed the shape of its plan.)*
 
+## What it looks like in practice (corpus, 2026-08-28)
+
+This lesson was a pure code read until now. One machine's transcripts, parsed structurally:
+
+| | |
+|---|---|
+| re-attachment records | **269** |
+| skill entries across them | **651** |
+| entries carrying the truncation marker | **101** |
+| length of every truncated entry | **exactly 20,000 characters** |
+| most skills in one record | **7** |
+| largest combined estimated size observed | **17,207** — never near the 25,000 cap |
+
+Two things follow. **Co-invocation of six or seven skills is ordinary**, not exotic — so the combined cap is not protected by rarity, it is protected by typical skills being small. The zeroing branch is reached only when enough *large* skills are live at once; every one of the 101 truncations, by contrast, is a routine event. And **truncation is the common failure, zeroing the rare one** — which is the opposite of the emphasis a reader takes from the caps alone.
+
+Also visible: the registry accumulates entries nobody chose, including an auto-loading bundled skill and `builtin:` commands, so an author does not control the whole occupancy of the shared budget.
+
+**Counting trap, recorded because this lesson's author fell into it while writing this section.** A first pass reported 271 records. That count came from grepping the marker/type string across a whole directory tree, which swept in a peer project's notes and a stored tool-result dump alongside the transcripts. **A text grep cannot distinguish a re-attachment from a document that discusses re-attachment** — and this file is now itself such a document, so the trap gets worse over time. Parse the structured record; state the predicate and the capture date, as above, or the number is unverifiable a week later.
+
 ## Pin values, not names — three builds, three namings
 
 | build | per-skill | combined | source |
@@ -117,12 +174,35 @@ Write the recovery instruction anyway; it is the highest-value line available an
 | 2.1.222 | `Nvy = 5000` | `$vy = 25000` | `skill-creator-plus`, 2026-08 |
 | 2.1.246 | `V3o = 5000` | `K3o = 25000` | this lesson, first-party |
 | 2.1.247 | `XJo = 5000` | `ZJo = 25000` | `skill-creator-plus`, cross-confirmed |
+| 2.1.248 | `yOn = 5000` | `_On = 25000` | this lesson, first-party (standalone CLI) |
+| 2.1.250 | `_On = 5000` | `bOn = 25000` | this lesson, first-party (standalone CLI) |
 
-The minified identifiers rotated at **every** build; the values did not move across 25 versions. A note pinned to `Nvy`/`$vy` reads as stale on sight and is unverifiable a build later, while the same note pinned to *"5,000 per skill / 25,000 combined, in the re-attachment loop"* survives. Same discipline as Ch35/L124's `_y` and Ch43's resolve-aliases-within-their-own-chunk.
+The minified identifiers rotated at **every** build; the values did not move across 25 versions.
 
-## Deliberately NOT claimed: the token estimator
+**The last two rows are the strongest form of the argument.** `_On` is the *combined* 25,000 cap at 2.1.248 and the *per-skill* 5,000 cap at 2.1.250 — one release apart. A note pinned to that symbol is not merely stale a build later, it is **inverted**, and it will still parse as plausible to whoever reads it. Rotation makes a name useless; reuse makes it actively misleading.
 
-`xc` (`Lc` at 2.1.247) computes the token size, and **it is not resolved here.** Three different `function xc(` definitions exist in that JS region — a shell-AST walker, a port-range mapper, and a Windows drive-letter test — none a counter, so it is a cross-chunk import and proximity resolution returns the wrong answer. A `Math.round(chars/4)` model is widely documented and the `t*4` in the truncator is consistent with it, **but this lesson does not assert it**, and any document calling that estimator "binary-verified" is over-claiming. Nothing operational depends on it: the character budget is what tooling gates on, and `t*4` is load-bearing there regardless of what computes `tokens()`.
+*Artifact-class note:* the 2.1.222/2.1.246/2.1.247 rows were read from the Desktop-managed host agent, the 2.1.248/2.1.250 rows from the standalone CLI. The symbols were checked to match in both artifacts at 2.1.246 (`oXo`, `W3o`, `Rge` are present in each), so the two carry the same bundle here and no claim in this lesson depends on the distinction — but the column is headed "build", and elsewhere in this skill that assumption does not hold. A note pinned to `Nvy`/`$vy` reads as stale on sight and is unverifiable a build later, while the same note pinned to *"5,000 per skill / 25,000 combined, in the re-attachment loop"* survives. Same discipline as Ch35/L124's `_y` and Ch43's resolve-aliases-within-their-own-chunk.
+
+## RESOLVED (2026-08-28): the token estimator is `Math.round(chars / 4)`
+
+An earlier version of this lesson declined to claim this, and was right to at the time. It is now resolved, **identically in all four builds checked**:
+
+```js
+function sc(e,t=4){ if (typeof e!=="string") return 0; return Math.round(e.length/t) }   // 2.1.248, 2.1.250
+function  m(e,n=4){ if (typeof e!=="string") return 0; return Math.round(e.length/n) }   // 2.1.246, via alias
+```
+
+It is a character heuristic, not a tokenizer. The sibling `ept(e,ext)` passes a divisor of 2 for `json`/`jsonl`/`jsonc` and 4 otherwise; the re-attachment truncator calls the bare form, so **4**.
+
+**The consequence is that the "token" gate is exactly a character gate**, with no conversion error at all. `Math.round(20002/4) = 5001 > 5000` truncates; `Math.round(20001/4) = 5000` does not. So the thresholds are exact: **truncation triggers at 20,002 characters, the last safe length is 20,001, and the survivor is always exactly 20,000** (19,900 + the 100-character marker). All 101 truncated entries in the corpus are exactly 20,000 characters. A char-based lint over a skill body is therefore measuring the *right* unit — the common claim that it overstates overage because prose runs above four characters per token is wrong, because nothing here ever counts tokens. (Two residual imprecisions, both negligible at these sizes: `.length` and `.slice` count UTF-16 code units, so `wc -m` differs on astral characters and a cut can land mid-surrogate; and what is measured is the rendered skill prompt, not the file on disk.)
+
+### The method that resolved it — and the one that did not
+
+Proximity fails outright: nine `function sc(` definitions exist in the 2.1.248 JS, several inside module closures.
+
+What appeared to work was **export uniqueness** — exactly one chunk in 2.1.248 exports a bare `sc`, and the re-attachment chunk imports it alongside `ept`/`M_e`. Applying the same scan to 2.1.246 returned **zero** chunks exporting a bare `xc`, which this lesson briefly read as "not resolvable in that build". That conclusion was an artifact of the instrument. 2.1.246 predates the chunk consolidation of Ch43/L162 and uses **mangled cross-chunk aliases**; the truncator's chunk imports `nNb as xc`, and `nNb` is exported as `m as nNb`, reaching the definition above.
+
+So the technique that works in **both** layouts is: **read the consuming chunk's own `import` statement, then follow the alias through the exporting chunk's `export` block.** A bare-name export grep silently false-negatives on an alias-mangled bundle — the same family as this skill's other instrument traps (a hidden dot-directory `rg` skips, a gzip-wrapped cache a raw grep reports as empty). Each one produced a confident *absence*, and an absence is exactly what a broken instrument returns.
 
 ## Why this lesson is anchored to code rather than to documentation
 

@@ -1,5 +1,27 @@
 # Changelog
 
+## v2.44.0 — 2026-08-28 (this fork) — the re-attachment budget: one question closed, one claim of our own retracted
+
+Extends **Ch45/L167** against the standalone CLI **2.1.248** and **2.1.250** plus a corpus of **269 real re-attachment records**. No baseline moves (CLI content stays 2.1.231, Desktop 1.30096.1).
+
+**The token estimator is resolved, and the lesson's one open question closes.** `Math.round(chars / 4)`, identical in 2.1.246, 2.1.248 and 2.1.250. The consequence is larger than the fact: **the "token" gate is exactly a character gate**, with no conversion error at all — truncation triggers at **20,002** characters, the last safe length is **20,001**, and the survivor is always exactly **20,000**. The common claim that a character-based lint overstates a skill's overage, because prose runs above four characters per token, is simply wrong here — nothing in this path ever counts tokens.
+
+The method is the reusable half. Export-uniqueness resolved it at 2.1.248/2.1.250 and returned **zero** at 2.1.246 — which read as "not resolvable in that build" and was an artifact of the instrument. 2.1.246 predates Ch43/L162's chunk consolidation and uses mangled cross-chunk aliases. **Read the consuming chunk's own `import`, then follow the alias through the exporting chunk's `export` block** — that works in both layouts. A bare-name export grep silently false-negatives on an alias-mangled bundle, the same family as this skill's other instrument traps.
+
+**A claim this repo made mid-investigation, retracted here.** L167 says a truncated skill is recoverable because `Read` on the skill path returns the full text. While extending the lesson, this session checked the `path` field, found `plugin:superpowers:writing-plans` — a source-qualified identifier, never a file location — and concluded the marker's instruction was unexecutable. That was **relayed to a peer project before it was checked**, and it is wrong. The loader prepends `Base directory for this skill: <absolute dir>` to the stored **content**, and truncation is head-preserving, so the line survives by construction: **586/651** entries and **99/101 truncated** entries carry it. What survives is the narrow exception, which is the operational part — single-file `.claude/commands/*.md` entries and builtins have no base directory at all, so **a skill shipped as a single-file command rather than a `SKILL.md` in its own directory has no recovery channel.** Recorded as a method lesson: *verifying that one channel does not carry a thing is not evidence that no channel does.*
+
+**The three constants L167 quoted but never explained** are the post-compaction **file restore**: five slots, a per-file 5,000-token cap, a 50,000 combined cap, over a per-context LRU of 5,000 entries / 25 MiB. "The five most recently read files" is wrong as a summary — the slice runs **last**, after four exclusions, one of which applies only on the partial-compaction caller, so **microcompaction restores a different file set than full compaction**. This qualifies rather than overturns the references exemption: reference files stay exempt from both *skill* caps but are candidates for *this* budget. Per-agent scoping is stated as a property of today's callers, not of the mechanism, and an SDK-layer merge was not traced, so no "only" is claimed.
+
+**Three chunk-local callers**, one of them microcompaction — so a survey counting only full-compaction boundaries undercounts exposure.
+
+**First empirical corpus for this lesson**: 269 records / 651 entries / 101 truncated, every truncated one exactly 20,000 characters, up to **7** co-invoked skills, combined never observed above 17,207. Six- and seven-skill co-invocation is **ordinary**; the combined cap is protected by typical skills being small, not by rarity. A first pass reported 271 — that count came from grepping a distinctive string across a directory tree and swept in a peer project's notes and a stored tool-result dump. **A corpus-wide grep for a distinctive string sweeps the artifacts of everyone investigating that string, including yourself** — and this lesson is now itself one of those artifacts.
+
+**Pin-values table** gains 2.1.248/2.1.250 rows, where `_On` is the *combined* 25,000 cap at 2.1.248 and the *per-skill* 5,000 cap at 2.1.250 — one release apart, so a note pinned to that symbol is not merely stale, it is **inverted**. Artifact-class note added, since earlier rows came from the Desktop-managed host agent and the new ones from the standalone CLI.
+
+Chapter 45 retitled to cover both post-compaction budgets. `troubleshooting.json` and `cross-references.json` gain their first L167 entries — both had zero.
+
+**Deliberately not changed: ccinternals.dev.** Its published advice — the file on disk is untouched, so re-reading the skill from its path recovers the full text — is **true and actionable**. The `path`-vs-content distinction is a lesson-layer implementation detail an author cannot act on, and publishing it would have added a false obstacle to the one recovery path the page recommends.
+
 ## v2.43.9 — 2026-08-27 (this fork) — carrying v2.43.8 into the published layer
 
 v2.43.8 changed the lesson only. Two of its findings are author-facing and belonged on ccinternals.dev.
