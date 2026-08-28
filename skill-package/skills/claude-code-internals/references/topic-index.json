@@ -4852,7 +4852,7 @@
       "lesson_number": "167",
       "file": "42-skill-reattach-compaction-budget.md",
       "startLine": 13,
-      "endLine": 213,
+      "endLine": 218,
       "keywords": [
         "skill-reattach-budget",
         "compaction-skill-truncation",
@@ -4900,7 +4900,9 @@
         "follow-the-import-alias",
         "export-grep-false-negative",
         "reattach-corpus-269",
-        "grep-sweeps-the-investigation"
+        "grep-sweeps-the-investigation",
+        "bundled-skill-no-basedir",
+        "skill-owns-a-directory"
       ]
     },
     {
@@ -16796,6 +16798,12 @@
       167
     ],
     "grep-sweeps-the-investigation": [
+      167
+    ],
+    "bundled-skill-no-basedir": [
+      167
+    ],
+    "skill-owns-a-directory": [
       167
     ]
   }

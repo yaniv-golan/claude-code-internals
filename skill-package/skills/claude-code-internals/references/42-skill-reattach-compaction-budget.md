@@ -91,7 +91,12 @@ Base directory for this skill: <absolute dir>
 
 to the stored content. Truncation is **head-preserving** (`e.slice(0,n) + marker`), so that line survives by construction: it is the first thing in the string and the cut is at the far end. Measured — **586/651** attached entries carry it, **99/101 truncated entries** carry it.
 
-**The exception is the operational part.** An entry with no base-directory line has no recoverable location at all: single-file commands loaded from `.claude/commands/*.md` (a base directory is resolved only for a `SKILL.md` in its own folder) and `builtin:` entries. In the corpus that is 65/651 entries but only 2/101 truncated — small, yet it is precisely the population for which a "re-read the file" recovery instruction *cannot* work. **A skill shipped as a single-file command rather than a `SKILL.md` in its own directory does not get the recovery channel.**
+**The exception is the operational part**, and it has *two* members — 65/651 entries in the corpus, 2/101 truncated ones. The split is clean: no path ever appears both with and without the line.
+
+1. **Single-file commands** — a `commands/*.md` file, whether a plugin's or `.claude/commands/`'s, plus `builtin:` entries. A base directory is resolved only for a `SKILL.md` that owns its folder. The sharpest illustration ships inside one plugin: `superpowers:brainstorming`, a `SKILL.md` in its own directory, carries the line; `superpowers:brainstorm`, the single-file command beside it, never does.
+2. **Bundled skills** — compiled into the binary rather than installed on disk (`artifact-design`, `artifact-diagramming`, `fewer-permission-prompts` in this corpus). These have no base directory because **they have no file to point at**; the recovery instruction is unexecutable for them in principle, not merely unpopulated.
+
+So the author-facing rule is narrower than "skills are recoverable": **a skill that owns a directory is recoverable; a single-file command is not.** That is precisely the population for which a "re-read the file if a section looks missing" instruction cannot fire — and commands are usually short enough never to reach the cap, which is why the class is easy to miss rather than harmless.
 
 Method note, which is the reusable part: the author checked the `path` field, found an identifier, and concluded the marker's instruction was unexecutable — relaying that to another project before checking it. It was refuted by reading the **content**, a different field entirely. *Verifying that one channel does not carry a thing is not evidence that no channel does.*
 
