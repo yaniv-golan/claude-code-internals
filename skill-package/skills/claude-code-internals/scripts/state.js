@@ -56,21 +56,47 @@ function lookup(refsDir, query) {
   };
 }
 
-/** Everything whose as_of lags registry.as_of.cli. */
+/**
+ * Compare dotted numeric version strings. Returns <0, 0, >0.
+ * Non-numeric or malformed segments sort as -1 so a typo reads as BEHIND
+ * (which fails the gate) rather than AHEAD (which would not).
+ */
+function cmpVersion(a, b) {
+  const seg = (v) => String(v || '').split('.').map(n => (/^\d+$/.test(n) ? Number(n) : -1));
+  const x = seg(a), y = seg(b);
+  for (let i = 0; i < Math.max(x.length, y.length); i++) {
+    const d = (x[i] ?? 0) - (y[i] ?? 0);
+    if (d !== 0) return d < 0 ? -1 : 1;
+  }
+  return 0;
+}
+
+/**
+ * Split records by how their as_of relates to registry.as_of.cli.
+ *
+ * BEHIND is the failure: the record has not been reconciled to the current
+ * baseline and may be stale. AHEAD is not — it means a targeted subsystem pass
+ * verified that record against a NEWER artifact than the baseline, which is a
+ * real and common thing to do here and must not be flattened into a false
+ * baseline stamp just to keep the gate quiet. Before this split, any as_of that
+ * merely differed was printed as "behind baseline", so the only way to keep the
+ * gate green was to restamp a newer verification as older than it was.
+ */
 function audit(refsDir) {
   const { registry, pages } = loadState(refsDir);
   const baseline = registry.as_of.cli;
-  const stale = [];
-  for (const e of registry.entries || []) {
-    if (e.as_of !== baseline) stale.push({ id: e.id, as_of: e.as_of });
-  }
-  for (const p of pages) {
-    if (p.as_of_cli !== baseline) stale.push({ file: p.file, as_of: p.as_of_cli });
-  }
-  return { baseline, stale };
+  const stale = [], ahead = [];
+  const place = (rec, v) => {
+    const c = cmpVersion(v, baseline);
+    if (c < 0) stale.push(rec);
+    else if (c > 0) ahead.push(rec);
+  };
+  for (const e of registry.entries || []) place({ id: e.id, as_of: e.as_of }, e.as_of);
+  for (const p of pages) place({ file: p.file, as_of: p.as_of_cli }, p.as_of_cli);
+  return { baseline, stale, ahead };
 }
 
-module.exports = { lookup, audit };
+module.exports = { lookup, audit, cmpVersion };
 
 if (require.main === module) {
   const argv = process.argv.slice(2);
@@ -83,10 +109,15 @@ if (require.main === module) {
     try { r = audit(refsDir); } catch (e) { console.error(`state layer unreadable: ${e.message}`); process.exit(1); }
     if (json) { console.log(JSON.stringify(r, null, 2)); process.exit(0); }
     console.log(`baseline: CLI ${r.baseline}`);
-    if (!r.stale.length) { console.log('everything reconciled to baseline'); process.exit(0); }
+    for (const s of r.ahead) console.log(`  ahead of baseline (verified against a newer artifact): ${s.id || s.file}  (as_of ${s.as_of})`);
+    if (!r.stale.length) {
+      const note = r.ahead.length ? ` (${r.ahead.length} verified ahead)` : '';
+      console.log(`everything reconciled to baseline${note}`);
+      process.exit(0);
+    }
     console.log(`${r.stale.length} record(s) behind baseline:`);
     for (const s of r.stale) console.log(`  ${s.id || s.file}  (as_of ${s.as_of || 'MISSING'})`);
-    process.exit(0);
+    process.exit(1);
   }
 
   if (!args[0]) {

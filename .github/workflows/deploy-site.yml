@@ -39,6 +39,8 @@ jobs:
 
       # Gate 1 — schema, provenance, and the verified_against coupling that
       # stops a published claim outliving the capture it was made against.
+      - name: JSON index format
+        run: node skill-package/skills/claude-code-internals/scripts/check-json-format.js
       - name: State-layer integrity
         run: node skill-package/skills/claude-code-internals/scripts/validate-state.js
 

@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.44.2 — 2026-08-28 (this fork) — two conventions become checks
+
+No new binary findings. This turns two rules that were being held by memory into things CI enforces, after both failed inside a single release.
+
+**`scripts/check-json-format.js` pins each index file's serialization.** The index JSONs do not share a format — two are indent=1, three are indent=2 with a trailing newline, and the generated semantic index is indent=2 with **no** trailing newline. Rewriting one at the wrong indent produces a five-figure diff in which the actual change is invisible, which happened twice while shipping v2.44.0 and v2.44.1 despite a `CLAUDE.md` warning saying exactly that. A convention you have to remember is not a check. Wired into both workflows, with six tests including controls that must trip.
+
+**The finding that made it non-trivial is worth more than the checker.** JavaScript objects do not preserve the order of integer-like keys: `"129"`, `"31999"` and `"2307090146"` are array indices as far as the engine is concerned, so `JSON.parse` + `JSON.stringify` silently hoists every numeric key to the front in ascending order. `cross-references.json` is keyed by lesson id and `topic-index.json`'s `keyword_map` holds gate ids, so **any Node script that reads and rewrites those two reorders thousands of lines while changing nothing** — Python preserves insertion order and does not. The checker therefore carries its own order-preserving parser instead of comparing against `JSON.stringify`: a checker built on the round-trip it is meant to police would have had to call those two files permanently broken, or accept the exact reordering it exists to catch.
+
+**`state.js --audit` now tells ahead from behind.** It compared `as_of` with string inequality, so a record verified against a *newer* artifact than the baseline printed as "behind baseline" — and the only way to keep the gate green was to restamp a newer verification as older than it was, which v2.44.1 did to two entries. Comparison is now numeric, a malformed version sorts as behind so a typo still fails, **behind now exits 1** (it exited 0, leaving the gate resting entirely on a `grep`), and ahead is reported without failing. The two entries corrected in v2.44.1 carry their honest 2.1.250 stamps again.
+
+No lesson content changed and no baseline moves.
+
 ## v2.44.1 — 2026-08-28 (this fork) — two env-var claims corrected, both caught by a reader
 
 Both corrections came out of answering an external plugin author's question, and both were re-derived first-party against CLI 2.1.233→2.1.250 and Desktop `app.asar` **1.37937.3** — newer than this skill's Desktop baseline, which is deliberately **not** moved.

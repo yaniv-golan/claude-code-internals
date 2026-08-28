@@ -75,3 +75,32 @@ test('audit reports entries and pages behind the registry baseline', () => {
   assert.ok(staleIds.includes('cowork-permissions.md'));
   assert.ok(!staleIds.includes('env.CLAUDE_CODE_ENABLE_TASKS'));
 });
+
+// --- baseline comparison: AHEAD is not BEHIND ------------------------------
+//
+// The audit used to test as_of with string inequality, so a record verified
+// against a NEWER artifact than the baseline printed as "behind baseline".
+// The only way to keep the gate green was to restamp a newer verification as
+// older than it was, which is the opposite of what the stamp is for.
+
+const { cmpVersion: _cmpVersion, audit: _audit } = require('../state.js');
+
+test('cmpVersion orders dotted versions numerically, not lexically', () => {
+  assert.ok(_cmpVersion('2.1.231', '2.1.250') < 0);
+  assert.ok(_cmpVersion('2.1.250', '2.1.231') > 0);
+  assert.strictEqual(_cmpVersion('2.1.231', '2.1.231'), 0);
+  // the lexical trap this replaces: "2.1.99" > "2.1.231" as strings
+  assert.ok(_cmpVersion('2.1.99', '2.1.231') < 0);
+  assert.ok(_cmpVersion('2.1.9', '2.1.10') < 0);
+});
+
+test('a malformed version sorts as behind, so a typo fails the gate', () => {
+  assert.ok(_cmpVersion('2.1.x', '2.1.231') < 0);
+  assert.ok(_cmpVersion('', '2.1.231') < 0);
+});
+
+test('audit separates ahead from behind and the repo has no behind records', () => {
+  const r = _audit(path.join(__dirname, '..', '..', 'references'));
+  assert.ok(Array.isArray(r.stale) && Array.isArray(r.ahead));
+  assert.strictEqual(r.stale.length, 0, `behind baseline: ${JSON.stringify(r.stale)}`);
+});
