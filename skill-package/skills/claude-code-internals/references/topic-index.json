@@ -4852,7 +4852,7 @@
       "lesson_number": "167",
       "file": "42-skill-reattach-compaction-budget.md",
       "startLine": 13,
-      "endLine": 248,
+      "endLine": 250,
       "keywords": [
         "skill-reattach-budget",
         "compaction-skill-truncation",
@@ -4908,7 +4908,9 @@
         "version-stamped-plugin-cache",
         "dead-base-directory",
         "resume-after-upgrade",
-        "recovery-depends-on-timing"
+        "recovery-depends-on-timing",
+        "hostloop-staging-deterministic-hash",
+        "cli-lane-vs-cowork-lane"
       ]
     },
     {
@@ -16828,6 +16830,12 @@
       167
     ],
     "recovery-depends-on-timing": [
+      167
+    ],
+    "hostloop-staging-deterministic-hash": [
+      167
+    ],
+    "cli-lane-vs-cowork-lane": [
       167
     ]
   }
