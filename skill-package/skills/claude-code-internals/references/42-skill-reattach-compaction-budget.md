@@ -91,25 +91,42 @@ Base directory for this skill: <absolute dir>
 
 to the stored content. Truncation is **head-preserving** (`e.slice(0,n) + marker`), so that line survives by construction: it is the first thing in the string and the cut is at the far end. Measured — **586/651** attached entries carry it, **99/101 truncated entries** carry it.
 
-**The exception is the operational part**, and it is *three* states rather than two. Each path in the corpus is consistently one of them — no path is ever observed both with and without the line — but the predicate is **directory durability**, not source kind, and a first pass here got that wrong by generalising from a prefix.
+**The exception is the operational part**, and the axis is not what kind of skill it is — it is **whether the base directory still exists at the moment recovery is attempted**. Two earlier passes at this section got that wrong, first by checking the wrong field and then by generalising from a source prefix.
 
-1. **A durable directory the skill owns** — an installed `SKILL.md` in its own folder (plugin, user, project). Absolute path, still there later. Recovery works. This is 586/651 entries.
-2. **No directory at all** — single-file `commands/*.md` (a plugin's or `.claude/`'s) and some builtins. The recovery instruction cannot fire, but nothing misleads: there is no path to try. The sharpest illustration ships inside one plugin — `superpowers:brainstorming`, a `SKILL.md` owning its folder, carries the line in 81/81 records; `superpowers:brainstorm`, the single-file command beside it, in 0/17.
-3. **A directory that can evaporate** — a **bundled** skill, extracted at runtime under
+Every path in the corpus is consistently one of three states; no path is ever observed both with and without the line.
 
-   ```
-   <tmp>/bundled-skills/<CLI version>/<16 random bytes as hex>/<skill>
-   ```
+1. **No directory at all** — single-file `commands/*.md` (a plugin's or `.claude/`'s) and some builtins. Recovery cannot fire, but **nothing misleads**: there is no path to try. One plugin ships the contrast — `superpowers:brainstorming`, a `SKILL.md` owning its folder, carries the line in 81/81 records; `superpowers:brainstorm`, the single-file command beside it, in 0/17.
+2. **A directory that still exists** — recovery works exactly as the marker says.
+3. **A directory that existed when the line was written and is gone when it is read** — the instruction *looks* executable and fails.
 
-   built by a root function that memoises `join(tmpdir(), "bundled-skills", VERSION, randomBytes(16).hex)`. The name is **random per run, not a content hash**, and the directory is version-stamped and lives in the temp tree. A real record carries `…/bundled-skills/2.1.181/8543ac…/verify`; on the machine that produced it, that path — and the entire `bundled-skills` root — **no longer exists**.
+**State 3 is worse than state 1.** A model that has just lost 80% of a skill body is handed an absolute path and gets an error: a burned turn on what looks like a real lead, which is a worse position than being handed nothing.
 
-**State 3 is worse than state 2**, and it is the reason this section is worth its length: the recovery instruction *looks* executable and fails. A model that has just lost 80% of a skill body is handed an absolute path and gets an error, which is a worse position than being handed nothing.
+### How common state 3 is
 
-*Inference, flagged as such:* the acute case should be **resume**. Re-attachment inside a live run still resolves, because that run created the directory. But the transcript-replay path re-registers stored content verbatim on resume, and the root is re-randomised per run and stamped with the CLI version — so a resumed session, or one that outlived an upgrade or a temp sweep, should carry a base directory pointing at a directory that is gone. Both halves are verified independently; the failing `Read` has **not** been observed, so this is reasoning from two measurements, not a measurement.
+Measured over the 56 distinct base directories in the corpus:
 
-Also unexplained, and left that way: three bundled skills in the corpus (`artifact-design`, `artifact-diagramming`, `fewer-permission-prompts`) carry no base directory at all, while `bundled:verify` does. The prefix does not predict the state, which is precisely the generalisation to avoid.
+| kind of base directory | alive | dead |
+|---|---:|---:|
+| plugin cache (version-stamped) | 6 | **46** |
+| bundled (temp root, random per run) | 0 | 1 |
+| project / other | 1 | 2 |
+| **total** | **7** | **49** |
 
-**So the rule is about durability, not ownership or provenance:** a skill installed in a directory that persists is recoverable; a single-file command has nothing to recover from; a bundled skill's path is valid only for as long as the run that extracted it.
+The dominant population is not exotic. A plugin's cache path is **version-stamped**, and the old version directory is removed on upgrade: `…/superpowers/6.1.1/skills/writing-plans` is dead with `6.3.0` present; `…/skill-creator-plus/0.4.2/…` is dead with `0.9.0` and `0.10.0` present. Bundled skills reach the same state by a different route — extracted at runtime to
+
+```
+<tmp>/bundled-skills/<CLI version>/<16 random bytes as hex>/<skill>
+```
+
+memoised per run as `join(tmpdir(), "bundled-skills", VERSION, randomBytes(16).hex)`, so the name is **random per run, not a content hash**. One real record names `…/bundled-skills/2.1.181/8543ac…/verify`; that path and the entire `bundled-skills` root are gone.
+
+**The state is not a property of the skill — it is a property of when you look.** Every one of those 49 dead paths was alive when it was written, and inside a live run the path names the currently-mounted version and resolves. So this is not "recovery is broken".
+
+*Inference, flagged as such:* the reachable failure is **resume**. The transcript-replay path re-registers stored content verbatim, so a session resumed after a plugin upgrade — or, for a bundled skill, in any later run — carries a base directory pointing at a removed version directory. Plugin upgrades are routine, which makes this far more reachable than the bundled case that first exposed it. The path-death is measured; **the failing `Read` has not been observed.** A single resumed session whose re-attached body points at a removed version directory would close both halves at once.
+
+**So the durable statement is about timing, not taxonomy:** a truncated skill is recoverable only if its base directory outlives the session, and the common way that fails is an ordinary plugin upgrade. The mitigation that does not depend on any of this is front-loading — putting load-bearing instructions inside the first 19,900 characters, where truncation cannot reach them.
+
+Left unexplained rather than tidied: three bundled skills in the corpus (`artifact-design`, `artifact-diagramming`, `fewer-permission-prompts`) carry no base directory while `bundled:verify` does. The prefix does not predict the state; supplying a second story to cover that is exactly the move that produced the first wrong one.
 
 Method note, which is the reusable part: the author checked the `path` field, found an identifier, and concluded the marker's instruction was unexecutable — relaying that to another project before checking it. It was refuted by reading the **content**, a different field entirely. *Verifying that one channel does not carry a thing is not evidence that no channel does.*
 
