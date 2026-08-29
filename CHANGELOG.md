@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.46.12 — 2026-08-29 (this fork) — a site caveat from v2.46.5, falsified by v2.46.10
+
+`plugins.skill-dir-is-body-text` told readers:
+
+> The companion tokens substituted in the same pass — the session id, the project directory — hold on exactly the same terms: body text only.
+
+**False.** `${CLAUDE_SESSION_ID}` and `${CLAUDE_EFFORT}` are replaced *outside* the `isSkillMode` guard, and `${CLAUDE_PLUGIN_ROOT}` / `${CLAUDE_PROJECT_DIR}` / `${CLAUDE_PLUGIN_DATA}` go through the ungated `a9()` substituter — every one of them replaced inside a command file, where `${CLAUDE_SKILL_DIR}` alone is skipped. A peer harness run put both tokens in one command file and observed exactly that split.
+
+The caveat generalised from one token to its neighbours because they shared a substitution pass. Sharing a pass does not imply sharing terms, and one guard between two statements is the whole difference.
+
+**Also corrected:** the detail said "three places it will quietly do nothing." There are **four** — a command file is the fourth and the most surprising, because it *is* definition text and the other tokens replace there normally. The rule now reads that the token belongs to a skill **body** specifically, not to definition text in general.
+
+**And the truncation fact gains the check that actually catches the failure:** find your skill's first heading and see whether it falls inside the surviving part. Counting characters tells you whether you are over; finding the first heading tells you whether being over costs anything. Drawn from v2.46.11, where this skill's own first heading sat at character 23,509 against a 19,900 cut, so the survivor held release history and no instructions at all.
+
 ## v2.46.11 — 2026-08-29 (this fork) — we documented the truncation mitigation and never applied it to ourselves
 
 `SKILL.md` is **116,931 characters** against a **20,002-character** truncation trigger, and the first heading sat at character **23,509**. So every post-compaction re-attachment kept 19,900 characters of unheaded version-narrative preamble and lost **100% of the operating instructions** — zero headings survived, and no mention of `search.js`, `state.js`, `fetch-lesson.js` or `troubleshoot.js`.
