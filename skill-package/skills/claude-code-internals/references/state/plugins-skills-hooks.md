@@ -74,10 +74,20 @@ Answer first; mechanism in the sections that follow.
 
 | you are | use |
 |---|---|
-| reading a bundled file with a **file tool** | `${CLAUDE_PLUGIN_ROOT}/…` written in the **SKILL.md or command body** — substituted at load, so the model sees a real path |
+| reading a bundled file with a **file tool** | `${CLAUDE_SKILL_DIR}/…` (a skill) or `${CLAUDE_PLUGIN_ROOT}/…` (plugin-wide), written in the **SKILL.md or command body** — substituted at load, so the model sees a real path |
 | running a bundled script from the **shell** | a **launcher in the plugin's `bin/`**, called as a **bare command** |
 | the launcher is absent | **discover** the directory shell-side and confirm with a sentinel file |
-| any shell context | **never** read `$CLAUDE_PLUGIN_ROOT` |
+| any shell context | **never** read `$CLAUDE_SKILL_DIR` or `$CLAUDE_PLUGIN_ROOT` |
+
+**`${CLAUDE_SKILL_DIR}` carries exactly the same three limits as `${CLAUDE_PLUGIN_ROOT}`**, and is the token a skill author reaches for first, so state them together. First-party in CLI 2.1.250, every substitution site is a literal `.replace(/\$\{CLAUDE_SKILL_DIR\}/g, …)` / `.replaceAll("${CLAUDE_SKILL_DIR}", …)`:
+
+1. **Substitution, not environment.** It is replaced into text at load. It is never exported, so in a shell it expands to the empty string — a command built from it silently addresses `/scripts/tool.py` at the filesystem root.
+2. **Braced form only.** `${CLAUDE_SKILL_DIR}`. `$CLAUDE_SKILL_DIR` is not a pattern any site matches and passes through untouched.
+3. **Definition text only, and only when the skill owns a directory.** The sites are `getPromptForCommand`'s body text and the `allowed-tools` frontmatter, both gated on a resolved skill root (`isSkillMode` / a non-null `baseDir`). A `references/*.md` your skill **reads at run time** is not definition text: the token arrives literally. Where no base directory is attached, it passes through unsubstituted.
+
+The same load-time pass also substitutes `${CLAUDE_PROJECT_DIR}`, `${CLAUDE_SESSION_ID}` and `${CLAUDE_EFFORT}`, and prepends `Base directory for this skill: <abs path>` — which is why a skill's own root is legible to the model in body text and to nothing else.
+
+**The operative rule, stated once:** `${CLAUDE_SKILL_DIR}` is a **SKILL.md-body-text feature**. The moment a path must reach a shell it has to be an absolute path the model already resolved and passes explicitly, or a `bin/` launcher that locates itself from `$0`.
 
 **Why `bin/` is the answer and not a workaround (L173).** Claude Code puts every enabled non-builtin plugin's `<plugin>/bin` on the Bash tool's PATH, and the path is correct for the namespace of the shell that will use it — measured in all three lanes, including Cowork host-loop where the file tools and the shell disagree about every other path. PATH lookup is performed by the shell, in the shell's own namespace, so **no path crosses the boundary and the model derives nothing**. A launcher self-locates in one line:
 
@@ -86,11 +96,11 @@ Answer first; mechanism in the sections that follow.
 exec python3 "$(cd "$(dirname "$0")/.." && pwd)/scripts/$1.py" "${@:2}"
 ```
 
-**Why not `$CLAUDE_PLUGIN_ROOT` in a shell.** It is not merely absent — it is frequently **set, to an unrelated plugin's directory**. Hooks can write session environment through `CLAUDE_ENV_FILE` (four events; the loader concatenates their scripts in a fixed order, so the last `export` wins textually and reproducibly), and the hook executor gives each hook *its own* plugin's root. Two independent machines observed the same leaked pair, neither being the plugin whose skill was running. The failure mode is a **confident wrong answer**, which is worse than an empty one.
+**Why not `$CLAUDE_PLUGIN_ROOT` in a shell.** It is not merely absent — it is frequently **set, to an unrelated plugin's directory**. Hooks can write session environment through `CLAUDE_ENV_FILE` (four events; the loader concatenates their scripts in a fixed order, so the last `export` wins textually and reproducibly), and the hook executor gives each hook *its own* plugin's root. A leaked pair was observed this way, neither being the plugin whose skill was running (one machine; not independently replicated). The failure mode is a **confident wrong answer**, which is worse than an empty one.
 
 **Why not the token in a `references/*.md`.** Substitution happens in the files the runtime **loads** as definitions — a SKILL.md body, a command, a hook. A reference file your skill **reads at run time** is not substituted: the token arrives literally and names nothing.
 
-**Three ways `bin/` fails, all silent.** A PATH entry is **not** evidence the directory exists (`bin/` is provisioned by sync/install, not carried in plugin source — 35 entries on one machine, zero on disk). The Cowork mount is **read-only**, so a launcher cannot write beside itself. And a plugin path containing shell metacharacters is dropped from PATH with no model-visible error. So: **construct, verify, fall back** — and have the step that cannot resolve stop and say so, because a resolution that fails quietly is indistinguishable from a feature that was never shipped.
+**Three ways `bin/` fails, all silent.** A PATH entry is **not** evidence the directory exists: the PATH builder performs no existence check, mapping `<path>/bin` for every enabled non-builtin plugin unconditionally, so a count of entries is a fact about the plugin count and says nothing about what is on disk (35 entries on one machine, zero directories). A `bin/` committed in plugin source **does** survive installation; install narrows the mode but the execute bit survives. The Cowork mount is **read-only**, so a launcher cannot write beside itself. And a plugin path containing shell metacharacters is dropped from PATH with no model-visible error. So: **construct, verify, fall back** — and have the step that cannot resolve stop and say so, because a resolution that fails quietly is indistinguishable from a feature that was never shipped.
 
 ## `${CLAUDE_PLUGIN_ROOT}` resolves to wherever the agent loaded the plugin from
 

@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.46.5 — 2026-08-29 (this fork) — the recommended variable was the undocumented one
+
+Three passes hardened `${CLAUDE_PLUGIN_ROOT}` — an ANSWER-FIRST registry lead, a four-row decision table, a published fact, an explicit *never trust it in a shell*. Meanwhile `${CLAUDE_SKILL_DIR}`, the token a **skill author** reaches for first and the one our own guidance recommends for bundled scripts, had **no registry entry, zero mentions in the "How a skill reaches its own bundled scripts" table, and nothing on the site.**
+
+It carries the same three limits, first-party in the CLI 2.1.250 bundle across five substitution sites:
+
+1. **Substitution, not environment** — empty in a shell, so a command built from it silently addresses a path at the filesystem *root*.
+2. **Braced form only** — `$CLAUDE_SKILL_DIR` matches no pattern and passes through untouched.
+3. **Definition text only, and only when the skill owns a directory** — `getPromptForCommand`'s body text and the `allowed-tools` frontmatter, both gated on a resolved skill root. A `references/*.md` read at run time is not definition text.
+
+Stated once: **`${CLAUDE_SKILL_DIR}` is a SKILL.md-body-text feature.** The moment a path must reach a shell it has to be an absolute path the model already resolved, or a `bin/` launcher that locates itself from `$0`.
+
+**Two v2.46.4 retractions had never reached the state layer.** `plugins-skills-hooks.md` still said "Two independent machines observed the same leaked pair" (one machine — the two agent sessions share a host) and "`bin/` is provisioned by sync/install, not carried in plugin source" (it does survive install; the 35-entries/0-directories count is a fact about the plugin count, since the PATH builder has no existence check). Correcting a lesson is not correcting the state page that repeats it.
+
+**Methodology.** `grep -o` returned **0** for `CLAUDE_SKILL_DIR` *and* for the `CLAUDE_PLUGIN_ROOT` positive control on the same bundle, while a Python regex pass found five sites — grep treats the file as binary and reports nothing. The positive control is the only reason this was caught.
+
 ## v2.46.4 — 2026-08-29 (this fork) — retracting v2.46.3's correction, and proving the mechanism live
 
 Third error in one chapter, and the same shape as the first two: **verify one quantity, state a conclusion about its neighbour.** v2.46.3 read three `bin/` directories out of plugin-shipping repos, called them misplacements, and proposed a lint rule on that reading — from directory *position* alone, without opening a single file.
