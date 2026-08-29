@@ -4,7 +4,7 @@
 
 Three passes hardened `${CLAUDE_PLUGIN_ROOT}` — an ANSWER-FIRST registry lead, a four-row decision table, a published fact, an explicit *never trust it in a shell*. Meanwhile `${CLAUDE_SKILL_DIR}`, the token a **skill author** reaches for first and the one our own guidance recommends for bundled scripts, had **no registry entry, zero mentions in the "How a skill reaches its own bundled scripts" table, and nothing on the site.**
 
-It carries the same three limits, first-party in the CLI 2.1.250 bundle across five substitution sites:
+It carries the same three limits, first-party in the CLI 2.1.250 bundle — 6 occurrences, 4 of them replacement call sites (two `getPromptForCommand` body-text paths, two `allowed-tools` paths), 2 string-table entries:
 
 1. **Substitution, not environment** — empty in a shell, so a command built from it silently addresses a path at the filesystem *root*.
 2. **Braced form only** — `$CLAUDE_SKILL_DIR` matches no pattern and passes through untouched.
@@ -14,7 +14,7 @@ Stated once: **`${CLAUDE_SKILL_DIR}` is a SKILL.md-body-text feature.** The mome
 
 **Two v2.46.4 retractions had never reached the state layer.** `plugins-skills-hooks.md` still said "Two independent machines observed the same leaked pair" (one machine — the two agent sessions share a host) and "`bin/` is provisioned by sync/install, not carried in plugin source" (it does survive install; the 35-entries/0-directories count is a fact about the plugin count, since the PATH builder has no existence check). Correcting a lesson is not correcting the state page that repeats it.
 
-**Methodology.** `grep -o` returned **0** for `CLAUDE_SKILL_DIR` *and* for the `CLAUDE_PLUGIN_ROOT` positive control on the same bundle, while a Python regex pass found five sites — grep treats the file as binary and reports nothing. The positive control is the only reason this was caught.
+**Methodology — two instrument failures in one check.** `grep -o` returned **0** for `CLAUDE_SKILL_DIR` *and* for the `CLAUDE_PLUGIN_ROOT` positive control on the same bundle: grep classifies it as binary and declines *silently*, printing no "Binary file matches" line when counting, so a refusal is indistinguishable from a zero. The positive control caught it; **`grep -a` prevents it** — the fix is one flag, cheaper than the diagnosis. Then the Python pass that replaced grep reported "five sites" because its 260-char context windows merged two adjacent hits; `grep -a -o` gives 6. Both numbers in this entry are the corrected ones.
 
 ## v2.46.4 — 2026-08-29 (this fork) — retracting v2.46.3's correction, and proving the mechanism live
 
