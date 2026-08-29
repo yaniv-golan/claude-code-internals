@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.46.10 — 2026-08-29 (this fork) — `${CLAUDE_SKILL_DIR}` excludes commands too, and the reference-file half is now observed
+
+**Commands are excluded, and it is the easy one to get backwards.** Both replacement sites live in the `bz` builder, guarded on `g.isSkillMode` — default **false**. The two command load sites pass it explicitly false; skills pass true. So the token arrives literally in a `commands/*.md`, exactly as in a reference file.
+
+```js
+FAt(T.commandsPath, …, {isSkillMode:!1})   → "Loaded N commands"
+bz(ue, pe, r, o, u, !0, {isSkillMode:!0})  → skills, pe carries baseDir
+```
+
+**The correct scope is the SKILL.md body and its `allowed-tools`, and nothing else.** The trap: the very next statement substitutes `${CLAUDE_SESSION_ID}` and `${CLAUDE_EFFORT}` *outside* the guard, so commands **are** a substituting definition surface — just not for this token. "Does substitution happen in commands?" answers yes and misleads.
+
+This has already cost someone: a peer project built a build-time rule scoping substitution to "SKILL.md and commands/*.md", saw it break 11 tests, and reverted it. The commands half of that scope was wrong.
+
+**The reference-file exclusion is no longer only a code read.** A peer harness run (container fidelity) put the same token in a skill's `SKILL.md` and its `references/paths.md`. Delivered content: the body line substituted to an absolute mount path, the reference line untouched — read from the event stream rather than the model's answer, which rules out the model expanding it from a path it had already seen.
+
+Caveat carried: a second builder gates on a truthy `baseDir` rather than the flag, and its call sites are untraced here, so a path where a command acquires a `baseDir` is not ruled out.
+
 ## v2.46.9 — 2026-08-29 (this fork) — a published denominator, and a hazard the site never carried
 
 **The number was the wrong population.** `plugins.ship-a-launcher` told readers "no plugin in a 35-plugin install base uses it." 35 was the count of *PATH entries* — enabled, non-builtin plugins with a path — which is not an install base. The population that matches the claim is installed plugin roots: **97 with a `.claude-plugin/plugin.json`, 0 with a `bin/` at the root.** The published figure understated its own evidence while sounding more specific than it was.

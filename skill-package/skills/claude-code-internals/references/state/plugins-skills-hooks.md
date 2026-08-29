@@ -87,6 +87,18 @@ Answer first; mechanism in the sections that follow.
 
 The same load-time pass also substitutes `${CLAUDE_PROJECT_DIR}`, `${CLAUDE_SESSION_ID}` and `${CLAUDE_EFFORT}`, and prepends `Base directory for this skill: <abs path>` — which is why a skill's own root is legible to the model in body text and to nothing else.
 
+**Commands are excluded too, and that is the easy one to get wrong.** Both replacement sites live in
+the `bz` builder guarded on `g.isSkillMode` (default **false**); the two command load sites pass it
+explicitly false, skills pass true. So the token arrives literally in a `commands/*.md` exactly as it
+does in a reference file. The trap is that the next statement substitutes `${CLAUDE_SESSION_ID}` and
+`${CLAUDE_EFFORT}` *outside* that guard — so commands **are** a substituting definition surface, just
+not for this token. "Does substitution happen in commands?" answers yes and misleads.
+
+**Observed, not only read.** A peer harness run (container fidelity) put the same token in a skill's
+`SKILL.md` and in its `references/paths.md`; the delivered content carried the body line substituted
+to an absolute mount path and the reference line untouched. Read from the event stream rather than the
+model's answer, which rules out the model expanding it from a path it had already seen.
+
 **The operative rule, stated once:** `${CLAUDE_SKILL_DIR}` is a **SKILL.md-body-text feature**. The moment a path must reach a shell it has to be an absolute path the model already resolved and passes explicitly, or a `bin/` launcher that locates itself from `$0`.
 
 **Why `bin/` is the answer and not a workaround (L173).** Claude Code puts every enabled non-builtin plugin's `<plugin>/bin` on the Bash tool's PATH, and the path is correct for the namespace of the shell that will use it — measured in all three lanes, including Cowork host-loop where the file tools and the shell disagree about every other path. PATH lookup is performed by the shell, in the shell's own namespace, so **no path crosses the boundary and the model derives nothing**. A launcher self-locates in one line:
