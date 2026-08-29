@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.46.6 — 2026-08-29 (this fork) — four skill-reachability gaps
+
+**`when_to_use` does not reach the Cowork listing.** CLI-side the schema says it *"becomes part of the tool description."* In `app.asar` **1.40609.0** it occurs **zero** times — against positive controls `list_skills` (17) and `suggest_skills` (14) in the same file. The Desktop's `mcp__skills__list_skills` handler has no code that reads it, so trigger information placed only there is invisible under Cowork.
+
+**`paths:` silently suppresses a skill**, and was documented nowhere: *"Glob patterns this skill applies to. The skill only loads when the model touches matching files."* A skill carrying it does not load for a question that touches no matching file, with no message. When a skill will not trigger, this is the thing to check **before** rewriting the description — no prose fixes a narrowing set.
+
+Both now sit in `plugins-skills-hooks.md` with the reachability check order: `paths:` → `disable-model-invocation` → `description`/`when_to_use`. Only `description` reaches every host and both Cowork listings.
+
+Also: a new troubleshooting symptom (**"skill not triggering"** → L88/L129/L173, previously nothing matched), a new published fact `plugins.description-is-the-trigger`, and topic-index keywords added for L88/L129/L173 *before* the semantic reindex, per this repo's own ordering rule.
+
+Nothing lands in the registry: `KINDS` is enum-enforced and frontmatter fields are not a registered kind.
+
+**Scope:** the Desktop finding is one asar version, the newest held here. Older builds unchecked; the agent-side rendering path was not re-traced.
+
 ## v2.46.5 — 2026-08-29 (this fork) — the recommended variable was the undocumented one
 
 Three passes hardened `${CLAUDE_PLUGIN_ROOT}` — an ANSWER-FIRST registry lead, a four-row decision table, a published fact, an explicit *never trust it in a shell*. Meanwhile `${CLAUDE_SKILL_DIR}`, the token a **skill author** reaches for first and the one our own guidance recommends for bundled scripts, had **no registry entry, zero mentions in the "How a skill reaches its own bundled scripts" table, and nothing on the site.**

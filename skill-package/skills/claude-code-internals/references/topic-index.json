@@ -1963,7 +1963,16 @@
         "AK6",
         "GX",
         "ys7",
-        "cA_"
+        "cA_",
+        "when_to_use",
+        "whenToUse",
+        "skill trigger",
+        "skill not triggering",
+        "skill selection",
+        "paths frontmatter",
+        "disable-model-invocation",
+        "user-invocable",
+        "tool description"
       ]
     },
     {
@@ -3719,7 +3728,12 @@
         "trigger-omitted",
         "hidden-but-invocable-skill",
         "docx-skill-not-listed",
-        "gate-1598976391-on-force"
+        "gate-1598976391-on-force",
+        "when_to_use",
+        "skill listing",
+        "skill not triggering",
+        "skill selection",
+        "description field"
       ]
     },
     {
@@ -5084,7 +5098,9 @@
         "self-locating-launcher",
         "plugin-root-in-a-shell",
         "scripts-directory",
-        "invoke-bundled-executable"
+        "invoke-bundled-executable",
+        "skill trigger",
+        "bundled scripts"
       ]
     },
     {
@@ -17223,6 +17239,29 @@
     ],
     "plugin-root-empty-in-shell": [
       89
+    ],
+    "when_to_use": [
+      88,
+      129
+    ],
+    "whentouse": [
+      88
+    ],
+    "skill trigger": [
+      88,
+      129,
+      173
+    ],
+    "skill not triggering": [
+      88,
+      129
+    ],
+    "paths frontmatter": [
+      88
+    ],
+    "skill selection": [
+      88,
+      129
     ]
   }
 }

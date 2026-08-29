@@ -1258,6 +1258,27 @@
         "It is also skipped when the skill has no directory of its own to resolve, in which case the token survives unchanged rather than raising anything.",
         "The companion tokens substituted in the same pass — the session id, the project directory — hold on exactly the same terms: body text only."
       ]
+    },
+    {
+      "id": "plugins.description-is-the-trigger",
+      "page": "plugins-and-plugin-root",
+      "rule": "Your skill's description is the only thing that decides whether it gets used.",
+      "detail": "Everything else you write is read after that decision, if it is read at all. Two frontmatter settings can stop a skill being reachable before any of it is considered: one restricts it to loading only when the model touches files matching a pattern, so a question that touches no files quietly gets nothing; another tells the model to ask you to run the skill rather than using it. There is also a second field that looks made for describing when to reach for a skill, and it does feed the decision — but only in the terminal. The desktop listing has no handling for it at all, and other tools that read skills ignore it. So put what makes your skill findable in the description, keep it self-sufficient, and treat the other field as reinforcement you could delete without loss.",
+      "tier": "binary",
+      "severity": "friction",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          88,
+          129
+        ],
+        "state_page": "plugins-skills-hooks"
+      },
+      "caveats": [
+        "Being selected is not the same as being read: a model can pick up a skill and still answer from what it already believes without opening the body, so anything load-bearing needs to survive a shallow read.",
+        "The desktop finding is from a single application build, the newest available when it was checked; older builds were not examined."
+      ]
     }
   ],
   "router": [

@@ -1812,6 +1812,23 @@
     167
    ],
    "hint": "Two caps run at compaction (including microcompaction), not one. Over 20,001 characters a skill is TRUNCATED to exactly 20,000 (19,900 + a 100-char marker) and the cut copy is written back; over a 25,000-token combined budget the least-recently-invoked skill is ZEROED with no marker at all. Truncation is the common case and announces itself; zeroing is rare and cannot be detected from inside. Recovery works because the content's first line carries an absolute 'Base directory for this skill:' -- EXCEPT single-file .claude/commands/*.md entries and builtins, which have no directory line. The 'Path:' field is a source-qualified identifier, not a file location."
+  },
+  {
+   "pattern": [
+    "skill not triggering",
+    "skill doesn't trigger",
+    "skill not invoked",
+    "skill never loads",
+    "claude ignores my skill",
+    "skill not being used",
+    "model didn't use the skill"
+   ],
+   "lessons": [
+    88,
+    129,
+    173
+   ],
+   "hint": "Check reachability before rewriting prose. `paths:` in frontmatter loads the skill ONLY when the model touches a matching file, so a mechanics question silently gets no skill; `disable-model-invocation` makes the model ask the user to run it instead. Selection is judged on the tool description: `when_to_use` feeds it CLI-side, but is ABSENT from the Desktop/Cowork skills listing (zero occurrences in app.asar 1.40609.0) and ignored by non-Claude hosts -- so keep `description` self-sufficient and treat `when_to_use` as reinforcement. A skill can also be selected and then answer from priors without reading its body, so load-bearing content must survive a shallow read."
   }
  ]
 }

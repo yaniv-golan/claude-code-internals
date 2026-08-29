@@ -12,7 +12,7 @@
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-plugin-F97316)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/plugins)
 [![Improved with Skill Creator Plus](https://img.shields.io/badge/Improved_with-Skill_Creator_Plus-4ecdc4?style=flat-square)](https://github.com/yaniv-golan/skill-creator-plus)
 
-**Skill Version:** 2.46.5 | **Captured from:** Claude Code v2.1.231 (+ Claude Desktop app.asar through 1.30096.1 + Desktop-managed host agent Mach-O 2.1.229 + in-VM ELF claude-code-vm/2.1.170 / 2.1.197 / 2.1.205 + the golden Cowork VM disk image `rootfs.img` + live `fcache` decodes + Desktop's Chromium HTTP cache) | **Date:** 2026-08-14 | **License:** MIT
+**Skill Version:** 2.46.6 | **Captured from:** Claude Code v2.1.231 (+ Claude Desktop app.asar through 1.30096.1 + Desktop-managed host agent Mach-O 2.1.229 + in-VM ELF claude-code-vm/2.1.170 / 2.1.197 / 2.1.205 + the golden Cowork VM disk image `rootfs.img` + live `fcache` decodes + Desktop's Chromium HTTP cache) | **Date:** 2026-08-14 | **License:** MIT
 
 ---
 
@@ -369,7 +369,7 @@ claude-code-internals/
 │   └── skills/
 │       └── claude-code-internals/  The skill itself
 │           ├── SKILL.md            Skill brain (search strategy, lesson index)
-│           ├── version.json        Version tracking (v2.46.5 / v2.1.231)
+│           ├── version.json        Version tracking (v2.46.6 / v2.1.231)
 │           ├── hooks-config.json   PreToolUse hook definition
 │           ├── references/
 │           │   ├── 01-core-architecture-tools.md
@@ -515,7 +515,7 @@ claude-code-internals/
 
 ```json
 {
-  "skill_version": "2.46.5",
+  "skill_version": "2.46.6",
   "captured_version": "2.1.231",
   "verified_against_binary": "2.1.231",
   "captured_date": "2026-08-05"
@@ -556,7 +556,7 @@ This repository is a fork of [stuinfla/claude-code-internals](https://github.com
 - The PreToolUse `.claude/` hook (`config-aware-hook.sh`), version check script, and RuFlo index builder
 - The original README documentation and architecture diagrams
 
-**What this fork adds** (v2.2.0–v2.46.5, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
+**What this fork adds** (v2.2.0–v2.46.6, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
 
 - Chapter 9 (Lessons 51–56): binary-verified new features in Claude Code v2.1.90, extracted directly from the Bun SEA binary and verified against official docs
 - Chapter 10 (Lessons 57–59): binary-verified changes in Claude Code v2.1.92 — new commands, removed commands, new env vars, and AskUserQuestionTool documentation

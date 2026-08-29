@@ -404,6 +404,25 @@ Non-Claude hosts ignore the field entirely, so the same rule serves portability.
 Scope: one asar version (1.40609.0, the newest held here); not checked against older builds,
 and the agent-side rendering path was not re-traced this pass.
 
+### `paths:` silently suppresses a skill
+
+Sibling field, same schema, and the more dangerous of the two because it *removes* a skill
+rather than failing to promote it:
+
+```
+paths: "Glob patterns this skill applies to. The skill only loads when the model touches matching files."
+```
+
+A skill carrying `paths:` does not load for a question that touches no matching file — a
+mechanics question, a "how do I…", anything conversational. There is no message. When a skill
+does not trigger, check `paths:` **before** rewriting the description: a narrowing set there
+cannot be fixed by better prose.
+
+**The three frontmatter fields that decide whether a skill is reachable at all**, in the order
+worth checking: `paths:` (loads only on matching files), `disable-model-invocation` (the model
+is told to ask the user to run it instead), and `description`/`when_to_use` (what selection is
+judged on). Only `description` reaches every host and both Cowork listings.
+
 ### Input schemas (verbatim, 1.24012.1)
 
 All `type:"object"`. Required fields in **bold**; everything else optional.
