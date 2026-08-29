@@ -1,7 +1,7 @@
 {
   "generated": "2026-08-13",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 172,
+  "total_lessons": 174,
   "lessons": [
     {
       "id": 1,
@@ -5051,6 +5051,48 @@
         "artifact-comment-responder",
         "artifact-direct-upload-removed",
         "removal-found-by-audit-not-diff"
+      ]
+    },
+    {
+      "id": 173,
+      "title": "Plugin bin/ Is on the Shell's PATH, Namespace-Correct, in Every Lane",
+      "lesson_number": "173",
+      "file": "45-plugin-bin-path-and-cloud-lane.md",
+      "startLine": 14,
+      "endLine": 80,
+      "keywords": [
+        "plugin-bin-on-path",
+        "bin-launcher",
+        "path-lookup-in-shell-namespace",
+        "namespace-correct-by-construction",
+        "plugin-root-asymmetry",
+        "provisioned-not-shipped",
+        "path-entry-is-not-existence",
+        "read-only-plugin-mount",
+        "metacharacter-path-dropped",
+        "undocumented-affordance",
+        "three-lane-measurement"
+      ]
+    },
+    {
+      "id": 174,
+      "title": "The Cloud Lane's Environment Is Not a Subset of the CLI's",
+      "lesson_number": "174",
+      "file": "45-plugin-bin-path-and-cloud-lane.md",
+      "startLine": 81,
+      "endLine": 121,
+      "keywords": [
+        "cloud-lane-env-census",
+        "remote-cowork-entrypoint",
+        "container-agent-version-2.1.42",
+        "agent-older-than-installed",
+        "orphan-env-vars",
+        "claude-code-sync-plugins",
+        "synced-plugin-layout",
+        "root-user-remote-lane",
+        "depth-pinned-by-env",
+        "lane-dependent-defaults",
+        "enumerated-not-documented"
       ]
     }
   ],
@@ -17063,6 +17105,72 @@
     ],
     "removal-found-by-audit-not-diff": [
       172
+    ],
+    "plugin-bin-on-path": [
+      173
+    ],
+    "bin-launcher": [
+      173
+    ],
+    "path-lookup-in-shell-namespace": [
+      173
+    ],
+    "namespace-correct-by-construction": [
+      173
+    ],
+    "plugin-root-asymmetry": [
+      173
+    ],
+    "provisioned-not-shipped": [
+      173
+    ],
+    "path-entry-is-not-existence": [
+      173
+    ],
+    "read-only-plugin-mount": [
+      173
+    ],
+    "metacharacter-path-dropped": [
+      173
+    ],
+    "undocumented-affordance": [
+      173
+    ],
+    "three-lane-measurement": [
+      173
+    ],
+    "cloud-lane-env-census": [
+      174
+    ],
+    "remote-cowork-entrypoint": [
+      174
+    ],
+    "container-agent-version-2.1.42": [
+      174
+    ],
+    "agent-older-than-installed": [
+      174
+    ],
+    "orphan-env-vars": [
+      174
+    ],
+    "claude-code-sync-plugins": [
+      174
+    ],
+    "synced-plugin-layout": [
+      174
+    ],
+    "root-user-remote-lane": [
+      174
+    ],
+    "depth-pinned-by-env": [
+      174
+    ],
+    "lane-dependent-defaults": [
+      174
+    ],
+    "enumerated-not-documented": [
+      174
     ]
   }
 }

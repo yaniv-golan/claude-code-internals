@@ -4814,7 +4814,7 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.250",
-      "summary": "PRECISION (2026-08-28, vs CLI 2.1.250 + Desktop app.asar 1.37937.3): this is TWO mechanisms and the distinction is load-bearing. (A) SUBSTITUTION TOKEN -- ${CLAUDE_PLUGIN_ROOT} is text-replaced into plugin-declared definition strings (hook commands, MCP command/args, Monitor commands, permission-rule prefixes) before execution. (B) OUTBOUND ENV VAR into THREE child spawns only: plugin-declared command spawns, MCP stdio servers, and an MCP headersHelper exec env. It is NOT set on the agent's own process environment, so it does NOT reach the Bash tool. Verified: the Bash child env is {...xa() (inherited process env), SHELL, GIT_EDITOR, ...envOverrides, ...sandboxEnv, ...Fke(), ...unset} -- it DOES inherit process env, so the var would pass through if it were there, and it is not; Fke() adds no plugin root. env.CLAUDE_PLUGIN_ROOT has ZERO read sites. COUNTS CORRECTED 2026-08-29, and the first correction was itself wrong. Published numbers were 'all three occurrences' (asar) and 59 (CLI). A first pass 'corrected' these to 9 and 56, calling 56 byte-level truth and 59 a null-stripping artifact. TRUE VALUES: asar 1.40609.0 = 9 (ASCII 9 + UTF-16LE 0); CLI 2.1.250 = 59 (ASCII 56 + UTF-16LE 3). THE ORIGINAL 59 WAS RIGHT. Three instruments, three distinct failures: (a) grep -c counts LINES and these artifacts are effectively one line -- it under-reported the asar as 3 (real error, correction stands); (b) an ASCII-only raw-byte regex CANNOT SEE UTF-16LE-stored strings -- it under-reported the CLI as 56; (c) a null-stripped extract (tr -d '\\000') does NOT fabricate matches, it DECODES UTF-16LE (each ASCII char followed by \\x00), which is why it found 59 -- 56+3=59 exactly. Rule: count in BOTH encodings, or state which one you counted; never call an ASCII count 'byte-level truth'. The three UTF-16LE sites are prose (a changelog line about literal ${CLAUDE_PLUGIN_ROOT} in hook errors, and the Monitor tool description twice). NONE of the 9 assigns into the agent's process environment. CONSEQUENCE, and a correction to how this entry previously read: the note that 'bash ${CLAUDE_PLUGIN_ROOT}/x.sh works' under VM-loop is about a HOOK COMMAND STRING being substituted before execution -- NOT about a model-issued Bash call being able to read $CLAUDE_PLUGIN_ROOT, which it cannot, on any surface checked. A skill needing its own root shell-side must DISCOVER it. Under Cowork the Desktop picks the dir per mode: Ei = isHostLoopModeEnabled ? qX(installPath) : sdkPath. Host-loop => host-side path, accepted by host file tools but unreachable from in-VM bash, which must use the VM mount instead; VM-loop => sdkPath = that VM mount. Decisive: claude-hostloop-plugins is absent from both agent binaries (host CLI 2.1.201, in-VM ELF 2.1.197), present only in app.asar, so L89's 'host-side EVERYWHERE' is host-loop-only. Host-loop qX mechanics, re-confirmed at 1.37937.3: space-triggered (returns the raw install path unless it contains a space) and deterministic (sha256(installPath).slice(0,16), stable across invocations/sessions/reboots). Host-loop mechanics live-confirmed 2026-07-07 via docs/internal/cowork-pluginroot-probe; VM-loop resolution static-derived from the branch. VM MOUNT SHAPES re-derived at 1.37937.3: remote => /sessions/<id>/mnt/.remote-plugins/<plugin id> (tail is exactly the plugin id, so a file-tool-path basename joins the two namespaces); local => /sessions/<id>/mnt/.local-plugins/<guestCompatibleRelative(accountOrgRoot, installPath)> -- a relative-path MIRROR of the host layout, NOT a fixed cache/<marketplace>/<plugin>/<version> depth. Mount-level constants are .auto-memory/.remote-plugins/.local-plugins (plus non-plugin .claude/.projects/uploads/outputs). TRAP: skills are ALSO advertised at /sessions/<id>/mnt/.claude/<...>/<sanitizeSkillName(name)>, which is a SKILL mount and does not contain the plugin's scripts/ -- a name-matched search can succeed there and still be wrong, so match on a sentinel file, never a directory name.",
+      "summary": "PRECISION (2026-08-28, vs CLI 2.1.250 + Desktop app.asar 1.37937.3): this is TWO mechanisms and the distinction is load-bearing. (A) SUBSTITUTION TOKEN -- ${CLAUDE_PLUGIN_ROOT} is text-replaced into plugin-declared definition strings (hook commands, MCP command/args, Monitor commands, permission-rule prefixes) before execution. (B) OUTBOUND ENV VAR into THREE child spawns only: plugin-declared command spawns, MCP stdio servers, and an MCP headersHelper exec env. It is NOT set on the agent's own process environment, so it does NOT reach the Bash tool. Verified: the Bash child env is {...xa() (inherited process env), SHELL, GIT_EDITOR, ...envOverrides, ...sandboxEnv, ...Fke(), ...unset} -- it DOES inherit process env, so the var would pass through if it were there, and it is not; Fke() adds no plugin root. env.CLAUDE_PLUGIN_ROOT has ZERO read sites. COUNTS CORRECTED 2026-08-29, and the first correction was itself wrong. Published numbers were 'all three occurrences' (asar) and 59 (CLI). A first pass 'corrected' these to 9 and 56, calling 56 byte-level truth and 59 a null-stripping artifact. TRUE VALUES: asar 1.40609.0 = 9 (ASCII 9 + UTF-16LE 0); CLI 2.1.250 = 59 (ASCII 56 + UTF-16LE 3). THE ORIGINAL 59 WAS RIGHT. Three instruments, three distinct failures: (a) grep -c counts LINES and these artifacts are effectively one line -- it under-reported the asar as 3 (real error, correction stands); (b) an ASCII-only raw-byte regex CANNOT SEE UTF-16LE-stored strings -- it under-reported the CLI as 56; (c) a null-stripped extract (tr -d '\\000') does NOT fabricate matches, it DECODES UTF-16LE (each ASCII char followed by \\x00), which is why it found 59 -- 56+3=59 exactly. Rule: count in BOTH encodings, or state which one you counted; never call an ASCII count 'byte-level truth'. The three UTF-16LE sites are prose (a changelog line about literal ${CLAUDE_PLUGIN_ROOT} in hook errors, and the Monitor tool description twice). NONE of the 9 assigns into the agent's process environment. CONSEQUENCE, and a correction to how this entry previously read: the note that 'bash ${CLAUDE_PLUGIN_ROOT}/x.sh works' under VM-loop is about a HOOK COMMAND STRING being substituted before execution -- NOT about a model-issued Bash call being able to read $CLAUDE_PLUGIN_ROOT, which it cannot, on any surface checked. A skill needing its own root shell-side should prefer a bin/ LAUNCHER -- see tool.plugin_bin_on_path, the one measured channel that resolves in the SHELL's namespace -- and fall back to discovery. Under Cowork the Desktop picks the dir per mode: Ei = isHostLoopModeEnabled ? qX(installPath) : sdkPath. Host-loop => host-side path, accepted by host file tools but unreachable from in-VM bash, which must use the VM mount instead; VM-loop => sdkPath = that VM mount. Decisive: claude-hostloop-plugins is absent from both agent binaries (host CLI 2.1.201, in-VM ELF 2.1.197), present only in app.asar, so L89's 'host-side EVERYWHERE' is host-loop-only. Host-loop qX mechanics, re-confirmed at 1.37937.3: space-triggered (returns the raw install path unless it contains a space) and deterministic (sha256(installPath).slice(0,16), stable across invocations/sessions/reboots). Host-loop mechanics live-confirmed 2026-07-07 via docs/internal/cowork-pluginroot-probe; VM-loop resolution static-derived from the branch. VM MOUNT SHAPES re-derived at 1.37937.3: remote => /sessions/<id>/mnt/.remote-plugins/<plugin id> (tail is exactly the plugin id, so a file-tool-path basename joins the two namespaces); local => /sessions/<id>/mnt/.local-plugins/<guestCompatibleRelative(accountOrgRoot, installPath)> -- a relative-path MIRROR of the host layout, NOT a fixed cache/<marketplace>/<plugin>/<version> depth. Mount-level constants are .auto-memory/.remote-plugins/.local-plugins (plus non-plugin .claude/.projects/uploads/outputs). TRAP: skills are ALSO advertised at /sessions/<id>/mnt/.claude/<...>/<sanitizeSkillName(name)>, which is a SKILL mount and does not contain the plugin's scripts/ -- a name-matched search can succeed there and still be wrong, so match on a sentinel file, never a directory name.",
       "provenance": [
         {
           "lesson": 89
@@ -6947,6 +6947,129 @@
         },
         {
           "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "tool.plugin_bin_on_path",
+      "kind": "tool",
+      "name": "plugin bin/ on the Bash tool's PATH",
+      "summary": "UNDOCUMENTED AFFORDANCE (Ch48/L173). Z$n() maps every ENABLED, NON-BUILTIN plugin with a path to <path>/bin and adds it to the Bash tool's PATH, dropping any path matching /[:\"'$`\\\\\\n\\r]/ SILENTLY (log line only). Measured live in three lanes, each namespace-correct for its own shell: standalone CLI ~/.claude/plugins/cache/<mp>/<plugin>/<ver>/bin (35 entries, ZERO existed); Cowork host-loop VM shell /sessions/<slug>/mnt/.remote-plugins/plugin_<id>/bin (1 entry, EXISTS, populated with a 54-byte read-only executable); Cowork cloud /root/.claude/plugins/synced/<orgUuid>_<accountUuid>/<plugin>/bin (20 entries). THE ASYMMETRY: in ONE host-loop session CLAUDE_PLUGIN_ROOT resolves to a HOST path the VM shell cannot use while the bin PATH entry resolves to a VM path it can -- so a bin/ launcher is the only measured channel giving a plugin its root in the shell's own namespace, and PATH lookup means no path crosses the boundary. Functionally verified: a bare command resolved and cd \"$(dirname \"$0\")/..\" && pwd returned the plugin root. CAVEATS: a PATH entry is NOT evidence the dir exists (bin/ is provisioned by sync/install, not carried in plugin source); the Cowork mount is read-only; metacharacter paths vanish with no model-visible error. Version floor UNVERIFIED -- the embedded CHANGELOG reaches only 2.1.220.",
+      "provenance": [
+        {
+          "lesson": 173
+        },
+        {
+          "lesson": 89
+        }
+      ],
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE",
+      "name": "CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE",
+      "summary": "Cloud lane environment class; observed value cloud_default in a live remote_cowork session. (Ch48/L174, live cloud session census.)",
+      "provenance": [
+        {
+          "lesson": 174
+        }
+      ],
+      "kind": "env-var",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_CONTAINER_ID",
+      "name": "CLAUDE_CODE_CONTAINER_ID",
+      "summary": "Cloud lane container identity, observed as container_<id> in a live remote_cowork session. (Ch48/L174, live cloud session census.)",
+      "provenance": [
+        {
+          "lesson": 174
+        }
+      ],
+      "kind": "env-var",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION",
+      "name": "CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION",
+      "summary": "Cloud lane runner build, observed staging-<sha> -- versioned SEPARATELY from the agent (CLAUDE_CODE_VERSION), so neither implies the other. (Ch48/L174, live cloud session census.)",
+      "provenance": [
+        {
+          "lesson": 174
+        }
+      ],
+      "kind": "env-var",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_VERSION",
+      "name": "CLAUDE_CODE_VERSION",
+      "summary": "Agent version as seen by its own environment. Observed 2.1.42 in a live cloud session against 2.1.250 installed locally -- a concrete figure for Ch33's state.container-agent-range and the reason a current-CLI claim does not automatically describe the cloud lane. (Ch48/L174, live cloud session census.)",
+      "provenance": [
+        {
+          "lesson": 174
+        }
+      ],
+      "kind": "env-var",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_ADDITIONAL_DIRECTORIES",
+      "name": "CLAUDE_ADDITIONAL_DIRECTORIES",
+      "status": "dark-launched",
+      "summary": "SET in a live cloud (remote_cowork) session but ABSENT from every standalone CLI binary available here -- 0 occurrences in 2.1.233, 2.1.246 and 2.1.250 (positive control: CLAUDE_CODE_ENTRYPOINT returns 86/84/89 on the same instrument). The cloud lane reports CLAUDE_CODE_VERSION=2.1.42, so these are plausibly names a much older agent reads -- but whether they are consumed by that agent, by the environment runner, or by nothing is NOT determinable without a 2.1.42-era binary. Recorded as observed, not explained. (Ch48/L174.)",
+      "provenance": [
+        {
+          "lesson": 174
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_BUILTIN_ANTMCP",
+      "name": "CLAUDE_CODE_DISABLE_BUILTIN_ANTMCP",
+      "status": "dark-launched",
+      "summary": "SET in a live cloud (remote_cowork) session but ABSENT from every standalone CLI binary available here -- 0 occurrences in 2.1.233, 2.1.246 and 2.1.250 (positive control: CLAUDE_CODE_ENTRYPOINT returns 86/84/89 on the same instrument). The cloud lane reports CLAUDE_CODE_VERSION=2.1.42, so these are plausibly names a much older agent reads -- but whether they are consumed by that agent, by the environment runner, or by nothing is NOT determinable without a 2.1.42-era binary. Recorded as observed, not explained. (Ch48/L174.)",
+      "provenance": [
+        {
+          "lesson": 174
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_POST_FOR_SESSION_INGRESS_V2",
+      "name": "CLAUDE_CODE_POST_FOR_SESSION_INGRESS_V2",
+      "status": "dark-launched",
+      "summary": "SET in a live cloud (remote_cowork) session but ABSENT from every standalone CLI binary available here -- 0 occurrences in 2.1.233, 2.1.246 and 2.1.250 (positive control: CLAUDE_CODE_ENTRYPOINT returns 86/84/89 on the same instrument). The cloud lane reports CLAUDE_CODE_VERSION=2.1.42, so these are plausibly names a much older agent reads -- but whether they are consumed by that agent, by the environment runner, or by nothing is NOT determinable without a 2.1.42-era binary. Recorded as observed, not explained. (Ch48/L174.)",
+      "provenance": [
+        {
+          "lesson": 174
         }
       ],
       "kind": "env-var",

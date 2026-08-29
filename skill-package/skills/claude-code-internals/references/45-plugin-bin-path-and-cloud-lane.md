@@ -1,0 +1,121 @@
+Updated: 2026-08-29 | Source: **live probes in three lanes** — a standalone CLI session (2.1.250, this machine), a Claude Cowork **local** session (host-loop VM shell, slug `nice-nifty-sagan`), and a Claude Cowork **cloud** session (`CLAUDE_CODE_ENTRYPOINT=remote_cowork`, `CLAUDE_CODE_VERSION=2.1.42`) — cross-read against CLI binaries 2.1.233/2.1.246/2.1.250 and `app.asar` 1.40609.0. Counts taken with `scripts/count-symbol.js` (ASCII + UTF-16LE, refuses a single total when a null-stripped extract disagrees). **Does NOT move the CLI content baseline.** First chapter here built primarily on *live session measurement* rather than artifact reading; static-only claims say so.
+
+# Chapter 48: The Plugin `bin/` PATH Affordance, and What a Live Cloud Session Shows
+
+---
+
+## TABLE OF CONTENTS
+
+173. [Lesson 173 — Plugin `bin/` Is on the Shell's PATH, Namespace-Correct, in Every Lane](#lesson-173--plugin-bin-is-on-the-shells-path)
+174. [Lesson 174 — The Cloud Lane's Environment Is Not a Subset of the CLI's](#lesson-174--the-cloud-lanes-environment)
+
+---
+
+# LESSON 173 — PLUGIN `bin/` IS ON THE SHELL'S PATH
+
+**Claude Code puts every enabled non-builtin plugin's `bin/` directory on the Bash tool's PATH, and the path it uses is correct for the namespace that shell lives in — including Cowork host-loop, where the file tools and the shell disagree about every other path. This is the only channel measured that hands a plugin its own root in the shell's own terms, and it is undocumented.**
+
+## The mechanism
+
+```js
+async function Z$n(e){
+  let {enabled:t} = await Yi(e);
+  return t.filter((r) => !r.isBuiltin && r.path)
+          .map((r) => Cs(r.path, "bin"))
+          .filter((r) => {
+            if (Xy !== "\\" && /[:"'$`\\\n\r]/.test(r))
+              return n(`Dropping plugin bin path with shell metacharacters: …`), false
+            …
+```
+
+Enabled, non-builtin, has a path → `<path>/bin` joins PATH. A path containing shell metacharacters is **silently dropped** with only a log line.
+
+## Measured in three lanes — three path shapes, each correct locally
+
+| lane | PATH entry shape | entries | directory exists? |
+|---|---|---|---|
+| standalone CLI | `~/.claude/plugins/cache/<mp>/<plugin>/<ver>/bin` | 35 | **0 of 35** |
+| Cowork **local** (host-loop VM shell) | `/sessions/<slug>/mnt/.remote-plugins/plugin_<id>/bin` | 1 | **yes, populated** |
+| Cowork **cloud** (`remote_cowork`) | `/root/.claude/plugins/synced/<orgUuid>_<accountUuid>/<plugin>/bin` | 20 | not tested |
+
+The local Cowork shell's entire PATH is seven entries — six system directories plus the plugin — which is a **constructed** PATH, not a filtered inheritance.
+
+**Functional verification, standalone CLI.** Creating a `bin/` script in a plugin's cache directory and invoking it as a bare command resolved, and `cd "$(dirname "$0")/.." && pwd` returned the plugin root. (Removed afterwards.)
+
+**In-production verification, Cowork local.** That lane's `bin/` is not empty:
+
+```
+dr-x------ 3 nice-nifty-sagan nice-nifty-sagan  96 .
+-r-x------ 1 nice-nifty-sagan nice-nifty-sagan  54 <a plugin-shipped launcher>
+```
+
+A 54-byte executable, mounted read-only, on PATH, at a VM-side path. Someone is already shipping the launcher pattern.
+
+## The asymmetry that makes this matter
+
+In **one** Cowork host-loop session, the runtime resolves a plugin's location two different ways:
+
+| channel | value | usable from the VM shell? |
+|---|---|---|
+| `CLAUDE_PLUGIN_ROOT` (substituted into definition text) | **host** staging path | **no** |
+| `<plugin>/bin` on `PATH` | `/sessions/…/mnt/.remote-plugins/<id>/bin` | **yes** |
+
+Every previously-documented approach — Ch17/L89, the `env.CLAUDE_PLUGIN_ROOT` registry entry, the discovery ladders built on them — reads the channel that resolves **host-side**. This one is built for the shell that will use it. That is why a `bin/` launcher collapses the problem instead of mitigating it: **PATH lookup is performed by the shell, in the shell's namespace, so no path crosses the boundary and the model derives nothing.**
+
+**This corrects the standing advice** in `env.CLAUDE_PLUGIN_ROOT` that *"a skill needing its own root shell-side must DISCOVER it."* Discovery remains the fallback; it is no longer the only option.
+
+## Three caveats, all of them silent failures
+
+1. **PATH advertises directories that do not exist.** 35 entries locally, **zero** on disk — including the very plugin whose Cowork copy *is* populated. `bin/` is provisioned by the sync/install path, not carried in plugin source: that plugin's local install contains only `hooks/` and `skills/`. **A PATH entry is not evidence the directory exists.**
+2. **The mount is read-only** (`dr-x------`, files `-r-x------`). A launcher can execute but cannot write beside itself.
+3. **Metacharacter paths vanish without an error the model can see.** A plugin installed under a path containing `$`, a quote or a backtick gets no PATH entry at all.
+
+So the pattern is *construct, verify, fall back* — the same discipline the discovery ladders already use, with a much better first rung.
+
+## Not established
+
+The commonly-cited **v2.1.91** origin could not be verified: the CHANGELOG embedded in these binaries reaches back only to **2.1.220**, so its absence there is expected and proves nothing. Treat the version floor as unknown. Whether the cloud lane's 20 directories exist was not tested.
+
+---
+
+# LESSON 174 — THE CLOUD LANE'S ENVIRONMENT
+
+**A live `remote_cowork` session exposes 61 `CLAUDE_*` variables. Forty are absent from this skill's registry, and three are absent from every standalone CLI binary available here — so the cloud lane's spawn environment is not a subset of what the current CLI reads.**
+
+## The three that exist nowhere in the CLI
+
+| variable | CLI 2.1.233 | 2.1.246 | 2.1.250 |
+|---|---|---|---|
+| `CLAUDE_ADDITIONAL_DIRECTORIES` | 0 | 0 | 0 |
+| `CLAUDE_CODE_DISABLE_BUILTIN_ANTMCP` | 0 | 0 | 0 |
+| `CLAUDE_CODE_POST_FOR_SESSION_INGRESS_V2` | 0 | 0 | 0 |
+
+Positive control on the same instrument: `CLAUDE_CODE_ENTRYPOINT` returns 86 / 84 / 89. The zeros are real absences, not a broken search.
+
+They are **set** in a running cloud session. Whether they are read by the cloud agent, by the environment runner, or by nothing, is **not determinable from the artifacts here** — which the next section explains.
+
+## The cloud lane runs a different, much older agent
+
+```
+CLAUDE_CODE_VERSION=2.1.42
+CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION=staging-7c398eb231
+CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE=cloud_default
+CLAUDE_CODE_CONTAINER_ID=container_…
+```
+
+Ch33's `state.container-agent-range` says remote sessions run *"a range of agent builds distinct from the installed application"*. This is a **concrete number for it: 2.1.42**, against 2.1.250 installed locally — roughly two hundred releases apart. It also explains the three orphan variables without needing a theory: names a 2.1.42-era agent reads need not exist in a 2.1.250 binary.
+
+**Consequence for this skill:** a claim derived from the current CLI binary does not automatically describe the cloud lane, and a lane-unqualified statement about "Claude Code" can be two hundred releases wrong there.
+
+## What the same dump confirms first-party
+
+Four records previously static-only or probe-only, now seen live:
+
+- **No per-session user in the remote lane** — `user=root`, `home=/root`, `cwd=/home/claude`. Ch37/L146 said exactly this; first confirmation from inside a running cloud session.
+- **`CLAUDE_EFFORT=high` present in a shell environment** — Ch45's *write-only, exported to children, never read* behaviour, observed rather than inferred.
+- **`CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH=1`** — the cloud lane pins nesting to 1 by environment. Ch47/L170 established env → served flag → default 3; here the first rung is taken, confirming the resolution order and showing **the effective depth is lane-dependent**, not a property of the build.
+- **`CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1`** — Ch29/L115's Cowork spawn-env finding, holding in the cloud lane too.
+
+## Honest scope
+
+Forty unrecorded variables were **enumerated, not documented**. Registry entries were added only where meaning is legible from the dump plus a call-site read; the rest are a named backlog rather than summaries this pass would have had to invent. The census is itself the artifact — a full pass needs each call site read in a 2.1.42-era binary that is not on this machine.

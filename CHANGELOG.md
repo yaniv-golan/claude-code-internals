@@ -1,5 +1,29 @@
 # Changelog
 
+## v2.46.0 — 2026-08-29 (this fork) — Chapter 48: the plugin `bin/` affordance, measured in three live lanes
+
+The first chapter here built primarily on **live session measurement** rather than artifact reading — a standalone CLI session, a Cowork host-loop session, and a Cowork cloud session, cross-read against the binaries. Baseline unmoved.
+
+**L173 — an undocumented affordance that solves a problem this skill documented as unsolved.** Claude Code adds every enabled non-builtin plugin's `<path>/bin` to the Bash tool's PATH, and **the path is correct for the namespace of the shell that will use it** — in all three lanes:
+
+| lane | shape | entries | exists |
+|---|---|---|---|
+| standalone CLI | `~/.claude/plugins/cache/<mp>/<plugin>/<ver>/bin` | 35 | **0** |
+| Cowork host-loop | `/sessions/<slug>/mnt/.remote-plugins/plugin_<id>/bin` | 1 | **yes, populated** |
+| Cowork cloud | `/root/.claude/plugins/synced/<org>_<acct>/<plugin>/bin` | 20 | untested |
+
+**The asymmetry is the finding.** In a *single* host-loop session, `CLAUDE_PLUGIN_ROOT` resolves to a **host** path the VM shell cannot use, while the `bin` PATH entry resolves to a **VM** path it can. Every previously-documented approach reads the host-side channel. A `bin/` launcher therefore *collapses* the plugin-root problem rather than mitigating it: PATH lookup happens in the shell's own namespace, so no path crosses the boundary and the model derives nothing. This **corrects** the registry's standing advice that a shell-side root "must be DISCOVERED".
+
+Verified functionally (created a `bin/` script, invoked it as a bare command, self-location returned the plugin root) and found already in production use — the Cowork lane's `bin/` holds a 54-byte read-only executable shipped by another plugin.
+
+Three caveats, all silent failures: a PATH entry is **not** evidence the directory exists (`bin/` is provisioned by sync/install, not carried in plugin source — the same plugin's local install has only `hooks/` and `skills/`); the Cowork mount is read-only; and a path containing shell metacharacters is dropped with no model-visible error. The commonly-cited **v2.1.91** floor is **unverified** — the embedded CHANGELOG reaches only 2.1.220, so its absence there proves nothing.
+
+**L174 — the cloud lane's environment is not a subset of the CLI's.** A live `remote_cowork` session exposes 61 `CLAUDE_*` variables; 40 are absent from this registry and **three are absent from every CLI binary here** (0 in 2.1.233/246/250, positive control returning 86/84/89). The lane reports **`CLAUDE_CODE_VERSION=2.1.42`** against 2.1.250 installed — a concrete figure for Ch33's `state.container-agent-range`, and the reason a current-CLI claim does not automatically describe the cloud lane.
+
+The same dump confirms four records first-party from a running cloud session for the first time: no per-session user (root), `CLAUDE_EFFORT` present in a shell environment, `MAX_SUBAGENT_SPAWN_DEPTH=1` pinned by env — confirming Ch47/L170's resolution order and showing effective depth is **lane-dependent** — and `DISABLE_BACKGROUND_TASKS=1`.
+
+The 40 unrecorded variables are **enumerated, not documented**: entries were added only where meaning is legible from the dump plus a call-site read, and the rest is recorded as a named backlog rather than summaries this pass would have had to invent.
+
 ## v2.45.0 — 2026-08-29 (this fork) — Chapter 47, after an adversarial review rewrote most of it
 
 Three lessons from a CLI surface pass **v2.1.233 → v2.1.250**. An adversarial review of the first draft rejected one lesson outright and found specific errors in the other two; what shipped is the revised version. Baseline unmoved.
