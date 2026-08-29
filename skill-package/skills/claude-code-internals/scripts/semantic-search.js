@@ -45,11 +45,25 @@ const STOP_WORDS = new Set([
  * Tokenize text into lowercase terms.
  */
 function tokenize(text) {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, ' ')
-    .split(/\s+/)
-    .filter(t => t.length > 1 && !STOP_WORDS.has(t));
+  const lower = String(text).toLowerCase();
+  const tokens = [];
+
+  // Compound identifiers first. CLAUDE_PLUGIN_ROOT, list_skills, when_to_use and
+  // disable-model-invocation would otherwise shatter into generic parts and lose all
+  // discriminative power -- CLAUDE_PLUGIN_ROOT became ['claude','plugin','root'], which
+  // matches most of the corpus, and when_to_use became ['use']. Emitting the joined form
+  // as well gives each identifier one rare, high-IDF term. Additive: every token the old
+  // tokenizer produced is still produced below.
+  for (const m of lower.matchAll(/[a-z0-9]+(?:[._-]+[a-z0-9]+)+/g)) {
+    const joined = m[0].replace(/[._-]+/g, '');
+    if (joined.length > 1 && !STOP_WORDS.has(joined)) tokens.push(joined);
+  }
+
+  for (const t of lower.replace(/[^a-z0-9]+/g, ' ').split(/\s+/)) {
+    if (t.length > 1 && !STOP_WORDS.has(t)) tokens.push(t);
+  }
+
+  return tokens;
 }
 
 /**

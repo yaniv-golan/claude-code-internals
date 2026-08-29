@@ -17262,6 +17262,668 @@
     "skill selection": [
       88,
       129
+    ],
+    "afk-mode-2026-01-31": [
+      96
+    ],
+    "fallback-credit-2026-06-01": [
+      113
+    ],
+    "prompt-caching-evict-2026-05-12": [
+      113
+    ],
+    "server-side-fallback-2026-06-01": [
+      113
+    ],
+    "/auto-mode-setup": [
+      112
+    ],
+    "/bridge-kick": [
+      111
+    ],
+    "/commit": [
+      102
+    ],
+    "/commit-push-pr": [
+      102
+    ],
+    "/config": [
+      111
+    ],
+    "/cowork-plugin": [
+      112
+    ],
+    "/dream": [
+      101
+    ],
+    "/extra-usage": [
+      102
+    ],
+    "import": [
+      135
+    ],
+    "/init-verifiers": [
+      111
+    ],
+    "/model": [
+      86
+    ],
+    "/remote-control": [
+      86
+    ],
+    "/rewind": [
+      111
+    ],
+    "/scroll-speed": [
+      102
+    ],
+    "/simplify": [
+      111
+    ],
+    "subtask": [
+      135
+    ],
+    "/toggle-memory": [
+      112
+    ],
+    "/usage-credits": [
+      102
+    ],
+    "/wellbeing": [
+      102
+    ],
+    "/workflows": [
+      91
+    ],
+    "claude_additional_directories": [
+      174
+    ],
+    "claude_after_last_compact": [
+      108
+    ],
+    "claude_agent": [
+      89
+    ],
+    "claude_bg_memory_toggled_off": [
+      102
+    ],
+    "claude_bg_session_permission_rules": [
+      100,
+      107
+    ],
+    "claude_bg_source": [
+      89
+    ],
+    "claude_bg_tcc_disclaimed": [
+      100
+    ],
+    "claude_bridge_reattach_outbound_only": [
+      100
+    ],
+    "claude_client_presence_file": [
+      111
+    ],
+    "claude_code_account_tagged_id": [
+      141
+    ],
+    "claude_code_account_uuid": [
+      141
+    ],
+    "claude_code_additional_directories_claude_md": [
+      141
+    ],
+    "claude_code_agent_list_in_messages": [
+      111
+    ],
+    "claude_code_agent_view_relaunch": [
+      100
+    ],
+    "claude_code_artifacts_api_base_url": [
+      112
+    ],
+    "claude_code_artifact_assets": [
+      112,
+      172
+    ],
+    "claude_code_artifact_auto_open": [
+      112
+    ],
+    "claude_code_artifact_comment_fast_ack": [
+      112,
+      172
+    ],
+    "claude_code_artifact_comment_fast_ack_fixed": [
+      112,
+      172
+    ],
+    "claude_code_artifact_delete": [
+      112,
+      172
+    ],
+    "claude_code_artifact_direct_upload": [
+      112
+    ],
+    "claude_code_artifact_mcp": [
+      112,
+      172
+    ],
+    "claude_code_artifact_preview": [
+      112,
+      172
+    ],
+    "claude_code_artifact_room": [
+      112,
+      172
+    ],
+    "claude_code_artifact_sync_base_url": [
+      112,
+      172
+    ],
+    "claude_code_artifact_types": [
+      112,
+      172
+    ],
+    "claude_code_artifact_type_catalog": [
+      112,
+      172
+    ],
+    "claude_code_artifact_type_cloud_create": [
+      112,
+      172
+    ],
+    "claude_code_artifact_verify": [
+      112,
+      172
+    ],
+    "claude_code_auto_compact_window": [
+      141
+    ],
+    "claude_code_brief_upload": [
+      141
+    ],
+    "claude_code_byoc_enable_datadog": [
+      108
+    ],
+    "claude_code_classifier_summary": [
+      89
+    ],
+    "claude_code_container_id": [
+      174
+    ],
+    "claude_code_design_oauth_client_id": [
+      112
+    ],
+    "claude_code_disable_agents_fleet": [
+      100,
+      114,
+      115,
+      158
+    ],
+    "claude_code_disable_artifact": [
+      112
+    ],
+    "claude_code_disable_auto_memory": [
+      114
+    ],
+    "claude_code_disable_builtin_antmcp": [
+      174
+    ],
+    "claude_code_disable_bundled_skills": [
+      111
+    ],
+    "claude_code_disable_claude_code_skill": [
+      98
+    ],
+    "claude_code_disable_cron": [
+      38,
+      114
+    ],
+    "claude_code_disable_git_instructions": [
+      108
+    ],
+    "claude_code_disable_launch_composer": [
+      112
+    ],
+    "claude_code_disable_legacy_model_remap": [
+      108
+    ],
+    "claude_code_disable_memory_bulk_inflate": [
+      113
+    ],
+    "claude_code_disable_memory_periodic_resync": [
+      113
+    ],
+    "claude_code_disable_nonessential_traffic": [
+      139
+    ],
+    "claude_code_disable_terminal_title": [
+      141
+    ],
+    "claude_code_disable_workflows": [
+      91
+    ],
+    "claude_code_enable_design_sync": [
+      112
+    ],
+    "claude_code_enable_launch_composer": [
+      112
+    ],
+    "claude_code_enable_opus_4_7_fast_mode": [
+      93,
+      110
+    ],
+    "claude_code_environment_runner_version": [
+      174
+    ],
+    "claude_code_experimental_observer_agents": [
+      134
+    ],
+    "claude_code_explore_agent_count": [
+      108,
+      111,
+      158
+    ],
+    "claude_code_force_evaluate_memory": [
+      113
+    ],
+    "claude_code_host_auth_refresh_timeout_ms": [
+      99
+    ],
+    "claude_code_host_platform": [
+      141
+    ],
+    "claude_code_invoked_skills": [
+      116,
+      160
+    ],
+    "claude_code_opus_4_6_fast_mode_override": [
+      93,
+      158
+    ],
+    "claude_code_organization_uuid": [
+      141
+    ],
+    "claude_code_plan_mode_interview_phase": [
+      102
+    ],
+    "claude_code_post_for_session_ingress_v2": [
+      174
+    ],
+    "claude_code_provider_managed_by_host": [
+      99
+    ],
+    "claude_code_remote_environment_type": [
+      174
+    ],
+    "claude_code_remote_hermetic_mode": [
+      107
+    ],
+    "claude_code_spawn_timestamp_ms": [
+      100
+    ],
+    "claude_code_stop_hook_block_cap": [
+      95
+    ],
+    "claude_code_supervised": [
+      100
+    ],
+    "claude_code_sync_plugins_install_timeout_ms": [
+      98
+    ],
+    "claude_code_sync_plugins_mcp_timeout_ms": [
+      98
+    ],
+    "claude_code_sync_skills_wait_timeout_ms": [
+      98
+    ],
+    "claude_code_tags": [
+      141
+    ],
+    "claude_code_team_onboarding": [
+      111
+    ],
+    "claude_code_user_email": [
+      141
+    ],
+    "claude_code_version": [
+      174
+    ],
+    "claude_code_workflows": [
+      91
+    ],
+    "claude_enable_byte_watchdog_bedrock": [
+      94
+    ],
+    "claude_env_file": [
+      89,
+      116,
+      173
+    ],
+    "claude_internal_fc_overrides": [
+      89
+    ],
+    "claude_job_dir": [
+      89
+    ],
+    "claude_project_tool": [
+      141
+    ],
+    "claude_project_uuid": [
+      141
+    ],
+    "claude_pty_host_exec": [
+      100
+    ],
+    "claude_pty_orphan_check_ms": [
+      100
+    ],
+    "claude_securestorage_config_dir": [
+      99
+    ],
+    "claude_skill_dir": [
+      89
+    ],
+    "disable_brief_mode_stop_hook": [
+      141
+    ],
+    "enable_prompt_caching_1h": [
+      141
+    ],
+    "mcp_tool_timeout": [
+      141
+    ],
+    "1129419822 (enabletoolsearchauto)": [
+      108,
+      124
+    ],
+    "1131777852 (updaterappownership)": [
+      141
+    ],
+    "1143815894 (host-loop)": [
+      107,
+      108,
+      124
+    ],
+    "123929380 (coworkkappa)": [
+      108,
+      109
+    ],
+    "124685897 (starling section-prompt override)": [
+      123
+    ],
+    "1311049725 (vcssdkeventsenabled)": [
+      130,
+      131,
+      141,
+      162
+    ],
+    "1549258603 (sdkoauthrefreshrework)": [
+      131
+    ],
+    "1598976391 (proactiveskillsuggestenabled)": [
+      129
+    ],
+    "1648655587 (scheduled-task session limiter)": [
+      108,
+      109
+    ],
+    "1696890383": [
+      114
+    ],
+    "1893165035 (auto-retry error categories)": [
+      108
+    ],
+    "1936081873 (oauthscopesenv)": [
+      108
+    ],
+    "1942337209 (mcp version negotiation)": [
+      160
+    ],
+    "1942781881 (promptsuggestions)": [
+      149
+    ],
+    "1978029737 (cowork runtime config)": [
+      108,
+      109,
+      119,
+      152
+    ],
+    "2039376689 (pressureevictionenabled)": [
+      141
+    ],
+    "2051942385 (ciccanusetoolenabled)": [
+      150
+    ],
+    "2140326016 (pluginbinstubhardening)": [
+      141
+    ],
+    "2216414644 (mobileremotesessioncontrol)": [
+      138
+    ],
+    "2307090146 (cli_plugin)": [
+      106,
+      109,
+      124
+    ],
+    "2340532315 (sparkplug / plugin sync)": [
+      108
+    ],
+    "2392971184 (/rc alias + replay-user-messages)": [
+      108
+    ],
+    "245679952 (suggestskillsenabled)": [
+      129
+    ],
+    "2486083521 (cucanusetoolenabled)": [
+      148
+    ],
+    "2614807392 (.host-home skeleton-path index)": [
+      108,
+      117
+    ],
+    "2678393595 (sessionwatcherpool)": [
+      141,
+      162
+    ],
+    "278625510 (mcpskillsextension)": [
+      131
+    ],
+    "2860753854 (memoryextraguidelines value gate)": [
+      108
+    ],
+    "286376943 (imagineelicitationenabled)": [
+      147
+    ],
+    "2940196192 (coworkartifacts)": [
+      108,
+      112,
+      120,
+      149
+    ],
+    "2976814254": [
+      114
+    ],
+    "3045399524 (fable model allow)": [
+      108,
+      109
+    ],
+    "3123045134 (resolvecloudbranch)": [
+      138,
+      141
+    ],
+    "3214976288 (morningbundledskillenabled)": [
+      131,
+      162
+    ],
+    "3424551112 (cowork auto-mode rule additions)": [
+      150
+    ],
+    "3436441689 (launchpreviewfileaccess)": [
+      141
+    ],
+    "364911507 (tasks_tab experiment)": [
+      109
+    ],
+    "3671534883 (declared-but-unconsumed)": [
+      160
+    ],
+    "3705360580 (ccdoauthrefreshrework)": [
+      131
+    ],
+    "3758515526 (official plugin marketplace repo)": [
+      139
+    ],
+    "3796647113 (stallsampler)": [
+      141
+    ],
+    "3976799455 (awayrecap)": [
+      141
+    ],
+    "4074604942 (1pdirectmcppool)": [
+      141
+    ],
+    "4116586025 (yukonsilvercapabilityprobe)": [
+      138
+    ],
+    "4153934152 (skipprecompactload)": [
+      108
+    ],
+    "4185841952 (sessionclassifyconfig)": [
+      141
+    ],
+    "4202409342 (builtin-tool auto-mode classifier)": [
+      150
+    ],
+    "434204418 (mcpconnectionnonblockingoff)": [
+      108,
+      124
+    ],
+    "583857784 (bridge transport sdk adapter)": [
+      108,
+      119
+    ],
+    "66187241 (emittoolusesummaries)": [
+      108
+    ],
+    "714014285 (finegrainedtoolstreaming)": [
+      108
+    ],
+    "942840715 (declared-but-unconsumed)": [
+      160
+    ],
+    "pne (claude design)": [
+      112
+    ],
+    "tengu_cobalt_plinth (artifacts)": [
+      112
+    ],
+    "coworkscheduledtasks (aka ccdscheduledtasks)": [
+      109
+    ],
+    "localplugins": [
+      106
+    ],
+    "localsessions (cloud-teleport methods)": [
+      119
+    ],
+    "localsessions / localagentmodesessions (effort + extended-thinking methods)": [
+      114,
+      120
+    ],
+    "can_use_tool": [
+      105,
+      107
+    ],
+    "end_session": [
+      107
+    ],
+    "hook_callback": [
+      105,
+      108
+    ],
+    "host_auth_token_refresh": [
+      99,
+      105
+    ],
+    "initialize": [
+      105,
+      107
+    ],
+    "memory_recall / memory_saved": [
+      109
+    ],
+    "model_fallback family": [
+      109,
+      113
+    ],
+    "oauth_token_refresh": [
+      99,
+      105
+    ],
+    "request_user_dialog": [
+      107,
+      108
+    ],
+    "stage_file": [
+      107,
+      108
+    ],
+    "task_started (dispatch + tasks-tool family)": [
+      109,
+      124
+    ],
+    "artifact": [
+      112
+    ],
+    "sendmessage": [
+      115
+    ],
+    "task": [
+      115,
+      121
+    ],
+    "taskcreate": [
+      109
+    ],
+    "taskget": [
+      109
+    ],
+    "tasklist": [
+      109
+    ],
+    "taskoutput": [
+      109
+    ],
+    "taskupdate": [
+      109
+    ],
+    "claude_code_android_emulator (mcp server \"claude code android emulator\", tool `control`)": [
+      125
+    ],
+    "claude_code_ios_simulator (mcp server \"claude code ios simulator\", tool `control`)": [
+      125
+    ],
+    "mcp__cowork-onboarding__show_onboarding_role_picker": [
+      129
+    ],
+    "mcp__mcp-registry__list_connectors": [
+      129
+    ],
+    "mcp__mcp-registry__search_mcp_registry": [
+      129
+    ],
+    "mcp__mcp-registry__suggest_connectors": [
+      129
+    ],
+    "mcp__plugins__list_plugins": [
+      129
+    ],
+    "mcp__plugins__suggest_plugin_install": [
+      129
+    ],
+    "plugin bin/ on the bash tool's path": [
+      89,
+      173
     ]
   }
 }

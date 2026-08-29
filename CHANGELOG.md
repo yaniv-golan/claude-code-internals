@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.46.7 — 2026-08-29 (this fork) — the search layer could not find this repo's own identifiers
+
+`tokenize()` stripped every separator, so `CLAUDE_PLUGIN_ROOT` became `['claude','plugin','root']` — three terms that match most of the corpus — and `when_to_use` became `['use']`. Neither `claudepluginroot` nor `claude_plugin_root` was in the vocabulary in **any** form. Searching for the single most-documented identifier here returned the wrong lesson, and the same held for the largest registry category: **236 of 421 entries are env vars, all `SCREAMING_SNAKE`.**
+
+Three changes:
+
+1. **`tokenize()` also emits a joined form** for separator-bearing identifiers, giving each one rare, high-IDF term. Patched identically in all three copies. Their `tokenize()` bodies were byte-identical — but their `STOP_WORDS` deliberately are **not** (the query side additionally drops `claude` and `code`), so the two were not consolidated.
+2. **201 registry identifiers added to `keyword_map`**, each mapped through its own entry's `provenance.lesson` rather than by guesswork.
+3. **Identifier-shaped `keyword_map` keys now match exactly**, not by substring. The generic token `path` had been hitting every `*_PATHS` variable and dragging its lesson above the one actually about plugin `bin/` on PATH.
+
+**Rejected along the way:** also adding those identifiers to lesson `keywords`. It fixed identifier lookup and then diluted the TF-IDF vectors, regressing `plugin bin PATH` from L173 to L89. `keyword_map` is the layer built for term lookup; the vectors were left alone.
+
+One pre-existing miss improved as a side effect: **`hooks not firing`** returned L04 (Query Engine) and now returns L10 (Hooks System).
+
+New `scripts/tests/search-identifiers.test.js` — 6 tests, 89 total — pins identifier ranking, the natural-language queries that must not be displaced, and byte-identity of the three `tokenize()` copies, which is the real hazard of a triplicated function.
+
 ## v2.46.6 — 2026-08-29 (this fork) — four skill-reachability gaps
 
 **`when_to_use` does not reach the Cowork listing.** CLI-side the schema says it *"becomes part of the tool description."* In `app.asar` **1.40609.0** it occurs **zero** times — against positive controls `list_skills` (17) and `suggest_skills` (14) in the same file. The Desktop's `mcp__skills__list_skills` handler has no code that reads it, so trigger information placed only there is invisible under Cowork.

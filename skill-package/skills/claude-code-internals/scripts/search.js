@@ -66,11 +66,25 @@ const STOP_WORDS = new Set([
  * @returns {string[]}
  */
 function tokenize(text) {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, ' ')
-    .split(/\s+/)
-    .filter(t => t.length > 1 && !STOP_WORDS.has(t));
+  const lower = String(text).toLowerCase();
+  const tokens = [];
+
+  // Compound identifiers first. CLAUDE_PLUGIN_ROOT, list_skills, when_to_use and
+  // disable-model-invocation would otherwise shatter into generic parts and lose all
+  // discriminative power -- CLAUDE_PLUGIN_ROOT became ['claude','plugin','root'], which
+  // matches most of the corpus, and when_to_use became ['use']. Emitting the joined form
+  // as well gives each identifier one rare, high-IDF term. Additive: every token the old
+  // tokenizer produced is still produced below.
+  for (const m of lower.matchAll(/[a-z0-9]+(?:[._-]+[a-z0-9]+)+/g)) {
+    const joined = m[0].replace(/[._-]+/g, '');
+    if (joined.length > 1 && !STOP_WORDS.has(joined)) tokens.push(joined);
+  }
+
+  for (const t of lower.replace(/[^a-z0-9]+/g, ' ').split(/\s+/)) {
+    if (t.length > 1 && !STOP_WORDS.has(t)) tokens.push(t);
+  }
+
+  return tokens;
 }
 
 // ---------------------------------------------------------------------------
@@ -95,10 +109,29 @@ function keywordSearch(tokens, topicIndex) {
   // and collect the associated lesson IDs.
   const hitCounts = new Map(); // lesson ID -> number of token matches
 
+  // Precomputed once: each keyword alongside a separator-stripped form, so a joined
+  // identifier token (claudepluginroot) still matches a keyword written with separators
+  // (claude-plugin-root). Without this the tokenizer's new joined forms would never hit
+  // the keyword layer.
+  // An identifier-shaped key (separators, no spaces: CLAUDE_CODE_WORKSPACE_HOST_PATHS,
+  // list_skills, tengu_saddle_lantern) matches only EXACTLY, as itself or as its joined
+  // form. Substring matching on these is what made the generic token 'path' hit every
+  // *_PATHS variable and drag their lesson to the top of unrelated queries. Natural-language
+  // keys keep the original substring behaviour.
+  const normalizedKeywords = Object.entries(keywordMap).map(([keyword, lessonIds]) => {
+    const lower = keyword.toLowerCase();
+    const joined = lower.replace(/[._\-\s]+/g, '');
+    const isIdentifier = !/\s/.test(lower) && /[._-]/.test(lower);
+    return [lower, joined, lessonIds, isIdentifier];
+  });
+
   for (const token of tokens) {
     const matchedIds = new Set();
-    for (const [keyword, lessonIds] of Object.entries(keywordMap)) {
-      if (keyword.toLowerCase().includes(token)) {
+    for (const [keyword, keywordJoined, lessonIds, isIdentifier] of normalizedKeywords) {
+      const hit = isIdentifier
+        ? (token === keyword || token === keywordJoined)
+        : (keyword.includes(token) || keywordJoined.includes(token));
+      if (hit) {
         for (const id of lessonIds) {
           matchedIds.add(id);
         }
