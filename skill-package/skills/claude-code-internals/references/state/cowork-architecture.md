@@ -502,8 +502,13 @@ All mounts appear at `/sessions/<slug>/mnt/…` — the host-path strings visibl
 **not usable VM paths**. A typical session carries **29** fuse mounts:
 
 `outputs` (rw) · `uploads` (**ro**) · each connected folder · `.claude/projects` · `.claude/skills`
-(separate mounts) · `.projects/<uuid>` (**ro**) · `.local-plugins/cache/<marketplace>/<plugin>/<version>`
-(version-pinned) · `.remote-plugins/plugin_<id>`
+(separate mounts) · `.projects/<uuid>` (**ro**) · `.local-plugins/<install path relative to the account
+root>` · `.remote-plugins/plugin_<id>`
+
+`.local-plugins` has **no fixed depth** — the tail mirrors the host install layout, so
+`cache/<marketplace>/<plugin>/<version>` is one instance, not a template; a live capture shows
+`marketplaces/<marketplace>/<plugin>` with no version and no id. `.remote-plugins` is the opposite: the
+plugin id **is** the leaf, one directory per id, so only that shape supports keying off the id.
 
 That is the **host-loop runtime** view. The VM-loop builder additionally emits `.artifacts/<id>` and
 `.scheduled/<id>` (both `ro`), which no host-loop `/proc/mounts` capture can show.

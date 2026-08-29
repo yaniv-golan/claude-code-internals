@@ -782,7 +782,7 @@
       "id": "plugins.plugin-root-per-consumer",
       "page": "plugins-and-plugin-root",
       "rule": "Use `${CLAUDE_PLUGIN_ROOT}` for file-tool reads, and discover the mounted path at runtime for anything you execute.",
-      "detail": "`${CLAUDE_PLUGIN_ROOT}` is a token that expands to your plugin's directory — but it expands differently depending on what expands it and which sandbox the session is in, and one expansion names a location the other cannot reach. Reading your plugin's files through the file tools with the token is reliable. Executing a script by that path is not: in the local sandbox the token resolves to a host staging directory that the shell cannot see. For anything you execute, locate the plugin's mounted directory at runtime instead of hardcoding a path.",
+      "detail": "`${CLAUDE_PLUGIN_ROOT}` is a token that expands to your plugin's directory — but it expands differently depending on what expands it and which sandbox the session is in, and one expansion names a location the other cannot reach. Reading your plugin's files through the file tools with the token is reliable **only where the runtime replaces it for you**, which it does in the files it loads as definitions — your skill's own body, a command, a hook. There the token is swapped for a real path before the model ever sees it. It is **not** replaced in a file your skill merely reads later while it runs: a reference file that instructs the model to use the token hands over the token itself, which names nothing. This is the difference between text the runtime loads and text your skill reads, and it has cost a real skill a silent fallback to a degraded path. Executing a script by that path is not: in the local sandbox the substituted value names a host staging directory the shell cannot see, and the token is not in your shell's environment either, so referring to it in a command yields an empty string rather than an error. For anything you execute, locate the plugin's mounted directory at runtime instead of hardcoding a path.",
       "tier": "binary",
       "severity": "silent",
       "durability": "durable",
@@ -796,7 +796,8 @@
         "state_page": "plugins-skills-hooks"
       },
       "caveats": [
-        "Resolution differs between the two sandboxes; this rule is written to be correct in both."
+        "Resolution differs between the two sandboxes; this rule is written to be correct in both.",
+        "The reliable case is narrower than it reads: substitution happens in the files the runtime loads, not in files your skill reads at run time. If your skill points the model at a reference file, put a real located path in it rather than the token, and have the step that cannot find what it needs stop and say so — a resolution that fails quietly is indistinguishable from a feature that was never shipped."
       ]
     },
     {

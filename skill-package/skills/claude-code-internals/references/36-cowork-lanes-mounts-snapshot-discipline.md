@@ -288,12 +288,42 @@ Session dirs are `drwxr-x---` owned by `nobody:nogroup`; each session runs as it
 | connected folder | 1 | `/mnt/<name>` (spaces octal-escaped, `untitled\040folder\0405`) |
 | `.claude` | 2 | `.claude/projects`, `.claude/skills` — **separate mounts** |
 | `.projects` | 1 | `.projects/<uuid>` |
-| `.local-plugins` | 3 | `.local-plugins/cache/<marketplace>/<plugin>/<version>` — **version-pinned** |
+| `.local-plugins` | 3 | `.local-plugins/<install path relative to the account root>` — in **this** capture `cache/<marketplace>/<plugin>/<version>`; see the correction below, the depth is not fixed |
 | `.remote-plugins` | 20 | `.remote-plugins/plugin_<id>` |
 
 **`.projects/<uuid>` vs a connected folder — two different things.** Connecting a *project* creates a `.projects/<uuid>` mount and populates `userSelectedProjectUuids`; connecting a *folder* creates `/mnt/<name>` and populates `userSelectedFolders` + `resolvedFolderKinds: [{display, kind:"local"}]`. A session with a project attached therefore shows an **empty `userSelectedFolders` and no folder mount** — a real source of confusion when reading session state.
 
-The plugin mount shapes confirm Ch17/L89 + v2.12.1 live, and add that the local-plugin cache path is version-pinned. `pluginInstallPaths` on the host reads `/var/folders/…/T/claude-hostloop-plugins/<16-hex>` — the L89 staging path with the documented `sha256(installPath).slice(0,16)` hash.
+The plugin mount shapes confirm Ch17/L89 + v2.12.1 live. `pluginInstallPaths` on the host reads `/var/folders/…/T/claude-hostloop-plugins/<16-hex>` — the L89 staging path with the documented `sha256(installPath).slice(0,16)` hash.
+
+### CORRECTION (2026-08-29): `.local-plugins` has no fixed depth
+
+The table row above once read `.local-plugins/cache/<marketplace>/<plugin>/<version>` — **version-pinned**, stated as *the* shape. It is one instance of a shape, and the generalisation was wrong.
+
+The Desktop builds that path as `` `/sessions/${id}/mnt/${.local-plugins}/${guestCompatibleRelative(accountOrgRoot, installPath)}` `` — the tail is the **install path relative to an account/org root**, so it mirrors whatever the host layout happens to be. `cache/<marketplace>/<plugin>/<version>` is what a marketplace install looks like on disk, not a template. A live counterexample, relayed from a `cowork-harness` `container`-fidelity run:
+
+```
+/sessions/<id>/mnt/.local-plugins/marketplaces/local-desktop-app-uploads/creative-problem-solving
+```
+
+Three segments, `marketplaces` rather than `cache`, **no version and no plugin id**. Anything keying off the id — including the two-namespace join below — cannot fire on this shape.
+
+The sibling row is different in kind and is safe to rely on: `.remote-plugins/plugin_<id>` is built as `<mnt>/.remote-plugins/<plugin.id>`, so the id **is** the leaf, by construction one directory per id per session.
+
+### Live confirmation from inside a running session (2026-08-29)
+
+Everything above was read from the Desktop application or the guest disk image. This is the first confirmation from **inside a running host-loop session**, relayed by the `creative-problem-solving` project:
+
+```
+file tools:  …/local-agent-mode-sessions/<a>/<b>/rpm/plugin_01Xzg…/skills/<skill>/references/pipeline.md
+shell:       HOME=/sessions/zealous-gallant-wozniak   PWD=/sessions/zealous-gallant-wozniak
+             ls -d "$HOME/.claude/plugins"  ->  absent
+             find /sessions -name verify_pipeline.py -path '*/scripts/*'
+               /sessions/zealous-gallant-wozniak/mnt/.remote-plugins/plugin_01Xzg…/scripts/verify_pipeline.py
+```
+
+Four recorded facts confirmed at once, none previously observed from a live shell: the `.remote-plugins/plugin_<id>` shape; `$HOME` = the session root (Ch37/L146, established there by probe); the adjective-adjective-noun slug format (Ch31/L117); and the namespace split itself — **the plugin id is byte-identical in both paths**, which is what makes a basename join work where a path never can. Note also `~/.claude/plugins` does not exist in the VM, so a search rooted there is inert.
+
+**Method note on the same transcript.** It also reported that an upward directory walk "is what found" the scripts. It is not: the agent had set its start directory to a `/sessions/…` path learned from an earlier `find`, not to the file-tool directory the instruction named. Fed the documented value the walk searches a tree the shell cannot see. A trace showing the right answer does not establish the mechanism that produced it — and this one would have entered a lesson as a working fallback.
 
 ## ⚠️ METHODOLOGY — agent-reported paths are not evidence
 

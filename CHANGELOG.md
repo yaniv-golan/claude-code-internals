@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.44.3 — 2026-08-29 (this fork) — a shape that was one instance, and the first look from inside
+
+**`.local-plugins` has no fixed depth, and two pages said it did.** Ch36/L140's mount table and the Cowork architecture state page both gave `.local-plugins/cache/<marketplace>/<plugin>/<version>` as *the* shape, one of them labelled "version-pinned". It is one instance. The Desktop builds that tail as the install path *relative to an account root* — a mirror of whatever the host layout happens to be. v2.44.1 had already corrected the underlying claim from the builder, but fixed only the registry entry and left both prose copies standing: the record being looked at gets corrected, its copies do not.
+
+A live counterexample makes it concrete — `.local-plugins/marketplaces/<marketplace>/<plugin>`, three segments, `marketplaces` rather than `cache`, **no version and no plugin id**, so anything keying off the id cannot fire on it. The sibling row is different in kind and stays reliable: `.remote-plugins/plugin_<id>` is built with the id *as* the leaf, one directory per id by construction.
+
+**The first confirmation from inside a running session.** Every Cowork mount claim in this skill was read from the application bundle or the guest disk image. A real host-loop session, relayed by the `creative-problem-solving` project, confirms four of them at once from a live shell: the `.remote-plugins/plugin_<id>` shape, `$HOME` = the session root (previously probe-only), the adjective-adjective-noun slug format, and the namespace split itself — with **the plugin id byte-identical in the host and VM paths**, which is precisely what lets a basename join work where a path never can. Also recorded: `~/.claude/plugins` does not exist inside the VM, so a search rooted there is inert.
+
+**A method note from the same transcript**, kept because it nearly became a mechanism: it reported that an upward directory walk "is what found" the scripts. It was not — the agent had seeded the walk with a `/sessions` path it learned from an earlier `find`, not the file-tool path the instruction named. Fed the documented value, the walk searches a tree the shell cannot see. *A trace showing the right answer does not establish the mechanism that produced it.*
+
+**ccinternals.dev — the plugin-root rule was correct and incomplete.** It said reading your plugin's files with the token is reliable. It is, but only where the runtime replaces the token for you: in the files it **loads** as definitions — your skill body, a command, a hook. It is *not* replaced in a file your skill **reads while it runs**, where the token arrives literally and names nothing. That distinction cost a real skill a silent fallback to a degraded path, which is the strongest argument for publishing it. The page also now says the token is absent from the shell environment, so referring to it in a command yields an empty string rather than an error. The neighbouring "find the mount at runtime" rule needed no change — it already said exactly that.
+
+Bounds for file 36 re-derived, which also fixed a pre-existing off-by-one on L138. No baseline moves.
+
 ## v2.44.2 — 2026-08-28 (this fork) — two conventions become checks
 
 No new binary findings. This turns two rules that were being held by memory into things CI enforces, after both failed inside a single release.

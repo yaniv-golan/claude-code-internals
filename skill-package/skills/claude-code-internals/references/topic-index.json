@@ -4005,7 +4005,7 @@
       "lesson_number": "138",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
       "startLine": 19,
-      "endLine": 108,
+      "endLine": 109,
       "keywords": [
         "cowork-remote-lane",
         "cowork-local-lane",
@@ -4111,7 +4111,7 @@
       "lesson_number": "140",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
       "startLine": 259,
-      "endLine": 323,
+      "endLine": 353,
       "keywords": [
         "vm-multiplexing-confirmed",
         "shared-vm-guest",
@@ -4141,7 +4141,12 @@
         "scheduled-mount",
         "vm-loop-only-mounts",
         "runtime-vs-construction-view",
-        "mcpb-cache-submount"
+        "mcpb-cache-submount",
+        "local-plugins-no-fixed-depth",
+        "remote-plugins-id-is-the-leaf",
+        "live-session-mount-confirmation",
+        "plugin-id-joins-two-namespaces",
+        "home-is-the-session-root"
       ]
     },
     {
@@ -4149,8 +4154,8 @@
       "title": "Snapshot Discipline: the fcache Is a Moving Target with Two Absence Axes",
       "lesson_number": "141",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 324,
-      "endLine": 402,
+      "startLine": 354,
+      "endLine": 432,
       "keywords": [
         "fcache-snapshot-identity",
         "fcache-content-hash",
@@ -4188,8 +4193,8 @@
       "title": "coworkSyspromptMap: a Server-Driven Prompt REPLACE Channel",
       "lesson_number": "142",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 403,
-      "endLine": 438,
+      "startLine": 433,
+      "endLine": 468,
       "keywords": [
         "coworkSyspromptMap",
         "system-prompt-patch-channel",
@@ -16861,6 +16866,21 @@
     ],
     "discover-plugin-root-shell-side": [
       89
+    ],
+    "local-plugins-no-fixed-depth": [
+      140
+    ],
+    "remote-plugins-id-is-the-leaf": [
+      140
+    ],
+    "live-session-mount-confirmation": [
+      140
+    ],
+    "plugin-id-joins-two-namespaces": [
+      140
+    ],
+    "home-is-the-session-root": [
+      140
     ]
   }
 }
