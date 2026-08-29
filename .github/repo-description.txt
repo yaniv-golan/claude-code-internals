@@ -1,0 +1,1 @@
+Claude Code internals skill — 174 binary-verified lessons across 48 chapters (CLI content baseline 2.1.231 + Desktop asar 1.30096.1 + agent 2.1.229): hooks, permissions, agents, MCP, Cowork path resolution, the in-app browser, skill authoring, plugin bin/ on PATH, self-hosted runners, and the device bridge

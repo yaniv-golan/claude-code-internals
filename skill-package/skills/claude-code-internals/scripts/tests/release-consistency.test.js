@@ -38,6 +38,12 @@ const DOCS = {
   'plugin.json': path.join(PKG_DIR, '.claude-plugin', 'plugin.json'),
   'skill-package/README.md': path.join(PKG_DIR, 'README.md'),
   'SKILL.md': path.join(SKILL_DIR, 'SKILL.md'),
+  // The GitHub "About" text. It lives here rather than only on github.com because
+  // the checks below can only reach artifacts inside the repository -- and the one
+  // stated-count surface that lived outside it is the one that drifted, sitting at
+  // "169 lessons across 46 chapters" through two releases while every file in the
+  // tree said 174/48. scripts/sync-repo-description.sh publishes this file.
+  'repo-description.txt': path.join(REPO_DIR, '.github', 'repo-description.txt'),
 };
 
 const allNumbers = (text, re) => [...new Set([...text.matchAll(re)].map((m) => m[1]))];
@@ -212,4 +218,30 @@ test('the hook-event count is stated consistently across docs', () => {
     }
   }
   assert.ok(counts.size <= 1, `docs disagree on the hook-event count: ${[...counts].join(' vs ')}`);
+});
+
+// The general lesson-count rule tolerates only "N lessons" / "N detailed lessons",
+// and widening it is not safe: README legitimately says "50 original lessons" about
+// chapters 1-8, which is history, not a current claim. So the About text -- one line
+// containing only current claims, where a tolerant pattern IS safe -- gets its own
+// assertion rather than a loosened shared one.
+test('the GitHub About text states the current lesson and chapter counts', () => {
+  const text = readText(DOCS['repo-description.txt']);
+  const lessons = text.match(/(\d{2,4})\s+(?:[a-z][a-z-]*\s+)*lessons\b/);
+  const chapters = text.match(/(\d{1,3})\s+chapters\b/);
+  assert.ok(lessons, 'About text states no lesson count');
+  assert.ok(chapters, 'About text states no chapter count');
+  assert.strictEqual(lessons[1], String(version.lessons_count),
+    `About text says ${lessons[1]} lessons but version.json says ${version.lessons_count}`);
+  assert.strictEqual(chapters[1], String(version.chapters_count),
+    `About text says ${chapters[1]} chapters but version.json says ${version.chapters_count}`);
+});
+
+test('the GitHub About text is a single line within GitHub\'s 350-char limit', () => {
+  const text = readText(DOCS['repo-description.txt']);
+  assert.ok(!text.trimEnd().includes('\n'), 'repo-description.txt must be a single line');
+  assert.ok(
+    text.trim().length <= 350,
+    `repo description is ${text.trim().length} chars; GitHub truncates above 350`,
+  );
 });

@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.46.8 — 2026-08-29 (this fork) — the one correspondence surface outside the repository
+
+`release-consistency.test.js` already asserted that every doc stating a lesson or chapter count states the current one. The GitHub **About** text still sat at *"169 lessons across 46 chapters"* through two releases while every file in the tree said 174/48 — because the suite can only reach artifacts **inside** the repository. The failure was a boundary, not a missing check.
+
+The canonical text now lives at `.github/repo-description.txt`, registered in that test's `DOCS` map like any other doc, with `scripts/sync-repo-description.sh` (`--check` / `--push`) as the mechanical publisher so nobody retypes it into the GitHub UI.
+
+**The tamper test caught two defects in the fix itself**, which is the whole reason for tampering rather than assuming:
+
+1. Registering the file gave only **vacuous** lesson coverage. The shared regex matches `N lessons` / `N detailed lessons`; the About text says `174 binary-verified lessons`, so it matched nothing and the assertion passed by checking nothing.
+2. Broadening that regex to tolerate any qualifier then **false-positived** on README's `50 original lessons` — a historical claim about chapters 1–8, not a current one.
+
+Resolved by asserting the **specific pair** rather than loosening the shared rule: the About text is a single line of current claims, so a tolerant pattern is safe *there* and nowhere else. Both counts verified to fire independently under tampering. 91 tests.
+
 ## v2.46.7 — 2026-08-29 (this fork) — the search layer could not find this repo's own identifiers
 
 `tokenize()` stripped every separator, so `CLAUDE_PLUGIN_ROOT` became `['claude','plugin','root']` — three terms that match most of the corpus — and `when_to_use` became `['use']`. Neither `claudepluginroot` nor `claude_plugin_root` was in the vocabulary in **any** form. Searching for the single most-documented identifier here returned the wrong lesson, and the same held for the largest registry category: **236 of 421 entries are env vars, all `SCREAMING_SNAKE`.**
