@@ -1,5 +1,29 @@
 # Changelog
 
+## v2.46.4 — 2026-08-29 (this fork) — retracting v2.46.3's correction, and proving the mechanism live
+
+Third error in one chapter, and the same shape as the first two: **verify one quantity, state a conclusion about its neighbour.** v2.46.3 read three `bin/` directories out of plugin-shipping repos, called them misplacements, and proposed a lint rule on that reading — from directory *position* alone, without opening a single file.
+
+Opening them refutes all three:
+
+| repo | what its `bin/` is | misplaced? |
+|---|---|---|
+| `proof-engine` | top-level bash dispatcher for a Python monorepo (`../` → `tools/`, `packages/`); that repo's plugin is skills-only | **no** |
+| `chrome-devtools` | TypeScript *sources* for the npm package's declared entries (`package.json` → `"bin": {…: "./build/src/bin/…js"}`) | **no** |
+| `xev-cli` | the `xev-cli` sub-project's own entry point, one of five siblings under the marketplace root | **no** |
+
+So the field record is not three failures. It is **zero attempts**. Nobody has used the affordance and nobody has misused it — and the proposed rule's entire observed firing set would have been false positives, each one telling an author to break a working CLI to satisfy a convention it was never following.
+
+**Resolution proven live.** A peer session ran the direct test instead of reasoning about it (probe since removed): an enabled plugin's `<root>/bin` was already a PATH entry while the directory did *not* exist; creating it made the bare command resolve **immediately, from an already-running shell** — no restart, no reload — and `dirname "$0"/..` returned the plugin root. Composed with copy fidelity and the bundle's PATH mapping, the chain is complete: a `bin/` beside `.claude-plugin/plugin.json` reaches PATH and executes, recovering the plugin root without consulting `CLAUDE_PLUGIN_ROOT`.
+
+**The org-remote lane's second writer, now a rule.** Across every org-remote plugin root on one machine — 26, spanning two org lanes under one account — `bin/` exists **iff** the manifest declares `clis`, and the launcher's filename equals the declared CLI key. 25 without, one with a single key carrying a launcher of exactly that name; zero violations; `bin/`'s mtime trails the plugin's own directories by a week.
+
+A draft of this entry claimed **46 roots across two independent machines**. It was 26 on one. Two agent sessions reported 20 and 26 and I read that as replication — they share a host and a filesystem, 20 is one org lane, 26 is both, the smaller is a subset of the larger, and the "byte-identical launchers" were one file read twice. **Two agents reading one disk is one measurement**, and its agreement is not evidence. Corrected before push; the scope now sits in the lesson beside the claim.
+
+The actionable form needs no measurement at all: **declaring `clis: {foo: …}` means the runtime owns `bin/foo` — do not ship a launcher by that name.** Whether a *differently*-named authored launcher survives alongside a generated one is still untested.
+
+Status is now **proven and unadopted** — which is an argument for documenting it, not for hedging it. The correction cost one `head -25` per file; the peer's probe cost a minute. Both beat the expensive inference they replaced.
+
 ## v2.46.3 — 2026-08-29 (this fork) — two retractions in Ch48/L173, pointing opposite ways
 
 Both from last week's pass, both the same underlying mistake — **verifying one quantity and stating a conclusion about its neighbour**.
