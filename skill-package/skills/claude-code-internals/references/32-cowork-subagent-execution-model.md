@@ -72,6 +72,13 @@ function rly({tools:e,isBuiltIn:t,isAsync:r=!1,isTeammate:n=!1,permissionMode:o,
 
 ## Depth cap and the absence of a fan-out cap
 
+> **SUPERSEDED BY LATER BUILDS — see Ch38/L134 first, then Ch47/L170.** This section is correct for the
+> artifacts it names (host agent 2.1.205 / in-VM ELF 2.1.205), where no concurrency cap exists and the depth
+> bound is a hardcoded `NMr`. Fan-out caps **arrived later** (2.1.212/2.1.217) and are documented in L134;
+> L170 records what has moved since (depth default now 3, the per-session cap removed, two bypasses on the
+> concurrency cap). Nothing below was wrong when written — *"not found in the bundle I searched" only
+> disproves a claim for that bundle.*
+
 Depth: the dispatch throws at `Q3(ctx)>=5` ("Subagent nesting limit reached (depth ${g} of 5)"), `NMr=5` on the host; the in-VM ELF carries the identical guard, `BLr=5`:
 
 ```js

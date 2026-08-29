@@ -2106,11 +2106,11 @@
       "id": "env.CLAUDE_CODE_ARTIFACT_DIRECT_UPLOAD",
       "kind": "env-var",
       "name": "CLAUDE_CODE_ARTIFACT_DIRECT_UPLOAD",
-      "status": "dark-launched",
+      "status": "removed",
       "first_seen": "2.1.198",
-      "removed_in": null,
-      "as_of": "2.1.231",
-      "summary": "Chooses the inline direct-upload lane vs redeploy for Artifacts (tengu_cobalt_plinth_direct).",
+      "removed_in": "2.1.246",
+      "as_of": "2.1.250",
+      "summary": "REMOVED: present in CLI 2.1.233 (3 occurrences), absent from 2.1.246/2.1.247/2.1.248/2.1.250 and from Desktop app.asar 1.40609.0. Previously carried as dark-launched at a 2.1.231 stamp. Found by auditing every registry env-var name against the raw binary, not by a diff -- a diff of ADDED names cannot surface a removal. Chooses the inline direct-upload lane vs redeploy for Artifacts (tengu_cobalt_plinth_direct).",
       "provenance": [
         {
           "lesson": 112
@@ -5183,11 +5183,14 @@
       "status": "live",
       "first_seen": "2.1.217",
       "removed_in": null,
-      "as_of": "2.1.231",
-      "summary": "Caps concurrently-running sub-agents; default 20 (DUg) via KEu(). Enforced on Task dispatch (taskRegistry.getConcurrentSubagents); over-cap throws a model-visible 'Do not retry' error, telemetry subagent_concurrency_cap; bypass gate tengu_amber_kestrel. CORRECTS Ch35/L121's 'no fan-out cap'.",
+      "as_of": "2.1.250",
+      "summary": "RE-VERIFIED at 2.1.250 (Ch47/L170): default still 20 (var J=20 in hzn()). The refusal has TWO early returns before it throws -- x('tengu_amber_kestrel',!1) is a BYPASS GATE that disables the cap (as L134 correctly recorded; a Ch47 draft wrongly called it telemetry, having read it from the string table beside subagent_concurrency_cap), and BC(model,...,appState.ultracode) exempts ultracode/xhigh sessions. Practical note: MAX_TOOL_USE_CONCURRENCY defaults to 10 < 20, so an ordinary single-turn fan-out queues and never reaches this cap. PRIOR TEXT: Caps concurrently-running sub-agents; default 20 (DUg) via KEu(). Enforced on Task dispatch (taskRegistry.getConcurrentSubagents); over-cap throws a model-visible 'Do not retry' error, telemetry subagent_concurrency_cap; bypass gate tengu_amber_kestrel. CORRECTS Ch35/L121's 'no fan-out cap'.",
       "provenance": [
         {
           "lesson": 134
+        },
+        {
+          "lesson": 170
         }
       ]
     },
@@ -5195,14 +5198,17 @@
       "id": "env.CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION",
       "kind": "env-var",
       "name": "CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION",
-      "status": "live",
+      "status": "removed",
       "first_seen": "2.1.212",
-      "removed_in": null,
-      "as_of": "2.1.231",
-      "summary": "Per-session total sub-agent spawn cap; default 200 (HUg) via YEu(). taskRegistry.getTotalAgentSpawns >= cap throws, telemetry subagent_count_cap.",
+      "removed_in": "(between 2.1.231 and 2.1.233)",
+      "as_of": "2.1.250",
+      "summary": "REMOVED (Ch47/L170): the reader is gone. Across 2.1.233/246/247/248/250 both subagent_count_cap and getTotalAgentSpawns are ZERO; the variable NAME survives twice, in the settings numeric-env allowlist only, with no accessor. THE NAME OUTLIVES ITS READER -- same shape as env.CLAUDE_CODE_INVOKED_SKILLS (declared-but-unconsumed), and the reason a name-presence audit did not catch it: audit for an ACCESSOR, not a string. PRIOR TEXT (L134): Per-session total sub-agent spawn cap; default 200 (HUg) via YEu(). taskRegistry.getTotalAgentSpawns >= cap throws, telemetry subagent_count_cap.",
       "provenance": [
         {
           "lesson": 134
+        },
+        {
+          "lesson": 170
         }
       ]
     },
@@ -5228,11 +5234,14 @@
       "status": "live",
       "first_seen": "2.1.217",
       "removed_in": null,
-      "as_of": "2.1.231",
-      "summary": "Sub-agent nesting depth; env override else gate tengu_hazel_trellis, fallback DEu=1. 2.1.217 made nesting OFF by default (depth 1); Ch35/L121's depth-5 (NMr/BLr) remains the hard ceiling.",
+      "as_of": "2.1.250",
+      "summary": "UPDATED 2.1.250 (Ch47/L170): fallback is now 3, not 1 -- announced in the official CHANGELOG under 2.1.219 ('up to depth 3 by default (was 1)'), so the history is 5 -> 1 (2.1.217) -> 3 (2.1.219). Resolution order: env -> served flag (maxSubagentSpawnDepthFromGrowthBook, gate tengu_hazel_trellis) -> fallback 3 (var o=3 in sb()). ALSO CORRECTED: this entry previously said Ch35/L121's depth-5 (NMr/BLr) 'remains the hard ceiling' -- NMr and BLr are ABSENT from 2.1.250 (0 occurrences); sb() is the only bound. Because a served flag can move it, the NUMBER is not a property of the build. PRIOR TEXT (L134, 2.1.217): Sub-agent nesting depth; env override else gate tengu_hazel_trellis, fallback DEu=1. 2.1.217 made nesting OFF by default (depth 1); Ch35/L121's depth-5 (NMr/BLr) remains the hard ceiling.",
       "provenance": [
         {
           "lesson": 134
+        },
+        {
+          "lesson": 170
         }
       ]
     },
@@ -6602,6 +6611,348 @@
           "lesson": 160
         }
       ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACTS_API_TOKEN",
+      "name": "CLAUDE_CODE_ARTIFACTS_API_TOKEN",
+      "status": "dark-launched",
+      "summary": "Artifact API token override; sibling of CLAUDE_CODE_ARTIFACTS_API_BASE_URL. Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_ASSET_BASE_URL",
+      "name": "CLAUDE_CODE_ARTIFACT_ASSET_BASE_URL",
+      "status": "dark-launched",
+      "summary": "Artifact asset-store endpoint override. Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_LIVE_BASE_URL",
+      "name": "CLAUDE_CODE_ARTIFACT_LIVE_BASE_URL",
+      "status": "dark-launched",
+      "summary": "Artifact live-page endpoint override. Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_SYNC_BASE_URL",
+      "name": "CLAUDE_CODE_ARTIFACT_SYNC_BASE_URL",
+      "status": "dark-launched",
+      "summary": "Artifact sync endpoint override. Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_VIEWER_BASE_URL",
+      "name": "CLAUDE_CODE_ARTIFACT_VIEWER_BASE_URL",
+      "status": "dark-launched",
+      "summary": "Artifact viewer endpoint override. Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_ASSETS",
+      "name": "CLAUDE_CODE_ARTIFACT_ASSETS",
+      "status": "dark-launched",
+      "summary": "Artifact asset store. DEFAULTS TRUE: Et(){return a.CLAUDE_CODE_ARTIFACT_ASSETS??!0}. Endpoints: /_blob/, /api/frame/blob/, /agent-upload, /agent-list, /agent-delete. Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_DB",
+      "name": "CLAUDE_CODE_ARTIFACT_DB",
+      "status": "dark-launched",
+      "summary": "Artifact per-page datastore (gate tengu_umber_lattice); carries write_capacity / scan_budget / response_budget and the quota-exceeded and custody_403 failure states. Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_ROOM",
+      "name": "CLAUDE_CODE_ARTIFACT_ROOM",
+      "status": "dark-launched",
+      "summary": "Artifact shared-state room; appears in the config-dir env family. Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_COMMENTS_AUTOREACT",
+      "name": "CLAUDE_CODE_ARTIFACT_COMMENTS_AUTOREACT",
+      "status": "dark-launched",
+      "summary": "Auto-reaction on artifact comments; gate tengu_sorrel_trellis, opt-in (optIn??=a.<VAR>??x(\"tengu_sorrel_trellis\",!1)). NOT tengu_gorse_pylon -- that gate belongs to the adjacent _COMMENT_FAST_ACK accessor; an earlier draft paired it from string-table adjacency. Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_COMMENT_FAST_ACK",
+      "name": "CLAUDE_CODE_ARTIFACT_COMMENT_FAST_ACK",
+      "status": "dark-launched",
+      "summary": "Fast-acknowledge path for artifact comments gate tengu_gorse_pylon (Xt(){return a.<VAR>??x(\"tengu_gorse_pylon\",!1)}); summonPickupRequested, fastAckFlagRefresh. Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_COMMENT_FAST_ACK_FIXED",
+      "name": "CLAUDE_CODE_ARTIFACT_COMMENT_FAST_ACK_FIXED",
+      "status": "dark-launched",
+      "summary": "Fixed-deadline variant of the fast-ack path gate tengu_gorse_sill (vi(){if(!Xt())return!1;return a.<VAR>??x(\"tengu_gorse_sill\",!1)}); fastAckFlagRefreshDeadlineMsOverride. Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_COMMENT_RESPONDER",
+      "name": "CLAUDE_CODE_ARTIFACT_COMMENT_RESPONDER",
+      "status": "dark-launched",
+      "summary": "Agent responder for artifact comments; gate tengu_bracken_sluice, responderDispatchOptIn, isProbedLivePage. Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_TYPES",
+      "name": "CLAUDE_CODE_ARTIFACT_TYPES",
+      "status": "dark-launched",
+      "summary": "Artifact type system (gate tengu_cobalt_plinth_larch). Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_TYPE_CATALOG",
+      "name": "CLAUDE_CODE_ARTIFACT_TYPE_CATALOG",
+      "status": "dark-launched",
+      "summary": "Published-type catalog, gate tengu_cobalt_plinth_rowan: /api/frame/types, /api/frame/types?q=; failure states release_unreadable, path_collision. Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_TYPE_CLOUD_CREATE",
+      "name": "CLAUDE_CODE_ARTIFACT_TYPE_CLOUD_CREATE",
+      "status": "dark-launched",
+      "summary": "Create-from-type, gate tengu_cobalt_plinth_hazel: /api/frame/types/<id>/create ('Created from the Artifact type ...'). Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_DELETE",
+      "name": "CLAUDE_CODE_ARTIFACT_DELETE",
+      "status": "dark-launched",
+      "summary": "Artifact deletion via a cloud relay (gate tengu_cobalt_plinth_alder); relay failure is reported as possibly-succeeded. Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_VERIFY",
+      "name": "CLAUDE_CODE_ARTIFACT_VERIFY",
+      "status": "dark-launched",
+      "summary": "Artifact verification path (gate tengu_osier_pylon_trace (accessor: Ft(){if(a.CLAUDE_CODE_REMOTE)return!1;return a.CLAUDE_CODE_ARTIFACT_VERIFY??x(\"tengu_osier_pylon_trace\",!1)}). NOT tengu_cobalt_plinth_yew -- an earlier draft paired it from string-table adjacency; _yew is read by an unrelated function). Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_PREVIEW",
+      "name": "CLAUDE_CODE_ARTIFACT_PREVIEW",
+      "status": "dark-launched",
+      "summary": "Headless artifact preview (gate tengu_cobalt_plinth_aspen). Its accessor guards on En(){return ce!==null&&!0} where `var ce=null` is the module's ONLY assignment to ce, so it can never return true in the standalone CLI -- preview is COMPILED OUT of 2.1.250, not merely gated. A fourth state beyond on/off/dark. Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_ARTIFACT_MCP",
+      "name": "CLAUDE_CODE_ARTIFACT_MCP",
+      "status": "dark-launched",
+      "summary": "Artifact runtime-capability declaration ('Runtime capabilities this page declares, as {name: config}'). DEFAULTS TRUE: Pt(){return Bn.CLAUDE_CODE_ARTIFACT_MCP??!0}. One of TWO that default true (the other is CLAUDE_CODE_ARTIFACT_ASSETS); an earlier draft claimed exclusivity, missing _ASSETS because the two use different module-local receivers (Bn. vs a.). Part of the Artifact subsystem documented in Ch47/L172; Ch27/L112 recorded Artifacts behind a single master flag, which is now a 21-member tengu_cobalt_plinth family.",
+      "provenance": [
+        {
+          "lesson": 172
+        },
+        {
+          "lesson": 112
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250"
     }
   ]
 }

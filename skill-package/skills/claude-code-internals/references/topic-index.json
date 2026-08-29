@@ -1,7 +1,7 @@
 {
   "generated": "2026-08-13",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 169,
+  "total_lessons": 172,
   "lessons": [
     {
       "id": 1,
@@ -3449,7 +3449,7 @@
       "lesson_number": "121",
       "file": "32-cowork-subagent-execution-model.md",
       "startLine": 28,
-      "endLine": 137,
+      "endLine": 144,
       "keywords": [
         "subagent-tools",
         "sub-agent-tool-composition",
@@ -3479,8 +3479,8 @@
       "title": "Sub-Agent File-Tool Namespace: the Outputs cwd, Write/Delete, and the Path-Containment Hook",
       "lesson_number": "122",
       "file": "32-cowork-subagent-execution-model.md",
-      "startLine": 138,
-      "endLine": 208,
+      "startLine": 145,
+      "endLine": 223,
       "keywords": [
         "subagent-cwd",
         "outputs-path",
@@ -3505,8 +3505,8 @@
       "title": "The Sub-Agent Prompt Append: subagent_env_hl / subagent_env_vm",
       "lesson_number": "123",
       "file": "32-cowork-subagent-execution-model.md",
-      "startLine": 217,
-      "endLine": 251,
+      "startLine": 224,
+      "endLine": 259,
       "keywords": [
         "subagent_env_hl",
         "subagent_env_vm",
@@ -3525,8 +3525,8 @@
       "title": "Sub-Agent Env/Model, Lifecycle Re-Verification, VM-Loop Deltas, Stream Observability & Methodology",
       "lesson_number": "124",
       "file": "32-cowork-subagent-execution-model.md",
-      "startLine": 253,
-      "endLine": 415,
+      "startLine": 260,
+      "endLine": 422,
       "keywords": [
         "subagent-model",
         "CLAUDE_CODE_SUBAGENT_MODEL",
@@ -4989,6 +4989,68 @@
         "preview-launch-config",
         "cli-permission-carve-out",
         "cross-artifact-config"
+      ]
+    },
+    {
+      "id": 170,
+      "title": "Sub-Agent Limits: There IS a Fan-Out Cap, It Refuses, and the Depth Default Is 3",
+      "lesson_number": "170",
+      "file": "44-cli-surface-2.1.233-to-2.1.250.md",
+      "startLine": 15,
+      "endLine": 113,
+      "keywords": [
+        "subagent-fanout-cap",
+        "max-concurrent-subagents",
+        "refuses-not-queues",
+        "do-not-retry",
+        "subagent-depth-default-3",
+        "max-subagent-spawn-depth",
+        "tengu-hazel-trellis",
+        "tengu-amber-kestrel",
+        "subagent-budget-exhausted",
+        "maxBudgetUsd",
+        "three-refusal-classes",
+        "teammates-cannot-spawn-teammates",
+        "corrects-l121",
+        "corrects-l111"
+      ]
+    },
+    {
+      "id": 171,
+      "title": "Cowork Gets At Most Three Bundled Skills",
+      "lesson_number": "171",
+      "file": "44-cli-surface-2.1.233-to-2.1.250.md",
+      "startLine": 114,
+      "endLine": 159,
+      "keywords": [
+        "bundled-skill-suppression",
+        "local-agent-entrypoint-early-return",
+        "artifact-trio-survivors",
+        "three-artifact-classes",
+        "persists-to-2.1.250",
+        "disable-bundled-skills-not-consulted",
+        "cowork-skill-surface"
+      ]
+    },
+    {
+      "id": 172,
+      "title": "Artifacts Became a Subsystem: 23 Env Vars and a 21-Flag Gate Family",
+      "lesson_number": "172",
+      "file": "44-cli-surface-2.1.233-to-2.1.250.md",
+      "startLine": 160,
+      "endLine": 208,
+      "keywords": [
+        "artifact-subsystem",
+        "tengu-cobalt-plinth-family",
+        "artifact-env-surface",
+        "artifact-mcp-defaults-true",
+        "artifact-preview-not-compiled",
+        "fourth-state-absent-from-build",
+        "artifact-db-quota",
+        "artifact-type-catalog",
+        "artifact-comment-responder",
+        "artifact-direct-upload-removed",
+        "removal-found-by-audit-not-diff"
       ]
     }
   ],
@@ -16905,6 +16967,102 @@
     ],
     "mount-source-is-a-fuse-fd": [
       139
+    ],
+    "subagent-fanout-cap": [
+      170
+    ],
+    "max-concurrent-subagents": [
+      170
+    ],
+    "refuses-not-queues": [
+      170
+    ],
+    "do-not-retry": [
+      170
+    ],
+    "subagent-depth-default-3": [
+      170
+    ],
+    "max-subagent-spawn-depth": [
+      170
+    ],
+    "tengu-hazel-trellis": [
+      170
+    ],
+    "tengu-amber-kestrel": [
+      170
+    ],
+    "subagent-budget-exhausted": [
+      170
+    ],
+    "maxBudgetUsd": [
+      170
+    ],
+    "three-refusal-classes": [
+      170
+    ],
+    "teammates-cannot-spawn-teammates": [
+      170
+    ],
+    "corrects-l121": [
+      170
+    ],
+    "corrects-l111": [
+      170
+    ],
+    "bundled-skill-suppression": [
+      171
+    ],
+    "local-agent-entrypoint-early-return": [
+      171
+    ],
+    "artifact-trio-survivors": [
+      171
+    ],
+    "three-artifact-classes": [
+      171
+    ],
+    "persists-to-2.1.250": [
+      171
+    ],
+    "disable-bundled-skills-not-consulted": [
+      171
+    ],
+    "cowork-skill-surface": [
+      171
+    ],
+    "artifact-subsystem": [
+      172
+    ],
+    "tengu-cobalt-plinth-family": [
+      172
+    ],
+    "artifact-env-surface": [
+      172
+    ],
+    "artifact-mcp-defaults-true": [
+      172
+    ],
+    "artifact-preview-not-compiled": [
+      172
+    ],
+    "fourth-state-absent-from-build": [
+      172
+    ],
+    "artifact-db-quota": [
+      172
+    ],
+    "artifact-type-catalog": [
+      172
+    ],
+    "artifact-comment-responder": [
+      172
+    ],
+    "artifact-direct-upload-removed": [
+      172
+    ],
+    "removal-found-by-audit-not-diff": [
+      172
     ]
   }
 }
