@@ -1,5 +1,29 @@
 # Changelog
 
+## v2.44.5 — 2026-08-29 (this fork) — three instruments, three different failures, one self-inflicted
+
+The `CLAUDE_PLUGIN_ROOT` registry entry carried two counts. Correcting them took three attempts, and the second attempt made a right number wrong **in the same way this entry exists to document**.
+
+**True values:** asar 1.40609.0 = **9** (ASCII 9 + UTF-16LE 0). CLI 2.1.250 = **59** (ASCII 56 + UTF-16LE 3).
+
+| instrument | failure | effect here |
+|---|---|---|
+| `grep -c` | counts **lines**; these artifacts are effectively one line | asar under-reported as **3** — real error, correction stands |
+| ASCII-only raw-byte regex | **cannot see UTF-16LE-stored strings** | CLI under-reported as **56**, and published as "byte-level truth" |
+| null-stripped extract | *no failure* — `tr -d '\000'` **decodes** UTF-16LE | returned **59**, which was correct all along |
+
+The originally published **59 was right.** A first draft of this entry "corrected" it to 56 and explained the gap by asserting that null-stripping *fabricates matches by joining non-contiguous fragments*. That mechanism was invented to dissolve a discrepancy rather than tested — which is precisely the error the v2.44.4/v2.44.5 work set out to record. The arithmetic settles it: 56 ASCII + 3 UTF-16LE = 59, exactly the stripped-extract count. Null-stripping was decoding, not fabricating.
+
+**Rule: count in both encodings, or say which one you counted. An ASCII count is never "byte-level truth."**
+
+**The conclusion is unaffected** and still rests on all nine asar occurrences rather than the three originally examined — including the newly-read **reserved-name guard**, where a plugin's declared `env` may not redefine the token (*"env declares reserved variable name"*), independently confirming it is host-resolved rather than plugin-supplied. Three of the nine are the substitution resolver's own variable tables — text replacement, not a process environment. None assigns into the agent's environment.
+
+Shipped scripts audited and clean: no `grep -c` anywhere, all counting already uses `grep -o`.
+
+*Credit: the UTF-16 blind spot was found by the `cowork-harness` session auditing its own instruments after reading this repo's writeup of a counting failure that was not theirs.*
+
+No baseline moves.
+
 ## v2.44.4 — 2026-08-29 (this fork) — withdrawing a sentence of our own, and two recorded dead ends
 
 **A sentence here sent a skill author down a design that cannot work.** The Cowork architecture page said *"the host-path strings visible in `/proc/mounts` are not usable VM paths"*. That reads as **host paths are present but useless** — and it was taken as licence to build a mount-table lookup: take the path the file tools reported, find the mount whose host side is a prefix of it, rewrite to the VM side. That would have replaced an entire tested discovery ladder with a one-step translation.
