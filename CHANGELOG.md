@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.46.9 — 2026-08-29 (this fork) — a published denominator, and a hazard the site never carried
+
+**The number was the wrong population.** `plugins.ship-a-launcher` told readers "no plugin in a 35-plugin install base uses it." 35 was the count of *PATH entries* — enabled, non-builtin plugins with a path — which is not an install base. The population that matches the claim is installed plugin roots: **97 with a `.claude-plugin/plugin.json`, 0 with a `bin/` at the root.** The published figure understated its own evidence while sounding more specific than it was.
+
+Corrected to 97, with the population named, and with the reading made explicit: it means *nobody has tried this yet*, **not** *people tried and it failed*. That distinction was retracted in v2.46.4 and the site prose had never carried it.
+
+**A verified hazard was on no page.** Declaring a command-line tool in a plugin manifest makes the runtime materialise a launcher of that exact name into the very `bin/` directory an author would use — on its own provisioning schedule. Measured across 26 org-remote plugin roots: `bin/` exists **iff** the manifest declares one, and the launcher's filename equals the declared key, zero exceptions. An author who ships `bin/<same-name>` collides with it. Now a caveat, including that whether a differently-named launcher survives re-provisioning is untested.
+
 ## v2.46.8 — 2026-08-29 (this fork) — the one correspondence surface outside the repository
 
 `release-consistency.test.js` already asserted that every doc stating a lesson or chapter count states the current one. The GitHub **About** text still sat at *"169 lessons across 46 chapters"* through two releases while every file in the tree said 174/48 — because the suite can only reach artifacts **inside** the repository. The failure was a boundary, not a missing check.
