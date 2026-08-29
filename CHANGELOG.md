@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.46.2 — 2026-08-29 (this fork) — a published site sentence corrected, and the launcher rule added
+
+**ccinternals.dev carried a claim this week's work falsified — one we put there in v2.44.3.** `plugins.plugin-root-per-consumer` said the token *"is not in your shell's environment either, so referring to it in a command yields an empty string rather than an error."*
+
+It is often **present** in a shell, holding a **different plugin's** directory. Hooks can write environment for later shell commands, each hook is given its own plugin's location, and the loader concatenates them so the last write wins reproducibly.
+
+The old wording was worse than merely wrong: it prescribed a debugging step — *check whether it's empty* — that returns clean on the actual failure and sends the author looking elsewhere. The page now says the failure presents as a plausible wrong path, not a blank.
+
+**New fact `plugins.ship-a-launcher`** — the `bin/`-on-PATH affordance from Ch48/L173, measured in three lanes, written for authors rather than as mechanism: ship a launcher, call it as a bare command, and nothing has to survive a trip between the model and the shell. Both silent caveats are carried: a PATH entry is not a promise the directory exists, and the mount is read-only.
+
+`verified_against.cli_note` records this as an out-of-baseline correction; the CLI stamp is deliberately not bumped.
+
 ## v2.46.1 — 2026-08-29 (this fork) — a v2.44.1 claim corrected, and the guidance made findable
 
 **The correction.** v2.44.1's `CLAUDE_PLUGIN_ROOT` entry said it *"is not set on the agent's own process environment, so it does not reach the Bash tool."* The first half stands — `Fke()`, the Bash child-env builder, adds no plugin root. The conclusion does not follow: the Bash environment is `{...xa() (inherited), …}`, and **`CLAUDE_ENV_FILE` is a designed channel that writes into it.**
