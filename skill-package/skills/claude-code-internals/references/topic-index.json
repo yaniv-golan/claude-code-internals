@@ -2199,7 +2199,10 @@
         "airtable-key-cowork",
         "affinity-key-cowork",
         "plugin-root-is-substitution-not-env",
-        "discover-plugin-root-shell-side"
+        "discover-plugin-root-shell-side",
+        "plugin-root-token-substitution",
+        "reference-file-not-substituted",
+        "plugin-root-empty-in-shell"
       ]
     },
     {
@@ -5071,7 +5074,17 @@
         "read-only-plugin-mount",
         "metacharacter-path-dropped",
         "undocumented-affordance",
-        "three-lane-measurement"
+        "three-lane-measurement",
+        "find-my-scripts",
+        "how-a-skill-finds-its-scripts",
+        "bundled-scripts",
+        "run-a-script-from-a-skill",
+        "call-a-plugin-script-from-bash",
+        "launcher-script",
+        "self-locating-launcher",
+        "plugin-root-in-a-shell",
+        "scripts-directory",
+        "invoke-bundled-executable"
       ]
     },
     {
@@ -17171,6 +17184,45 @@
     ],
     "enumerated-not-documented": [
       174
+    ],
+    "find-my-scripts": [
+      173
+    ],
+    "how-a-skill-finds-its-scripts": [
+      173
+    ],
+    "bundled-scripts": [
+      173
+    ],
+    "run-a-script-from-a-skill": [
+      173
+    ],
+    "call-a-plugin-script-from-bash": [
+      173
+    ],
+    "launcher-script": [
+      173
+    ],
+    "self-locating-launcher": [
+      173
+    ],
+    "plugin-root-in-a-shell": [
+      173
+    ],
+    "scripts-directory": [
+      173
+    ],
+    "invoke-bundled-executable": [
+      173
+    ],
+    "plugin-root-token-substitution": [
+      89
+    ],
+    "reference-file-not-substituted": [
+      89
+    ],
+    "plugin-root-empty-in-shell": [
+      89
     ]
   }
 }

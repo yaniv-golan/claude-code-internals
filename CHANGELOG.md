@@ -1,5 +1,25 @@
 # Changelog
 
+## v2.46.1 — 2026-08-29 (this fork) — a v2.44.1 claim corrected, and the guidance made findable
+
+**The correction.** v2.44.1's `CLAUDE_PLUGIN_ROOT` entry said it *"is not set on the agent's own process environment, so it does not reach the Bash tool."* The first half stands — `Fke()`, the Bash child-env builder, adds no plugin root. The conclusion does not follow: the Bash environment is `{...xa() (inherited), …}`, and **`CLAUDE_ENV_FILE` is a designed channel that writes into it.**
+
+Disputed and measured by the `skill-creator-plus` session, then reproduced here byte-identically on a different session: the Bash tool saw `CLAUDE_PLUGIN_ROOT` and `CLAUDE_PLUGIN_DATA` pointing at **two different plugins, neither the one whose skill was running.** So the shell-side failure is not "silently empty" but **"silently set to an unrelated plugin's directory"** — a confident wrong answer, which defeats the natural first debugging step of checking whether it's blank.
+
+**Mechanism, traced here.** `CLAUDE_ENV_FILE` is set for **four** hook events (SessionStart, Setup, CwdChanged, FileChanged — only the latter two document it), and the loader **concatenates** per-hook scripts in a fixed order, so the last `export` wins *textually and reproducibly* rather than by race. That is why two machines with the same install set saw the identical pair. The hook executor gives each hook its own plugin's root, so a hook that exports its environment leaks it to every later Bash call.
+
+Lane caveat recorded, because the two facts read as opposites: this is a **plain-CLI** mechanism. Under Cowork the VM shell is sealed and hook exports do not cross, so the published Cowork guidance stays correct and is not contradicted.
+
+The error shape is the one recurring all week: **I verified what the runtime *adds* and stated a conclusion about what the shell *sees*.**
+
+**The guidance fix.** The facts were right and unusable. Searching *"how does my skill find its bundled scripts"* returned L03, then L171 (a different sense of "bundled") and L119 (cloud tasks) — L173 was reachable only by already knowing the mechanism's name. The registry entry had grown to 772 words with its one actionable sentence at character 3,760 of 5,520. The state page said nothing at all.
+
+Fixed in all three layers: question-shaped keywords on L173 and L89 (all three reader queries now return L173), an **answer-first** lead on the registry entry with the provenance after it, and a new *"How a skill reaches its own bundled scripts"* section on the plugins-skills-hooks state page that answers in a four-row table before explaining anything.
+
+**Also verified, for anyone writing a linter against this:** the substitution form rules **differ by context**. Body text is braced-only (`a9` uses `/\$\{CLAUDE_PLUGIN_ROOT\}/g`); permission-rule prefixes accept **both** forms; hook commands accept both in **shell** form but braced-only in **exec** form. So "the bare form is always wrong" is false in two of three contexts — a naive rule would flag valid usage.
+
+No baseline moves.
+
 ## v2.46.0 — 2026-08-29 (this fork) — Chapter 48: the plugin `bin/` affordance, measured in three live lanes
 
 The first chapter here built primarily on **live session measurement** rather than artifact reading — a standalone CLI session, a Cowork host-loop session, and a Cowork cloud session, cross-read against the binaries. Baseline unmoved.

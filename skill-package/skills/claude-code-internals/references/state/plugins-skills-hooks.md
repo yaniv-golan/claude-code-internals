@@ -68,6 +68,30 @@ dispatch falls back to the built-in `general-purpose` type with
 outcome from pinning any explicit-`tools:` agent, plugin or not. See
 `cowork-architecture.md`'s "Sub-agent execution" section.
 
+## How a skill reaches its own bundled scripts (the practical question)
+
+Answer first; mechanism in the sections that follow.
+
+| you are | use |
+|---|---|
+| reading a bundled file with a **file tool** | `${CLAUDE_PLUGIN_ROOT}/…` written in the **SKILL.md or command body** — substituted at load, so the model sees a real path |
+| running a bundled script from the **shell** | a **launcher in the plugin's `bin/`**, called as a **bare command** |
+| the launcher is absent | **discover** the directory shell-side and confirm with a sentinel file |
+| any shell context | **never** read `$CLAUDE_PLUGIN_ROOT` |
+
+**Why `bin/` is the answer and not a workaround (L173).** Claude Code puts every enabled non-builtin plugin's `<plugin>/bin` on the Bash tool's PATH, and the path is correct for the namespace of the shell that will use it — measured in all three lanes, including Cowork host-loop where the file tools and the shell disagree about every other path. PATH lookup is performed by the shell, in the shell's own namespace, so **no path crosses the boundary and the model derives nothing**. A launcher self-locates in one line:
+
+```bash
+#!/usr/bin/env bash
+exec python3 "$(cd "$(dirname "$0")/.." && pwd)/scripts/$1.py" "${@:2}"
+```
+
+**Why not `$CLAUDE_PLUGIN_ROOT` in a shell.** It is not merely absent — it is frequently **set, to an unrelated plugin's directory**. Hooks can write session environment through `CLAUDE_ENV_FILE` (four events; the loader concatenates their scripts in a fixed order, so the last `export` wins textually and reproducibly), and the hook executor gives each hook *its own* plugin's root. Two independent machines observed the same leaked pair, neither being the plugin whose skill was running. The failure mode is a **confident wrong answer**, which is worse than an empty one.
+
+**Why not the token in a `references/*.md`.** Substitution happens in the files the runtime **loads** as definitions — a SKILL.md body, a command, a hook. A reference file your skill **reads at run time** is not substituted: the token arrives literally and names nothing.
+
+**Three ways `bin/` fails, all silent.** A PATH entry is **not** evidence the directory exists (`bin/` is provisioned by sync/install, not carried in plugin source — 35 entries on one machine, zero on disk). The Cowork mount is **read-only**, so a launcher cannot write beside itself. And a plugin path containing shell metacharacters is dropped from PATH with no model-visible error. So: **construct, verify, fall back** — and have the step that cannot resolve stop and say so, because a resolution that fails quietly is indistinguishable from a feature that was never shipped.
+
 ## `${CLAUDE_PLUGIN_ROOT}` resolves to wherever the agent loaded the plugin from
 
 The token substitutes to **one value per agent** — the directory the
