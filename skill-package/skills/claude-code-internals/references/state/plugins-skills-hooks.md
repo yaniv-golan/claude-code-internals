@@ -384,6 +384,26 @@ Drift: 7 tools at 2.1.64–2.1.87 → 8 (2.1.92) → 10 (2.1.111) → 11 (2.1.12
 and the corpus shows zero within-version splits, so it cannot validate a
 version boundary.
 
+### `when_to_use` does not reach the Cowork listing
+
+A skill's `when_to_use` frontmatter is documented CLI-side as *"Guidance for when the model
+should reach for this skill. **Becomes part of the tool description**"* (schema, CLI 2.1.250),
+mapped as `whenToUse: H.when_to_use != null ? String(H.when_to_use) : void 0` (Ch19/L88).
+
+**It has no counterpart on the Desktop side.** In `app.asar` **1.40609.0**, `whenToUse` and
+`when_to_use` occur **zero** times, against positive controls `list_skills` (17) and
+`suggest_skills` (14) in the same file. The Desktop's `mcp__skills__list_skills` handler
+therefore cannot surface the field — it has no code that reads it.
+
+Consequence for skill authors: under Cowork a skill is advertised through a listing that
+carries `name`/`description` and not `when_to_use`, so **trigger information placed only in
+`when_to_use` is invisible on that path**. Keep `description` self-sufficient and treat
+`when_to_use` as reinforcement for the CLI surface, never as the sole carrier of a trigger.
+Non-Claude hosts ignore the field entirely, so the same rule serves portability.
+
+Scope: one asar version (1.40609.0, the newest held here); not checked against older builds,
+and the agent-side rendering path was not re-traced this pass.
+
 ### Input schemas (verbatim, 1.24012.1)
 
 All `type:"object"`. Required fields in **bold**; everything else optional.
