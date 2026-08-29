@@ -134,6 +134,8 @@ Cross-device rename (`outputs` → `/tmp`) gives **EXDEV** — outputs really is
 
 **Both mount lines were byte-identical before and after** — same `/proc/self/fd/3`, same options (`rw,nosuid,nodev,relatime,user_id=0,group_id=0,default_permissions,allow_other`).
 
+> **This is also the only verbatim mount line recorded anywhere in this skill, and it carries a second finding captured for a different purpose.** The mount **source** is `/proc/self/fd/3` — a fuse descriptor, *not* a host path. So `/proc/mounts` offers **no host→VM translation**: there is nothing in it to prefix-match a host-side path against. The Cowork architecture state page previously said "the host-path strings visible in `/proc/mounts` are not usable VM paths", which reads as *present but useless* and was taken by a skill author as licence to build a mount-table lookup. Corrected there 2026-08-29. Caveat on this correction: one line, captured while proving that delete-approval involves no remount, is thin evidence for a claim about the whole table — a real dump from a live host-loop session would settle it.
+
 On-disk correlate: `fileDeleteApprovedMounts: ["outputs"]` — one mount name, the connected folder absent.
 
 ## The host-loop / VM-loop split
@@ -276,6 +278,16 @@ cat  /sessions/magical-zen-babbage/mnt/outputs/* → Permission denied
 ```
 
 Session dirs are `drwxr-x---` owned by `nobody:nogroup`; each session runs as its own uid/gid with no group overlap. **Ch31/L117's `coworkd` per-session Unix user is what enforces the boundary** — previously known only from leftover journald logs, now confirmed live (`uid=1529(awesome-intelligent-franklin)`, `uid=1531(peaceful-hopeful-feynman)`).
+
+### What 522 means for a skill that searches the session tree
+
+Recorded here because the number is a property of the *tree*, not of anyone's code, and no author would guess it. `/sessions` holds **hundreds of directories and grows** — historical sessions persist, only active ones carry mounts — and from inside any one session **almost all of them are unreadable**. A skill that resolves its own files by walking the session roots is therefore walking a large, mostly-forbidden, monotonically growing tree.
+
+It is nonetheless **cheap**, and the reason matters: session directories are `drwxr-x---` owned by `nobody:nogroup` with no group overlap, so a walker is refused at the *directory* level and never descends. The cost is one refused `stat` per sibling, not a per-file traversal. An author who knows only "search the session roots" will misjudge this in both directions — fearing a cost that is not there, and missing that the tree grows without bound.
+
+The same property is what scopes such a search to your own session **without a filter you have to write**: the kernel refuses the others. A lookup built on the mount table would see every slug's mounts (below) and need a hand-written slug filter to get back to where a plain search already is.
+
+*(Raised by the `creative-problem-solving` project, whose resolver walks this tree and had assumed a handful of directories.)*
 
 **Residual disclosure (minor, not an incident):** `ls -1 /sessions/ | wc -l` → **522**. Every session directory on the guest is enumerable from inside any session. Slugs are not secrets, but session count and naming are visible to any Cowork agent. 522 directories against ~28 mounts for the neighbouring slug also shows `/sessions/` is a **persistent shared volume** — almost certainly `sessiondata.img` (10 GB, alongside `rootfs.img` in `vm_bundles/`): directories persist for all historical sessions, only active ones carry mounts.
 

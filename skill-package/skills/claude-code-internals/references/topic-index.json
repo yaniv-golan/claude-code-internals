@@ -4048,7 +4048,7 @@
       "lesson_number": "139",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
       "startLine": 110,
-      "endLine": 258,
+      "endLine": 260,
       "keywords": [
         "cowork-delete-semantics",
         "unlink-rmdir-denied",
@@ -4102,7 +4102,8 @@
         "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC",
         "exit-code-143",
         "template-literal-quote-stable",
-        "plain-literal-version-scoped"
+        "plain-literal-version-scoped",
+        "mount-source-is-a-fuse-fd"
       ]
     },
     {
@@ -4110,8 +4111,8 @@
       "title": "VM Multiplexing Confirmed, Isolation Holds, and the Real Mount Inventory",
       "lesson_number": "140",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 259,
-      "endLine": 353,
+      "startLine": 261,
+      "endLine": 365,
       "keywords": [
         "vm-multiplexing-confirmed",
         "shared-vm-guest",
@@ -4146,7 +4147,12 @@
         "remote-plugins-id-is-the-leaf",
         "live-session-mount-confirmation",
         "plugin-id-joins-two-namespaces",
-        "home-is-the-session-root"
+        "home-is-the-session-root",
+        "session-tree-scale-522",
+        "directory-level-refusal",
+        "no-host-to-vm-mapping",
+        "proc-mounts-fuse-source",
+        "search-scoped-by-kernel"
       ]
     },
     {
@@ -4154,8 +4160,8 @@
       "title": "Snapshot Discipline: the fcache Is a Moving Target with Two Absence Axes",
       "lesson_number": "141",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 354,
-      "endLine": 432,
+      "startLine": 366,
+      "endLine": 444,
       "keywords": [
         "fcache-snapshot-identity",
         "fcache-content-hash",
@@ -4193,8 +4199,8 @@
       "title": "coworkSyspromptMap: a Server-Driven Prompt REPLACE Channel",
       "lesson_number": "142",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 433,
-      "endLine": 468,
+      "startLine": 445,
+      "endLine": 480,
       "keywords": [
         "coworkSyspromptMap",
         "system-prompt-patch-channel",
@@ -16881,6 +16887,24 @@
     ],
     "home-is-the-session-root": [
       140
+    ],
+    "session-tree-scale-522": [
+      140
+    ],
+    "directory-level-refusal": [
+      140
+    ],
+    "no-host-to-vm-mapping": [
+      140
+    ],
+    "proc-mounts-fuse-source": [
+      140
+    ],
+    "search-scoped-by-kernel": [
+      140
+    ],
+    "mount-source-is-a-fuse-fd": [
+      139
     ]
   }
 }

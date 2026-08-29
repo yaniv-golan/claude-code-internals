@@ -6584,6 +6584,24 @@
           "lesson": 120
         }
       ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_INVOKED_SKILLS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_INVOKED_SKILLS",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.250",
+      "summary": "DECLARED BUT UNCONSUMED in CLI 2.1.250 (status recorded as dark-launched, the nearest value this schema allows -- the precise state is weaker: not gated off, simply never written or read) -- the third state (cf. L160's declared-but-unconsumed gates), recorded because it reads as a discovery to whoever finds it next. Three occurrences, no writer and no reader: (1) the string table; (2) the static key list feeding spawnEnvKeys(), which builds a SET OF KEY NAMES to carry/diff for shell snapshots and does not assign values; (3) `var JTn=\"CLAUDE_CODE_INVOKED_SKILLS\"` in the shell-snapshot chunk, whose sole occurrence is its own declaration -- the neighbouring Ake() wrapper-builder uses only Pke (CLAUDE_CODE_EXECPATH). It is NOT set by Fke(), the Bash/hook child env builder. WHY IT MATTERS: it is the obvious name to reach for when asking 'can a shell learn which skill/plugin is executing', and the answer today is NO -- there is no first-party channel; the model knows the path it read a file at and nothing else does. The adjacent ${CLAUDE_SKILL_DIR} is likewise not an env var but a substitution token replaced into skill DEFINITION text at load (which is where the 'Base directory for this skill:' prefix comes from). Identity therefore travels via the model passing what it already knows, not via the environment. Surfaced by the creative-problem-solving project asking whether a shell-side identity channel exists.",
+      "provenance": [
+        {
+          "lesson": 116
+        },
+        {
+          "lesson": 160
+        }
+      ]
     }
   ]
 }

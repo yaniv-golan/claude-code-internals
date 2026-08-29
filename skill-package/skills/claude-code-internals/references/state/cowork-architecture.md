@@ -498,12 +498,21 @@ ordinary session end); host files reachable only via `device_request_folder_acce
 
 ## Mount model and delete policy (L139, L140)
 
-All mounts appear at `/sessions/<slug>/mnt/…` — the host-path strings visible in `/proc/mounts` are
-**not usable VM paths**. A typical session carries **29** fuse mounts:
+All mounts appear at `/sessions/<slug>/mnt/…`. A typical session carries **29** fuse mounts:
 
 `outputs` (rw) · `uploads` (**ro**) · each connected folder · `.claude/projects` · `.claude/skills`
 (separate mounts) · `.projects/<uuid>` (**ro**) · `.local-plugins/<install path relative to the account
 root>` · `.remote-plugins/plugin_<id>`
+
+**The mount table carries no host→VM mapping** (corrected 2026-08-29). An earlier version of this
+page said "the host-path strings visible in `/proc/mounts` are not usable VM paths", which reads as
+*host paths are present but useless*. The only verbatim mount line on record shows the source field is
+**`/proc/self/fd/3`** — a fuse descriptor — with the mount point carrying the `/sessions/<slug>/mnt/…`
+path. There is nothing in it to prefix-match a host path against, so a shell cannot use the table to
+translate a host-side path the file tools reported into a VM path. That earlier sentence was read by a
+skill author as licence to build exactly that lookup; it was withdrawn before they shipped it. **Open:**
+no full `/proc/mounts` dump from a live host-loop session has been read here, so this rests on one line
+captured for another purpose. A real dump would settle it in either direction.
 
 `.local-plugins` has **no fixed depth** — the tail mirrors the host install layout, so
 `cache/<marketplace>/<plugin>/<version>` is one instance, not a template; a live capture shows

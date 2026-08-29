@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.44.4 — 2026-08-29 (this fork) — withdrawing a sentence of our own, and two recorded dead ends
+
+**A sentence here sent a skill author down a design that cannot work.** The Cowork architecture page said *"the host-path strings visible in `/proc/mounts` are not usable VM paths"*. That reads as **host paths are present but useless** — and it was taken as licence to build a mount-table lookup: take the path the file tools reported, find the mount whose host side is a prefix of it, rewrite to the VM side. That would have replaced an entire tested discovery ladder with a one-step translation.
+
+It cannot work. The only verbatim mount line on record shows the mount **source** is `/proc/self/fd/3` — a fuse descriptor, not a host path. There is no host→VM mapping in the table and nothing to prefix-match. The sentence is withdrawn, and the finding now sits where the mount model is described rather than buried in a line captured to prove that delete-approval involves no remount. **Flagged open:** one line captured for another purpose is thin evidence about a whole table, and no full dump from a live host-loop session has been read here.
+
+**Two dead ends recorded as dead ends.** Both are things the next reader will reach for, so an absence is worse than an entry.
+
+`CLAUDE_CODE_INVOKED_SKILLS` is **declared but unconsumed** — three occurrences, no writer and no reader: the string table, the static key list feeding the spawn-env key set (which builds a set of key *names* and assigns nothing), and a constant whose sole occurrence is its own declaration. It is the obvious name to reach for when asking whether a shell can learn which skill or plugin is executing, and the answer is **no**. `${CLAUDE_SKILL_DIR}` is likewise a substitution token into skill *definition* text rather than an environment variable — which is where the `Base directory for this skill:` prefix comes from. Identity travels via the model passing what it already knows, not via the environment.
+
+**The 522-directory session tree** gains the guidance an author needs and would not guess: hundreds of directories, growing, and almost all permission-denied from inside any one session — yet **cheap** to search, because the refusal happens at the *directory* level, so a walker is turned away per sibling rather than descending. That same property scopes such a search to your own session **with no filter you have to write**, which is a second argument against the mount-table lookup: a table read sees every slug's mounts and would need one.
+
+**ccinternals.dev: no change needed**, and checked rather than assumed. The 522 shape is already published accurately, with a caveat that listings show scale rather than concurrency, and no published fact touches the mount table, host paths, or an environment identity channel.
+
+Bounds for file 36 re-derived again. No baseline moves.
+
 ## v2.44.3 — 2026-08-29 (this fork) — a shape that was one instance, and the first look from inside
 
 **`.local-plugins` has no fixed depth, and two pages said it did.** Ch36/L140's mount table and the Cowork architecture state page both gave `.local-plugins/cache/<marketplace>/<plugin>/<version>` as *the* shape, one of them labelled "version-pinned". It is one instance. The Desktop builds that tail as the install path *relative to an account root* — a mirror of whatever the host layout happens to be. v2.44.1 had already corrected the underlying claim from the builder, but fixed only the registry entry and left both prose copies standing: the record being looked at gets corrected, its copies do not.
