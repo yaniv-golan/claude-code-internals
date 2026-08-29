@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.46.11 — 2026-08-29 (this fork) — we documented the truncation mitigation and never applied it to ourselves
+
+`SKILL.md` is **116,931 characters** against a **20,002-character** truncation trigger, and the first heading sat at character **23,509**. So every post-compaction re-attachment kept 19,900 characters of unheaded version-narrative preamble and lost **100% of the operating instructions** — zero headings survived, and no mention of `search.js`, `state.js`, `fetch-lesson.js` or `troubleshoot.js`.
+
+Ch45/L167 names the fix in its own words — *"front-loading — putting load-bearing instructions inside the first 19,900 characters, where truncation cannot reach them"* — and this skill had not applied it to itself.
+
+**Restructured, not shortened.** New order: frontmatter → Steps 1–7 → Gotchas → "If no topic was given" → version preamble → the 76,973-character reference-file table, moved to the end under a new **Reference file map** heading with a pointer left at Step 6. The surviving head now carries 9 headings, all seven steps, Gotchas, and all four script names.
+
+Verified content-preserving: fences 20/20 even, frontmatter intact, all 43 table rows present, **zero substantive lines lost**.
+
+Found only because the question was asked directly. The same one-line check had been run against another repo during a review that same hour and never turned on the repo whose entire subject is the mechanism.
+
+A sweep of all 262 `SKILL.md` files on this machine: **59 truncate**, 12 sit within 1,500 characters of the cliff.
+
 ## v2.46.10 — 2026-08-29 (this fork) — `${CLAUDE_SKILL_DIR}` excludes commands too, and the reference-file half is now observed
 
 **Commands are excluded, and it is the easy one to get backwards.** Both replacement sites live in the `bz` builder, guarded on `g.isSkillMode` — default **false**. The two command load sites pass it explicitly false; skills pass true. So the token arrives literally in a `commands/*.md`, exactly as in a reference file.

@@ -10,28 +10,140 @@ allowed-tools:
   - Glob
   - Bash
 ---
+## Step 1: Current-state layer (check FIRST for "how does it behave now" questions)
 
-You are a Claude Code architecture expert with access to 174 lessons covering Claude Code
-internals — verified against live binaries through v2.1.231 (CLI content baseline v2.1.231 for L153–L158, superseding v2.1.217 for L133–L137 and v2.1.198 for L110–L113; plus Claude Desktop app.asar 1.9659.4 for L105, 1.11847.5 for L106, 1.12603.1 + in-VM ELF claude-code-vm/2.1.170 for L107–L108, 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 for L109, and 1.18286.0 for L114–L115 (L114: a re-verification pass with no byte-diff baseline available; L115 also re-uses the v2.1.198 CLI bundle), and 1.19367.0 for L119 (diffed against a 1.18286.2 intermediate baseline, plus agent ELF 2.1.202 for parity checks), and 1.20186.1 + the Desktop-managed host agent Mach-O 2.1.205 (`~/Library/Application Support/Claude/claude-code/2.1.205/claude.app` — a distinct artifact class from both the standalone CLI and the in-VM ELF) + in-VM ELF claude-code-vm/2.1.205 for L121–L124, and 1.22209.0 for L125–L128 (a pure asar diff vs a 1.21459.0 baseline, no live fcache captured for this pass), and 1.28929.0 diffed vs 1.26832.0 and 13 further local asars back to 1.18286.2 + host agent Mach-O and in-VM ELF 2.1.227 + standalone CLI 2.1.228/2.1.229 + a live fcache decoded 2026-08-13 (254 features) for L147–L152, since Anthropic serves no historical Desktop .app builds). Lessons 1–50 were reverse-engineered
-from source docs (v2.1.88, confirmed unchanged through v2.1.120). Lessons 51–90 were extracted
-directly from the v2.1.90/v2.1.92/v2.1.94/v2.1.100/v2.1.101/v2.1.104/v2.1.107/v2.1.108/v2.1.109/v2.1.110/v2.1.111/v2.1.112/v2.1.113/v2.1.114/v2.1.116/v2.1.117/v2.1.118/v2.1.119/v2.1.120 binaries. L11 (Skills System) was re-verified against the v2.1.116 bundle in v2.9.0 and extended with a `progressMessage` deep-dive in v2.9.1. L86 (OIDC Federation + proxy plumbing + `/model` headless) was added in v2.9.1. L87 (/fork background subagent, rate-limit/subscription overrides, /autocompact + /stop-hook removal) and L88 (/cost + /stats → /usage aliases, cache-diagnosis-2026-04-07, frontmatter shadow validator, WIF OAuth locking) were added in v2.10.0. **L89 (v2.1.119 Cowork-runtime GA: /background, /daemon, Fleet view, classifier-summary, session identity taxonomy) and L90 (v2.1.120 daemon on-demand model, CLAUDE_CODE_LEAN_PROMPT, CLAUDE_COWORK_MEMORY_GUIDELINES, memory-write Approve/Reject UX, plan-mode tripwire) were added in v2.11.0.** v2.11.1 corrected L89: most of the new user-facing surface is **dark-launched** in v2.1.119/v2.1.120 — `/daemon` is hardcoded off (`OqH() = return false`), `/background` and Fleet view are gated by the `tengu_slate_meadow` GB flag (default false; flipped for Claude Max/Cowork users), `/stop` is conditional on bg session. Only `/autocompact` and `/fork` from this surface are universally live. The runtime *code* shipped; the user *surface* is gated. Methodology note: when verifying a new slash command, always trace the master command-resolver-array inclusion (`...VAR && fn() ? [VAR] : []`), not just per-command `isEnabled` — registration in the bundle ≠ reachable command. **L91–L104 (Chapter 21) were added in v2.12.0**, advancing the content baseline from v2.1.120 to **v2.1.159** (extracted from the v2.1.159 binary, diffed vs v2.1.138, CHANGELOG-crosschecked): Dynamic Workflows + coordinator mode, the Opus 4.8 launch (effort ladder low|medium|high|xhigh|max), streaming-tool-execution GA, the `MessageDisplay` hook (the live master hook array is **30**, correcting older 27/19 counts), auto-mode promotion + repo-spoof guard, the Cloud gateway provider, org-managed skills/plugins sync, host-delegated credential refresh, background binary-takeover + Fleet→agent-view rename, `/loop` keepalive, plan-interview removal + team-memory multistore + command churn, the PEWTER_OWL gate over `SendUserMessage`, and a codename-flag triage. v2.11.18 also retracted+resolved L89's Cowork plugin-hook mechanism (hooks DO fire; three-root namespace; host-loop staging). **L105 (Chapter 22) was added in v2.13.0** from binary inspection of Claude.app (Desktop) `app.asar` **1.9659.4** — the Desktop MCP-Apps host bridge (Claude's own postMessage/JSON-RPC dialect; `window.app` injected client; **no** `tools/call`/`callServerTool` channel; only data-return path `sendPrompt`→`ui/message` injects into chat) versus **elicitation** (`elicitation/create`, subtype `elicitation` → `onElicitation` → `{action,content}` returned privately to the server; `form`+`url` modes), settling that an MCP server collecting a secret in Desktop/Cowork must use elicitation, never an App UI form. **L106 (Chapter 23) was added in v2.14.0** from Claude.app (Desktop) `app.asar` **1.11847.5** + the live `fcache` — the Cowork **CLI-plugin credential broker** (`clis.*.env` → set once under Customize → Plugins → `cowork-plugin-env` safeStorage store → injected at CLI invocation by `VKr`, with per-CLI `network[]` merged into the egress allowlist), the *third* Desktop credential channel after L105's two — but **dark-launched behind GrowthBook gate `2307090146` (`cli_plugin`), off by default**, gated in both the renderer (`pJe`→`GXr` strips `clis`) and the runtime (`PKr` ahead of `VKr` returns `oauth_disabled`), so a correctly-authored manifest renders no credential field with no error until Anthropic flips the gate (read the gate state by decoding `userData/fcache`). **L107 (Chapter 24) was added in v2.15.0** — the Cowork **spawn + stream-json control-protocol contract**, first-party binary-verified against Claude.app `app.asar` **1.12603.1** + the staged in-VM agent ELF `claude-code-vm/2.1.170/claude` + the live `fcache` (a 14-agent extraction-and-adversarial-verification workflow). Since the real Desktop runtime can't be scripted, the stable seam is the agent's flags + control protocol: `CLAUDE_CODE_IS_COWORK=1` activates cowork mode (the `--cowork` flag is rejected; don't set `CLAUDE_CODE_USE_COWORK_PLUGINS`), spawn flags `-p --verbose --input-format stream-json --output-format stream-json --permission-prompt-tool stdio` (without `stdio` routing, AskUserQuestion is silently auto-dismissed), an `initialize` handshake first, a doubly-nested `control_response` envelope, AskUserQuestion answers as `updatedInput.answers`, MCP delivered as SDK servers tunneled over `control_request{subtype:mcp_message}` (the driver IS the MCP server; `--mcp-config` is dropped only in safe/hermetic-remote mode, not by plain cowork-bg), a layered permission model, and `CLAUDE_CODE_OAUTH_TOKEN` auth. The verification overturned two earlier-draft claims (the `--effort` default — the desktop *passes* `medium` while the agent default is `high`; and a supposed "PreToolUse forced-ask for 5 cowork tools + `Task run_in_background` block" — the real mechanisms are host-loop path-gating on file tools and a Bash/PowerShell-only background abort) and surfaced new control-protocol subtypes (`mcp_call`, `register_repo_root`, etc.). **v2.15.0 also corrected Chapter 20's host-loop/VM-loop framing** — gate `1143815894` decides; production decodes to **host-loop**, so the agent loop runs host-side (`/usr/local/bin/claude`) and only `mcp__workspace__bash`/`web_fetch` run in the VM (the chapter's prior "in-VM CLI" wording for that process is host-side under host-loop). **L108 (Chapter 25) was also added in v2.15.0** — a first-party binary-verified reference catalog of ~33 Cowork/Desktop environment variables (incl. `CLAUDE_CODE_ENABLE_XAA`, `CLAUDE_CODE_ENVIRONMENT_KIND`, `CLAUDE_CODE_WORKER_EPOCH`, the `CLAUDE_BG_*_AUTH` handshake, `CLAUDE_AGENT_SDK_*`, the `ANTHROPIC_DEFAULT_FABLE_MODEL` quartet, `CLAUDE_CODE_DONT_INHERIT_ENV`, and the Desktop-only `CLAUDE_AI_URL`/`CLAUDE_EXTRA_HEADERS_TOKEN`/`CLAUDE_UPDATER_TOKEN`), the **production GrowthBook gates** decoded from the live `fcache` (host-loop `1143815894`, Fable-model `3045399524`, bridge SDK-adapter transport `583857784`, the cowork-runtime config `1978029737`, the task-dispatch limiter `1648655587` = `{perTask:1,global:3}`, sparkplug plugin sync `2340532315` — all ON; `coworkKappa`/`cli_plugin` OFF), and the **extended control-protocol surface**
-(get_session_cost/get_binary_version/generate_session_title/ultrareview_launch/side_question,
-system messages elicitation_complete/files_persisted/local_command_output/api_metrics/thinking,
-and the `Bv1`/`Uv1` dispatcher sets). **v2.23.0 EXTENDS L108** with a cluster of gate-conditioned
-Cowork spawn-env vars this chapter's original pass missed (`MCP_CONNECTION_NONBLOCKING`/
-`MCP_CONNECT_TIMEOUT_MS`, `CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES`,
-`CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING` force-ON live, `CLAUDE_CODE_OAUTH_SCOPES`,
-`CLAUDE_CODE_SKIP_PRECOMPACT_LOAD`, `ENABLE_TOOL_SEARCH`) plus two new Part B gates — `2614807392`
-(dark; governs whether the system prompt explains the `.host-home` synthetic path-translation
-index, confirmed **not** a real bind mount by L117's rootfs mount-unit inventory) and `2860753854`
-(a GrowthBook *string*-config gate, not boolean, supplying `CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES`'s
-default PII-handling text) — surfaced by cross-referencing the independent
-`claude-cowork-headless-emulator` project's `PINNED_GATES` table, then independently re-derived
-first-party against this installation's own `app.asar` **1.18286.0** before being added, and the
-**extended control-protocol surface** (`get_session_cost`, `get_binary_version`, `generate_session_title`, `ultrareview_launch`, `side_question`; system messages `elicitation_complete`/`files_persisted`/`local_command_output`/`api_metrics`/`thinking`; and the `Bv1`/`Uv1` dispatcher sets). **L109 (Chapter 26) was added in v2.16.0** — first-party binary-verified against Claude.app (Desktop) `app.asar` **1.17377.2** + the in-VM agent ELF `claude-code-vm/2.1.197` + the live `fcache` (2026-07-02): Cowork's shift toward a **workspace product** — two new Desktop IPC interfaces (`CoworkSpaces`, an organizing container over projects/folders/links/remote-sessions with per-space auto-memory + `classifySessions`; and `CoworkScheduledTasks`/`CCDScheduledTasks` for cron+watcher tasks, surfaced to the agent as the `scheduled_task_fire` system message), an agent-side **Tasks tool** family (`CLAUDE_CODE_ENABLE_TASKS`/`_TASK_LIST_ID` + `CLAUDE_AUTO_BACKGROUND_TASKS`/`_DISABLE_BACKGROUND_TASKS`/`_BG_TASKS_REPORT_RUNNING`) behind the force-ON `tasks_tab` insider experiment (gate `364911507`), **SDK file-checkpointing** (`CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING` + `rewind_files`/`file_snapshot` subtypes) and `CLAUDE_CODE_ENABLE_REMOTE_RECAP` (`away_summary`), the grown **~90-subtype control protocol** (new `apply_flag_settings`/`set_permission_mode`/`set_model`/`get_context_usage`/`reload_skills`/`memory_recall`/`memory_saved`/`background_tasks`/`session_state_changed`/model-fallback family/etc), and an `fcache` posture note (the 11 documented gates unchanged in on/off state — `cli_plugin`/`coworkKappa` still OFF; the Fable-model gate now enables `claude-fable-5[1m]`+`claude-fable-5`, so Fable 5 is the live Cowork model; `web_fetch` routes via API). **L117 (Chapter 31) was added in v2.22.0** from direct forensic inspection of a **third Cowork artifact class** — the golden VM guest disk image itself (`vm_bundles/claudevm.bundle/rootfs.img`, a raw ~10 GB ext4 image, searchable on the host because it's unencrypted and retains leftover `systemd-journald` logs from real historical sessions). It surfaces the **complete per-session mount inventory** (`outputs`, `uploads`, `.claude`, `.claude/skills`, `.claude/projects`, and one unit per user-connected folder, each an independently mounted/unmounted `sessions-<slug>-mnt-<name>.mount` systemd unit) and confirms the key negative result — **no mount unit exists for home or `/tmp`** — which is the structural reason those two are never host-shared (plain guest-local paths, not bind mounts, an entirely different kind of storage from `outputs/`). Real session slugs are confirmed as Docker-style `<adjective>-<adjective>-<noun>` triples (e.g. `zealous-vigilant-einstein`), not UUIDs, and a previously undocumented in-guest daemon, **`coworkd`**, provisions a dedicated Unix user (uid/gid) per session and spawns work as that user via `oneshot-<uuid>` jobs. Notes a plausible-but-unconfirmed session-to-VM multiplexing inference (an idempotent user-exists check plus an empty `vm_bundles/warm/` directory), and a methodology point: raw/unencrypted disk or container images are a third, greppable artifact class when a feature isn't in either "obvious" binary, and `rg` is roughly 15–20x faster than `grep -a` or naive scripting-language regex over multi-GB images. **L118 (Chapter 32) was added in v2.24.0** — SKILL-SCOPE ATTRIBUTION & the per-`tool_use` stream contract, cross-artifact first-party (in-VM ELF `claude-code-vm/2.1.197` + host CLI `2.1.201` + `app.asar` **1.18286.0**), prompted by the independent `claude-cowork-headless-emulator` project's 2026-07-05 implementation plan and then independently re-derived first-party. The agent tracks an internal `activeSkill` scope (set on `Skill.call` via `W1e`; **inline** = sticky/most-recent-wins/no-pop, **fork** `context:fork` restores the previous `activeSkill` in a `finally` after running the body in a forked sub-agent via `Ypm`) and threads `attribution: c$(querySource, spawnedBySkill, activeSkill, activeMcpServer, activeMcpTool)` onto every **outbound API request** — but that attribution is **absent from the local stream-json output**, whose per-`tool_use` envelope is a fixed small set (`message`, `parent_tool_use_id`, `session_id`, `uuid`, `error`, `request_id`, `supersedes?`, `tool_use_meta?`, + conditional `subagent_type`/`task_description` on dispatch-scoped messages) and whose only per-tool metadata `tool_use_meta` is **display-only** (`{id, display_name, server_display_name?, icon_url?}`). So no exact tool→skill attribution exists in the stream — **fork** skills are the exception (inner tools carry `parent_tool_use_id` = the `Skill` id, exact, and are currently **undercounted** in `toolCounts`). Fork re-entry is guarded by `tengu_skill_tool_fork_recursion`. Also pins **`microcompact_boundary`** as a distinct system-subtype sibling of `compact_boundary` (`return null`'d in at least one render path). The Haiku-4.5-vs-Sonnet-5 fork *runtime* behavior is relayed from the emulator project's live sandboxed runs; all static/code facts are first-party. **L119 (Chapter 33) was added in v2.26.0** — Desktop **cloud tasks**: `teleportToCloud`, bridge-session workers, and the `CLAUDE_CODE_ENVIRONMENT_KIND=bridge` link, first-party binary-verified against `app.asar` **1.19367.0** diffed against a **1.18286.2** baseline + the agent ELF **2.1.202**. Confirmed the headline first-party: **zero IPC interfaces added/removed** (+14/-0 methods, none cloud-task related) — every cloud-task primitive already existed byte-similarly in the older baseline; the one real delta is a newly-vendored but **unused** SDK helper class (`WorkPoller`/`EnvironmentWorker`). `teleportToCloud` confirmed (readiness check → `pushBranch` → stop session → `generateTranscriptSummary` → `POST /v1/sessions`, returning an **absolute** `https://claude.ai/code/<id>`). The chapter's central finding closes a gap this skill has carried since Ch25/L108: **`CLAUDE_CODE_ENVIRONMENT_KIND=bridge` is the exact same mechanism as the Desktop's bridge-session worker surface** — the agent's own `claude remote-control` bridge worker (confirmed to carry its own `poll`/`ack`/`stop` client against `/v1/environments/{id}/work`) sets the var itself when spawning children to execute claimed work; **the Desktop never sets it** — a Desktop-hosted bridge session reaches the identical classifier-summary surface via a separate in-process signal, `replBridgeActive`, instead. Gate `583857784` re-confirmed as the same bridge transport concept under fresh minified symbol names. Two items reported honestly as unresolved rather than assumed: no `heartbeat` call was located inside the `/v1/environments/{id}/work` family specifically, and no fully enumerable `work_type` schema was found (only a two-value dispatcher `switch` with graceful unknown-handling). Prompted by the independent `claude-cowork-headless-emulator` project's 2026-07-08 cloud-tasks analysis, then independently re-derived first-party, correcting its "typed-SDK migration" framing and substantially resolving two of its flagged-unresolvable open questions. **L120 (Chapter 34) was added in v2.27.0** — Desktop reasoning config (effort & extended thinking) traced first-party against `app.asar` **1.19367.0**: extended thinking is a strict boolean (`31999` or `0`, CLI flags only), effort resolves from a local settings-file object across four model-config classes and **never** from `CLAUDE_CODE_EFFORT_LEVEL` (correcting Ch28/L114's backing-store claim), and `setEffort`/`setExtendedThinking` provide the first concrete payloads for the `apply_flag_settings`/`set_max_thinking_tokens` control subtypes. **L121–L124 (Chapter 35) were added in v2.28.0** — the COWORK SUB-AGENT (TASK TOOL) EXECUTION MODEL, first-party against `app.asar` **1.20186.1** + the **Desktop-managed host agent Mach-O 2.1.205** (a new artifact class at `~/Library/Application Support/Claude/claude-code/<v>/claude.app`, distinct from the standalone CLI and the in-VM ELF) + in-VM ELF **2.1.205** + the live fcache + a 509-dispatch production audit corpus: the `GY` recomputed-universe tool-composition rule with the type-less→`general-purpose tools:["*"]` fallback trap (113/509 real dispatches) and the plugin-agent `permissionMode`/`hooks`/`mcpServers` discard (L121); the in-process file-tool namespace where cwd IS the session outputs dir, `/sessions/...` is denied-never-translated, and the path-gate hooks provably fire inside sub-agents (L122); the `subagent_env_hl`/`subagent_env_vm` prompt-append mechanism with its env-gated initialize delivery and the starling-override-only gate `124685897` (L123); and the model-resolution chain, ToolSearch semantics, lifecycle re-verification (`run_in_background` polarity flip, `mcp__dispatch__send_message`), resume-sticky host-loop gate, custom-3p `uOt` hardcode table, VM-loop deltas (Bash the only true divergence), the `task_started`/`toolUseResult`/`permission_denied` stream-observability channels, and the **fcache-is-now-gzip-wrapped** methodology correction (L124). Produced through a six-round mutual-correction cross-review with the emulator project, with corrections flowing both directions. **L125–L128 (Chapter 36) were added in v2.29.0** — Desktop device automation, the `grand_prix` partner bridge, and permission tuning, first-party binary diff of `app.asar` **1.21459.0 → 1.22209.0** (no live GrowthBook fcache captured this pass — gate on/off claims are code-level defaults only). Two real mobile-simulator MCP tools (iOS Simulator, Android Emulator) are structurally impossible for any Cowork agent to receive — gated on `sessionType==="ccd"` (never `"cowork"`/`"cowork-remote"`), a per-platform gate defaulting false, org policy, and a user preference (L125). `remote_devices` (`session_type:"cowork-remote"`) is the actual Cowork-facing device bridge — pairing with a real remote device via a `computer_request_access` permission model, backed by an enclave-key-bound device registry (L126). `grand_prix` is a signed single-partner tool/prompt-injection bridge, built out this release into a full `list/fill/release/code` role set servicing tab-origin-scoped login/address/payment-card autofill — the fourth Desktop credential channel, not a general extensibility point (L127). Three new gate ids tune auto-mode: `4200321681` forces a re-prompt (not a silent allow) for destructive connector tools under auto mode, `1447478638` lets scheduled-task tools auto-approve, `1076115445` auto-resumes sleeping sessions — alongside protected-folder-grant hardening, mandatory DXT extension signing, and a default-off `otlpTracesEnabled` OpenTelemetry setting (L128). Investigation delegated to a Fable-5 subagent; findings relayed as reported, not independently re-verified line-by-line here. **L129–L132 (Chapter 37) were added in v2.30.0** — skill/plugin discovery tools, VCS SDK events & session containment, multi-artifact first-party (host CLI 2.1.215/216/217 + `app.asar` 1.24012.1 vs 1.22209.0 + live fcache + a 10+-session on-disk `audit.jsonl` corpus). The model's real skill-discovery surface is Desktop's SDK-MCP `mcp__skills__*` over the control protocol, **not** the native `ListSkills`/`SearchSkills`/`SuggestSkills` compiled into the CLI (verified against every real session's `system/init` tools array — read `init.tools`, not the model's self-report, which confabulates); the `vLt`/`Vne` `CLAUDE_CODE_REMOTE` predicate gates only the never-rendered native tools (L129). Two new `type:system` subtypes `code_change_published`/`vcs_state_changed` emit from agent **2.1.216** (git-operation-driven, ungated agent-side; Desktop consumption floored at 2.1.217) as the git-state observability primitive for the Managed Agents fleet (L130). The 1.22209.0→1.24012.1 asar diff (run first-party) confirms `getMcpSkillSources` dead code (gate `278625510`), the `morning` bundled skill removed, `coworkTokens`, the `harnessCwd` naming trap, and SDK/CCD OAuth-refresh gates — four new gate ids ABSENT from the fcache, not off (L131). Flagged lead: 1.24012.1 may move Cowork session state into the VM, darkening the host-side disk-recovery path (L132). **L133–L137 (Chapter 38) were added in v2.31.0** — the CLI content refresh **v2.1.198 → v2.1.217** (moves the CLI content baseline to 2.1.217; v2.1.198 CDN-recovered + sha256-verified, CHANGELOG-crosschecked, env additions source-verified). L133 provider/auth: `An()` now returns seven values incl. new `anthropicAws`/`anthropicGoogleCloud` (Claude Platform on AWS/GCP — first-party on the hyperscaler, distinct from BYOC bedrock/vertex). L134 **corrects Ch35/L121's "no fan-out cap"**: real enforced caps (concurrent 20, per-session 200, WebSearch 200, nesting off by default) via `taskRegistry`. L135 command surface: `/fork` redesigned to a background session, in-session role moved to new `/subtask`; dark `/import` + `/artifacts`; hooks still 30. L136 feature surfaces (Artifacts buildout, auto-mode wizard, agent-proxy gh/git shim, `per_message_effort` beta). L137 retired surface (`CLAUDE_CODE_VERIFY_PROMPT` removed) + codename triage. Includes a **meta-view**: four strategic moves — governance of autonomous parallelism, enterprise distribution via hyperscaler-native first-party, differentiated multi-agent orchestration primitives, and the CLI as runtime for a supervised cloud fleet.
+`${CLAUDE_SKILL_DIR}/references/state/` is the normalized truth layer: per-domain pages +
+`state/registry.json`, each stamped `as_of` a binary version. Lessons are
+history and provenance; the state layer is current behavior.
 
-**Topic:** $argument
+- Is a flag/command/gate live, dark, renamed, removed?
+  `node ${CLAUDE_SKILL_DIR}/scripts/state.js <name>` (e.g. `node ${CLAUDE_SKILL_DIR}/scripts/state.js toggle-memory`)
+- How does a domain currently work (Cowork permissions, control protocol,
+  credential channels, models, plugins/hooks, memory)?
+  Read the matching `references/state/<domain>.md` — it supersedes any
+  conflicting statement in an older lesson.
+- Only fall through to `search.js`/`fetch-lesson.js` when the state layer
+  has no matching domain/entry, or when the user asks about history,
+  corrections, or how something was verified.
 
+## Step 2: Check version staleness
+
+```bash
+bash ${CLAUDE_SKILL_DIR}/scripts/check-version.sh 2>/dev/null
+```
+
+Silent if versions match. Prints a warning if the Claude Code version you're running differs from v2.1.231.
+If there's a mismatch, note it in your answer — hooks and permission details change frequently.
+
+## Step 3: Search with unified RRF
+
+Run the Reciprocal Rank Fusion search (keyword + TF-IDF combined):
+
+```bash
+node ${CLAUDE_SKILL_DIR}/scripts/search.js "$argument" --top=5
+```
+
+Fallback if search.js is unavailable:
+```bash
+bash ${CLAUDE_SKILL_DIR}/scripts/lookup.sh "$argument"
+node ${CLAUDE_SKILL_DIR}/scripts/semantic-search.js "$argument"
+```
+
+Results include lesson title, **lesson ID**, file path, line range, and confidence.
+`[HIGH]` = matched both search layers — strongly prefer these.
+Note the lesson IDs; you'll use them in Step 4.
+
+## Step 4: Check cross-references for multi-topic queries
+
+Skip for single-concept queries. For queries spanning subsystems (e.g. "hooks and permissions",
+"agents and memory"), use the lesson IDs from Step 3 to surface related lessons you'd otherwise miss.
+
+```bash
+node ${CLAUDE_SKILL_DIR}/scripts/xref.js <id1> [id2] [id3]
+# Example: node ${CLAUDE_SKILL_DIR}/scripts/xref.js 10 29
+```
+
+## Step 5: Check troubleshooting index for problem queries
+
+If the query describes a problem ("not working", "why", "broken", "keeps", "error", "won't", "fails"):
+
+```bash
+node ${CLAUDE_SKILL_DIR}/scripts/troubleshoot.js "$argument"
+```
+
+## Step 6: Fetch matched lesson content
+
+Use `fetch-lesson.js` to retrieve lesson content by ID — no need to track file paths or line offsets:
+
+```bash
+node ${CLAUDE_SKILL_DIR}/scripts/fetch-lesson.js <id>
+# List all lessons: node ${CLAUDE_SKILL_DIR}/scripts/fetch-lesson.js --list
+```
+
+For multi-lesson topics, fetch each in turn. For a quick lookup without full content:
+```bash
+node ${CLAUDE_SKILL_DIR}/scripts/fetch-lesson.js <id> --meta
+```
+
+If `fetch-lesson.js` is unavailable, fall back to `Read` with the file/offset from search results.
+All reference files are in `${CLAUDE_SKILL_DIR}/references/`.
+
+
+
+If unsure which file, use Grep across all references:
+```
+Grep pattern="<keyword>" path="${CLAUDE_SKILL_DIR}/references/"
+```
+
+For topics spanning multiple lessons, read all matching sections and synthesize using the
+cross-reference map.
+
+## Step 7: Synthesize a focused answer
+
+Structure your answer like this:
+
+**[Subsystem]** — one-line summary of what it does and why it exists.
+
+**Architecture:** Key components, data flow, or state machine. Include type definitions or
+interfaces when they clarify the design.
+
+**Configuration:** Options the user can actually set, and their effects.
+
+**Non-obvious behavior:** Things that surprise people — ordering constraints, edge cases,
+undocumented interactions.
+
+**Example** (only when it illuminates the design):
+```typescript
+// concrete code example from the lesson
+```
+
+Keep it under 5KB. If the topic spans more than 3 lessons, ask which aspect matters most
+before synthesizing everything.
+
+---
+
+## Gotchas
+
+- **Reverse-engineered, not official docs.** Treat as high-quality community documentation.
+  When something contradicts your runtime observation, trust what you observe.
+
+- **[MEDIUM] search results can be noisy.** Check the lesson title before loading the full
+  section. If it doesn't look right for the query, try a more specific search term.
+
+- **Lesson IDs ≠ lesson numbers.** The `id` field in search output maps to cross-references.json
+  keys. Use the file path + line range from search output to navigate directly — don't guess IDs.
+
+- **Unreleased features are speculative.** Content in `05-unreleased-bigpicture.md` (KAIROS,
+  ULTRAPLAN) is inferred from source code. These features may never ship or may look
+  very different in final form. BUDDY was removed in v2.1.97.
+
+- **Lessons 1–50 verified against v2.1.100 binary.** Core subsystems (hooks, permissions, boot,
+  compaction) are unchanged between v2.1.88 and v2.1.100. If running a newer version, treat
+  Ch.9–12 (new features) with extra scrutiny — those subsystems evolve fastest.
+- **Lessons 51–88 are binary-extracted, not from third-party docs.** These are the highest-
+  confidence claims in the skill — extracted directly from the running binary you have installed.
+
+The full chapter/lesson reference table lives at the end of this file, under **Reference file map** — jump there when you need to pick a file by chapter.
 ## If no topic was given
 
 If `$argument` is empty or just whitespace, print this index and ask what the user wants to know:
@@ -177,83 +289,32 @@ Available topics (174 lessons across 48 chapters):
 
 ---
 
-## Step 1: Current-state layer (check FIRST for "how does it behave now" questions)
 
-`${CLAUDE_SKILL_DIR}/references/state/` is the normalized truth layer: per-domain pages +
-`state/registry.json`, each stamped `as_of` a binary version. Lessons are
-history and provenance; the state layer is current behavior.
+You are a Claude Code architecture expert with access to 174 lessons covering Claude Code
+internals — verified against live binaries through v2.1.231 (CLI content baseline v2.1.231 for L153–L158, superseding v2.1.217 for L133–L137 and v2.1.198 for L110–L113; plus Claude Desktop app.asar 1.9659.4 for L105, 1.11847.5 for L106, 1.12603.1 + in-VM ELF claude-code-vm/2.1.170 for L107–L108, 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 for L109, and 1.18286.0 for L114–L115 (L114: a re-verification pass with no byte-diff baseline available; L115 also re-uses the v2.1.198 CLI bundle), and 1.19367.0 for L119 (diffed against a 1.18286.2 intermediate baseline, plus agent ELF 2.1.202 for parity checks), and 1.20186.1 + the Desktop-managed host agent Mach-O 2.1.205 (`~/Library/Application Support/Claude/claude-code/2.1.205/claude.app` — a distinct artifact class from both the standalone CLI and the in-VM ELF) + in-VM ELF claude-code-vm/2.1.205 for L121–L124, and 1.22209.0 for L125–L128 (a pure asar diff vs a 1.21459.0 baseline, no live fcache captured for this pass), and 1.28929.0 diffed vs 1.26832.0 and 13 further local asars back to 1.18286.2 + host agent Mach-O and in-VM ELF 2.1.227 + standalone CLI 2.1.228/2.1.229 + a live fcache decoded 2026-08-13 (254 features) for L147–L152, since Anthropic serves no historical Desktop .app builds). Lessons 1–50 were reverse-engineered
+from source docs (v2.1.88, confirmed unchanged through v2.1.120). Lessons 51–90 were extracted
+directly from the v2.1.90/v2.1.92/v2.1.94/v2.1.100/v2.1.101/v2.1.104/v2.1.107/v2.1.108/v2.1.109/v2.1.110/v2.1.111/v2.1.112/v2.1.113/v2.1.114/v2.1.116/v2.1.117/v2.1.118/v2.1.119/v2.1.120 binaries. L11 (Skills System) was re-verified against the v2.1.116 bundle in v2.9.0 and extended with a `progressMessage` deep-dive in v2.9.1. L86 (OIDC Federation + proxy plumbing + `/model` headless) was added in v2.9.1. L87 (/fork background subagent, rate-limit/subscription overrides, /autocompact + /stop-hook removal) and L88 (/cost + /stats → /usage aliases, cache-diagnosis-2026-04-07, frontmatter shadow validator, WIF OAuth locking) were added in v2.10.0. **L89 (v2.1.119 Cowork-runtime GA: /background, /daemon, Fleet view, classifier-summary, session identity taxonomy) and L90 (v2.1.120 daemon on-demand model, CLAUDE_CODE_LEAN_PROMPT, CLAUDE_COWORK_MEMORY_GUIDELINES, memory-write Approve/Reject UX, plan-mode tripwire) were added in v2.11.0.** v2.11.1 corrected L89: most of the new user-facing surface is **dark-launched** in v2.1.119/v2.1.120 — `/daemon` is hardcoded off (`OqH() = return false`), `/background` and Fleet view are gated by the `tengu_slate_meadow` GB flag (default false; flipped for Claude Max/Cowork users), `/stop` is conditional on bg session. Only `/autocompact` and `/fork` from this surface are universally live. The runtime *code* shipped; the user *surface* is gated. Methodology note: when verifying a new slash command, always trace the master command-resolver-array inclusion (`...VAR && fn() ? [VAR] : []`), not just per-command `isEnabled` — registration in the bundle ≠ reachable command. **L91–L104 (Chapter 21) were added in v2.12.0**, advancing the content baseline from v2.1.120 to **v2.1.159** (extracted from the v2.1.159 binary, diffed vs v2.1.138, CHANGELOG-crosschecked): Dynamic Workflows + coordinator mode, the Opus 4.8 launch (effort ladder low|medium|high|xhigh|max), streaming-tool-execution GA, the `MessageDisplay` hook (the live master hook array is **30**, correcting older 27/19 counts), auto-mode promotion + repo-spoof guard, the Cloud gateway provider, org-managed skills/plugins sync, host-delegated credential refresh, background binary-takeover + Fleet→agent-view rename, `/loop` keepalive, plan-interview removal + team-memory multistore + command churn, the PEWTER_OWL gate over `SendUserMessage`, and a codename-flag triage. v2.11.18 also retracted+resolved L89's Cowork plugin-hook mechanism (hooks DO fire; three-root namespace; host-loop staging). **L105 (Chapter 22) was added in v2.13.0** from binary inspection of Claude.app (Desktop) `app.asar` **1.9659.4** — the Desktop MCP-Apps host bridge (Claude's own postMessage/JSON-RPC dialect; `window.app` injected client; **no** `tools/call`/`callServerTool` channel; only data-return path `sendPrompt`→`ui/message` injects into chat) versus **elicitation** (`elicitation/create`, subtype `elicitation` → `onElicitation` → `{action,content}` returned privately to the server; `form`+`url` modes), settling that an MCP server collecting a secret in Desktop/Cowork must use elicitation, never an App UI form. **L106 (Chapter 23) was added in v2.14.0** from Claude.app (Desktop) `app.asar` **1.11847.5** + the live `fcache` — the Cowork **CLI-plugin credential broker** (`clis.*.env` → set once under Customize → Plugins → `cowork-plugin-env` safeStorage store → injected at CLI invocation by `VKr`, with per-CLI `network[]` merged into the egress allowlist), the *third* Desktop credential channel after L105's two — but **dark-launched behind GrowthBook gate `2307090146` (`cli_plugin`), off by default**, gated in both the renderer (`pJe`→`GXr` strips `clis`) and the runtime (`PKr` ahead of `VKr` returns `oauth_disabled`), so a correctly-authored manifest renders no credential field with no error until Anthropic flips the gate (read the gate state by decoding `userData/fcache`). **L107 (Chapter 24) was added in v2.15.0** — the Cowork **spawn + stream-json control-protocol contract**, first-party binary-verified against Claude.app `app.asar` **1.12603.1** + the staged in-VM agent ELF `claude-code-vm/2.1.170/claude` + the live `fcache` (a 14-agent extraction-and-adversarial-verification workflow). Since the real Desktop runtime can't be scripted, the stable seam is the agent's flags + control protocol: `CLAUDE_CODE_IS_COWORK=1` activates cowork mode (the `--cowork` flag is rejected; don't set `CLAUDE_CODE_USE_COWORK_PLUGINS`), spawn flags `-p --verbose --input-format stream-json --output-format stream-json --permission-prompt-tool stdio` (without `stdio` routing, AskUserQuestion is silently auto-dismissed), an `initialize` handshake first, a doubly-nested `control_response` envelope, AskUserQuestion answers as `updatedInput.answers`, MCP delivered as SDK servers tunneled over `control_request{subtype:mcp_message}` (the driver IS the MCP server; `--mcp-config` is dropped only in safe/hermetic-remote mode, not by plain cowork-bg), a layered permission model, and `CLAUDE_CODE_OAUTH_TOKEN` auth. The verification overturned two earlier-draft claims (the `--effort` default — the desktop *passes* `medium` while the agent default is `high`; and a supposed "PreToolUse forced-ask for 5 cowork tools + `Task run_in_background` block" — the real mechanisms are host-loop path-gating on file tools and a Bash/PowerShell-only background abort) and surfaced new control-protocol subtypes (`mcp_call`, `register_repo_root`, etc.). **v2.15.0 also corrected Chapter 20's host-loop/VM-loop framing** — gate `1143815894` decides; production decodes to **host-loop**, so the agent loop runs host-side (`/usr/local/bin/claude`) and only `mcp__workspace__bash`/`web_fetch` run in the VM (the chapter's prior "in-VM CLI" wording for that process is host-side under host-loop). **L108 (Chapter 25) was also added in v2.15.0** — a first-party binary-verified reference catalog of ~33 Cowork/Desktop environment variables (incl. `CLAUDE_CODE_ENABLE_XAA`, `CLAUDE_CODE_ENVIRONMENT_KIND`, `CLAUDE_CODE_WORKER_EPOCH`, the `CLAUDE_BG_*_AUTH` handshake, `CLAUDE_AGENT_SDK_*`, the `ANTHROPIC_DEFAULT_FABLE_MODEL` quartet, `CLAUDE_CODE_DONT_INHERIT_ENV`, and the Desktop-only `CLAUDE_AI_URL`/`CLAUDE_EXTRA_HEADERS_TOKEN`/`CLAUDE_UPDATER_TOKEN`), the **production GrowthBook gates** decoded from the live `fcache` (host-loop `1143815894`, Fable-model `3045399524`, bridge SDK-adapter transport `583857784`, the cowork-runtime config `1978029737`, the task-dispatch limiter `1648655587` = `{perTask:1,global:3}`, sparkplug plugin sync `2340532315` — all ON; `coworkKappa`/`cli_plugin` OFF), and the **extended control-protocol surface**
+(get_session_cost/get_binary_version/generate_session_title/ultrareview_launch/side_question,
+system messages elicitation_complete/files_persisted/local_command_output/api_metrics/thinking,
+and the `Bv1`/`Uv1` dispatcher sets). **v2.23.0 EXTENDS L108** with a cluster of gate-conditioned
+Cowork spawn-env vars this chapter's original pass missed (`MCP_CONNECTION_NONBLOCKING`/
+`MCP_CONNECT_TIMEOUT_MS`, `CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES`,
+`CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING` force-ON live, `CLAUDE_CODE_OAUTH_SCOPES`,
+`CLAUDE_CODE_SKIP_PRECOMPACT_LOAD`, `ENABLE_TOOL_SEARCH`) plus two new Part B gates — `2614807392`
+(dark; governs whether the system prompt explains the `.host-home` synthetic path-translation
+index, confirmed **not** a real bind mount by L117's rootfs mount-unit inventory) and `2860753854`
+(a GrowthBook *string*-config gate, not boolean, supplying `CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES`'s
+default PII-handling text) — surfaced by cross-referencing the independent
+`claude-cowork-headless-emulator` project's `PINNED_GATES` table, then independently re-derived
+first-party against this installation's own `app.asar` **1.18286.0** before being added, and the
+**extended control-protocol surface** (`get_session_cost`, `get_binary_version`, `generate_session_title`, `ultrareview_launch`, `side_question`; system messages `elicitation_complete`/`files_persisted`/`local_command_output`/`api_metrics`/`thinking`; and the `Bv1`/`Uv1` dispatcher sets). **L109 (Chapter 26) was added in v2.16.0** — first-party binary-verified against Claude.app (Desktop) `app.asar` **1.17377.2** + the in-VM agent ELF `claude-code-vm/2.1.197` + the live `fcache` (2026-07-02): Cowork's shift toward a **workspace product** — two new Desktop IPC interfaces (`CoworkSpaces`, an organizing container over projects/folders/links/remote-sessions with per-space auto-memory + `classifySessions`; and `CoworkScheduledTasks`/`CCDScheduledTasks` for cron+watcher tasks, surfaced to the agent as the `scheduled_task_fire` system message), an agent-side **Tasks tool** family (`CLAUDE_CODE_ENABLE_TASKS`/`_TASK_LIST_ID` + `CLAUDE_AUTO_BACKGROUND_TASKS`/`_DISABLE_BACKGROUND_TASKS`/`_BG_TASKS_REPORT_RUNNING`) behind the force-ON `tasks_tab` insider experiment (gate `364911507`), **SDK file-checkpointing** (`CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING` + `rewind_files`/`file_snapshot` subtypes) and `CLAUDE_CODE_ENABLE_REMOTE_RECAP` (`away_summary`), the grown **~90-subtype control protocol** (new `apply_flag_settings`/`set_permission_mode`/`set_model`/`get_context_usage`/`reload_skills`/`memory_recall`/`memory_saved`/`background_tasks`/`session_state_changed`/model-fallback family/etc), and an `fcache` posture note (the 11 documented gates unchanged in on/off state — `cli_plugin`/`coworkKappa` still OFF; the Fable-model gate now enables `claude-fable-5[1m]`+`claude-fable-5`, so Fable 5 is the live Cowork model; `web_fetch` routes via API). **L117 (Chapter 31) was added in v2.22.0** from direct forensic inspection of a **third Cowork artifact class** — the golden VM guest disk image itself (`vm_bundles/claudevm.bundle/rootfs.img`, a raw ~10 GB ext4 image, searchable on the host because it's unencrypted and retains leftover `systemd-journald` logs from real historical sessions). It surfaces the **complete per-session mount inventory** (`outputs`, `uploads`, `.claude`, `.claude/skills`, `.claude/projects`, and one unit per user-connected folder, each an independently mounted/unmounted `sessions-<slug>-mnt-<name>.mount` systemd unit) and confirms the key negative result — **no mount unit exists for home or `/tmp`** — which is the structural reason those two are never host-shared (plain guest-local paths, not bind mounts, an entirely different kind of storage from `outputs/`). Real session slugs are confirmed as Docker-style `<adjective>-<adjective>-<noun>` triples (e.g. `zealous-vigilant-einstein`), not UUIDs, and a previously undocumented in-guest daemon, **`coworkd`**, provisions a dedicated Unix user (uid/gid) per session and spawns work as that user via `oneshot-<uuid>` jobs. Notes a plausible-but-unconfirmed session-to-VM multiplexing inference (an idempotent user-exists check plus an empty `vm_bundles/warm/` directory), and a methodology point: raw/unencrypted disk or container images are a third, greppable artifact class when a feature isn't in either "obvious" binary, and `rg` is roughly 15–20x faster than `grep -a` or naive scripting-language regex over multi-GB images. **L118 (Chapter 32) was added in v2.24.0** — SKILL-SCOPE ATTRIBUTION & the per-`tool_use` stream contract, cross-artifact first-party (in-VM ELF `claude-code-vm/2.1.197` + host CLI `2.1.201` + `app.asar` **1.18286.0**), prompted by the independent `claude-cowork-headless-emulator` project's 2026-07-05 implementation plan and then independently re-derived first-party. The agent tracks an internal `activeSkill` scope (set on `Skill.call` via `W1e`; **inline** = sticky/most-recent-wins/no-pop, **fork** `context:fork` restores the previous `activeSkill` in a `finally` after running the body in a forked sub-agent via `Ypm`) and threads `attribution: c$(querySource, spawnedBySkill, activeSkill, activeMcpServer, activeMcpTool)` onto every **outbound API request** — but that attribution is **absent from the local stream-json output**, whose per-`tool_use` envelope is a fixed small set (`message`, `parent_tool_use_id`, `session_id`, `uuid`, `error`, `request_id`, `supersedes?`, `tool_use_meta?`, + conditional `subagent_type`/`task_description` on dispatch-scoped messages) and whose only per-tool metadata `tool_use_meta` is **display-only** (`{id, display_name, server_display_name?, icon_url?}`). So no exact tool→skill attribution exists in the stream — **fork** skills are the exception (inner tools carry `parent_tool_use_id` = the `Skill` id, exact, and are currently **undercounted** in `toolCounts`). Fork re-entry is guarded by `tengu_skill_tool_fork_recursion`. Also pins **`microcompact_boundary`** as a distinct system-subtype sibling of `compact_boundary` (`return null`'d in at least one render path). The Haiku-4.5-vs-Sonnet-5 fork *runtime* behavior is relayed from the emulator project's live sandboxed runs; all static/code facts are first-party. **L119 (Chapter 33) was added in v2.26.0** — Desktop **cloud tasks**: `teleportToCloud`, bridge-session workers, and the `CLAUDE_CODE_ENVIRONMENT_KIND=bridge` link, first-party binary-verified against `app.asar` **1.19367.0** diffed against a **1.18286.2** baseline + the agent ELF **2.1.202**. Confirmed the headline first-party: **zero IPC interfaces added/removed** (+14/-0 methods, none cloud-task related) — every cloud-task primitive already existed byte-similarly in the older baseline; the one real delta is a newly-vendored but **unused** SDK helper class (`WorkPoller`/`EnvironmentWorker`). `teleportToCloud` confirmed (readiness check → `pushBranch` → stop session → `generateTranscriptSummary` → `POST /v1/sessions`, returning an **absolute** `https://claude.ai/code/<id>`). The chapter's central finding closes a gap this skill has carried since Ch25/L108: **`CLAUDE_CODE_ENVIRONMENT_KIND=bridge` is the exact same mechanism as the Desktop's bridge-session worker surface** — the agent's own `claude remote-control` bridge worker (confirmed to carry its own `poll`/`ack`/`stop` client against `/v1/environments/{id}/work`) sets the var itself when spawning children to execute claimed work; **the Desktop never sets it** — a Desktop-hosted bridge session reaches the identical classifier-summary surface via a separate in-process signal, `replBridgeActive`, instead. Gate `583857784` re-confirmed as the same bridge transport concept under fresh minified symbol names. Two items reported honestly as unresolved rather than assumed: no `heartbeat` call was located inside the `/v1/environments/{id}/work` family specifically, and no fully enumerable `work_type` schema was found (only a two-value dispatcher `switch` with graceful unknown-handling). Prompted by the independent `claude-cowork-headless-emulator` project's 2026-07-08 cloud-tasks analysis, then independently re-derived first-party, correcting its "typed-SDK migration" framing and substantially resolving two of its flagged-unresolvable open questions. **L120 (Chapter 34) was added in v2.27.0** — Desktop reasoning config (effort & extended thinking) traced first-party against `app.asar` **1.19367.0**: extended thinking is a strict boolean (`31999` or `0`, CLI flags only), effort resolves from a local settings-file object across four model-config classes and **never** from `CLAUDE_CODE_EFFORT_LEVEL` (correcting Ch28/L114's backing-store claim), and `setEffort`/`setExtendedThinking` provide the first concrete payloads for the `apply_flag_settings`/`set_max_thinking_tokens` control subtypes. **L121–L124 (Chapter 35) were added in v2.28.0** — the COWORK SUB-AGENT (TASK TOOL) EXECUTION MODEL, first-party against `app.asar` **1.20186.1** + the **Desktop-managed host agent Mach-O 2.1.205** (a new artifact class at `~/Library/Application Support/Claude/claude-code/<v>/claude.app`, distinct from the standalone CLI and the in-VM ELF) + in-VM ELF **2.1.205** + the live fcache + a 509-dispatch production audit corpus: the `GY` recomputed-universe tool-composition rule with the type-less→`general-purpose tools:["*"]` fallback trap (113/509 real dispatches) and the plugin-agent `permissionMode`/`hooks`/`mcpServers` discard (L121); the in-process file-tool namespace where cwd IS the session outputs dir, `/sessions/...` is denied-never-translated, and the path-gate hooks provably fire inside sub-agents (L122); the `subagent_env_hl`/`subagent_env_vm` prompt-append mechanism with its env-gated initialize delivery and the starling-override-only gate `124685897` (L123); and the model-resolution chain, ToolSearch semantics, lifecycle re-verification (`run_in_background` polarity flip, `mcp__dispatch__send_message`), resume-sticky host-loop gate, custom-3p `uOt` hardcode table, VM-loop deltas (Bash the only true divergence), the `task_started`/`toolUseResult`/`permission_denied` stream-observability channels, and the **fcache-is-now-gzip-wrapped** methodology correction (L124). Produced through a six-round mutual-correction cross-review with the emulator project, with corrections flowing both directions. **L125–L128 (Chapter 36) were added in v2.29.0** — Desktop device automation, the `grand_prix` partner bridge, and permission tuning, first-party binary diff of `app.asar` **1.21459.0 → 1.22209.0** (no live GrowthBook fcache captured this pass — gate on/off claims are code-level defaults only). Two real mobile-simulator MCP tools (iOS Simulator, Android Emulator) are structurally impossible for any Cowork agent to receive — gated on `sessionType==="ccd"` (never `"cowork"`/`"cowork-remote"`), a per-platform gate defaulting false, org policy, and a user preference (L125). `remote_devices` (`session_type:"cowork-remote"`) is the actual Cowork-facing device bridge — pairing with a real remote device via a `computer_request_access` permission model, backed by an enclave-key-bound device registry (L126). `grand_prix` is a signed single-partner tool/prompt-injection bridge, built out this release into a full `list/fill/release/code` role set servicing tab-origin-scoped login/address/payment-card autofill — the fourth Desktop credential channel, not a general extensibility point (L127). Three new gate ids tune auto-mode: `4200321681` forces a re-prompt (not a silent allow) for destructive connector tools under auto mode, `1447478638` lets scheduled-task tools auto-approve, `1076115445` auto-resumes sleeping sessions — alongside protected-folder-grant hardening, mandatory DXT extension signing, and a default-off `otlpTracesEnabled` OpenTelemetry setting (L128). Investigation delegated to a Fable-5 subagent; findings relayed as reported, not independently re-verified line-by-line here. **L129–L132 (Chapter 37) were added in v2.30.0** — skill/plugin discovery tools, VCS SDK events & session containment, multi-artifact first-party (host CLI 2.1.215/216/217 + `app.asar` 1.24012.1 vs 1.22209.0 + live fcache + a 10+-session on-disk `audit.jsonl` corpus). The model's real skill-discovery surface is Desktop's SDK-MCP `mcp__skills__*` over the control protocol, **not** the native `ListSkills`/`SearchSkills`/`SuggestSkills` compiled into the CLI (verified against every real session's `system/init` tools array — read `init.tools`, not the model's self-report, which confabulates); the `vLt`/`Vne` `CLAUDE_CODE_REMOTE` predicate gates only the never-rendered native tools (L129). Two new `type:system` subtypes `code_change_published`/`vcs_state_changed` emit from agent **2.1.216** (git-operation-driven, ungated agent-side; Desktop consumption floored at 2.1.217) as the git-state observability primitive for the Managed Agents fleet (L130). The 1.22209.0→1.24012.1 asar diff (run first-party) confirms `getMcpSkillSources` dead code (gate `278625510`), the `morning` bundled skill removed, `coworkTokens`, the `harnessCwd` naming trap, and SDK/CCD OAuth-refresh gates — four new gate ids ABSENT from the fcache, not off (L131). Flagged lead: 1.24012.1 may move Cowork session state into the VM, darkening the host-side disk-recovery path (L132). **L133–L137 (Chapter 38) were added in v2.31.0** — the CLI content refresh **v2.1.198 → v2.1.217** (moves the CLI content baseline to 2.1.217; v2.1.198 CDN-recovered + sha256-verified, CHANGELOG-crosschecked, env additions source-verified). L133 provider/auth: `An()` now returns seven values incl. new `anthropicAws`/`anthropicGoogleCloud` (Claude Platform on AWS/GCP — first-party on the hyperscaler, distinct from BYOC bedrock/vertex). L134 **corrects Ch35/L121's "no fan-out cap"**: real enforced caps (concurrent 20, per-session 200, WebSearch 200, nesting off by default) via `taskRegistry`. L135 command surface: `/fork` redesigned to a background session, in-session role moved to new `/subtask`; dark `/import` + `/artifacts`; hooks still 30. L136 feature surfaces (Artifacts buildout, auto-mode wizard, agent-proxy gh/git shim, `per_message_effort` beta). L137 retired surface (`CLAUDE_CODE_VERIFY_PROMPT` removed) + codename triage. Includes a **meta-view**: four strategic moves — governance of autonomous parallelism, enterprise distribution via hyperscaler-native first-party, differentiated multi-agent orchestration primitives, and the CLI as runtime for a supervised cloud fleet.
 
-- Is a flag/command/gate live, dark, renamed, removed?
-  `node ${CLAUDE_SKILL_DIR}/scripts/state.js <name>` (e.g. `node ${CLAUDE_SKILL_DIR}/scripts/state.js toggle-memory`)
-- How does a domain currently work (Cowork permissions, control protocol,
-  credential channels, models, plugins/hooks, memory)?
-  Read the matching `references/state/<domain>.md` — it supersedes any
-  conflicting statement in an older lesson.
-- Only fall through to `search.js`/`fetch-lesson.js` when the state layer
-  has no matching domain/entry, or when the user asks about history,
-  corrections, or how something was verified.
+**Topic:** $argument
 
-## Step 2: Check version staleness
 
-```bash
-bash ${CLAUDE_SKILL_DIR}/scripts/check-version.sh 2>/dev/null
-```
+## Reference file map
 
-Silent if versions match. Prints a warning if the Claude Code version you're running differs from v2.1.231.
-If there's a mismatch, note it in your answer — hooks and permission details change frequently.
-
-## Step 3: Search with unified RRF
-
-Run the Reciprocal Rank Fusion search (keyword + TF-IDF combined):
-
-```bash
-node ${CLAUDE_SKILL_DIR}/scripts/search.js "$argument" --top=5
-```
-
-Fallback if search.js is unavailable:
-```bash
-bash ${CLAUDE_SKILL_DIR}/scripts/lookup.sh "$argument"
-node ${CLAUDE_SKILL_DIR}/scripts/semantic-search.js "$argument"
-```
-
-Results include lesson title, **lesson ID**, file path, line range, and confidence.
-`[HIGH]` = matched both search layers — strongly prefer these.
-Note the lesson IDs; you'll use them in Step 4.
-
-## Step 4: Check cross-references for multi-topic queries
-
-Skip for single-concept queries. For queries spanning subsystems (e.g. "hooks and permissions",
-"agents and memory"), use the lesson IDs from Step 3 to surface related lessons you'd otherwise miss.
-
-```bash
-node ${CLAUDE_SKILL_DIR}/scripts/xref.js <id1> [id2] [id3]
-# Example: node ${CLAUDE_SKILL_DIR}/scripts/xref.js 10 29
-```
-
-## Step 5: Check troubleshooting index for problem queries
-
-If the query describes a problem ("not working", "why", "broken", "keeps", "error", "won't", "fails"):
-
-```bash
-node ${CLAUDE_SKILL_DIR}/scripts/troubleshoot.js "$argument"
-```
-
-## Step 6: Fetch matched lesson content
-
-Use `fetch-lesson.js` to retrieve lesson content by ID — no need to track file paths or line offsets:
-
-```bash
-node ${CLAUDE_SKILL_DIR}/scripts/fetch-lesson.js <id>
-# List all lessons: node ${CLAUDE_SKILL_DIR}/scripts/fetch-lesson.js --list
-```
-
-For multi-lesson topics, fetch each in turn. For a quick lookup without full content:
-```bash
-node ${CLAUDE_SKILL_DIR}/scripts/fetch-lesson.js <id> --meta
-```
-
-If `fetch-lesson.js` is unavailable, fall back to `Read` with the file/offset from search results.
-All reference files are in `${CLAUDE_SKILL_DIR}/references/`.
+Which reference file holds which chapters and lessons.
 
 | File | Chapters | Lessons |
 |------|----------|---------|
@@ -300,56 +361,3 @@ All reference files are in `${CLAUDE_SKILL_DIR}/references/`.
 | `41-cowork-path-resolution-lanes.md` | 44 | **Path resolution in Cowork — a withdrawal, and the two path forms (L163–L166).** A **correction chapter**: this skill published, and repeated across four chapters plus the state layer and its author-facing guidance, the claim that host-loop bash and the file tools share one working directory and that a bare filename is correct for both. **Withdrawn.** **L163** `mcp__workspace__bash` starts at the **session root `/sessions/<id>`**, with and without a connected folder, and always did — this skill's own **Ch40 probes measured it at Desktop 1.25927.0**, *before* the shipped prompt was corrected at **1.32885.1**. The behaviour never changed; the prompt was wrong and we copied it. The `— cwd` annotation marked the **agent's** cwd on the host side of a host→VM mapping row, not bash's. **Unchanged & re-verified:** the agent-process cwd IS the outputs dir (`e.cwd = d`, `d = hostCwd = getOutputsDir`; sibling proof `hostUploadsDir = join(dirname(hostCwd),"uploads")`) — Ch35/L122 stands. **L164** **two tool families, two path forms, no form correct for both**: bare names for Read/Write/Edit (cwd = outputs, user-visible), absolute `/sessions/<id>/mnt/outputs/...` for bash (its own prompt says *"Use absolute paths"*); `{{cwd}}` and `{{workspaceFolder}}` **collapse onto one path** in host-loop with no folder connected, which is why the shipped template calls one directory both an invisible scratchpad and the deliverables folder; `outputs/x` **doubles** to `outputs/outputs/x` and hides, `<folder>/x` builds a **decoy dir** inside outputs, only an absolute path reaches a connected folder. **L165** `Write`'s result carries the **raw** `file_path` (`filePath:e`) while telemetry carries the derived path — nothing absolutizes it; `Dn` collides three ways in 2.1.246 and is deliberately not claimed. **L166** **surface separation** — the "same scratch space" text is **Chat mode's** (`Zo()`), where it is true and enforced by an explicit `cd`; plus the lane facts (disallow+alias is host-loop-only, so **VM-loop keeps built-in Bash**; `WebFetch` aliased in both) re-derived by enumerating all **11** `disallowedTools=[` sites in the **raw asar**. **Two greps that lie:** the `\uXXXX` **re-encoding at 1.32352.0** false-negatives raw non-ASCII greps and manufactures a phantom "transitional build"; `@electron/asar extract` leaves a **partial tree** (265 of 292 entries) that looks complete. **Does NOT move the Desktop baseline** (still 1.30096.1) — targeted correction, per-fact provenance only. Cross-refs Ch24 L107, Ch35 L122/L123/L124, Ch40 L146. |
 | `42-skill-reattach-compaction-budget.md` | 45 | **What compaction re-attaches: the skill budget and its file-restore sibling (L167).** After compaction — including **microcompaction**, one of the assembler's three chunk-local callers — the agent re-attaches invoked skills under **two** budgets: per-skill **5,000 tokens** (truncates to `t*4 − 100` = **19,900 chars** + a **100**-char marker = exactly 20,000) and combined **25,000 tokens** (**drops a skill outright**, stored content set to `""`). Combined is consumed by **post-truncation** sizes and the loop sorts **most-recently-invoked first**, so the skill that silently vanishes is rarely the big one. **Four guards:** write-back *and* zeroing are `!c`-guarded (content already in the body), an already-`attachment`ed skill is skipped entirely, and `if(!a.content) continue` makes zeroing **persistent for the session**. **Estimator RESOLVED** — `Math.round(chars/4)`, identical in 2.1.246/2.1.248/2.1.250, so the token gate is exactly a **character** gate: truncates at **20,002** chars, last safe **20,001**. The 2.1.246 read required **following the import alias through the export block**; a bare-name export grep false-negatives on alias-mangled bundles. **Recovery channel corrected:** the `Path:` field is a source-qualified identifier (`plugin:…`), **not** a file location — but the content's first line carries an absolute `Base directory for this skill:` which **survives head-truncation** (99/101 truncated records), — but recovery depends on whether that directory **still exists when the line is read**, which is a property of *when you look*, not of the skill. Three states: **no** directory (single-file `commands/*.md` + some builtins — cannot fire, but nothing misleads); a directory that still exists (works); and one that died since (**looks executable and fails** — worse than having none). Measured: **49 of 56** distinct base directories in the corpus are dead, **46** of them version-stamped plugin-cache paths removed by an ordinary upgrade (`superpowers/6.1.1` dead, `6.3.0` present); bundled skills reach it via a per-run random temp root. Every dead path was alive when written, so the reachable failure is **resume after upgrade** — path-death measured, failing `Read` **not** observed. **Adjacent mechanism:** the `5`/`50000`/`5000` constants are the **post-compaction file restore** (five slots after four exclusions, per-file and combined caps, a per-context 5,000-entry/25 MiB LRU) — so references are exempt from both *skill* caps but land in *that* budget. Corpus: **269** records / 651 entries / 101 truncated, all exactly 20,000 chars, up to 7 co-invoked. Names rotate every build and `_On` **inverts** meaning between 2.1.248 and 2.1.250: **pin values, not names**. Cross-refs Ch32 L118, Ch35 L124, Ch43 L162. |
 | `43-cowork-in-app-browser-preview.md` | 46 | **Cowork's in-app browser & the `preview_*` family (L168–L169).** `app.asar` **1.37937.1**, **binary tier — no live probe, no fcache, so both gate ids' live state is UNKNOWN.** **L168** Cowork ships its own browser as **`mcp__Claude_Browser__*`** — 14 tools whose names are **identical to Claude-in-Chrome's**, so the surfaces differ only by prefix and name-matching can't tell them apart. Gated by **two** gates + a setting + a session test: `jL()=!kL()&&xS('17519066')`, `ML()=jL()?xS('3990395613'):false`, `NL()=ML()&&Vx('coworkBrowserToolsEnabled')!==false`, `hasInAppBrowser=NL()&&sessionType!=='chat'` (**Chat mode never gets it**); `kL()=!CL||SL` unresolved and flagged. **Security shape:** the pane keeps a **persistent profile carrying the user's existing logins across sessions**, with "never signs out or changes credentials" as *prompt instruction, not mechanism* — a further credential-adjacent surface beside Ch36/L127. Arbitration via `coworkPreferredBrowser`; can't open `file://` or a Claude-started `localhost` (publish an Artifact instead). **L169** **`preview_start` has two incompatible contracts** chosen by session kind in `Xhr(pgr,kind)`: Cowork gets `Uhr` → `{url}` *"Open the Browser pane at a URL (a fresh browser tab; **no dev server on this surface**)"*, while the base is `{name}` *"Start a dev server from `.claude/launch.json`"*. **`launch.json` and the 13-tool Playwright-shaped preview family are NOT a Cowork feature** — Cowork keeps only the name. Three surfaces from one branch. Schema recorded verbatim; the Launch Composer identification (Ch27/L112) is **inferred**. **Method:** a truncated sampling window nearly shipped a false "no `tabs_*` in Cowork" claim — extract whole arrays by bracket-matching before asserting absence. Cross-refs Ch27 L112, Ch36 L127, Ch37 L129, Ch43 L162, Ch44 L164/L166. |
-
-If unsure which file, use Grep across all references:
-```
-Grep pattern="<keyword>" path="${CLAUDE_SKILL_DIR}/references/"
-```
-
-For topics spanning multiple lessons, read all matching sections and synthesize using the
-cross-reference map.
-
-## Step 7: Synthesize a focused answer
-
-Structure your answer like this:
-
-**[Subsystem]** — one-line summary of what it does and why it exists.
-
-**Architecture:** Key components, data flow, or state machine. Include type definitions or
-interfaces when they clarify the design.
-
-**Configuration:** Options the user can actually set, and their effects.
-
-**Non-obvious behavior:** Things that surprise people — ordering constraints, edge cases,
-undocumented interactions.
-
-**Example** (only when it illuminates the design):
-```typescript
-// concrete code example from the lesson
-```
-
-Keep it under 5KB. If the topic spans more than 3 lessons, ask which aspect matters most
-before synthesizing everything.
-
----
-
-## Gotchas
-
-- **Reverse-engineered, not official docs.** Treat as high-quality community documentation.
-  When something contradicts your runtime observation, trust what you observe.
-
-- **[MEDIUM] search results can be noisy.** Check the lesson title before loading the full
-  section. If it doesn't look right for the query, try a more specific search term.
-
-- **Lesson IDs ≠ lesson numbers.** The `id` field in search output maps to cross-references.json
-  keys. Use the file path + line range from search output to navigate directly — don't guess IDs.
-
-- **Unreleased features are speculative.** Content in `05-unreleased-bigpicture.md` (KAIROS,
-  ULTRAPLAN) is inferred from source code. These features may never ship or may look
-  very different in final form. BUDDY was removed in v2.1.97.
-
-- **Lessons 1–50 verified against v2.1.100 binary.** Core subsystems (hooks, permissions, boot,
-  compaction) are unchanged between v2.1.88 and v2.1.100. If running a newer version, treat
-  Ch.9–12 (new features) with extra scrutiny — those subsystems evolve fastest.
-- **Lessons 51–88 are binary-extracted, not from third-party docs.** These are the highest-
-  confidence claims in the skill — extracted directly from the running binary you have installed.
