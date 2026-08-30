@@ -186,6 +186,26 @@ This boundary is what makes the corpus result meaningful and nearly made it mean
 
 One machine, one account. The Cowork post-2.1.237 slice is small — 224 sessions, 1,601 main-thread turns. The stretch reconstruction approximates `k0s` rather than reproducing it: it does not model the `Gj()` skip predicate or `S0s`'s two sentinel-string exclusions, and it resolves three of the five names in `w0s`. Both gaps push the same way — they can only **over**-count silent turns, so the true opportunity count is at most 399, never more.
 
+### ADDENDUM (2026-08-30) — a SECOND cause of silence: the model cannot speak inside its own tool batch
+
+The lesson explains a quiet turn as a choice the model makes under an instruction. There is a second cause that is not a choice at all, and it dominates for one class of skill.
+
+An assistant message can carry several `tool_use` blocks. The model emits them together and then **stops** — it regains the floor only when every result in that batch has returned. So a message carrying N parallel dispatches is structurally incapable of narrating between them, no matter what the prompt section asks for. Text can only appear *before* the batch or *after* all of it.
+
+Measured across this machine's corpora, grouping `tool_use` blocks by `message.id`, main thread only:
+
+| Corpus | tool-bearing msgs | mean tools/msg | >1 tool | ≥5 tools | max |
+|---|---|---|---|---|---|
+| Cowork, agent ≥2.1.237 | 1,391 | 1.18 | 7.6% | 1.4% | **11** |
+| Cowork, all versions | 40,793 | 1.33 | 17.9% | 1.9% | 36 |
+| CLI, agent ≥2.1.237 (900-file sample) | 492 | 1.05 | 4.9% | **0%** | 2 |
+
+**The scoping is the finding.** The median Cowork message carries one tool, so batching is *not* a general explanation for Cowork's lower narration rate — L176's prompt-and-override account still carries that. But the tail is real and it is Cowork-only: 1.4% of Cowork messages dispatch five or more tools at once and the CLI sample never does. A fan-out skill lives in that tail, and for it the silence is mechanical.
+
+The practical consequence for skill authors is a hard limit, not a tuning knob: **a phase implemented as one parallel batch cannot report from inside itself.** Narration has to sit at batch boundaries, and buying finer granularity means splitting the batch and paying the wall-clock. That is worth knowing before designing a progress scheme that assumes mid-phase updates are available.
+
+The grouping technique — and the observation that a fan-out orchestrator "regains the floor only between phases" — comes from the `creative-problem-solving` project's own pipeline analysis, which measured 9, 11, 6 and 3 dispatches in single messages. Those figures sit exactly at the maximum of 11 seen independently here in the same version slice. The corpus-wide scoping above is this pass.
+
 ---
 
 # LESSON 177 — BRIEF MODE, PEWTER_OWL, AND COWORK

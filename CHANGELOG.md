@@ -1,5 +1,25 @@
 # Changelog
 
+## v2.47.2 — 2026-08-30 (this fork) — a second cause of Cowork silence, and it is not a choice
+
+Ch49/L176 explained a quiet turn as something the model decides under an instruction. There is a second cause that is not a decision at all.
+
+An assistant message can carry several `tool_use` blocks. The model emits them together and then stops — it regains the floor only once **every** result in that batch returns. A message carrying N parallel dispatches is therefore structurally incapable of narrating between them: text can appear before the batch, or after all of it, and nowhere in between.
+
+Measured by grouping `tool_use` blocks on `message.id`, main thread only:
+
+| Corpus | tool-bearing msgs | mean tools/msg | >1 tool | ≥5 tools | max |
+|---|---|---|---|---|---|
+| Cowork ≥2.1.237 | 1,391 | 1.18 | 7.6% | 1.4% | 11 |
+| Cowork, all versions | 40,793 | 1.33 | 17.9% | 1.9% | 36 |
+| CLI ≥2.1.237 (900-file sample) | 492 | 1.05 | 4.9% | 0% | 2 |
+
+**The scoping is the finding.** The median Cowork message carries one tool, so batching does *not* explain Cowork's lower narration rate in general — L176's prompt-and-override account still carries that. But the tail is real and Cowork-only, and a fan-out skill lives in it.
+
+For skill authors this is a hard limit rather than a tuning knob: **a phase implemented as one parallel batch cannot report from inside itself.** Narration has to sit at batch boundaries, and buying finer granularity means splitting the batch and paying the wall-clock — worth knowing before designing a progress scheme that assumes mid-phase updates exist.
+
+The grouping technique, and the observation that a fan-out orchestrator regains the floor only between phases, come from the `creative-problem-solving` project's pipeline analysis, which measured 9, 11, 6 and 3 dispatches in single messages — sitting exactly at the maximum of 11 seen independently here in the same version slice. The corpus-wide scoping is this pass.
+
 ## v2.47.1 — 2026-08-30 (this fork) — two peer claims re-derived first-party, and a correction to our own likely reading
 
 The `cowork-harness` project sent back two findings from its own pass. Both re-verified here against `app.asar` 1.40609.0 and agent 2.1.247 before being folded in, as three addenda — no new lessons, counts stay 179/49.

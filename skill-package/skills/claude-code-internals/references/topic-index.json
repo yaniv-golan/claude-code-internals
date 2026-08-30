@@ -5185,7 +5185,7 @@
       "lesson_number": "176",
       "file": "46-narration-turn-updates-silent-turn.md",
       "startLine": 110,
-      "endLine": 190,
+      "endLine": 210,
       "keywords": [
         "silent_turn_reminder",
         "tengu_hushed_lark",
@@ -5211,7 +5211,15 @@
         "hushed lark",
         "silent turn reminder",
         "silent turns",
-        "no progress updates during a long task"
+        "no progress updates during a long task",
+        "parallel-tool-batch",
+        "tool_use-blocks-per-message",
+        "cannot-narrate-mid-batch",
+        "fan-out-silence",
+        "batch-boundary-narration",
+        "regains-the-floor-between-phases",
+        "why can't my skill report mid-phase",
+        "group tool_use by message id"
       ]
     },
     {
@@ -5219,8 +5227,8 @@
       "title": "Brief Mode, PEWTER_OWL, and Why Cowork Renders Plain Text",
       "lesson_number": "177",
       "file": "46-narration-turn-updates-silent-turn.md",
-      "startLine": 191,
-      "endLine": 244,
+      "startLine": 211,
+      "endLine": 264,
       "keywords": [
         "brief-mode",
         "SendUserMessage",
@@ -5257,8 +5265,8 @@
       "title": "The Dark Narration Lane: thinking.display and Sable Thrush",
       "lesson_number": "178",
       "file": "46-narration-turn-updates-silent-turn.md",
-      "startLine": 245,
-      "endLine": 318,
+      "startLine": 265,
+      "endLine": 338,
       "keywords": [
         "thinking.display",
         "thinking_display_updates",
@@ -5295,8 +5303,8 @@
       "title": "Reading Model Behaviour Out of the Transcript Corpus",
       "lesson_number": "179",
       "file": "46-narration-turn-updates-silent-turn.md",
-      "startLine": 319,
-      "endLine": 357,
+      "startLine": 339,
+      "endLine": 377,
       "keywords": [
         "transcript-corpus",
         "session-transcripts",
@@ -18584,6 +18592,30 @@
     ],
     "pinning one effort across models": [
       120
+    ],
+    "parallel-tool-batch": [
+      176
+    ],
+    "tool_use-blocks-per-message": [
+      176
+    ],
+    "cannot-narrate-mid-batch": [
+      176
+    ],
+    "fan-out-silence": [
+      176
+    ],
+    "batch-boundary-narration": [
+      176
+    ],
+    "regains-the-floor-between-phases": [
+      176
+    ],
+    "why can't my skill report mid-phase": [
+      176
+    ],
+    "group tool_use by message id": [
+      176
     ]
   }
 }
