@@ -76,6 +76,35 @@ Ch40/L161 recorded `CLAUDE_CODE_TURN_UPDATES` as one of four names in a `+4 / �
 
 `excludeDynamicSections` would drop the section. It occurs **4 times in `app.asar` 1.40609.0, all four inside vendored Agent-SDK plumbing** (the `initialize` payload builder and the `preset` system-prompt destructure). No Cowork call site sets it, so a Cowork session gets whichever variant its model resolves to.
 
+### ADDENDUM (2026-08-30) — the model reaches the agent as a SENTINEL, and that is why the variant is unknowable locally
+
+The lesson says the selected variant is "not determinable from the binaries." Traced end to end across three artifacts, the reason is sharper than that: **the Desktop does not choose a model at all — it forwards a sentinel and lets the agent resolve it.**
+
+```js
+// Desktop LAM spawn (index2.chunk-Cnd4mQ_Q.js, 1 occurrence)
+V = { cwd: d, model: i.model || `default`, effort: i.effort, ... }
+
+// vendored Agent-SDK ProcessTransport (index.chunk-Clv3sLGS.js)
+this.options.effort && w.push(`--effort`, this.options.effort),
+… p && w.push(`--model`, p),
+
+// agent 2.1.247
+if (n === "default" || n === "inherit") return null;   // no override; resolve the default
+… a === "default" ? k() : a                            // fallbackModel chain
+```
+
+`"default"` is truthy, and **nothing in `app.asar` 1.40609.0 tests for or strips it** (`===\`default\``, `!==\`default\``: 0 occurrences). So `--model default` ships on every Cowork spawn where the session carries no explicit model, and the agent treats `default` as *resolve the configured default*, not as a model id.
+
+Three consequences:
+
+- **There is no default-model constant to read.** `claude-opus-5` occurs **exactly once** in the whole asar, inside the per-model *effort* table (see Ch34/L120's addendum) — never as a spawn default. A client cannot re-derive which model a Cowork session will run by reading the Desktop build.
+- **The effective model can change with no local artifact changing**, which is exactly the property that makes the `U0` capability tier unknowable: model is server-resolved, and the prompt variant is selected from the model.
+- **The only model-keyed remote config present is not model selection.** `coworkModelAutoFallbackByAccount` is an account-keyed boolean map whose sole use is `=== false` → `CLAUDE_CODE_DISABLE_REFUSAL_FALLBACK: "1"` in the spawn env. Refusal-fallback, not routing.
+
+**The Desktop's own flag asymmetry runs the opposite way to a naive emulator's.** In the SDK transport both flags are conditional and symmetric; the asymmetry is introduced upstream, in the LAM options: `model` has a sentinel fallback (so it is *always* sent) while `effort` has none (so it is sent *only* when the session sets one). A client that pins effort from a synced default and leaves model unset has inverted both halves.
+
+Prompted by a claim from the `cowork-harness` project and re-derived first-party here; the flag-asymmetry framing is theirs, the sentinel chain and the three consequences are this pass.
+
 ---
 
 # LESSON 176 — THE SILENT-TURN REMINDER
@@ -273,6 +302,17 @@ function nOs(){
 ```
 
 A side model call (`querySource:"narration"`, alongside `prompt_suggestion` / `away_summary` / `agent_summary`), debounced 30 s, fired per tool round, skipped for sub-agents, producing a `{now, next}` pair for the **interactive spinner's status line**. It is not a transcript message and it returns `null` by default in the non-interactive contexts Cowork runs in. Three mechanisms, one word: the prompt section writes narration, `thinking.display` transports it, and this one fabricates a status line that never enters the conversation.
+
+### ADDENDUM (2026-08-30) — `thinking.display` also has a COMMAND-LINE delivery path
+
+The lesson traces `thinking.display` as an API request field. It is also a CLI flag, emitted by the vendored Agent-SDK transport in `app.asar` 1.40609.0:
+
+```js
+if (l) { switch (l.type) { case `enabled`: … case `disabled`: w.push(`--thinking`, `disabled`); … }
+         l.type !== `disabled` && l.display && w.push(`--thinking-display`, l.display) }
+```
+
+So the value is not something the agent decides alone — a driver can set it at spawn, and it is suppressed when thinking is disabled. This is the same delivery shape Ch34/L120 established for extended thinking (CLI flags, never spawn env), now extended to the display axis.
 
 ---
 

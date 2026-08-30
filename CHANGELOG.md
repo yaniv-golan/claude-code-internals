@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.47.1 — 2026-08-30 (this fork) — two peer claims re-derived first-party, and a correction to our own likely reading
+
+The `cowork-harness` project sent back two findings from its own pass. Both re-verified here against `app.asar` 1.40609.0 and agent 2.1.247 before being folded in, as three addenda — no new lessons, counts stay 179/49.
+
+**The model reaches the agent as a sentinel, not a choice** (Ch49/L175). The Desktop LAM spawn sets `model: i.model || "default"` and `effort: i.effort`. The vendored SDK transport guards both flags *identically*, so the asymmetry is introduced **upstream in the LAM options**, not in the transport: model always ships, effort only when the session sets one. `"default"` is truthy and nothing in the asar tests or strips it (`===\`default\``: 0 occurrences), so `--model default` goes out on every Cowork spawn without an explicit model, and the agent resolves it (`if (n === "default" || n === "inherit") return null`).
+
+Which yields the sharper form of L175's "not determinable from the binaries": `claude-opus-5` occurs **exactly once** in the entire asar — inside the per-model *effort* table, never as a spawn default. **No client can re-derive which model a Cowork session will run by reading the Desktop build**, and the effective model can change with no local artifact changing. That is precisely what makes the capability tier that selects the narration prompt unknowable. The only model-keyed remote config, `coworkModelAutoFallbackByAccount`, turns out to be an account-keyed boolean whose sole use is `=== false` → `CLAUDE_CODE_DISABLE_REFUSAL_FALLBACK` — refusal-fallback, not routing.
+
+**A correction to our own likely reading of the effort table** (Ch34/L120). The table is now pinned verbatim: eight explicit models plus a fable/mythos regex class. `Dvt` sits immediately above the map and carries a full `effortLevels` list, which invites reading it as the default class. It is not — the resolver is `Ovt[t] ?? (kvt.test(t) ? Dvt : void 0)`, so an unlisted non-fable model gets `undefined`, no options at all. `Dvt` is the *narrowest* class, reached only by regex.
+
+`recommended` is also not uniform — `low` for sonnet-4-6, `medium` for sonnet-5 and opus-4-6, `high` for opus-4-8 and opus-5, `xhigh` for opus-4-7 — and two models carry no `xhigh` at all. Pinning one effort value across models applies a setting the product deliberately varies. L120 Part B's `"medium"` fallback is unaffected: that is the settings resolver, a different thing from this option-list builder, which feeds the selector UI rather than the spawn.
+
+**`thinking.display` also has a command-line path** (Ch49/L178) — `--thinking-display`, suppressed when thinking is disabled. Same flags-not-env delivery shape L120 established for extended thinking, extended to the display axis.
+
+**Two methodology notes.** `coworkModelAutoFallbackByAccount` is *not* in `registry.json`: `validate-state.js` refused it three ways, correctly — `kind: gate` means a numeric GrowthBook id with observed fcache state, and this is a named Desktop settings key. The schema slot did not fit, so the fact lives in the lesson instead rather than being mis-typed to satisfy a validator. Separately, a stale positive control (`coworkTokens`, a 1.24012.1-era symbol) returned zero on this build and briefly looked like a broken extraction — pick controls verified in the *same* artifact.
+
 ## v2.47.0 — 2026-08-30 (this fork) — why the model talks, and a corpus that says the backstop never fires
 
 Chapter 49 (L175–L179). First-party against the Desktop-managed Cowork host agent **2.1.247** — sha256-matched to the live staged agent — plus `app.asar` **1.40609.0**, the 16 staged agents 2.1.197–2.1.247 for introduction boundaries, and a behavioural corpus of **2,250 Cowork session transcripts and 3,010 recent CLI transcripts**. The CLI content baseline stays at 2.1.231.

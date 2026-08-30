@@ -3408,7 +3408,7 @@
       "lesson_number": "120",
       "file": "31-desktop-reasoning-config-effort-thinking.md",
       "startLine": 13,
-      "endLine": 167,
+      "endLine": 203,
       "keywords": [
         "reasoning-config",
         "extended-thinking",
@@ -3451,7 +3451,16 @@
         "--max-thinking-tokens flag",
         "--thinking disabled",
         "CLAUDE_EFFORT-env-noop",
-        "MAX_THINKING_TOKENS-env-absent"
+        "MAX_THINKING_TOKENS-env-absent",
+        "effort-recommended-per-model",
+        "effortLevels-table",
+        "recommended-effort",
+        "fable-mythos-effort-class",
+        "effort-options-builder",
+        "no-default-effort-class",
+        "effort-varies-by-model",
+        "claude-opus-5-effort",
+        "pinning one effort across models"
       ],
       "summary": "First-party binary trace of Cowork's two reasoning knobs against app.asar 1.19367.0. Extended thinking is a strict boolean -- maxThinkingTokens resolves to exactly 31999 or 0 (zgi/NX), never an arbitrary budget, delivered as --max-thinking-tokens/--thinking disabled flags with no MAX_THINKING_TOKENS env var at spawn; a live-session toggle calls query.setMaxThinkingTokens, confirming the payload behind the already-named set_max_thinking_tokens control-protocol subtype. Effort is a per-model enum (low/medium/high/xhigh(\"extra\")/max) resolved via qgi(override, A1e(model), E2t()) across FOUR model-config classes -- literal picker models, no-picker models that still emit --effort medium, a fable/mythos regex-default class with disallowThinkingDisabled, and unknown models with no config -- all sourced from a local settings-file object (effort/effortByModel), falling back to a hardcoded \"medium\" string, never CLAUDE_CODE_EFFORT_LEVEL. Corrects Ch28/L114's claim that the Desktop's LocalSessions effort IPC family is backed by CLAUDE_CODE_EFFORT_LEVEL: that env var is real but backs a separate, non-spawn-path getDefaultEffort() implementation -- the actual spawn value never touches it. Confirms setEffort's live-session branch calls applyFlagSettings({effortLevel}), giving the previously name-only apply_flag_settings control-protocol subtype its first concrete payload shape. Prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan (itself not yet implemented); every load-bearing binary claim independently re-derived first-party against this installation's own binary before folding in; the plan's own live-spawn-log analysis (flat 'medium' default, never per-model recommended) is relayed, not independently re-verified here."
     },
@@ -5130,7 +5139,7 @@
       "lesson_number": "175",
       "file": "46-narration-turn-updates-silent-turn.md",
       "startLine": 17,
-      "endLine": 80,
+      "endLine": 109,
       "keywords": [
         "narration",
         "progress-narration",
@@ -5154,7 +5163,20 @@
         "make-claude-narrate",
         "progress-updates",
         "turn updates",
-        "how do I get progress messages"
+        "how do I get progress messages",
+        "model-sentinel-default",
+        "--model default",
+        "default-sentinel",
+        "no-default-model-constant",
+        "model-is-server-resolved",
+        "LAM-spawn-options",
+        "effort-omitted-when-unset",
+        "flag-asymmetry-model-vs-effort",
+        "coworkModelAutoFallbackByAccount",
+        "refusal-fallback-account-map",
+        "CLAUDE_CODE_DISABLE_REFUSAL_FALLBACK",
+        "which model does cowork run",
+        "cowork default model"
       ]
     },
     {
@@ -5162,8 +5184,8 @@
       "title": "The Silent-Turn Reminder, and 399 Chances It Did Not Take",
       "lesson_number": "176",
       "file": "46-narration-turn-updates-silent-turn.md",
-      "startLine": 81,
-      "endLine": 161,
+      "startLine": 110,
+      "endLine": 190,
       "keywords": [
         "silent_turn_reminder",
         "tengu_hushed_lark",
@@ -5197,8 +5219,8 @@
       "title": "Brief Mode, PEWTER_OWL, and Why Cowork Renders Plain Text",
       "lesson_number": "177",
       "file": "46-narration-turn-updates-silent-turn.md",
-      "startLine": 162,
-      "endLine": 215,
+      "startLine": 191,
+      "endLine": 244,
       "keywords": [
         "brief-mode",
         "SendUserMessage",
@@ -5235,8 +5257,8 @@
       "title": "The Dark Narration Lane: thinking.display and Sable Thrush",
       "lesson_number": "178",
       "file": "46-narration-turn-updates-silent-turn.md",
-      "startLine": 216,
-      "endLine": 278,
+      "startLine": 245,
+      "endLine": 318,
       "keywords": [
         "thinking.display",
         "thinking_display_updates",
@@ -5262,7 +5284,10 @@
         "sable thrush",
         "pewter kite",
         "thinking display",
-        "connector text"
+        "connector text",
+        "--thinking-display",
+        "thinking-display-flag",
+        "thinking-display-cli-delivery"
       ]
     },
     {
@@ -5270,8 +5295,8 @@
       "title": "Reading Model Behaviour Out of the Transcript Corpus",
       "lesson_number": "179",
       "file": "46-narration-turn-updates-silent-turn.md",
-      "startLine": 279,
-      "endLine": 316,
+      "startLine": 319,
+      "endLine": 357,
       "keywords": [
         "transcript-corpus",
         "session-transcripts",
@@ -10800,7 +10825,8 @@
       113
     ],
     "CLAUDE_CODE_DISABLE_REFUSAL_FALLBACK": [
-      113
+      113,
+      175
     ],
     "api-betas-2.1.198": [
       113
@@ -18483,6 +18509,81 @@
     ],
     "how do I get progress messages": [
       175
+    ],
+    "model-sentinel-default": [
+      175
+    ],
+    "--model default": [
+      175
+    ],
+    "default-sentinel": [
+      175
+    ],
+    "no-default-model-constant": [
+      175
+    ],
+    "model-is-server-resolved": [
+      175
+    ],
+    "LAM-spawn-options": [
+      175
+    ],
+    "effort-omitted-when-unset": [
+      175
+    ],
+    "flag-asymmetry-model-vs-effort": [
+      175
+    ],
+    "coworkModelAutoFallbackByAccount": [
+      175
+    ],
+    "refusal-fallback-account-map": [
+      175
+    ],
+    "which model does cowork run": [
+      175
+    ],
+    "cowork default model": [
+      175
+    ],
+    "--thinking-display": [
+      178
+    ],
+    "thinking-display-flag": [
+      178
+    ],
+    "thinking-display-cli-delivery": [
+      178
+    ],
+    "effort-recommended-per-model": [
+      120
+    ],
+    "effortLevels-table": [
+      120
+    ],
+    "recommended-effort": [
+      120
+    ],
+    "disallowThinkingDisabled": [
+      120
+    ],
+    "fable-mythos-effort-class": [
+      120
+    ],
+    "effort-options-builder": [
+      120
+    ],
+    "no-default-effort-class": [
+      120
+    ],
+    "effort-varies-by-model": [
+      120
+    ],
+    "claude-opus-5-effort": [
+      120
+    ],
+    "pinning one effort across models": [
+      120
     ]
   }
 }

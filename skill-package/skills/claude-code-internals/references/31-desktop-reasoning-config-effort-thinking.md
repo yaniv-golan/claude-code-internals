@@ -165,3 +165,38 @@ The source plan document ran a **live-log analysis** (not a static grep) against
 - **Scope not covered:** the global settings kill-switch UI surface, and the fenced numeric escape-hatch pattern the source plan proposes for a harness's own debug affordance — both are harness-design questions for that project, not Cowork mechanism facts, and are out of scope for this skill.
 
 **Cross-references.** Ch28/L114 (`25-verified-new-v1.18286.0-desktop.md`, Part C — the `--effort` backing-store claim corrected here) · Lesson 93 (`CLAUDE_CODE_EFFORT_LEVEL`, the CLI-side global effort-tier pin this chapter confirms is real but not the Cowork spawn-path source) · `cowork-control-protocol.md` state page (the `--effort medium --max-thinking-tokens 31999` spawn-argv line and the `Bv1`/`set_max_thinking_tokens` dispatcher entry, both extended here with the full resolution mechanism) · Ch23/`23-cowork-spaces-tasks-checkpointing.md` (Ch26/L109 — first named `apply_flag_settings` without a payload; Part D supplies one) · Ch33/L119 (same first-party discipline against the same 1.19367.0 binary, and the `LocalAgentModeSessions`/`LocalSessions` interface-naming precedent this chapter extends).
+
+---
+
+### ADDENDUM (2026-08-30) — the per-model table at `app.asar` 1.40609.0, and a correction to what the "default class" is
+
+Part B's mechanism holds at 1.40609.0 — per-model enum, a regex-matched class, resolution from the settings object. Two things are now pinned that were not before.
+
+**The table, verbatim.** Eight explicit model entries plus one regex class:
+
+```js
+Dvt = {effortLevels:[`low`,`medium`,`high`,`xhigh`,`max`], recommended:`high`, modes:[`auto`], disallowThinkingDisabled:!0}
+Ovt = {
+  "claude-haiku-4-5":  {modes:[`extended`]},
+  "claude-sonnet-4-5": {modes:[`extended`]},
+  "claude-sonnet-4-6": {effortLevels:[`low`,`medium`,`high`,`max`],         recommended:`low`,    modes:[`auto`]},
+  "claude-sonnet-5":   {effortLevels:[`low`,`medium`,`high`,`xhigh`,`max`], recommended:`medium`, modes:[`auto`]},
+  "claude-opus-4-6":   {effortLevels:[`low`,`medium`,`high`,`max`],         recommended:`medium`, modes:[`extended`]},
+  "claude-opus-4-7":   {effortLevels:[`low`,`medium`,`high`,`xhigh`,`max`], recommended:`xhigh`,  modes:[`auto`]},
+  "claude-opus-4-8":   {effortLevels:[`low`,`medium`,`high`,`xhigh`,`max`], recommended:`high`,   modes:[`auto`]},
+  "claude-opus-5":     {effortLevels:[`low`,`medium`,`high`,`xhigh`,`max`], recommended:`high`,   modes:[`auto`], disallowThinkingDisabled:!0}
+}
+kvt = /^(?:claude-)?(?:fable|mythos)(?:-|$)/
+```
+
+`recommended` is **not uniform** — `low` for sonnet-4-6, `medium` for sonnet-5 and opus-4-6, `high` for opus-4-8 and opus-5, `xhigh` for opus-4-7 — so a client that pins one effort value across models is applying a setting the product varies deliberately. Two models (sonnet-4-6, opus-4-6) have **no `xhigh`** at all, and `disallowThinkingDisabled` appears only on the Fable class and opus-5.
+
+**The correction — `Dvt` is the Fable/Mythos class, not a general fallback.** The resolver is:
+
+```js
+function Rvt(e){ let t=vw(e), n=Ovt[t] ?? (kvt.test(t) ? Dvt : void 0); if(!n) return; … }
+```
+
+A model absent from `Ovt` and not matching the fable/mythos regex gets **`undefined` — no effort options and no mode options at all**, not a default class. Reading `Dvt` as "the default" (it sits immediately above `Ovt` and carries a full `effortLevels` list) inverts that: it is the *narrowest* class, reached only by regex. Part B's `"medium"` fallback claim is unaffected — that is the settings-resolution fallback, a different thing from this option-list builder, which feeds the selector UI rather than the spawn.
+
+**Where the spawn value actually comes from** is `effort: i.effort` in the LAM options — session state, with **no fallback**, so `--effort` is omitted entirely when the session sets none (the SDK transport guards it: `this.options.effort && w.push("--effort", …)`). Contrast `model: i.model || "default"`, which always sends. See Ch49/L175's addendum for that chain.

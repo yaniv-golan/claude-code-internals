@@ -3,7 +3,7 @@ domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.231
 as_of_desktop: 1.30096.1
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178]
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178]
 updated: 2026-08-30
 ---
 
@@ -632,6 +632,25 @@ Consequences:
   same agent versions, with observed silent runs up to 146 turns. A long skill
   pipeline can and does run for dozens of turns with nothing reaching the user.
   Phase-boundary narration has to be written into the skill body.
+- **The model reaches the agent as a sentinel, not a choice.** The Desktop LAM
+  spawn sets `model: i.model || "default"` and `effort: i.effort`. `"default"` is
+  truthy and nothing in the asar strips it, so `--model default` ships on every
+  Cowork spawn with no explicit model, and the agent resolves `"default"` to its own
+  configured default. Consequences: `claude-opus-5` appears exactly **once** in
+  `app.asar` 1.40609.0 — inside the per-model *effort* table, never as a spawn
+  default — so **no client can re-derive which model a Cowork session will run** by
+  reading the Desktop build; and the effective model can change with no local
+  artifact changing, which is what makes the L175 capability tier unknowable. The
+  only model-keyed remote config, `coworkModelAutoFallbackByAccount`, is an
+  account-keyed boolean whose sole use is `=== false` →
+  `CLAUDE_CODE_DISABLE_REFUSAL_FALLBACK: "1"` — refusal-fallback, not routing.
+- **`--model` and `--effort` are asymmetric, and not in the direction an emulator
+  guesses.** In the vendored SDK transport both flags are conditional; the asymmetry
+  is introduced upstream in the LAM options, where `model` has a sentinel fallback
+  (always sent) and `effort` has none (sent only when the session sets one). Effort
+  itself is per-model in the product — `recommended` is `low` for sonnet-4-6,
+  `medium` for sonnet-5, `high` for opus-4-8 and opus-5, `xhigh` for opus-4-7 — so
+  pinning one effort value across models applies a setting the product varies.
 - **The dark lane is CLI-only.** `thinking.display` (API beta
   `thinking-display-updates-2026-08-18`) can return the model's between-tool
   connector text as narration-tagged thinking blocks, but `sable_thrush`,
