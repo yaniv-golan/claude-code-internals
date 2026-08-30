@@ -1,5 +1,29 @@
 # Changelog
 
+## v2.47.0 — 2026-08-30 (this fork) — why the model talks, and a corpus that says the backstop never fires
+
+Chapter 49 (L175–L179). First-party against the Desktop-managed Cowork host agent **2.1.247** — sha256-matched to the live staged agent — plus `app.asar` **1.40609.0**, the 16 staged agents 2.1.197–2.1.247 for introduction boundaries, and a behavioural corpus of **2,250 Cowork session transcripts and 3,010 recent CLI transcripts**. The CLI content baseline stays at 2.1.231.
+
+**There is no narration feature.** Plain assistant text between tool calls *is* the channel in Cowork, and the only thing producing it is the dynamic `communication` system-prompt section `SUs()`. It picks one of three verbatim bodies through `U0(cap, env, modelFamily)` — env, then a per-family table, then a **server-delivered client-data capability map**. Which instruction a session gets is therefore not determinable from the binaries at all.
+
+That closes Ch40/L161's untraced `CLAUDE_CODE_TURN_UPDATES` lead: the consumer is `SUs()`, and the symbol first appears in the agent at exactly **2.1.229** — the version L161 had paired with asar 1.30096.1 from an independent diff.
+
+**The one runtime backstop did not fire.** The `silent_turn_reminder` attachment (agent ≥ 2.1.237) nudges the model after five consecutive silent assistant turns, capped at three per stretch. Across **399 qualifying stretches** on feature-carrying versions in this machine's own corpora, it fired **zero times** — with the channel positive-controlled, since the same corpus persists 21 attachment types including the reminder's own list-siblings `total_tokens_reminder` (×1,946) and `task_reminder` (×1,519).
+
+**The more useful number is the one nobody asked for.** Cowork narrates about **half as often as the CLI** — 31.0% of main-thread assistant turns carry text or a speaking tool against 54.1% — and its silent runs reach **146 turns**. Same binary, same prompt section. A long skill pipeline under Cowork routinely runs for dozens of turns with nothing reaching the user, so phase-boundary narration has to be written into the skill body.
+
+**Three instrument bugs, each of which produced a confident wrong number before being caught.** They are the substance of L179, not an apology:
+
+- Python's `glob('**')` skips dot-prefixed path components, so it read **553 of 2,250** Cowork transcripts — the path contains `.claude/projects`. Same class as `rg` skipping `.vite/build`.
+- `type:"user"` records are mostly **tool results**. Treating them as user turns reset the run counter after every silent turn and yielded a structurally impossible maximum stretch of **1** against a real **146**. A structurally impossible result is a bug report about the instrument.
+- A string hit is not an event. All three corpus hits for `silent_turn_reminder` were contamination — two from sessions investigating the feature, one a pasted binary string-table dump.
+
+Version-slicing against the introduction boundary removed **1,766 of 1,839** apparent opportunities and moved the conclusion twice: from "22 misses, feature off" to "zero opportunities, uninformative" to, once the instrument was fixed, "399 misses, feature off."
+
+**Also:** the PEWTER_OWL prompt body is byte-identical to `app.asar`'s `mcp__cowork__send_user_message` description and states that normal text reaches the user, while the Dispatch orchestrator in the same build says plain text is never rendered — so "does plain text reach the user" is a **per-surface** property. And a dark lane exists: API beta `thinking-display-updates-2026-08-18` carries `thinking.display`, under which a thinking block's **signature decodes to the tag `narration`**; every string it needs is absent from asar 1.40609.0, so it is CLI-only. It is *not* Ch34/L120's `set_max_thinking_tokens` `thinking_display` field, and neither is `CLAUDE_CODE_ENABLE_NARRATION` — three different things sharing one word.
+
+Registry gains 15 entries; gate entries carry `namespace: cli_growthbook`, and their status reflects code defaults and observed behaviour, **not** a decoded fcache value — these gates are absent from the Desktop fcache. `state.js --audit` and `validate-state.js` pass clean. SKILL.md's reference-file map also regains the rows for chapters 47 and 48, which were never added.
+
 ## v2.46.12 — 2026-08-29 (this fork) — a site caveat from v2.46.5, falsified by v2.46.10
 
 `plugins.skill-dir-is-body-text` told readers:

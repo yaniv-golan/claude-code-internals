@@ -3308,6 +3308,91 @@
     "relevance": 0.5,
     "reason": "skill base directory and plugin root resolution"
    }
+  ],
+  "175": [
+   {
+    "id": 103,
+    "relevance": 0.9,
+    "reason": "the PEWTER_OWL/brief gate layer this section's prompt bodies belong to"
+   },
+   {
+    "id": 161,
+    "relevance": 0.9,
+    "reason": "recorded CLAUDE_CODE_TURN_UPDATES with no consumer; SUs() is the consumer"
+   },
+   {
+    "id": 176,
+    "relevance": 0.8,
+    "reason": "the only runtime backstop for the behaviour this section asks for"
+   }
+  ],
+  "176": [
+   {
+    "id": 175,
+    "relevance": 0.9,
+    "reason": "the prompt section is what actually produces narration; this is the fallback"
+   },
+   {
+    "id": 177,
+    "relevance": 0.7,
+    "reason": "brief mode enforces the same outcome with a stop hook instead of a nudge"
+   },
+   {
+    "id": 179,
+    "relevance": 0.9,
+    "reason": "the corpus method that produced the zero-fires result"
+   }
+  ],
+  "177": [
+   {
+    "id": 103,
+    "relevance": 0.95,
+    "reason": "the original PEWTER_OWL gate lesson this extends and re-verifies"
+   },
+   {
+    "id": 175,
+    "relevance": 0.8,
+    "reason": "brief vs pewter-owl selects which communication prompt body is used"
+   },
+   {
+    "id": 107,
+    "relevance": 0.6,
+    "reason": "the Cowork SDK-MCP tool surface send_user_message is delivered over"
+   }
+  ],
+  "178": [
+   {
+    "id": 120,
+    "relevance": 0.9,
+    "reason": "naming collision: its thinking_display is a control-protocol field, not this API field"
+   },
+   {
+    "id": 175,
+    "relevance": 0.7,
+    "reason": "connector text is the same narration the prompt section asks for, promoted to a protocol field"
+   },
+   {
+    "id": 131,
+    "relevance": 0.6,
+    "reason": "same class of naming trap as harnessCwd"
+   }
+  ],
+  "179": [
+   {
+    "id": 167,
+    "relevance": 0.8,
+    "reason": "also measured a claim from the on-disk transcript corpus"
+   },
+   {
+    "id": 117,
+    "relevance": 0.7,
+    "reason": "artifact-class choice and the discipline of positive controls"
+   },
+   {
+    "id": 176,
+    "relevance": 0.9,
+    "reason": "the result this method produced"
+   }
   ]
  }
 }

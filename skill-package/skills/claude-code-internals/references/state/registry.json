@@ -221,6 +221,21 @@
       ]
     },
     {
+      "id": "beta.thinking-display-updates-2026-08-18",
+      "kind": "api-beta",
+      "name": "thinking-display-updates-2026-08-18",
+      "status": "dark-launched",
+      "first_seen": "2.1.241",
+      "removed_in": null,
+      "as_of": "2.1.247",
+      "summary": "Carries the `thinking.display` request field (values: thinking_and_connector_text | connector_text | none), asking the server to return the model's between-tool connector text. Has a server-rejection path that drops the field and header for the rest of the conversation (retry:thinking-display-updates, telemetry tengu_thinking_display_rejected_retry).",
+      "provenance": [
+        {
+          "lesson": 178
+        }
+      ]
+    },
+    {
       "id": "cmd.artifacts",
       "kind": "slash-command",
       "name": "artifacts",
@@ -2087,6 +2102,9 @@
       "provenance": [
         {
           "lesson": 141
+        },
+        {
+          "lesson": 177
         }
       ]
     },
@@ -2769,6 +2787,21 @@
       ]
     },
     {
+      "id": "env.CLAUDE_CODE_ENABLE_NARRATION",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ENABLE_NARRATION",
+      "status": "dark-launched",
+      "first_seen": "2.1.241",
+      "removed_in": null,
+      "as_of": "2.1.247",
+      "summary": "Enables the interactive spinner's now/next narration — a side model call (querySource \"narration\"), debounced 30s by default, fired per tool round, skipped for sub-agents. Returns null by default in non-interactive contexts. NOT the transcript narration of L175/L178; distinct mechanism sharing the word.",
+      "provenance": [
+        {
+          "lesson": 178
+        }
+      ]
+    },
+    {
       "id": "env.CLAUDE_CODE_ENABLE_OPUS_4_7_FAST_MODE",
       "kind": "env-var",
       "name": "CLAUDE_CODE_ENABLE_OPUS_4_7_FAST_MODE",
@@ -3360,6 +3393,24 @@
       "provenance": [
         {
           "lesson": 103
+        },
+        {
+          "lesson": 177
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_PEWTER_OWL_TOOL",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_PEWTER_OWL_TOOL",
+      "status": "live",
+      "first_seen": "2.1.159",
+      "removed_in": null,
+      "as_of": "2.1.247",
+      "summary": "Hard override for `isPewterOwlTool()`, which selects the PEWTER_OWL prompt for SendUserMessage (\"normal text reaches them\") over the brief-mode prompt (\"the answer lives here\"). The PEWTER_OWL prompt body is byte-identical to app.asar's description for mcp__cowork__send_user_message.",
+      "provenance": [
+        {
+          "lesson": 177
         }
       ]
     },
@@ -3518,6 +3569,21 @@
       ]
     },
     {
+      "id": "env.CLAUDE_CODE_SABLE_THRUSH",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SABLE_THRUSH",
+      "status": "dark-launched",
+      "first_seen": "2.1.241",
+      "removed_in": null,
+      "as_of": "2.1.247",
+      "summary": "Enables rendering of narration-tagged thinking blocks (signature decodes to \"narration\") as an AssistantNarrationSummaryMessage. Falls back to gate `tengu_sable_thrush`, default false. Also one of two conditions selecting `thinking.display: \"connector_text\"`. No renderer exists in app.asar 1.40609.0, so CLI-only.",
+      "provenance": [
+        {
+          "lesson": 178
+        }
+      ]
+    },
+    {
       "id": "env.CLAUDE_CODE_SAFE_MODE",
       "kind": "env-var",
       "name": "CLAUDE_CODE_SAFE_MODE",
@@ -3623,6 +3689,51 @@
       "provenance": [
         {
           "lesson": 89
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SILENT_TURN_REMINDER",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SILENT_TURN_REMINDER",
+      "status": "live",
+      "first_seen": "2.1.237",
+      "removed_in": null,
+      "as_of": "2.1.247",
+      "summary": "Enables/disables the `silent_turn_reminder` attachment. Read via `U0(\"silent_turn_reminder\", env, modelFamily)`, so absent an env value the capability comes from the server-delivered client-data map. Not observed firing in 399 qualifying stretches on this machine.",
+      "provenance": [
+        {
+          "lesson": 176
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SILENT_TURN_REMINDER_TEXT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SILENT_TURN_REMINDER_TEXT",
+      "status": "live",
+      "first_seen": "2.1.237",
+      "removed_in": null,
+      "as_of": "2.1.247",
+      "summary": "Overrides the reminder body. Falls back to gate `tengu_hushed_lark_text`, then the hardcoded default: \"The user hasn't heard from you in a while. As you continue, keep them updated when there's something to tell — a finding, a change of plan.\"",
+      "provenance": [
+        {
+          "lesson": 176
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SILENT_TURN_REMINDER_TURNS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SILENT_TURN_REMINDER_TURNS",
+      "status": "live",
+      "first_seen": "2.1.237",
+      "removed_in": null,
+      "as_of": "2.1.247",
+      "summary": "Consecutive silent assistant turns before the reminder fires. Falls back to gate `tengu_hushed_lark`, default 5.",
+      "provenance": [
+        {
+          "lesson": 176
         }
       ]
     },
@@ -3872,6 +3983,36 @@
       "provenance": [
         {
           "lesson": 111
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_THINKING_DISPLAY_UPDATES",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_THINKING_DISPLAY_UPDATES",
+      "status": "dark-launched",
+      "first_seen": "2.1.241",
+      "removed_in": null,
+      "as_of": "2.1.247",
+      "summary": "Overrides the `thinking_display_updates` capability that gates sending the `thinking.display` request field. Falls back to `U0(...)` then gate `tengu_thinking_display_updates` (default false).",
+      "provenance": [
+        {
+          "lesson": 178
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_TURN_UPDATES",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_TURN_UPDATES",
+      "status": "live",
+      "first_seen": "2.1.229",
+      "removed_in": null,
+      "as_of": "2.1.247",
+      "summary": "Override for the `turn_updates` model capability. When truthy, the dynamic `communication` system-prompt section collapses to a single terse instruction (`bUs`) in place of the longer `# Communicating with the user` body. Consumer is `SUs()`; resolution is `U0(cap, env, modelFamily)` — env, then a per-family table, then a server-delivered client-data capability map.",
+      "provenance": [
+        {
+          "lesson": 175
         }
       ]
     },
@@ -4494,6 +4635,9 @@
       "provenance": [
         {
           "lesson": 141
+        },
+        {
+          "lesson": 177
         }
       ]
     },
@@ -5943,6 +6087,86 @@
       "as_of": "2.1.231"
     },
     {
+      "id": "gate.tengu_hushed_lark",
+      "kind": "gate",
+      "name": "tengu_hushed_lark",
+      "status": "dark-launched",
+      "first_seen": "2.1.237",
+      "removed_in": null,
+      "as_of": "2.1.247",
+      "summary": "Integer gate supplying the silent-turn threshold; code default 5. It is a VALUE gate, not the enable switch — enablement is `U0(\"silent_turn_reminder\", CLAUDE_CODE_SILENT_TURN_REMINDER, modelFamily)`. Status here reflects the BEHAVIOURAL result (zero fires across 399 qualifying stretches on this machine), not a decoded gate value: this is a cli_growthbook gate and is absent from the Desktop fcache. Reminders are capped at 3 per silent stretch by a hardcoded constant.",
+      "provenance": [
+        {
+          "lesson": 176
+        }
+      ],
+      "namespace": "cli_growthbook"
+    },
+    {
+      "id": "gate.tengu_hushed_lark_text",
+      "kind": "gate",
+      "name": "tengu_hushed_lark_text",
+      "status": "dark-launched",
+      "first_seen": "2.1.237",
+      "removed_in": null,
+      "as_of": "2.1.247",
+      "summary": "String gate overriding the silent-turn reminder body; empty/non-string falls through to the hardcoded default. Value gate, not an enable switch; no decoded state available (cli_growthbook namespace, absent from the Desktop fcache).",
+      "provenance": [
+        {
+          "lesson": 176
+        }
+      ],
+      "namespace": "cli_growthbook"
+    },
+    {
+      "id": "gate.tengu_kairos_brief",
+      "kind": "gate",
+      "name": "tengu_kairos_brief",
+      "status": "dark-launched",
+      "first_seen": "2.1.231",
+      "removed_in": null,
+      "as_of": "2.1.247",
+      "summary": "Entitlement gate for brief mode (`isBriefEntitled`), code default FALSE, overridable by CLAUDE_CODE_BRIEF. Brief mode hides plain assistant text and enforces a SendUserMessage call via a stop hook. Cowork does not run brief mode; it runs the PEWTER_OWL variant, under which plain text IS what the user reads.",
+      "provenance": [
+        {
+          "lesson": 177
+        }
+      ],
+      "namespace": "cli_growthbook"
+    },
+    {
+      "id": "gate.tengu_pewter_kite_ms",
+      "kind": "gate",
+      "name": "tengu_pewter_kite_ms",
+      "status": "dark-launched",
+      "first_seen": "2.1.241",
+      "removed_in": null,
+      "as_of": "2.1.247",
+      "summary": "Integer gate; when >0 it is the debounce interval in ms for the spinner narration pipeline. 0 (default) leaves the pipeline off unless CLAUDE_CODE_ENABLE_NARRATION is truthy, in which case the interval is 30000.",
+      "provenance": [
+        {
+          "lesson": 178
+        }
+      ],
+      "namespace": "cli_growthbook"
+    },
+    {
+      "id": "gate.tengu_sable_thrush",
+      "kind": "gate",
+      "name": "tengu_sable_thrush",
+      "status": "dark-launched",
+      "first_seen": "2.1.241",
+      "removed_in": null,
+      "as_of": "2.1.247",
+      "summary": "Boolean gate, default false, latched per process. Gates rendering of narration-tagged thinking blocks and is one of two conditions selecting thinking.display \"connector_text\".",
+      "provenance": [
+        {
+          "lesson": 178
+        }
+      ],
+      "namespace": "cli_growthbook"
+    },
+    {
       "id": "gate.tengu_teal_corbel",
       "kind": "gate",
       "name": "tengu_teal_corbel",
@@ -5957,6 +6181,22 @@
       ],
       "removed_in": null,
       "as_of": "2.1.231"
+    },
+    {
+      "id": "gate.tengu_thinking_display_updates",
+      "kind": "gate",
+      "name": "tengu_thinking_display_updates",
+      "status": "dark-launched",
+      "first_seen": "2.1.241",
+      "removed_in": null,
+      "as_of": "2.1.247",
+      "summary": "Boolean gate, default false; final fallback for whether the agent sends the `thinking.display` request field under the thinking-display-updates-2026-08-18 beta.",
+      "provenance": [
+        {
+          "lesson": 178
+        }
+      ],
+      "namespace": "cli_growthbook"
     },
     {
       "id": "hook.DirectoryAdded",

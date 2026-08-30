@@ -1,7 +1,7 @@
 {
   "name": "claude-code-internals",
-  "version": "2.46.12",
-  "description": "Gives Claude source-level knowledge of its own architecture, read out of the shipping binaries rather than the docs — including the parts the docs get wrong. 174 lessons across 48 chapters: hooks, the permission pipeline, settings precedence, skills and plugins, sub-agents, MCP, memory, compaction, sessions, and OAuth. A third of it is Claude Cowork's runtime — host-loop vs VM-loop, sandbox mounts, path resolution, file delivery, and the stream-json control protocol — which is documented almost nowhere else. Ships with keyword + semantic search over every lesson.",
+  "version": "2.47.0",
+  "description": "Gives Claude source-level knowledge of its own architecture, read out of the shipping binaries rather than the docs — including the parts the docs get wrong. 179 lessons across 49 chapters: hooks, the permission pipeline, settings precedence, skills and plugins, sub-agents, MCP, memory, compaction, sessions, and OAuth. A third of it is Claude Cowork's runtime — host-loop vs VM-loop, sandbox mounts, path resolution, file delivery, and the stream-json control protocol — which is documented almost nowhere else. Ships with keyword + semantic search over every lesson.",
   "author": {
     "name": "Yaniv Golan",
     "email": "yaniv@golan.name"

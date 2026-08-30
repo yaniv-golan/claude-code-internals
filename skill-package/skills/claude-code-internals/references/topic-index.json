@@ -1,7 +1,7 @@
 {
   "generated": "2026-08-13",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 174,
+  "total_lessons": 179,
   "lessons": [
     {
       "id": 1,
@@ -5122,6 +5122,180 @@
         "depth-pinned-by-env",
         "lane-dependent-defaults",
         "enumerated-not-documented"
+      ]
+    },
+    {
+      "id": 175,
+      "title": "Narration Is a Prompt Section, Not a Feature",
+      "lesson_number": "175",
+      "file": "46-narration-turn-updates-silent-turn.md",
+      "startLine": 17,
+      "endLine": 80,
+      "keywords": [
+        "narration",
+        "progress-narration",
+        "why-the-model-talks",
+        "communicating-with-the-user",
+        "communication-prompt-section",
+        "SUs-prompt-selector",
+        "turn_updates",
+        "CLAUDE_CODE_TURN_UPDATES",
+        "tengu-turn-updates",
+        "model-capability-map",
+        "client-data-capability",
+        "U0-capability-resolver",
+        "tengu_model_capability_from_client_data",
+        "excludeDynamicSections",
+        "dynamic-prompt-section",
+        "brief-updates-while-you-work",
+        "status-update-mid-turn",
+        "text-between-tool-calls",
+        "why-does-claude-go-quiet",
+        "make-claude-narrate",
+        "progress-updates",
+        "turn updates",
+        "how do I get progress messages"
+      ]
+    },
+    {
+      "id": 176,
+      "title": "The Silent-Turn Reminder, and 399 Chances It Did Not Take",
+      "lesson_number": "176",
+      "file": "46-narration-turn-updates-silent-turn.md",
+      "startLine": 81,
+      "endLine": 161,
+      "keywords": [
+        "silent_turn_reminder",
+        "tengu_hushed_lark",
+        "tengu_hushed_lark_text",
+        "hushed-lark",
+        "CLAUDE_CODE_SILENT_TURN_REMINDER",
+        "CLAUDE_CODE_SILENT_TURN_REMINDER_TURNS",
+        "CLAUDE_CODE_SILENT_TURN_REMINDER_TEXT",
+        "silent-turn-threshold",
+        "five-silent-turns",
+        "reminders-in-stretch",
+        "silent-stretch",
+        "cowork-narrates-less-than-cli",
+        "narration-rate",
+        "long-pipeline-silence",
+        "skill-pipeline-goes-quiet",
+        "phase-boundary-narration",
+        "introduction-boundary-2.1.237",
+        "corpus-measurement",
+        "capability-off-for-account",
+        "speaking-tool-set",
+        "w0s-speaking-set",
+        "hushed lark",
+        "silent turn reminder",
+        "silent turns",
+        "no progress updates during a long task"
+      ]
+    },
+    {
+      "id": 177,
+      "title": "Brief Mode, PEWTER_OWL, and Why Cowork Renders Plain Text",
+      "lesson_number": "177",
+      "file": "46-narration-turn-updates-silent-turn.md",
+      "startLine": 162,
+      "endLine": 215,
+      "keywords": [
+        "brief-mode",
+        "SendUserMessage",
+        "Brief-tool",
+        "BRIEF_ENFORCE_SENTINEL",
+        "brief-mode-stop-hook",
+        "DISABLE_BRIEF_MODE_STOP_HOOK",
+        "tengu_kairos_brief",
+        "pewter_owl",
+        "PEWTER_OWL",
+        "CLAUDE_CODE_PEWTER_OWL",
+        "CLAUDE_CODE_PEWTER_OWL_TOOL",
+        "pewter_owl_brief",
+        "pewter_owl_tool",
+        "mcp__cowork__send_user_message",
+        "send_user_message",
+        "BRIEF_PROACTIVE_SECTION",
+        "ack-work-result",
+        "checkpoint-cadence",
+        "dispatch-orchestrator",
+        "plain-text-not-rendered",
+        "per-surface-rendering",
+        "does-plain-text-reach-the-user",
+        "pewter owl",
+        "brief mode",
+        "send user message",
+        "does plain text reach the user",
+        "is my text shown to the user",
+        "talking to the user"
+      ]
+    },
+    {
+      "id": 178,
+      "title": "The Dark Narration Lane: thinking.display and Sable Thrush",
+      "lesson_number": "178",
+      "file": "46-narration-turn-updates-silent-turn.md",
+      "startLine": 216,
+      "endLine": 278,
+      "keywords": [
+        "thinking.display",
+        "thinking_display_updates",
+        "thinking-display-updates-2026-08-18",
+        "connector_text",
+        "thinking_and_connector_text",
+        "sable_thrush",
+        "tengu_sable_thrush",
+        "CLAUDE_CODE_SABLE_THRUSH",
+        "narration-tagged-thinking",
+        "thinking-block-signature",
+        "signature-carries-a-tag",
+        "AssistantNarrationSummaryMessage",
+        "summarized-placeholder",
+        "CLAUDE_CODE_ENABLE_NARRATION",
+        "tengu_pewter_kite_ms",
+        "spinner-narration",
+        "now-next-narration",
+        "narration-querySource",
+        "naming-collision-thinking-display",
+        "dark-launched-narration",
+        "no-cowork-renderer",
+        "sable thrush",
+        "pewter kite",
+        "thinking display",
+        "connector text"
+      ]
+    },
+    {
+      "id": 179,
+      "title": "Reading Model Behaviour Out of the Transcript Corpus",
+      "lesson_number": "179",
+      "file": "46-narration-turn-updates-silent-turn.md",
+      "startLine": 279,
+      "endLine": 316,
+      "keywords": [
+        "transcript-corpus",
+        "session-transcripts",
+        "local-agent-mode-sessions",
+        "jsonl-transcripts",
+        "behavioural-measurement",
+        "measure-what-the-model-did",
+        "glob-skips-hidden-components",
+        "hidden-path-component-trap",
+        "os.walk-vs-glob",
+        "type-user-is-a-tool-result",
+        "tool_result-record",
+        "O1t-predicate",
+        "real-user-turn-test",
+        "structurally-impossible-result",
+        "instrument-bug",
+        "positive-control-the-channel",
+        "version-slice-the-corpus",
+        "introduction-boundary",
+        "string-hit-is-not-an-event",
+        "transcript-contamination",
+        "over-counting-approximation",
+        "transcript corpus",
+        "session transcript"
       ]
     }
   ],
@@ -10366,7 +10540,8 @@
     ],
     "local-agent-mode-sessions": [
       109,
-      132
+      132,
+      179
     ],
     "claude-code-sessions": [
       109,
@@ -14095,7 +14270,8 @@
       114
     ],
     "mcp__cowork__send_user_message": [
-      114
+      114,
+      177
     ],
     "mcp__cowork__present_files": [
       114
@@ -17924,6 +18100,389 @@
     "plugin bin/ on the bash tool's path": [
       89,
       173
+    ],
+    "narration": [
+      175,
+      178
+    ],
+    "progress-narration": [
+      175
+    ],
+    "why-the-model-talks": [
+      175
+    ],
+    "communicating-with-the-user": [
+      175
+    ],
+    "communication-prompt-section": [
+      175
+    ],
+    "SUs-prompt-selector": [
+      175
+    ],
+    "turn_updates": [
+      175
+    ],
+    "CLAUDE_CODE_TURN_UPDATES": [
+      175
+    ],
+    "tengu-turn-updates": [
+      175
+    ],
+    "model-capability-map": [
+      175
+    ],
+    "client-data-capability": [
+      175
+    ],
+    "U0-capability-resolver": [
+      175
+    ],
+    "tengu_model_capability_from_client_data": [
+      175
+    ],
+    "excludeDynamicSections": [
+      175
+    ],
+    "dynamic-prompt-section": [
+      175
+    ],
+    "brief-updates-while-you-work": [
+      175
+    ],
+    "status-update-mid-turn": [
+      175
+    ],
+    "text-between-tool-calls": [
+      175
+    ],
+    "why-does-claude-go-quiet": [
+      175
+    ],
+    "make-claude-narrate": [
+      175
+    ],
+    "progress-updates": [
+      175
+    ],
+    "silent_turn_reminder": [
+      176
+    ],
+    "tengu_hushed_lark": [
+      176
+    ],
+    "tengu_hushed_lark_text": [
+      176
+    ],
+    "hushed-lark": [
+      176
+    ],
+    "CLAUDE_CODE_SILENT_TURN_REMINDER": [
+      176
+    ],
+    "CLAUDE_CODE_SILENT_TURN_REMINDER_TURNS": [
+      176
+    ],
+    "CLAUDE_CODE_SILENT_TURN_REMINDER_TEXT": [
+      176
+    ],
+    "silent-turn-threshold": [
+      176
+    ],
+    "five-silent-turns": [
+      176
+    ],
+    "reminders-in-stretch": [
+      176
+    ],
+    "silent-stretch": [
+      176
+    ],
+    "cowork-narrates-less-than-cli": [
+      176
+    ],
+    "narration-rate": [
+      176
+    ],
+    "long-pipeline-silence": [
+      176
+    ],
+    "skill-pipeline-goes-quiet": [
+      176
+    ],
+    "phase-boundary-narration": [
+      176
+    ],
+    "introduction-boundary-2.1.237": [
+      176
+    ],
+    "corpus-measurement": [
+      176
+    ],
+    "capability-off-for-account": [
+      176
+    ],
+    "speaking-tool-set": [
+      176
+    ],
+    "w0s-speaking-set": [
+      176
+    ],
+    "brief-mode": [
+      177
+    ],
+    "SendUserMessage": [
+      177
+    ],
+    "Brief-tool": [
+      177
+    ],
+    "BRIEF_ENFORCE_SENTINEL": [
+      177
+    ],
+    "brief-mode-stop-hook": [
+      177
+    ],
+    "DISABLE_BRIEF_MODE_STOP_HOOK": [
+      177
+    ],
+    "tengu_kairos_brief": [
+      177
+    ],
+    "pewter_owl": [
+      177
+    ],
+    "PEWTER_OWL": [
+      177
+    ],
+    "CLAUDE_CODE_PEWTER_OWL": [
+      177
+    ],
+    "CLAUDE_CODE_PEWTER_OWL_TOOL": [
+      177
+    ],
+    "pewter_owl_brief": [
+      177
+    ],
+    "pewter_owl_tool": [
+      177
+    ],
+    "send_user_message": [
+      177
+    ],
+    "BRIEF_PROACTIVE_SECTION": [
+      177
+    ],
+    "ack-work-result": [
+      177
+    ],
+    "checkpoint-cadence": [
+      177
+    ],
+    "dispatch-orchestrator": [
+      177
+    ],
+    "plain-text-not-rendered": [
+      177
+    ],
+    "per-surface-rendering": [
+      177
+    ],
+    "does-plain-text-reach-the-user": [
+      177
+    ],
+    "thinking.display": [
+      178
+    ],
+    "thinking_display_updates": [
+      178
+    ],
+    "thinking-display-updates-2026-08-18": [
+      178
+    ],
+    "connector_text": [
+      178
+    ],
+    "thinking_and_connector_text": [
+      178
+    ],
+    "sable_thrush": [
+      178
+    ],
+    "tengu_sable_thrush": [
+      178
+    ],
+    "CLAUDE_CODE_SABLE_THRUSH": [
+      178
+    ],
+    "narration-tagged-thinking": [
+      178
+    ],
+    "thinking-block-signature": [
+      178
+    ],
+    "signature-carries-a-tag": [
+      178
+    ],
+    "AssistantNarrationSummaryMessage": [
+      178
+    ],
+    "summarized-placeholder": [
+      178
+    ],
+    "CLAUDE_CODE_ENABLE_NARRATION": [
+      178
+    ],
+    "tengu_pewter_kite_ms": [
+      178
+    ],
+    "spinner-narration": [
+      178
+    ],
+    "now-next-narration": [
+      178
+    ],
+    "narration-querySource": [
+      178
+    ],
+    "naming-collision-thinking-display": [
+      178
+    ],
+    "dark-launched-narration": [
+      178
+    ],
+    "no-cowork-renderer": [
+      178
+    ],
+    "transcript-corpus": [
+      179
+    ],
+    "session-transcripts": [
+      179
+    ],
+    "jsonl-transcripts": [
+      179
+    ],
+    "behavioural-measurement": [
+      179
+    ],
+    "measure-what-the-model-did": [
+      179
+    ],
+    "glob-skips-hidden-components": [
+      179
+    ],
+    "hidden-path-component-trap": [
+      179
+    ],
+    "os.walk-vs-glob": [
+      179
+    ],
+    "type-user-is-a-tool-result": [
+      179
+    ],
+    "tool_result-record": [
+      179
+    ],
+    "O1t-predicate": [
+      179
+    ],
+    "real-user-turn-test": [
+      179
+    ],
+    "structurally-impossible-result": [
+      179
+    ],
+    "instrument-bug": [
+      179
+    ],
+    "positive-control-the-channel": [
+      179
+    ],
+    "version-slice-the-corpus": [
+      179
+    ],
+    "introduction-boundary": [
+      179
+    ],
+    "string-hit-is-not-an-event": [
+      179
+    ],
+    "transcript-contamination": [
+      179
+    ],
+    "over-counting-approximation": [
+      179
+    ],
+    "why doesn't claude tell me what it's doing": [
+      175,
+      176
+    ],
+    "no progress updates": [
+      175,
+      176
+    ],
+    "claude goes silent during a long task": [
+      176,
+      175
+    ],
+    "make my skill report progress": [
+      176,
+      177
+    ],
+    "turn updates": [
+      175
+    ],
+    "hushed lark": [
+      176
+    ],
+    "silent turn reminder": [
+      176
+    ],
+    "silent turns": [
+      176
+    ],
+    "pewter owl": [
+      177
+    ],
+    "brief mode": [
+      177
+    ],
+    "send user message": [
+      177
+    ],
+    "sable thrush": [
+      178
+    ],
+    "pewter kite": [
+      178
+    ],
+    "thinking display": [
+      178
+    ],
+    "connector text": [
+      178
+    ],
+    "transcript corpus": [
+      179
+    ],
+    "session transcript": [
+      179
+    ],
+    "does plain text reach the user": [
+      177
+    ],
+    "is my text shown to the user": [
+      177
+    ],
+    "talking to the user": [
+      177
+    ],
+    "no progress updates during a long task": [
+      176
+    ],
+    "how do I get progress messages": [
+      175
     ]
   }
 }

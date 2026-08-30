@@ -2,7 +2,7 @@
 
 ![Claude Code Internals banner](assets/banner.png)
 
-> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 174 lessons covering every internal subsystem, verified against the v2.1.231 binary and six further artifact classes (the Claude Desktop `app.asar`, the Desktop-managed host agent Mach-O, the Cowork in-VM agent ELF, the golden Cowork VM disk image, the live GrowthBook `fcache`, and Desktop's Chromium HTTP cache), searchable three ways.
+> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 179 lessons covering every internal subsystem, verified against the v2.1.231 binary and six further artifact classes (the Claude Desktop `app.asar`, the Desktop-managed host agent Mach-O, the Cowork in-VM agent ELF, the golden Cowork VM disk image, the live GrowthBook `fcache`, and Desktop's Chromium HTTP cache), searchable three ways.
 >
 > **This is a modified fork** of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals). See [Attribution](#attribution) for what changed.
 
@@ -109,7 +109,6 @@ Adds a gentle reminder whenever Claude edits `.claude/` config files. Add to `ho
 - [Usage Examples](#usage-examples)
 - [Sample Output](#sample-output)
 - [Getting the Most Out of It](#getting-the-most-out-of-it)
-- [RuFlo & RuVector Integration](#ruflo--ruvector-integration--universal-knowledge-access)
 - [Troubleshooting](#troubleshooting)
 - [What's Inside](#whats-inside)
 - [Version Tracking](#version-tracking)
@@ -121,7 +120,7 @@ Adds a gentle reminder whenever Claude edits `.claude/` config files. Add to `ho
 
 ## What This Is
 
-This is a Claude Code skill containing a complete reverse-engineering of Claude Code's internal architecture, verified against the v2.1.231 binary. **174 detailed lessons across 48 chapters** cover every major subsystem — from the boot sequence to undocumented features found directly in the binary. See [the full chapter table](#whats-inside) for the lesson-by-lesson breakdown.
+This is a Claude Code skill containing a complete reverse-engineering of Claude Code's internal architecture, verified against the v2.1.231 binary. **179 detailed lessons across 49 chapters** cover every major subsystem — from the boot sequence to undocumented features found directly in the binary. See [the full chapter table](#whats-inside) for the lesson-by-lesson breakdown.
 
 The material falls into four strands:
 
@@ -292,7 +291,7 @@ Returns the per-mount FUSE delete policy: exactly `unlink` and `rmdir` are denie
 ```bash
 node scripts/fetch-lesson.js 32          # Hooks System content
 node scripts/fetch-lesson.js 32 --meta   # Metadata only (file, line range)
-node scripts/fetch-lesson.js --list      # All 174 lessons
+node scripts/fetch-lesson.js --list      # All 179 lessons
 ```
 
 ### xref.js — Shell-Safe Cross-Reference Lookup
@@ -326,17 +325,16 @@ bash scripts/check-version.sh
 # Warns if you are running a newer version
 ```
 
-## RuFlo & RuVector Integration — Universal Knowledge Access
+## Rebuilding the Search Index
 
-The skill works standalone. To make Claude Code architecture knowledge accessible to all agents, swarms, and task orchestration, load it into RuFlo and RuVector:
+After changing reference content, rebuild the TF-IDF layer that `semantic-search.js` and `search.js` both read:
 
 ```bash
-# Generate and store embeddings via Ruflo
 cd ~/.claude/skills/claude-code-internals
 node scripts/build-rvf-index.js
 ```
 
-This generates `references/semantic-index.json`, the TF-IDF layer `semantic-search.js` and `search.js` both read.
+Edit `references/topic-index.json` **first** — vectors are built from each lesson's title, keywords and description, not from the chapter prose, so new body text is invisible to search until the keywords land.
 
 ## Troubleshooting
 
@@ -447,7 +445,7 @@ claude-code-internals/
 │   └── dist/                       Built output (index.html, llms.txt, cowork/, static/)
 ├── assets/
 │   ├── banner.png
-│   └── diagrams/                   architecture / hook-flow / installation-flow / ruflo-integration SVGs
+│   └── diagrams/                   architecture / hook-flow / installation-flow SVGs
 ├── .github/workflows/
 │   ├── release.yml                 Auto-zip on tag push
 │   └── deploy-site.yml             GitHub Pages deploy
@@ -552,8 +550,8 @@ This repository is a fork of [stuinfla/claude-code-internals](https://github.com
 
 - The 50 original lessons (Chapters 1–8), reverse-engineered from Claude Code v2.1.88
 - The unified RRF search engine (`search.js`, `semantic-search.js`, `lookup.sh`)
-- The 494-keyword topic index, TF-IDF vectors, cross-reference map, and troubleshooting index
-- The PreToolUse `.claude/` hook (`config-aware-hook.sh`), version check script, and RuFlo index builder
+- The topic index, TF-IDF vectors, cross-reference map, and troubleshooting index
+- The PreToolUse `.claude/` hook (`config-aware-hook.sh`), version check script, and TF-IDF index builder
 - The original README documentation and architecture diagrams
 
 **What this fork adds** (v2.2.0–v2.46.12, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):

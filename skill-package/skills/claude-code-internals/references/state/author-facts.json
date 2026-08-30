@@ -1281,6 +1281,33 @@
         "Being selected is not the same as being read: a model can pick up a skill and still answer from what it already believes without opening the body, so anything load-bearing needs to survive a shallow read.",
         "The desktop finding is from a single application build, the newest available when it was checked; older builds were not examined."
       ]
+    },
+    {
+      "id": "delivery.narration-is-yours-to-write",
+      "page": "delivering-outputs",
+      "rule": "Nothing will report progress for you — if a long run should say anything mid-way, your skill has to say it.",
+      "detail": "Plain text you write between tool calls does reach the user here, and the shipped instructions do ask for it in general terms: say what you are about to do before the first tool call, and give brief updates when you find something load-bearing or change direction. But the wording of that instruction is chosen per model by the service rather than by anything on the machine, so you cannot count on a particular version of it, and in a long tool loop it measurably does not hold. Measured across every session on one machine, work in this environment produces user-visible text on roughly a third of its turns, against about half in the terminal, and silent runs of well over a hundred consecutive turns occur. There is a mechanism meant to catch exactly that — a nudge injected once a run has gone several turns without saying anything — and across every stretch long enough to qualify, it never fired once. Treat it as absent. If a phase boundary, a decision, or a surprise is worth the user knowing about while the work is still running, write the instruction to say so into the skill itself, at the step where it matters. A useful shape to copy: acknowledge in one line, work, then report — and between those, only when something happened that carries information, not as filler.",
+      "tier": "measured",
+      "severity": "friction",
+      "durability": "durable",
+      "volatile_dependency": true,
+      "sources": {
+        "lessons": [
+          174,
+          175,
+          176,
+          177
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": [
+        "The measurement is one machine and one account. The rate is a property of how this account's models behave under the instruction they were given, not a guarantee about anyone else's.",
+        "The nudge is present and complete in the shipping agent — it is reachable code, not a stub. What was observed is that it never fired, which points at the per-account switch that enables it rather than at the mechanism. That switch is delivered with the account, so it can turn on without any version changing.",
+        "The instruction the model receives is selected per model family, so a session on a different model may be told to narrate in noticeably different terms — including a much terser form. Do not write a skill that depends on the wording of any one of them.",
+        "The rule holds even if the nudge is switched on: it only acts after several consecutive silent turns and stops after a few, so it is a floor on the worst case, not a substitute for saying anything useful.",
+        "In the remote lane the backstop is not merely switched off but absent: that lane runs a much older agent than the desktop one — older, on every version observed, than the release that introduced the nudge — so nothing there can interrupt a silent stretch at all."
+      ],
+      "lane": "both"
     }
   ],
   "router": [
@@ -1339,6 +1366,13 @@
       "symptom": "A tool name from the CLI does not exist",
       "why": "Tool surfaces are served to the session, not shipped in the app.",
       "fix": "Check it exists before naming it."
+    },
+    {
+      "page": "delivering-outputs",
+      "fact": "delivery.narration-is-yours-to-write",
+      "symptom": "A long run goes silent and the user asks what is happening",
+      "why": "Nothing in the runtime narrates, and the one nudge meant to break a silent stretch was never observed firing.",
+      "fix": "Write the progress messages into the skill, at the steps that matter."
     }
   ],
   "top5": [

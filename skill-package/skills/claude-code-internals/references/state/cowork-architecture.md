@@ -3,8 +3,8 @@ domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.231
 as_of_desktop: 1.30096.1
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151]
-updated: 2026-08-14
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178]
+updated: 2026-08-30
 ---
 
 # Cowork runtime architecture (current)
@@ -601,3 +601,39 @@ capturing machine: **0 of 469** persisted session records (375 no type, 86 `sche
 slugs' mounts in `/proc/mounts`), but **isolation holds** — cross-session reads return EACCES; session
 dirs are `drwxr-x---` `nobody:nogroup` and each session runs as its own `coworkd` uid. `/sessions/` is
 a persistent shared volume (522 dirs enumerable from any session).
+
+## How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
+
+**Plain assistant text between tool calls is the narration channel.** No
+runtime mechanism emits progress narration; the Desktop renders assistant text
+blocks as they stream, and the build says so itself — the PEWTER_OWL prompt
+body attached to `mcp__cowork__send_user_message` reads *"Don't use it for
+routine narration of what you're about to do, or for your final answer —
+normal text reaches them for those."*
+
+Consequences:
+
+- **Cowork is not in brief mode.** Brief mode (where plain text is hidden and
+  every user-facing word must go through `SendUserMessage`, enforced by a stop
+  hook) is a different surface's contract — the Dispatch orchestrator states it
+  outright. Cowork runs the opposite variant.
+- **What makes the model talk is a prompt section**, `SUs()`, registered as the
+  dynamic `communication` block. Three bodies, chosen by
+  `U0(cap, env, modelFamily)` — env, then a per-family table, then a
+  **server-delivered client-data capability map**. Which body a session gets is
+  therefore not determinable from the binaries alone.
+- **One runtime backstop exists and was not observed working.** The
+  `silent_turn_reminder` attachment (agent ≥ 2.1.237) injects a nudge after 5
+  consecutive silent assistant turns, capped at 3 per stretch, main thread and
+  non-user-prompt turns only. Across 399 qualifying stretches in this machine's
+  Cowork and CLI corpora on feature-carrying versions, it fired zero times.
+- **Cowork narrates about half as often as the CLI** — 31.0% of main-thread
+  assistant turns carry text or a speaking tool, against 54.1% in the CLI on the
+  same agent versions, with observed silent runs up to 146 turns. A long skill
+  pipeline can and does run for dozens of turns with nothing reaching the user.
+  Phase-boundary narration has to be written into the skill body.
+- **The dark lane is CLI-only.** `thinking.display` (API beta
+  `thinking-display-updates-2026-08-18`) can return the model's between-tool
+  connector text as narration-tagged thinking blocks, but `sable_thrush`,
+  `connector_text` and the `AssistantNarrationSummaryMessage` renderer are all
+  absent from `app.asar` 1.40609.0.

@@ -1829,6 +1829,52 @@
     173
    ],
    "hint": "Check reachability before rewriting prose. `paths:` in frontmatter loads the skill ONLY when the model touches a matching file, so a mechanics question silently gets no skill; `disable-model-invocation` makes the model ask the user to run it instead. Selection is judged on the tool description: `when_to_use` feeds it CLI-side, but is ABSENT from the Desktop/Cowork skills listing (zero occurrences in app.asar 1.40609.0) and ignored by non-Claude hosts -- so keep `description` self-sufficient and treat `when_to_use` as reinforcement. A skill can also be selected and then answer from priors without reading its body, so load-bearing content must survive a shallow read."
+  },
+  {
+   "pattern": [
+    "claude doesn't say what it's doing",
+    "no progress updates",
+    "silent during a long task",
+    "skill runs silently",
+    "no narration",
+    "claude goes quiet",
+    "model stops talking mid-task",
+    "how do I get progress messages"
+   ],
+   "lessons": [
+    175,
+    176,
+    177
+   ],
+   "hint": "There is no runtime narration feature. Plain assistant text between tool calls IS the channel in Cowork, and the only thing producing it is a dynamic system-prompt section whose wording is chosen per model by a server-supplied capability map. The one runtime backstop, the silent_turn_reminder attachment (agent >=2.1.237, fires after 5 silent turns, capped at 3 per stretch), did not fire once in 399 qualifying stretches measured on this machine. Cowork also speaks about half as often as the CLI (31.0% of main-thread turns vs 54.1%), with silent runs observed to 146 turns. So write phase-boundary narration into the skill body; do not expect the runtime to supply it."
+  },
+  {
+   "pattern": [
+    "is my text shown to the user",
+    "does plain text reach the user",
+    "SendUserMessage",
+    "brief mode",
+    "send_user_message",
+    "should I use a tool to message the user"
+   ],
+   "lessons": [
+    177,
+    175
+   ],
+   "hint": "Per-surface, not global. Under brief mode plain assistant text is hidden and every user-facing word must go through SendUserMessage, enforced by a stop hook; under the PEWTER_OWL variant plain text IS what the user reads and the tool is for verbatim payloads only. Cowork runs PEWTER_OWL -- its own mcp__cowork__send_user_message description says 'normal text reaches them'. The Dispatch orchestrator in the same build is the opposite."
+  },
+  {
+   "pattern": [
+    "measuring model behaviour from transcripts",
+    "transcript corpus",
+    "session jsonl",
+    "grep found nothing in transcripts",
+    "attachment never appears"
+   ],
+   "lessons": [
+    179
+   ],
+   "hint": "Three traps, each of which produced a wrong number: Python glob('**') skips dot-prefixed path components, so it silently reads a fraction of the Cowork corpus (the path contains .claude/projects) -- use os.walk; type:\"user\" records are mostly tool results, so treating them as user turns corrupts any per-turn counter; and a string hit is not an event -- search for the structured attachment.type and date-filter out your own investigation. Before any 'never appears' claim, positive-control the channel and version-slice against the version that introduced the symbol."
   }
  ]
 }
