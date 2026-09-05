@@ -3913,7 +3913,7 @@
       "first_seen": "2.1.237",
       "removed_in": null,
       "as_of": "2.1.260",
-      "summary": "Overrides enablement of the silent-turn reminder OUTRIGHT (`env ?? (tK(model) || Fee('silent_turn_reminder',...))`), ahead of both the fable_5_1_prompt_bundle branch and the served capability. L185: the served-capability gate -- not the turn count -- is why Ch49/L176 measured 399 qualifying stretches and ZERO fires; the capability was never armed for those sessions' models.",
+      "summary": "Overrides enablement of the silent-turn reminder OUTRIGHT (`env ?? (tK(model) || Fee('silent_turn_reminder',...))`), ahead of both the fable_5_1_prompt_bundle branch and the served capability. L185: the served-capability gate -- not the turn count -- is why Ch49/L176 measured 399 qualifying stretches and ZERO fires; the capability was never armed for those sessions' models. PROBE-CONFIRMED 2026-09-05 (CLI 2.1.261, headless -p): with the var set the reminder fires, the custom _TEXT appears verbatim in the persisted transcript, and the hardcoded 3-per-stretch cap is hit exactly. Both '1' and 'true' parse (declared triBool). Firing is NOT deterministic across identical invocations - two runs of the same condition gave 0 and 3 - so nothing here supports a claim about the turn-counting semantics.",
       "provenance": [
         {
           "lesson": 176

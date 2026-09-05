@@ -1,5 +1,31 @@
 # Changelog
 
+## v2.49.2 — 2026-09-05 (this fork) — L185's mechanism confirmed by probe
+
+No new lessons; counts stay 189/51. Five headless runs on CLI **2.1.261** over an identical six-file read task:
+
+| run | `_REMINDER` | `_TURNS` | silent assistant msgs | reminders |
+|---|---|---|---|---|
+| A | `1` | 2 | 8 | 0 |
+| B | `true` | 1 | 13 | **3** |
+| C | `1` | 1 | 8 | **1** |
+| D | `1` | 2 | 13 | **3** |
+| E | `1` | 3 | 8 | 0 |
+
+**Established.** The reminder fires; `"1"` and `"true"` both parse as the declared `triBool`; `_TEXT` replaces the
+wording, with a custom marker appearing verbatim in the persisted transcript; and the **hardcoded 3-per-stretch cap
+is hit exactly** in both runs that reach it. It fires in **headless `-p` mode**, eliminating print-mode suppression.
+
+**Not established, deliberately.** Runs A and D are the same condition and disagree (0 vs 3). With n=1 per cell
+nothing here supports a claim about turn-counting semantics. After three runs a tidy hypothesis was available — that
+`vis()`'s backward walk terminates at each tool-result boundary so the count never exceeds 1, which would have meant
+the shipped default of 5 can never fire — and the fourth run **falsified it**. It is recorded in the lesson as the
+kind of mechanism story that fits three data points and is wrong.
+
+**What it settles for Ch49/L176.** With the override on, the feature is functional end to end — counter, cap, custom
+text, headless delivery, transcript persistence. So the 399-stretch zero was never a broken counter or a suppressed
+surface; it is upstream **enablement**, which is what L185 attributes it to.
+
 ## v2.49.1 — 2026-09-05 (this fork) — L184 confirmed by probe
 
 No new lessons; counts stay 189/51. L184 was published from a code read of the Cowork PreToolUse hook. It is now

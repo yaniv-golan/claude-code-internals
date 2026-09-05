@@ -199,15 +199,38 @@ Three of the five resolve in-chunk to `AskUserQuestion`, `ExitPlanMode` and `Sen
 
 Ch49/L179 recommended preferring an approximation that **over**-counts opportunities. This names the over-count's source: a transcript scan that only looks for assistant *text* will count a turn as silent when the agent in fact called `AskUserQuestion` or handed the user a file. Any re-measurement should exclude those turns.
 
-## How to actually observe it
+## Observed firing (2026-09-05, CLI 2.1.261)
 
-Because all three overrides are env vars, the fire is directly reproducible without waiting for a capability to be served:
+Because all three overrides are env vars, the fire is directly reproducible without waiting for a
+capability to be served. Five headless runs over an identical six-file read task in a scratch
+directory, `--model haiku`, prompt instructing no text until done:
 
-```
-CLAUDE_CODE_SILENT_TURN_REMINDER=1 CLAUDE_CODE_SILENT_TURN_REMINDER_TURNS=2 claude
-```
+| run | `_REMINDER` | `_TURNS` | silent assistant msgs | reminders fired |
+|---|---|---|---|---|
+| A | `1` | 2 | 8 | 0 |
+| B | `true` | 1 | 13 | **3** |
+| C | `1` | 1 | 8 | **1** |
+| D | `1` | 2 | 13 | **3** |
+| E | `1` | 3 | 8 | 0 |
 
-then drive two consecutive tool-only turns and look for a `silent_turn_reminder` attachment in the transcript. **This has not been run here** — it is the probe L176's result now calls for, recorded as a method, not a result.
+**Established.** The mechanism works end to end: the env var enables it (`"1"` and `"true"` both
+parse as the `triBool` it is declared as), `_TEXT` replaces the wording — a custom marker string
+appears verbatim in the persisted transcript — and `_TURNS` sets the threshold. The **3-per-stretch
+cap is real**, hit exactly in both runs that reached it. And it fires in **headless `-p` mode**, so
+nothing about non-interactive operation suppresses it.
+
+**Not established, and the reason to say so.** Runs A and D are the same condition and disagree
+(0 vs 3). Whatever governs that is not the threshold alone, and with n=1 per cell nothing here can
+support a claim about the turn-counting semantics. After runs A–C a tidy hypothesis was available —
+that the backward walk in `vis()` terminates at each tool-result boundary, so
+`turnsSinceLastReminder` never exceeds 1, which would mean the shipped default of 5 could never fire
+at all. Run D falsifies it. **One run per condition is not a measurement**, and a mechanism story
+that fits three data points is exactly the kind that survives to publication and is wrong.
+
+**What this settles for L176.** With the override forced on, the feature is demonstrably functional:
+counter, cap, custom text, headless delivery, persistence to the transcript. So the 399-stretch zero
+was never a broken counter or a suppressed surface — it is upstream **enablement**, which is what
+this lesson attributes it to.
 
 ---
 

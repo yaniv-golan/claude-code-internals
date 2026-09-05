@@ -5563,7 +5563,7 @@
       "lesson_number": "185",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
       "startLine": 127,
-      "endLine": 213,
+      "endLine": 236,
       "keywords": [
         "silent_turn_reminder",
         "CLAUDE_CODE_SILENT_TURN_REMINDER",
@@ -5585,7 +5585,12 @@
         "zero-fires-explained",
         "why doesn't the reminder fire",
         "model capability not served",
-        "silent turn"
+        "silent turn",
+        "probe-observed-firing",
+        "triBool",
+        "three-per-stretch-cap-observed",
+        "one-run-is-not-a-measurement",
+        "headless-p-mode-fires"
       ]
     },
     {
@@ -5593,8 +5598,8 @@
       "title": "Two Force Overrides Above the Sub-Agent Model Chain",
       "lesson_number": "186",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
-      "startLine": 214,
-      "endLine": 271,
+      "startLine": 237,
+      "endLine": 294,
       "keywords": [
         "CLAUDE_CODE_COORDINATOR_FORCE_WORKER_INHERIT_MODEL",
         "CLAUDE_CODE_SUBAGENT_MODEL_FORCE",
@@ -5619,8 +5624,8 @@
       "title": "Function Hooks: A Second Hook-Authoring Surface",
       "lesson_number": "187",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
-      "startLine": 272,
-      "endLine": 332,
+      "startLine": 295,
+      "endLine": 355,
       "keywords": [
         "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS",
         "tengu_plugin_hooks_modules",
@@ -5646,8 +5651,8 @@
       "title": "The Rest of the 2.1.260 Surface, and a Count That Moved",
       "lesson_number": "188",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
-      "startLine": 333,
-      "endLine": 406,
+      "startLine": 356,
+      "endLine": 429,
       "keywords": [
         "thirty-three-hook-events",
         "33-hook-events",
@@ -5683,8 +5688,8 @@
       "title": "The Release CDN Has Two Channels",
       "lesson_number": "189",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
-      "startLine": 407,
-      "endLine": 440,
+      "startLine": 430,
+      "endLine": 463,
       "keywords": [
         "manifest.zst.json",
         "compressed-release-channel",
@@ -19746,6 +19751,21 @@
     ],
     "spaces-preserved-mount": [
       184
+    ],
+    "probe-observed-firing": [
+      185
+    ],
+    "triBool": [
+      185
+    ],
+    "three-per-stretch-cap-observed": [
+      185
+    ],
+    "one-run-is-not-a-measurement": [
+      185
+    ],
+    "headless-p-mode-fires": [
+      185
     ]
   }
 }
