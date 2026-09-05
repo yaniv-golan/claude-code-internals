@@ -6289,14 +6289,14 @@
       "first_seen": "1.28929.0",
       "removed_in": null,
       "as_of": "2.1.260",
-      "summary": "Builtin-tool auto-mode classifier gate. TRACED (L184): in the Cowork PreToolUse hook it lets request_cowork_directory and save_skill SKIP the forced ask and defer to the auto-mode classifier (hook returns {} instead of permissionDecision:'ask'), emitting lam_builtin_tool_auto_mode {outcome:'deferred_to_classifier'}. Predicate Phn: gateEnabled && !mdmAutoModeDisabled && session.permissionMode==='auto' && permissionSession.permissionMode==='auto'. Carve-out: request_cowork_directory with NO path in a bridge/dispatch-child/scheduled/remote-origin/non-desktop-channel session keeps the forced ask (an invisible-folder-picker rule, not a permissions rule). Moved defaultValue/off -> FORCE/ON between the 2026-08-14 and 2026-09-05 captures.",
+      "summary": "Builtin-tool auto-mode classifier gate. TRACED (L184): in the Cowork PreToolUse hook it lets request_cowork_directory and save_skill SKIP the forced ask and defer to the auto-mode classifier (hook returns {} instead of permissionDecision:'ask'), emitting lam_builtin_tool_auto_mode {outcome:'deferred_to_classifier'}. Predicate Phn: gateEnabled && !mdmAutoModeDisabled && session.permissionMode==='auto' && permissionSession.permissionMode==='auto'. Carve-out: request_cowork_directory with NO path in a bridge/dispatch-child/scheduled/remote-origin/non-desktop-channel session keeps the forced ask (an invisible-folder-picker rule, not a permissions rule). Moved defaultValue/off -> FORCE/ON between the 2026-08-14 and 2026-09-05 captures. LIVE-CONFIRMED 2026-09-05: in an auto-mode Cowork session save_skill and request_cowork_directory ran with no approval dialog while allow_cowork_file_delete (released by neither gate) produced the Allow/Deny card - the control that shows the hook was still firing.",
       "provenance": [
         {
           "lesson": 128
         },
         {
           "lesson": 184,
-          "note": "call site traced; gate now forced ON; defers 2 of the 9 matcher tools in auto mode"
+          "note": "call site traced; gate now forced ON; defers 2 of the 9 matcher tools in auto mode; behaviourally confirmed by probe 2026-09-05"
         }
       ],
       "namespace": "desktop_fcache",

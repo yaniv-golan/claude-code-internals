@@ -96,6 +96,28 @@ function ql(e){return !!e?.scheduledTaskId || e?.dispatchParentOrigin==="remote"
 
 `t.Ww` is the tool whose builtin id is `request_cowork_directory`. When it is called **without a path**, in a bridge session, a dispatch child, a scheduled task, a remote-origin dispatch, or a turn whose channel is not the desktop, the deferral is refused and the forced ask stands. The agent's own tool description says why: such a call *"would open a folder picker on this computer that the user cannot see."* The carve-out is a no-invisible-dialog rule, not a permissions rule.
 
+## Live confirmation (2026-09-05)
+
+Run in one Cowork session on this Mac, **auto mode on**, desktop-local lane, one connected folder:
+
+| tool | predicted | observed |
+|---|---|---|
+| `save_skill` | deferred, no prompt | executed, no approval dialog |
+| `request_cowork_directory` | deferred, no prompt | executed — the native folder picker opened, which *is* the tool's action, not a gate |
+| `allow_cowork_file_delete` | **forced ask** | **Allow / Deny card**: *"Allow Claude to permanently delete files in your `untitled folder 5` folder during this task?"* |
+
+**The third row is the control and it is what makes the first two mean anything.** It proves the
+forced-ask hook was live in that session, so the first two tools running unprompted is the gates
+releasing them by name — not auto mode waving everything through. The observed split matches the
+predicted partition exactly.
+
+Two things this does **not** establish. The scheduled-task half of the partition (gate `1447478638`,
+five tools) was not exercised. And the same three tools were not run **outside** auto mode, so the
+`permissionMode === "auto"` precondition in `Phn` is confirmed only from the code, not from
+behaviour — a session not in auto mode should prompt on all three.
+
+Incidental: the connected folder mounts as `untitled folder 5`, spaces preserved and unsanitised.
+
 ## What this means for an author
 
 The sentence "these tools always prompt" is now false in auto mode for 7 of 9. Do not design a skill around a guaranteed human checkpoint on `save_skill`, `request_cowork_directory`, or any scheduled-task tool. **The guarantee that survives is narrower: `allow_cowork_file_delete` and `launch_code_session` still always prompt, and everything still prompts outside auto mode.** Ch24/L107's mechanism is intact; its unconditionality is not.

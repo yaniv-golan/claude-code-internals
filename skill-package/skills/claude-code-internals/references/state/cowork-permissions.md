@@ -74,7 +74,12 @@ lessons (see frontmatter).
      channel session, because the folder picker would open where the user
      cannot see it. **Net: in auto mode 7 of the 9 skip the forced ask;
      only `allow_cowork_file_delete` and `launch_code_session` always
-     prompt. Outside auto mode the set below is unchanged.** The set:
+     prompt. Outside auto mode the set below is unchanged.**
+     **LIVE-CONFIRMED 2026-09-05** in one auto-mode session: `save_skill` and
+     `request_cowork_directory` ran with no approval dialog while
+     `allow_cowork_file_delete` produced the Allow/Deny card — the third is
+     the control proving the hook was live. The scheduled-task half and the
+     not-in-auto-mode case remain code-read only. The set:
      `Abt = [RrA, AQ, l0A, hv]` →
      `mcp__cowork__allow_cowork_file_delete`,
      `mcp__cowork__request_cowork_directory`,

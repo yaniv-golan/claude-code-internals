@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.49.1 — 2026-09-05 (this fork) — L184 confirmed by probe
+
+No new lessons; counts stay 189/51. L184 was published from a code read of the Cowork PreToolUse hook. It is now
+confirmed behaviourally, in one auto-mode session on Desktop 1.46388.4 (desktop-local lane, one connected folder):
+
+| tool | predicted | observed |
+|---|---|---|
+| `save_skill` | deferred | executed, no approval dialog |
+| `request_cowork_directory` | deferred | executed — the native folder picker is the tool's action, not a gate |
+| `allow_cowork_file_delete` | **forced ask** | **Allow / Deny card** |
+
+**The third row is the control.** It shows the forced-ask hook was live in that session, so the first two running
+unprompted is gates `4202409342` / `1447478638` releasing those tools by name — not auto mode approving
+everything. The observed split matches the predicted partition exactly.
+
+Deliberately **not** claimed: the scheduled-task half of the partition was not exercised, and the same tools were
+not run outside auto mode, so `Phn`'s `permissionMode === "auto"` precondition remains code-read only.
+
 ## v2.49.0 — 2026-09-05 (this fork) — the forced ask became conditional
 
 **Chapter 51, lessons 184–189.** Every lead Chapter 50 left open, run down, against `app.asar` **1.46388.4**,

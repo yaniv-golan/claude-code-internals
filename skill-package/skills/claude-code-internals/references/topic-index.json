@@ -5522,7 +5522,7 @@
       "lesson_number": "184",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
       "startLine": 20,
-      "endLine": 104,
+      "endLine": 126,
       "keywords": [
         "forced-ask-conditional",
         "4202409342",
@@ -5549,7 +5549,12 @@
         "currentTurnChannel",
         "does save_skill still prompt",
         "tool no longer asks for approval",
-        "auto mode skipped the prompt"
+        "auto mode skipped the prompt",
+        "live-confirmation",
+        "probe-confirmed",
+        "allow-deny-card",
+        "untitled folder 5",
+        "spaces-preserved-mount"
       ]
     },
     {
@@ -5557,8 +5562,8 @@
       "title": "Why the Silent-Turn Reminder Never Fired",
       "lesson_number": "185",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
-      "startLine": 105,
-      "endLine": 191,
+      "startLine": 127,
+      "endLine": 213,
       "keywords": [
         "silent_turn_reminder",
         "CLAUDE_CODE_SILENT_TURN_REMINDER",
@@ -5588,8 +5593,8 @@
       "title": "Two Force Overrides Above the Sub-Agent Model Chain",
       "lesson_number": "186",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
-      "startLine": 192,
-      "endLine": 249,
+      "startLine": 214,
+      "endLine": 271,
       "keywords": [
         "CLAUDE_CODE_COORDINATOR_FORCE_WORKER_INHERIT_MODEL",
         "CLAUDE_CODE_SUBAGENT_MODEL_FORCE",
@@ -5614,8 +5619,8 @@
       "title": "Function Hooks: A Second Hook-Authoring Surface",
       "lesson_number": "187",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
-      "startLine": 250,
-      "endLine": 310,
+      "startLine": 272,
+      "endLine": 332,
       "keywords": [
         "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS",
         "tengu_plugin_hooks_modules",
@@ -5641,8 +5646,8 @@
       "title": "The Rest of the 2.1.260 Surface, and a Count That Moved",
       "lesson_number": "188",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
-      "startLine": 311,
-      "endLine": 384,
+      "startLine": 333,
+      "endLine": 406,
       "keywords": [
         "thirty-three-hook-events",
         "33-hook-events",
@@ -5678,8 +5683,8 @@
       "title": "The Release CDN Has Two Channels",
       "lesson_number": "189",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
-      "startLine": 385,
-      "endLine": 418,
+      "startLine": 407,
+      "endLine": 440,
       "keywords": [
         "manifest.zst.json",
         "compressed-release-channel",
@@ -19726,6 +19731,21 @@
     ],
     "binary not on the CDN": [
       189
+    ],
+    "live-confirmation": [
+      184
+    ],
+    "probe-confirmed": [
+      184
+    ],
+    "allow-deny-card": [
+      184
+    ],
+    "untitled folder 5": [
+      184
+    ],
+    "spaces-preserved-mount": [
+      184
     ]
   }
 }
