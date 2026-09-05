@@ -343,7 +343,7 @@ function fs({skipEssentialTrafficGate:P=!1}={}){
 
 `CLAUDE_CODE_MODEL_CATALOG_URL` overrides the source, validated hard: a non-URL is refused (`invalid_url`, "configured catalog URL is not a URL; published path off"), so is an unsupported scheme, and so is a **loopback or metadata host** ("names a loopback or metadata host; published path off") — an SSRF guard on a value the user controls. A `file:` scheme has its own branch. Managed source settings are honoured only from an admin policy origin: "ignoring managed model-catalog source settings from a non-admin policy origin". The whole subsystem sits behind `tengu_delegated_quail`, default `{mode:"off"}`.
 
-`CLAUDE_CODE_SUBAGENT_MODEL_FORCE` and `CLAUDE_CODE_COORDINATOR_FORCE_WORKER_INHERIT_MODEL` sit in the same export group as `CLAUDE_CODE_SUBAGENT_MODEL` (Ch35/L124's model chain). **Their behaviour was not traced in this pass** — the names suggest an override that defeats the frontmatter/Task-param tiers, but that is a guess and is recorded here as one.
+`CLAUDE_CODE_SUBAGENT_MODEL_FORCE` and `CLAUDE_CODE_COORDINATOR_FORCE_WORKER_INHERIT_MODEL` sit in the same export group as `CLAUDE_CODE_SUBAGENT_MODEL` (Ch35/L124's model chain). Their behaviour was not traced in this pass; the guess recorded here was that they defeat the Task-param tier. **Traced in Ch51/L186 and confirmed** — both discard the Task `model` parameter outright, and `SUBAGENT_MODEL_FORCE` turns out to be announced at CLI 2.1.257, not dark.
 
 ## None of these is set by the Cowork spawn
 

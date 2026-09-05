@@ -3471,6 +3471,108 @@
         "relevance": 0.6,
         "reason": "the model landscape the published catalog would serve"
       }
+    ],
+    "184": [
+      {
+        "id": 107,
+        "relevance": 0.95,
+        "reason": "L184 makes L107's forced-ask hook conditional in auto mode"
+      },
+      {
+        "id": 128,
+        "relevance": 0.85,
+        "reason": "the auto-mode gate family this pair belongs to"
+      },
+      {
+        "id": 109,
+        "relevance": 0.7,
+        "reason": "the scheduled-task tools the second gate releases"
+      },
+      {
+        "id": 150,
+        "relevance": 0.62,
+        "reason": "the Cowork permission stack these hooks sit in"
+      }
+    ],
+    "185": [
+      {
+        "id": 176,
+        "relevance": 0.96,
+        "reason": "L185 supplies the cause of L176's measured zero"
+      },
+      {
+        "id": 175,
+        "relevance": 0.88,
+        "reason": "same served-capability resolver gates narration and the reminder"
+      },
+      {
+        "id": 179,
+        "relevance": 0.75,
+        "reason": "names the source of the corpus over-count L179 anticipated"
+      }
+    ],
+    "186": [
+      {
+        "id": 124,
+        "relevance": 0.94,
+        "reason": "L186 adds two override tiers above L124's model chain"
+      },
+      {
+        "id": 183,
+        "relevance": 0.8,
+        "reason": "resolves the guess L183 flagged"
+      },
+      {
+        "id": 121,
+        "relevance": 0.62,
+        "reason": "sub-agent dispatch and tool composition"
+      }
+    ],
+    "187": [
+      {
+        "id": 183,
+        "relevance": 0.82,
+        "reason": "L183 named ENABLE_FUNCTION_HOOKS; L187 traces the contract"
+      },
+      {
+        "id": 107,
+        "relevance": 0.7,
+        "reason": "the hook delivery path a function hook would join"
+      },
+      {
+        "id": 155,
+        "relevance": 0.6,
+        "reason": "the hook-event set a registration must name"
+      }
+    ],
+    "188": [
+      {
+        "id": 155,
+        "relevance": 0.9,
+        "reason": "L188 moves L155's hook-event count from 31 to 33"
+      },
+      {
+        "id": 112,
+        "relevance": 0.78,
+        "reason": "tengu_cobalt_plinth, whose 33 children L188 enumerates"
+      },
+      {
+        "id": 180,
+        "relevance": 0.65,
+        "reason": "same 2.1.260 / 1.46388.4 artifact pass"
+      }
+    ],
+    "189": [
+      {
+        "id": 180,
+        "relevance": 0.6,
+        "reason": "artifact provenance and recovery underpin both"
+      },
+      {
+        "id": 162,
+        "relevance": 0.58,
+        "reason": "extraction and artifact-integrity methodology"
+      }
     ]
   }
 }

@@ -1,7 +1,7 @@
 {
   "generated": "2026-08-13",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 183,
+  "total_lessons": 189,
   "lessons": [
     {
       "id": 1,
@@ -2726,7 +2726,7 @@
       "lesson_number": "107",
       "file": "21-cowork-control-protocol.md",
       "startLine": 22,
-      "endLine": 394,
+      "endLine": 402,
       "keywords": [
         "cowork-spawn-contract",
         "stream-json",
@@ -3547,7 +3547,7 @@
       "lesson_number": "124",
       "file": "32-cowork-subagent-execution-model.md",
       "startLine": 260,
-      "endLine": 422,
+      "endLine": 431,
       "keywords": [
         "subagent-model",
         "CLAUDE_CODE_SUBAGENT_MODEL",
@@ -4547,7 +4547,7 @@
       "lesson_number": "155",
       "file": "39-verified-new-v2.1.231.md",
       "startLine": 92,
-      "endLine": 129,
+      "endLine": 135,
       "keywords": [
         "DirectoryAdded",
         "31-hook-events",
@@ -4575,8 +4575,8 @@
       "title": "Artifacts Grew a Backend: Comments, Autoreact, and an Agent Responder",
       "lesson_number": "156",
       "file": "39-verified-new-v2.1.231.md",
-      "startLine": 130,
-      "endLine": 167,
+      "startLine": 136,
+      "endLine": 173,
       "keywords": [
         "artifact-comments",
         "CLAUDE_CODE_ARTIFACT_COMMENTS",
@@ -4600,8 +4600,8 @@
       "title": "Remote-Session State: Directory Sync, Cross-Session Messaging, and L151's Closed Loop",
       "lesson_number": "157",
       "file": "39-verified-new-v2.1.231.md",
-      "startLine": 168,
-      "endLine": 209,
+      "startLine": 174,
+      "endLine": 215,
       "keywords": [
         "dir-sync",
         "startWorkerDirSync",
@@ -4637,8 +4637,8 @@
       "title": "The UTr() Codename Resolver, New Betas & Retired Surface",
       "lesson_number": "158",
       "file": "39-verified-new-v2.1.231.md",
-      "startLine": 210,
-      "endLine": 262,
+      "startLine": 216,
+      "endLine": 268,
       "keywords": [
         "UTr-resolver",
         "codename-flags",
@@ -5185,7 +5185,7 @@
       "lesson_number": "176",
       "file": "46-narration-turn-updates-silent-turn.md",
       "startLine": 110,
-      "endLine": 210,
+      "endLine": 218,
       "keywords": [
         "silent_turn_reminder",
         "tengu_hushed_lark",
@@ -5227,8 +5227,8 @@
       "title": "Brief Mode, PEWTER_OWL, and Why Cowork Renders Plain Text",
       "lesson_number": "177",
       "file": "46-narration-turn-updates-silent-turn.md",
-      "startLine": 211,
-      "endLine": 264,
+      "startLine": 219,
+      "endLine": 272,
       "keywords": [
         "brief-mode",
         "SendUserMessage",
@@ -5265,8 +5265,8 @@
       "title": "The Dark Narration Lane: thinking.display and Sable Thrush",
       "lesson_number": "178",
       "file": "46-narration-turn-updates-silent-turn.md",
-      "startLine": 265,
-      "endLine": 338,
+      "startLine": 273,
+      "endLine": 346,
       "keywords": [
         "thinking.display",
         "thinking_display_updates",
@@ -5303,8 +5303,8 @@
       "title": "Reading Model Behaviour Out of the Transcript Corpus",
       "lesson_number": "179",
       "file": "46-narration-turn-updates-silent-turn.md",
-      "startLine": 339,
-      "endLine": 377,
+      "startLine": 347,
+      "endLine": 385,
       "keywords": [
         "transcript-corpus",
         "session-transcripts",
@@ -5514,6 +5514,189 @@
         "what is COZY_TEAPOT",
         "what is WISE_COMET",
         "model catalog"
+      ]
+    },
+    {
+      "id": 184,
+      "title": "The Cowork Forced Ask Is Now Conditional",
+      "lesson_number": "184",
+      "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
+      "startLine": 20,
+      "endLine": 104,
+      "keywords": [
+        "forced-ask-conditional",
+        "4202409342",
+        "1447478638",
+        "deferred_to_classifier",
+        "lam_builtin_tool_auto_mode",
+        "lam_scheduled_task_tool_auto_mode",
+        "auto-mode-deferral",
+        "PreToolUse-empty-result",
+        "GNt",
+        "nine-tool-matcher",
+        "request_cowork_directory",
+        "save_skill",
+        "allow_cowork_file_delete",
+        "launch_code_session",
+        "delete_scheduled_task",
+        "start_watching",
+        "stop_watching",
+        "mdmAutoModeDisabled",
+        "permissionMode-auto",
+        "folder-picker-carve-out",
+        "invisible-dialog-rule",
+        "dispatchParentOrigin",
+        "currentTurnChannel",
+        "does save_skill still prompt",
+        "tool no longer asks for approval",
+        "auto mode skipped the prompt"
+      ]
+    },
+    {
+      "id": 185,
+      "title": "Why the Silent-Turn Reminder Never Fired",
+      "lesson_number": "185",
+      "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
+      "startLine": 105,
+      "endLine": 191,
+      "keywords": [
+        "silent_turn_reminder",
+        "CLAUDE_CODE_SILENT_TURN_REMINDER",
+        "CLAUDE_CODE_SILENT_TURN_REMINDER_TEXT",
+        "CLAUDE_CODE_SILENT_TURN_REMINDER_TURNS",
+        "tengu_hushed_lark",
+        "tengu_hushed_lark_text",
+        "served-capability",
+        "servedCapabilityLookup",
+        "capability-list",
+        "Qf-capability-resolver",
+        "five-silent-turns",
+        "three-per-stretch",
+        "stretch-counter",
+        "AskUserQuestion-breaks-stretch",
+        "ExitPlanMode",
+        "SendUserFile",
+        "fable_5_1_prompt_bundle",
+        "zero-fires-explained",
+        "why doesn't the reminder fire",
+        "model capability not served",
+        "silent turn"
+      ]
+    },
+    {
+      "id": 186,
+      "title": "Two Force Overrides Above the Sub-Agent Model Chain",
+      "lesson_number": "186",
+      "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
+      "startLine": 192,
+      "endLine": 249,
+      "keywords": [
+        "CLAUDE_CODE_COORDINATOR_FORCE_WORKER_INHERIT_MODEL",
+        "CLAUDE_CODE_SUBAGENT_MODEL_FORCE",
+        "model-param-discarded",
+        "subagent-model-chain-corrected",
+        "resolvedModel",
+        "toolUseResult",
+        "schema-description-mutates",
+        "coordinator-prompt-mutates",
+        "workflow-agent-model-ignored",
+        "2.1.257-announced",
+        "subagent-model-precedence-changed",
+        "unresolved-guard",
+        "symbol-collision-Ts",
+        "my subagent ran the wrong model",
+        "model parameter ignored",
+        "Task model not applied"
+      ]
+    },
+    {
+      "id": 187,
+      "title": "Function Hooks: A Second Hook-Authoring Surface",
+      "lesson_number": "187",
+      "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
+      "startLine": 250,
+      "endLine": 310,
+      "keywords": [
+        "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS",
+        "tengu_plugin_hooks_modules",
+        "function-hooks",
+        "hooks-register-ts",
+        "register-on-options",
+        "builtin-hooks-module",
+        "bundle-builtin-hooks-module",
+        "ScanRefusal",
+        "hook-reference-linter",
+        "string-literal-event-name",
+        "statically-enumerable-hooks",
+        "hook-flag-provenance",
+        "hooks-as-modules",
+        "second-hook-surface",
+        "can I write hooks in javascript",
+        "hook module",
+        "register(on, options)"
+      ]
+    },
+    {
+      "id": 188,
+      "title": "The Rest of the 2.1.260 Surface, and a Count That Moved",
+      "lesson_number": "188",
+      "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
+      "startLine": 311,
+      "endLine": 384,
+      "keywords": [
+        "thirty-three-hook-events",
+        "33-hook-events",
+        "PreModelSwitch",
+        "PostModelSwitch",
+        "hook-event-count-moved",
+        "MessageDisplay-33rd",
+        "CLAUDE_CODE_FORWARD_USER_INTENT",
+        "prompt-attribution-frame",
+        "relay-human",
+        "verifiedSlackHumanTurn",
+        "relayed-message-boundary",
+        "not-your-user-speaking",
+        "CLAUDE_CODE_SESSION_ORIGIN",
+        "CLAUDE_CODE_PLUGIN_DIR_WATCH",
+        "CLAUDE_CODE_CHROME_MCP_ORG_DENIED",
+        "CLAUDE_CODE_CCR_EARLY_HYDRATE_PREFETCH",
+        "CLAUDE_CODE_ARTIFACT_PIN",
+        "CLAUDE_CODE_ARTIFACT_TOOLSET",
+        "toolsetLatch",
+        "tengu_cobalt_plinth-family",
+        "33-artifact-subflags",
+        "cobalt-plinth-children",
+        "containment-escape-rule",
+        "changelog-crosscheck",
+        "append-subagent-system-prompt-file",
+        "how many hook events",
+        "is this feature announced"
+      ]
+    },
+    {
+      "id": 189,
+      "title": "The Release CDN Has Two Channels",
+      "lesson_number": "189",
+      "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
+      "startLine": 385,
+      "endLine": 418,
+      "keywords": [
+        "manifest.zst.json",
+        "compressed-release-channel",
+        "claude.zst",
+        "binary-recovery",
+        "downloads.claude.ai",
+        "stable-pointer-lag",
+        "stable-is-not-latest",
+        "version-404",
+        "unrecoverable-version",
+        "manifestSignatureEnforcement",
+        "manifest-signing",
+        "buildDate-skew",
+        "recovery-recipe",
+        "how do I download an old version",
+        "which version is current",
+        "binary not on the CDN"
       ]
     }
   ],
@@ -11393,10 +11576,12 @@
       124
     ],
     "resolvedModel": [
-      124
+      124,
+      186
     ],
     "toolUseResult": [
-      124
+      124,
+      186
     ],
     "fcache gzip": [
       124
@@ -15511,7 +15696,8 @@
       139
     ],
     "allow_cowork_file_delete": [
-      139
+      139,
+      184
     ],
     "per-mount-approval": [
       139
@@ -15529,7 +15715,8 @@
       139
     ],
     "request_cowork_directory": [
-      139
+      139,
+      184
     ],
     "spawn-time-mode-selector": [
       139
@@ -18395,31 +18582,38 @@
       175
     ],
     "silent_turn_reminder": [
-      176
+      176,
+      185
     ],
     "tengu_hushed_lark": [
-      176
+      176,
+      185
     ],
     "tengu_hushed_lark_text": [
-      176
+      176,
+      185
     ],
     "hushed-lark": [
       176
     ],
     "CLAUDE_CODE_SILENT_TURN_REMINDER": [
-      176
+      176,
+      185
     ],
     "CLAUDE_CODE_SILENT_TURN_REMINDER_TURNS": [
-      176
+      176,
+      185
     ],
     "CLAUDE_CODE_SILENT_TURN_REMINDER_TEXT": [
-      176
+      176,
+      185
     ],
     "silent-turn-threshold": [
       176
     ],
     "five-silent-turns": [
-      176
+      176,
+      185
     ],
     "reminders-in-stretch": [
       176
@@ -19059,7 +19253,8 @@
       182
     ],
     "1447478638": [
-      182
+      182,
+      184
     ],
     "CLAUDE_CODE_DISABLE_AGENTS_FLEET": [
       182
@@ -19086,25 +19281,32 @@
       182
     ],
     "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS": [
-      183
+      183,
+      187
     ],
     "tengu_plugin_hooks_modules": [
-      183
+      183,
+      187
     ],
     "function-hooks": [
-      183
+      183,
+      187
     ],
     "hooks-register-ts": [
-      183
+      183,
+      187
     ],
     "builtin-hooks-module": [
-      183
+      183,
+      187
     ],
     "hook-reference-linter": [
-      183
+      183,
+      187
     ],
     "hooks-as-modules": [
-      183
+      183,
+      187
     ],
     "CLAUDE_CODE_COZY_TEAPOT": [
       183
@@ -19191,10 +19393,12 @@
       183
     ],
     "CLAUDE_CODE_SUBAGENT_MODEL_FORCE": [
-      183
+      183,
+      186
     ],
     "CLAUDE_CODE_COORDINATOR_FORCE_WORKER_INHERIT_MODEL": [
-      183
+      183,
+      186
     ],
     "cozy teapot": [
       183
@@ -19216,6 +19420,312 @@
     ],
     "claude-ai-renderer-lane-choice": [
       180
+    ],
+    "forced-ask-conditional": [
+      184
+    ],
+    "4202409342": [
+      184
+    ],
+    "deferred_to_classifier": [
+      184
+    ],
+    "lam_builtin_tool_auto_mode": [
+      184
+    ],
+    "lam_scheduled_task_tool_auto_mode": [
+      184
+    ],
+    "auto-mode-deferral": [
+      184
+    ],
+    "PreToolUse-empty-result": [
+      184
+    ],
+    "GNt": [
+      184
+    ],
+    "nine-tool-matcher": [
+      184
+    ],
+    "save_skill": [
+      184
+    ],
+    "launch_code_session": [
+      184
+    ],
+    "delete_scheduled_task": [
+      184
+    ],
+    "start_watching": [
+      184
+    ],
+    "stop_watching": [
+      184
+    ],
+    "mdmAutoModeDisabled": [
+      184
+    ],
+    "permissionMode-auto": [
+      184
+    ],
+    "folder-picker-carve-out": [
+      184
+    ],
+    "invisible-dialog-rule": [
+      184
+    ],
+    "dispatchParentOrigin": [
+      184
+    ],
+    "currentTurnChannel": [
+      184
+    ],
+    "does save_skill still prompt": [
+      184
+    ],
+    "tool no longer asks for approval": [
+      184
+    ],
+    "auto mode skipped the prompt": [
+      184
+    ],
+    "served-capability": [
+      185
+    ],
+    "servedCapabilityLookup": [
+      185
+    ],
+    "capability-list": [
+      185
+    ],
+    "Qf-capability-resolver": [
+      185
+    ],
+    "three-per-stretch": [
+      185
+    ],
+    "stretch-counter": [
+      185
+    ],
+    "AskUserQuestion-breaks-stretch": [
+      185
+    ],
+    "ExitPlanMode": [
+      185
+    ],
+    "SendUserFile": [
+      185
+    ],
+    "fable_5_1_prompt_bundle": [
+      185
+    ],
+    "zero-fires-explained": [
+      185
+    ],
+    "why doesn't the reminder fire": [
+      185
+    ],
+    "model capability not served": [
+      185
+    ],
+    "silent turn": [
+      185
+    ],
+    "model-param-discarded": [
+      186
+    ],
+    "subagent-model-chain-corrected": [
+      186
+    ],
+    "schema-description-mutates": [
+      186
+    ],
+    "coordinator-prompt-mutates": [
+      186
+    ],
+    "workflow-agent-model-ignored": [
+      186
+    ],
+    "2.1.257-announced": [
+      186
+    ],
+    "subagent-model-precedence-changed": [
+      186
+    ],
+    "unresolved-guard": [
+      186
+    ],
+    "symbol-collision-Ts": [
+      186
+    ],
+    "my subagent ran the wrong model": [
+      186
+    ],
+    "model parameter ignored": [
+      186
+    ],
+    "Task model not applied": [
+      186
+    ],
+    "register-on-options": [
+      187
+    ],
+    "bundle-builtin-hooks-module": [
+      187
+    ],
+    "ScanRefusal": [
+      187
+    ],
+    "string-literal-event-name": [
+      187
+    ],
+    "statically-enumerable-hooks": [
+      187
+    ],
+    "hook-flag-provenance": [
+      187
+    ],
+    "second-hook-surface": [
+      187
+    ],
+    "can I write hooks in javascript": [
+      187
+    ],
+    "hook module": [
+      187
+    ],
+    "register(on, options)": [
+      187
+    ],
+    "thirty-three-hook-events": [
+      188
+    ],
+    "33-hook-events": [
+      188
+    ],
+    "PreModelSwitch": [
+      188
+    ],
+    "PostModelSwitch": [
+      188
+    ],
+    "hook-event-count-moved": [
+      188
+    ],
+    "MessageDisplay-33rd": [
+      188
+    ],
+    "CLAUDE_CODE_FORWARD_USER_INTENT": [
+      188
+    ],
+    "prompt-attribution-frame": [
+      188
+    ],
+    "relay-human": [
+      188
+    ],
+    "verifiedSlackHumanTurn": [
+      188
+    ],
+    "relayed-message-boundary": [
+      188
+    ],
+    "not-your-user-speaking": [
+      188
+    ],
+    "CLAUDE_CODE_SESSION_ORIGIN": [
+      188
+    ],
+    "CLAUDE_CODE_PLUGIN_DIR_WATCH": [
+      188
+    ],
+    "CLAUDE_CODE_CHROME_MCP_ORG_DENIED": [
+      188
+    ],
+    "CLAUDE_CODE_CCR_EARLY_HYDRATE_PREFETCH": [
+      188
+    ],
+    "CLAUDE_CODE_ARTIFACT_PIN": [
+      188
+    ],
+    "CLAUDE_CODE_ARTIFACT_TOOLSET": [
+      188
+    ],
+    "toolsetLatch": [
+      188
+    ],
+    "tengu_cobalt_plinth-family": [
+      188
+    ],
+    "33-artifact-subflags": [
+      188
+    ],
+    "cobalt-plinth-children": [
+      188
+    ],
+    "containment-escape-rule": [
+      188
+    ],
+    "changelog-crosscheck": [
+      188
+    ],
+    "append-subagent-system-prompt-file": [
+      188
+    ],
+    "how many hook events": [
+      188
+    ],
+    "is this feature announced": [
+      188
+    ],
+    "manifest.zst.json": [
+      189
+    ],
+    "compressed-release-channel": [
+      189
+    ],
+    "claude.zst": [
+      189
+    ],
+    "binary-recovery": [
+      189
+    ],
+    "downloads.claude.ai": [
+      189
+    ],
+    "stable-pointer-lag": [
+      189
+    ],
+    "stable-is-not-latest": [
+      189
+    ],
+    "version-404": [
+      189
+    ],
+    "unrecoverable-version": [
+      189
+    ],
+    "manifestSignatureEnforcement": [
+      189
+    ],
+    "manifest-signing": [
+      189
+    ],
+    "buildDate-skew": [
+      189
+    ],
+    "recovery-recipe": [
+      189
+    ],
+    "how do I download an old version": [
+      189
+    ],
+    "which version is current": [
+      189
+    ],
+    "binary not on the CDN": [
+      189
     ]
   }
 }

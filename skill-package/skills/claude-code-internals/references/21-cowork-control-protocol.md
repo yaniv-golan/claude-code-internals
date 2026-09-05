@@ -215,6 +215,14 @@ Four matchers:
   `MCP_CREATE_SCHEDULED_TASK`/`MCP_UPDATE_SCHEDULED_TASK`/`MCP_START_WATCHING`/`MCP_STOP_WATCHING` (the
   Ch26/L109 scheduled-tasks server). Any match forces `permissionDecision:"ask"` with reason *"This tool
   requires explicit approval regardless of permission mode"* — unconditional, even under
+
+> **SUPERSEDED IN AUTO MODE (2026-09-05, Ch51/L184).** The word *unconditional* no longer holds.
+> Two gates forced ON in production — `4202409342` (builtin tools) and `1447478638` (scheduled-task
+> tools) — let the hook return an empty result instead of the forced ask when the session **and** the
+> permission session are both in `auto` and MDM has not disabled auto mode, deferring the call to the
+> auto-mode classifier. The matcher has also grown to **9** tools (`delete_scheduled_task` added).
+> **7 of the 9 now skip the forced ask in auto mode**; only `allow_cowork_file_delete` and
+> `launch_code_session` always prompt. Outside auto mode this section stands as written. See L184.
   `--allow-dangerously-skip-permissions`. The set has grown as Cowork gained features: a third-party
   capture at app.asar 1.12603.1 (pre-Ch26) recorded 5 names (no scheduled-tasks/watching, no
   `save_skill`); the live 1.17377.2 binary has 8.

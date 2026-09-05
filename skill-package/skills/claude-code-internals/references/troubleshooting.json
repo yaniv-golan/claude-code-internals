@@ -1937,6 +1937,79 @@
         180
       ],
       "hint": "Features routed through the ccr-session host (cowork_memory_context, /worker/skill-manifest) need --sdk-url, which occurs 0 times in the entire app.asar and 41 times in the agent. No Desktop-spawned session can resolve that host, so those features are structurally unreachable in the desktop-local lane -- not merely disabled."
+    },
+    {
+      "pattern": [
+        "save_skill didn't prompt",
+        "tool ran without asking",
+        "forced approval didn't appear",
+        "request_cowork_directory no prompt"
+      ],
+      "lessons": [
+        184,
+        107
+      ],
+      "hint": "In auto mode the Cowork forced-ask hook is no longer unconditional. Gates 4202409342 and 1447478638 (both forced ON as of 2026-09-05) let 7 of the 9 matcher tools defer to the auto-mode classifier instead. Only allow_cowork_file_delete and launch_code_session always prompt; outside auto mode all 9 still do."
+    },
+    {
+      "pattern": [
+        "silent turn reminder never fires",
+        "agent goes quiet and nothing nudges it",
+        "hushed lark"
+      ],
+      "lessons": [
+        185,
+        176
+      ],
+      "hint": "The reminder is gated on a SERVED model capability (silent_turn_reminder), not just the 5-turn count — the same capability map that gates narration. Force it locally with CLAUDE_CODE_SILENT_TURN_REMINDER=1 and CLAUDE_CODE_SILENT_TURN_REMINDER_TURNS=2. Note a turn is not 'silent' if it called AskUserQuestion, ExitPlanMode or SendUserFile."
+    },
+    {
+      "pattern": [
+        "subagent ran the wrong model",
+        "Task model parameter ignored",
+        "model override did nothing"
+      ],
+      "lessons": [
+        186,
+        124
+      ],
+      "hint": "CLAUDE_CODE_COORDINATOR_FORCE_WORKER_INHERIT_MODEL and CLAUDE_CODE_SUBAGENT_MODEL_FORCE sit above the documented chain and DISCARD the Task `model` parameter — silently on the Task path, with a log line on the Workflow path. Read resolvedModel off toolUseResult rather than assuming your parameter took."
+    },
+    {
+      "pattern": [
+        "how many hook events are there",
+        "is PreModelSwitch a hook",
+        "hook event count"
+      ],
+      "lessons": [
+        188,
+        155
+      ],
+      "hint": "33 as of agent 2.1.260, not 31. PreModelSwitch and PostModelSwitch were added at 2.1.251 and inserted mid-array between PostCompact and PermissionRequest, so MessageDisplay is the 33rd entry. Any 'all 30' phrasing predates 2.1.219; 'all 31' predates 2.1.251."
+    },
+    {
+      "pattern": [
+        "can I write a hook in javascript",
+        "hook module",
+        "register(on, options)",
+        "function hooks"
+      ],
+      "lessons": [
+        187
+      ],
+      "hint": "There is a second hook-authoring surface behind CLAUDE_CODE_ENABLE_FUNCTION_HOOKS / tengu_plugin_hooks_modules (default off): hooks/register.ts exporting register(on, options), with on(\"<event>\", hook). The event name must be a STRING LITERAL and `on` may only be called — a static analyser refuses it being bound, assigned, spread, returned, or put in an object/array/template."
+    },
+    {
+      "pattern": [
+        "download an old claude binary",
+        "version 404 on the CDN",
+        "which version is stable",
+        "manifest.zst"
+      ],
+      "lessons": [
+        189
+      ],
+      "hint": "Every version serves BOTH manifest.json and manifest.zst.json; the zst channel is the same binary at ~1/3 the size — prefer it. The /stable pointer is a rollout pointer, not 'latest' (it read 2.1.236 while 2.1.261 was published). And not every version is served: 2.1.255 is 404 on both channels, so a version number seen in the wild is not proof the artifact is recoverable."
     }
   ]
 }

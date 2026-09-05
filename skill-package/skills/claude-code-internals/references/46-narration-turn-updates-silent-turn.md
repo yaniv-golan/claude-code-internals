@@ -109,6 +109,14 @@ Prompted by a claim from the `cowork-harness` project and re-derived first-party
 
 # LESSON 176 — THE SILENT-TURN REMINDER
 
+> **CAUSE FOUND (2026-09-05, Ch51/L185).** The 399-stretch zero measured here is real and is now
+> explained, without contradicting any measurement below. The reminder is not gated on the turn count
+> alone: the call site requires `glr(model)`, which resolves through `Fee(...)` → `Qf(...)`, the **same
+> served-capability lookup** L175 identified behind narration, and `silent_turn_reminder` is a member of
+> that capability list. It was never armed for those sessions' models. Three env vars
+> (`CLAUDE_CODE_SILENT_TURN_REMINDER`, `_TEXT`, `_TURNS`) override enablement, wording and threshold,
+> which makes the fire directly probeable. See L185.
+
 **The agent carries one mechanism that actively pushes the model to speak mid-turn — a `silent_turn_reminder` attachment injected after five consecutive silent assistant turns. It shipped at 2.1.237. Across 399 qualifying stretches in this machine's own Cowork and CLI corpora on versions that carry it, it fired zero times.**
 
 ## The mechanism

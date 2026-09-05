@@ -3,7 +3,7 @@ domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.231
 as_of_desktop: 1.46388.4
-sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183]
+sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188]
 updated: 2026-09-05
 ---
 
@@ -199,7 +199,12 @@ ULID-keyed), while a marketplace install mounts as `.local-plugins/cache/<mp>/<p
 **VM-loop** resolution remains **static-derived from the branch** (a live VM-loop run needs a
 locked-down org or the `forceDisableHostLoop` Dev-Menu toggle).
 
-## There are 31 hook events, not 30 (L155)
+## The hook-event array: 31 at CLI 2.1.231, 33 at agent 2.1.260 (L155, L188)
+
+> **Current count: 33.** `PreModelSwitch` and `PostModelSwitch` were added at CLI **2.1.251**
+> (announced) and inserted **mid-array**, between `PostCompact` and `PermissionRequest`, so
+> **`MessageDisplay` is the 33rd entry**, not the 31st. Any "all 30" phrasing predates 2.1.219;
+> any "all 31" phrasing predates 2.1.251.
 
 The master hook-event array carries **31** entries as of CLI **2.1.231**. It was 30
 through v2.1.217; `DirectoryAdded` was inserted (announced 2.1.219) between
@@ -348,6 +353,15 @@ written as JavaScript **function modules** rather than shell commands (`hooks/re
 var wins outright. A reference linter rejects a hook function that is "bound to a name", "assigned",
 "returned", "put in an object", "put in an array", "optionally chained", or "put in a template". The
 Cowork spawn does not set it. Nothing here changes the shell-command hook contract documented above.
+
+**The module contract (L187).** `hooks/register.ts` exporting `export function register(on, options)`;
+registration is `on("<event>", hook)` or `on("<event>", matcher, hook)`. The event name **must be a string
+literal** and must be `"*"` or a recognised event. A static analyser (`ScanRefusal`) permits `on` to be
+**called and nothing else** — binding it to a name, assigning, spreading, returning, putting it in an object
+or array, optional-chaining or interpolating it are all refused, so the hook graph is statically enumerable
+without running the module. Built-ins use `builtin:<name>/hooks/register.ts`, resolved by an esbuild plugin
+that bundles via a spawned subprocess. **Whether a function hook can override a Desktop-injected forced ask
+(see cowork-permissions) is NOT traced** — establish it before enabling this on a Cowork-adjacent surface.
 
 ## `activeSkill` scope & attribution (internal, not in the stream)
 

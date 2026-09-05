@@ -2,11 +2,23 @@
 domain: model-landscape
 title: Model landscape (current)
 as_of_cli: 2.1.231
-sources: [108, 110, 133]
-updated: 2026-08-14
+sources: [108, 110, 133, 186]
+updated: 2026-09-05
 ---
 
 # Model landscape (current)
+
+## Two force overrides sit above the sub-agent model chain (L186)
+
+`CLAUDE_CODE_COORDINATOR_FORCE_WORKER_INHERIT_MODEL` discards the Task tool's `model` parameter in
+`call()` (`B=void 0`, behind a guard whose symbol collides six ways and is unresolved), and
+`CLAUDE_CODE_SUBAGENT_MODEL_FORCE` does the same on the Workflow path with a log line. Both sit **above**
+Ch35/L124's chain and delete its Task-param tier; both mutate the Task tool's own `inputSchema` description
+and the coordinator prompt to say the parameter is ignored. `SUBAGENT_MODEL_FORCE` was **announced at CLI
+2.1.257**, and `CLAUDE_CODE_SUBAGENT_MODEL` precedence changed at **2.1.251**.
+
+**A `model` you pass to Task may be discarded with no error and nothing in the tool result naming it.**
+If which model ran matters, read `resolvedModel` off `toolUseResult`.
 
 One page, current truth. History and correction trail live in the source
 lessons (see frontmatter).

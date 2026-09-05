@@ -2,7 +2,7 @@
 
 ![Claude Code Internals banner](assets/banner.png)
 
-> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 183 lessons covering every internal subsystem, verified against the v2.1.231 binary and six further artifact classes (the Claude Desktop `app.asar`, the Desktop-managed host agent Mach-O, the Cowork in-VM agent ELF, the golden Cowork VM disk image, the live GrowthBook `fcache`, and Desktop's Chromium HTTP cache), searchable three ways.
+> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 189 lessons covering every internal subsystem, verified against the v2.1.231 binary and six further artifact classes (the Claude Desktop `app.asar`, the Desktop-managed host agent Mach-O, the Cowork in-VM agent ELF, the golden Cowork VM disk image, the live GrowthBook `fcache`, and Desktop's Chromium HTTP cache), searchable three ways.
 >
 > **This is a modified fork** of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals). See [Attribution](#attribution) for what changed.
 
@@ -120,7 +120,7 @@ Adds a gentle reminder whenever Claude edits `.claude/` config files. Add to `ho
 
 ## What This Is
 
-This is a Claude Code skill containing a complete reverse-engineering of Claude Code's internal architecture, verified against the v2.1.231 binary. **183 detailed lessons across 50 chapters** cover every major subsystem — from the boot sequence to undocumented features found directly in the binary. See [the full chapter table](#whats-inside) for the lesson-by-lesson breakdown.
+This is a Claude Code skill containing a complete reverse-engineering of Claude Code's internal architecture, verified against the v2.1.231 binary. **189 detailed lessons across 51 chapters** cover every major subsystem — from the boot sequence to undocumented features found directly in the binary. See [the full chapter table](#whats-inside) for the lesson-by-lesson breakdown.
 
 The material falls into four strands:
 
@@ -291,7 +291,7 @@ Returns the per-mount FUSE delete policy: exactly `unlink` and `rmdir` are denie
 ```bash
 node scripts/fetch-lesson.js 32          # Hooks System content
 node scripts/fetch-lesson.js 32 --meta   # Metadata only (file, line range)
-node scripts/fetch-lesson.js --list      # All 183 lessons
+node scripts/fetch-lesson.js --list      # All 189 lessons
 ```
 
 ### xref.js — Shell-Safe Cross-Reference Lookup

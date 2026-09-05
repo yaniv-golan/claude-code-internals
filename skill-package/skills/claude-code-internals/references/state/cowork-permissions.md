@@ -2,9 +2,9 @@
 domain: cowork-permissions
 title: Cowork permission stack (current)
 as_of_cli: 2.1.231
-as_of_desktop: 1.30096.1
-sources: [89, 107, 108, 109, 115, 121, 122, 124, 128, 148, 150]
-updated: 2026-08-14
+as_of_desktop: 1.46388.4
+sources: [89, 107, 108, 109, 115, 121, 122, 124, 128, 148, 150, 184]
+updated: 2026-09-05
 ---
 
 # Cowork permission stack (current)
@@ -55,9 +55,26 @@ lessons (see frontmatter).
      attribution), can inject `additionalContext`, and fires
      `cowork_consolidate_memory_called` for the memory-consolidation skill.
    - **Joined-name matcher forces `permissionDecision:"ask"`** for 9
-     `mcp__cowork__*`/scheduled-task tools, unconditionally — even under
+     `mcp__cowork__*`/scheduled-task tools — even under
      `--allow-dangerously-skip-permissions` — with reason *"This tool
-     requires explicit approval regardless of permission mode."* The set:
+     requires explicit approval regardless of permission mode."*
+     **NO LONGER UNCONDITIONAL IN AUTO MODE (L184, 2026-09-05.)** Before
+     returning that decision the hook makes two gate-conditioned early
+     returns of `{}` (an empty result is not a decision, so the call falls
+     through to the normal pipeline — i.e. the auto-mode classifier):
+     gate **`1447478638`** releases all five scheduled-task tools, gate
+     **`4202409342`** releases `request_cowork_directory` and `save_skill`.
+     Both are **forced ON** in the 2026-09-05 fcache. The shared predicate
+     requires `gateEnabled && !mdmAutoModeDisabled &&
+     session.permissionMode === "auto" && permissionSession.permissionMode
+     === "auto"`; the scheduled-task branch additionally refuses to defer
+     when the session itself carries a `scheduledTaskId`. One carve-out
+     keeps the forced ask: `request_cowork_directory` with **no path** in a
+     bridge / dispatch-child / scheduled / remote-origin / non-desktop-
+     channel session, because the folder picker would open where the user
+     cannot see it. **Net: in auto mode 7 of the 9 skip the forced ask;
+     only `allow_cowork_file_delete` and `launch_code_session` always
+     prompt. Outside auto mode the set below is unchanged.** The set:
      `Abt = [RrA, AQ, l0A, hv]` →
      `mcp__cowork__allow_cowork_file_delete`,
      `mcp__cowork__request_cowork_directory`,

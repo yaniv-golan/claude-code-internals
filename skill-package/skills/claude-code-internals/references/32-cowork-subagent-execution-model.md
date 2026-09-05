@@ -265,6 +265,15 @@ GrowthBook `124685897` does **not** gate the append feature — that was the emu
 
 In-process, **zero per-sub-agent env** (Lesson 122) — identity is context fields, surfaced to hooks as JSON input (`agent_id`, `agent_type`); Bash subprocesses see only the generic `AI_AGENT` marker. `spawnedBySkill: options.spawnedBySkill ?? options.activeSkill` persists unchanged in 2.1.205 (the Ch32/L118 mechanism is intact).
 
+> **EXTENDED (2026-09-05, Ch51/L186).** Two env vars sit ABOVE this entire chain and delete its
+> second tier: `CLAUDE_CODE_COORDINATOR_FORCE_WORKER_INHERIT_MODEL` discards the Task `model`
+> parameter in `call()` (`B=void 0`) behind an unresolved guard, and `CLAUDE_CODE_SUBAGENT_MODEL_FORCE`
+> does the same on the Workflow path with a log line. Both mutate the tool's own schema description and
+> the coordinator prompt to say the parameter is ignored. `SUBAGENT_MODEL_FORCE` was announced at CLI
+> **2.1.257**, and `CLAUDE_CODE_SUBAGENT_MODEL` precedence changed at **2.1.251** — so the chain below
+> was already stale when published against 2.1.205. Read `resolvedModel` off `toolUseResult` rather
+> than assuming a `model` parameter took. See L186.
+
 **Model resolution chain** (`Fae`/`JYu`, host bundle ~10166687–10167214), verbatim precedence: `CLAUDE_CODE_SUBAGENT_MODEL` env (unless `"inherit"`) → Agent-tool `model` param → frontmatter `model:` → inherit main-loop model (default). Built-in **Explore** inherits, except on first-party when the main model is outside the haiku/sonnet/opus families → pinned `"opus"` (`w4e`/`m7c`); teammates use their own resolver (`teammateDefaultModel` setting, default opus48).
 
 **Unrecognized `CLAUDE_CODE_SUBAGENT_MODEL` warns and inherits — it does not fall through to the tool param or frontmatter.** In `Fae`: `if(a&&a!=="inherit"){let p=oi(a);if(!yl(p))return s(a);return p}`, where `s` calls `DJg`: *"Subagent model \"${e}\" is not in the availableModels allowlist; inheriting the parent model instead"* (level warn), returning the inherit resolution `i()`. It is precisely an **availableModels-allowlist** check (`yl`); a failing env value short-circuits straight to inherit. Telemetry: `subagent_model_resolve`/`override_dropped`.

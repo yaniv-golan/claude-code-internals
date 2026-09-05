@@ -91,6 +91,12 @@ The bridge URL is an **OAuth-environment-derived constant** (production / stagin
 
 # LESSON 155 — `DirectoryAdded`, THE 31st HOOK EVENT
 
+> **COUNT MOVED (2026-09-05, Ch51/L188).** 31 is correct **as of CLI 2.1.231** and wrong at agent
+> 2.1.260, where the array carries **33**. `PreModelSwitch` and `PostModelSwitch` were added at 2.1.251
+> (announced) and inserted **mid-array**, between `PostCompact` and `PermissionRequest`, so
+> `MessageDisplay` is now the **33rd** entry. Everything below about `DirectoryAdded` stands; only the
+> ordinal moves. See L188.
+
 **The hook event count moved from 30 to 31 — the first change since Ch21/L94. Every "all 30 hook events" statement in this skill (including `SKILL.md` and `CLAUDE.md`) was correct through v2.1.217 and is now stale.** This is **announced** (changelog: *"Added `DirectoryAdded` hook that fires after `/add-dir` or the SDK `register_repo_root` control request registers a new working directory mid-session"*).
 
 Verbatim master arrays, both versions:
