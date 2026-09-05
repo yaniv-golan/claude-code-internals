@@ -2,9 +2,9 @@
 domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.231
-as_of_desktop: 1.30096.1
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178]
-updated: 2026-08-30
+as_of_desktop: 1.46388.4
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182]
+updated: 2026-09-05
 ---
 
 # Cowork runtime architecture (current)
@@ -495,6 +495,32 @@ it — `archiveSession` deletes just `["uploads","uploads-tmp","doc-export-out"]
 ordinary session end); host files reachable only via `device_request_folder_access` +
 `remoteSessionFolderGrants`, and only while the Desktop app is open. `container_cc_version` (observed
 2.1.204–2.1.216) is a **separate version axis** from the host CLI and the Desktop-managed agent.
+
+### Lane facts re-derived at Desktop 1.46388.4 / agent 2.1.260 (L180)
+
+**The remote lane's environment prompt is server-authored.** Its heading and markers
+(`pw-browsers`) are **0 occurrences** in `app.asar` 1.46388.4, the in-VM ELF 2.1.260 and the
+Desktop-managed Mach-O 2.1.260 alike. Nothing local composes it, so nothing local can be read to
+predict it.
+
+**Desktop constructs one entrypoint literal; the agent knows two.**
+`CLAUDE_CODE_ENTRYPOINT:"local-agent"` is assigned at exactly 2 sites (the Cowork local-agent spawn
+and a one-shot inference helper). The agent's own table maps **both `local-agent` and
+`remote_cowork`** to the display name "Cowork" — `remote_cowork` appears 8× in `.vite/build` for
+recognition only, never construction, because the remote lane's agent is spawned server-side.
+
+**Remote-lane features are inert locally for a transport reason, not an entrypoint check.**
+`cowork_memory_context` (0 in the asar, 26 in the agent) and the `/worker/skill-manifest` fetch both
+route through `host:"ccr-session"`, which throws `"ccr-session host requires --sdk-url"` when that
+flag is absent and otherwise validates the URL against an allowlist. **`--sdk-url` occurs 0 times in
+the entire `app.asar` and 41 times in the agent**, so no Desktop-spawned session can resolve the
+host. This is structural, not a toggle.
+
+**Counting scope is part of every asar claim.** `.vite/build` (main process), `.vite/renderer`, and
+the remainder (`node_modules`, `compile-cache`, and the Agent SDK bundled inside the asar) answer
+differently — `isRemote` is 60 in build and 87 whole-file. 1.46388.3 → 1.46388.4 moves **no** tracked
+identifier (`localAgentMode` 20 → 20, `isRemote` 60 → 60, `remoteSession` 59 → 59, `deviceLink`
+6 → 6, `device_bash` 34 → 34); the real delta is three build chunks and −859 bytes.
 
 ## Mount model and delete policy (L139, L140)
 

@@ -2,9 +2,9 @@
 domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.231
-as_of_desktop: 1.30096.1
-sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155]
-updated: 2026-08-14
+as_of_desktop: 1.46388.4
+sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183]
+updated: 2026-09-05
 ---
 
 # Plugins, skills & hooks (current)
@@ -313,6 +313,41 @@ gets `canSaveSkill=false` unconditionally, regardless of the gate's own
 force-on state. `save_skill`'s own description states its effect
 directly: the skill description "enters the system prompt of every
 future session" — equivalent to writing to `.claude/skills/`.
+
+## Server attribution reaches the agent by a computed env key (L181)
+
+Desktop describes sync-managed skills and remote plugins to the agent through two env vars whose
+names are **computed properties**, so they do not appear beside their values:
+
+```js
+let $e=o.n(Ge); $e&&(K.env={...K.env,[o.t]:$e});   // CLAUDE_CODE_SKILL_ATTRIBUTION
+let J=await Ie;  J&&(K.env={...K.env,[s.t]:J});     // CLAUDE_CODE_PLUGIN_ATTRIBUTION
+```
+
+Set on **both** the Cowork local-agent and the CCD spawn path.
+
+- `CLAUDE_CODE_SKILL_ATTRIBUTION` — `{ <path>: { skill_id, server_plugin_id? } }`, built **only** for
+  `creatorType === "user" && syncManaged !== false` skills with ids matching
+  `skill_(staging_|local_)?…`. Desktop **drops the whole payload past 98,304 bytes**
+  (`[SkillsPlugin] … omitted: N skills exceed its 98304-byte cap`); the agent accepts up to 262,144,
+  so Desktop is the stricter half and a large enough skill set silently loses all attribution.
+- `CLAUDE_CODE_PLUGIN_ATTRIBUTION` — the same for `source === "remote"` plugins, carrying
+  `server_plugin_id`, `marketplace_name`, `installation_preference`.
+
+Agent-side both are **telemetry-only**: parsed into a `path → {skillId, pluginId}` lookup, attached
+to each loaded skill as `serverAttribution`, and read only by a property-bag builder whose call sites
+are all `tengu_*` emits. Their other reader is the child-process env-scrub allowlist, which deletes
+them. Setting either by hand changes telemetry attribution and nothing the model sees.
+
+## Hooks as function modules — `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS` (L183)
+
+A second hook-authoring surface exists in agent 2.1.260 and is **off by default**: plugin hooks
+written as JavaScript **function modules** rather than shell commands (`hooks/register.ts`,
+`builtin-hooks-module:`). Resolution is
+`CLAUDE_CODE_ENABLE_FUNCTION_HOOKS ?? GrowthBook("tengu_plugin_hooks_modules") ?? false` — the env
+var wins outright. A reference linter rejects a hook function that is "bound to a name", "assigned",
+"returned", "put in an object", "put in an array", "optionally chained", or "put in a template". The
+Cowork spawn does not set it. Nothing here changes the shell-command hook contract documented above.
 
 ## `activeSkill` scope & attribution (internal, not in the stream)
 

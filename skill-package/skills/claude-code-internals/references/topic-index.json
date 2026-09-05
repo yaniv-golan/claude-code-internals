@@ -1,7 +1,7 @@
 {
   "generated": "2026-08-13",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 179,
+  "total_lessons": 183,
   "lessons": [
     {
       "id": 1,
@@ -5330,6 +5330,191 @@
         "transcript corpus",
         "session transcript"
       ]
+    },
+    {
+      "id": 180,
+      "title": "Two Cowork Lanes, and the Scope That Decides What a Count Means",
+      "lesson_number": "180",
+      "file": "47-desktop-1.46388-lanes-computed-env-flags.md",
+      "startLine": 18,
+      "endLine": 120,
+      "keywords": [
+        "cowork-two-lanes",
+        "desktop-local-lane",
+        "remote-lane",
+        "only-on-this-computer",
+        "lane-selector",
+        "server-authored-prompt",
+        "pw-browsers",
+        "remote-execution-environment",
+        "opt-pw-browsers",
+        "remote_cowork",
+        "local-agent-entrypoint",
+        "CLAUDE_CODE_ENTRYPOINT",
+        "entrypoint-display-name",
+        "ccr-session",
+        "sdk-url",
+        "--sdk-url",
+        "cowork_memory_context",
+        "cowork_memory_context_gated",
+        "worker-skill-manifest",
+        "transport-host-gate",
+        "structurally-unreachable",
+        "remoteFolderConsentMemory",
+        "remoteSessionFolderGrants",
+        "grantRemoteSessionFolder",
+        "vite-build-scope",
+        "vite-renderer-scope",
+        "asar-three-trees",
+        "counting-scope",
+        "scope-before-version",
+        "1.46388.4",
+        "1.46388.3",
+        "zero-delta-patch",
+        "localAgentMode",
+        "chunk-hash-rotation",
+        "asar scope",
+        "which tree did you count",
+        "is 1.46388.4 a no-op",
+        "4116586025",
+        "yukon_silver",
+        "environment_kind",
+        "lane-selection",
+        "anthropic_cloud",
+        "claude-ai-renderer-lane-choice"
+      ]
+    },
+    {
+      "id": 181,
+      "title": "The Computed-Key Spawn-Env Blind Spot: Five Keys, Three Sites, Two Shapes",
+      "lesson_number": "181",
+      "file": "47-desktop-1.46388-lanes-computed-env-flags.md",
+      "startLine": 121,
+      "endLine": 200,
+      "keywords": [
+        "computed-key-env",
+        "computed-property-env",
+        "spawn-env-blind-spot",
+        "env-literal-scanner",
+        "CLAUDE_CODE_SKILL_ATTRIBUTION",
+        "CLAUDE_CODE_PLUGIN_ATTRIBUTION",
+        "serverAttribution",
+        "CLAUDE_DESKTOP_USER_ZDOTDIR",
+        "CLAUDE_DESKTOP_TERMINAL_NONCE_FILE",
+        "CLAUDE_DESKTOP_TERMINAL_HEADLESS",
+        "SkillsPlugin-cap",
+        "98304-byte-cap",
+        "262144",
+        "creatorType-user",
+        "syncManaged",
+        "backingPluginId",
+        "marketplace_name",
+        "installation_preference",
+        "ccd-spawn-path",
+        "known_marketplaces.json",
+        "osc-133",
+        "terminal-shell-integration",
+        "zdotdir-wrapper",
+        "env-scrubber-allowlist",
+        "telemetry-only-env",
+        "tengu_skill_loaded",
+        "tengu_skill_tool_invocation",
+        "computed key",
+        "why is my env var missing",
+        "env var not in the literal"
+      ]
+    },
+    {
+      "id": 182,
+      "title": "QUESTION_EXTENDED, Two Writer Sites, and Served-and-Off vs Dark",
+      "lesson_number": "182",
+      "file": "47-desktop-1.46388-lanes-computed-env-flags.md",
+      "startLine": 201,
+      "endLine": 263,
+      "keywords": [
+        "CLAUDE_CODE_QUESTION_EXTENDED",
+        "extendedQuestions",
+        "askUserQuestion-extended",
+        "1595132361",
+        "bundled-agent-sdk-in-asar",
+        "sdk-env-delete-branch",
+        "toolConfig-askUserQuestion",
+        "served-and-off",
+        "dark-gate",
+        "gate-absent-from-fcache",
+        "defaultValue-source",
+        "force-source",
+        "fcache-2026-09-05",
+        "2529235968",
+        "plugin-mcp-shadow",
+        "124685897",
+        "1143815894",
+        "2307090146",
+        "1129419822",
+        "96101707",
+        "4200321681",
+        "1447478638",
+        "CLAUDE_CODE_DISABLE_AGENTS_FLEET",
+        "CLAUDE_CODE_DISABLE_AGENT_VIEW",
+        "disableAgentView",
+        "producer-vs-consumer",
+        "key-each-side-does-not-share",
+        "served and off",
+        "is the gate dark",
+        "gate evaluated but off"
+      ]
+    },
+    {
+      "id": 183,
+      "title": "Four Flags Named: ENABLE_FUNCTION_HOOKS, COZY_TEAPOT, WISE_COMET, MODEL_CATALOG",
+      "lesson_number": "183",
+      "file": "47-desktop-1.46388-lanes-computed-env-flags.md",
+      "startLine": 264,
+      "endLine": 351,
+      "keywords": [
+        "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS",
+        "tengu_plugin_hooks_modules",
+        "function-hooks",
+        "hooks-register-ts",
+        "builtin-hooks-module",
+        "hook-reference-linter",
+        "hooks-as-modules",
+        "CLAUDE_CODE_COZY_TEAPOT",
+        "tengu_cozy_teapot",
+        "strict-relaxed",
+        "bashFirstSteer",
+        "CLAUDE_CODE_THRIFTY_SONIC",
+        "tengu_thrifty_sonic",
+        "bashFirst",
+        "CLAUDE_CODE_GORSE_PLOVER",
+        "bashActFirstEnabled",
+        "auto_mode-attachment",
+        "CLAUDE_CODE_WISE_COMET",
+        "tengu_wise_comet",
+        "thinking_stripped",
+        "strip-thinking-tail",
+        "adaptive-thinking-type",
+        "compaction-kept-tail",
+        "CLAUDE_CODE_MODEL_CATALOG",
+        "CLAUDE_CODE_MODEL_CATALOG_URL",
+        "publishedCatalog",
+        "tengu_delegated_quail",
+        "allow_model_catalog",
+        "replayed_version",
+        "catalog_version_rollback",
+        "loopback-or-metadata-host",
+        "catalog-ssrf-guard",
+        "admin-policy-origin",
+        "600-env-flags",
+        "export-table-counting",
+        "CLAUDE_CODE_SUBAGENT_MODEL_FORCE",
+        "CLAUDE_CODE_COORDINATOR_FORCE_WORKER_INHERIT_MODEL",
+        "cozy teapot",
+        "wise comet",
+        "what is COZY_TEAPOT",
+        "what is WISE_COMET",
+        "model catalog"
+      ]
     }
   ],
   "keyword_map": {
@@ -5351,7 +5536,8 @@
     ],
     "2307090146": [
       106,
-      114
+      114,
+      182
     ],
     "boot": [
       1,
@@ -6725,7 +6911,8 @@
       41
     ],
     "ccr-session": [
-      41
+      41,
+      180
     ],
     "polling": [
       41
@@ -10196,7 +10383,8 @@
     ],
     "anthropic_cloud": [
       108,
-      138
+      138,
+      180
     ],
     "claude_code_worker_epoch": [
       108,
@@ -10882,7 +11070,8 @@
       116
     ],
     "CLAUDE_CODE_ENTRYPOINT": [
-      116
+      116,
+      180
     ],
     "sessions-path-signature": [
       116
@@ -11456,7 +11645,8 @@
       129
     ],
     "local-agent-entrypoint": [
-      129
+      129,
+      180
     ],
     "system-init-tools-array": [
       129
@@ -11680,7 +11870,8 @@
       132
     ],
     "1143815894": [
-      132
+      132,
+      182
     ],
     "boot-snapshot-gate": [
       132
@@ -14387,7 +14578,8 @@
     ],
     "remote_cowork": [
       116,
-      138
+      138,
+      180
     ],
     "claude-desktop-entrypoint": [
       116
@@ -15211,7 +15403,8 @@
       138
     ],
     "environment_kind": [
-      138
+      138,
+      180
     ],
     "bridge-environment-kind": [
       138
@@ -15253,10 +15446,12 @@
       138
     ],
     "yukon_silver": [
-      138
+      138,
+      180
     ],
     "4116586025": [
-      138
+      138,
+      180
     ],
     "yukonsilver-capability-probe": [
       138
@@ -18616,6 +18811,411 @@
     ],
     "group tool_use by message id": [
       176
+    ],
+    "cowork-two-lanes": [
+      180
+    ],
+    "desktop-local-lane": [
+      180
+    ],
+    "remote-lane": [
+      180
+    ],
+    "only-on-this-computer": [
+      180
+    ],
+    "lane-selector": [
+      180
+    ],
+    "server-authored-prompt": [
+      180
+    ],
+    "pw-browsers": [
+      180
+    ],
+    "remote-execution-environment": [
+      180
+    ],
+    "opt-pw-browsers": [
+      180
+    ],
+    "entrypoint-display-name": [
+      180
+    ],
+    "sdk-url": [
+      180
+    ],
+    "--sdk-url": [
+      180
+    ],
+    "cowork_memory_context": [
+      180
+    ],
+    "cowork_memory_context_gated": [
+      180
+    ],
+    "worker-skill-manifest": [
+      180
+    ],
+    "transport-host-gate": [
+      180
+    ],
+    "structurally-unreachable": [
+      180
+    ],
+    "remoteFolderConsentMemory": [
+      180
+    ],
+    "remoteSessionFolderGrants": [
+      180
+    ],
+    "grantRemoteSessionFolder": [
+      180
+    ],
+    "vite-build-scope": [
+      180
+    ],
+    "vite-renderer-scope": [
+      180
+    ],
+    "asar-three-trees": [
+      180
+    ],
+    "counting-scope": [
+      180
+    ],
+    "scope-before-version": [
+      180
+    ],
+    "1.46388.4": [
+      180
+    ],
+    "1.46388.3": [
+      180
+    ],
+    "zero-delta-patch": [
+      180
+    ],
+    "localAgentMode": [
+      180
+    ],
+    "chunk-hash-rotation": [
+      180
+    ],
+    "asar scope": [
+      180
+    ],
+    "which tree did you count": [
+      180
+    ],
+    "is 1.46388.4 a no-op": [
+      180
+    ],
+    "computed-key-env": [
+      181
+    ],
+    "computed-property-env": [
+      181
+    ],
+    "spawn-env-blind-spot": [
+      181
+    ],
+    "env-literal-scanner": [
+      181
+    ],
+    "CLAUDE_CODE_SKILL_ATTRIBUTION": [
+      181
+    ],
+    "CLAUDE_CODE_PLUGIN_ATTRIBUTION": [
+      181
+    ],
+    "serverAttribution": [
+      181
+    ],
+    "CLAUDE_DESKTOP_USER_ZDOTDIR": [
+      181
+    ],
+    "CLAUDE_DESKTOP_TERMINAL_NONCE_FILE": [
+      181
+    ],
+    "CLAUDE_DESKTOP_TERMINAL_HEADLESS": [
+      181
+    ],
+    "SkillsPlugin-cap": [
+      181
+    ],
+    "98304-byte-cap": [
+      181
+    ],
+    "262144": [
+      181
+    ],
+    "creatorType-user": [
+      181
+    ],
+    "syncManaged": [
+      181
+    ],
+    "backingPluginId": [
+      181
+    ],
+    "marketplace_name": [
+      181
+    ],
+    "installation_preference": [
+      181
+    ],
+    "ccd-spawn-path": [
+      181
+    ],
+    "known_marketplaces.json": [
+      181
+    ],
+    "osc-133": [
+      181
+    ],
+    "terminal-shell-integration": [
+      181
+    ],
+    "zdotdir-wrapper": [
+      181
+    ],
+    "env-scrubber-allowlist": [
+      181
+    ],
+    "telemetry-only-env": [
+      181
+    ],
+    "tengu_skill_loaded": [
+      181
+    ],
+    "tengu_skill_tool_invocation": [
+      181
+    ],
+    "computed key": [
+      181
+    ],
+    "why is my env var missing": [
+      181
+    ],
+    "env var not in the literal": [
+      181
+    ],
+    "CLAUDE_CODE_QUESTION_EXTENDED": [
+      182
+    ],
+    "extendedQuestions": [
+      182
+    ],
+    "askUserQuestion-extended": [
+      182
+    ],
+    "1595132361": [
+      182
+    ],
+    "bundled-agent-sdk-in-asar": [
+      182
+    ],
+    "sdk-env-delete-branch": [
+      182
+    ],
+    "toolConfig-askUserQuestion": [
+      182
+    ],
+    "served-and-off": [
+      182
+    ],
+    "dark-gate": [
+      182
+    ],
+    "gate-absent-from-fcache": [
+      182
+    ],
+    "defaultValue-source": [
+      182
+    ],
+    "force-source": [
+      182
+    ],
+    "fcache-2026-09-05": [
+      182
+    ],
+    "2529235968": [
+      182
+    ],
+    "plugin-mcp-shadow": [
+      182
+    ],
+    "124685897": [
+      182
+    ],
+    "1129419822": [
+      182
+    ],
+    "96101707": [
+      182
+    ],
+    "4200321681": [
+      182
+    ],
+    "1447478638": [
+      182
+    ],
+    "CLAUDE_CODE_DISABLE_AGENTS_FLEET": [
+      182
+    ],
+    "CLAUDE_CODE_DISABLE_AGENT_VIEW": [
+      182
+    ],
+    "disableAgentView": [
+      182
+    ],
+    "producer-vs-consumer": [
+      182
+    ],
+    "key-each-side-does-not-share": [
+      182
+    ],
+    "served and off": [
+      182
+    ],
+    "is the gate dark": [
+      182
+    ],
+    "gate evaluated but off": [
+      182
+    ],
+    "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS": [
+      183
+    ],
+    "tengu_plugin_hooks_modules": [
+      183
+    ],
+    "function-hooks": [
+      183
+    ],
+    "hooks-register-ts": [
+      183
+    ],
+    "builtin-hooks-module": [
+      183
+    ],
+    "hook-reference-linter": [
+      183
+    ],
+    "hooks-as-modules": [
+      183
+    ],
+    "CLAUDE_CODE_COZY_TEAPOT": [
+      183
+    ],
+    "tengu_cozy_teapot": [
+      183
+    ],
+    "strict-relaxed": [
+      183
+    ],
+    "bashFirstSteer": [
+      183
+    ],
+    "CLAUDE_CODE_THRIFTY_SONIC": [
+      183
+    ],
+    "tengu_thrifty_sonic": [
+      183
+    ],
+    "bashFirst": [
+      183
+    ],
+    "CLAUDE_CODE_GORSE_PLOVER": [
+      183
+    ],
+    "bashActFirstEnabled": [
+      183
+    ],
+    "auto_mode-attachment": [
+      183
+    ],
+    "CLAUDE_CODE_WISE_COMET": [
+      183
+    ],
+    "tengu_wise_comet": [
+      183
+    ],
+    "thinking_stripped": [
+      183
+    ],
+    "strip-thinking-tail": [
+      183
+    ],
+    "adaptive-thinking-type": [
+      183
+    ],
+    "compaction-kept-tail": [
+      183
+    ],
+    "CLAUDE_CODE_MODEL_CATALOG": [
+      183
+    ],
+    "CLAUDE_CODE_MODEL_CATALOG_URL": [
+      183
+    ],
+    "publishedCatalog": [
+      183
+    ],
+    "tengu_delegated_quail": [
+      183
+    ],
+    "allow_model_catalog": [
+      183
+    ],
+    "replayed_version": [
+      183
+    ],
+    "catalog_version_rollback": [
+      183
+    ],
+    "loopback-or-metadata-host": [
+      183
+    ],
+    "catalog-ssrf-guard": [
+      183
+    ],
+    "admin-policy-origin": [
+      183
+    ],
+    "600-env-flags": [
+      183
+    ],
+    "export-table-counting": [
+      183
+    ],
+    "CLAUDE_CODE_SUBAGENT_MODEL_FORCE": [
+      183
+    ],
+    "CLAUDE_CODE_COORDINATOR_FORCE_WORKER_INHERIT_MODEL": [
+      183
+    ],
+    "cozy teapot": [
+      183
+    ],
+    "wise comet": [
+      183
+    ],
+    "what is COZY_TEAPOT": [
+      183
+    ],
+    "what is WISE_COMET": [
+      183
+    ],
+    "model catalog": [
+      183
+    ],
+    "lane-selection": [
+      180
+    ],
+    "claude-ai-renderer-lane-choice": [
+      180
     ]
   }
 }

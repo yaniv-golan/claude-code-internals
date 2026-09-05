@@ -2,15 +2,15 @@
   "schema_version": 1,
   "as_of": {
     "cli": "2.1.231",
-    "desktop_asar": "1.30096.1",
-    "in_vm_elf": "2.1.227",
+    "desktop_asar": "1.46388.4",
+    "in_vm_elf": "2.1.260",
     "fcache_capture": {
-      "content16": "b84a0ad7452188d7",
-      "embedded_timestamp": 1786570872198,
-      "feature_count": 254,
-      "observed_at": "2026-08-14"
+      "content16": "5c4ad148aca13387",
+      "embedded_timestamp": 1788622324310,
+      "feature_count": 322,
+      "observed_at": "2026-09-05"
     },
-    "agent_elf_parity_check": "2.1.229",
+    "agent_elf_parity_check": "2.1.260",
     "container_cc_version_observed": {
       "newest": "2.1.216",
       "range": [
@@ -2220,6 +2220,21 @@
       ]
     },
     {
+      "id": "env.CLAUDE_CODE_COZY_TEAPOT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_COZY_TEAPOT",
+      "status": "dark-launched",
+      "first_seen": "2.1.260",
+      "removed_in": null,
+      "as_of": "2.1.260",
+      "summary": "NOT a boolean: a string enum \"strict\"|\"relaxed\" (default \"strict\"), gate tengu_cozy_teapot. Surfaces as bashFirstSteer on the auto_mode attachment and is emitted ONLY when bash-first is already on (CLAUDE_CODE_THRIFTY_SONIC / tengu_thrifty_sonic, itself cohort-assigned). An unrecognised env value is passed through unvalidated by the ?? chain.",
+      "provenance": [
+        {
+          "lesson": 183
+        }
+      ]
+    },
+    {
       "id": "env.CLAUDE_CODE_DAEMON_COLD_START",
       "kind": "env-var",
       "name": "CLAUDE_CODE_DAEMON_COLD_START",
@@ -2775,6 +2790,21 @@
       ]
     },
     {
+      "id": "env.CLAUDE_CODE_ENABLE_FUNCTION_HOOKS",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS",
+      "status": "dark-launched",
+      "first_seen": "2.1.260",
+      "removed_in": null,
+      "as_of": "2.1.260",
+      "summary": "Enables plugin hooks authored as JavaScript FUNCTION MODULES rather than shell commands (hooks/register.ts, builtin-hooks-module:, plus a reference linter rejecting a hook fn that is bound to a name / assigned / returned / put in an object or array / optionally chained / put in a template). Resolves env ?? GrowthBook tengu_plugin_hooks_modules ?? false; env wins outright. Not set by the Cowork spawn.",
+      "provenance": [
+        {
+          "lesson": 183
+        }
+      ]
+    },
+    {
       "id": "env.CLAUDE_CODE_ENABLE_LAUNCH_COMPOSER",
       "kind": "env-var",
       "name": "CLAUDE_CODE_ENABLE_LAUNCH_COMPOSER",
@@ -3307,6 +3337,36 @@
       ]
     },
     {
+      "id": "env.CLAUDE_CODE_MODEL_CATALOG",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_MODEL_CATALOG",
+      "status": "dark-launched",
+      "first_seen": "2.1.255",
+      "removed_in": null,
+      "as_of": "2.1.260",
+      "summary": "Kill switch for the [publishedCatalog] signed model-catalog subsystem; first rejection in the enable ladder (env_off), ahead of bare / essential_traffic / unix_socket / not_first_party / not_claude_ai_auth / no_org / no_account / policy(allow_model_catalog). Subsystem gate tengu_delegated_quail defaults {mode:\"off\"}.",
+      "provenance": [
+        {
+          "lesson": 183
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_MODEL_CATALOG_URL",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_MODEL_CATALOG_URL",
+      "status": "dark-launched",
+      "first_seen": "2.1.258",
+      "removed_in": null,
+      "as_of": "2.1.260",
+      "summary": "Overrides the published model-catalog source URL. Hard-validated: non-URL (invalid_url), unsupported scheme, and loopback-or-metadata host are each refused with \"published path off\" -- an SSRF guard on a user-controlled value; file: has its own branch. Managed source settings are honoured only from an admin policy origin. Also present in the agent's child-process env-scrub allowlist.",
+      "provenance": [
+        {
+          "lesson": 183
+        }
+      ]
+    },
+    {
       "id": "env.CLAUDE_CODE_NO_MODEL_FALLBACK",
       "kind": "env-var",
       "name": "CLAUDE_CODE_NO_MODEL_FALLBACK",
@@ -3448,6 +3508,21 @@
       ]
     },
     {
+      "id": "env.CLAUDE_CODE_PLUGIN_ATTRIBUTION",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_PLUGIN_ATTRIBUTION",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.260",
+      "summary": "Symmetric counterpart to SKILL_ATTRIBUTION for source==\"remote\" plugins, carrying server_plugin_id / marketplace_name / installation_preference. Same computed-key ([mod.t]) delivery on both spawn paths; telemetry-only agent-side.",
+      "provenance": [
+        {
+          "lesson": 181
+        }
+      ]
+    },
+    {
       "id": "env.CLAUDE_CODE_POST_FOR_SESSION_INGRESS_V2",
       "name": "CLAUDE_CODE_POST_FOR_SESSION_INGRESS_V2",
       "status": "dark-launched",
@@ -3474,6 +3549,21 @@
       "provenance": [
         {
           "lesson": 99
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_QUESTION_EXTENDED",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_QUESTION_EXTENDED",
+      "status": "live",
+      "first_seen": "1.46388.3",
+      "removed_in": null,
+      "as_of": "2.1.260",
+      "summary": "Extended AskUserQuestion mode. Injected into the Cowork spawn env only when Desktop gate 1595132361 is on (served-and-off in the 2026-09-05 fcache). TWO writer sites: the Desktop spawn, and the Agent SDK bundled inside app.asar, whose branch DELETES the key when the caller supplies no env -- Cowork supplies env, so that branch cannot fire on the Cowork path. Agent-side real: 11 occurrences plus 5 of extendedQuestions at 2.1.260.",
+      "provenance": [
+        {
+          "lesson": 182
         }
       ]
     },
@@ -3752,6 +3842,21 @@
       "provenance": [
         {
           "lesson": 86
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SKILL_ATTRIBUTION",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SKILL_ATTRIBUTION",
+      "status": "live",
+      "first_seen": "1.46388.3",
+      "removed_in": null,
+      "as_of": "2.1.260",
+      "summary": "Desktop->agent skill attribution map, JSON {path:{skill_id,server_plugin_id?}} for user-created sync-managed skills only (creatorType==\"user\" && syncManaged!==false). Set via a COMPUTED key ([mod.t]) on both the Cowork local-agent and CCD spawn paths, so ALL-CAPS literal scans of the env object miss it. Desktop omits the payload past a 98304-byte cap with a [SkillsPlugin] warning; the agent accepts up to 262144. Telemetry-only agent-side (serverAttribution -> tengu_* property bags); also in the child-process env-scrub allowlist, which deletes it.",
+      "provenance": [
+        {
+          "lesson": 181
         }
       ]
     },
@@ -4128,6 +4233,21 @@
       "as_of": "2.1.250"
     },
     {
+      "id": "env.CLAUDE_CODE_WISE_COMET",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_WISE_COMET",
+      "status": "dark-launched",
+      "first_seen": "2.1.260",
+      "removed_in": null,
+      "as_of": "2.1.260",
+      "summary": "Strips thinking blocks from the tail compaction preserves, emitting {type:\"thinking_stripped\",scope:\"all\"}. Three-tier: env -> hard false when the thinking type is not \"adaptive\" -> gate tengu_wise_comet (default false). Only the env var can override the non-adaptive hard false.",
+      "provenance": [
+        {
+          "lesson": 183
+        }
+      ]
+    },
+    {
       "id": "env.CLAUDE_CODE_WORKER_EPOCH",
       "kind": "env-var",
       "name": "CLAUDE_CODE_WORKER_EPOCH",
@@ -4266,6 +4386,51 @@
       "provenance": [
         {
           "lesson": 108
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_DESKTOP_TERMINAL_HEADLESS",
+      "kind": "env-var",
+      "name": "CLAUDE_DESKTOP_TERMINAL_HEADLESS",
+      "status": "live",
+      "first_seen": "1.46388.4",
+      "removed_in": null,
+      "as_of": "2.1.260",
+      "summary": "Desktop terminal shell-integration env, computed key ([F]), conditionally spread. Marks a headless terminal launch; the wrapper rc consumes and unsets it. One literal occurrence in the asar.",
+      "provenance": [
+        {
+          "lesson": 181
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_DESKTOP_TERMINAL_NONCE_FILE",
+      "kind": "env-var",
+      "name": "CLAUDE_DESKTOP_TERMINAL_NONCE_FILE",
+      "status": "live",
+      "first_seen": "1.46388.4",
+      "removed_in": null,
+      "as_of": "2.1.260",
+      "summary": "Desktop terminal shell-integration env, computed key ([P]). Names a one-shot file holding the OSC-133 nonce and display name; the wrapper rc reads it, then rm -f's it and unsets the variable. One literal occurrence in the asar.",
+      "provenance": [
+        {
+          "lesson": 181
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_DESKTOP_USER_ZDOTDIR",
+      "kind": "env-var",
+      "name": "CLAUDE_DESKTOP_USER_ZDOTDIR",
+      "status": "live",
+      "first_seen": "1.46388.4",
+      "removed_in": null,
+      "as_of": "2.1.260",
+      "summary": "Desktop terminal shell-integration env, set via a bare-identifier computed key ([N]) in the zsh/bash login-shell env literal. Carries the user's real ZDOTDIR through Desktop's wrapper rc files so the user's own dotfiles run unchanged. Occurs exactly once as a literal in the whole asar (its var definition).",
+      "provenance": [
+        {
+          "lesson": 181
         }
       ]
     },
@@ -4597,6 +4762,21 @@
       ]
     },
     {
+      "id": "env.CLAUDE_STREAM_IDLE_TIMEOUT_MS",
+      "kind": "env-var",
+      "name": "CLAUDE_STREAM_IDLE_TIMEOUT_MS",
+      "status": "live",
+      "first_seen": "1.44121.1",
+      "removed_in": null,
+      "as_of": "2.1.260",
+      "summary": "Stream idle timeout, third-party-provider deployments only and conditional on an admin-set gateway streamIdleTimeoutSec; one construction site in the asar. Introduced Desktop-side at 1.44121.1.",
+      "provenance": [
+        {
+          "lesson": 182
+        }
+      ]
+    },
+    {
       "id": "env.CLAUDE_TRUSTED_DEVICE_TOKEN",
       "kind": "env-var",
       "name": "CLAUDE_TRUSTED_DEVICE_TOKEN",
@@ -4761,7 +4941,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -4783,7 +4963,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -4812,7 +4992,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -4837,7 +5017,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -4858,8 +5038,8 @@
       "observed": {
         "present": true,
         "source": "defaultValue",
-        "on": false,
-        "at": "b84a0ad7452188d7"
+        "on": true,
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -4892,7 +5072,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -4915,7 +5095,29 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
+      }
+    },
+    {
+      "id": "gate.1595132361",
+      "kind": "gate",
+      "name": "1595132361 (CLAUDE_CODE_QUESTION_EXTENDED)",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.260",
+      "summary": "Gates injection of CLAUDE_CODE_QUESTION_EXTENDED:\"1\" into the Cowork local-agent spawn env. Desktop and agent shipped the feature in the same release (1.46388.3 / 2.1.260).",
+      "provenance": [
+        {
+          "lesson": 182
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -4937,7 +5139,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -4962,7 +5164,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -4984,7 +5186,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5006,7 +5208,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5028,7 +5230,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5042,7 +5244,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       },
       "summary": "MCP version-negotiation KILL SWITCH with INVERTED sense. Consumer: `...(u && !un()) ? {versionNegotiation:{mode:'auto',probe:{timeoutMs:500}}} : {}` where un()=t.ld('1942337209'). Because the predicate is !un(), the gate being OFF (its live state) means automatic version negotiation IS ACTIVE; flipping it ON removes it. t.ld is isEnabled, proven in-chunk against 278625510/getSkillSources.",
       "provenance": [
@@ -5072,7 +5274,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5105,7 +5307,7 @@
         "present": true,
         "source": "experiment",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5126,8 +5328,8 @@
       "observed": {
         "present": true,
         "source": "defaultValue",
-        "on": false,
-        "at": "b84a0ad7452188d7"
+        "on": true,
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5149,7 +5351,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5171,7 +5373,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5193,7 +5395,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5215,7 +5417,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5245,7 +5447,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5267,7 +5469,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5289,7 +5491,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5311,7 +5513,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5331,9 +5533,31 @@
       "namespace": "desktop_fcache",
       "observed": {
         "present": true,
+        "source": "force",
+        "on": true,
+        "at": "5c4ad148aca13387"
+      }
+    },
+    {
+      "id": "gate.2529235968",
+      "kind": "gate",
+      "name": "2529235968 (plugin-declared MCP shadow file)",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.260",
+      "summary": "Gates the cowork-plugin-mcp-shadow.json guest file that stubs plugin-declared MCP servers to zero tools (fail-closed). CORRECTION to a lead-source label: this gate is SERVED-and-off in the fcache, not dark -- it is present in the payload and evaluated false by its own defaultValue, so a server-side rule can flip it without a client release.",
+      "provenance": [
+        {
+          "lesson": 182
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5359,7 +5583,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5389,7 +5613,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5411,7 +5635,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5433,7 +5657,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5455,7 +5679,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5489,7 +5713,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5511,7 +5735,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5536,7 +5760,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5562,7 +5786,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5588,7 +5812,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5611,7 +5835,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5631,9 +5855,9 @@
       "namespace": "desktop_fcache",
       "observed": {
         "present": true,
-        "source": "defaultValue",
-        "on": false,
-        "at": "b84a0ad7452188d7"
+        "source": "force",
+        "on": true,
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5655,7 +5879,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5677,7 +5901,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5691,7 +5915,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       },
       "summary": "Declared-but-unconsumed: appears exactly once, in the client-side gate defaults table as {defaultValue:false}, with NO read site anywhere in the asar and NO fcache entry. Not dark-launched (no code behind it yet) -- the switch was declared before its consumer shipped.",
       "provenance": [
@@ -5722,7 +5946,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5744,7 +5968,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       },
       "served_keys": [
         "displayName",
@@ -5771,7 +5995,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5794,7 +6018,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5816,7 +6040,7 @@
         "present": true,
         "source": "force",
         "on": false,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5838,7 +6062,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5860,7 +6084,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5882,7 +6106,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5902,9 +6126,9 @@
       "namespace": "desktop_fcache",
       "observed": {
         "present": true,
-        "source": "defaultValue",
-        "on": false,
-        "at": "b84a0ad7452188d7"
+        "source": "force",
+        "on": true,
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5930,7 +6154,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5956,7 +6180,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -5978,7 +6202,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -6000,7 +6224,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       }
     },
     {
@@ -6014,7 +6238,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b84a0ad7452188d7"
+        "at": "5c4ad148aca13387"
       },
       "summary": "Declared-but-unconsumed, same as 3671534883. Written as an UNQUOTED numeric object key, so a quoted-string-only gate regex misses it entirely.",
       "provenance": [

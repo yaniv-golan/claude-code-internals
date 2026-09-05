@@ -1,5 +1,72 @@
 # Changelog
 
+## v2.48.0 — 2026-09-05 (this fork) — Desktop 1.46388.4: two lanes, a computed-key blind spot, and four flags named
+
+**Chapter 50, lessons 180–183.** First-party against `app.asar` **1.46388.4** (live install, extracted) diffed
+against **1.46388.3**, the in-VM ELF and Desktop-managed host Mach-O **2.1.260**, and a live GrowthBook fcache
+decoded **2026-09-05** (322 features, 176 on / 146 off). Prompted by the `cowork-harness` project's
+`docs/internal/2026-09-05-desktop-internals-since-3.2.0.md`, then re-derived first-party. **Moves the Desktop
+baseline to 1.46388.4; the CLI content baseline stays 2.1.231.**
+
+**Three claims from the lead-source are corrected.**
+
+1. *"`localAgentMode` went 20 → 22, so 1.46388.4 is not a no-op release generally."* — a **scope artifact**.
+   Measured in one scope across both versions, `.vite/build` is 20 at 1.46388.3 **and** 1.46388.4, as are
+   `isRemote` 60, `remoteSession` 59, `deviceLink` 6, `device_bash` 34. The 22 is the whole-asar count. The real
+   delta is three build chunks and **−859 bytes**. An `app.asar` has three trees that answer differently
+   (`isRemote`: 60 build / 5 renderer / 87 whole-file), and the residue includes the Agent SDK bundled inside
+   the asar.
+2. *Gate `2529235968` (plugin-declared-MCP shadow) is "DARK."* — it is **served-and-off**
+   (`{on:false, source:"defaultValue"}`). Dark means *absent from the payload*; in this capture only
+   `1129419822` and `96101707` qualify. A served gate has a rule surface that can flip for a cohort tomorrow; a
+   dark one does not. The lead-source's own §6 draws this distinction and then mislabels its own §5 finding.
+3. *`cowork_memory_context` is "entrypoint-gated to the REMOTE lane."* — the conclusion holds, the mechanism
+   does not. It routes through `host:"ccr-session"`, which throws `"ccr-session host requires --sdk-url"`.
+   **`--sdk-url` occurs 0 times in the entire `app.asar` and 41 times in the agent**, so no Desktop-spawned
+   session can resolve the host at all. Structural, not a toggle.
+
+**L180 — two lanes, and counting scope.** The remote lane's environment prompt is **server-authored**: its
+heading and the `pw-browsers` marker are 0 occurrences in the asar *and* both agent binaries. Desktop
+constructs exactly one entrypoint literal `CLAUDE_CODE_ENTRYPOINT:"local-agent"` (2 sites), while the agent's
+own table maps **both `local-agent` and `remote_cowork`** to the display name "Cowork" — `remote_cowork` is
+recognition-only Desktop-side, because the remote lane's agent is spawned server-side. The "Only on this
+computer" copy and every candidate key are **0 across the whole extracted tree**, including `.vite/renderer`
+and `node_modules` — but this is not an open question: **Ch40/L138 already located lane selection in claude.ai
+renderer code** (the `yukon_silver` statsig family plus capability-probe gate `4116586025`, itself absent from
+this capture), so the exhaustive negative corroborates rather than re-opens.
+
+**L181 — closes the lead-source's open question #3.** The computed-key spawn-env pattern is **systematic, not a
+curiosity**: **5 keys, 7 assignments, 3 sites, 2 shapes**. Shape A (`[mod.t]`) carries
+`CLAUDE_CODE_SKILL_ATTRIBUTION` and `CLAUDE_CODE_PLUGIN_ATTRIBUTION` on **both** the Cowork local-agent spawn
+and the CCD spawn. Shape B — previously unrecorded — uses **bare identifier keys** `[N]`/`[P]`/`[F]` in the
+terminal login-shell env for `CLAUDE_DESKTOP_USER_ZDOTDIR`, `CLAUDE_DESKTOP_TERMINAL_NONCE_FILE` and
+`CLAUDE_DESKTOP_TERMINAL_HEADLESS`, each occurring **exactly once** as a literal in the whole asar. Skill
+attribution describes only `creatorType==="user" && syncManaged!==false` skills and Desktop **drops the whole
+payload past 98,304 bytes** while the agent accepts 262,144. Both keys are telemetry-only agent-side.
+
+**L182 — `QUESTION_EXTENDED`, and served-and-off vs dark.** Two writer sites, the second being the Agent SDK
+bundled inside the asar, whose delete branch cannot fire because Cowork supplies `env`. **Gate-state delta
+since the 2026-08-14 capture:** of 54 pinned `desktop_fcache` gates, **49 unchanged, 5 moved** — `124685897`
+(the sub-agent section-prompt server override) went **off → ON with `source` still `defaultValue`**, i.e. its
+server-side *default* changed with no client release and no payload behind it, which is the live example of
+`change.served-not-shipped`; `2039376689` likewise; `2486083521`, `3424551112` and `4202409342` moved
+`defaultValue → force`. Desktop sends `CLAUDE_CODE_DISABLE_AGENTS_FLEET` to an agent that reads it **0** times.
+
+**L183 — four flags named** from the 600-flag export table. `ENABLE_FUNCTION_HOOKS` = plugin hooks authored as
+**JavaScript function modules** (`tengu_plugin_hooks_modules`, default off, with a reference linter).
+`COZY_TEAPOT` is **not a boolean** — a string enum `"strict"|"relaxed"` carrying auto-mode's `bashFirstSteer`,
+inert unless `THRIFTY_SONIC` bash-first is on. `WISE_COMET` **strips thinking blocks from the
+compaction-preserved tail**, hard-false unless the thinking type is `adaptive`. `MODEL_CATALOG`/`_URL` gate a
+signed, versioned `[publishedCatalog]` with replay and rollback guards and a **loopback-and-metadata-host SSRF
+refusal**, behind `tengu_delegated_quail` (default off). `SUBAGENT_MODEL_FORCE` and
+`COORDINATOR_FORCE_WORKER_INHERIT_MODEL` are explicitly **not traced** this pass and say so.
+
+**State layer.** `registry.as_of.desktop_asar` → 1.46388.4, `in_vm_elf` / `agent_elf_parity_check` → 2.1.260,
+`fcache_capture` → the 2026-09-05 decode, with **all 54 pinned `desktop_fcache` gates re-observed against it**.
+14 new registry entries. `author-facts.json` restamped with a note naming exactly which markers were re-checked
+and which facts were not re-derived. `content16` is defined here as sha256 of the canonicalised `features`
+object, first 16 hex. `state.js --audit` and `validate-state.js` pass clean.
+
 ## v2.47.2 — 2026-08-30 (this fork) — a second cause of Cowork silence, and it is not a choice
 
 Ch49/L176 explained a quiet turn as something the model decides under an instruction. There is a second cause that is not a decision at all.
