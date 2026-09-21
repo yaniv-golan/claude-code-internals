@@ -5118,19 +5118,38 @@
       "lesson_number": "174",
       "file": "45-plugin-bin-path-and-cloud-lane.md",
       "startLine": 127,
-      "endLine": 167,
+      "endLine": 203,
       "keywords": [
         "cloud-lane-env-census",
         "remote-cowork-entrypoint",
-        "container-agent-version-2.1.42",
-        "agent-older-than-installed",
         "orphan-env-vars",
         "claude-code-sync-plugins",
         "synced-plugin-layout",
         "root-user-remote-lane",
         "depth-pinned-by-env",
         "lane-dependent-defaults",
-        "enumerated-not-documented"
+        "enumerated-not-documented",
+        "claude-code-version-is-runner-set",
+        "payload-field-dating",
+        "cloud-agent-floor-2.1.248",
+        "transcript-version-field",
+        "skip-plugin-mcp-servers",
+        "plugin-mcp-inert-on-cloud-lane",
+        "desktop-app-version-env",
+        "cloud-uploads-path",
+        "root-claude-uploads",
+        "stop-hook-payload-fields",
+        "session-start-resume-only",
+        "cloud-lane-cowork-own-hooks",
+        "computer-link-inert-remote",
+        "environment-runner-version",
+        "CLAUDE_CODE_VERSION",
+        "CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS",
+        "CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS_EXCEPT",
+        "CLAUDE_CODE_DESKTOP_APP_VERSION",
+        "CLAUDE_CODE_POST_TURN_MEMORY",
+        "CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION",
+        "CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE"
       ]
     },
     {
@@ -17776,12 +17795,6 @@
     "remote-cowork-entrypoint": [
       174
     ],
-    "container-agent-version-2.1.42": [
-      174
-    ],
-    "agent-older-than-installed": [
-      174
-    ],
     "orphan-env-vars": [
       174
     ],
@@ -19766,6 +19779,69 @@
     ],
     "headless-p-mode-fires": [
       185
+    ],
+    "claude-code-version-is-runner-set": [
+      174
+    ],
+    "payload-field-dating": [
+      174
+    ],
+    "cloud-agent-floor-2.1.248": [
+      174
+    ],
+    "transcript-version-field": [
+      174
+    ],
+    "skip-plugin-mcp-servers": [
+      174
+    ],
+    "plugin-mcp-inert-on-cloud-lane": [
+      174
+    ],
+    "desktop-app-version-env": [
+      174
+    ],
+    "cloud-uploads-path": [
+      174
+    ],
+    "root-claude-uploads": [
+      174
+    ],
+    "stop-hook-payload-fields": [
+      174
+    ],
+    "session-start-resume-only": [
+      174
+    ],
+    "cloud-lane-cowork-own-hooks": [
+      174
+    ],
+    "computer-link-inert-remote": [
+      174
+    ],
+    "environment-runner-version": [
+      174
+    ],
+    "CLAUDE_CODE_VERSION": [
+      174
+    ],
+    "CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS": [
+      174
+    ],
+    "CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS_EXCEPT": [
+      174
+    ],
+    "CLAUDE_CODE_DESKTOP_APP_VERSION": [
+      174
+    ],
+    "CLAUDE_CODE_POST_TURN_MEMORY": [
+      174
+    ],
+    "CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION": [
+      174
+    ],
+    "CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE": [
+      174
     ]
   }
 }

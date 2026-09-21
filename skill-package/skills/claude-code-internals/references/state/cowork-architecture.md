@@ -4,7 +4,7 @@ title: Cowork runtime architecture (current)
 as_of_cli: 2.1.231
 as_of_desktop: 1.46388.4
 sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182]
-updated: 2026-09-05
+updated: 2026-09-22
 ---
 
 # Cowork runtime architecture (current)
@@ -494,7 +494,25 @@ servers cannot cross the boundary; the filesystem **is discarded** at session en
 it — `archiveSession` deletes just `["uploads","uploads-tmp","doc-export-out"]` and does not fire at
 ordinary session end); host files reachable only via `device_request_folder_access` +
 `remoteSessionFolderGrants`, and only while the Desktop app is open. `container_cc_version` (observed
-2.1.204–2.1.216) is a **separate version axis** from the host CLI and the Desktop-managed agent.
+2.1.204–2.1.216 in session API traffic) is a **separate version axis** from the host CLI and the
+Desktop-managed agent — and **`CLAUDE_CODE_VERSION` in the cloud shell/hook env is NOT that axis**:
+it is runner-set (`2.1.42` on both 2026-08-29 and 2026-09-21, across a staging→release runner change),
+never read by the agent (0 read sites in 2.1.275/2.1.278), and the cloud agent is dated **≥ 2.1.248**
+by the hook-payload fields it emits (`scratchpad_dir`, `prompt_cache_likely_expired`, …: 0 through
+2.1.247, present from 2.1.255). Read the real build from the transcript's per-record `"version"`
+field (`transcript_path` is in every hook payload) or `$CLAUDE_CODE_EXECPATH --version` (L174,
+corrected 2026-09-22).
+
+Cloud-lane facts from the 2026-09-21 canary (relayed; semantics verified first-party, L174):
+uploads land at **`/root/.claude/uploads/<session-id>/<8-hex>-<name>`** (`HOME=/root`; the
+`/mnt/user-data/uploads` the lane's own prompt names does not exist; `.claude/uploads` is 0 in every
+agent binary, so it is runner-placed); **plugin `mcpServers` do not start** there
+(`CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS=1`, `…_EXCEPT=documents`); `CLAUDE_CODE_DESKTOP_APP_VERSION` is
+unset and would be ignored under `remote_cowork` anyway (agent reads it only under
+`claude-desktop`/`local-agent`); Cowork ships its own Stop/UserPromptSubmit hooks under
+`/home/claude/.claude/`; every `computer://` link form renders inert and a bare path becomes a
+broken `claude.ai` URL — the presented file card is the only delivery, and it works from
+`/home/claude`, outside `outputs/`.
 
 ### Lane facts re-derived at Desktop 1.46388.4 / agent 2.1.260 (L180)
 

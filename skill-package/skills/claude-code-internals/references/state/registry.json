@@ -1045,7 +1045,7 @@
       "id": "env.CLAUDE_ADDITIONAL_DIRECTORIES",
       "name": "CLAUDE_ADDITIONAL_DIRECTORIES",
       "status": "dark-launched",
-      "summary": "SET in a live cloud (remote_cowork) session but ABSENT from every standalone CLI binary available here -- 0 occurrences in 2.1.233, 2.1.246 and 2.1.250 (positive control: CLAUDE_CODE_ENTRYPOINT returns 86/84/89 on the same instrument). The cloud lane reports CLAUDE_CODE_VERSION=2.1.42, so these are plausibly names a much older agent reads -- but whether they are consumed by that agent, by the environment runner, or by nothing is NOT determinable without a 2.1.42-era binary. Recorded as observed, not explained. (Ch48/L174.)",
+      "summary": "SET in a live cloud (remote_cowork) session but ABSENT from every Anthropic client artifact on this machine -- 0 occurrences in CLI 2.1.233/2.1.246/2.1.250 (L174, positive control CLAUDE_CODE_ENTRYPOINT 86/84/89) and, re-checked 2026-09-22, 0 in Desktop-managed agents 2.1.260/2.1.275, standalone CLI 2.1.278 and app.asar 2.2553.1. CORRECTION (2026-09-22): the entry previously explained this as 'names a much older agent reads' because the cloud lane reports CLAUDE_CODE_VERSION=2.1.42; that variable is runner-set and never read by the agent, and the cloud agent is dated >=2.1.248 by the hook-payload fields it emits, so the old-agent explanation is ruled out. Whatever consumes these is not the agent -- the environment runner is the remaining candidate and is not an artifact we hold. Recorded as observed, not explained. (Ch48/L174.)",
       "provenance": [
         {
           "lesson": 174
@@ -1054,7 +1054,7 @@
       "kind": "env-var",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.250"
+      "as_of": "2.1.278"
     },
     {
       "id": "env.CLAUDE_AFTER_LAST_COMPACT",
@@ -2464,7 +2464,7 @@
       "id": "env.CLAUDE_CODE_DISABLE_BUILTIN_ANTMCP",
       "name": "CLAUDE_CODE_DISABLE_BUILTIN_ANTMCP",
       "status": "dark-launched",
-      "summary": "SET in a live cloud (remote_cowork) session but ABSENT from every standalone CLI binary available here -- 0 occurrences in 2.1.233, 2.1.246 and 2.1.250 (positive control: CLAUDE_CODE_ENTRYPOINT returns 86/84/89 on the same instrument). The cloud lane reports CLAUDE_CODE_VERSION=2.1.42, so these are plausibly names a much older agent reads -- but whether they are consumed by that agent, by the environment runner, or by nothing is NOT determinable without a 2.1.42-era binary. Recorded as observed, not explained. (Ch48/L174.)",
+      "summary": "SET in a live cloud (remote_cowork) session but ABSENT from every Anthropic client artifact on this machine -- 0 occurrences in CLI 2.1.233/2.1.246/2.1.250 (L174, positive control CLAUDE_CODE_ENTRYPOINT 86/84/89) and, re-checked 2026-09-22, 0 in Desktop-managed agents 2.1.260/2.1.275, standalone CLI 2.1.278 and app.asar 2.2553.1. CORRECTION (2026-09-22): the entry previously explained this as 'names a much older agent reads' because the cloud lane reports CLAUDE_CODE_VERSION=2.1.42; that variable is runner-set and never read by the agent, and the cloud agent is dated >=2.1.248 by the hook-payload fields it emits, so the old-agent explanation is ruled out. Whatever consumes these is not the agent -- the environment runner is the remaining candidate and is not an artifact we hold. Recorded as observed, not explained. (Ch48/L174.)",
       "provenance": [
         {
           "lesson": 174
@@ -2473,7 +2473,7 @@
       "kind": "env-var",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.250"
+      "as_of": "2.1.278"
     },
     {
       "id": "env.CLAUDE_CODE_DISABLE_BUNDLED_SKILLS",
@@ -3030,7 +3030,7 @@
     {
       "id": "env.CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION",
       "name": "CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION",
-      "summary": "Cloud lane runner build, observed staging-<sha> -- versioned SEPARATELY from the agent (CLAUDE_CODE_VERSION), so neither implies the other. (Ch48/L174, live cloud session census.)",
+      "summary": "Cloud lane runner build; observed staging-7c398eb231 (2026-08-29) and release-bfe55864c5-ext (2026-09-21). Versioned separately from the agent, and NOT recoverable from CLAUDE_CODE_VERSION, which is runner-set and unread by the agent (see env.CLAUDE_CODE_VERSION). (Ch48/L174.)",
       "provenance": [
         {
           "lesson": 174
@@ -3040,7 +3040,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.250"
+      "as_of": "2.1.278"
     },
     {
       "id": "env.CLAUDE_CODE_EXPERIMENTAL_OBSERVER_AGENTS",
@@ -3631,7 +3631,7 @@
       "id": "env.CLAUDE_CODE_POST_FOR_SESSION_INGRESS_V2",
       "name": "CLAUDE_CODE_POST_FOR_SESSION_INGRESS_V2",
       "status": "dark-launched",
-      "summary": "SET in a live cloud (remote_cowork) session but ABSENT from every standalone CLI binary available here -- 0 occurrences in 2.1.233, 2.1.246 and 2.1.250 (positive control: CLAUDE_CODE_ENTRYPOINT returns 86/84/89 on the same instrument). The cloud lane reports CLAUDE_CODE_VERSION=2.1.42, so these are plausibly names a much older agent reads -- but whether they are consumed by that agent, by the environment runner, or by nothing is NOT determinable without a 2.1.42-era binary. Recorded as observed, not explained. (Ch48/L174.)",
+      "summary": "SET in a live cloud (remote_cowork) session but ABSENT from every Anthropic client artifact on this machine -- 0 occurrences in CLI 2.1.233/2.1.246/2.1.250 (L174, positive control CLAUDE_CODE_ENTRYPOINT 86/84/89) and, re-checked 2026-09-22, 0 in Desktop-managed agents 2.1.260/2.1.275, standalone CLI 2.1.278 and app.asar 2.2553.1. CORRECTION (2026-09-22): the entry previously explained this as 'names a much older agent reads' because the cloud lane reports CLAUDE_CODE_VERSION=2.1.42; that variable is runner-set and never read by the agent, and the cloud agent is dated >=2.1.248 by the hook-payload fields it emits, so the old-agent explanation is ruled out. Whatever consumes these is not the agent -- the environment runner is the remaining candidate and is not an artifact we hold. Recorded as observed, not explained. (Ch48/L174.)",
       "provenance": [
         {
           "lesson": 174
@@ -3640,7 +3640,7 @@
       "kind": "env-var",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.250"
+      "as_of": "2.1.278"
     },
     {
       "id": "env.CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST",
@@ -4367,7 +4367,7 @@
     {
       "id": "env.CLAUDE_CODE_VERSION",
       "name": "CLAUDE_CODE_VERSION",
-      "summary": "Agent version as seen by its own environment. Observed 2.1.42 in a live cloud session against 2.1.250 installed locally -- a concrete figure for Ch33's state.container-agent-range and the reason a current-CLI claim does not automatically describe the cloud lane. (Ch48/L174, live cloud session census.)",
+      "summary": "NOT the agent's version, and NOT read by the agent. CORRECTION (2026-09-22) of the L174 entry that called the cloud lane's CLAUDE_CODE_VERSION=2.1.42 'agent version as seen by its own environment'. First-party in 2.1.275 and 2.1.278: 0 read sites (.CLAUDE_CODE_VERSION / env.CLAUDE_CODE_VERSION), absent from the env-var registry; the single code occurrence is the agent EXPORTING its own build (VERSION:\"2.1.278\") into the policyHelper child's env -- it never sets it in its own process, hook env or shell. The 2.1.42 seen in cloud shells/hooks is runner-set and stayed 2.1.42 across a staging-7c398eb231 -> release-bfe55864c5-ext runner change (2026-08-29 -> 2026-09-21), i.e. a constant of unknown meaning. The cloud agent's real build is >=2.1.248, dated by agent-built payload fields (scratchpad_dir, prompt_cache_likely_expired, seconds_since_last_response, estimated_cache_write_usd: 0 through 2.1.247, present from 2.1.255). Read the real version from the transcript's per-record \"version\" field (transcript_path is in every hook payload) or $CLAUDE_CODE_EXECPATH --version. (Ch48/L174.)",
       "provenance": [
         {
           "lesson": 174
@@ -4377,7 +4377,7 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.250"
+      "as_of": "2.1.278"
     },
     {
       "id": "env.CLAUDE_CODE_WISE_COMET",
@@ -7801,6 +7801,66 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.250"
+    },
+    {
+      "id": "env.CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS",
+      "name": "CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS",
+      "status": "live",
+      "summary": "When set, plugin-declared MCP servers are not discovered: agent 2.1.275 logs 'Skipping plugin MCP server discovery for \"<plugin>\" (CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS is set)'. The Cowork CLOUD lane sets it (=1) together with CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS_EXCEPT=documents (2026-08-29 census and 2026-09-21 canary), so a plugin's mcpServers block is inert there unless the plugin is named documents. Present in every agent on disk back to 2.1.197. (Ch48/L174.)",
+      "provenance": [
+        {
+          "lesson": 174
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.278"
+    },
+    {
+      "id": "env.CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS_EXCEPT",
+      "name": "CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS_EXCEPT",
+      "status": "live",
+      "summary": "Plugin-name allowlist that overrides CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS: agent 2.1.275 logs 'Loading MCP servers for \"<plugin>\" despite CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS (exempted via CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS_EXCEPT)'. The Cowork cloud lane sets it to documents. (Ch48/L174.)",
+      "provenance": [
+        {
+          "lesson": 174
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.278"
+    },
+    {
+      "id": "env.CLAUDE_CODE_DESKTOP_APP_VERSION",
+      "name": "CLAUDE_CODE_DESKTOP_APP_VERSION",
+      "status": "live",
+      "summary": "Desktop-set, local-lane-only. app.asar 2.2553.1 sets CLAUDE_CODE_DESKTOP_APP_VERSION: n.type===\"3p\" ? \"\" : app.getVersion() in the local-agent spawn env (blank for third-party providers). The agent reads it only when CLAUDE_CODE_ENTRYPOINT is claude-desktop or local-agent (t5t(): e===\"claude-desktop\"||e===\"local-agent\" ? a.CLAUDE_CODE_DESKTOP_APP_VERSION : void 0); 3 occurrences in agent 2.1.275, 0 in asar 1.46388.x. The cloud runner leaves it unset and under remote_cowork it would be ignored anyway -- keying 'is this Cowork' on it is wrong on the cloud lane. (Ch48/L174; measured unset in the 2026-09-21 cloud canary.)",
+      "provenance": [
+        {
+          "lesson": 174
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.278"
+    },
+    {
+      "id": "env.CLAUDE_CODE_POST_TURN_MEMORY",
+      "name": "CLAUDE_CODE_POST_TURN_MEMORY",
+      "status": "live",
+      "summary": "First seen in agent 2.1.275 (20 occurrences; 0 in 2.1.260), alongside a CLAUDE_CODE_POST_TURN_MEMORY_CONFIG instruction blob. SET (=1, with the config blob) in the Cowork cloud lane's spawn env on 2026-09-21. Semantics not yet read from a call site -- enumerated, not documented. (Ch48/L174.)",
+      "provenance": [
+        {
+          "lesson": 174
+        }
+      ],
+      "kind": "env-var",
+      "first_seen": "2.1.275",
+      "removed_in": null,
+      "as_of": "2.1.278"
     }
   ]
 }

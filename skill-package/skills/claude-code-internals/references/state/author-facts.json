@@ -1305,7 +1305,7 @@
         "The nudge is present and complete in the shipping agent — it is reachable code, not a stub. What was observed is that it never fired, which points at the per-account switch that enables it rather than at the mechanism. That switch is delivered with the account, so it can turn on without any version changing.",
         "The instruction the model receives is selected per model family, so a session on a different model may be told to narrate in noticeably different terms — including a much terser form. Do not write a skill that depends on the wording of any one of them.",
         "The rule holds even if the nudge is switched on: it only acts after several consecutive silent turns and stops after a few, so it is a floor on the worst case, not a substitute for saying anything useful.",
-        "In the remote lane the backstop is not merely switched off but absent: that lane runs a much older agent than the desktop one — older, on every version observed, than the release that introduced the nudge — so nothing there can interrupt a silent stretch at all."
+        "In the remote lane the agent build is not pinned by anything on your machine, and it moves: every build observed through August 2026 predated the release that added the nudge, and a September 2026 probe dated it at or after a release that carries it. So whether the backstop exists there depends on the day, and whether it fires depends on the same per-account switch as everywhere else. Treat it as absent on that lane too — for a different reason than before: not because the code is missing, but because nothing you can check locally tells you which build you got."
       ],
       "lane": "both"
     }

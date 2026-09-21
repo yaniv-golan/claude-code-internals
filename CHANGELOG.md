@@ -1,5 +1,57 @@
 # Changelog
 
+## v2.49.3 — 2026-09-22 (this fork) — L174's "much older cloud agent" retracted
+
+No new lessons; counts stay 189/51. Ch48/L174 (v2.45.x) read `CLAUDE_CODE_VERSION=2.1.42` in a live cloud session as the
+cloud agent's build and concluded that lane ran an agent roughly two hundred releases behind the installed one. **That
+reading was wrong.** It also contradicted `registry.as_of.container_cc_version_observed` (2.1.204–2.1.216, from API
+traffic) from the day it was written, and nothing compared the two.
+
+**What falsified it.** An in-app canary run in the `founder-skills` project (2026-09-21, one cloud session, relayed)
+logged Stop and SessionStart payloads from the cloud lane. Four of their fields are built by the agent's own code —
+`scratchpad_dir` in the hook-input builder; `seconds_since_last_response`, `prompt_cache_likely_expired`,
+`estimated_cache_write_usd` in the resume path — and, counted first-party across the staged agents on disk:
+
+| field | 2.1.246 | 2.1.247 | 2.1.255 | 2.1.258 | 2.1.260 | 2.1.275 |
+|---|---|---|---|---|---|---|
+| `scratchpad_dir` | 0 | 0 | 2 | 2 | 2 | 8 |
+| `prompt_cache_likely_expired` | 0 | 0 | 3 | 3 | 3 | 3 |
+| `seconds_since_last_response` | 0 | 0 | 5 | 5 | 5 | 5 |
+| `estimated_cache_write_usd` | 0 | 0 | 6 | 6 | 6 | 6 |
+
+The cloud agent that emitted them is **≥ 2.1.248** — contemporary with the Desktop-staged 2.1.275, not seven months
+behind it.
+
+**What `CLAUDE_CODE_VERSION` actually is.** The agent never reads it: 0 read sites in 2.1.275 and 2.1.278, absent
+from the env-var registry. Its one code occurrence is the agent *exporting its own build* into the `policyHelper`
+child's environment. So the value a cloud shell or hook sees is runner-set — and it read `2.1.42` on both
+2026-08-29 (`staging-7c398eb231`) and 2026-09-21 (`release-bfe55864c5-ext`), across a runner change. A constant of
+unknown meaning. The direct read is the transcript's per-record `"version"` field, reachable from any hook via
+`transcript_path`; neither census ran it, and the lesson now says it is the check to add.
+
+**Corrected:** L174's version section rewritten (the retracted claim stays visible as the trap it was); the three
+"orphan" env vars re-checked — still 0 in 2.1.260/2.1.275/2.1.278 and asar 2.2553.1, so "an older agent reads them"
+is ruled out; `env.CLAUDE_CODE_VERSION`, the three orphan entries and `env.CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION`
+rewritten in the registry; the `cowork-architecture` state page; SKILL.md / README rows; and the **site** caveat on
+`delivery.narration-is-yours-to-write`, which told skill authors the remote lane "runs a much older agent … older,
+on every version observed, than the release that introduced the nudge" — true of every build observed through
+August, false by the September probe.
+
+**Added from the same canary (measurements relayed; semantics verified first-party in 2.1.275 / asar 2.2553.1):**
+`CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS=1` + `_EXCEPT=documents` on the cloud lane, with the agent's own skip/exempt
+log strings — **plugin `mcpServers` do not start there**; `CLAUDE_CODE_DESKTOP_APP_VERSION` is Desktop-set
+(`n.type==="3p"?"":app.getVersion()`) and read only under `claude-desktop`/`local-agent`; cloud uploads land at
+`/root/.claude/uploads/<sid>/<8-hex>-<name>` (`.claude/uploads` is 0 in every agent binary — runner-placed);
+`CLAUDE_CODE_POST_TURN_MEMORY` first seen 2.1.275. Registry +4 entries; troubleshooting +3 symptoms.
+
+**Housekeeping.** `cross-references.json` and `troubleshooting.json` were re-serialized at indent=2 in v2.48.0
+against a pinned indent=1, so `check-json-format.js` — and the site-deploy workflow that runs it — had been failing
+since. Restored content-identical at the pinned indent.
+
+**Method.** An environment variable whose *name* says version is not evidence of a version until a read site is
+found. Date an agent by the fields only its own code can emit. And a registry axis that exists to govern a class of
+claims (`container_cc_version_observed`) is worth nothing if a lesson can contradict it without a check firing.
+
 ## v2.49.2 — 2026-09-05 (this fork) — L185's mechanism confirmed by probe
 
 No new lessons; counts stay 189/51. Five headless runs on CLI **2.1.261** over an identical six-file read task:

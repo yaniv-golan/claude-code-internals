@@ -1,4 +1,4 @@
-Updated: 2026-08-29 | Source: **live probes in three lanes** — a standalone CLI session (2.1.250, this machine), a Claude Cowork **local** session (host-loop VM shell, slug `nice-nifty-sagan`), and a Claude Cowork **cloud** session (`CLAUDE_CODE_ENTRYPOINT=remote_cowork`, `CLAUDE_CODE_VERSION=2.1.42`) — cross-read against CLI binaries 2.1.233/2.1.246/2.1.250 and `app.asar` 1.40609.0. Counts taken with `scripts/count-symbol.js` (ASCII + UTF-16LE, refuses a single total when a null-stripped extract disagrees). **Does NOT move the CLI content baseline.** First chapter here built primarily on *live session measurement* rather than artifact reading; static-only claims say so.
+Updated: 2026-09-22 (L174 corrected: the cloud agent is NOT 2.1.42 — see "`CLAUDE_CODE_VERSION` is not the agent's version") | Source: **live probes in three lanes** — a standalone CLI session (2.1.250, this machine), a Claude Cowork **local** session (host-loop VM shell, slug `nice-nifty-sagan`), and a Claude Cowork **cloud** session (`CLAUDE_CODE_ENTRYPOINT=remote_cowork`, `CLAUDE_CODE_VERSION=2.1.42`) — cross-read against CLI binaries 2.1.233/2.1.246/2.1.250 and `app.asar` 1.40609.0. Counts taken with `scripts/count-symbol.js` (ASCII + UTF-16LE, refuses a single total when a null-stripped extract disagrees). **Does NOT move the CLI content baseline.** First chapter here built primarily on *live session measurement* rather than artifact reading; static-only claims say so.
 
 # Chapter 48: The Plugin `bin/` PATH Affordance, and What a Live Cloud Session Shows
 
@@ -138,20 +138,43 @@ The commonly-cited **v2.1.91** origin could not be verified: the CHANGELOG embed
 
 Positive control on the same instrument: `CLAUDE_CODE_ENTRYPOINT` returns 86 / 84 / 89. The zeros are real absences, not a broken search.
 
-They are **set** in a running cloud session. Whether they are read by the cloud agent, by the environment runner, or by nothing, is **not determinable from the artifacts here** — which the next section explains.
+They are **set** in a running cloud session. Whether they are read by the cloud agent, by the environment runner, or by nothing, is **not determinable from the artifacts here**.
 
-## The cloud lane runs a different, much older agent
+Re-checked 2026-09-22 against newer artifacts: still **0** in the Desktop-managed agents 2.1.260 and 2.1.275, the standalone CLI 2.1.278, and `app.asar` 2.2553.1. Since the cloud agent is now dated at ≥ 2.1.248 (next section), "names an older agent reads" is ruled out as the explanation. Whatever consumes them is not any Anthropic client artifact on this machine — the environment runner is the remaining candidate, and it is not an artifact we hold.
+
+## `CLAUDE_CODE_VERSION` is not the agent's version
 
 ```
 CLAUDE_CODE_VERSION=2.1.42
-CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION=staging-7c398eb231
+CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION=staging-7c398eb231     # 2026-08-29 census
+CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION=release-bfe55864c5-ext # 2026-09-21 canary, same 2.1.42
 CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE=cloud_default
 CLAUDE_CODE_CONTAINER_ID=container_…
 ```
 
-Ch33's `state.container-agent-range` says remote sessions run *"a range of agent builds distinct from the installed application"*. This is a **concrete number for it: 2.1.42**, against 2.1.250 installed locally — roughly two hundred releases apart. It also explains the three orphan variables without needing a theory: names a 2.1.42-era agent reads need not exist in a 2.1.250 binary.
+The first version of this lesson read `2.1.42` as the cloud agent's build and concluded the cloud lane ran an agent roughly two hundred releases behind the installed one. **That reading is wrong**, and the same dump that produced it contradicted `registry.as_of.container_cc_version_observed` (2.1.204–2.1.216, from session API traffic) without anything comparing the two. Three independent checks settle it:
 
-**Consequence for this skill:** a claim derived from the current CLI binary does not automatically describe the cloud lane, and a lane-unqualified statement about "Claude Code" can be two hundred releases wrong there.
+**1. The agent never reads the variable.** In 2.1.275 and 2.1.278 there are **0** read sites (`.CLAUDE_CODE_VERSION`, `env.CLAUDE_CODE_VERSION`) and it is absent from the agent's env-var registry. Its single code occurrence is the agent *exporting its own build number* into one child's environment — the `policyHelper` spawn: `env:{...kt(M,h),CLAUDE_CODE_VERSION:{…VERSION:"2.1.278"…}.VERSION}`. It sets the variable for a helper it launches; it does not set it in its own process, in hook environments, or in the shell. So the value a cloud shell or hook sees is **runner-set**, and it stayed `2.1.42` across a `staging-…` → `release-…-ext` runner change three weeks apart — the behaviour of a constant, not of a version pin.
+
+**2. The agent's own hook payloads date it.** A 2026-09-21 in-app canary (the `founder-skills` project's `cowork-canary` plugin, relayed; the field dating below is first-party) logged Stop and SessionStart(`resume`) payloads from the cloud lane. Four of their fields are built agent-side — `scratchpad_dir:GE()?PH(e.id)??void 0:void 0` in the hook-input builder; `seconds_since_last_response` / `prompt_cache_likely_expired` / `estimated_cache_write_usd` computed in the resume path — and none of them exists in any agent through 2.1.247:
+
+| field emitted by the cloud agent | 2.1.246 | 2.1.247 | 2.1.255 | 2.1.258 | 2.1.260 | 2.1.275 |
+|---|---|---|---|---|---|---|
+| `scratchpad_dir` (Stop payload) | 0 | 0 | 2 | 2 | 2 | 8 |
+| `prompt_cache_likely_expired` (SessionStart resume) | 0 | 0 | 3 | 3 | 3 | 3 |
+| `seconds_since_last_response` | 0 | 0 | 5 | 5 | 5 | 5 |
+| `estimated_cache_write_usd` | 0 | 0 | 6 | 6 | 6 | 6 |
+| `CLAUDE_CODE_POST_TURN_MEMORY` (env, runner-set) | 0 | 0 | 0 | 0 | 0 | 20 |
+
+An agent that writes `scratchpad_dir` into a Stop payload is **≥ 2.1.248** (first seen 2.1.255; 2.1.248–2.1.254 not on disk). If the runner sets `CLAUDE_CODE_POST_TURN_MEMORY` because the agent reads it, it is ≥ 2.1.261. Either way the cloud agent on 2026-09-21 was contemporary with the Desktop-staged 2.1.275, not seven months behind it.
+
+**3. The transcript says so directly.** Every record in a Claude Code transcript carries `"version":"2.1.x"` (144/144 records in a local 2.1.278 sample). The cloud lane's transcript is at `transcript_path` in every hook payload (`/root/.claude/projects/-home-claude/<sid>.jsonl`), so `grep -o '"version":"[^"]*"' "$transcript_path" | sort -u` from any hook — or `$CLAUDE_CODE_EXECPATH --version` from the shell — reads the real build. Neither was run in either census; **that is the check to add to the next cloud probe**, and until it runs, the cloud agent's version is a floor, not a number.
+
+**What `2.1.42` labels is unknown.** It is set by the runner, ignored by the agent, and stable across runner builds. It is recorded here as a value, not as a version of anything.
+
+**Consequence, restated.** `state.container-agent-range` still holds — the cloud lane runs a build the local artifacts do not pin — but the gap is *unpinned*, not *large*. A current-CLI claim still does not automatically describe the cloud lane; it is now more likely to than the first version of this lesson said.
+
+**Method trap.** An environment variable whose *name* says "version" is not evidence of a version until a read site is found. Date an agent by the fields it emits (which only its own code can produce), not by what its environment says about it.
 
 ## What the same dump confirms first-party
 
@@ -162,6 +185,19 @@ Four records previously static-only or probe-only, now seen live:
 - **`CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH=1`** — the cloud lane pins nesting to 1 by environment. Ch47/L170 established env → served flag → default 3; here the first rung is taken, confirming the resolution order and showing **the effective depth is lane-dependent**, not a property of the build.
 - **`CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1`** — Ch29/L115's Cowork spawn-env finding, holding in the cloud lane too.
 
+## What the 2026-09-21 canary adds (relayed measurements; semantics verified first-party)
+
+The canary's measurements are the `founder-skills` project's (`docs/internal/2026-09-22-cowork-remote-lane-canary-findings.md`; one session, one account, `release-bfe55864c5-ext` runner). What is verified here against our own artifacts is the *meaning* of what it saw.
+
+- **Plugin MCP servers do not start on the cloud lane.** The spawn env carries `CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS=1` and `CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS_EXCEPT=documents`. Agent 2.1.275 logs `Skipping plugin MCP server discovery for "<plugin>" (CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS is set)` and `Loading MCP servers for "…" despite CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS (exempted via CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS_EXCEPT)`. A plugin's `mcpServers` block is inert there unless the plugin is named `documents`. This is a larger blast radius for plugin authors than anything else in the census.
+- **`CLAUDE_CODE_DESKTOP_APP_VERSION` is a local-lane discriminator, set by Desktop and read under two entrypoints.** `app.asar` 2.2553.1 sets it in the local-agent spawn env — `CLAUDE_CODE_DESKTOP_APP_VERSION: n.type==="3p" ? "" : app.getVersion()` (blank for third-party providers). The agent reads it only when `CLAUDE_CODE_ENTRYPOINT` is `claude-desktop` or `local-agent` (`t5t()`). The cloud runner leaves it unset, and under `remote_cowork` it would be ignored even if set.
+- **Uploads on the cloud lane land at `$HOME/.claude/uploads/<session-id>/<8-hex>-<original name>` with `HOME=/root`** (measured once, mid-session attach). `/mnt/user-data/uploads` — which the lane's own environment text and `CLAUDE_ADDITIONAL_DIRECTORIES` name — did not exist before or after. `.claude/uploads` occurs **0** times in every agent binary on disk, so the directory is runner-placed; the model learns of the file through the message, and a script reads it from that path. A resolver keyed on `/sessions/<id>/mnt/uploads` (local lane) or `/mnt/user-data/uploads` returns nothing here.
+- **Hook payload fields new since the L107/2.1.197 contract**, all present in the cloud payloads: Stop carries `scratchpad_dir`, `prompt_id`, `last_assistant_message`, `background_tasks`, `session_crons`, `stop_hook_active`; SessionStart(`resume`) carries `seconds_since_last_response`, `context_tokens`, `prompt_cache_likely_expired`, `estimated_cache_write_usd`. `scratchpad_dir` is gated agent-side (`GE()`), so its presence is not guaranteed by version alone.
+- **Cowork ships its own hooks on the cloud lane**, under `/home/claude/.claude/`: `stop-hook-reply-gate.py`, `stop-hook-git-check.sh`, `user-prompt-submit-reply-reminder.py`. Ordering against a plugin's Stop hook is untested.
+- **Plugin `SessionStart` fired on `source:"resume"` only** — no `startup` entry, though the same plugin's Stop hook fired minutes earlier. One observation; the canary's inference (plugins are synced after the session starts, `CLAUDE_CODE_SYNC_PLUGINS=1`, so `startup` is missed) is plausible and unverified.
+- **A Stop-hook block shows nothing in the app UI**; the CLI's `stop-hook-error` notification has no counterpart there. The blocked message stays visible with the corrected one beneath it.
+- **Link rendering:** every `computer://` form rendered as plain text; a bare absolute path rendered as `https://claude.ai/home/claude/x.md` and 404'd. The presented file card was the only working delivery — and it worked from `/home/claude`, outside `outputs/`.
+
 ## Honest scope
 
-Forty unrecorded variables were **enumerated, not documented**. Registry entries were added only where meaning is legible from the dump plus a call-site read; the rest are a named backlog rather than summaries this pass would have had to invent. The census is itself the artifact — a full pass needs each call site read in a 2.1.42-era binary that is not on this machine.
+Forty unrecorded variables were **enumerated, not documented**. Registry entries were added only where meaning is legible from the dump plus a call-site read; the rest are a named backlog rather than summaries this pass would have had to invent. The census is itself the artifact — a full pass needs each call site read in the agent build the cloud lane actually runs, which the next probe should read from the transcript's `version` field before anything else.
