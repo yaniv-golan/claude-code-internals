@@ -1,5 +1,35 @@
 # Changelog
 
+## v2.49.6 — 2026-09-22 (this fork) — the site catches up with the remote lane
+
+No new lessons; counts stay 189/51. Author-facts 60 → 64. ccinternals.dev is generated from `author-facts.json` alone,
+so the v2.49.3–v2.49.5 corrections reached it only where a published fact changed — one caveat. A coverage pass
+against the ten pages found the remote sandbox under-described in four places a skill author acts on.
+
+**New facts (all lane: remote).**
+- `paths.uploads-location-differs-by-lane` (measured) — resolve an attached file from the message that announced it,
+  never a fixed uploads directory; the remote copy lands under the home directory's hidden Claude folder, per
+  session, with an eight-hex prefix, and the uploads directory the sandbox's own prompt names does not exist.
+- `detect.remote-sandbox-is-one-context` (measured) — the two-context split and the sealed shell are local-only;
+  remotely the shell sees the markers and shares the file tools' working directory.
+- `plugins.mcp-servers-run-on-the-users-machine` (binary) — ship stdio servers with no user-configuration
+  placeholders; the Desktop app on the user's machine runs them and bridges the tools in, gated by its own approval
+  prompt, only while it is open; URL-declared servers are skipped, so shim them. Caveated: plugin path code-read, the
+  Desktop-config path observed live on 2026-09-18 (`stackchan-mcp-mod`); a server-side switch and org policy govern it.
+- `subagents.no-nesting-in-the-remote-sandbox` (binary) — depth pinned to one level, measured in two cloud sessions.
+
+**Lane-scoped.** `detect.two-contexts` and `detect.naive-env-check-false-negatives` were published unscoped. They
+are true of one sandbox and false of the other; now `lane: local` with a pointer caveat.
+
+**Caveats added.** `delivery.name-the-path-anyway` (state the path as text — a bare path rendered as a dead claude.ai
+link remotely; the file-link scheme rendered inert), `plugins.hooks-do-fire` (session-start fired only on resume in
+one remote run; a blocking stop hook shows the user nothing), `shell.python-stack-is-preinstalled` (the two images
+differ), `shell.runs-as-its-own-user` (root remotely, confirmed live). Router +2 rows.
+
+Two gates fired during authoring, both correctly: a "this page" container reference in a caveat (facts also render on
+the contract page and in `facts.json`), and caveats beginning "Local sandbox only" inflating the lane-badge parity
+count. Reworded, not suppressed.
+
 ## v2.49.5 — 2026-09-22 (this fork) — host MCP servers DO reach the cloud lane; two claims retracted
 
 No new lessons; counts stay 189/51. Two claims were false and both were falsifiable from an asar already on disk:

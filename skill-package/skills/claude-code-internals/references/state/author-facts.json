@@ -371,7 +371,8 @@
         "state_page": "cowork-architecture"
       },
       "caveats": [
-        "Reasoned from the two-sandbox split rather than measured; the cost is one sentence either way."
+        "Reasoned from the two-sandbox split rather than measured; the cost is one sentence either way.",
+        "State the path as plain text, not as a link. In the remote sandbox a bare absolute path in the final message rendered as a link to a claude.ai address that does not exist, and the file-link scheme that works locally rendered as inert text — observed once, relayed from another project's run."
       ]
     },
     {
@@ -515,7 +516,10 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "caveats": []
+      "caveats": [
+        "This applies in the local sandbox only. In the remote sandbox there is one context and the markers are visible from the shell; the rule that says to expect the split only locally covers that case."
+      ],
+      "lane": "local"
     },
     {
       "id": "detect.ordered-recipe",
@@ -550,7 +554,10 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "caveats": []
+      "caveats": [
+        "This applies in the local sandbox only. In the remote sandbox there is one context and the markers are visible from the shell; the rule that says to expect the split only locally covers that case."
+      ],
+      "lane": "local"
     },
     {
       "id": "paths.connected-folders-are-mounts",
@@ -724,7 +731,10 @@
         ],
         "state_page": "plugins-skills-hooks"
       },
-      "caveats": []
+      "caveats": [
+        "In the remote sandbox one instrumented run saw a plugin's session-start hook fire only when the session resumed, not on the first turn, while the same plugin's stop hook fired normally. Do not depend on session-start work having happened before the first turn there.",
+        "A stop hook that blocks shows the user nothing in the app: no notice, no error — the first reply stays visible and the corrected one appears beneath it. If your hook blocks, make the corrected reply self-explanatory."
+      ]
     },
     {
       "id": "plugins.install-through-the-app",
@@ -919,7 +929,8 @@
         "state_page": "cowork-architecture"
       },
       "caveats": [
-        "Read from the shipped guest image; the exact package set is a property of that image and can change with it."
+        "Read from the shipped guest image; the exact package set is a property of that image and can change with it.",
+        "The two sandboxes ship different images. The remote one was seen once with a newer Python plus OCR, PDF-rendering, PDF-parsing and office-conversion tools preinstalled; treat the specific versions as per-sandbox and check at use."
       ]
     },
     {
@@ -941,7 +952,8 @@
       },
       "caveats": [
         "Verified by attempting cross-session reads in the local sandbox, which were refused.",
-        "The two sandboxes differ: per-session user locally, root remotely. Directory listings show scale, not how many sessions are running at once."
+        "The two sandboxes differ: per-session user locally, root remotely. Directory listings show scale, not how many sessions are running at once.",
+        "The remote half — the shell runs as root — was confirmed from inside a live cloud session on 2026-09-21."
       ]
     },
     {
@@ -1308,6 +1320,94 @@
         "In the remote lane the agent build is not pinned by anything on your machine, and it moves: every build observed through August 2026 predated the release that added the nudge, and a September 2026 probe dated it at or after a release that carries it. So whether the backstop exists there depends on the day, and whether it fires depends on the same per-account switch as everywhere else. Treat it as absent on that lane too — for a different reason than before: not because the code is missing, but because nothing you can check locally tells you which build you got."
       ],
       "lane": "both"
+    },
+    {
+      "caveats": [
+        "One remote session, one account, one mid-session attach, relayed from another project's instrumented run and its logs. Whether a file attached before the first turn lands in the same place was not tested.",
+        "The hidden-folder path is what a shell command can read; it is not a location your skill should write to or present from."
+      ],
+      "volatile_dependency": false,
+      "durability": "durable",
+      "id": "paths.uploads-location-differs-by-lane",
+      "page": "files-and-paths",
+      "rule": "Find an uploaded file from the message that announced it, never from a fixed uploads directory.",
+      "detail": "Where an attached file lands depends on the sandbox. In the local sandbox uploads are a read-only mount beside the outputs location. In the remote sandbox a file attached mid-session landed under the home directory's hidden Claude folder, in a per-session subdirectory, with an eight-character hex prefix on its original name — and the uploads directory that sandbox's own environment text names did not exist before or after the attach. The model is told about the attachment through the conversation, so the announcing message is the one source that is right in both sandboxes. A resolver keyed on either fixed path returns nothing in the other sandbox, and the skill then proceeds as if nothing was attached — the failure with the largest blast radius for any skill that hands documents to scripts or sub-agents.",
+      "tier": "measured",
+      "severity": "silent",
+      "lane": "remote",
+      "sources": {
+        "lessons": [
+          174,
+          140
+        ],
+        "state_page": "cowork-architecture"
+      }
+    },
+    {
+      "caveats": [
+        "One remote session, one account, relayed from another project's instrumented run. The local-sandbox half of this rule is the long-measured one."
+      ],
+      "volatile_dependency": false,
+      "durability": "durable",
+      "id": "detect.remote-sandbox-is-one-context",
+      "page": "detecting-cowork",
+      "rule": "Expect the two-context split, and the missing shell markers, only in the local sandbox.",
+      "detail": "In the remote sandbox the shell and the file tools share one filesystem and one working directory, and the runtime markers are visible from the shell — the opposite of the local sandbox, where the shell is sealed. The ordered recipe still terminates correctly, but its early branches answer differently per sandbox: a skill that reads 'the markers are absent from the shell' as a universal fact, and treats their presence as proof it is not in Cowork, concludes wrongly in exactly the sandbox new sessions may default to. The remote sandbox does set its own distinct entry-point marker, but that value is served and has changed before; treat it as one check in the sequence, not the answer.",
+      "tier": "measured",
+      "severity": "silent",
+      "lane": "remote",
+      "sources": {
+        "lessons": [
+          174,
+          116
+        ],
+        "state_page": "cowork-architecture"
+      }
+    },
+    {
+      "caveats": [
+        "The plugin-server path is read from the shipped application and has not been exercised live. The same bridge's path for servers in the Desktop app's own configuration was observed live — a LAN-only device driven from a cloud session on 2026-09-18 through a stdio shim, in another project's run.",
+        "The plugin half sits behind a server-side switch that was on at the last capture, and behind organisation policy that can disable local MCP bridging entirely or restrict it to an allowlist. Either can turn it off with no version change.",
+        "In the local sandbox plugin MCP servers are started differently and this rule's constraints were not measured there."
+      ],
+      "volatile_dependency": false,
+      "durability": "durable",
+      "id": "plugins.mcp-servers-run-on-the-users-machine",
+      "page": "plugins-and-plugin-root",
+      "rule": "If your plugin ships an MCP server, make it a stdio command with no user-configuration placeholders, and expect it to run on the user's machine rather than in the sandbox.",
+      "detail": "In the remote sandbox the session itself does not start plugin MCP servers. The Claude Desktop app on the user's machine starts them — the same bridge it uses for servers in its own MCP configuration — and announces their tools into the session, so every call travels back to the user's machine and is gated by the Desktop app's own tool-approval prompt, not by anything in your skill or your plugin's permission rules. Only a stdio command qualifies: a server declared by URL is skipped, so an HTTP-only endpoint needs a stdio-to-HTTP shim (the `mcp-remote` package is the one observed working); a server whose configuration references plugin user-configuration placeholders is skipped; and one bundled Anthropic plugin is excluded from the bridge and served from inside the sandbox instead. The Desktop app must stay open for the whole session — close it and the tools vanish mid-conversation — and after a server outage the bridge's own reconnect decides when they come back, measured once at seventeen minutes.",
+      "tier": "binary",
+      "severity": "silent",
+      "lane": "remote",
+      "sources": {
+        "lessons": [
+          174,
+          138,
+          126
+        ],
+        "state_page": "cowork-architecture"
+      }
+    },
+    {
+      "caveats": [
+        "The pinned value was measured in the environment; the refusal behaviour at that depth is read from the shipped agent, not exercised in the remote sandbox."
+      ],
+      "volatile_dependency": false,
+      "durability": "durable",
+      "id": "subagents.no-nesting-in-the-remote-sandbox",
+      "page": "sub-agents",
+      "rule": "Do not design a sub-agent that itself dispatches sub-agents.",
+      "detail": "In the remote sandbox the nesting depth is pinned to one level by the session's environment — observed in two independent cloud sessions three weeks apart — so a sub-agent's attempt to dispatch another is refused with an instruction to do the work itself. The local sandbox's default is higher and is served, so it can move. A skill whose sub-agents fan out a second level works in one sandbox and silently flattens in the other.",
+      "tier": "binary",
+      "severity": "silent",
+      "lane": "remote",
+      "sources": {
+        "lessons": [
+          174,
+          170
+        ],
+        "state_page": "cowork-architecture"
+      }
     }
   ],
   "router": [
@@ -1373,6 +1473,20 @@
       "symptom": "A long run goes silent and the user asks what is happening",
       "why": "Nothing in the runtime narrates, and the one nudge meant to break a silent stretch was never observed firing.",
       "fix": "Write the progress messages into the skill, at the steps that matter."
+    },
+    {
+      "page": "files-and-paths",
+      "fact": "paths.uploads-location-differs-by-lane",
+      "symptom": "Your skill says nothing was attached, but the user attached a file",
+      "why": "It looked in a fixed uploads directory; the file is somewhere else in this sandbox.",
+      "fix": "Resolve the path from the message that announced the attachment."
+    },
+    {
+      "page": "plugins-and-plugin-root",
+      "fact": "plugins.mcp-servers-run-on-the-users-machine",
+      "symptom": "Your plugin's MCP tools are missing in a cloud session",
+      "why": "The sandbox does not start them; the Desktop app on the user's machine does, and only for stdio servers while it is open.",
+      "fix": "Ship a stdio command (shim an HTTP endpoint), drop user-configuration placeholders, and tell users to keep Desktop open."
     }
   ],
   "top5": [
