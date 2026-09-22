@@ -544,6 +544,37 @@ differently — `isRemote` is 60 in build and 87 whole-file. 1.46388.3 → 1.463
 identifier (`localAgentMode` 20 → 20, `isRemote` 60 → 60, `remoteSession` 59 → 59, `deviceLink`
 6 → 6, `device_bash` 34 → 34); the real delta is three build chunks and −859 bytes.
 
+## A THIRD surface Desktop calls "cloud" — the claude.ai code-execution container (relayed, 2026-09-22)
+
+A Desktop "cloud session" served, on 2026-09-22, a runtime that is **not Claude Code at all**, one day
+after the same Desktop gave the `remote_cowork` lane. Measured in-session by the `founder-skills`
+project (relayed; the artifact half is first-party below):
+
+| | Cowork remote lane | this third surface |
+|---|---|---|
+| `CLAUDE_CODE_ENTRYPOINT` / `_REMOTE` / `_VERSION` | `remote_cowork` / `true` / `2.1.42` | **all empty** |
+| cwd | `/home/claude` | `/` |
+| outputs | `/mnt/user-data/outputs` → `/mnt/attach/outputs` (symlink) | `/mnt/user-data/outputs` |
+| skills | plugin at `/root/.claude/plugins/synced/<org>_<acct>/` | **flat, read-only, `/mnt/skills/plugins/<plugin>:<skill>/`, ~150 of them** — every account-enabled skill, no plugin root |
+| transcript | `/root/.claude/projects/-home-claude/<sid>.jsonl` | no `/root/.claude` |
+| sub-agents | depth pinned to 1 | **no `Task` dispatch at all** |
+
+**First-party check (CLI 2.1.278, Desktop-managed agent 2.1.275, `app.asar` 2.2553.1):** `/mnt/skills`
+and `/mnt/attach` are **0 in all three**; positive control `/mnt/user-data` 5/5/3 and
+`CLAUDE_CODE_ENTRYPOINT` 91/93/16. So the flat skills mount is not a Claude Code concept — consistent
+with a different runtime rather than a Cowork variant.
+
+**`/mnt/user-data` is NOT a discriminator.** The CLI hardcodes it: `UKr="/mnt/user-data/uploads"` is
+the stage-file root (overridable by `CLAUDE_STAGE_FILE_ROOT`) and `/mnt/user-data/working` is the
+directory-sync root. The outputs directory therefore has the same name on both surfaces. The only
+reliable signal is **the absence of the plugin**: `${SCRIPTS%/skills/*}` yields the shared mount root,
+and the plugin's `scripts/`, `agents/` and `plugin.json` hooks do not exist.
+
+**Why it matters:** a skill whose checks live in its plugin runs anyway and degrades *silently* — the
+observed case hand-wrote every sub-agent hand-off, graded its own checklist, dispatched no adversary,
+ran no gates, and shipped a report indistinguishable from a checked one. Published as the site rules
+`detect.plugin-may-be-absent` and `change.refuse-rather-than-degrade`.
+
 ## Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
 
 `buildLocalMcpBridgeTools` (`[localMcpBridge]`) announces host-side stdio MCP servers into a

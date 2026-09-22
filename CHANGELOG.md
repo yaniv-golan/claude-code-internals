@@ -1,5 +1,34 @@
 # Changelog
 
+## v2.49.7 — 2026-09-22 (this fork) — a third surface Desktop calls "cloud"
+
+No new lessons; counts stay 189/51. Author-facts 64 → 66. Reported by the `founder-skills` project: a Desktop
+"cloud session" served a runtime that is **not Claude Code**, one day after the same Desktop gave the
+`remote_cowork` lane. In-session: `CLAUDE_CODE_ENTRYPOINT` / `_REMOTE` / `_VERSION` all empty, cwd `/`, no
+`/root/.claude`, outputs at `/mnt/user-data/outputs`, every account-enabled skill mounted flat and read-only at
+`/mnt/skills/plugins/<plugin>:<skill>/` (~150 of them, not one plugin's), no `Task` dispatch.
+
+**First-party half.** `/mnt/skills` and `/mnt/attach` are **0** in CLI 2.1.278, the Desktop-managed agent 2.1.275
+and `app.asar` 2.2553.1 (positive control: `/mnt/user-data` 5/5/3, `CLAUDE_CODE_ENTRYPOINT` 91/93/16). The flat
+skills mount is not a Claude Code concept, which is consistent with a different runtime rather than a Cowork variant.
+
+**A refinement the report did not make.** `/mnt/user-data` cannot tell the surfaces apart: the CLI hardcodes
+`"/mnt/user-data/uploads"` as its stage-file root (overridable by `CLAUDE_STAGE_FILE_ROOT`) and
+`/mnt/user-data/working` as the directory-sync root, so the outputs directory has the same name on both. The only
+reliable signal is the **absence of the plugin** — `${SCRIPTS%/skills/*}` yields the shared mount root, and the
+plugin's `scripts/`, `agents/` and hooks are simply not there.
+
+**Published.** `detect.plugin-may-be-absent` (measured) — check your own plugin's files are reachable before doing
+any work, and stop if they are not; includes the naming trap, since the user-facing word for this surface is the
+same one a Cowork sandbox uses and the outputs directory name matches. `change.refuse-rather-than-degrade`
+(inference) — when the missing capability is one that *checks* your work, refuse rather than continue: a
+self-graded, self-reviewed result is indistinguishable from a checked one. `detect.ordered-recipe` gains a caveat
+that its "neither" answer is a real third case. The `cowork-architecture` state page gains the comparison table.
+
+The costed case behind the second rule — a review skill that hand-wrote every sub-agent hand-off, graded its own
+checklist, dispatched no adversary and shipped a report indistinguishable from a verified one, with one sentence
+carrying the wrong reason — is relayed, not reproduced here.
+
 ## v2.49.6 — 2026-09-22 (this fork) — the site catches up with the remote lane
 
 No new lessons; counts stay 189/51. Author-facts 60 → 64. ccinternals.dev is generated from `author-facts.json` alone,

@@ -536,7 +536,9 @@
         ],
         "state_page": "cowork-architecture"
       },
-      "caveats": []
+      "caveats": [
+        "The recipe can end with neither answer. Treat that as a real third case — a surface that may be running your skill without your plugin — and check for your own files rather than assuming the CLI."
+      ]
     },
     {
       "id": "detect.two-contexts",
@@ -1408,6 +1410,47 @@
         ],
         "state_page": "cowork-architecture"
       }
+    },
+    {
+      "id": "detect.plugin-may-be-absent",
+      "page": "detecting-cowork",
+      "rule": "Check that your own plugin's files are reachable before doing any work, and stop if they are not.",
+      "detail": "The ordered recipe can return neither Cowork nor the CLI, and that third answer is not a curiosity — there is at least one surface that runs your skill's text without your plugin around it. Its fingerprint is cheap: every skill the account has enabled is mounted flat and read-only in one shared directory, side by side, each named for its plugin and skill together, so trimming the skills segment off your own directory gives you that shared mount rather than a plugin root. Your plugin's scripts, agents and hooks are simply not there, and sub-agent dispatch is unavailable. One line at the top of your skill — test for a file you ship and cannot work without — separates this from every supported runtime, and it is the only check that works, because a skill's shell cannot see the tool list. The trap is naming: the word a user sees when they start this surface is the same word one of Cowork's sandboxes uses, so the person who launched it cannot tell you which one you are in, and the directory your outputs go to has the same name in both.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          174,
+          116
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": [
+        "Observed in one session on 2026-09-22, relayed from another project's run; the specific mount layout is a detail that can change, so test for your own file rather than for that layout.",
+        "Do not use the outputs directory name to tell surfaces apart. The same name is a built-in constant of the remote sandbox too — confirmed in the shipped application — so it identifies nothing. The absence of your plugin is the signal."
+      ]
+    },
+    {
+      "id": "change.refuse-rather-than-degrade",
+      "page": "what-can-change-under-you",
+      "rule": "When the capability that is missing is one that CHECKS your work, stop and say so rather than continuing without it.",
+      "detail": "A fallback is the right answer when a missing capability costs you convenience. It is the wrong answer when the missing capability is a gate, a second opinion, or a verification step, because what you ship then is a self-graded, self-reviewed result that looks exactly like a checked one — same structure, same confident summary, same score — and neither the user nor a later reader can tell the difference. This is not hypothetical: a review skill run on a surface without its own plugin hand-wrote every hand-off it would normally have delegated, scored its own checklist, ran no adversarial pass and no gates, and produced a report indistinguishable from a verified one, with a single sentence carrying the wrong explanation and nothing else signalling. If you cannot run your checks, refusing costs the user one run; degrading costs them their trust in every run you did check. Where you do continue, name in the output exactly which check did not happen and why, and never let a skipped step be recorded with a value that implies it could be retried here.",
+      "tier": "inference",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          174,
+          116
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": [
+        "The reasoning is general; the case behind it is one run of one skill on one surface, relayed from another project."
+      ]
     }
   ],
   "router": [
@@ -1487,6 +1530,13 @@
       "symptom": "Your plugin's MCP tools are missing in a cloud session",
       "why": "The sandbox does not start them; the Desktop app on the user's machine does, and only for stdio servers while it is open.",
       "fix": "Ship a stdio command (shim an HTTP endpoint), drop user-configuration placeholders, and tell users to keep Desktop open."
+    },
+    {
+      "page": "detecting-cowork",
+      "fact": "detect.plugin-may-be-absent",
+      "symptom": "Your skill ran, but none of its scripts or sub-agents did",
+      "why": "A surface can serve your skill's text without your plugin around it, and nothing announces that.",
+      "fix": "Test for a file you ship and cannot work without, and stop when it is missing."
     }
   ],
   "top5": [
