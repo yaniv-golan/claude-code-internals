@@ -575,6 +575,89 @@ function validateGate(entry, label, fc) {
 }
 
 /** Validate the state layer under refsDir. Returns an array of error strings. */
+// --- container agent version axis --------------------------------------------
+// registry.as_of.container_cc_version_observed exists to govern remote-lane
+// version claims, and for three weeks a lesson contradicted it (L174 read the
+// cloud lane's runner-set CLAUDE_CODE_VERSION=2.1.42 as the agent's build; the
+// axis said 2.1.204–2.1.216) with nothing comparing the two. This is the
+// comparison. Any sentence that asserts a cloud/remote AGENT build below the
+// lowest version ever observed on that axis is an error, unless the sentence
+// itself is a negation or a retraction (the corrected L174 text must pass).
+// Scanned: registry summaries, author-facts rule/detail/caveats, state-page
+// bodies. It is a prose heuristic, so it is deliberately narrow: it catches the
+// failure that happened, not every possible one.
+// Bare "not" is NOT a retraction marker: the v2.49.2 sentences this check exists
+// for ("does not automatically describe the cloud lane", "NOT determinable
+// without a 2.1.42-era binary") both contained it while asserting the wrong
+// build. Only words that mark the sentence itself as a retraction or as
+// describing the variable rather than the agent exempt it.
+const CC_NEGATION = /\b(runner-set|retract\w*|correct\w*|falsif\w*|wrong|is not the agent|not the agent'?s)\b/i;
+function versionKey(v) {
+  const m = /^(\d+)\.(\d+)\.(\d+)$/.exec(String(v).trim());
+  return m ? (+m[1]) * 1e8 + (+m[2]) * 1e4 + (+m[3]) : null;
+}
+function scanContainerAgentVersion(text, label, minKey, minVersion) {
+  const errors = [];
+  for (const raw of String(text).split(/(?<=[.!?])\s+|\n+/)) {
+    const sentence = raw.trim();
+    if (!sentence) continue;
+    if (!/\b(cloud|remote)\b/i.test(sentence) || !/\bagent\b/i.test(sentence)) continue;
+    if (CC_NEGATION.test(sentence)) continue;
+    for (const m of sentence.matchAll(/\b(\d+\.\d+\.\d+)\b/g)) {
+      const k = versionKey(m[1]);
+      // The version must sit next to the word "agent" (or the variable that was
+      // misread as the agent's version) — not merely share a sentence with it —
+      // and must not be an "as of X" stamp, which dates the claim, not the agent.
+      const before = sentence.slice(Math.max(0, m.index - 120), m.index);
+      const after = sentence.slice(m.index + m[0].length, m.index + m[0].length + 120);
+      if (/\bas of\s*$/i.test(before)) continue;
+      if (!/\bagent\b|CLAUDE_CODE_VERSION/i.test(before + ' ' + after)) continue;
+      if (k !== null && k < minKey) {
+        errors.push(`${label}: asserts a cloud/remote agent build ${m[1]}, below the lowest version ever observed on as_of.container_cc_version_observed (${minVersion}) — "${sentence.slice(0, 120)}"`);
+        break;
+      }
+    }
+  }
+  return errors;
+}
+function validateContainerAgentVersionClaims(stateDir, registry, pageFiles) {
+  const errors = [];
+  const cc = registry && registry.as_of && registry.as_of.container_cc_version_observed;
+  if (!cc || !Array.isArray(cc.range)) return errors;
+  const keys = cc.range.map(versionKey).filter(k => k !== null);
+  if (keys.length === 0) return errors;
+  const minKey = Math.min(...keys);
+  const minVersion = cc.range[keys.indexOf(minKey)];
+  if (cc.floor !== undefined) {
+    // An optional typed floor for a bound established by some other method (e.g.
+    // dating the agent by payload fields only its own code emits). Kept separate
+    // from range because range is "seen in API traffic" and mixing provenances is
+    // how a correct number acquires a wrong story.
+    if (typeof cc.floor !== 'object' || cc.floor === null || versionKey(cc.floor.version) === null
+        || typeof cc.floor.method !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(String(cc.floor.observed_at))) {
+      errors.push('registry.json: as_of.container_cc_version_observed.floor must be {version, observed_at: YYYY-MM-DD, method}');
+    }
+  }
+  for (const entry of Array.isArray(registry.entries) ? registry.entries : []) {
+    errors.push(...scanContainerAgentVersion(entry.summary || '', entry.id || '?', minKey, minVersion));
+  }
+  const af = path.join(stateDir, 'author-facts.json');
+  if (fs.existsSync(af)) {
+    try {
+      const facts = JSON.parse(fs.readFileSync(af, 'utf8')).facts || [];
+      for (const f of facts) {
+        const text = [f.rule, f.detail, ...(Array.isArray(f.caveats) ? f.caveats : [])].join(' ');
+        errors.push(...scanContainerAgentVersion(text, `author-facts.json: ${f.id}`, minKey, minVersion));
+      }
+    } catch (e) { /* malformed author-facts is reported elsewhere */ }
+  }
+  for (const file of pageFiles) {
+    const text = fs.readFileSync(path.join(stateDir, file), 'utf8');
+    errors.push(...scanContainerAgentVersion(text, file, minKey, minVersion));
+  }
+  return errors;
+}
+
 function validate(refsDir) {
   const errors = [];
   const stateDir = path.join(refsDir, 'state');
@@ -733,6 +816,9 @@ function validate(refsDir) {
     }
   }
 
+  // --- cloud/remote agent version claims vs the container axis ---
+  if (registry) errors.push(...validateContainerAgentVersionClaims(stateDir, registry, pageFiles));
+
   return errors;
 }
 
@@ -741,7 +827,7 @@ module.exports = {
   // shared with site/generator/lint-disclosure.js so PR-time and build-time
   // enforcement can never drift apart
   scanForDisclosure, DISCLOSURE_RULES, DISCLOSURE_ALLOWLIST, DISCLOSURE_NEVER,
-  validateAuthorFacts,
+  validateAuthorFacts, validateContainerAgentVersionClaims, scanContainerAgentVersion,
 };
 
 if (require.main === module) {

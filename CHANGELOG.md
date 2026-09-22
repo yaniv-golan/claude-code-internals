@@ -1,5 +1,30 @@
 # Changelog
 
+## v2.49.4 — 2026-09-22 (this fork) — the container-version axis now checks the prose
+
+No new lessons; counts stay 189/51. v2.49.3 retracted a claim that had contradicted
+`registry.as_of.container_cc_version_observed` for three weeks with nothing comparing the two. This makes the
+comparison mechanical.
+
+**The check.** `validate-state.js` fails any sentence in a registry summary, an author-fact, or a state page that
+asserts a cloud/remote *agent* build below the axis's range minimum. The version literal must sit within 120 chars
+of `agent` or `CLAUDE_CODE_VERSION`; `as of X` stamps are dates, not claims; and sentences that are themselves
+retractions (`runner-set`, `CORRECTION`, `wrong`, `falsified`, `not the agent's`) are exempt so the corrected L174
+text passes.
+
+**Control.** Run against the v2.49.2 registry it trips exactly the four L174 entries — `env.CLAUDE_CODE_VERSION`
+and the three orphan vars — and nothing else. Against the current repo it passes. Two tunings were needed to get
+there, both now pinned by fixture tests: a negation list containing bare `not` exempted the very sentences the
+check exists for ("does *not* automatically describe the cloud lane", "*NOT* determinable without a 2.1.42-era
+binary"), and a 60-char proximity window missed the `env.CLAUDE_CODE_VERSION` summary, where the number and the
+word "agent" sat 70 chars apart.
+
+**The axis gains a typed `floor`** — `{version: "2.1.248", observed_at: "2026-09-21", method: "payload-field
+dating"}` — validated when present and kept separate from `range`, which means "seen in API traffic". A bound
+reached by one method must not be filed as an observation from another.
+
+7 new tests (98 total); `state/README.md` rule 4 documents the rule.
+
 ## v2.49.3 — 2026-09-22 (this fork) — L174's "much older cloud agent" retracted
 
 No new lessons; counts stay 189/51. Ch48/L174 (v2.45.x) read `CLAUDE_CODE_VERSION=2.1.42` in a live cloud session as the

@@ -51,6 +51,16 @@ Rules:
 3. `node scripts/validate-state.js` must pass before every commit that
    touches this directory. `node scripts/state.js --audit` shows what has
    not been reconciled to the newest baseline.
+4. **Remote-lane version claims are governed by
+   `registry.as_of.container_cc_version_observed`, not by `cli`/`desktop_asar`.**
+   The validator fails any sentence in a registry summary, an author-fact, or a
+   state page that asserts a cloud/remote *agent* build below that axis's range
+   minimum (retraction sentences — `CORRECTION`, `runner-set`, `wrong` — are
+   exempt). It exists because L174's entries asserted `2.1.42` against an axis
+   reading 2.1.204–2.1.216 for three weeks and nothing compared them. The axis
+   carries an optional typed `floor` for a bound reached by another method
+   (payload-field dating); keep it separate from `range`, which means "seen in
+   API traffic" — a correct number with the wrong provenance is the trap.
 
 ---
 

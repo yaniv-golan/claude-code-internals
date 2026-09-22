@@ -133,3 +133,63 @@ test('state page citing an unknown lesson is an error', () => {
   const errors = validate(dir);
   assert.ok(errors.some(e => e.includes('42')), errors.join('; '));
 });
+
+// --- container agent version axis ------------------------------------------
+// registry.as_of.container_cc_version_observed governs remote-lane version
+// claims. For three weeks (v2.45.x–v2.49.2) L174's registry entries asserted a
+// cloud agent build of 2.1.42 against an axis reading 2.1.204–2.1.216 and
+// nothing compared them. These are the controls for the comparison.
+
+const CC_AXIS = { newest: '2.1.216', range: ['2.1.204', '2.1.216'], note: 'seen in session API traffic' };
+
+function fixtureWithSummary(summary, axis = CC_AXIS) {
+  const dir = makeFixture();
+  const regPath = path.join(dir, 'state', 'registry.json');
+  const reg = JSON.parse(fs.readFileSync(regPath, 'utf8'));
+  if (axis) reg.as_of.container_cc_version_observed = axis;
+  reg.entries[0].summary = summary;
+  fs.writeFileSync(regPath, JSON.stringify(reg));
+  return dir;
+}
+
+test('a registry summary asserting a cloud agent build below the observed axis is an error', () => {
+  // Verbatim shape of the v2.49.2 env.CLAUDE_CODE_VERSION summary.
+  const errs = validate(fixtureWithSummary(
+    'Agent version as seen by its own environment. Observed 2.1.42 in a live cloud session against 2.1.250 installed locally -- a concrete figure for state.container-agent-range and the reason a current-CLI claim does not automatically describe the cloud lane.'));
+  assert.ok(errs.some(e => /asserts a cloud\/remote agent build 2\.1\.42/.test(e)), errs.join('\n'));
+});
+
+test('bare "not" does not exempt the sentence (the v2.49.2 orphan-var shape)', () => {
+  const errs = validate(fixtureWithSummary(
+    'The cloud lane reports CLAUDE_CODE_VERSION=2.1.42, so these are plausibly names a much older agent reads -- but whether they are consumed is NOT determinable without a 2.1.42-era binary.'));
+  assert.ok(errs.some(e => /agent build 2\.1\.42/.test(e)), errs.join('\n'));
+});
+
+test('a retraction sentence about the same number passes', () => {
+  const errs = validate(fixtureWithSummary(
+    'CORRECTION: the cloud lane reports CLAUDE_CODE_VERSION=2.1.42 but that variable is runner-set and never read by the agent; the cloud agent is >=2.1.248 by payload dating.'));
+  assert.deepStrictEqual(errs.filter(e => /agent build/.test(e)), []);
+});
+
+test('an "as of" stamp next to the word agent is not an agent-version claim', () => {
+  const errs = validate(fixtureWithSummary(
+    'Recognized values as of 2.1.198: cli, sdk-cli, local-agent, remote_cowork -- the cloud lane uses remote_cowork.'));
+  assert.deepStrictEqual(errs.filter(e => /agent build/.test(e)), []);
+});
+
+test('a version at or above the axis minimum passes', () => {
+  const errs = validate(fixtureWithSummary('The cloud lane ran agent 2.1.204 in the August census; a remote agent build of 2.1.260 was seen later.'));
+  assert.deepStrictEqual(errs.filter(e => /agent build/.test(e)), []);
+});
+
+test('without the axis the check is skipped, not failed', () => {
+  const errs = validate(fixtureWithSummary('Observed 2.1.42 in a live cloud session; the cloud agent build.', null));
+  assert.deepStrictEqual(errs.filter(e => /agent build/.test(e)), []);
+});
+
+test('a malformed floor on the axis is an error; a typed one passes', () => {
+  const bad = validate(fixtureWithSummary('x', { ...CC_AXIS, floor: '2.1.248' }));
+  assert.ok(bad.some(e => /container_cc_version_observed\.floor must be/.test(e)), bad.join('\n'));
+  const good = validate(fixtureWithSummary('x', { ...CC_AXIS, floor: { version: '2.1.248', observed_at: '2026-09-21', method: 'payload-field dating' } }));
+  assert.deepStrictEqual(good.filter(e => /floor/.test(e)), []);
+});

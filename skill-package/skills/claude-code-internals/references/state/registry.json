@@ -21,7 +21,12 @@
         "2.1.212",
         "2.1.216"
       ],
-      "note": "Cloud-container agent versions seen in session API traffic; not an artifact we hold. Remote-lane claims are governed by this axis, NOT by cli/desktop_asar."
+      "note": "Cloud-container agent versions seen in session API traffic; not an artifact we hold. Remote-lane claims are governed by this axis, NOT by cli/desktop_asar. CLAUDE_CODE_VERSION in the cloud env is NOT this axis: it is runner-set and never read by the agent (L174, corrected 2026-09-22). validate-state.js fails any registry/author-facts/state-page sentence asserting a cloud/remote agent build below the range minimum.",
+      "floor": {
+        "version": "2.1.248",
+        "observed_at": "2026-09-21",
+        "method": "payload-field dating: the cloud agent's Stop/SessionStart payloads carried scratchpad_dir, prompt_cache_likely_expired, seconds_since_last_response and estimated_cache_write_usd, which are built agent-side and are 0 in every staged agent through 2.1.247, present from 2.1.255 (Ch48/L174, corrected). A floor, not an observation: the transcript's per-record \"version\" field has not yet been read on the cloud lane."
+      }
     }
   },
   "entries": [
