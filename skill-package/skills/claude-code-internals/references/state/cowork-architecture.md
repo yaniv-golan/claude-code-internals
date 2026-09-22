@@ -552,7 +552,7 @@ project (relayed; the artifact half is first-party below):
 
 | | Cowork remote lane | this third surface |
 |---|---|---|
-| `CLAUDE_CODE_ENTRYPOINT` / `_REMOTE` / `_VERSION` | `remote_cowork` / `true` / `2.1.42` | **all empty** |
+| `CLAUDE_CODE_ENTRYPOINT` / `_REMOTE` / `_VERSION` | `remote_cowork` / `true` / `2.1.42` (the variable's value — **runner-set metadata, NOT the agent's build**, which is ≥ 2.1.248; see above) | **all empty** |
 | cwd | `/home/claude` | `/` |
 | outputs | `/mnt/user-data/outputs` → `/mnt/attach/outputs` (symlink) | `/mnt/user-data/outputs` |
 | skills | plugin at `/root/.claude/plugins/synced/<org>_<acct>/` | **flat, read-only, `/mnt/skills/plugins/<plugin>:<skill>/`, ~150 of them** — every account-enabled skill, no plugin root |
