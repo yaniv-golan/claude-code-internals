@@ -4031,7 +4031,7 @@
       "lesson_number": "138",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
       "startLine": 19,
-      "endLine": 109,
+      "endLine": 110,
       "keywords": [
         "cowork-remote-lane",
         "cowork-local-lane",
@@ -4065,7 +4065,10 @@
         "device_request_folder_access",
         "chromium-cache-artifact-class",
         "Cache_Data",
-        "cowork-lane-oracle"
+        "cowork-lane-oracle",
+        "local-mcp-bridge",
+        "desktop-bridges-plugin-mcp",
+        "mcp-crosses-the-boundary"
       ]
     },
     {
@@ -4073,8 +4076,8 @@
       "title": "Delete Semantics: Per-Mount FUSE Policy, unlink and rmdir Only",
       "lesson_number": "139",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 110,
-      "endLine": 260,
+      "startLine": 111,
+      "endLine": 261,
       "keywords": [
         "cowork-delete-semantics",
         "unlink-rmdir-denied",
@@ -4137,8 +4140,8 @@
       "title": "VM Multiplexing Confirmed, Isolation Holds, and the Real Mount Inventory",
       "lesson_number": "140",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 261,
-      "endLine": 365,
+      "startLine": 262,
+      "endLine": 366,
       "keywords": [
         "vm-multiplexing-confirmed",
         "shared-vm-guest",
@@ -4186,8 +4189,8 @@
       "title": "Snapshot Discipline: the fcache Is a Moving Target with Two Absence Axes",
       "lesson_number": "141",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 366,
-      "endLine": 444,
+      "startLine": 367,
+      "endLine": 445,
       "keywords": [
         "fcache-snapshot-identity",
         "fcache-content-hash",
@@ -4225,8 +4228,8 @@
       "title": "coworkSyspromptMap: a Server-Driven Prompt REPLACE Channel",
       "lesson_number": "142",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 445,
-      "endLine": 480,
+      "startLine": 446,
+      "endLine": 481,
       "keywords": [
         "coworkSyspromptMap",
         "system-prompt-patch-channel",
@@ -5134,7 +5137,6 @@
         "cloud-agent-floor-2.1.248",
         "transcript-version-field",
         "skip-plugin-mcp-servers",
-        "plugin-mcp-inert-on-cloud-lane",
         "desktop-app-version-env",
         "cloud-uploads-path",
         "root-claude-uploads",
@@ -5149,7 +5151,18 @@
         "CLAUDE_CODE_DESKTOP_APP_VERSION",
         "CLAUDE_CODE_POST_TURN_MEMORY",
         "CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION",
-        "CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE"
+        "CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE",
+        "local-mcp-bridge",
+        "buildLocalMcpBridgeTools",
+        "bridge-stdio",
+        "plugin-mcp-host-bridge",
+        "PluginBridgeMcp",
+        "desktop-bridges-plugin-mcp",
+        "mcp-remote-stdio-shim",
+        "stackchan-cloud-session",
+        "3555657854",
+        "227459766",
+        "documents-plugin-exclusion"
       ]
     },
     {
@@ -19795,9 +19808,6 @@
     "skip-plugin-mcp-servers": [
       174
     ],
-    "plugin-mcp-inert-on-cloud-lane": [
-      174
-    ],
     "desktop-app-version-env": [
       174
     ],
@@ -19842,6 +19852,44 @@
     ],
     "CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE": [
       174
+    ],
+    "local-mcp-bridge": [
+      174,
+      138
+    ],
+    "buildLocalMcpBridgeTools": [
+      174
+    ],
+    "bridge-stdio": [
+      174
+    ],
+    "plugin-mcp-host-bridge": [
+      174
+    ],
+    "PluginBridgeMcp": [
+      174
+    ],
+    "desktop-bridges-plugin-mcp": [
+      174,
+      138
+    ],
+    "mcp-remote-stdio-shim": [
+      174
+    ],
+    "stackchan-cloud-session": [
+      174
+    ],
+    "3555657854": [
+      174
+    ],
+    "227459766": [
+      174
+    ],
+    "documents-plugin-exclusion": [
+      174
+    ],
+    "mcp-crosses-the-boundary": [
+      138
     ]
   }
 }

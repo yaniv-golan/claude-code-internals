@@ -7811,7 +7811,7 @@
       "id": "env.CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS",
       "name": "CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS",
       "status": "live",
-      "summary": "When set, plugin-declared MCP servers are not discovered: agent 2.1.275 logs 'Skipping plugin MCP server discovery for \"<plugin>\" (CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS is set)'. The Cowork CLOUD lane sets it (=1) together with CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS_EXCEPT=documents (2026-08-29 census and 2026-09-21 canary), so a plugin's mcpServers block is inert there unless the plugin is named documents. Present in every agent on disk back to 2.1.197. (Ch48/L174.)",
+      "summary": "When set, the AGENT does not discover plugin-declared MCP servers: 2.1.278's u2() returns before reading a plugin's .mcp.json/inline mcpServers ('Skipping plugin MCP server discovery for \"<plugin>\" (CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS is set)'), transport-agnostic, isBuiltin exempt. The Cowork CLOUD lane sets it (=1) with _EXCEPT=documents. CORRECTION (2026-09-22, same day as first written): this does NOT make plugin MCP inert on the cloud lane -- it is the agent-side half of a two-half design. The Desktop runs the account's Cowork plugin MCP servers on the host (getPluginMcpInstance pool, [PluginBridgeMcp], gate 3555657854 force-ON, exclusion config 227459766 default [\"documents\"]) and bridges their tools into the cowork-remote session as <server>__<tool> via buildLocalMcpBridgeTools over the remote-tools device, stdio servers only, while the Desktop is open. Present in every agent on disk back to 2.1.197; the Desktop half is in every asar since 1.20186.0. (Ch48/L174; state page cowork-architecture 'Local MCP bridge'.)",
       "provenance": [
         {
           "lesson": 174
@@ -7826,7 +7826,7 @@
       "id": "env.CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS_EXCEPT",
       "name": "CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS_EXCEPT",
       "status": "live",
-      "summary": "Plugin-name allowlist that overrides CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS: agent 2.1.275 logs 'Loading MCP servers for \"<plugin>\" despite CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS (exempted via CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS_EXCEPT)'. The Cowork cloud lane sets it to documents. (Ch48/L174.)",
+      "summary": "Plugin-name allowlist (name, or name@marketplace) that overrides CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS in the agent ('Loading MCP servers for \"<plugin>\" despite ... (exempted via ...)'). The Cowork cloud lane sets it to documents -- the mirror of the Desktop's host-bridge exclusion default [\"documents\"] (served config 227459766): the documents plugin's MCP server runs container-side, every other plugin's runs on the Mac and is bridged in. (Ch48/L174.)",
       "provenance": [
         {
           "lesson": 174

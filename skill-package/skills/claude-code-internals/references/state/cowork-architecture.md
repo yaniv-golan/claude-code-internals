@@ -489,8 +489,11 @@ Desktop's capability probe, **gate `4116586025`**). Desktop main has no lane bra
 gate can hold the decision**. `1143815894` (host-loop vs VM-loop) is a *within-local-lane* axis.
 
 Remote lane specifics: cwd `/home/claude`; delivery via `SendUserFile` →
-`internal__remote-devices__device_commit_files` (**delivery is an act, not a location**); local MCP
-servers cannot cross the boundary; the filesystem **is discarded** at session end (local only *hides*
+`internal__remote-devices__device_commit_files` (**delivery is an act, not a location**); host-side
+**stdio** MCP servers — both `claude_desktop_config.json` and Cowork **plugin** servers — DO reach the
+session, run on the Mac by the Desktop and bridged in as `<server>__<tool>` tools while the Desktop is
+open (see "Local MCP bridge" below; corrects L138's "cannot cross the boundary", 2026-09-22); the
+filesystem **is discarded** at session end (local only *hides*
 it — `archiveSession` deletes just `["uploads","uploads-tmp","doc-export-out"]` and does not fire at
 ordinary session end); host files reachable only via `device_request_folder_access` +
 `remoteSessionFolderGrants`, and only while the Desktop app is open. `container_cc_version` (observed
@@ -506,8 +509,9 @@ corrected 2026-09-22).
 Cloud-lane facts from the 2026-09-21 canary (relayed; semantics verified first-party, L174):
 uploads land at **`/root/.claude/uploads/<session-id>/<8-hex>-<name>`** (`HOME=/root`; the
 `/mnt/user-data/uploads` the lane's own prompt names does not exist; `.claude/uploads` is 0 in every
-agent binary, so it is runner-placed); **plugin `mcpServers` do not start** there
-(`CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS=1`, `…_EXCEPT=documents`); `CLAUDE_CODE_DESKTOP_APP_VERSION` is
+agent binary, so it is runner-placed); the container agent **does not start plugin `mcpServers`**
+(`CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS=1`, `…_EXCEPT=documents`) — because the Desktop does, see
+"Local MCP bridge" below; `CLAUDE_CODE_DESKTOP_APP_VERSION` is
 unset and would be ignored under `remote_cowork` anyway (agent reads it only under
 `claude-desktop`/`local-agent`); Cowork ships its own Stop/UserPromptSubmit hooks under
 `/home/claude/.claude/`; every `computer://` link form renders inert and a bare path becomes a
@@ -539,6 +543,43 @@ the remainder (`node_modules`, `compile-cache`, and the Agent SDK bundled inside
 differently — `isRemote` is 60 in build and 87 whole-file. 1.46388.3 → 1.46388.4 moves **no** tracked
 identifier (`localAgentMode` 20 → 20, `isRemote` 60 → 60, `remoteSession` 59 → 59, `deviceLink`
 6 → 6, `device_bash` 34 → 34); the real delta is three build chunks and −859 bytes.
+
+## Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
+
+`buildLocalMcpBridgeTools` (`[localMcpBridge]`) announces host-side stdio MCP servers into a
+`cowork-remote` session from **two pools**, each tool named `<server>__<tool>` (telemetry
+`mcp__<server>__<tool>`, `server_type:"bridge-stdio"`, `session_type:"cowork-remote"`):
+
+| pool | source | `server_source` | `_meta["anthropic/kind"]` |
+|---|---|---|---|
+| `LocalMcpServerManager.getSharedInstance()` | `claude_desktop_config.json` `mcpServers` | `user_config` | `local` |
+| `getPluginMcpInstance()` | the account's Cowork plugins (remote `getHostPluginPaths` + local `getEnabledLocalPlugins`), collected by `[PluginBridgeMcp]` | `plugin` | `plugin` |
+
+- **Gates/policy (plugin pool):** gate **`3555657854`** (force-ON, `fr_mqzam1o7`, fcache 2026-09-22,
+  367 features — not yet a registry gate entry: pinning it requires restamping `fcache_capture` and
+  re-observing all pinned gates); org `localMcpEnabled` (off → "local MCP disabled by policy");
+  `allowedPluginMcpServers` set → "no plugin servers bridged". Exclusion list = served config
+  **`227459766`** (absent from the fcache → shipped default **`["documents"]`**) — excluded plugins
+  are "not bridging its MCP servers; the session-side copies serve instead". This is the Desktop half
+  of the agent's `CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS=1` / `_EXCEPT=documents`: the container agent
+  skips plugin MCP discovery because the Mac runs the servers, and `documents` is the one plugin
+  whose server runs container-side.
+- **Per-server rules** (`[PluginMcpHostConfig]`, logged skip reasons): must be a **valid stdio spawn
+  config** (`invalid_config` — an HTTP `url` declaration is not bridged; use an `mcp-remote` stdio
+  shim); no `${user_config.*}` references (`user_config_unsupported`); MCPB manifests must resolve
+  to stdio with no un-defaulted required config (`could_not_prepare`); `blocked_by_policy`.
+- **Timing:** plugin config apply bounded to **15 s** (then bridge what registered; a late differing
+  result fires `reloadRemoteToolsDevice("plugin_mcp_change")`, debounce 2 s); connect race **10 s**
+  (partial/empty set announced on timeout, grown later via `prepareGrowth`); plugin request timeout
+  120 s; tool call timeout **180 s**. Name collisions drop the later arrival.
+- **Gating of calls:** the Desktop's own tool-approval prompt keyed on `anthropic/approvalHash` —
+  not the agent's permission rules.
+- **Transport:** the remote-tools device (Ch36/L126 `remote_devices`), so **the Desktop must stay
+  open**; a normal Desktop chat does not see bridged servers (`[localMcpBridge]` lines in
+  `~/Library/Logs/Claude/main.log` are the confirmation).
+- **Live evidence:** `user_config` pool confirmed 2026-09-18 by `stackchan-mcp-mod` (LAN robot
+  driven from a cloud session through `npx mcp-remote … --allow-http`). `plugin` pool: code-verified
+  only.
 
 ## Mount model and delete policy (L139, L140)
 

@@ -2013,15 +2013,19 @@
   },
   {
    "pattern": [
-    "plugin MCP server not starting in Cowork",
+    "plugin MCP server not starting in Cowork cloud",
     "mcpServers ignored in cloud session",
     "CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS",
-    "remote_cowork mcp server missing"
+    "remote_cowork mcp server missing",
+    "LAN MCP server from a cloud Cowork session",
+    "localMcpBridge announcing"
    ],
    "lessons": [
-    174
+    174,
+    138,
+    126
    ],
-   "hint": "The Cowork cloud lane spawns the agent with CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS=1 and _EXCEPT=documents: plugin-declared MCP servers are not discovered there unless the plugin is named documents (agent logs 'Skipping plugin MCP server discovery for \"<plugin>\"'). Nothing in the manifest fixes it; the local lane is unaffected."
+   "hint": "The container agent is spawned with CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS=1 and does not start plugin MCP servers -- because the Desktop does: it runs the account's Cowork plugin MCP servers (and claude_desktop_config.json servers) on the Mac and bridges their tools into the cloud session as <server>__<tool> over the remote-devices bridge (buildLocalMcpBridgeTools; gate 3555657854 force-ON). Requirements: the Desktop must be open; the server must be a STDIO spawn config (an HTTP url declaration is dropped as invalid_config -- wrap it with npx mcp-remote <url> --allow-http); no ${user_config.*} references; plugin not on the exclusion list (default: documents). Confirm in ~/Library/Logs/Claude/main.log: '[LocalMcpServerManager] Connected to <name> (N tools)' then '[localMcpBridge] announcing <name>: N tool(s)'. Calls are gated by the Desktop's own tool-approval prompt, not the agent's permission rules. A normal Desktop chat cannot see bridged servers."
   },
   {
    "pattern": [

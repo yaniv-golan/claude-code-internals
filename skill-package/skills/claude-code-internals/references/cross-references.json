@@ -2536,6 +2536,11 @@
     "id": 127,
     "relevance": 0.65,
     "reason": "remote_devices tool assembly (zzrNR3X_.js) includes buildRemoteGrandPrixTools, the remote variant of the grand_prix bridge"
+   },
+   {
+    "id": 174,
+    "relevance": 0.5,
+    "reason": "live confirmation the remote-devices bridge carries MCP tool calls (stackchan, 2026-09-18)"
    }
   ],
   "127": [
@@ -2877,6 +2882,16 @@
     "id": 108,
     "relevance": 0.7,
     "reason": "lane selection is gate-driven"
+   },
+   {
+    "id": 174,
+    "relevance": 0.7,
+    "reason": "L174 carries the mechanism that corrects L138's 'cannot cross the boundary' row"
+   },
+   {
+    "id": 126,
+    "relevance": 0.55,
+    "reason": "remote_devices is the channel host-side MCP and files cross on"
    }
   ],
   "139": [
@@ -3594,6 +3609,11 @@
     "id": 180,
     "relevance": 0.5,
     "reason": "remote-lane facts re-derived at 2.1.260; the version axis this corrects"
+   },
+   {
+    "id": 126,
+    "relevance": 0.6,
+    "reason": "the remote_devices bridge is the transport for bridged local/plugin MCP tools"
    }
   ]
  }

@@ -1,5 +1,50 @@
 # Changelog
 
+## v2.49.5 — 2026-09-22 (this fork) — host MCP servers DO reach the cloud lane; two claims retracted
+
+No new lessons; counts stay 189/51. Two claims were false and both were falsifiable from an asar already on disk:
+
+- **v2.49.3 (this morning):** "plugin `mcpServers` are inert on the cloud lane", read off the agent-side
+  `CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS=1`.
+- **Ch36/L138 (2026-08-05):** "local MCP servers cannot cross the boundary" into the remote lane.
+
+**The mechanism.** `buildLocalMcpBridgeTools` (`[localMcpBridge]`) — present in **every** asar from 1.20186.0 through
+2.2553.1, including 1.25927.0, the one L138 was derived from — announces host-side stdio MCP servers into a
+`cowork-remote` session from two pools: `claude_desktop_config.json` servers (`server_source:"user_config"`) and Cowork
+**plugin** servers (`getPluginMcpInstance()`, `[PluginBridgeMcp]`, `server_source:"plugin"`). Each tool is announced as
+`<server>__<tool>` with an `anthropic/approvalHash` the Desktop's own tool-approval prompt gates; calls route back to the
+Mac over the remote-tools device (Ch36/L126) with a 180 s timeout, while the Desktop is open.
+
+**Two halves of one design.** The plugin pool's exclusion list is served config `227459766`, shipped default
+`["documents"]` — "not bridging its MCP servers; the session-side copies serve instead". That is the mirror of the
+agent's `CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS_EXCEPT=documents`: the container agent skips plugin MCP discovery because
+the Mac runs the servers, and `documents` is the one plugin whose server runs container-side. Gate `3555657854`
+enables the plugin pool — **force-ON** in today's fcache (`fr_mqzam1o7`, 367 features). Not yet a registry gate entry:
+pinning it requires restamping `fcache_capture` and re-observing every pinned gate, a separate pass.
+
+**Constraints** (`[PluginMcpHostConfig]`, each a logged skip reason): stdio spawn configs only — an HTTP `url`
+declaration is dropped as `invalid_config`, which is why an HTTP server needs an `npx mcp-remote … --allow-http` stdio
+shim; no `${user_config.*}` references (`user_config_unsupported`); MCPB manifests must resolve to stdio with no
+un-defaulted required config. Apply bounded to 15 s, connect race 10 s, plugin request timeout 120 s.
+
+**Evidence.** Prompted by the `stackchan-mcp-mod` project's `docs/remote-access.md`: a LAN-only robot driven from a cloud
+Cowork session on 2026-09-18 through `mcp-remote` in `claude_desktop_config.json` — live confirmation of the
+`user_config` pool (`[LocalMcpServerManager] Connected to stackchan (N tools)` / `[localMcpBridge] announcing
+stackchan: N tool(s)`). The `plugin` pool is code-verified only. Raised directly against this skill's answer.
+
+**Method failures, both already on record and both repeated.** "Not found in the bundle I searched" — the agent-side
+skip was read and its consequence declared without grepping the asar for a counterpart (Ch24/L107's own lesson). And
+L138's row was written from a lane table without checking the cited artifact for a bridge.
+
+**Convention change.** Lessons now carry the correct *current* state and are corrected in place; the retraction
+narrative lives here and in `version.json`, not in the lesson. `state/README.md` rule 2 rewritten. The `⚠️ CORRECTED`
+block this pass had first added to L138 was removed and the row fixed; L174's "the first version of this lesson
+read…" paragraph removed. About 29 legacy correction blocks across 8 chapters remain for a separate sweep.
+
+Changed: L138 row, L174 bullet, `cowork-architecture` state page (new "Local MCP bridge" section), registry
+(`SKIP_PLUGIN_MCP_SERVERS` / `_EXCEPT`), troubleshooting hint, cross-references (174↔126, 138→174/126), SKILL.md /
+README rows. The site carried no fact on this, so ccinternals.dev is unchanged.
+
 ## v2.49.4 — 2026-09-22 (this fork) — the container-version axis now checks the prose
 
 No new lessons; counts stay 189/51. v2.49.3 retracted a claim that had contradicted

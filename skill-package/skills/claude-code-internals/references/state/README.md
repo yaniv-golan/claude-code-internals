@@ -1,8 +1,11 @@
 # Current-state layer
 
 This directory is the **mutable "as of version X" truth layer**. The lesson
-chapters (`../NN-*.md`) are immutable provenance — corrections there land as
-new prose, so facts about one feature scatter across chapters. Each file here
+chapters (`../NN-*.md`) are provenance, and each carries the **current correct
+state** of what it covers: a corrected fact is edited in place, and the
+retraction narrative (what was claimed, why it was wrong, what falsified it)
+lives in `CHANGELOG.md` and `version.json`, never in the lesson. Facts about
+one feature still scatter across chapters, which is why this layer exists. Each file here
 states the *current* behavior of one domain, stamped with the binary versions
 it reflects, and cites its source lessons in frontmatter.
 
@@ -47,7 +50,9 @@ Rules:
    Nothing in this repo can. Server-side behaviour changes with no version
    bump; the defences are quarantine (volatile facts confined to the
    current-state page), the per-claim badge, and re-capture discipline.
-2. Never delete history from lessons; supersede it here.
+2. Correct lessons in place; put the correction *history* in `CHANGELOG.md`. A
+   lesson may keep a one-line pointer ("corrected in v2.49.5, see CHANGELOG"),
+   not a retraction block. Then supersede the fact here.
 3. `node scripts/validate-state.js` must pass before every commit that
    touches this directory. `node scripts/state.js --audit` shows what has
    not been reconciled to the newest baseline.
