@@ -11,12 +11,26 @@ const CHECKER = path.join(__dirname, '..', 'check-json-format.js');
 const REFS = path.join(__dirname, '..', '..', 'references');
 const { parseOrdered, emit, PINNED } = require('../check-json-format.js');
 
-function run() {
+function run(refsDir) {
+  const env = refsDir ? { ...process.env, CHECK_JSON_FORMAT_REFS: refsDir } : process.env;
   try {
-    return { code: 0, out: execFileSync('node', [CHECKER], { encoding: 'utf8' }) };
+    return { code: 0, out: execFileSync('node', [CHECKER], { encoding: 'utf8', env }) };
   } catch (e) {
     return { code: e.status, out: (e.stdout || '') + (e.stderr || '') };
   }
+}
+
+// The mutation tests work on a COPY of references/. Mutating the real files raced
+// with search-identifiers.test.js reading topic-index.json in a parallel process
+// ('Unexpected end of JSON input' in CI, green locally by timing).
+const SCRATCH = [];
+test.after(() => { for (const d of SCRATCH) fs.rmSync(d, { recursive: true, force: true }); });
+function scratchRefs() {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'json-format-refs-'));
+  SCRATCH.push(dir);
+  fs.mkdirSync(path.join(dir, 'state'));
+  for (const rel of Object.keys(PINNED)) fs.copyFileSync(path.join(REFS, rel), path.join(dir, rel));
+  return dir;
 }
 
 // The checker must PASS on the repo as committed. If this fails, a file drifted.
@@ -41,45 +55,36 @@ test('order-preserving parser keeps integer-like keys in source order', () => {
 });
 
 test('re-indenting a pinned file is caught', () => {
-  const rel = 'topic-index.json';                       // pinned indent=2
-  const abs = path.join(REFS, rel);
-  const original = fs.readFileSync(abs, 'utf8');
-  const tree = parseOrdered(original);
-  try {
-    fs.writeFileSync(abs, emit(tree, 1) + '\n', 'utf8'); // wrong indent, order intact
-    const r = run();
-    assert.strictEqual(r.code, 1, 'checker did not fail on a re-indented file');
-    assert.match(r.out, /topic-index\.json: not canonical/);
-    assert.match(r.out, /indent=1/);
-  } finally {
-    fs.writeFileSync(abs, original, 'utf8');
-  }
+  const dir = scratchRefs();
+  const abs = path.join(dir, 'topic-index.json');       // pinned indent=2
+  const tree = parseOrdered(fs.readFileSync(abs, 'utf8'));
+  fs.writeFileSync(abs, emit(tree, 1) + '\n', 'utf8');   // wrong indent, order intact
+  const r = run(dir);
+  assert.strictEqual(r.code, 1, 'checker did not fail on a re-indented file');
+  assert.match(r.out, /topic-index\.json: not canonical/);
+  assert.match(r.out, /indent=1/);
 });
 
 test('dropping the trailing newline is caught', () => {
-  const rel = 'state/registry.json';                    // pinned trailingNewline=true
-  const abs = path.join(REFS, rel);
-  const original = fs.readFileSync(abs, 'utf8');
-  try {
-    fs.writeFileSync(abs, original.replace(/\n$/, ''), 'utf8');
-    const r = run();
-    assert.strictEqual(r.code, 1, 'checker did not fail on a missing trailing newline');
-    assert.match(r.out, /registry\.json: not canonical/);
-  } finally {
-    fs.writeFileSync(abs, original, 'utf8');
-  }
+  const dir = scratchRefs();
+  const abs = path.join(dir, 'state', 'registry.json'); // pinned trailingNewline=true
+  fs.writeFileSync(abs, fs.readFileSync(abs, 'utf8').replace(/\n$/, ''), 'utf8');
+  const r = run(dir);
+  assert.strictEqual(r.code, 1, 'checker did not fail on a missing trailing newline');
+  assert.match(r.out, /registry\.json: not canonical/);
 });
 
 test('an unpinned json under references/ is an error', () => {
-  const abs = path.join(REFS, '__format_probe.json');
-  try {
-    fs.writeFileSync(abs, '{}\n', 'utf8');
-    const r = run();
-    assert.strictEqual(r.code, 1, 'checker did not fail on an unpinned file');
-    assert.match(r.out, /__format_probe\.json: not pinned/);
-  } finally {
-    fs.rmSync(abs, { force: true });
-  }
+  const dir = scratchRefs();
+  fs.writeFileSync(path.join(dir, '__format_probe.json'), '{}\n', 'utf8');
+  const r = run(dir);
+  assert.strictEqual(r.code, 1, 'checker did not fail on an unpinned file');
+  assert.match(r.out, /__format_probe\.json: not pinned/);
+});
+
+test('a scratch copy of the real indexes passes, so the copy is faithful', () => {
+  const r = run(scratchRefs());
+  assert.strictEqual(r.code, 0, r.out);
 });
 
 test('every pinned entry names a file that exists', () => {

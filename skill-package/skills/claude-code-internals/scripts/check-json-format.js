@@ -44,6 +44,11 @@ const fs = require('fs');
 const path = require('path');
 
 const REFS = path.join(__dirname, '..', 'references');
+// Tests point the checker at a scratch copy so they never mutate the real indexes:
+// json-format.test.js used to rewrite references/topic-index.json in place while
+// search-identifiers.test.js read it from a parallel process (CI: 'Unexpected end of
+// JSON input'). CHECK_JSON_FORMAT_REFS overrides the directory for exactly that use.
+const REFS_DIR = process.env.CHECK_JSON_FORMAT_REFS || REFS;
 
 /** file (relative to references/) -> { indent, trailingNewline } */
 const PINNED = {
@@ -158,7 +163,7 @@ function detect(raw, tree) {
 }
 
 function main() {
-  const found = listJson(REFS);
+  const found = listJson(REFS_DIR);
   const errors = [];
 
   for (const rel of found) {
@@ -168,7 +173,7 @@ function main() {
   }
 
   for (const [rel, want] of Object.entries(PINNED)) {
-    const abs = path.join(REFS, rel);
+    const abs = path.join(REFS_DIR, rel);
     if (!fs.existsSync(abs)) { errors.push(`${rel}: pinned but missing`); continue; }
     const raw = fs.readFileSync(abs, 'utf8');
     let tree;
