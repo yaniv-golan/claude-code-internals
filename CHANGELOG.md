@@ -1,5 +1,32 @@
 # Changelog
 
+## v2.51.0 — 2026-09-23 (this fork) — artifacts that call local tools, a Remote Control inbox, folder skills
+
+Adds Chapter 53 (L195–L197); counts move to 197/53. Traces the three leads v2.50.0 left open, first-party against
+`app.asar` 2.7032.0 (with backed-up asars back to 1.18286.2 for first-appearance), agent 2.1.260/2.1.275/2.1.280,
+and fcache `f82df085d027eff0`.
+
+- **L195.** The Desktop's Artifact pane has a complete host-tools bridge. A page sends
+  `claude-page:host-tools-hello` and can then call the user's local MCP servers through
+  `LocalMcpServerManager.callTool`, with rate limits and a confirmation for destructive tools. Every call is
+  refused while gate `2864556627` is off, and it was off at the capture. The code has been there since at least
+  1.46388.4. L105's "a rendered artifact cannot call back" is therefore now a gate state, not missing code; the
+  credential-channels state page says so. `CLAUDE_ARTIFACT_HOST_GRANT`, read from agent 2.1.275, is the
+  agent-side allow-list of `host:` servers a published Artifact may declare.
+- **L196.** `FetchInboxMessage` reads a message relayed into a Remote Control session from a linked chat or
+  project thread, by the `file_id` in a `session-inbox` wake notification. It is enabled only while Remote
+  Control is active, and relayed content is untrusted unless the sender is the verified machine owner. Four new
+  agent→host system frames: `peer_message_hold`, `turn_preempted`, `turn_handoff_available` and `dev_intent`;
+  Desktop consumes only `dev_intent`.
+- **L197.** A cloud Cowork session granted a local folder gets that folder's `.claude/skills` uploaded as
+  stubs. Gate `2877254163` is set to `"stubs"`, so only the frontmatter survives and the body points to the
+  device copy. The feature appears in Desktop 1.44121.1. The 100-skill and 32 MiB limits drop skills with
+  little or no notice, and admins can block the whole feature. Local Cowork does not load a connected folder's
+  `.claude/skills`. New author fact `plugins.folder-skills-are-not-a-channel`: ship skills in a plugin.
+- **Registry.** Six new gates and four new `proto.*` subtypes. `tool.FetchInboxMessage` and
+  `env.CLAUDE_ARTIFACT_HOST_GRANT` are filled in. The credential-channels, control-protocol and plugins state
+  pages are updated.
+
 ## v2.50.1 — 2026-09-23 (this fork) — L190 observed live, and an audit-log trap
 
 No new lessons; counts stay 194/52. Two local host-loop Cowork probe sessions under Desktop 2.7032.0 / agent 2.1.280

@@ -3730,6 +3730,57 @@
     "relevance": 0.4,
     "reason": "artifact no-callback boundary; CLAUDE_ARTIFACT_HOST_GRANT grants host tools to frame artifacts"
    }
+  ],
+  "195": [
+   {
+    "id": 105,
+    "relevance": 0.95,
+    "reason": "L105's no-callback boundary; L195 shows it is now a gate state"
+   },
+   {
+    "id": 194,
+    "relevance": 0.6,
+    "reason": "CLAUDE_ARTIFACT_HOST_GRANT first recorded there"
+   },
+   {
+    "id": 112,
+    "relevance": 0.5,
+    "reason": "the Artifact tool whose publish path reads the grant"
+   }
+  ],
+  "196": [
+   {
+    "id": 191,
+    "relevance": 0.8,
+    "reason": "FetchInboxMessage and SubagentHandback first listed there"
+   },
+   {
+    "id": 119,
+    "relevance": 0.6,
+    "reason": "Remote Control / bridge sessions, the only place the inbox tool is enabled"
+   },
+   {
+    "id": 115,
+    "relevance": 0.4,
+    "reason": "SendMessage cross-session continuation, the path peer_message_hold reports on"
+   }
+  ],
+  "197": [
+   {
+    "id": 126,
+    "relevance": 0.7,
+    "reason": "remote_devices device_bash, which staged stubs point the model at"
+   },
+   {
+    "id": 89,
+    "relevance": 0.6,
+    "reason": "the plugin namespace that is the reliable way to ship skills"
+   },
+   {
+    "id": 138,
+    "relevance": 0.6,
+    "reason": "the local vs remote lanes"
+   }
   ]
  }
 }

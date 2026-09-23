@@ -2116,6 +2116,44 @@
     190
    ],
    "hint": "In Desktop's audit.jsonl the assistant record's message.content[].input shows a relative file_path rewritten to <session>/outputs/<name>, even for a call that was refused and wrote nothing. The model's real input is in the same record's wire_tool_inputs; the path the deny rule matched is in the result record's permission_denials[].tool_input. The agent transcript keeps the original input and never shows a hook's updatedInput rewrite."
+  },
+  {
+   "pattern": [
+    "artifact cannot call MCP tool",
+    "capability_disabled artifact",
+    "host-tools-hello",
+    "artifact page call local MCP server"
+   ],
+   "lessons": [
+    195,
+    105
+   ],
+   "hint": "Desktop has an Artifact host-tools bridge (page sends claude-page:host-tools-hello, then host:<server> calls run via LocalMcpServerManager.callTool), but every call returns capability_disabled while gate 2864556627 is off (off at the 2026-09-23 capture). Collect secrets through elicitation, not a page form."
+  },
+  {
+   "pattern": [
+    "FetchInboxMessage",
+    "session-inbox notification",
+    "relayed inbox message",
+    "wake reason external-event session-inbox"
+   ],
+   "lessons": [
+    196
+   ],
+   "hint": "FetchInboxMessage reads a message relayed into a Remote Control session from a linked chat or project thread, by the file_id in the session-inbox wake notification. It exists only while Remote Control is active. Relayed content is untrusted unless the envelope says from=\"rc_owner\"."
+  },
+  {
+   "pattern": [
+    "skills in connected folder not loading in Cowork",
+    ".claude/skills ignored in Cowork",
+    "staged stub skill",
+    "This is a staged stub",
+    "folder skills capped"
+   ],
+   "lessons": [
+    197
+   ],
+   "hint": "Local Cowork loads user settings only, so a connected folder's .claude/skills does not load. A cloud Cowork session granted a local folder gets the folder's skills as stubs (gate 2877254163 = stubs): frontmatter only, body replaced by a pointer to run on the device via device_bash. Ship skills in a plugin."
   }
  ]
 }

@@ -1,7 +1,7 @@
 {
   "generated": "2026-09-23",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 194,
+  "total_lessons": 197,
   "lessons": [
     {
       "id": 1,
@@ -5810,7 +5810,6 @@
         "SubagentHandback",
         "CLAUDE_CODE_SENDMESSAGE_HANDBACK",
         "tengu_lively_waffle",
-        "FetchInboxMessage",
         "AppifactRepl",
         "bashCommandClamp",
         "toolAliases-vs-canonicalizer",
@@ -5916,6 +5915,86 @@
         "my plugin memory server does not start in Cowork",
         "claude_desktop_config memory server",
         "hipaa_restricted"
+      ]
+    },
+    {
+      "id": 195,
+      "title": "Rendered Artifacts Can Call Local MCP Tools, Behind a Switch That Is Off",
+      "lesson_number": "195",
+      "file": "50-artifact-host-tools-inbox-folder-skills.md",
+      "startLine": 17,
+      "endLine": 78,
+      "keywords": [
+        "artifact-host-tools",
+        "ArtifactHostTools",
+        "claude-page:host-tools-hello",
+        "host-tools-bridge",
+        "2864556627",
+        "capability_disabled",
+        "LocalMcpServerManager.callTool",
+        "CLAUDE_ARTIFACT_HOST_GRANT",
+        "host_grant_narrowed",
+        "artifactHostGrant",
+        "getArtifactRepublishContent",
+        "3229517805",
+        "sharingEnabled",
+        "mcpCallsPerMinute",
+        "artifact-callback-channel",
+        "can an artifact call MCP tools",
+        "artifact page call local tools"
+      ]
+    },
+    {
+      "id": 196,
+      "title": "FetchInboxMessage and the Remote Control Session Inbox",
+      "lesson_number": "196",
+      "file": "50-artifact-host-tools-inbox-folder-skills.md",
+      "startLine": 80,
+      "endLine": 124,
+      "keywords": [
+        "FetchInboxMessage",
+        "session-inbox",
+        "message.received",
+        "remote-control-inbox",
+        "rc_owner",
+        "relayed-message",
+        "peer_message_hold",
+        "crossSessionInbound",
+        "turn_preempted",
+        "rapidFollowupPreempt",
+        "tengu_zippy_spindle",
+        "turn_handoff_available",
+        "dev_intent",
+        "devIntents",
+        "SubagentHandback-flagged",
+        "what is FetchInboxMessage"
+      ]
+    },
+    {
+      "id": 197,
+      "title": "Skills From a Granted Folder Are Staged Into Cloud Sessions as Stubs",
+      "lesson_number": "197",
+      "file": "50-artifact-host-tools-inbox-folder-skills.md",
+      "startLine": 126,
+      "endLine": 177,
+      "keywords": [
+        "folder-skills",
+        "remote-folder-skill-staging",
+        "grantRemoteSessionFolders",
+        "cowork-folders",
+        "staged-stub",
+        "This is a staged stub",
+        "2877254163",
+        "1603637451",
+        "onFolderSkillsCapped",
+        "strictPluginOnlyCustomization",
+        "4018447017",
+        "144158705",
+        "claude-md-staging",
+        "project-skills-cowork",
+        "settingSources-user",
+        "does Cowork load .claude/skills from my folder",
+        "skills in connected folder not loading"
       ]
     }
   ],
@@ -20196,7 +20275,7 @@
       191
     ],
     "FetchInboxMessage": [
-      191
+      196
     ],
     "AppifactRepl": [
       191
@@ -20208,16 +20287,20 @@
       191
     ],
     "turn_handoff_available": [
-      191
+      191,
+      196
     ],
     "turn_preempted": [
-      191
+      191,
+      196
     ],
     "peer_message_hold": [
-      191
+      191,
+      196
     ],
     "dev_intent": [
-      191
+      191,
+      196
     ],
     "2.1.277": [
       191
@@ -20379,7 +20462,8 @@
       194
     ],
     "CLAUDE_ARTIFACT_HOST_GRANT": [
-      194
+      194,
+      195
     ],
     "CLAUDE_CODE_PROJECT_DIR_NAME": [
       194
@@ -20409,7 +20493,8 @@
       194
     ],
     "4018447017": [
-      194
+      194,
+      197
     ],
     "my plugin memory server does not start in Cowork": [
       194
@@ -20446,6 +20531,135 @@
     ],
     "observed-relative-path-refusal": [
       190
+    ],
+    "artifact-host-tools": [
+      195
+    ],
+    "ArtifactHostTools": [
+      195
+    ],
+    "claude-page:host-tools-hello": [
+      195
+    ],
+    "host-tools-bridge": [
+      195
+    ],
+    "2864556627": [
+      195
+    ],
+    "capability_disabled": [
+      195
+    ],
+    "LocalMcpServerManager.callTool": [
+      195
+    ],
+    "host_grant_narrowed": [
+      195
+    ],
+    "artifactHostGrant": [
+      195
+    ],
+    "getArtifactRepublishContent": [
+      195
+    ],
+    "3229517805": [
+      195
+    ],
+    "sharingEnabled": [
+      195
+    ],
+    "mcpCallsPerMinute": [
+      195
+    ],
+    "artifact-callback-channel": [
+      195
+    ],
+    "can an artifact call MCP tools": [
+      195
+    ],
+    "artifact page call local tools": [
+      195
+    ],
+    "session-inbox": [
+      196
+    ],
+    "message.received": [
+      196
+    ],
+    "remote-control-inbox": [
+      196
+    ],
+    "rc_owner": [
+      196
+    ],
+    "relayed-message": [
+      196
+    ],
+    "crossSessionInbound": [
+      196
+    ],
+    "rapidFollowupPreempt": [
+      196
+    ],
+    "tengu_zippy_spindle": [
+      196
+    ],
+    "devIntents": [
+      196
+    ],
+    "SubagentHandback-flagged": [
+      196
+    ],
+    "what is FetchInboxMessage": [
+      196
+    ],
+    "folder-skills": [
+      197
+    ],
+    "remote-folder-skill-staging": [
+      197
+    ],
+    "grantRemoteSessionFolders": [
+      197
+    ],
+    "cowork-folders": [
+      197
+    ],
+    "staged-stub": [
+      197
+    ],
+    "This is a staged stub": [
+      197
+    ],
+    "2877254163": [
+      197
+    ],
+    "1603637451": [
+      197
+    ],
+    "onFolderSkillsCapped": [
+      197
+    ],
+    "strictPluginOnlyCustomization": [
+      197
+    ],
+    "144158705": [
+      197
+    ],
+    "claude-md-staging": [
+      197
+    ],
+    "project-skills-cowork": [
+      197
+    ],
+    "settingSources-user": [
+      197
+    ],
+    "does Cowork load .claude/skills from my folder": [
+      197
+    ],
+    "skills in connected folder not loading": [
+      197
     ]
   }
 }

@@ -1418,6 +1418,26 @@
       ]
     },
     {
+      "id": "plugins.folder-skills-are-not-a-channel",
+      "page": "plugins-and-plugin-root",
+      "rule": "Ship Cowork skills in a plugin, not in a project's `.claude/skills` folder.",
+      "detail": "A skill left in a folder's `.claude/skills` does not load in a local Cowork session, as far as the shipped code shows: the desktop starts the agent with user settings only, and project skills load from project settings. In a cloud Cowork session that the user grants the folder to, the desktop does upload those skills, but by default only as stubs: the model sees your frontmatter, the body is replaced by a note to run the skill on the user's device, and your scripts never run in the cloud. Past 100 skills in one folder, or 32 MiB in total, skills are dropped with little or no notice. A plugin is the only route that delivers the whole skill on both lanes.",
+      "tier": "binary",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": true,
+      "sources": {
+        "lessons": [
+          197
+        ],
+        "state_page": "plugins-skills-hooks"
+      },
+      "caveats": [
+        "The cloud behaviour is controlled by a server-side mode that was set to stubs at the 2026-09-23 capture; it also supports off and full copies.",
+        "The local-lane conclusion rests on how the desktop configures the agent, not on a live run."
+      ]
+    },
+    {
       "caveats": [
         "The pinned value was measured in the environment; the refusal behaviour at that depth is read from the shipped agent, not exercised in the remote sandbox."
       ],

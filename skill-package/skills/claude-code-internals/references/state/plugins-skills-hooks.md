@@ -3,7 +3,7 @@ domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194]
+sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197]
 updated: 2026-09-23
 ---
 
@@ -59,6 +59,26 @@ guidance is appended to the main and sub-agent prompts, with
 append takes effect. Observed: 30 of 31 recent Cowork runs on one machine
 (nearly all one scheduled task) were offered `mcp__memory__memory_list`/
 `_read` and no write tool; none called a memory tool.
+
+## Skills in a user's folder (L197)
+
+**Local Cowork:** a connected folder's `.claude/skills` is not loaded as far as
+the code shows — the local spawn passes `settingSources:["user"]`, and project
+skills load only with `projectSettings` (agent symbols matched by shape).
+Ship skills in a plugin.
+
+**Cloud Cowork with a granted local folder** (from Desktop 1.44121.1): the
+Desktop scans `<folder>/.claude/skills/*/SKILL.md` and uploads them to
+`/mnt/user-data/uploads/cowork-folders/<slug>-<hash>/.claude/skills/`. Mode gate
+`2877254163` is **`"stubs"`** at the 2026-09-23 capture: only the frontmatter
+survives, and the body becomes a notice to run the skill on the device via
+`device_bash`. Limits: 100 skills per folder (the only one surfaced, via
+`onFolderSkillsCapped`), `SKILL.md` ≤ 1 MiB, frontmatter ≤ 8 KiB with no
+control characters, 32 MiB per folder (that skill and all after it skipped);
+`full` mode also drops a whole skill over 4 MiB per asset or 64 files. Blocked
+by managed `strictPluginOnlyCustomization` (`true` or including `"skills"`),
+failing closed. From 2.7032.0 the folder's `.claude/CLAUDE.md` and
+`.claude/rules/**/*.md` are staged too (gate `4018447017`).
 
 ## Plugin agent frontmatter restrictions
 

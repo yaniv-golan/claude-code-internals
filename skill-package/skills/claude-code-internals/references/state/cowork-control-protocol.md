@@ -3,7 +3,7 @@ domain: cowork-control-protocol
 title: Cowork spawn + stream-json control protocol (current)
 as_of_cli: 2.1.231
 as_of_desktop: 1.30096.1
-sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124, 129, 130, 152, 193]
+sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124, 129, 130, 152, 193, 196]
 updated: 2026-09-23
 ---
 
@@ -263,6 +263,19 @@ in-VM agent 2.1.205:
   Decode with `tail -c +9 fcache | gunzip`. Raw `grep`/`strings` against
   the file — the technique used through v2.26.0 — no longer works and
   will falsely report gates as absent.
+
+## New agent→host system frames (agent 2.1.275+, L196)
+
+All `type:"system"`, all 0 in 2.1.260: `peer_message_hold` (a cross-session
+`SendMessage` message held/released/dropped by the receiver's inbound policy;
+informational, no host approval through it), `turn_preempted` (rapid follow-up;
+needs `initialize.rapidFollowupPreempt:true` + flag `tengu_zippy_spindle`,
+default off), `turn_handoff_available` (a cloud worker offers a turn handoff),
+`dev_intent` (`ios_app`/`android_app` — the only one Desktop 2.7032.0 consumes,
+for its iOS Simulator entry point). A Remote Control session also receives
+`<wake reason="external-event"><event source="session-inbox" …>` notifications,
+read with the `FetchInboxMessage` tool, enabled only while Remote Control is
+active.
 
 ## Compaction subtypes
 

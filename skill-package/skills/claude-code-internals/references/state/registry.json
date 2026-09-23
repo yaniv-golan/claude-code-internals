@@ -7923,10 +7923,13 @@
       "first_seen": "2.1.275",
       "removed_in": null,
       "as_of": "2.1.280",
-      "summary": "New tool, absent in 2.1.260, present in 2.1.275 and 2.1.280. Not in the official CHANGELOG; behaviour not traced this pass.",
+      "summary": "Reads one message relayed into a Remote Control session's inbox from a linked chat or Claude Code project thread, by the file_id in a <wake reason=\"external-event\"><event source=\"session-inbox\" kind=\"message.received\"> notification. Enabled only while Remote Control is active (replBridgeActive or a supervised bridge session); org enablement enforced server-side. Read-only, no permission prompt. Relayed content is untrusted except a from=\"rc_owner\" envelope (the verified machine owner). Absent in 2.1.260, present from 2.1.275. Not in the official CHANGELOG.",
       "provenance": [
         {
           "lesson": 191
+        },
+        {
+          "lesson": 196
         }
       ]
     },
@@ -7960,10 +7963,13 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.280",
-      "summary": "Set by the Desktop Cowork spawn from 2.2553.1: JSON {v:1,servers:[{server:'host:<name>',tools}]} granting frame artifacts access to named host tools, capped at 50 servers x 200 tools. Agent-side consumption not traced.",
+      "summary": "Set by the Desktop Cowork spawn from 2.2553.1, only for interactive plain Cowork sessions with frame artifacts on (not scheduled, bridge, dispatch-child, unattended or HIPAA-restricted): JSON {v:1,servers:[{server:'host:<name>',tools}]}, at most 50 servers x 200 tools. Read by the agent from 2.1.275 in the Artifact tool's publish path: undeclared host: servers/tools are dropped with a warning, an unreadable grant refuses any host: declaration, a redeploy carrying ungranted tools is refused; absent = no filtering. The Desktop side of the channel it limits is gate 2864556627 (off).",
       "provenance": [
         {
           "lesson": 194
+        },
+        {
+          "lesson": 195
         }
       ]
     },
@@ -7997,6 +8003,198 @@
         },
         {
           "lesson": 190
+        }
+      ]
+    },
+    {
+      "id": "gate.2864556627",
+      "kind": "gate",
+      "name": "2864556627 (artifact host-tools bridge)",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "Master switch qV() for Desktop's ArtifactHostTools bridge: a rendered Artifact page (claude-page:host-tools-hello, MessageChannelMain port) may call local MCP servers via LocalMcpServerManager.callTool, with 8 in flight, 30/min, destructive-tool confirmation. Every call refused with capability_disabled while off. Code present since at least Desktop 1.46388.4; served off (defaultValue) at the 2026-09-23 capture.",
+      "provenance": [
+        {
+          "lesson": 195
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "f82df085d027eff0"
+      }
+    },
+    {
+      "id": "gate.3229517805",
+      "kind": "gate",
+      "name": "3229517805 (artifact sharing / host-tools config)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "Value gate for Cowork Artifacts: sharingEnabled (default false; gates getArtifactRepublishContent), mcpCallsPerMinute (default 30), debugLogEnabled, verifyToolsEnabled. At the 2026-09-23 capture it serves {debugLogEnabled:true, verifyToolsEnabled:true} with no sharingEnabled.",
+      "provenance": [
+        {
+          "lesson": 195
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": true,
+        "at": "f82df085d027eff0"
+      }
+    },
+    {
+      "id": "gate.2877254163",
+      "kind": "gate",
+      "name": "2877254163 (folder-skill staging mode)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "Mode for staging <folder>/.claude/skills into a cloud Cowork session granted a local folder: off | stubs | full. stubs uploads only a rewritten SKILL.md (frontmatter kept, body replaced by a pointer to run the skill on the device via device_bash). From Desktop 1.44121.1. 'stubs' (force, fr_mtkk8tfg) at the 2026-09-23 capture.",
+      "provenance": [
+        {
+          "lesson": 197
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "f82df085d027eff0"
+      }
+    },
+    {
+      "id": "gate.1603637451",
+      "kind": "gate",
+      "name": "1603637451 (folder-skill staging limits override)",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "Overrides the folder-skill staging limits (maxSkillsPerFolder 1-1000, folderBudgetBytes up to 256 MiB, etc.); defaults 100 skills, 1 MiB SKILL.md, 8 KiB frontmatter, 4 MiB asset, 64 files, 32 MiB per folder. Absent from the 2026-09-23 capture, so the defaults apply.",
+      "provenance": [
+        {
+          "lesson": 197
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "f82df085d027eff0"
+      }
+    },
+    {
+      "id": "gate.4018447017",
+      "kind": "gate",
+      "name": "4018447017 (remote-folder .claude context staging)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "From Desktop 2.7032.0: stages a granted folder's .claude/CLAUDE.md and .claude/rules/**/*.md into a cloud Cowork session (50 files, 8 MiB total, 4 MiB each), on top of gate 144158705. On (defaultValue) at the 2026-09-23 capture.",
+      "provenance": [
+        {
+          "lesson": 197
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": true,
+        "at": "f82df085d027eff0"
+      }
+    },
+    {
+      "id": "gate.144158705",
+      "kind": "gate",
+      "name": "144158705 (remote-folder root CLAUDE.md staging)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "Stages a granted folder's root CLAUDE.md into a cloud Cowork session; present since at least Desktop 1.18286.2. On (defaultValue) at the 2026-09-23 capture.",
+      "provenance": [
+        {
+          "lesson": 197
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": true,
+        "at": "f82df085d027eff0"
+      }
+    },
+    {
+      "id": "proto.peer_message_hold",
+      "kind": "control-subtype",
+      "name": "peer_message_hold",
+      "status": "live",
+      "first_seen": "2.1.275",
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "type:system frame (agent 2.1.275+): a cross-session SendMessage message was held/released/dropped under the receiver's crossSessionInbound / permission-mode policy; fields state, lane, from, cause, outcome. Informational only; not consumed by Desktop 2.7032.0. Announced 2.1.271.",
+      "provenance": [
+        {
+          "lesson": 196
+        }
+      ]
+    },
+    {
+      "id": "proto.turn_preempted",
+      "kind": "control-subtype",
+      "name": "turn_preempted",
+      "status": "live",
+      "first_seen": "2.1.275",
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "type:system frame (agent 2.1.275+): a rapid follow-up preempted the current turn; requires initialize.rapidFollowupPreempt:true and flag tengu_zippy_spindle (default off). Not set by Desktop 2.7032.0. Unannounced.",
+      "provenance": [
+        {
+          "lesson": 196
+        }
+      ]
+    },
+    {
+      "id": "proto.turn_handoff_available",
+      "kind": "control-subtype",
+      "name": "turn_handoff_available",
+      "status": "live",
+      "first_seen": "2.1.275",
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "type:system frame (agent 2.1.275+): a cloud worker offers to hand the turn off ({v:1, tools, worker_epoch, staged_files?}). Not consumed by Desktop 2.7032.0. Unannounced.",
+      "provenance": [
+        {
+          "lesson": 196
+        }
+      ]
+    },
+    {
+      "id": "proto.dev_intent",
+      "kind": "control-subtype",
+      "name": "dev_intent",
+      "status": "live",
+      "first_seen": "2.1.275",
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "type:system frame (agent 2.1.275+): kind ios_app/android_app plus trigger; Desktop 2.7032.0 stores it as devIntents (cap 16) for its iOS Simulator entry point. Unannounced.",
+      "provenance": [
+        {
+          "lesson": 196
         }
       ]
     }

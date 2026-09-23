@@ -310,6 +310,12 @@
         "plugins-and-plugin-root",
         1
       ]
+    ],
+    "197": [
+      [
+        "plugins-and-plugin-root",
+        1
+      ]
     ]
   },
   "by_state_page": {
@@ -360,7 +366,7 @@
     "plugins-skills-hooks": [
       [
         "plugins-and-plugin-root",
-        10
+        11
       ],
       [
         "asking-the-user",
@@ -410,6 +416,7 @@
     "paths.uploads-location-differs-by-lane": "files-and-paths#fact-paths-uploads-location-differs-by-lane",
     "paths.uploads-read-only": "files-and-paths#fact-paths-uploads-read-only",
     "plugins.description-is-the-trigger": "plugins-and-plugin-root#fact-plugins-description-is-the-trigger",
+    "plugins.folder-skills-are-not-a-channel": "plugins-and-plugin-root#fact-plugins-folder-skills-are-not-a-channel",
     "plugins.hook-exports-do-not-cross": "plugins-and-plugin-root#fact-plugins-hook-exports-do-not-cross",
     "plugins.hooks-do-fire": "plugins-and-plugin-root#fact-plugins-hooks-do-fire",
     "plugins.install-through-the-app": "plugins-and-plugin-root#fact-plugins-install-through-the-app",
