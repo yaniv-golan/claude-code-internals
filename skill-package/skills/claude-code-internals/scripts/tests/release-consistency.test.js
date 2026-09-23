@@ -190,23 +190,84 @@ test('the plugin manifest version matches version.json', () => {
   );
 });
 
+// Require the claim to exist (a regex that stops matching must fail loudly,
+// not be silently skipped) and check every occurrence, not just the first —
+// `.match()` without /g only inspects the first hit in the whole file, so a
+// SECOND, stale restatement of the same claim elsewhere in the doc would
+// never be checked. Every regex passed in here must carry the /g flag.
+const requireEveryMatch = (label, re, expected, describe) => {
+  assert.ok(re.global, `${label}: regex ${re} is missing the /g flag needed to check every occurrence`);
+  const matches = [...readText(DOCS[label]).matchAll(re)];
+  assert.ok(matches.length > 0, `${label}: no "${describe}" stamp found matching ${re} — reworded or removed?`);
+  for (const m of matches) {
+    assert.strictEqual(
+      m[1], expected,
+      `${label} ${describe} ${m[1]} but expected ${expected}`,
+    );
+  }
+};
+
 test('docs that pin a "captured from" CLI version pin the current one', () => {
   // Only the explicit capture claims — not the many historical "verified against
   // v2.1.x" mentions, which are legitimately about older binaries.
   const captured = version.captured_version;
   const claims = [
-    ['README.md', /\*\*Captured from:\*\*\s*Claude Code v(2\.1\.\d+)/],
-    ['README.md', /currently v(2\.1\.\d+)\)/],
-    ['SKILL.md', /differs from v(2\.1\.\d+)\./],
+    ['README.md', /\*\*Captured from:\*\*\s*Claude Code v(2\.1\.\d+)/g],
+    ['README.md', /currently v(2\.1\.\d+)\)/g],
+    ['SKILL.md', /differs from v(2\.1\.\d+)\./g],
   ];
   for (const [label, re] of claims) {
-    const m = readText(DOCS[label]).match(re);
-    if (!m) continue;
-    assert.strictEqual(
-      m[1], captured,
-      `${label} pins CLI v${m[1]} but version.json captured_version is ${captured}`,
-    );
+    requireEveryMatch(label, re, captured, 'pins CLI v');
   }
+});
+
+test('docs that pin the skill version pin the current one', () => {
+  // Same shape as the "captured from" CLI-version test above, but for the
+  // skill_version stamps — the pinning the plugin.json test (above) already
+  // checks against version.json, but only the README copies drift silently.
+  // At v2.49.8 the root README's four stamps (the banner line, the file-tree
+  // comment, the version.json example block, and the "what this fork adds"
+  // changelog line) sat stale at 2.46.12. Only the specific pinned forms below
+  // count; README legitimately mentions other version numbers (CLI 2.1.x,
+  // asar/Mach-O 1.x/2.1.x, historical skill versions in prose like
+  // "Chapter 9 ... v2.1.90"), so this does NOT do a broad x.y.z scan.
+  //
+  // skill-package/README.md is NOT in this list: it used to pin its own stale
+  // "Skill Version: 2.0.0" banner, untouched since the very first release, and
+  // rather than keep a second stamp in sync forever, that file now points at
+  // version.json instead of restating the number — see the dedicated negative
+  // test below, which guards that a pin doesn't creep back in unchecked.
+  const expected = version.skill_version;
+  const claims = [
+    ['README.md', /\*\*Skill Version:\*\*\s*(\d+\.\d+\.\d+)/g],
+    ['README.md', /Version tracking \(v(\d+\.\d+\.\d+)/g],
+    ['README.md', /"skill_version":\s*"(\d+\.\d+\.\d+)"/g],
+    ['README.md', /v2\.2\.0.v(\d+\.\d+\.\d+),/g],
+  ];
+  for (const [label, re] of claims) {
+    requireEveryMatch(label, re, expected, 'pins skill version');
+  }
+});
+
+test('the README version.json example\'s captured_date matches version.json', () => {
+  // The root README's "Version Tracking" section shows a literal json example
+  // of version.json's shape. Its captured_date drifted to 2026-08-05 while
+  // version.json's real captured_date moved to 2026-08-14 — nothing checked
+  // that the illustrative example still matched the real file.
+  requireEveryMatch('README.md', /"captured_date":\s*"(\d{4}-\d{2}-\d{2})"/g, version.captured_date, 'shows example captured_date');
+});
+
+test('skill-package/README.md does not restate a skill-version or captured-from pin', () => {
+  // It used to carry its own "Skill Version: 2.0.0 | Captured from: Claude
+  // Code v2.1.88 | Date: 2026-03-31" banner that nothing ever updated after
+  // the very first release, plus several more v2.1.88 mentions in prose, a
+  // directory diagram, and a JSON example. All of those now point readers at
+  // version.json instead of restating a number that will go stale again.
+  // This is a negative check, not a "pins the current one" check, so that a
+  // pinned version can't creep back in unchecked.
+  const text = readText(DOCS['skill-package/README.md']);
+  assert.ok(!/\*\*Skill Version:\*\*/.test(text), 'skill-package/README.md restates a **Skill Version:** pin — point it at version.json instead');
+  assert.ok(!/Captured from:/.test(text), 'skill-package/README.md restates a Captured from: pin — point it at version.json instead');
 });
 
 test('the hook-event count is stated consistently across docs', () => {

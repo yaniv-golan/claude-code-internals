@@ -2,7 +2,7 @@
 
 > A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 189 lessons covering every internal subsystem, searchable three ways.
 
-**Skill Version:** 2.0.0 | **Captured from:** Claude Code v2.1.88 | **Date:** 2026-03-31 | **License:** MIT
+**License:** MIT | Version and capture details: see [`skills/claude-code-internals/version.json`](skills/claude-code-internals/version.json)
 
 ---
 
@@ -342,7 +342,7 @@ The skill then reads the matched section with exact line offsets and synthesizes
 
 2. **Use natural language when keywords don't work.** If "compaction" doesn't find what you need, try "what happens when Claude runs out of context space" — the TF-IDF layer handles fuzzy matching.
 
-3. **Know its limits.** This is captured from Claude Code **v2.1.88**. If Claude Code has updated, some internals may have changed. The `check-version.sh` script detects this automatically.
+3. **Know its limits.** This is captured from a specific Claude Code build — see `version.json`'s `captured_version` for the exact one. If Claude Code has updated since, some internals may have changed. The `check-version.sh` script detects this automatically.
 
 ## Smart Features (v2.0)
 
@@ -367,7 +367,7 @@ The skill automatically warns when Claude Code has updated past the captured ver
 ```bash
 bash scripts/check-version.sh
 # Silent if versions match
-# Warns: "captured from v2.1.88 but you are running vX.Y.Z"
+# Warns: "captured from vA.B.C but you are running vX.Y.Z"
 ```
 
 ### Troubleshooting Index
@@ -429,7 +429,7 @@ claude-code-internals-skill/
 |
 +-- skill-package/                  Mirror of installed skill
 |   +-- SKILL.md                    Skill brain (search strategy + topic index)
-|   +-- version.json                Version tracking (v2.1.88)
+|   +-- version.json                Version tracking (see file)
 |   +-- hooks-config.json           PreToolUse hook definition
 |   +-- references/                 Source material
 |   |   +-- 01-core-architecture-tools.md
@@ -491,13 +491,13 @@ The zip is exactly `skill-package/skills/claude-code-internals/`, so it does **n
 
 ```json
 {
-  "captured_version": "2.1.88",
-  "captured_date": "2026-03-31",
+  "captured_version": "x.y.z",
+  "captured_date": "YYYY-MM-DD",
   "source": "https://www.markdown.engineering/learn-claude-code/"
 }
 ```
 
-When Claude Code updates beyond v2.1.88, the internals knowledge may be stale. To update:
+See `version.json` for the real, current values of the fields above. When Claude Code updates beyond the pinned `captured_version`, the internals knowledge may be stale. To update:
 
 1. Re-download lessons from the source
 2. Replace the files in `references/`
