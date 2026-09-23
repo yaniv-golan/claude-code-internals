@@ -1348,10 +1348,106 @@ ${ANALYTICS}
   return { emitted, days, band };
 }
 
+// --- skill-side link map ----------------------------------------------------
+//
+// The installed skill never ships the site, so the scripts that print a
+// "Skill-author page:" footer (fetch-lesson.js, state.js) need their own copy of
+// which lesson / state page / fact lands on which site page. It is DERIVED from
+// the same author-facts.json the pages are built from and written into the skill
+// package; site-links.test.js asserts the committed file equals a fresh rebuild.
+
+const SITE_LINKS_PATH = path.join(REPO_ROOT, 'skill-package/skills/claude-code-internals/references/site-links.json');
+const TOPIC_INDEX_PATH = path.join(REPO_ROOT, 'skill-package/skills/claude-code-internals/references/topic-index.json');
+
+/**
+ * Build the { base, by_lesson, by_state_page, by_fact } map. by_lesson and
+ * by_state_page map each key to [slug, citations] pairs — how many facts on
+ * that page cite the lesson / state page — ordered by citations descending,
+ * ties by slug, so site-links.js can pick the dominant page rather than
+ * falling back to the hub whenever a lesson is cited from more than two pages.
+ * Output order is fixed (keys ascending — numerically for lessons), so the
+ * serialized file is byte-stable across runs.
+ *
+ * Lesson citations are resolved against topic-index.json by `id`, the key
+ * fetch-lesson.js looks lessons up by. topic-index carries a second numbering
+ * (`lesson_number`) that diverges from `id` for L1-L50; a citation whose two
+ * numbers disagree throws rather than emit a link fetch-lesson.js would print
+ * under the wrong lesson.
+ */
+function buildSiteLinks(doc, topicIndex) {
+  const lessonsById = new Map((topicIndex.lessons || []).map(l => [l.id, l]));
+  const byLesson = new Map();
+  const byStatePage = new Map();
+  const byFact = {};
+  const add = (map, key, slug) => {
+    if (!map.has(key)) map.set(key, new Map());
+    const w = map.get(key);
+    w.set(slug, (w.get(slug) || 0) + 1);
+  };
+  for (const f of doc.facts) {
+    const src = f.sources || {};
+    for (const n of new Set(src.lessons || [])) {
+      const l = lessonsById.get(n);
+      if (!l) throw new Error(`fact "${f.id}" cites lesson ${n}, which has no topic-index entry with id ${n}`);
+      if (l.lesson_number !== undefined && String(l.lesson_number) !== String(n)) {
+        throw new Error(`fact "${f.id}" cites lesson ${n}, but topic-index id ${n} is lesson_number ` +
+          `"${l.lesson_number}" — the two numberings disagree, so the link would attach to the wrong lesson`);
+      }
+      add(byLesson, n, f.page);
+    }
+    if (src.state_page) add(byStatePage, src.state_page, f.page);
+    // Volatile facts render on current-state as a list with no per-fact anchor.
+    byFact[f.id] = f.durability === 'volatile' ? f.page : `${f.page}#${factAnchor(f)}`;
+  }
+  const sorted = (map, cmp) => {
+    const out = {};
+    for (const k of [...map.keys()].sort(cmp)) {
+      out[String(k)] = [...map.get(k)]
+        .sort(([a, na], [b, nb]) => nb - na || (a < b ? -1 : a > b ? 1 : 0));
+    }
+    return out;
+  };
+  const factOut = {};
+  for (const k of Object.keys(byFact).sort()) factOut[k] = byFact[k];
+  return {
+    base: `${ORIGIN}/${SECTION}/`,
+    by_lesson: sorted(byLesson, (a, b) => a - b),
+    by_state_page: sorted(byStatePage),
+    by_fact: factOut,
+  };
+}
+
+function serializeSiteLinks(links) {
+  return JSON.stringify(links, null, 2) + '\n';
+}
+
+function writeSiteLinks(doc, dest = SITE_LINKS_PATH) {
+  const topicIndex = JSON.parse(fs.readFileSync(TOPIC_INDEX_PATH, 'utf8'));
+  let links;
+  try {
+    links = buildSiteLinks(doc, topicIndex);
+  } catch (e) {
+    die(`site-links: ${e.message}`);
+  }
+  fs.writeFileSync(dest, serializeSiteLinks(links));
+  console.log(`  site-links: ${Object.keys(links.by_lesson).length} lessons, ` +
+    `${Object.keys(links.by_state_page).length} state pages, ${Object.keys(links.by_fact).length} facts ` +
+    `-> ${path.relative(REPO_ROOT, dest)}`);
+  return links;
+}
+
 if (require.main === module) {
   const i = process.argv.indexOf('--out');
   const out = i > -1 ? path.resolve(process.argv[i + 1]) : path.join(REPO_ROOT, 'site', 'dist');
   build(out);
+  // Only the default repo build refreshes the tracked skill-side map. A
+  // `--out <dir>` build (CI's lint pass, a scratch preview) must not rewrite a
+  // committed file as a side effect; site-links.test.js compares the committed
+  // copy against an in-memory rebuild, so staleness still fails the tests.
+  if (i === -1) writeSiteLinks(load().doc);
 }
 
-module.exports = { build, SITE_URL, SECTION };
+module.exports = {
+  build, SITE_URL, SECTION, factAnchor, buildSiteLinks, serializeSiteLinks,
+  SITE_LINKS_PATH, TOPIC_INDEX_PATH,
+};

@@ -1,5 +1,47 @@
 # Changelog
 
+## v2.49.8 — 2026-09-23 (this fork) — skill answers now link the matching ccinternals.dev page
+
+No new lessons; counts stay 189/51. A Cowork skill-authoring answer now ends with a link to
+the ccinternals.dev page that covers it, and the link is printed by the scripts rather than chosen by the model.
+
+- **`references/site-links.json`** (new, generated). `site/generator/build.js` derives it from
+  `references/state/author-facts.json` — `base`, `by_lesson`, `by_state_page`, `by_fact` (anchors via the same
+  `factAnchor` the pages use) — and writes it into the skill package, since the installed skill never ships the site.
+  Lesson citations resolve by topic-index `id`, the key `fetch-lesson.js` uses; a citation whose `id` and
+  `lesson_number` disagree (the L1–L50 dual numbering) fails the build instead of linking the wrong lesson.
+- **Footer.** `fetch-lesson.js` and `state.js` print `Skill-author page: <url>?ref=skill` when the lesson or matched
+  state page is mapped. `by_lesson` / `by_state_page` carry `[slug, citations]` pairs (how many facts on that page
+  cite the key, ordered by citations then slug), and the footer links the dominant page — the top page when it holds
+  a strict majority and at least twice the runner-up, else a clear top two, else the `/cowork/` hub; never more than
+  two. So L116 links `detecting-cowork`, L138 `delivering-outputs`, L140 `files-and-paths`, L122 `files-and-paths` +
+  `sub-agents`, and only an evenly split lesson such as L174 prints the hub. `state.js` links only matched state
+  pages: a registry entry names no author fact, and joining through its provenance lesson would link, e.g., every
+  L108 env-catalog entry to `shell-commands`. Unmapped items, `--meta`, `--list` and `--json` output are unchanged;
+  a missing or invalid `base` prints no footer. Only the default `build.js` run rewrites `site-links.json`; a
+  `--out <dir>` build leaves it alone.
+- **Author-facts citations.** Five `plugins.*` facts (hooks fire, install through the app, hook exports do not
+  cross, plugin files are mounted, plugin root per consumer) cite L89, whose "Plugin hooks in Cowork sessions"
+  section holds the three-root namespace, the in-VM probe table and the host-loop vs VM-loop resolution; the plugin
+  root fact also cites L122, where file tools never expand the token. `shell.python-stack-is-preinstalled` cites
+  L145, which records the preinstalled Python 3.10.12 stack (149 packages).
+- **Lesson pointers.** L117 (`28-vm-rootfs-forensics.md`) and its `topic-index.json` summary name Ch26/L109 as
+  the source of the first `.claude/skills` rootfs mount-unit finding (`23-cowork-spaces-tasks-checkpointing.md`).
+- **`SKILL.md`.** Step 7 tells the skill to end such answers with `Read more: <url>` exactly as printed, `?ref=skill`
+  included, keeping only the page(s) printed for the lesson or state page that most directly answers the question
+  (at most two), and to put that line in the answer it returns verbatim, because it runs forked and the parent relays
+  only what it returns. A fallback topic table (one row per real page, full `?ref=skill` URLs) sits in Gotchas for
+  answers where no script ran.
+- **Guards.** `scripts/tests/site-links.test.js`: the committed file equals a fresh rebuild byte for byte; every slug
+  in the map and every `/cowork/<slug>/` URL in `SKILL.md` is a real page slug (one assertion per item); every
+  `by_fact` anchor equals `factAnchor(id)` and exists in the built HTML; every weight equals its citation count;
+  positive control 139 → `deleting-files`; `fetch-lesson.js` pins 116/138/140/89 to their dominant page, 122 to its
+  top two and 174 to the hub, and the hooks lesson prints none; `state.js` prints nothing for
+  `proto.get_session_cost`, `env.CLAUDE_UPDATER_TOKEN`, `compact` and `effort`, and only `plugins-and-plugin-root`
+  for `hooks`; the id/`lesson_number` guard, the `base` guard and the `--out` no-write rule each have a test; every
+  concrete URL in `SKILL.md` ends in `?ref=skill`. `site-links.json` is pinned in `check-json-format.js` (indent 2,
+  trailing newline).
+
 ## v2.49.7 — 2026-09-22 (this fork) — a third surface Desktop calls "cloud"
 
 No new lessons; counts stay 189/51. Author-facts 64 → 66. Reported by the `founder-skills` project: a Desktop

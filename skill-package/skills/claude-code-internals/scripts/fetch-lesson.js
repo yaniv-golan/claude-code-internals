@@ -15,6 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadSiteLinks, lessonFooter } = require('./site-links.js');
 
 const SKILL_DIR = path.resolve(__dirname, '..');
 const TOPIC_INDEX = path.join(SKILL_DIR, 'references', 'topic-index.json');
@@ -109,6 +110,13 @@ function fetchContent(lesson) {
   return lines.slice(start, end).join('\n');
 }
 
+/** "Skill-author page:" footer lines for a lesson (empty when unmapped); see site-links.js lessonFooter. */
+function siteFooter(lesson) {
+  const r = lessonFooter(loadSiteLinks(REF_DIR), lesson);
+  if (r.error) process.stderr.write(`Error: ${r.error}\n`);
+  return r.lines;
+}
+
 function printList(lessons) {
   const byFile = {};
   for (const l of lessons) {
@@ -178,6 +186,8 @@ try {
   console.log(`# Lesson ${lesson.id}: ${lesson.title}`);
   console.log(`# Source: ${lesson.file} L${lesson.startLine}–${lesson.endLine}\n`);
   console.log(content);
+  const footer = siteFooter(lesson);
+  if (footer.length) console.log('\n' + footer.join('\n'));
 } catch (e) {
   process.stderr.write(`Error: ${e.message}\n`);
   process.exit(1);

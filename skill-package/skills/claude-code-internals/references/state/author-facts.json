@@ -711,7 +711,7 @@
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          104,
+          89,
           116
         ],
         "state_page": "plugins-skills-hooks"
@@ -729,7 +729,7 @@
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          104
+          89
         ],
         "state_page": "plugins-skills-hooks"
       },
@@ -749,7 +749,7 @@
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          104
+          89
         ],
         "state_page": "plugins-skills-hooks"
       },
@@ -783,7 +783,7 @@
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          104,
+          89,
           140
         ],
         "state_page": "plugins-skills-hooks"
@@ -802,7 +802,8 @@
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          104,
+          89,
+          122,
           124
         ],
         "state_page": "plugins-skills-hooks"
@@ -926,7 +927,7 @@
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          117
+          145
         ],
         "state_page": "cowork-architecture"
       },

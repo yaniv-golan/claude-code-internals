@@ -1,0 +1,423 @@
+{
+  "base": "https://ccinternals.dev/cowork/",
+  "by_lesson": {
+    "88": [
+      [
+        "plugins-and-plugin-root",
+        1
+      ]
+    ],
+    "89": [
+      [
+        "plugins-and-plugin-root",
+        5
+      ]
+    ],
+    "108": [
+      [
+        "shell-commands",
+        1
+      ]
+    ],
+    "115": [
+      [
+        "sub-agents",
+        2
+      ]
+    ],
+    "116": [
+      [
+        "detecting-cowork",
+        7
+      ],
+      [
+        "shell-commands",
+        3
+      ],
+      [
+        "plugins-and-plugin-root",
+        1
+      ],
+      [
+        "what-can-change-under-you",
+        1
+      ]
+    ],
+    "117": [
+      [
+        "files-and-paths",
+        1
+      ]
+    ],
+    "121": [
+      [
+        "sub-agents",
+        2
+      ]
+    ],
+    "122": [
+      [
+        "files-and-paths",
+        3
+      ],
+      [
+        "sub-agents",
+        2
+      ],
+      [
+        "detecting-cowork",
+        1
+      ],
+      [
+        "plugins-and-plugin-root",
+        1
+      ]
+    ],
+    "124": [
+      [
+        "plugins-and-plugin-root",
+        1
+      ],
+      [
+        "shell-commands",
+        1
+      ]
+    ],
+    "126": [
+      [
+        "plugins-and-plugin-root",
+        1
+      ]
+    ],
+    "129": [
+      [
+        "plugins-and-plugin-root",
+        1
+      ]
+    ],
+    "134": [
+      [
+        "sub-agents",
+        1
+      ]
+    ],
+    "138": [
+      [
+        "delivering-outputs",
+        7
+      ],
+      [
+        "what-can-change-under-you",
+        2
+      ],
+      [
+        "current-state",
+        1
+      ],
+      [
+        "files-and-paths",
+        1
+      ],
+      [
+        "plugins-and-plugin-root",
+        1
+      ],
+      [
+        "shell-commands",
+        1
+      ]
+    ],
+    "139": [
+      [
+        "deleting-files",
+        6
+      ],
+      [
+        "files-and-paths",
+        2
+      ]
+    ],
+    "140": [
+      [
+        "files-and-paths",
+        5
+      ],
+      [
+        "plugins-and-plugin-root",
+        2
+      ],
+      [
+        "shell-commands",
+        1
+      ]
+    ],
+    "141": [
+      [
+        "what-can-change-under-you",
+        6
+      ]
+    ],
+    "142": [
+      [
+        "what-can-change-under-you",
+        2
+      ]
+    ],
+    "143": [
+      [
+        "files-and-paths",
+        1
+      ]
+    ],
+    "144": [
+      [
+        "files-and-paths",
+        1
+      ]
+    ],
+    "145": [
+      [
+        "shell-commands",
+        3
+      ]
+    ],
+    "146": [
+      [
+        "shell-commands",
+        2
+      ],
+      [
+        "files-and-paths",
+        1
+      ],
+      [
+        "sub-agents",
+        1
+      ]
+    ],
+    "147": [
+      [
+        "asking-the-user",
+        1
+      ]
+    ],
+    "151": [
+      [
+        "detecting-cowork",
+        1
+      ]
+    ],
+    "163": [
+      [
+        "files-and-paths",
+        1
+      ],
+      [
+        "sub-agents",
+        1
+      ]
+    ],
+    "164": [
+      [
+        "files-and-paths",
+        1
+      ],
+      [
+        "sub-agents",
+        1
+      ]
+    ],
+    "167": [
+      [
+        "what-can-change-under-you",
+        1
+      ]
+    ],
+    "168": [
+      [
+        "delivering-outputs",
+        1
+      ]
+    ],
+    "170": [
+      [
+        "sub-agents",
+        1
+      ]
+    ],
+    "173": [
+      [
+        "plugins-and-plugin-root",
+        2
+      ]
+    ],
+    "174": [
+      [
+        "detecting-cowork",
+        2
+      ],
+      [
+        "delivering-outputs",
+        1
+      ],
+      [
+        "files-and-paths",
+        1
+      ],
+      [
+        "plugins-and-plugin-root",
+        1
+      ],
+      [
+        "sub-agents",
+        1
+      ],
+      [
+        "what-can-change-under-you",
+        1
+      ]
+    ],
+    "175": [
+      [
+        "delivering-outputs",
+        1
+      ]
+    ],
+    "176": [
+      [
+        "delivering-outputs",
+        1
+      ]
+    ],
+    "177": [
+      [
+        "delivering-outputs",
+        1
+      ]
+    ]
+  },
+  "by_state_page": {
+    "cowork-architecture": [
+      [
+        "delivering-outputs",
+        9
+      ],
+      [
+        "what-can-change-under-you",
+        9
+      ],
+      [
+        "files-and-paths",
+        8
+      ],
+      [
+        "shell-commands",
+        8
+      ],
+      [
+        "detecting-cowork",
+        7
+      ],
+      [
+        "sub-agents",
+        7
+      ],
+      [
+        "deleting-files",
+        4
+      ],
+      [
+        "current-state",
+        1
+      ],
+      [
+        "plugins-and-plugin-root",
+        1
+      ]
+    ],
+    "cowork-permissions": [
+      [
+        "deleting-files",
+        2
+      ]
+    ],
+    "plugins-skills-hooks": [
+      [
+        "plugins-and-plugin-root",
+        9
+      ],
+      [
+        "asking-the-user",
+        1
+      ]
+    ]
+  },
+  "by_fact": {
+    "change.detect-at-use": "what-can-change-under-you#fact-change-detect-at-use",
+    "change.mid-session": "what-can-change-under-you#fact-change-mid-session",
+    "change.never-assert-on-prompt-wording": "what-can-change-under-you#fact-change-never-assert-on-prompt-wording",
+    "change.no-version-bump": "what-can-change-under-you#fact-change-no-version-bump",
+    "change.refuse-rather-than-degrade": "what-can-change-under-you#fact-change-refuse-rather-than-degrade",
+    "change.served-not-shipped": "what-can-change-under-you#fact-change-served-not-shipped",
+    "change.state-your-assumptions": "what-can-change-under-you#fact-change-state-your-assumptions",
+    "change.tool-names-are-not-stable": "what-can-change-under-you#fact-change-tool-names-are-not-stable",
+    "change.your-own-skill-can-be-cut": "what-can-change-under-you#fact-change-your-own-skill-can-be-cut",
+    "delete.approval-interrupts-the-user": "deleting-files#fact-delete-approval-interrupts-the-user",
+    "delete.approval-is-per-mount": "deleting-files#fact-delete-approval-is-per-mount",
+    "delete.cross-mount-moves-fail": "deleting-files#fact-delete-cross-mount-moves-fail",
+    "delete.deny-set": "deleting-files#fact-delete-deny-set",
+    "delete.expect-self-escalation": "deleting-files#fact-delete-expect-self-escalation",
+    "delete.truncate-and-rename-permitted": "deleting-files#fact-delete-truncate-and-rename-permitted",
+    "delivery.act-not-location": "delivering-outputs#fact-delivery-act-not-location",
+    "delivery.capability-conditional": "delivering-outputs#fact-delivery-capability-conditional",
+    "delivery.name-the-path-anyway": "delivering-outputs#fact-delivery-name-the-path-anyway",
+    "delivery.narration-is-yours-to-write": "delivering-outputs#fact-delivery-narration-is-yours-to-write",
+    "delivery.never-commit-to-disk": "delivering-outputs#fact-delivery-never-commit-to-disk",
+    "delivery.no-local-server": "delivering-outputs#fact-delivery-no-local-server",
+    "delivery.presenting-copies-for-you": "delivering-outputs#fact-delivery-presenting-copies-for-you",
+    "delivery.remote-filesystem-discarded": "delivering-outputs#fact-delivery-remote-filesystem-discarded",
+    "delivery.two-lanes": "delivering-outputs#fact-delivery-two-lanes",
+    "detect.branch-on-tools": "detecting-cowork#fact-detect-branch-on-tools",
+    "detect.markers-come-and-go": "detecting-cowork#fact-detect-markers-come-and-go",
+    "detect.naive-env-check-false-negatives": "detecting-cowork#fact-detect-naive-env-check-false-negatives",
+    "detect.ordered-recipe": "detecting-cowork#fact-detect-ordered-recipe",
+    "detect.plugin-may-be-absent": "detecting-cowork#fact-detect-plugin-may-be-absent",
+    "detect.remote-sandbox-is-one-context": "detecting-cowork#fact-detect-remote-sandbox-is-one-context",
+    "detect.two-contexts": "detecting-cowork#fact-detect-two-contexts",
+    "input.elicitation-over-askuserquestion": "asking-the-user#fact-input-elicitation-over-askuserquestion",
+    "paths.connected-folders-are-mounts": "files-and-paths#fact-paths-connected-folders-are-mounts",
+    "paths.projects-differ-from-folders": "files-and-paths#fact-paths-projects-differ-from-folders",
+    "paths.relative-filenames": "files-and-paths#fact-paths-relative-filenames",
+    "paths.scratch-is-not-delivered": "files-and-paths#fact-paths-scratch-is-not-delivered",
+    "paths.session-paths-denied": "files-and-paths#fact-paths-session-paths-denied",
+    "paths.skills-are-a-read-only-mount": "files-and-paths#fact-paths-skills-are-a-read-only-mount",
+    "paths.uploads-location-differs-by-lane": "files-and-paths#fact-paths-uploads-location-differs-by-lane",
+    "paths.uploads-read-only": "files-and-paths#fact-paths-uploads-read-only",
+    "plugins.description-is-the-trigger": "plugins-and-plugin-root#fact-plugins-description-is-the-trigger",
+    "plugins.hook-exports-do-not-cross": "plugins-and-plugin-root#fact-plugins-hook-exports-do-not-cross",
+    "plugins.hooks-do-fire": "plugins-and-plugin-root#fact-plugins-hooks-do-fire",
+    "plugins.install-through-the-app": "plugins-and-plugin-root#fact-plugins-install-through-the-app",
+    "plugins.mcp-servers-run-on-the-users-machine": "plugins-and-plugin-root#fact-plugins-mcp-servers-run-on-the-users-machine",
+    "plugins.mounts-are-read-only": "plugins-and-plugin-root#fact-plugins-mounts-are-read-only",
+    "plugins.plugin-files-are-mounted": "plugins-and-plugin-root#fact-plugins-plugin-files-are-mounted",
+    "plugins.plugin-root-per-consumer": "plugins-and-plugin-root#fact-plugins-plugin-root-per-consumer",
+    "plugins.ship-a-launcher": "plugins-and-plugin-root#fact-plugins-ship-a-launcher",
+    "plugins.skill-dir-is-body-text": "plugins-and-plugin-root#fact-plugins-skill-dir-is-body-text",
+    "shell.home-is-the-session": "shell-commands#fact-shell-home-is-the-session",
+    "shell.inline-execution-disabled": "shell-commands#fact-shell-inline-execution-disabled",
+    "shell.no-arbitrary-network": "shell-commands#fact-shell-no-arbitrary-network",
+    "shell.no-package-installs": "shell-commands#fact-shell-no-package-installs",
+    "shell.python-stack-is-preinstalled": "shell-commands#fact-shell-python-stack-is-preinstalled",
+    "shell.runs-as-its-own-user": "shell-commands#fact-shell-runs-as-its-own-user",
+    "shell.sealed-environment": "shell-commands#fact-shell-sealed-environment",
+    "shell.tool-is-not-the-cli-tool": "shell-commands#fact-shell-tool-is-not-the-cli-tool",
+    "state.container-agent-range": "current-state",
+    "subagents.name-the-type": "sub-agents#fact-subagents-name-the-type",
+    "subagents.no-nesting-in-the-remote-sandbox": "sub-agents#fact-subagents-no-nesting-in-the-remote-sandbox",
+    "subagents.no-resume": "sub-agents#fact-subagents-no-resume",
+    "subagents.same-containment": "sub-agents#fact-subagents-same-containment",
+    "subagents.self-contained-prompts": "sub-agents#fact-subagents-self-contained-prompts",
+    "subagents.tolerate-limits": "sub-agents#fact-subagents-tolerate-limits",
+    "subagents.working-directory": "sub-agents#fact-subagents-working-directory"
+  }
+}

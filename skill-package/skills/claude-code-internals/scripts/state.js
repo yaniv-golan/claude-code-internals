@@ -21,6 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 const { parseFrontmatter } = require('./validate-state.js');
+const { loadSiteLinks, footerLines, mergeWeights, slugsForStatePage } = require('./site-links.js');
 
 const DEFAULT_REFS = path.join(__dirname, '..', 'references');
 
@@ -54,6 +55,27 @@ function lookup(refsDir, query) {
     pages: pages.filter(p =>
       p.domain.toLowerCase().includes(q) || p.title.toLowerCase().includes(q)),
   };
+}
+
+/**
+ * "Skill-author page:" footer for a lookup result: the ccinternals.dev page(s)
+ * that dominate the matched state pages (by domain), after the shared selection
+ * rule in site-links.js.
+ *
+ * Registry entries contribute nothing. Their only link to author-facts would be
+ * through `provenance` lessons, and a lesson is far broader than one entry: L108
+ * alone is the provenance of dozens of env-catalog and control-protocol entries,
+ * so joining through it links `proto.get_session_cost` to a shell-commands page
+ * it has nothing to do with. author-facts.json has no field naming a registry
+ * entry, so there is no direct evidence to link an entry on — and by_lesson is
+ * deliberately never read here, which also means the topic-index id vs
+ * lesson_number mismatch that fetch-lesson.js guards against has no path into
+ * this script's output.
+ */
+function siteFooter(refsDir, r) {
+  const links = loadSiteLinks(refsDir);
+  if (!links) return [];
+  return footerLines(links, mergeWeights(...r.pages.map(p => slugsForStatePage(links, p.domain))));
 }
 
 /**
@@ -96,7 +118,7 @@ function audit(refsDir) {
   return { baseline, stale, ahead };
 }
 
-module.exports = { lookup, audit, cmpVersion };
+module.exports = { lookup, audit, cmpVersion, siteFooter };
 
 if (require.main === module) {
   const argv = process.argv.slice(2);
@@ -139,4 +161,5 @@ if (require.main === module) {
     console.log(`[page] ${p.domain} — ${p.title} (as of CLI ${p.as_of_cli})`);
     console.log(`    ${p.path}`);
   }
+  for (const line of siteFooter(refsDir, r)) console.log(line);
 }

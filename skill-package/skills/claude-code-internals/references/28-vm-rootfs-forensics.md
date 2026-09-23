@@ -1,4 +1,4 @@
-Updated: 2026-07-04 | Source: Direct forensic inspection of three **local, already-downloaded** artifacts on a machine with Claude Desktop installed — Claude.app (Desktop) `app.asar` **1.18286.0**, the staged in-VM agent ELF `claude-code-vm/2.1.197/claude`, and (newly used in this chapter) the **golden VM guest disk image itself**, `~/Library/Application Support/Claude/vm_bundles/claudevm.bundle/rootfs.img` (a ~10 GB raw, unencrypted ext4 image). No live Cowork session was required — the image retains leftover `systemd-journald` binary log entries from real past sessions run on this machine. Companion chapter to Ch21/L104 (which first suggested grepping `rootfs.img` for `.mount` unit names) and to the `cowork-architecture.md` state page (which this chapter's findings feed into).
+Updated: 2026-07-04 | Source: Direct forensic inspection of three **local, already-downloaded** artifacts on a machine with Claude Desktop installed — Claude.app (Desktop) `app.asar` **1.18286.0**, the staged in-VM agent ELF `claude-code-vm/2.1.197/claude`, and (newly used in this chapter) the **golden VM guest disk image itself**, `~/Library/Application Support/Claude/vm_bundles/claudevm.bundle/rootfs.img` (a ~10 GB raw, unencrypted ext4 image). No live Cowork session was required — the image retains leftover `systemd-journald` binary log entries from real past sessions run on this machine. Companion chapter to Ch26/L109 (which first suggested grepping `rootfs.img` for `.mount` unit names) and to the `cowork-architecture.md` state page (which this chapter's findings feed into).
 
 # Chapter 31: VM Rootfs Forensics — The Mount Inventory, Session-Slug Format, and `coworkd`
 
@@ -17,7 +17,7 @@ Updated: 2026-07-04 | Source: Direct forensic inspection of three **local, alrea
 A prior investigation (probe reasoning about Cowork's host/VM filesystem split) claimed: the VM
 shell's home directory and the file-tool-visible `outputs/` mount are architecturally different
 kinds of things — not merely "not currently shared" but structurally incapable of being shared —
-while `outputs/` (and a handful of sibling paths) are genuinely bridged. Ch21/L104 and the
+while `outputs/` (and a handful of sibling paths) are genuinely bridged. Ch26/L109 and the
 `cowork-architecture.md` state page already asserted the *behavior* (home/tmp vanish at session
 end; only `outputs/`, `uploads/`, and `.claude/skills` are known to be real systemd mounts, the
 last one confirmed by a single verbatim unit-name grep). This chapter pins down the *complete*
@@ -39,7 +39,7 @@ image sitting on the host disk, so host tools can grep it directly without mount
 the VM, or having a live session. Two things make it useful:
 
 - **Static content**: any file baked into the golden image (systemd unit files, scripts) is
-  literal text in the image, greppable the same way L104 found the `.claude/skills` mount unit.
+  literal text in the image, greppable the same way L109 found the `.claude/skills` mount unit.
 - **Leftover dynamic content**: this image is not reset between every session on a real machine —
   it retains `systemd-journald` binary log entries (the `MESSAGE=`/`UNIT=`/`INVOCATION_ID=`
   journal export format) from real historical sessions, including their actual session slugs,
@@ -54,7 +54,7 @@ first.
 
 ## Part B — the mount inventory
 
-Grepping `rootfs.img` for the systemd unit-name pattern `mnt-*.mount` (extending L104's single
+Grepping `rootfs.img` for the systemd unit-name pattern `mnt-*.mount` (extending L109's single
 verified example, `.claude-skills`) surfaces the **complete** set of host-shared mount points:
 
 ```
@@ -232,7 +232,7 @@ activity that a fresh code-read of the shipping binaries can never show you. Too
 at this scale: prefer `rg` over `grep -a` or naive scripting-language regex for multi-GB scans —
 the difference was roughly 15–20x in this investigation.
 
-**Cross-references.** Ch21/L104 (first `.claude/skills` mount-unit grep, methodology origin) ·
+**Cross-references.** Ch26/L109 (first `.claude/skills` mount-unit grep, methodology origin) ·
 `cowork-architecture.md` state page (Filesystem & mounts, Plugin roots sections — this chapter's
 findings are folded in there) · Ch24/L107 (`/sessions/<id>` path pattern, host-loop tool
 partition) · Ch20/L89 (host-loop plugin staging, `claude-hostloop-plugins/<hash>`) · Ch26/L109

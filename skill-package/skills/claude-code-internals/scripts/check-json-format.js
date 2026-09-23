@@ -58,6 +58,7 @@ const PINNED = {
   'semantic-index.json':       { indent: 2, trailingNewline: false }, // written by build-rvf-index.js
   'state/registry.json':       { indent: 2, trailingNewline: true },
   'state/author-facts.json':   { indent: 2, trailingNewline: true },
+  'site-links.json':           { indent: 2, trailingNewline: true }, // written by site/generator/build.js
 };
 
 function listJson(dir, base = '') {
