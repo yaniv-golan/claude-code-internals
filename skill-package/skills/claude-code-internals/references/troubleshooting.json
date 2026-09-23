@@ -2091,7 +2091,7 @@
    "lessons": [
     194
    ],
-   "hint": "From Desktop 2.2553.1, when gate 946844604 is on (force-ON at the 2026-09-23 capture), the account is first-party and not HIPAA-restricted, the Cowork spawn installs its own cloud memory relay under the MCP server name 'memory', replaces a server configured under that name (e.g. mcpServers.memory in claude_desktop_config.json) and adds 'memory' to deniedMcpServers. Rename your server. Whether plugin-declared servers (named plugin:<plugin>:<server>) are affected is not established."
+   "hint": "From Desktop 2.2553.1, when gate 946844604 is on (force-ON at the 2026-09-23 capture), the account is first-party and not HIPAA-restricted, the Cowork spawn installs its own cloud memory relay under the MCP server name 'memory', replaces a server configured under that name (e.g. mcpServers.memory in claude_desktop_config.json) and adds 'memory' to deniedMcpServers. Rename your server. Plugin-declared servers are not affected: the agent keys them plugin:<plugin>:<server>, so they run next to the relay."
   },
   {
    "pattern": [

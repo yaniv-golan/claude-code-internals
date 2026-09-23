@@ -221,3 +221,11 @@ Two single values separate the three cloud surfaces: `CLAUDE_CODE_ENTRYPOINT` (`
 - **In cloud Cowork a pathless search walks the agent's own credential directory.** The home contains `.claude/remote/.oauth_token` and `.session_ingress_token`, and a bare `Grep` listed them among its matches. A skill that searches without a path can put the names, and potentially the contents, of session credentials into the conversation.
 - **Claude Code on the web acts on a real repository.** In this run the agent committed the probe files and pushed them to a new branch without being asked, to clear a hook's untracked-files warning. Probing there has side effects outside the session.
 
+## Other things the probe showed
+
+- **The ordered detection recipe (L116) needs its last refinement.** Cloud Cowork's shell sets `CLAUDECODE=1` and `CLAUDE_CODE_ENTRYPOINT=remote_cowork` but not `CLAUDE_CODE_IS_COWORK`, and has no `/sessions`. A recipe that stops at "`CLAUDECODE` set, so the CLI" misreads it; checking the entry point (`remote_cowork` / `remote` / other) separates cloud Cowork, Claude Code on the web and the CLI.
+- **Local Cowork's shell can list other sessions' folder names.** `ls /sessions` from one session printed three other session slugs. Each session runs as its own Unix user (L117), and this probe did not test whether their contents are readable.
+- **Local Cowork's VM has a `claude` binary on its path** (`claude --version` → 2.1.280), even in host-loop, where the agent itself runs on the host.
+- **Cloud Cowork was offered the memory write tools.** Its tool list included `memory_write`, `memory_str_replace` and `memory_append`, where local Cowork sessions on the same account were offered only read and list (L194). One observation; the cloud lane's agent is configured server-side, not by the Desktop.
+- **`CLAUDE_CODE_VERSION=2.1.42` appears on Claude Code on the web too**, not only in cloud Cowork: it is runner metadata on both, never the agent's build (L174).
+

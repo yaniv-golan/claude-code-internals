@@ -1,5 +1,25 @@
 # Changelog
 
+## v2.52.1 — 2026-09-23 (this fork) — the detection recipe misread cloud Cowork; plugin `memory` servers are safe
+
+No new lessons; counts stay 198/53.
+
+- **Corrected: `detect.ordered-recipe`.** Its last step read "`CLAUDECODE` set, so this is the CLI". The v2.52.0
+  probe found that cloud Cowork's shell sets `CLAUDECODE=1` but not `CLAUDE_CODE_IS_COWORK`, and has no
+  `/sessions`, so the recipe misread cloud Cowork as the CLI. It now refines by `CLAUDE_CODE_ENTRYPOINT`:
+  `remote_cowork` is cloud Cowork, `remote` is Claude Code on the web, and anything else is the CLI. The same
+  change is made on the architecture state page.
+- **Corrected: `detect.remote-sandbox-is-one-context`.** It said the runtime markers are visible from the
+  remote shell. `CLAUDECODE` and the entrypoint are visible; `CLAUDE_CODE_IS_COWORK` is not.
+- **Resolved: plugin `memory` servers (L194).** A plugin that ships an MCP server named `memory` is not displaced
+  by the cloud memory relay. The agent keys plugin servers as `plugin:<plugin>:<server>`, and the
+  `deniedMcpServers` check compares the exact key. Only a server configured as `memory` in
+  `claude_desktop_config.json` is replaced. Updated in `plugins.server-named-memory`, the plugins state page, the
+  registry and troubleshooting. This comes from reading the shipped code, not from a live run.
+- **L198** gains the probe's side findings. Local Cowork's shell can list other sessions' folder names; a
+  `claude` binary is on the local VM's PATH; cloud Cowork was offered the memory write tools; and
+  `CLAUDE_CODE_VERSION=2.1.42` appears on Claude Code on the web too.
+
 ## v2.52.0 — 2026-09-23 (this fork) — one probe, four surfaces
 
 Adds L198 to Chapter 53; counts move to 198/53. The same seven-step probe was run on local Cowork, Cowork in the

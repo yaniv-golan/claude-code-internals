@@ -5914,7 +5914,9 @@
         "4018447017",
         "my plugin memory server does not start in Cowork",
         "claude_desktop_config memory server",
-        "hipaa_restricted"
+        "hipaa_restricted",
+        "plugin:<plugin>:<server>",
+        "deniedMcpServers exact key"
       ]
     },
     {
@@ -6003,7 +6005,7 @@
       "lesson_number": "198",
       "file": "50-artifact-host-tools-inbox-folder-skills.md",
       "startLine": 182,
-      "endLine": 223,
+      "endLine": 231,
       "keywords": [
         "four-surfaces",
         "surface-fingerprint",
@@ -20722,6 +20724,12 @@
     ],
     "which surface am I on": [
       198
+    ],
+    "plugin:<plugin>:<server>": [
+      194
+    ],
+    "deniedMcpServers exact key": [
+      194
     ]
   }
 }

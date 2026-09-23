@@ -525,14 +525,15 @@
       "id": "detect.ordered-recipe",
       "page": "detecting-cowork",
       "rule": "Detect the runtime with an ordered sequence of checks, not a single environment test.",
-      "detail": "Run three checks in order. First, is `CLAUDE_CODE_IS_COWORK` set — if so you are in Cowork. Otherwise, is the working directory under `/sessions/` — that catches the shell context, where the marker is absent. Otherwise, is `CLAUDECODE` set — that is the CLI. Each step only adds coverage and a later one never contradicts an earlier one, so a missing marker should fall through rather than fail.",
+      "detail": "Run three checks in order. First, is `CLAUDE_CODE_IS_COWORK` set — if so you are in Cowork. Otherwise, is the working directory under `/sessions/` — that catches the shell context, where the marker is absent. Otherwise, is `CLAUDECODE` set — then it is Claude Code, and `CLAUDE_CODE_ENTRYPOINT` says which: `remote_cowork` is Cowork running in the cloud, `remote` is Claude Code on the web, and anything else is the CLI. Skipping that last refinement misreads a cloud Cowork session as the CLI, because its shell sets `CLAUDECODE` but not `CLAUDE_CODE_IS_COWORK`. Each step only adds coverage and a later one never contradicts an earlier one, so a missing marker should fall through rather than fail.",
       "tier": "measured",
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          116
+          116,
+          198
         ],
         "state_page": "cowork-architecture"
       },
@@ -1373,21 +1374,23 @@
     },
     {
       "caveats": [
-        "One remote session, one account, relayed from another project's instrumented run. The local-sandbox half of this rule is the long-measured one."
+        "One remote session, one account, relayed from another project's instrumented run. The local-sandbox half of this rule is the long-measured one.",
+        "Re-measured 2026-09-23 on a cloud Cowork session: the shell showed CLAUDECODE=1, CLAUDE_CODE_ENTRYPOINT=remote_cowork and CLAUDE_CODE_REMOTE=true, and no CLAUDE_CODE_IS_COWORK."
       ],
       "volatile_dependency": false,
       "durability": "durable",
       "id": "detect.remote-sandbox-is-one-context",
       "page": "detecting-cowork",
       "rule": "Expect the two-context split, and the missing shell markers, only in the local sandbox.",
-      "detail": "In the remote sandbox the shell and the file tools share one filesystem and one working directory, and the runtime markers are visible from the shell — the opposite of the local sandbox, where the shell is sealed. The ordered recipe still terminates correctly, but its early branches answer differently per sandbox: a skill that reads 'the markers are absent from the shell' as a universal fact, and treats their presence as proof it is not in Cowork, concludes wrongly in exactly the sandbox new sessions may default to. The remote sandbox does set its own distinct entry-point marker, but that value is served and has changed before; treat it as one check in the sequence, not the answer.",
+      "detail": "In the remote sandbox the shell and the file tools share one filesystem and one working directory, and some runtime markers are visible from the shell — `CLAUDECODE` and the entry-point marker, but not `CLAUDE_CODE_IS_COWORK` — the opposite of the local sandbox, where the shell is sealed. The ordered recipe still terminates correctly, but its early branches answer differently per sandbox: a skill that reads 'the markers are absent from the shell' as a universal fact, and treats their presence as proof it is not in Cowork, concludes wrongly in exactly the sandbox new sessions may default to. The remote sandbox does set its own distinct entry-point marker, but that value is served and has changed before; treat it as one check in the sequence, not the answer.",
       "tier": "measured",
       "severity": "silent",
       "lane": "remote",
       "sources": {
         "lessons": [
+          116,
           174,
-          116
+          198
         ],
         "state_page": "cowork-architecture"
       }
@@ -1419,8 +1422,8 @@
     {
       "id": "plugins.server-named-memory",
       "page": "plugins-and-plugin-root",
-      "rule": "Do not name an MCP server `memory` for Cowork.",
-      "detail": "Current Cowork desktop builds install their own server under that name, backed by the user's cloud memory. A server configured under the same name — for example the reference memory server added as `memory` in the desktop application's MCP configuration — is replaced by it, and the name is added to the denied-servers list, so yours never starts. The only trace is a line in the desktop application's log, not anything the model or the user sees. Pick a distinctive name; the replacement keys on the exact name.",
+      "rule": "Do not name a server `memory` in the desktop application's MCP configuration; a plugin's own `memory` server is safe.",
+      "detail": "Current Cowork desktop builds install their own server under the name `memory`, backed by the user's cloud memory. A server configured under that same name in the desktop application's MCP configuration — a common name for the reference memory server — is replaced by it, and never starts. The only trace is a line in the desktop application's log. A server that ships inside a plugin is not affected, because plugin servers are loaded under a name that includes the plugin's, so it runs next to the cloud one. Its tools are distinct from the built-in memory tools, but the model now sees two sets of memory tools; a distinctive name avoids that confusion.",
       "tier": "binary",
       "severity": "silent",
       "durability": "durable",
@@ -1433,8 +1436,8 @@
         "state_page": "plugins-skills-hooks"
       },
       "caveats": [
-        "The replacement happens only when the cloud memory server is switched on, which is gated server-side (on at the 2026-09-23 capture) and requires a first-party account that is not HIPAA-restricted. Whether a server declared inside a plugin is affected is not established: the agent gives plugin servers a prefixed name that an exact-name match would not obviously hit.",
-        "Observed on one machine: 30 of 31 recent Cowork runs, nearly all one scheduled task, were offered the cloud server's read and list tools."
+        "The replacement happens only when the cloud memory server is switched on, which is gated server-side (on at the 2026-09-23 capture) and requires a first-party account that is not HIPAA-restricted.",
+        "The plugin case is established from the shipped code, not a live run."
       ]
     },
     {

@@ -385,7 +385,12 @@ the host/VM bridge — neither can serve as a probe.
 
 Reliable recipe (ordered): `$CLAUDE_CODE_IS_COWORK` set → cowork (host-side or
 VM-loop); cwd under `/sessions/<id>` → cowork VM shell (host-loop); `$CLAUDECODE
-= 1` → Claude Code CLI (refine via `CLAUDE_CODE_ENTRYPOINT`); else → other
+= 1` → Claude Code, refined via `CLAUDE_CODE_ENTRYPOINT` — **measured
+2026-09-23 (L198):** `remote_cowork` = Cowork in the cloud (its shell has
+`CLAUDECODE=1` but **no** `CLAUDE_CODE_IS_COWORK` and no `/sessions`, so
+without this refinement the recipe calls it the CLI), `remote` = Claude Code
+on the web, `local-agent` = local Cowork's agent context, otherwise the CLI;
+no `CLAUDECODE` and no `claude` binary → e.g. a claude.ai chat; else → other
 harness. Content-side, branch on the tool surface: plain `Bash` vs
 `mcp__workspace__bash`. The old host→VM env allowlist (`MGn`, asar v1.6259.1)
 is gone from the 1.18286.0 asar — the sealed-env fact rests on the empirical

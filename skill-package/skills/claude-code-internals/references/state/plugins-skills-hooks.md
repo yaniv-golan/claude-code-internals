@@ -49,9 +49,11 @@ It is on when gate `946844604` is on (force-ON at the 2026-09-23
 capture), the account is first-party and not HIPAA-restricted. When it is
 on, a server configured under the same name (e.g. `mcpServers.memory` in
 `claude_desktop_config.json`) is **replaced** (only a Desktop-log warning)
-and `memory` is added to `deniedMcpServers`. Whether a plugin-declared
-server (agent-side name `plugin:<plugin>:<server>`) is affected is not
-established. Read and list are always pre-approved; all six when the
+and `memory` is added to `deniedMcpServers`. A **plugin**-declared server
+named `memory` is **not** affected: plugin servers reach the agent via
+`--plugin-dir` and are keyed `plugin:<plugin>:<server>`, and the deny
+matcher compares the exact key. The deny entry blocks only a non-SDK
+server loaded under the plain key `memory` (`.mcp.json`, `--mcp-config`). Read and list are always pre-approved; all six when the
 session has a live memory project binding, and a write still needs a
 verified binding that admits writes at call time. Its
 guidance is appended to the main and sub-agent prompts, with
