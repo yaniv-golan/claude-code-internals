@@ -3,7 +3,7 @@ domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194]
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198]
 updated: 2026-09-23
 ---
 
@@ -595,6 +595,23 @@ and the plugin's `scripts/`, `agents/` and `plugin.json` hooks do not exist.
 observed case hand-wrote every sub-agent hand-off, graded its own checklist, dispatched no adversary,
 ran no gates, and shipped a report indistinguishable from a checked one. Published as the site rules
 `detect.plugin-may-be-absent` and `change.refuse-rather-than-degrade`.
+
+## Four surfaces, one probe (L198, 2026-09-23, first-party)
+
+The same probe on each surface an agent can receive a skill on:
+
+| | Cowork local | Cowork cloud | Claude Code on the web | claude.ai chat |
+|---|---|---|---|---|
+| `CLAUDE_CODE_ENTRYPOINT` (shell) | not visible (sealed) | `remote_cowork` | `remote` | unset |
+| shell `pwd` / `$HOME` | `/sessions/<slug>` / same | `/home/claude` / `/root` | `/home/user/<repo>` / `/root` | `/` / `/root` |
+| `claude` binary | 2.1.280 | 2.1.280 | 2.1.280 | absent |
+| relative `Write` | **refused** | written to `/home/claude` (not shown to the user) | written to the repo | **refused** by `create_file` |
+| `Write /var/empty/x` | refused | written | written | written |
+| pathless Glob/Grep | re-anchored to outputs | walks `/home/claude`, incl. `.claude/remote/` token files | the repo | no search tools |
+| outputs location named in the prompt | host outputs path | `/mnt/user-data/outputs` | none (the repo) | `/mnt/user-data/outputs` |
+
+Discriminators: `CLAUDE_CODE_ENTRYPOINT` (`remote_cowork` vs `remote` vs unset) and whether a
+`claude` binary exists. `/mnt/user-data` is on all three cloud surfaces.
 
 ## Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
 

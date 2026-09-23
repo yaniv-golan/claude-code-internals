@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.52.0 — 2026-09-23 (this fork) — one probe, four surfaces
+
+Adds L198 to Chapter 53; counts move to 198/53. The same seven-step probe was run on local Cowork, Cowork in the
+cloud, Claude Code on the web, and a claude.ai chat. The local run was checked against the machine's transcript
+and Desktop log; the other three are pasted tool output.
+
+- **Telling the surfaces apart.** `CLAUDE_CODE_ENTRYPOINT` is `remote_cowork` in cloud Cowork, `remote` in
+  Claude Code on the web, and unset in chat, where there is also no `claude` binary. Local Cowork's shell is the
+  sealed `/sessions/<slug>`, where the slug is also the user name and `$HOME`.
+- **Relative paths.** A relative `Write` is refused in local Cowork and in chat. In cloud Cowork it is written to
+  `/home/claude`, which is never shown to the user. In Claude Code on the web it is written to the repository.
+- **Search with no folder.** It searches the outputs folder in local Cowork, the whole container home in cloud
+  Cowork (including `.claude/remote/.oauth_token` and `.session_ingress_token`), and the repository on the web.
+  Chat has no search tools. New author fact `paths.always-pass-a-search-path`.
+- The earlier probe whose working directory was `/home/claude` is now identified as cloud Cowork.
+- The architecture state page gains a four-surface table, and troubleshooting a surface-identification entry.
+
 ## v2.51.0 — 2026-09-23 (this fork) — artifacts that call local tools, a Remote Control inbox, folder skills
 
 Adds Chapter 53 (L195–L197); counts move to 197/53. Traces the three leads v2.50.0 left open, first-party against

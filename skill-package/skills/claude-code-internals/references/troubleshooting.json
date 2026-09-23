@@ -2154,6 +2154,19 @@
     197
    ],
    "hint": "Local Cowork loads user settings only, so a connected folder's .claude/skills does not load. A cloud Cowork session granted a local folder gets the folder's skills as stubs (gate 2877254163 = stubs): frontmatter only, body replaced by a pointer to run on the device via device_bash. Ship skills in a plugin."
+  },
+  {
+   "pattern": [
+    "which surface am I running on",
+    "cloud Cowork vs Claude Code web",
+    "remote_cowork vs remote",
+    "pwd /home/claude",
+    "relative path written but user cannot see it"
+   ],
+   "lessons": [
+    198
+   ],
+   "hint": "Check CLAUDE_CODE_ENTRYPOINT in the shell: remote_cowork = Cowork in the cloud (cwd /home/claude, outputs /mnt/user-data/outputs), remote = Claude Code on the web (cwd = the repo), unset with no claude binary = claude.ai chat, not visible with cwd /sessions/<slug> = local Cowork. A relative Write is refused locally and in chat, lands in /home/claude (never shown) in cloud Cowork, and in the repo on the web."
   }
  ]
 }

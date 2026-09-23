@@ -298,7 +298,7 @@
     "190": [
       [
         "files-and-paths",
-        3
+        4
       ],
       [
         "sub-agents",
@@ -316,6 +316,12 @@
         "plugins-and-plugin-root",
         1
       ]
+    ],
+    "198": [
+      [
+        "files-and-paths",
+        1
+      ]
     ]
   },
   "by_state_page": {
@@ -325,12 +331,12 @@
         9
       ],
       [
-        "what-can-change-under-you",
+        "files-and-paths",
         9
       ],
       [
-        "files-and-paths",
-        8
+        "what-can-change-under-you",
+        9
       ],
       [
         "shell-commands",
@@ -407,6 +413,7 @@
     "detect.remote-sandbox-is-one-context": "detecting-cowork#fact-detect-remote-sandbox-is-one-context",
     "detect.two-contexts": "detecting-cowork#fact-detect-two-contexts",
     "input.elicitation-over-askuserquestion": "asking-the-user#fact-input-elicitation-over-askuserquestion",
+    "paths.always-pass-a-search-path": "files-and-paths#fact-paths-always-pass-a-search-path",
     "paths.connected-folders-are-mounts": "files-and-paths#fact-paths-connected-folders-are-mounts",
     "paths.projects-differ-from-folders": "files-and-paths#fact-paths-projects-differ-from-folders",
     "paths.relative-filenames": "files-and-paths#fact-paths-relative-filenames",

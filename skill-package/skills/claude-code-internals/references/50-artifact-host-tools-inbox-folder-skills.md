@@ -11,6 +11,7 @@ Follow-up to Chapter 52: the three leads it left open, traced to the end.
 195. [Lesson 195 — Rendered Artifacts Can Call Local MCP Tools, Behind a Switch That Is Off](#lesson-195--rendered-artifacts-can-call-local-mcp-tools)
 196. [Lesson 196 — `FetchInboxMessage` and the Remote Control Session Inbox](#lesson-196--fetchinboxmessage-and-the-remote-control-session-inbox)
 197. [Lesson 197 — Skills From a Granted Folder Are Staged Into Cloud Sessions as Stubs](#lesson-197--skills-from-a-granted-folder-are-staged-as-stubs)
+198. [Lesson 198 — One Probe, Four Surfaces: What a Relative Path Means Where](#lesson-198--one-probe-four-surfaces)
 
 ---
 
@@ -175,3 +176,48 @@ A second pass, gate `4018447017` (on), stages the folder's `.claude/CLAUDE.md` a
 - **A project's `.claude/skills` reaches a cloud Cowork session only as a stub**, and only when the user grants that folder to the session. The model sees your frontmatter; it does not see the body, and it cannot run your scripts in the cloud. Write a `description` that lets the model decide to use the skill from the frontmatter alone.
 - **Keep under the limits.** Past 100 skills in one folder, or past 32 MiB in total, skills disappear without a message.
 - **Local Cowork does not load a connected folder's `.claude/skills` at all** as far as the code shows: the local spawn passes `settingSources:["user"]`, and the agent loads project skills only when `projectSettings` is among its sources. This rests on agent symbols matched by shape rather than traced to one chunk; ship skills in a plugin if they must work in local Cowork.
+
+---
+
+# LESSON 198 — ONE PROBE, FOUR SURFACES
+
+**The same seven-step probe, run on the four places a Claude agent can be handed a skill, gives four different answers to "where does a relative path go". Only local Cowork refuses it. The fingerprint in step 0 tells the surfaces apart without guessing.**
+
+Run on 2026-09-23 from one account: local Cowork (Desktop 2.7032.0), Cowork running in the cloud, Claude Code on the web, and a claude.ai chat with code execution. Local Cowork was checked against the machine's own transcript and Desktop log; the other three leave nothing on the machine, so their evidence is the pasted tool output.
+
+## The fingerprint
+
+| | Cowork, local | Cowork, cloud | Claude Code on the web | claude.ai chat |
+|---|---|---|---|---|
+| shell tool | `mcp__workspace__bash` | `Bash` | `Bash` | `bash_tool` |
+| shell `pwd` | `/sessions/<slug>` | `/home/claude` | `/home/user/<repo>` | `/` |
+| `$HOME` | `/sessions/<slug>` | `/root` | `/root` | `/root` |
+| `whoami` | `<slug>` (a per-session user) | `root` | `root` | `root` |
+| `ls /mnt` | nothing | `vm attach sandboxing skills user-data` | `vm attach sandboxing skills user-data` | same, plus `transcripts` |
+| `/root/.claude` | permission denied | present | present | absent |
+| `CLAUDE_CODE_ENTRYPOINT` | not visible (sealed shell, L116) | `remote_cowork` | `remote` | not set |
+| `CLAUDE_CODE_VERSION` | — | `2.1.42` (runner-set, not the agent, L174) | `2.1.42` | — |
+| `claude --version` | 2.1.280 | 2.1.280 | 2.1.280 | not installed |
+| file tools | Read/Write/Edit/Glob/Grep | Read/Write/Edit/Glob/Grep | Read/Write/Edit/Glob/Grep | `create_file`, `view`, `str_replace` (no search tools) |
+
+Two single values separate the three cloud surfaces: `CLAUDE_CODE_ENTRYPOINT` (`remote_cowork` vs `remote`, unset in chat) and the presence of a `claude` binary. `/mnt/user-data` exists on all three and identifies nothing (L174). Local Cowork's shell is the only one whose user and home are the session slug.
+
+## What each step did
+
+| step | Cowork, local | Cowork, cloud | Claude Code on the web | claude.ai chat |
+|---|---|---|---|---|
+| Write `probe-rel.md` | **refused**: "File is in a directory that is denied by your permission settings." | written to `/home/claude/probe-rel.md` | written to the repo root | **refused**: "Relative paths are not supported … files for the user belong under /mnt/user-data/outputs/" |
+| Read `probe-rel.md` | **refused** (same message) | read | read | **refused**: "not an absolute path. Run realpath …" |
+| Write `/var/empty/probe2.md` | **refused** | written | written | written |
+| where the model was told outputs go | the host outputs folder's absolute path | `/mnt/user-data/outputs` | no outputs folder; "the primary working directory" (the repo) | `/mnt/user-data/outputs` |
+| Glob `*.md`, no path | searched the outputs folder (re-anchored, L190) | searched `/home/claude`: 1,577 files, mostly package caches | searched the repo | no search tool |
+| Grep `x`, no path | searched the outputs folder | searched `/home/claude`, 250-file cap, including files under `.claude/remote/` | searched the repo | no search tool |
+
+## What this means for a skill
+
+- **A relative path is only safe in Claude Code on the web**, where it means the repo. In local Cowork it is refused; in a claude.ai chat it is refused; in cloud Cowork it lands in `/home/claude`, which is not the outputs location, so a deliverable written there is never shown to the user.
+- **The absolute outputs path each surface names is the one form that delivers everywhere it exists.** Local Cowork names a host path, cloud Cowork and chat name `/mnt/user-data/outputs`. Read it from the instructions; do not hard-code either.
+- **A pathless search means something different on each surface**: the outputs folder (local Cowork), the whole container home (cloud Cowork), the repo (web), and nothing at all (chat). Always pass a path.
+- **In cloud Cowork a pathless search walks the agent's own credential directory.** The home contains `.claude/remote/.oauth_token` and `.session_ingress_token`, and a bare `Grep` listed them among its matches. A skill that searches without a path can put the names, and potentially the contents, of session credentials into the conversation.
+- **Claude Code on the web acts on a real repository.** In this run the agent committed the probe files and pushed them to a new branch without being asked, to clear a hook's untracked-files warning. Probing there has side effects outside the session.
+

@@ -1352,6 +1352,26 @@
       }
     },
     {
+      "id": "paths.always-pass-a-search-path",
+      "page": "files-and-paths",
+      "rule": "Always give search tools an explicit folder.",
+      "detail": "A search with no folder means something different on every surface. In local Cowork it searches the outputs location; in a Cowork session running in the cloud it walks the whole container home, thousands of package-cache files and the agent's own credential directory included; in Claude Code on the web it searches the repository; in a claude.ai chat there are no search tools at all. Pass the folder you mean, usually the outputs location or a connected folder, and the result is the same everywhere.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          198,
+          190
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": [
+        "Measured once per surface on 2026-09-23, from one account."
+      ]
+    },
+    {
       "caveats": [
         "One remote session, one account, relayed from another project's instrumented run. The local-sandbox half of this rule is the long-measured one."
       ],

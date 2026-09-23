@@ -3781,6 +3781,28 @@
     "relevance": 0.6,
     "reason": "the local vs remote lanes"
    }
+  ],
+  "198": [
+   {
+    "id": 190,
+    "relevance": 0.9,
+    "reason": "the local-Cowork column, measured in depth"
+   },
+   {
+    "id": 174,
+    "relevance": 0.8,
+    "reason": "cloud lane facts: HOME=/root, CLAUDE_CODE_VERSION runner-set"
+   },
+   {
+    "id": 116,
+    "relevance": 0.7,
+    "reason": "runtime detection markers used as the fingerprint"
+   },
+   {
+    "id": 138,
+    "relevance": 0.6,
+    "reason": "the local and remote lanes"
+   }
   ]
  }
 }
