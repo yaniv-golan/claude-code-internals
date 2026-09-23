@@ -3,7 +3,7 @@ domain: cowork-control-protocol
 title: Cowork spawn + stream-json control protocol (current)
 as_of_cli: 2.1.231
 as_of_desktop: 1.30096.1
-sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124, 129, 130, 152, 193, 196]
+sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124, 129, 130, 152, 193, 196, 203]
 updated: 2026-09-23
 ---
 
@@ -276,6 +276,16 @@ for its iOS Simulator entry point). A Remote Control session also receives
 `<wake reason="external-event"><event source="session-inbox" …>` notifications,
 read with the `FetchInboxMessage` tool, enabled only while Remote Control is
 active.
+
+## Hook lifecycle frames are gated (L203)
+
+`hook_started`/`hook_progress`/`hook_response` are emitted only for
+`SessionStart` and `Setup` unless the agent runs with `--include-hook-events`
+(SDK `includeHookEvents`) or `CLAUDE_CODE_REMOTE`. Desktop 2.7032.0 never sets
+the option, so local Cowork streams show only `SessionStart` hooks.
+`stop_hook_summary` is built but never mapped into stream-json. A
+`hook_response` with `outcome:"error"` and no `exit_code` is an HTTP hook whose
+request failed outright.
 
 ## Compaction subtypes
 

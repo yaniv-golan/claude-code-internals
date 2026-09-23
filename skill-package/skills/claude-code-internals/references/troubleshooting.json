@@ -2167,6 +2167,66 @@
     198
    ],
    "hint": "Check CLAUDE_CODE_ENTRYPOINT in the shell: remote_cowork = Cowork in the cloud (cwd /home/claude, outputs /mnt/user-data/outputs), remote = Claude Code on the web (cwd = the repo), unset with no claude binary = claude.ai chat, not visible with cwd /sessions/<slug> = local Cowork. A relative Write is refused locally and in chat, lands in /home/claude (never shown) in cloud Cowork, and in the repo on the web."
+  },
+  {
+   "pattern": [
+    "plugin MCP server has no tools in Cowork",
+    "plugin MCP tools missing Cowork",
+    "Overriding with no-ops",
+    "cowork-plugin-mcp-shadow.json"
+   ],
+   "lessons": [
+    199
+   ],
+   "hint": "Search Desktop's main.log for 'Overriding with no-ops' and 'already provides it (matched by url)'. A local stdio plugin server gets real tools unless an MCP policy applies (it appears as '[LocalMcpServerManager] Connected to plugin:<p>:<s>'); a remote (http/sse) plugin server is stubbed to zero tools when gate 2529235968 is on and a claude.ai connector already provides it (every remote one in 1.37937.0-1.46388.x)."
+  },
+  {
+   "pattern": [
+    "--plugin-dir ignored",
+    "testing plugin but installed copy runs",
+    "plugin work tree not read",
+    "overrides installed version"
+   ],
+   "lessons": [
+    200
+   ],
+   "hint": "An enabled --plugin-dir copy replaces the installed plugin of the same exact, case-sensitive name (debug log only). The installed copy wins if the inline copy is disabled, managed settings lock it, disableSideloadFlags is set, or the names differ. Check init.plugins[].path, not source."
+  },
+  {
+   "pattern": [
+    "skill description missing from listing",
+    "skill listed by name only",
+    "skill not triggering on busy machine",
+    "skillListingBudgetFraction"
+   ],
+   "lessons": [
+    201
+   ],
+   "hint": "Budget = context window x chars/token (3 on current models, 4 on older) x 1%: about 30,000 chars on current first-party 1M-context models, 6,000-8,000 on 200k. Over it, non-bundled skills are ranked by recent use and packed first-fit; losers show by name only. Put trigger words in the name, shorten the description, or raise skillListingBudgetFraction."
+  },
+  {
+   "pattern": [
+    "hook did not fire in Cowork",
+    "only SessionStart hook events",
+    "hook_started missing",
+    "include-hook-events"
+   ],
+   "lessons": [
+    203
+   ],
+   "hint": "Local Cowork's stream only reports SessionStart/Setup hook frames; Desktop never passes --include-hook-events. Absence of other hook frames is the gate, not evidence the hook did not run."
+  },
+  {
+   "pattern": [
+    "claude --cloud",
+    "device hooks",
+    "register_device_hooks",
+    "hook cloud device"
+   ],
+   "lessons": [
+    202
+   ],
+   "hint": "claude --cloud can forward local hooks to a cloud session and run them on this machine. The hook field cloud: omitted = only hash-pinnable scripts outside the session's reach; 'device' = offered anyway (a session-written file can run); 'skip' = never. Needs consent in /hooks and account flags tengu_violin_wood+amati."
   }
  ]
 }

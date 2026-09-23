@@ -1,5 +1,38 @@
 # Changelog
 
+## v2.53.0 — 2026-09-23 (this fork) — plugin MCP stubs, plugin precedence, the skill-list budget, device hooks
+
+Adds Chapter 54 (L199–L203); counts move to 203/54. Other sessions working on neighbouring projects were asked for
+open leads; five of their leads are traced here. Each was re-derived first-party against `app.asar` 2.7032.0
+(with backups back to 1.18286.2), agent 2.1.241–2.1.280, and this machine's Desktop log, recorded session starts
+and audit logs.
+
+- **L199 — when a plugin's MCP server gets zero tools.** Desktop replaces a plugin server with a stub that lists no
+  tools in two cases. The first is an MCP policy, for local and `.mcpb` servers. The second is gate `2529235968`,
+  for remote http/sse servers: every such server in 1.37937.0–1.46388.x, and from 2.2553.1 only those a claude.ai
+  connector already provides. Plugins' local stdio servers get their real tools (observed with pdf-viewer through 2.7032.0). Remote ones are
+  replaced when a connector covers them, which this machine's Desktop log shows daily from 2026-09-15 for Slack,
+  Notion and Airtable. The shadow file lists only stubbed servers; it does not route the working ones.
+  Refusal to start needs both the gate and an active policy.
+- **L200 — `--plugin-dir` beats the installed copy.** An enabled `--plugin-dir` copy silently replaces the
+  installed plugin with the same exact, case-sensitive name. Only a debug log records it. Cowork passes its plugins this way:
+  0 marketplace sources in 3,020 `system/init` records across 916 sessions, and 374 of those records list the same
+  plugin twice.
+- **L201 — the skill-list budget.** The budget uses 3 characters per token on current models and 4 on models up to
+  4.6. Current first-party models run a 1M context, so the default is about 30,000 characters; it is 6,000 at 200k
+  and 8,000 on Haiku 4.5. **Corrects** Ch2, which said ×4. When the list
+  is over budget, skills are ranked by usage decaying with a one-week half-life, with a 0.1 floor, and packed
+  first-fit. Skills that don't fit are listed by name only.
+- **L202 — `claude --cloud` and device hooks.** A cloud session driven from this machine can run the user's hooks
+  locally. Forwarding is present from 2.1.237; the hook's internal `cloud` field (from agent 2.1.246) controls which
+  hooks are forwarded: `"device"` lets a script the session
+  wrote run here. This needs the user's consent and a hash re-check, and it is off for the capturing account.
+- **L203 — hook frames are gated.** Stream hook events are reported only for `SessionStart` and `Setup` unless
+  `--include-hook-events` or `CLAUDE_CODE_REMOTE` is set. Desktop never sets it, so local Cowork records show only
+  `SessionStart` hooks: 20,106 of 20,106 on this machine.
+- Five new author facts on the plugins page, each carrying today's verified stamp. Registry, plugins and
+  control-protocol state pages, troubleshooting and cross-references are updated.
+
 ## v2.52.2 — 2026-09-23 (this fork) — every published fact carries the date it was last actually checked
 
 No new lessons; counts stay 198/53. A site-display and data-model fix.

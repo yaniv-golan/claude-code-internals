@@ -1,7 +1,7 @@
 {
   "generated": "2026-09-23",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 198,
+  "total_lessons": 203,
   "lessons": [
     {
       "id": 1,
@@ -6022,6 +6022,112 @@
         "oauth_token in home",
         "which surface am I on"
       ]
+    },
+    {
+      "id": 199,
+      "title": "When a Plugin's MCP Server Gets Zero Tools in Cowork",
+      "lesson_number": "199",
+      "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
+      "startLine": 17,
+      "endLine": 87,
+      "keywords": [
+        "plugin-mcp-zero-tools",
+        "cowork-plugin-mcp-shadow.json",
+        "noopMcpOverrides",
+        "createSdkMcpServer tools []",
+        "Overriding with no-ops",
+        "pluginMcpStandInMatches",
+        "remote plugin MCP server stubbed",
+        "LocalMcpServerManager",
+        "localMcpBridge announcing",
+        "2529235968",
+        "MCP policy plugin servers",
+        "allowedPluginServers",
+        "my plugin MCP server has no tools in Cowork",
+        "Replacing plugin already provides it",
+        "matched by url"
+      ]
+    },
+    {
+      "id": 200,
+      "title": "A --plugin-dir Copy Silently Replaces the Installed Plugin",
+      "lesson_number": "200",
+      "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
+      "startLine": 89,
+      "endLine": 124,
+      "keywords": [
+        "plugin-dir-precedence",
+        "overrides installed version",
+        "@inline",
+        "plugin-dir vs marketplace",
+        "disableSideloadFlags",
+        "locked by managed settings",
+        "init.plugins path",
+        "duplicate inline plugin",
+        "which plugin copy loaded"
+      ]
+    },
+    {
+      "id": 201,
+      "title": "The Skill-List Budget: Which Descriptions the Model Actually Sees",
+      "lesson_number": "201",
+      "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
+      "startLine": 126,
+      "endLine": 170,
+      "keywords": [
+        "skill-listing-budget",
+        "skillListingBudgetFraction",
+        "skillListingMaxDescChars",
+        "SLASH_COMMAND_TOOL_CHAR_BUDGET",
+        "skillUsage",
+        "skill usage score",
+        "name-only skills",
+        "skillOverrides",
+        "chars per token 3",
+        "skill description dropped",
+        "30000 char skill budget",
+        "native 1M skill budget"
+      ]
+    },
+    {
+      "id": 202,
+      "title": "claude --cloud and Hooks That Run on Your Machine for a Cloud Session",
+      "lesson_number": "202",
+      "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
+      "startLine": 172,
+      "endLine": 213,
+      "keywords": [
+        "claude --cloud",
+        "device-hooks",
+        "hook cloud field",
+        "cloud device skip",
+        "register_device_hooks",
+        "pin_refused",
+        "tengu_violin_wood",
+        "tengu_violin_amati",
+        "hook_forwarding_disabled",
+        "cloud session runs local hook"
+      ]
+    },
+    {
+      "id": 203,
+      "title": "Hook Events in the Stream Are Gated: Local Cowork Shows Only SessionStart",
+      "lesson_number": "203",
+      "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
+      "startLine": 215,
+      "endLine": 246,
+      "keywords": [
+        "hook-frame-gating",
+        "include-hook-events",
+        "includeHookEvents",
+        "hook_started",
+        "hook_response",
+        "hook_progress",
+        "stop_hook_summary",
+        "allHookEventsEnabled",
+        "SessionStart only hook events",
+        "hook exit_code missing"
+      ]
     }
   ],
   "keyword_map": {
@@ -11244,7 +11350,8 @@
       109
     ],
     "stop_hook_summary": [
-      109
+      109,
+      203
     ],
     "coworkWebFetchViaApi": [
       109
@@ -19555,7 +19662,8 @@
       182
     ],
     "2529235968": [
-      182
+      182,
+      199
     ],
     "plugin-mcp-shadow": [
       182
@@ -20730,6 +20838,168 @@
     ],
     "deniedMcpServers exact key": [
       194
+    ],
+    "plugin-mcp-zero-tools": [
+      199
+    ],
+    "cowork-plugin-mcp-shadow.json": [
+      199
+    ],
+    "noopMcpOverrides": [
+      199
+    ],
+    "createSdkMcpServer tools []": [
+      199
+    ],
+    "Overriding with no-ops": [
+      199
+    ],
+    "pluginMcpStandInMatches": [
+      199
+    ],
+    "remote plugin MCP server stubbed": [
+      199
+    ],
+    "LocalMcpServerManager": [
+      199
+    ],
+    "localMcpBridge announcing": [
+      199
+    ],
+    "MCP policy plugin servers": [
+      199
+    ],
+    "allowedPluginServers": [
+      199
+    ],
+    "my plugin MCP server has no tools in Cowork": [
+      199
+    ],
+    "plugin-dir-precedence": [
+      200
+    ],
+    "overrides installed version": [
+      200
+    ],
+    "@inline": [
+      200
+    ],
+    "plugin-dir vs marketplace": [
+      200
+    ],
+    "disableSideloadFlags": [
+      200
+    ],
+    "locked by managed settings": [
+      200
+    ],
+    "init.plugins path": [
+      200
+    ],
+    "duplicate inline plugin": [
+      200
+    ],
+    "which plugin copy loaded": [
+      200
+    ],
+    "skill-listing-budget": [
+      201
+    ],
+    "skillListingBudgetFraction": [
+      201
+    ],
+    "skillListingMaxDescChars": [
+      201
+    ],
+    "SLASH_COMMAND_TOOL_CHAR_BUDGET": [
+      201
+    ],
+    "skillUsage": [
+      201
+    ],
+    "skill usage score": [
+      201
+    ],
+    "name-only skills": [
+      201
+    ],
+    "skillOverrides": [
+      201
+    ],
+    "chars per token 3": [
+      201
+    ],
+    "skill description dropped": [
+      201
+    ],
+    "claude --cloud": [
+      202
+    ],
+    "device-hooks": [
+      202
+    ],
+    "hook cloud field": [
+      202
+    ],
+    "cloud device skip": [
+      202
+    ],
+    "register_device_hooks": [
+      202
+    ],
+    "pin_refused": [
+      202
+    ],
+    "tengu_violin_wood": [
+      202
+    ],
+    "tengu_violin_amati": [
+      202
+    ],
+    "hook_forwarding_disabled": [
+      202
+    ],
+    "cloud session runs local hook": [
+      202
+    ],
+    "hook-frame-gating": [
+      203
+    ],
+    "include-hook-events": [
+      203
+    ],
+    "includeHookEvents": [
+      203
+    ],
+    "hook_started": [
+      203
+    ],
+    "hook_response": [
+      203
+    ],
+    "hook_progress": [
+      203
+    ],
+    "allHookEventsEnabled": [
+      203
+    ],
+    "SessionStart only hook events": [
+      203
+    ],
+    "hook exit_code missing": [
+      203
+    ],
+    "Replacing plugin already provides it": [
+      199
+    ],
+    "matched by url": [
+      199
+    ],
+    "30000 char skill budget": [
+      201
+    ],
+    "native 1M skill budget": [
+      201
     ]
   }
 }

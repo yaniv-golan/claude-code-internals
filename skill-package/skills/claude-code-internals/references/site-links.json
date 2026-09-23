@@ -326,6 +326,36 @@
         "files-and-paths",
         1
       ]
+    ],
+    "199": [
+      [
+        "plugins-and-plugin-root",
+        1
+      ]
+    ],
+    "200": [
+      [
+        "plugins-and-plugin-root",
+        1
+      ]
+    ],
+    "201": [
+      [
+        "plugins-and-plugin-root",
+        1
+      ]
+    ],
+    "202": [
+      [
+        "plugins-and-plugin-root",
+        1
+      ]
+    ],
+    "203": [
+      [
+        "plugins-and-plugin-root",
+        1
+      ]
     ]
   },
   "by_state_page": {
@@ -376,7 +406,7 @@
     "plugins-skills-hooks": [
       [
         "plugins-and-plugin-root",
-        11
+        16
       ],
       [
         "asking-the-user",
@@ -426,17 +456,22 @@
     "paths.skills-are-a-read-only-mount": "files-and-paths#fact-paths-skills-are-a-read-only-mount",
     "paths.uploads-location-differs-by-lane": "files-and-paths#fact-paths-uploads-location-differs-by-lane",
     "paths.uploads-read-only": "files-and-paths#fact-paths-uploads-read-only",
+    "plugins.cowork-records-hide-hooks": "plugins-and-plugin-root#fact-plugins-cowork-records-hide-hooks",
     "plugins.description-is-the-trigger": "plugins-and-plugin-root#fact-plugins-description-is-the-trigger",
+    "plugins.device-hooks-run-cloud-written-files": "plugins-and-plugin-root#fact-plugins-device-hooks-run-cloud-written-files",
     "plugins.folder-skills-are-not-a-channel": "plugins-and-plugin-root#fact-plugins-folder-skills-are-not-a-channel",
     "plugins.hook-exports-do-not-cross": "plugins-and-plugin-root#fact-plugins-hook-exports-do-not-cross",
     "plugins.hooks-do-fire": "plugins-and-plugin-root#fact-plugins-hooks-do-fire",
     "plugins.install-through-the-app": "plugins-and-plugin-root#fact-plugins-install-through-the-app",
+    "plugins.mcp-server-may-be-stubbed": "plugins-and-plugin-root#fact-plugins-mcp-server-may-be-stubbed",
     "plugins.mcp-servers-run-on-the-users-machine": "plugins-and-plugin-root#fact-plugins-mcp-servers-run-on-the-users-machine",
     "plugins.mounts-are-read-only": "plugins-and-plugin-root#fact-plugins-mounts-are-read-only",
+    "plugins.plugin-dir-overrides-installed": "plugins-and-plugin-root#fact-plugins-plugin-dir-overrides-installed",
     "plugins.plugin-files-are-mounted": "plugins-and-plugin-root#fact-plugins-plugin-files-are-mounted",
     "plugins.plugin-root-per-consumer": "plugins-and-plugin-root#fact-plugins-plugin-root-per-consumer",
     "plugins.server-named-memory": "plugins-and-plugin-root#fact-plugins-server-named-memory",
     "plugins.ship-a-launcher": "plugins-and-plugin-root#fact-plugins-ship-a-launcher",
+    "plugins.skill-descriptions-can-be-dropped": "plugins-and-plugin-root#fact-plugins-skill-descriptions-can-be-dropped",
     "plugins.skill-dir-is-body-text": "plugins-and-plugin-root#fact-plugins-skill-dir-is-body-text",
     "shell.home-is-the-session": "shell-commands#fact-shell-home-is-the-session",
     "shell.inline-execution-disabled": "shell-commands#fact-shell-inline-execution-disabled",

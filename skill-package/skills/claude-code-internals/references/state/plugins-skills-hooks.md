@@ -3,7 +3,7 @@ domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197]
+sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203]
 updated: 2026-09-23
 ---
 
@@ -81,6 +81,56 @@ control characters, 32 MiB per folder (that skill and all after it skipped);
 by managed `strictPluginOnlyCustomization` (`true` or including `"skills"`),
 failing closed. From 2.7032.0 the folder's `.claude/CLAUDE.md` and
 `.claude/rules/**/*.md` are staged too (gate `4018447017`).
+
+## Plugin MCP servers in Cowork (L199)
+
+With no MCP policy, a plugin's **local stdio** MCP server gets its real tools in
+local Cowork: the Desktop's `LocalMcpServerManager` runs it host-side and
+`localMcpBridge` announces it (observed: `plugin:pdf-viewer:pdf`, through Desktop
+2.7032.0). A server is replaced by `createSdkMcpServer({name, tools:[]})` — zero
+tools, keyed `plugin:<p>:<s>`, delivered in the SDK map (and, while the gate is
+on, in `cowork-plugin-mcp-shadow.json`) — when (a) an MCP
+policy applies to a local or `.mcpb` server, or (b) gate `2529235968` is on for a
+**remote** (http/sse) server: every remote server in 1.37937.0–1.46388.x, only
+one a claude.ai connector (or 3p direct server) already provides from 2.2553.1 —
+observed daily from 2026-09-15 ("Replacing plugin … already provides it (matched
+by url)" for Slack, Notion, Airtable). Unreplaced remote servers are opened by the
+agent itself.
+
+## `--plugin-dir` beats the installed copy (L200)
+
+An enabled `--plugin-dir` copy replaces the installed plugin with the **same
+exact (case-sensitive) manifest name**, whole plugin, with only a debug-log line
+("overrides installed version"). The installed copy wins when the inline copy is
+disabled, managed settings lock the name (reported in `plugin_errors`),
+`disableSideloadFlags` is set, or the path/name differ. Cowork passes every plugin
+as `--plugin-dir` (0 marketplace sources in 3,020 `system/init` records across 916
+sessions; 374 records list a plugin twice). Check `init.plugins[].path`, not `source`.
+
+## Skill-list budget (L201)
+
+Budget = context window × chars-per-token (4 for models up to Opus/Sonnet 4.6 and
+Haiku 4.5, **3 for newer**) × `skillListingBudgetFraction` (0.01) — about
+**30,000** display-width characters on current first-party models (1M context),
+6,000 with 1M disabled, 8,000 on Haiku 4.5; `SLASH_COMMAND_TOOL_CHAR_BUDGET` overrides. Over
+budget, bundled and name-only skills keep full entries; the rest are ranked by
+`usageCount × max(0.5^(days/7), 0.1)` (`skillUsage` in `~/.claude.json`) and packed
+first-fit; losers are listed by name only. Per-description cap
+`skillListingMaxDescChars` (1,536).
+
+## Hooks for cloud sessions, and hook visibility (L202, L203)
+
+`claude --cloud` can forward the user's hooks to a cloud session and run them
+locally (forwarding from 2.1.237). Hook field `cloud` (internal, agent ≥ 2.1.246): omitted = offer only a
+hash-pinnable script outside the session's writable reach; `"skip"` = never;
+`"device"` = offer anyway, so a session-written script or helper can run here.
+Needs per-machine consent in `/hooks`; a pinned script changed after
+registration is refused. Account flags `tengu_violin_wood` (master) + `_amati`
+(wood off for the capturing account). Separately, stream hook frames are emitted only for
+`SessionStart`/`Setup` unless `--include-hook-events` or `CLAUDE_CODE_REMOTE`;
+Desktop never sets the former, so local Cowork records show only `SessionStart`
+hooks (20,106/20,106 in one machine's audit logs; that others ran unseen is
+code-derived).
 
 ## Plugin agent frontmatter restrictions
 

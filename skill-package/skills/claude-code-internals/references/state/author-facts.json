@@ -1926,6 +1926,137 @@
       ]
     },
     {
+      "id": "plugins.mcp-server-may-be-stubbed",
+      "page": "plugins-and-plugin-root",
+      "rule": "Expect your plugin's local MCP server to work in Cowork, and a remote one to be replaced when the user already has that service connected.",
+      "detail": "A plugin's MCP server that runs locally over stdio gets its real tools in local Cowork: the desktop application starts it on the user's machine and hands its tools to the session. Two things replace a server with an empty stand-in that lists no tools. An organisation's MCP policy can do it to local servers and packaged extensions. And a remote server, one reached over HTTP, is replaced when the user already has the same service connected through a claude.ai connector, because the connector then serves it. Earlier desktop releases replaced every remote plugin server while that behaviour was switched on. The desktop application's log records each replacement by name, which is the quickest way to tell which case you are in.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": true,
+      "sources": {
+        "lessons": [
+          199
+        ],
+        "state_page": "plugins-skills-hooks"
+      },
+      "caveats": [
+        "The remote-server replacement is switched on server-side; on one account it was observed replacing connector-covered plugin servers daily from 2026-09-15.",
+        "Observed on one machine: a local stdio plugin server connected with its tools, and several remote plugin servers replaced by matching connectors."
+      ],
+      "verified": {
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "live"
+      }
+    },
+    {
+      "id": "plugins.plugin-dir-overrides-installed",
+      "page": "plugins-and-plugin-root",
+      "rule": "When testing a plugin you also have installed, check which copy actually loaded.",
+      "detail": "A copy passed on the command line with `--plugin-dir` silently replaces the installed plugin of the same name — the whole plugin, skills, hooks and servers alike — and nothing tells you. The installed copy wins instead if the command-line copy is disabled, if an administrator has locked that plugin, if side-loading is turned off, or if the names differ, even only in letter case, in which case both load. The session's list of loaded plugins shows each copy's path; that path, not the plugin's source label, tells you which one you are testing.",
+      "tier": "binary",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          200
+        ],
+        "state_page": "plugins-skills-hooks"
+      },
+      "caveats": [
+        "Cowork itself delivers every plugin this way, and sometimes lists the same plugin twice; which copy then serves a skill was not traced."
+      ],
+      "verified": {
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "code"
+      }
+    },
+    {
+      "id": "plugins.skill-descriptions-can-be-dropped",
+      "page": "plugins-and-plugin-root",
+      "rule": "Put your skill's trigger words in its name, and keep its description short.",
+      "detail": "The list of skills the model sees has a size budget: about 30,000 characters on current models with their standard 1M context, but only 6,000 to 8,000 when the model runs a 200k context. When a user has more skills than fit, bundled skills keep their descriptions and the rest are ranked by how recently and often they were used; those that do not fit are listed by name alone. A new or rarely used skill is the first to lose its description, and a long description can lose to a shorter one even when it ranks higher. A skill whose name says what it does still gets picked.",
+      "tier": "binary",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          201
+        ],
+        "state_page": "plugins-skills-hooks"
+      },
+      "caveats": [
+        "Most users stay under the 1M-context budget; the limit bites for users with many plugins or on 200k-context models. Users can raise it in settings."
+      ],
+      "verified": {
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "code"
+      }
+    },
+    {
+      "id": "plugins.device-hooks-run-cloud-written-files",
+      "page": "plugins-and-plugin-root",
+      "rule": "Do not mark a hook to run for cloud sessions unless you accept that the session may have written what it runs.",
+      "detail": "When a user drives a cloud session from their own machine, the command-line tool can offer that session some of the user's hooks, run on the user's machine. By default only a hook whose script can be fingerprinted and lies outside anything the cloud session can write is offered. A hook marked to run on the device anyway can end up running a script, or a helper it loads, that the cloud session itself wrote. The user still has to consent on that machine, and a fingerprinted script that changes afterwards is refused.",
+      "tier": "binary",
+      "severity": "loud",
+      "durability": "durable",
+      "volatile_dependency": true,
+      "sources": {
+        "lessons": [
+          202
+        ],
+        "state_page": "plugins-skills-hooks"
+      },
+      "caveats": [
+        "Switched off for the account checked on 2026-09-23; this describes the shipped mechanism, not a live run."
+      ],
+      "verified": {
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "code"
+      }
+    },
+    {
+      "id": "plugins.cowork-records-hide-hooks",
+      "page": "plugins-and-plugin-root",
+      "rule": "Do not conclude your hook did not fire because a local Cowork session's records do not show it.",
+      "detail": "The agent reports hook activity in its output stream only for session-start hooks unless it is started with an option the desktop application never passes. So a local Cowork session's records show session-start hooks and nothing else, even when your other hooks ran. Check your hook's own side effects instead, or reproduce outside Cowork with hook events switched on. Cloud sessions report every hook.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          203
+        ],
+        "state_page": "plugins-skills-hooks"
+      },
+      "caveats": [
+        "Across one machine's local session records every recorded hook event was a session-start event; that other hooks ran unseen is read from the shipped code, not observed."
+      ],
+      "verified": {
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "code"
+      }
+    },
+    {
       "caveats": [
         "The pinned value was measured in the environment; the refusal behaviour at that depth is read from the shipped agent, not exercised in the remote sandbox."
       ],

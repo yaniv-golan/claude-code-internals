@@ -21,7 +21,7 @@ A skill is a named, reusable prompt workflow that Claude Code can discover and e
 **Load**
 - Reads `skill-name/SKILL.md` files
 - Listing budget computed in **characters**, not tokens (verified in v2.1.116 bundle: `X6_` in the skills module)
-- Formula: `budget = ctxWindowTokens × 4 × skillListingBudgetFraction` (default fraction `0.01`); fallback `8000` if model context unknown; env override `SLASH_COMMAND_TOOL_CHAR_BUDGET`
+- Formula: `budget = ctxWindowTokens × charsPerToken × skillListingBudgetFraction` (default fraction `0.01`); `charsPerToken` is 4 for models up to Opus 4.6 / Sonnet 4.6 / Haiku 4.5 and **3 for newer ones** (verified at 2.1.280 — about 30,000 chars on current first-party 1M-context models, 6,000 at 200k; Ch54/L201); fallback `8000` if model context unknown; env override `SLASH_COMMAND_TOOL_CHAR_BUDGET`
 - Per-skill description hard cap `skillListingMaxDescChars` (default `1536` chars), truncated with `…` before listing packing
 
 **Parse**

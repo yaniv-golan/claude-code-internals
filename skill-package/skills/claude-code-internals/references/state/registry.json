@@ -5729,13 +5729,16 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.280",
-      "summary": "Gates the cowork-plugin-mcp-shadow.json guest file that stubs plugin-declared MCP servers to zero tools (fail-closed). CORRECTION to a lead-source label: this gate is SERVED-and-off in the fcache, not dark -- it is present in the payload and evaluated false by its own defaultValue, so a server-side rule can flip it without a client release. UPDATE (2026-09-23 capture f82df085d027eff0, Desktop 2.7032.0): now force/ON (rule fr_mt94q5rk) -- the server-side flip L182 said was possible without a client release happened (Ch52/L193).",
+      "summary": "Gates the cowork-plugin-mcp-shadow.json guest file that stubs plugin-declared MCP servers to zero tools (fail-closed). CORRECTION to a lead-source label: this gate is SERVED-and-off in the fcache, not dark -- it is present in the payload and evaluated false by its own defaultValue, so a server-side rule can flip it without a client release. UPDATE (2026-09-23 capture f82df085d027eff0, Desktop 2.7032.0): now force/ON (rule fr_mt94q5rk) -- the server-side flip L182 said was possible without a client release happened (Ch52/L193). TRACED (Ch54/L199; replacements observed in main.log daily from 2026-09-15): the shadow file lists only STUBBED plugin servers (policy stubs only while the gate is on) ({type:'sdk'} pointing at createSdkMcpServer({name,tools:[]})), not every plugin server; working plugin servers are run by LocalMcpServerManager and bridged. This gate enables stubbing of REMOTE (http/sse) plugin servers: all of them in 1.37937.0-1.46388.x, only those with a connector/3p stand-in from 2.2553.1. Local/.mcpb servers are stubbed only by an MCP policy (ungated, since <=1.18286.2). Refusal to start on a failed write needs enforcesPolicy AND an active policy.",
       "provenance": [
         {
           "lesson": 182
         },
         {
           "lesson": 193
+        },
+        {
+          "lesson": 199
         }
       ],
       "namespace": "desktop_fcache",
@@ -8195,6 +8198,21 @@
       "provenance": [
         {
           "lesson": 196
+        }
+      ]
+    },
+    {
+      "id": "env.SLASH_COMMAND_TOOL_CHAR_BUDGET",
+      "kind": "env-var",
+      "name": "SLASH_COMMAND_TOOL_CHAR_BUDGET",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "Absolute override of the skill-listing character budget. Default at 2.1.280: ctxWindow x charsPerToken x skillListingBudgetFraction (0.01); charsPerToken 4 for models up to Opus/Sonnet 4.6 and Haiku 4.5, 3 for newer; so about 30,000 on current first-party 1M-context models, 6,000 at 200k, 8,000 on Haiku 4.5. Over budget: bundled/name-only skills keep full entries, others ranked by usageCount x max(0.5^(days/7),0.1) and packed first-fit; losers are listed by name only (Ch54/L201).",
+      "provenance": [
+        {
+          "lesson": 201
         }
       ]
     }

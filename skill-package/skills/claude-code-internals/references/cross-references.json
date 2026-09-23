@@ -3803,6 +3803,71 @@
     "relevance": 0.6,
     "reason": "the local and remote lanes"
    }
+  ],
+  "199": [
+   {
+    "id": 182,
+    "relevance": 0.85,
+    "reason": "gate 2529235968 first recorded there as served-and-off"
+   },
+   {
+    "id": 194,
+    "relevance": 0.6,
+    "reason": "the other SDK server swap (memory relay)"
+   },
+   {
+    "id": 129,
+    "relevance": 0.5,
+    "reason": "Desktop SDK-MCP servers"
+   }
+  ],
+  "200": [
+   {
+    "id": 89,
+    "relevance": 0.8,
+    "reason": "Cowork plugin staging (claude-hostloop-plugins) that delivers every plugin as --plugin-dir"
+   },
+   {
+    "id": 173,
+    "relevance": 0.5,
+    "reason": "plugin loading lanes"
+   }
+  ],
+  "201": [
+   {
+    "id": 11,
+    "relevance": 0.9,
+    "reason": "the skill-listing budget first described"
+   },
+   {
+    "id": 129,
+    "relevance": 0.5,
+    "reason": "Desktop's separate list_skills surface"
+   }
+  ],
+  "202": [
+   {
+    "id": 126,
+    "relevance": 0.7,
+    "reason": "the device bridge family"
+   },
+   {
+    "id": 107,
+    "relevance": 0.5,
+    "reason": "hook contract"
+   }
+  ],
+  "203": [
+   {
+    "id": 107,
+    "relevance": 0.7,
+    "reason": "stream-json control contract"
+   },
+   {
+    "id": 174,
+    "relevance": 0.6,
+    "reason": "cloud lane sets CLAUDE_CODE_REMOTE"
+   }
   ]
  }
 }
