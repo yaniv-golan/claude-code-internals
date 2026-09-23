@@ -3,7 +3,7 @@ domain: cowork-control-protocol
 title: Cowork spawn + stream-json control protocol (current)
 as_of_cli: 2.1.231
 as_of_desktop: 1.30096.1
-sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124, 129, 130, 152, 193, 196, 203]
+sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124, 129, 130, 152, 193, 196, 203, 207]
 updated: 2026-09-23
 ---
 
@@ -286,6 +286,15 @@ the option, so local Cowork streams show only `SessionStart` hooks.
 `stop_hook_summary` is built but never mapped into stream-json. A
 `hook_response` with `outcome:"error"` and no `exit_code` is an HTTP hook whose
 request failed outright.
+
+## Skill invocations and hook feedback in transcripts (L207)
+
+A typed `/skill` expands to a `<command-name>` user message plus a hidden (`isMeta`)
+body message whose `parentUuid` is that message's id — **no `Skill` tool_use**. A
+model-initiated skill is a `Skill` tool_use followed by a hidden message with
+`sourceToolUseID`. A blocking (exit 2) hook on `Stop`, `TeammateIdle`,
+`TaskCreated` or `TaskCompleted` injects a hidden user turn
+`<Event> hook feedback:` + newline + `[<hook>]: <stderr>`.
 
 ## Compaction subtypes
 

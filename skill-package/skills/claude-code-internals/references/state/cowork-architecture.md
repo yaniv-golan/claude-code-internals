@@ -3,7 +3,7 @@ domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198]
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198, 207]
 updated: 2026-09-23
 ---
 
@@ -617,6 +617,16 @@ The same probe on each surface an agent can receive a skill on:
 
 Discriminators: `CLAUDE_CODE_ENTRYPOINT` (`remote_cowork` vs `remote` vs unset) and whether a
 `claude` binary exists. `/mnt/user-data` is on all three cloud surfaces.
+
+## Credential delivery and build identity (L207)
+
+Host-loop on macOS/Linux: Desktop removes `CLAUDE_CODE_OAUTH_TOKEN` and passes the
+token as fd 3 (`CLAUDE_CODE_OAUTH_TOKEN_FILE_DESCRIPTOR=3`, a 0600 temp file opened
+then unlinked; env fallback on failure); the agent reads `/dev/fd/3` and deletes the
+variable. Present since ≤ 1.18286.2. Desktop updates come from a per-device endpoint
+on `api.anthropic.com`, which can serve builds the public `RELEASES.json` never lists
+(2.2553.13 on 2026-09-22); the running build is visible only as `appVersion` in
+`main.log`.
 
 ## Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
 

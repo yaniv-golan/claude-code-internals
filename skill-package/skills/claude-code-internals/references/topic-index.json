@@ -1,7 +1,7 @@
 {
   "generated": "2026-09-23",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 203,
+  "total_lessons": 207,
   "lessons": [
     {
       "id": 1,
@@ -6029,7 +6029,7 @@
       "lesson_number": "199",
       "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
       "startLine": 17,
-      "endLine": 87,
+      "endLine": 91,
       "keywords": [
         "plugin-mcp-zero-tools",
         "cowork-plugin-mcp-shadow.json",
@@ -6045,7 +6045,10 @@
         "allowedPluginServers",
         "my plugin MCP server has no tools in Cowork",
         "Replacing plugin already provides it",
-        "matched by url"
+        "matched by url",
+        "connector installation id tool names",
+        "mcp__<uuid>__",
+        "hard-coded MCP tool names"
       ]
     },
     {
@@ -6053,8 +6056,8 @@
       "title": "A --plugin-dir Copy Silently Replaces the Installed Plugin",
       "lesson_number": "200",
       "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
-      "startLine": 89,
-      "endLine": 124,
+      "startLine": 93,
+      "endLine": 128,
       "keywords": [
         "plugin-dir-precedence",
         "overrides installed version",
@@ -6072,8 +6075,8 @@
       "title": "The Skill-List Budget: Which Descriptions the Model Actually Sees",
       "lesson_number": "201",
       "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
-      "startLine": 126,
-      "endLine": 170,
+      "startLine": 130,
+      "endLine": 174,
       "keywords": [
         "skill-listing-budget",
         "skillListingBudgetFraction",
@@ -6094,8 +6097,8 @@
       "title": "claude --cloud and Hooks That Run on Your Machine for a Cloud Session",
       "lesson_number": "202",
       "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
-      "startLine": 172,
-      "endLine": 213,
+      "startLine": 176,
+      "endLine": 217,
       "keywords": [
         "claude --cloud",
         "device-hooks",
@@ -6114,8 +6117,8 @@
       "title": "Hook Events in the Stream Are Gated: Local Cowork Shows Only SessionStart",
       "lesson_number": "203",
       "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
-      "startLine": 215,
-      "endLine": 246,
+      "startLine": 219,
+      "endLine": 250,
       "keywords": [
         "hook-frame-gating",
         "include-hook-events",
@@ -6127,6 +6130,94 @@
         "allHookEventsEnabled",
         "SessionStart only hook events",
         "hook exit_code missing"
+      ]
+    },
+    {
+      "id": 204,
+      "title": "A Forked Skill's Answer Is Rewritten Before the User Sees It",
+      "lesson_number": "204",
+      "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
+      "startLine": 18,
+      "endLine": 58,
+      "keywords": [
+        "fork-skill-relay",
+        "context fork",
+        "forked execution",
+        "skill output rewritten",
+        "link dropped by parent",
+        "parent-addressed note",
+        "prompt injection warning",
+        "inline vs fork skill",
+        "?ref stripped"
+      ]
+    },
+    {
+      "id": 205,
+      "title": "Two Ways to Ask the User, and the Model Chooses",
+      "lesson_number": "205",
+      "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
+      "startLine": 60,
+      "endLine": 99,
+      "keywords": [
+        "visualize-server",
+        "mcp__visualize__show_widget",
+        "mcp__visualize__read_me",
+        "getImagineServerDef",
+        "3444158716",
+        "elicitation form vs AskUserQuestion",
+        "hook_additional_context",
+        "286376943",
+        "show_widget",
+        "show_widget instead of AskUserQuestion",
+        "form instead of AskUserQuestion",
+        "visualize form",
+        "skill input form",
+        "AskUserQuestion or form"
+      ]
+    },
+    {
+      "id": 206,
+      "title": "What Grants save_skill, and a Second Server-Side Switch Channel",
+      "lesson_number": "206",
+      "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
+      "startLine": 101,
+      "endLine": 128,
+      "keywords": [
+        "save_skill",
+        "canSaveSkill",
+        "current_user_access",
+        "access list",
+        "skill_creation",
+        "3246569822 removed",
+        "3469616823",
+        "3656976882",
+        "setup-writing-style",
+        "save_skill missing",
+        "save_skill tool",
+        "canSaveSkill false",
+        "who gets save_skill",
+        "save skill tool cowork"
+      ]
+    },
+    {
+      "id": 207,
+      "title": "Five Smaller Mechanics: Slash Skills, the OAuth Descriptor, Hook Feedback, a Plugin-Server Allowlist, an Unlisted Build",
+      "lesson_number": "207",
+      "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
+      "startLine": 130,
+      "endLine": 155,
+      "keywords": [
+        "slash skill invocation",
+        "command-name",
+        "isMeta skill body",
+        "CLAUDE_CODE_OAUTH_TOKEN_FILE_DESCRIPTOR",
+        "oauth fd 3",
+        "hook feedback",
+        "TeammateIdle TaskCreated TaskCompleted",
+        "allowedPluginMcpServers",
+        "2.2553.13",
+        "RELEASES.json",
+        "per-device update feed"
       ]
     }
   ],
@@ -10649,10 +10740,12 @@
     ],
     "show_widget": [
       105,
-      147
+      147,
+      205
     ],
     "getImagineServerDef": [
-      105
+      105,
+      205
     ],
     "elicitation/create": [
       105
@@ -19877,7 +19970,8 @@
       184
     ],
     "save_skill": [
-      184
+      184,
+      206
     ],
     "launch_code_session": [
       184
@@ -20354,7 +20448,8 @@
       190
     ],
     "2.2553.13": [
-      190
+      190,
+      207
     ],
     "why does Read say needs an absolute path": [
       190
@@ -21000,6 +21095,147 @@
     ],
     "native 1M skill budget": [
       201
+    ],
+    "fork-skill-relay": [
+      204
+    ],
+    "context fork": [
+      204
+    ],
+    "forked execution": [
+      204
+    ],
+    "skill output rewritten": [
+      204
+    ],
+    "link dropped by parent": [
+      204
+    ],
+    "parent-addressed note": [
+      204
+    ],
+    "prompt injection warning": [
+      204
+    ],
+    "inline vs fork skill": [
+      204
+    ],
+    "?ref stripped": [
+      204
+    ],
+    "visualize-server": [
+      205
+    ],
+    "mcp__visualize__show_widget": [
+      205
+    ],
+    "mcp__visualize__read_me": [
+      205
+    ],
+    "3444158716": [
+      205
+    ],
+    "elicitation form vs AskUserQuestion": [
+      205
+    ],
+    "hook_additional_context": [
+      205
+    ],
+    "286376943": [
+      205
+    ],
+    "canSaveSkill": [
+      206
+    ],
+    "current_user_access": [
+      206
+    ],
+    "access list": [
+      206
+    ],
+    "skill_creation": [
+      206
+    ],
+    "3246569822 removed": [
+      206
+    ],
+    "3469616823": [
+      206
+    ],
+    "3656976882": [
+      206
+    ],
+    "setup-writing-style": [
+      206
+    ],
+    "slash skill invocation": [
+      207
+    ],
+    "command-name": [
+      207
+    ],
+    "isMeta skill body": [
+      207
+    ],
+    "CLAUDE_CODE_OAUTH_TOKEN_FILE_DESCRIPTOR": [
+      207
+    ],
+    "oauth fd 3": [
+      207
+    ],
+    "hook feedback": [
+      207
+    ],
+    "TeammateIdle TaskCreated TaskCompleted": [
+      207
+    ],
+    "allowedPluginMcpServers": [
+      207
+    ],
+    "RELEASES.json": [
+      207
+    ],
+    "per-device update feed": [
+      207
+    ],
+    "connector installation id tool names": [
+      199
+    ],
+    "mcp__<uuid>__": [
+      199
+    ],
+    "hard-coded MCP tool names": [
+      199
+    ],
+    "show_widget instead of AskUserQuestion": [
+      205
+    ],
+    "form instead of AskUserQuestion": [
+      205
+    ],
+    "visualize form": [
+      205
+    ],
+    "skill input form": [
+      205
+    ],
+    "AskUserQuestion or form": [
+      205
+    ],
+    "save_skill missing": [
+      206
+    ],
+    "save_skill tool": [
+      206
+    ],
+    "canSaveSkill false": [
+      206
+    ],
+    "who gets save_skill": [
+      206
+    ],
+    "save skill tool cowork": [
+      206
     ]
   }
 }

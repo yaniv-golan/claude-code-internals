@@ -3868,6 +3868,59 @@
     "relevance": 0.6,
     "reason": "cloud lane sets CLAUDE_CODE_REMOTE"
    }
+  ],
+  "204": [
+   {
+    "id": 118,
+    "relevance": 0.7,
+    "reason": "fork skill scope and skill_progress attribution"
+   },
+   {
+    "id": 191,
+    "relevance": 0.4,
+    "reason": "SubagentHandback, another sub-task result channel"
+   }
+  ],
+  "205": [
+   {
+    "id": 147,
+    "relevance": 0.95,
+    "reason": "the elicitation instruction first documented"
+   },
+   {
+    "id": 105,
+    "relevance": 0.5,
+    "reason": "MCP Apps; show_widget is one"
+   }
+  ],
+  "206": [
+   {
+    "id": 131,
+    "relevance": 0.6,
+    "reason": "earlier save_skill / canSaveSkill description"
+   },
+   {
+    "id": 195,
+    "relevance": 0.4,
+    "reason": "another server-side capability switch"
+   }
+  ],
+  "207": [
+   {
+    "id": 118,
+    "relevance": 0.6,
+    "reason": "skill invocation attribution in transcripts"
+   },
+   {
+    "id": 199,
+    "relevance": 0.6,
+    "reason": "plugin MCP server handling the allowlist overrides"
+   },
+   {
+    "id": 192,
+    "relevance": 0.5,
+    "reason": "build identity beyond version strings"
+   }
   ]
  }
 }

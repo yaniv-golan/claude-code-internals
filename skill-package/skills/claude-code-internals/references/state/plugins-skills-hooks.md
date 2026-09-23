@@ -3,7 +3,7 @@ domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203]
+sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207]
 updated: 2026-09-23
 ---
 
@@ -96,6 +96,16 @@ one a claude.ai connector (or 3p direct server) already provides from 2.2553.1 �
 observed daily from 2026-09-15 ("Replacing plugin … already provides it (matched
 by url)" for Slack, Notion, Airtable). Unreplaced remote servers are opened by the
 agent itself.
+
+
+With the 3p managed setting `allowedPluginMcpServers` set (Desktop ≥ 2.2553.0),
+no plugin server is bridged or started locally and only remote servers matching
+its `{serverUrl}` patterns connect (L207).
+
+In Cowork a claude.ai connector's tools are named `mcp__<org MCP-server uuid>__<tool>`
+(differed between two organisations observed, e.g. Slack `mcp__a34d41f6-…__slack_add_reaction`),
+not after the service; a replaced plugin server's `mcp__plugin_<p>_<s>__…` names vanish. Skills must
+not hard-code either (L199).
 
 ## `--plugin-dir` beats the installed copy (L200)
 
@@ -400,17 +410,40 @@ behaves **oppositely**: `activeSkill` is sticky/no-pop, `activeSkillThisTurn`
 is per-turn and explicitly reset. Two skill scopes with the same name and
 opposite lifetimes — treat them as distinct.
 
-## `save_skill` / `canSaveSkill` is 1p-only
+## `save_skill` / `canSaveSkill` (L206)
 
-`canSaveSkill` is served by gate `3246569822` (force-ON, listed in the
-same force-on table as `cli_plugin`/`2307090146`, 3p/CCD-class only) —
-but the **consuming resolver** additionally requires the account type be
-1p before it even reads the gate:
-`us(){return c.in().type==="1p"?c.Ht("3246569822"):!1}`. A 3p/CCD account
-gets `canSaveSkill=false` unconditionally, regardless of the gate's own
-force-on state. `save_skill`'s own description states its effect
-directly: the skill description "enters the system prompt of every
-future session" — equivalent to writing to `.claude/skills/`.
+Gate `3246569822` no longer governs it: it has been absent from Desktop code
+since 1.44121.1 (still served, unread). In 2.7032.0 `canSaveSkill` =
+org skill creation allowed — not `workspace.skillCreationEnabled:false` (3p
+managed setting), not HIPAA-restricted, and `skill_creation` not blocked in the
+account's **access list** — AND skills enabled with the org-skills-off check
+(gate `3656976882`, off) not tripped; sticky per built system prompt/model.
+There is **no account-type check**; the "1p-only" resolver `us()` previously
+quoted here belongs to `/setup-writing-style`. The access list is
+`GET <claude.ai>/api/bootstrap/<org>/current_user_access` → `{features:[{feature,status}]}`,
+refreshed hourly, memory-only — a server-side switch channel outside the fcache
+(also covers `skills`, `claude_code_remote_control`, `claude_code_routines`,
+`claude_code_web`, `cowork_browser_pane`, …). On the capturing machine
+`save_skill` first appeared 2026-07-25 with Desktop 1.24012.9. `save_skill`'s
+own description states its effect: the skill description "enters the system
+prompt of every future session".
+
+## Forked skills are relayed, not passed through (L204)
+
+A `context: fork` skill's tool result is `Skill "<name>" completed (forked
+execution).` + `Result:` + the fork's **last** assistant message; the main
+model then writes its own answer. Measured (129 relayed runs, CLI 2.1.280): a
+Sonnet 5 main model passed the fork's link 0/51 times; a parent-addressed note
+raised it to 6/9 but 2 runs flagged it as prompt injection; Opus 5.5 kept the
+link 24/27 and dropped `?ref=` in 23. Inline skills have no relay step.
+
+## Two input channels (L205)
+
+The "collect input with a form" instruction (gate `286376943`) and the
+`visualize` server that provides the form (`mcp__visualize__read_me` /
+`show_widget`, gate `3444158716`) are independent; AskUserQuestion stays
+available and the model chooses — 31 form / 27 AskUserQuestion / 13 both in
+71 sessions that asked anything. The instruction is invisible in `audit.jsonl`.
 
 ## Server attribution reaches the agent by a computed env key (L181)
 

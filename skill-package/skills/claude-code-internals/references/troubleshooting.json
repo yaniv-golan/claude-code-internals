@@ -2227,6 +2227,56 @@
     202
    ],
    "hint": "claude --cloud can forward local hooks to a cloud session and run them on this machine. The hook field cloud: omitted = only hash-pinnable scripts outside the session's reach; 'device' = offered anyway (a session-written file can run); 'skip' = never. Needs consent in /hooks and account flags tengu_violin_wood+amati."
+  },
+  {
+   "pattern": [
+    "forked skill link missing",
+    "context fork output summarized",
+    "skill output reworded by main model",
+    "forked execution result"
+   ],
+   "lessons": [
+    204
+   ],
+   "hint": "A context: fork skill returns only its final message, wrapped as 'Skill \"<name>\" completed (forked execution). Result: …', and the main model rewrites it; a Sonnet main model dropped the link in 51/51 relayed runs. Use an inline skill or write essential content to a file."
+  },
+  {
+   "pattern": [
+    "show_widget instead of AskUserQuestion",
+    "mcp__visualize__show_widget",
+    "skill asked with a form",
+    "AskUserQuestion not used in Cowork"
+   ],
+   "lessons": [
+    205,
+    147
+   ],
+   "hint": "Cowork injects an instruction to collect skill input with the visualize form (gate 286376943); the visualize server itself is gate 3444158716. Both channels stay available and the model chooses (31 form / 27 AskUserQuestion / 13 both on one machine). Handle both."
+  },
+  {
+   "pattern": [
+    "save_skill missing",
+    "canSaveSkill false",
+    "current_user_access",
+    "skill_creation blocked"
+   ],
+   "lessons": [
+    206
+   ],
+   "hint": "canSaveSkill no longer reads gate 3246569822 (removed from code at 1.44121.1). It depends on org skill-creation settings, HIPAA restriction, and the hourly current_user_access list's skill_creation status."
+  },
+  {
+   "pattern": [
+    "slash skill not counted",
+    "no Skill tool_use for skill",
+    "command-name skill invocation",
+    "CLAUDE_CODE_OAUTH_TOKEN missing in Cowork",
+    "hook feedback turn"
+   ],
+   "lessons": [
+    207
+   ],
+   "hint": "A typed /skill expands to a <command-name> message plus a hidden body message (no Skill tool_use). Cowork host-loop passes the OAuth token on fd 3 (CLAUDE_CODE_OAUTH_TOKEN_FILE_DESCRIPTOR). Blocking Stop/TeammateIdle/TaskCreated/TaskCompleted hooks inject '<Event> hook feedback:' + newline + '[<hook>]: <stderr>'."
   }
  ]
 }

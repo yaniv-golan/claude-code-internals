@@ -1,5 +1,41 @@
 # Changelog
 
+## v2.54.0 — 2026-09-23 (this fork) — forked skills get rewritten, two input channels, what grants `save_skill`
+
+Adds Chapter 55 (L204–L207); counts move to 207/55. This is the second batch of leads from the sibling-session
+consultation, each re-derived first-party.
+
+- **L199 addition: MCP tool names depend on the route.** In Cowork, a claude.ai connector's tools are named after the
+  organisation's MCP server uuid, `mcp__<uuid>__<tool>`, and the id differed between the two organisations observed. When a connector
+  replaces a plugin's server, the plugin's tool names vanish: in 358 local sessions they never offered more than
+  authentication tools. New author fact
+  `plugins.do-not-hard-code-mcp-tool-names`.
+- **L204 — forked skills are relayed, not passed through.** A `context: fork` skill returns only its final message,
+  and the main model rewrites it. Measured over 129 relayed runs, re-scored here:
+  - A Sonnet 5 main model passed on the link in 0 of 51 runs.
+  - A note in the skill addressed to the main model got it through in 6 of 9 runs, but 2 other runs warned the user
+    about a prompt injection.
+  - Opus 5.5 kept the link in 24 of 27 runs and dropped `?ref=` in 23 of those.
+
+  New author fact `plugins.forked-output-is-rewritten`.
+- **L205 — two ways to ask the user.** The "use a form" instruction (gate `286376943`) and the `visualize` server that
+  provides the form (gate `3444158716`) are independent. AskUserQuestion stays available and the model chooses:
+  form 31, AskUserQuestion 27, both 13. The instruction never appears in `audit.jsonl`. The existing elicitation fact
+  gains the measured split.
+- **L206 — what grants `save_skill`.** Gate `3246569822` has been absent from Desktop code since 1.44121.1, though it is
+  still served. `canSaveSkill` now comes from org settings and an hourly `current_user_access` list, a second
+  server-side switch channel outside the fcache. **Corrects** the state page's "1p-only" claim; that resolver
+  belonged to `/setup-writing-style`.
+- **L207 — five smaller mechanics:**
+  - A typed `/skill` leaves no `Skill` tool call.
+  - Cowork passes the OAuth token on fd 3.
+  - One feedback path serves Stop, TeammateIdle, TaskCreated and TaskCompleted hooks.
+  - A third-party `allowedPluginMcpServers` allowlist stops local plugin servers from running.
+  - This machine was served Desktop 2.2553.13, a build the public release feed never listed.
+- Registry: `gate.3246569822` marked removed; new entries for gates `3444158716`, `3656976882` and `3469616823` and
+  for env var `CLAUDE_CODE_OAUTH_TOKEN_FILE_DESCRIPTOR`. The plugins, architecture and control-protocol state pages
+  and troubleshooting are updated.
+
 ## v2.53.0 — 2026-09-23 (this fork) — plugin MCP stubs, plugin precedence, the skill-list budget, device hooks
 
 Adds Chapter 54 (L199–L203); counts move to 203/54. Other sessions working on neighbouring projects were asked for

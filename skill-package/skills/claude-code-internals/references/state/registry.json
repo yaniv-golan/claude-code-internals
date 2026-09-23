@@ -3502,10 +3502,13 @@
       "first_seen": "1.12603.1",
       "removed_in": null,
       "as_of": "2.1.231",
-      "summary": "The Desktop's VM-env builder rtA() sets this to the session OAuth token for a spawned Cowork agent; ANTHROPIC_API_KEY/AUTH_TOKEN/CUSTOM_HEADERS are deleted (not blanked) alongside it, so the final env has no API-key vars at all.",
+      "summary": "The Desktop's VM-env builder rtA() sets this to the session OAuth token for a spawned Cowork agent; ANTHROPIC_API_KEY/AUTH_TOKEN/CUSTOM_HEADERS are deleted (not blanked) alongside it, so the final env has no API-key vars at all. In host-loop on macOS/Linux it is replaced by CLAUDE_CODE_OAUTH_TOKEN_FILE_DESCRIPTOR=3 before spawn (Ch55/L207).",
       "provenance": [
         {
           "lesson": 107
+        },
+        {
+          "lesson": 207
         }
       ]
     },
@@ -5856,11 +5859,14 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.231",
-      "summary": "Force-ON in the 2026-08-13 fcache. When on, Desktop injects a standing instruction into every skill invocation directing the model to collect missing arguments via the elicitation form instead of AskUserQuestion, delivered as additionalContext on TWO hook events: the Skill tool's PreToolUse hook (excludes sub-agents via !e.agent_id) and UserPromptSubmit (for slash-command invocations), both converging on one resolver (function Lo(e,t)). The injected message itself is byte-stable across all 15 local asars back to 1.18286.2 -- a standing gap in prior coverage, not a new 1.28929.0 feature; the only substantive edit was an argument-hint fallback ternary added at 1.25927.0. Sets a turn-scoped Desktop-side activeSkillThisTurn scope (cleared at message-cycle-start/finishTurnCleanup/CU-lock-release) -- the opposite lifetime of Ch32/L118's sticky, no-pop agent-side activeSkill. Upgrades Ch24/L107's additionalContext black-box description; extends Ch22/L105.",
+      "as_of": "2.1.280",
+      "summary": "Force-ON in the 2026-08-13 and 2026-09-23 fcache captures. When on, Desktop injects a standing instruction into every skill invocation directing the model to collect missing arguments via the elicitation form instead of AskUserQuestion, delivered as additionalContext on TWO hook events: the Skill tool's PreToolUse hook (excludes sub-agents via !e.agent_id) and UserPromptSubmit (for slash-command invocations), both converging on one resolver (function Lo(e,t)). The injected message itself is byte-stable across all 15 local asars back to 1.18286.2 -- a standing gap in prior coverage, not a new 1.28929.0 feature; the only substantive edit was an argument-hint fallback ternary added at 1.25927.0. Sets a turn-scoped Desktop-side activeSkillThisTurn scope (cleared at message-cycle-start/finishTurnCleanup/CU-lock-release) -- the opposite lifetime of Ch32/L118's sticky, no-pop agent-side activeSkill. Upgrades Ch24/L107's additionalContext black-box description; extends Ch22/L105. INDEPENDENT of the visualize-server gate 3444158716; the model, not the host, picks between the form and AskUserQuestion (measured 31/27/13 in 71 asking sessions; Ch55/L205).",
       "provenance": [
         {
           "lesson": 147
+        },
+        {
+          "lesson": 205
         }
       ],
       "namespace": "desktop_fcache",
@@ -6011,15 +6017,18 @@
       "id": "gate.3246569822",
       "kind": "gate",
       "name": "3246569822",
-      "status": "dark-launched",
+      "status": "removed",
       "first_seen": null,
-      "removed_in": null,
-      "as_of": "2.1.231",
-      "summary": "Gates canSaveSkill. Listed in the same force-on table as cli_plugin (2307090146), 3p/CCD-class only -- but the CONSUMING resolver additionally requires the account type be 1p before it even reads this gate: us(){return c.in().type===\"1p\"?c.Ht(\"3246569822\"):!1} -- a 3p/CCD account gets canSaveSkill=false unconditionally, regardless of this gate's own value. Ch28/L114's original entry listed the gate without this consumer-side term.",
+      "removed_in": "1.44121.1",
+      "as_of": "2.1.280",
+      "summary": "Formerly gated canSaveSkill (mcp__cowork__save_skill) and /setup-writing-style. ABSENT from Desktop code since 1.44121.1 (2-3 occurrences in every asar 1.18286.2-1.40609.1, 0 from 1.44121.1 through 2.7032.0) while still served force-ON in the fcache -- served, unread. canSaveSkill is now computed from org skill-creation settings and the current_user_access list (Ch55/L206). CORRECTS the earlier 1p-only claim: the us() 1p-type resolver belonged to /setup-writing-style, not canSaveSkill.",
       "provenance": [
         {
           "lesson": 114,
           "note": "re-verified 2026-08-13 against asar 1.28929.0: the consuming resolver additionally requires account type 1p"
+        },
+        {
+          "lesson": 206
         }
       ],
       "namespace": "desktop_fcache",
@@ -8213,6 +8222,87 @@
       "provenance": [
         {
           "lesson": 201
+        }
+      ]
+    },
+    {
+      "id": "gate.3444158716",
+      "kind": "gate",
+      "name": "3444158716 (visualize server)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "isEnabled for the Desktop-internal SDK-MCP server 'visualize' (getImagineServerDef): tools mcp__visualize__read_me (modules incl. elicitation) and mcp__visualize__show_widget (MCP App ui://imagine/show-widget.html). Independent of the elicitation-instruction gate 286376943. Visualize tools present in every local session from agent 2.1.119 on the capturing machine; force-ON at the 2026-09-23 capture.",
+      "provenance": [
+        {
+          "lesson": 205
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "f82df085d027eff0"
+      }
+    },
+    {
+      "id": "gate.3656976882",
+      "kind": "gate",
+      "name": "3656976882 (org skills off check)",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "Enables the org-skills-off check (orgSkillsOff) that can remove canSaveSkill; served off (defaultValue) at the 2026-09-23 capture (Ch55/L206).",
+      "provenance": [
+        {
+          "lesson": 206
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "f82df085d027eff0"
+      }
+    },
+    {
+      "id": "gate.3469616823",
+      "kind": "gate",
+      "name": "3469616823 (skill-creation access bypass)",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "New in Desktop 2.7032.0: bypasses the current_user_access block check for skill_creation when computing canSaveSkill (Ch55/L206). Capture state is in observed.",
+      "provenance": [
+        {
+          "lesson": 206
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "f82df085d027eff0"
+      }
+    },
+    {
+      "id": "env.CLAUDE_CODE_OAUTH_TOKEN_FILE_DESCRIPTOR",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_OAUTH_TOKEN_FILE_DESCRIPTOR",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "Host-loop Cowork on macOS/Linux: Desktop deletes CLAUDE_CODE_OAUTH_TOKEN and sets this to '3', passing the token through a 0600 temp file opened then unlinked, as the child's fd 3 (env fallback if staging fails). The agent reads /dev/fd/<n> and deletes the variable. Present since <= Desktop 1.18286.2 (Ch55/L207).",
+      "provenance": [
+        {
+          "lesson": 207
         }
       ]
     }

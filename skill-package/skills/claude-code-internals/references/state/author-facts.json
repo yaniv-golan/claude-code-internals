@@ -183,27 +183,29 @@
       "id": "input.elicitation-over-askuserquestion",
       "page": "asking-the-user",
       "rule": "Do not build your skill's argument collection around AskUserQuestion in Cowork.",
-      "detail": "On every skill invocation the host injects an instruction telling the model to gather missing context through the elicitation form — pills, free text, dates, a file dropzone — and explicitly not through AskUserQuestion, which it reserves for one-off clarifications mid-task. The answers arrive as bullet points in the model's next message, not as a tool result, so a skill written to wait for a tool result is waiting for something that will not come. Declaring `argument-hint` in your frontmatter is what makes this path work: the hint is passed through verbatim, and a skill without one leaves the model told to infer what to collect from your SKILL.md.",
+      "detail": "On every top-level skill invocation (not inside sub-agents) the host injects an instruction telling the model to gather missing context through the elicitation form — pills, free text, dates, a file dropzone — and explicitly not through AskUserQuestion, which it reserves for one-off clarifications mid-task. The answers arrive as bullet points in the model's next message, not as a tool result, so a skill written to wait for a tool result is waiting for something that will not come. Declaring `argument-hint` in your frontmatter is what makes this path work: the hint is passed through verbatim, and a skill without one leaves the model told to infer what to collect from your SKILL.md.",
       "tier": "binary",
       "verified": {
-        "date": "2026-08-13",
-        "desktop_asar": "1.28929.0",
-        "cli": "2.1.229",
-        "basis": "history",
-        "from_commit": "b07da16"
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "live"
       },
       "severity": "friction",
       "durability": "durable",
       "volatile_dependency": true,
       "sources": {
         "lessons": [
-          147
+          147,
+          205
         ],
         "state_page": "plugins-skills-hooks"
       },
       "caveats": [
         "This is a steer, not an enforcement boundary. AskUserQuestion remains callable and functional; what was verified is that Cowork injects the instruction, not that a model obeys it in any particular run.",
-        "Delivery is gated server-side and read on at the 2026-08-13 capture. A session where that flag is off receives no such instruction, and the guidance does not apply."
+        "Delivery is gated server-side and read on at the 2026-08-13 and 2026-09-23 captures. A session where that flag is off receives no such instruction, and the guidance does not apply.",
+        "Measured on one machine: in 71 Cowork sessions that asked the user anything after receiving the instruction, the model used the form in 31, AskUserQuestion in 27 and both in 13 — so your skill must handle answers arriving either way."
       ]
     },
     {
@@ -1953,6 +1955,32 @@
       }
     },
     {
+      "id": "plugins.do-not-hard-code-mcp-tool-names",
+      "page": "plugins-and-plugin-root",
+      "rule": "Do not write exact MCP tool names for connectors or a plugin's remote servers into your skill.",
+      "detail": "In Cowork, the tools of a claude.ai connector are named after the organisation's own record for that connector, an identifier that differed between the two organisations observed, not after the service. A plugin's own server has names built from the plugin's name, but when the organisation also has the same service connected, the plugin's copy is replaced and those names disappear. A skill that spells out either form is tied to one organisation's setup. Describe the tool by what it does and let the model pick the matching tool.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": true,
+      "sources": {
+        "lessons": [
+          199
+        ],
+        "state_page": "plugins-skills-hooks"
+      },
+      "caveats": [
+        "Observed on one machine across two organisations of the same user. That a hard-coded name then fails elsewhere is inferred from the names present, not from a skill run, and whether the action part of a tool's name matches between the two routes could not be checked."
+      ],
+      "verified": {
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "live"
+      }
+    },
+    {
       "id": "plugins.plugin-dir-overrides-installed",
       "page": "plugins-and-plugin-root",
       "rule": "When testing a plugin you also have installed, check which copy actually loaded.",
@@ -2054,6 +2082,32 @@
         "cli": "2.1.231",
         "agent": "2.1.280",
         "basis": "code"
+      }
+    },
+    {
+      "id": "plugins.forked-output-is-rewritten",
+      "page": "plugins-and-plugin-root",
+      "rule": "Do not rely on a forked skill's exact output reaching the user.",
+      "detail": "A skill set to run as a separate sub-task hands back only its final message, and the main conversation then writes its own answer from it — shorter, reworded, and in measured runs usually without the skill's links and caveats. Asking the main model, from inside the skill, to pass something through helps only partly and can make it warn the user about a possible prompt injection. For output whose exact wording matters, run the skill inline, which has no relay step, or write the essential content to a file the skill produces.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          204
+        ],
+        "state_page": "plugins-skills-hooks"
+      },
+      "caveats": [
+        "Measured in 129 headless runs on one machine with one skill; behaviour differs by model — one kept links far more often than another."
+      ],
+      "verified": {
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "live"
       }
     },
     {

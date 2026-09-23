@@ -78,6 +78,10 @@ Replacing plugin "airtable" MCP server "airtable": "Airtable" already provides i
 
 — and likewise for Notion and for Slack in the `finance` and `legal` plugins. Search Desktop's log for "Overriding with no-ops" and "already provides it" to see which of your plugin's servers were stubbed; stubs never appear as `LocalMcpServerManager` connections.
 
+## Tool names change with the route
+
+In a local Cowork session, a claude.ai connector's tools are named after the organisation's **MCP server id** (`mcp__${serverUuid}__${tool}`, the same id used in `/api/organizations/<org>/mcp/servers/<uuid>/tools/call`), not after the service: the capturing machine's Slack tools are `mcp__a34d41f6-…__slack_add_reaction` and so on, Notion's `mcp__4b4fae34-…__notion-ai-search`. The id is fixed within one organisation and differed between the two organisations observed — the same user's second organisation sees Slack as `mcp__573bbee0-…__…` (222 and 2 sessions respectively since 2026-09-12, counted from `audit.jsonl` init records). A plugin's own server is named `mcp__plugin_<plugin>_<server>__…`. When a connector covers a plugin's remote server, the plugin's names disappear: in 358 local sessions since 2026-09-01, the plugin-prefixed Slack, Notion and Airtable servers never offered anything but their authentication tools. So a skill that names `mcp__plugin_design_slack__…` or a connector id is tied to one organisation's setup. Name the tool by what it does and let the model find it; whether the final part of the name matches between the plugin and connector routes could not be checked, because the plugin route never exposed its real tools here.
+
 ## For a plugin author
 
 - **A local stdio MCP server in your plugin works in local Cowork** unless the user's organisation enforces an MCP policy.
