@@ -3,8 +3,8 @@ domain: cowork-control-protocol
 title: Cowork spawn + stream-json control protocol (current)
 as_of_cli: 2.1.231
 as_of_desktop: 1.30096.1
-sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124, 129, 130, 152]
-updated: 2026-08-14
+sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124, 129, 130, 152, 193]
+updated: 2026-09-23
 ---
 
 # Cowork spawn + stream-json control protocol (current)
@@ -254,9 +254,12 @@ in-VM agent 2.1.205:
   session level, not the sub-agent level; it does not restore Task-tool
   resume.
 - **fcache decode recipe changed.** As of the 2026-07-11 capture the
-  on-disk `fcache` is no longer raw JSON: it's a container with magic
-  `CLF\x01\x00` + 3 bytes, then a **gzip stream starting at byte 8**
-  (observed: 24,863 bytes on disk → 86,779 decompressed, 207 gates).
+  on-disk `fcache` is no longer raw JSON: it's a container with an 8-byte
+  magic `CLF` + a version byte + 4 bytes, then a **gzip stream starting at
+  byte 8** (observed: 24,863 bytes on disk → 86,779 decompressed, 207
+  gates). The version byte was `\x01` through Desktop 1.32885.1 and is
+  `\x02` (`CLF\x02\x00\x9a\xb7\xe2`) from 1.34493.1 on (Ch52/L193); the
+  gzip offset did not move, so the recipe below is unchanged.
   Decode with `tail -c +9 fcache | gunzip`. Raw `grep`/`strings` against
   the file — the technique used through v2.26.0 — no longer works and
   will falsely report gates as absent.

@@ -334,7 +334,7 @@ Full layer stack, current identifiers (unchanged 1.12603.1 → 1.17377.2 except 
     host path is **not present in the guest** → fails. bash must use the **in-VM mount** —
     `/sessions/<id>/mnt/.local-plugins/…` (marketplace) or `/sessions/<id>/mnt/.remote-plugins/plugin_<id>/…`
     (org-remote), discovered at runtime — not the token.
-  - **Outputs** (`report.md`): bare filenames **for the file tools only**; `mcp__workspace__bash` needs the
+  - **Outputs** (`report.md`): bare filenames **for the file tools only** (before Desktop 2.7032.0; from 2.7032.0 the file tools need the absolute host outputs path — Ch52/L190); `mcp__workspace__bash` needs the
     absolute `/sessions/<id>/mnt/outputs/` form (Ch44/L164 — there is no form correct for both).
   So a blanket "always resolve the token to the VM path" rule is **right for scripts, wrong for reference
   Reads** — the VM path handed to a host file tool is then denied by the gate. The token can't be correct for

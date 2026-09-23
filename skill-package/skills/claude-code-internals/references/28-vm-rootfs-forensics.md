@@ -166,6 +166,12 @@ Two new facts:
    not a settled fact, until a chapter finds a stronger signal (e.g. two active sessions' log
    lines interleaved with the same guest boot/PID-1 identity).
 
+   > **The `warm/` evidence does not hold (Ch52/L193).** `vm_bundles/warm/<sha>/` is the Desktop's
+   > download cache for a VM image fetched ahead of an update (`maybeWarmDownloadForUpdate`,
+   > `[warm] Starting warm download for VM SHA: …`), one directory per image sha. It says nothing
+   > about how sessions map to guests. The idempotent user check above is now the only evidence for
+   > multiplexing.
+
 The `oneshot-<uuid>` spawn line is also a fresh, concrete example of the host-loop plugin-staging
 mechanism from `cowork-architecture.md` ("Plugin roots"): the `SCRIPTS` path
 (`/var/folders/.../claude-hostloop-plugins/<hash>/skills/deck-review/scripts`) is a real

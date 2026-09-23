@@ -1,5 +1,5 @@
 {
- "generated": "2026-08-29",
+ "generated": "2026-09-23",
  "description": "Maps common symptoms/problems to relevant lessons for debugging Claude Code internals",
  "symptoms": [
   {
@@ -1322,9 +1322,10 @@
    "lessons": [
     107,
     89,
-    109
+    109,
+    190
    ],
-   "hint": "CORRECTED (Ch44/L163): the file tools and mcp__workspace__bash need DIFFERENT path forms -- the old advice here ('use bare filenames with both') was copied from a Desktop prompt string that was itself wrong and was corrected upstream at app.asar 1.32885.1. Read/Write/Edit run host-side with cwd = the session outputs dir, so a BARE filename is correct there and is immediately user-visible. mcp__workspace__bash starts at the session ROOT /sessions/<id>, which exists only inside the Linux environment -- a bare filename there is invisible to both the user and the file tools, so bash must use the ABSOLUTE /sessions/<id>/mnt/outputs/... form. The classic failure is the reverse trip: passing a VM-absolute /sessions/<id>/mnt/... path from bash output into a host file tool, which the PreToolUse path-gate (IeA=[Read,Write,Edit,Glob,Grep]) DENIES ('VM path on host') and never translates. Also: from a file tool, 'outputs/x' DOUBLES to outputs/outputs/x and hides, and '<folder>/x' builds a decoy directory inside outputs -- only an absolute host path reaches a connected folder. ${CLAUDE_PLUGIN_ROOT} resolves HOST-SIDE (claude-hostloop-plugins/<hash>): keep it literal for host-side Read of references; for bash-run scripts use the in-VM mount /sessions/<id>/mnt/.local-plugins/. One token can't be right for both host file tools and in-VM bash."
+   "hint": "CORRECTED (Ch44/L163): the file tools and mcp__workspace__bash need DIFFERENT path forms -- the old advice here ('use bare filenames with both') was copied from a Desktop prompt string that was itself wrong and was corrected upstream at app.asar 1.32885.1. Read/Write/Edit run host-side and take the HOST-ABSOLUTE outputs path (given to the model in its system prompt). Before Desktop 2.7032.0 their cwd was the session outputs dir and a bare filename also worked; from 2.7032.0 the cwd is /var/empty (or <sessionDir>/host-cwd), write-denied, and a bare filename is refused (Ch52/L190). mcp__workspace__bash starts at the session ROOT /sessions/<id>, which exists only inside the Linux environment -- a bare filename there is invisible to both the user and the file tools, so bash must use the ABSOLUTE /sessions/<id>/mnt/outputs/... form. The classic failure is the reverse trip: passing a VM-absolute /sessions/<id>/mnt/... path from bash output into a host file tool, which the PreToolUse path-gate (IeA=[Read,Write,Edit,Glob,Grep]) DENIES ('VM path on host') and never translates. Also (before 2.7032.0): from a file tool, 'outputs/x' DOUBLED to outputs/outputs/x and hid, and '<folder>/x' built a decoy directory inside outputs; from 2.7032.0 those relative forms are refused instead. Only an absolute host path reaches a connected folder. ${CLAUDE_PLUGIN_ROOT} resolves HOST-SIDE (claude-hostloop-plugins/<hash>): keep it literal for host-side Read of references; for bash-run scripts use the in-VM mount /sessions/<id>/mnt/.local-plugins/. One token can't be right for both host file tools and in-VM bash."
   },
   {
    "pattern": [
@@ -1469,9 +1470,10 @@
     "host-loop file tool VM path denied"
    ],
    "lessons": [
-    122
+    122,
+    190
    ],
-   "hint": "Host-loop file tools (Read/Write/Edit/Glob/Grep/MultiEdit) run host-native and always deny /sessions/... paths -- never translate them -- for both the main thread and sub-agents. The agent's cwd already IS the session outputs directory, so use a cwd-relative path (e.g. artifacts/report.md) or the host-absolute outputs path instead of any /sessions/<id>/mnt/... form."
+   "hint": "Host-loop file tools (Read/Write/Edit/Glob/Grep/MultiEdit) run host-native and always deny /sessions/... paths -- never translate them -- for both the main thread and sub-agents. Use the host-absolute outputs path instead of any /sessions/<id>/mnt/... form. A cwd-relative path (e.g. artifacts/report.md) also worked before Desktop 2.7032.0, when the agent's cwd was the outputs dir; from 2.7032.0 the cwd is /var/empty and relative paths are refused (Ch52/L190)."
   },
   {
    "pattern": [
@@ -2050,6 +2052,58 @@
     174
    ],
    "hint": "On the cloud lane a mid-session attachment lands at /root/.claude/uploads/<session-id>/<8-hex>-<original name> (HOME=/root). /mnt/user-data/uploads, which the lane's own prompt names, did not exist; /sessions/<id>/mnt/uploads is the LOCAL lane's path. Resolve from the message that announced the file, not a fixed directory."
+  },
+  {
+   "pattern": [
+    "needs an absolute path here",
+    "File is in a directory that is denied by your permission settings",
+    "bare filename refused in Cowork",
+    "relative path blocked Cowork file tool",
+    "is plugin content or the app's private working directory",
+    "cwd is /var/empty",
+    "Primary working directory /private/var/empty"
+   ],
+   "lessons": [
+    190
+   ],
+   "hint": "From Desktop 2.7032.0 the host-loop Cowork agent runs in /var/empty (or <session>/host-cwd), which the spawn read- and write-denies. A bare filename passed to Read/Write/Edit is expanded to /var/empty/x and refused by the agent's own validation ('File is in a directory that is denied by your permission settings.'); a relative Grep/Glob is re-anchored to outputs by Desktop's hook. Pass the host-absolute outputs path, which the system prompt names; it is correct on every Desktop release."
+  },
+  {
+   "pattern": [
+    "TaskOutput tool missing",
+    "TaskOutput not found",
+    "names a removed tool",
+    "BashOutput permission rule ignored",
+    "how to read background task output"
+   ],
+   "lessons": [
+    191
+   ],
+   "hint": "TaskOutput was removed at agent 2.1.277 (with its aliases AgentOutputTool/BashOutputTool/AgentOutput/BashOutput). Read the background task's output file with Read. A permission rule or --tools entry naming any of those is skipped with a 'names a removed tool' warning from 2.1.280."
+  },
+  {
+   "pattern": [
+    "MCP server named memory not starting in Cowork",
+    "claude_desktop_config memory server missing",
+    "replacing a configured MCP server named memory",
+    "mcp__memory__memory_read appeared"
+   ],
+   "lessons": [
+    194
+   ],
+   "hint": "From Desktop 2.2553.1, when gate 946844604 is on (force-ON at the 2026-09-23 capture), the account is first-party and not HIPAA-restricted, the Cowork spawn installs its own cloud memory relay under the MCP server name 'memory', replaces a server configured under that name (e.g. mcpServers.memory in claude_desktop_config.json) and adds 'memory' to deniedMcpServers. Rename your server. Whether plugin-declared servers (named plugin:<plugin>:<server>) are affected is not established."
+  },
+  {
+   "pattern": [
+    "same version different behaviour",
+    "two builds same version",
+    "release candidate agent build",
+    "checksum differs for same version"
+   ],
+   "lessons": [
+    192
+   ],
+   "hint": "A Desktop release can pin its agent to a release-candidate base (claude-code-releases/rc/<commit>). For 2.1.280 the RC and the later stable build differ in commit, buildDate and bytes. Compare sha256 or the manifest commit, not the version string."
   }
  ]
 }

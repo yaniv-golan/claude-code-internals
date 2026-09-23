@@ -2,8 +2,8 @@
 domain: model-landscape
 title: Model landscape (current)
 as_of_cli: 2.1.231
-sources: [108, 110, 133, 186]
-updated: 2026-09-05
+sources: [108, 110, 133, 186, 193]
+updated: 2026-09-23
 ---
 
 # Model landscape (current)
@@ -38,7 +38,7 @@ selectable; it is no longer what a fresh install defaults to.
 general use" — `claude-fable-5` and the internal
 `claude-fable-5-mythos-5`. Fable 5 is the **live Cowork model** — fcache
 gate `3045399524` (`registry.json` id `gate.3045399524`) whitelists
-`claude-fable-5[1m]` and `claude-fable-5` with `alwaysLoad: true`. In the
+`claude-fable-5[1m]` and `claude-fable-5` with `alwaysLoad: true`. At the 2026-09-23 capture (Desktop 2.7032.0) the same gate also allow-lists `claude-fable-5-1[1m]`, `claude-fable-5-1`, `claude-opus-5-5[1m]` and `claude-opus-5-5` (Ch52/L193). In the
 standalone CLI, Fable 5 is one selectable model among the
 Claude 5 family, not the default. v2.1.173 fixed normalization of the
 `[1m]`-suffixed Fable names.

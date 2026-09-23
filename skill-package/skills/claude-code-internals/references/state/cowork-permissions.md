@@ -2,9 +2,9 @@
 domain: cowork-permissions
 title: Cowork permission stack (current)
 as_of_cli: 2.1.231
-as_of_desktop: 1.46388.4
-sources: [89, 107, 108, 109, 115, 121, 122, 124, 128, 148, 150, 184]
-updated: 2026-09-05
+as_of_desktop: 2.7032.0
+sources: [89, 107, 108, 109, 115, 121, 122, 124, 128, 148, 150, 184, 190]
+updated: 2026-09-23
 ---
 
 # Cowork permission stack (current)
@@ -104,8 +104,10 @@ lessons (see frontmatter).
    itself). `/sessions` (exact or prefix) is **denied, not translated** —
    `xe()` checks membership in `g5e` only (no `MultiEdit`), so a
    `/sessions/...` `MultiEdit` skips the friendly VM-path message but is
-   still blocked by containment. **Allow-roots**: hostCwd, hostOutputsDir,
-   hostUploadsDir (read-only for mutating tools), `.claude/projects` +
+   still blocked by containment. **Allow-roots**: hostOutputsDir (the only
+   writable root from Desktop 2.7032.0; before it `writablePaths` was
+   `[hostCwd, hostOutputsDir]`, the same directory twice), hostUploadsDir
+   (read-only for mutating tools), `.claude/projects` +
    staged-config projects (read-only, spooled tool results),
    autoMemoryHostDir, skillsPluginPath, readOnlyPluginPaths (read-only),
    `additionalDirectories` (connected folders), plus live connected
@@ -123,10 +125,30 @@ lessons (see frontmatter).
    printed here — "one shared scratch space, use bare filenames with
    both" — is **withdrawn** (Ch44/L163): it was copied from a Desktop
    prompt string that was wrong, and corrected upstream at 1.32885.1.
-   What the gate actually catches: the **file tools** run host-side with
-   their cwd at the outputs dir, so a `/sessions/...` path handed to them
-   is a VM path on the host and is denied, never translated. The fix for
-   a denied path is a **bare filename** for the file tools — but note
+   What the gate actually catches: the **file tools** run host-side, so a
+   `/sessions/...` path handed to them is a VM path on the host and is
+   denied, never translated. The fix for a denied path is the
+   **host-absolute outputs path** for the file tools. **Relative paths
+   (Ch52/L190):** before Desktop 2.7032.0 the gate resolved them against
+   `hostCwd` = the outputs dir (`dd(path, hostCwd)`), so a bare filename
+   worked. From 2.7032.0 the process cwd is `/var/empty` or
+   `<sessionDir>/host-cwd`, and the gate treats a relative path — or an
+   absolute one under any spelling of the process cwd (`cwdSpellings`,
+   needed because the agent expands `file_path` against its cwd before
+   hooks run). In practice agent 2.1.280 refuses a relative `Read`/`Write`/
+   `Edit` *before* the hook: each tool's `validateInput` checks the
+   expanded path against the deny rules below and returns "File is in a
+   directory that is denied by your permission settings." `Grep`/`Glob`
+   do no deny check there, reach the hook, and are **re-anchored** to
+   outputs via `updatedInput`. The hook's own blocks — "needs an absolute
+   path here — use `<outputs>/x`" for a still-relative path, and "is
+   plugin content or the app's private working directory and cannot be
+   written; use the outputs directory" for a write under the cwd — apply
+   to `MultiEdit` and to any path that reaches it unexpanded (static
+   reading; no live run has exercised a relative path). The
+   spawn also puts `Write/Edit/MultiEdit(<cwd>/**)` and `Read(<cwd>/**)`
+   (every spelling) plus `Write/Edit/MultiEdit(<userData>/local-agent-mode-sessions/plugin-cache/**)`
+   into `disallowedTools`/deny, so the cwd is refused twice. Note
    `mcp__workspace__bash` needs the *opposite* form (absolute
    `/sessions/<id>/mnt/outputs/...`), because it starts at the session
    root. There is no form correct for both. **Confirmed to apply to

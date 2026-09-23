@@ -1,5 +1,5 @@
 {
- "generated": "2026-06-04",
+ "generated": "2026-09-23",
  "description": "Cross-reference map: for each lesson, lists related lessons ranked by relevance",
  "references": {
   "1": [
@@ -2017,7 +2017,7 @@
    {
     "id": 122,
     "relevance": 0.8,
-    "reason": "L122 pins the exact host-loop shared-scratch mechanism L89 first observed: sub-agent cwd IS the session outputs directory, and /sessions/... paths are denied not translated for file tools"
+    "reason": "L122 pins the exact host-loop shared-scratch mechanism L89 first observed: sub-agent cwd was the session outputs directory until Desktop 2.7032.0 (L190), and /sessions/... paths are denied not translated for file tools"
    }
   ],
   "99": [
@@ -2447,7 +2447,7 @@
    {
     "id": 89,
     "relevance": 0.85,
-    "reason": "L89's 'single shared scratch space' gloss is WITHDRAWN by L163 (bash starts at the session root, not outputs; the prompt it was read from was wrong until 1.32885.1). What survives: L122's mechanism -- the AGENT PROCESS cwd IS the outputs directory (getStorageDir/sessionDirPaths) -- and that /sessions/... is denied, never translated, for file tools"
+    "reason": "L89's 'single shared scratch space' gloss is WITHDRAWN by L163 (bash starts at the session root, not outputs; the prompt it was read from was wrong until 1.32885.1). What survives: L122's mechanism -- the AGENT PROCESS cwd (until Desktop 2.7032.0, L190) IS the outputs directory (getStorageDir/sessionDirPaths) -- and that /sessions/... is denied, never translated, for file tools"
    },
    {
     "id": 104,
@@ -3614,6 +3614,121 @@
     "id": 126,
     "relevance": 0.6,
     "reason": "the remote_devices bridge is the transport for bridged local/plugin MCP tools"
+   }
+  ],
+  "190": [
+   {
+    "id": 122,
+    "relevance": 0.9,
+    "reason": "L122's 'cwd IS the outputs directory' is the fact this lesson supersedes at Desktop 2.7032.0"
+   },
+   {
+    "id": 163,
+    "relevance": 0.8,
+    "reason": "bash cwd (session root) is unchanged; L190 changes only the file tools' side"
+   },
+   {
+    "id": 164,
+    "relevance": 0.85,
+    "reason": "the two-path-forms rule; the file-tool form becomes the absolute outputs path"
+   },
+   {
+    "id": 107,
+    "relevance": 0.6,
+    "reason": "the PreToolUse path gate whose relative-path handling changed"
+   },
+   {
+    "id": 184,
+    "relevance": 0.4,
+    "reason": "the same Desktop-side hooks option, previous release"
+   }
+  ],
+  "191": [
+   {
+    "id": 115,
+    "relevance": 0.6,
+    "reason": "background-task and resume model; TaskOutput was one of its read paths"
+   },
+   {
+    "id": 121,
+    "relevance": 0.7,
+    "reason": "toolAliases, a separate mechanism from the canonicalizer changed here"
+   },
+   {
+    "id": 109,
+    "relevance": 0.5,
+    "reason": "the Tasks tool family TaskOutput belonged to"
+   },
+   {
+    "id": 111,
+    "relevance": 0.4,
+    "reason": "the earlier TeamCreate/TeamDelete removal, now on the same removed-tools list"
+   }
+  ],
+  "192": [
+   {
+    "id": 189,
+    "relevance": 0.95,
+    "reason": "L189's two release channels and the unserved 2.1.255; L192 gives the cause (RC-only)"
+   },
+   {
+    "id": 180,
+    "relevance": 0.4,
+    "reason": "counting-scope discipline: identify the artifact before counting in it"
+   }
+  ],
+  "193": [
+   {
+    "id": 182,
+    "relevance": 0.8,
+    "reason": "gate 2529235968, called served-and-off there, flipped on here"
+   },
+   {
+    "id": 117,
+    "relevance": 0.75,
+    "reason": "L117's warm-pool inference loses its warm/ evidence"
+   },
+   {
+    "id": 124,
+    "relevance": 0.6,
+    "reason": "the fcache decode recipe; the header version byte changed"
+   },
+   {
+    "id": 141,
+    "relevance": 0.6,
+    "reason": "content16 snapshot identity used for this capture"
+   },
+   {
+    "id": 126,
+    "relevance": 0.5,
+    "reason": "remote_devices device_bash, consumer of remoteBashVmStartHandling"
+   }
+  ],
+  "194": [
+   {
+    "id": 129,
+    "relevance": 0.75,
+    "reason": "Desktop SDK-MCP servers; memory is another one"
+   },
+   {
+    "id": 123,
+    "relevance": 0.6,
+    "reason": "the sub-agent prompt append the memory relay force-enables"
+   },
+   {
+    "id": 181,
+    "relevance": 0.5,
+    "reason": "spawn-env composition, now filtered for VM-loop"
+   },
+   {
+    "id": 132,
+    "relevance": 0.5,
+    "reason": "transcript-location forensics; projects/session is now the folder name"
+   },
+   {
+    "id": 105,
+    "relevance": 0.4,
+    "reason": "artifact no-callback boundary; CLAUDE_ARTIFACT_HOST_GRANT grants host tools to frame artifacts"
    }
   ]
  }

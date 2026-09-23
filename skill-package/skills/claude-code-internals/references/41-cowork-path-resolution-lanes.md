@@ -62,7 +62,7 @@ The `— cwd` marker was over-read. The mapping row is `` `- ${n} → ${e}/` `` 
 let A=`/sessions/${e}`, j=C&&ue?ue:A;  …  k=k.replaceAll(`{{cwd}}`,()=>j)
 ```
 
-It annotated the **agent's** cwd on the host side of a host→VM mapping row. That statement was true then and is true now. The error was reading a fact about the agent process as a fact about the shell.
+It annotated the **agent's** cwd on the host side of a host→VM mapping row. That statement was true then, and stayed true through Desktop 2.2553.13; at 2.7032.0 the agent's cwd left outputs (Ch52/L190). The error was reading a fact about the agent process as a fact about the shell.
 
 ## What is unchanged (re-verified, not restamped)
 
@@ -73,6 +73,8 @@ hostUploadsDir: (0,D.join)((0,D.dirname)(h), `uploads`)   // h === hostCwd
 ```
 
 which holds only if `hostCwd` is `uploads`' sibling — i.e. the session's `outputs` dir. Ch35/L122 stands.
+
+> **Superseded at Desktop 2.7032.0 (Ch52/L190).** `hostCwd` no longer exists; the agent process runs in `/var/empty` (or `<session>/host-cwd`), a write- and read-denied directory, and relative file-tool paths are refused rather than resolved into outputs. Measured across the upgrade with agent 2.1.280 held constant.
 
 ## Two questions this lesson opened, both now closed
 
@@ -94,6 +96,8 @@ This is the practical replacement for the withdrawn "use bare filenames with bot
 | `Read`/`Write`/`Edit` | **bare name** (`report.md`) | cwd is the host outputs dir → immediately user-visible |
 | `mcp__workspace__bash` | **absolute** `/sessions/<id>/mnt/outputs/x` | cwd is the session root; the prompt itself says *"Use absolute paths"* |
 | file tool given `/sessions/...` | **denied**, never translated | the path-gate PreToolUse hook (Ch24/L107) |
+
+> **From Desktop 2.7032.0 (Ch52/L190)** the first row changes: the file tools take the **absolute** host outputs path, and a bare name is refused (the agent's cwd is `/var/empty`). The absolute outputs path is correct on both sides of that release. The bash row is unchanged.
 
 ### ADDENDUM (2026-08-27) — a THIRD correct form, and why no skill needs to derive a host path
 

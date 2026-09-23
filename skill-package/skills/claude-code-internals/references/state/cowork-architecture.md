@@ -2,9 +2,9 @@
 domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.231
-as_of_desktop: 1.46388.4
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182]
-updated: 2026-09-22
+as_of_desktop: 2.7032.0
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194]
+updated: 2026-09-23
 ---
 
 # Cowork runtime architecture (current)
@@ -79,13 +79,22 @@ Desktop drives this agent with.
 ## Filesystem & mounts
 
 **Two tool families, two path forms — the shared-scratch claim is WITHDRAWN
-(Ch44/L163).** The host-loop **agent process** has its cwd set to the session
-outputs dir, so a **bare filename** from `Read`/`Write`/`Edit` lands there and
-is immediately user-visible. `mcp__workspace__bash` is a different case: it
+(Ch44/L163).** The file tools (`Read`/`Write`/`Edit`) take the **host-absolute
+outputs path**, which the model is given in its system prompt. **From Desktop
+2.7032.0 (Ch52/L190) the host-loop agent process's cwd is `/var/empty`** (when
+that is a root-owned directory that is not group- or world-writable, as on stock
+macOS; otherwise a private `<sessionDir>/host-cwd`), and that cwd is
+write- and read-denied. A **bare filename** is therefore refused: the agent
+expands it against `/var/empty` and its own validation rejects a Read, Write
+or Edit there ("File is in a directory that is denied by your permission
+settings."), while a relative Grep/Glob reaches Desktop's hook and is
+re-anchored to outputs (`cowork-permissions.md` layer 4). Before
+2.7032.0 the cwd **was** the outputs dir and a bare filename landed there,
+user-visible (measured under 2.2553.13 with the same agent 2.1.280 build).
+`mcp__workspace__bash` is a different case: it
 starts at the **session root `/sessions/<id>`**, and that directory (plus
 `/tmp`) exists only inside the Linux environment — invisible to the user *and*
-to the file tools. So a bare filename in bash does **not** reach the same place
-a bare filename in `Write` does. Bash needs the absolute
+to the file tools. So a bare filename in bash never reaches outputs. Bash needs the absolute
 `/sessions/<id>/mnt/outputs/...` form; the file tools **reject** that form
 outright (path-gate, `cowork-permissions.md` layer 4). There is no path form
 correct for both.
@@ -149,13 +158,18 @@ treated as an error) and spawns work as that user via named
 `oneshot-<uuid>` jobs, e.g. a `deck-review` skill script invocation
 resolving `SCRIPTS=.../claude-hostloop-plugins/<hash>/skills/deck-review/
 scripts` — real corroboration of the host-loop plugin-staging mechanism
-below. The idempotent user-exists check, together with an observed empty
-`vm_bundles/warm/<hash>/` directory alongside the golden image, is
-*suggestive* of session-to-VM multiplexing (a warm pool of booted guests,
-each capable of hosting more than one session's worth of per-user
-provisioning) — but this is an inference from indirect evidence, not a
+below. The idempotent user-exists check is *suggestive* of session-to-VM
+multiplexing (one booted guest hosting more than one session's worth of
+per-user provisioning) — an inference from indirect evidence, not a
 directly confirmed fact; no artifact yet states "one guest serves N
-sessions" outright. See lesson 117 for the full forensic trace and the
+sessions" outright. The `vm_bundles/warm/<sha>/` directories once cited
+as corroboration are a **download cache** for VM images fetched ahead of
+an update, one per image sha (Ch52/L193), and say nothing about
+multiplexing. **The Desktop pins its VM image by sha** in an embedded
+manifest; the on-disk `claudevm.bundle/.rootfs.img.origin` names the
+image actually installed (`882518393…`, published 2026-09-11, pinned by
+both Desktop 2.2553.1 and 2.7032.0). A Desktop update does not imply a
+VM update. See lesson 117 for the full forensic trace and the
 tool-speed methodology note (`rg` over raw multi-GB images vs. `grep -a`
 vs. naive scripting-language regex).
 
@@ -172,17 +186,18 @@ re-verified at Desktop 1.20186.1 / agent 2.1.205):
   a plain context object (`agentId`, `parentAgentId`, `depth`,
   `parentSessionId`, `agentType:"subagent"`, `subagentName`, …), not
   environment variables.
-- **cwd = the session outputs directory, always — for the AGENT PROCESS.**
-  (`mcp__workspace__bash` starts at the session root instead; Ch44/L163.)
-  The host agent's `cwd` is set once at spawn to
-  `local-agent-mode-sessions/<accountId>/<orgId>/local_<sessionId>/outputs`
-  (see "Session storage" below). A sub-agent's cwd is the **parent's
-  cwd** — cwd is AsyncLocalStorage-scoped with a process-level fallback,
-  and the Task tool's model-facing input schema **strips `cwd`** entirely
-  (`.omit({cwd:!0})`); a model cannot set it, only worktree isolation
-  changes it. So the canonical "reachable outputs root" for any sub-agent
-  IS its cwd, addressed via bare/cwd-relative paths — not a `/sessions/…`
-  form.
+- **cwd = the parent's cwd; a sub-agent cannot set it.** The host agent's
+  `cwd` is set once at spawn: from Desktop 2.7032.0 to `/var/empty` (or
+  `<sessionDir>/host-cwd`), a deliberately empty, write-denied directory
+  (Ch52/L190); before 2.7032.0 to the session outputs dir. (`mcp__workspace__bash`
+  starts at the session root instead; Ch44/L163.) A sub-agent's cwd is the
+  **parent's cwd** — cwd is AsyncLocalStorage-scoped with a process-level
+  fallback, and the Task tool's model-facing input schema **strips `cwd`**
+  entirely (`.omit({cwd:!0})`); a model cannot set it, only worktree isolation
+  changes it. So the reachable outputs root for any sub-agent is the
+  **host-absolute outputs path** — not its cwd (from 2.7032.0) and never a
+  `/sessions/…` form. From 2.7032.0 the sub-agent's own environment text says
+  to pass absolute paths to the file tools.
 - **The path-gate hook and the `canUseTool` chain both apply to
   sub-agents identically to the main thread.** SDK-passed PreToolUse hooks
   are registered process-globally with no subagent exclusion, and the
@@ -196,8 +211,9 @@ re-verified at Desktop 1.20186.1 / agent 2.1.205):
   (`mapVMPathToHostPath`/`deepTranslateVMPaths`) runs only on **outbound**
   agent messages, `file://`/`computer://` URIs, and the scheduled-task
   file reader — never on file-tool inputs. A sub-agent Write targeting
-  `/sessions/<id>/mnt/outputs/...` fails every time; a cwd-relative or
-  host-absolute-outputs Write succeeds every time. Apparent
+  `/sessions/<id>/mnt/outputs/...` fails every time; a host-absolute-outputs
+  Write succeeds every time (a cwd-relative one did too before Desktop
+  2.7032.0, and is refused from it). Apparent
   non-determinism in practice is the *model* choosing which path form to
   construct (e.g. echoing a VM-absolute path captured from bash output),
   not a product-side namespace flip.
@@ -263,7 +279,11 @@ only). The session config record carries `"hostLoopMode": true`.
                                        #   cliSessionId, cwd, enabledMcpTools,
                                        #   egressAllowedDomains, etc.
     local_<sessionId>/                # the session SANDBOX directory
-      outputs/                        #   agent process's cwd (NOT bash's — L163)
+      outputs/                        #   user-visible deliverables; agent cwd
+                                       #   before Desktop 2.7032.0 (NOT bash's — L163)
+      host-cwd/                       #   agent cwd from 2.7032.0 ONLY when
+                                       #   /var/empty is unusable; holds a
+                                       #   {"private": true} package.json (L190)
       uploads/                        #   user-attached files
       audit.jsonl  +  .audit-key      #   signed per-session audit log
       .claude/                        #   per-session CLAUDE_CONFIG_DIR

@@ -294,6 +294,22 @@
         "delivering-outputs",
         1
       ]
+    ],
+    "190": [
+      [
+        "files-and-paths",
+        3
+      ],
+      [
+        "sub-agents",
+        1
+      ]
+    ],
+    "194": [
+      [
+        "plugins-and-plugin-root",
+        1
+      ]
     ]
   },
   "by_state_page": {
@@ -344,7 +360,7 @@
     "plugins-skills-hooks": [
       [
         "plugins-and-plugin-root",
-        9
+        10
       ],
       [
         "asking-the-user",
@@ -401,6 +417,7 @@
     "plugins.mounts-are-read-only": "plugins-and-plugin-root#fact-plugins-mounts-are-read-only",
     "plugins.plugin-files-are-mounted": "plugins-and-plugin-root#fact-plugins-plugin-files-are-mounted",
     "plugins.plugin-root-per-consumer": "plugins-and-plugin-root#fact-plugins-plugin-root-per-consumer",
+    "plugins.server-named-memory": "plugins-and-plugin-root#fact-plugins-server-named-memory",
     "plugins.ship-a-launcher": "plugins-and-plugin-root#fact-plugins-ship-a-launcher",
     "plugins.skill-dir-is-body-text": "plugins-and-plugin-root#fact-plugins-skill-dir-is-body-text",
     "shell.home-is-the-session": "shell-commands#fact-shell-home-is-the-session",

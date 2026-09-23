@@ -1,5 +1,48 @@
 # Changelog
 
+## v2.50.0 — 2026-09-23 (this fork) — Desktop 2.7032.0: the working directory leaves outputs
+
+Adds Chapter 52 (L190–L194); counts move to 194/52. First-party against `app.asar` 2.7032.0, diffed against 2.2553.1
+and 1.46388.4, agent 2.1.280 against 2.1.260 and 2.1.275, a live fcache decoded 2026-09-23, live release-CDN probes,
+and this machine's own Desktop log and Cowork transcripts across the 2.2553.13 → 2.7032.0 upgrade. Prompted by the
+cowork-harness project's 2.7032.0 parity sync. Its headline, that every consumer was repointed at the outputs dir, was
+half right: the writable roots collapsed onto outputs, but the agent's working directory moved off it. The CLI content
+baseline stays 2.1.231.
+
+- **L190 — published guidance changed.** From Desktop 2.7032.0 the host-loop agent runs in `/var/empty` (or a private
+  `<session>/host-cwd`), and the spawn denies it to both reading and writing. An hourly task on one machine ran agent
+  2.1.280 with its cwd at outputs in 4 of 4 runs under Desktop 2.2553.13, and at `/private/var/empty` in 9 of 9 runs
+  under 2.7032.0. A bare filename given to Read, Write or Edit is now refused: the agent expands it to `/var/empty/x` and
+  its own validation rejects it against the new deny rules. A relative Grep or Glob is re-anchored to outputs by
+  Desktop's hook. The main and sub-agent prompts now tell the model to pass absolute paths. "Use a bare filename with the file
+  tools" is withdrawn everywhere it was published: the state pages, `author-facts.json` (and so the site),
+  troubleshooting, SKILL.md and the README. The replacement is to give the file tools the absolute outputs path, which
+  is correct before and after 2.7032.0. The refusal messages are read from the shipped code; no live run has triggered them yet.
+- **L191.** `TaskOutput` was removed at agent 2.1.277. That removal is announced; a background task's output is now
+  read with `Read`. It and its four aliases join a removed-tools list, and from 2.1.280 a permission rule or `--tools`
+  entry naming one of them logs "names a removed tool". `REPL` was removed without a changelog line.
+  `SubagentHandback`, `FetchInboxMessage` and `AppifactRepl` are new. A `bashCommandClamp` `agent()` refuses to spawn
+  when Bash is remapped through `toolAliases`, which is always the case in host-loop Cowork. That refusal is not new.
+- **L192.** A Desktop release can pin its agent to a release-candidate base. An RC may later be promoted unchanged
+  (2.1.219), never promoted (2.1.255, the real reason L189 saw a 404), or replaced on stable by a different build under
+  the same version number (2.1.280 differs in commit, build date and bytes). The agent Desktop staged here is the RC.
+- **L193.** New fcache snapshot `f82df085d027eff0` (371 features). All 57 previously pinned gates were re-observed:
+  `2529235968` flipped to force-ON, Opus 5.5 and Fable 5.1 are now on the Cowork model allow-list, and
+  `remoteBashVmStartHandling` was added. The fcache header's version byte has been `\x02` since Desktop 1.34493.1; the
+  decode recipe is unchanged, but a decoder that checks for `CLF\x01` rejects current files. The VM image did not
+  change with the Desktop. `vm_bundles/warm/` is a download cache, so L117's warm-pool evidence is withdrawn.
+- **L194.** A cloud-backed `memory` SDK-MCP server (gate `946844604`, force-ON) replaces an MCP server configured
+  under the name `memory`, for example in `claude_desktop_config.json`. Whether plugin-declared servers are
+  affected is not established. New author fact `plugins.server-named-memory`. Also: the VM-loop spawn env now drops host-only paths;
+  `CLAUDE_CODE_DESKTOP_APP_VERSION` and `CLAUDE_ARTIFACT_HOST_GRANT` are set; there is a shared plugin cache and a cron
+  admin policy; transcripts land under `projects/session/`; and the OTLP egress allowlist now rejects wildcard or
+  dotless hosts (except `localhost`).
+- **State layer.** `registry.as_of` is now desktop 2.7032.0, in-VM ELF 2.1.280, fcache 2026-09-23. `tool.TaskOutput`
+  and `tool.REPL` are marked removed, and there are new entries for `SubagentHandback`, `FetchInboxMessage`, gate
+  `946844604`, `CLAUDE_ARTIFACT_HOST_GRANT`, `CLAUDE_CODE_PROJECT_DIR_NAME` and `CLAUDE_CODE_PLUGIN_CACHE_DIR`. The
+  architecture, permissions and plugins pages are re-baselined to Desktop 2.7032.0. Forward pointers were added in
+  L117, L122, L163 and L164 and in Ch24.
+
 ## v2.49.9 — 2026-09-23 (this fork) — the repo and the plugin point at ccinternals.dev
 
 No new lessons; counts stay 189/51; no reference content changed. Someone who reached the repo or the plugin had no

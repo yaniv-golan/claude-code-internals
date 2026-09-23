@@ -29,11 +29,11 @@
   },
   "verified_against": {
     "cli": "2.1.231",
-    "desktop_asar": "1.46388.4",
-    "fcache_content16": "5c4ad148aca13387",
-    "observed_at": "2026-09-05",
+    "desktop_asar": "2.7032.0",
+    "fcache_content16": "f82df085d027eff0",
+    "observed_at": "2026-09-23",
     "cli_note": "Re-stamped for the v2.1.217->v2.1.231 CLI refresh (Ch42). The CLI-side diff was scanned for contradictions against these facts and found none; the runtime markers the detect.* facts rely on (CLAUDECODE, CLAUDE_CODE_ENTRYPOINT + local-agent normalisation, CLAUDE_CODE_IS_COWORK) were positively confirmed present in the 2.1.231 bundle. The Cowork-side facts themselves were NOT re-derived this pass; desktop_asar/fcache stamps are unchanged and remain their true provenance. OUT-OF-BASELINE CORRECTION (2026-08-28, Ch45/L167): change.your-own-skill-can-be-cut was corrected against standalone CLI 2.1.248/2.1.250 and a 269-record re-attachment corpus -- NEWER than the cli stamp below, which is deliberately NOT bumped because this was a targeted subsystem pass, not a baseline refresh. The page had said re-reading a shortened skill from its path recovers the full text, full stop. Measured: 49 of 56 distinct recorded locations on one machine no longer exist, 46 of them version-stamped plugin directories removed by an ordinary update. Every one was valid when written and resolves inside a live run, so the wording now says best-effort and names resume-after-update as the weak point. The dead locations are measured; a resulting failed re-read is inferred, not observed, and the caveat says so. LANE DISCIPLINE: those 56 directories are all standalone-CLI sessions. The two Cowork host-loop records available (staged under a claude-hostloop-plugins/<hash> root, where the hash is a deterministic digest of the install path rather than a per-run random value) BOTH still exist. So the CLI figure was NOT published as a Cowork rate -- the page states only that the location is captured at first invocation rather than resolved when read, and the caveat carries both samples with their sizes. Also re-checked this pass: all four runtime markers the detecting-cowork page depends on (CLAUDE_CODE_IS_COWORK, CLAUDECODE, CLAUDE_CODE_ENTRYPOINT, CLAUDE_CODE_COWORK_FRAME_ARTIFACTS) are still present in CLI 2.1.250, 19 versions past the cli stamp, so that page is current. OUT-OF-BASELINE CORRECTION (2026-08-29, Ch48/L173 + the v2.44.1 plugin-root correction): plugins.plugin-root-per-consumer previously said the token 'is not in your shell's environment either, so referring to it in a command yields an empty string rather than an error'. FALSIFIED -- reproduced in two agent sessions on the SAME machine (not independent replication: per env.CLAUDE_ENV_FILE the winning export is deterministic from the shared install set, so any session on this install sees the same pair), the shell env carried the token set to an UNRELATED plugin's directory (hooks can write session env; each hook gets its own plugin's location; the loader concatenates them so the last write wins reproducibly). The published wording gave actively wrong debugging advice, since checking for a blank value returns clean. Corrected, and a new fact plugins.ship-a-launcher added for the bin/-on-PATH affordance measured in three lanes (Ch48/L173). Both verified against CLI 2.1.250 and live sessions NEWER than the cli stamp below, which is deliberately NOT bumped -- targeted subsystem passes, not a baseline refresh.",
-    "desktop_note": "Re-stamped for the Desktop 1.30096.1 -> 1.46388.4 / agent 2.1.227 -> 2.1.260 jump (Ch50). The 60 facts here were NOT each re-derived against the new artifacts; what was re-checked this pass is the set of runtime markers and mechanisms they rest on, all still present at asar 1.46388.4 (.vite/build scope) and in-VM ELF 2.1.260: CLAUDE_CODE_IS_COWORK (4/11), CLAUDECODE (4/18), CLAUDE_CODE_ENTRYPOINT (13/93), CLAUDE_CODE_COWORK_FRAME_ARTIFACTS (4/7), disableSkillShellExecution (3/6), present_files (6/4), coworkEgressAllowedHosts (17/14), fileDeleteApprovedMounts (10 asar-side), mcp__workspace__bash (2/2), CLAUDE_COWORK_MEMORY_GUIDELINES (5/8). Every desktop_fcache gate in registry.json WAS re-observed against the 2026-09-05 capture (54 pinned; 49 unchanged, 5 moved -- see the CHANGELOG). One of the five is directly relevant to change.served-not-shipped: gate 124685897, the sub-agent section-prompt server override, went off -> ON between captures while its source stayed \"defaultValue\", i.e. its server-side default changed with no client release and no payload behind it -- the live example that fact describes. delivery.two-lanes and delivery.remote-filesystem-discarded were positively re-derived this pass (L180). Facts whose evidence is a transcript corpus or a live probe rather than a binary marker were not re-measured."
+    "desktop_note": "Re-stamped for the Desktop 1.46388.4 -> 2.7032.0 / agent 2.1.260 -> 2.1.280 jump (Ch52). A full .vite/build diff across 1.46388.4 -> 2.2553.1 -> 2.7032.0 found one change that falsifies published guidance: the host-loop agent's working directory left the outputs folder (now /var/empty or <session>/host-cwd, read- and write-denied), measured 9/9 runs under 2.7032.0 vs 4/4 on outputs under 2.2553.13 with the same agent build. paths.relative-filenames, paths.scratch-is-not-delivered, paths.session-paths-denied and subagents.working-directory were rewritten to 'use the absolute outputs path' (correct before and after), the top5 and router entries with them; plugins.server-named-memory was added for the cloud memory relay that replaces any MCP server named memory (L194). The remaining facts were NOT each re-derived; the diff found their mechanisms unchanged (tools/allowedTools, the four PreToolUse matchers, the sub-agent prompt templates apart from the path sentence, the spawn-env gate set). Every desktop_fcache gate in registry.json was re-observed against the 2026-09-23 capture (57 pinned; 56 unchanged, 2529235968 flipped force-ON). Previous note: Re-stamped for the Desktop 1.30096.1 -> 1.46388.4 / agent 2.1.227 -> 2.1.260 jump (Ch50). The 60 facts here were NOT each re-derived against the new artifacts; what was re-checked this pass is the set of runtime markers and mechanisms they rest on, all still present at asar 1.46388.4 (.vite/build scope) and in-VM ELF 2.1.260: CLAUDE_CODE_IS_COWORK (4/11), CLAUDECODE (4/18), CLAUDE_CODE_ENTRYPOINT (13/93), CLAUDE_CODE_COWORK_FRAME_ARTIFACTS (4/7), disableSkillShellExecution (3/6), present_files (6/4), coworkEgressAllowedHosts (17/14), fileDeleteApprovedMounts (10 asar-side), mcp__workspace__bash (2/2), CLAUDE_COWORK_MEMORY_GUIDELINES (5/8). Every desktop_fcache gate in registry.json WAS re-observed against the 2026-09-05 capture (54 pinned; 49 unchanged, 5 moved -- see the CHANGELOG). One of the five is directly relevant to change.served-not-shipped: gate 124685897, the sub-agent section-prompt server override, went off -> ON between captures while its source stayed \"defaultValue\", i.e. its server-side default changed with no client release and no payload behind it -- the live example that fact describes. delivery.two-lanes and delivery.remote-filesystem-discarded were positively re-derived this pass (L180). Facts whose evidence is a transcript corpus or a live probe rather than a binary marker were not re-measured."
   },
   "pages": [
     {
@@ -54,7 +54,7 @@
       "nav_label": "Files & paths",
       "nav_group": "Filesystem",
       "blurb": "The shell and the file tools need DIFFERENT path forms. There is no form correct for both.",
-      "summary": "Your skill's file tools and its shell need DIFFERENT path forms, and getting this wrong fails silently. Use a BARE filename with the file-writing and file-reading tools: their working directory is the outputs location, so the file is immediately visible to the user. Use an ABSOLUTE session path under the outputs mount with the shell: the shell starts in a scratch directory that exists only inside the Linux environment, so a bare filename there is written somewhere the user and the file tools can never see. Handing the shell's absolute form to a file tool is rejected outright rather than translated, which is the most common way a working skill breaks when moved into Cowork. The uploads location is read-only; the outputs location is where deliverables belong.",
+      "summary": "Your skill's file tools and its shell need DIFFERENT path forms, and getting this wrong breaks a skill that works in the CLI. Give the file-writing and file-reading tools the ABSOLUTE path of the outputs location — the model is told that path in its instructions. Older Desktop releases also accepted a bare filename there, because the file tools' working directory was the outputs location; from Desktop 2.7032.0 their working directory is a deliberately empty, write-denied directory, and a bare filename is refused. The absolute outputs path works on both, so it is the form to write. Use an ABSOLUTE session path under the outputs mount with the shell: the shell starts in a scratch directory that exists only inside the Linux environment, so a bare filename there is written somewhere the user and the file tools can never see. Handing the shell's absolute form to a file tool is rejected outright rather than translated. The uploads location is read-only; the outputs location is where deliverables belong.",
       "open_questions": [
         "An earlier version of this page said a relative filename was correct for both the shell and the file tools. That was wrong -- it was copied from a product prompt string that was itself wrong, and which the product corrected in a later release. It is withdrawn."
       ]
@@ -602,8 +602,8 @@
     {
       "id": "paths.relative-filenames",
       "page": "files-and-paths",
-      "rule": "Use a bare filename with the file tools; use an absolute outputs path with the shell. No single form works for both.",
-      "detail": "The file-reading and file-writing tools have their working directory set to the outputs location, so a bare filename lands there and the user can see it immediately. The shell does NOT share that working directory -- it starts in a scratch directory that exists only inside the Linux environment, so the same bare filename written from the shell goes somewhere neither the user nor the file tools can reach, with no error. From the shell, write to the absolute outputs path instead. In the other direction, an absolute path copied out of shell output is the wrong form for the file tools and is rejected every time rather than translated. There is a third form worth knowing if your skill bundles a script: because the shell always starts in the same place and the shared area sits directly inside it, a shell command can reach the outputs location with a short relative path instead of the long absolute one, and that short form contains nothing you have to look up. But do not have the script work out its own destination by inspecting the directories around it. Surfaces differ in ways a single test cannot separate — on one of them the shell already starts inside the outputs location, so a test for a nested folder finds nothing and a naive fallback appends a second level, which nests a second outputs level and hides the file. Instead, let the component that already knows the destination pass it: the caller has the file tools, has resolved the workspace, and is the only party that can name a path the user will see. Give scripts an absolute destination as a required argument, have them fail with a clear message when it is missing rather than inventing a directory, and have them print the path they actually wrote.",
+      "rule": "Give the file tools the absolute outputs path; give the shell the absolute session outputs path. No single form works for both.",
+      "detail": "The file-reading and file-writing tools run on the user's computer and need the outputs location's own absolute path, which the model is given in its instructions. Before Desktop 2.7032.0 their working directory was the outputs location, so a bare filename also landed there. From Desktop 2.7032.0 the working directory is a deliberately empty directory the tools are denied from writing to, and a relative path is refused: a bare filename given to the read, write or edit tools is refused with an error saying the file is in a directory denied by the permission settings, and a relative search is quietly re-anchored to the outputs location. Because a user may be on either release, write the absolute outputs path; it works on both. The shell does NOT share the file tools' location either way -- it starts in a scratch directory that exists only inside the Linux environment, so a bare filename written from the shell goes somewhere neither the user nor the file tools can reach, with no error. From the shell, write to the absolute outputs path instead. In the other direction, an absolute path copied out of shell output is the wrong form for the file tools and is rejected every time rather than translated. There is a third form worth knowing if your skill bundles a script: because the shell always starts in the same place and the shared area sits directly inside it, a shell command can reach the outputs location with a short relative path instead of the long absolute one, and that short form contains nothing you have to look up. But do not have the script work out its own destination by inspecting the directories around it. Surfaces differ in ways a single test cannot separate — on one of them the shell already starts inside the outputs location, so a test for a nested folder finds nothing and a naive fallback appends a second level, which nests a second outputs level and hides the file. Instead, let the component that already knows the destination pass it: the caller has the file tools, has resolved the workspace, and is the only party that can name a path the user will see. Give scripts an absolute destination as a required argument, have them fail with a clear message when it is missing rather than inventing a directory, and have them print the path they actually wrote.",
       "tier": "measured",
       "severity": "loud",
       "durability": "durable",
@@ -613,19 +613,21 @@
         "lessons": [
           122,
           139,
-          144
+          144,
+          190
         ],
         "state_page": "cowork-architecture"
       },
       "caveats": [
-        "An earlier version of this fact suggested a script could locate the outputs directory itself by testing for a nested folder. That is withdrawn: it is correct on one surface and silently wrong on another, where the shell already starts inside the outputs location."
+        "An earlier version of this fact suggested a script could locate the outputs directory itself by testing for a nested folder. That is withdrawn: it is correct on one surface and silently wrong on another, where the shell already starts inside the outputs location.",
+        "Changed at Desktop 2.7032.0, with the agent build held constant. On one machine an hourly Cowork task ran agent 2.1.280 under Desktop 2.2553.13 with its working directory at the outputs location (4 of 4 runs), then under 2.7032.0 at /var/empty (9 of 9 runs). That is measured. That relative paths are now refused, and with which message, is read from the shipped application and has not been triggered in a live run. The absolute outputs path is correct on both."
       ]
     },
     {
       "id": "paths.scratch-is-not-delivered",
       "page": "files-and-paths",
       "rule": "Producing a file is not delivering it — and where your working directory lands differs by lane.",
-      "detail": "Where your working directory lands differs by lane, so do not assume it is either visible or invisible. On the local desktop lane the working directory IS the outputs location, so a file written there with a bare filename is visible to the user immediately. On the remote lane the working directory is a container home directory that is neither surfaced nor retained, and a file left there is lost at session end. Because a skill cannot tell which lane it is on, treat producing and delivering as two separate acts on both: write the file to a stated path, then present it with whatever tool this surface offers for sending files to the user. Note also that 'the scratch directory' is not one place — the agent is separately instructed to use a host-side temporary directory for working files, which survives the session and is never shown to the user, and the shell has its own scratch area that reaches neither the user nor your file tools. Anything outside the outputs location or a connected folder is a temporary file by definition.",
+      "detail": "Where your working directory lands differs by lane, so do not assume it is either visible or invisible. On the local desktop lane the file tools' working directory was the outputs location before Desktop 2.7032.0, so a bare filename landed somewhere visible; from 2.7032.0 it is an empty directory the tools cannot write to, and a bare filename is refused. On the remote lane the working directory is a container home directory that is neither surfaced nor retained, and a file left there is lost at session end. Because a skill cannot tell which lane it is on, treat producing and delivering as two separate acts on both: write the file to a stated path, then present it with whatever tool this surface offers for sending files to the user. Note also that 'the scratch directory' is not one place — the agent is separately instructed to use a host-side temporary directory for working files, which survives the session and is never shown to the user, and the shell has its own scratch area that reaches neither the user nor your file tools. Anything outside the outputs location or a connected folder is a temporary file by definition.",
       "tier": "measured",
       "severity": "silent",
       "durability": "durable",
@@ -635,19 +637,20 @@
           122,
           138,
           163,
-          164
+          164,
+          190
         ],
         "state_page": "cowork-architecture"
       },
       "caveats": [
-        "An earlier release of this rule stated flatly that the directory your skill works in is a scratch space the user does not see. That is true on the remote lane and wrong on the local desktop lane, where the working directory is the outputs location itself. It is withdrawn: neither half holds on both lanes, so write the file to a stated path and present it either way."
+        "An earlier release of this rule stated flatly that the directory your skill works in is a scratch space the user does not see. That is true on the remote lane and wrong on the local desktop lane before Desktop 2.7032.0, where the working directory was the outputs location itself; from 2.7032.0 it no longer is. It is withdrawn: neither half holds on both lanes, so write the file to a stated path and present it either way."
       ]
     },
     {
       "id": "paths.session-paths-denied",
       "page": "files-and-paths",
       "rule": "Never pass an absolute session path to the file tools. It is denied, not translated.",
-      "detail": "Your shell commands print absolute paths that look like `/sessions/<session-name>/mnt/outputs/report.pdf`. If you hand one of those to a file-reading or file-writing tool, the call is refused — the check is a literal prefix test on `/sessions/`, so the same path is refused every time and retrying cannot help. Nothing rewrites it into the form those tools want. Write `report.pdf` instead when you are using a file tool -- a bare filename is correct there. Do not carry that advice back to the shell: the shell needs the absolute outputs path, because its own starting directory is invisible to the user. The error text blames the path form, which is right in this case, but the same message appears for other causes too, so read it as \"this tool cannot take this path\" rather than as a diagnosis.",
+      "detail": "Your shell commands print absolute paths that look like `/sessions/<session-name>/mnt/outputs/report.pdf`. If you hand one of those to a file-reading or file-writing tool, the call is refused — the check is a literal prefix test on `/sessions/`, so the same path is refused every time and retrying cannot help. Nothing rewrites it into the form those tools want. Pass the outputs location's own absolute path instead when you are using a file tool (a bare filename also worked before Desktop 2.7032.0, and is refused from 2.7032.0). Do not carry that advice back to the shell: the shell needs the absolute outputs path, because its own starting directory is invisible to the user. The error text blames the path form, which is right in this case, but the same message appears for other causes too, so read it as \"this tool cannot take this path\" rather than as a diagnosis.",
       "tier": "measured",
       "severity": "loud",
       "durability": "durable",
@@ -656,7 +659,8 @@
       "sources": {
         "lessons": [
           122,
-          143
+          143,
+          190
         ],
         "state_page": "cowork-architecture"
       },
@@ -1091,8 +1095,8 @@
     {
       "id": "subagents.working-directory",
       "page": "sub-agents",
-      "rule": "Write sub-agent prompts with relative paths, exactly as you would the main thread.",
-      "detail": "A sub-agent starts in the session's own working area, not a private one, so the same path rules apply and absolute session paths handed to file tools are rejected there for the same reason. Two limits do not carry over from the main thread, though. Shell commands do not share the file tools' working directory, so a relative path is right for a file tool and wrong for the shell, which needs an absolute path. And a sub-agent is not told how the folders the user connected are named inside the shell environment — the main thread receives that mapping, a sub-agent does not, and the tool description points it at a section of its instructions that it does not have. So if a sub-agent must work inside a folder the user connected, put the resolved path in its prompt. Left to guess, it will address the folder by name and silently create a same-named directory in the outputs location instead.",
+      "rule": "Write sub-agent prompts with the absolute outputs path, as the sub-agent's own instructions now ask.",
+      "detail": "A sub-agent inherits the main thread's working directory rather than getting a private one, so the same path rules apply and absolute session paths handed to file tools are rejected there for the same reason. From Desktop 2.7032.0 the sub-agent's instructions say to pass absolute paths to the file tools, where earlier releases told it relative paths started at the outputs location; an absolute outputs path is correct on both. Two limits do not carry over from the main thread, though. Shell commands do not share the file tools' location, so the path form that is right for a file tool is wrong for the shell, which needs the absolute session path. And a sub-agent is not told how the folders the user connected are named inside the shell environment — the main thread receives that mapping, a sub-agent does not, and the tool description points it at a section of its instructions that it does not have. So if a sub-agent must work inside a folder the user connected, put the resolved path in its prompt. Left to guess, it will address the folder by name; before Desktop 2.7032.0 that silently created a same-named directory in the outputs location, and from 2.7032.0 the relative path is refused instead.",
       "tier": "measured",
       "severity": "loud",
       "durability": "durable",
@@ -1101,7 +1105,8 @@
         "lessons": [
           122,
           163,
-          164
+          164,
+          190
         ],
         "state_page": "cowork-architecture"
       },
@@ -1392,6 +1397,27 @@
       }
     },
     {
+      "id": "plugins.server-named-memory",
+      "page": "plugins-and-plugin-root",
+      "rule": "Do not name an MCP server `memory` for Cowork.",
+      "detail": "Current Cowork desktop builds install their own server under that name, backed by the user's cloud memory. A server configured under the same name — for example the reference memory server added as `memory` in the desktop application's MCP configuration — is replaced by it, and the name is added to the denied-servers list, so yours never starts. The only trace is a line in the desktop application's log, not anything the model or the user sees. Pick a distinctive name; the replacement keys on the exact name.",
+      "tier": "binary",
+      "severity": "silent",
+      "durability": "durable",
+      "lane": "local",
+      "volatile_dependency": true,
+      "sources": {
+        "lessons": [
+          194
+        ],
+        "state_page": "plugins-skills-hooks"
+      },
+      "caveats": [
+        "The replacement happens only when the cloud memory server is switched on, which is gated server-side (on at the 2026-09-23 capture) and requires a first-party account that is not HIPAA-restricted. Whether a server declared inside a plugin is affected is not established: the agent gives plugin servers a prefixed name that an exact-name match would not obviously hit.",
+        "Observed on one machine: 30 of 31 recent Cowork runs, nearly all one scheduled task, were offered the cloud server's read and list tools."
+      ]
+    },
+    {
       "caveats": [
         "The pinned value was measured in the environment; the refusal behaviour at that depth is read from the shipped agent, not exercised in the remote sandbox."
       ],
@@ -1460,7 +1486,7 @@
       "fact": "paths.session-paths-denied",
       "symptom": "Tool refused the path your shell just printed",
       "why": "The file tools reject the shell’s absolute form outright — a literal prefix test, not a translation.",
-      "fix": "Pass a bare filename."
+      "fix": "Pass the outputs location's absolute path."
     },
     {
       "page": "delivering-outputs",
@@ -1544,8 +1570,8 @@
     {
       "page": "files-and-paths",
       "fact": "paths.relative-filenames",
-      "rule": "Write with bare or relative filenames.",
-      "why": "Absolute session paths are denied by the file tools every single time."
+      "rule": "Write to the absolute outputs path.",
+      "why": "Absolute session paths are denied by the file tools every time, and from Desktop 2.7032.0 so are bare filenames."
     },
     {
       "page": "delivering-outputs",

@@ -1,6 +1,6 @@
 # Claude Code Internals
 
-> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 189 lessons covering every internal subsystem, searchable three ways.
+> A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 194 lessons covering every internal subsystem, searchable three ways.
 
 **Writing skills that survive Cowork → [ccinternals.dev/cowork](https://ccinternals.dev/cowork/)**
 
@@ -28,7 +28,7 @@
 
 ## What This Is
 
-This is a Claude Code skill (a local knowledge package that Claude Code loads automatically) containing a complete reverse-engineering of Claude Code's internal architecture. 189 detailed lessons cover every major subsystem — from the boot sequence to unreleased features. When you type `/claude-code-internals hooks` or `/claude-code-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
+This is a Claude Code skill (a local knowledge package that Claude Code loads automatically) containing a complete reverse-engineering of Claude Code's internal architecture. 194 detailed lessons cover every major subsystem — from the boot sequence to unreleased features. When you type `/claude-code-internals hooks` or `/claude-code-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
 
 Without this skill, Claude knows *how to use* Claude Code but doesn't know *how Claude Code works internally*. With it, Claude becomes an expert on its own implementation — the query engine's retry logic, the 31 hook event types, the 7-phase permission pipeline, the compaction algorithm, the agent spawn lifecycle, all of it.
 
@@ -121,7 +121,7 @@ This is because Claude's training data doesn't include Claude Code's source code
 | **2. TF-IDF** | `semantic-search.js` | ~50ms | Natural language: "how does Claude decide what tools to use" | Node.js |
 
 - **Layer 1** uses `jq` to search a 4,480-key keyword map pointing at exact file:line ranges.
-- **Layer 2** tokenizes your query and computes cosine similarity against pre-built TF-IDF vectors for all 189 lessons. Pure Node.js, no dependencies.
+- **Layer 2** tokenizes your query and computes cosine similarity against pre-built TF-IDF vectors for all 194 lessons. Pure Node.js, no dependencies.
 - **`search.js`** runs both and fuses the rankings. It is the one to reach for unless you specifically want a single layer's behaviour.
 
 ### Auto-Trigger Hook
@@ -228,7 +228,7 @@ chmod +x scripts/*.sh scripts/*.js
 # "Unknown skill" instead, Claude Code needs a restart.
 ```
 
-That's it. The zip contains everything the skill needs — the SKILL.md brain, all 189 lessons, both search indexes, the current-state layer, and the scripts. No npm install, no server, no API keys.
+That's it. The zip contains everything the skill needs — the SKILL.md brain, all 194 lessons, both search indexes, the current-state layer, and the scripts. No npm install, no server, no API keys.
 
 ### From This Repo
 
@@ -440,7 +440,7 @@ claude-code-internals-skill/
 |   |   +-- 04-connectivity-plugins.md
 |   |   +-- 05-unreleased-bigpicture.md
 |   |   +-- topic-index.json        Keyword index (494 entries)
-|   |   +-- semantic-index.json     TF-IDF vectors (189 lessons)
+|   |   +-- semantic-index.json     TF-IDF vectors (194 lessons)
 |   +-- scripts/
 |       +-- lookup.sh               Keyword search (jq)
 |       +-- semantic-search.js      TF-IDF search (Node.js)
@@ -477,9 +477,9 @@ The `claude-code-internals.zip` file is the complete, shareable package. It cont
 | `SKILL.md` | 120KB | The skill brain — seven-step workflow, gotchas, and the reference-file map |
 | `version.json` | 78KB | Version metadata plus the cumulative per-release verification record |
 | `hooks-config.json` | 1.4KB | Example PreToolUse hook definition (portable paths) |
-| `references/*.md` | 1.4MB | 48 chapter files holding all 189 lessons |
+| `references/*.md` | 1.4MB | 49 chapter files holding all 194 lessons |
 | `references/topic-index.json` | 341KB | Per-lesson bounds and keywords, plus a 4,480-key keyword map |
-| `references/semantic-index.json` | 1.1MB | Pre-built TF-IDF vectors for all 189 lessons |
+| `references/semantic-index.json` | 1.1MB | Pre-built TF-IDF vectors for all 194 lessons |
 | `references/cross-references.json` | 88KB | 614 lesson-to-lesson links, keyed from 161 source entries |
 | `references/troubleshooting.json` | 74KB | 133 symptom entries (672 patterns) with lesson pointers and hints |
 | `references/state/` | 496KB | Current-state layer — 8 domain pages, `registry.json` (436 entries), `author-facts.json` (60 facts) |

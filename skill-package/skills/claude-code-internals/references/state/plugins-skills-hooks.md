@@ -2,9 +2,9 @@
 domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.231
-as_of_desktop: 1.46388.4
-sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188]
-updated: 2026-09-05
+as_of_desktop: 2.7032.0
+sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194]
+updated: 2026-09-23
 ---
 
 # Plugins, skills & hooks (current)
@@ -38,6 +38,27 @@ UI (or org-remote/RPM); the standalone CLI's `--cowork` install path does
 Mechanism: the host loop symlinks each enabled plugin into a temp
 `claude-hostloop-plugins/<hash>` dir at session start and runs hooks
 **host-side**.
+
+## The MCP server name `memory` is taken in Cowork (L194)
+
+From Desktop 2.2553.1 the Cowork spawn installs an in-process SDK-MCP
+server named **`memory`** that relays to the user's cloud memory
+(`/v2/ccr-sessions/-/memory/mcp`; tools `memory_read`, `memory_list`,
+`memory_write`, `memory_str_replace`, `memory_append`, `memory_delete`).
+It is on when gate `946844604` is on (force-ON at the 2026-09-23
+capture), the account is first-party and not HIPAA-restricted. When it is
+on, a server configured under the same name (e.g. `mcpServers.memory` in
+`claude_desktop_config.json`) is **replaced** (only a Desktop-log warning)
+and `memory` is added to `deniedMcpServers`. Whether a plugin-declared
+server (agent-side name `plugin:<plugin>:<server>`) is affected is not
+established. Read and list are always pre-approved; all six when the
+session has a live memory project binding, and a write still needs a
+verified binding that admits writes at call time. Its
+guidance is appended to the main and sub-agent prompts, with
+`CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT=1` set so the sub-agent
+append takes effect. Observed: 30 of 31 recent Cowork runs on one machine
+(nearly all one scheduled task) were offered `mcp__memory__memory_list`/
+`_read` and no write tool; none called a memory tool.
 
 ## Plugin agent frontmatter restrictions
 

@@ -2,8 +2,8 @@
 domain: command-surface
 title: Command surface (current)
 as_of_cli: 2.1.231
-sources: [111, 112, 135]
-updated: 2026-08-14
+sources: [111, 112, 135, 191]
+updated: 2026-09-23
 ---
 
 # Command surface (current)
@@ -90,7 +90,13 @@ a user a dark-launched command is available to them.
 - **Removed:** `/bridge-kick`, `/init-verifiers`, `/simplify`.
 - **Removed tools:** `TeamCreate` / `TeamDelete` — every session now has
   one implicit team (binary hit count for `TeamCreate` dropped from 6 in
-  v2.1.159 to 1 in v2.1.198).
+  v2.1.159 to 1 in v2.1.198). Past this page's CLI baseline (Ch52/L191):
+  **`TaskOutput`** removed at 2.1.277 (announced; read a background task's
+  output file with `Read`), and its aliases `AgentOutputTool` /
+  `BashOutputTool` / `AgentOutput` / `BashOutput` with it — in 2.1.280
+  all five sit in the agent's removed-tools set, and a permission rule or
+  `--tools` entry naming one is skipped with a "names a removed tool"
+  warning. **`REPL`** removed between 2.1.260 and 2.1.275 (not announced).
 - **Removed env vars:** `ANTHROPIC_FOUNDRY_AUTH_TOKEN`,
   `CLAUDE_CODE_AGENT_LIST_IN_MESSAGES`, `CLAUDE_CODE_TEAM_ONBOARDING`.
 - **Renamed:** `/toggle-memory` → `/pause-memory` (kept as an alias, not
