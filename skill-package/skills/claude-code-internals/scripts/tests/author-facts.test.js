@@ -59,6 +59,11 @@ test('quoted-span budget flags but does not fail', () => {
 
 // --- author-facts.json schema ---------------------------------------------
 
+// A history-derived stamp from before the fixture capture (2026-08-05).
+const OLD_STAMP = {
+  date: '2026-08-01', desktop_asar: '1.20000.0', cli: '2.1.210', basis: 'history', from_commit: 'abc1234',
+};
+
 function fixture(overrides = {}) {
   const doc = {
     schema_version: 1,
@@ -92,6 +97,9 @@ function fixture(overrides = {}) {
     ],
     ...overrides,
   };
+  // Every fact needs its own last-checked stamp. Supply one unless the test set
+  // the key itself -- `verified: undefined` still exercises the missing case.
+  doc.facts = (doc.facts || []).map(f => ('verified' in f) ? f : { ...f, verified: OLD_STAMP });
   const dir = mkStateDir('af-');
   fs.writeFileSync(path.join(dir, 'author-facts.json'), JSON.stringify(doc, null, 2));
   return { dir, doc };
@@ -370,29 +378,70 @@ test('page-level prose may reference its page, and any prose may reference the s
 
 // --- the three architecture fixes (v2.37.3) ------------------------------
 
-test('verified may not restate the capture date', () => {
-  // All 53 facts carried the capture date verbatim, so the field was
-  // indistinguishable from the capture and a blanket restamp read as
-  // re-verification. Present now means "re-checked on its own".
-  const { dir } = fixture({
-    facts: [{
-      id: 'demo.one', page: 'demo', rule: 'R.', detail: 'D.', tier: 'measured',
-      durability: 'durable', volatile_dependency: false, verified: '2026-08-05',
-      sources: { lessons: [139], state_page: 'cowork-architecture' }, caveats: [],
-    }],
-  });
-  assert.ok(validateAuthorFacts(dir, LESSONS, REGISTRY).some(e => /says nothing/.test(e)));
+// --- per-fact verified stamps (v2.52.2) -----------------------------------
+
+function factWith(verified) {
+  return {
+    id: 'demo.one', page: 'demo', rule: 'R.', detail: 'D.', tier: 'measured',
+    durability: 'durable', volatile_dependency: false, verified,
+    sources: { lessons: [139], state_page: 'cowork-architecture' }, caveats: [],
+  };
+}
+const errsFor = verified => validateAuthorFacts(fixture({ facts: [factWith(verified)] }).dir, LESSONS, REGISTRY);
+
+test('every fact needs its own verified stamp', () => {
+  // Until v2.52.2 an absent stamp meant "as of the capture", so a restamp that
+  // re-checked nine facts displayed all 69 as freshly verified.
+  assert.ok(errsFor(undefined).some(e => /verified: missing/.test(e)));
 });
 
-test('a fact with no verified date is valid', () => {
-  const { dir } = fixture({
-    facts: [{
-      id: 'demo.one', page: 'demo', rule: 'R.', detail: 'D.', tier: 'measured',
-      durability: 'durable', volatile_dependency: false,
-      sources: { lessons: [139], state_page: 'cowork-architecture' }, caveats: [],
-    }],
-  });
-  assert.deepStrictEqual(validateAuthorFacts(dir, LESSONS, REGISTRY), []);
+test('a history-derived stamp may not carry the current capture date', () => {
+  const errs = errsFor({ ...OLD_STAMP, date: '2026-08-05' });
+  assert.ok(errs.some(e => /without a re-check/.test(e)), errs.join('\n'));
+});
+
+test('a re-checked fact may carry the capture date', () => {
+  for (const basis of ['live', 'code']) {
+    assert.deepStrictEqual(errsFor({
+      date: '2026-08-05', desktop_asar: '1.25927.0', cli: '2.1.217', agent: '2.1.280', basis,
+    }), []);
+  }
+});
+
+test('no fact is dated after the capture', () => {
+  const errs = errsFor({ date: '2026-08-06', desktop_asar: '1.25927.0', cli: '2.1.217', basis: 'live' });
+  assert.ok(errs.some(e => /later than verified_against\.observed_at/.test(e)), errs.join('\n'));
+});
+
+test('a history-derived stamp must name the change it came from', () => {
+  const { from_commit, ...noCommit } = OLD_STAMP;
+  assert.ok(errsFor(noCommit).some(e => /from_commit/.test(e)));
+});
+
+test('an unknown basis, or a missing build, is an error', () => {
+  assert.ok(errsFor({ ...OLD_STAMP, basis: 'restamp' }).some(e => /basis/.test(e)));
+  const { cli, ...noCli } = OLD_STAMP;
+  assert.ok(errsFor(noCli).some(e => /verified\.cli: missing/.test(e)));
+});
+
+test('real data: no fact silently inherits the current capture date', () => {
+  // The published file, not a fixture: a restamp must leave every fact that was
+  // not individually re-checked at its older date.
+  const real = JSON.parse(fs.readFileSync(
+    path.join(__dirname, '..', '..', 'references', 'state', 'author-facts.json'), 'utf8'));
+  const capture = real.verified_against.observed_at;
+  const bad = [];
+  for (const f of real.facts) {
+    const v = f.verified || {};
+    if (!v.date) bad.push(`${f.id}: no verified.date`);
+    else if (v.date > capture) bad.push(`${f.id}: ${v.date} is after the capture ${capture}`);
+    else if (v.date === capture && !['live', 'code'].includes(v.basis)) {
+      bad.push(`${f.id}: dated at the capture with basis ${v.basis}`);
+    }
+  }
+  assert.deepStrictEqual(bad, []);
+  // Positive control: the check has something to bite on -- some facts are older.
+  assert.ok(real.facts.some(f => f.verified.date < capture), 'expected some facts older than the capture');
 });
 
 test('derived rows must name the fact they paraphrase', () => {

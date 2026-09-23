@@ -10,7 +10,10 @@
         "volatile_dependency",
         "durability"
       ],
-      "meaning": "Properties of the claim: how it was established, against what, and where it applies. Falsifiable."
+      "meaning": "Properties of the claim: how it was established, against what, and where it applies. Falsifiable.",
+      "definitions": {
+        "verified": "When, and against which build, this fact was last actually checked. `date` is the day of that check's capture; `desktop_asar`/`cli` (and `agent` where known) are the builds it ran against. `basis`: `live` = exercised in a real session, `code` = re-read from a shipped artifact, `history` = not individually re-checked since it last changed, so it carries the capture stamp that was in force when it last materially changed (rule, detail, caveats, tier or lane), taken from the older capture when the change landed together with a restamp; `from_commit` names that change. A site-wide restamp does NOT move this date. It is never later than verified_against.observed_at, and only a `live` or `code` fact may equal it."
+      }
     },
     "guidance": {
       "fields": [
@@ -182,6 +185,13 @@
       "rule": "Do not build your skill's argument collection around AskUserQuestion in Cowork.",
       "detail": "On every skill invocation the host injects an instruction telling the model to gather missing context through the elicitation form — pills, free text, dates, a file dropzone — and explicitly not through AskUserQuestion, which it reserves for one-off clarifications mid-task. The answers arrive as bullet points in the model's next message, not as a tool result, so a skill written to wait for a tool result is waiting for something that will not come. Declaring `argument-hint` in your frontmatter is what makes this path work: the hint is passed through verbatim, and a skill without one leaves the model told to infer what to collect from your SKILL.md.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-08-13",
+        "desktop_asar": "1.28929.0",
+        "cli": "2.1.229",
+        "basis": "history",
+        "from_commit": "b07da16"
+      },
       "severity": "friction",
       "durability": "durable",
       "volatile_dependency": true,
@@ -202,6 +212,13 @@
       "rule": "The remote sandbox runs its own agent build, independent of the local application version.",
       "detail": "Remote sessions were observed running a range of agent builds distinct from the installed application and from the local agent. This is why remote-sandbox behaviour cannot be pinned by the CLI and Desktop versions this site records.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.221",
+        "basis": "history",
+        "from_commit": "d927c5c"
+      },
       "durability": "volatile",
       "lane": "remote",
       "volatile_dependency": false,
@@ -219,6 +236,13 @@
       "rule": "Treat needing a delete as a design smell, because getting one interrupts the user.",
       "detail": "Enabling deletion requires a prompt the user must accept, and it is presented as irreversible for the remainder of the session. It also fires regardless of how permissive the session's permission mode is. A skill that routinely needs deletions will routinely interrupt its user, so prefer writing new files over rewriting in place.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "dbcee41"
+      },
       "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
@@ -236,6 +260,13 @@
       "rule": "Do not assume that approval to delete in one location applies anywhere else.",
       "detail": "Approval is granted per mount. Enabling deletion for the outputs location leaves a connected folder still denied, in the same shell and in later ones. A skill that gets one approval and then assumes free rein across the workspace will fail on the second mount it touches.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "dbcee41"
+      },
       "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
@@ -255,6 +286,13 @@
       "rule": "Do not move files between mounts with a rename. Copy, then verify.",
       "detail": "The outputs location is a genuinely separate device from the rest of the session filesystem, so renaming across that boundary fails with a cross-device error rather than falling back to a copy. Shell tools usually degrade to copy-then-delete on their own — and the delete half will then hit the permission denial.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "9c5d7f2"
+      },
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
@@ -272,6 +310,13 @@
       "rule": "Expect removing a file or a directory to fail with a permission error on every Cowork mount.",
       "detail": "The denied set is exactly those two operations. This is not specific to the outputs location — a freshly connected folder behaves identically. The failure is a permission error, not a missing-file error, and it happens even though the same directory is writable.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.221",
+        "basis": "history",
+        "from_commit": "d927c5c"
+      },
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
@@ -291,6 +336,13 @@
       "rule": "Expect the agent to ask for delete permission on its own the first time a removal fails.",
       "detail": "The permission tool's own description instructs the agent to request approval whenever a removal fails, rather than reporting it as impossible. So a skill that merely attempts a delete may cause a prompt it never asked for. If you do not want that, do not attempt removals.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "dbcee41"
+      },
       "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
@@ -308,6 +360,13 @@
       "rule": "Do not treat a file vanishing from its old path as evidence that it was deleted.",
       "detail": "Truncating a file to zero length, renaming it within the mount, and renaming it onto an existing file all succeed. The last of those destroys whatever was at the destination. So content can be emptied and paths can be reused without any delete having occurred, and a check based on 'the old path is gone' will report deletions that did not happen.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "dbcee41"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -325,6 +384,13 @@
       "rule": "Do not rely on writing a file to a directory as the act of delivering it.",
       "detail": "In one sandbox the workspace location is itself the delivery channel and writing there is enough. In the other it delivers nothing: the file exists only inside a session filesystem that is discarded when the session ends, and the user never sees it. A skill written against the first behaviour loses its deliverables silently in the second — no error, no warning, just nothing.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.221",
+        "basis": "history",
+        "from_commit": "5499c40"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -342,6 +408,13 @@
       "rule": "Write the deliverable to a stated path, then present it to the user. If you cannot present it, say where it is.",
       "detail": "Producing the file and delivering it are two separate acts. Instruct your skill to present the finished file to the user rather than naming a specific tool to do it with: which delivery mechanism exists depends on the sandbox and on the product your skill is running in, and a skill that names one tool breaks everywhere that tool is absent. Always state the path as well, so the work is recoverable if presentation is unavailable.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.221",
+        "basis": "history",
+        "from_commit": "5499c40"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": true,
@@ -361,6 +434,13 @@
       "rule": "State the path of what you produced even when a delivery tool worked.",
       "detail": "It costs one sentence and it is the only part of your output that survives every sandbox, every tool-surface change, and a user reading a transcript later. If delivery silently failed, the stated path is the difference between a recoverable result and a lost one.",
       "tier": "inference",
+      "verified": {
+        "date": "2026-09-05",
+        "desktop_asar": "1.46388.4",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "8787fe6"
+      },
       "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
@@ -381,6 +461,13 @@
       "rule": "Never call a tool that writes to the user's own disk from inside a skill.",
       "detail": "Committing files onto the user's machine is infrastructure the agent and the user negotiate through folder-connection consent, not something a skill should reach for. No first-party skill names such a tool. Present the file and let the delivery path be decided outside your skill.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "dbcee41"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -398,6 +485,13 @@
       "rule": "Do not deliver by starting a local server and opening it. Write a self-contained file and present that.",
       "detail": "A skill that generates something to look at — a report, a viewer, a chart — is tempted to serve it and open a browser at the address. That does not work here, and the reason survives whichever surfaces happen to be available: anything your shell starts runs where the shell runs, which is not where a viewer would be looking, and a plain file path on disk is not reachable that way either. Write one self-contained file with everything inlined, put it where deliverables belong, and present it. If the surface offers a way to publish a rendered page, that is the better target than a server. Build the interaction so it does not need a round trip back to your skill: a page that asks the person to copy something back into the conversation works, a page that expects to POST its results somewhere does not.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-14",
+        "desktop_asar": "1.30096.1",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "c879eef"
+      },
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
@@ -415,6 +509,13 @@
       "rule": "Do not hand-copy files into the outputs location before presenting them.",
       "detail": "The tool that presents files to the user copies what you give it out of the scratch space for you. Copying first and then presenting the copy produces duplicates and obscures which file is the deliverable.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "9c5d7f2"
+      },
       "severity": "friction",
       "durability": "durable",
       "volatile_dependency": true,
@@ -434,6 +535,13 @@
       "rule": "Assume the session filesystem does not outlive the session.",
       "detail": "In the remote sandbox the filesystem is discarded at session end. In the local sandbox undelivered files are hidden from the user rather than destroyed, and can in principle be surfaced on a later turn — but a skill should not depend on that difference. Deliver within the turn that produces the file.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.221",
+        "basis": "history",
+        "from_commit": "5499c40"
+      },
       "severity": "silent",
       "durability": "durable",
       "lane": "remote",
@@ -452,6 +560,13 @@
       "rule": "Assume your skill may run in either sandbox, and never assume which one.",
       "detail": "A Cowork session runs in one of two sandboxes: a local one on the user's own machine, or a remote one on Anthropic's infrastructure. They differ in where the filesystem lives, whether it survives the session, and how a file reaches the user. Which one a session gets depends on how it was created and on account configuration, neither of which a skill can control or reliably detect — so write for both.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.221",
+        "basis": "history",
+        "from_commit": "5499c40"
+      },
       "severity": "silent",
       "durability": "durable",
       "lane": "both",
@@ -472,6 +587,13 @@
       "rule": "For behaviour rather than reporting, branch on which tools exist instead of on the environment.",
       "detail": "The tool surface is the most durable runtime signal available to a skill: it determines what the skill can actually do, it is visible without running a shell, and it stays correct when environment variables are added or removed. Concretely, the shell tool has a different name in Cowork than in the CLI — `mcp__workspace__bash` rather than `Bash` — so the presence of the Cowork-flavoured name is the signal. Use environment checks to report where you are; use tool presence to decide what to do.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.221",
+        "basis": "history",
+        "from_commit": "5499c40"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -489,6 +611,13 @@
       "rule": "Do not hard-fail when a runtime marker is missing. Fall through to the next check.",
       "detail": "A runtime marker is an environment variable the host sets when it starts your session — `CLAUDE_CODE_IS_COWORK` and `CLAUDECODE` are the two that matter. Which markers are set has changed across releases, and they are absent entirely from the shell context. A detection routine that treats one missing variable as proof of a runtime will be wrong the next time the spawn contract changes. Order the checks so each one only adds coverage. The set is still moving: Desktop 1.28929.0 added CLAUDE_CODE_COWORK_FRAME_ARTIFACTS alongside the existing markers, and no agent before 2.1.228 could read it.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.221",
+        "basis": "history",
+        "from_commit": "b07da16"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": true,
@@ -507,6 +636,13 @@
       "rule": "Do not detect Cowork with a bare environment-variable check.",
       "detail": "A skill spans two execution contexts. The part that runs shell commands runs in a sealed context with none of the usual markers set, so a bare environment check returns 'not Cowork' in precisely the production configuration you most needed to detect. The failure is silent and produces confidently wrong behaviour.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-09-05",
+        "desktop_asar": "1.46388.4",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "8787fe6"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -527,6 +663,13 @@
       "rule": "Detect the runtime with an ordered sequence of checks, not a single environment test.",
       "detail": "Run three checks in order. First, is `CLAUDE_CODE_IS_COWORK` set — if so you are in Cowork. Otherwise, is the working directory under `/sessions/` — that catches the shell context, where the marker is absent. Otherwise, is `CLAUDECODE` set — then it is Claude Code, and `CLAUDE_CODE_ENTRYPOINT` says which: `remote_cowork` is Cowork running in the cloud, `remote` is Claude Code on the web, and anything else is the CLI. Skipping that last refinement misreads a cloud Cowork session as the CLI, because its shell sets `CLAUDECODE` but not `CLAUDE_CODE_IS_COWORK`. Each step only adds coverage and a later one never contradicts an earlier one, so a missing marker should fall through rather than fail.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "live"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -547,6 +690,13 @@
       "rule": "Remember your skill spans two execution contexts, and test the one you are actually in.",
       "detail": "Your skill's instructions and its file-reading and file-writing tools run in one place — call it the agent context. The shell commands it issues run somewhere else, with a different environment and a different view of the filesystem. In Cowork the agent context sees `CLAUDE_CODE_IS_COWORK` and host-form paths, while the shell context sees neither and works under `/sessions/`. A check performed in one tells you very little about the other, which is why a single probe produces confident wrong answers.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-09-05",
+        "desktop_asar": "1.46388.4",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "8787fe6"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -568,6 +718,13 @@
       "rule": "Treat a folder the user connected as a separate mount with its own rules, not as part of the workspace.",
       "detail": "Connected folders appear as their own mounts alongside the outputs location. Permissions are tracked per mount, so a capability granted for one does not extend to another. A skill that assumes one uniform writable area will be surprised the first time it touches a connected folder.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "64cb6f0"
+      },
       "severity": "silent",
       "durability": "durable",
       "lane": "local",
@@ -587,6 +744,13 @@
       "rule": "Do not assume a connected project gives you a folder mount. It does not.",
       "detail": "Connecting a project and connecting a folder are different actions producing different results. A session with a project attached and no folder attached has no folder mount at all, and a skill that looks for one will find nothing. A connected project is also mounted read-only, while a connected folder is writable, so a project is a source to read from rather than somewhere to put output.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "64cb6f0"
+      },
       "severity": "loud",
       "durability": "durable",
       "lane": "local",
@@ -606,6 +770,13 @@
       "rule": "Give the file tools the absolute outputs path; give the shell the absolute session outputs path. No single form works for both.",
       "detail": "The file-reading and file-writing tools run on the user's computer and need the outputs location's own absolute path, which the model is given in its instructions. Before Desktop 2.7032.0 their working directory was the outputs location, so a bare filename also landed there. From Desktop 2.7032.0 the working directory is a deliberately empty directory the tools are denied from writing to, and a relative path is refused: a bare filename given to the read, write or edit tools is refused with an error saying the file is in a directory denied by the permission settings, and a relative search is quietly re-anchored to the outputs location. Because a user may be on either release, write the absolute outputs path; it works on both. The shell does NOT share the file tools' location either way -- it starts in a scratch directory that exists only inside the Linux environment, so a bare filename written from the shell goes somewhere neither the user nor the file tools can reach, with no error. From the shell, write to the absolute outputs path instead. In the other direction, an absolute path copied out of shell output is the wrong form for the file tools and is rejected every time rather than translated. There is a third form worth knowing if your skill bundles a script: because the shell always starts in the same place and the shared area sits directly inside it, a shell command can reach the outputs location with a short relative path instead of the long absolute one, and that short form contains nothing you have to look up. But do not have the script work out its own destination by inspecting the directories around it. Surfaces differ in ways a single test cannot separate — on one of them the shell already starts inside the outputs location, so a test for a nested folder finds nothing and a naive fallback appends a second level, which nests a second outputs level and hides the file. Instead, let the component that already knows the destination pass it: the caller has the file tools, has resolved the workspace, and is the only party that can name a path the user will see. Give scripts an absolute destination as a required argument, have them fail with a clear message when it is missing rather than inventing a directory, and have them print the path they actually wrote.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "live"
+      },
       "severity": "loud",
       "durability": "durable",
       "lane": "local",
@@ -630,6 +801,13 @@
       "rule": "Producing a file is not delivering it — and where your working directory lands differs by lane.",
       "detail": "Where your working directory lands differs by lane, so do not assume it is either visible or invisible. On the local desktop lane the file tools' working directory was the outputs location before Desktop 2.7032.0, so a bare filename landed somewhere visible; from 2.7032.0 it is an empty directory the tools cannot write to, and a bare filename is refused. On the remote lane the working directory is a container home directory that is neither surfaced nor retained, and a file left there is lost at session end. Because a skill cannot tell which lane it is on, treat producing and delivering as two separate acts on both: write the file to a stated path, then present it with whatever tool this surface offers for sending files to the user. Note also that 'the scratch directory' is not one place — the agent is separately instructed to use a host-side temporary directory for working files, which survives the session and is never shown to the user, and the shell has its own scratch area that reaches neither the user nor your file tools. Anything outside the outputs location or a connected folder is a temporary file by definition.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "live"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -653,6 +831,13 @@
       "rule": "Never pass an absolute session path to the file tools. It is denied, not translated.",
       "detail": "Your shell commands print absolute paths that look like `/sessions/<session-name>/mnt/outputs/report.pdf`. If you hand one of those to a file-reading or file-writing tool, the call is refused — the check is a literal prefix test on `/sessions/`, so the same path is refused every time and retrying cannot help. Nothing rewrites it into the form those tools want. Pass the outputs location's own absolute path instead when you are using a file tool (a bare filename also worked before Desktop 2.7032.0, and is refused from 2.7032.0). Do not carry that advice back to the shell: the shell needs the absolute outputs path, because its own starting directory is invisible to the user. The error text blames the path form, which is right in this case, but the same message appears for other causes too, so read it as \"this tool cannot take this path\" rather than as a diagnosis.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "live"
+      },
       "severity": "loud",
       "durability": "durable",
       "lane": "local",
@@ -675,6 +860,13 @@
       "rule": "Treat your own skill's files as read-only at runtime.",
       "detail": "A skill's own directory is made available to the session as a mount you should not expect to write back to. Generate into the outputs location instead. A skill that rewrites its own files to keep state will not carry that state anywhere useful.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "9c5d7f2"
+      },
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
@@ -693,6 +885,13 @@
       "rule": "Treat the uploads location as read-only and write everything to the outputs location.",
       "detail": "Uploaded files are mounted read-only. Attempting to write there fails. Deliverables belong in the outputs location, which is writable and is also what the delivery mechanisms operate on.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "64cb6f0"
+      },
       "severity": "loud",
       "durability": "durable",
       "lane": "local",
@@ -711,6 +910,13 @@
       "rule": "Do not use a hook to export environment variables for your skill's shell commands.",
       "detail": "Hooks run, but the environment they modify is not the environment those commands see. This is a common way a plugin appears broken in Cowork while working in the CLI: the hook fires, the export succeeds, and the value is simply absent downstream.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "9c5d7f2"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -729,6 +935,13 @@
       "rule": "Expect plugin hooks to fire in Cowork.",
       "detail": "Hooks shipped by a plugin do run. If you have heard otherwise, the determinant is installation namespace rather than hook support: a plugin installed where Cowork sessions do not look will appear to have no hooks at all.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-09-05",
+        "desktop_asar": "1.46388.4",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "8787fe6"
+      },
       "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
@@ -749,6 +962,13 @@
       "rule": "Install a plugin through the Cowork application if you want Cowork sessions to see it.",
       "detail": "Plugins installed through the CLI's own installation path land in a namespace that Cowork sessions never read, so the plugin appears installed and is simply invisible. This is the usual explanation for 'my plugin works in the CLI but not in Cowork'.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "dbcee41"
+      },
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
@@ -766,6 +986,13 @@
       "rule": "Do not write into your plugin's own directory at runtime.",
       "detail": "Plugin content is mounted for reading. Treat everything shipped with the plugin as immutable during a session and put generated state in the outputs location.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "9c5d7f2"
+      },
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
@@ -783,6 +1010,13 @@
       "rule": "Expect plugin files to be present as a mounted directory, and find it rather than hardcoding it.",
       "detail": "Plugin content is made available to the session as its own mount. The exact location embeds identifiers that vary per plugin and per install source, and the shape has changed across releases, so discovery at runtime is the only stable approach.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "dbcee41"
+      },
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
@@ -801,6 +1035,13 @@
       "rule": "Use `${CLAUDE_PLUGIN_ROOT}` for file-tool reads, and discover the mounted path at runtime for anything you execute.",
       "detail": "`${CLAUDE_PLUGIN_ROOT}` is a token that expands to your plugin's directory — but it expands differently depending on what expands it and which sandbox the session is in, and one expansion names a location the other cannot reach. Reading your plugin's files through the file tools with the token is reliable **only where the runtime replaces it for you**, which it does in the files it loads as definitions — your skill's own body, a command, a hook. There the token is swapped for a real path before the model ever sees it. It is **not** replaced in a file your skill merely reads later while it runs: a reference file that instructs the model to use the token hands over the token itself, which names nothing. This is the difference between text the runtime loads and text your skill reads, and it has cost a real skill a silent fallback to a degraded path. Executing a script by that path is not: in the local sandbox the substituted value names a host staging directory the shell cannot see. **And do not test for the obvious failure — it is not the one you get.** The token is often *present* in a shell, holding a **different plugin's** directory: hooks can write environment for later shell commands, each hook is given its own plugin's location, and the last one to write wins. So a shell reading it typically fails as a plausible wrong path, not as a blank — checking whether it is empty comes back clean and sends you looking in the wrong place. For anything you execute, do not read the token at all: ship a launcher (next rule), and fall back to locating the plugin's directory at run time.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-08-14",
+        "desktop_asar": "1.30096.1",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "d5ab0c6"
+      },
       "severity": "silent",
       "durability": "durable",
       "lane": "local",
@@ -824,6 +1065,13 @@
       "rule": "Ship a launcher in your plugin's `bin/` and call it as a bare command.",
       "detail": "This is the one way to run your own bundled code that does not require any path to survive a trip between the model and the shell. Every enabled plugin's `bin/` directory is placed on the shell's command path, and the entry is correct for the namespace that shell actually lives in — measured on three different surfaces, including the one where the file tools and the shell disagree about every other path. Because the shell resolves the name itself, nothing has to be derived, passed across, or rewritten. A launcher is a few lines: locate your own directory from the script's own position, then run the real program beneath it. Your skill then says `mytool <args>` instead of constructing a path it has no reliable way to construct. Every link is verified: the path entry is live rather than nominal (a command dropped into the directory resolves immediately, without restarting anything), and a launcher committed in your source survives installation intact. What it is not, yet, is common: of the ninety-seven plugins installed on the machine where this was checked, not one puts a launcher where the command path looks for it. So confirm your first use resolves rather than assuming it — and read that number as \"nobody has tried this yet\", not as \"people tried and it failed\".",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-14",
+        "desktop_asar": "1.30096.1",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "b7588e4"
+      },
       "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
@@ -846,6 +1094,13 @@
       "rule": "Do not treat the home directory as a private place that outlives the session.",
       "detail": "In the local sandbox the home directory is the session directory itself, not a separate per-user home, and it goes away with the session. Writing there is fine for scratch, but nothing put there is delivered, carried to the next session, or visible to anyone. Deliverables belong in the outputs location.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.221",
+        "basis": "history",
+        "from_commit": "64cb6f0"
+      },
       "severity": "silent",
       "durability": "durable",
       "lane": "local",
@@ -864,6 +1119,13 @@
       "rule": "Do not use the inline shell-execution syntax in skill instructions and expect it to run.",
       "detail": "The syntax that lets a skill embed a command in its own instructions and have the result substituted is disabled in Cowork. It fails quietly rather than erroring, so a skill that relies on it to gather context gets an empty result and carries on with wrong assumptions.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "dbcee41"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": true,
@@ -883,6 +1145,13 @@
       "rule": "Do not rely on arbitrary outbound network access from shell commands.",
       "detail": "Outbound access from the shell is filtered by destination rather than absent: some hosts answer and others do not, and the session carries a URL allowlist. Fetching is also available as a dedicated capability with its own routing. Write skills that use the fetch capability when it exists and state a clear limitation when it does not, rather than shelling out to a network client and assuming any host is reachable.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "b8d90aa"
+      },
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": true,
@@ -905,6 +1174,13 @@
       "rule": "Prefer what is preinstalled, and never install globally. A user-scoped or project-local install works, but treat it as a fallback.",
       "detail": "Check what is already there first: the sandbox ships Python 3.10.12 with roughly 149 packages, including `pandas`, `numpy`, `PIL` and `openpyxl`. If you do need something else, a user-scoped Python install (`pip install --user`) and a project-local Node install (`npm install`) both succeed, and the package imports normally afterwards. A global install does not take effect — `npm install -g` in particular leaves nothing behind. Which package sources are reachable is session configuration that has changed between releases, so put any install on a path that degrades gracefully rather than making it a prerequisite.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.221",
+        "basis": "history",
+        "from_commit": "0c0bab1"
+      },
       "severity": "loud",
       "durability": "durable",
       "lane": "local",
@@ -926,6 +1202,13 @@
       "rule": "Do not assume the sandbox has no third-party libraries. It ships a large preinstalled stack.",
       "detail": "The environment your shell commands run in ships Python 3.10.12 with roughly 149 packages already installed — `pandas`, `numpy`, `PIL` and `openpyxl` among them, alongside other data, document and imaging libraries. Skills have shipped workarounds and portability warnings for a scarcity that is not there. Check for what you need at runtime before vendoring it or degrading: the exact set belongs to the shipped image and can change with it, so test rather than rely on this list.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-09-05",
+        "desktop_asar": "1.46388.4",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "8787fe6"
+      },
       "severity": "friction",
       "durability": "durable",
       "lane": "local",
@@ -947,6 +1230,13 @@
       "rule": "Do not expect to read or write anything outside your own session, and do not rely on the identity your shell runs as.",
       "detail": "In the local sandbox each session runs as its own operating-system user: sibling sessions are visible by name but their contents are refused, and the session namespace holds hundreds of entries. In the remote sandbox there is no per-session user at all and commands run as root. Either way, anything your skill needs must be inside the session or fetched into it — but identity itself is not a stable thing to branch on.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-09-05",
+        "desktop_asar": "1.46388.4",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "8787fe6"
+      },
       "severity": "loud",
       "durability": "durable",
       "lane": "both",
@@ -970,6 +1260,13 @@
       "rule": "Do not pass configuration to your skill's shell commands through the environment.",
       "detail": "The shell your commands run in does not inherit the host environment: variables set in user or managed settings do not appear there, and neither do exports written by a hook. Only a couple of `CLAUDE_*` variables are present. Pass configuration one of three ways instead — put the value literally in the command string, write it to a file and have the command read that file, or pass it as an argument to a script your skill invokes.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.221",
+        "basis": "history",
+        "from_commit": "5499c40"
+      },
       "severity": "silent",
       "durability": "durable",
       "lane": "local",
@@ -990,6 +1287,13 @@
       "rule": "Do not assume the shell tool has the same name it has in the CLI.",
       "detail": "The tool your skill uses to run commands in Cowork is a different tool from the CLI's, with a different name. This matters if your skill's instructions name tools explicitly, and it is also useful: the tool surface is a more reliable indicator of where you are running than the environment is.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "dbcee41"
+      },
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1008,6 +1312,13 @@
       "rule": "Always name the agent type when dispatching a sub-agent.",
       "detail": "Omitting the type yields a general-purpose agent holding the full tool surface, including the shell. If your intent was a constrained helper — a reader, a summariser — you have instead created something with more capability than the task needs, and the dispatch will look correct in every log.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "dbcee41"
+      },
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1027,6 +1338,13 @@
       "rule": "Do not plan to resume a finished sub-agent. Dispatch a fresh one with the context restated.",
       "detail": "In Cowork a completed or stopped sub-agent cannot be continued — the mechanism that does this elsewhere is not available. Recovery and follow-up work therefore mean a new dispatch carrying whatever context it needs, so design sub-agent prompts to be self-contained.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "dbcee41"
+      },
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1044,6 +1362,13 @@
       "rule": "Do not use a sub-agent to get around a path restriction or a permission prompt.",
       "detail": "Sub-agents run under the same containment as the main thread. The path rules apply identically inside them, and the permission machinery fires there too. Dispatching a sub-agent changes what work happens in parallel; it does not change what is allowed.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "dbcee41"
+      },
       "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1061,6 +1386,13 @@
       "rule": "Put everything a sub-agent needs in its prompt. It cannot ask you for more.",
       "detail": "Because a finished sub-agent cannot be resumed, a dispatch that omits context cannot be topped up — it can only be redone. Restating context is cheaper than a failed dispatch, and it is the only recovery mechanism available.",
       "tier": "inference",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "9c5d7f2"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1081,6 +1413,13 @@
       "rule": "Write sub-agent fan-out so that a dispatch being queued or refused is handled, not fatal.",
       "detail": "Concurrency and per-session limits are enforced, and the numbers have changed between releases. A dispatch can also be refused outright before it starts, by a classifier rather than a limit — observed refusing one dispatch and accepting an equivalent one the same day, so a refusal is possible and not reliably reproducible. A skill that dispatches a fixed wide fan-out and assumes every one starts will behave differently across versions and across runs. Treat parallelism as an optimisation, not a requirement, and handle a dispatch that never starts.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "64cb6f0"
+      },
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1099,6 +1438,13 @@
       "rule": "Write sub-agent prompts with the absolute outputs path, as the sub-agent's own instructions now ask.",
       "detail": "A sub-agent inherits the main thread's working directory rather than getting a private one, so the same path rules apply and absolute session paths handed to file tools are rejected there for the same reason. From Desktop 2.7032.0 the sub-agent's instructions say to pass absolute paths to the file tools, where earlier releases told it relative paths started at the outputs location; an absolute outputs path is correct on both. Two limits do not carry over from the main thread, though. Shell commands do not share the file tools' location, so the path form that is right for a file tool is wrong for the shell, which needs the absolute session path. And a sub-agent is not told how the folders the user connected are named inside the shell environment — the main thread receives that mapping, a sub-agent does not, and the tool description points it at a section of its instructions that it does not have. So if a sub-agent must work inside a folder the user connected, put the resolved path in its prompt. Left to guess, it will address the folder by name; before Desktop 2.7032.0 that silently created a same-named directory in the outputs location, and from 2.7032.0 the relative path is refused instead.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "code"
+      },
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1119,6 +1465,13 @@
       "rule": "Detect capabilities at the moment you use them, and state a clear fallback when they are missing.",
       "detail": "This is the one defensive pattern that survives every kind of change described here. A skill that checks for the tool it needs, uses it if present, and says plainly what it could not do otherwise will keep working across sandbox changes, served-configuration flips, and version bumps. A skill that assumes a surface breaks silently on all three.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.221",
+        "basis": "history",
+        "from_commit": "d927c5c"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1137,6 +1490,13 @@
       "rule": "Do not assume configuration is fixed for the lifetime of a session.",
       "detail": "At least some served configuration is subscribed to rather than read once, so it can change while a session is running and the application reacts. A skill that reads a capability at the start of a long task and caches the answer can be wrong by the end of it.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "dbcee41"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1154,6 +1514,13 @@
       "rule": "Never write a skill that depends on the exact wording of the system prompt.",
       "detail": "The instructions a Cowork session runs with can be patched from the operator's side, including a mode that replaces the computed instructions wholesale rather than adding to them. So a model of the session prompt as 'the standard preset plus my additions' can be wrong at any time, with no local artifact changing. Depend on behaviour you can observe, not on text you expect to be present.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "dbcee41"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": true,
@@ -1173,6 +1540,13 @@
       "rule": "Do not treat 'the version has not changed' as evidence that behaviour has not changed.",
       "detail": "Behaviour governed from the operator's side changes with no new version, no release note, and nothing observable locally. This has been directly observed: a capability that was off in one week's capture was on in the next, with no application update in between.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "dbcee41"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1190,6 +1564,13 @@
       "rule": "Assume tool availability and defaults are served to the session, not shipped in the application.",
       "detail": "A meaningful part of what a session offers is decided on the operator's side at spawn time. Two sessions on the same application version can therefore present different tools and different defaults. Nothing about the installed version tells you what a given session will look like.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "dbcee41"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1207,6 +1588,13 @@
       "rule": "Write down which behaviours your skill depends on, in the skill itself.",
       "detail": "When something changes underneath you, the cost of diagnosis is dominated by not knowing what was assumed. A short stated list of dependencies — this needs a delivery tool, this needs shell access, this assumes files persist within the turn — turns a silent failure into an obvious one.",
       "tier": "inference",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "9c5d7f2"
+      },
       "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1227,6 +1615,13 @@
       "rule": "Do not hardcode a tool name your skill merely hopes is present.",
       "detail": "Tool surfaces have changed across releases: names differ between runtimes, tools have been added and withdrawn, and which ones a session gets is decided when it starts. Name a tool only after checking it exists, and say what you will do if it does not.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-05",
+        "desktop_asar": "1.25927.0",
+        "cli": "2.1.217",
+        "basis": "history",
+        "from_commit": "9c5d7f2"
+      },
       "severity": "loud",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1245,6 +1640,13 @@
       "rule": "Your skill's own text can be shortened, or dropped entirely, part-way through a session — put what must survive near the top.",
       "detail": "When a long conversation is compacted, previously-invoked skills are re-attached from a stored copy rather than re-read from disk, and that copy is subject to two separate limits. The first shortens an over-long skill, keeping roughly the first twenty thousand characters and discarding the tail — and the shortened version replaces the stored copy, so a later compaction cannot bring the rest back. The second is a shared budget across every skill invoked in the session: once it is exhausted, a skill that does not fit is not shortened but emptied, and stays gone for the rest of that session. Skills are packed most-recently-used first and counted at their already-shortened size, so the one that disappears is usually not the largest — it is whichever was used least recently when the budget ran out. Only the first of the two announces itself. When your skill is shortened, a marker is appended to what the model reads, saying in so many words that the text was cut and can be re-read from its path — so a skill can be written to notice that and try to recover. When a skill is emptied by the shared budget it is simply not there that turn: no marker, no entry, nothing to compare against. So a recovery instruction is worth writing, and is worth writing as covering the case it can actually detect rather than as covering both. Nothing errors, and the file on disk is untouched — but treat that recovery as best-effort rather than a guarantee. The location offered to the reader is the one captured when the skill was first invoked, not one resolved fresh at the moment it is read, and where a skill's files are staged is decided by the surface rather than by you. Within a running session it resolves. The case to design against is a session resumed later, where a location captured earlier may no longer describe where that skill now lives — and it would fail by pointing somewhere that is not there rather than by saying so. Two practical consequences: put load-bearing instructions early and push detail into reference files, which are read on demand and are genuinely not counted against either limit; and if a later section of your own skill appears to be missing, say so and re-read the file rather than proceeding on what is left. Be aware of what moving detail into a reference actually trades, though: the shortened skill body tells the reader it was cut, while material that came from a reference and later falls out of the conversation leaves no such signal — so the pointer telling the reader those references exist and must be read has to survive near the top of the file, and is doing more work after the move than before it. One reassurance, so you do not defend against the wrong thing: the shared limit is counted separately for each agent, so dispatching work to sub-agents does not consume the budget your main thread is working within.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-08-14",
+        "desktop_asar": "1.30096.1",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "9638176"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1267,6 +1669,13 @@
       "rule": "`${CLAUDE_SKILL_DIR}` works in your SKILL.md body and nowhere else.",
       "detail": "It is the variable most skill authors reach for to point at their own bundled files, and in the body of SKILL.md it does exactly what you want: it is replaced with a real absolute path before the model ever reads the text, so a file tool opens the right file. There are four places it will quietly do nothing instead. In a shell command it is not set at all, so it becomes empty and the command addresses a path at the root of the filesystem. Written without braces it is not recognised and survives into the loaded text as the literal characters you typed. And in a reference file your skill opens while it is running — as opposed to the definition the runtime loads at startup — it is never substituted, so it arrives as the characters you typed. And in a command file — which is definition text the runtime loads, and where the other tokens are replaced normally — this one alone is skipped. One rule covers all four: it belongs to the body of a skill specifically, not to definition text in general, and not to anything that can be looked up later. Once a path has to reach a shell, either the model passes an absolute path it has already resolved, or you ship a launcher that finds its own location.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-08-14",
+        "desktop_asar": "1.30096.1",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "9638176"
+      },
       "severity": "silent",
       "durability": "durable",
       "lane": "local",
@@ -1288,6 +1697,13 @@
       "rule": "Your skill's description is the only thing that decides whether it gets used.",
       "detail": "Everything else you write is read after that decision, if it is read at all. Two frontmatter settings can stop a skill being reachable before any of it is considered: one restricts it to loading only when the model touches files matching a pattern, so a question that touches no files quietly gets nothing; another tells the model to ask you to run the skill rather than using it. There is also a second field that looks made for describing when to reach for a skill, and it does feed the decision — but only in the terminal. The desktop listing has no handling for it at all, and other tools that read skills ignore it. So put what makes your skill findable in the description, keep it self-sufficient, and treat the other field as reinforcement you could delete without loss.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-08-14",
+        "desktop_asar": "1.30096.1",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "0224afb"
+      },
       "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1309,6 +1725,13 @@
       "rule": "Nothing will report progress for you — if a long run should say anything mid-way, your skill has to say it.",
       "detail": "Plain text you write between tool calls does reach the user here, and the shipped instructions do ask for it in general terms: say what you are about to do before the first tool call, and give brief updates when you find something load-bearing or change direction. But the wording of that instruction is chosen per model by the service rather than by anything on the machine, so you cannot count on a particular version of it, and in a long tool loop it measurably does not hold. Measured across every session on one machine, work in this environment produces user-visible text on roughly a third of its turns, against about half in the terminal, and silent runs of well over a hundred consecutive turns occur. There is a mechanism meant to catch exactly that — a nudge injected once a run has gone several turns without saying anything — and across every stretch long enough to qualify, it never fired once. Treat it as absent. If a phase boundary, a decision, or a surprise is worth the user knowing about while the work is still running, write the instruction to say so into the skill itself, at the step where it matters. A useful shape to copy: acknowledge in one line, work, then report — and between those, only when something happened that carries information, not as filler.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-09-05",
+        "desktop_asar": "1.46388.4",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "6c12f4f"
+      },
       "severity": "friction",
       "durability": "durable",
       "volatile_dependency": true,
@@ -1342,6 +1765,13 @@
       "rule": "Find an uploaded file from the message that announced it, never from a fixed uploads directory.",
       "detail": "Where an attached file lands depends on the sandbox. In the local sandbox uploads are a read-only mount beside the outputs location. In the remote sandbox a file attached mid-session landed under the home directory's hidden Claude folder, in a per-session subdirectory, with an eight-character hex prefix on its original name — and the uploads directory that sandbox's own environment text names did not exist before or after the attach. The model is told about the attachment through the conversation, so the announcing message is the one source that is right in both sandboxes. A resolver keyed on either fixed path returns nothing in the other sandbox, and the skill then proceeds as if nothing was attached — the failure with the largest blast radius for any skill that hands documents to scripts or sub-agents.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-09-05",
+        "desktop_asar": "1.46388.4",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "8787fe6"
+      },
       "severity": "silent",
       "lane": "remote",
       "sources": {
@@ -1358,6 +1788,13 @@
       "rule": "Always give search tools an explicit folder.",
       "detail": "A search with no folder means something different on every surface. In local Cowork it searches the outputs location; in a Cowork session running in the cloud it walks the whole container home, thousands of package-cache files and the agent's own credential directory included; in Claude Code on the web it searches the repository; in a claude.ai chat there are no search tools at all. Pass the folder you mean, usually the outputs location or a connected folder, and the result is the same everywhere.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "live"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1384,6 +1821,13 @@
       "rule": "Expect the two-context split, and the missing shell markers, only in the local sandbox.",
       "detail": "In the remote sandbox the shell and the file tools share one filesystem and one working directory, and some runtime markers are visible from the shell — `CLAUDECODE` and the entry-point marker, but not `CLAUDE_CODE_IS_COWORK` — the opposite of the local sandbox, where the shell is sealed. The ordered recipe still terminates correctly, but its early branches answer differently per sandbox: a skill that reads 'the markers are absent from the shell' as a universal fact, and treats their presence as proof it is not in Cowork, concludes wrongly in exactly the sandbox new sessions may default to. The remote sandbox does set its own distinct entry-point marker, but that value is served and has changed before; treat it as one check in the sequence, not the answer.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "live"
+      },
       "severity": "silent",
       "lane": "remote",
       "sources": {
@@ -1408,6 +1852,13 @@
       "rule": "If your plugin ships an MCP server, make it a stdio command with no user-configuration placeholders, and expect it to run on the user's machine rather than in the sandbox.",
       "detail": "In the remote sandbox the session itself does not start plugin MCP servers. The Claude Desktop app on the user's machine starts them — the same bridge it uses for servers in its own MCP configuration — and announces their tools into the session, so every call travels back to the user's machine and is gated by the Desktop app's own tool-approval prompt, not by anything in your skill or your plugin's permission rules. Only a stdio command qualifies: a server declared by URL is skipped, so an HTTP-only endpoint needs a stdio-to-HTTP shim (the `mcp-remote` package is the one observed working); a server whose configuration references plugin user-configuration placeholders is skipped; and one bundled Anthropic plugin is excluded from the bridge and served from inside the sandbox instead. The Desktop app must stay open for the whole session — close it and the tools vanish mid-conversation — and after a server outage the bridge's own reconnect decides when they come back, measured once at seventeen minutes.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-09-05",
+        "desktop_asar": "1.46388.4",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "8787fe6"
+      },
       "severity": "silent",
       "lane": "remote",
       "sources": {
@@ -1425,6 +1876,13 @@
       "rule": "Do not name a server `memory` in the desktop application's MCP configuration; a plugin's own `memory` server is safe.",
       "detail": "Current Cowork desktop builds install their own server under the name `memory`, backed by the user's cloud memory. A server configured under that same name in the desktop application's MCP configuration — a common name for the reference memory server — is replaced by it, and never starts. The only trace is a line in the desktop application's log. A server that ships inside a plugin is not affected, because plugin servers are loaded under a name that includes the plugin's, so it runs next to the cloud one. Its tools are distinct from the built-in memory tools, but the model now sees two sets of memory tools; a distinctive name avoids that confusion.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "code"
+      },
       "severity": "silent",
       "durability": "durable",
       "lane": "local",
@@ -1446,6 +1904,13 @@
       "rule": "Ship Cowork skills in a plugin, not in a project's `.claude/skills` folder.",
       "detail": "A skill left in a folder's `.claude/skills` does not load in a local Cowork session, as far as the shipped code shows: the desktop starts the agent with user settings only, and project skills load from project settings. In a cloud Cowork session that the user grants the folder to, the desktop does upload those skills, but by default only as stubs: the model sees your frontmatter, the body is replaced by a note to run the skill on the user's device, and your scripts never run in the cloud. Past 100 skills in one folder, or 32 MiB in total, skills are dropped with little or no notice. A plugin is the only route that delivers the whole skill on both lanes.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-09-23",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "code"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": true,
@@ -1471,6 +1936,13 @@
       "rule": "Do not design a sub-agent that itself dispatches sub-agents.",
       "detail": "In the remote sandbox the nesting depth is pinned to one level by the session's environment — observed in two independent cloud sessions three weeks apart — so a sub-agent's attempt to dispatch another is refused with an instruction to do the work itself. The local sandbox's default is higher and is served, so it can move. A skill whose sub-agents fan out a second level works in one sandbox and silently flattens in the other.",
       "tier": "binary",
+      "verified": {
+        "date": "2026-09-05",
+        "desktop_asar": "1.46388.4",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "8787fe6"
+      },
       "severity": "silent",
       "lane": "remote",
       "sources": {
@@ -1487,6 +1959,13 @@
       "rule": "Check that your own plugin's files are reachable before doing any work, and stop if they are not.",
       "detail": "The ordered recipe can return neither Cowork nor the CLI, and that third answer is not a curiosity — there is at least one surface that runs your skill's text without your plugin around it. Its fingerprint is cheap: every skill the account has enabled is mounted flat and read-only in one shared directory, side by side, each named for its plugin and skill together, so trimming the skills segment off your own directory gives you that shared mount rather than a plugin root. Your plugin's scripts, agents and hooks are simply not there, and sub-agent dispatch is unavailable. One line at the top of your skill — test for a file you ship and cannot work without — separates this from every supported runtime, and it is the only check that works, because a skill's shell cannot see the tool list. The trap is naming: the word a user sees when they start this surface is the same word one of Cowork's sandboxes uses, so the person who launched it cannot tell you which one you are in, and the directory your outputs go to has the same name in both.",
       "tier": "measured",
+      "verified": {
+        "date": "2026-09-05",
+        "desktop_asar": "1.46388.4",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "9c130e5"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,
@@ -1508,6 +1987,13 @@
       "rule": "When the capability that is missing is one that CHECKS your work, stop and say so rather than continuing without it.",
       "detail": "A fallback is the right answer when a missing capability costs you convenience. It is the wrong answer when the missing capability is a gate, a second opinion, or a verification step, because what you ship then is a self-graded, self-reviewed result that looks exactly like a checked one — same structure, same confident summary, same score — and neither the user nor a later reader can tell the difference. This is not hypothetical: a review skill run on a surface without its own plugin hand-wrote every hand-off it would normally have delegated, scored its own checklist, ran no adversarial pass and no gates, and produced a report indistinguishable from a verified one, with a single sentence carrying the wrong explanation and nothing else signalling. If you cannot run your checks, refusing costs the user one run; degrading costs them their trust in every run you did check. Where you do continue, name in the output exactly which check did not happen and why, and never let a skipped step be recorded with a value that implies it could be retried here.",
       "tier": "inference",
+      "verified": {
+        "date": "2026-09-05",
+        "desktop_asar": "1.46388.4",
+        "cli": "2.1.231",
+        "basis": "history",
+        "from_commit": "9c130e5"
+      },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": false,

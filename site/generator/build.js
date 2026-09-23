@@ -583,7 +583,8 @@ function pageHtml(doc, page, registry, depth) {
     body,
     mdHref,
     up,
-    verified: doc.verified_against.observed_at,
+    verified: pageVerified(doc, page.slug),
+    modified: doc.verified_against.observed_at,
     slug: page.slug,
     canonical: page.slug === 'index' ? `/${SECTION}/` : `/${SECTION}/${page.slug}/`,
   });
@@ -668,9 +669,25 @@ function toolsHtml(tools, heading) {
   return out;
 }
 
-/** A fact's date: its own only if it was individually re-checked, else the capture. */
+/**
+ * A fact's date: when it was last actually checked. Required on every fact.
+ * It used to fall back to the capture date, so a restamp that re-checked a few
+ * facts displayed every fact as freshly verified.
+ */
 function factDate(doc, f) {
-  return f.verified || doc.verified_against.observed_at;
+  if (!f.verified || !f.verified.date) die(`gate 1: fact ${f.id} has no verified.date`);
+  return f.verified.date;
+}
+
+/**
+ * A page's freshness stamp: its OLDEST durable fact, because the page is only as
+ * current as its stalest claim. Pages without facts (the entry page, the
+ * current-state page) carry the capture date.
+ */
+function pageVerified(doc, slug) {
+  const pool = slug === 'contract' ? doc.facts : factsFor(doc, slug);
+  const dates = pool.filter(f => f.durability === 'durable').map(f => factDate(doc, f)).sort();
+  return dates[0] || doc.verified_against.observed_at;
 }
 
 function factAnchor(f) {
@@ -736,7 +753,7 @@ function navHtml(doc, up, slug) {
   return out.join('\n');
 }
 
-function shell({ doc, title, description, body, mdHref, up, verified, slug, canonical, wide }) {
+function shell({ doc, title, description, body, mdHref, up, verified, modified, slug, canonical, wide }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -755,7 +772,7 @@ function shell({ doc, title, description, body, mdHref, up, verified, slug, cano
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(description)}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<script type="application/ld+json">${jsonLd({ title, description, canonical, verified })}</script>
+<script type="application/ld+json">${jsonLd({ title, description, canonical, verified: modified || verified })}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300..800;1,400..600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1102,7 +1119,7 @@ function build(outDir) {
     // date and the thresholds and compute age at read time.
     staleness: {
       verified: doc.verified_against.observed_at,
-      compute: 'age = today - verified; do not cache a precomputed band',
+      compute: 'per fact: age = today - facts[].verified (when that fact was last actually checked; `verified` here is the site capture). Do not cache a precomputed band',
       bands_days: { fresh: BAND_FRESH, aging: BAND_AGING },
     },
     tiers: TIER_TITLE,
@@ -1114,6 +1131,9 @@ function build(outDir) {
       tier: f.tier,
       server_flag_dependent: !!f.volatile_dependency,
       verified: factDate(doc, f),
+      verified_against: Object.fromEntries(['desktop_asar', 'cli', 'agent']
+        .filter(k => f.verified[k]).map(k => [k, f.verified[k]])),
+      verified_basis: f.verified.basis,
       caveats: f.caveats || [],
     })),
     open_questions: doc.pages.flatMap(p => (p.open_questions || []).map(q => ({

@@ -1,5 +1,41 @@
 # Changelog
 
+## v2.52.2 — 2026-09-23 (this fork) — every published fact carries the date it was last actually checked
+
+No new lessons; counts stay 198/53. A site-display and data-model fix.
+
+**The problem.** Every author fact displayed the site-wide capture date. `build.js`'s `factDate` fell back to
+`verified_against.observed_at`, and none of the 69 facts carried a date of its own. So the v2.50.0 restamp for
+Desktop 2.7032.0 showed all 69 as "verified 2026-09-23", although only nine were re-checked that day. The site's
+freshness badges, and `facts.json`, overstated how recently most claims had been exercised.
+
+- **Every fact now carries its own `verified` stamp** in `author-facts.json`: `{date, desktop_asar, cli, agent?,
+  basis, from_commit?}`. `basis` is `live` (exercised in a real session), `code` (re-read from a shipped artifact)
+  or `history` (not individually re-checked since it last changed).
+  - **Re-checked on 2026-09-23 against Desktop 2.7032.0 / agent 2.1.280 (9).** Live: `paths.relative-filenames`,
+    `paths.scratch-is-not-delivered`, `paths.session-paths-denied`, `paths.always-pass-a-search-path`,
+    `detect.ordered-recipe`, `detect.remote-sandbox-is-one-context`. Code: `subagents.working-directory`,
+    `plugins.server-named-memory`, `plugins.folder-skills-are-not-a-channel`.
+  - **History-derived (60).** Each takes the capture stamp that was in force at the fact's last *material* change
+    (rule, detail, caveats, tier or lane) across the 44 commits of `author-facts.json`. `from_commit` names that
+    change. It errs older in two ways: when the change landed in the same commit as a restamp, the parent's older
+    capture is used; and a correction made weeks after a capture still carries that capture's date. The result is
+    41 facts at 2026-08-05, 1 at 2026-08-13, 6 at 2026-08-14 and 12 at 2026-09-05. Source-lesson dates were not
+    consulted, so a fact may have been checked more recently than it now shows, never less.
+- **Validator.** `validate-state.js` now requires the stamp, rejects a date later than the capture, and rejects a
+  `history` stamp equal to the capture: a restamp must not move a fact's date. This replaces the v2.37.3 rule,
+  which made `verified` an optional string where absent meant "as of the capture". That default is exactly what
+  re-dated every unmarked fact on each restamp. `field_semantics.measured.definitions.verified` defines the field.
+- **Site.** Each fact's chip shows its own date. A topic page's freshness badge shows its **oldest** fact, since a
+  page is only as current as its stalest claim, so most pages now read 2026-08-05. The page's `dateModified`, the
+  `/cowork/` hub and the current-state page keep the capture date. `facts.json` adds `verified_against` and
+  `verified_basis` per fact, and `verified` stays a date string for existing consumers.
+- **Tests.** The two v2.37.3 tests are replaced by six fixture tests (missing stamp; a history stamp at the
+  capture; a re-checked fact at the capture is fine; a date after the capture; a missing `from_commit`; an unknown
+  basis or missing build). There is also a real-data test that no fact silently inherits the current capture date,
+  with a positive control. Negative control: setting one history fact to the capture date fails both the validator
+  and the real-data test.
+
 ## v2.52.1 — 2026-09-23 (this fork) — the detection recipe misread cloud Cowork; plugin `memory` servers are safe
 
 No new lessons; counts stay 198/53.

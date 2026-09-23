@@ -357,6 +357,32 @@ function validateAuthorFacts(stateDir, lessonIds, registry) {
     }
   }
 
+  // Per-fact `verified`: when, and against which build, the fact was last
+  // actually checked. The site used to show every fact at the capture date, so a
+  // restamp that re-checked nine facts displayed all 69 as freshly verified.
+  // Two mechanical guards: no fact is dated after the capture, and only a fact
+  // that declares a re-check (`live`/`code`) may carry the capture's own date --
+  // a `history`-derived stamp equal to it is exactly the silent inheritance this
+  // field exists to prevent.
+  const BASES = new Set(['live', 'code', 'history']);
+  for (const f of facts) {
+    const v = f.verified;
+    const label = `author-facts.${f.id}.verified`;
+    if (!v || typeof v !== 'object') { errors.push(`${label}: missing (every fact needs its own last-checked stamp)`); continue; }
+    if (!ISO_DATE.test(v.date || '')) errors.push(`${label}.date: must be YYYY-MM-DD`);
+    for (const k of ['desktop_asar', 'cli']) {
+      if (typeof v[k] !== 'string' || !v[k]) errors.push(`${label}.${k}: missing`);
+    }
+    if (!BASES.has(v.basis)) errors.push(`${label}.basis: "${v.basis}" is not one of ${[...BASES].join(', ')}`);
+    if (v.basis === 'history' && !v.from_commit) errors.push(`${label}.from_commit: a history-derived stamp must name the change it came from`);
+    if (va.observed_at && v.date > va.observed_at) {
+      errors.push(`${label}.date ${v.date} is later than verified_against.observed_at ${va.observed_at}`);
+    }
+    if (va.observed_at && v.date === va.observed_at && v.basis === 'history') {
+      errors.push(`${label}: dated at the current capture (${v.date}) without a re-check -- a restamp must not move a fact's date; set basis live/code only if it was actually re-checked`);
+    }
+  }
+
   const ids = new Set();
   for (const [label, text] of positionalTargets(doc)) {
     const bad = scanPositional(text);
@@ -454,17 +480,10 @@ function validateAuthorFacts(stateDir, lessonIds, registry) {
     if (typeof ft.volatile_dependency !== 'boolean') {
       errors.push(`${label}: volatile_dependency must be boolean`);
     }
-    // `verified` is OPTIONAL and means "this fact was individually re-checked on
-    // this date". Absent means "as of the site capture". Every fact carried the
-    // capture date verbatim until v2.37.3, which made the field indistinguishable
-    // from the capture and let a blanket restamp read as re-verification.
-    if (ft.verified !== undefined) {
-      if (!ISO_DATE.test(ft.verified)) errors.push(`${label}: verified must be YYYY-MM-DD`);
-      else if (ft.verified === (registry.as_of?.fcache_capture?.observed_at)) {
-        errors.push(`${label}: verified equals the capture date, so it says nothing — ` +
-          `omit it unless this fact was re-checked on its own`);
-      }
-    }
+    // `verified` is checked above, with the verified_against guards: it is
+    // REQUIRED and structured. From v2.37.3 it was optional, with absent meaning
+    // "as of the site capture" -- which re-dated every unmarked fact on each
+    // restamp, the overstatement the required form removes.
     const src = ft.sources || {};
     for (const l of Array.isArray(src.lessons) ? src.lessons : []) {
       if (!lessonIds.has(l)) errors.push(`${label}: sources.lesson ${l} not in topic-index.json`);
