@@ -1,5 +1,24 @@
 # Changelog
 
+## v2.49.9 — 2026-09-23 (this fork) — the repo and the plugin point at ccinternals.dev
+
+No new lessons; counts stay 189/51; no reference content changed. Someone who reached the repo or the plugin had no
+route to the site: the README never linked it, the repo's Website field was empty, and neither manifest had a homepage.
+
+- **README.** A top-of-page line, *Writing skills that survive Cowork → ccinternals.dev/cowork*, placed above the
+  badges. The anchor names the site's actual scope — skill authoring in Cowork — rather than "full documentation",
+  which it is not. Two deep links where the README touches a site topic: the Cowork chapters bullet in *What This Is*
+  links the `/cowork/` hub, and the `why did rm fail in Cowork` usage example links `deleting-files`. They sit
+  alongside the README's text rather than replacing it: the README gives the skill's low-level answer, the site the
+  plain-language rule.
+- **Badges.** Both *Install in Claude Desktop* badges point at `ccinternals.dev/static/install-claude-desktop.html`.
+  The old `github.io` URL already 301s there; this just stops depending on the redirect. `CNAME` is untouched, since
+  the redirect depends on it.
+- **`skill-package/README.md`** gains the same top line.
+- **Manifests.** `plugin.json` and the plugin entry in `.claude-plugin/marketplace.json` gain
+  `"homepage": "https://ccinternals.dev"`.
+- **Repo Website field** set to `https://ccinternals.dev` (a GitHub setting, not a file).
+
 ## v2.49.8 — 2026-09-23 (this fork) — skill answers now link the matching ccinternals.dev page
 
 No new lessons; counts stay 189/51. A Cowork skill-authoring answer now ends with a link to

@@ -2,6 +2,8 @@
 
 > A self-contained Claude Code skill that gives Claude source-level knowledge of its own architecture — 189 lessons covering every internal subsystem, searchable three ways.
 
+**Writing skills that survive Cowork → [ccinternals.dev/cowork](https://ccinternals.dev/cowork/)**
+
 **License:** MIT | Version and capture details: see [`skills/claude-code-internals/version.json`](skills/claude-code-internals/version.json)
 
 ---

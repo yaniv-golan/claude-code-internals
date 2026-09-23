@@ -6,13 +6,15 @@
 >
 > **This is a modified fork** of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals). See [Attribution](#attribution) for what changed.
 
-[![Install in Claude Desktop](https://img.shields.io/badge/Install_in_Claude_Desktop-D97757?style=for-the-badge&logo=claude&logoColor=white)](https://yaniv-golan.github.io/claude-code-internals/static/install-claude-desktop.html)
+**Writing skills that survive Cowork → [ccinternals.dev/cowork](https://ccinternals.dev/cowork/)**
+
+[![Install in Claude Desktop](https://img.shields.io/badge/Install_in_Claude_Desktop-D97757?style=for-the-badge&logo=claude&logoColor=white)](https://ccinternals.dev/static/install-claude-desktop.html)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-plugin-F97316)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/plugins)
 [![Improved with Skill Creator Plus](https://img.shields.io/badge/Improved_with-Skill_Creator_Plus-4ecdc4?style=flat-square)](https://github.com/yaniv-golan/skill-creator-plus)
 
-**Skill Version:** 2.49.8 | **Captured from:** Claude Code v2.1.231 (+ Claude Desktop app.asar through 1.30096.1 + Desktop-managed host agent Mach-O 2.1.229 + in-VM ELF claude-code-vm/2.1.170 / 2.1.197 / 2.1.205 + the golden Cowork VM disk image `rootfs.img` + live `fcache` decodes + Desktop's Chromium HTTP cache) | **Date:** 2026-08-14 | **License:** MIT
+**Skill Version:** 2.49.9 | **Captured from:** Claude Code v2.1.231 (+ Claude Desktop app.asar through 1.30096.1 + Desktop-managed host agent Mach-O 2.1.229 + in-VM ELF claude-code-vm/2.1.170 / 2.1.197 / 2.1.205 + the golden Cowork VM disk image `rootfs.img` + live `fcache` decodes + Desktop's Chromium HTTP cache) | **Date:** 2026-08-14 | **License:** MIT
 
 ---
 
@@ -20,7 +22,7 @@
 
 ### Claude Desktop
 
-[![Install in Claude Desktop](https://img.shields.io/badge/Install_in_Claude_Desktop-D97757?style=for-the-badge&logo=claude&logoColor=white)](https://yaniv-golan.github.io/claude-code-internals/static/install-claude-desktop.html)
+[![Install in Claude Desktop](https://img.shields.io/badge/Install_in_Claude_Desktop-D97757?style=for-the-badge&logo=claude&logoColor=white)](https://ccinternals.dev/static/install-claude-desktop.html)
 
 *— or install manually —*
 
@@ -126,7 +128,7 @@ The material falls into four strands:
 
 - **Chapters 1–8 (L1–L50)** — the core architecture: boot sequence, query engine, tool system, permissions, hooks, agents, MCP, memory, compaction, sessions, OAuth.
 - **Chapters 9–21, 27, 38 (CLI binary diffs)** — what actually changed release to release, extracted from the Bun SEA binary and cross-checked against the official changelog. The delta between the two *is* the finding: this is where dark-launched features surface (Claude Design, Artifacts, Launch Composer) alongside announced ones.
-- **Chapters 22–26, 28–37, 39 (Claude Desktop + Cowork)** — the Desktop `app.asar`, the Cowork spawn and stream-json control protocol, the host-loop/VM-loop split, sub-agent execution, mount and delete semantics, skill-discovery tooling, and the two execution lanes. Verified across six artifact classes, several of which no single binary contains.
+- **Chapters 22–26, 28–37, 39 (Claude Desktop + Cowork)** — the Desktop `app.asar`, the Cowork spawn and stream-json control protocol, the host-loop/VM-loop split, sub-agent execution, mount and delete semantics, skill-discovery tooling, and the two execution lanes. Verified across six artifact classes, several of which no single binary contains. The rules for skill authors, in plain language: [ccinternals.dev/cowork](https://ccinternals.dev/cowork/).
 - **[`references/state/`](skill-package/skills/claude-code-internals/references/state/)** — a mutable "as of version X" truth layer over the append-only lesson chapters, tracking enumerable facts (env vars, gates, commands, tools, IPC interfaces, control-protocol subtypes) with per-entry provenance, validated by its own schema checker and reconciliation audit.
 
 When you type `/claude-code-internals hooks` or `/claude-code-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
@@ -254,7 +256,7 @@ Returns the effort ladder (`low` / `medium` / `high` / `xhigh` / `max`), the `ef
 ```
 /claude-code-internals why did rm fail in Cowork
 ```
-Returns the per-mount FUSE delete policy: exactly `unlink` and `rmdir` are denied, `truncate` and rename are not, approval via `allow_cowork_file_delete` is per-mount and takes effect live with no remount.
+Returns the per-mount FUSE delete policy: exactly `unlink` and `rmdir` are denied, `truncate` and rename are not, approval via `allow_cowork_file_delete` is per-mount and takes effect live with no remount. Plain-language version: [Deleting files](https://ccinternals.dev/cowork/deleting-files/).
 
 ## Sample Output
 
@@ -367,7 +369,7 @@ claude-code-internals/
 │   └── skills/
 │       └── claude-code-internals/  The skill itself
 │           ├── SKILL.md            Skill brain (search strategy, lesson index)
-│           ├── version.json        Version tracking (v2.49.8 / v2.1.231)
+│           ├── version.json        Version tracking (v2.49.9 / v2.1.231)
 │           ├── hooks-config.json   PreToolUse hook definition
 │           ├── references/
 │           │   ├── 01-core-architecture-tools.md
@@ -513,7 +515,7 @@ claude-code-internals/
 
 ```json
 {
-  "skill_version": "2.49.8",
+  "skill_version": "2.49.9",
   "captured_version": "2.1.231",
   "verified_against_binary": "2.1.231",
   "captured_date": "2026-08-14"
@@ -554,7 +556,7 @@ This repository is a fork of [stuinfla/claude-code-internals](https://github.com
 - The PreToolUse `.claude/` hook (`config-aware-hook.sh`), version check script, and TF-IDF index builder
 - The original README documentation and architecture diagrams
 
-**What this fork adds** (v2.2.0–v2.49.8, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
+**What this fork adds** (v2.2.0–v2.49.9, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
 
 - Chapter 9 (Lessons 51–56): binary-verified new features in Claude Code v2.1.90, extracted directly from the Bun SEA binary and verified against official docs
 - Chapter 10 (Lessons 57–59): binary-verified changes in Claude Code v2.1.92 — new commands, removed commands, new env vars, and AskUserQuestionTool documentation
