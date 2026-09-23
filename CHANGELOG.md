@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.50.1 — 2026-09-23 (this fork) — L190 observed live, and an audit-log trap
+
+No new lessons; counts stay 194/52. Two local host-loop Cowork probe sessions under Desktop 2.7032.0 / agent 2.1.280
+turned L190's path handling from a code reading into an observation:
+
+- `Write` and `Read` of a bare `probe-rel.md`, and a `Write` to `/var/empty/probe2.md`, were refused by the agent
+  itself with "File is in a directory that is denied by your permission settings." Nothing was written. Desktop's own
+  "needs an absolute path here" message never appeared, because the agent refuses first.
+- `Glob *.md` and `Grep x`, both sent with no path, found a file seeded in the outputs folder. So Desktop's hook
+  re-anchors a pathless search to outputs. The transcript still records the original pathless input.
+- **New trap.** In Desktop's `audit.jsonl`, `message.content[].input.file_path` for the refused `Write probe-rel.md`
+  reads `<session>/outputs/probe-rel.md`, a path the model never sent, for a call that wrote nothing. The real input
+  is in `wire_tool_inputs`; the matched path is in `result.permission_denials[].tool_input`. Added to L190, the
+  permissions state page and troubleshooting.
+- The architecture and permissions state pages and author fact `paths.relative-filenames` now say "observed".
+
 ## v2.50.0 — 2026-09-23 (this fork) — Desktop 2.7032.0: the working directory leaves outputs
 
 Adds Chapter 52 (L190–L194); counts move to 194/52. First-party against `app.asar` 2.7032.0, diffed against 2.2553.1

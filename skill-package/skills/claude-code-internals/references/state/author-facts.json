@@ -620,7 +620,7 @@
       },
       "caveats": [
         "An earlier version of this fact suggested a script could locate the outputs directory itself by testing for a nested folder. That is withdrawn: it is correct on one surface and silently wrong on another, where the shell already starts inside the outputs location.",
-        "Changed at Desktop 2.7032.0, with the agent build held constant. On one machine an hourly Cowork task ran agent 2.1.280 under Desktop 2.2553.13 with its working directory at the outputs location (4 of 4 runs), then under 2.7032.0 at /var/empty (9 of 9 runs). That is measured. That relative paths are now refused, and with which message, is read from the shipped application and has not been triggered in a live run. The absolute outputs path is correct on both."
+        "Changed at Desktop 2.7032.0, with the agent build held constant. On one machine an hourly Cowork task ran agent 2.1.280 under Desktop 2.2553.13 with its working directory at the outputs location (4 of 4 runs), then under 2.7032.0 at /var/empty (9 of 9 runs). That is measured. The refusal was then observed directly in two probe sessions under 2.7032.0: a bare filename given to the write and read tools was refused with the permission-settings error and nothing was written, and a search with no folder found a file in the outputs location. The absolute outputs path is correct on both."
       ]
     },
     {

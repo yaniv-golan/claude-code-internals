@@ -2104,6 +2104,18 @@
     192
    ],
    "hint": "A Desktop release can pin its agent to a release-candidate base (claude-code-releases/rc/<commit>). For 2.1.280 the RC and the later stable build differ in commit, buildDate and bytes. Compare sha256 or the manifest commit, not the version string."
+  },
+  {
+   "pattern": [
+    "audit.jsonl shows a Write to outputs that never happened",
+    "audit.jsonl file_path differs from transcript",
+    "wire_tool_inputs",
+    "permission_denials tool_input /private/var/empty"
+   ],
+   "lessons": [
+    190
+   ],
+   "hint": "In Desktop's audit.jsonl the assistant record's message.content[].input shows a relative file_path rewritten to <session>/outputs/<name>, even for a call that was refused and wrote nothing. The model's real input is in the same record's wire_tool_inputs; the path the deny rule matched is in the result record's permission_denials[].tool_input. The agent transcript keeps the original input and never shows a hook's updatedInput rewrite."
   }
  ]
 }

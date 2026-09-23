@@ -121,7 +121,25 @@ A bare `report.md` becomes `/private/var/empty/report.md`, matches the deny rule
 | `Grep`, `Glob` | no deny check in their validation, so they reach the hook, which **rewrites** the path to `resolve(outputs, x)` via `updatedInput` if that lands inside an allowed root (no path means `.` → outputs), and otherwise blocks |
 | `MultiEdit`, or a relative path reaching the hook unexpanded | the hook's own blocks: "`<Tool>` needs an absolute path here — use `<outputs>/x` for `x`." for a still-relative path, and for a write under the cwd "`<path>` is plugin content or the app's private working directory and cannot be written; use the outputs directory." |
 
-This is a static reading; no run on the capturing machine exercised a relative path, and neither message appears in its transcripts. The outcome for the file tools is not in doubt: a relative path is refused, at the agent, at the hook, or both. "needs an absolute path here" appears 0 times in 1.46388.4 and 2.2553.1 and 2 times in 2.7032.0, but on agent 2.1.280 the agent's own validation fires first for `Read`, `Write` and `Edit`.
+## Observed (2026-09-23, two local probe sessions)
+
+Two host-loop Cowork tasks on the capturing machine (Desktop 2.7032.0, agent 2.1.280, transcript `cwd` = `/private/var/empty`, Desktop log `cwd: '/var/empty'`) sent these exact inputs:
+
+| model sent | result |
+|---|---|
+| `Write {file_path:"probe-rel.md"}` | error: "File is in a directory that is denied by your permission settings." |
+| `Read {file_path:"probe-rel.md"}` | the same error |
+| `Write {file_path:"/var/empty/probe2.md"}` | the same error |
+| `Write` to `<outputs>/seed.md` (absolute) | created |
+| `Glob {pattern:"*.md"}` — no path | found `<outputs>/seed.md` |
+| `Grep {pattern:"x"}` — no path | found `<outputs>/seed.md` |
+
+Nothing was written for the refused calls. The pathless searches ran against outputs, not against the cwd: Desktop's hook re-anchored them. So the table above holds as observed for `Read`, `Write`, `Grep` and `Glob`; `Edit` shares `Write`'s validation code; the hook's own "needs an absolute path here" message did not appear, because the agent refused first.
+
+Two things to know when reading such a session afterwards:
+
+- **The transcript keeps the model's original input.** The Glob call is recorded as `{"pattern":"*.md"}` even though it searched outputs; a hook's `updatedInput` rewrite leaves no trace in the transcript's `tool_use` input, only in the result.
+- **Desktop's `audit.jsonl` records a path the model never sent.** For `Write probe-rel.md`, the assistant record's `message.content[].input.file_path` is `<session>/outputs/probe-rel.md` — an absolute outputs path, for a call that wrote nothing. The model's real input is in the same record's `wire_tool_inputs` (`probe-rel.md`), and the path the deny rule actually matched is in the run's `result` record under `permission_denials[].tool_input` (`/private/var/empty/probe-rel.md`). The refusals are counted there as permission denials. Read `wire_tool_inputs`, never `message.content`, when auditing what a model asked for.
 
 The writable roots collapsed with it. `writablePaths` was `[hostCwd, hostOutputsDir]` — the same directory twice — and is now `[hostOutputsDir]`.
 
@@ -141,7 +159,7 @@ Chat-mode sessions changed the same way: their prompt drops the line that bare f
 - A bare filename that worked on an older Desktop now fails **loudly**: the call is refused with a message. Before, the classic failures were silent (a doubled `outputs/outputs/x`, a decoy folder). A skill that relied on a bare filename breaks visibly, not quietly.
 - Nothing about the shell changed. `mcp__workspace__bash` still starts at `/sessions/<id>` and still needs `/sessions/<id>/mnt/outputs/...` (L163).
 
-The measured runs above are one scheduled task on one machine. They establish the working directory; they did not exercise a relative path, so the refusal messages are read from the shipped code, not observed.
+All of the above was measured on one machine: an hourly scheduled task for the working directory, and two deliberate probe sessions for the path handling.
 
 ---
 

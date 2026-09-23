@@ -5747,7 +5747,7 @@
       "lesson_number": "190",
       "file": "49-desktop-2.7032-cwd-rc-builds.md",
       "startLine": 19,
-      "endLine": 146,
+      "endLine": 164,
       "keywords": [
         "/var/empty",
         "host-cwd",
@@ -5778,7 +5778,13 @@
         "where is the Cowork agent cwd",
         "File is in a directory that is denied by your permission settings",
         "validateInput-deny-before-hook",
-        "plugin content or the app's private working directory"
+        "plugin content or the app's private working directory",
+        "audit.jsonl-wire_tool_inputs",
+        "wire_tool_inputs",
+        "permission_denials",
+        "audit-log-rewritten-path",
+        "updatedInput-not-in-transcript",
+        "observed-relative-path-refusal"
       ]
     },
     {
@@ -5786,8 +5792,8 @@
       "title": "TaskOutput Is Removed, and Removed Tools Now Have a List",
       "lesson_number": "191",
       "file": "49-desktop-2.7032-cwd-rc-builds.md",
-      "startLine": 148,
-      "endLine": 200,
+      "startLine": 166,
+      "endLine": 218,
       "keywords": [
         "TaskOutput-removed",
         "TaskOutput",
@@ -5822,8 +5828,8 @@
       "title": "One Version Number, Two Builds: Desktop Can Pin a Release Candidate",
       "lesson_number": "192",
       "file": "49-desktop-2.7032-cwd-rc-builds.md",
-      "startLine": 202,
-      "endLine": 246,
+      "startLine": 220,
+      "endLine": 264,
       "keywords": [
         "release-candidate",
         "rc-channel",
@@ -5851,8 +5857,8 @@
       "title": "The 2026-09-23 fcache, and What the VM Bundle Directories Really Are",
       "lesson_number": "193",
       "file": "49-desktop-2.7032-cwd-rc-builds.md",
-      "startLine": 248,
-      "endLine": 300,
+      "startLine": 266,
+      "endLine": 318,
       "keywords": [
         "fcache-2026-09-23",
         "f82df085d027eff0",
@@ -5882,8 +5888,8 @@
       "title": "What Else Changed in the Cowork Spawn: a Cloud Memory Server, Env Stripping, and Smaller Changes",
       "lesson_number": "194",
       "file": "49-desktop-2.7032-cwd-rc-builds.md",
-      "startLine": 302,
-      "endLine": 354,
+      "startLine": 320,
+      "endLine": 372,
       "keywords": [
         "memory-mcp-relay",
         "mcp__memory__memory_read",
@@ -20422,6 +20428,24 @@
     ],
     "hipaa_restricted": [
       194
+    ],
+    "audit.jsonl-wire_tool_inputs": [
+      190
+    ],
+    "wire_tool_inputs": [
+      190
+    ],
+    "permission_denials": [
+      190
+    ],
+    "audit-log-rewritten-path": [
+      190
+    ],
+    "updatedInput-not-in-transcript": [
+      190
+    ],
+    "observed-relative-path-refusal": [
+      190
     ]
   }
 }

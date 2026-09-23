@@ -88,7 +88,8 @@ write- and read-denied. A **bare filename** is therefore refused: the agent
 expands it against `/var/empty` and its own validation rejects a Read, Write
 or Edit there ("File is in a directory that is denied by your permission
 settings."), while a relative Grep/Glob reaches Desktop's hook and is
-re-anchored to outputs (`cowork-permissions.md` layer 4). Before
+re-anchored to outputs (`cowork-permissions.md` layer 4) — both observed in
+local probe sessions on 2026-09-23. Before
 2.7032.0 the cwd **was** the outputs dir and a bare filename landed there,
 user-visible (measured under 2.2553.13 with the same agent 2.1.280 build).
 `mcp__workspace__bash` is a different case: it

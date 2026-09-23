@@ -144,8 +144,11 @@ lessons (see frontmatter).
    path here — use `<outputs>/x`" for a still-relative path, and "is
    plugin content or the app's private working directory and cannot be
    written; use the outputs directory" for a write under the cwd — apply
-   to `MultiEdit` and to any path that reaches it unexpanded (static
-   reading; no live run has exercised a relative path). The
+   to `MultiEdit` and to any path that reaches it unexpanded. **Observed
+   2026-09-23** (two local probes, L190): relative and `/var/empty` Read/
+   Write refused with the agent's message; pathless Glob and Grep found a
+   file in outputs. `audit.jsonl`'s `message.content` input shows a
+   rewritten outputs path the model never sent — use `wire_tool_inputs`. The
    spawn also puts `Write/Edit/MultiEdit(<cwd>/**)` and `Read(<cwd>/**)`
    (every spelling) plus `Write/Edit/MultiEdit(<userData>/local-agent-mode-sessions/plugin-cache/**)`
    into `disallowedTools`/deny, so the cwd is refused twice. Note
