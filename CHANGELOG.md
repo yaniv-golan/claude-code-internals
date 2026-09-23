@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.54.1 — 2026-09-23 (this fork) — two small additions
+
+No new lessons; counts stay 207/55.
+
+- **L201.** A relayed live measurement fits the budget derived from the code: with 332 skills installed, the listing a
+  session received was 29,993 characters, just under the 30,000 derived for 1M-context models, and identical for
+  Opus and Sonnet.
+- **L204.** The skill listing gives no hint that a skill will fork. Each entry is only its description, plus
+  `when_to_use` if present, so the model picks a skill without knowing its answer will be relayed.
+
 ## v2.54.0 — 2026-09-23 (this fork) — forked skills get rewritten, two input channels, what grants `save_skill`
 
 Adds Chapter 55 (L204–L207); counts move to 207/55. This is the second batch of leads from the sibling-session

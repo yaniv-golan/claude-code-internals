@@ -6138,7 +6138,7 @@
       "lesson_number": "204",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
       "startLine": 18,
-      "endLine": 58,
+      "endLine": 59,
       "keywords": [
         "fork-skill-relay",
         "context fork",
@@ -6156,8 +6156,8 @@
       "title": "Two Ways to Ask the User, and the Model Chooses",
       "lesson_number": "205",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
-      "startLine": 60,
-      "endLine": 99,
+      "startLine": 61,
+      "endLine": 100,
       "keywords": [
         "visualize-server",
         "mcp__visualize__show_widget",
@@ -6180,8 +6180,8 @@
       "title": "What Grants save_skill, and a Second Server-Side Switch Channel",
       "lesson_number": "206",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
-      "startLine": 101,
-      "endLine": 128,
+      "startLine": 102,
+      "endLine": 129,
       "keywords": [
         "save_skill",
         "canSaveSkill",
@@ -6204,8 +6204,8 @@
       "title": "Five Smaller Mechanics: Slash Skills, the OAuth Descriptor, Hook Feedback, a Plugin-Server Allowlist, an Unlisted Build",
       "lesson_number": "207",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
-      "startLine": 130,
-      "endLine": 155,
+      "startLine": 131,
+      "endLine": 156,
       "keywords": [
         "slash skill invocation",
         "command-name",

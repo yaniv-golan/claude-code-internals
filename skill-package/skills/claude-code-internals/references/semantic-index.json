@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "created": "2026-09-23T17:44:02.256Z",
+  "created": "2026-09-23T17:46:13.291Z",
   "description": "TF-IDF semantic index for Claude Code internals lessons. Use semantic-search.js to query.",
   "total_entries": 207,
   "entries": [
@@ -25203,7 +25203,7 @@
       "title": "A Forked Skill's Answer Is Rewritten Before the User Sees It",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
       "startLine": 18,
-      "endLine": 58,
+      "endLine": 59,
       "text": "A Forked Skill's Answer Is Rewritten Before the User Sees It fork-skill-relay context fork forked execution skill output rewritten link dropped by parent parent-addressed note prompt injection warning inline vs fork skill ?ref stripped  fork-skill-relay context fork forked execution skill output rewritten link dropped by parent parent-addressed note prompt injection warning inline vs fork skill ?ref stripped",
       "keywords": [
         "fork-skill-relay",
@@ -25259,8 +25259,8 @@
       "id": 205,
       "title": "Two Ways to Ask the User, and the Model Chooses",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
-      "startLine": 60,
-      "endLine": 99,
+      "startLine": 61,
+      "endLine": 100,
       "text": "Two Ways to Ask the User, and the Model Chooses visualize-server mcp__visualize__show_widget mcp__visualize__read_me getImagineServerDef 3444158716 elicitation form vs AskUserQuestion hook_additional_context 286376943 show_widget show_widget instead of AskUserQuestion form instead of AskUserQuestion visualize form skill input form AskUserQuestion or form  286376943 3444158716 show_widget getImagineServerDef visualize-server mcp__visualize__show_widget mcp__visualize__read_me elicitation form vs AskUserQuestion hook_additional_context show_widget instead of AskUserQuestion form instead of AskUserQuestion visualize form skill input form AskUserQuestion or form",
       "keywords": [
         "visualize-server",
@@ -25331,8 +25331,8 @@
       "id": 206,
       "title": "What Grants save_skill, and a Second Server-Side Switch Channel",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
-      "startLine": 101,
-      "endLine": 128,
+      "startLine": 102,
+      "endLine": 129,
       "text": "What Grants save_skill, and a Second Server-Side Switch Channel save_skill canSaveSkill current_user_access access list skill_creation 3246569822 removed 3469616823 3656976882 setup-writing-style save_skill missing save_skill tool canSaveSkill false who gets save_skill save skill tool cowork  3469616823 3656976882 save_skill canSaveSkill current_user_access access list skill_creation 3246569822 removed setup-writing-style save_skill missing save_skill tool canSaveSkill false who gets save_skill save skill tool cowork",
       "keywords": [
         "save_skill",
@@ -25404,8 +25404,8 @@
       "id": 207,
       "title": "Five Smaller Mechanics: Slash Skills, the OAuth Descriptor, Hook Feedback, a Plugin-Server Allowlist, an Unlisted Build",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
-      "startLine": 130,
-      "endLine": 155,
+      "startLine": 131,
+      "endLine": 156,
       "text": "Five Smaller Mechanics: Slash Skills, the OAuth Descriptor, Hook Feedback, a Plugin-Server Allowlist, an Unlisted Build slash skill invocation command-name isMeta skill body CLAUDE_CODE_OAUTH_TOKEN_FILE_DESCRIPTOR oauth fd 3 hook feedback TeammateIdle TaskCreated TaskCompleted allowedPluginMcpServers 2.2553.13 RELEASES.json per-device update feed  2.2553.13 slash skill invocation command-name isMeta skill body CLAUDE_CODE_OAUTH_TOKEN_FILE_DESCRIPTOR oauth fd 3 hook feedback TeammateIdle TaskCreated TaskCompleted allowedPluginMcpServers RELEASES.json per-device update feed",
       "keywords": [
         "slash skill invocation",

@@ -149,7 +149,7 @@ So the budget is **context window × characters-per-token × 1%**, where charact
 | the same with 1M disabled (`CLAUDE_CODE_DISABLE_1M_CONTEXT`, the long-context credit block, or a third-party provider without native 1M) | 200k | 3 | 6,000 |
 | Haiku 4.5 and older 200k models | 200k | 4 | 8,000 |
 
-Width is measured as display width (`Bun.stringWidth`), so wide characters count double.
+Width is measured as display width (`Bun.stringWidth`), so wide characters count double. A relayed measurement on the capturing machine fits the 1M row: with 332 skills installed, the listing a session received was 29,993 characters, identical for Opus and Sonnet.
 
 Settings: `SLASH_COMMAND_TOOL_CHAR_BUDGET` (env, absolute), `skillListingBudgetFraction` (above 0 up to 1), `skillListingMaxDescChars` (per-description cap, default 1,536; the description is `description - whenToUse`, cut with `…`), and `skillOverrides` to make a skill name-only.
 

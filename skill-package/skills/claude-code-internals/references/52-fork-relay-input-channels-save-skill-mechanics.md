@@ -26,6 +26,7 @@ Agent 2.1.280, `mapToolResultToToolResultBlockParam` for the Skill tool:
 - **Forked:** the tool result is the plain text `Skill "<name>" completed (forked execution).` followed by `Result:` and the fork's **last assistant message** (text blocks joined). Anything the fork said only in earlier messages is lost. A background fork gets `launched (forked execution, running in the background)` instead. (A third mode returns the skill's instructions read-only.)
 - **Inline:** the tool result is just `Launching skill: <name>`, and the skill's body goes into the main conversation itself, so the main model writes the answer with the skill's instructions in view. There is no relay.
 - The result is not marked as untrusted unless the fork read Artifact content written by others, in which case an `<artifact-content-authored-by-others/>` note is prefixed.
+- The skill listing gives the model no hint that a skill will fork: each entry is only its description, plus `when_to_use` if present (`HYe`), so the choice to call it is made without knowing its answer will be relayed.
 - No instruction asks the main model to relay a forked skill's output verbatim. The Agent tool's prompt says the opposite for sub-agents: their report is invisible to the user, so summarise it. The main system prompt also tells the model not to generate URLs unless confident they help, while allowing URLs from the user's messages or local files; whether that rule causes the dropped links is not established.
 
 ## The measurements
