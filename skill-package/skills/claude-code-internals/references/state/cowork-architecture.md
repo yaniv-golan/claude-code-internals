@@ -3,8 +3,8 @@ domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198, 207]
-updated: 2026-09-23
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198, 207, 208, 210]
+updated: 2026-09-25
 ---
 
 # Cowork runtime architecture (current)
@@ -617,6 +617,34 @@ The same probe on each surface an agent can receive a skill on:
 
 Discriminators: `CLAUDE_CODE_ENTRYPOINT` (`remote_cowork` vs `remote` vs unset) and whether a
 `claude` binary exists. `/mnt/user-data` is on all three cloud surfaces.
+
+## Scheduled tasks migrate themselves to the cloud (L208)
+
+Desktop's `[RemoteMigrationSweep]` (from 1.44121.1; config gate `2974609625`, force-on)
+converts a local scheduled task into a cloud routine after ≥2 runs over ≥0.5 days
+(among other conditions), disables the local copy and stamps `migratedToRemote`;
+tasks attached to a Space, sub-hourly, custom-cron or with attachments are held back;
+device-tied tasks move as bound routines; a reverted task is never moved again. Observed on the capturing machine 2026-09-24 ("Remote migration completed;
+local copy disabled"). Desktop decides only whether lanes are **allowed**
+(`placementRules`: device / SSH host / cloud; for Cowork only self-hosted-only and the
+`cowork-local-tasks-off` latch from gate `3634338308`, off by default, can deny local); the web UI picks the lane per task. The task-header
+laptop+chevron is a device picker for a cloud session (see L210 for how the lane is picked). A local start logs
+`LocalAgentModeSessions.start` then `Starting local session local_<uuid>`.
+
+## Where a new task runs (L210)
+
+The claude.ai interface picks the lane per new task. Its router returns the first of
+`local_ungated`, `local_override_forced`, **`local_opted_out`** (account setting
+`dramatic_shrimp_enabled` false; unset means cloud), folder/Space-forced,
+Auto/Bypass-forced, Chrome/options/computer-use/plugin-stdio, else `remote`. The account
+setting is what Settings → General → Tasks "Only on this computer" (row `cowork-backend`)
+and the task-header Cloud popover both write; switching to local saves only after the
+feedback dialog's main button. A scheduled task's own "Only on this computer" switch is a
+separate, per-task setting. Measured 2026-09-25 on Desktop 2.9939.2: with the account
+setting saved and the app restarted, new tasks still ran in the cloud (`/home/claude`,
+`CLAUDE_CODE_ENTRYPOINT=remote_cowork`), in Auto mode too; a local-only scheduled task
+did run locally. The bundled interface and three builds fetched from
+`assets-proxy.anthropic.com` route identically, so the cause lies outside that code.
 
 ## Credential delivery and build identity (L207)
 

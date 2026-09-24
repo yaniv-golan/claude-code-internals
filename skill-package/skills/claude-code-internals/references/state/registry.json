@@ -5,10 +5,10 @@
     "desktop_asar": "2.7032.0",
     "in_vm_elf": "2.1.280",
     "fcache_capture": {
-      "content16": "f82df085d027eff0",
-      "embedded_timestamp": 1790144587775,
-      "feature_count": 371,
-      "observed_at": "2026-09-23"
+      "content16": "ff36facd2d636210",
+      "embedded_timestamp": 1790293351071,
+      "feature_count": 378,
+      "observed_at": "2026-09-25"
     },
     "agent_elf_parity_check": "2.1.280",
     "container_cc_version_observed": {
@@ -5099,7 +5099,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5121,7 +5121,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5150,7 +5150,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5175,7 +5175,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5197,7 +5197,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5230,7 +5230,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5255,7 +5255,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5278,7 +5278,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5300,7 +5300,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5322,7 +5322,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5347,7 +5347,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5369,7 +5369,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5391,7 +5391,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5413,7 +5413,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5427,7 +5427,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       },
       "summary": "MCP version-negotiation KILL SWITCH with INVERTED sense. Consumer: `...(u && !un()) ? {versionNegotiation:{mode:'auto',probe:{timeoutMs:500}}} : {}` where un()=t.ld('1942337209'). Because the predicate is !un(), the gate being OFF (its live state) means automatic version negotiation IS ACTIVE; flipping it ON removes it. t.ld is isEnabled, proven in-chunk against 278625510/getSkillSources.",
       "provenance": [
@@ -5457,7 +5457,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5493,7 +5493,7 @@
         "present": true,
         "source": "experiment",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5515,7 +5515,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5537,7 +5537,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5559,7 +5559,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5581,7 +5581,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5603,7 +5603,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5633,7 +5633,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5655,7 +5655,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5677,7 +5677,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5699,7 +5699,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5721,7 +5721,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5749,7 +5749,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5775,7 +5775,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5805,7 +5805,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5827,7 +5827,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5849,7 +5849,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5874,7 +5874,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5908,7 +5908,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5930,7 +5930,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5958,7 +5958,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -5984,7 +5984,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6010,7 +6010,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6036,7 +6036,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6058,7 +6058,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6080,7 +6080,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6102,7 +6102,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6116,7 +6116,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       },
       "summary": "Declared-but-unconsumed: appears exactly once, in the client-side gate defaults table as {defaultValue:false}, with NO read site anywhere in the asar and NO fcache entry. Not dark-launched (no code behind it yet) -- the switch was declared before its consumer shipped.",
       "provenance": [
@@ -6147,7 +6147,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6169,7 +6169,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       },
       "served_keys": [
         "displayName",
@@ -6196,7 +6196,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6219,7 +6219,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6241,7 +6241,7 @@
         "present": true,
         "source": "force",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6260,10 +6260,10 @@
       ],
       "namespace": "desktop_fcache",
       "observed": {
-        "present": false,
-        "source": null,
-        "on": null,
-        "at": "f82df085d027eff0"
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6285,7 +6285,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6307,7 +6307,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6318,7 +6318,7 @@
       "first_seen": "1.28929.0",
       "removed_in": null,
       "as_of": "2.1.260",
-      "summary": "Builtin-tool auto-mode classifier gate. TRACED (L184): in the Cowork PreToolUse hook it lets request_cowork_directory and save_skill SKIP the forced ask and defer to the auto-mode classifier (hook returns {} instead of permissionDecision:'ask'), emitting lam_builtin_tool_auto_mode {outcome:'deferred_to_classifier'}. Predicate Phn: gateEnabled && !mdmAutoModeDisabled && session.permissionMode==='auto' && permissionSession.permissionMode==='auto'. Carve-out: request_cowork_directory with NO path in a bridge/dispatch-child/scheduled/remote-origin/non-desktop-channel session keeps the forced ask (an invisible-folder-picker rule, not a permissions rule). Moved defaultValue/off -> FORCE/ON between the 2026-08-14 and 2026-09-05 captures. LIVE-CONFIRMED 2026-09-05: in an auto-mode Cowork session save_skill and request_cowork_directory ran with no approval dialog while allow_cowork_file_delete (released by neither gate) produced the Allow/Deny card - the control that shows the hook was still firing.",
+      "summary": "Builtin-tool auto-mode classifier gate. TRACED (L184): in the Cowork PreToolUse hook it lets request_cowork_directory and save_skill SKIP the forced ask and defer to the auto-mode classifier (hook returns {} instead of permissionDecision:'ask'), emitting lam_builtin_tool_auto_mode {outcome:'deferred_to_classifier'}. Predicate Phn: gateEnabled && !mdmAutoModeDisabled && session.permissionMode==='auto' && permissionSession.permissionMode==='auto'. Carve-out: request_cowork_directory with NO path in a bridge/dispatch-child/scheduled/remote-origin/non-desktop-channel session keeps the forced ask (an invisible-folder-picker rule, not a permissions rule). Moved defaultValue/off -> FORCE/ON between the 2026-08-14 and 2026-09-05 captures. LIVE-CONFIRMED 2026-09-05: in an auto-mode Cowork session save_skill and request_cowork_directory ran with no approval dialog while allow_cowork_file_delete (released by neither gate) produced the Allow/Deny card - the control that shows the hook was still firing. At the 2026-09-24 capture it is still on but served by defaultValue rather than force (Ch56).",
       "provenance": [
         {
           "lesson": 128
@@ -6331,9 +6331,9 @@
       "namespace": "desktop_fcache",
       "observed": {
         "present": true,
-        "source": "force",
+        "source": "defaultValue",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6359,7 +6359,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6385,7 +6385,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6407,7 +6407,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6429,7 +6429,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -6443,7 +6443,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       },
       "summary": "Declared-but-unconsumed, same as 3671534883. Written as an UNQUOTED numeric object key, so a quoted-string-only gate regex misses it entirely.",
       "provenance": [
@@ -7964,7 +7964,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -8037,7 +8037,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -8059,7 +8059,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -8081,7 +8081,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -8103,7 +8103,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -8125,7 +8125,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -8147,7 +8147,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -8244,7 +8244,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -8266,7 +8266,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -8288,7 +8288,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "f82df085d027eff0"
+        "at": "ff36facd2d636210"
       }
     },
     {
@@ -8305,6 +8305,50 @@
           "lesson": 207
         }
       ]
+    },
+    {
+      "id": "gate.2974609625",
+      "kind": "gate",
+      "name": "2974609625 (remote migration sweep config)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "Config for Desktop's [RemoteMigrationSweep] (from 1.44121.1): hourly pass that converts a local scheduled task into a cloud routine once it has run >=2 times over >=0.5 days (minRunsObserved/minObservedDays), among other conditions; tasks attached to a Space (heldBlockReasons ['space']), sub-hourly/custom-cron, with attachments etc. are held back; device-tied tasks move as bound routines; reverted tasks are skipped; disables the local copy and stamps migratedToRemote={triggerId, via:'sweep'}. Force-on; observed migrating a local hourly task on the capturing machine on 2026-09-24 (Ch56/L208).",
+      "provenance": [
+        {
+          "lesson": 208
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "force",
+        "on": true,
+        "at": "ff36facd2d636210"
+      }
+    },
+    {
+      "id": "gate.3634338308",
+      "kind": "gate",
+      "name": "3634338308 (cowork local tasks off latch)",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.280",
+      "summary": "When on for a first-party account, latches coworkLocalTasksOffLatched and placementRules deny the device lane for Cowork and Cowork routines ('Your organization doesn't allow Cowork tasks on this computer'). From Desktop 2.2553.1; served off at the 2026-09-24 capture (Ch56/L208).",
+      "provenance": [
+        {
+          "lesson": 208
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "ff36facd2d636210"
+      }
     }
   ]
 }

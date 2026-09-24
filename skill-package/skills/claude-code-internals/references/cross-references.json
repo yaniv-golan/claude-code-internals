@@ -3921,6 +3921,67 @@
     "relevance": 0.5,
     "reason": "build identity beyond version strings"
    }
+  ],
+  "208": [
+   {
+    "id": 210,
+    "relevance": 0.9,
+    "reason": "where a new task runs, and the controls that claim to set it"
+   },
+   {
+    "id": 138,
+    "relevance": 0.8,
+    "reason": "the local and remote lanes a migrated task moves between"
+   },
+   {
+    "id": 109,
+    "relevance": 0.6,
+    "reason": "Cowork scheduled tasks"
+   },
+   {
+    "id": 198,
+    "relevance": 0.6,
+    "reason": "what changes for a skill on each surface"
+   }
+  ],
+  "209": [
+   {
+    "id": 89,
+    "relevance": 0.9,
+    "reason": "plugin hooks fire in Cowork (namespace)"
+   },
+   {
+    "id": 203,
+    "relevance": 0.8,
+    "reason": "stream hook frames gated; related visibility trap"
+   },
+   {
+    "id": 121,
+    "relevance": 0.6,
+    "reason": "toolAliases"
+   },
+   {
+    "id": 174,
+    "relevance": 0.5,
+    "reason": "cloud lane SessionStart on resume"
+   }
+  ],
+  "210": [
+   {
+    "id": 208,
+    "relevance": 0.9,
+    "reason": "scheduled tasks and the Desktop's lane rules"
+   },
+   {
+    "id": 198,
+    "relevance": 0.6,
+    "reason": "telling the surfaces apart from inside a session"
+   },
+   {
+    "id": 138,
+    "relevance": 0.6,
+    "reason": "the local and remote lanes"
+   }
   ]
  }
 }

@@ -2277,6 +2277,44 @@
     207
    ],
    "hint": "A typed /skill expands to a <command-name> message plus a hidden body message (no Skill tool_use). Cowork host-loop passes the OAuth token on fd 3 (CLAUDE_CODE_OAUTH_TOKEN_FILE_DESCRIPTOR). Blocking Stop/TeammateIdle/TaskCreated/TaskCompleted hooks inject '<Event> hook feedback:' + newline + '[<hook>]: <stderr>'."
+  },
+  {
+   "pattern": [
+    "Cowork tasks run in the cloud",
+    "no local Cowork session",
+    "scheduled task moved to cloud",
+    "Remote migration completed"
+   ],
+   "lessons": [
+    208
+   ],
+   "hint": "Desktop's RemoteMigrationSweep (gate 2974609625) converts a local scheduled task to a cloud routine after >=2 runs over >=0.5 days unless held back (Space, sub-hourly or custom cron, attachments, etc.); look for 'Remote migration completed; local copy disabled' in main.log. A local start logs 'LocalAgentModeSessions.start'. For new tasks see L210."
+  },
+  {
+   "pattern": [
+    "plugin hook not firing in Cowork",
+    "SessionStart hook not firing cloud",
+    "Bash matcher hook never runs Cowork",
+    "UserPromptSubmit plugin hook"
+   ],
+   "lessons": [
+    209
+   ],
+   "hint": "Plugin hooks fire on both lanes; SessionStart did not fire in a new cloud session. A 'Bash' matcher matches local Cowork's mcp__workspace__bash only via the session's Bash→mcp__workspace__bash alias — write 'Bash|mcp__workspace__bash'. A hook that succeeds silently leaves no transcript record; check a side effect instead. A block from a hook with a missing script is downgraded to a non-blocking error."
+  },
+  {
+   "pattern": [
+    "Only on this computer ignored",
+    "new Cowork task runs in the cloud",
+    "cannot force local Cowork",
+    "Cowork cloud even with local setting",
+    "how to run Cowork locally"
+   ],
+   "lessons": [
+    210,
+    208
+   ],
+   "hint": "The claude.ai interface picks the lane; its code returns local_opted_out when the account setting dramatic_shrimp_enabled is false, but a saved opt-out still gave cloud sessions on 2026-09-25 (also in Auto mode). Switching to local saves only after the feedback dialog's main button. Proven local route: a scheduled task with its own 'Only on this computer' switch on, run with Run now. Check with pwd: /sessions/<slug> local, /home/claude cloud."
   }
  ]
 }

@@ -368,20 +368,38 @@
         "asking-the-user",
         1
       ]
+    ],
+    "208": [
+      [
+        "what-can-change-under-you",
+        1
+      ]
+    ],
+    "209": [
+      [
+        "plugins-and-plugin-root",
+        2
+      ]
+    ],
+    "210": [
+      [
+        "what-can-change-under-you",
+        1
+      ]
     ]
   },
   "by_state_page": {
     "cowork-architecture": [
+      [
+        "what-can-change-under-you",
+        11
+      ],
       [
         "delivering-outputs",
         9
       ],
       [
         "files-and-paths",
-        9
-      ],
-      [
-        "what-can-change-under-you",
         9
       ],
       [
@@ -418,7 +436,7 @@
     "plugins-skills-hooks": [
       [
         "plugins-and-plugin-root",
-        18
+        19
       ],
       [
         "asking-the-user",
@@ -430,8 +448,10 @@
     "change.detect-at-use": "what-can-change-under-you#fact-change-detect-at-use",
     "change.mid-session": "what-can-change-under-you#fact-change-mid-session",
     "change.never-assert-on-prompt-wording": "what-can-change-under-you#fact-change-never-assert-on-prompt-wording",
+    "change.new-tasks-may-run-in-the-cloud": "what-can-change-under-you#fact-change-new-tasks-may-run-in-the-cloud",
     "change.no-version-bump": "what-can-change-under-you#fact-change-no-version-bump",
     "change.refuse-rather-than-degrade": "what-can-change-under-you#fact-change-refuse-rather-than-degrade",
+    "change.scheduled-tasks-move-to-the-cloud": "what-can-change-under-you#fact-change-scheduled-tasks-move-to-the-cloud",
     "change.served-not-shipped": "what-can-change-under-you#fact-change-served-not-shipped",
     "change.state-your-assumptions": "what-can-change-under-you#fact-change-state-your-assumptions",
     "change.tool-names-are-not-stable": "what-can-change-under-you#fact-change-tool-names-are-not-stable",
@@ -477,6 +497,7 @@
     "plugins.hook-exports-do-not-cross": "plugins-and-plugin-root#fact-plugins-hook-exports-do-not-cross",
     "plugins.hooks-do-fire": "plugins-and-plugin-root#fact-plugins-hooks-do-fire",
     "plugins.install-through-the-app": "plugins-and-plugin-root#fact-plugins-install-through-the-app",
+    "plugins.match-both-shell-names": "plugins-and-plugin-root#fact-plugins-match-both-shell-names",
     "plugins.mcp-server-may-be-stubbed": "plugins-and-plugin-root#fact-plugins-mcp-server-may-be-stubbed",
     "plugins.mcp-servers-run-on-the-users-machine": "plugins-and-plugin-root#fact-plugins-mcp-servers-run-on-the-users-machine",
     "plugins.mounts-are-read-only": "plugins-and-plugin-root#fact-plugins-mounts-are-read-only",

@@ -33,10 +33,10 @@
   "verified_against": {
     "cli": "2.1.231",
     "desktop_asar": "2.7032.0",
-    "fcache_content16": "f82df085d027eff0",
-    "observed_at": "2026-09-23",
+    "fcache_content16": "ff36facd2d636210",
+    "observed_at": "2026-09-25",
     "cli_note": "Re-stamped for the v2.1.217->v2.1.231 CLI refresh (Ch42). The CLI-side diff was scanned for contradictions against these facts and found none; the runtime markers the detect.* facts rely on (CLAUDECODE, CLAUDE_CODE_ENTRYPOINT + local-agent normalisation, CLAUDE_CODE_IS_COWORK) were positively confirmed present in the 2.1.231 bundle. The Cowork-side facts themselves were NOT re-derived this pass; desktop_asar/fcache stamps are unchanged and remain their true provenance. OUT-OF-BASELINE CORRECTION (2026-08-28, Ch45/L167): change.your-own-skill-can-be-cut was corrected against standalone CLI 2.1.248/2.1.250 and a 269-record re-attachment corpus -- NEWER than the cli stamp below, which is deliberately NOT bumped because this was a targeted subsystem pass, not a baseline refresh. The page had said re-reading a shortened skill from its path recovers the full text, full stop. Measured: 49 of 56 distinct recorded locations on one machine no longer exist, 46 of them version-stamped plugin directories removed by an ordinary update. Every one was valid when written and resolves inside a live run, so the wording now says best-effort and names resume-after-update as the weak point. The dead locations are measured; a resulting failed re-read is inferred, not observed, and the caveat says so. LANE DISCIPLINE: those 56 directories are all standalone-CLI sessions. The two Cowork host-loop records available (staged under a claude-hostloop-plugins/<hash> root, where the hash is a deterministic digest of the install path rather than a per-run random value) BOTH still exist. So the CLI figure was NOT published as a Cowork rate -- the page states only that the location is captured at first invocation rather than resolved when read, and the caveat carries both samples with their sizes. Also re-checked this pass: all four runtime markers the detecting-cowork page depends on (CLAUDE_CODE_IS_COWORK, CLAUDECODE, CLAUDE_CODE_ENTRYPOINT, CLAUDE_CODE_COWORK_FRAME_ARTIFACTS) are still present in CLI 2.1.250, 19 versions past the cli stamp, so that page is current. OUT-OF-BASELINE CORRECTION (2026-08-29, Ch48/L173 + the v2.44.1 plugin-root correction): plugins.plugin-root-per-consumer previously said the token 'is not in your shell's environment either, so referring to it in a command yields an empty string rather than an error'. FALSIFIED -- reproduced in two agent sessions on the SAME machine (not independent replication: per env.CLAUDE_ENV_FILE the winning export is deterministic from the shared install set, so any session on this install sees the same pair), the shell env carried the token set to an UNRELATED plugin's directory (hooks can write session env; each hook gets its own plugin's location; the loader concatenates them so the last write wins reproducibly). The published wording gave actively wrong debugging advice, since checking for a blank value returns clean. Corrected, and a new fact plugins.ship-a-launcher added for the bin/-on-PATH affordance measured in three lanes (Ch48/L173). Both verified against CLI 2.1.250 and live sessions NEWER than the cli stamp below, which is deliberately NOT bumped -- targeted subsystem passes, not a baseline refresh.",
-    "desktop_note": "Re-stamped for the Desktop 1.46388.4 -> 2.7032.0 / agent 2.1.260 -> 2.1.280 jump (Ch52). A full .vite/build diff across 1.46388.4 -> 2.2553.1 -> 2.7032.0 found one change that falsifies published guidance: the host-loop agent's working directory left the outputs folder (now /var/empty or <session>/host-cwd, read- and write-denied), measured 9/9 runs under 2.7032.0 vs 4/4 on outputs under 2.2553.13 with the same agent build. paths.relative-filenames, paths.scratch-is-not-delivered, paths.session-paths-denied and subagents.working-directory were rewritten to 'use the absolute outputs path' (correct before and after), the top5 and router entries with them; plugins.server-named-memory was added for the cloud memory relay that replaces any MCP server named memory (L194). The remaining facts were NOT each re-derived; the diff found their mechanisms unchanged (tools/allowedTools, the four PreToolUse matchers, the sub-agent prompt templates apart from the path sentence, the spawn-env gate set). Every desktop_fcache gate in registry.json was re-observed against the 2026-09-23 capture (57 pinned; 56 unchanged, 2529235968 flipped force-ON). Previous note: Re-stamped for the Desktop 1.30096.1 -> 1.46388.4 / agent 2.1.227 -> 2.1.260 jump (Ch50). The 60 facts here were NOT each re-derived against the new artifacts; what was re-checked this pass is the set of runtime markers and mechanisms they rest on, all still present at asar 1.46388.4 (.vite/build scope) and in-VM ELF 2.1.260: CLAUDE_CODE_IS_COWORK (4/11), CLAUDECODE (4/18), CLAUDE_CODE_ENTRYPOINT (13/93), CLAUDE_CODE_COWORK_FRAME_ARTIFACTS (4/7), disableSkillShellExecution (3/6), present_files (6/4), coworkEgressAllowedHosts (17/14), fileDeleteApprovedMounts (10 asar-side), mcp__workspace__bash (2/2), CLAUDE_COWORK_MEMORY_GUIDELINES (5/8). Every desktop_fcache gate in registry.json WAS re-observed against the 2026-09-05 capture (54 pinned; 49 unchanged, 5 moved -- see the CHANGELOG). One of the five is directly relevant to change.served-not-shipped: gate 124685897, the sub-agent section-prompt server override, went off -> ON between captures while its source stayed \"defaultValue\", i.e. its server-side default changed with no client release and no payload behind it -- the live example that fact describes. delivery.two-lanes and delivery.remote-filesystem-discarded were positively re-derived this pass (L180). Facts whose evidence is a transcript corpus or a live probe rather than a binary marker were not re-measured."
+    "desktop_note": "2026-09-25: fcache re-read, content unchanged (same ff36facd2d636210, 378 features, newer embedded timestamp), so every pinned gate observation stands; observed_at moved to the re-read date for the L210 lane facts, which were measured live that day on Desktop 2.9939.2. 2026-09-24 restamp: fcache re-captured (ff36facd2d636210, 378 features; two pinned gates moved: 4116586025 now served off, 4202409342 on via defaultValue instead of force). Desktop code baseline stays 2.7032.0; Ch56 facts were checked against the live 2.9939.2 install. Previous note: Re-stamped for the Desktop 1.46388.4 -> 2.7032.0 / agent 2.1.260 -> 2.1.280 jump (Ch52). A full .vite/build diff across 1.46388.4 -> 2.2553.1 -> 2.7032.0 found one change that falsifies published guidance: the host-loop agent's working directory left the outputs folder (now /var/empty or <session>/host-cwd, read- and write-denied), measured 9/9 runs under 2.7032.0 vs 4/4 on outputs under 2.2553.13 with the same agent build. paths.relative-filenames, paths.scratch-is-not-delivered, paths.session-paths-denied and subagents.working-directory were rewritten to 'use the absolute outputs path' (correct before and after), the top5 and router entries with them; plugins.server-named-memory was added for the cloud memory relay that replaces any MCP server named memory (L194). The remaining facts were NOT each re-derived; the diff found their mechanisms unchanged (tools/allowedTools, the four PreToolUse matchers, the sub-agent prompt templates apart from the path sentence, the spawn-env gate set). Every desktop_fcache gate in registry.json was re-observed against the 2026-09-23 capture (57 pinned; 56 unchanged, 2529235968 flipped force-ON). Previous note: Re-stamped for the Desktop 1.30096.1 -> 1.46388.4 / agent 2.1.227 -> 2.1.260 jump (Ch50). The 60 facts here were NOT each re-derived against the new artifacts; what was re-checked this pass is the set of runtime markers and mechanisms they rest on, all still present at asar 1.46388.4 (.vite/build scope) and in-VM ELF 2.1.260: CLAUDE_CODE_IS_COWORK (4/11), CLAUDECODE (4/18), CLAUDE_CODE_ENTRYPOINT (13/93), CLAUDE_CODE_COWORK_FRAME_ARTIFACTS (4/7), disableSkillShellExecution (3/6), present_files (6/4), coworkEgressAllowedHosts (17/14), fileDeleteApprovedMounts (10 asar-side), mcp__workspace__bash (2/2), CLAUDE_COWORK_MEMORY_GUIDELINES (5/8). Every desktop_fcache gate in registry.json WAS re-observed against the 2026-09-05 capture (54 pinned; 49 unchanged, 5 moved -- see the CHANGELOG). One of the five is directly relevant to change.served-not-shipped: gate 124685897, the sub-agent section-prompt server override, went off -> ON between captures while its source stayed \"defaultValue\", i.e. its server-side default changed with no client release and no payload behind it -- the live example that fact describes. delivery.two-lanes and delivery.remote-filesystem-discarded were positively re-derived this pass (L180). Facts whose evidence is a transcript corpus or a live probe rather than a binary marker were not re-measured."
   },
   "pages": [
     {
@@ -935,28 +935,56 @@
       "id": "plugins.hooks-do-fire",
       "page": "plugins-and-plugin-root",
       "rule": "Expect plugin hooks to fire in Cowork.",
-      "detail": "Hooks shipped by a plugin do run. If you have heard otherwise, the determinant is installation namespace rather than hook support: a plugin installed where Cowork sessions do not look will appear to have no hooks at all.",
+      "detail": "Hooks shipped by a plugin do run in Cowork, in both the local and the cloud lane: in a live check in the cloud, prompt, before-tool, after-tool and stop hooks all fired. Two things make it look otherwise. A plugin installed where Cowork sessions do not look appears to have no hooks at all. And a hook that succeeds without printing anything leaves no trace in the session's record, so check a side effect it produces rather than the record.",
       "tier": "measured",
       "verified": {
-        "date": "2026-09-05",
-        "desktop_asar": "1.46388.4",
+        "date": "2026-09-24",
+        "desktop_asar": "2.7032.0",
         "cli": "2.1.231",
-        "basis": "history",
-        "from_commit": "8787fe6"
+        "agent": "2.1.280",
+        "basis": "live"
       },
       "severity": "friction",
       "durability": "durable",
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          89
+          89,
+          209
         ],
         "state_page": "plugins-skills-hooks"
       },
       "caveats": [
-        "In the remote sandbox one instrumented run saw a plugin's session-start hook fire only when the session resumed, not on the first turn, while the same plugin's stop hook fired normally. Do not depend on session-start work having happened before the first turn there.",
+        "In a new cloud session the session-start hook did not fire (checked live); in an earlier instrumented run it fired only when the session resumed. Do not depend on session-start work having happened before the first turn there.",
+        "On the local lane the before-tool hook and session-start hook have been seen firing live; prompt, after-tool and stop hooks are expected from the shipped code but not yet observed on the current build.",
         "A stop hook that blocks shows the user nothing in the app: no notice, no error — the first reply stays visible and the corrected one appears beneath it. If your hook blocks, make the corrected reply self-explanatory."
       ]
+    },
+    {
+      "id": "plugins.match-both-shell-names",
+      "page": "plugins-and-plugin-root",
+      "rule": "Match the shell under both of its names in a before-tool hook.",
+      "detail": "The shell tool is called one thing in the command-line tool and in cloud Cowork, and another in local Cowork. The agent translates between the two when matching hooks only if the session carries a mapping between the names, which current desktop builds pass but older ones and other launchers may not. Listing both names in the matcher works either way, on both lanes.",
+      "tier": "binary",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          209
+        ],
+        "state_page": "plugins-skills-hooks"
+      },
+      "caveats": [
+        "In cloud Cowork the command-line name matched the shell in a live check; the local translation is read from the shipped agent."
+      ],
+      "verified": {
+        "date": "2026-09-24",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "code"
+      }
     },
     {
       "id": "plugins.install-through-the-app",
@@ -2192,6 +2220,58 @@
       "caveats": [
         "The reasoning is general; the case behind it is one run of one skill on one surface, relayed from another project."
       ]
+    },
+    {
+      "id": "change.scheduled-tasks-move-to-the-cloud",
+      "page": "what-can-change-under-you",
+      "rule": "Do not assume a scheduled Cowork task keeps running on the user's computer.",
+      "detail": "Claude Desktop can move a scheduled task that has run a couple of times from the user's computer to the cloud on its own, switched on from the server side. After the move the task runs in the cloud and reaches the computer as a connected device, so its files, paths, shell and hooks all behave the cloud way. Attaching the task to a Space holds it back, as do some kinds of schedule and attachments; a task moved back by hand is not moved again.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": true,
+      "sources": {
+        "lessons": [
+          208
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": [
+        "Observed once, on one machine, for an hourly task, a day before an unrelated app update."
+      ],
+      "verified": {
+        "date": "2026-09-24",
+        "desktop_asar": "2.7032.0",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "live"
+      }
+    },
+    {
+      "id": "change.new-tasks-may-run-in-the-cloud",
+      "page": "what-can-change-under-you",
+      "rule": "Do not assume a new Cowork task runs on the user's computer because their settings say so; check where it ran.",
+      "detail": "The Cowork setting \"Only on this computer\" is meant to keep new tasks local, and the app's own code says a saved choice always wins. In a live test it did not: with the setting saved and the app restarted, new tasks still ran in the cloud, in Auto mode too. The one route that did give local sessions was a scheduled task with its own \"Only on this computer\" switch turned on. Inside a task, the working directory tells you: a local session starts under /sessions/, a cloud one in /home/claude.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": true,
+      "sources": {
+        "lessons": [
+          210
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": [
+        "Measured on one account and one machine, on one day. Why the saved setting was not honoured was not found: the interface code read from the app and from three builds it downloaded all route the same way and predict local."
+      ],
+      "verified": {
+        "date": "2026-09-25",
+        "desktop_asar": "2.9939.2",
+        "cli": "2.1.231",
+        "agent": "2.1.280",
+        "basis": "live"
+      }
     }
   ],
   "router": [

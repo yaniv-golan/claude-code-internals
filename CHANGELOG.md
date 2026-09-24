@@ -1,5 +1,36 @@
 # Changelog
 
+## v2.55.0 — 2026-09-25 (this fork) — scheduled tasks move to the cloud; plugin hooks by lane; where a new task runs
+
+Adds Chapter 56 (L208–L210); counts move to 210/56.
+
+- **L208 — Desktop moves local scheduled tasks to the cloud on its own.** `[RemoteMigrationSweep]` has been in Desktop
+  since 1.44121.1 and is controlled by gate `2974609625`, which is force-on. After at least 2 runs over at least half
+  a day, it converts a local scheduled task into a cloud routine, unless the task is attached to a Space. On this
+  machine it moved an hourly task on 2026-09-24 ("Remote migration completed; local copy disabled"), a day before an
+  unrelated app update. After that, no local Cowork sessions started. Desktop only decides which lanes are allowed.
+  The task-header laptop icon is a device picker for a cloud session. New fact
+  `change.scheduled-tasks-move-to-the-cloud`.
+- **L209 — plugin hooks, event by event.** A probe plugin run live in cloud Cowork showed UserPromptSubmit,
+  PreToolUse, PostToolUse and Stop firing; SessionStart did not fire in a new session. On the local lane all events
+  are registered, and SessionStart and PreToolUse have been seen firing. A `Bash` matcher also matches local Cowork's
+  `mcp__workspace__bash`, but only through the `Bash`→`mcp__workspace__bash` alias the session carries (the expansion is
+  in every agent from 2.1.197; Desktop passes the alias from about 1.20186.1). A session without the alias misses it,
+  which fits a GitHub report of a `Bash` hook that never ran. Two traps: a hook that succeeds silently leaves no transcript
+  record, and a blocking UserPromptSubmit hook whose script is missing is silently downgraded. **Corrects**
+  `plugins.hooks-do-fire`, which rested on SessionStart alone; it now states what was checked on each lane. New fact
+  `plugins.match-both-shell-names`.
+- **L210 — where a new Cowork task runs.** The claude.ai interface picks the lane. Its router returns
+  `local_opted_out` whenever the account setting `dramatic_shrimp_enabled` is false, which is what Settings → General →
+  Tasks "Only on this computer" and the task-header Cloud popover write (switching to local saves only through a
+  feedback dialog). Live on 2026-09-25 (Desktop 2.9939.2), a saved opt-out plus an app restart still gave cloud sessions,
+  in Auto mode too; a scheduled task with its own "Only on this computer" switch ran locally. The bundled interface and
+  three builds the Desktop fetched from `assets-proxy.anthropic.com` route identically, so the cause lies outside that
+  code. New fact `change.new-tasks-may-run-in-the-cloud`. **Corrects** the L208 draft line that called "Only on this
+  computer" only a routine label: it names three controls.
+- fcache re-captured 2026-09-24 (`ff36facd2d636210`, 378 features); re-read 2026-09-25 with identical content. `4116586025` is now served (off), and
+  `4202409342` is on via its default rather than forced. New gates `2974609625` and `3634338308` are in the registry.
+
 ## v2.54.1 — 2026-09-23 (this fork) — two small additions
 
 No new lessons; counts stay 207/55.

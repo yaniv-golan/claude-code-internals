@@ -3,8 +3,8 @@ domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207]
-updated: 2026-09-23
+sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207, 209]
+updated: 2026-09-25
 ---
 
 # Plugins, skills & hooks (current)
@@ -141,6 +141,19 @@ registration is refused. Account flags `tengu_violin_wood` (master) + `_amati`
 Desktop never sets the former, so local Cowork records show only `SessionStart`
 hooks (20,106/20,106 in one machine's audit logs; that others ran unseen is
 code-derived).
+
+## Plugin hooks by lane and event (L209)
+
+Cloud Cowork (live, probe plugin, Desktop 2.9939.2): UserPromptSubmit, PreToolUse,
+PostToolUse and Stop fire; **SessionStart did not fire in a new session**; the shell
+is `Bash` there. Local Cowork: agent 2.1.280 registers plugin hooks for all 33 events
+and nothing disables them; SessionStart and PreToolUse (with deny honoured) seen live,
+the rest code-only on the current build. Matchers: letters/digits/`_`/`|` form an exact
+list, expanded through the session's tool aliases (every agent checked, 2.1.197 on) —
+so with Desktop's `Bash`→`mcp__workspace__bash` alias, `Bash` matches the local Cowork
+shell; without the alias it does not. `tool_name` is the resolved name. Traps: a hook that exits 0 with no output leaves **no transcript
+record**; a block from a hook whose script is missing (plugin UserPromptSubmit; any Stop,
+SubagentStop, TaskCompleted, TeammateIdle) is downgraded to a non-blocking error.
 
 ## Plugin agent frontmatter restrictions
 
