@@ -1,5 +1,34 @@
 # Changelog
 
+## v2.55.3 — 2026-09-25 (this fork) — the site explains its own labels
+
+Site only. No lesson, fact or baseline changes; `references/site-links.json` is byte-identical.
+
+- **Popovers on every label chip.** Confidence (`Measured`, `From binary`, `Inference`), severity (`SILENT`,
+  `LOUD`, `FRICTION`), sandbox and "can change without a version bump" chips each show a one-sentence meaning.
+  The popover appears on hover with a mouse and on keyboard focus for the chips that are links, and Esc
+  dismisses it without moving focus. On touch, tapping a confidence chip opens the legend. The popover sits
+  beside the chip, not inside the link, so it doesn't change the link's name. It's anchored to the full-width
+  row, so it can't widen the page on a phone (checked at 375 px). Severity and sandbox chips stay non-focusable,
+  so a long page doesn't gain dozens of tab stops that all lead to the same legend. Native `title` tooltips are
+  removed.
+- **One source for the wording.** `LABEL_HELP` in `build.js` feeds the popovers, the legend on `/cowork/`, a new
+  legend in `index.md`, and `facts.json`'s `tiers`, which now publishes the same sentences. The measured tier is
+  now "observed live", not "seen working" (many measured rules are observed failures). Sandbox wording follows
+  the field's meaning: where a rule applies, with no label meaning "never scoped", not "both".
+- **Every rule shows its provenance**, visibly and identically in HTML and Markdown, from its own `verified`
+  stamp (v2.52.2), worded by basis: *Checked live …*, *Re-read from the shipped code …*, or *As of the {date}
+  capture · not individually re-checked since this rule last changed*. A history stamp never says "checked".
+  Builds are shown exactly as recorded on the fact. On the contract page, the date gets the same text as a
+  popover.
+- **Legend anchors** `#severity`, `#lanes` and `#dates` join `#tiers`, with scroll margins below the sticky
+  header. The dead `tierLegend()` is removed.
+- **Process.** The plan (`docs/internal/plan-site-label-popovers-2026-09-25.md`) was adversarially reviewed
+  before any code. The review found 2 blockers: the page script returned early off the contract page, and a
+  date labelled "Checked" was false for 58 history-stamped rules. It also found 8 majors, all fixed. Nine new
+  build tests cover it, two of them confirmed by negative controls. It was checked in a real browser: hover,
+  focus plus Esc, the pointer bridge onto a popover, no overflow at 375 px, and the contract date popover.
+
 ## v2.55.2 — 2026-09-25 (this fork) — a missing hook script can block
 
 No new lessons; counts stay 210/56.

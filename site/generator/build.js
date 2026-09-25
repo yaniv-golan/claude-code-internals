@@ -63,11 +63,39 @@ const LANE_LABEL = {
   both: 'Both sandboxes',
 };
 
-const TIER_TITLE = {
-  measured: 'Observed live, with controls where noted',
-  binary: 'Read from a shipped artifact; behaviour not exercised',
-  inference: 'Stated inference — see caveats',
+/**
+ * The ONE source for what each label means to a reader. Popovers, the legend on
+ * the entry page, index.md and facts.json's `tiers` all render from here, so the
+ * wording cannot drift between them. Two constraints, asserted by the tests: no
+ * sentence may contain a lane label (LANE_LABEL) or a severity name (SEV_MEANS),
+ * because tests count those strings to prove HTML/Markdown parity.
+ */
+const LABEL_HELP = {
+  tier: {
+    measured: 'Observed live in a real session, with a control where noted.',
+    binary: 'Read from a shipped artifact (the app, the agent or the sandbox image). The behaviour itself was not exercised.',
+    inference: 'Stated as an inference from the evidence, not observed directly. Read the caveats.',
+  },
+  sev: {
+    silent: 'Nothing errors. Your skill carries on with wrong results, and you only find out by checking.',
+    loud: "You get an error straight away. Annoying, but you'll notice.",
+    friction: 'It works, but costs the user an extra prompt or step.',
+  },
+  lane: {
+    local: "Applies to the sandbox on the user's own computer. Not established for the cloud one.",
+    remote: "Applies to the cloud sandbox. Not established for the one on the user's computer.",
+    both: 'Established for both sandboxes.',
+    none: 'No sandbox label means the rule was never scoped to one, not that it holds in both.',
+  },
+  volatile: "Served from Anthropic's side, so it can change without an app update.",
+  basis: {
+    live: 'Checked live: exercised in a real session on that date, against the builds shown.',
+    code: 'Re-read from the shipped code on that date, against the builds shown. The behaviour itself was not re-run.',
+    history: 'Not individually re-checked since the rule last changed. The date and build are the capture that was current then, so the rule may have been checked earlier, never later.',
+  },
 };
+// Published in facts.json as `tiers`; derived so it is the same wording.
+const TIER_TITLE = LABEL_HELP.tier;
 
 /**
  * The freshness badge. The date is SERVER-RENDERED: an empty span filled by
@@ -79,22 +107,6 @@ function freshnessBadge(verified) {
   // Dot + date. AGE_SCRIPT appends "· N days ago" and recolours the dot; without
   // scripting the date still stands on its own.
   return `<span class="dot" data-dot></span><span class="fresh" data-verified="${esc(verified)}">Verified ${esc(verified)}</span>`;
-}
-
-/**
- * Tier legend. Rendered `open`: a collapsed <details> is not auto-expanded by
- * most browsers when targeted via #tiers, so a badge link would land a reader
- * on a closed summary and require a second tap for a load-bearing signal.
- */
-function tierLegend() {
-  return `<details class="legend" id="tiers" open>
-<summary>What the confidence labels mean</summary>
-<dl>
-<dt>Measured</dt><dd>Observed live in a real session, with a control where noted.</dd>
-<dt>From binary</dt><dd>Read out of a shipped artifact; the behaviour was not exercised.</dd>
-<dt>Inference</dt><dd>Stated as inference in the source material — read the caveats.</dd>
-</dl>
-</details>`;
 }
 
 // Cloudflare Web Analytics. Installed manually, not auto-injected: the domain
@@ -135,6 +147,23 @@ const AGE_SCRIPT = `<script>
 // Theme toggle and the contract page's filters, ticks and copy. Everything here
 // is an enhancement: the pages are complete and readable with scripting off,
 // and every rule is present in the DOM before any filter runs.
+// Label popovers: Esc dismisses the open one without moving focus (WCAG 1.4.13),
+// and it comes back once the pointer or focus leaves. Its own IIFE on every page:
+// UI_SCRIPT returns early anywhere but the contract page.
+const TIP_SCRIPT = `<script>(function(){
+  function off(e){
+    var w = e.target && e.target.closest ? e.target.closest('.tipw') : null;
+    if (w && !w.contains(e.relatedTarget)) w.classList.remove('tip-off');
+  }
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Escape') return;
+    var open = document.querySelectorAll('.tipw:hover, .tipw:focus-within');
+    for (var i = 0; i < open.length; i++) open[i].classList.add('tip-off');
+  });
+  document.addEventListener('mouseout', off);
+  document.addEventListener('focusout', off);
+})();</script>`;
+
 const UI_SCRIPT = `<script>
 (function () {
   var root = document.documentElement;
@@ -311,6 +340,7 @@ function renderFactMd(f) {
   out.push(`*${TIER_LABEL[f.tier]}*${sev}${lane}${f.volatile_dependency ? ' · *Depends on server-side configuration — can change without a version bump*' : ''}`, '');
   out.push(f.detail, '');
   for (const c of f.caveats || []) out.push(`> ${CAVEAT_LABEL} ${c}`, '');
+  out.push(`*${provText(f)}*`, '');
   return out;
 }
 
@@ -339,6 +369,17 @@ function renderPageMd(doc, page, registry) {
       out.push(`- **${p.title}** — ${p.summary.split('. ')[0]}.`);
     }
     out.push('');
+    out.push('## How to read the labels', '', '**Confidence — how we know**', '');
+    for (const k of ['measured', 'binary', 'inference']) out.push(`- **${TIER_LABEL[k]}** — ${LABEL_HELP.tier[k]}`);
+    out.push('', '**Severity — what it costs you** (editorial, not measured)', '');
+    for (const k of ['silent', 'loud', 'friction']) out.push(`- **${SEV_LABEL[k]}** — ${LABEL_HELP.sev[k]}`);
+    out.push('', '**Sandbox — where it applies**', '');
+    for (const k of ['local', 'remote', 'both']) out.push(`- **${LANE_LABEL[k]}** — ${LABEL_HELP.lane[k]}`);
+    out.push('', LABEL_HELP.lane.none, '', `**Can change without a version bump:** ${LABEL_HELP.volatile}`, '',
+      '**Dates — when each rule was last checked**', '',
+      `- **Checked live** — ${LABEL_HELP.basis.live}`,
+      `- **Re-read from the shipped code** — ${LABEL_HELP.basis.code}`,
+      `- **As of the … capture** — ${LABEL_HELP.basis.history}`, '');
     out.push(...toolsMd(doc.tools || [], 'Where this fits in your workflow'));
   } else {
     for (const f of facts) out.push(...renderFactMd(f));
@@ -392,10 +433,29 @@ const SEV_MEANS = {
 };
 
 /** Severity is editorial: what the mistake costs you, not how the rule was checked. */
-function sevChip(f) {
+/** A popover: a sibling of its chip, never a child, so it stays out of the link's name. */
+function tip(id, text) {
+  return `<span class="tip" role="tooltip" id="${id}"><span>${esc(text)}</span></span>`;
+}
+/** Per-page unique popover id. `scope` separates the contract page's rows from topic pages. */
+function tipId(f, kind, scope) {
+  return `tip-${scope ? scope + '-' : ''}${factAnchor(f)}-${kind}`;
+}
+
+function sevChip(f, scope) {
   if (!f.severity) return '';
-  return `<span class="chip sev sev-${f.severity}" title="${esc(SEV_MEANS[f.severity])}">` +
-         `<i></i>${SEV_LABEL[f.severity]}</span>`;
+  // Hover only: a span, not a tab stop. Its meaning is in the legend one tab away.
+  return `<span class="tipw"><span class="chip sev sev-${f.severity}">` +
+         `<i></i>${SEV_LABEL[f.severity]}</span>${tip(tipId(f, 'sev', scope), LABEL_HELP.sev[f.severity])}</span>`;
+}
+
+/** What the fact's own `verified` says, worded by basis. Builds exactly as recorded on the fact. */
+function provText(f) {
+  const v = f.verified;
+  const builds = `Desktop ${v.desktop_asar}${v.agent ? ` · agent ${v.agent}` : ''}`;
+  if (v.basis === 'live') return `Checked live ${v.date} · ${builds}`;
+  if (v.basis === 'code') return `Re-read from the shipped code ${v.date} · ${builds}`;
+  return `As of the ${v.date} capture · Desktop ${v.desktop_asar} · not individually re-checked since this rule last changed`;
 }
 
 /** First sentence of a rule — short enough for a table of contents, and never invented. */
@@ -440,21 +500,42 @@ function homeBody(doc, up) {
   });
   b.push('</ol></div>');
 
+  // The legend: every label's meaning, rendered from LABEL_HELP -- the same
+  // sentences the chips' popovers show. Each group is an anchor a chip can target.
   b.push('<div class="legend" id="tiers">',
     '<h3>How to read the labels</h3>',
     '<div class="t">Confidence — how we know</div>',
-    '<div class="badges" style="padding:0 0 6px">',
-    '<span class="chip">MEASURED</span><span class="chip">FROM BINARY</span><span class="chip">INFERENCE</span>',
-    '</div>',
+    '<dl class="lkey">');
+  for (const k of ['measured', 'binary', 'inference']) {
+    b.push(`<dt><span class="chip">${TIER_LABEL[k].toUpperCase()}</span></dt><dd>${esc(LABEL_HELP.tier[k])}</dd>`);
+  }
+  b.push('</dl>',
     '<div class="d">Neutral on purpose. Provenance is not severity.</div>',
     '<hr>',
-    '<div class="t">Severity — what it costs you</div>',
-    '<div class="sevkey">');
+    '<div class="t" id="severity">Severity — what it costs you</div>',
+    '<dl class="lkey">');
   for (const k of ['silent', 'loud', 'friction']) {
-    b.push(`<span><i style="background:var(--sev${k === 'silent' ? 1 : k === 'loud' ? 2 : 3})"></i>${SEV_MEANS[k]}</span>`);
+    b.push(`<dt><span class="chip sev sev-${k}"><i></i>${SEV_LABEL[k]}</span></dt><dd>${esc(LABEL_HELP.sev[k])}</dd>`);
   }
-  b.push('</div>',
+  b.push('</dl>',
     '<div class="d" style="margin-top:8px">Editorial, not measured — a judgement about consequence.</div>',
+    '<hr>',
+    '<div class="t" id="lanes">Sandbox — where it applies</div>',
+    '<dl class="lkey">');
+  for (const k of ['local', 'remote', 'both']) {
+    b.push(`<dt><span class="tier tier-lane">${LANE_LABEL[k]}</span></dt><dd>${esc(LABEL_HELP.lane[k])}</dd>`);
+  }
+  b.push('</dl>',
+    `<div class="d">${esc(LABEL_HELP.lane.none)}</div>`,
+    `<div class="d" style="margin-top:6px"><strong>Can change without a version bump:</strong> ${esc(LABEL_HELP.volatile)}</div>`,
+    '<hr>',
+    '<div class="t" id="dates">Dates — when each rule was last checked</div>',
+    '<div class="d">Each rule ends with a line saying how and when it was last checked, and against which builds.</div>',
+    '<dl class="lkey">',
+    `<dt>Checked live</dt><dd>${esc(LABEL_HELP.basis.live)}</dd>`,
+    `<dt>Re-read from the shipped code</dt><dd>${esc(LABEL_HELP.basis.code)}</dd>`,
+    `<dt>As of the … capture</dt><dd>${esc(LABEL_HELP.basis.history)}</dd>`,
+    '</dl>',
     '</div></section>');
 
   b.push('<section class="block">',
@@ -495,12 +576,13 @@ function topicBody(doc, page, up) {
     b.push('<section class="fact">',
       '<div class="facthead">',
       `<h2 id="${factAnchor(f)}">${inlineHtml(f.rule)}</h2>`,
-      `<div class="badges">${sevChip(f)}${badge(f, up)}${laneBadge(f)}${f.volatile_dependency ? volatileBadge(up) : ''}</div>`,
+      `<div class="badges">${sevChip(f)}${badge(f, up)}${laneBadge(f)}${f.volatile_dependency ? volatileBadge(f, up) : ''}</div>`,
       '</div>',
       `<p>${inlineHtml(f.detail)}</p>`);
     for (const c of f.caveats || []) {
       b.push(`<div class="caveat"><strong>${CAVEAT_LABEL}</strong> ${inlineHtml(c)}</div>`);
     }
+    b.push(`<p class="prov">${esc(provText(f))}</p>`);
     b.push('</section>');
   }
   b.push('</div>');
@@ -556,7 +638,9 @@ function contractBody(doc, page, up) {
         '<input type="checkbox">',
         '<div>',
         `<div class="t"><a class="rule-link" href="${up}${p.slug}/#${factAnchor(f)}">${inlineHtml(f.rule)}</a></div>`,
-        `<div class="m">${sevChip(f)}<span class="chip">${TIER_LABEL[f.tier]}</span><span class="d">${esc(factDate(doc, f))}</span></div>`,
+        `<div class="m">${sevChip(f, 'c')}` +
+          `<span class="tipw"><span class="chip">${TIER_LABEL[f.tier]}</span>${tip(tipId(f, 'tier', 'c'), LABEL_HELP.tier[f.tier])}</span>` +
+          `<span class="tipw dw"><span class="d">${esc(factDate(doc, f))}</span>${tip(tipId(f, 'date', 'c'), provText(f))}</span></div>`,
         '</div></label>');
     }
     b.push('</div></section>');
@@ -595,7 +679,9 @@ function badge(f, up) {
   // repeated below every page. A title= tooltip is invisible on touch devices, and
   // the tier is how a reader decides how much weight to give the claim.
   const href = up === undefined ? '#tiers' : `${up}#tiers`;
-  return `<a class="chip tier-${f.tier}" href="${href}" title="${esc(TIER_TITLE[f.tier])}">${TIER_LABEL[f.tier]}</a>`;
+  const id = tipId(f, 'tier');
+  return `<span class="tipw"><a class="chip tier-${f.tier}" href="${href}" aria-describedby="${id}">` +
+         `${TIER_LABEL[f.tier]}</a>${tip(id, LABEL_HELP.tier[f.tier])}</span>`;
 }
 /**
  * Stable per-fact anchor. Derived from the fact id, NOT the rule text: rule
@@ -697,10 +783,14 @@ function laneBadge(f) {
   // Rendered only when `lane` is set. An unscoped fact gets no badge at all --
   // absence is an unknown, and a "Both sandboxes" default would assert more than
   // the source material does. Mirrors the markdown renderer; keep the two together.
-  return f.lane ? ` <span class="tier tier-lane">${LANE_LABEL[f.lane]}</span>` : '';
+  if (!f.lane) return '';
+  return ` <span class="tipw"><span class="tier tier-lane">${LANE_LABEL[f.lane]}</span>` +
+         `${tip(tipId(f, 'lane'), LABEL_HELP.lane[f.lane])}</span>`;
 }
-function volatileBadge(up) {
-  return ` <a class="tier tier-volatile" href="${up}what-can-change-under-you/">Can change without a version bump</a>`;
+function volatileBadge(f, up) {
+  const id = tipId(f, 'vol');
+  return ` <span class="tipw"><a class="tier tier-volatile" href="${up}what-can-change-under-you/" aria-describedby="${id}">` +
+         `Can change without a version bump</a>${tip(id, LABEL_HELP.volatile)}</span>`;
 }
 
 /** Convert the small subset of markdown current-state emits (tables, headings, lists). */
@@ -899,7 +989,7 @@ ol.top5 .w{margin-top:3px;font-size:14px;line-height:1.5;color:var(--fg2)}
 /* Facts */
 .facts{display:flex;flex-direction:column;gap:40px}
 .fact h2{margin:0;flex:1 1 340px;font-size:22px;line-height:1.28;font-weight:700;letter-spacing:-.018em;scroll-margin-top:80px}
-.facthead{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.facthead{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;position:relative}
 .badges{display:flex;gap:6px;align-items:center;padding-top:5px;flex-wrap:wrap}
 .fact p{margin:12px 0 0;font-size:16px;line-height:1.62;color:var(--fg2)}
 .chip{padding:2px 8px;border:1px solid var(--line);border-radius:4px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--fg2);text-decoration:none;white-space:nowrap}
@@ -910,6 +1000,26 @@ ol.top5 .w{margin-top:3px;font-size:14px;line-height:1.5;color:var(--fg2)}
 .sev-loud{border-color:var(--sev2b);color:var(--sev2)}.sev-loud i{background:var(--sev2)}
 .sev-friction{border-color:var(--sev3b);color:var(--sev3)}.sev-friction i{background:var(--sev3)}
 .chip.lane{color:var(--fg3);border-style:dashed}
+.fact .prov{margin:14px 0 0;font-family:var(--mono);font-size:11.5px;line-height:1.5;color:var(--fg3)}
+/* Label popovers. Anchored to the full-width row (.facthead / .crule .m), right-
+   aligned and capped at that row's width, so they can never widen the page. Shown
+   on real-pointer hover and on keyboard focus; hidden with a short delay so the
+   pointer can travel onto the popover (WCAG 1.4.13 hoverable). Below the sticky
+   bars (z 4-5). */
+.tipw{display:inline-flex}
+.tip{position:absolute;top:100%;right:0;z-index:3;width:max-content;max-width:min(24rem,100%);padding-top:6px;
+     visibility:hidden;transition:visibility 0s linear .3s}
+.tip>span{display:block;padding:8px 11px;border:1px solid var(--line);border-radius:6px;background:var(--panel);
+     color:var(--fg);font:400 12.5px/1.45 system-ui,-apple-system,sans-serif;letter-spacing:normal;text-transform:none;
+     white-space:normal;text-align:left;box-shadow:0 6px 18px rgb(0 0 0 / .14)}
+@media (hover:hover) and (pointer:fine){.tipw:hover .tip{visibility:visible;transition-delay:0s}}
+.tipw:focus-within .tip{visibility:visible;transition-delay:0s}
+.tipw.tip-off .tip{visibility:hidden;transition:none}
+@media print{.tip{display:none}}
+.lkey{display:grid;grid-template-columns:max-content 1fr;gap:6px 10px;margin:4px 0 8px;align-items:baseline}
+.lkey dt{margin:0;font-size:12.5px;color:var(--fg2)}
+.lkey dd{margin:0;font-size:13px;line-height:1.5;color:var(--fg3)}
+#tiers,#severity,#lanes,#dates{scroll-margin-top:calc(var(--barh) + 12px)}
 .caveat{margin-top:14px;padding-left:14px;border-left:2px solid var(--line);font-size:14.5px;line-height:1.55;color:var(--fg3)}
 .caveat strong{font-weight:650;color:var(--fg2)}
 .notest{margin-top:48px;padding:22px;border:1px dashed var(--line);border-radius:10px}
@@ -953,9 +1063,10 @@ nav.toc .all{margin-top:6px;padding-top:12px;border-top:1px solid var(--line)}
 .crule{display:grid;grid-template-columns:18px 1fr;gap:10px;padding:9px 0;border-top:1px solid var(--line2);cursor:pointer}
 .crule input{margin:4px 0 0;width:14px;height:14px}
 .crule .t{font-size:14.5px;line-height:1.45;font-weight:550;color:var(--fg)}
-.crule .m{display:flex;align-items:center;gap:6px;margin-top:5px;flex-wrap:wrap}
+.crule .m{display:flex;align-items:center;gap:6px;margin-top:5px;flex-wrap:wrap;position:relative}
 .crule .m .chip{font-size:9.5px;padding:1px 6px;color:var(--fg3)}
-.crule .m .d{font-family:var(--mono);font-size:9.5px;color:var(--fg3);margin-left:auto}
+.crule .m .d{font-family:var(--mono);font-size:9.5px;color:var(--fg3)}
+.crule .m .dw{margin-left:auto}
 .crule.hide{display:none}
 /* Tables, code, footer */
 table{border-collapse:collapse;width:100%;font-size:14px;margin-top:14px}
@@ -1026,6 +1137,7 @@ version bump and no signal here · <a href="https://github.com/yaniv-golan/claud
 </div>
 </div>
 ${AGE_SCRIPT}
+${TIP_SCRIPT}
 ${UI_SCRIPT}
 </body>
 </html>
@@ -1469,5 +1581,6 @@ if (require.main === module) {
 
 module.exports = {
   build, SITE_URL, SECTION, factAnchor, buildSiteLinks, serializeSiteLinks,
+  LABEL_HELP, LANE_LABEL, SEV_MEANS, provText,
   SITE_LINKS_PATH, TOPIC_INDEX_PATH,
 };

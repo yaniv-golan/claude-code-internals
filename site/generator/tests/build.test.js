@@ -544,3 +544,126 @@ test('a 404 page exists and routes back into the site', () => {
   assert.ok(fs.existsSync(p), 'no 404.html');
   assert.match(fs.readFileSync(p, 'utf8'), new RegExp(`href="/${SECTION}/"`));
 });
+
+// --- label popovers and per-rule provenance (v2.55.3) ----------------------
+
+const { LABEL_HELP, LANE_LABEL, SEV_MEANS, provText } = require('../build.js');
+const AUTHOR_FACTS = path.join(__dirname, '../../../skill-package/skills/claude-code-internals/references/state/author-facts.json');
+const decode = s => s.replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+const helpStrings = () => [
+  ...Object.values(LABEL_HELP.tier), ...Object.values(LABEL_HELP.sev),
+  ...Object.values(LABEL_HELP.lane), LABEL_HELP.volatile, ...Object.values(LABEL_HELP.basis),
+];
+function topicPages(out) {
+  const facts = JSON.parse(fs.readFileSync(AUTHOR_FACTS, 'utf8'));
+  return facts.pages.filter(p => !['index', 'current-state', 'contract'].includes(p.slug)).map(p => ({
+    slug: p.slug,
+    facts: facts.facts.filter(f => f.page === p.slug),
+    html: fs.readFileSync(path.join(out, SECTION, p.slug, 'index.html'), 'utf8'),
+    md: fs.readFileSync(path.join(out, SECTION, `${p.slug}.md`), 'utf8'),
+  }));
+}
+
+test('every chip carries a popover, and every described-by target exists once', () => {
+  const { out } = buildOnce();
+  for (const pg of topicPages(out)) {
+    // Each chip kind is wrapped with its own popover.
+    const chips = pg.html.match(/<span class="tipw">(?:<a class="chip tier-|<span class="chip sev |<span class="tier tier-lane"|<a class="tier tier-volatile")[\s\S]*?<span class="tip" role="tooltip" id="[^"]+">/g) || [];
+    const expected = pg.facts.reduce((n, f) => n + 1 + (f.severity ? 1 : 0) + (f.lane ? 1 : 0) + (f.volatile_dependency ? 1 : 0), 0);
+    assert.strictEqual(chips.length, expected, `${pg.slug}: ${chips.length} wrapped chips, expected ${expected}`);
+    // Link chips name their popover, and that id is unique on the page.
+    for (const m of pg.html.matchAll(/aria-describedby="([^"]+)"/g)) {
+      const n = pg.html.split(`id="${m[1]}"`).length - 1;
+      assert.strictEqual(n, 1, `${pg.slug}: ${m[1]} defined ${n} times`);
+    }
+    const ids = [...pg.html.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]);
+    assert.strictEqual(new Set(ids).size, ids.length, `${pg.slug}: duplicate ids`);
+  }
+});
+
+test('popover text is LABEL_HELP verbatim, and facts.json tiers is the same wording', () => {
+  const { out } = buildOnce();
+  const allowed = new Set(helpStrings());
+  for (const pg of topicPages(out)) {
+    for (const m of pg.html.matchAll(/<span class="tip" role="tooltip" id="[^"]+"><span>([^<]*)<\/span><\/span>/g)) {
+      assert.ok(allowed.has(decode(m[1])), `${pg.slug}: popover text not from LABEL_HELP: ${m[1]}`);
+    }
+  }
+  const pub = JSON.parse(fs.readFileSync(path.join(out, SECTION, 'facts.json'), 'utf8'));
+  assert.deepStrictEqual(pub.tiers, LABEL_HELP.tier);
+});
+
+test('label wording never repeats a string the parity tests count', () => {
+  // The lane-parity and severity-count tests count these exact strings; a
+  // popover or legend sentence containing one would break them silently.
+  const banned = [...Object.values(LANE_LABEL), ...Object.values(SEV_MEANS)];
+  for (const s of helpStrings()) {
+    for (const b of banned) assert.ok(!s.includes(b), `"${s}" contains "${b}"`);
+  }
+});
+
+test('the legend defines every label, in HTML and in index.md', () => {
+  const { out } = buildOnce();
+  const html = decode(fs.readFileSync(path.join(out, SECTION, 'index.html'), 'utf8'));
+  const md = fs.readFileSync(path.join(out, SECTION, 'index.md'), 'utf8');
+  for (const id of ['tiers', 'severity', 'lanes', 'dates']) assert.match(html, new RegExp(`id="${id}"`), `legend lacks #${id}`);
+  for (const s of helpStrings()) {
+    assert.ok(html.includes(s), `HTML legend lacks: ${s}`);
+    assert.ok(md.includes(s), `index.md legend lacks: ${s}`);
+  }
+});
+
+test('no chip keeps a native title tooltip', () => {
+  const { out } = buildOnce();
+  for (const f of htmlFiles(out)) {
+    const html = fs.readFileSync(f, 'utf8');
+    assert.ok(!/class="(?:chip|tier)[^"]*"[^>]*\btitle=/.test(html), `${path.relative(out, f)}: chip with title=`);
+  }
+});
+
+test('hover is scoped to fine pointers; focus works everywhere', () => {
+  const { out } = buildOnce();
+  const html = fs.readFileSync(path.join(out, SECTION, 'deleting-files', 'index.html'), 'utf8');
+  const css = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
+  const hover = css.match(/\.tipw:hover/g) || [];
+  assert.strictEqual(hover.length, 1, 'exactly one hover rule');
+  assert.match(css, /@media \(hover:hover\) and \(pointer:fine\)\{\.tipw:hover \.tip\{/);
+  assert.match(css, /\.tipw:focus-within \.tip\{/);
+});
+
+test('every rule shows its provenance, identically in HTML and Markdown', () => {
+  // Counted by markup, not by text: "Checked live" also occurs in caveat prose.
+  const { out } = buildOnce();
+  for (const pg of topicPages(out)) {
+    const html = (pg.html.match(/<p class="prov">/g) || []).length;
+    assert.strictEqual(html, pg.facts.length, `${pg.slug}: ${html} provenance lines for ${pg.facts.length} rules`);
+    for (const f of pg.facts) {
+      assert.ok(pg.md.includes(`*${provText(f)}*`), `${pg.slug}.md lacks provenance for ${f.id}`);
+    }
+  }
+});
+
+test('provenance uses the fact\'s own recorded builds, worded by basis', () => {
+  const facts = JSON.parse(fs.readFileSync(AUTHOR_FACTS, 'utf8')).facts;
+  const live = facts.find(f => f.verified.basis === 'live');
+  const hist = facts.find(f => f.verified.basis === 'history');
+  assert.ok(live && hist, 'fixture needs a live and a history fact');
+  for (const f of [live, hist]) {
+    const s = provText(f);
+    assert.ok(s.includes(f.verified.date) && s.includes(f.verified.desktop_asar), `${f.id}: ${s}`);
+  }
+  assert.match(provText(live), /^Checked live /);
+  assert.match(provText(hist), /^As of the .* not individually re-checked/);
+  assert.ok(!/Checked/.test(provText(hist)), 'a history stamp must not claim a check');
+});
+
+test('the popover script runs on every Cowork page, not only the contract', () => {
+  const { out } = buildOnce();
+  for (const rel of ['index.html', 'contract/index.html', 'deleting-files/index.html']) {
+    const html = fs.readFileSync(path.join(out, SECTION, rel), 'utf8');
+    const i = html.indexOf("classList.add('tip-off')");
+    assert.ok(i > 0, `${rel}: no popover script`);
+    const script = html.slice(html.lastIndexOf('<script>', i), html.indexOf('</script>', i));
+    assert.ok(!script.includes('data-contract'), `${rel}: popover script depends on the contract page`);
+  }
+});
