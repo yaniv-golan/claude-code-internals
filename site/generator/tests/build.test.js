@@ -568,7 +568,7 @@ test('every chip carries a popover, and every described-by target exists once', 
   const { out } = buildOnce();
   for (const pg of topicPages(out)) {
     // Each chip kind is wrapped with its own popover.
-    const chips = pg.html.match(/<span class="tipw">(?:<a class="chip tier-|<span class="chip sev |<span class="tier tier-lane"|<a class="tier tier-volatile")[\s\S]*?<span class="tip" role="tooltip" id="[^"]+">/g) || [];
+    const chips = pg.html.match(/<span class="tipw">(?:<a class="chip tier-|<span class="chip sev |<span class="chip lane tier-lane"|<a class="chip volatile tier-volatile")[\s\S]*?<span class="tip" role="tooltip" id="[^"]+">/g) || [];
     const expected = pg.facts.reduce((n, f) => n + 1 + (f.severity ? 1 : 0) + (f.lane ? 1 : 0) + (f.volatile_dependency ? 1 : 0), 0);
     assert.strictEqual(chips.length, expected, `${pg.slug}: ${chips.length} wrapped chips, expected ${expected}`);
     // Link chips name their popover, and that id is unique on the page.
@@ -667,3 +667,21 @@ test('the popover script runs on every Cowork page, not only the contract', () =
     assert.ok(!script.includes('data-contract'), `${rel}: popover script depends on the contract page`);
   }
 });
+
+test('every label badge is a styled chip', () => {
+  // The lane and volatile badges were emitted as class="tier ..." from v2.37.0
+  // to v2.55.3, while the only stylesheet rule targeted .chip.lane -- so they
+  // rendered as bare text and a bare link, and every test still passed because
+  // the tests checked presence, never style. Assert the class the CSS keys on.
+  const { out } = buildOnce();
+  for (const f of htmlFiles(out)) {
+    const html = fs.readFileSync(f, 'utf8');
+    for (const m of html.matchAll(/<(?:a|span) class="([^"]*\btier-(?:lane|volatile)\b[^"]*)"/g)) {
+      assert.ok(/\bchip\b/.test(m[1]), `${path.relative(out, f)}: unstyled badge class="${m[1]}"`);
+    }
+    const css = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
+    if (/tier-lane/.test(html)) assert.match(css, /\.chip\.lane\{/);
+    if (/tier-volatile/.test(html)) assert.match(css, /\.chip\.volatile\{/);
+  }
+});
+

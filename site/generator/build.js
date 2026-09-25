@@ -523,7 +523,7 @@ function homeBody(doc, up) {
     '<div class="t" id="lanes">Sandbox — where it applies</div>',
     '<dl class="lkey">');
   for (const k of ['local', 'remote', 'both']) {
-    b.push(`<dt><span class="tier tier-lane">${LANE_LABEL[k]}</span></dt><dd>${esc(LABEL_HELP.lane[k])}</dd>`);
+    b.push(`<dt><span class="chip lane tier-lane">${LANE_LABEL[k]}</span></dt><dd>${esc(LABEL_HELP.lane[k])}</dd>`);
   }
   b.push('</dl>',
     `<div class="d">${esc(LABEL_HELP.lane.none)}</div>`,
@@ -784,12 +784,12 @@ function laneBadge(f) {
   // absence is an unknown, and a "Both sandboxes" default would assert more than
   // the source material does. Mirrors the markdown renderer; keep the two together.
   if (!f.lane) return '';
-  return ` <span class="tipw"><span class="tier tier-lane">${LANE_LABEL[f.lane]}</span>` +
+  return ` <span class="tipw"><span class="chip lane tier-lane">${LANE_LABEL[f.lane]}</span>` +
          `${tip(tipId(f, 'lane'), LABEL_HELP.lane[f.lane])}</span>`;
 }
 function volatileBadge(f, up) {
   const id = tipId(f, 'vol');
-  return ` <span class="tipw"><a class="tier tier-volatile" href="${up}what-can-change-under-you/" aria-describedby="${id}">` +
+  return ` <span class="tipw"><a class="chip volatile tier-volatile" href="${up}what-can-change-under-you/" aria-describedby="${id}">` +
          `Can change without a version bump</a>${tip(id, LABEL_HELP.volatile)}</span>`;
 }
 
@@ -1000,6 +1000,8 @@ ol.top5 .w{margin-top:3px;font-size:14px;line-height:1.5;color:var(--fg2)}
 .sev-loud{border-color:var(--sev2b);color:var(--sev2)}.sev-loud i{background:var(--sev2)}
 .sev-friction{border-color:var(--sev3b);color:var(--sev3)}.sev-friction i{background:var(--sev3)}
 .chip.lane{color:var(--fg3);border-style:dashed}
+/* Neutral, not a severity colour: "can change" is about provenance, not cost. */
+.chip.volatile{color:var(--fg3);border-style:dotted}
 .fact .prov{margin:14px 0 0;font-family:var(--mono);font-size:11.5px;line-height:1.5;color:var(--fg3)}
 /* Label popovers. Anchored to the full-width row (.facthead / .crule .m), right-
    aligned and capped at that row's width, so they can never widen the page. Shown

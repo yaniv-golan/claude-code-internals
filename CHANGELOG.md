@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.55.4 — 2026-09-25 (this fork) — the sandbox and can-change badges are chips again
+
+Site only. `references/site-links.json` is byte-identical.
+
+- **Fixed: two badges rendered as plain text.** The sandbox badge ("Local sandbox", "Remote sandbox", "Both
+  sandboxes") and the "Can change without a version bump" badge have been emitted as `class="tier tier-lane"` and
+  `class="tier tier-volatile"` since the v2.37.0 redesign. The only stylesheet rule was `.chip.lane`, so on every
+  topic page they showed as bare text and a bare link next to their styled neighbours. They now carry `chip lane`
+  and `chip volatile` (the `tier-*` classes are kept), including in the legend. "Can change" gets its own neutral,
+  dotted style rather than a severity colour, because it is about provenance, not cost.
+- **Why the tests missed it:** they checked that the badges were present, never how they were styled. A new test
+  asserts that every sandbox or can-change badge carries the class the stylesheet keys on, and that the rule exists.
+  Negative control: restoring the old class fails it. Checked visually in a browser.
+
 ## v2.55.3 — 2026-09-25 (this fork) — the site explains its own labels
 
 Site only. No lesson, fact or baseline changes; `references/site-links.json` is byte-identical.
