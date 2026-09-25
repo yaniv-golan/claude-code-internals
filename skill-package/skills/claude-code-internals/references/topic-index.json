@@ -6248,7 +6248,7 @@
       "lesson_number": "209",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
       "startLine": 61,
-      "endLine": 110,
+      "endLine": 117,
       "keywords": [
         "cowork plugin hook events",
         "cowork cloud hooks",
@@ -6267,8 +6267,8 @@
       "title": "Where a New Cowork Task Runs, and the Switch That Did Not Keep It Local",
       "lesson_number": "210",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
-      "startLine": 111,
-      "endLine": 176,
+      "startLine": 118,
+      "endLine": 183,
       "keywords": [
         "Only on this computer",
         "dramatic_shrimp_enabled",

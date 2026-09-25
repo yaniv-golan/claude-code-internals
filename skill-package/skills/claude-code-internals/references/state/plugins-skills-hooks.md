@@ -146,9 +146,10 @@ code-derived).
 
 Cloud Cowork (live, probe plugin, Desktop 2.9939.2): UserPromptSubmit, PreToolUse,
 PostToolUse and Stop fire; **SessionStart did not fire in a new session**; the shell
-is `Bash` there. Local Cowork: agent 2.1.280 registers plugin hooks for all 33 events
-and nothing disables them; SessionStart and PreToolUse (with deny honoured) seen live,
-the rest code-only on the current build. Matchers: letters/digits/`_`/`|` form an exact
+is `Bash` there. Local Cowork (live, same probe in a local scheduled task, agent 2.1.281):
+SessionStart (`startup` each run, `resume` on reopen), UserPromptSubmit, PreToolUse,
+PostToolUse and Stop all fire; `Bash`, `mcp__workspace__bash` and `*` matchers each
+fired for the shell, with `tool_name` `mcp__workspace__bash`. Matchers: letters/digits/`_`/`|` form an exact
 list, expanded through the session's tool aliases (every agent checked, 2.1.197 on) —
 so with Desktop's `Bash`→`mcp__workspace__bash` alias, `Bash` matches the local Cowork
 shell; without the alias it does not. `tool_name` is the resolved name. Traps: a hook that exits 0 with no output leaves **no transcript

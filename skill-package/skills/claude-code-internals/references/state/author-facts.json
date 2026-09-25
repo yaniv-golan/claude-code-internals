@@ -935,13 +935,13 @@
       "id": "plugins.hooks-do-fire",
       "page": "plugins-and-plugin-root",
       "rule": "Expect plugin hooks to fire in Cowork.",
-      "detail": "Hooks shipped by a plugin do run in Cowork, in both the local and the cloud lane: in a live check in the cloud, prompt, before-tool, after-tool and stop hooks all fired. Two things make it look otherwise. A plugin installed where Cowork sessions do not look appears to have no hooks at all. And a hook that succeeds without printing anything leaves no trace in the session's record, so check a side effect it produces rather than the record.",
+      "detail": "Hooks shipped by a plugin do run in Cowork, in both the local and the cloud lane: in live checks, prompt, before-tool, after-tool and stop hooks fired on both lanes, and the session-start hook on the local lane. Two things make it look otherwise. A plugin installed where Cowork sessions do not look appears to have no hooks at all. And a hook that succeeds without printing anything leaves no trace in the session's record, so check a side effect it produces rather than the record.",
       "tier": "measured",
       "verified": {
-        "date": "2026-09-24",
+        "date": "2026-09-25",
         "desktop_asar": "2.7032.0",
         "cli": "2.1.231",
-        "agent": "2.1.280",
+        "agent": "2.1.281",
         "basis": "live"
       },
       "severity": "friction",
@@ -956,7 +956,6 @@
       },
       "caveats": [
         "In a new cloud session the session-start hook did not fire (checked live); in an earlier instrumented run it fired only when the session resumed. Do not depend on session-start work having happened before the first turn there.",
-        "On the local lane the before-tool hook and session-start hook have been seen firing live; prompt, after-tool and stop hooks are expected from the shipped code but not yet observed on the current build.",
         "A stop hook that blocks shows the user nothing in the app: no notice, no error — the first reply stays visible and the corrected one appears beneath it. If your hook blocks, make the corrected reply self-explanatory."
       ]
     },
@@ -976,14 +975,14 @@
         "state_page": "plugins-skills-hooks"
       },
       "caveats": [
-        "In cloud Cowork the command-line name matched the shell in a live check; the local translation is read from the shipped agent."
+        "Checked live on both lanes: in cloud Cowork the command-line name matched the shell; in local Cowork the command-line name, the local name and a match-all each fired for the same shell call."
       ],
       "verified": {
-        "date": "2026-09-24",
+        "date": "2026-09-25",
         "desktop_asar": "2.7032.0",
         "cli": "2.1.231",
-        "agent": "2.1.280",
-        "basis": "code"
+        "agent": "2.1.281",
+        "basis": "live"
       }
     },
     {

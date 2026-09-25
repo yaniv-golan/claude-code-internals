@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "created": "2026-09-24T23:56:32.332Z",
+  "created": "2026-09-25T06:59:57.379Z",
   "description": "TF-IDF semantic index for Claude Code internals lessons. Use semantic-search.js to query.",
   "total_entries": 210,
   "entries": [
@@ -25550,7 +25550,7 @@
       "title": "Plugin Hooks in Cowork, Event by Event and Lane by Lane",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
       "startLine": 61,
-      "endLine": 110,
+      "endLine": 117,
       "text": "Plugin Hooks in Cowork, Event by Event and Lane by Lane cowork plugin hook events cowork cloud hooks SessionStart missing in new cloud session Bash matcher mcp__workspace__bash Bash|mcp__workspace__bash getToolAliases hook matcher alias silent hook no record UserPromptSubmit missing script does my plugin hook run in Cowork  Bash matcher mcp__workspace__bash Bash|mcp__workspace__bash getToolAliases hook matcher alias silent hook no record UserPromptSubmit missing script cowork plugin hook events cowork cloud hooks SessionStart missing in new cloud session does my plugin hook run in Cowork",
       "keywords": [
         "cowork plugin hook events",
@@ -25607,8 +25607,8 @@
       "id": 210,
       "title": "Where a New Cowork Task Runs, and the Switch That Did Not Keep It Local",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
-      "startLine": 111,
-      "endLine": 176,
+      "startLine": 118,
+      "endLine": 183,
       "text": "Where a New Cowork Task Runs, and the Switch That Did Not Keep It Local Only on this computer dramatic_shrimp_enabled cowork-backend local_opted_out routing_reason run Cowork task locally force local Cowork session new task runs in the cloud why do my Cowork tasks run in the cloud remote_cowork /home/claude switch to local feedback dialog assets-proxy.anthropic.com interface build Only on this computer setting ignored local setting ignored dramatic_shrimp run in the cloud despite setting  Only on this computer why do my Cowork tasks run in the cloud dramatic_shrimp_enabled cowork-backend local_opted_out routing_reason run Cowork task locally force local Cowork session new task runs in the cloud remote_cowork /home/claude switch to local feedback dialog assets-proxy.anthropic.com interface build Only on this computer setting ignored local setting ignored dramatic_shrimp run in the cloud despite setting",
       "keywords": [
         "Only on this computer",

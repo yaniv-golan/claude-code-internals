@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.55.1 — 2026-09-25 (this fork) — plugin hooks on the local lane, checked live
+
+No new lessons; counts stay 210/56.
+
+- **L209.** The probe plugin ran in a local scheduled task (Desktop 2.9939.2, agent 2.1.281, Auto mode). SessionStart
+  fired with `source` `startup` on each run and `resume` when the session was reopened; UserPromptSubmit, PreToolUse,
+  PostToolUse and Stop fired too. For one shell call the `Bash`, `mcp__workspace__bash` and `*` matchers all fired,
+  each with `tool_name` `mcp__workspace__bash`, so the alias expansion is now seen live, not only read from the code.
+  The `Read` matcher was not exercised. `plugins.hooks-do-fire` loses its "not yet observed locally" caveat, and
+  `plugins.match-both-shell-names` moves from code to live.
+- The same log also held runs from a separate SDK test harness on this machine that loaded the plugin; they were told
+  apart by the Desktop's local session starts and left out.
+
 ## v2.55.0 — 2026-09-25 (this fork) — scheduled tasks move to the cloud; plugin hooks by lane; where a new task runs
 
 Adds Chapter 56 (L208–L210); counts move to 210/56.

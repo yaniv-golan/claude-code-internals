@@ -1,4 +1,4 @@
-Updated: 2026-09-25 | Source: **`app.asar` 2.9939.2** (sha256 `fe0c6d44b118a8ea436d3c3f539dcd31008e6f8f1d2568fc9ef84e860e33d24d`, the live install) and 2.7032.0, backed-up asars back to 1.18286.2, **agent 2.1.197 / 2.1.241 / 2.1.246 / 2.1.280**, the claude.ai interface code (the copy bundled in the app plus three builds the Desktop fetched on 2026-09-24/25), the live fcache (captured 2026-09-24 22:33Z), this machine's Desktop log and 2,123 local Cowork transcripts, **a live probe plugin run in cloud Cowork on 2026-09-24**, and **four live lane tests on 2026-09-25**. **Does NOT move the CLI or Desktop baselines.**
+Updated: 2026-09-25 | Source: **`app.asar` 2.9939.2** (sha256 `fe0c6d44b118a8ea436d3c3f539dcd31008e6f8f1d2568fc9ef84e860e33d24d`, the live install) and 2.7032.0, backed-up asars back to 1.18286.2, **agent 2.1.197 / 2.1.241 / 2.1.246 / 2.1.280 / 2.1.281**, the claude.ai interface code (the copy bundled in the app plus three builds the Desktop fetched on 2026-09-24/25), the live fcache (captured 2026-09-24 22:33Z), this machine's Desktop log and 2,123 local Cowork transcripts, **a live probe plugin run in cloud Cowork on 2026-09-24 and in local Cowork on 2026-09-25**, and **four live lane tests on 2026-09-25**. **Does NOT move the CLI or Desktop baselines.**
 
 Prompted by a cowork-harness session that could not get a local Cowork session after a Desktop update, by a sibling session's review of the published "plugin hooks fire in Cowork" rule against three GitHub reports, and by the capturing user's own attempts to get a new task to run locally.
 
@@ -60,7 +60,7 @@ When a scheduled task moves, it changes lane: its working directory, what a rela
 
 # LESSON 209 — PLUGIN HOOKS IN COWORK, EVENT BY EVENT
 
-**Plugin hooks fire in both Cowork lanes, with one exception: SessionStart did not fire in a new cloud session. A `Bash` matcher matches Cowork's `mcp__workspace__bash` only through a tool alias the session must carry. And a hook that succeeds silently leaves no record, so "it didn't fire" is easy to conclude wrongly.**
+**Plugin hooks fire in both Cowork lanes, with one exception: SessionStart did not fire in a new cloud session (it did on the local lane). A `Bash` matcher matches Cowork's `mcp__workspace__bash` only through a tool alias the session must carry. And a hook that succeeds silently leaves no record, so "it didn't fire" is easy to conclude wrongly.**
 
 ## Cloud lane (live)
 
@@ -76,14 +76,21 @@ A probe plugin installed through Cowork → Customize → Plugins declared Sessi
 
 The SessionStart result fits Ch48's earlier cloud observation: SessionStart fired only on resume there, plausibly because plugins are synced after the session starts.
 
-## Local lane (code, plus older live evidence)
+## Local lane (live)
 
-Agent 2.1.280 registers plugin hooks for all 33 events with no event filter, and nothing in the Desktop's session setup turns plugin hooks off (its hook-related settings only pass managed policy through). Evidence on the capturing machine:
+The same probe plugin, in a local scheduled task (Desktop 2.9939.2, agent 2.1.281, Auto mode) — the host log, since a local session's hooks run on the Mac:
 
-- **SessionStart:** fires — 111 recorded successes, 99 non-blocking errors and 54 context additions from plugin SessionStart hooks in local transcripts (including resume and compaction firings; the latest recorded success is on agent 2.1.221, errors continue to 2.1.275).
-- **PreToolUse:** fires, and denies are honoured — an installed plugin's Read guard and Bash guard blocked calls in local sessions on agents 2.1.78 and 2.1.92. On current agents no call happened to trigger a deny, so there is no newer live evidence.
-- **UserPromptSubmit, PostToolUse, Stop:** should fire by the code; no live local evidence on the current build yet.
-- **UserPromptExpansion:** fires only when a slash command or an MCP prompt is expanded.
+| event | fired | detail |
+|---|---|---|
+| SessionStart | **yes** | `source` `startup` on each new run (3 runs), `resume` when the session was reopened |
+| UserPromptSubmit | yes, every turn | |
+| PreToolUse | yes | `*` matched Write and the shell; for the shell, `Bash`, `mcp__workspace__bash` and `*` **all** fired, each with `tool_name` `mcp__workspace__bash` |
+| PostToolUse | yes | Write, `mcp__workspace__bash` |
+| Stop | yes, every turn | |
+
+The run made no Read call, so the `Read` matcher was not exercised. Agent 2.1.280 registers plugin hooks for all 33 events with no event filter, and nothing in the Desktop's session setup turns plugin hooks off (its hook-related settings only pass managed policy through). Older local transcripts agree: 111 recorded SessionStart successes and 54 context additions from plugin hooks, and PreToolUse denies from an installed plugin's Read and Bash guards honoured on agents 2.1.78 and 2.1.92. UserPromptExpansion fires only when a slash command or an MCP prompt is expanded.
+
+A `claude` session started outside Cowork (an SDK harness, a CLI run) can load the same plugin and write to the same log; tell the runs apart by session time against the Desktop's `LocalAgentModeSessions.start` lines.
 
 ## Matchers and the Cowork shell
 
@@ -93,7 +100,7 @@ A matcher made only of letters, digits, `_` and `|` is an exact, case-sensitive 
 function Ope(e,n){let t=n&&Object.hasOwn(n,e)?n[e]:void 0;return t!==void 0&&t!==e?[e,t]:[e]}
 ```
 
-Local host-loop Cowork passes the alias `Bash` → `mcp__workspace__bash` (a first-class spawn option since about Desktop 1.20186.1, Ch35/L121), so a `Bash` matcher also matches the Cowork shell, and the hook receives `tool_name` `mcp__workspace__bash`. A session without that alias — older Desktop builds, or anything that starts the agent without it — gives a `Bash` matcher nothing to match; a reported `Bash` hook that never ran (May 2026) predates the alias. In cloud Cowork the shell is `Bash` itself. The file tools keep their names (`Read`, `Write`, `Edit`) on both lanes.
+Local host-loop Cowork passes the alias `Bash` → `mcp__workspace__bash` (a first-class spawn option since about Desktop 1.20186.1, Ch35/L121), so a `Bash` matcher also matches the Cowork shell, and the hook receives `tool_name` `mcp__workspace__bash` — seen live above. A session without that alias — older Desktop builds, or anything that starts the agent without it — gives a `Bash` matcher nothing to match; a reported `Bash` hook that never ran (May 2026) predates the alias. In cloud Cowork the shell is `Bash` itself. The file tools keep their names (`Read`, `Write`, `Edit`) on both lanes.
 
 ## Two traps
 
