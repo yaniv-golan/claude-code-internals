@@ -939,7 +939,7 @@
       "tier": "measured",
       "verified": {
         "date": "2026-09-25",
-        "desktop_asar": "2.7032.0",
+        "desktop_asar": "2.9939.2",
         "cli": "2.1.231",
         "agent": "2.1.281",
         "basis": "live"
@@ -979,10 +979,36 @@
       ],
       "verified": {
         "date": "2026-09-25",
-        "desktop_asar": "2.7032.0",
+        "desktop_asar": "2.9939.2",
         "cli": "2.1.231",
         "agent": "2.1.281",
         "basis": "live"
+      }
+    },
+    {
+      "id": "plugins.missing-hook-script-can-block",
+      "page": "plugins-and-plugin-root",
+      "rule": "Ship every script your hook commands name inside the plugin: on Linux a missing script can block tool calls.",
+      "detail": "When a hook runs a script that is not there, the exit code depends on the shell. The usual shell on Debian and Ubuntu exits with 2, the code a hook uses to block; the macOS shell exits with a different code that does not block. Claude Code recognises the missing-script case only for stop-type hooks and a plugin's prompt hook, and shows a warning with a hint to reinstall the plugin instead of blocking. For every other event, a before-tool hook included, the 2 is taken as a real block, so every tool call the hook matches is refused. A hook that only warns when tried on a Mac can block on Linux.",
+      "tier": "binary",
+      "severity": "silent",
+      "durability": "durable",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          209
+        ],
+        "state_page": "plugins-skills-hooks"
+      },
+      "caveats": [
+        "The agent's handling is read from the shipped agent; the shell exit codes were measured, but a blocked tool call from a missing script was not reproduced in a live session, and which shell each Cowork lane uses was not checked."
+      ],
+      "verified": {
+        "date": "2026-09-25",
+        "desktop_asar": "2.9939.2",
+        "cli": "2.1.231",
+        "agent": "2.1.281",
+        "basis": "code"
       }
     },
     {

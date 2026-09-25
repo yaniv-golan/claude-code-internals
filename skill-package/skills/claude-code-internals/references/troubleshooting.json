@@ -2295,12 +2295,13 @@
     "plugin hook not firing in Cowork",
     "SessionStart hook not firing cloud",
     "Bash matcher hook never runs Cowork",
-    "UserPromptSubmit plugin hook"
+    "UserPromptSubmit plugin hook",
+    "missing hook script blocks"
    ],
    "lessons": [
     209
    ],
-   "hint": "Plugin hooks fire on both lanes (checked live): SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, Stop locally; all but SessionStart in a new cloud session. A 'Bash' matcher matches local Cowork's mcp__workspace__bash only via the session's Bash→mcp__workspace__bash alias (seen live) — write 'Bash|mcp__workspace__bash'. A hook that succeeds silently leaves no transcript record; check a side effect instead. A block from a hook with a missing script is downgraded to a non-blocking error."
+   "hint": "Plugin hooks fire on both lanes (checked live): SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, Stop locally; all but SessionStart in a new cloud session. A 'Bash' matcher matches local Cowork's mcp__workspace__bash only via the session's Bash→mcp__workspace__bash alias (seen live) — write 'Bash|mcp__workspace__bash'. A hook that succeeds silently leaves no transcript record; check a side effect instead. A missing hook script exits 2 (block) under dash but 127 on macOS; the agent downgrades that to a warning only for Stop-type and plugin UserPromptSubmit hooks, so a missing PreToolUse script blocks on Linux."
   },
   {
    "pattern": [

@@ -378,7 +378,7 @@
     "209": [
       [
         "plugins-and-plugin-root",
-        2
+        3
       ]
     ],
     "210": [
@@ -436,7 +436,7 @@
     "plugins-skills-hooks": [
       [
         "plugins-and-plugin-root",
-        19
+        20
       ],
       [
         "asking-the-user",
@@ -500,6 +500,7 @@
     "plugins.match-both-shell-names": "plugins-and-plugin-root#fact-plugins-match-both-shell-names",
     "plugins.mcp-server-may-be-stubbed": "plugins-and-plugin-root#fact-plugins-mcp-server-may-be-stubbed",
     "plugins.mcp-servers-run-on-the-users-machine": "plugins-and-plugin-root#fact-plugins-mcp-servers-run-on-the-users-machine",
+    "plugins.missing-hook-script-can-block": "plugins-and-plugin-root#fact-plugins-missing-hook-script-can-block",
     "plugins.mounts-are-read-only": "plugins-and-plugin-root#fact-plugins-mounts-are-read-only",
     "plugins.plugin-dir-overrides-installed": "plugins-and-plugin-root#fact-plugins-plugin-dir-overrides-installed",
     "plugins.plugin-files-are-mounted": "plugins-and-plugin-root#fact-plugins-plugin-files-are-mounted",

@@ -6248,7 +6248,7 @@
       "lesson_number": "209",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
       "startLine": 61,
-      "endLine": 117,
+      "endLine": 118,
       "keywords": [
         "cowork plugin hook events",
         "cowork cloud hooks",
@@ -6259,7 +6259,10 @@
         "hook matcher alias",
         "silent hook no record",
         "UserPromptSubmit missing script",
-        "does my plugin hook run in Cowork"
+        "does my plugin hook run in Cowork",
+        "missing hook script blocks",
+        "dash exit 2 hook",
+        "Hook script appears to be missing"
       ]
     },
     {
@@ -6267,8 +6270,8 @@
       "title": "Where a New Cowork Task Runs, and the Switch That Did Not Keep It Local",
       "lesson_number": "210",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
-      "startLine": 118,
-      "endLine": 183,
+      "startLine": 119,
+      "endLine": 184,
       "keywords": [
         "Only on this computer",
         "dramatic_shrimp_enabled",
@@ -21417,6 +21420,15 @@
     ],
     "run in the cloud despite setting": [
       210
+    ],
+    "missing hook script blocks": [
+      209
+    ],
+    "dash exit 2 hook": [
+      209
+    ],
+    "Hook script appears to be missing": [
+      209
     ]
   }
 }

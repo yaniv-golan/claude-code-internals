@@ -105,13 +105,14 @@ Local host-loop Cowork passes the alias `Bash` → `mcp__workspace__bash` (a fir
 ## Two traps
 
 - **A silent hook leaves no trace.** The agent writes no transcript record for a hook that exits 0 with empty output. A missing PreToolUse or Stop record in a session therefore proves nothing; only hooks that print, add context, or block show up. (On a local lane the stream reports only SessionStart hook activity anyway — L203.)
-- **A block from a hook whose script is missing is downgraded.** For a plugin's UserPromptSubmit hook, and for any Stop, SubagentStop, TaskCompleted or TeammateIdle hook, exit code 2 with empty output and a "no such file" or "can't open" error becomes a non-blocking error, so the block is lost without a visible failure.
+- **A missing hook script can block, depending on the shell and the event.** `dash`, the usual `/bin/sh` on Debian and Ubuntu, exits **2** when it cannot open a script, which is the hook "block" code. macOS `sh` and `bash` exit 127, which is not (all three measured). The agent recognises this case only for a plugin's UserPromptSubmit hook and for any Stop, SubagentStop, TaskCompleted or TeammateIdle hook: exit 2 with empty output and a "no such file" or "can't open" error becomes a visible non-blocking error ("Hook script appears to be missing … Treating as non-blocking", with a hint to reinstall the plugin). For every other event — PreToolUse included — the exit 2 counts as a real block, so under `dash` a missing script refuses every call it matches. A hook that only warns when tested on a Mac can block on Linux.
 
 ## For a plugin author
 
 - Expect your hooks to fire in both lanes — but do not rely on SessionStart in a new cloud session.
 - Write shell matchers as `Bash|mcp__workspace__bash` so they match whether or not the session carries the alias.
 - When checking whether a hook ran, give it a side effect you can see — a log line, a file — rather than looking for it in the session record.
+- Ship every script a hook command names inside the plugin, and test the installed plugin, not the source folder.
 
 ---
 

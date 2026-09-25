@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.55.2 — 2026-09-25 (this fork) — a missing hook script can block
+
+No new lessons; counts stay 210/56.
+
+- **L209 correction: the missing-script trap ran the other way.** The lesson said a block from a hook whose script is
+  missing is "downgraded, so the block is lost without a visible failure". Read again in agent 2.1.281: when a hook
+  exits 2 with empty output and a "no such file" / "can't open" error, the agent shows a visible non-blocking warning
+  ("Hook script appears to be missing … Treating as non-blocking", with a reinstall hint). It does this only for Stop,
+  SubagentStop, TaskCompleted, TeammateIdle and a plugin's UserPromptSubmit hook. It stops a spurious block; no real
+  block is lost. Measured on this Mac: `dash` exits 2 on a missing script, macOS `sh` and `bash` exit 127. So under
+  `dash` a missing PreToolUse script blocks every call it matches, while the same hook only warns on a Mac. New fact
+  `plugins.missing-hook-script-can-block`.
+- `plugins.hooks-do-fire` and `plugins.match-both-shell-names` now record Desktop 2.9939.2, the build their live runs
+  used (flagged by a sibling session).
+
 ## v2.55.1 — 2026-09-25 (this fork) — plugin hooks on the local lane, checked live
 
 No new lessons; counts stay 210/56.

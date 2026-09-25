@@ -153,8 +153,10 @@ fired for the shell, with `tool_name` `mcp__workspace__bash`. Matchers: letters/
 list, expanded through the session's tool aliases (every agent checked, 2.1.197 on) —
 so with Desktop's `Bash`→`mcp__workspace__bash` alias, `Bash` matches the local Cowork
 shell; without the alias it does not. `tool_name` is the resolved name. Traps: a hook that exits 0 with no output leaves **no transcript
-record**; a block from a hook whose script is missing (plugin UserPromptSubmit; any Stop,
-SubagentStop, TaskCompleted, TeammateIdle) is downgraded to a non-blocking error.
+record**; a missing hook script exits 2 (the block code) under `dash` but 127 under macOS
+`sh`/`bash` — the agent turns that exit 2 into a visible non-blocking error only for a
+plugin UserPromptSubmit and any Stop, SubagentStop, TaskCompleted, TeammateIdle hook;
+for other events (PreToolUse included) it blocks.
 
 ## Plugin agent frontmatter restrictions
 
