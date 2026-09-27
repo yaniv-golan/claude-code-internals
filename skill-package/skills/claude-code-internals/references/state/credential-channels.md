@@ -3,8 +3,8 @@ domain: credential-channels
 title: Desktop/Cowork credential channels (current)
 as_of_cli: 2.1.231
 as_of_desktop: 1.30096.1
-sources: [105, 106, 107, 114, 127, 195]
-updated: 2026-09-23
+sources: [105, 106, 107, 114, 127, 195, 211]
+updated: 2026-09-27
 ---
 
 # Desktop/Cowork credential channels (current)
@@ -136,14 +136,18 @@ through the conversation transcript — never privately to a server. Using
 an MCP App form to collect a secret leaks the value into the chat and
 transcript; use elicitation (channel 1) instead.
 
-**Rendered Artifacts are a separate surface, with a channel that is off
-(L195).** Desktop's Artifact pane has a complete host-tools bridge — a page
-sends `claude-page:host-tools-hello`, then `{kind:"call", server:"host:<name>",
-tool, input}`, and the Desktop runs it through `LocalMcpServerManager.callTool`
-(the `claude_desktop_config.json` servers), with rate limits and a confirmation
-for destructive tools. Every call is refused (`capability_disabled`) unless gate
-**`2864556627`** is on; it is served **off** at the 2026-09-23 capture, and the
-code has been present since at least Desktop 1.46388.4. So "no callback" is
-today a gate state, not missing code. `CLAUDE_ARTIFACT_HOST_GRANT` (agent
+**Rendered Artifacts are a separate surface, with a channel that is closed
+end to end (L195, L211).** Desktop's Artifact pane has a complete host-tools
+bridge — a page sends `claude-page:host-tools-hello`, then `{kind:"call",
+server:"host:<name>", tool, input, grant}`, and the Desktop runs it through
+`LocalMcpServerManager.callTool` (the `claude_desktop_config.json` servers),
+with rate limits, no prompt for read-only tools, and a click plus a dialog for
+anything else. Gate **`2864556627`** switches it; it is **on** from the
+2026-09-26 capture (`source:"force"`), and the code has been present since
+Desktop 1.34493.1. The Desktop does not check the page's grant and offers every
+connected local server. The channel is still closed at two claude.ai layers:
+the Artifacts service refuses a `host:` declaration at publish, and the frame
+shell refuses an undeclared `host:` call with `not_in_manifest` before it
+reaches the Desktop (both measured 2026-09-27, L211). `CLAUDE_ARTIFACT_HOST_GRANT` (agent
 ≥ 2.1.275) limits which `host:` servers an Artifact published from an
 interactive Cowork session may declare.

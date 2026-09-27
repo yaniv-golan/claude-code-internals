@@ -1,7 +1,7 @@
 {
   "generated": "2026-09-25",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 210,
+  "total_lessons": 214,
   "lessons": [
     {
       "id": 1,
@@ -3669,7 +3669,7 @@
       "lesson_number": "129",
       "file": "34-skill-discovery-vcs-events-containment.md",
       "startLine": 20,
-      "endLine": 205,
+      "endLine": 207,
       "keywords": [
         "skill-discovery-tools",
         "plugin-discovery-tools",
@@ -3750,8 +3750,8 @@
       "title": "VCS SDK Events: Emit Floor 2.1.216, Git-Operation-Driven, Ungated Agent-Side",
       "lesson_number": "130",
       "file": "34-skill-discovery-vcs-events-containment.md",
-      "startLine": 206,
-      "endLine": 303,
+      "startLine": 208,
+      "endLine": 305,
       "keywords": [
         "vcs-sdk-events",
         "code_change_published",
@@ -3796,8 +3796,8 @@
       "title": "Desktop 1.22209.0 -> 1.24012.1 asar Delta",
       "lesson_number": "131",
       "file": "34-skill-discovery-vcs-events-containment.md",
-      "startLine": 304,
-      "endLine": 436,
+      "startLine": 306,
+      "endLine": 438,
       "keywords": [
         "asar-diff",
         "1.24012.1",
@@ -3848,8 +3848,8 @@
       "title": "LEAD: 1.24012.1 May Move Cowork Session State Off the Host",
       "lesson_number": "132",
       "file": "34-skill-discovery-vcs-events-containment.md",
-      "startLine": 437,
-      "endLine": 496,
+      "startLine": 439,
+      "endLine": 498,
       "keywords": [
         "session-containment",
         "vm-loop-shift",
@@ -4393,7 +4393,7 @@
       "lesson_number": "149",
       "file": "38-cowork-elicitation-flag-classes.md",
       "startLine": 152,
-      "endLine": 198,
+      "endLine": 200,
       "keywords": [
         "session-config-boolean",
         "frameArtifactsEnabled",
@@ -4413,8 +4413,8 @@
       "title": "Cowork's Additions to the Agent's Auto-Mode Rules",
       "lesson_number": "150",
       "file": "38-cowork-elicitation-flag-classes.md",
-      "startLine": 199,
-      "endLine": 261,
+      "startLine": 201,
+      "endLine": 263,
       "keywords": [
         "autoMode-rubric",
         "gate-3424551112",
@@ -4437,8 +4437,8 @@
       "title": "Desktop Shipped an Env Key Its Own Agent Could Not Read",
       "lesson_number": "151",
       "file": "38-cowork-elicitation-flag-classes.md",
-      "startLine": 262,
-      "endLine": 326,
+      "startLine": 264,
+      "endLine": 328,
       "keywords": [
         "CLAUDE_CODE_COWORK_FRAME_ARTIFACTS",
         "producer-before-consumer",
@@ -4456,8 +4456,8 @@
       "title": "Four Traps That Fired in One Pass",
       "lesson_number": "152",
       "file": "38-cowork-elicitation-flag-classes.md",
-      "startLine": 327,
-      "endLine": 351,
+      "startLine": 329,
+      "endLine": 353,
       "keywords": [
         "two-numbers-trap",
         "served-value-vs-code-default",
@@ -5921,7 +5921,7 @@
     },
     {
       "id": 195,
-      "title": "Rendered Artifacts Can Call Local MCP Tools, Behind a Switch That Is Off",
+      "title": "Rendered Artifacts Can Call Local MCP Tools: The Desktop Channel",
       "lesson_number": "195",
       "file": "50-artifact-host-tools-inbox-folder-skills.md",
       "startLine": 18,
@@ -6289,6 +6289,138 @@
         "local setting ignored",
         "dramatic_shrimp",
         "run in the cloud despite setting"
+      ]
+    },
+    {
+      "id": 211,
+      "title": "Can an Artifact Call My Local MCP Server? Three Layers, Measured",
+      "lesson_number": "211",
+      "file": "54-desktop-2.9939-artifacts-gates-egress.md",
+      "startLine": 18,
+      "endLine": 96,
+      "keywords": [
+        "artifact call local MCP server",
+        "host: server artifact",
+        "host:<name>",
+        "callTool host:",
+        "features.mcp.host",
+        "host_unavailable",
+        "host servers aren't available in this session",
+        "not_in_manifest artifact",
+        "outside the scope you consented to",
+        "2864556627",
+        "ArtifactHostTools",
+        "host-tools-hello",
+        "bridge offered",
+        "YH()",
+        "artifactHostGrant",
+        "CLAUDE_ARTIFACT_HOST_GRANT",
+        "claude_desktop_config.json server runs twice",
+        "local MCP server two processes",
+        "local-agent-mode client",
+        "LocalMcpServerManager",
+        "coworkMcpWriteToolsAlwaysAllowEnabled",
+        "Don't ask again artifact",
+        "readOnlyHint no dialog",
+        "artifact owner host servers",
+        "api/frame/contract roster",
+        "mcp capability artifact",
+        "Artifact runtime contract 0.2.60",
+        "gate flip ruleId null"
+      ]
+    },
+    {
+      "id": 212,
+      "title": "Cowork's Other Artifact Tools: create_artifact and Its Siblings",
+      "lesson_number": "212",
+      "file": "54-desktop-2.9939-artifacts-gates-egress.md",
+      "startLine": 98,
+      "endLine": 148,
+      "keywords": [
+        "create_artifact",
+        "update_artifact",
+        "list_artifacts",
+        "verify_artifact",
+        "read_widget_context",
+        "mcp__cowork__create_artifact",
+        "hasHtmlArtifacts",
+        "frameArtifactsEnabled",
+        "2940196192",
+        "scheduled task artifact tool",
+        "legacy live artifacts",
+        "list_legacy_live_artifacts",
+        "1847129881",
+        "1947305033",
+        "remote-devices bridge artifacts",
+        "native Artifact tool host-loop",
+        "VM-loop-only Artifact 1.32352.0",
+        "disallowedTools init.tools",
+        "listed not callable",
+        "init.tools MCP tool disallowed",
+        "3229517805 verifyToolsEnabled",
+        "update_summary"
+      ]
+    },
+    {
+      "id": 213,
+      "title": "What Desktop 2.9939.2's New Gates Do",
+      "lesson_number": "213",
+      "file": "54-desktop-2.9939-artifacts-gates-egress.md",
+      "startLine": 150,
+      "endLine": 209,
+      "keywords": [
+        "2.9939.2 new gates",
+        "822840158",
+        "cowork-spawn-settings",
+        "--settings file host-loop",
+        "lam_host_loop_spawn_settings",
+        "3067718716",
+        "approvalSurface",
+        "host_dialog",
+        "hostDialogAttestations",
+        "1169442571",
+        "1453979703",
+        "move_to_cloud auto mode",
+        "4288313598",
+        "1835121223",
+        "minCliVersion",
+        "cli_below_model_floor",
+        "1753075645",
+        "cachedArtifactRoster",
+        "artifact-roster.json",
+        "4217215889",
+        "macOS entry points dock Spotlight",
+        "4175551826",
+        "3778108436",
+        "958249077",
+        "kx default true unserved gate",
+        "gate diff table keys",
+        "custom-3p bootstrap table"
+      ]
+    },
+    {
+      "id": 214,
+      "title": "HIPAA Egress and Fast Mode on Third-Party Providers",
+      "lesson_number": "214",
+      "file": "54-desktop-2.9939-artifacts-gates-egress.md",
+      "startLine": 211,
+      "endLine": 248,
+      "keywords": [
+        "HIPAA egress",
+        "vm_egress_allowlist",
+        "lam_hipaa_gate_blocked",
+        "resolveVmAllowedDomains",
+        "compliance_taints hipaa",
+        "coworkHipaaRestricted",
+        "egress wildcard replaced",
+        "*.anthropic.com claude.com allowlist",
+        "CLAUDE_CODE_DISABLE_FAST_MODE",
+        "fast mode third-party",
+        "fast mode gateway",
+        "fast mode Bedrock Vertex",
+        "He() firstParty gateway",
+        "credentialSlots gateway",
+        "ro() fast mode"
       ]
     }
   ],
@@ -16957,7 +17089,8 @@
       149
     ],
     "frameArtifactsEnabled": [
-      149
+      149,
+      212
     ],
     "third-gating-class": [
       149
@@ -20765,7 +20898,8 @@
     ],
     "CLAUDE_ARTIFACT_HOST_GRANT": [
       194,
-      195
+      195,
+      211
     ],
     "CLAUDE_CODE_PROJECT_DIR_NAME": [
       194
@@ -20838,7 +20972,8 @@
       195
     ],
     "ArtifactHostTools": [
-      195
+      195,
+      211
     ],
     "claude-page:host-tools-hello": [
       195
@@ -20847,7 +20982,8 @@
       195
     ],
     "2864556627": [
-      195
+      195,
+      211
     ],
     "capability_disabled": [
       195
@@ -20859,7 +20995,8 @@
       195
     ],
     "artifactHostGrant": [
-      195
+      195,
+      211
     ],
     "getArtifactRepublishContent": [
       195
@@ -21027,7 +21164,8 @@
       199
     ],
     "LocalMcpServerManager": [
-      199
+      199,
+      211
     ],
     "localMcpBridge announcing": [
       199
@@ -21429,6 +21567,264 @@
     ],
     "Hook script appears to be missing": [
       209
+    ],
+    "artifact call local MCP server": [
+      211
+    ],
+    "host: server artifact": [
+      211
+    ],
+    "host:<name>": [
+      211
+    ],
+    "callTool host:": [
+      211
+    ],
+    "features.mcp.host": [
+      211
+    ],
+    "host_unavailable": [
+      211
+    ],
+    "host servers aren't available in this session": [
+      211
+    ],
+    "not_in_manifest artifact": [
+      211
+    ],
+    "outside the scope you consented to": [
+      211
+    ],
+    "host-tools-hello": [
+      211
+    ],
+    "bridge offered": [
+      211
+    ],
+    "YH()": [
+      211
+    ],
+    "claude_desktop_config.json server runs twice": [
+      211
+    ],
+    "local MCP server two processes": [
+      211
+    ],
+    "local-agent-mode client": [
+      211
+    ],
+    "coworkMcpWriteToolsAlwaysAllowEnabled": [
+      211
+    ],
+    "Don't ask again artifact": [
+      211
+    ],
+    "readOnlyHint no dialog": [
+      211
+    ],
+    "artifact owner host servers": [
+      211
+    ],
+    "api/frame/contract roster": [
+      211
+    ],
+    "mcp capability artifact": [
+      211
+    ],
+    "Artifact runtime contract 0.2.60": [
+      211
+    ],
+    "gate flip ruleId null": [
+      211
+    ],
+    "create_artifact": [
+      212
+    ],
+    "update_artifact": [
+      212
+    ],
+    "list_artifacts": [
+      212
+    ],
+    "verify_artifact": [
+      212
+    ],
+    "read_widget_context": [
+      212
+    ],
+    "mcp__cowork__create_artifact": [
+      212
+    ],
+    "hasHtmlArtifacts": [
+      212
+    ],
+    "2940196192": [
+      212
+    ],
+    "scheduled task artifact tool": [
+      212
+    ],
+    "legacy live artifacts": [
+      212
+    ],
+    "list_legacy_live_artifacts": [
+      212
+    ],
+    "1847129881": [
+      212
+    ],
+    "1947305033": [
+      212
+    ],
+    "remote-devices bridge artifacts": [
+      212
+    ],
+    "native Artifact tool host-loop": [
+      212
+    ],
+    "VM-loop-only Artifact 1.32352.0": [
+      212
+    ],
+    "disallowedTools init.tools": [
+      212
+    ],
+    "listed not callable": [
+      212
+    ],
+    "init.tools MCP tool disallowed": [
+      212
+    ],
+    "3229517805 verifyToolsEnabled": [
+      212
+    ],
+    "update_summary": [
+      212
+    ],
+    "2.9939.2 new gates": [
+      213
+    ],
+    "822840158": [
+      213
+    ],
+    "cowork-spawn-settings": [
+      213
+    ],
+    "--settings file host-loop": [
+      213
+    ],
+    "lam_host_loop_spawn_settings": [
+      213
+    ],
+    "3067718716": [
+      213
+    ],
+    "approvalSurface": [
+      213
+    ],
+    "host_dialog": [
+      213
+    ],
+    "hostDialogAttestations": [
+      213
+    ],
+    "1169442571": [
+      213
+    ],
+    "1453979703": [
+      213
+    ],
+    "move_to_cloud auto mode": [
+      213
+    ],
+    "4288313598": [
+      213
+    ],
+    "1835121223": [
+      213
+    ],
+    "minCliVersion": [
+      213
+    ],
+    "cli_below_model_floor": [
+      213
+    ],
+    "1753075645": [
+      213
+    ],
+    "cachedArtifactRoster": [
+      213
+    ],
+    "artifact-roster.json": [
+      213
+    ],
+    "4217215889": [
+      213
+    ],
+    "macOS entry points dock Spotlight": [
+      213
+    ],
+    "4175551826": [
+      213
+    ],
+    "3778108436": [
+      213
+    ],
+    "958249077": [
+      213
+    ],
+    "kx default true unserved gate": [
+      213
+    ],
+    "gate diff table keys": [
+      213
+    ],
+    "custom-3p bootstrap table": [
+      213
+    ],
+    "HIPAA egress": [
+      214
+    ],
+    "vm_egress_allowlist": [
+      214
+    ],
+    "lam_hipaa_gate_blocked": [
+      214
+    ],
+    "resolveVmAllowedDomains": [
+      214
+    ],
+    "compliance_taints hipaa": [
+      214
+    ],
+    "coworkHipaaRestricted": [
+      214
+    ],
+    "egress wildcard replaced": [
+      214
+    ],
+    "*.anthropic.com claude.com allowlist": [
+      214
+    ],
+    "CLAUDE_CODE_DISABLE_FAST_MODE": [
+      214
+    ],
+    "fast mode third-party": [
+      214
+    ],
+    "fast mode gateway": [
+      214
+    ],
+    "fast mode Bedrock Vertex": [
+      214
+    ],
+    "He() firstParty gateway": [
+      214
+    ],
+    "credentialSlots gateway": [
+      214
+    ],
+    "ro() fast mode": [
+      214
     ]
   }
 }

@@ -3,8 +3,8 @@ domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198, 207, 208, 210]
-updated: 2026-09-25
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198, 207, 208, 210, 211, 212, 213, 214]
+updated: 2026-09-27
 ---
 
 # Cowork runtime architecture (current)
@@ -646,6 +646,28 @@ setting saved and the app restarted, new tasks still ran in the cloud (`/home/cl
 did run locally. The bundled interface and three builds fetched from
 `assets-proxy.anthropic.com` route identically, so the cause lies outside that code.
 
+## Desktop 2.9939.2 additions (L212–L214)
+
+- **Artifact tools by session kind.** One predicate (`frameArtifactsEnabled`,
+  not scheduled/bridge/dispatch child/HIPAA) picks the family: eligible
+  sessions get the native `Artifact` tool; every other session, including every
+  scheduled task, gets `mcp__cowork__create_artifact` / `update_artifact` /
+  `list_artifacts` (+ `verify_artifact` under `3229517805`) when `2940196192`
+  is on. `read_widget_context` is always present. Desktop calls the family
+  legacy (L212).
+- **`--settings` as a file.** Host-loop spawns write agent settings to
+  `<userData>/cowork-spawn-settings/<id>-<hex>.json` (gate `822840158`, default
+  on); the argv hop is inferred (L213).
+- **Minimum CLI per model.** `minCliVersion`; a prewarmed session below it is
+  discarded (`cli_below_model_floor`) (L213).
+- **HIPAA egress.** For an org whose `compliance_taints` include `hipaa`, a `*`
+  in the VM egress allowlist becomes `*.anthropic.com`, `anthropic.com`,
+  `claude.com`, `*.claude.com` (`lam_hipaa_gate_blocked`, surface
+  `vm_egress_allowlist`) (L214).
+- **Fast mode on 3p.** `CLAUDE_CODE_DISABLE_FAST_MODE` is set for every
+  third-party deployment; it changes behaviour only for a gateway with a static
+  credential (L214).
+
 ## Credential delivery and build identity (L207)
 
 Host-loop on macOS/Linux: Desktop removes `CLAUDE_CODE_OAUTH_TOKEN` and passes the
@@ -773,11 +795,11 @@ only; config-flag-on + **unattended** gets **neither**.
 `frameArtifactsEnabled` itself is a third gating class this skill's fcache-reading methodology
 cannot see at all: it arrives in the server-delivered session-config struct next to `memoryEnabled`/
 `skillsEnabled`/`pluginsEnabled`, never as a GrowthBook gate — there is no local signal, live or
-dark, that reveals its state. `Po`'s `!isHostLoop` term also makes the `Artifact` tool structurally
-**VM-loop-only**: with the host-loop gate (`1143815894`) force-ON for 1p accounts, it is unreachable
-on a standard 1p posture regardless of how the config flag or `2940196192` are set — the same
-"VM-loop-only feature class" as `cowork-permissions.md`'s auto-mode rubric addition (gate
-`3424551112`), which is gated the identical `!hostLoopMode` way.
+dark, that reveals its state. `Po` no longer carries an `!isHostLoop` term (dropped at Desktop
+1.32352.0; present in 1.28929.0), so the native `Artifact` tool reaches host-loop sessions: all 50
+frame-artifact sessions on the capturing machine are host-loop and made real calls (L149, L212). A
+session `Po` excludes (scheduled, bridge, dispatch child, HIPAA, or frame artifacts off) gets the
+`mcp__cowork__` artifact tools instead when `2940196192` is on (L212).
 
 **Host-loop's own artifact-access mechanism is not a mount at all.** `grantArtifactDirReadAccess()`
 short-circuits for non-host-loop/`chat` sessions; under host-loop it instead appends the artifact

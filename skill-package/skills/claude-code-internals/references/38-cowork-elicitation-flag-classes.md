@@ -192,7 +192,9 @@ The unattended row is the one worth remembering: a session that is unattended wi
 
 ## VM-loop-only as a class, not a one-off
 
-`!isHostLoop` is the term in `Po` that matters most for this skill: the `Artifact` tool is **structurally VM-loop-only**. Ch35/L124 frames VM-loop as a set of deltas *from* host-loop; this is the mirror case — a capability host-loop can never reach at all. The auto-mode rubric addition (L150) is gated the identical way: `!hostLoopMode` in its own predicate. With host-loop gate `1143815894` force-ON for 1p accounts, **neither feature is reachable on a standard 1p posture, however the other flags are set.** Two independently-shipped `!isHostLoop`-gated features in one release is enough to treat "VM-loop-only" as a recognisable feature class going forward, the same way Ch35/L124 treats "VM-loop delta."
+In 1.28929.0, `!isHostLoop` was a term in `Po`, which made the `Artifact` tool unreachable on host-loop, the default 1p posture; the auto-mode rubric addition (L150) was gated the same way (`!hostLoopMode`). Ch35/L124 frames VM-loop as a set of deltas *from* host-loop, and a feature gated `!isHostLoop` is the mirror case: a capability host-loop cannot reach at all. That is still a class worth checking for in every predicate.
+
+**The `Artifact` tool has left that class.** Desktop 1.32352.0 dropped `!isHostLoop` from `Po`, and from then the native tool reaches host-loop sessions: all 50 frame-artifact sessions on the capturing machine run host-loop, and they made real `Artifact` calls. The predicate in 2.9939.2 is `frameArtifactsEnabled` plus the bridge, dispatch-child, scheduled and HIPAA exclusions, and the sessions it excludes get the `mcp__cowork__` artifact tools instead (L212). L150's own `!hostLoopMode` gating was not re-checked in that pass.
 
 ---
 

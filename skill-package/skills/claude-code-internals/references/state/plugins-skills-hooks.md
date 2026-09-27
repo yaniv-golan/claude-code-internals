@@ -3,8 +3,8 @@ domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207, 209]
-updated: 2026-09-25
+sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207, 209, 211]
+updated: 2026-09-27
 ---
 
 # Plugins, skills & hooks (current)
@@ -61,6 +61,17 @@ guidance is appended to the main and sub-agent prompts, with
 append takes effect. Observed: 30 of 31 recent Cowork runs on one machine
 (nearly all one scheduled task) were offered `mcp__memory__memory_list`/
 `_read` and no write tool; none called a memory tool.
+
+## A `claude_desktop_config.json` server runs twice (L211)
+
+Measured on Desktop 2.9939.2 (2026-09-27) from a probe server's own log: at
+launch the Desktop started it three times. One copy never connected; one
+connected as client `claude-ai` 0.1.0 (the chat side); one as
+`local-agent-mode-<server>` 1.0.0 (Cowork's `LocalMcpServerManager`, which the
+Artifact host-tools bridge also uses). Both live copies negotiated protocol
+`2025-11-25` with the MCP-Apps extension (`io.modelcontextprotocol/ui`). So
+such a server runs as two processes with separate memory; keep shared state on
+disk.
 
 ## Skills in a user's folder (L197)
 

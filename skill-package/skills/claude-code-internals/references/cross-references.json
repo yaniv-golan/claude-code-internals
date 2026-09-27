@@ -2744,6 +2744,11 @@
     "id": 118,
     "relevance": 0.6,
     "reason": "the system/init tools array is the authoritative per-tool_use stream contract"
+   },
+   {
+    "id": 212,
+    "relevance": 0.6,
+    "reason": "a disallowed MCP tool stays in init.tools, so listed is not callable"
    }
   ],
   "130": [
@@ -3079,6 +3084,11 @@
     "id": 151,
     "relevance": 0.75,
     "reason": "session-config booleans"
+   },
+   {
+    "id": 212,
+    "relevance": 0.85,
+    "reason": "the native Artifact tool has reached host-loop since 1.32352.0; the excluded sessions get the mcp__cowork__ family"
    }
   ],
   "150": [
@@ -3746,6 +3756,11 @@
     "id": 112,
     "relevance": 0.5,
     "reason": "the Artifact tool whose publish path reads the grant"
+   },
+   {
+    "id": 211,
+    "relevance": 0.95,
+    "reason": "L211 measures this channel end to end: the Desktop half is on, publishing and the viewer refuse host:"
    }
   ],
   "196": [
@@ -3981,6 +3996,114 @@
     "id": 138,
     "relevance": 0.6,
     "reason": "the local and remote lanes"
+   }
+  ],
+  "211": [
+   {
+    "id": 195,
+    "relevance": 0.95,
+    "reason": "L195 is the Desktop host-tools mechanism; L211 is the live probe of all three layers"
+   },
+   {
+    "id": 105,
+    "relevance": 0.8,
+    "reason": "the MCP-Apps no-callback rule; secrets still go through elicitation"
+   },
+   {
+    "id": 212,
+    "relevance": 0.7,
+    "reason": "the other artifact tools and the host grant's session predicate"
+   },
+   {
+    "id": 194,
+    "relevance": 0.6,
+    "reason": "another claude_desktop_config.json server behaviour (the reserved memory name)"
+   },
+   {
+    "id": 199,
+    "relevance": 0.55,
+    "reason": "how local MCP servers otherwise reach Cowork"
+   }
+  ],
+  "212": [
+   {
+    "id": 149,
+    "relevance": 0.9,
+    "reason": "L149's Po predicate and the VM-loop-only reading this lesson dates to 1.28929.0-1.32352.0"
+   },
+   {
+    "id": 211,
+    "relevance": 0.7,
+    "reason": "the native Artifact tool's host: channel"
+   },
+   {
+    "id": 195,
+    "relevance": 0.65,
+    "reason": "CLAUDE_ARTIFACT_HOST_GRANT shares the same session predicate"
+   },
+   {
+    "id": 129,
+    "relevance": 0.65,
+    "reason": "init.tools as the rendered surface; this lesson adds that MCP tools stay listed when disallowed"
+   },
+   {
+    "id": 208,
+    "relevance": 0.5,
+    "reason": "scheduled tasks, which always get the mcp__cowork__ artifact family"
+   }
+  ],
+  "213": [
+   {
+    "id": 211,
+    "relevance": 0.6,
+    "reason": "the same Desktop release and fcache capture"
+   },
+   {
+    "id": 128,
+    "relevance": 0.6,
+    "reason": "earlier auto-mode tuning gates"
+   },
+   {
+    "id": 207,
+    "relevance": 0.55,
+    "reason": "spawn mechanics: credential delivery beside the new --settings file"
+   },
+   {
+    "id": 108,
+    "relevance": 0.5,
+    "reason": "reading gate state from the fcache"
+   },
+   {
+    "id": 212,
+    "relevance": 0.45,
+    "reason": "the remote-devices artifact gates"
+   }
+  ],
+  "214": [
+   {
+    "id": 139,
+    "relevance": 0.6,
+    "reason": "the VM egress allowlist and mount model"
+   },
+   {
+    "id": 108,
+    "relevance": 0.55,
+    "reason": "Cowork spawn env vars"
+   },
+   {
+    "id": 58,
+    "relevance": 0.55,
+    "reason": "CLAUDE_CODE_DISABLE_FAST_MODE as a CLI variable"
+   },
+   {
+    "id": 213,
+    "relevance": 0.5,
+    "reason": "the same Desktop release"
+   },
+   {
+    "id": 110,
+    "relevance": 0.45,
+    "reason": "model landscape and fast mode"
    }
   ]
  }

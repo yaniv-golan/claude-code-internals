@@ -8,7 +8,7 @@ Follow-up to Chapter 52: the three leads it left open, traced to the end.
 
 ## TABLE OF CONTENTS
 
-195. [Lesson 195 — Rendered Artifacts Can Call Local MCP Tools, Behind a Switch That Is Off](#lesson-195--rendered-artifacts-can-call-local-mcp-tools)
+195. [Lesson 195 — Rendered Artifacts Can Call Local MCP Tools: The Desktop Channel](#lesson-195--rendered-artifacts-can-call-local-mcp-tools)
 196. [Lesson 196 — `FetchInboxMessage` and the Remote Control Session Inbox](#lesson-196--fetchinboxmessage-and-the-remote-control-session-inbox)
 197. [Lesson 197 — Skills From a Granted Folder Are Staged Into Cloud Sessions as Stubs](#lesson-197--skills-from-a-granted-folder-are-staged-as-stubs)
 198. [Lesson 198 — One Probe, Four Surfaces: What a Relative Path Means Where](#lesson-198--one-probe-four-surfaces)
@@ -17,11 +17,11 @@ Follow-up to Chapter 52: the three leads it left open, traced to the end.
 
 # LESSON 195 — RENDERED ARTIFACTS CAN CALL LOCAL MCP TOOLS
 
-**Claude Desktop contains a complete channel for a rendered Artifact page to call the user's local MCP servers. It is switched off by gate `2864556627`, off at the 2026-09-23 capture. So the Ch22/L105 rule — a rendered artifact cannot call back — still holds, but it now rests on a server-side switch rather than on missing code. `CLAUDE_ARTIFACT_HOST_GRANT` is the agent-side half: an allow-list of which local servers an Artifact published from Cowork may declare.**
+**Claude Desktop contains a complete channel for a rendered Artifact page to call the user's local MCP servers, switched by gate `2864556627`. `CLAUDE_ARTIFACT_HOST_GRANT` is the agent-side half: an allow-list of which local servers an Artifact published from Cowork may declare. The gate is on from the 2026-09-26 capture, but the channel is still closed end to end at two claude.ai layers. L211 has the live probe; this lesson is the mechanism.**
 
 ## The Desktop channel
 
-The Desktop's `ArtifactHostTools` module (chunk `D3OyLXgG`) answers a page that sends `claude-page:host-tools-hello`; the artifact-pane preloads (`claudePagePreview.js`, `mainView.js`) implement that message. The Desktop replies over a `MessageChannelMain` port, and the page then sends:
+The Desktop's `ArtifactHostTools` module (chunk `D3OyLXgG` in 2.7032.0, `DzZc-q0x` in 2.9939.2) answers a page that sends `claude-page:host-tools-hello`; the preloads (`claudePagePreview.js`, `mainView.js`) relay that message. It attaches to the Cowork preview pane, to artifact frames embedded in the main claude.ai window (at most 8 per window), and to that window's child windows. The Desktop replies over a `MessageChannelMain` port, and the page then sends:
 
 ```js
 {kind:"call", server:"host:<name>", tool, input, grant}
@@ -31,21 +31,21 @@ which the Desktop runs through `LocalMcpServerManager.callTool` — the same man
 
 - `host:claude_browser` is a pseudo-server for the browser surface.
 - 8 calls in flight and 30 calls per minute (`mcpCallsPerMinute`, from gate `3229517805`).
-- A confirmation dialog for any tool that is destructive or not read-only, shown only right after the user clicked in the Artifact.
+- A tool annotated read-only (`readOnlyHint:true`, not destructive) runs with no dialog. Any other tool needs a click in the Artifact and then a native "Allow this artifact to run …" dialog. From 2.9939.2 the dialog can offer "Don't ask again", but only when the org setting `coworkMcpWriteToolsAlwaysAllowEnabled` is on.
 - Per-tool user toggles and admin policy blocks are honoured.
+- The server list offered to the page is every connected `claude_desktop_config.json` server, minus reserved names and tools the user switched off. It is not narrowed to what the page declared.
+- The page's `grant` field is only checked against a pattern and logged: `a=EEr.test(e.grant)?e.grant:"invalid"`. The Desktop never compares it with anything, so scoping a page to its declaration is left to claude.ai (L211).
+- There is no session-type, HIPAA, frame-artifacts or artifact-owner check on this path.
 
-Every call is refused with `capability_disabled` unless `qV()`:
+Every call is refused with `capability_disabled` unless the gate is on:
 
 ```js
-function qV(){return jx("2864556627")}
+function YH(){return Ox("2864556627")}   // 2.9939.2; qV(){return jx("2864556627")} in 1.46388.4
 ```
 
-| | 1.46388.4 | 2.2553.1 | 2.7032.0 |
-|---|---|---|---|
-| `claude-page:host-tools-hello` | 3 | 3 | 3 |
-| gate id `2864556627` | 1 | 1 | 1 |
+The code first appears in Desktop **1.34493.1** (absent in 1.32885.1) and is unchanged in its checks through 2.9939.2, which only adds the "Don't ask again" path.
 
-The channel is not new in this release: it was already in 1.46388.4. At the 2026-09-23 capture, `2864556627` is `{value:false, source:"defaultValue"}` — off, but served, so a server-side rule can turn it on without a client release. The companion gate `3229517805` serves `{debugLogEnabled:true, verifyToolsEnabled:true}` with no `sharingEnabled` key, so republishing (below) is off too.
+`2864556627` was served off (`defaultValue`) through the 2026-09-24 capture and **on (`source:"force"`, `ruleId:null`) from the 2026-09-26 capture**; it flipped between 2026-09-25 15:56 and 2026-09-26 16:56 UTC. It is the only one of 105 forced entries in that capture with no rule id. From one account a general rollout cannot be told from a targeted rule. The companion gate `3229517805` serves `{debugLogEnabled:true, verifyToolsEnabled:true}` with no `sharingEnabled` key, so republishing (below) is off.
 
 ## The agent-side allow-list: `CLAUDE_ARTIFACT_HOST_GRANT`
 
@@ -58,7 +58,7 @@ From Desktop 2.2553.1 the Cowork spawn sets:
 // server /^host:[A-Za-z0-9_-]{1,64}$/, tool /^[A-Za-z0-9_-]{1,128}$/
 ```
 
-`re` is true only for an **interactive, plain Cowork session with frame artifacts enabled**: not a scheduled task, not a bridge session, not a dispatch child, not unattended, and not a HIPAA-restricted account. `artifactHostGrant` arrives as a session-start field that no Desktop main-process code writes; the claude.ai web UI is the likely source. When an existing Artifact is republished, `CoworkArtifacts.getArtifactRepublishContent` builds its grant from the Artifact's `mcp__<server>__<tool>` entries that name a Desktop-local server, and only when sharing is enabled.
+`re` is true only for an **interactive, plain Cowork session with frame artifacts enabled**: not a scheduled task, not a bridge session, not a dispatch child, not unattended, and not a HIPAA-restricted account. `artifactHostGrant` arrives as a session-start field that no Desktop code writes. The claude.ai client sends the key (a Desktop that did not declare it logged "undeclared wire keys dropped: artifactHostGrant"), but none of 911 session records on the capturing machine carries a value, so in practice the variable is absent and nothing is narrowed. When an existing Artifact is republished, `CoworkArtifacts.getArtifactRepublishContent` builds its grant from the Artifact's `mcp__<server>__<tool>` entries that name a Desktop-local server, and only when sharing is enabled.
 
 The agent reads the variable from **2.1.275** (0 in 2.1.260; 9 in the 2.1.275 and 2.1.280 Mach-O and the 2.1.280 ELF). In the `Artifact` tool's publish path it:
 
@@ -72,9 +72,9 @@ Telemetry: `host_grant_narrowed`, `host_grant_unreadable`, `host_grant_carry_ref
 
 ## What this means
 
-- **Today:** unchanged for authors. A rendered Artifact in Cowork cannot call MCP tools, because the Desktop side refuses every call while `2864556627` is off. Collect secrets through elicitation, not a page form (L105).
-- **If the gate flips:** an Artifact page opened in the Desktop could call the user's local MCP servers, limited to what its manifest declares, which in turn is limited by the host grant, and with a confirmation for anything destructive.
-- Watch `2864556627` in each fcache capture; it is the single switch.
+- **Today:** a rendered Artifact cannot call the user's local MCP tools. The Desktop half is on, but the Artifacts service refuses a `host:` declaration at publish, and the claude.ai frame shell refuses any `host:` call the published manifest does not carry (L211, measured). Collect secrets through elicitation, not a page form (L105).
+- **When the service accepts `host:`:** the Desktop offers every connected local server to any claude.ai artifact frame it shows, and does not check the page's grant. Whatever limits a page to its declared tools will be claude.ai's, including the contract's "only the Artifact's owner can use host servers".
+- Watch three things: `2864556627` in each fcache capture, `features.mcp.host` in the Artifacts contract roster (L211), and the shell's answer to a declared `host:` call.
 
 ---
 

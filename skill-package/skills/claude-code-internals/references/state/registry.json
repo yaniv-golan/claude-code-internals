@@ -5,10 +5,10 @@
     "desktop_asar": "2.7032.0",
     "in_vm_elf": "2.1.280",
     "fcache_capture": {
-      "content16": "ff36facd2d636210",
-      "embedded_timestamp": 1790293351071,
-      "feature_count": 378,
-      "observed_at": "2026-09-25"
+      "content16": "d21cd40b42abe59d",
+      "embedded_timestamp": 1790456211143,
+      "feature_count": 382,
+      "observed_at": "2026-09-27"
     },
     "agent_elf_parity_check": "2.1.280",
     "container_cc_version_observed": {
@@ -5099,7 +5099,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5121,7 +5121,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5150,7 +5150,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5175,7 +5175,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5197,7 +5197,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5230,7 +5230,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5255,7 +5255,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5278,7 +5278,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5300,7 +5300,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5322,7 +5322,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5347,7 +5347,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5369,7 +5369,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5391,7 +5391,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5413,7 +5413,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5427,7 +5427,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       },
       "summary": "MCP version-negotiation KILL SWITCH with INVERTED sense. Consumer: `...(u && !un()) ? {versionNegotiation:{mode:'auto',probe:{timeoutMs:500}}} : {}` where un()=t.ld('1942337209'). Because the predicate is !un(), the gate being OFF (its live state) means automatic version negotiation IS ACTIVE; flipping it ON removes it. t.ld is isEnabled, proven in-chunk against 278625510/getSkillSources.",
       "provenance": [
@@ -5457,7 +5457,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5493,7 +5493,7 @@
         "present": true,
         "source": "experiment",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5515,7 +5515,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5537,7 +5537,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5559,7 +5559,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5581,7 +5581,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5603,7 +5603,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5633,7 +5633,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5655,7 +5655,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5677,7 +5677,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5699,7 +5699,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5721,7 +5721,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5749,7 +5749,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5775,7 +5775,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5805,7 +5805,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5827,7 +5827,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5849,7 +5849,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5874,7 +5874,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5885,7 +5885,7 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.231",
-      "summary": "Desktop-side artifacts gate: getAllWithDiskStatus(), askClaude() inference, and the CoworkArtifacts mount collection (one host bind-mount per artifact dir via getArtifactDir(id); artifacts whose disk status is neither local nor cloud-sync are skipped with a warning, never mounted). ON (force); distinct from the CLI's own tengu_cobalt_plinth Artifacts flag (the string coworkArtifacts is absent from the CLI bundle). 1.28929.0 ANDs the mount build with !Po(...) -- the same eligibility predicate that gates the native Artifact tool (Ch41/L149) -- so these mounts are the SUPPRESSED LEGACY path: built only when a session is NOT eligible for the native tool (frame-artifacts-eligible sessions get the tool and no legacy mounts; ineligible sessions get the mounts, if this gate is on, to fill the gap). Host-loop never builds artifact mounts at all, eligible or not: instead grantArtifactDirReadAccess() appends the artifact dir to a per-session midSessionReadOnlyPaths list and pushes it live via applyFlagSettings({permissions:{additionalDirectories, allow}}) -- a second applyFlagSettings payload shape alongside Ch34/L120's {effortLevel}, used for mid-session read-only grants rather than a settings toggle. No mnt-artifact*/CoworkArtifacts mount unit exists in the current VM rootfs image (0 occurrences), consistent with the host-loop gate (1143815894) being force-ON on this machine.",
+      "summary": "Desktop-side artifacts gate: getAllWithDiskStatus(), askClaude() inference, and the CoworkArtifacts mount collection (one host bind-mount per artifact dir via getArtifactDir(id); artifacts whose disk status is neither local nor cloud-sync are skipped with a warning, never mounted). ON (force); distinct from the CLI's own tengu_cobalt_plinth Artifacts flag (the string coworkArtifacts is absent from the CLI bundle). 1.28929.0 ANDs the mount build with !Po(...) -- the same eligibility predicate that gates the native Artifact tool (Ch41/L149) -- so these mounts are the SUPPRESSED LEGACY path: built only when a session is NOT eligible for the native tool (frame-artifacts-eligible sessions get the tool and no legacy mounts; ineligible sessions get the mounts, if this gate is on, to fill the gap). Host-loop never builds artifact mounts at all, eligible or not: instead grantArtifactDirReadAccess() appends the artifact dir to a per-session midSessionReadOnlyPaths list and pushes it live via applyFlagSettings({permissions:{additionalDirectories, allow}}) -- a second applyFlagSettings payload shape alongside Ch34/L120's {effortLevel}, used for mid-session read-only grants rather than a settings toggle. No mnt-artifact*/CoworkArtifacts mount unit exists in the current VM rootfs image (0 occurrences), consistent with the host-loop gate (1143815894) being force-ON on this machine. The same predicate also builds the whole mcp__cowork__ artifact family (create_artifact, update_artifact, list_artifacts, verify_artifact; hasHtmlArtifacts) for sessions not eligible for the native Artifact tool, including every scheduled task (L212).",
       "provenance": [
         {
           "lesson": 108
@@ -5901,6 +5901,9 @@
         {
           "lesson": 120,
           "note": "the second applyFlagSettings payload shape, {permissions:{additionalDirectories, allow}}, for host-loop mid-session grants"
+        },
+        {
+          "lesson": 212
         }
       ],
       "namespace": "desktop_fcache",
@@ -5908,7 +5911,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5930,7 +5933,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5958,7 +5961,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -5984,7 +5987,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6010,7 +6013,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6036,7 +6039,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6058,7 +6061,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6080,7 +6083,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6102,7 +6105,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6116,7 +6119,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       },
       "summary": "Declared-but-unconsumed: appears exactly once, in the client-side gate defaults table as {defaultValue:false}, with NO read site anywhere in the asar and NO fcache entry. Not dark-launched (no code behind it yet) -- the switch was declared before its consumer shipped.",
       "provenance": [
@@ -6147,7 +6150,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6169,7 +6172,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       },
       "served_keys": [
         "displayName",
@@ -6196,7 +6199,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6219,7 +6222,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6241,7 +6244,7 @@
         "present": true,
         "source": "force",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6263,7 +6266,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6285,7 +6288,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6307,7 +6310,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6333,7 +6336,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6359,7 +6362,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6385,7 +6388,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6407,7 +6410,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6429,7 +6432,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -6443,7 +6446,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       },
       "summary": "Declared-but-unconsumed, same as 3671534883. Written as an UNQUOTED numeric object key, so a quoted-string-only gate regex misses it entirely.",
       "provenance": [
@@ -7964,7 +7967,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -7975,13 +7978,16 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.280",
-      "summary": "Set by the Desktop Cowork spawn from 2.2553.1, only for interactive plain Cowork sessions with frame artifacts on (not scheduled, bridge, dispatch-child, unattended or HIPAA-restricted): JSON {v:1,servers:[{server:'host:<name>',tools}]}, at most 50 servers x 200 tools. Read by the agent from 2.1.275 in the Artifact tool's publish path: undeclared host: servers/tools are dropped with a warning, an unreadable grant refuses any host: declaration, a redeploy carrying ungranted tools is refused; absent = no filtering. The Desktop side of the channel it limits is gate 2864556627 (off).",
+      "summary": "Set by the Desktop Cowork spawn from 2.2553.1, only for interactive plain Cowork sessions with frame artifacts on (not scheduled, bridge, dispatch-child, unattended or HIPAA-restricted): JSON {v:1,servers:[{server:'host:<name>',tools}]}, at most 50 servers x 200 tools. Read by the agent from 2.1.275 in the Artifact tool's publish path: undeclared host: servers/tools are dropped with a warning, an unreadable grant refuses any host: declaration, a redeploy carrying ungranted tools is refused; absent = no filtering. The Desktop side of the channel it limits is gate 2864556627 (on from the 2026-09-26 capture). The value comes only from the claude.ai client's artifactHostGrant start field; the client sends the key, but none of 911 session records on the observed machine carries a value, so in practice the variable is absent and nothing is narrowed.",
       "provenance": [
         {
           "lesson": 194
         },
         {
           "lesson": 195
+        },
+        {
+          "lesson": 211
         }
       ]
     },
@@ -8022,22 +8028,25 @@
       "id": "gate.2864556627",
       "kind": "gate",
       "name": "2864556627 (artifact host-tools bridge)",
-      "status": "dark-launched",
+      "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.280",
-      "summary": "Master switch qV() for Desktop's ArtifactHostTools bridge: a rendered Artifact page (claude-page:host-tools-hello, MessageChannelMain port) may call local MCP servers via LocalMcpServerManager.callTool, with 8 in flight, 30/min, destructive-tool confirmation. Every call refused with capability_disabled while off. Code present since at least Desktop 1.46388.4; served off (defaultValue) at the 2026-09-23 capture.",
+      "as_of": "2.1.281",
+      "summary": "Master switch YH() (2.9939.2; qV() in 1.46388.4) for Desktop's ArtifactHostTools bridge, attached to the Cowork preview pane, artifact frames embedded in the main claude.ai window (at most 8) and its child windows. A claude.ai artifact frame that sends claude-page:host-tools-hello gets a MessageChannel port and every connected claude_desktop_config.json server (minus reserved names and user-disabled tools); calls run via LocalMcpServerManager.callTool: read-only-annotated tools with no dialog, others after a click plus a native dialog (optional 'Don't ask again' under org setting coworkMcpWriteToolsAlwaysAllowEnabled, new in 2.9939.2); 8 in flight, mcpCallsPerMinute (default 30). The page's grant is pattern-checked and logged, never enforced; no session-type, HIPAA or frame-artifacts check. Code since Desktop 1.34493.1. Served off through the 2026-09-24 capture; on (force, ruleId null) from the 2026-09-26 capture, flipped between 2026-09-25 15:56 and 2026-09-26 16:56 UTC. End to end the channel is still closed: the Artifacts service refuses a host: declaration at publish and the claude.ai viewer refuses an undeclared host: call with not_in_manifest (measured on two accounts, 2026-09-27).",
       "provenance": [
         {
           "lesson": 195
+        },
+        {
+          "lesson": 211
         }
       ],
       "namespace": "desktop_fcache",
       "observed": {
         "present": true,
-        "source": "defaultValue",
-        "on": false,
-        "at": "ff36facd2d636210"
+        "source": "force",
+        "on": true,
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -8048,10 +8057,13 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.280",
-      "summary": "Value gate for Cowork Artifacts: sharingEnabled (default false; gates getArtifactRepublishContent), mcpCallsPerMinute (default 30), debugLogEnabled, verifyToolsEnabled. At the 2026-09-23 capture it serves {debugLogEnabled:true, verifyToolsEnabled:true} with no sharingEnabled.",
+      "summary": "Value gate for Cowork Artifacts: sharingEnabled (default false; gates getArtifactRepublishContent), mcpCallsPerMinute (default 30), debugLogEnabled, verifyToolsEnabled. At the 2026-09-23 capture it serves {debugLogEnabled:true, verifyToolsEnabled:true} with no sharingEnabled. verifyToolsEnabled && debugLogEnabled also enable mcp__cowork__verify_artifact (L212); both true from the 2026-09-26 capture.",
       "provenance": [
         {
           "lesson": 195
+        },
+        {
+          "lesson": 212
         }
       ],
       "namespace": "desktop_fcache",
@@ -8059,7 +8071,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -8081,7 +8093,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -8103,7 +8115,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -8125,7 +8137,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -8147,7 +8159,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -8244,7 +8256,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -8266,7 +8278,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -8288,7 +8300,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -8325,7 +8337,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
     },
     {
@@ -8347,8 +8359,246 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "ff36facd2d636210"
+        "at": "d21cd40b42abe59d"
       }
+    },
+    {
+      "id": "gate.822840158",
+      "kind": "gate",
+      "name": "822840158 (host-loop spawn settings file)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.281",
+      "summary": "New in Desktop 2.9939.2 (kx default true; unserved). Host-loop Cowork writes the agent's settings to <userData>/cowork-spawn-settings/<sessionId-suffix>-<hex>.json (created exclusively) instead of passing them inline; lam_host_loop_spawn_settings records a fallback to inline. The final hop to a --settings <path> argv is inferred.",
+      "provenance": [
+        {
+          "lesson": 213
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "d21cd40b42abe59d"
+      }
+    },
+    {
+      "id": "gate.3067718716",
+      "kind": "gate",
+      "name": "3067718716 (approvalSurface host_dialog)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.281",
+      "summary": "New in Desktop 2.9939.2 (kx default true; unserved). Permission answers from Desktop's local card carry approvalSurface:\"host_dialog\"; the agent recognises it (oPo, 2.1.281+) and 2.1.283 adds a hostDialogAttestations map. Its downstream use is not traced.",
+      "provenance": [
+        {
+          "lesson": 213
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "d21cd40b42abe59d"
+      }
+    },
+    {
+      "id": "gate.1169442571",
+      "kind": "gate",
+      "name": "1169442571 (auto-mode stand-down: adopted sessions)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.281",
+      "summary": "New in Desktop 2.9939.2 (kx default true; unserved). Auto mode defers to the classifier instead of prompting for adopted remote/SSH sessions.",
+      "provenance": [
+        {
+          "lesson": 213
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "d21cd40b42abe59d"
+      }
+    },
+    {
+      "id": "gate.1453979703",
+      "kind": "gate",
+      "name": "1453979703 (auto-mode stand-down: move_to_cloud)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.281",
+      "summary": "New in Desktop 2.9939.2 (kx default true; unserved). Auto mode defers to the classifier for mcp__ccd_session__move_to_cloud.",
+      "provenance": [
+        {
+          "lesson": 213
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "d21cd40b42abe59d"
+      }
+    },
+    {
+      "id": "gate.4288313598",
+      "kind": "gate",
+      "name": "4288313598 (per-model minimum CLI version)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.281",
+      "summary": "New in Desktop 2.9939.2 (kx default true; unserved). Session option minCliVersion: a prewarmed session on an older CLI is discarded with reason cli_below_model_floor.",
+      "provenance": [
+        {
+          "lesson": 213
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "d21cd40b42abe59d"
+      }
+    },
+    {
+      "id": "gate.1835121223",
+      "kind": "gate",
+      "name": "1835121223 (respawn waits for CLI install)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.281",
+      "summary": "New in Desktop 2.9939.2 (kx default true; unserved). A warm respawn waits for an in-flight CLI install, the companion of 4288313598's minCliVersion floor.",
+      "provenance": [
+        {
+          "lesson": 213
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "d21cd40b42abe59d"
+      }
+    },
+    {
+      "id": "gate.1753075645",
+      "kind": "gate",
+      "name": "1753075645 (artifact roster seed)",
+      "status": "dark-launched",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.281",
+      "summary": "New in Desktop 2.9939.2; served off (defaultValue). Would save cachedArtifactRoster to cowork-session-seed/.../artifact-roster.json at teardown and seed it into new sessions; the CLI reads that key.",
+      "provenance": [
+        {
+          "lesson": 213
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "d21cd40b42abe59d"
+      }
+    },
+    {
+      "id": "gate.4217215889",
+      "kind": "gate",
+      "name": "4217215889 (macOS entry points)",
+      "status": "removed",
+      "first_seen": null,
+      "removed_in": "2.9939.2",
+      "as_of": "2.1.281",
+      "summary": "Gated the macOS entry points (dock menu, Spotlight entries, OS Services, code deep links, folder drop) through Desktop 2.7032.0. Removed from code in 2.9939.2, where those entry points are on whenever the user is logged in; the fcache still serves the id and nothing reads it.",
+      "provenance": [
+        {
+          "lesson": 213
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": true,
+        "at": "d21cd40b42abe59d"
+      }
+    },
+    {
+      "id": "gate.1947305033",
+      "kind": "gate",
+      "name": "1947305033 (remote-devices artifact tools)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.281",
+      "summary": "remote-devices bridge (the Mac as a device for cloud sessions) carries create_artifact / update_artifact / list_artifacts. On (defaultValue); seen connecting with them in main.log on 2026-09-27.",
+      "provenance": [
+        {
+          "lesson": 212
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": true,
+        "at": "d21cd40b42abe59d"
+      }
+    },
+    {
+      "id": "gate.1847129881",
+      "kind": "gate",
+      "name": "1847129881 (list_legacy_live_artifacts)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.281",
+      "summary": "From Desktop 2.2553.1 the remote-devices bridge adds list_legacy_live_artifacts, whose description calls the mcp__cowork__ artifact tools' output 'legacy live artifacts', tells the model to use the native Artifact tool for new ones, and gives a migration recipe. On (defaultValue).",
+      "provenance": [
+        {
+          "lesson": 212
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": true,
+        "at": "d21cd40b42abe59d"
+      }
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_FAST_MODE",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_FAST_MODE",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.281",
+      "summary": "Agent: ro(){if(He()!==\"firstParty\")return!1;return!a.CLAUDE_CODE_DISABLE_FAST_MODE} gates the fast-mode setting (also read directly by Va() as fastModeEnabled). From Desktop 2.9939.2 the Cowork spawn sets it for every type===\"3p\" deployment: redundant for Bedrock/Vertex (He() already not first-party), a real fix for a gateway with a static credential (He() fell through to firstParty, so fast mode was reachable); gateway with interactive sign-in not settled.",
+      "provenance": [
+        {
+          "lesson": 214
+        },
+        {
+          "lesson": 58
+        }
+      ]
     }
   ]
 }

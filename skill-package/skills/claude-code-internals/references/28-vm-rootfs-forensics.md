@@ -216,8 +216,8 @@ counted occurrences of each in `rootfs.img`:
 `.claude-projects` are close behind; user-connected-folder units are comparatively rare, consistent with
 being opt-in per session. **`mnt-artifact*` and `CoworkArtifacts`: 0 occurrences in either image** — no
 artifact mount has ever been created on this machine, consistent with the host-loop gate (`1143815894`)
-being force-ON here and the `Artifact` tool's per-artifact bind mount being structurally VM-loop-only
-(see the new L149, which also documents host-loop's live-grant alternative to a mount).
+being force-ON here: host-loop reaches artifacts through a live grant, not a mount (L149). (L149's
+"VM-loop-only" reading of the `Artifact` tool itself held only until Desktop 1.32352.0; L212.)
 
 **Methodology note carried over from this re-run:** the first pass of this re-run reported zero mount
 units and zero `systemd`/`/sessions/` hits — impossible on a 10 GiB Linux image, and it was: the scan

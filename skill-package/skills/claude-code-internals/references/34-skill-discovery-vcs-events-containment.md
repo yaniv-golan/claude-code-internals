@@ -106,6 +106,8 @@ Distinct discovery tools per `claude_code_version` across the sweep:
 
 A real Cowork session's model self-report ("Deferred tools `ListSkills`/`SearchSkills`/`SuggestSkills`, no `mcp__skills__*` server") — which an earlier framing took as ground truth — is **confabulation**. The on-disk `init.tools` shows the exact opposite. **Tool-name self-reports are unreliable; the `init` record is authoritative. Key any tool-surface question on the `system/init` `tools` array, never on what the agent says it has.**
 
+One limit on that rule: `init.tools` is authoritative for what was **rendered**, not for what can be **called**. `disallowedTools` removes a native tool from the array (`AskUserQuestion` is missing from 421 of 457 scheduled-session frames on the capturing machine) but leaves a disallowed MCP tool listed (the onboarding role picker is in 457 of 457). So a listed `mcp__…` tool may still be refused. Read `disallowedTools` next to it. This rests on name counts across the corpus, not on a trace of the agent code (L212).
+
 ## The `CLAUDE_CODE_REMOTE`/`vLt` puzzle is moot for the model surface
 
 The native tools (gated by `vLt`, i.e. `CLAUDE_CODE_REMOTE`) simply **never render** in real Cowork — their absence needs no explanation. The tools the model uses arrive via SDK-MCP, which never touches `vLt`. So `Wt(CLAUDE_CODE_REMOTE)` polarity is irrelevant to what reaches the model. Even if the `vLt` fallback fired (requires `tengu_saddle_lantern` on, default off), the native tools would be **additive** to the SDK-MCP pair — a state no real session has ever shown.
@@ -473,7 +475,7 @@ If 1.24012.x moves real Desktop sessions' transcripts into the VM, **the host-si
 | `tengu_saddle_lantern` (`pI_`) | feature flag | CLI bundle | One cached read drives native-family enable (`fI_`) + `SuggestSkills.shouldDefer` + branching prompt (`pdd`); default off |
 | `ekl` = `{claude-desktop, claude-desktop-3p, local-agent}` | entrypoint set | CLI bundle | `vth()`/`LZe()` allowlist; extends Ch30/L116 taxonomy |
 | `mcp__skills__list_skills`/`suggest_skills`, `mcp__plugins__*` | SDK-MCP tools | asar | The discovery tools the model **actually** sees, via `sdkMcpServers`/`mcp_message` (L129) |
-| `system/init` `tools` array | stream record | `audit.jsonl` | Authoritative rendered tool list; beats any model self-report |
+| `system/init` `tools` array | stream record | `audit.jsonl` | Authoritative rendered tool list; beats any model self-report. A disallowed MCP tool stays listed, so listed ≠ callable for `mcp__…` (L212) |
 | `code_change_published` | control-subtype | CLI 2.1.216+ | PR-publish event (`izr`, github-URL prefix); SDK-native replacement for `gh pr create` scraping (L130) |
 | `vcs_state_changed` | control-subtype | CLI 2.1.216+ | commit/push/merge/rebase event (`hlo`); strict `kind` enum agent-side |
 | `cliSupportsVcsSdkEvents` = `isPinnedCliAtLeast("2.1.217")` | capability | asar only | Desktop consumption floor (one-version blind window vs the 2.1.216 emit floor) |

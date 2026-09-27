@@ -1,5 +1,59 @@
 # Changelog
 
+## v2.56.0 — 2026-09-27 (this fork) — Artifacts and local MCP servers, measured; Cowork's other artifact tools; Desktop 2.9939.2's gates
+
+Adds Chapter 57 (L211–L214); counts move to 214/57. The leads came from a review of the cowork-harness project's commits
+from 2026-09-16 to 2026-09-26, and each was re-derived first-party before it was written.
+
+- **L211 — can an Artifact call my local MCP server? Not today.**
+  - **Desktop's half is on.** Gate `2864556627`, which switches the host-tools bridge, flipped to force-on between
+    2026-09-25 15:56 and 2026-09-26 16:56 UTC. It is the only one of 105 forced gates with no rule id.
+  - **Publishing refuses it.** A live probe on 2026-09-27 found the Artifacts service refusing a `host:` declaration
+    (`host_unavailable`). The agent requires `features.mcp.host` in the account's `/api/frame/contract` roster, and
+    reads it once per session. This held on two accounts.
+  - **The viewer refuses it.** The claude.ai viewer refuses an undeclared `host:` call with `not_in_manifest` in
+    3–8 ms, before anything reaches Desktop. `main.log` shows no bridge line, and the probe server got no call.
+  - **Desktop won't scope it later.** Once claude.ai opens, Desktop offers every connected local server to a page and
+    never checks the page's grant.
+  - **One server runs twice.** A `claude_desktop_config.json` server runs as two processes, one for chat and one for
+    Cowork.
+  - New facts `plugins.artifacts-cannot-call-local-servers` and `plugins.local-server-runs-twice`.
+- **L212 — Cowork's other artifact tools.**
+  - `mcp__cowork__create_artifact`, `update_artifact`, `list_artifacts` and `verify_artifact` are the complement of
+    the native `Artifact` tool's session predicate. Every scheduled task gets them, and an unattended frame-artifact
+    session gets neither. Desktop describes them as legacy.
+  - `read_widget_context` is always present.
+  - A disallowed MCP tool stays in `system/init` `tools`, so listed is not callable.
+- **L213 — Desktop 2.9939.2's 28 new gate ids.**
+  - Host-loop spawns write `--settings` to a file (`822840158`).
+  - Permission answers carry `approvalSurface:"host_dialog"` (`3067718716`).
+  - Auto mode stands down in more places.
+  - A model can set a minimum CLI version (`minCliVersion`).
+  - A roster seed is added, off.
+  - The macOS entry points are ungated (`4217215889` removed).
+  - Twelve unserved ids default on. A string-literal diff misses five ids that exist only as table keys.
+- **L214 — HIPAA egress and fast mode on third-party.**
+  - For an org marked HIPAA, a `*` in the VM egress allowlist becomes four Anthropic and Claude domains.
+  - `CLAUDE_CODE_DISABLE_FAST_MODE` is set on every third-party Cowork spawn. It changes behaviour only for a gateway
+    with a static credential, which the agent took for first-party.
+- **Corrected:**
+  - **L195** now gives the current state: the code has been present since 1.34493.1 (not "at least 1.46388.4"), the
+    grant is logged and never enforced, and the attach sites include artifact frames in the main window.
+  - **L149**, **Ch31** and `state/cowork-architecture.md` said the native `Artifact` tool was structurally VM-loop-only.
+    That held only between 1.28929.0 and 1.32352.0.
+  - **L129**: `init.tools` is authoritative for what was rendered, not for what can be called.
+  - The fcache header is `CLF\x02` from 1.34493.1 (in `troubleshooting.json`).
+  - Author facts:
+    - `shell.python-stack-is-preinstalled`: its caveat credited OCR, PDF and office-conversion tools to the cloud
+      sandbox alone, but the local image has them too. The fact now names the local lane, drops the "~149 packages"
+      count, and is re-read from the 2.9939.2 guest image.
+    - `shell.no-package-installs` drops the same count.
+  - `state/credential-channels.md` is brought to the current state.
+- **fcache re-captured 2026-09-27** (`d21cd40b42abe59d`, 382 features). All 69 pinned gates were re-observed, and only
+  `2864556627` moved. No served key inside a value gate changed.
+  - New registry entries: ten gates and `env.CLAUDE_CODE_DISABLE_FAST_MODE`.
+  - Does not move the CLI or Desktop code baselines.
+
 ## v2.55.4 — 2026-09-25 (this fork) — the sandbox and can-change badges are chips again
 
 Site only. `references/site-links.json` is byte-identical.

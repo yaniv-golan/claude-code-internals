@@ -1512,7 +1512,7 @@
    "lessons": [
     124
    ],
-   "hint": "The Desktop fcache is no longer raw JSON -- it's a container with magic CLF\\x01\\x00 + 3 bytes, then a gzip stream starting at byte 8. Raw grep/strings against the file will falsely report gates as absent. Decode first: tail -c +9 fcache | gunzip, then search the decompressed JSON."
+   "hint": "The Desktop fcache is no longer raw JSON -- it's a container with magic CLF + a version byte (\\x02 since Desktop 1.34493.1, \\x01 before) + 4 bytes, then a gzip stream starting at byte 8. Raw grep/strings against the file will falsely report gates as absent. Decode first: tail -c +9 fcache | gunzip, then search the decompressed JSON."
   },
   {
    "pattern": [
@@ -2125,10 +2125,11 @@
     "artifact page call local MCP server"
    ],
    "lessons": [
+    211,
     195,
     105
    ],
-   "hint": "Desktop has an Artifact host-tools bridge (page sends claude-page:host-tools-hello, then host:<server> calls run via LocalMcpServerManager.callTool), but every call returns capability_disabled while gate 2864556627 is off (off at the 2026-09-23 capture). Collect secrets through elicitation, not a page form."
+   "hint": "Not today. Desktop's host-tools bridge (page sends claude-page:host-tools-hello, then host:<server> calls run via LocalMcpServerManager.callTool) is switched on by gate 2864556627, on from the 2026-09-26 capture. But the Artifacts service refuses a host: declaration at publish (host_unavailable: no features.mcp.host in the contract roster), and the claude.ai frame shell refuses an undeclared host: call with not_in_manifest before it reaches Desktop (L211, measured on two accounts). Collect secrets through elicitation, not a page form."
   },
   {
    "pattern": [
@@ -2316,6 +2317,91 @@
     208
    ],
    "hint": "The claude.ai interface picks the lane; its code returns local_opted_out when the account setting dramatic_shrimp_enabled is false, but a saved opt-out still gave cloud sessions on 2026-09-25 (also in Auto mode). Switching to local saves only after the feedback dialog's main button. Proven local route: a scheduled task with its own 'Only on this computer' switch on, run with Run now. Check with pwd: /sessions/<slug> local, /home/claude cloud."
+  },
+  {
+   "pattern": [
+    "host servers aren't available in this session",
+    "host_unavailable",
+    "artifact host: declaration refused",
+    "mcp manifest rejected locally-configured"
+   ],
+   "lessons": [
+    211,
+    195
+   ],
+   "hint": "The Artifacts service did not advertise features.mcp.host for your account, so a host:<name> declaration is refused at publish. It is read once per session: retry from a new session. On 2026-09-27 it was refused on every account tested."
+  },
+  {
+   "pattern": [
+    "not_in_manifest host:",
+    "artifact callTool host: fails",
+    "outside the scope you consented to"
+   ],
+   "lessons": [
+    211
+   ],
+   "hint": "The claude.ai viewer checks the page's published manifest before anything reaches Desktop; an undeclared host: call is refused in milliseconds. A host: server must be declared, which publishing currently refuses (L211)."
+  },
+  {
+   "pattern": [
+    "MCP server started twice",
+    "local MCP server two processes",
+    "claude_desktop_config server state lost",
+    "MCP server duplicate instance"
+   ],
+   "lessons": [
+    211
+   ],
+   "hint": "Claude Desktop runs a claude_desktop_config.json server once per client (chat and Cowork), each with its own memory. Keep shared state on disk and make startup safe to run twice."
+  },
+  {
+   "pattern": [
+    "create_artifact",
+    "mcp__cowork__create_artifact",
+    "scheduled task has no Artifact tool",
+    "update_artifact verify_artifact"
+   ],
+   "lessons": [
+    212
+   ],
+   "hint": "Sessions not eligible for the native Artifact tool (every scheduled task, bridge and dispatch-child sessions, frame artifacts off, HIPAA) get Desktop's mcp__cowork__ artifact tools instead. An unattended interactive frame-artifact session gets neither."
+  },
+  {
+   "pattern": [
+    "tool listed in init but refused",
+    "init.tools disallowed MCP tool",
+    "listed but not callable"
+   ],
+   "lessons": [
+    212,
+    129
+   ],
+   "hint": "disallowedTools removes a native tool from system/init tools but leaves a disallowed MCP tool listed. Check disallowedTools alongside init.tools."
+  },
+  {
+   "pattern": [
+    "HIPAA egress",
+    "egress allowlist wildcard removed",
+    "VM can only reach anthropic.com",
+    "vm_egress_allowlist"
+   ],
+   "lessons": [
+    214
+   ],
+   "hint": "From Desktop 2.9939.2, for an org marked HIPAA a * in the Cowork VM's egress allowlist is replaced by *.anthropic.com, anthropic.com, claude.com and *.claude.com."
+  },
+  {
+   "pattern": [
+    "fast mode gateway",
+    "fast mode third-party",
+    "fast mode missing Bedrock",
+    "CLAUDE_CODE_DISABLE_FAST_MODE Cowork"
+   ],
+   "lessons": [
+    214,
+    58
+   ],
+   "hint": "Fast mode is first-party only. Desktop 2.9939.2 also sets CLAUDE_CODE_DISABLE_FAST_MODE for every third-party Cowork deployment, which closes the case of a gateway with a static credential being taken for first-party."
   }
  ]
 }
