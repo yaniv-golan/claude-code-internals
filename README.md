@@ -14,7 +14,7 @@
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-plugin-F97316)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/plugins)
 [![Improved with Skill Creator Plus](https://img.shields.io/badge/Improved_with-Skill_Creator_Plus-4ecdc4?style=flat-square)](https://github.com/yaniv-golan/skill-creator-plus)
 
-**Skill Version:** 2.57.0 | **Captured from:** Claude Code v2.1.231 (+ Claude Desktop app.asar through 2.7032.0 + Desktop-managed host agent Mach-O through 2.1.280 + in-VM ELF claude-code-vm through 2.1.280 + the golden Cowork VM disk image `rootfs.img` + live `fcache` decodes + Desktop's Chromium HTTP cache) | **Date:** 2026-08-14 | **License:** MIT
+**Skill Version:** 2.57.1 | **Captured from:** Claude Code v2.1.231 (+ Claude Desktop app.asar through 2.7032.0 + Desktop-managed host agent Mach-O through 2.1.280 + in-VM ELF claude-code-vm through 2.1.280 + the golden Cowork VM disk image `rootfs.img` + live `fcache` decodes + Desktop's Chromium HTTP cache) | **Date:** 2026-08-14 | **License:** MIT
 
 ---
 
@@ -26,11 +26,10 @@
 
 *— or install manually —*
 
-1. Click **Customize** in the sidebar
-2. Click **Browse Plugins**
-3. Go to the **Personal** tab and click **+**
-4. Choose **Add marketplace**
-5. Type `yaniv-golan/claude-code-internals` and click **Sync**
+1. Click **Customize** in the sidebar and open the **Plugins** tab
+2. Click **+ Add** → **Add marketplace**
+3. Enter `yaniv-golan/claude-code-internals` and add it
+4. Install **claude-code-internals** from that marketplace
 
 ### Claude Code (CLI)
 
@@ -50,8 +49,8 @@ Or from within a Claude Code session:
 
 1. Download [`claude-code-internals.zip`](https://github.com/yaniv-golan/claude-code-internals/releases/latest/download/claude-code-internals.zip)
 2. Click **Customize** in the sidebar
-3. Go to **Skills** and click **+**
-4. Choose **Upload a skill** and upload the zip file
+3. Open the **Skills** tab and click **+ Add** → **Upload skill**
+4. Upload the zip file
 
 ### Manus
 
@@ -369,7 +368,7 @@ claude-code-internals/
 │   └── skills/
 │       └── claude-code-internals/  The skill itself
 │           ├── SKILL.md            Skill brain (search strategy, lesson index)
-│           ├── version.json        Version tracking (v2.57.0 / v2.1.231)
+│           ├── version.json        Version tracking (v2.57.1 / v2.1.231)
 │           ├── hooks-config.json   PreToolUse hook definition
 │           ├── references/
 │           │   ├── 01-core-architecture-tools.md
@@ -515,7 +514,7 @@ claude-code-internals/
 
 ```json
 {
-  "skill_version": "2.57.0",
+  "skill_version": "2.57.1",
   "captured_version": "2.1.231",
   "verified_against_binary": "2.1.231",
   "captured_date": "2026-08-14"
@@ -556,7 +555,7 @@ This repository is a fork of [stuinfla/claude-code-internals](https://github.com
 - The PreToolUse `.claude/` hook (`config-aware-hook.sh`), version check script, and TF-IDF index builder
 - The original README documentation and architecture diagrams
 
-**What this fork adds** (v2.2.0–v2.57.0, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
+**What this fork adds** (v2.2.0–v2.57.1, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)):
 
 - Chapter 9 (Lessons 51–56): binary-verified new features in Claude Code v2.1.90, extracted directly from the Bun SEA binary and verified against official docs
 - Chapter 10 (Lessons 57–59): binary-verified changes in Claude Code v2.1.92 — new commands, removed commands, new env vars, and AskUserQuestionTool documentation

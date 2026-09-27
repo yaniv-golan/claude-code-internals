@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.57.1 — 2026-09-27 (this fork) — install steps for the new Customize screen
+
+Docs and install page only. No lesson, fact or baseline changes.
+
+- **Claude Desktop.** Desktop's Customize screen was redesigned. The manual install steps in the README and on
+  the page the install badges open (`site/static/install-claude-desktop.html`) named labels that no longer exist
+  (**Browse Plugins**, the **Personal** tab, **Sync**). They now read: Customize → **Plugins** tab →
+  **+ Add → Add marketplace** → enter `yaniv-golan/claude-code-internals` → install the plugin from it. Checked
+  against screenshots of the current Customize screen.
+- **Claude.ai (web).** The upload step now reads **Skills → + Add → Upload skill** (was "click + → Upload a
+  skill").
+- Not changed: the one-click deep link the install page tries first. Whether the redesigned screen still
+  honours it hasn't been checked; the manual steps are the fallback either way.
+
 ## v2.57.0 — 2026-09-27 (this fork) — how a cloud session reaches the user's computer; how a chat becomes a workspace
 
 Adds Chapter 58 (L215–L216); counts move to 216/58. Prompted by a review request from the skill-creator-plus project.
