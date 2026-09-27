@@ -1,5 +1,32 @@
 # Changelog
 
+## v2.57.0 — 2026-09-27 (this fork) — how a cloud session reaches the user's computer; how a chat becomes a workspace
+
+Adds Chapter 58 (L215–L216); counts move to 216/58. Prompted by a review request from the skill-creator-plus project.
+
+- **L215 — the device tools, probed live.** A cloud Cowork task (Desktop 2.9939.2 connected) reached the Mac only through
+  `mcp__remote-devices__*` tools, loaded on demand:
+  - `get_device_info` shows the Desktop build, **every top-level home-folder name** and the local MCP servers' states
+    before any folder is granted.
+  - `device_request_folder_access` asks "Claude wants to use a folder on your computer" (Allow once, this session only).
+  - `device_stage_files` copies files into `/mnt/user-data/uploads/<folder>/…`, byte-identical, through the Files API.
+  - `device_commit_files` writes a file from the container's outputs folder (or a `SendUserFile` id) to a path inside
+    a granted folder. It refuses when the file changed since it was staged (`force` overrides); no prompt per write.
+  - `device_bash` runs in **the Mac's Cowork VM** (Ubuntu 22.04.5, a per-session user `rcw-<id>`, the folder at
+    `$HOME/mnt/<folder>`). Deleting fails until `device_request_delete_permission` is approved; the mount then becomes
+    `rwd`.
+  - The session's own Write to `/Users/…` "succeeded" and created the file in the cloud container. Nothing reached the
+    Mac.
+  - New fact `paths.cloud-session-reaches-the-computer-through-device-tools`.
+- **L216 — one conversation, two runtimes (code only).** The claude.ai composer picks a backend (Cowork session, hub
+  or REST) from where it is mounted and the conversation record, not from the message. The hub API schema, embedded
+  in the client as base64 protobuf descriptors, gives a conversation a work mode (`CHAT`, `WORKSPACE_PROXY`,
+  `TOOL_FAULT_PROXY`, `FULL_PROXY`) and a `WorkspaceUpgrade` into a cloud Cowork workspace, triggered by the client
+  (a folder and device picked), the model (`hub_workspace_setup`) or, from the trigger list, the server. A Cowork session
+  can also be continued or shown as a chat. None of this was observed live.
+- **L209.** `/bin/sh` is `dash` in the cloud container and in the Mac's Cowork VM (measured), so a missing hook script
+  exits 2 in both. `plugins.missing-hook-script-can-block` and `delivery.never-commit-to-disk` gain caveats.
+
 ## v2.56.0 — 2026-09-27 (this fork) — Artifacts and local MCP servers, measured; Cowork's other artifact tools; Desktop 2.9939.2's gates
 
 Adds Chapter 57 (L211–L214); counts move to 214/57. The leads came from a review of the cowork-harness project's commits

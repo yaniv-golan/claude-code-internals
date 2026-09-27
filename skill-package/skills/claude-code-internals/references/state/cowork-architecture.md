@@ -3,7 +3,7 @@ domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198, 207, 208, 210, 211, 212, 213, 214]
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198, 207, 208, 210, 211, 212, 213, 214, 215, 216]
 updated: 2026-09-27
 ---
 
@@ -667,6 +667,36 @@ did run locally. The bundled interface and three builds fetched from
 - **Fast mode on 3p.** `CLAUDE_CODE_DISABLE_FAST_MODE` is set for every
   third-party deployment; it changes behaviour only for a gateway with a static
   credential (L214).
+
+## A cloud session and the user's computer (L215)
+
+Measured 2026-09-27 (Desktop 2.9939.2, `remote_cowork`): a cloud session reaches the
+Mac only through `mcp__remote-devices__*` tools the running Desktop serves (deferred,
+loaded via ToolSearch). `get_device_info` shows platform, Desktop build, every top-level
+home-folder name (Desktop/Documents/Downloads flagged `requiresGrantBeforeListing`) and
+local MCP server states before any grant. `device_request_folder_access` → "Allow once",
+session-scoped. `device_stage_files` copies files into `/mnt/user-data/uploads/<folder>/…`
+(byte-identical, via the Files API); `device_commit_files` writes a file from the outputs
+folder (or a `SendUserFile` id) to an absolute path inside a granted folder, with an mtime
+guard (`force` overrides), no per-write prompt. `device_bash` runs in the **Mac's Cowork VM**
+(Ubuntu 22.04.5 aarch64, per-session user `rcw-<id>`, `$HOME=/sessions/rcw-<id>`, folder
+at `$HOME/mnt/<folder>`, `/bin/sh` → dash); deleting needs
+`device_request_delete_permission` (mount `rw` → `rwd`). The session's own Write to a
+`/Users/…` path succeeds silently **inside the container**. The cloud container's
+`/bin/sh` is dash too.
+
+## One conversation, two runtimes (L216)
+
+Code-level (claude.ai client + its embedded `bard_api.proto`/`conversation.proto`, not
+observed live): the composer sends to `session` / `hub` / `rest` by mount point and
+conversation record, not by message. A hub conversation has a work mode
+(`CHAT` / `WORKSPACE_PROXY` / `TOOL_FAULT_PROXY` / `FULL_PROXY`) and can be upgraded into
+a cloud Cowork workspace (`WorkspaceUpgrade`, lane `COWORK_REMOTE`; triggers incl.
+`INTERCEPTED_TOOL`, `ATTACHMENT`, `MEDIA_LIMIT`, `DEVICE_ELECTION`), by the client
+(`workModeOverride:"workspace_proxy"` on folder+device pick), the model
+(`hub_workspace_setup` tool) or presumably the server. A Cowork session can be continued
+or shown as a chat (`continuation`, `cowork_session_presented_as_chat`, flag
+`cai_serene_pine`). Unrelated to the Desktop's local Chat mode.
 
 ## Credential delivery and build identity (L207)
 

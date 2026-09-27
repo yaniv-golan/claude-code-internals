@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-23",
+ "generated": "2026-09-27",
  "description": "Cross-reference map: for each lesson, lists related lessons ranked by relevance",
  "references": {
   "1": [
@@ -4104,6 +4104,50 @@
     "id": 110,
     "relevance": 0.45,
     "reason": "model landscape and fast mode"
+   }
+  ],
+  "215": [
+   {
+    "id": 126,
+    "relevance": 0.9,
+    "reason": "remote_devices, the same bridge's computer tools"
+   },
+   {
+    "id": 197,
+    "relevance": 0.8,
+    "reason": "granted-folder skills staged as stubs"
+   },
+   {
+    "id": 198,
+    "relevance": 0.7,
+    "reason": "the cloud surface's paths"
+   },
+   {
+    "id": 209,
+    "relevance": 0.5,
+    "reason": "dash in both Linux places settles the missing-script trap"
+   },
+   {
+    "id": 216,
+    "relevance": 0.6,
+    "reason": "how a chat gains a workspace and a device"
+   }
+  ],
+  "216": [
+   {
+    "id": 215,
+    "relevance": 0.6,
+    "reason": "a device-elected workspace brings the device tools"
+   },
+   {
+    "id": 210,
+    "relevance": 0.6,
+    "reason": "the local-vs-cloud router for Cowork tasks"
+   },
+   {
+    "id": 198,
+    "relevance": 0.5,
+    "reason": "the surfaces a skill can land on"
    }
   ]
  }

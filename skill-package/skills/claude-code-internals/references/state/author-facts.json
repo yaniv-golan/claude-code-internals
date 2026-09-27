@@ -475,11 +475,14 @@
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          138
+          138,
+          215
         ],
         "state_page": "cowork-architecture"
       },
-      "caveats": []
+      "caveats": [
+        "In a cloud session with the user's computer connected, the platform's own commit tool tells the model to copy every requested deliverable to the computer. That is the platform deciding delivery, which is what this rule leaves to it; a skill still should not name that tool."
+      ]
     },
     {
       "id": "delivery.no-local-server",
@@ -741,6 +744,33 @@
       "caveats": []
     },
     {
+      "id": "paths.cloud-session-reaches-the-computer-through-device-tools",
+      "page": "files-and-paths",
+      "rule": "In a cloud session, do not treat a path on the user's computer as a path your file tools or shell can use.",
+      "detail": "When a Cowork task runs in the cloud with the user's computer connected, the session's own file tools and shell act on the cloud container. Writing to a path on the computer with the ordinary write tool reports success and creates the file in the container, where the user never sees it. Files on the computer are read by copying them into the container first, written back by copying a file from the outputs location, and commands on the computer run in its Linux virtual machine with the folder mounted under a different path. Deleting there needs its own permission from the user.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "lane": "remote",
+      "volatile_dependency": false,
+      "sources": {
+        "lessons": [
+          215
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": [
+        "Measured in one cloud session on one account with Desktop 2.9939.2, with a folder the user granted during the session."
+      ],
+      "verified": {
+        "date": "2026-09-27",
+        "desktop_asar": "2.9939.2",
+        "cli": "2.1.231",
+        "agent": "2.1.281",
+        "basis": "live"
+      }
+    },
+    {
       "id": "paths.projects-differ-from-folders",
       "page": "files-and-paths",
       "rule": "Do not assume a connected project gives you a folder mount. It does not.",
@@ -996,15 +1026,16 @@
       "volatile_dependency": false,
       "sources": {
         "lessons": [
-          209
+          209,
+          215
         ],
         "state_page": "plugins-skills-hooks"
       },
       "caveats": [
-        "The agent's handling is read from the shipped agent; the shell exit codes were measured, but a blocked tool call from a missing script was not reproduced in a live session, and which shell each Cowork lane uses was not checked."
+        "The agent's handling is read from the shipped agent; a blocked tool call from a missing script was not reproduced in a live session. The usual shell was measured as dash in the cloud Cowork container and in the Cowork virtual machine on the user's computer; hooks of a local session on a Mac run under the macOS shell."
       ],
       "verified": {
-        "date": "2026-09-25",
+        "date": "2026-09-27",
         "desktop_asar": "2.9939.2",
         "cli": "2.1.231",
         "agent": "2.1.281",

@@ -398,6 +398,20 @@
         "plugins-and-plugin-root",
         2
       ]
+    ],
+    "215": [
+      [
+        "delivering-outputs",
+        1
+      ],
+      [
+        "files-and-paths",
+        1
+      ],
+      [
+        "plugins-and-plugin-root",
+        1
+      ]
     ]
   },
   "by_state_page": {
@@ -407,11 +421,11 @@
         11
       ],
       [
-        "delivering-outputs",
-        9
+        "files-and-paths",
+        10
       ],
       [
-        "files-and-paths",
+        "delivering-outputs",
         9
       ],
       [
@@ -498,6 +512,7 @@
     "detect.two-contexts": "detecting-cowork#fact-detect-two-contexts",
     "input.elicitation-over-askuserquestion": "asking-the-user#fact-input-elicitation-over-askuserquestion",
     "paths.always-pass-a-search-path": "files-and-paths#fact-paths-always-pass-a-search-path",
+    "paths.cloud-session-reaches-the-computer-through-device-tools": "files-and-paths#fact-paths-cloud-session-reaches-the-computer-through-device-tools",
     "paths.connected-folders-are-mounts": "files-and-paths#fact-paths-connected-folders-are-mounts",
     "paths.projects-differ-from-folders": "files-and-paths#fact-paths-projects-differ-from-folders",
     "paths.relative-filenames": "files-and-paths#fact-paths-relative-filenames",
