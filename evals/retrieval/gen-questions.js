@@ -310,7 +310,7 @@ async function generate(opts, deps) {
 
     if (!accepted) {
       const reason = modelFailed ? 'model call failed' : 'plain_question leaked an identifier after max retries';
-      state.dropped.push({ lesson_id: lesson.id, reason, leak_retries: leakRetries });
+      if (!modelFailed) state.dropped.push({ lesson_id: lesson.id, reason, leak_retries: leakRetries });
       process.stderr.write(`lesson ${lesson.id}: dropped (${reason}) after ${leakRetries} leak retries\n`);
     } else {
       state.questions.push({
@@ -323,7 +323,8 @@ async function generate(opts, deps) {
       });
     }
 
-    state.done.lessons.push(lesson.id);
+    // A model failure is retried on resume; a leak-exhausted drop is final.
+    if (!modelFailed) state.done.lessons.push(lesson.id);
     writePartial(outPath, state);
   });
 
@@ -349,10 +350,11 @@ async function generate(opts, deps) {
         qid: nextQid('st'), stratum: 'state', lesson_id: null, registry_id: entry.id,
         split: questionSplit, text: String(parsed.question || ''),
       });
+      // Only a success counts as done, so a resumed run retries failures.
+      state.done.state_entries.push(entryId);
     } catch (err) {
       process.stderr.write(`state entry ${entryId}: model call failed: ${err.message}\n`);
     }
-    state.done.state_entries.push(entryId);
     writePartial(outPath, state);
   });
 
@@ -373,10 +375,10 @@ async function generate(opts, deps) {
           split: negSplit, text: String(text),
         });
       }
+      state.done.negatives = true;
     } catch (err) {
       process.stderr.write(`negatives: model call failed: ${err.message}\n`);
     }
-    state.done.negatives = true;
     writePartial(outPath, state);
   }
 
