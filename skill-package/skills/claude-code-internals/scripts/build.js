@@ -6,8 +6,8 @@
  * DERIVED (written by default, compared by --check):
  *   references/topic-index.json   lessons[].startLine, lessons[].endLine, total_lessons
  *   version.json                  lessons_count, chapters_count
- *   references/semantic-index.json  rebuilt via build-rvf-index.js whenever the
- *                                   line bounds it embeds disagree with topic-index
+ * (The TF-IDF search index is not a file: search.js and semantic-search.js
+ * derive it from topic-index.json at load time, see lib/tfidf-index.js.)
  * It also removes the `generated:` date stamps from topic-index.json,
  * cross-references.json and troubleshooting.json (nothing reads them, and a
  * stamp that changes on every edit only produces diff noise).
@@ -39,7 +39,7 @@
  * JSON is rewritten through check-json-format.js's order-preserving parser and
  * emitter, so integer-like keys keep their order and only changed values move.
  *
- *   node scripts/build.js            write derived fields (and rebuild the semantic index if needed)
+ *   node scripts/build.js            write derived fields
  *   node scripts/build.js --check    compare only; exit 1 listing every stale field/file
  *   node scripts/build.js --root DIR operate on another skill directory (tests)
  */
@@ -48,7 +48,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execFileSync } = require('child_process');
 const { parseOrdered, emit, PINNED } = require('./check-json-format.js');
 
 const LESSON_HEADING = /^#{1,4}\s*LESSON\s+0*(\d+)/i;
@@ -176,7 +175,7 @@ function serialize(tree, rel, fallback) {
 /**
  * Compute everything in memory. Returns
  *   { errors, outputs: [{rel, abs, text}], bounds: Map(id -> {startLine,endLine}),
- *     lessonsCount, chaptersCount, semanticStale: [..] }
+ *     lessonsCount, chaptersCount, topic }
  */
 function build(skillDir) {
   const refs = path.join(skillDir, 'references');
@@ -194,6 +193,8 @@ function build(skillDir) {
   for (const l of topic.lessons) {
     if (ids.has(l.id)) errors.push(`duplicate lesson id ${l.id} in topic-index.json`);
     ids.add(l.id);
+    // Optional hand-written summary; lib/tfidf-index.js indexes it with the title and keywords.
+    if ('description' in l && typeof l.description !== 'string') errors.push(`lesson ${l.id} description must be a string`);
   }
 
   // scan every reference file
@@ -310,26 +311,6 @@ function build(skillDir) {
   return { errors, outputs, bounds, lessonsCount, chaptersCount, topic };
 }
 
-/** Fields of the semantic index that disagree with the derived bounds. */
-function semanticStale(skillDir, bounds) {
-  const abs = path.join(skillDir, 'references', 'semantic-index.json');
-  const stale = [];
-  const sem = JSON.parse(fs.readFileSync(abs, 'utf8'));
-  const entries = sem.entries || [];
-  if (entries.length !== bounds.size) stale.push(`semantic-index.json has ${entries.length} entries for ${bounds.size} lessons`);
-  const seen = new Set();
-  for (const e of entries) {
-    seen.add(e.id);
-    const b = bounds.get(e.id);
-    if (!b) { stale.push(`semantic-index.json entry ${e.id} is not a lesson`); continue; }
-    if (e.startLine !== b.startLine || e.endLine !== b.endLine) {
-      stale.push(`semantic-index.json entry ${e.id}: ${e.startLine}-${e.endLine}, expected ${b.startLine}-${b.endLine}`);
-    }
-  }
-  for (const id of bounds.keys()) if (!seen.has(id)) stale.push(`semantic-index.json is missing lesson ${id}`);
-  return stale;
-}
-
 /** Human-readable list of what differs between two versions of an output file. */
 function describeDiff(out, derived) {
   const lines = [];
@@ -371,7 +352,6 @@ function main(argv) {
   if (check) {
     const stale = [];
     for (const o of changed) stale.push(...describeDiff(o, derived));
-    stale.push(...semanticStale(skillDir, derived.bounds));
     if (stale.length) {
       console.error(`build.js --check: ${stale.length} stale derived field(s) — run node scripts/build.js`);
       for (const s of stale) console.error(`  ${s}`);
@@ -385,21 +365,12 @@ function main(argv) {
     fs.writeFileSync(o.abs, o.text);
     console.log(`wrote ${o.rel}`);
   }
-  if (semanticStale(skillDir, derived.bounds).length) {
-    execFileSync(process.execPath, [path.join(__dirname, 'build-rvf-index.js')], {
-      env: { ...process.env, BUILD_RVF_REFS: path.join(skillDir, 'references') },
-      stdio: ['ignore', 'ignore', 'inherit'],
-    });
-    console.log('rebuilt references/semantic-index.json');
-    const left = semanticStale(skillDir, derived.bounds);
-    if (left.length) { console.error(left.join('\n')); return 1; }
-  }
   if (!changed.length) console.log('derived fields already up to date');
   return 0;
 }
 
 module.exports = {
   scanLines, isThematicBreak, isSeparator, trimEnd, findHeadings,
-  lessonMatchesHeading, checkCoverage, build, semanticStale,
+  lessonMatchesHeading, checkCoverage, build,
 };
 if (require.main === module) process.exitCode = main(process.argv.slice(2));

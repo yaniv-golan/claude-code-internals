@@ -1,11 +1,11 @@
 {
-  "generated_from_commit": "2b26a127d6ab72abbfaf61066a2a9b391c15cce4",
+  "generated_from_commit": "6eadd96516df8c89050d019ec32dfb40618e440e",
   "worktree_dirty": true,
   "index_hashes": {
-    "topic_index": "aecde979d05b691eaa8f2fb77e96281df2c7029580cfd25e9404b4eb9359c62a",
-    "semantic_index": "972226aff230b49eb496193bc0a9e955f66583f2b390b56260ff963487dbe6e8"
+    "topic_index": "626beddc5f0fef649ecda5d742636726c03f0a3fbc8bcb13c32e613dd049f7ab",
+    "registry": "4347a565b077f180c6638f1c2f72c865f84782e60fdeb86425d16095f7cbfee0"
   },
-  "generated_at": "2026-09-28T11:50:40.440Z",
+  "generated_at": "2026-09-28T12:32:09.002Z",
   "cases": [
     {
       "name": "afk-mode-2026-01-31",

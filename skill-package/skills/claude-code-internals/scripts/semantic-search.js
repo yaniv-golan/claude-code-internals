@@ -2,14 +2,16 @@
 /**
  * semantic-search.js
  *
- * TF-IDF cosine-similarity search over the Claude Code internals semantic index.
+ * TF-IDF cosine-similarity search over the Claude Code internals lessons.
  *
  * Usage: node semantic-search.js "your query here"
  *        node semantic-search.js "your query" --top=5
  *        node semantic-search.js "your query" --json
  *
- * Reads semantic-index.json (built by build-rvf-index.js) and returns
- * the top matching lessons with scores, file paths, and line ranges.
+ * Builds (or loads from cache) the TF-IDF index derived from topic-index.json
+ * via lib/tfidf-index.js and returns the top matching lessons with scores,
+ * file paths, and line ranges. Titles, files, line bounds and keywords come
+ * from topic-index.json.
  */
 
 'use strict';
@@ -19,52 +21,11 @@ const path = require('path');
 
 // --- Paths ---
 const REFS_DIR = path.join(__dirname, '..', 'references');
-const SEMANTIC_INDEX = path.join(REFS_DIR, 'semantic-index.json');
+const TOPIC_INDEX = path.join(REFS_DIR, 'topic-index.json');
 
-// --- Stop words (must match build script) ---
-const STOP_WORDS = new Set([
-  'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
-  'of', 'with', 'by', 'from', 'is', 'it', 'as', 'be', 'was', 'are',
-  'were', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did',
-  'will', 'would', 'could', 'should', 'may', 'might', 'shall', 'can',
-  'this', 'that', 'these', 'those', 'i', 'you', 'he', 'she', 'we',
-  'they', 'me', 'him', 'her', 'us', 'them', 'my', 'your', 'his',
-  'its', 'our', 'their', 'what', 'which', 'who', 'whom', 'when',
-  'where', 'why', 'how', 'all', 'each', 'every', 'both', 'few',
-  'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not',
-  'only', 'own', 'same', 'so', 'than', 'too', 'very', 'just',
-  'about', 'above', 'after', 'again', 'also', 'any', 'because',
-  'before', 'between', 'during', 'here', 'if', 'into', 'once',
-  'out', 'over', 'then', 'there', 'through', 'under', 'until', 'up',
-  // Domain stop words: appear in every lesson, add noise not signal
-  'claude', 'code',
-  'while', 'down', 'off', 'further', 'get', 'got'
-]);
-
-/**
- * Tokenize text into lowercase terms.
- */
-function tokenize(text) {
-  const lower = String(text).toLowerCase();
-  const tokens = [];
-
-  // Compound identifiers first. CLAUDE_PLUGIN_ROOT, list_skills, when_to_use and
-  // disable-model-invocation would otherwise shatter into generic parts and lose all
-  // discriminative power -- CLAUDE_PLUGIN_ROOT became ['claude','plugin','root'], which
-  // matches most of the corpus, and when_to_use became ['use']. Emitting the joined form
-  // as well gives each identifier one rare, high-IDF term. Additive: every token the old
-  // tokenizer produced is still produced below.
-  for (const m of lower.matchAll(/[a-z0-9]+(?:[._-]+[a-z0-9]+)+/g)) {
-    const joined = m[0].replace(/[._-]+/g, '');
-    if (joined.length > 1 && !STOP_WORDS.has(joined)) tokens.push(joined);
-  }
-
-  for (const t of lower.replace(/[^a-z0-9]+/g, ' ').split(/\s+/)) {
-    if (t.length > 1 && !STOP_WORDS.has(t)) tokens.push(t);
-  }
-
-  return tokens;
-}
+// Tokenizer (query stop words: the index's plus "claude" and "code") and the
+// in-memory TF-IDF index, shared with search.js.
+const { tokenizeQuery: tokenize, loadIndex } = require('./lib/tfidf-index.js');
 
 /**
  * Cosine similarity between two sparse TF-IDF vectors (objects).
@@ -179,13 +140,15 @@ function main() {
     process.exit(1);
   }
 
-  // Load index
-  if (!fs.existsSync(SEMANTIC_INDEX)) {
-    console.error(`ERROR: semantic-index.json not found at ${SEMANTIC_INDEX}`);
-    console.error('Run build-rvf-index.js first to generate it.');
+  // Load topic-index and the index derived from it
+  if (!fs.existsSync(TOPIC_INDEX)) {
+    console.error(`ERROR: topic-index.json not found at ${TOPIC_INDEX}`);
     process.exit(1);
   }
-  const index = JSON.parse(fs.readFileSync(SEMANTIC_INDEX, 'utf8'));
+  const topicRaw = fs.readFileSync(TOPIC_INDEX, 'utf8');
+  const topicIndex = JSON.parse(topicRaw);
+  const index = loadIndex({ topicBytes: topicRaw, topicIndex });
+  const lessonById = new Map(topicIndex.lessons.map(l => [l.id, l]));
 
   // Tokenize and expand query
   let queryTokens = tokenize(query);
@@ -197,7 +160,11 @@ function main() {
   // Score each entry
   const scored = index.entries.map(entry => {
     const score = cosineSimilarity(queryVec, entry.tfidf);
-    return { ...entry, score };
+    const l = lessonById.get(entry.id);
+    return {
+      id: entry.id, title: l.title, file: l.file, startLine: l.startLine,
+      endLine: l.endLine, keywords: l.keywords || [], score,
+    };
   });
 
   // Sort by score descending

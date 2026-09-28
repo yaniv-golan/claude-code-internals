@@ -3,9 +3,8 @@
  * check-json-format.js — pins the on-disk serialization of every index JSON.
  *
  * WHY THIS EXISTS. These files are edited by scripts far more often than by
- * hand, and they do not all share a format: two are indent=1, three are
- * indent=2 with a trailing newline, and the generated semantic index is
- * indent=2 with NO trailing newline. Rewriting one at the wrong indent — or
+ * hand, and they do not all share a format: two are indent=1, the rest are
+ * indent=2 with a trailing newline. Rewriting one at the wrong indent — or
  * letting a tool re-sort a map whose order is deliberate — produces a diff of
  * five figures in which the actual change is invisible. That has happened
  * repeatedly, including twice in a single release, and a comment in CLAUDE.md
@@ -55,7 +54,6 @@ const PINNED = {
   'cross-references.json':     { indent: 1, trailingNewline: true },
   'troubleshooting.json':      { indent: 1, trailingNewline: true },
   'topic-index.json':          { indent: 2, trailingNewline: true },
-  'semantic-index.json':       { indent: 2, trailingNewline: false }, // written by build-rvf-index.js
   'state/registry.json':       { indent: 2, trailingNewline: true },
   'state/author-facts.json':   { indent: 2, trailingNewline: true },
   'site-links.json':           { indent: 2, trailingNewline: true }, // written by site/generator/build.js

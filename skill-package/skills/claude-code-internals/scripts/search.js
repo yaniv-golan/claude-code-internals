@@ -3,7 +3,8 @@
  * search.js — Unified search with Reciprocal Rank Fusion (RRF)
  *
  * Combines keyword lookup (topic-index.json) and TF-IDF cosine similarity
- * (semantic-index.json) into a single ranked result set using RRF scoring.
+ * (an in-memory index derived from topic-index.json by lib/tfidf-index.js)
+ * into a single ranked result set using RRF scoring.
  *
  * Usage:
  *   node search.js "hook events"
@@ -24,7 +25,6 @@ const path = require('path');
 // ---------------------------------------------------------------------------
 const REFS_DIR = path.join(__dirname, '..', 'references');
 const TOPIC_INDEX_PATH = path.join(REFS_DIR, 'topic-index.json');
-const SEMANTIC_INDEX_PATH = path.join(REFS_DIR, 'semantic-index.json');
 
 // ---------------------------------------------------------------------------
 // RRF constant (standard value from Cormack, Clarke & Buettcher 2009)
@@ -32,60 +32,10 @@ const SEMANTIC_INDEX_PATH = path.join(REFS_DIR, 'semantic-index.json');
 const RRF_K = 60;
 
 // ---------------------------------------------------------------------------
-// Stop words — matches semantic-search.js plus "claude" and "code" which
-// appear in every lesson and therefore carry no discriminative signal.
+// Tokenizer and TF-IDF index (shared with semantic-search.js). The query side
+// drops the stop words plus "claude" and "code", which appear in every lesson.
 // ---------------------------------------------------------------------------
-const STOP_WORDS = new Set([
-  'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
-  'of', 'with', 'by', 'from', 'is', 'it', 'as', 'be', 'was', 'are',
-  'were', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did',
-  'will', 'would', 'could', 'should', 'may', 'might', 'shall', 'can',
-  'this', 'that', 'these', 'those', 'i', 'you', 'he', 'she', 'we',
-  'they', 'me', 'him', 'her', 'us', 'them', 'my', 'your', 'his',
-  'its', 'our', 'their', 'what', 'which', 'who', 'whom', 'when',
-  'where', 'why', 'how', 'all', 'each', 'every', 'both', 'few',
-  'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not',
-  'only', 'own', 'same', 'so', 'than', 'too', 'very', 'just',
-  'about', 'above', 'after', 'again', 'also', 'any', 'because',
-  'before', 'between', 'during', 'here', 'if', 'into', 'once',
-  'out', 'over', 'then', 'there', 'through', 'under', 'until', 'up',
-  'while', 'down', 'off', 'further', 'get', 'got',
-  // Domain stop words — ubiquitous across all 50 lessons
-  'claude', 'code',
-]);
-
-// ---------------------------------------------------------------------------
-// Tokenizer (shared between both search layers)
-// ---------------------------------------------------------------------------
-
-/**
- * Tokenize a string into lowercase alphanumeric terms, removing stop words
- * and single-character tokens.
- *
- * @param {string} text
- * @returns {string[]}
- */
-function tokenize(text) {
-  const lower = String(text).toLowerCase();
-  const tokens = [];
-
-  // Compound identifiers first. CLAUDE_PLUGIN_ROOT, list_skills, when_to_use and
-  // disable-model-invocation would otherwise shatter into generic parts and lose all
-  // discriminative power -- CLAUDE_PLUGIN_ROOT became ['claude','plugin','root'], which
-  // matches most of the corpus, and when_to_use became ['use']. Emitting the joined form
-  // as well gives each identifier one rare, high-IDF term. Additive: every token the old
-  // tokenizer produced is still produced below.
-  for (const m of lower.matchAll(/[a-z0-9]+(?:[._-]+[a-z0-9]+)+/g)) {
-    const joined = m[0].replace(/[._-]+/g, '');
-    if (joined.length > 1 && !STOP_WORDS.has(joined)) tokens.push(joined);
-  }
-
-  for (const t of lower.replace(/[^a-z0-9]+/g, ' ').split(/\s+/)) {
-    if (t.length > 1 && !STOP_WORDS.has(t)) tokens.push(t);
-  }
-
-  return tokens;
-}
+const { tokenizeQuery: tokenize, loadIndex } = require('./lib/tfidf-index.js');
 
 // ---------------------------------------------------------------------------
 // Layer 1: Keyword search (mirrors lookup.sh logic)
@@ -186,7 +136,7 @@ function cosineSimilarity(vecA, vecB) {
  * Uses augmented term frequency: 0.5 + 0.5 * (tf / max_tf).
  *
  * @param {string[]} queryTokens
- * @param {object} idf - Term -> IDF weight from the semantic index
+ * @param {object} idf - Term -> IDF weight from the TF-IDF index
  * @returns {object} - Sparse TF-IDF vector
  */
 function queryToTFIDF(queryTokens, idf) {
@@ -248,11 +198,11 @@ function expandQueryTokens(tokens, vocabulary) {
 }
 
 /**
- * Run TF-IDF cosine similarity search over the semantic index.
+ * Run TF-IDF cosine similarity search over the TF-IDF index.
  * Returns entries scored and sorted descending, filtered by minimum threshold.
  *
  * @param {string[]} tokens - Raw query tokens
- * @param {object} semanticIndex - Parsed semantic-index.json
+ * @param {object} semanticIndex - Index from lib/tfidf-index.js loadIndex()
  * @returns {{ id: number, score: number }[]}
  */
 function tfidfSearch(tokens, semanticIndex) {
@@ -361,13 +311,13 @@ function layerDescription(keywordRank, tfidfRank) {
 // ---------------------------------------------------------------------------
 
 /**
- * Load and validate a JSON file, exiting with a descriptive error on failure.
+ * Read a file's text, exiting with a descriptive error if it is missing.
  *
  * @param {string} filePath
  * @param {string} label - Human-readable name for error messages
- * @returns {object}
+ * @returns {string}
  */
-function loadJSON(filePath, label) {
+function loadRaw(filePath, label) {
   if (!fs.existsSync(filePath)) {
     process.stderr.write(
       `ERROR: ${label} not found at ${filePath}\n` +
@@ -375,9 +325,19 @@ function loadJSON(filePath, label) {
     );
     process.exit(1);
   }
+  return fs.readFileSync(filePath, 'utf8');
+}
 
+/**
+ * Parse JSON text, exiting with a descriptive error on failure.
+ *
+ * @param {string} raw
+ * @param {string} filePath
+ * @param {string} label - Human-readable name for error messages
+ * @returns {object}
+ */
+function parseJSON(raw, filePath, label) {
   try {
-    const raw = fs.readFileSync(filePath, 'utf8');
     return JSON.parse(raw);
   } catch (err) {
     process.stderr.write(
@@ -454,8 +414,9 @@ function main() {
   const { query, topN, jsonOutput } = parseArgs(process.argv.slice(2));
 
   // Load both indexes
-  const topicIndex = loadJSON(TOPIC_INDEX_PATH, 'topic-index.json');
-  const semanticIndex = loadJSON(SEMANTIC_INDEX_PATH, 'semantic-index.json');
+  const topicRaw = loadRaw(TOPIC_INDEX_PATH, 'topic-index.json');
+  const topicIndex = parseJSON(topicRaw, TOPIC_INDEX_PATH, 'topic-index.json');
+  const semanticIndex = loadIndex({ topicBytes: topicRaw, topicIndex });
 
   // Build a lookup table: lesson ID -> lesson metadata
   const lessonById = new Map();

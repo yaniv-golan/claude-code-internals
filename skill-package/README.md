@@ -395,9 +395,9 @@ Claude Code configuration, it injects a reminder pointing at this skill.
 
 That hook is the whole integration. There is no embedding pipeline, no
 `claude-code-internals` vector namespace, and no neural search layer in this
-repository — `scripts/build-rvf-index.js` builds the local TF-IDF
-`semantic-index.json` and nothing else. Search works entirely offline through
-Layers 1 and 2.
+repository — `scripts/lib/tfidf-index.js` derives a local TF-IDF index from
+`topic-index.json` in memory and nothing else. Search works entirely offline
+through Layers 1 and 2.
 
 ## Troubleshooting
 
@@ -440,11 +440,10 @@ claude-code-internals-skill/
 |   |   +-- 04-connectivity-plugins.md
 |   |   +-- 05-unreleased-bigpicture.md
 |   |   +-- topic-index.json        Keyword index (494 entries)
-|   |   +-- semantic-index.json     TF-IDF vectors (218 lessons)
 |   +-- scripts/
 |       +-- lookup.sh               Keyword search (jq)
 |       +-- semantic-search.js      TF-IDF search (Node.js)
-|       +-- build-rvf-index.js      RVF/TF-IDF index builder
+|       +-- lib/tfidf-index.js      In-memory TF-IDF index (from topic-index)
 |       +-- config-aware-hook.sh    PreToolUse .claude/ detector
 |
 +-- assets/diagrams/                SVG diagrams for this README
@@ -479,12 +478,11 @@ The `claude-code-internals.zip` file is the complete, shareable package. It cont
 | `hooks-config.json` | 1.4KB | Example PreToolUse hook definition (portable paths) |
 | `references/*.md` | 1.4MB | 56 chapter files holding all 218 lessons |
 | `references/topic-index.json` | 341KB | Per-lesson bounds and keywords, plus a 4,480-key keyword map |
-| `references/semantic-index.json` | 1.1MB | Pre-built TF-IDF vectors for all 218 lessons |
 | `references/cross-references.json` | 88KB | 614 lesson-to-lesson links, keyed from 161 source entries |
 | `references/troubleshooting.json` | 74KB | 133 symptom entries (672 patterns) with lesson pointers and hints |
 | `references/state/` | 496KB | Current-state layer — 8 domain pages, `registry.json` (436 entries), `author-facts.json` (60 facts) |
-| `scripts/` (query) | — | `search.js` (unified RRF — use this by default), `semantic-search.js`, `lookup.sh`, `fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `state.js` |
-| `scripts/` (maintenance) | — | `build-rvf-index.js`, `validate-state.js`, `check-json-format.js`, `count-symbol.js`, `check-version.sh`, `extract-bundle.sh`, `diff-versions.sh`, `config-aware-hook.sh` |
+| `scripts/` (query) | — | `search.js` (unified RRF — use this by default), `semantic-search.js`, `lib/tfidf-index.js` (the TF-IDF index, derived from `topic-index.json` at load and cached outside the skill directory), `lookup.sh`, `fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `state.js` |
+| `scripts/` (maintenance) | — | `build.js`, `validate-state.js`, `check-json-format.js`, `count-symbol.js`, `check-version.sh`, `extract-bundle.sh`, `diff-versions.sh`, `config-aware-hook.sh` |
 | `scripts/tests/` | 49KB | 7 test files guarding release consistency, JSON canonical format, and the state layer |
 
 The zip is exactly `skill-package/skills/claude-code-internals/`, so it does **not** contain this README or the LICENSE — those live in the repository.
@@ -503,7 +501,7 @@ See `version.json` for the real, current values of the fields above. When Claude
 
 1. Re-download lessons from the source
 2. Replace the files in `references/`
-3. Run `node scripts/build-rvf-index.js` to rebuild the TF-IDF index
+3. Run `node scripts/build.js` to re-derive lesson bounds and counts (the TF-IDF index is derived from `topic-index.json` at search time; nothing to rebuild)
 4. Update `version.json` with the new version
 
 ## Platform Compatibility

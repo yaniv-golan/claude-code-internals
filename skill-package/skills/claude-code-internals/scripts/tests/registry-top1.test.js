@@ -17,6 +17,7 @@
 const test = require('node:test');
 const assert = require('node:assert');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 const { execFileSync } = require('node:child_process');
 
@@ -36,10 +37,17 @@ test('registry-derived top-1 identifier cases (evals/retrieval/registry-top1.jso
   let knownMisses = 0;
   const regressions = [];
 
+  // A private index cache for this run: hundreds of spawns share one build, and the
+  // user's own cache directory is never written by tests.
+  const cacheDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cci-registry-top1-cache-'));
+  t.after(() => fs.rmSync(cacheDir, { recursive: true, force: true }));
+  const env = { ...process.env, CCI_INDEX_CACHE_DIR: cacheDir };
+  delete env.CCI_NO_INDEX_CACHE;
+
   for (const c of data.cases) {
     let topId = null;
     try {
-      const out = execFileSync('node', [SEARCH_JS, c.name, '--json', '--top=1'], { encoding: 'utf8' });
+      const out = execFileSync('node', [SEARCH_JS, c.name, '--json', '--top=1'], { encoding: 'utf8', env });
       const results = JSON.parse(out);
       topId = results[0] ? results[0].id : null;
     } catch (err) {

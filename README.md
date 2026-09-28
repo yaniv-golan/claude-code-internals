@@ -328,14 +328,9 @@ bash scripts/check-version.sh
 
 ## Rebuilding the Search Index
 
-After changing reference content, rebuild the TF-IDF layer that `semantic-search.js` and `search.js` both read:
+There is nothing to rebuild. `search.js` and `semantic-search.js` derive their TF-IDF layer from `references/topic-index.json` each time they load it (`scripts/lib/tfidf-index.js`), caching the result under `$XDG_CACHE_HOME/claude-code-internals` (or `~/.cache/`, else the system temp dir) keyed by a hash of topic-index. Set `CCI_NO_INDEX_CACHE=1` to skip the cache.
 
-```bash
-cd ~/.claude/skills/claude-code-internals
-node scripts/build-rvf-index.js
-```
-
-Edit `references/topic-index.json` **first** — vectors are built from each lesson's title, keywords and description, not from the chapter prose, so new body text is invisible to search until the keywords land.
+Vectors are built from each lesson's title, keywords, `description` and the `keyword_map` keys that point at it — not from the chapter prose — so new body text is invisible to search until its keywords land in `topic-index.json`.
 
 ## Troubleshooting
 
@@ -415,8 +410,7 @@ claude-code-internals/
 │           │   │   ├── README.md
 │           │   │   ├── registry.json       Structured records (env vars, gates, commands, IPC…)
 │           │   │   └── *.md                One page per domain (Cowork architecture, permissions…)
-│           │   ├── topic-index.json
-│           │   ├── semantic-index.json
+│           │   ├── topic-index.json    Lesson index; the TF-IDF search index is derived from it
 │           │   ├── cross-references.json
 │           │   └── troubleshooting.json
 │           └── scripts/
@@ -427,9 +421,9 @@ claude-code-internals/
 │               ├── diff-versions.sh        Diff env vars/commands between bundles (new)
 │               ├── search.js               Unified RRF search (keyword + TF-IDF)
 │               ├── semantic-search.js      TF-IDF search
+│               ├── lib/tfidf-index.js      In-memory TF-IDF index (built from topic-index, cached)
 │               ├── lookup.sh               Keyword search
 │               ├── check-version.sh        Version staleness detection
-│               ├── build-rvf-index.js      TF-IDF index builder
 │               ├── state.js                Current-state lookup + --audit CLI
 │               ├── validate-state.js       Schema validator for references/state/
 │               ├── check-json-format.js   Pins each index JSON's indent + key order
@@ -532,8 +526,8 @@ bash scripts/diff-versions.sh claude-2.1.90-bundle.js claude-<new>-bundle.js
 
 # 3. Update references/ and add a new chapter lesson
 # 4. Update version.json
-# 5. Rebuild the TF-IDF index
-node scripts/build-rvf-index.js
+# 5. Derive lesson bounds and counts (the TF-IDF index needs no rebuild)
+node scripts/build.js
 ```
 
 ## Platform Compatibility

@@ -12,9 +12,8 @@
  * value against both fields: all 100 distinct values found in topic-index ids,
  * 2 of them are not valid lesson_numbers at all).
  *
- * Guards against a concurrent writer (another session is actively editing
- * topic-index.json/semantic-index.json per this task's brief): hashes both
- * index files before and after the run and refuses to write a result built
+ * Guards against a concurrent writer (another session editing topic-index.json
+ * or registry.json, the two inputs): hashes both files before and after the run and refuses to write a result built
  * from a torn read.
  *
  * Usage: node gen-registry-top1.js [--out <path>]
@@ -88,9 +87,9 @@ function main() {
   }
 
   const hashesAfter = lib.indexHashes();
-  if (hashesBefore.topic_index !== hashesAfter.topic_index || hashesBefore.semantic_index !== hashesAfter.semantic_index) {
+  if (hashesBefore.topic_index !== hashesAfter.topic_index || hashesBefore.registry !== hashesAfter.registry) {
     process.stderr.write(
-      'ABORT: topic-index.json or semantic-index.json changed while this run was in progress\n' +
+      'ABORT: topic-index.json or registry.json changed while this run was in progress\n' +
       '(a concurrent editor is active). Refusing to write a result built from a torn read.\n' +
       'Re-run once the other session finishes.\n'
     );

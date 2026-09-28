@@ -36,7 +36,7 @@ function fixture() {
   fs.mkdirSync(refs);
   const src = path.join(SKILL_DIR, 'references');
   for (const f of fs.readdirSync(src)) {
-    if (/^\d\d-.*\.md$/.test(f) || /^(topic-index|cross-references|troubleshooting|semantic-index)\.json$/.test(f)) {
+    if (/^\d\d-.*\.md$/.test(f) || /^(topic-index|cross-references|troubleshooting)\.json$/.test(f)) {
       fs.copyFileSync(path.join(src, f), path.join(refs, f));
     }
   }
@@ -75,7 +75,7 @@ test('an inserted line makes --check fail, and a write makes it pass again', () 
   const stale = run(['--check', '--root', dir]);
   assert.strictEqual(stale.code, 1, `expected --check to fail:\n${stale.out}`);
   assert.match(stale.out, /lesson 107 startLine \d+, expected \d+/);
-  assert.match(stale.out, /semantic-index\.json entry 107/);
+  assert.match(stale.out, /lesson 107 endLine \d+, expected \d+/);
 
   const before = topicOf(dir).lessons.find((l) => l.id === 107);
   const w = run(['--root', dir]);
@@ -105,6 +105,16 @@ test('an unindexed lesson heading fails validation', () => {
   const r = run(['--check', '--root', dir]);
   assert.strictEqual(r.code, 1);
   assert.match(r.out, /LESSON 999.*claimed by 0 lessons/);
+});
+
+test('a non-string lesson description fails validation', () => {
+  const dir = fixture();
+  const ti = path.join(dir, 'references', 'topic-index.json');
+  const raw = fs.readFileSync(ti, 'utf8');
+  fs.writeFileSync(ti, raw.replace(/("description": )"[^"]*"/, '$142'));
+  const r = run(['--check', '--root', dir]);
+  assert.strictEqual(r.code, 1);
+  assert.match(r.out, /lesson 1 description must be a string/);
 });
 
 test('a reference to a missing lesson id fails validation', () => {

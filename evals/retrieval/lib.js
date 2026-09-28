@@ -32,7 +32,6 @@ const REFS_DIR = path.join(SKILL_DIR, 'references');
 const SEARCH_JS = path.join(SCRIPTS_DIR, 'search.js');
 const STATE_JS = path.join(SCRIPTS_DIR, 'state.js');
 const TOPIC_INDEX_PATH = path.join(REFS_DIR, 'topic-index.json');
-const SEMANTIC_INDEX_PATH = path.join(REFS_DIR, 'semantic-index.json');
 const REGISTRY_PATH = path.join(REFS_DIR, 'state', 'registry.json');
 
 // ---------------------------------------------------------------------------
@@ -48,8 +47,7 @@ function loadRegistry() {
 }
 
 /** sha256 of a file's bytes, or null if it does not exist. Used to detect a
- * concurrent writer (another session edits topic-index.json/semantic-index.json
- * per this task's brief) mid-run so a torn read never gets recorded as a result. */
+ * concurrent writer (another session editing topic-index.json or registry.json) mid-run so a torn read never gets recorded as a result. */
 function fileHash(filePath) {
   if (!fs.existsSync(filePath)) return null;
   return crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('hex');
@@ -58,7 +56,7 @@ function fileHash(filePath) {
 function indexHashes() {
   return {
     topic_index: fileHash(TOPIC_INDEX_PATH),
-    semantic_index: fileHash(SEMANTIC_INDEX_PATH),
+    registry: fileHash(REGISTRY_PATH),
   };
 }
 
@@ -339,7 +337,6 @@ module.exports = {
   SEARCH_JS,
   STATE_JS,
   TOPIC_INDEX_PATH,
-  SEMANTIC_INDEX_PATH,
   REGISTRY_PATH,
   loadTopicIndex,
   loadRegistry,

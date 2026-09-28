@@ -11,7 +11,7 @@
  * claimed 118 lessons / v2.1.198, and SKILL.md's own opening line — the one
  * the model reads when the skill loads — claimed 124.
  *
- * The counts are also checked against reality (topic-index / semantic-index /
+ * The counts are also checked against reality (topic-index / the TF-IDF index /
  * the chapter files), not just against each other, so that a release which
  * updates every doc to the same WRONG number still fails.
  */
@@ -61,16 +61,15 @@ test('version.json lessons_count matches the actual lesson inventory', () => {
   );
 });
 
-test('semantic index covers every lesson in the topic index', () => {
-  const semantic = readJson(path.join(SKILL_DIR, 'references', 'semantic-index.json'));
-  const entries = semantic.lessons || semantic.entries || semantic.vectors || [];
-  assert.strictEqual(
-    entries.length, topicIndex.lessons.length,
-    `semantic-index has ${entries.length} entries for ${topicIndex.lessons.length} lessons — rebuild it with build-rvf-index.js`,
+test('the TF-IDF index covers every lesson in the topic index', () => {
+  const { buildIndex } = require('../lib/tfidf-index.js');
+  const { entries } = buildIndex(topicIndex);
+  assert.deepStrictEqual(
+    entries.map((e) => e.id), topicIndex.lessons.map((l) => l.id),
+    'the TF-IDF index must have one entry per topic-index lesson, in topic-index order',
   );
-  const indexed = new Set(entries.map((e) => String(e.id ?? e.lesson_id)));
-  const missing = topicIndex.lessons.map((l) => String(l.id)).filter((id) => !indexed.has(id));
-  assert.deepStrictEqual(missing, [], `lessons missing from the semantic index: ${missing.join(', ')}`);
+  const empty = entries.filter((e) => !Object.keys(e.tfidf).length).map((e) => e.id);
+  assert.deepStrictEqual(empty, [], `lessons with no indexed terms: ${empty.join(', ')}`);
 });
 
 test('every lesson body referenced by the topic index exists, and startLine lands on its heading', () => {
