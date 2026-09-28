@@ -47,7 +47,7 @@ In the cloud run, the session reported that the first invocation, earlier in the
 
 # LESSON 218 — PLUGIN BLOCKS AND MCP PLACEHOLDERS, LANE BY LANE
 
-**A plugin's UserPromptSubmit hook can block a prompt in both Cowork lanes. Locally the user sees why. In the cloud the prompt simply disappears: no reply, no notice, and the model never sees it. PreToolUse denies work in both lanes. For a plugin's MCP servers, a plain `${VAR}` never stops a server; only a plugin-setting placeholder (`${user_config.…}`) does, and only in the cloud.**
+**A plugin's UserPromptSubmit hook can block a prompt in both Cowork lanes. Locally the user sees why. In the cloud the prompt simply disappears: no reply, no notice, and the model never sees it. PreToolUse denies work in both lanes. For a plugin's MCP servers, only a few standard variables are ever filled in: any other `${VAR}` reaches the server as literal text, even when the variable is set, and a plugin-setting placeholder (`${user_config.…}`) stops the server in the cloud.**
 
 ## The probe
 
@@ -83,14 +83,24 @@ A PreToolUse deny was honoured on both lanes: "PreToolUse:mcp__workspace__bash h
 | `${HOME}` | expanded to `/Users/<user>` | expanded to `/Users/<user>` |
 | `${CCI_PROBE_TOKEN:-fallback-value}` | `fallback-value` | `fallback-value` |
 | `${CCI_PROBE_TOKEN}`, unset | starts; receives the literal text `${CCI_PROBE_TOKEN}` | starts; receives the literal text |
+| `${CCI_PROBE_TOKEN}`, **set** in the Desktop's environment (`launchctl setenv`, app restarted) | still the literal text | still left as written (Desktop log, below) |
+| `${CCI_PROBE_TOKEN:-fallback-value}` with the variable set | `fallback-value` | `fallback-value` (by the code) |
 | `${user_config.api_key}` with a default | starts; receives the default | **not started**: `get_device_info` lists it as `not_started`, reason `user_config_unsupported` |
 | working directory | `/private/var/empty` | `/` |
 
 In the cloud, each call to a bridged server was approved through the Desktop's own prompt ("Claude wants to use Report default from plugin cci-probe2 cci-default", with Decline / Always allow / Allow once). Locally it went through the session's normal tool approval. The cloud rule matches the code: the Desktop drops any plugin server whose config references plugin settings, and says so only in its log and in `get_device_info` (asar 2.9939.2, `[PluginMcpHostConfig]`).
 
+**Only a safelist is filled in.** In the cloud, the Desktop fills placeholders in a plugin server's command, arguments and environment from a fixed list, by exact name: `HOME`, `LOGNAME`, `PATH`, `SHELL`, `TERM` and `USER` on macOS and Linux (a longer list on Windows), plus `CLAUDE_PLUGIN_ROOT`. Anything else is left as written, even when the Desktop's own environment has it, and `${NAME:-default}` then yields the default. `CLAUDE_PROJECT_DIR` and `CLAUDE_PLUGIN_DATA` are also left as written, with their own warning. The server's environment is only those safelisted values plus the config's own `env` block. After a restart with `CCI_PROBE_TOKEN` set, the Desktop still logged:
+
+```
+[PluginMcpHostConfig] Plugin "plugin_…" server "cci-unsetvar": config uses environment variables the desktop does not fill in for plugin servers: CCI_PROBE_TOKEN. They were left as written. Only CLAUDE_PLUGIN_ROOT and the variables every local server receives (such as PATH and HOME) are filled in, by exact name.
+```
+
+The rule is old. Builds 1.18286.2 to 1.46388.4 log it as "config references environment variables outside the MCP stdio safelist … left unexpanded"; from 2.2553.1 the wording is the one above. On the local lane the set variable also arrived literal; whether that is the agent's own filtering or the environment the Desktop gives the agent was not determined.
+
 ## For an author
 
 - A blocking prompt hook works in Cowork, but in the cloud the user gets no feedback at all. If the block matters to the user, tell them another way, or block at the tool level, where the model sees and reports the denial.
-- Environment placeholders are fine in a plugin's MCP config. An unset one is passed through as its literal text, not as empty, so a server that reads a token from it will fail to authenticate rather than fail to start. Give a default with `${VAR:-default}` or check for a leftover `${` in the server.
+- Do not pass a credential to a plugin's MCP server through an environment placeholder. Outside the standard variables it arrives as literal text in both Cowork lanes, set or not, so the server starts and then fails to authenticate. A `:-` default only hides this. Have the server read its credential itself, for example from a file under the user's home folder or from the system keychain, and treat a value that still looks like `${…}` as missing.
 - Do not use `${user_config.…}` in a plugin MCP server that must work in cloud Cowork: the server is silently left out there.
 - To see why a plugin server is missing from a cloud session, ask the session to call `get_device_info`: its `localMcpServers` entries carry each server's state and the reason it did not start.

@@ -6498,7 +6498,7 @@
       "lesson_number": "218",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 48,
-      "endLine": 96,
+      "endLine": 106,
       "keywords": [
         "UserPromptSubmit block",
         "decision block",
@@ -6512,7 +6512,11 @@
         "unset env var literal",
         "plugin MCP server not appearing in Cowork",
         "not_started reason",
-        "cci-probe2@inline"
+        "cci-probe2@inline",
+        "MCP stdio safelist",
+        "left as written",
+        "TESTMO_API_TOKEN style custom env var",
+        "set env var not passed to plugin MCP server"
       ]
     }
   ],
@@ -22066,6 +22070,18 @@
       218
     ],
     "cci-probe2@inline": [
+      218
+    ],
+    "MCP stdio safelist": [
+      218
+    ],
+    "left as written": [
+      218
+    ],
+    "TESTMO_API_TOKEN style custom env var": [
+      218
+    ],
+    "set env var not passed to plugin MCP server": [
       218
     ]
   }

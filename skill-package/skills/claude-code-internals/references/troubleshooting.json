@@ -2448,12 +2448,14 @@
     "message got no reply in cloud Cowork",
     "plugin MCP tools missing in Cowork",
     "env placeholder MCP server Cowork",
-    "user_config_unsupported"
+    "user_config_unsupported",
+    "config uses environment variables the desktop does not fill in",
+    "outside the MCP stdio safelist"
    ],
    "lessons": [
     218
    ],
-   "hint": "UserPromptSubmit blocks stop the turn on both lanes; locally the app shows 'Blocked by your organization's policy', in the cloud the message just gets no reply. PreToolUse denies work on both. Plugin MCP config: ${HOME}/${VAR:-default} expand, an unset ${VAR} arrives as literal text, ${user_config.*} is dropped in the cloud (get_device_info shows not_started/user_config_unsupported)."
+   "hint": "UserPromptSubmit blocks stop the turn on both lanes; locally the app shows 'Blocked by your organization's policy', in the cloud the message just gets no reply. PreToolUse denies work on both. Plugin MCP config: only HOME/LOGNAME/PATH/SHELL/TERM/USER and CLAUDE_PLUGIN_ROOT are filled in; any other ${VAR} arrives as literal text even when set (${VAR:-d} gives d), ${user_config.*} is dropped in the cloud (get_device_info shows not_started/user_config_unsupported)."
   }
  ]
 }

@@ -186,7 +186,9 @@ Measured 2026-09-27/28 (Desktop 2.9939.2, agent 2.1.281). UserPromptSubmit block
 never sees the prompt; locally the user sees "Blocked by your organization's policy" + reason +
 Go back, **in the cloud nothing at all**. PreToolUse deny honoured on both (`Bash` in cloud,
 `mcp__workspace__bash` locally). Plugin MCP config: `${HOME}` and `${VAR:-default}` expand on
-both lanes; an unset `${VAR}` is passed as **literal text** and the server still starts;
+both lanes, but **only safelisted names are filled in** (`HOME`, `LOGNAME`, `PATH`, `SHELL`, `TERM`,
+`USER`, plus `CLAUDE_PLUGIN_ROOT`): any other `${VAR}` arrives as **literal text even when set**
+(measured both lanes, 2026-09-28) and `:-` then yields the default; the server still starts;
 `${user_config.*}` works locally (default applied) but in the cloud the Desktop bridge leaves
 the server `not_started` / `user_config_unsupported` (visible in `get_device_info`).
 

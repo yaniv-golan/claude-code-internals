@@ -1101,8 +1101,8 @@
     {
       "id": "plugins.mcp-env-placeholders-need-defaults",
       "page": "plugins-and-plugin-root",
-      "rule": "Give every environment placeholder in a plugin's server configuration a default.",
-      "detail": "In a plugin's server configuration, a placeholder for an environment variable that is not set is passed to the server as its literal text, not as an empty value, in both Cowork sandboxes. The server still starts, so a missing credential shows up as a failed request rather than a missing server. Write the placeholder with a default, or have the server treat a value that still looks like a placeholder as missing.",
+      "rule": "Do not pass a credential to a plugin's server through an environment placeholder.",
+      "detail": "In a plugin's server configuration, only a few standard variables are filled in: the home folder, the search path, the shell, the user and the terminal, plus the plugin's own root. Any other placeholder reaches the server as its literal text in both Cowork sandboxes, even when the variable is set on the user's machine, and a placeholder with a default gets the default instead. The server still starts, so the failure shows up later as rejected requests. Have the server read its credential itself, for example from a file in the user's home folder or from the system keychain, and treat a value that still looks like a placeholder as missing.",
       "tier": "measured",
       "severity": "silent",
       "durability": "durable",
@@ -1115,7 +1115,7 @@
         "state_page": "plugins-skills-hooks"
       },
       "caveats": [
-        "Measured on one machine; in the remote sandbox the desktop application expands placeholders from its own environment, which may not include variables set only in the user's shell profile."
+        "Measured on one machine with a variable set in the desktop application's environment. In the remote sandbox the refusal is also the desktop application's documented behaviour in its log; on the user's own machine the mechanism behind it was not determined."
       ],
       "verified": {
         "date": "2026-09-28",
@@ -2012,7 +2012,7 @@
         "The plugin-server path is read from the shipped application and has not been exercised live. The same bridge's path for servers in the Desktop app's own configuration was observed live — a LAN-only device driven from a cloud session on 2026-09-18 through a stdio shim, in another project's run.",
         "The plugin half sits behind a server-side switch that was on at the last capture, and behind organisation policy that can disable local MCP bridging entirely or restrict it to an allowlist. Either can turn it off with no version change.",
         "In the local sandbox plugin MCP servers are started differently and this rule's constraints were not measured there.",
-        "Measured: an ordinary environment placeholder does not stop a server in either sandbox. Only a plugin-setting placeholder does, and only in the remote sandbox, where the desktop application leaves the server unstarted and reports why only to the session's device-information tool."
+        "Measured: in the remote sandbox the desktop application fills in only a few standard variables in a plugin server's configuration and leaves every other placeholder as written, and it leaves a server that uses a plugin-setting placeholder unstarted, reporting why only to the session's device-information tool."
       ],
       "volatile_dependency": false,
       "durability": "durable",

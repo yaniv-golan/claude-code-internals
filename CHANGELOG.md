@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.58.1 — 2026-09-28 (this fork) — a set custom variable still isn't filled in
+
+No new lessons; counts stay 218/59. Prompted by a sibling session reading a GitHub report's Desktop log line.
+
+- **L218 correction: only a safelist is filled in.** v2.58.0 said a plain `${VAR}` in a plugin's MCP config is fine
+  and advised giving it a default. That held only for the variables tested, which were unset or on the safelist.
+  - The Desktop fills in only `HOME`, `LOGNAME`, `PATH`, `SHELL`, `TERM` and `USER` (a longer list on Windows), plus
+    `CLAUDE_PLUGIN_ROOT`, by exact name.
+  - Measured with the variable set through `launchctl setenv` and the app restarted: a custom `${VAR}` still reached
+    the server as literal text on the local lane, and the Desktop still logged it as "left as written" for the cloud.
+    `${VAR:-default}` then gives the default, even though the variable is set.
+  - The rule is old: builds 1.18286.2 to 1.46388.4 log it as "outside the MCP stdio safelist".
+  - `plugins.mcp-env-placeholders-need-defaults` is rewritten under the same anchor: do not pass a credential through
+    an environment placeholder.
+
 ## v2.58.0 — 2026-09-28 (this fork) — uploaded skills; plugin blocks and MCP placeholders by lane
 
 Adds Chapter 59 (L217–L218); counts move to 218/59. Every result is from live probes on 2026-09-27/28 (Desktop 2.9939.2,
