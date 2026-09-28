@@ -5925,7 +5925,7 @@
       "lesson_number": "195",
       "file": "50-artifact-host-tools-inbox-folder-skills.md",
       "startLine": 18,
-      "endLine": 79,
+      "endLine": 80,
       "keywords": [
         "artifact-host-tools",
         "ArtifactHostTools",
@@ -5952,7 +5952,7 @@
       "lesson_number": "196",
       "file": "50-artifact-host-tools-inbox-folder-skills.md",
       "startLine": 81,
-      "endLine": 125,
+      "endLine": 126,
       "keywords": [
         "FetchInboxMessage",
         "session-inbox",
@@ -5978,7 +5978,7 @@
       "lesson_number": "197",
       "file": "50-artifact-host-tools-inbox-folder-skills.md",
       "startLine": 127,
-      "endLine": 180,
+      "endLine": 181,
       "keywords": [
         "folder-skills",
         "remote-folder-skill-staging",
@@ -6005,7 +6005,7 @@
       "lesson_number": "198",
       "file": "50-artifact-host-tools-inbox-folder-skills.md",
       "startLine": 182,
-      "endLine": 231,
+      "endLine": 237,
       "keywords": [
         "four-surfaces",
         "surface-fingerprint",
@@ -6020,7 +6020,12 @@
         "bash_tool",
         "Relative paths are not supported",
         "oauth_token in home",
-        "which surface am I on"
+        "which surface am I on",
+        "outputs contract per session",
+        "ccr_outputs_filestore_mount",
+        "ccr_outputs_path_delivery",
+        "SendUserFile vs outputs",
+        "/mnt/user-data/outputs empty"
       ]
     },
     {
@@ -22103,6 +22108,21 @@
     ],
     "CLAUDE_SKILL_DIR": [
       217
+    ],
+    "outputs contract per session": [
+      198
+    ],
+    "ccr_outputs_filestore_mount": [
+      198
+    ],
+    "ccr_outputs_path_delivery": [
+      198
+    ],
+    "SendUserFile vs outputs": [
+      198
+    ],
+    "/mnt/user-data/outputs empty": [
+      198
     ]
   }
 }

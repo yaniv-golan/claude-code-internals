@@ -831,14 +831,14 @@
       "id": "paths.scratch-is-not-delivered",
       "page": "files-and-paths",
       "rule": "Producing a file is not delivering it — and where your working directory lands differs by lane.",
-      "detail": "Where your working directory lands differs by lane, so do not assume it is either visible or invisible. On the local desktop lane the file tools' working directory was the outputs location before Desktop 2.7032.0, so a bare filename landed somewhere visible; from 2.7032.0 it is an empty directory the tools cannot write to, and a bare filename is refused. On the remote lane the working directory is a container home directory that is neither surfaced nor retained, and a file left there is lost at session end. Because a skill cannot tell which lane it is on, treat producing and delivering as two separate acts on both: write the file to a stated path, then present it with whatever tool this surface offers for sending files to the user. Note also that 'the scratch directory' is not one place — the agent is separately instructed to use a host-side temporary directory for working files, which survives the session and is never shown to the user, and the shell has its own scratch area that reaches neither the user nor your file tools. Anything outside the outputs location or a connected folder is a temporary file by definition.",
+      "detail": "Where your working directory lands differs by lane, so do not assume it is either visible or invisible. On the local desktop lane the file tools' working directory was the outputs location before Desktop 2.7032.0, so a bare filename landed somewhere visible; from 2.7032.0 it is an empty directory the tools cannot write to, and a bare filename is refused. On the remote lane the working directory is a container home directory. In some sessions the instructions designate it as the place to work and hand files over from; in others they name a separate outputs location where a written file is delivered on its own. Either way a file left in the working directory is not shown to the user unless it is handed over. Because a skill cannot tell which lane it is on, treat producing and delivering as two separate acts on both: write the file to a stated path, then present it with whatever tool this surface offers for sending files to the user. Note also that 'the scratch directory' is not one place — the agent is separately instructed to use a host-side temporary directory for working files, which survives the session and is never shown to the user, and the shell has its own scratch area that reaches neither the user nor your file tools. Anything outside the outputs location or a connected folder is a temporary file by definition.",
       "tier": "measured",
       "verified": {
-        "date": "2026-09-23",
-        "desktop_asar": "2.7032.0",
+        "date": "2026-09-28",
+        "desktop_asar": "2.9939.2",
         "cli": "2.1.231",
-        "agent": "2.1.280",
-        "basis": "live"
+        "agent": "2.1.281",
+        "basis": "code"
       },
       "severity": "silent",
       "durability": "durable",
@@ -849,12 +849,14 @@
           138,
           163,
           164,
-          190
+          190,
+          198
         ],
         "state_page": "cowork-architecture"
       },
       "caveats": [
-        "An earlier release of this rule stated flatly that the directory your skill works in is a scratch space the user does not see. That is true on the remote lane and wrong on the local desktop lane before Desktop 2.7032.0, where the working directory was the outputs location itself; from 2.7032.0 it no longer is. It is withdrawn: neither half holds on both lanes, so write the file to a stated path and present it either way."
+        "An earlier release of this rule stated flatly that the directory your skill works in is a scratch space the user does not see. That is true on the remote lane and wrong on the local desktop lane before Desktop 2.7032.0, where the working directory was the outputs location itself; from 2.7032.0 it no longer is. It is withdrawn: neither half holds on both lanes, so write the file to a stated path and present it either way.",
+        "The remote lane's contract is switched per session: some sessions name an outputs location where writing a file delivers it, others name only the working directory and a send-file step. Read which one your instructions give rather than assuming either."
       ]
     },
     {

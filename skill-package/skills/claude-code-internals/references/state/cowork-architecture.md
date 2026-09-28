@@ -571,6 +571,14 @@ differently — `isRemote` is 60 in build and 87 whole-file. 1.46388.3 → 1.463
 identifier (`localAgentMode` 20 → 20, `isRemote` 60 → 60, `remoteSession` 59 → 59, `deviceLink`
 6 → 6, `device_bash` 34 → 34); the real delta is three build chunks and −859 bytes.
 
+## Cloud Cowork's outputs contract is switched per session (L198)
+
+Client features `ccr_outputs_filestore_mount` / `ccr_outputs_path_delivery`: **on** →
+`/mnt/user-data/outputs` → `/mnt/attach/outputs`, files there persist and a Write/Edit there is the
+delivery (no `SendUserFile`); **off** → the outputs dir is an empty directory, the session's
+instructions name the working directory (`/home/claude`) and delivery is `SendUserFile`. Both seen live
+(2026-09-23 on, 2026-09-28 off, relayed). The session prompt itself is server-side.
+
 ## A THIRD surface Desktop calls "cloud" — the claude.ai code-execution container (relayed, 2026-09-22)
 
 A Desktop "cloud session" served, on 2026-09-22, a runtime that is **not Claude Code at all**, one day
@@ -590,6 +598,8 @@ project (relayed; the artifact half is first-party below):
 and `/mnt/attach` are **0 in all three**; positive control `/mnt/user-data` 5/5/3 and
 `CLAUDE_CODE_ENTRYPOINT` 91/93/16. So the flat skills mount is not a Claude Code concept — consistent
 with a different runtime rather than a Cowork variant.
+
+**`/mnt/skills` is NOT a discriminator either:** cloud Cowork also lists `skills` under `/mnt` (L198's table, and a relayed session on 2026-09-28). Use `CLAUDE_CODE_ENTRYPOINT` and whether a `claude` binary exists (cloud Cowork: `/opt/node22/bin/claude`).
 
 **`/mnt/user-data` is NOT a discriminator.** The CLI hardcodes it: `UKr="/mnt/user-data/uploads"` is
 the stage-file root (overridable by `CLAUDE_STAGE_FILE_ROOT`) and `/mnt/user-data/working` is the

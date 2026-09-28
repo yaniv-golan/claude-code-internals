@@ -209,14 +209,19 @@ Two single values separate the three cloud surfaces: `CLAUDE_CODE_ENTRYPOINT` (`
 | Write `probe-rel.md` | **refused**: "File is in a directory that is denied by your permission settings." | written to `/home/claude/probe-rel.md` | written to the repo root | **refused**: "Relative paths are not supported … files for the user belong under /mnt/user-data/outputs/" |
 | Read `probe-rel.md` | **refused** (same message) | read | read | **refused**: "not an absolute path. Run realpath …" |
 | Write `/var/empty/probe2.md` | **refused** | written | written | written |
-| where the model was told outputs go | the host outputs folder's absolute path | `/mnt/user-data/outputs` | no outputs folder; "the primary working directory" (the repo) | `/mnt/user-data/outputs` |
+| where the model was told outputs go | the host outputs folder's absolute path | `/mnt/user-data/outputs` (in this session; switched per session, see below) | no outputs folder; "the primary working directory" (the repo) | `/mnt/user-data/outputs` |
 | Glob `*.md`, no path | searched the outputs folder (re-anchored, L190) | searched `/home/claude`: 1,577 files, mostly package caches | searched the repo | no search tool |
 | Grep `x`, no path | searched the outputs folder | searched `/home/claude`, 250-file cap, including files under `.claude/remote/` | searched the repo | no search tool |
 
 ## What this means for a skill
 
 - **A relative path is only safe in Claude Code on the web**, where it means the repo. In local Cowork it is refused; in a claude.ai chat it is refused; in cloud Cowork it lands in `/home/claude`, which is not the outputs location, so a deliverable written there is never shown to the user.
-- **The absolute outputs path each surface names is the one form that delivers everywhere it exists.** Local Cowork names a host path, cloud Cowork and chat name `/mnt/user-data/outputs`. Read it from the instructions; do not hard-code either.
+- **The absolute outputs path each surface names is the one form that delivers everywhere it exists.** Local Cowork names a host path, chat names `/mnt/user-data/outputs`, and cloud Cowork names one or the other of two contracts (next point). Read it from the instructions; do not hard-code either.
+- **In cloud Cowork the outputs contract is switched per session.** The claude.ai client carries two session features, `ccr_outputs_filestore_mount` and `ccr_outputs_path_delivery`, and words the device instructions it injects to match:
+  - **On** (this probe): `/mnt/user-data/outputs` is a mount (a symlink to `/mnt/attach/outputs`). Files written there "persist with the session and the user can open them from the chat sidebar", and a file written there with Write or Edit is delivered as soon as it is written, without `SendUserFile`.
+  - **Off** (a session relayed by the skill-creator-plus project on 2026-09-28): `/mnt/user-data/outputs` is an ordinary empty directory. The session's own instructions name no outputs folder: the model works in the working directory (`/home/claude`) and hands files over with `SendUserFile`.
+
+  Both states were seen on current builds. What decides a session's state is not visible from the client. The session's own instructions are served from the server and are in none of the artifacts on this machine, so the only way to know which contract applies is to read those instructions.
 - **A pathless search means something different on each surface**: the outputs folder (local Cowork), the whole container home (cloud Cowork), the repo (web), and nothing at all (chat). Always pass a path.
 - **In cloud Cowork a pathless search walks the agent's own credential directory.** The home contains `.claude/remote/.oauth_token` and `.session_ingress_token`, and a bare `Grep` listed them among its matches. A skill that searches without a path can put the names, and potentially the contents, of session credentials into the conversation.
 - **Claude Code on the web acts on a real repository.** In this run the agent committed the probe files and pushed them to a new branch without being asked, to clear a hook's untracked-files warning. Probing there has side effects outside the session.
@@ -227,5 +232,6 @@ Two single values separate the three cloud surfaces: `CLAUDE_CODE_ENTRYPOINT` (`
 - **Local Cowork's shell can list other sessions' folder names.** `ls /sessions` from one session printed three other session slugs. Each session runs as its own Unix user (L117), and this probe did not test whether their contents are readable.
 - **Local Cowork's VM has a `claude` binary on its path** (`claude --version` → 2.1.280), even in host-loop, where the agent itself runs on the host.
 - **Cloud Cowork was offered the memory write tools.** Its tool list included `memory_write`, `memory_str_replace` and `memory_append`, where local Cowork sessions on the same account were offered only read and list (L194). One observation; the cloud lane's agent is configured server-side, not by the Desktop.
+- **Cloud Cowork's `claude` binary is at `/opt/node22/bin/claude`** (relayed by the skill-creator-plus project, 2026-09-28).
 - **`CLAUDE_CODE_VERSION=2.1.42` appears on Claude Code on the web too**, not only in cloud Cowork: it is runner metadata on both, never the agent's build (L174).
 

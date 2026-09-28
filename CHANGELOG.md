@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.58.4 — 2026-09-28 (this fork) — cloud Cowork's outputs contract is switched per session
+
+No new lessons; counts stay 218/59. Prompted by a live finding from the skill-creator-plus project, then traced in
+the claude.ai client.
+
+- **L198.** Whether cloud Cowork has an outputs folder that delivers files is a per-session switch. It is controlled
+  by the client features `ccr_outputs_filestore_mount` and `ccr_outputs_path_delivery`.
+  - **On**, as in our 2026-09-23 probe: `/mnt/user-data/outputs` links to `/mnt/attach/outputs`, and a Write there is
+    the delivery.
+  - **Off**, as in a session relayed on 2026-09-28: the folder is empty, and the instructions name the working
+    directory and `SendUserFile`.
+  - The session instructions are served from the server.
+  - Also noted: cloud Cowork's `claude` is at `/opt/node22/bin/claude`.
+- **L215** notes that which commit source the session is told to use follows the same switches.
+- **Corrected:** the Cowork state page used `/mnt/skills` to recognise the chat runtime. Cloud Cowork lists it too,
+  so only `CLAUDE_CODE_ENTRYPOINT` and the presence of a `claude` binary discriminate. `paths.scratch-is-not-delivered`
+  no longer says the remote working directory is always discarded scratch.
+
 ## v2.58.3 — 2026-09-28 (this fork) — whether a skill's inline command runs depends on how it was installed
 
 No new lessons; counts stay 218/59. Read from agent 2.1.281 while reviewing a sibling project's test plan.

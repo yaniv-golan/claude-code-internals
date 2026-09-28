@@ -45,7 +45,7 @@ So a cloud session learns the names of the user's home folders and local servers
 | `device_list_dir`, `device_stage_files`, `device_commit_files` | the absolute path on the computer (`~` means the user's home), or the `~/mnt/<folder>` spelling, which is resolved and echoed back as `resolvedPath` / `resolvedDevicePath` |
 | `device_bash` | `$HOME/mnt/<folder>`, where `$HOME` is `/sessions/rcw-<id>` in the Mac's Cowork VM |
 | staged copies in the cloud container | `/mnt/user-data/uploads/<folder>/<relative path>` |
-| files to commit back | a file under the container's outputs folder, `/mnt/user-data/outputs` (a symlink to `/mnt/attach/outputs`), or a `SendUserFile` id |
+| files to commit back | a file under the container's outputs folder, `/mnt/user-data/outputs` (a symlink to `/mnt/attach/outputs`), or a `SendUserFile` id; which of the two the session is told to use depends on its outputs switches (L198) |
 | the session's own Read / Write / Bash | the cloud container only |
 
 ## Reading: stage a copy
