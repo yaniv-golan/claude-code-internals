@@ -50,7 +50,8 @@
  * other_acceptable / none), a per stratum x split `top1_breakdown`, a
  * `relevance` marker and an (empty) `waivers` list. A question WITHOUT
  * `relevant` (questions-v1) is scored exactly as before, and a v1 report has
- * none of those keys.
+ * none of those keys. Every report records its questions file's lesson split as
+ * `questions_source.split_sha256` (lib.splitHash), v1 included.
  *
  * Usage:
  *   node run.js [--questions <file>] [--top 20]
@@ -64,7 +65,7 @@
  *
  * The gate never passes vacuously: it fails when the questions file is
  * missing or has no gated questions, when the report's question-set version
- * differs from the baseline's, when a gated stratum x split or a gated
+ * or lesson split differs from the baseline's, when a gated stratum x split or a gated
  * question in the baseline is missing from the report, and on any
  * identifier question that was top-1 and no longer is.
  */
@@ -343,14 +344,17 @@ function buildReport(questionsData, opts) {
     n_reachable_by_name: stateScored.filter(s => s.state_exact_match_by_name).length,
   };
 
-  // Keys that exist only for acceptable-answer sets, so a v1 report is unchanged.
+  // Keys that exist only for acceptable-answer sets, so a v1 report has none of them.
   const graded = lessonScored.some((s) => s.top1 !== undefined);
   const gradedKeys = graded
     ? { relevance: 'acceptable-answer sets (rank = first acceptable lesson; graded nDCG@5, linear gain)', waivers: [] }
     : {};
   return {
     generated_at: new Date().toISOString(),
-    questions_source: questionsData.version !== undefined ? { version: questionsData.version, seed: questionsData.seed, model: questionsData.model } : null,
+    questions_source: questionsData.version !== undefined ? {
+      version: questionsData.version, seed: questionsData.seed, model: questionsData.model,
+      ...(questionsData.split ? { split_sha256: lib.splitHash(questionsData.split) } : {}),
+    } : null,
     top: opts.top,
     thresholds: opts.thresholds || { ...DEFAULT_THRESHOLDS },
     ...gradedKeys,
@@ -371,6 +375,27 @@ function buildReport(questionsData, opts) {
 // ---------------------------------------------------------------------------
 
 /**
+ * Why a report and a baseline were scored under different lesson splits, or null.
+ * The split hash (questions_source.split_sha256) is compared when both carry one; a
+ * baseline recorded before the hash existed (baseline-v1, baseline-v2) is judged by
+ * its questions' own labels: any gated question present in both with a different
+ * `split` means the splits differ.
+ */
+function splitMismatch(report, baseline) {
+  const hr = report.questions_source && report.questions_source.split_sha256;
+  const hb = baseline.questions_source && baseline.questions_source.split_sha256;
+  const advice = 'the baseline was recorded under a different lesson split and cannot be compared — record a new baseline (run.js --save) for the current split';
+  if (hr && hb && hr !== hb) return `lesson split mismatch (split_sha256 ${hr.slice(0, 12)} vs baseline ${hb.slice(0, 12)}): ${advice}`;
+  const cur = new Map(report.queries.lesson.map((q) => [q.qid, q.split]));
+  const moved = baseline.queries.lesson.filter((b) => GATED_STRATA.has(b.stratum) && cur.has(b.qid) && cur.get(b.qid) !== b.split);
+  if (moved.length) {
+    const list = moved.slice(0, 6).map((b) => `${b.qid} ${b.split}->${cur.get(b.qid)}`).join(', ');
+    return `lesson split mismatch: ${moved.length} gated question(s) changed split (${list}${moved.length > 6 ? ', ...' : ''}): ${advice}`;
+  }
+  return null;
+}
+
+/**
  * Compare a fresh report against a saved baseline report. Returns
  * {ok, failures: string[]}. `thresholds` is resolveThresholds()'s output
  * (the legacy {mrrThreshold, rankDropK} opts shape is also accepted).
@@ -378,6 +403,8 @@ function buildReport(questionsData, opts) {
  * Fails on:
  *   - a question-set version that differs from the baseline's (or is missing),
  *     since qids are only comparable within one version;
+ *   - a lesson split that differs from the baseline's (splitMismatch), since the
+ *     per stratum x split aggregates are then over different questions;
  *   - a gated stratum x split in the baseline that the report lacks;
  *   - a gated baseline question (keyed by version + qid) the report lacks;
  *   - any per-stratum x split MRR or nDCG@5 drop beyond `mrr_ndcg_drop`;
@@ -405,6 +432,15 @@ function compareToBaseline(report, baseline, thresholdsIn) {
   }
   if (!!report.relevance !== !!baseline.relevance) {
     failures.push(`scoring mode mismatch: report ${report.relevance ? 'uses' : 'lacks'} acceptable-answer sets, baseline ${baseline.relevance ? 'uses' : 'lacks'} them`);
+    return { ok: false, failures };
+  }
+
+  // Aggregates per stratum x split only compare under one lesson split. A baseline
+  // recorded before the question set was resplit (resplit.js) labels some questions
+  // differently: it cannot be compared at all, and the fix is a new baseline.
+  const splitFailure = splitMismatch(report, baseline);
+  if (splitFailure) {
+    failures.push(splitFailure);
     return { ok: false, failures };
   }
 
@@ -564,7 +600,7 @@ function main() {
 module.exports = {
   DEFAULT_THRESHOLDS, GATED_STRATA, resolveThresholds, countGated,
   parseArgs, findLatestQuestions, scoreLessonQuestion, scoreWithRelevant, top1Breakdown, scoreStateQuestion, scoreNegativeQuestion,
-  aggregateByStratumSplit, summarizeNegatives, buildReport, compareToBaseline,
+  aggregateByStratumSplit, summarizeNegatives, buildReport, splitMismatch, compareToBaseline,
 };
 
 if (require.main === module) main();

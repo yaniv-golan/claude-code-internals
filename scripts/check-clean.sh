@@ -43,11 +43,18 @@ if [[ -f "$skill/scripts/build.js" ]]; then
   step "Derived fields"
   node "$skill/scripts/build.js" --check
 fi
-if [[ -f evals/retrieval/baseline-v2.json ]]; then
-  step "Retrieval baseline"
-  node evals/retrieval/run.js --baseline evals/retrieval/baseline-v2.json --questions evals/retrieval/questions-v2.json | tail -2
-  test "${PIPESTATUS[0]}" -eq 0
-fi
+# The gated question set and baseline (evals/retrieval/lib.js CURRENT_QUESTIONS /
+# CURRENT_BASELINE; retrieval-gate.test.js checks this file names exactly those).
+# A missing one fails: it must not silently turn the retrieval gate off.
+step "Retrieval baseline"
+for f in evals/retrieval/baseline-v3.json evals/retrieval/questions-v2.json; do
+  if [[ ! -f "$f" ]]; then
+    echo "missing $f (not tracked?): the retrieval gate cannot run" >&2
+    exit 1
+  fi
+done
+node evals/retrieval/run.js --baseline evals/retrieval/baseline-v3.json --questions evals/retrieval/questions-v2.json | tail -2
+test "${PIPESTATUS[0]}" -eq 0
 step "Site generator tests"
 node --test site/generator/tests/*.test.js
 step "Site build + disclosure lint"

@@ -3,6 +3,16 @@
 # Usage: ./lookup.sh <search-term>
 # Searches keyword_map for partial, case-insensitive matches and
 # prints matching lesson details in machine-readable format.
+#
+# DELIBERATELY NOT search.js's keyword ranker. This is the jq-only fallback
+# SKILL.md runs when search.js cannot (no working node): it lists every lesson
+# with a HAND key containing a query word, ranked by how many words matched.
+# search.js's keyword layer (lib/keyword-match.js) weights each hit by key and
+# token specificity, distinguishes whole-key / word / substring hits, matches
+# identifier-shaped keys exactly and ignores substrings under 3 characters, and
+# is fused with TF-IDF. Porting that to jq would triple this script for a path
+# used only when node is broken, so the two diverge on purpose: expect a longer,
+# noisier list here, and use search.js whenever it runs.
 
 set -euo pipefail
 
@@ -25,12 +35,12 @@ TERM=$(printf '%s' "$1" | tr '[:upper:]' '[:lower:]')
 # independently and return the union of matches, ranked by
 # how many tokens matched each lesson.
 
-# Generated keys (prepare-lessons.js; listed per lesson in identifier_keys) are
+# Generated keys (prepare-lessons.js; listed per lesson in identifier_keys and vocab_keys) are
 # ignored: this substring matcher predates them and has no identifier-shape rule,
 # so they would add hits everywhere. search.js is the ranker that uses them.
 RESULTS=$(jq -r --arg term "$TERM" '
   . as $root |
-  (reduce ($root.lessons[] | (.identifier_keys // [])[]) as $k ({}; .[$k] = true)) as $generated |
+  (reduce ($root.lessons[] | ((.identifier_keys // []) + (.vocab_keys // []))[]) as $k ({}; .[$k] = true)) as $generated |
   # Split input into tokens
   ($term | split(" ") | map(select(length > 0))) as $tokens |
   # For each token, find matching lesson IDs

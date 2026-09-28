@@ -171,7 +171,7 @@ This means Claude gets a nudge to consult the architecture docs before modifying
 |-------------|----------------|---------------|-------|
 | **Claude Code** | v2.1.0+ | `claude --version` | Skills require a recent version |
 | **Node.js** | v18+ | `node --version` | Required for Layer 2 (TF-IDF search) |
-| **jq** | Any | `jq --version` | Required for Layer 1 (keyword search) |
+| **jq** | Any | `jq --version` | Required for `lookup.sh`, the keyword fallback used when `search.js` cannot run |
 
 **Install missing prerequisites:**
 

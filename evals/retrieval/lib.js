@@ -2,11 +2,10 @@
 /**
  * lib.js — shared helpers for the retrieval eval suite (phase 0b).
  *
- * search.js has no `module.exports` and calls its own `main()` unconditionally
- * at load time (no `require.main === module` guard), so requiring it directly
- * would run its CLI immediately. It DOES support `--json` and `--top=N`
- * (see scripts/search.js printUsage()), so every consumer here spawns it as a
- * subprocess and parses stdout. state.js, by contrast, DOES export
+ * search.js is spawned as a subprocess (`--json --top=N`) and its stdout
+ * parsed, so the gate exercises the real CLI end to end, index cache included.
+ * (search.js also exports `search()` behind a `require.main` guard, for
+ * in-process experiments; the gate does not use it.) state.js exports
  * `{ lookup, audit, cmpVersion, siteFooter }` and is required directly where
  * this suite needs it (run.js).
  *
@@ -33,6 +32,14 @@ const SEARCH_JS = path.join(SCRIPTS_DIR, 'search.js');
 const STATE_JS = path.join(SCRIPTS_DIR, 'state.js');
 const TOPIC_INDEX_PATH = path.join(REFS_DIR, 'topic-index.json');
 const REGISTRY_PATH = path.join(REFS_DIR, 'state', 'registry.json');
+
+// The gated question set and the baseline it is scored against (file names in
+// EVALS_DIR). The one place they are named: CI (validate.yml), check-clean.sh,
+// the registry gate (gen-registry-top1.js, registry-top1.test.js) and the split
+// guard (tests/repo-context.js) all follow these; retrieval-gate.test.js asserts
+// validate.yml and check-clean.sh name exactly these files.
+const CURRENT_QUESTIONS = 'questions-v2.json';
+const CURRENT_BASELINE = 'baseline-v3.json';
 
 // ---------------------------------------------------------------------------
 // Index loading
@@ -177,6 +184,106 @@ function splitLessons(lessonIds, seed, holdoutFraction = 1 / 3) {
 }
 
 // ---------------------------------------------------------------------------
+// The split rule: random split, then every lesson a hard ranking test depends on
+// is moved to dev.
+// ---------------------------------------------------------------------------
+
+/** The hard ranking tests' case table, shared with the skill package's test suite. */
+const HARD_TESTS_PATH = path.join(SCRIPTS_DIR, 'tests', 'ranking-cases.json');
+const SPLIT_RULE = 'random split, then every lesson a hard ranking test depends on is moved to dev';
+
+/** {lessonId: [queries]} for every lesson a case in ranking-cases.json asserts. */
+function loadHardTestLessons(file = HARD_TESTS_PATH) {
+  const { cases } = JSON.parse(fs.readFileSync(file, 'utf8'));
+  if (!Array.isArray(cases) || !cases.length) throw new Error(`${file} has no cases`);
+  const byLesson = {};
+  for (const c of cases) (byLesson[c.lesson] = byLesson[c.lesson] || []).push(c.query);
+  return byLesson;
+}
+
+/**
+ * Apply the split rule to a random split. `split` may already carry the rule
+ * (`moved_to_dev`); its random split is then recovered first (holdout plus the
+ * lessons it moved), so the result depends only on (random split, hard tests) and
+ * re-applying is idempotent. A hard-test lesson in neither list (added after the
+ * split) is left alone: it is not holdout, so it is already treated as dev.
+ *
+ * @param {{holdout:number[], dev:number[], moved_to_dev?:Array}} split
+ * @param {Object<string,string[]>} hard  loadHardTestLessons() output
+ * @returns {{holdout:number[], dev:number[], rule:string, hard_tests:string, moved_to_dev:Array<{lesson_id, reason, queries}>}}
+ */
+function applyHardTestRule(split, hard) {
+  const random = randomSplitOf(split);
+  const moved = random.holdout.filter((id) => hard[id]);
+  const movedSet = new Set(moved);
+  return {
+    holdout: random.holdout.filter((id) => !movedSet.has(id)),
+    dev: [...random.dev, ...moved].sort((a, b) => a - b),
+    rule: SPLIT_RULE,
+    hard_tests: 'skill-package/skills/claude-code-internals/scripts/tests/ranking-cases.json',
+    moved_to_dev: moved.map((id) => ({ lesson_id: id, reason: 'a hard ranking test asserts this lesson', queries: hard[id] })),
+  };
+}
+
+/** The random split a rule-applied split was drawn from ({holdout, dev}). */
+function randomSplitOf(split) {
+  const moved = (split.moved_to_dev || []).map((m) => m.lesson_id);
+  return {
+    holdout: [...split.holdout, ...moved].sort((a, b) => a - b),
+    dev: split.dev.filter((id) => !moved.includes(id)),
+  };
+}
+
+/** sha256 of a split's lesson assignment (sorted dev and holdout ids only). */
+function splitHash(split) {
+  const canon = JSON.stringify({ dev: [...split.dev].sort((a, b) => a - b), holdout: [...split.holdout].sort((a, b) => a - b) });
+  return crypto.createHash('sha256').update(canon).digest('hex');
+}
+
+/**
+ * The lesson a state question's split follows: its registry entry's first provenance
+ * lesson, or null (no provenance: the question is dev and never relabelled). The
+ * generator (gen-questions.js) calls this once and records the result on the
+ * question as `split_lesson_id`; nothing reads the registry for this afterwards.
+ */
+function stateSplitLessonId(entry) {
+  return entry && entry.provenance && entry.provenance.length ? entry.provenance[0].lesson : null;
+}
+
+/**
+ * Relabel the questions of every lesson the split rule moves or moved: the lessons in
+ * `split.moved_to_dev` and in `previous.moved_to_dev` (the split being replaced, so a
+ * hard test removed since sends its lesson's questions back to holdout). Such a
+ * question takes its lesson's side in `split` — a lesson question by its lesson, a
+ * state question by its recorded `split_lesson_id` (stateSplitLessonId(), written
+ * when the question was generated). The live registry is never read, so editing,
+ * renaming or deleting a registry entry cannot move a question. A state question
+ * without the field throws. Every other question, and every negative, keeps its
+ * label, so this depends on nothing but the moved lessons. Returns new question
+ * objects; texts, qids and relevance sets are untouched.
+ */
+function relabelQuestions(questions, split, previous = null) {
+  const ids = (s) => ((s && s.moved_to_dev) || []).map((m) => m.lesson_id);
+  const affected = new Set([...ids(split), ...ids(previous)]);
+  // Checked before the early return, so a set missing the field fails on every call.
+  for (const q of questions) {
+    if (q.stratum === 'state' && !('split_lesson_id' in q)) {
+      throw new Error(`${q.qid}: state question has no split_lesson_id; cannot place it in the split (record it: the registry entry's first provenance lesson when the question was generated)`);
+    }
+  }
+  if (!affected.size) return questions;
+  const holdout = new Set(split.holdout);
+  return questions.map((q) => {
+    let lessonId = null;
+    if (q.stratum === 'identifier' || q.stratum === 'plain') lessonId = q.lesson_id;
+    else if (q.stratum === 'state') lessonId = q.split_lesson_id;
+    if (lessonId === null || !affected.has(lessonId)) return q;
+    const side = holdout.has(lessonId) ? 'holdout' : 'dev';
+    return side === q.split ? q : { ...q, split: side };
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Ranking metrics
 // ---------------------------------------------------------------------------
 
@@ -244,6 +351,16 @@ module.exports = {
   mulberry32,
   seededShuffle,
   splitLessons,
+  HARD_TESTS_PATH,
+  SPLIT_RULE,
+  loadHardTestLessons,
+  applyHardTestRule,
+  randomSplitOf,
+  splitHash,
+  stateSplitLessonId,
+  relabelQuestions,
+  CURRENT_QUESTIONS,
+  CURRENT_BASELINE,
   reciprocalRank,
   ndcgAt5,
   gradedNdcgAt5,

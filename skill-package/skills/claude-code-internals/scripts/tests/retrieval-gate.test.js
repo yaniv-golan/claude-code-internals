@@ -21,8 +21,17 @@ const REPO = path.join(__dirname, '..', '..', '..', '..', '..');
 const EVALS = path.join(REPO, 'evals', 'retrieval');
 const RUN_JS = path.join(EVALS, 'run.js');
 const GEN_JS = path.join(EVALS, 'gen-questions.js');
-const PRESENT = fs.existsSync(RUN_JS) && fs.existsSync(GEN_JS);
-const SKIP = 'evals/retrieval/ not present (expected in the shipped skill package zip)';
+// Skip only in the shipped skill package; in the repository a missing eval
+// file fails (see repo-context.js), so leaving it out of a commit can't
+// silently remove these checks.
+const { IN_REPO, STANDALONE_SKIP } = require('./repo-context.js');
+const PRESENT = IN_REPO;
+const SKIP = STANDALONE_SKIP;
+
+test('repository checkout has the eval files these tests need', (t) => {
+  if (!IN_REPO) { t.skip(SKIP); return; }
+  for (const f of ['run.js', 'gen-questions.js']) assert.ok(fs.existsSync(path.join(EVALS, f)), `evals/retrieval/${f} is missing`);
+});
 
 const SCRATCH = [];
 test.after(() => { for (const d of SCRATCH) fs.rmSync(d, { recursive: true, force: true }); });
@@ -97,6 +106,27 @@ test('compareToBaseline: a gated baseline question missing from the report fails
   const cmp = R.compareToBaseline(cur, report(1, clone(BASE_QS)), R.DEFAULT_THRESHOLDS);
   assert.strictEqual(cmp.ok, false);
   assert.deepStrictEqual(cmp.failures, ['[id-0003] gated "identifier" question is in the baseline but missing from the report']);
+});
+
+test('compareToBaseline: a baseline recorded under another lesson split cannot be compared', (t) => {
+  if (!PRESENT) { t.skip(SKIP); return; }
+  const R = require(RUN_JS);
+  // One gated question relabelled (its lesson moved to dev): no hash on either side,
+  // as in baseline-v1/baseline-v2, so the questions' own labels decide.
+  const moved = clone(BASE_QS);
+  moved[2] = q('id-0003', 'identifier', 'dev', 2);
+  const cmp = R.compareToBaseline(report(1, moved), report(1, clone(BASE_QS)), R.DEFAULT_THRESHOLDS);
+  assert.strictEqual(cmp.ok, false);
+  assert.deepStrictEqual(cmp.failures.length, 1, cmp.failures.join('\n'));
+  assert.match(cmp.failures[0], /lesson split mismatch: 1 gated question\(s\) changed split \(id-0003 holdout->dev\).*record a new baseline/);
+  // With a split hash on both sides, a different hash fails even when no label differs.
+  const a = report(1, clone(BASE_QS));
+  const b = report(1, clone(BASE_QS));
+  a.questions_source.split_sha256 = 'a'.repeat(64);
+  b.questions_source.split_sha256 = 'b'.repeat(64);
+  assert.match(R.compareToBaseline(a, b, R.DEFAULT_THRESHOLDS).failures.join('\n'), /lesson split mismatch \(split_sha256/);
+  b.questions_source.split_sha256 = a.questions_source.split_sha256;
+  assert.strictEqual(R.compareToBaseline(a, b, R.DEFAULT_THRESHOLDS).ok, true, 'control: same hash, same labels');
 });
 
 test('compareToBaseline: an identifier question losing top-1 fails, even by one rank', (t) => {
@@ -192,14 +222,43 @@ test('run.js exits non-zero on a questions file with no gated questions, or none
   assert.match(missing.stderr, /no questions-vN\.json found/);
 });
 
-test('CI and check-clean.sh score the v2 question set explicitly', (t) => {
+test('CI and check-clean.sh score exactly the current question set against the current baseline (lib.js CURRENT_*)', (t) => {
   if (!PRESENT) { t.skip(SKIP); return; }
-  const want = /run\.js --baseline evals\/retrieval\/baseline-v2\.json --questions evals\/retrieval\/questions-v2\.json/;
+  const { CURRENT_QUESTIONS, CURRENT_BASELINE } = require(path.join(EVALS, 'lib.js'));
+  const esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const want = new RegExp(`run\\.js --baseline evals/retrieval/${esc(CURRENT_BASELINE)} --questions evals/retrieval/${esc(CURRENT_QUESTIONS)}`);
   for (const rel of ['.github/workflows/validate.yml', 'scripts/check-clean.sh']) {
     const p = path.join(REPO, rel);
-    if (!fs.existsSync(p)) continue;
-    assert.match(fs.readFileSync(p, 'utf8'), want, rel);
+    assert.ok(fs.existsSync(p), `${rel} is missing`);
+    const text = fs.readFileSync(p, 'utf8');
+    assert.match(text, want, rel);
+    // No other question set or baseline is named outside comments (history in
+    // comments is fine; a second file on a command line would be a second gate).
+    const code = text.split('\n').filter((l) => !/^\s*#/.test(l)).join('\n');
+    const named = new Set(code.match(/evals\/retrieval\/(?:questions|baseline)-v\d+\.json/g) || []);
+    assert.deepStrictEqual([...named].sort(), [`evals/retrieval/${CURRENT_BASELINE}`, `evals/retrieval/${CURRENT_QUESTIONS}`].sort(), rel);
   }
+});
+
+test('lib.js CURRENT_QUESTIONS / CURRENT_BASELINE exist, and repo-context.js resolves the same files', (t) => {
+  if (!PRESENT) { t.skip(SKIP); return; }
+  const lib = require(path.join(EVALS, 'lib.js'));
+  const { currentEvalFiles } = require('./repo-context.js');
+  const files = currentEvalFiles();
+  assert.strictEqual(files.questions, path.join(lib.EVALS_DIR, lib.CURRENT_QUESTIONS));
+  assert.strictEqual(files.baseline, path.join(lib.EVALS_DIR, lib.CURRENT_BASELINE));
+  for (const f of Object.values(files)) assert.ok(fs.existsSync(f), `${path.basename(f)} is missing`);
+  // The baseline scores the question set's version.
+  const qs = JSON.parse(fs.readFileSync(files.questions, 'utf8'));
+  const base = JSON.parse(fs.readFileSync(files.baseline, 'utf8'));
+  assert.strictEqual(base.questions_source.version, qs.version);
+});
+
+test('check-clean.sh fails, never skips, when the retrieval baseline is missing', (t) => {
+  if (!PRESENT) { t.skip(SKIP); return; }
+  const text = fs.readFileSync(path.join(REPO, 'scripts', 'check-clean.sh'), 'utf8');
+  assert.doesNotMatch(text, /if \[\[ -f evals\/retrieval\/baseline/, 'the retrieval step is conditional on the baseline existing');
+  assert.match(text, /\[\[ ! -f "\$f" \]\][\s\S]*?exit 1/, 'a missing gate file must exit 1');
 });
 
 // --- gen-questions.js on a stub model ------------------------------------------------
@@ -244,6 +303,17 @@ test('gen-questions: qids carry the version from v2 on, and v1 keeps bare qids',
   assert.ok(out.questions.length >= 4);
   for (const x of out.questions) assert.match(x.qid, /^v3-(id|pl|st|ng)-\d{4}$/);
   assert.strictEqual(new Set(out.questions.map((x) => x.qid)).size, out.questions.length);
+  // A new state question records its split lesson (the entry's first provenance lesson),
+  // and its label is that lesson's side, so relabelling never needs the registry.
+  const lib = require(path.join(EVALS, 'lib.js'));
+  const entries = new Map(lib.loadRegistry().entries.map((e) => [e.id, e]));
+  const holdout = new Set(out.split.holdout);
+  const st = out.questions.filter((x) => x.stratum === 'state');
+  assert.ok(st.length >= 1);
+  for (const x of st) {
+    assert.strictEqual(x.split_lesson_id, lib.stateSplitLessonId(entries.get(x.registry_id)), x.qid);
+    assert.strictEqual(x.split, x.split_lesson_id !== null && holdout.has(x.split_lesson_id) ? 'holdout' : 'dev', x.qid);
+  }
   // The committed v1 set is frozen with bare qids.
   const v1 = JSON.parse(fs.readFileSync(path.join(EVALS, 'questions-v1.json'), 'utf8'));
   assert.ok(v1.questions.every((x) => /^(id|pl|st|ng)-\d{4}$/.test(x.qid)));

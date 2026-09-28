@@ -132,15 +132,18 @@ function computeIDF(docTokenSets) {
 
 /**
  * Keys scripts/prepare-lessons.js appended, as recorded per lesson in
- * `identifier_keys`. They reach the KEYWORD layer only: the TF-IDF text leaves
+ * `identifier_keys` and `vocab_keys`. They reach the KEYWORD layer only: the TF-IDF text leaves
  * them out, so every pre-existing lesson vector, idf value and vocabulary entry
  * is exactly what it was before any append. Feeding them in shifted TF
  * normalisation and vector norms across hundreds of lessons and flipped
  * registry top-1 cases on exact RRF ties (plan §4.7, "Prototype result").
- * A later generated-key record (phase 3b vocabulary) joins this set.
+ * Vocabulary keys (phase 3b) are left out too: measured on the dev split,
+ * feeding them in raised plain MRR much further (0.51 -> 0.77, the most circular
+ * part of the gain: vocabulary and eval questions are both model-written from
+ * the lesson text) but broke the hand-written `hooks not firing` top-1 test.
  */
 function generatedKeys(lesson) {
-  return new Set(lesson.identifier_keys || []);
+  return new Set([...(lesson.identifier_keys || []), ...(lesson.vocab_keys || [])]);
 }
 
 /**

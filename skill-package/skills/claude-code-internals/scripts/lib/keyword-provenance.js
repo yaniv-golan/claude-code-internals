@@ -30,7 +30,7 @@
  * Lesson ids are the join key, so an id must never be reused for a different
  * lesson.
  *
- * `identifier_keys` (per lesson) records the generated keys mapped to it. It is
+ * `identifier_keys` and `vocab_keys` (per lesson) record the generated keys mapped to it. They are
  * derived output like the rest and --check compares it with the derivation, so
  * losing it fails the check and a plain run restores it; it cannot turn a
  * generated key into a hand key, because provenance does not come from it.
@@ -116,14 +116,16 @@ function handTopic(topic, hand) {
   for (const l of t.lessons) {
     l.keywords = proj.lessonKeywords(l.id).map((x) => x.value);
     delete l.identifier_keys;
+    delete l.vocab_keys;
+    delete l.vocab;
   }
   delete t[BOUNDARY_FIELD];
   return { topic: t, retired: proj.retired };
 }
 
-/** Keys a lesson records as generated. */
+/** Keys a lesson records as generated: its identifier keys and its vocabulary keys. */
 function lessonGenerated(lesson) {
-  return new Set(lesson.identifier_keys || []);
+  return new Set([...(lesson.identifier_keys || []), ...(lesson.vocab_keys || [])]);
 }
 
 /** A lesson's keywords without the generated ones (what the query scripts print). */

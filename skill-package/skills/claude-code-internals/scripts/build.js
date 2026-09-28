@@ -56,7 +56,9 @@
  * references/hand-keywords.json projected onto the live lessons, then the
  * generated keys derived from the current lesson text, with the unreachable
  * count within its ceiling (see prepare-lessons.js --check). build.js never
- * writes keyword fields; prepare-lessons.js is the fix.
+ * writes keyword fields; prepare-lessons.js is the fix. A lesson whose
+ * vocabulary proposal is stale (the lesson changed since the model saw it,
+ * lib/vocab.js) is a WARNING naming the lesson, not a failure.
  *
  * JSON is rewritten through check-json-format.js's order-preserving parser and
  * emitter, so integer-like keys keep their order and only changed values move.
@@ -512,6 +514,9 @@ function main(argv) {
       console.error('build.js --check: lesson keywords incomplete — the fix is a script run, never a hand edit:');
       for (const e of lessons.errors) console.error(`  ${e}`);
     }
+    // Stale vocabulary proposals (a lesson changed since the model saw it) are
+    // reported by id, never failed: a lesson prose edit must not fail CI.
+    for (const w of lessons.warnings || []) console.warn(`build.js --check: WARNING: ${w}`);
     if (stale.length || derived.coverage.length || lessons.errors.length) return 1;
     console.log(`derived fields OK (${derived.lessonsCount} lessons, ${derived.chaptersCount} chapters)`);
     console.log(`lesson keywords OK (${lessons.notes.join('; ')})`);
@@ -530,6 +535,7 @@ function main(argv) {
   if (!written.length) console.log('derived fields already up to date');
   // Bounds are written regardless: prepare-lessons.js needs them before it can run.
   for (const e of lessons.errors) console.log(`note: ${e}`);
+  for (const w of lessons.warnings || []) console.log(`note: ${w}`);
   return 0;
 }
 
@@ -552,7 +558,10 @@ function lessonChecks(skillDir, derived) {
     if (!cache.has(l.file)) cache.set(l.file, fs.readFileSync(path.join(skillDir, 'references', l.file), 'utf8').split('\n'));
     return cache.get(l.file).slice(l.startLine - 1, l.endLine).join('\n');
   };
-  return checkLessons({ raw, lessonText, hand });
+  const { loadProposals } = require('./lib/vocab.js');
+  let proposals;
+  try { proposals = loadProposals(skillDir); } catch (e) { return { errors: [e.message], notes: [] }; }
+  return checkLessons({ raw, lessonText, hand, proposals });
 }
 
 module.exports = {

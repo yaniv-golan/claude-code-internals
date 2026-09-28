@@ -36,66 +36,44 @@ const RRF_K = 60;
 // drops the stop words plus "claude" and "code", which appear in every lesson.
 // ---------------------------------------------------------------------------
 const { tokenizeQuery: tokenize, loadIndex } = require('./lib/tfidf-index.js');
-const { compileKey, keyHitsToken } = require('./lib/keyword-match.js');
+const keywordMatch = require('./lib/keyword-match.js');
 // Output shows hand keywords only: generated identifier keys (prepare-lessons.js)
 // still rank, but printing them doubled some lessons' output. Ranking is unchanged.
-const { handKeywords } = require('./lib/keyword-provenance.js');
+const { handKeywords, lessonGenerated } = require('./lib/keyword-provenance.js');
 
 // ---------------------------------------------------------------------------
-// Layer 1: Keyword search (mirrors lookup.sh logic)
+// Layer 1: Keyword search over topic-index.json keyword_map
 // ---------------------------------------------------------------------------
 
 /**
- * Search topic-index.json keyword_map for partial, case-insensitive matches.
- * Returns lesson IDs ranked by how many query tokens matched.
+ * Rank lessons by specificity-weighted keyword hits. The matching rule and the
+ * formula live in lib/keyword-match.js (shared with prepare-lessons.js's
+ * collision rule); in short, with N lessons:
+ *   spec(k)  = ln(1 + N / n_k)     n_k  = lessons key k maps to
+ *   spec(t)  = ln(1 + N / df_t)    df_t = lessons token t reaches through any key
+ *   w(t, k)  = min(spec(k), spec(t)) * (1 for a hit on the whole key, 0.5 for a
+ *              word of a multi-word key -- times the query's coverage of a hand
+ *              kebab key -- and 0.25 for a substring)
+ *   score(L) = sum over distinct query tokens t of max w(t, k) over keys k -> L
+ * ordered by score, then the best single hit, then tokens hit, then lowest id.
+ * A token shorter than 3 characters never matches inside a word. A vocabulary
+ * key is hit by its content words only; a word the query has only inside a
+ * compound identifier counts half (see keyword-match.js).
  *
  * @param {string[]} tokens - Query tokens
  * @param {object} topicIndex - Parsed topic-index.json
- * @returns {{ id: number, hits: number }[]} - Ranked results
+ * @param {string} [query] - The query text the tokens came from
+ * @returns {{ id: number, score: number, best: number, hits: number }[]} - Ranked results
  */
-function keywordSearch(tokens, topicIndex) {
-  const keywordMap = topicIndex.keyword_map;
-  if (!keywordMap || typeof keywordMap !== 'object') {
-    return [];
+const generatedSets = new WeakMap();
+function keywordSearch(tokens, topicIndex, query = null) {
+  // Generated keys are identifiers by construction: never hand kebab phrases.
+  let exactOnly = generatedSets.get(topicIndex);
+  if (!exactOnly) {
+    exactOnly = new Set((topicIndex.lessons || []).flatMap((l) => [...lessonGenerated(l)]));
+    generatedSets.set(topicIndex, exactOnly);
   }
-
-  // For each token, find all keyword_map keys that contain it (partial match)
-  // and collect the associated lesson IDs.
-  const hitCounts = new Map(); // lesson ID -> number of token matches
-
-  // Precomputed once: each keyword alongside a separator-stripped form, so a joined
-  // identifier token (claudepluginroot) still matches a keyword written with separators
-  // (claude-plugin-root). Without this the tokenizer's new joined forms would never hit
-  // the keyword layer.
-  // An identifier-shaped key (separators, no spaces: CLAUDE_CODE_WORKSPACE_HOST_PATHS,
-  // list_skills, tengu_saddle_lantern) matches only EXACTLY, as itself or as its joined
-  // form. Substring matching on these is what made the generic token 'path' hit every
-  // *_PATHS variable and drag their lesson to the top of unrelated queries. Natural-language
-  // keys keep the original substring behaviour.
-  // The rule itself lives in lib/keyword-match.js, shared with prepare-lessons.js's
-  // collision rule.
-  const normalizedKeywords = Object.entries(keywordMap).map(([keyword, lessonIds]) => [compileKey(keyword), lessonIds]);
-
-  for (const token of tokens) {
-    const matchedIds = new Set();
-    for (const [ck, lessonIds] of normalizedKeywords) {
-      if (keyHitsToken(ck, token)) {
-        for (const id of lessonIds) {
-          matchedIds.add(id);
-        }
-      }
-    }
-    for (const id of matchedIds) {
-      hitCounts.set(id, (hitCounts.get(id) || 0) + 1);
-    }
-  }
-
-  // Sort by hit count descending, then by ID ascending for stable ordering
-  const results = Array.from(hitCounts.entries())
-    .map(([id, hits]) => ({ id, hits }))
-    .sort((a, b) => b.hits - a.hits || a.id - b.id);
-
-  return results;
+  return keywordMatch.rankLessons(tokens, topicIndex.keyword_map, (topicIndex.lessons || []).length, exactOnly, query);
 }
 
 // ---------------------------------------------------------------------------
@@ -233,22 +211,38 @@ function tfidfSearch(tokens, semanticIndex) {
  * @param {{ id: number }[]} keywordResults - Ranked keyword results (position = rank)
  * @param {{ id: number, score: number }[]} tfidfResults - Ranked TF-IDF results
  * @param {number} k - RRF constant (default 60)
- * @returns {Map<number, { rrfScore: number, keywordRank: number|null, tfidfRank: number|null }>}
+ * @returns {Map<number, { rrfScore: number, rrfNum: number, rrfDen: number, keywordRank: number|null, tfidfRank: number|null }>}
+ *   rrfNum/rrfDen: the same score as an exact reduced fraction (fusedOrder compares these)
  */
 function reciprocalRankFusion(keywordResults, tfidfResults, k) {
-  const fused = new Map(); // id -> { rrfScore, keywordRank, tfidfRank }
+  const fused = new Map(); // id -> { rrfScore, rrfNum, rrfDen, keywordRank, tfidfRank, ... }
+  const entryOf = (id) => {
+    if (!fused.has(id)) {
+      fused.set(id, { rrfScore: 0, rrfNum: 0, rrfDen: 1, keywordRank: null, tfidfRank: null, keywordScore: 0, tfidfScore: 0 });
+    }
+    return fused.get(id);
+  };
+  // The exact score, as the fraction rrfNum/rrfDen: p/q + 1/(k+rank) = (p(k+rank) + q) / (q(k+rank)),
+  // reduced. With integer k and ranks the terms stay far below 2^53.
+  const addExact = (entry, rank) => {
+    const d = k + rank;
+    const num = entry.rrfNum * d + entry.rrfDen;
+    const den = entry.rrfDen * d;
+    const g = gcd(num, den);
+    entry.rrfNum = num / g;
+    entry.rrfDen = den / g;
+  };
 
   // Process keyword ranks (1-indexed)
   for (let i = 0; i < keywordResults.length; i++) {
     const id = keywordResults[i].id;
     const rank = i + 1;
     const contribution = 1 / (k + rank);
-    if (!fused.has(id)) {
-      fused.set(id, { rrfScore: 0, keywordRank: null, tfidfRank: null });
-    }
-    const entry = fused.get(id);
+    const entry = entryOf(id);
     entry.rrfScore += contribution;
+    addExact(entry, rank);
     entry.keywordRank = rank;
+    entry.keywordScore = keywordResults[i].score || 0;
   }
 
   // Process TF-IDF ranks (1-indexed)
@@ -256,15 +250,35 @@ function reciprocalRankFusion(keywordResults, tfidfResults, k) {
     const id = tfidfResults[i].id;
     const rank = i + 1;
     const contribution = 1 / (k + rank);
-    if (!fused.has(id)) {
-      fused.set(id, { rrfScore: 0, keywordRank: null, tfidfRank: null });
-    }
-    const entry = fused.get(id);
+    const entry = entryOf(id);
     entry.rrfScore += contribution;
+    addExact(entry, rank);
     entry.tfidfRank = rank;
+    entry.tfidfScore = tfidfResults[i].score || 0;
   }
 
   return fused;
+}
+
+function gcd(a, b) {
+  while (b) [a, b] = [b, a % b];
+  return a;
+}
+
+/**
+ * Order of fused results: RRF score descending, compared EXACTLY as the
+ * fractions rrfNum/rrfDen by integer cross-multiplication (the float rrfScore
+ * is for display: 1/90 + 1/78 and 1/117 + 1/65 are both 14/585, but their
+ * float sums differ in the last bit). An exact tie (ranks 1+2 vs 2+1, or 30+18
+ * vs 57+5 at k = 60) goes to the higher keyword-layer score (the more specific
+ * key match), then to the higher TF-IDF score, then to the lowest id. The
+ * TF-IDF step matters when two lessons tie in the keyword layer too: their
+ * keyword ranks were then set by id alone, so the id must not decide the fused
+ * order as well when the other layer tells them apart.
+ * Entries come from reciprocalRankFusion(), which always sets rrfNum/rrfDen.
+ */
+function fusedOrder(a, b) {
+  return b.rrfNum * a.rrfDen - a.rrfNum * b.rrfDen || b.keywordScore - a.keywordScore || b.tfidfScore - a.tfidfScore || a.id - b.id;
 }
 
 // ---------------------------------------------------------------------------
@@ -408,47 +422,36 @@ function printUsage() {
 // Main
 // ---------------------------------------------------------------------------
 
-function main() {
-  const { query, topN, jsonOutput } = parseArgs(process.argv.slice(2));
-
-  // Load both indexes
-  const topicRaw = loadRaw(TOPIC_INDEX_PATH, 'topic-index.json');
-  const topicIndex = parseJSON(topicRaw, TOPIC_INDEX_PATH, 'topic-index.json');
-  const semanticIndex = loadIndex({ topicBytes: topicRaw, topicIndex });
-
-  // Build a lookup table: lesson ID -> lesson metadata
+/**
+ * Rank `query` against the loaded indexes. Returns the enriched top-N results
+ * (the --json shape) or throws {stopWordsOnly: true} when the query tokenizes to
+ * nothing. Pure given its inputs; main() is the CLI around it.
+ */
+function search(query, { topicIndex, semanticIndex, topN = 5 }) {
   const lessonById = new Map();
   for (const lesson of topicIndex.lessons) {
     lessonById.set(lesson.id, lesson);
   }
 
-  // Tokenize query
   const tokens = tokenize(query);
-
   if (tokens.length === 0) {
-    process.stderr.write(
-      'ERROR: Query contains only stop words. Try more specific terms.\n'
-    );
-    process.exit(1);
+    const e = new Error('Query contains only stop words.');
+    e.stopWordsOnly = true;
+    throw e;
   }
 
   // Run both search layers
-  const keywordResults = keywordSearch(tokens, topicIndex);
+  const keywordResults = keywordSearch(tokens, topicIndex, query);
   const tfidfResults = tfidfSearch(tokens, semanticIndex);
 
   // Fuse with RRF
   const fused = reciprocalRankFusion(keywordResults, tfidfResults, RRF_K);
 
-  // Sort by RRF score descending, then by lesson ID for stability
   const ranked = Array.from(fused.entries())
     .map(([id, data]) => ({ id, ...data }))
-    .sort((a, b) => b.rrfScore - a.rrfScore || a.id - b.id);
+    .sort(fusedOrder);
 
-  // Take top N
-  const results = ranked.slice(0, topN);
-
-  // Enrich with lesson metadata
-  const enriched = results.map(r => {
+  return ranked.slice(0, topN).map(r => {
     const lesson = lessonById.get(r.id);
     if (!lesson) {
       return null; // Defensive: skip if lesson metadata is missing
@@ -468,6 +471,26 @@ function main() {
       keywords: handKeywords(lesson),
     };
   }).filter(Boolean);
+}
+
+function main() {
+  const { query, topN, jsonOutput } = parseArgs(process.argv.slice(2));
+
+  // Load both indexes
+  const topicRaw = loadRaw(TOPIC_INDEX_PATH, 'topic-index.json');
+  const topicIndex = parseJSON(topicRaw, TOPIC_INDEX_PATH, 'topic-index.json');
+  const semanticIndex = loadIndex({ topicBytes: topicRaw, topicIndex });
+
+  let enriched;
+  try {
+    enriched = search(query, { topicIndex, semanticIndex, topN });
+  } catch (err) {
+    if (!err.stopWordsOnly) throw err;
+    process.stderr.write(
+      'ERROR: Query contains only stop words. Try more specific terms.\n'
+    );
+    process.exit(1);
+  }
 
   // Output
   if (jsonOutput) {
@@ -519,4 +542,6 @@ function main() {
   }
 }
 
-main();
+module.exports = { search, keywordSearch, tfidfSearch, reciprocalRankFusion, fusedOrder };
+
+if (require.main === module) main();

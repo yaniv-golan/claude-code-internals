@@ -136,10 +136,13 @@ test('an unwritable cache directory falls back to an in-memory build without err
   assert.strictEqual(JSON.stringify(got), JSON.stringify(fresh));
   assert.deepStrictEqual(fs.readdirSync(dir), []);
 
-  // and end to end: the CLI still answers, with nothing on stderr
-  const out = execFileSync('node', [path.join(SCRIPTS, 'search.js'), 'list_skills', '--json', '--top=1'],
-    { encoding: 'utf8', env: { ...process.env, CCI_NO_INDEX_CACHE: '', CCI_INDEX_CACHE_DIR: path.join(dir, 'sub') }, stdio: ['ignore', 'pipe', 'pipe'] });
-  assert.strictEqual(JSON.parse(out)[0].id, 129);
+  // and end to end: the CLI still answers, with nothing on stderr, exactly as with no cache
+  // (a comparison, not a pinned lesson: corpus ranking assertions live in ranking-cases.json)
+  const cli = (env) => execFileSync('node', [path.join(SCRIPTS, 'search.js'), 'list_skills', '--json', '--top=3'],
+    { encoding: 'utf8', env: { ...process.env, CCI_INDEX_CACHE_DIR: '', ...env }, stdio: ['ignore', 'pipe', 'pipe'] });
+  const out = cli({ CCI_NO_INDEX_CACHE: '', CCI_INDEX_CACHE_DIR: path.join(dir, 'sub') });
+  assert.ok(JSON.parse(out).length > 0);
+  assert.strictEqual(out, cli({ CCI_NO_INDEX_CACHE: '1' }));
 });
 
 test('cache directory candidates: override, else XDG, home, tmpdir — never the skill directory', () => {

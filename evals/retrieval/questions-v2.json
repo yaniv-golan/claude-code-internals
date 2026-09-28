@@ -57,7 +57,6 @@
       71,
       72,
       86,
-      88,
       92,
       93,
       94,
@@ -73,7 +72,6 @@
       124,
       125,
       127,
-      129,
       133,
       136,
       146,
@@ -82,7 +80,6 @@
       165,
       167,
       170,
-      173,
       175,
       177,
       179,
@@ -163,6 +160,7 @@
       84,
       85,
       87,
+      88,
       89,
       90,
       91,
@@ -188,6 +186,7 @@
       123,
       126,
       128,
+      129,
       130,
       131,
       132,
@@ -223,6 +222,7 @@
       169,
       171,
       172,
+      173,
       174,
       176,
       178,
@@ -249,6 +249,33 @@
       215,
       216,
       217
+    ],
+    "rule": "random split, then every lesson a hard ranking test depends on is moved to dev",
+    "hard_tests": "skill-package/skills/claude-code-internals/scripts/tests/ranking-cases.json",
+    "moved_to_dev": [
+      {
+        "lesson_id": 88,
+        "reason": "a hard ranking test asserts this lesson",
+        "queries": [
+          "when_to_use"
+        ]
+      },
+      {
+        "lesson_id": 129,
+        "reason": "a hard ranking test asserts this lesson",
+        "queries": [
+          "list_skills",
+          "tengu_saddle_lantern",
+          "mcp__skills__list_skills"
+        ]
+      },
+      {
+        "lesson_id": 173,
+        "reason": "a hard ranking test asserts this lesson",
+        "queries": [
+          "plugin bin PATH"
+        ]
+      }
     ]
   },
   "questions": [
@@ -20127,7 +20154,7 @@
       "stratum": "identifier",
       "lesson_id": 88,
       "registry_id": null,
-      "split": "holdout",
+      "split": "dev",
       "text": "In the WIF user-OAuth locking retry loop `Vk4`, how many retries (`tvq`) are allowed, what backoff range is used between them, and which error code is the only one retried before the `e5` error 'Could not acquire credentials lock' is thrown?",
       "leak_retries": 0,
       "relevant": {
@@ -20152,7 +20179,7 @@
       "stratum": "plain",
       "lesson_id": 88,
       "registry_id": null,
-      "split": "holdout",
+      "split": "dev",
       "text": "When I run several Claude Code processes at once and they all try to renew the same login token, how does the tool stop them from clobbering each other, and how long will one wait for another before giving up with an error?",
       "leak_retries": 0,
       "relevant": {
@@ -29399,7 +29426,7 @@
       "stratum": "identifier",
       "lesson_id": 129,
       "registry_id": null,
-      "split": "holdout",
+      "split": "dev",
       "text": "In Desktop 1.25927.0, the proactive-suggestion gate `1598976391` flipped to on/force; besides swapping the `suggest_skills` description and injecting `trigger`, what third surface does it change through `generateSkillsSystemPrompt`, and what guidance rule exists only in the proactive branch?",
       "leak_retries": 0,
       "relevant": {
@@ -29436,7 +29463,7 @@
       "stratum": "plain",
       "lesson_id": 129,
       "registry_id": null,
-      "split": "holdout",
+      "split": "dev",
       "text": "When I check what tools a real Cowork session gave the model for finding skills and plugins, the model claims it has one set of tools but the session's saved startup record shows a different set. Which one should I trust, and why?",
       "leak_retries": 0,
       "relevant": {
@@ -40919,7 +40946,7 @@
       "stratum": "identifier",
       "lesson_id": 173,
       "registry_id": null,
-      "split": "holdout",
+      "split": "dev",
       "text": "Why does the `Z$n()` function's PATH entry for a plugin's `bin/` directory not prove the directory exists, and how does a `bin/` launcher in Cowork host-loop avoid the `CLAUDE_PLUGIN_ROOT` host-vs-VM path mismatch?",
       "leak_retries": 0,
       "relevant": {
@@ -40958,7 +40985,7 @@
       "stratum": "plain",
       "lesson_id": 173,
       "registry_id": null,
-      "split": "holdout",
+      "split": "dev",
       "text": "I wrote a plugin with a folder of executable scripts and I see my plugin's folder listed when I print my shell's search path, but the command isn't found. Why might that happen, and why is this approach more reliable than passing the plugin's location around as a path when the agent runs in a sandboxed VM?",
       "leak_retries": 0,
       "relevant": {
@@ -51057,6 +51084,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "gate.tengu_hushed_lark",
+      "split_lesson_id": 176,
       "split": "dev",
       "text": "In Claude Code's silent-turn reminder feature, what does the integer gate that supplies the silent-turn threshold do (default 5), is it the actual on/off switch, and has it ever actually fired on this machine, and what is the per-stretch cap on reminders?"
     },
@@ -51065,6 +51093,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_EXPERIMENTAL_OBSERVER_AGENTS",
+      "split_lesson_id": 134,
       "split": "dev",
       "text": "Is there an experimental environment variable for observer-type agents that goes with the agent teams experimental flag, and is it officially announced or still an undocumented, dark-launched feature?"
     },
@@ -51073,6 +51102,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "proto.hook_callback",
+      "split_lesson_id": 105,
       "split": "dev",
       "text": "When the Claude Code CLI sends a hook_callback control request over the stream-json protocol, what fields does the message carry, and what happens if a PreToolUse hook denies the tool call: does the permission callback still run?"
     },
@@ -51081,6 +51111,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_DISABLE_ORG_MEMORY",
+      "split_lesson_id": 136,
       "split": "holdout",
       "text": "Is there an environment variable in Claude Code that turns off organization-level memory, and is it officially documented in the changelog or only present in the code?"
     },
@@ -51089,6 +51120,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CLIENT_PRESENCE_FILE",
+      "split_lesson_id": 111,
       "split": "dev",
       "text": "Which environment variable tells Claude where to find the presence file that keeps mobile push notifications from firing while I'm actively using a local client, and is it still supported?"
     },
@@ -51097,6 +51129,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_AGENTS_AUTO_RELAUNCHED_AT",
+      "split_lesson_id": 90,
       "split": "dev",
       "text": "When the daemon automatically relaunches a background agent, it stamps the worker with a timestamp environment variable. What limits how often an agent can get auto-relaunched?"
     },
@@ -51105,6 +51138,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "gate.1453979703",
+      "split_lesson_id": 213,
       "split": "holdout",
       "text": "In Claude Desktop 2.9939.2, what happens to the move-to-cloud session tool when auto mode is on, and is that behavior currently being served to users?"
     },
@@ -51113,6 +51147,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "gate.1603637451",
+      "split_lesson_id": 197,
       "split": "dev",
       "text": "What limits apply to staging a skills folder right now, given that the override gate for those limits is dark-launched and wasn't in the latest capture? I'd like the max skills per folder, SKILL.md size, frontmatter size, asset size, file count, and total folder size."
     },
@@ -51121,6 +51156,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_PROJECT_UUID",
+      "split_lesson_id": 141,
       "split": "dev",
       "text": "In Cowork, when is the CLAUDE_PROJECT_UUID environment variable present in a session's environment, and is it currently in use?"
     },
@@ -51129,6 +51165,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_ORGANIZATION_UUID",
+      "split_lesson_id": 141,
       "split": "dev",
       "text": "Under what condition does Claude Code populate the environment variable holding the organization's UUID, and which other identity values does it travel with?"
     },
@@ -51137,6 +51174,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_DESKTOP_APP_VERSION",
+      "split_lesson_id": 174,
       "split": "dev",
       "text": "Is it safe to use the desktop app version environment variable to tell whether a session is running in Cowork, including on the cloud runner? Where does that variable actually get set, and under what conditions does the agent read it?"
     },
@@ -51145,6 +51183,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "gate.123929380",
+      "split_lesson_id": 108,
       "split": "holdout",
       "text": "Is the flag that turns on the \"Kappa\" skill variant and project mounting for clients without a session type switched on for the regular client, or is it still dark-launched?"
     },
@@ -51153,6 +51192,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.ANTHROPIC_FEDERATION_RULE_ID",
+      "split_lesson_id": 86,
       "split": "holdout",
       "text": "When setting up OIDC federation authentication with Anthropic, which required environment variable holds the federation rule ID that I copy from the Anthropic console?"
     },
@@ -51161,6 +51201,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_SECURESTORAGE_CONFIG_DIR",
+      "split_lesson_id": 99,
       "split": "dev",
       "text": "Is there an environment variable I can set to make Claude Code keep its secure credential storage somewhere other than the default ~/.claude folder, and is it still supported?"
     },
@@ -51169,6 +51210,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "gate.tengu_harbor_kite",
+      "split_lesson_id": 157,
       "split": "dev",
       "text": "Is the feature flag that controls cross-session messaging in Claude Code live for users yet, and does running it on Windows require any extra flag beyond the main one?"
     },
@@ -51177,6 +51219,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_ARTIFACT_PIN",
+      "split_lesson_id": 188,
       "split": "holdout",
       "text": "What happens if I try to pin an artifact from inside a cloud session, and is that capability actually released yet?"
     },
@@ -51185,6 +51228,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "tool.SubagentHandback",
+      "split_lesson_id": 191,
       "split": "dev",
       "text": "In recent Claude Code builds, is there a tool that lets a sub-agent submit its final report as a tool call rather than as its last message, and what controls whether it's turned on (including any requirement on the sub-agent's mode) and which versions include it?"
     },
@@ -51193,6 +51237,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_ARTIFACTS_API_BASE_URL",
+      "split_lesson_id": 112,
       "split": "holdout",
       "text": "Is the environment variable that sets the base URL for Claude Code's artifacts upload API actually live yet, and does it get passed along to subprocesses that Claude Code spawns?"
     },
@@ -51201,6 +51246,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_SUBAGENT_MODEL_FORCE",
+      "split_lesson_id": 186,
       "split": "holdout",
       "text": "When the CLAUDE_CODE_SUBAGENT_MODEL_FORCE environment variable is set and a Workflow script requests a specific model for one of its agents, what happens to that requested model, and is this behavior silent or logged?"
     },
@@ -51209,6 +51255,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_BG_CLAIM_AUTH",
+      "split_lesson_id": 108,
       "split": "holdout",
       "text": "In the background/Cowork session startup handshake, which environment variable passes the host's claim credential to the worker, and why is it removed from the process environment as soon as it has been read?"
     },
@@ -51217,6 +51264,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "tool.TaskOutput",
+      "split_lesson_id": 109,
       "split": "dev",
       "text": "Does Claude Code still have a tool for reading a background task's output, and if I keep a permission rule or --tools exclusion that names it, what happens?"
     },
@@ -51225,6 +51273,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_AGENT_SDK_MCP_NO_PREFIX",
+      "split_lesson_id": 108,
       "split": "holdout",
       "text": "Is there a currently supported environment variable that stops the server-name prefix from being added to MCP tool names when the connection is an SDK-type one, and what does it do?"
     },
@@ -51233,6 +51282,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_TRUSTED_DEVICE_TOKEN",
+      "split_lesson_id": 108,
       "split": "holdout",
       "text": "Is there an environment variable I can set to hand Claude Code a trusted-device token directly, so it doesn't go through the automatic device-trust enrollment step first?"
     },
@@ -51241,6 +51291,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "gate.1847129881",
+      "split_lesson_id": 212,
       "split": "holdout",
       "text": "In recent Claude Desktop builds, is there a remote-devices bridge tool that labels the output of the mcp__cowork__ artifact tools as \"legacy live artifacts\", steers the model to the native Artifact tool for new ones, and includes migration steps? Since which version is it available, and is its feature flag currently on or off by default?"
     },
@@ -51249,6 +51300,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_BG_SOURCE",
+      "split_lesson_id": 89,
       "split": "dev",
       "text": "Which environment variable does the daemon set when it dispatches workers, so a background session can tell where it was spawned from, and is it still in use?"
     },
@@ -51257,7 +51309,8 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "tool.mcp__skills__suggest_skills",
-      "split": "holdout",
+      "split_lesson_id": 129,
+      "split": "dev",
       "text": "In the Cowork desktop app, what does the skill-suggestion tool exposed through the skills MCP server do, and under what conditions does it show up with different input parameters, such as whether it takes a trigger field or is missing entirely?"
     },
     {
@@ -51265,6 +51318,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.ANTHROPIC_SERVICE_ACCOUNT_ID",
+      "split_lesson_id": 86,
       "split": "holdout",
       "text": "When authenticating with OIDC federation, is there an environment variable for supplying a service account ID, and is setting it required or optional?"
     },
@@ -51273,6 +51327,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "tool.TeamCreate",
+      "split_lesson_id": 92,
       "split": "holdout",
       "text": "Is the tool for managing teams of workers in coordinator mode still available in Claude Code, and if not, how do sessions handle teams now?"
     },
@@ -51281,6 +51336,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_JOB_DIR",
+      "split_lesson_id": 89,
       "split": "dev",
       "text": "Where does a background job keep its working files, like its git worktree, conversation transcript, and terminal recording, and is that location still in use?"
     },
@@ -51289,6 +51345,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "cmd.stop-hook",
+      "split_lesson_id": 87,
       "split": "dev",
       "text": "Is the slash command that let you add a temporary, session-only Stop hook by typing a short prompt still available in Claude Code, and if not, when was it fully removed?"
     },
@@ -51297,6 +51354,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_EFFORT",
+      "split_lesson_id": 90,
       "split": "dev",
       "text": "If I set the CLAUDE_EFFORT environment variable myself before launching Claude Code, will it change the effort level being used? And does Claude Code still put that variable into the environment of Bash commands and hooks?"
     },
@@ -51305,6 +51363,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_ARTIFACT_COMMENT_FAST_ACK_FIXED",
+      "split_lesson_id": 172,
       "split": "dev",
       "text": "What is the launch status of the env var that provides a fixed-deadline override for the Artifact comment fast-ack path (the one that otherwise falls back to the tengu_gorse_sill gate), and how does it relate to the Artifact master flag that earlier chapters described as a single switch?"
     },
@@ -51313,6 +51372,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "gate.1648655587",
+      "split_lesson_id": 108,
       "split": "holdout",
       "text": "How many Cowork scheduled-task sessions can be running at once, both for a single scheduled task and across all of them, and what happens when a new run would go over those limits?"
     },
@@ -51321,6 +51381,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "cmd.artifacts",
+      "split_lesson_id": 135,
       "split": "dev",
       "text": "Is there a Claude Code slash command for browsing the artifacts I've published and shared, and is it publicly available yet, or is it still behind a gate and not mentioned in the official changelog?"
     },
@@ -51329,6 +51390,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "gate.2864556627",
+      "split_lesson_id": 195,
       "split": "holdout",
       "text": "Is Claude Desktop's bridge that lets claude.ai artifact frames call my locally configured MCP servers switched on now, and can an artifact actually use it end to end yet?"
     },
@@ -51337,6 +51399,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_ARTIFACTS_API_TOKEN",
+      "split_lesson_id": 172,
       "split": "dev",
       "text": "What's the current rollout status of the environment variable that overrides the Artifact API token (the companion to the one that sets the Artifact API base URL), and how are Artifacts gated now compared with the earlier single master flag?"
     },
@@ -51345,6 +51408,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_PLUGIN_DIR_WATCH",
+      "split_lesson_id": 188,
       "split": "holdout",
       "text": "Is Claude Code's plugin-directory file watcher turned on by default, and what exactly does a user have to do to disable it? Also, what debounce delay and rate-limit settings does it use?"
     },
@@ -51353,6 +51417,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_ENVIRONMENT_KIND",
+      "split_lesson_id": 108,
       "split": "holdout",
       "text": "Which process is responsible for setting the \"bridge\" value of the CLAUDE_CODE_ENVIRONMENT_KIND variable, and how does a Desktop-hosted bridge session end up on the bridge classifier surface if the Desktop app never sets that value itself?"
     },
@@ -51361,6 +51426,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_SILENT_TURN_REMINDER_TURNS",
+      "split_lesson_id": 176,
       "split": "dev",
       "text": "In Claude Code, is there an environment variable that lets me change how many silent turns trigger the reminder from its default of 5, and can I also change the limit of 3 reminders per stretch the same way?"
     },
@@ -51369,6 +51435,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_BYTE_STREAM_IDLE_TIMEOUT_MS",
+      "split_lesson_id": 94,
       "split": "holdout",
       "text": "If I set both the older stream idle timeout variable and the newer byte-level stream idle watchdog variable, which one wins, and what's the default value and allowed range for the byte-level one?"
     },
@@ -51377,6 +51444,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_BRIEF",
+      "split_lesson_id": 141,
       "split": "dev",
       "text": "Under what condition does Claude Code set the CLAUDE_CODE_BRIEF environment variable to \"1\", and is that variable still active?"
     },
@@ -51385,6 +51453,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_ENABLE_BYTE_WATCHDOG_BEDROCK",
+      "split_lesson_id": 94,
       "split": "holdout",
       "text": "Is the CLAUDE_ENABLE_BYTE_WATCHDOG_BEDROCK environment variable enabled by default, and what does it control?"
     },
@@ -51393,6 +51462,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_RETRY_WATCHDOG",
+      "split_lesson_id": 86,
       "split": "holdout",
       "text": "When should I enable the retry watchdog via CLAUDE_CODE_RETRY_WATCHDOG, and does it work on local dev machines?"
     },
@@ -51401,6 +51471,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_ARTIFACT_DB",
+      "split_lesson_id": 172,
       "split": "dev",
       "text": "What's the current rollout status of the CLAUDE_CODE_ARTIFACT_DB environment variable, and what capacity/quota settings does it control?"
     },
@@ -51409,6 +51480,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "gate.tengu_sable_thrush",
+      "split_lesson_id": 178,
       "split": "dev",
       "text": "Is the tengu_sable_thrush gate enabled by default, and what does it control regarding thinking block display?"
     },
@@ -51417,6 +51489,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "proto.peer_message_hold",
+      "split_lesson_id": 196,
       "split": "dev",
       "text": "What does a type:system message with cause 'peer_message_hold' mean when it shows up in agent 2.1.275+, and does Desktop actually do anything with it?"
     },
@@ -51425,6 +51498,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT",
+      "split_lesson_id": 86,
       "split": "holdout",
       "text": "What does the CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT environment variable do, and is it currently active?"
     },
@@ -51433,6 +51507,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "proto.turn_handoff_available",
+      "split_lesson_id": 196,
       "split": "dev",
       "text": "If a cloud worker sends a type:system frame offering to hand off the turn, will Claude Desktop 2.7032.0 recognize and act on it?"
     },
@@ -51441,6 +51516,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH",
+      "split_lesson_id": 99,
       "split": "dev",
       "text": "In the Claude Agent SDK, what does the CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH environment variable indicate?"
     },
@@ -51449,6 +51525,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_RATE_LIMIT_TIER",
+      "split_lesson_id": 87,
       "split": "dev",
       "text": "What does the CLAUDE_CODE_RATE_LIMIT_TIER environment variable do, and does it actually change my rate limits on the server side?"
     },
@@ -51457,6 +51534,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "proto.local_command_output",
+      "split_lesson_id": 108,
       "split": "holdout",
       "text": "When a slash command like /voice or /usage produces output through the SDK stream, what message type and format does it come through as?"
     },
@@ -51465,6 +51543,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_SYNC_PLUGINS_MCP_TIMEOUT_MS",
+      "split_lesson_id": 98,
       "split": "holdout",
       "text": "What does the CLAUDE_CODE_SYNC_PLUGINS_MCP_TIMEOUT_MS environment variable control, what's its default, and when does the tengu_plugins_sync_mcp_skipped event get triggered?"
     },
@@ -51473,6 +51552,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_DISABLE_AGENT_VIEW",
+      "split_lesson_id": 100,
       "split": "dev",
       "text": "Does setting CLAUDE_CODE_DISABLE_AGENT_VIEW still work, or did it get replaced when the Fleet view feature was renamed?"
     },
@@ -51481,7 +51561,8 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "gate.2114777685",
-      "split": "holdout",
+      "split_lesson_id": 129,
+      "split": "dev",
       "text": "Is the gate for the fifth SDK-MCP discovery server, cowork-onboarding, currently live for cowork sessions?"
     },
     {
@@ -51489,6 +51570,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "proto.end_session",
+      "split_lesson_id": 107,
       "split": "dev",
       "text": "What happens if the host sends an end_session control message with reason \"archived\" to a worker that's on its second lifecycle epoch or later?"
     },
@@ -51497,6 +51579,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "gate.3444158716",
+      "split_lesson_id": 205,
       "split": "dev",
       "text": "Is the visualize server's 'read_me'/'show_widget' MCP tool gate currently enabled, and is it the same gate that controls elicitation instructions?"
     },
@@ -51505,6 +51588,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "tool.MCP_LIST_SCHEDULED_TASKS",
+      "split_lesson_id": 114,
       "split": "dev",
       "text": "Is there a fifth scheduled-tasks tool for just listing tasks, and is it included in the Desktop app's 8-tool forced-ask matcher?"
     },
@@ -51513,6 +51597,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "beta.afk-mode-2026-01-31",
+      "split_lesson_id": 96,
       "split": "dev",
       "text": "What is the status of the afk-mode beta token that auto mode injects when CLAUDE_CODE_ENABLE_AUTO_MODE is set, and does it predate v2.1.159?"
     },
@@ -51521,6 +51606,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_CODE_AGENT",
+      "split_lesson_id": 89,
       "split": "dev",
       "text": "What is the CLAUDE_CODE_AGENT environment variable used for, and is it currently active?"
     },
@@ -51529,6 +51615,7 @@
       "stratum": "state",
       "lesson_id": null,
       "registry_id": "env.CLAUDE_MEMORY_STORES",
+      "split_lesson_id": 102,
       "split": "dev",
       "text": "What does the CLAUDE_MEMORY_STORES environment variable do, and what happens if I list the same mount path twice?"
     },

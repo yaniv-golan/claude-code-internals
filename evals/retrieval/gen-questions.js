@@ -26,6 +26,13 @@
  * resumed run keeps the partial's lesson split (never recomputes it), so a
  * topic-index change between runs cannot move a lesson across dev/holdout.
  *
+ * The split rule: a seeded random split (lib.splitLessons), then every lesson a
+ * hard ranking test asserts (the skill package's scripts/tests/ranking-cases.json)
+ * is moved to dev (lib.applyHardTestRule). The file's `split` records the rule
+ * and the moved lessons (`moved_to_dev`), so the random split is recoverable.
+ * When a later hard test names a holdout lesson of a committed set, resplit.js
+ * applies the rule to that file (and a new baseline is cut).
+ *
  * qids: v1 used bare `id-0001`, `pl-0002`, ... (frozen). From v2 on they carry
  * the version (`v2-id-0001`) so they are unique across versions; run.js also
  * keys every comparison by version + qid.
@@ -277,7 +284,9 @@ async function generate(opts, deps) {
 
   let state = readPartial(outPath, header) || {
     header,
-    split: lib.splitLessons(topicIndex.lessons.map(l => l.id), opts.seed),
+    // The split rule: a seeded random split, then every lesson a hard ranking test
+    // (skill-package/.../scripts/tests/ranking-cases.json) asserts is moved to dev.
+    split: lib.applyHardTestRule(lib.splitLessons(topicIndex.lessons.map(l => l.id), opts.seed), lib.loadHardTestLessons()),
     questions: [],
     done: { lessons: [], state_entries: [], negatives: false },
     dropped: [], // leaked questions that never resolved, for audit
@@ -375,12 +384,13 @@ async function generate(opts, deps) {
     const prompt = buildStatePrompt(entry);
     try {
       const parsed = await callModelJSON(callModel, prompt, opts);
-      const questionSplit = (entry.provenance && entry.provenance.length)
-        ? (splitOf.get(entry.provenance[0].lesson) || 'dev')
-        : 'dev'; // open decision: state questions inherit the FIRST provenance lesson's split
+      // open decision: state questions inherit the FIRST provenance lesson's split.
+      // The lesson is recorded (split_lesson_id) so relabelling never re-reads the registry.
+      const splitLessonId = lib.stateSplitLessonId(entry);
+      const questionSplit = splitLessonId === null ? 'dev' : (splitOf.get(splitLessonId) || 'dev');
       state.questions.push({
         qid: nextQid('st'), stratum: 'state', lesson_id: null, registry_id: entry.id,
-        split: questionSplit, text: String(parsed.question || ''),
+        split_lesson_id: splitLessonId, split: questionSplit, text: String(parsed.question || ''),
       });
       // Only a success counts as done, so a resumed run retries failures.
       state.done.state_entries.push(entryId);

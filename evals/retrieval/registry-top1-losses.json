@@ -1,0 +1,4 @@
+{
+  "comment": "Named losses of the registry top-1 gate (registry-gate.js): dev-lesson cases recorded passing in registry-top1.json that no longer rank their lesson first. Each entry names the case, the lesson it now loses to, and why. A stale entry fails; the list empties when registry-top1.json is regenerated.",
+  "losses": []
+}

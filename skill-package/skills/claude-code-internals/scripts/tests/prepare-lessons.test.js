@@ -9,7 +9,7 @@
  * Integration cases run against a scratch COPY of the skill directory.
  */
 
-const test = require('node:test');
+const nodeTest = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const os = require('os');
@@ -24,12 +24,19 @@ const P = require('../prepare-lessons.js');
 const {
   keywordCandidates, extractIdentifiers, keyFormOf, shapeReject, contextReject,
 } = require('../lib/identifiers.js');
-const { compileKey, keyHitsToken } = require('../lib/keyword-match.js');
+const { compileKey, keyHitsToken, surfaceTokens } = require('../lib/keyword-match.js');
 const { buildIndex, tokenizeQuery } = require('../lib/tfidf-index.js');
 const {
   BOUNDARY_FIELD, HAND_FILE, HAND_SHA256, loadHandSource, handTopic, handKeywords,
 } = require('../lib/keyword-provenance.js');
 const { parseOrdered, emit } = require('../check-json-format.js');
+const V = require('../lib/vocab.js');
+const { PROPOSALS_FILE, loadProposals, proposalsPath } = V;
+
+// The vocabulary proposals (data/ at the repository root) are a build input, not part of the
+// shipped skill zip; there nothing can be derived or checked, so every case skips.
+const test = fs.existsSync(proposalsPath(SKILL_DIR)) ? nodeTest
+  : Object.assign((name, fn) => nodeTest(name, { skip: 'data/vocab-proposals.json not present (the shipped skill package zip)' }, fn), { after: nodeTest.after });
 
 const TOPIC = path.join(SKILL_DIR, 'references', 'topic-index.json');
 const committed = () => JSON.parse(fs.readFileSync(TOPIC, 'utf8'));
@@ -47,17 +54,21 @@ function run(script, args) {
 
 const SCRATCH = [];
 test.after(() => { for (const d of SCRATCH) fs.rmSync(d, { recursive: true, force: true }); });
+/** A scratch repository layout: <root>/skill-package/skills/claude-code-internals (returned) and <root>/data. */
 function fixture() {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cci-prep-'));
-  SCRATCH.push(dir);
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'cci-prep-'));
+  SCRATCH.push(root);
+  const dir = path.join(root, 'skill-package', 'skills', 'claude-code-internals');
   const refs = path.join(dir, 'references');
-  fs.mkdirSync(refs);
+  fs.mkdirSync(refs, { recursive: true });
   const src = path.join(SKILL_DIR, 'references');
   for (const f of fs.readdirSync(src)) {
     if (/^\d\d-.*\.md$/.test(f) || /^(topic-index|hand-keywords|cross-references|troubleshooting)\.json$/.test(f)) {
       fs.copyFileSync(path.join(src, f), path.join(refs, f));
     }
   }
+  fs.mkdirSync(path.dirname(proposalsPath(dir)));
+  fs.copyFileSync(proposalsPath(SKILL_DIR), proposalsPath(dir));
   fs.copyFileSync(path.join(SKILL_DIR, 'version.json'), path.join(dir, 'version.json'));
   return dir;
 }
@@ -151,20 +162,25 @@ test('camelCase identifiers are stored in separator form, reachable by the ident
   assert.strictEqual(keyFormOf('getMCPServer'), 'get-mcp-server');
   assert.strictEqual(keyFormOf('CLAUDE_CODE_X'), 'CLAUDE_CODE_X');
   for (const raw of ['switchSession', 'SendMessage', 'getMCPServer', 'isEnabled']) {
-    const ck = compileKey(keyFormOf(raw));
+    // Generated keys are compiled exact-only (lib/keyword-match.js): never hand kebab phrases.
+    const ck = compileKey(keyFormOf(raw), { exactOnly: true });
     assert.ok(ck.isIdentifier, `${raw} key is identifier-shaped`);
     assert.ok(tokenizeQuery(raw).some((t) => keyHitsToken(ck, t)), `typing ${raw} hits its key`);
     // and no plain word inside it does
     for (const w of ['switch', 'session', 'send', 'message', 'enabled']) assert.ok(!keyHitsToken(ck, w));
   }
+  // The same spelling as a HAND key is a kebab phrase: its words hit it.
+  assert.ok(keyHitsToken(compileKey('switch-session'), 'session'));
 });
 
-test('a key must be self-reachable: /foo-bar can never be hit by a query token', () => {
-  assert.strictEqual(P.selfReachable('/foo-bar', '/foo-bar'), false);
+test('a key must be self-reachable: /code (a query stop word) can never be hit by a query token', () => {
+  assert.strictEqual(P.selfReachable('/code', '/code'), false);
   assert.strictEqual(P.selfReachable('/schedule', '/schedule'), true);
-  const { derived, report } = planOf({}, [[1, 'Run /foo-bar and /bazquux now.']]);
-  assert.deepStrictEqual(derived.map((d) => d.key), ['/bazquux']);
-  assert.ok(report.rejected.some((r) => r.raw === '/foo-bar' && r.reason === 'not-self-reachable'));
+  // A key's joined form drops every non-alphanumeric character, so /foo-bar is hit by foobar.
+  assert.strictEqual(P.selfReachable('/foo-bar', '/foo-bar'), true);
+  const { derived, report } = planOf({}, [[1, 'Run /foo-bar, /code and /bazquux now.']]);
+  assert.deepStrictEqual(derived.map((d) => d.key), ['/foo-bar', '/bazquux']);
+  assert.ok(report.rejected.some((r) => r.raw === '/code' && r.reason === 'not-self-reachable'));
 });
 
 // evals/ is not part of the shipped skill package; this check skips there.
@@ -263,15 +279,11 @@ test('on the committed index, every generated key opened only tokens no hand key
   const cur = committed();
   const before = handTopic(cur, HAND).topic;
   const beforeKeys = Object.keys(before.keyword_map).map(compileKey);
-  const added = [...generatedOf(cur)];
+  // Identifier keys only: vocabulary keys are ordinary phrases and may share words (rule 4).
+  const added = cur.lessons.flatMap((l) => l.identifier_keys || []).filter((k, i, a) => a.indexOf(k) === i);
   assert.ok(added.length > 0, 'the committed index carries the identifier backfill');
   for (const k of added) {
-    const ck = compileKey(k);
-    const surface = ck.isIdentifier ? [ck.joined] : [];
-    if (!ck.isIdentifier) {
-      const f = ck.lower.replace(/[^a-z0-9]/g, '');
-      for (let n = 2; n <= f.length; n++) for (let i = 0; i + n <= f.length; i++) surface.push(f.slice(i, i + n));
-    }
+    const surface = [...surfaceTokens(compileKey(k, { exactOnly: true }))];
     for (const t of surface) {
       assert.ok(!beforeKeys.some((b) => keyHitsToken(b, t)), `generated key "${k}" hits "${t}", which a hand key already hit`);
     }
@@ -290,7 +302,7 @@ test('hand-keywords.json is the frozen snapshot, and the committed index is exac
   const cur = committed();
   const raw = fs.readFileSync(TOPIC, 'utf8');
   const lessonText = P.load(SKILL_DIR).lessonText;
-  const { errors, derived } = P.checkLessons({ raw, lessonText, hand: HAND });
+  const { errors, derived } = P.checkLessons({ raw, lessonText, hand: HAND, proposals: loadProposals(SKILL_DIR) });
   assert.deepStrictEqual(errors, []);
   // keyword_map = every hand key (no lesson is deleted), in snapshot order, then the generated keys
   const keys = P.storedKeyList(raw).map(([k]) => k);
@@ -301,7 +313,7 @@ test('hand-keywords.json is the frozen snapshot, and the committed index is exac
   // each lesson: its snapshot keywords verbatim (lesson 87 keeps its duplicate), then identifier_keys
   for (const l of cur.lessons) {
     const handKw = (HAND.lessonKeywords.get(l.id) || []).map((x) => x.value);
-    assert.deepStrictEqual(l.keywords, [...handKw, ...(l.identifier_keys || [])], `lesson ${l.id}`);
+    assert.deepStrictEqual(l.keywords, [...handKw, ...(l.identifier_keys || []), ...(l.vocab_keys || [])], `lesson ${l.id}`);
   }
   assert.deepStrictEqual(Object.keys(cur[BOUNDARY_FIELD]), ['unreachable_max']);
 });
@@ -337,7 +349,7 @@ function strippedFixture() {
   const dir = fixture();
   editTree(dir, (tree) => {
     entry(tree, 'keyword_map')[1].entries = [];
-    for (const item of lessonItems(tree)) item.entries = item.entries.filter(([k]) => k !== '"identifier_keys"' && k !== '"keywords"');
+    for (const item of lessonItems(tree)) item.entries = item.entries.filter(([k]) => !['"identifier_keys"', '"keywords"', '"vocab_keys"', '"vocab"'].includes(k));
   });
   return dir;
 }
@@ -367,7 +379,7 @@ test('losing identifier_keys fails the check, and a plain run (no flag) restores
   const b = run(BUILD, ['--check', '--root', dir]);
   assert.strictEqual(b.code, 1, b.out);
   // provenance comes from hand-keywords.json, so the generated keys are still generated
-  const res = P.checkLessons({ raw: fs.readFileSync(topicPath(dir), 'utf8'), lessonText: P.load(dir).lessonText, hand: HAND });
+  const res = P.checkLessons({ raw: fs.readFileSync(topicPath(dir), 'utf8'), lessonText: P.load(dir).lessonText, hand: HAND, proposals: loadProposals(dir) });
   assert.strictEqual(res.derived.length, generatedOf(committed()).size);
   const w = run(PREP, ['--root', dir]);
   assert.strictEqual(w.code, 0, w.out);
@@ -476,7 +488,22 @@ function deleteLesson(dir, victim) {
   editTree(dir, (tree) => { const ls = entry(tree, 'lessons')[1]; ls.items = ls.items.filter((it) => idOf(it) !== victim.id); });
 }
 
-test('deleting a lesson is automatic: build.js + prepare-lessons.js, no flag, no keyword edit, hand-keywords.json never written', () => {
+/**
+ * After a lesson is deleted its vocabulary proposal is stale: --generate drops it (no model
+ * call) and the proposals file gets a new hash, which the maintainer pins in the same
+ * commit. Returns the check errors with that new hash pinned.
+ */
+async function dropStaleProposals(dir) {
+  const stale = run(PREP, ['--check', '--root', dir]);
+  assert.strictEqual(stale.code, 1, stale.out);
+  assert.match(stale.out, /proposals for 1 lesson id\(s\) not in the index .*--generate/);
+  await P.runGenerate(dir, {}, { callModel: async () => { throw new Error('no model call expected'); } }, () => {});
+  const after = loadProposals(dir);
+  assert.match(run(BUILD, ['--check', '--root', dir]).out, /is not the pinned proposals file/);
+  return P.checkLessons({ raw: fs.readFileSync(topicPath(dir), 'utf8'), lessonText: P.load(dir).lessonText, hand: HAND, proposals: after, proposalsPin: after.sha256 }).errors;
+}
+
+test('deleting a lesson is automatic: build.js + prepare-lessons.js, no flag, no keyword edit, hand-keywords.json never written', async () => {
   const dir = fixture();
   const t0 = topicOf(dir);
   const referenced = referencedIds(dir);
@@ -498,8 +525,8 @@ test('deleting a lesson is automatic: build.js + prepare-lessons.js, no flag, no
   const p = run(PREP, ['--root', dir]);
   assert.strictEqual(p.code, 0, p.out);
 
-  assert.strictEqual(run(PREP, ['--check', '--root', dir]).code, 0);
-  assert.strictEqual(run(BUILD, ['--check', '--root', dir]).code, 0);
+  // the keyword fields are derived; what is left is the deleted lesson's vocabulary proposal
+  assert.deepStrictEqual(await dropStaleProposals(dir), []);
   const t = topicOf(dir);
   for (const k of owned) assert.ok(!(k in t.keyword_map), `generated key ${k} of the deleted lesson survived`);
   for (const k of handOnly(victim.id)) assert.ok(!(k in t.keyword_map), `hand key ${k} naming only the deleted lesson is still projected`);
@@ -514,7 +541,7 @@ test('deleting a lesson is automatic: build.js + prepare-lessons.js, no flag, no
   assert.match(run(PREP, ['--root', dir]).out, /already up to date/);
 });
 
-test('a retired hand key (its only lesson deleted) stays hand: it is never generated from another lesson', () => {
+test('a retired hand key (its only lesson deleted) stays hand: it is never generated from another lesson', async () => {
   const dir = fixture();
   const t0 = topicOf(dir);
   const referenced = referencedIds(dir);
@@ -535,7 +562,7 @@ test('a retired hand key (its only lesson deleted) stays hand: it is never gener
   const t = topicOf(dir);
   assert.ok(!(cand.key in t.keyword_map), 'a retired hand key came back as a generated key');
   assert.ok(!(t.lessons.find((l) => l.id === host.id).identifier_keys || []).includes(cand.key));
-  assert.strictEqual(run(BUILD, ['--check', '--root', dir]).code, 0);
+  assert.deepStrictEqual(await dropStaleProposals(dir), []);
   // unit form of the same rule
   const { derived, report } = P.planIdentifiers(miniTopic({}, [[1]]), () => '`retired_hand_key`', { retired: new Set(['retired_hand_key']) });
   assert.deepStrictEqual(derived, []);
@@ -632,12 +659,22 @@ test('lookup.sh ignores generated keys', (t) => {
   assert.match(q.stderr, /No matches/);
   const hand = spawnSync('bash', [path.join(dir, 'scripts', 'lookup.sh'), 'hooks'], { encoding: 'utf8' });
   assert.strictEqual(hand.status, 0);
+  // a vocabulary key that is the only key containing its word is ignored too
+  const ti = topicOf(dir);
+  const words = new Map();
+  for (const k of Object.keys(ti.keyword_map)) for (const w of k.toLowerCase().split(/[^a-z0-9]+/).filter((x) => x.length > 5)) words.set(w, (words.get(w) || []).concat(k));
+  const vocabOnly = [...words].find(([w, ks]) => ks.length === 1 && ti.lessons.some((l) => (l.vocab_keys || []).includes(ks[0])) && !Object.keys(ti.keyword_map).some((k) => k !== ks[0] && k.toLowerCase().includes(w)));
+  assert.ok(vocabOnly, 'some word occurs only in one vocabulary key');
+  const v = spawnSync('bash', [path.join(dir, 'scripts', 'lookup.sh'), vocabOnly[0]], { encoding: 'utf8' });
+  assert.strictEqual(v.status, 1, `${vocabOnly[0]}: ${v.stdout}`);
 });
 
 test('search.js, semantic-search.js and fetch-lesson.js print hand keywords only', () => {
   const cur = committed();
   const lesson = cur.lessons.find((l) => l.id === 89);
-  assert.ok(lesson.identifier_keys.length, 'lesson 89 carries generated keys');
+  assert.ok(lesson.identifier_keys.length, 'lesson 89 carries generated identifier keys');
+  assert.ok(lesson.vocab_keys.length, 'lesson 89 carries generated vocabulary keys');
+  for (const k of lesson.vocab_keys) assert.ok(!handKeywords(lesson).includes(k), `vocab key ${k} is not a hand keyword`);
   const meta = JSON.parse(execFileSync('node', [path.join(SCRIPTS, 'fetch-lesson.js'), '89', '--meta'], { encoding: 'utf8' }));
   assert.deepStrictEqual(meta.keywords, handKeywords(lesson));
   for (const script of ['search.js', 'semantic-search.js']) {
@@ -656,6 +693,8 @@ test('--check passes on the committed tree', () => {
   const r = run(PREP, ['--check']);
   assert.strictEqual(r.code, 0, r.out);
   assert.match(r.out, /prepare-lessons check OK/);
+  const sp = spawnSync('node', [PREP, '--check'], { encoding: 'utf8' });
+  assert.doesNotMatch(sp.stdout + sp.stderr, /WARNING/, 'no stale or unknown-input vocabulary proposal is committed');
 });
 
 test('--check refuses to judge stale bounds', () => {
@@ -759,4 +798,313 @@ test('build.js: HEAD moving mid-run aborts the write; outside git the guard is s
   const env = { ...process.env, PATH: '/nonexistent' };
   const c = spawnSync(process.execPath, [BUILD, '--check', '--root', plain], { encoding: 'utf8', env });
   assert.strictEqual(c.status, 0, c.stdout + c.stderr);
+});
+
+// --- vocabulary (rule 4, lib/vocab.js) ------------------------------------------------
+
+test('vocabulary rules: clean, drop identifiers / existing keys / hand keywords / long terms, share across at most 2 lessons', () => {
+  const state = new P.KeyState({ hooks: [1], 'plugin cache': [2] });
+  const handKw = new Map([[1, new Set(['why hooks do not fire'])], [2, new Set()], [3, new Set()], [4, new Set()]]);
+  const prop = (terms) => ({ model: 'm', prompt_version: 'v', date: '2026-01-01', terms });
+  const byId = new Map([
+    [1, prop(['  "Why do my HOOKS not fire?" ', 'Hooks', 'set CLAUDE_CODE_FOO to fix it', 'use `hooks` wisely', 'Why hooks do not fire', 'x'.repeat(81), 'shared phrase here'])],
+    [2, prop(['plugin-cache', 'Shared phrase here!', 'the café problem', 'wide phrase'])],
+    [3, prop(['wide phrase', 'only mine'])],
+    [4, prop(['wide phrase'])],
+  ]);
+  const lessons = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
+  const r = V.planVocab(lessons, state, handKw, byId);
+  assert.deepStrictEqual(r.derived.map((d) => [d.key, d.lessons]), [
+    ['why do my hooks not fire', [1]],
+    ['shared phrase here', [1, 2]],
+    ['only mine', [3]],
+  ]);
+  assert.deepStrictEqual(r.missing, [5]);
+  assert.deepStrictEqual([...r.stamps.keys()], [1, 2, 3, 4]);
+  assert.deepStrictEqual(r.report.dropped, {
+    'already a key': 2, 'contains an identifier': 2, 'too long': 1, 'non-ascii': 1,
+    'a hand keyword of its lesson': 1, 'proposed for more than 2 lessons': 1,
+  });
+});
+
+test('the committed index carries vocabulary for every lesson, keyword layer only', () => {
+  const cur = committed();
+  const props = loadProposals(SKILL_DIR);
+  assert.deepStrictEqual(props.errors, []);
+  for (const l of cur.lessons) {
+    assert.ok(props.byId.has(l.id), `lesson ${l.id} has proposals`);
+    const p = props.byId.get(l.id);
+    assert.deepStrictEqual(l.vocab, { model: p.model, prompt_version: p.prompt_version, date: p.date, terms_sha256: V.termsSha256(p.terms) });
+  }
+  const vocabKeys = cur.lessons.flatMap((l) => l.vocab_keys || []);
+  assert.ok(vocabKeys.length > 1000);
+  for (const k of vocabKeys) assert.ok(!HAND.keySet.has(k), `${k} is generated, not hand`);
+});
+
+test('the proposals file is tracked outside the shipped skill directory and is the pinned one', () => {
+  const abs = proposalsPath(SKILL_DIR);
+  assert.strictEqual(path.relative(path.join(SKILL_DIR, '..', '..', '..'), abs), PROPOSALS_FILE);
+  assert.ok(!abs.startsWith(path.join(SKILL_DIR, '..', '..') + path.sep), 'not under skill-package/');
+  assert.strictEqual(loadProposals(SKILL_DIR).sha256, V.PROPOSALS_SHA256);
+  // every entry records the hash of the prompt it was generated from, and it is the current one
+  const loaded = P.load(SKILL_DIR);
+  const props = loadProposals(SKILL_DIR);
+  assert.deepStrictEqual(V.staleProposals(loaded.topic.lessons, loaded.lessonText, props.byId), { stale: [], unknown: [] });
+});
+
+test('a lesson without vocabulary proposals fails --check and names --generate', () => {
+  const dir = fixture();
+  const props = loadProposals(dir);
+  props.byId.delete(107);
+  fs.writeFileSync(proposalsPath(dir), V.renderProposals(props.byId));
+  const r = run(PREP, ['--check', '--root', dir]);
+  assert.strictEqual(r.code, 1, r.out);
+  assert.match(r.out, /1 lesson\(s\) have no vocabulary proposals .*\(107\).*--generate/);
+  assert.match(r.out, /is not the pinned proposals file/, 'the edit itself is caught by the pin');
+  assert.strictEqual(run(BUILD, ['--check', '--root', dir]).code, 1);
+});
+
+test('an edited, missing or stale-entry proposals file fails --check; --generate drops stale entries and prints the new hash', async () => {
+  const dir = fixture();
+  // one term edited by hand: the derivation would still check, the pin does not
+  const props = loadProposals(dir);
+  props.byId.get(89).terms[0] = 'a hand edit';
+  fs.writeFileSync(proposalsPath(dir), V.renderProposals(props.byId));
+  const edited = run(BUILD, ['--check', '--root', dir]);
+  assert.strictEqual(edited.code, 1, edited.out);
+  assert.match(edited.out, /data\/vocab-proposals\.json is not the pinned proposals file .*PROPOSALS_SHA256/);
+  assert.match(edited.out, /vocab stamp other than their proposal's: 89/, 'the stamp records the terms hash');
+  // an entry for a lesson that is not in the index
+  const fresh = fixture();
+  const p2 = loadProposals(fresh);
+  p2.byId.set(9999, { model: 'm', prompt_version: 'p', date: 'd', terms: ['x'] });
+  fs.writeFileSync(proposalsPath(fresh), V.renderProposals(p2.byId));
+  const stale = run(PREP, ['--check', '--root', fresh]);
+  assert.strictEqual(stale.code, 1, stale.out);
+  assert.match(stale.out, /proposals for 1 lesson id\(s\) not in the index \(9999\)/);
+  const lines = [];
+  const noModel = async () => { throw new Error('no model call expected'); };
+  // the added entry is itself an unpinned edit: --generate refuses to start from it
+  const edit = fs.readFileSync(proposalsPath(fresh), 'utf8');
+  await assert.rejects(P.runGenerate(fresh, {}, { callModel: noModel }, () => {}), /is not the pinned proposals file/);
+  assert.strictEqual(fs.readFileSync(proposalsPath(fresh), 'utf8'), edit, 'nothing written');
+  // accepted deliberately (--bootstrap), the entry of a lesson not in the index is dropped
+  await P.runGenerate(fresh, { bootstrap: true }, { callModel: noModel }, (l) => lines.push(l));
+  assert.ok(!loadProposals(fresh).byId.has(9999), 'dropped');
+  const hash = loadProposals(fresh).sha256;
+  assert.strictEqual(hash, V.PROPOSALS_SHA256, 'dropping the added entry restores the committed file');
+  assert.ok(lines.some((l) => l.includes(`sha256 is now ${hash}`)), lines.join('\n'));
+  assert.ok(lines.some((l) => /set PROPOSALS_SHA256 in scripts\/lib\/vocab\.js/.test(l)), lines.join('\n'));
+  assert.strictEqual(run(PREP, ['--check', '--root', fresh]).code, 0);
+  // missing
+  fs.rmSync(proposalsPath(fresh));
+  const gone = run(PREP, ['--check', '--root', fresh]);
+  assert.strictEqual(gone.code, 1, gone.out);
+  assert.match(gone.out, /data\/vocab-proposals\.json is missing/);
+});
+
+test('stored vocab_keys and vocab stamps must equal the derivation from the proposals; a plain run restores them', () => {
+  const dir = fixture();
+  const original = fs.readFileSync(topicPath(dir), 'utf8');
+  editTree(dir, (tree) => {
+    const item = lessonItems(tree).find((it) => idOf(it) === 89);
+    const vk = entry(item, 'vocab_keys')[1];
+    vk.items = vk.items.slice(1);
+    entry(entry(item, 'vocab')[1], 'model')[1] = { t: 'raw', text: '"someone-else"' };
+  });
+  const r = run(PREP, ['--check', '--root', dir]);
+  assert.strictEqual(r.code, 1, r.out);
+  assert.match(r.out, /record other vocab_keys than derived/);
+  assert.match(r.out, /vocab stamp other than their proposal/);
+  assert.strictEqual(run(PREP, ['--root', dir]).code, 0);
+  assert.strictEqual(fs.readFileSync(topicPath(dir), 'utf8'), original);
+});
+
+test('--generate asks the model only for lessons without proposals, adds them, and derives their keys (stubbed model)', async () => {
+  const dir = fixture();
+  const props = loadProposals(dir);
+  props.byId.delete(107);
+  props.byId.delete(12);
+  fs.writeFileSync(proposalsPath(dir), V.renderProposals(props.byId));
+  const calls = [];
+  const callModel = async (prompt, { model }) => {
+    calls.push({ model, title: prompt.match(/^LESSON TITLE: (.*)$/m)[1] });
+    return JSON.stringify({ type: 'result', is_error: false, result: '```json\n{"terms": ["a stubbed phrase for testing", "CLAUDE_CODE_NOPE is dropped"]}\n```' });
+  };
+  const quiet = () => {};
+  // the maintainer's starting point is a pinned file (here: pinned by the test)
+  const pinned = loadProposals(dir).sha256;
+  const dry = await P.runGenerate(dir, { dryRun: true, proposalsPin: pinned }, { callModel }, quiet);
+  assert.strictEqual(dry.generated, 0);
+  assert.strictEqual(calls.length, 0, 'a dry run calls no model');
+  const lines = [];
+  const r = await P.runGenerate(dir, { proposalsPin: pinned }, { callModel, date: '2026-09-28' }, (l) => lines.push(l));
+  assert.strictEqual(r.generated, 2);
+  assert.deepStrictEqual(calls.map((c) => c.model), [V.DEFAULT_MODEL, V.DEFAULT_MODEL]);
+  const after = loadProposals(dir);
+  const loaded = P.load(dir);
+  for (const id of [12, 107]) {
+    const l = loaded.topic.lessons.find((x) => x.id === id);
+    assert.deepStrictEqual(after.byId.get(id), { model: V.DEFAULT_MODEL, prompt_version: V.PROMPT_VERSION, date: '2026-09-28',
+      input_sha256: V.inputSha256(l, loaded.lessonText(l)), terms: ['a stubbed phrase for testing', 'CLAUDE_CODE_NOPE is dropped'] });
+  }
+  const t = topicOf(dir);
+  assert.deepStrictEqual(t.keyword_map['a stubbed phrase for testing'], [12, 107]);
+  assert.ok(!('claude_code_nope is dropped' in t.keyword_map));
+  // the new file is not the pinned one until the constant is updated: the run says so, --check fails
+  assert.ok(lines.some((l) => l.includes(`sha256 is now ${after.sha256}`)), lines.join('\n'));
+  const check = run(PREP, ['--check', '--root', dir]);
+  assert.strictEqual(check.code, 1, check.out);
+  assert.match(check.out, /is not the pinned proposals file/);
+  // with the constant updated (passed as the pin), everything else checks clean
+  const res = P.checkLessons({ raw: fs.readFileSync(topicPath(dir), 'utf8'), lessonText: P.load(dir).lessonText, hand: HAND, proposals: after, proposalsPin: after.sha256 });
+  assert.deepStrictEqual(res.errors, []);
+  // nothing left to generate: no further calls
+  await P.runGenerate(dir, { proposalsPin: after.sha256 }, { callModel }, quiet);
+  assert.strictEqual(calls.length, 2);
+});
+
+// --- stale vocabulary: the lesson changed since the model saw it ------------------------
+
+/** Replace `from` with `to` on one line inside a lesson (same line count, bounds unchanged). */
+function editLessonLine(dir, lessonId, from, to) {
+  const l = topicOf(dir).lessons.find((x) => x.id === lessonId);
+  const file = path.join(dir, 'references', l.file);
+  const all = fs.readFileSync(file, 'utf8').split('\n');
+  const i = all.findIndex((x, n) => n >= l.startLine && n < l.endLine && x.includes(from));
+  assert.ok(i >= 0, `lesson ${lessonId} has a line containing ${from}`);
+  all[i] = all[i].replace(from, to);
+  fs.writeFileSync(file, all.join('\n'));
+}
+const stubTerms = (terms) => async () => JSON.stringify({ type: 'result', is_error: false, result: JSON.stringify({ terms }) });
+
+test('a lesson edited after its vocabulary was generated: --check warns by id (no failure), --generate regenerates only it', async () => {
+  const dir = fixture();
+  const l89 = topicOf(dir).lessons.find((x) => x.id === 89);
+  const word = P.load(dir).lessonText(l89).split('\n').slice(2).join(' ').match(/\b(the|a|is|and)\b/)[0];
+  editLessonLine(dir, 89, ` ${word} `, ` ${word} quite `);
+  assert.strictEqual(run(BUILD, ['--root', dir]).code, 0);
+  for (const script of [BUILD, PREP]) {
+    const sp = spawnSync('node', [script, '--check', '--root', dir], { encoding: 'utf8' });
+    const r = { code: sp.status, out: sp.stdout + sp.stderr };
+    assert.strictEqual(r.code, 0, `${path.basename(script)} --check must not fail on a prose edit:\n${r.out}`);
+    assert.match(sp.stderr, /WARNING: .*1 lesson\(s\) changed since their vocabulary proposal was generated \(89\).*--generate/);
+  }
+  const res = P.checkLessons({ raw: fs.readFileSync(topicPath(dir), 'utf8'), lessonText: P.load(dir).lessonText, hand: HAND, proposals: loadProposals(dir) });
+  assert.deepStrictEqual(res.errors, []);
+  assert.strictEqual(res.warnings.length, 1);
+  // --generate (no --regen) regenerates the stale lesson, and only it, from the edited text
+  const prompts = [];
+  const callModel = async (prompt) => { prompts.push(prompt); return stubTerms(['a regenerated phrase for testing'])(); };
+  const lines = [];
+  await P.runGenerate(dir, {}, { callModel, date: '2026-09-29' }, (l) => lines.push(l));
+  assert.strictEqual(prompts.length, 1, lines.join('\n'));
+  assert.match(prompts[0], new RegExp(`LESSON TITLE: ${l89.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
+  assert.ok(prompts[0].includes(` ${word} quite `), 'the prompt carries the edited text');
+  const after = loadProposals(dir);
+  assert.strictEqual(after.byId.get(89).input_sha256, require('crypto').createHash('sha256').update(prompts[0]).digest('hex'));
+  assert.deepStrictEqual(after.byId.get(89).terms, ['a regenerated phrase for testing']);
+  const now = P.checkLessons({ raw: fs.readFileSync(topicPath(dir), 'utf8'), lessonText: P.load(dir).lessonText, hand: HAND, proposals: after, proposalsPin: after.sha256 });
+  assert.deepStrictEqual([now.errors, now.warnings], [[], []]);
+});
+
+test('a proposal without input_sha256 has unknown inputs: warned, kept by --generate, replaced by --regen', async () => {
+  const dir = fixture();
+  const props = loadProposals(dir);
+  delete props.byId.get(89).input_sha256;
+  fs.writeFileSync(proposalsPath(dir), V.renderProposals(props.byId));
+  const pinned = loadProposals(dir).sha256;
+  const res = P.checkLessons({ raw: fs.readFileSync(topicPath(dir), 'utf8'), lessonText: P.load(dir).lessonText, hand: HAND, proposals: loadProposals(dir), proposalsPin: pinned });
+  assert.deepStrictEqual(res.errors, []);
+  assert.match(res.warnings.join('\n'), /1 lesson\(s\) have a vocabulary proposal whose generation inputs are unknown \(no input_sha256: 89\).*--regen/);
+  let calls = 0;
+  const callModel = async () => { calls++; return stubTerms(['a regenerated phrase for testing'])(); };
+  await P.runGenerate(dir, { proposalsPin: pinned }, { callModel }, () => {});
+  assert.strictEqual(calls, 0, 'unknown inputs are not regenerated by default');
+  await P.runGenerate(dir, { proposalsPin: pinned, regen: [89] }, { callModel }, () => {});
+  assert.strictEqual(calls, 1);
+  assert.match(loadProposals(dir).byId.get(89).input_sha256, /^[0-9a-f]{64}$/);
+});
+
+test('a lesson edited while the model runs aborts the write: nothing written', async () => {
+  const dir = fixture();
+  const props = loadProposals(dir);
+  props.byId.delete(89);
+  fs.writeFileSync(proposalsPath(dir), V.renderProposals(props.byId));
+  const before = fs.readFileSync(proposalsPath(dir), 'utf8');
+  const l89 = topicOf(dir).lessons.find((x) => x.id === 89);
+  const word = P.load(dir).lessonText(l89).split('\n').slice(2).join(' ').match(/\b(the|a|is|and)\b/)[0];
+  const callModel = async () => { editLessonLine(dir, 89, ` ${word} `, ` ${word} quite `); return stubTerms(['a phrase for testing'])(); };
+  await assert.rejects(P.runGenerate(dir, { proposalsPin: loadProposals(dir).sha256 }, { callModel }, () => {}), /lesson\(s\) 89 changed while the model ran.*nothing written/);
+  assert.strictEqual(fs.readFileSync(proposalsPath(dir), 'utf8'), before);
+});
+
+// --- generation starts only from the pinned proposals file ---------------------------------
+
+test('--generate refuses to start from an unpinned (hand-edited) or missing proposals file; --bootstrap is explicit', async () => {
+  const dir = fixture();
+  const props = loadProposals(dir);
+  props.byId.get(1).terms[0] = 'a manual phrase';
+  fs.writeFileSync(proposalsPath(dir), V.renderProposals(props.byId));
+  const edited = fs.readFileSync(proposalsPath(dir), 'utf8');
+  let calls = 0;
+  const callModel = async () => { calls++; return stubTerms(['a regenerated phrase for testing'])(); };
+  for (const opts of [{ regen: [2] }, {}, { regen: [2], dryRun: true }]) {
+    await assert.rejects(P.runGenerate(dir, opts, { callModel }, () => {}),
+      /is not the pinned proposals file .*nothing generated.*previous --generate run, set PROPOSALS_SHA256.*--bootstrap/);
+  }
+  assert.strictEqual(calls, 0, 'no model call');
+  assert.strictEqual(fs.readFileSync(proposalsPath(dir), 'utf8'), edited, 'nothing written');
+  // the command line says the same, and exits 1
+  const cli = run(PREP, ['--regen', '2', '--root', dir]);
+  assert.strictEqual(cli.code, 1, cli.out);
+  assert.match(cli.out, /is not the pinned proposals file/);
+  // --bootstrap: the maintainer accepts the file as it is (an intentional re-pin)
+  const lines = [];
+  await P.runGenerate(dir, { regen: [2], bootstrap: true }, { callModel }, (l) => lines.push(l));
+  assert.strictEqual(calls, 1);
+  assert.match(lines.join('\n'), /--bootstrap: starting from the proposals file as it is/);
+  assert.strictEqual(loadProposals(dir).byId.get(1).terms[0], 'a manual phrase', 'kept, because --bootstrap was asked for');
+  // a missing file: restore it, unless this is the first-ever file
+  const none = fixture();
+  fs.rmSync(proposalsPath(none));
+  await assert.rejects(P.runGenerate(none, {}, { callModel }, () => {}), /vocab-proposals\.json is missing .*nothing generated.*--bootstrap/);
+  assert.strictEqual(calls, 1);
+  assert.ok(!fs.existsSync(proposalsPath(none)));
+});
+
+test('--bootstrap parses only with --generate / --regen', () => {
+  assert.strictEqual(P.parseArgs(['--generate', '--bootstrap']).bootstrap, true);
+  assert.strictEqual(P.parseArgs(['--regen', '3', '--bootstrap']).bootstrap, true);
+  assert.strictEqual(P.parseArgs(['--generate']).bootstrap, false);
+  assert.throws(() => P.parseArgs(['--bootstrap']), /only applies to --generate/);
+  assert.throws(() => P.parseArgs(['--check', '--bootstrap']), /only applies to --generate/);
+});
+
+test('input_sha256 in the proposals file: optional, a sha256 digest, kept by renderProposals', () => {
+  const ok = { model: 'm', prompt_version: 'p', date: 'd', terms: ['x'] };
+  assert.deepStrictEqual(V.proposalErrors({ lessons: { 1: ok } }), []);
+  assert.deepStrictEqual(V.proposalErrors({ lessons: { 1: { ...ok, input_sha256: 'a'.repeat(64) } } }), []);
+  assert.match(V.proposalErrors({ lessons: { 1: { ...ok, input_sha256: 'nope' } } }).join(), /input_sha256 must be a sha256/);
+  const text = V.renderProposals(new Map([[1, { ...ok, input_sha256: 'b'.repeat(64) }], [2, ok]]));
+  assert.deepStrictEqual(Object.keys(JSON.parse(text).lessons[1]), ['model', 'prompt_version', 'date', 'input_sha256', 'terms']);
+  assert.ok(!('input_sha256' in JSON.parse(text).lessons[2]));
+  // the hash is of the exact prompt: title, summary and text all count
+  const l = { id: 1, title: 'T', description: 'D' };
+  const h = V.inputSha256(l, 'body');
+  assert.notStrictEqual(V.inputSha256({ ...l, title: 'T2' }, 'body'), h);
+  assert.notStrictEqual(V.inputSha256({ ...l, description: 'D2' }, 'body'), h);
+  assert.notStrictEqual(V.inputSha256(l, 'body2'), h);
+  assert.strictEqual(h, require('crypto').createHash('sha256').update(V.buildPrompt(l, 'body')).digest('hex'));
+});
+
+test('--generate command line: default model, flags parsed, never part of --check', () => {
+  const o = P.parseArgs(['--generate', '--model', 'claude-x', '--concurrency', '2']);
+  assert.strictEqual(o.generate, true);
+  assert.strictEqual(o.model, 'claude-x');
+  assert.strictEqual(o.concurrency, 2);
+  assert.strictEqual(P.parseArgs([]).model, 'claude-opus-5-5');
+  assert.deepStrictEqual(P.parseArgs(['--regen', '3,4']).regen, [3, 4]);
+  assert.throws(() => P.parseArgs(['--regen', 'x']));
+  assert.deepStrictEqual(V.MODEL_FLAGS, ['--safe-mode', '--tools', '']);
 });

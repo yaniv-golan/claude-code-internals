@@ -1,0 +1,15 @@
+{
+  "comment": "Every assertion in the test suite about how the REAL corpus ranks: the query, the lesson search.js must rank first (its topic-index id, which search.js --json reports and the eval split uses; NOT lesson_number, which differs for L1-L50), and (optionally) the keyword_map key that must name exactly that lesson. corpus-ranking.test.js runs every case and guards that no case names a holdout lesson. The retrieval eval's split tooling (evals/retrieval/lib.js applyHardTestRule) reads this file: a random lesson split is drawn, then every lesson a case here depends on is moved to dev. Add a real-corpus ranking assertion here, never inline in a test file.",
+  "cases": [
+    { "query": "CLAUDE_SECURESTORAGE_CONFIG_DIR", "key": "claude_securestorage_config_dir", "lesson": 99, "why": "the compound-part rule: the identifier's own lesson, not the one whose key is a part" },
+    { "query": "/rewind-from-clear", "key": "/rewind-from-clear", "lesson": 111, "why": "slash-command keys, dead before a key's joined form dropped every non-alphanumeric character" },
+    { "query": "/commit-push-pr", "key": "/commit-push-pr", "lesson": 102, "why": "slash-command keys, dead before a key's joined form dropped every non-alphanumeric character" },
+    { "query": "list_skills", "lesson": 129, "why": "identifiers with separators used to shatter into generic parts; the joined-form token must survive" },
+    { "query": "when_to_use", "lesson": 88, "why": "when_to_use used to tokenize to ['use']" },
+    { "query": "tengu_saddle_lantern", "lesson": 129, "why": "a tengu_* gate name reaches its lesson through the joined-form token" },
+    { "query": "mcp__skills__list_skills", "lesson": 129, "why": "an mcp__x__y tool name reaches its lesson through the joined-form token" },
+    { "query": "plugin bin PATH", "lesson": 173, "why": "identifier-shaped keys match exactly: with substring matching, 'path' hit every *_PATHS variable and displaced the lesson about plugin bin/ on PATH" },
+    { "query": "hooks not firing", "lesson": 32, "why": "a natural-language query is not displaced by identifier keys" },
+    { "query": "compaction budget", "lesson": 28, "why": "a natural-language query is not displaced by identifier keys" }
+  ]
+}

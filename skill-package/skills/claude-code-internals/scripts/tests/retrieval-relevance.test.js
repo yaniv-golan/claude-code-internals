@@ -16,8 +16,17 @@ const path = require('node:path');
 const REPO = path.join(__dirname, '..', '..', '..', '..', '..');
 const EVALS = path.join(REPO, 'evals', 'retrieval');
 const GEN_REL = path.join(EVALS, 'gen-relevance.js');
-const PRESENT = fs.existsSync(GEN_REL) && fs.existsSync(path.join(EVALS, 'run.js'));
-const SKIP = 'evals/retrieval/ not present (expected in the shipped skill package zip)';
+// Skip only in the shipped skill package; in the repository a missing eval
+// file fails (see repo-context.js), so leaving it out of a commit can't
+// silently remove these checks.
+const { IN_REPO, STANDALONE_SKIP } = require('./repo-context.js');
+const PRESENT = IN_REPO;
+const SKIP = STANDALONE_SKIP;
+
+test('repository checkout has the eval files these tests need', (t) => {
+  if (!IN_REPO) { t.skip(SKIP); return; }
+  for (const f of ['gen-relevance.js', 'run.js']) assert.ok(fs.existsSync(path.join(EVALS, f)), `evals/retrieval/${f} is missing`);
+});
 
 const SCRATCH = [];
 test.after(() => { for (const d of SCRATCH) fs.rmSync(d, { recursive: true, force: true }); });
@@ -27,6 +36,11 @@ function scratch() {
   return d;
 }
 const R = (ids) => ids.map((id) => ({ id }));
+/** Every committed evals/retrieval/questions-v*.json whose split records the split rule. */
+function ruleSets() {
+  return fs.readdirSync(EVALS).filter((n) => /^questions-v\d+\.json$/.test(n)).map((n) => path.join(EVALS, n))
+    .filter((f) => { const d = JSON.parse(fs.readFileSync(f, 'utf8')); return !!(d.split && d.split.rule); });
+}
 
 // --- metrics -----------------------------------------------------------------------
 
@@ -164,6 +178,7 @@ test('gen-relevance: stub judge, resumable checkpoint, source always grade 2, ne
   const lib = require(path.join(EVALS, 'lib.js'));
   const ids = lib.loadTopicIndex().lessons.map((l) => l.id);
   const [a, b, c] = ids;
+  const entry = lib.loadRegistry().entries.find((e) => e.provenance && e.provenance.length);
   const dir = scratch();
   const from = path.join(dir, 'questions-v1.json');
   fs.writeFileSync(from, JSON.stringify({
@@ -172,7 +187,8 @@ test('gen-relevance: stub judge, resumable checkpoint, source always grade 2, ne
       { qid: 'id-0001', stratum: 'identifier', lesson_id: a, registry_id: null, split: 'dev', text: 'What is `nothingSharedHere`?' },
       { qid: 'pl-0002', stratum: 'plain', lesson_id: a, registry_id: null, split: 'dev', text: 'plain one' },
       { qid: 'pl-0003', stratum: 'plain', lesson_id: b, registry_id: null, split: 'dev', text: 'plain two' },
-      { qid: 'st-0004', stratum: 'state', lesson_id: null, registry_id: 'x', split: 'dev', text: 'state q' },
+      { qid: 'st-0004', stratum: 'state', lesson_id: null, registry_id: entry.id, split: 'dev', text: 'state q' },
+      { qid: 'st-0005', stratum: 'state', lesson_id: null, registry_id: 'gone.entry', split_lesson_id: a, split: 'dev', text: 'state r' },
     ],
   }));
   const pools = (text, src) => [{ id: a, layers: ['fused'] }, { id: b, layers: ['keyword'] }, { id: c, layers: ['tfidf-semantic'] }]
@@ -203,9 +219,13 @@ test('gen-relevance: stub judge, resumable checkpoint, source always grade 2, ne
   assert.strictEqual(out.version, 2);
   assert.deepStrictEqual(out.questions.map((q) => [q.qid, q.text, q.split]), [
     ['id-0001', 'What is `nothingSharedHere`?', 'dev'], ['pl-0002', 'plain one', 'dev'],
-    ['pl-0003', 'plain two', 'dev'], ['st-0004', 'state q', 'dev'],
+    ['pl-0003', 'plain two', 'dev'], ['st-0004', 'state q', 'dev'], ['st-0005', 'state r', 'dev'],
   ]);
   const byQid = Object.fromEntries(out.questions.map((q) => [q.qid, q]));
+  // a source state question without split_lesson_id gets it once, from its entry's first
+  // provenance lesson; one that has it keeps it (its registry entry is not looked up)
+  assert.strictEqual(byQid['st-0004'].split_lesson_id, entry.provenance[0].lesson);
+  assert.strictEqual(byQid['st-0005'].split_lesson_id, a);
   assert.deepStrictEqual(byQid['id-0001'].relevant, { [a]: 2 });
   assert.deepStrictEqual(byQid['pl-0002'].relevant, { [a]: 2, [c]: 1 });
   assert.deepStrictEqual(byQid['pl-0003'].relevant, { [b]: 2, [c]: 1 });
@@ -217,6 +237,31 @@ test('gen-relevance: stub judge, resumable checkpoint, source always grade 2, ne
   assert.deepStrictEqual(out.derived_from.version, 1);
 
   await assert.rejects(G.generate(opts, { callJudge, pools }), /already exists/);
+});
+
+test('gen-relevance: a lesson the source moved to dev and the rule no longer moves returns its questions to holdout', async (t) => {
+  if (!PRESENT) { t.skip(SKIP); return; }
+  const G = require(GEN_REL);
+  const lib = require(path.join(EVALS, 'lib.js'));
+  const hard = lib.loadHardTestLessons();
+  const [a, b] = lib.loadTopicIndex().lessons.map((l) => l.id).filter((id) => !hard[id]);
+  const dir = scratch();
+  const from = path.join(dir, 'questions-v1.json');
+  // The source moved lesson b to dev under a hard test that no longer exists.
+  fs.writeFileSync(from, JSON.stringify({
+    version: 1, seed: 1, model: 'gen', prompt_version: 'p', generated_at: 'g', dropped: [],
+    split: { holdout: [], dev: [a, b], rule: lib.SPLIT_RULE, moved_to_dev: [{ lesson_id: b, reason: 'r', queries: ['gone'] }] },
+    questions: [
+      { qid: 'id-0001', stratum: 'identifier', lesson_id: b, registry_id: null, split: 'dev', text: 'What is `nothingSharedHere`?' },
+      { qid: 'st-0002', stratum: 'state', lesson_id: null, registry_id: 'e', split_lesson_id: b, split: 'dev', text: 'state q' },
+      { qid: 'id-0003', stratum: 'identifier', lesson_id: a, registry_id: null, split: 'dev', text: 'What is `alsoNothing`?' },
+    ],
+  }));
+  const opts = G.parseArgs(['--from', from, '--version', '2', '--out-dir', dir, '--concurrency', '1']);
+  const r = await G.generate(opts, { callJudge: async () => { throw new Error('no plain questions'); }, pools: () => [] });
+  assert.strictEqual(r.complete, true);
+  assert.deepStrictEqual([r.output.split.holdout, r.output.split.moved_to_dev], [[b], []]);
+  assert.deepStrictEqual(r.output.questions.map((q) => [q.qid, q.split]), [['id-0001', 'holdout'], ['st-0002', 'holdout'], ['id-0003', 'dev']]);
 });
 
 test('gen-relevance: parseVerdicts rejects a missing, duplicate or unknown candidate', (t) => {
@@ -252,15 +297,175 @@ test('baseline-v2.json uses v1\'s thresholds, has an empty waiver list and score
   assert.ok(v2.queries.lesson.every((q) => q.top1 !== undefined));
 });
 
-test('questions-v2.json keeps v1 texts, qids, strata and split, and every gated question has its source at grade 2', (t) => {
+test('baseline-v3.json uses v2\'s thresholds, has no waivers, records the accepted drops and scores the current split', (t) => {
   if (!PRESENT) { t.skip(SKIP); return; }
-  const p2 = path.join(EVALS, 'questions-v2.json');
-  if (!fs.existsSync(p2)) { t.skip('questions-v2.json not generated'); return; }
-  const v1 = JSON.parse(fs.readFileSync(path.join(EVALS, 'questions-v1.json'), 'utf8'));
-  const v2 = JSON.parse(fs.readFileSync(p2, 'utf8'));
-  assert.deepStrictEqual(v2.split, v1.split);
-  const strip = (q) => ({ qid: q.qid, stratum: q.stratum, lesson_id: q.lesson_id, registry_id: q.registry_id, split: q.split, text: q.text });
+  const lib = require(path.join(EVALS, 'lib.js'));
+  // the gated pair (lib.js CURRENT_*), and the baseline it was accepted against
+  const v3 = JSON.parse(fs.readFileSync(path.join(EVALS, lib.CURRENT_BASELINE), 'utf8'));
+  const v2 = JSON.parse(fs.readFileSync(path.join(EVALS, v3.accepted_vs_previous.vs), 'utf8'));
+  const qs = JSON.parse(fs.readFileSync(path.join(EVALS, lib.CURRENT_QUESTIONS), 'utf8'));
+  assert.deepStrictEqual(v3.thresholds, v2.thresholds);
+  assert.deepStrictEqual(v3.waivers, []);
+  assert.strictEqual(v3.questions_source.version, 2);
+  assert.strictEqual(v3.questions_source.split_sha256, lib.splitHash(qs.split), 'baseline-v3 was cut under another split');
+  assert.ok(v3.relevance && v3.top1_breakdown);
+  const a = v3.accepted_vs_previous;
+  assert.strictEqual(a.vs, 'baseline-v2.json');
+  assert.strictEqual(a.accepted_by, 'maintainer');
+  assert.match(a.deferred, /fusion/);
+  const byQid = new Map(qs.questions.map((q) => [q.qid, q]));
+  assert.ok(a.drops.length > 0);
+  for (const d of a.drops) {
+    assert.strictEqual(byQid.get(d.qid).split, d.split_v3, `${d.qid}: split_v3 is its current label`);
+    assert.ok(d.rules.length > 0, d.qid);
+  }
+  // The same questions, with the labels the resplit changed (and only those).
+  const labelsV2 = new Map(v2.queries.lesson.map((q) => [q.qid, q.split]));
+  const changed = v3.queries.lesson.filter((q) => labelsV2.get(q.qid) !== q.split).map((q) => q.qid);
+  assert.deepStrictEqual(v3.queries.lesson.map((q) => q.qid), v2.queries.lesson.map((q) => q.qid));
+  const moved = new Set(qs.split.moved_to_dev.map((m) => m.lesson_id));
+  assert.deepStrictEqual(changed, v3.queries.lesson.filter((q) => moved.has(q.lesson_id)).map((q) => q.qid));
+});
+
+test('baseline-v3 accepted_vs_previous names exactly the questions that fail baseline-v3 vs baseline-v2 (labels equalised)', (t) => {
+  if (!PRESENT) { t.skip(SKIP); return; }
+  const { compareToBaseline } = require(path.join(EVALS, 'run.js'));
+  const lib = require(path.join(EVALS, 'lib.js'));
+  const v3 = JSON.parse(fs.readFileSync(path.join(EVALS, lib.CURRENT_BASELINE), 'utf8'));
+  const v2 = JSON.parse(fs.readFileSync(path.join(EVALS, v3.accepted_vs_previous.vs), 'utf8'));
+  // Give baseline-v2 baseline-v3's split labels, so the comparison is per question, not refused.
+  const labelV3 = new Map(v3.queries.lesson.map((q) => [q.qid, q.split]));
+  const v2eq = { ...v2, queries: { ...v2.queries, lesson: v2.queries.lesson.map((q) => ({ ...q, split: labelV3.get(q.qid) || q.split })) } };
+  const { failures } = compareToBaseline(v3, v2eq, v2.thresholds);
+  const perQ = new Map();
+  for (const f of failures) {
+    const m = f.match(/^\[([a-z]{2}-\d+)\] (.*)$/);
+    if (m) (perQ.get(m[1]) || perQ.set(m[1], []).get(m[1])).push(m[2]);
+  }
+  assert.ok(!failures.some((f) => /version mismatch|split mismatch|scoring mode/.test(f)), failures.join('\n'));
+  const accepted = v3.accepted_vs_previous.drops;
+  assert.deepStrictEqual([...perQ.keys()].sort(), accepted.map((d) => d.qid).sort(), 'accepted drops differ from the failing questions');
+  for (const d of accepted) assert.deepStrictEqual(perQ.get(d.qid).slice().sort(), d.rules.slice().sort(), `${d.qid}: rules`);
+});
+
+test('the split rule: a random split, then every lesson a hard ranking test asserts is moved to dev', (t) => {
+  if (!PRESENT) { t.skip(SKIP); return; }
+  const lib = require(path.join(EVALS, 'lib.js'));
+  const hard = { 3: ['q3'], 9: ['q9'], 4: ['q4a', 'q4b'] };
+  const r = lib.applyHardTestRule({ holdout: [1, 3, 4], dev: [2, 5] }, hard);
+  assert.deepStrictEqual([r.holdout, r.dev], [[1], [2, 3, 4, 5]]);
+  assert.deepStrictEqual(r.moved_to_dev.map((m) => [m.lesson_id, m.queries]), [[3, ['q3']], [4, ['q4a', 'q4b']]]);
+  assert.strictEqual(r.rule, lib.SPLIT_RULE);
+  assert.deepStrictEqual(lib.randomSplitOf(r), { holdout: [1, 3, 4], dev: [2, 5] }, 'the random split is recoverable');
+  assert.deepStrictEqual(lib.applyHardTestRule(r, hard), r, 'idempotent');
+  // a hard test dropped later: its lesson goes back to where the random split put it
+  assert.deepStrictEqual(lib.applyHardTestRule(r, { 3: ['q3'] }).holdout, [1, 4]);
+  // lesson 9 (a hard test's lesson in neither list, added after the split) is left alone
+  assert.ok(!r.dev.includes(9) && !r.holdout.includes(9));
+  // relabelling touches only the moved lessons' holdout questions; a state question
+  // follows its recorded split_lesson_id (null: no lesson, never relabelled)
+  const qs = [
+    { qid: 'a', stratum: 'identifier', lesson_id: 3, split: 'holdout' }, { qid: 'b', stratum: 'plain', lesson_id: 1, split: 'holdout' },
+    { qid: 'c', stratum: 'state', registry_id: 'e3', split_lesson_id: 3, split: 'holdout' }, { qid: 'd', stratum: 'state', registry_id: 'e1', split_lesson_id: 1, split: 'holdout' },
+    { qid: 'e', stratum: 'negative', split: 'holdout' }, { qid: 'f', stratum: 'plain', lesson_id: 2, split: 'dev' },
+    { qid: 'g', stratum: 'state', registry_id: 'e0', split_lesson_id: null, split: 'dev' },
+  ];
+  const moved = lib.relabelQuestions(qs, r);
+  assert.deepStrictEqual(moved.map((q) => q.split), ['dev', 'holdout', 'dev', 'holdout', 'holdout', 'dev', 'dev']);
+  // round trip: the hard test for lesson 3 is removed; its questions go back to holdout
+  const back = lib.applyHardTestRule(r, {});
+  assert.deepStrictEqual([back.holdout, back.dev], [[1, 3, 4], [2, 5]]);
+  assert.deepStrictEqual(lib.relabelQuestions(moved, back, r).map((q) => q.split), qs.map((q) => q.split));
+});
+
+test('relabelQuestions: a state question without split_lesson_id fails loudly; the registry is never read', (t) => {
+  if (!PRESENT) { t.skip(SKIP); return; }
+  const lib = require(path.join(EVALS, 'lib.js'));
+  const r = lib.applyHardTestRule({ holdout: [1, 3], dev: [2] }, { 3: ['q3'] });
+  const bare = [{ qid: 'st-1', stratum: 'state', registry_id: 'e3', split: 'holdout' }];
+  assert.throws(() => lib.relabelQuestions(bare, r), /st-1: state question has no split_lesson_id/);
+  // even when nothing moves: a set missing the field fails on every call
+  assert.throws(() => lib.relabelQuestions(bare, { holdout: [1], dev: [2] }), /no split_lesson_id/);
+  // the recorded lesson decides, whatever registry entry the question names (one
+  // since deleted, renamed or re-provenanced): the function takes no registry at all
+  assert.strictEqual(lib.relabelQuestions.length, 2, 'relabelQuestions(questions, split, previous = null)');
+  const q = [{ qid: 'st-2', stratum: 'state', registry_id: 'deleted.entry', split_lesson_id: 3, split: 'holdout' }];
+  assert.strictEqual(lib.relabelQuestions(q, r)[0].split, 'dev');
+  assert.strictEqual(lib.stateSplitLessonId({ provenance: [{ lesson: 7 }, { lesson: 3 }] }), 7);
+  assert.strictEqual(lib.stateSplitLessonId({ provenance: [] }), null);
+});
+
+test('the committed rule-applied question sets record every state question\'s split lesson', (t) => {
+  if (!PRESENT) { t.skip(SKIP); return; }
+  for (const f of ruleSets()) {
+    const data = JSON.parse(fs.readFileSync(f, 'utf8'));
+    const missing = data.questions.filter((q) => q.stratum === 'state' && !('split_lesson_id' in q)).map((q) => q.qid);
+    assert.deepStrictEqual(missing, [], `${path.basename(f)}: state questions without split_lesson_id`);
+  }
+  const src = (n) => fs.readFileSync(path.join(EVALS, n), 'utf8');
+  const relabelBody = src('lib.js').match(/function relabelQuestions[\s\S]*?\n}\n/)[0];
+  assert.doesNotMatch(relabelBody, /loadRegistry|entries/);
+  assert.doesNotMatch(src('resplit.js'), /loadRegistry/);
+});
+
+test('resplit.js: removing a hard test sends its lesson and questions back to holdout', (t) => {
+  if (!PRESENT) { t.skip(SKIP); return; }
+  const { resplit } = require(path.join(EVALS, 'resplit.js'));
+  const file = {
+    version: 9, split: { holdout: [1, 3], dev: [2] },
+    questions: [{ qid: 'a', stratum: 'plain', lesson_id: 3, split: 'holdout' }, { qid: 's', stratum: 'state', registry_id: 'e3', split_lesson_id: 3, split: 'holdout' },
+      { qid: 'b', stratum: 'plain', lesson_id: 1, split: 'holdout' }],
+  };
+  const there = resplit(file, { 3: ['q'] });
+  assert.deepStrictEqual([there.moved, there.relabelled], [[3], ['a', 's']]);
+  assert.deepStrictEqual(resplit(there.data, { 3: ['q'] }).data, there.data, 're-running is a no-op');
+  const back = resplit(there.data, {});
+  assert.deepStrictEqual([back.data.split.holdout, back.data.split.dev, back.relabelled], [[1, 3], [2], ['a', 's']]);
+  assert.deepStrictEqual(back.data.questions, file.questions);
+});
+
+test('every questions-v*.json whose split has a rule carries it applied to ranking-cases.json (resplit.js --check)', (t) => {
+  if (!PRESENT) { t.skip(SKIP); return; }
+  const { resplit } = require(path.join(EVALS, 'resplit.js'));
+  const lib = require(path.join(EVALS, 'lib.js'));
+  const sets = ruleSets();
+  assert.ok(sets.some((f) => path.basename(f) === lib.CURRENT_QUESTIONS), `${lib.CURRENT_QUESTIONS} (the gated set) has no split rule`);
+  const hard = lib.loadHardTestLessons();
+  for (const f of sets) {
+    const name = path.basename(f);
+    const raw = fs.readFileSync(f, 'utf8');
+    const r = resplit(JSON.parse(raw));
+    assert.strictEqual(JSON.stringify(r.data, null, 2) + '\n', raw, `${name} is not up to date with the split rule: run node evals/retrieval/resplit.js evals/retrieval/${name}`);
+    for (const id of Object.keys(hard)) assert.ok(!r.data.split.holdout.includes(Number(id)), `${name}: hard-test lesson ${id} is holdout`);
+  }
+});
+
+test('questions-v2.json keeps v1 texts, qids and strata, v1\'s random split with the split rule applied, and every gated question has its source at grade 2', (t) => {
+  if (!PRESENT) { t.skip(SKIP); return; }
+  const lib = require(path.join(EVALS, 'lib.js'));
+  // the gated set (lib.js CURRENT_QUESTIONS) and the set it was derived from
+  const v2 = JSON.parse(fs.readFileSync(path.join(EVALS, lib.CURRENT_QUESTIONS), 'utf8'));
+  assert.ok(v2.derived_from && v2.derived_from.file, `${lib.CURRENT_QUESTIONS} records no derived_from source: this test assumes a gen-relevance.js derivation`);
+  const v1 = JSON.parse(fs.readFileSync(path.join(EVALS, v2.derived_from.file), 'utf8'));
+  assert.deepStrictEqual(lib.randomSplitOf(v2.split), v1.split, 'v2\'s random split is v1\'s');
+  assert.deepStrictEqual(v2.split, lib.applyHardTestRule(v1.split, lib.loadHardTestLessons()));
+  const strip = (q) => ({ qid: q.qid, stratum: q.stratum, lesson_id: q.lesson_id, registry_id: q.registry_id, text: q.text });
+  // besides relevance, the one field v2 adds to a v1 question: split_lesson_id, on state questions only
+  for (const q of v2.questions) assert.strictEqual('split_lesson_id' in q, q.stratum === 'state', q.qid);
   assert.deepStrictEqual(v2.questions.map(strip), v1.questions.map(strip));
+  // split_lesson_id (recorded once, never read from the live registry) reproduces
+  // v1's generation-time labels under v1's random split: its lesson's side, or dev for none.
+  const v1Holdout = new Set(v1.split.holdout);
+  const v1ById = new Map(v1.questions.map((q) => [q.qid, q]));
+  for (const q of v2.questions.filter((x) => x.stratum === 'state')) {
+    const want = q.split_lesson_id !== null && v1Holdout.has(q.split_lesson_id) ? 'holdout' : 'dev';
+    assert.strictEqual(v1ById.get(q.qid).split, want, `${q.qid}: split_lesson_id ${q.split_lesson_id} does not reproduce v1's label`);
+  }
+  // labels: v1's, except the moved lessons' questions, which are dev
+  const lessonOf = new Map(v2.questions.filter((q) => q.stratum === 'state').map((q) => [q.qid, q.split_lesson_id]));
+  const v1WithLesson = v1.questions.map((q) => (q.stratum === 'state' ? { ...q, split_lesson_id: lessonOf.get(q.qid) } : q));
+  const relabelled = lib.relabelQuestions(v1WithLesson, v2.split);
+  assert.deepStrictEqual(v2.questions.map((q) => q.split), relabelled.map((q) => q.split));
   for (const q of v2.questions) {
     if (q.stratum === 'identifier' || q.stratum === 'plain') {
       assert.strictEqual(q.relevant[q.lesson_id], 2, q.qid);

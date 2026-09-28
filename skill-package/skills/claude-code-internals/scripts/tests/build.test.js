@@ -7,7 +7,7 @@
  * tests read the real indexes while these run.
  */
 
-const test = require('node:test');
+const nodeTest = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const os = require('os');
@@ -19,6 +19,12 @@ const SKILL_DIR = path.join(SCRIPTS, '..');
 const BUILD = path.join(SCRIPTS, 'build.js');
 const B = require('../build.js');
 const { parseOrdered, emit } = require('../check-json-format.js');
+const { proposalsPath } = require('../lib/vocab.js');
+
+// The vocabulary proposals (data/ at the repository root) are a build input, not part of the
+// shipped skill zip; there build.js --check cannot re-derive the vocabulary keys, so every case skips.
+const test = fs.existsSync(proposalsPath(SKILL_DIR)) ? nodeTest
+  : Object.assign((name, fn) => nodeTest(name, { skip: 'data/vocab-proposals.json not present (the shipped skill package zip)' }, fn), { after: nodeTest.after });
 
 function run(args) {
   try {
@@ -30,17 +36,22 @@ function run(args) {
 
 const SCRATCH = [];
 test.after(() => { for (const d of SCRATCH) fs.rmSync(d, { recursive: true, force: true }); });
+/** A scratch repository layout: <root>/skill-package/skills/claude-code-internals (returned) and <root>/data. */
 function fixture() {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cci-build-'));
-  SCRATCH.push(dir);
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'cci-build-'));
+  SCRATCH.push(root);
+  const dir = path.join(root, 'skill-package', 'skills', 'claude-code-internals');
   const refs = path.join(dir, 'references');
-  fs.mkdirSync(refs);
+  fs.mkdirSync(refs, { recursive: true });
   const src = path.join(SKILL_DIR, 'references');
   for (const f of fs.readdirSync(src)) {
     if (/^\d\d-.*\.md$/.test(f) || /^(topic-index|hand-keywords|cross-references|troubleshooting)\.json$/.test(f)) {
       fs.copyFileSync(path.join(src, f), path.join(refs, f));
     }
   }
+  // prepare-lessons.js --check (run by build.js --check) derives vocabulary keys from the proposals.
+  fs.mkdirSync(path.dirname(proposalsPath(dir)));
+  fs.copyFileSync(proposalsPath(SKILL_DIR), proposalsPath(dir));
   fs.copyFileSync(path.join(SKILL_DIR, 'version.json'), path.join(dir, 'version.json'));
   return dir;
 }
@@ -176,12 +187,17 @@ test('a new lesson entry without startLine/endLine gets them at the canonical po
   const after = JSON.parse(raw).lessons;
   const added = after.find((l) => l.id === newId);
   assert.deepStrictEqual(Object.keys(added), ['id', 'title', 'lesson_number', 'file', 'startLine', 'endLine', 'keywords']);
-  // identifier_keys is prepare-lessons.js's record, appended after the hand-written fields.
-  assert.deepStrictEqual(Object.keys(added), Object.keys(after.find((l) => l.id === 107)).filter((k) => k !== 'identifier_keys'));
+  // identifier_keys, vocab_keys and vocab are prepare-lessons.js's records, appended after the hand-written fields.
+  assert.deepStrictEqual(Object.keys(added), Object.keys(after.find((l) => l.id === 107)).filter((k) => !['identifier_keys', 'vocab_keys', 'vocab'].includes(k)));
   assert.strictEqual(added.startLine, headingLine);
   assert.strictEqual(added.endLine, headingLine + 2);
   assert.strictEqual(JSON.parse(raw).total_lessons, topic.lessons.length + 1);
-  assert.strictEqual(run(['--check', '--root', dir]).code, 0);
+  // The bounds now check; what is left is the new lesson's vocabulary, which needs a model call.
+  const check = run(['--check', '--root', dir]);
+  assert.strictEqual(check.code, 1, check.out);
+  assert.ok(check.out.includes(`1 lesson(s) have no vocabulary proposals in data/vocab-proposals.json (${newId})`), check.out);
+  assert.match(check.out, /prepare-lessons\.js --generate/);
+  assert.doesNotMatch(check.out, /startLine|endLine|total_lessons/);
 });
 
 test('version.json missing lessons_count/chapters_count gets them after verified_against_binary', () => {

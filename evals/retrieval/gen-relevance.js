@@ -13,13 +13,19 @@
  *   node gen-relevance.js --from questions-v1.json --version 2 [--judge-model M]
  *                         [--concurrency N] [--limit N]
  *
- * The output keeps the source's question texts, qids, strata, split and
- * dropped list unchanged. A derived version keeps its source's qids (it holds
+ * The output keeps the source's question texts, qids, strata and dropped list
+ * unchanged. Its split is the source's random split with the split rule applied
+ * (lib.applyHardTestRule: every lesson a hard ranking test asserts is moved to
+ * dev, and those lessons' questions relabelled dev). A derived version keeps its source's qids (it holds
  * the same questions; run.js keys every comparison by version + qid). Each
  * identifier and plain question gains `relevant: {lessonId: grade}`:
  * grade 2 = the source lesson (always, whatever the rule or the judge says),
  * grade 1 = another acceptable lesson. State and negative questions are
- * carried over unchanged (they stay report-only in run.js).
+ * carried over unchanged (they stay report-only in run.js), except that a state
+ * question from a source written before `split_lesson_id` existed (questions-v1)
+ * gets it here, once: its registry entry's first provenance lesson
+ * (lib.stateSplitLessonId), the rule gen-questions.js placed it by. From then on
+ * relabelling reads the recorded field, never the registry.
  *
  * IDENTIFIER RULE (IDENTIFIER_RULE_VERSION, deterministic, no model):
  *   1. The question's identifiers: extractIdentifiers(question text)
@@ -33,7 +39,9 @@
  *      count s = the number of places it occurs there.
  *   3. A lesson L (other than the source) is acceptable if, for at least one
  *      kept token t:
- *        (a) HOMED: a topic-index keyword_map key (hand or generated) whose
+ *        (a) HOMED: a topic-index keyword_map key (hand or generated identifier
+ *            key; phase-3b vocabulary keys are phrases, never identifier homes, so
+ *            they are left out, which keeps the rule what it was when v1 was cut) whose
  *            normalize()d form equals normalize(t) or normalize(keyFormOf(t))
  *            maps to L; or
  *        (b) MENTIONED: occurrencePositions(L's text) has t at >= s places.
@@ -123,10 +131,14 @@ function printUsage() {
 // Identifier rule (pure)
 // ---------------------------------------------------------------------------
 
-/** keyword_map -> Map(normalized key -> Set(lesson ids)), unioning keys that normalize alike. */
-function buildKeyIndex(keywordMap) {
+/**
+ * keyword_map -> Map(normalized key -> Set(lesson ids)), unioning keys that normalize alike.
+ * `exclude`: keys to leave out (the vocabulary keys, see rule 3a).
+ */
+function buildKeyIndex(keywordMap, exclude = new Set()) {
   const idx = new Map();
   for (const [k, ids] of Object.entries(keywordMap || {})) {
+    if (exclude.has(k)) continue;
     const n = I.normalize(k);
     if (!n) continue;
     if (!idx.has(n)) idx.set(n, new Set());
@@ -344,7 +356,7 @@ async function generate(opts, deps = {}) {
 
   const { topicIndex, lessonById, lessonTexts } = loadCorpus();
   const positions = buildPositions(lessonTexts);
-  const keyIndex = buildKeyIndex(topicIndex.keyword_map);
+  const keyIndex = buildKeyIndex(topicIndex.keyword_map, new Set(topicIndex.lessons.flatMap((l) => l.vocab_keys || [])));
 
   const header = {
     from_sha256: sha256(fromRaw), version: opts.version, judge_model: opts.judgeModel,
@@ -404,6 +416,7 @@ async function generate(opts, deps = {}) {
     return { complete: false, failures, remaining };
   }
 
+  const registryById = new Map(lib.loadRegistry().entries.map((e) => [e.id, e]));
   const questions = source.questions.map((q) => {
     if (q.stratum === 'identifier') {
       const { relevant, basis } = identifierRelevance(q.text, q.lesson_id, positions, keyIndex);
@@ -415,9 +428,17 @@ async function generate(opts, deps = {}) {
       for (const v of verdicts) if (v.answers && v.id !== q.lesson_id) relevant[v.id] = 1;
       return { ...q, relevant, relevance_basis: { judge: JUDGE_PROMPT_VERSION, verdicts } };
     }
+    if (q.stratum === 'state' && !('split_lesson_id' in q)) {
+      const entry = registryById.get(q.registry_id);
+      if (!entry) throw new Error(`${q.qid}: registry entry ${q.registry_id} not found; cannot record its split lesson`);
+      return { ...q, split_lesson_id: lib.stateSplitLessonId(entry) };
+    }
     return q;
   });
 
+  // The split rule (lib.applyHardTestRule): the source's random split, then every
+  // lesson a hard ranking test asserts is moved to dev, and its questions relabelled.
+  const split = lib.applyHardTestRule(source.split, lib.loadHardTestLessons());
   const output = {
     version: opts.version,
     seed: source.seed,
@@ -437,8 +458,10 @@ async function generate(opts, deps = {}) {
       },
       rules: 'see evals/retrieval/gen-relevance.js header',
     },
-    split: source.split,
-    questions,
+    split,
+    // previous = the source's split, so a lesson the source had moved to dev and the
+    // rule no longer moves (its hard test removed) sends its questions back to holdout.
+    questions: lib.relabelQuestions(questions, split, source.split),
     dropped: source.dropped,
   };
   fs.writeFileSync(outPath, JSON.stringify(output, null, 2) + '\n');
