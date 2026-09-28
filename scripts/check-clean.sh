@@ -43,9 +43,9 @@ if [[ -f "$skill/scripts/build.js" ]]; then
   step "Derived fields"
   node "$skill/scripts/build.js" --check
 fi
-if [[ -f evals/retrieval/baseline-v1.json ]]; then
+if [[ -f evals/retrieval/baseline-v2.json ]]; then
   step "Retrieval baseline"
-  node evals/retrieval/run.js --baseline evals/retrieval/baseline-v1.json --questions evals/retrieval/questions-v1.json | tail -2
+  node evals/retrieval/run.js --baseline evals/retrieval/baseline-v2.json --questions evals/retrieval/questions-v2.json | tail -2
   test "${PIPESTATUS[0]}" -eq 0
 fi
 step "Site generator tests"

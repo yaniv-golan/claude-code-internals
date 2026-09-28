@@ -40,6 +40,18 @@
  * returned anything at all, its top rrf_score, confidence label and which
  * layer(s) hit, and reports the DISTRIBUTION of those — not a pass/fail.
  *
+ * Acceptable-answer sets (questions-v2+, made by gen-relevance.js): a question
+ * that carries `relevant: {lessonId: grade}` (2 = source lesson, 1 = other
+ * acceptable lesson) is scored by the FIRST acceptable lesson: its rank drives
+ * MRR and every per-question rule below, so the identifier top-1 rule reads
+ * "an acceptable lesson is first". nDCG@5 is graded with linear gain (gain =
+ * grade; with the source alone it equals the binary value). Such a report also
+ * records per question `rank_source`, `n_acceptable` and `top1` (source /
+ * other_acceptable / none), a per stratum x split `top1_breakdown`, a
+ * `relevance` marker and an (empty) `waivers` list. A question WITHOUT
+ * `relevant` (questions-v1) is scored exactly as before, and a v1 report has
+ * none of those keys.
+ *
  * Usage:
  *   node run.js [--questions <file>] [--top 20]
  *   node run.js --save <report.json>
@@ -154,12 +166,52 @@ function scoreLessonQuestion(q, top) {
   } catch (err) {
     error = err.stopWordsOnly ? 'stop-words-only' : err.message;
   }
+  if (q.relevant) return scoreWithRelevant(q, results, error);
   const rank = lib.rankOf(q.lesson_id, results);
   return {
     qid: q.qid, stratum: q.stratum, split: q.split, lesson_id: q.lesson_id,
     rank, rr: lib.reciprocalRank(rank), ndcg5: lib.ndcgAt5(rank),
     error,
   };
+}
+
+/**
+ * Acceptable-answer scoring (questions-v2+, a question carrying `relevant`):
+ * `rank` = rank of the FIRST acceptable lesson (so MRR and every rank rule in
+ * compareToBaseline, including "an identifier question at rank 1 stays at
+ * rank 1", read "an acceptable lesson is first"); nDCG@5 is graded
+ * (lib.gradedNdcgAt5, linear gain = grade). `rank_source` keeps the source
+ * lesson's own rank, and `top1` says whether the first result is the source
+ * lesson, another acceptable one, or neither.
+ */
+function scoreWithRelevant(q, results, error) {
+  const rank = lib.firstAcceptableRank(results, q.relevant);
+  const first = results[0];
+  let top1 = 'none';
+  if (first && first.id === q.lesson_id) top1 = 'source';
+  else if (first && (q.relevant[first.id] || 0) > 0) top1 = 'other_acceptable';
+  return {
+    qid: q.qid, stratum: q.stratum, split: q.split, lesson_id: q.lesson_id,
+    rank, rr: lib.reciprocalRank(rank), ndcg5: lib.gradedNdcgAt5(results, q.relevant),
+    rank_source: lib.rankOf(q.lesson_id, results),
+    n_acceptable: Object.keys(q.relevant).length,
+    top1,
+    error,
+  };
+}
+
+/** Per stratum x split: how often the top-1 is the source vs another acceptable lesson. */
+function top1Breakdown(scored) {
+  const out = {};
+  for (const s of scored) {
+    const key = `${s.stratum}|${s.split}`;
+    out[key] = out[key] || { n: 0, source: 0, other_acceptable: 0, none: 0, mean_acceptable: 0 };
+    out[key].n++;
+    out[key][s.top1]++;
+    out[key].mean_acceptable += s.n_acceptable;
+  }
+  for (const k of Object.keys(out)) out[k].mean_acceptable /= out[k].n;
+  return out;
 }
 
 /**
@@ -291,12 +343,19 @@ function buildReport(questionsData, opts) {
     n_reachable_by_name: stateScored.filter(s => s.state_exact_match_by_name).length,
   };
 
+  // Keys that exist only for acceptable-answer sets, so a v1 report is unchanged.
+  const graded = lessonScored.some((s) => s.top1 !== undefined);
+  const gradedKeys = graded
+    ? { relevance: 'acceptable-answer sets (rank = first acceptable lesson; graded nDCG@5, linear gain)', waivers: [] }
+    : {};
   return {
     generated_at: new Date().toISOString(),
     questions_source: questionsData.version !== undefined ? { version: questionsData.version, seed: questionsData.seed, model: questionsData.model } : null,
     top: opts.top,
     thresholds: opts.thresholds || { ...DEFAULT_THRESHOLDS },
+    ...gradedKeys,
     by_stratum_split: byStratumSplit,
+    ...(graded ? { top1_breakdown: top1Breakdown(lessonScored.filter((s) => s.top1 !== undefined)) } : {}),
     negatives,
     state_reachability: stateReachability,
     queries: {
@@ -342,6 +401,10 @@ function compareToBaseline(report, baseline, thresholdsIn) {
   const baseV = versionOf(baseline);
   if (repV === null || baseV === null || repV !== baseV) {
     failures.push(`question-set version mismatch: report is v${repV}, baseline is v${baseV} — score the baseline's question set (--questions questions-v${baseV}.json) or record a new baseline`);
+    return { ok: false, failures };
+  }
+  if (!!report.relevance !== !!baseline.relevance) {
+    failures.push(`scoring mode mismatch: report ${report.relevance ? 'uses' : 'lacks'} acceptable-answer sets, baseline ${baseline.relevance ? 'uses' : 'lacks'} them`);
     return { ok: false, failures };
   }
 
@@ -436,6 +499,14 @@ function printHumanTable(report) {
     const [stratum, split] = key.split('|');
     console.log(`  ${stratum.padEnd(14)} ${split.padEnd(9)} ${String(agg.n).padStart(3)}   ${agg.mrr.toFixed(4)}   ${agg.ndcg5.toFixed(4)}`);
   }
+  if (report.top1_breakdown) {
+    console.log('\nTop-1 with acceptable-answer sets (source = the question\'s own lesson):');
+    console.log('  stratum        split     n   source  other-acceptable  none   mean set size');
+    for (const [key, b] of Object.entries(report.top1_breakdown)) {
+      const [stratum, split] = key.split('|');
+      console.log(`  ${stratum.padEnd(14)} ${split.padEnd(9)} ${String(b.n).padStart(3)}   ${String(b.source).padStart(4)}    ${String(b.other_acceptable).padStart(8)}        ${String(b.none).padStart(4)}   ${b.mean_acceptable.toFixed(2)}`);
+    }
+  }
   console.log('\nState-layer lookup() reachability by entry name (informational, not gated):');
   console.log(`  ${report.state_reachability.n_reachable_by_name}/${report.state_reachability.n} sampled registry entries are found by state.js lookup() on their own name`);
   console.log('\nNegatives (reported, not gated — see run.js header comment on rrf_score):');
@@ -492,7 +563,7 @@ function main() {
 
 module.exports = {
   DEFAULT_THRESHOLDS, GATED_STRATA, resolveThresholds, countGated,
-  parseArgs, findLatestQuestions, scoreLessonQuestion, scoreStateQuestion, scoreNegativeQuestion,
+  parseArgs, findLatestQuestions, scoreLessonQuestion, scoreWithRelevant, top1Breakdown, scoreStateQuestion, scoreNegativeQuestion,
   aggregateByStratumSplit, summarizeNegatives, buildReport, compareToBaseline,
 };
 

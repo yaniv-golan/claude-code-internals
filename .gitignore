@@ -22,3 +22,6 @@ docs/internal/
 
 # Generated site output — built in CI, never committed
 /site/dist/
+
+# gen-questions.js / gen-relevance.js resume checkpoints
+evals/retrieval/*.partial

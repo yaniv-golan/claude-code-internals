@@ -192,9 +192,9 @@ test('run.js exits non-zero on a questions file with no gated questions, or none
   assert.match(missing.stderr, /no questions-vN\.json found/);
 });
 
-test('CI and check-clean.sh score the v1 question set explicitly', (t) => {
+test('CI and check-clean.sh score the v2 question set explicitly', (t) => {
   if (!PRESENT) { t.skip(SKIP); return; }
-  const want = /run\.js --baseline evals\/retrieval\/baseline-v1\.json --questions evals\/retrieval\/questions-v1\.json/;
+  const want = /run\.js --baseline evals\/retrieval\/baseline-v2\.json --questions evals\/retrieval\/questions-v2\.json/;
   for (const rel of ['.github/workflows/validate.yml', 'scripts/check-clean.sh']) {
     const p = path.join(REPO, rel);
     if (!fs.existsSync(p)) continue;

@@ -30,8 +30,9 @@ design this implements.
   Writes `questions-v<N>.json`. Supports `--dry-run` (prints prompts, no calls), `--limit`,
   `--concurrency`, and resumes automatically from a `.partial` checkpoint (refuses to resume one
   whose seed/model/prompt_version/version header doesn't match; a resumed run keeps the
-  checkpoint's lesson split). From v2 on, qids carry the version (`v2-id-0001`); v1's bare qids
-  are frozen. A plain question that never stops leaking is dropped, but its lesson's identifier
+  checkpoint's lesson split). A version it generates from v2 on carries the version in its qids
+  (`v3-id-0001`); v1's bare qids are frozen, and questions-v2 (derived from v1 by
+  `gen-relevance.js`, not generated) keeps them. A plain question that never stops leaking is dropped, but its lesson's identifier
   question is kept.
 - **`run.js`** — the scorer. Loads a `questions-vN.json` (latest by default) plus
   `registry-top1.json`, runs every question through `search.js`, reports MRR/nDCG@5 per
@@ -44,8 +45,37 @@ design this implements.
   no gated questions, its version differs from the baseline's, or a gated stratum × split or
   question in the baseline is missing from the report; and on any identifier question that
   loses top-1.
-- **`questions-v1.json`** + **`baseline-v1.json`** — the committed v1 question set and its
-  scored baseline, which CI gates on.
+- **`gen-relevance.js`** — derives a question set with **acceptable-answer sets** from an
+  existing one without regenerating questions (§4.7b item 5): `--from questions-v1.json
+  --version 2`. Same texts, qids, strata, split and `dropped` list; each identifier and plain
+  question gains `relevant: {lessonId: grade}` (2 = the source lesson, always; 1 = another
+  acceptable lesson). Identifier questions: a published deterministic rule (the question's
+  identifiers that the source lesson also has, per `scripts/lib/identifiers.js`; a lesson is
+  acceptable if one of them is homed there as a `keyword_map` key, hand or generated, or it
+  mentions it at least as often as the source, counted with `occurrencePositions`, the
+  arithmetic `prepare-lessons.js` homes keys with). Plain questions: a one-time model judgment,
+  frozen in the file — the candidate pool is the union of the keyword layer's top 10, the TF-IDF
+  top 10 (`semantic-search.js` and `search.js`'s own TF-IDF rank), the fused top 10 and the
+  source lesson; one `claude -p --safe-mode --tools ""` call per question judges every
+  candidate from its title, summary and a bounded excerpt, blind to which one is the source.
+  Judge model, prompt version, date, flags and pool rule are recorded in the file's `relevance`
+  header, every verdict and reason per question. Human-triggered only; `--dry-run` prints the
+  call estimate and one prompt; resumable from a `.partial` checkpoint (only fully parsed
+  judgments count as done); refuses to overwrite an existing version. State and negative
+  questions are carried over unchanged. See the file header for the exact rules.
+- **`questions-v2.json`** + **`baseline-v2.json`** — the gated set: v1's questions with
+  acceptable-answer sets, and its baseline (same thresholds as v1, empty `waivers`). `run.js`
+  scores a question carrying `relevant` by its first acceptable lesson (MRR, every per-question
+  rule, and the identifier top-1 rule, which reads "an acceptable lesson is first") with graded
+  nDCG@5 (linear gain = grade), and reports per stratum × split how often the top-1 is the
+  source lesson vs another acceptable one (`top1_breakdown`), plus each question's
+  `rank_source`. The pool is bounded by the search stack of the commit it was judged at
+  (`relevance.search_head`): a lesson no layer ranked in its top 10 then was never judged, so a
+  later ranker gets no credit for surfacing it.
+- **`questions-v1.json`** + **`baseline-v1.json`** — the v1 set (source lesson only, binary) and
+  its baseline with the one phase-3 waiver. Kept for trend, **not gated**; a question without
+  `relevant` is still scored exactly as before (the v1 report is byte-identical apart from
+  `generated_at`).
 
 ## How to (re)generate
 
@@ -57,12 +87,18 @@ node evals/retrieval/gen-registry-top1.js
 node --test skill-package/skills/claude-code-internals/scripts/tests/registry-top1.test.js
 
 # 3. Generate a NEW question set version (human-triggered, calls a model, costs money):
-node evals/retrieval/gen-questions.js --version 2   # v1, v2, ... never overwritten
+node evals/retrieval/gen-questions.js --version 3   # never overwrites an existing version
+
+# 3b. Or derive acceptable-answer sets for an existing one (one judge call per plain question):
+node evals/retrieval/gen-relevance.js --from evals/retrieval/questions-v1.json --version 2 --dry-run
+node evals/retrieval/gen-relevance.js --from evals/retrieval/questions-v1.json --version 2
 
 # 4. Score it and save a baseline:
 node evals/retrieval/run.js --questions evals/retrieval/questions-v2.json --save evals/retrieval/baseline-v2.json
 
 # 5. On a later change, check for regressions (always name the question set the baseline scored):
+node evals/retrieval/run.js --baseline evals/retrieval/baseline-v2.json --questions evals/retrieval/questions-v2.json
+# v1, for trend (not gated):
 node evals/retrieval/run.js --baseline evals/retrieval/baseline-v1.json --questions evals/retrieval/questions-v1.json
 ```
 
@@ -83,8 +119,13 @@ node evals/retrieval/run.js --baseline evals/retrieval/baseline-v1.json --questi
 - **Whole-set replacement only.** `questions-vN.json` is replaced as a whole new version on a
   fixed schedule (the plan says yearly or after 50 new lessons) — never edited piecemeal to drop
   an inconvenient question.
-- **CI gates on `baseline-v1.json`** (`validate.yml`, `scripts/check-clean.sh`), scoring
-  `questions-v1.json` named explicitly, alongside `registry-top1.test.js`.
+- **CI gates on `baseline-v2.json`** (`validate.yml`, `scripts/check-clean.sh`), scoring
+  `questions-v2.json` named explicitly, alongside `registry-top1.test.js`. v1 stays for trend.
+- **qids.** A generated version from v2 on prefixes its qids with the version (`v3-id-0001`);
+  a *derived* version (`gen-relevance.js`) holds the same questions and keeps its source's qids.
+  `run.js` keys every comparison by version + qid, so they never collide.
+- **Acceptable-answer sets are never hand-edited.** They come from the published identifier rule
+  or the frozen judgment; a wrong set is fixed by a rule or prompt change cut as a new version.
 
 ## Open decisions (flagged, not resolved here)
 
@@ -113,8 +154,3 @@ node evals/retrieval/run.js --baseline evals/retrieval/baseline-v1.json --questi
    inherits the split of its registry entry's *first* provenance lesson; a negative question is
    assigned holdout/dev via the same seeded RNG family (no natural lesson to inherit from).
    Neither is specified by the plan; both are documented here rather than picked silently.
-5. **`questions-v1.json` does not exist yet.** This task's constraints (no model calls, no
-   `claude` invocations) mean the real generation was never run. Everything downstream (leak
-   masking, resumability, the state/negative prompts) is instead proven against a stub model in
-   a throwaway `/tmp` harness and a hand-built fixture question file (also `/tmp`, not
-   committed) — see the task's final report for what was exercised.

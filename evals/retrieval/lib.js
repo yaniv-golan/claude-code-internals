@@ -193,6 +193,32 @@ function ndcgAt5(rank) {
   return 1 / Math.log2(rank + 1);
 }
 
+/**
+ * Graded nDCG@5 for an acceptable-answer set (questions-v2+). Linear gain:
+ * gain(lesson) = its grade (2 = source, 1 = other acceptable, 0 otherwise);
+ * DCG@5 = sum over result positions i=1..5 of gain / log2(i+1); normalized by
+ * the ideal DCG@5 (the set's grades sorted descending). With the source alone
+ * ({source: 2}) this equals ndcgAt5(rank of the source) exactly.
+ *
+ * @param {Array<{id:number}>} results  ranked search results
+ * @param {Object<string, number>} relevant  lessonId -> grade
+ */
+function gradedNdcgAt5(results, relevant) {
+  const gainOf = (id) => relevant[id] || 0;
+  let dcg = 0;
+  results.slice(0, 5).forEach((r, i) => { dcg += gainOf(r.id) / Math.log2(i + 2); });
+  const ideal = Object.values(relevant).filter((g) => g > 0).sort((a, b) => b - a).slice(0, 5);
+  let idcg = 0;
+  ideal.forEach((g, i) => { idcg += g / Math.log2(i + 2); });
+  return idcg ? dcg / idcg : 0;
+}
+
+/** Rank (1-based) of the first result that is in `relevant`, or null. */
+function firstAcceptableRank(results, relevant) {
+  const i = results.findIndex((r) => (relevant[r.id] || 0) > 0);
+  return i === -1 ? null : i + 1;
+}
+
 module.exports = {
   EVALS_DIR,
   REPO_ROOT,
@@ -220,4 +246,6 @@ module.exports = {
   splitLessons,
   reciprocalRank,
   ndcgAt5,
+  gradedNdcgAt5,
+  firstAcceptableRank,
 };

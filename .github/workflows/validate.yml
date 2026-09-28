@@ -26,10 +26,13 @@ jobs:
       # scored against the recorded baseline. Fails on a per-stratum MRR/nDCG
       # drop, any identifier question losing top-1, or any single question
       # losing more than a few ranks (thresholds are stored in the baseline).
-      # The question set is named explicitly: a newer questions-vN.json must
-      # never be scored against the v1 baseline.
+      # The question set is named explicitly: a questions-vN.json is only ever
+      # scored against its own baseline. v2 carries acceptable-answer sets
+      # (evals/retrieval/gen-relevance.js): a question's rank is its first
+      # acceptable lesson's. questions-v1/baseline-v1 stay in the repo for
+      # trend and are not gated.
       - name: Retrieval baseline
-        run: node evals/retrieval/run.js --baseline evals/retrieval/baseline-v1.json --questions evals/retrieval/questions-v1.json
+        run: node evals/retrieval/run.js --baseline evals/retrieval/baseline-v2.json --questions evals/retrieval/questions-v2.json
       - name: State-layer integrity
         run: node skill-package/skills/claude-code-internals/scripts/validate-state.js
       - name: State-layer reconciliation
