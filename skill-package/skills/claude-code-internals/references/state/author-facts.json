@@ -1102,7 +1102,7 @@
       "id": "plugins.mcp-env-placeholders-need-defaults",
       "page": "plugins-and-plugin-root",
       "rule": "Do not pass a credential to a plugin's server through an environment placeholder.",
-      "detail": "In a plugin's server configuration, only a few standard variables are filled in: the home folder, the search path, the shell, the user and the terminal, plus the plugin's own root. Any other placeholder reaches the server as its literal text in both Cowork sandboxes, even when the variable is set on the user's machine, and a placeholder with a default gets the default instead. The server still starts, so the failure shows up later as rejected requests. Have the server read its credential itself, for example from a file in the user's home folder or from the system keychain, and treat a value that still looks like a placeholder as missing.",
+      "detail": "In a plugin's server configuration, only a few standard variables are filled in: the home folder, the search path, the shell, the user and the terminal, plus the plugin's own root. Any other placeholder reaches the server as its literal text in both Cowork sandboxes, even when the variable is set on the user's machine, and a placeholder with a default gets the default instead. The server still starts, so the failure shows up later as rejected requests. Have the server read its credential itself, for example from a file in the user's home folder or from the system keychain, and treat a value that still looks like a placeholder as missing. A server the user adds to the desktop application's own MCP configuration, with the key in that server's environment block, does receive it.",
       "tier": "measured",
       "severity": "silent",
       "durability": "durable",
@@ -1110,6 +1110,8 @@
       "volatile_dependency": false,
       "sources": {
         "lessons": [
+          61,
+          89,
           218
         ],
         "state_page": "plugins-skills-hooks"

@@ -4174,6 +4174,11 @@
   ],
   "218": [
    {
+    "id": 61,
+    "relevance": 0.9,
+    "reason": "the local-agent MCP env allowlist, the same six names"
+   },
+   {
     "id": 209,
     "relevance": 0.9,
     "reason": "plugin hooks by lane"

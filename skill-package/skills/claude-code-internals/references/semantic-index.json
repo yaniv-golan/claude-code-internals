@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "created": "2026-09-28T08:52:12.730Z",
+  "created": "2026-09-28T08:53:52.196Z",
   "description": "TF-IDF semantic index for Claude Code internals lessons. Use semantic-search.js to query.",
   "total_entries": 218,
   "entries": [
@@ -26390,7 +26390,7 @@
       "title": "Plugin Blocks and MCP Placeholders, Lane by Lane",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 48,
-      "endLine": 106,
+      "endLine": 108,
       "text": "Plugin Blocks and MCP Placeholders, Lane by Lane UserPromptSubmit block decision block prompt blocked silently Blocked by your organization's policy cloud Cowork no reply PreToolUse deny live plugin MCP env placeholder ${VAR} in .mcp.json user_config_unsupported unset env var literal plugin MCP server not appearing in Cowork not_started reason cci-probe2@inline MCP stdio safelist left as written TESTMO_API_TOKEN style custom env var set env var not passed to plugin MCP server  UserPromptSubmit block decision block prompt blocked silently Blocked by your organization's policy cloud Cowork no reply PreToolUse deny live plugin MCP env placeholder ${VAR} in .mcp.json user_config_unsupported unset env var literal plugin MCP server not appearing in Cowork not_started reason cci-probe2@inline MCP stdio safelist left as written TESTMO_API_TOKEN style custom env var set env var not passed to plugin MCP server",
       "keywords": [
         "UserPromptSubmit block",

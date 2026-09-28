@@ -1,6 +1,12 @@
 {
   "base": "https://ccinternals.dev/cowork/",
   "by_lesson": {
+    "61": [
+      [
+        "plugins-and-plugin-root",
+        1
+      ]
+    ],
     "88": [
       [
         "plugins-and-plugin-root",
@@ -10,7 +16,7 @@
     "89": [
       [
         "plugins-and-plugin-root",
-        5
+        6
       ]
     ],
     "108": [

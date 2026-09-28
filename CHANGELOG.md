@@ -1,5 +1,16 @@
 # Changelog
 
+## v2.58.2 — 2026-09-28 (this fork) — the six names were already in L61
+
+No new lessons; counts stay 218/59.
+
+- **L218** now cites what this skill already recorded. The local agent runs as `local-agent`, where
+  `CLAUDE_CODE_MCP_ALLOWLIST_ENV` defaults on and a server it spawns gets only `HOME`, `LOGNAME`, `PATH`, `SHELL`, `TERM`
+  and `USER` plus its `env` block (L61). Those are the same six names as the Desktop bridge's safelist, which accounts
+  for the local measurement in v2.58.1. The lesson also gives the route that works: a server in
+  `claude_desktop_config.json` gets the full host environment plus its `env` block (L89). The fact
+  `plugins.mcp-env-placeholders-need-defaults` gains that route.
+
 ## v2.58.1 — 2026-09-28 (this fork) — a set custom variable still isn't filled in
 
 No new lessons; counts stay 218/59. Prompted by a sibling session reading a GitHub report's Desktop log line.
