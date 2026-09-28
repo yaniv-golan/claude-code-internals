@@ -269,8 +269,12 @@ function buildReport(questionsData, opts) {
  * drop beyond `mrrThreshold`; any single lesson/state query whose rank
  * worsens by more than `rankDropK` ranks, or that falls out of the top 10
  * when it was previously in it (or was found and is now not found at all).
+ * Only the GATED_STRATA are compared. State questions are reported, not gated:
+ * state.js cannot resolve a free-text question, and scoring them against
+ * provenance lessons would count historical lessons as correct answers.
  * Negatives are reported, never gated (see file header).
  */
+const GATED_STRATA = new Set(['identifier', 'plain']);
 function compareToBaseline(report, baseline, opts) {
   const failures = [];
 
@@ -278,6 +282,7 @@ function compareToBaseline(report, baseline, opts) {
     const cur = report.by_stratum_split[key];
     const base = baseline.by_stratum_split[key];
     if (!cur || !base) continue; // stratum/split only in one report — not a regression to score here
+    if (!GATED_STRATA.has(key.split('|')[0])) continue;
     if (base.mrr - cur.mrr > opts.mrrThreshold) {
       failures.push(`[${key}] MRR dropped ${base.mrr.toFixed(4)} -> ${cur.mrr.toFixed(4)} (> ${opts.mrrThreshold})`);
     }
@@ -287,8 +292,9 @@ function compareToBaseline(report, baseline, opts) {
   }
 
   const baseById = new Map();
-  for (const q of [...baseline.queries.lesson, ...baseline.queries.state]) baseById.set(q.qid, q);
-  for (const q of [...report.queries.lesson, ...report.queries.state]) {
+  for (const q of baseline.queries.lesson) baseById.set(q.qid, q);
+  for (const q of report.queries.lesson) {
+    if (!GATED_STRATA.has(q.stratum)) continue;
     const b = baseById.get(q.qid);
     if (!b) continue; // new query, no baseline to compare
     const oldRank = b.rank;

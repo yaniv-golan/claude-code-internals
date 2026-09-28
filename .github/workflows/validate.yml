@@ -19,6 +19,11 @@ jobs:
       # files; fail if any is stale.
       - name: Derived fields
         run: node skill-package/skills/claude-code-internals/scripts/build.js --check
+      # Retrieval quality gate: the generated question set (evals/retrieval/)
+      # scored against the recorded baseline. Fails on a per-stratum MRR/nDCG
+      # drop or any single question losing more than a few ranks.
+      - name: Retrieval baseline
+        run: node evals/retrieval/run.js --baseline evals/retrieval/baseline-v1.json
       - name: State-layer integrity
         run: node skill-package/skills/claude-code-internals/scripts/validate-state.js
       - name: State-layer reconciliation

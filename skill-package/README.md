@@ -84,8 +84,8 @@ This is because Claude's training data doesn't include Claude Code's source code
           |             |  | (TF-IDF)      |  |                |
           | jq query    |  | cosine sim    |  | fuses keyword  |
           | against     |  | against       |  | + TF-IDF via   |
-          | 4,480       |  | 189 lesson    |  | reciprocal     |
-          | keywords    |  | TF-IDF        |  | rank fusion    |
+          | the keyword |  | per-lesson    |  | reciprocal     |
+          | map         |  | TF-IDF        |  | rank fusion    |
           |             |  | vectors       |  |                |
           +------+------+  +-------+-------+  +-------+--------+
                  |                 |                   |
@@ -120,7 +120,7 @@ This is because Claude's training data doesn't include Claude Code's source code
 | **1. Keyword** | `lookup.sh` | Instant | Exact terms: "hooks", "permissions", "KAIROS" | `jq` |
 | **2. TF-IDF** | `semantic-search.js` | ~50ms | Natural language: "how does Claude decide what tools to use" | Node.js |
 
-- **Layer 1** uses `jq` to search a 4,480-key keyword map pointing at exact file:line ranges.
+- **Layer 1** uses `jq` to search the keyword map, which points at exact file:line ranges.
 - **Layer 2** tokenizes your query and computes cosine similarity against pre-built TF-IDF vectors for all 218 lessons. Pure Node.js, no dependencies.
 - **`search.js`** runs both and fuses the rankings. It is the one to reach for unless you specifically want a single layer's behaviour.
 
@@ -197,7 +197,7 @@ brew install jq node
   | claude-  |    | ~/.claude|    | chmod +x |    |          |    |internals|
   | internals|    | /skills/ |    | scripts/ |    | Skills   |    |  hooks  |
   | .zip     |    | claude-  |    | *.sh     |    | register |    |        |
-  | (171KB)  |    | internals|    | *.js     |    | at start |    |        |
+  |          |    | internals|    | *.js     |    | at start |    |        |
   +----------+    +----------+    +----------+    +----------+    +--------+
 ```
 
@@ -426,8 +426,7 @@ claude-code-internals-skill/
 |
 +-- README.md                       This file
 +-- LICENSE                         MIT license
-+-- claude-code-internals.zip            Shareable package (171KB)
-+-- topic-index.json                494-keyword lookup index
++-- claude-code-internals.zip       Shareable package (attached to each GitHub Release)
 |
 +-- skill-package/                  Mirror of installed skill
 |   +-- SKILL.md                    Skill brain (search strategy + topic index)
@@ -439,7 +438,7 @@ claude-code-internals-skill/
 |   |   +-- 03-interface-infrastructure.md
 |   |   +-- 04-connectivity-plugins.md
 |   |   +-- 05-unreleased-bigpicture.md
-|   |   +-- topic-index.json        Keyword index (494 entries)
+|   |   +-- topic-index.json        Lesson index and keyword map
 |   +-- scripts/
 |       +-- lookup.sh               Keyword search (jq)
 |       +-- semantic-search.js      TF-IDF search (Node.js)
@@ -471,19 +470,19 @@ claude-code-internals-skill/
 
 The `claude-code-internals.zip` file is the complete, shareable package. It contains everything needed to install and use the skill:
 
-| File | Size | Purpose |
-|------|------|---------|
-| `SKILL.md` | 120KB | The skill brain — seven-step workflow, gotchas, and the reference-file map |
-| `version.json` | 78KB | Version metadata plus the cumulative per-release verification record |
-| `hooks-config.json` | 1.4KB | Example PreToolUse hook definition (portable paths) |
-| `references/*.md` | 1.4MB | 56 chapter files holding all 218 lessons |
-| `references/topic-index.json` | 341KB | Per-lesson bounds and keywords, plus a 4,480-key keyword map |
-| `references/cross-references.json` | 88KB | 614 lesson-to-lesson links, keyed from 161 source entries |
-| `references/troubleshooting.json` | 74KB | 133 symptom entries (672 patterns) with lesson pointers and hints |
-| `references/state/` | 496KB | Current-state layer — 8 domain pages, `registry.json` (436 entries), `author-facts.json` (60 facts) |
-| `scripts/` (query) | — | `search.js` (unified RRF — use this by default), `semantic-search.js`, `lib/tfidf-index.js` (the TF-IDF index, derived from `topic-index.json` at load and cached outside the skill directory), `lookup.sh`, `fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `state.js` |
-| `scripts/` (maintenance) | — | `build.js`, `validate-state.js`, `check-json-format.js`, `count-symbol.js`, `check-version.sh`, `extract-bundle.sh`, `diff-versions.sh`, `config-aware-hook.sh` |
-| `scripts/tests/` | 49KB | 7 test files guarding release consistency, JSON canonical format, and the state layer |
+| File | Purpose |
+|------|---------|
+| `SKILL.md` | The skill brain — seven-step workflow, gotchas, and the reference-file map |
+| `version.json` | Version metadata plus the cumulative per-release verification record |
+| `hooks-config.json` | Example PreToolUse hook definition (portable paths) |
+| `references/*.md` | The chapter files holding every lesson |
+| `references/topic-index.json` | Per-lesson bounds and keywords, plus the keyword map |
+| `references/cross-references.json` | Lesson-to-lesson links |
+| `references/troubleshooting.json` | Symptom entries with lesson pointers and hints |
+| `references/state/` | Current-state layer — domain pages, `registry.json`, `author-facts.json` |
+| `scripts/` (query) | `search.js` (unified RRF — use this by default), `semantic-search.js`, `lib/tfidf-index.js` (the TF-IDF index, derived from `topic-index.json` at load and cached outside the skill directory), `lookup.sh`, `fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `state.js` |
+| `scripts/` (maintenance) | `build.js`, `validate-state.js`, `check-json-format.js`, `count-symbol.js`, `check-version.sh`, `extract-bundle.sh`, `diff-versions.sh`, `config-aware-hook.sh` |
+| `scripts/tests/` | Tests guarding release consistency, derived fields, JSON canonical format, search and the state layer |
 
 The zip is exactly `skill-package/skills/claude-code-internals/`, so it does **not** contain this README or the LICENSE — those live in the repository.
 
