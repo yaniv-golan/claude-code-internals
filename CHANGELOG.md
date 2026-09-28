@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.58.5 — 2026-09-28 (this fork) — the outputs mount and outputs delivery are separate switches
+
+No new lessons; counts stay 218/59.
+
+- **L198.** The per-session outputs switch from v2.58.4 is two independent features, and three states have been seen:
+  - **Mount on, delivery on:** our 2026-09-23 probe. `/mnt/user-data/outputs` is mounted and a Write there is the
+    delivery.
+  - **Mount on, delivery off:** two sessions relayed by the skill-creator-plus project on 2026-09-28. The instructions
+    never mention the mount and name the working directory and `SendUserFile` instead.
+  - **Mount off:** a third relayed session.
+
+  So the mount's presence does not tell a skill whether writing there delivers anything. The Cowork state page is
+  updated to match.
+
 ## v2.58.4 — 2026-09-28 (this fork) — cloud Cowork's outputs contract is switched per session
 
 No new lessons; counts stay 218/59. Prompted by a live finding from the skill-creator-plus project, then traced in

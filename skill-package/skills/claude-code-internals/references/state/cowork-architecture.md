@@ -573,11 +573,11 @@ identifier (`localAgentMode` 20 → 20, `isRemote` 60 → 60, `remoteSession` 59
 
 ## Cloud Cowork's outputs contract is switched per session (L198)
 
-Client features `ccr_outputs_filestore_mount` / `ccr_outputs_path_delivery`: **on** →
-`/mnt/user-data/outputs` → `/mnt/attach/outputs`, files there persist and a Write/Edit there is the
-delivery (no `SendUserFile`); **off** → the outputs dir is an empty directory, the session's
-instructions name the working directory (`/home/claude`) and delivery is `SendUserFile`. Both seen live
-(2026-09-23 on, 2026-09-28 off, relayed). The session prompt itself is server-side.
+Two independent client features: `ccr_outputs_filestore_mount` (is `/mnt/user-data/outputs` →
+`/mnt/attach/outputs` mounted) and `ccr_outputs_path_delivery` (is a Write/Edit there the delivery, named in
+the instructions). Seen live: both on (2026-09-23); mount on + delivery off, and mount off (2026-09-28,
+relayed) — in both of those the instructions name the working directory (`/home/claude`) and `SendUserFile`.
+The mount's presence says nothing about delivery. The session prompt itself is server-side.
 
 ## A THIRD surface Desktop calls "cloud" — the claude.ai code-execution container (relayed, 2026-09-22)
 

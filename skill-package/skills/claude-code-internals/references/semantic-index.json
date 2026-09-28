@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "created": "2026-09-28T09:51:55.686Z",
+  "created": "2026-09-28T10:01:14.692Z",
   "description": "TF-IDF semantic index for Claude Code internals lessons. Use semantic-search.js to query.",
   "total_entries": 218,
   "entries": [
@@ -24780,7 +24780,7 @@
       "title": "One Probe, Four Surfaces: What a Relative Path Means Where",
       "file": "50-artifact-host-tools-inbox-folder-skills.md",
       "startLine": 182,
-      "endLine": 237,
+      "endLine": 238,
       "text": "One Probe, Four Surfaces: What a Relative Path Means Where four-surfaces surface-fingerprint remote_cowork CLAUDE_CODE_ENTRYPOINT remote claude-code-on-the-web claude.ai chat create_file relative-path-per-surface pathless-search /home/claude /home/user bash_tool Relative paths are not supported oauth_token in home which surface am I on outputs contract per session ccr_outputs_filestore_mount ccr_outputs_path_delivery SendUserFile vs outputs /mnt/user-data/outputs empty  claude-code-on-the-web remote_cowork four-surfaces surface-fingerprint CLAUDE_CODE_ENTRYPOINT remote claude.ai chat create_file relative-path-per-surface pathless-search /home/claude /home/user bash_tool Relative paths are not supported oauth_token in home which surface am I on outputs contract per session ccr_outputs_filestore_mount ccr_outputs_path_delivery SendUserFile vs outputs /mnt/user-data/outputs empty",
       "keywords": [
         "four-surfaces",
