@@ -1,0 +1,2069 @@
+{
+  "generated_from_commit": "2b26a127d6ab72abbfaf61066a2a9b391c15cce4",
+  "worktree_dirty": true,
+  "index_hashes": {
+    "topic_index": "aecde979d05b691eaa8f2fb77e96281df2c7029580cfd25e9404b4eb9359c62a",
+    "semantic_index": "972226aff230b49eb496193bc0a9e955f66583f2b390b56260ff963487dbe6e8"
+  },
+  "generated_at": "2026-09-28T11:50:40.440Z",
+  "cases": [
+    {
+      "name": "afk-mode-2026-01-31",
+      "expected_id": 96,
+      "passes_today": true
+    },
+    {
+      "name": "agent-memory-2026-07-22",
+      "expected_id": 158,
+      "passes_today": false,
+      "top_id": 15
+    },
+    {
+      "name": "auto-mode-classifier-2026-07-16",
+      "expected_id": 158,
+      "passes_today": false,
+      "top_id": 150
+    },
+    {
+      "name": "cache-diagnosis-2026-04-07",
+      "expected_id": 88,
+      "passes_today": true
+    },
+    {
+      "name": "ccr-byoc-2025-07-29",
+      "expected_id": 119,
+      "passes_today": true
+    },
+    {
+      "name": "code-execution-2025-08-25",
+      "expected_id": 113,
+      "passes_today": true
+    },
+    {
+      "name": "dreaming-2026-04-21",
+      "expected_id": 158,
+      "passes_today": true
+    },
+    {
+      "name": "fallback-credit-2026-06-01",
+      "expected_id": 113,
+      "passes_today": true
+    },
+    {
+      "name": "mcp-tunnels-2026-06-22",
+      "expected_id": 158,
+      "passes_today": false,
+      "top_id": 107
+    },
+    {
+      "name": "oidc-federation-2026-04-01",
+      "expected_id": 86,
+      "passes_today": true
+    },
+    {
+      "name": "per-turn-control-2026-07-01",
+      "expected_id": 136,
+      "passes_today": false,
+      "top_id": 119
+    },
+    {
+      "name": "prompt-caching-evict-2026-05-12",
+      "expected_id": 113,
+      "passes_today": false,
+      "top_id": 141
+    },
+    {
+      "name": "server-side-fallback-2026-06-01",
+      "expected_id": 113,
+      "passes_today": true
+    },
+    {
+      "name": "thinking-display-updates-2026-08-18",
+      "expected_id": 178,
+      "passes_today": true
+    },
+    {
+      "name": "artifacts",
+      "expected_id": 135,
+      "passes_today": false,
+      "top_id": 212
+    },
+    {
+      "name": "/auto-mode-setup",
+      "expected_id": 112,
+      "passes_today": false,
+      "top_id": 96
+    },
+    {
+      "name": "/autofix-pr",
+      "expected_id": 88,
+      "passes_today": false,
+      "top_id": 60
+    },
+    {
+      "name": "/background",
+      "expected_id": 89,
+      "passes_today": false,
+      "top_id": 115
+    },
+    {
+      "name": "/bridge-kick",
+      "expected_id": 111,
+      "passes_today": false,
+      "top_id": 34
+    },
+    {
+      "name": "/cd",
+      "expected_id": 111,
+      "passes_today": true
+    },
+    {
+      "name": "/commit",
+      "expected_id": 102,
+      "passes_today": false,
+      "top_id": 69
+    },
+    {
+      "name": "/commit-push-pr",
+      "expected_id": 102,
+      "passes_today": false,
+      "top_id": 79
+    },
+    {
+      "name": "/config",
+      "expected_id": 111,
+      "passes_today": true
+    },
+    {
+      "name": "/cost",
+      "expected_id": 88,
+      "passes_today": false,
+      "top_id": 44
+    },
+    {
+      "name": "/cowork-plugin",
+      "expected_id": 112,
+      "passes_today": false,
+      "top_id": 209
+    },
+    {
+      "name": "/design",
+      "expected_id": 112,
+      "passes_today": true
+    },
+    {
+      "name": "/design-login",
+      "expected_id": 112,
+      "passes_today": true
+    },
+    {
+      "name": "/design-sync",
+      "expected_id": 112,
+      "passes_today": true
+    },
+    {
+      "name": "/dream",
+      "expected_id": 101,
+      "passes_today": true
+    },
+    {
+      "name": "/extra-usage",
+      "expected_id": 102,
+      "passes_today": true
+    },
+    {
+      "name": "import",
+      "expected_id": 135,
+      "passes_today": true
+    },
+    {
+      "name": "/init-verifiers",
+      "expected_id": 111,
+      "passes_today": false,
+      "top_id": 42
+    },
+    {
+      "name": "/model",
+      "expected_id": 86,
+      "passes_today": false,
+      "top_id": 46
+    },
+    {
+      "name": "/pause-memory",
+      "expected_id": 112,
+      "passes_today": false,
+      "top_id": 15
+    },
+    {
+      "name": "/plan-artifact",
+      "expected_id": 112,
+      "passes_today": false,
+      "top_id": 41
+    },
+    {
+      "name": "/pro-trial-expired",
+      "expected_id": 88,
+      "passes_today": true
+    },
+    {
+      "name": "/remote-control",
+      "expected_id": 86,
+      "passes_today": false,
+      "top_id": 119
+    },
+    {
+      "name": "/rewind",
+      "expected_id": 111,
+      "passes_today": false,
+      "top_id": 52
+    },
+    {
+      "name": "/scroll-speed",
+      "expected_id": 102,
+      "passes_today": true
+    },
+    {
+      "name": "/simplify",
+      "expected_id": 111,
+      "passes_today": true
+    },
+    {
+      "name": "/skill-doctor",
+      "expected_id": 112,
+      "passes_today": false,
+      "top_id": 11
+    },
+    {
+      "name": "/stats",
+      "expected_id": 88,
+      "passes_today": true
+    },
+    {
+      "name": "/stop",
+      "expected_id": 89,
+      "passes_today": false,
+      "top_id": 95
+    },
+    {
+      "name": "/stop-hook",
+      "expected_id": 87,
+      "passes_today": true
+    },
+    {
+      "name": "subtask",
+      "expected_id": 135,
+      "passes_today": true
+    },
+    {
+      "name": "/toggle-memory",
+      "expected_id": 112,
+      "passes_today": false,
+      "top_id": 15
+    },
+    {
+      "name": "/usage",
+      "expected_id": 88,
+      "passes_today": false,
+      "top_id": 102
+    },
+    {
+      "name": "/usage-credits",
+      "expected_id": 102,
+      "passes_today": true
+    },
+    {
+      "name": "/wellbeing",
+      "expected_id": 102,
+      "passes_today": true
+    },
+    {
+      "name": "/workflows",
+      "expected_id": 91,
+      "passes_today": true
+    },
+    {
+      "name": "ANTHROPIC_CONFIG_DIR",
+      "expected_id": 86,
+      "passes_today": true
+    },
+    {
+      "name": "ANTHROPIC_DEFAULT_FABLE_MODEL",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "ANTHROPIC_FEDERATION_RULE_ID",
+      "expected_id": 86,
+      "passes_today": false,
+      "top_id": 25
+    },
+    {
+      "name": "ANTHROPIC_IDENTITY_TOKEN",
+      "expected_id": 86,
+      "passes_today": true
+    },
+    {
+      "name": "ANTHROPIC_IDENTITY_TOKEN_FILE",
+      "expected_id": 86,
+      "passes_today": true
+    },
+    {
+      "name": "ANTHROPIC_ORGANIZATION_ID",
+      "expected_id": 86,
+      "passes_today": true
+    },
+    {
+      "name": "ANTHROPIC_PROFILE",
+      "expected_id": 86,
+      "passes_today": true
+    },
+    {
+      "name": "ANTHROPIC_SCOPE",
+      "expected_id": 86,
+      "passes_today": true
+    },
+    {
+      "name": "ANTHROPIC_SERVICE_ACCOUNT_ID",
+      "expected_id": 86,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDECODE",
+      "expected_id": 116,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_ADDITIONAL_DIRECTORIES",
+      "expected_id": 174,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_AFTER_LAST_COMPACT",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_AGENT",
+      "expected_id": 89,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_AGENTS_AUTO_RELAUNCHED_AT",
+      "expected_id": 90,
+      "passes_today": false,
+      "top_id": 89
+    },
+    {
+      "name": "CLAUDE_AGENTS_SELECT",
+      "expected_id": 89,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_AGENT_SDK_CLIENT_APP",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_AGENT_SDK_DISABLE_BUILTIN_AGENTS",
+      "expected_id": 108,
+      "passes_today": false,
+      "top_id": 12
+    },
+    {
+      "name": "CLAUDE_AGENT_SDK_MCP_NO_PREFIX",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_AGENT_SDK_VERSION",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_AI_URL",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_AUTO_BACKGROUND_TASKS",
+      "expected_id": 109,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_BG_AUTH_SNAPSHOT_PATH",
+      "expected_id": 99,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_BG_CLAIM_AUTH",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_BG_ISOLATION",
+      "expected_id": 89,
+      "passes_today": false,
+      "top_id": 54
+    },
+    {
+      "name": "CLAUDE_BG_MEMORY_TOGGLED_OFF",
+      "expected_id": 102,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_BG_PTY_AUTH",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_BG_RV_AUTH",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_BG_SOCKET_TOKENS_PATH",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_BG_SOURCE",
+      "expected_id": 89,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_BG_STARTUP_WEDGE_MS",
+      "expected_id": 108,
+      "passes_today": false,
+      "top_id": 1
+    },
+    {
+      "name": "CLAUDE_BG_TCC_DISCLAIMED",
+      "expected_id": 100,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_BRIDGE_REATTACH_OUTBOUND_ONLY",
+      "expected_id": 100,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_BYTE_STREAM_IDLE_TIMEOUT_MS",
+      "expected_id": 94,
+      "passes_today": false,
+      "top_id": 70
+    },
+    {
+      "name": "CLAUDE_CLIENT_PRESENCE_FILE",
+      "expected_id": 111,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ACCOUNT_TAGGED_ID",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ACCOUNT_UUID",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_AGENT",
+      "expected_id": 89,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_AGENT_LIST_IN_MESSAGES",
+      "expected_id": 111,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_AGENT_NAME",
+      "expected_id": 88,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_AGENT_PROXY_GH_SHIM",
+      "expected_id": 136,
+      "passes_today": false,
+      "top_id": 37
+    },
+    {
+      "name": "CLAUDE_CODE_AGENT_VIEW_RELAUNCH",
+      "expected_id": 100,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ARTIFACT",
+      "expected_id": 112,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ARTIFACTS_API_BASE_URL",
+      "expected_id": 112,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ARTIFACT_AUTO_OPEN",
+      "expected_id": 112,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ARTIFACT_COMMENTS",
+      "expected_id": 156,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ARTIFACT_DIRECT_UPLOAD",
+      "expected_id": 112,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ARTIFACT_PIN",
+      "expected_id": 188,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ARTIFACT_TOOLSET",
+      "expected_id": 188,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_AUTO_COMPACT_WINDOW",
+      "expected_id": 141,
+      "passes_today": false,
+      "top_id": 2
+    },
+    {
+      "name": "CLAUDE_CODE_AUTO_MODE_MODEL",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_BG_CLASSIFIER_MODEL",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_BG_TASKS_REPORT_RUNNING",
+      "expected_id": 109,
+      "passes_today": false,
+      "top_id": 85
+    },
+    {
+      "name": "CLAUDE_CODE_BRIEF_UPLOAD",
+      "expected_id": 141,
+      "passes_today": false,
+      "top_id": 103
+    },
+    {
+      "name": "CLAUDE_CODE_BYOC_ENABLE_DATADOG",
+      "expected_id": 108,
+      "passes_today": false,
+      "top_id": 29
+    },
+    {
+      "name": "CLAUDE_CODE_CCR_EARLY_HYDRATE_PREFETCH",
+      "expected_id": 188,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_CHROME_MCP_ORG_DENIED",
+      "expected_id": 188,
+      "passes_today": false,
+      "top_id": 129
+    },
+    {
+      "name": "CLAUDE_CODE_CLASSIFIER_SUMMARY",
+      "expected_id": 89,
+      "passes_today": false,
+      "top_id": 72
+    },
+    {
+      "name": "CLAUDE_CODE_COLD_COMPACT",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_CONTAINER_ID",
+      "expected_id": 174,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_COORDINATOR_FORCE_WORKER_INHERIT_MODEL",
+      "expected_id": 186,
+      "passes_today": false,
+      "top_id": 13
+    },
+    {
+      "name": "CLAUDE_CODE_COORDINATOR_MODE",
+      "expected_id": 92,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_COZY_TEAPOT",
+      "expected_id": 183,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_DAEMON_COLD_START",
+      "expected_id": 90,
+      "passes_today": false,
+      "top_id": 42
+    },
+    {
+      "name": "CLAUDE_CODE_DESIGN_OAUTH_CLIENT_ID",
+      "expected_id": 112,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_1M_CONTEXT",
+      "expected_id": 108,
+      "passes_today": false,
+      "top_id": 28
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING",
+      "expected_id": 108,
+      "passes_today": false,
+      "top_id": 51
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_AGENT_VIEW",
+      "expected_id": 100,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_ARTIFACT",
+      "expected_id": 112,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_AUTO_MEMORY",
+      "expected_id": 114,
+      "passes_today": false,
+      "top_id": 15
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_BUILTIN_ANTMCP",
+      "expected_id": 174,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_BUNDLED_SKILLS",
+      "expected_id": 111,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_CLAUDE_CODE_SKILL",
+      "expected_id": 98,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_DIR_SYNC",
+      "expected_id": 157,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_FILE_CHECKPOINTING",
+      "expected_id": 109,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS",
+      "expected_id": 108,
+      "passes_today": false,
+      "top_id": 36
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_LAUNCH_COMPOSER",
+      "expected_id": 112,
+      "passes_today": false,
+      "top_id": 169
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_LEGACY_MODEL_REMAP",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_MEMORY_BULK_INFLATE",
+      "expected_id": 113,
+      "passes_today": false,
+      "top_id": 15
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_MEMORY_PERIODIC_RESYNC",
+      "expected_id": 113,
+      "passes_today": false,
+      "top_id": 15
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_MOUSE_CLICKS",
+      "expected_id": 111,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC",
+      "expected_id": 139,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_ORG_MEMORY",
+      "expected_id": 136,
+      "passes_today": false,
+      "top_id": 15
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_TERMINAL_TITLE",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_DISABLE_WORKFLOWS",
+      "expected_id": 91,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_DONT_INHERIT_ENV",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_EFFORT_LEVEL",
+      "expected_id": 93,
+      "passes_today": false,
+      "top_id": 120
+    },
+    {
+      "name": "CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ENABLE_ASK_USER_QUESTION_TOOL",
+      "expected_id": 114,
+      "passes_today": false,
+      "top_id": 59
+    },
+    {
+      "name": "CLAUDE_CODE_ENABLE_AUTO_MODE",
+      "expected_id": 96,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ENABLE_DESIGN_SYNC",
+      "expected_id": 112,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS",
+      "expected_id": 183,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ENABLE_LAUNCH_COMPOSER",
+      "expected_id": 112,
+      "passes_today": false,
+      "top_id": 169
+    },
+    {
+      "name": "CLAUDE_CODE_ENABLE_NARRATION",
+      "expected_id": 178,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ENABLE_REMOTE_RECAP",
+      "expected_id": 109,
+      "passes_today": false,
+      "top_id": 72
+    },
+    {
+      "name": "CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING",
+      "expected_id": 109,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ENABLE_XAA",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION",
+      "expected_id": 174,
+      "passes_today": false,
+      "top_id": 153
+    },
+    {
+      "name": "CLAUDE_CODE_EXPERIMENTAL_OBSERVER_AGENTS",
+      "expected_id": 134,
+      "passes_today": false,
+      "top_id": 12
+    },
+    {
+      "name": "CLAUDE_CODE_FORCE_EVALUATE_MEMORY",
+      "expected_id": 113,
+      "passes_today": false,
+      "top_id": 15
+    },
+    {
+      "name": "CLAUDE_CODE_FORCE_MEMORY_SURVEY",
+      "expected_id": 113,
+      "passes_today": false,
+      "top_id": 15
+    },
+    {
+      "name": "CLAUDE_CODE_FORK_SUBAGENT",
+      "expected_id": 87,
+      "passes_today": false,
+      "top_id": 54
+    },
+    {
+      "name": "CLAUDE_CODE_FORWARD_USER_INTENT",
+      "expected_id": 188,
+      "passes_today": false,
+      "top_id": 59
+    },
+    {
+      "name": "CLAUDE_CODE_HARBOR_KITE",
+      "expected_id": 157,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_HIDE_CWD",
+      "expected_id": 89,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_HOST_AUTH_ENV_VAR",
+      "expected_id": 99,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_HOST_AUTH_REFRESH_TIMEOUT_MS",
+      "expected_id": 99,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_HOST_PLATFORM",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_HTTPS_PROXY",
+      "expected_id": 86,
+      "passes_today": false,
+      "top_id": 37
+    },
+    {
+      "name": "CLAUDE_CODE_HTTP_PROXY",
+      "expected_id": 86,
+      "passes_today": false,
+      "top_id": 37
+    },
+    {
+      "name": "CLAUDE_CODE_JUNIPER_SUNDIAL",
+      "expected_id": 158,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_KB_COHESION_FIXES",
+      "expected_id": 113,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_LOOP_KEEPALIVE",
+      "expected_id": 101,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY",
+      "expected_id": 121,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION",
+      "expected_id": 134,
+      "passes_today": false,
+      "top_id": 198
+    },
+    {
+      "name": "CLAUDE_CODE_MODEL_CATALOG",
+      "expected_id": 183,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_MODEL_CATALOG_URL",
+      "expected_id": 183,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_NO_MODEL_FALLBACK",
+      "expected_id": 133,
+      "passes_today": false,
+      "top_id": 110
+    },
+    {
+      "name": "CLAUDE_CODE_OAUTH_SCOPES",
+      "expected_id": 108,
+      "passes_today": false,
+      "top_id": 35
+    },
+    {
+      "name": "CLAUDE_CODE_ORGANIZATION_UUID",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_PEWTER_OWL_TOOL",
+      "expected_id": 177,
+      "passes_today": false,
+      "top_id": 103
+    },
+    {
+      "name": "CLAUDE_CODE_PLAN_MODE_INTERVIEW_PHASE",
+      "expected_id": 102,
+      "passes_today": false,
+      "top_id": 41
+    },
+    {
+      "name": "CLAUDE_CODE_PLAN_V2_AGENT_COUNT",
+      "expected_id": 108,
+      "passes_today": false,
+      "top_id": 41
+    },
+    {
+      "name": "CLAUDE_CODE_PLUGIN_ATTRIBUTION",
+      "expected_id": 181,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_PLUGIN_DIR_WATCH",
+      "expected_id": 188,
+      "passes_today": false,
+      "top_id": 200
+    },
+    {
+      "name": "CLAUDE_CODE_POST_FOR_SESSION_INGRESS_V2",
+      "expected_id": 174,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST",
+      "expected_id": 99,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_QUESTION_EXTENDED",
+      "expected_id": 182,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_QUESTION_PREVIEW_FORMAT",
+      "expected_id": 114,
+      "passes_today": false,
+      "top_id": 59
+    },
+    {
+      "name": "CLAUDE_CODE_RATE_LIMIT_TIER",
+      "expected_id": 87,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE",
+      "expected_id": 174,
+      "passes_today": false,
+      "top_id": 119
+    },
+    {
+      "name": "CLAUDE_CODE_REMOTE_HERMETIC_MODE",
+      "expected_id": 107,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_RETRY_WATCHDOG",
+      "expected_id": 86,
+      "passes_today": false,
+      "top_id": 74
+    },
+    {
+      "name": "CLAUDE_CODE_SABLE_THRUSH",
+      "expected_id": 178,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SDK_HAS_HOST_AUTH_REFRESH",
+      "expected_id": 99,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH",
+      "expected_id": 99,
+      "passes_today": false,
+      "top_id": 68
+    },
+    {
+      "name": "CLAUDE_CODE_SESSION_ID",
+      "expected_id": 89,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SESSION_KIND",
+      "expected_id": 89,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SESSION_LOG",
+      "expected_id": 89,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SESSION_NAME",
+      "expected_id": 89,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SESSION_ORIGIN",
+      "expected_id": 188,
+      "passes_today": false,
+      "top_id": 138
+    },
+    {
+      "name": "CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT",
+      "expected_id": 86,
+      "passes_today": false,
+      "top_id": 83
+    },
+    {
+      "name": "CLAUDE_CODE_SKILL_ATTRIBUTION",
+      "expected_id": 181,
+      "passes_today": false,
+      "top_id": 118
+    },
+    {
+      "name": "CLAUDE_CODE_SKIP_PRECOMPACT_LOAD",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SPAWN_TIMESTAMP_MS",
+      "expected_id": 100,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_STOP_HOOK_BLOCK_CAP",
+      "expected_id": 95,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SUBAGENT_MODEL_FORCE",
+      "expected_id": 186,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SUBSCRIPTION_TYPE",
+      "expected_id": 87,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SUPERVISED",
+      "expected_id": 100,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SYNC_PLUGINS",
+      "expected_id": 98,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SYNC_PLUGINS_INSTALL_TIMEOUT_MS",
+      "expected_id": 98,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SYNC_PLUGINS_MCP_TIMEOUT_MS",
+      "expected_id": 98,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SYNC_SKILLS",
+      "expected_id": 98,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SYNC_SKILLS_WAIT_TIMEOUT_MS",
+      "expected_id": 98,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_TAGS",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_TASK_LIST_ID",
+      "expected_id": 109,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_TEAM_NAME",
+      "expected_id": 88,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_TEAM_ONBOARDING",
+      "expected_id": 111,
+      "passes_today": false,
+      "top_id": 61
+    },
+    {
+      "name": "CLAUDE_CODE_THINKING_DISPLAY_UPDATES",
+      "expected_id": 178,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_TURN_UPDATES",
+      "expected_id": 175,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_USER_EMAIL",
+      "expected_id": 141,
+      "passes_today": false,
+      "top_id": 59
+    },
+    {
+      "name": "CLAUDE_CODE_USE_ANTHROPIC_AWS",
+      "expected_id": 133,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_USE_ANTHROPIC_GOOGLE_CLOUD",
+      "expected_id": 133,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_USE_COWORK_PLUGINS",
+      "expected_id": 107,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_USE_GATEWAY",
+      "expected_id": 97,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_VERSION",
+      "expected_id": 174,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_WISE_COMET",
+      "expected_id": 183,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_WORKFLOWS",
+      "expected_id": 91,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_COWORK_MEMORY_GUIDELINES",
+      "expected_id": 90,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_DESKTOP_LOCAL_FRAME_SHELL",
+      "expected_id": 108,
+      "passes_today": false,
+      "top_id": 211
+    },
+    {
+      "name": "CLAUDE_DESKTOP_TERMINAL_HEADLESS",
+      "expected_id": 181,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_DESKTOP_TERMINAL_NONCE_FILE",
+      "expected_id": 181,
+      "passes_today": false,
+      "top_id": 45
+    },
+    {
+      "name": "CLAUDE_DESKTOP_USER_ZDOTDIR",
+      "expected_id": 181,
+      "passes_today": false,
+      "top_id": 45
+    },
+    {
+      "name": "CLAUDE_ENABLE_BYTE_WATCHDOG",
+      "expected_id": 94,
+      "passes_today": false,
+      "top_id": 74
+    },
+    {
+      "name": "CLAUDE_ENABLE_BYTE_WATCHDOG_BEDROCK",
+      "expected_id": 94,
+      "passes_today": false,
+      "top_id": 46
+    },
+    {
+      "name": "CLAUDE_EXTRA_HEADERS_TOKEN",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_INTERNAL_FC_OVERRIDES",
+      "expected_id": 89,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_JOB_DIR",
+      "expected_id": 89,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_MEMORY_STORES",
+      "expected_id": 102,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_PLUGIN_ROOT",
+      "expected_id": 89,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_PROJECT_TOOL",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_PROJECT_UUID",
+      "expected_id": 141,
+      "passes_today": false,
+      "top_id": 140
+    },
+    {
+      "name": "CLAUDE_PTY_HOST_EXEC",
+      "expected_id": 100,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_PTY_ORPHAN_CHECK_MS",
+      "expected_id": 100,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_PTY_RECORD",
+      "expected_id": 89,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_REMOTE_TOOLS_BRIDGE_URL",
+      "expected_id": 154,
+      "passes_today": false,
+      "top_id": 199
+    },
+    {
+      "name": "CLAUDE_RUNNER_CLIENT_PLATFORM",
+      "expected_id": 153,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_RUNNER_ORDER_ID",
+      "expected_id": 153,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_RUNNER_POOL_ID",
+      "expected_id": 153,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_RUNNER_WORK_ORDER_FILE",
+      "expected_id": 153,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_SECURESTORAGE_CONFIG_DIR",
+      "expected_id": 99,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_SKILL_DIR",
+      "expected_id": 89,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_STREAM_IDLE_TIMEOUT_MS",
+      "expected_id": 182,
+      "passes_today": false,
+      "top_id": 70
+    },
+    {
+      "name": "CLAUDE_TRUSTED_DEVICE_TOKEN",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_UPDATER_TOKEN",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "DISABLE_MICROCOMPACT",
+      "expected_id": 141,
+      "passes_today": false,
+      "top_id": 2
+    },
+    {
+      "name": "ENABLE_PROMPT_CACHING_1H",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "MCP_CONNECTION_NONBLOCKING",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "MCP_CONNECT_TIMEOUT_MS",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "MCP_TOOL_TIMEOUT",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "1131777852 (updaterAppOwnership)",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "124685897 (starling section-prompt override)",
+      "expected_id": 123,
+      "passes_today": true
+    },
+    {
+      "name": "1549258603 (sdkOauthRefreshRework)",
+      "expected_id": 131,
+      "passes_today": true
+    },
+    {
+      "name": "1595132361 (CLAUDE_CODE_QUESTION_EXTENDED)",
+      "expected_id": 182,
+      "passes_today": true
+    },
+    {
+      "name": "1598976391 (proactiveSkillSuggestEnabled)",
+      "expected_id": 129,
+      "passes_today": true
+    },
+    {
+      "name": "1696890383",
+      "expected_id": 114,
+      "passes_today": true
+    },
+    {
+      "name": "1893165035 (auto-retry error categories)",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "1936081873 (oauthScopesEnv)",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "1942337209 (MCP version negotiation)",
+      "expected_id": 160,
+      "passes_today": true
+    },
+    {
+      "name": "1942781881 (promptSuggestions)",
+      "expected_id": 149,
+      "passes_today": true
+    },
+    {
+      "name": "2039376689 (pressureEvictionEnabled)",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "2051942385 (cicCanUseToolEnabled)",
+      "expected_id": 150,
+      "passes_today": true
+    },
+    {
+      "name": "2114777685",
+      "expected_id": 129,
+      "passes_today": true
+    },
+    {
+      "name": "2140326016 (pluginBinStubHardening)",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "2216414644 (mobileRemoteSessionControl)",
+      "expected_id": 138,
+      "passes_today": true
+    },
+    {
+      "name": "2340532315 (sparkplug / plugin sync)",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "2392971184 (/rc alias + replay-user-messages)",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "245679952 (suggestSkillsEnabled)",
+      "expected_id": 129,
+      "passes_today": true
+    },
+    {
+      "name": "2486083521 (cuCanUseToolEnabled)",
+      "expected_id": 148,
+      "passes_today": true
+    },
+    {
+      "name": "278625510 (mcpSkillsExtension)",
+      "expected_id": 131,
+      "passes_today": true
+    },
+    {
+      "name": "2860753854 (memoryExtraGuidelines value gate)",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "2976814254",
+      "expected_id": 114,
+      "passes_today": true
+    },
+    {
+      "name": "3424551112 (Cowork auto-mode rule additions)",
+      "expected_id": 150,
+      "passes_today": true
+    },
+    {
+      "name": "3436441689 (launchPreviewFileAccess)",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "364911507 (tasks_tab experiment)",
+      "expected_id": 109,
+      "passes_today": true
+    },
+    {
+      "name": "3671534883 (declared-but-unconsumed)",
+      "expected_id": 160,
+      "passes_today": true
+    },
+    {
+      "name": "3705360580 (ccdOauthRefreshRework)",
+      "expected_id": 131,
+      "passes_today": true
+    },
+    {
+      "name": "3758515526 (official plugin marketplace repo)",
+      "expected_id": 139,
+      "passes_today": true
+    },
+    {
+      "name": "3796647113 (stallSampler)",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "3976799455 (awayRecap)",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "4074604942 (1pDirectMcpPool)",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "4116586025 (yukonSilverCapabilityProbe)",
+      "expected_id": 138,
+      "passes_today": true
+    },
+    {
+      "name": "4153934152 (skipPrecompactLoad)",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "4185841952 (sessionClassifyConfig)",
+      "expected_id": 141,
+      "passes_today": true
+    },
+    {
+      "name": "66187241 (emitToolUseSummaries)",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "714014285 (fineGrainedToolStreaming)",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "942840715 (declared-but-unconsumed)",
+      "expected_id": 160,
+      "passes_today": true
+    },
+    {
+      "name": "pNe (Claude Design)",
+      "expected_id": 112,
+      "passes_today": true
+    },
+    {
+      "name": "tengu_cobalt_plinth (Artifacts)",
+      "expected_id": 112,
+      "passes_today": true
+    },
+    {
+      "name": "tengu_harbor_kite",
+      "expected_id": 157,
+      "passes_today": true
+    },
+    {
+      "name": "tengu_harbor_kite_win",
+      "expected_id": 157,
+      "passes_today": true
+    },
+    {
+      "name": "tengu_hushed_lark",
+      "expected_id": 176,
+      "passes_today": true
+    },
+    {
+      "name": "tengu_hushed_lark_text",
+      "expected_id": 176,
+      "passes_today": true
+    },
+    {
+      "name": "tengu_kairos_brief",
+      "expected_id": 177,
+      "passes_today": true
+    },
+    {
+      "name": "tengu_pewter_kite_ms",
+      "expected_id": 178,
+      "passes_today": true
+    },
+    {
+      "name": "tengu_plugin_hooks_modules",
+      "expected_id": 187,
+      "passes_today": true
+    },
+    {
+      "name": "tengu_sable_thrush",
+      "expected_id": 178,
+      "passes_today": true
+    },
+    {
+      "name": "tengu_teal_corbel",
+      "expected_id": 156,
+      "passes_today": true
+    },
+    {
+      "name": "tengu_thinking_display_updates",
+      "expected_id": 178,
+      "passes_today": true
+    },
+    {
+      "name": "DirectoryAdded",
+      "expected_id": 155,
+      "passes_today": true
+    },
+    {
+      "name": "MessageDisplay",
+      "expected_id": 95,
+      "passes_today": true
+    },
+    {
+      "name": "PostModelSwitch",
+      "expected_id": 188,
+      "passes_today": true
+    },
+    {
+      "name": "PreModelSwitch",
+      "expected_id": 188,
+      "passes_today": true
+    },
+    {
+      "name": "CoworkScheduledTasks (aka CCDScheduledTasks)",
+      "expected_id": 109,
+      "passes_today": true
+    },
+    {
+      "name": "CoworkSpaces",
+      "expected_id": 109,
+      "passes_today": true
+    },
+    {
+      "name": "LocalAgentModeSessions",
+      "expected_id": 119,
+      "passes_today": false,
+      "top_id": 114
+    },
+    {
+      "name": "LocalPlugins",
+      "expected_id": 106,
+      "passes_today": true
+    },
+    {
+      "name": "LocalSessions (cloud-teleport methods)",
+      "expected_id": 119,
+      "passes_today": true
+    },
+    {
+      "name": "api_metrics",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "away_summary",
+      "expected_id": 109,
+      "passes_today": false,
+      "top_id": 72
+    },
+    {
+      "name": "code_change_published",
+      "expected_id": 130,
+      "passes_today": true
+    },
+    {
+      "name": "elicitation",
+      "expected_id": 105,
+      "passes_today": false,
+      "top_id": 10
+    },
+    {
+      "name": "elicitation_complete",
+      "expected_id": 108,
+      "passes_today": false,
+      "top_id": 105
+    },
+    {
+      "name": "end_session",
+      "expected_id": 107,
+      "passes_today": true
+    },
+    {
+      "name": "file_snapshot",
+      "expected_id": 109,
+      "passes_today": false,
+      "top_id": 52
+    },
+    {
+      "name": "files_persisted",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "generate_session_title",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "get_binary_version",
+      "expected_id": 108,
+      "passes_today": false,
+      "top_id": 189
+    },
+    {
+      "name": "get_session_cost",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "local_command_output",
+      "expected_id": 108,
+      "passes_today": false,
+      "top_id": 18
+    },
+    {
+      "name": "mcp_call",
+      "expected_id": 107,
+      "passes_today": false,
+      "top_id": 195
+    },
+    {
+      "name": "memory_recall / memory_saved",
+      "expected_id": 109,
+      "passes_today": false,
+      "top_id": 16
+    },
+    {
+      "name": "permission_denied",
+      "expected_id": 124,
+      "passes_today": false,
+      "top_id": 190
+    },
+    {
+      "name": "rewind_files",
+      "expected_id": 109,
+      "passes_today": false,
+      "top_id": 52
+    },
+    {
+      "name": "scheduled_task_fire",
+      "expected_id": 109,
+      "passes_today": true
+    },
+    {
+      "name": "side_question",
+      "expected_id": 108,
+      "passes_today": false,
+      "top_id": 59
+    },
+    {
+      "name": "thinking",
+      "expected_id": 108,
+      "passes_today": false,
+      "top_id": 51
+    },
+    {
+      "name": "ultrareview_launch",
+      "expected_id": 108,
+      "passes_today": true
+    },
+    {
+      "name": "vcs_state_changed",
+      "expected_id": 130,
+      "passes_today": true
+    },
+    {
+      "name": "Artifact",
+      "expected_id": 112,
+      "passes_today": false,
+      "top_id": 195
+    },
+    {
+      "name": "Brief",
+      "expected_id": 103,
+      "passes_today": true
+    },
+    {
+      "name": "DesignSync",
+      "expected_id": 112,
+      "passes_today": true
+    },
+    {
+      "name": "ListSkills",
+      "expected_id": 129,
+      "passes_today": true
+    },
+    {
+      "name": "MCP_LIST_SCHEDULED_TASKS",
+      "expected_id": 114,
+      "passes_today": false,
+      "top_id": 109
+    },
+    {
+      "name": "SendMessage",
+      "expected_id": 115,
+      "passes_today": false,
+      "top_id": 12
+    },
+    {
+      "name": "SuggestSkills",
+      "expected_id": 129,
+      "passes_today": true
+    },
+    {
+      "name": "TaskGet",
+      "expected_id": 109,
+      "passes_today": true
+    },
+    {
+      "name": "TaskList",
+      "expected_id": 109,
+      "passes_today": true
+    },
+    {
+      "name": "TaskStop",
+      "expected_id": 109,
+      "passes_today": false,
+      "top_id": 89
+    },
+    {
+      "name": "TaskUpdate",
+      "expected_id": 109,
+      "passes_today": true
+    },
+    {
+      "name": "Workflow",
+      "expected_id": 91,
+      "passes_today": true
+    },
+    {
+      "name": "claude_code_android_emulator (MCP server \"Claude Code Android Emulator\", tool `control`)",
+      "expected_id": 125,
+      "passes_today": true
+    },
+    {
+      "name": "claude_code_ios_simulator (MCP server \"Claude Code iOS Simulator\", tool `control`)",
+      "expected_id": 125,
+      "passes_today": true
+    },
+    {
+      "name": "mcp__cowork-onboarding__show_onboarding_role_picker",
+      "expected_id": 129,
+      "passes_today": false,
+      "top_id": 60
+    },
+    {
+      "name": "mcp__cowork__present_files",
+      "expected_id": 114,
+      "passes_today": true
+    },
+    {
+      "name": "mcp__cowork__propose_skills",
+      "expected_id": 114,
+      "passes_today": false,
+      "top_id": 131
+    },
+    {
+      "name": "mcp__cowork__send_user_message",
+      "expected_id": 114,
+      "passes_today": false,
+      "top_id": 177
+    },
+    {
+      "name": "mcp__mcp-registry__list_connectors",
+      "expected_id": 129,
+      "passes_today": true
+    },
+    {
+      "name": "mcp__mcp-registry__search_mcp_registry",
+      "expected_id": 129,
+      "passes_today": true
+    },
+    {
+      "name": "mcp__mcp-registry__suggest_connectors",
+      "expected_id": 129,
+      "passes_today": true
+    },
+    {
+      "name": "mcp__plugins__list_plugins",
+      "expected_id": 129,
+      "passes_today": true
+    },
+    {
+      "name": "mcp__plugins__search_plugins",
+      "expected_id": 129,
+      "passes_today": false,
+      "top_id": 31
+    },
+    {
+      "name": "mcp__plugins__suggest_plugin_install",
+      "expected_id": 129,
+      "passes_today": true
+    },
+    {
+      "name": "mcp__skills__list_skills",
+      "expected_id": 129,
+      "passes_today": true
+    },
+    {
+      "name": "mcp__skills__suggest_skills",
+      "expected_id": 129,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS",
+      "expected_id": 174,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS_EXCEPT",
+      "expected_id": 174,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_DESKTOP_APP_VERSION",
+      "expected_id": 174,
+      "passes_today": false,
+      "top_id": 194
+    },
+    {
+      "name": "CLAUDE_CODE_POST_TURN_MEMORY",
+      "expected_id": 174,
+      "passes_today": false,
+      "top_id": 15
+    },
+    {
+      "name": "REPL",
+      "expected_id": 191,
+      "passes_today": false,
+      "top_id": 50
+    },
+    {
+      "name": "SubagentHandback",
+      "expected_id": 191,
+      "passes_today": true
+    },
+    {
+      "name": "946844604 (Cowork cloud memory relay)",
+      "expected_id": 194,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_PROJECT_DIR_NAME",
+      "expected_id": 194,
+      "passes_today": true
+    },
+    {
+      "name": "2877254163 (folder-skill staging mode)",
+      "expected_id": 197,
+      "passes_today": true
+    },
+    {
+      "name": "1603637451 (folder-skill staging limits override)",
+      "expected_id": 197,
+      "passes_today": true
+    },
+    {
+      "name": "4018447017 (remote-folder .claude context staging)",
+      "expected_id": 197,
+      "passes_today": true
+    },
+    {
+      "name": "144158705 (remote-folder root CLAUDE.md staging)",
+      "expected_id": 197,
+      "passes_today": true
+    },
+    {
+      "name": "peer_message_hold",
+      "expected_id": 196,
+      "passes_today": true
+    },
+    {
+      "name": "turn_preempted",
+      "expected_id": 196,
+      "passes_today": false,
+      "top_id": 148
+    },
+    {
+      "name": "turn_handoff_available",
+      "expected_id": 196,
+      "passes_today": false,
+      "top_id": 148
+    },
+    {
+      "name": "dev_intent",
+      "expected_id": 196,
+      "passes_today": true
+    },
+    {
+      "name": "SLASH_COMMAND_TOOL_CHAR_BUDGET",
+      "expected_id": 201,
+      "passes_today": true
+    },
+    {
+      "name": "3444158716 (visualize server)",
+      "expected_id": 205,
+      "passes_today": true
+    },
+    {
+      "name": "3656976882 (org skills off check)",
+      "expected_id": 206,
+      "passes_today": false,
+      "top_id": 11
+    },
+    {
+      "name": "3469616823 (skill-creation access bypass)",
+      "expected_id": 206,
+      "passes_today": true
+    },
+    {
+      "name": "CLAUDE_CODE_OAUTH_TOKEN_FILE_DESCRIPTOR",
+      "expected_id": 207,
+      "passes_today": false,
+      "top_id": 198
+    },
+    {
+      "name": "2974609625 (remote migration sweep config)",
+      "expected_id": 208,
+      "passes_today": true
+    },
+    {
+      "name": "3634338308 (cowork local tasks off latch)",
+      "expected_id": 208,
+      "passes_today": true
+    },
+    {
+      "name": "822840158 (host-loop spawn settings file)",
+      "expected_id": 213,
+      "passes_today": true
+    },
+    {
+      "name": "3067718716 (approvalSurface host_dialog)",
+      "expected_id": 213,
+      "passes_today": true
+    },
+    {
+      "name": "1169442571 (auto-mode stand-down: adopted sessions)",
+      "expected_id": 213,
+      "passes_today": false,
+      "top_id": 96
+    },
+    {
+      "name": "1453979703 (auto-mode stand-down: move_to_cloud)",
+      "expected_id": 213,
+      "passes_today": true
+    },
+    {
+      "name": "4288313598 (per-model minimum CLI version)",
+      "expected_id": 213,
+      "passes_today": true
+    },
+    {
+      "name": "1835121223 (respawn waits for CLI install)",
+      "expected_id": 213,
+      "passes_today": true
+    },
+    {
+      "name": "1753075645 (artifact roster seed)",
+      "expected_id": 213,
+      "passes_today": true
+    },
+    {
+      "name": "4217215889 (macOS entry points)",
+      "expected_id": 213,
+      "passes_today": true
+    },
+    {
+      "name": "1947305033 (remote-devices artifact tools)",
+      "expected_id": 212,
+      "passes_today": true
+    },
+    {
+      "name": "1847129881 (list_legacy_live_artifacts)",
+      "expected_id": 212,
+      "passes_today": true
+    }
+  ]
+}
