@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.58.7 — 2026-09-29 (this fork) — agent 2.1.284 checks plugin `bin/` before adding it to PATH
+
+No new lessons; counts stay 218/59. Prompted by a sibling session reading the 2.1.284 changelog, then diffed 2.1.283 →
+2.1.284.
+
+- **L173.** From agent 2.1.284 each plugin `bin/` is `stat`ed before it joins PATH, with a 2-second timeout. A
+  directory that does not exist is left out, and any other failure keeps it with a log line.
+  - There is no platform branch, although the changelog frames the fix as a Windows one.
+  - Cowork's Desktop-managed agent is 2.1.284 too, from Desktop 2.9939.4.
+  - The `plugins.ship-a-launcher` caveat, "the entry is added whether or not the directory is there", now applies
+    before 2.1.284 only.
+  - How the check treats local Cowork's VM-side paths was not measured.
+- **Model state.** From 2.1.284 the `sonnet` alias resolves to `claude-sonnet-5-5` on first-party. Bedrock, Vertex,
+  Foundry and Mantle keep `claude-sonnet-4-5`.
+
 ## v2.58.6 — 2026-09-29 (this fork) — the shell-commands page summary matches its rule
 
 No new lessons; counts stay 218/59.

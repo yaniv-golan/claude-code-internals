@@ -30,6 +30,8 @@ async function Z$n(e){
 
 Enabled, non-builtin, has a path → `<path>/bin` joins PATH. A path containing shell metacharacters is **silently dropped** with only a log line.
 
+**From agent 2.1.284 a missing `bin/` is no longer added.** Each candidate is now checked with a `stat` (2-second timeout) and kept only if it is a directory; `ENOENT` and `ENOTDIR` drop it, and any other failure keeps it with a log line ("Keeping plugin bin path on PATH despite a failed stat"). The check has no platform branch, although the changelog describes the fix as a Windows one. Before 2.1.284 every enabled plugin's entry was added whether or not the directory existed, which is what the standalone-CLI row below measured (0 of 35 existed). Cowork's Desktop-managed agent is also 2.1.284 from Desktop 2.9939.4. How the check behaves in local Cowork, where the entries name VM-side paths, was not measured.
+
 ## Measured in three lanes — three path shapes, each correct locally
 
 | lane | PATH entry shape | entries | directory exists? |

@@ -5088,7 +5088,7 @@
       "lesson_number": "173",
       "file": "45-plugin-bin-path-and-cloud-lane.md",
       "startLine": 14,
-      "endLine": 126,
+      "endLine": 128,
       "keywords": [
         "plugin-bin-on-path",
         "bin-launcher",
@@ -5120,8 +5120,8 @@
       "title": "The Cloud Lane's Environment Is Not a Subset of the CLI's",
       "lesson_number": "174",
       "file": "45-plugin-bin-path-and-cloud-lane.md",
-      "startLine": 127,
-      "endLine": 203,
+      "startLine": 129,
+      "endLine": 205,
       "keywords": [
         "cloud-lane-env-census",
         "remote-cowork-entrypoint",

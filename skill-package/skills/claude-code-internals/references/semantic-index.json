@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "created": "2026-09-28T10:01:14.692Z",
+  "created": "2026-09-28T22:43:49.208Z",
   "description": "TF-IDF semantic index for Claude Code internals lessons. Use semantic-search.js to query.",
   "total_entries": 218,
   "entries": [
@@ -21330,7 +21330,7 @@
       "title": "Plugin bin/ Is on the Shell's PATH, Namespace-Correct, in Every Lane",
       "file": "45-plugin-bin-path-and-cloud-lane.md",
       "startLine": 14,
-      "endLine": 126,
+      "endLine": 128,
       "text": "Plugin bin/ Is on the Shell's PATH, Namespace-Correct, in Every Lane plugin-bin-on-path bin-launcher path-lookup-in-shell-namespace namespace-correct-by-construction plugin-root-asymmetry provisioned-not-shipped path-entry-is-not-existence read-only-plugin-mount metacharacter-path-dropped undocumented-affordance three-lane-measurement find-my-scripts how-a-skill-finds-its-scripts bundled-scripts run-a-script-from-a-skill call-a-plugin-script-from-bash launcher-script self-locating-launcher plugin-root-in-a-shell scripts-directory invoke-bundled-executable skill trigger bundled scripts  plugin-bin-on-path bin-launcher path-lookup-in-shell-namespace namespace-correct-by-construction plugin-root-asymmetry provisioned-not-shipped path-entry-is-not-existence read-only-plugin-mount metacharacter-path-dropped undocumented-affordance three-lane-measurement find-my-scripts how-a-skill-finds-its-scripts bundled-scripts run-a-script-from-a-skill call-a-plugin-script-from-bash launcher-script self-locating-launcher plugin-root-in-a-shell scripts-directory invoke-bundled-executable skill trigger claude_env_file plugin bin/ on the bash tool's path bundled scripts",
       "keywords": [
         "plugin-bin-on-path",
@@ -21457,8 +21457,8 @@
       "id": 174,
       "title": "The Cloud Lane's Environment Is Not a Subset of the CLI's",
       "file": "45-plugin-bin-path-and-cloud-lane.md",
-      "startLine": 127,
-      "endLine": 203,
+      "startLine": 129,
+      "endLine": 205,
       "text": "The Cloud Lane's Environment Is Not a Subset of the CLI's cloud-lane-env-census remote-cowork-entrypoint orphan-env-vars claude-code-sync-plugins synced-plugin-layout root-user-remote-lane depth-pinned-by-env lane-dependent-defaults enumerated-not-documented claude-code-version-is-runner-set payload-field-dating cloud-agent-floor-2.1.248 transcript-version-field skip-plugin-mcp-servers desktop-app-version-env cloud-uploads-path root-claude-uploads stop-hook-payload-fields session-start-resume-only cloud-lane-cowork-own-hooks computer-link-inert-remote environment-runner-version CLAUDE_CODE_VERSION CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS_EXCEPT CLAUDE_CODE_DESKTOP_APP_VERSION CLAUDE_CODE_POST_TURN_MEMORY CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE local-mcp-bridge buildLocalMcpBridgeTools bridge-stdio plugin-mcp-host-bridge PluginBridgeMcp desktop-bridges-plugin-mcp mcp-remote-stdio-shim stackchan-cloud-session 3555657854 227459766 documents-plugin-exclusion  227459766 3555657854 cloud-lane-env-census remote-cowork-entrypoint orphan-env-vars claude-code-sync-plugins synced-plugin-layout root-user-remote-lane depth-pinned-by-env lane-dependent-defaults enumerated-not-documented claude_additional_directories claude_code_container_id claude_code_disable_builtin_antmcp claude_code_environment_runner_version claude_code_post_for_session_ingress_v2 claude_code_remote_environment_type claude_code_version claude-code-version-is-runner-set payload-field-dating cloud-agent-floor-2.1.248 transcript-version-field skip-plugin-mcp-servers desktop-app-version-env cloud-uploads-path root-claude-uploads stop-hook-payload-fields session-start-resume-only cloud-lane-cowork-own-hooks computer-link-inert-remote environment-runner-version CLAUDE_CODE_VERSION CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS_EXCEPT CLAUDE_CODE_DESKTOP_APP_VERSION CLAUDE_CODE_POST_TURN_MEMORY CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE local-mcp-bridge buildLocalMcpBridgeTools bridge-stdio plugin-mcp-host-bridge PluginBridgeMcp desktop-bridges-plugin-mcp mcp-remote-stdio-shim stackchan-cloud-session documents-plugin-exclusion",
       "keywords": [
         "cloud-lane-env-census",
