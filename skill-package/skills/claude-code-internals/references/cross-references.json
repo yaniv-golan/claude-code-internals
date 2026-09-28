@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-27",
+ "generated": "2026-09-28",
  "description": "Cross-reference map: for each lesson, lists related lessons ranked by relevance",
  "references": {
   "1": [
@@ -3961,6 +3961,11 @@
   ],
   "209": [
    {
+    "id": 218,
+    "relevance": 0.9,
+    "reason": "blocks and denies measured on both lanes"
+   },
+   {
     "id": 89,
     "relevance": 0.9,
     "reason": "plugin hooks fire in Cowork (namespace)"
@@ -4148,6 +4153,40 @@
     "id": 198,
     "relevance": 0.5,
     "reason": "the surfaces a skill can land on"
+   }
+  ],
+  "217": [
+   {
+    "id": 197,
+    "relevance": 0.8,
+    "reason": "folder-granted skills arrive as stubs in the cloud; uploaded ones do not"
+   },
+   {
+    "id": 89,
+    "relevance": 0.6,
+    "reason": "the host-loop staging symlink"
+   },
+   {
+    "id": 216,
+    "relevance": 0.5,
+    "reason": "the conversation that changed runtime"
+   }
+  ],
+  "218": [
+   {
+    "id": 209,
+    "relevance": 0.9,
+    "reason": "plugin hooks by lane"
+   },
+   {
+    "id": 199,
+    "relevance": 0.7,
+    "reason": "plugin MCP servers with no tools"
+   },
+   {
+    "id": 215,
+    "relevance": 0.6,
+    "reason": "get_device_info reports plugin server states"
    }
   ]
  }

@@ -68,7 +68,7 @@ A probe plugin installed through Cowork → Customize → Plugins declared Sessi
 
 | event | fired | detail |
 |---|---|---|
-| UserPromptSubmit | yes, both turns | its added context reached the model |
+| UserPromptSubmit | yes, both turns | its added context reached the model; a block stops the turn silently (L218) |
 | PreToolUse | yes | `Bash` matched the shell (`tool_name` `Bash`); `*` matched Bash and Write; `mcp__workspace__bash` never matched |
 | PostToolUse | yes | Bash, Write |
 | Stop | yes | |
@@ -83,7 +83,7 @@ The same probe plugin, in a local scheduled task (Desktop 2.9939.2, agent 2.1.28
 | event | fired | detail |
 |---|---|---|
 | SessionStart | **yes** | `source` `startup` on each new run (3 runs), `resume` when the session was reopened |
-| UserPromptSubmit | yes, every turn | |
+| UserPromptSubmit | yes, every turn | a block stops the turn and shows a notice (L218) |
 | PreToolUse | yes | `*` matched Write and the shell; for the shell, `Bash`, `mcp__workspace__bash` and `*` **all** fired, each with `tool_name` `mcp__workspace__bash` |
 | PostToolUse | yes | Write, `mcp__workspace__bash` |
 | Stop | yes, every turn | |

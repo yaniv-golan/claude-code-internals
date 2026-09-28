@@ -3,8 +3,8 @@ domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207, 209, 211]
-updated: 2026-09-27
+sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207, 209, 211, 217, 218]
+updated: 2026-09-28
 ---
 
 # Plugins, skills & hooks (current)
@@ -168,6 +168,27 @@ record**; a missing hook script exits 2 (the block code) under `dash` but 127 un
 `sh`/`bash` — the agent turns that exit 2 into a visible non-blocking error only for a
 plugin UserPromptSubmit and any Stop, SubagentStop, TaskCompleted, TeammateIdle hook;
 for other events (PreToolUse included) it blocks.
+
+## Uploaded skills (L217)
+
+A skill uploaded via Customize → Skills → + Add → Upload skill (zip with one top-level
+folder containing `SKILL.md`; a `.claude-plugin/plugin.json` is refused) becomes an account
+skill: within about a minute it reached the CLI (`~/.claude/skills/synced/<org>_<account>/`,
+listed as `anthropic-skills:<name>`), cloud Cowork (`/root/.claude/skills/synced/…`) and local
+Cowork (Desktop store `local-agent-mode-sessions/skills-plugin/<org>/<account>/skills/`,
+staged via `claude-hostloop-plugins/<hash>`, read-only at `/sessions/<slug>/mnt/.claude/skills/`),
+**whole**, scripts runnable (`dash` in both Cowork lanes). Measured 2026-09-27.
+
+## Plugin prompt blocks and MCP placeholders by lane (L218)
+
+Measured 2026-09-27/28 (Desktop 2.9939.2, agent 2.1.281). UserPromptSubmit blocks (JSON
+`decision:block`, inline `printf` JSON, exit 2) stop the turn on **both** lanes and the model
+never sees the prompt; locally the user sees "Blocked by your organization's policy" + reason +
+Go back, **in the cloud nothing at all**. PreToolUse deny honoured on both (`Bash` in cloud,
+`mcp__workspace__bash` locally). Plugin MCP config: `${HOME}` and `${VAR:-default}` expand on
+both lanes; an unset `${VAR}` is passed as **literal text** and the server still starts;
+`${user_config.*}` works locally (default applied) but in the cloud the Desktop bridge leaves
+the server `not_started` / `user_config_unsupported` (visible in `get_device_info`).
 
 ## Plugin agent frontmatter restrictions
 

@@ -1,5 +1,26 @@
 # Changelog
 
+## v2.58.0 — 2026-09-28 (this fork) — uploaded skills; plugin blocks and MCP placeholders by lane
+
+Adds Chapter 59 (L217–L218); counts move to 218/59. Every result is from live probes on 2026-09-27/28 (Desktop 2.9939.2,
+agent 2.1.281), run on the local lane, in a cloud Cowork task and in this CLI.
+
+- **L217 — an uploaded skill reaches every surface whole.** A skill uploaded via Customize → Skills → + Add → Upload
+  skill became an account skill. Within about a minute it was in the CLI (`~/.claude/skills/synced/<org>_<account>/`),
+  a cloud Cowork session (`/root/.claude/skills/synced/…`) and a local one (read-only, at
+  `/sessions/<slug>/mnt/.claude/skills/`), each time with its full body, its script and its reference file. It is not
+  reduced to a stub, unlike a skill from a folder granted to a cloud session. The uploader needs one top-level folder
+  and a `SKILL.md`, and refuses a plugin manifest. New fact `plugins.upload-a-personal-skill`.
+- **L218 — plugin blocks and MCP placeholders, lane by lane.**
+  - A UserPromptSubmit block (script JSON, inline `printf` JSON, or exit 2) stops the turn on both lanes, and the model
+    never sees the prompt. Locally the app shows "Blocked by your organization's policy" with the reason; **in the
+    cloud the user sees nothing**. New fact `plugins.prompt-block-is-silent-remotely`.
+  - PreToolUse denies are honoured on both lanes, the first live deny on a current agent.
+  - In a plugin's MCP config, `${HOME}` and `${VAR:-default}` expand on both lanes. An unset `${VAR}` arrives as literal
+    text and the server still starts. `${user_config.*}` works locally, but in the cloud the Desktop leaves the server
+    `not_started` with `user_config_unsupported`. New fact `plugins.mcp-env-placeholders-need-defaults`.
+- fcache re-captured 2026-09-28 (`7bb6ad82d6905e55`, 381 features); all 79 pinned gates re-observed, none changed.
+
 ## v2.57.1 — 2026-09-27 (this fork) — install steps for the new Customize screen
 
 Docs and install page only. No lesson, fact or baseline changes.

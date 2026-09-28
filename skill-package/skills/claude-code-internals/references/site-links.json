@@ -412,6 +412,18 @@
         "plugins-and-plugin-root",
         1
       ]
+    ],
+    "217": [
+      [
+        "plugins-and-plugin-root",
+        1
+      ]
+    ],
+    "218": [
+      [
+        "plugins-and-plugin-root",
+        4
+      ]
     ]
   },
   "by_state_page": {
@@ -468,7 +480,7 @@
     "plugins-skills-hooks": [
       [
         "plugins-and-plugin-root",
-        21
+        24
       ],
       [
         "asking-the-user",
@@ -533,6 +545,7 @@
     "plugins.install-through-the-app": "plugins-and-plugin-root#fact-plugins-install-through-the-app",
     "plugins.local-server-runs-twice": "plugins-and-plugin-root#fact-plugins-local-server-runs-twice",
     "plugins.match-both-shell-names": "plugins-and-plugin-root#fact-plugins-match-both-shell-names",
+    "plugins.mcp-env-placeholders-need-defaults": "plugins-and-plugin-root#fact-plugins-mcp-env-placeholders-need-defaults",
     "plugins.mcp-server-may-be-stubbed": "plugins-and-plugin-root#fact-plugins-mcp-server-may-be-stubbed",
     "plugins.mcp-servers-run-on-the-users-machine": "plugins-and-plugin-root#fact-plugins-mcp-servers-run-on-the-users-machine",
     "plugins.missing-hook-script-can-block": "plugins-and-plugin-root#fact-plugins-missing-hook-script-can-block",
@@ -540,10 +553,12 @@
     "plugins.plugin-dir-overrides-installed": "plugins-and-plugin-root#fact-plugins-plugin-dir-overrides-installed",
     "plugins.plugin-files-are-mounted": "plugins-and-plugin-root#fact-plugins-plugin-files-are-mounted",
     "plugins.plugin-root-per-consumer": "plugins-and-plugin-root#fact-plugins-plugin-root-per-consumer",
+    "plugins.prompt-block-is-silent-remotely": "plugins-and-plugin-root#fact-plugins-prompt-block-is-silent-remotely",
     "plugins.server-named-memory": "plugins-and-plugin-root#fact-plugins-server-named-memory",
     "plugins.ship-a-launcher": "plugins-and-plugin-root#fact-plugins-ship-a-launcher",
     "plugins.skill-descriptions-can-be-dropped": "plugins-and-plugin-root#fact-plugins-skill-descriptions-can-be-dropped",
     "plugins.skill-dir-is-body-text": "plugins-and-plugin-root#fact-plugins-skill-dir-is-body-text",
+    "plugins.upload-a-personal-skill": "plugins-and-plugin-root#fact-plugins-upload-a-personal-skill",
     "shell.home-is-the-session": "shell-commands#fact-shell-home-is-the-session",
     "shell.inline-execution-disabled": "shell-commands#fact-shell-inline-execution-disabled",
     "shell.no-arbitrary-network": "shell-commands#fact-shell-no-arbitrary-network",

@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-27",
+ "generated": "2026-09-28",
  "description": "Maps common symptoms/problems to relevant lessons for debugging Claude Code internals",
  "symptoms": [
   {
@@ -2428,6 +2428,32 @@
     216
    ],
    "hint": "claude.ai's hub backend gives a conversation a work mode and can upgrade a chat into a cloud Cowork workspace mid-conversation (client folder/device pick, the hub_workspace_setup tool, or server triggers). Re-check your tools at each step rather than once."
+  },
+  {
+   "pattern": [
+    "my skill is not in Cowork",
+    "get ~/.claude/skills skill into Cowork",
+    "upload skill rejected",
+    "A skill cannot contain a plugin manifest"
+   ],
+   "lessons": [
+    217
+   ],
+   "hint": "Upload it via Customize → Skills → + Add → Upload skill (zip with one top-level folder holding SKILL.md, no .claude-plugin/plugin.json). It becomes an account skill and reached the CLI, cloud and local Cowork whole, scripts runnable (dash in Cowork; read-only locally)."
+  },
+  {
+   "pattern": [
+    "UserPromptSubmit block ignored in Cowork",
+    "prompt hook block does nothing",
+    "message got no reply in cloud Cowork",
+    "plugin MCP tools missing in Cowork",
+    "env placeholder MCP server Cowork",
+    "user_config_unsupported"
+   ],
+   "lessons": [
+    218
+   ],
+   "hint": "UserPromptSubmit blocks stop the turn on both lanes; locally the app shows 'Blocked by your organization's policy', in the cloud the message just gets no reply. PreToolUse denies work on both. Plugin MCP config: ${HOME}/${VAR:-default} expand, an unset ${VAR} arrives as literal text, ${user_config.*} is dropped in the cloud (get_device_info shows not_started/user_config_unsupported)."
   }
  ]
 }
