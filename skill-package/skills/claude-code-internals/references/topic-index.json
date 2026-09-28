@@ -1,5 +1,4 @@
 {
-  "generated": "2026-09-28",
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
   "total_lessons": 218,
   "lessons": [
@@ -9,7 +8,7 @@
       "lesson_number": "01",
       "file": "01-core-architecture-tools.md",
       "startLine": 25,
-      "endLine": 234,
+      "endLine": 232,
       "keywords": [
         "boot",
         "startup",
@@ -31,7 +30,7 @@
       "lesson_number": "04",
       "file": "01-core-architecture-tools.md",
       "startLine": 236,
-      "endLine": 503,
+      "endLine": 501,
       "keywords": [
         "query-engine",
         "api",
@@ -53,7 +52,7 @@
       "lesson_number": "12",
       "file": "01-core-architecture-tools.md",
       "startLine": 505,
-      "endLine": 895,
+      "endLine": 893,
       "keywords": [
         "state",
         "appstate",
@@ -75,7 +74,7 @@
       "lesson_number": "39",
       "file": "01-core-architecture-tools.md",
       "startLine": 897,
-      "endLine": 1032,
+      "endLine": 1030,
       "keywords": [
         "system-prompt",
         "claude-md",
@@ -97,7 +96,7 @@
       "lesson_number": "50",
       "file": "01-core-architecture-tools.md",
       "startLine": 1034,
-      "endLine": 1303,
+      "endLine": 1301,
       "keywords": [
         "architecture",
         "capstone",
@@ -119,7 +118,7 @@
       "lesson_number": "02",
       "file": "01-core-architecture-tools.md",
       "startLine": 1305,
-      "endLine": 1580,
+      "endLine": 1578,
       "keywords": [
         "tools",
         "tool-interface",
@@ -142,7 +141,7 @@
       "lesson_number": "17",
       "file": "01-core-architecture-tools.md",
       "startLine": 1582,
-      "endLine": 1746,
+      "endLine": 1744,
       "keywords": [
         "bash",
         "shell",
@@ -164,7 +163,7 @@
       "lesson_number": "18",
       "file": "01-core-architecture-tools.md",
       "startLine": 1748,
-      "endLine": 1906,
+      "endLine": 1904,
       "keywords": [
         "file-read",
         "file-write",
@@ -186,7 +185,7 @@
       "lesson_number": "19",
       "file": "01-core-architecture-tools.md",
       "startLine": 1908,
-      "endLine": 2145,
+      "endLine": 2143,
       "keywords": [
         "glob",
         "grep",
@@ -230,7 +229,7 @@
       "lesson_number": "03",
       "file": "02-agents-intelligence-interface.md",
       "startLine": 7,
-      "endLine": 337,
+      "endLine": 334,
       "keywords": [
         "skills",
         "skill-md",
@@ -247,7 +246,7 @@
       "lesson_number": "05",
       "file": "02-agents-intelligence-interface.md",
       "startLine": 338,
-      "endLine": 608,
+      "endLine": 605,
       "keywords": [
         "agents",
         "subagent",
@@ -262,7 +261,7 @@
       "lesson_number": "21",
       "file": "02-agents-intelligence-interface.md",
       "startLine": 609,
-      "endLine": 764,
+      "endLine": 761,
       "keywords": [
         "coordinator",
         "dispatcher",
@@ -277,7 +276,7 @@
       "lesson_number": "22",
       "file": "02-agents-intelligence-interface.md",
       "startLine": 765,
-      "endLine": 1031,
+      "endLine": 1028,
       "keywords": [
         "swarm",
         "teams",
@@ -292,7 +291,7 @@
       "lesson_number": "08",
       "file": "02-agents-intelligence-interface.md",
       "startLine": 1032,
-      "endLine": 1198,
+      "endLine": 1195,
       "keywords": [
         "memory",
         "auto-memory",
@@ -307,7 +306,7 @@
       "lesson_number": "40",
       "file": "02-agents-intelligence-interface.md",
       "startLine": 1199,
-      "endLine": 1356,
+      "endLine": 1353,
       "keywords": [
         "dreams",
         "consolidation",
@@ -322,7 +321,7 @@
       "lesson_number": "11",
       "file": "02-agents-intelligence-interface.md",
       "startLine": 1357,
-      "endLine": 1549,
+      "endLine": 1546,
       "keywords": [
         "ink",
         "renderer",
@@ -337,7 +336,7 @@
       "lesson_number": "13",
       "file": "02-agents-intelligence-interface.md",
       "startLine": 1550,
-      "endLine": 1709,
+      "endLine": 1706,
       "keywords": [
         "commands",
         "slash-commands",
@@ -352,7 +351,7 @@
       "lesson_number": "35",
       "file": "02-agents-intelligence-interface.md",
       "startLine": 1710,
-      "endLine": 1870,
+      "endLine": 1867,
       "keywords": [
         "dialog",
         "ui",
@@ -382,7 +381,7 @@
       "lesson_number": "31",
       "file": "03-interface-infrastructure.md",
       "startLine": 6,
-      "endLine": 389,
+      "endLine": 386,
       "keywords": [
         "vim",
         "keybindings",
@@ -397,7 +396,7 @@
       "lesson_number": "33",
       "file": "03-interface-infrastructure.md",
       "startLine": 390,
-      "endLine": 434,
+      "endLine": 431,
       "keywords": [
         "keybindings",
         "keyboard",
@@ -412,7 +411,7 @@
       "lesson_number": "42",
       "file": "03-interface-infrastructure.md",
       "startLine": 435,
-      "endLine": 519,
+      "endLine": 516,
       "keywords": [
         "fullscreen",
         "alt-screen",
@@ -427,7 +426,7 @@
       "lesson_number": "41",
       "file": "03-interface-infrastructure.md",
       "startLine": 520,
-      "endLine": 642,
+      "endLine": 639,
       "keywords": [
         "theme",
         "styling",
@@ -442,7 +441,7 @@
       "lesson_number": "06",
       "file": "03-interface-infrastructure.md",
       "startLine": 643,
-      "endLine": 741,
+      "endLine": 738,
       "keywords": [
         "permissions",
         "allow-deny-ask",
@@ -463,7 +462,7 @@
       "lesson_number": "16",
       "file": "03-interface-infrastructure.md",
       "startLine": 742,
-      "endLine": 919,
+      "endLine": 916,
       "keywords": [
         "settings",
         "configuration",
@@ -478,7 +477,7 @@
       "lesson_number": "29",
       "file": "03-interface-infrastructure.md",
       "startLine": 920,
-      "endLine": 972,
+      "endLine": 969,
       "keywords": [
         "session",
         "jsonl",
@@ -493,7 +492,7 @@
       "lesson_number": "15",
       "file": "03-interface-infrastructure.md",
       "startLine": 973,
-      "endLine": 1062,
+      "endLine": 1059,
       "keywords": [
         "compaction",
         "context-window",
@@ -508,7 +507,7 @@
       "lesson_number": "32",
       "file": "03-interface-infrastructure.md",
       "startLine": 1063,
-      "endLine": 1277,
+      "endLine": 1274,
       "keywords": [
         "analytics",
         "telemetry",
@@ -538,7 +537,7 @@
       "lesson_number": "09",
       "file": "04-connectivity-plugins.md",
       "startLine": 8,
-      "endLine": 697,
+      "endLine": 695,
       "keywords": [
         "plugins",
         "marketplace",
@@ -553,7 +552,7 @@
       "lesson_number": "10",
       "file": "04-connectivity-plugins.md",
       "startLine": 699,
-      "endLine": 843,
+      "endLine": 841,
       "keywords": [
         "hooks",
         "lifecycle",
@@ -575,7 +574,7 @@
       "lesson_number": "44",
       "file": "04-connectivity-plugins.md",
       "startLine": 845,
-      "endLine": 963,
+      "endLine": 961,
       "keywords": [
         "errors",
         "recovery",
@@ -590,7 +589,7 @@
       "lesson_number": "20",
       "file": "04-connectivity-plugins.md",
       "startLine": 965,
-      "endLine": 1070,
+      "endLine": 1068,
       "keywords": [
         "bridge",
         "remote-control",
@@ -605,7 +604,7 @@
       "lesson_number": "25",
       "file": "04-connectivity-plugins.md",
       "startLine": 1072,
-      "endLine": 1145,
+      "endLine": 1143,
       "keywords": [
         "oauth",
         "pkce",
@@ -620,7 +619,7 @@
       "lesson_number": "28",
       "file": "04-connectivity-plugins.md",
       "startLine": 1147,
-      "endLine": 1221,
+      "endLine": 1219,
       "keywords": [
         "git",
         "filesystem-first",
@@ -635,7 +634,7 @@
       "lesson_number": "36",
       "file": "04-connectivity-plugins.md",
       "startLine": 1223,
-      "endLine": 1285,
+      "endLine": 1283,
       "keywords": [
         "proxy",
         "upstream",
@@ -650,7 +649,7 @@
       "lesson_number": "43",
       "file": "04-connectivity-plugins.md",
       "startLine": 1287,
-      "endLine": 1345,
+      "endLine": 1343,
       "keywords": [
         "cron",
         "scheduling",
@@ -665,7 +664,7 @@
       "lesson_number": "27",
       "file": "04-connectivity-plugins.md",
       "startLine": 1347,
-      "endLine": 1409,
+      "endLine": 1407,
       "keywords": [
         "voice",
         "speech-to-text",
@@ -695,7 +694,7 @@
       "lesson_number": "Ultraplan",
       "file": "05-unreleased-bigpicture.md",
       "startLine": 5,
-      "endLine": 330,
+      "endLine": 327,
       "keywords": [
         "ultraplan",
         "remote-planning",
@@ -712,7 +711,7 @@
       "lesson_number": "Entrypoints",
       "file": "05-unreleased-bigpicture.md",
       "startLine": 331,
-      "endLine": 585,
+      "endLine": 582,
       "keywords": [
         "entrypoints",
         "sdk",
@@ -727,7 +726,7 @@
       "lesson_number": "KAIROS",
       "file": "05-unreleased-bigpicture.md",
       "startLine": 586,
-      "endLine": 778,
+      "endLine": 775,
       "keywords": [
         "kairos",
         "daemon",
@@ -742,7 +741,7 @@
       "lesson_number": "Cost",
       "file": "05-unreleased-bigpicture.md",
       "startLine": 779,
-      "endLine": 985,
+      "endLine": 982,
       "keywords": [
         "cost",
         "analytics",
@@ -757,7 +756,7 @@
       "lesson_number": "Desktop",
       "file": "05-unreleased-bigpicture.md",
       "startLine": 986,
-      "endLine": 1115,
+      "endLine": 1112,
       "keywords": [
         "desktop",
         "ide",
@@ -772,7 +771,7 @@
       "lesson_number": "Model",
       "file": "05-unreleased-bigpicture.md",
       "startLine": 1116,
-      "endLine": 1300,
+      "endLine": 1297,
       "keywords": [
         "model",
         "provider",
@@ -787,7 +786,7 @@
       "lesson_number": "Sandbox",
       "file": "05-unreleased-bigpicture.md",
       "startLine": 1301,
-      "endLine": 1432,
+      "endLine": 1429,
       "keywords": [
         "sandbox",
         "security",
@@ -802,7 +801,7 @@
       "lesson_number": "Messages",
       "file": "05-unreleased-bigpicture.md",
       "startLine": 1433,
-      "endLine": 1550,
+      "endLine": 1547,
       "keywords": [
         "messages",
         "pipeline",
@@ -817,7 +816,7 @@
       "lesson_number": "Tasks",
       "file": "05-unreleased-bigpicture.md",
       "startLine": 1551,
-      "endLine": 1686,
+      "endLine": 1683,
       "keywords": [
         "tasks",
         "background-tasks",
@@ -847,7 +846,7 @@
       "lesson_number": "51",
       "file": "06-verified-new-v2.1.90.md",
       "startLine": 37,
-      "endLine": 97,
+      "endLine": 95,
       "keywords": [
         "effort",
         "reasoning-budget",
@@ -862,7 +861,7 @@
       "lesson_number": "52",
       "file": "06-verified-new-v2.1.90.md",
       "startLine": 99,
-      "endLine": 159,
+      "endLine": 157,
       "keywords": [
         "rewind",
         "checkpoint",
@@ -877,7 +876,7 @@
       "lesson_number": "53",
       "file": "06-verified-new-v2.1.90.md",
       "startLine": 161,
-      "endLine": 229,
+      "endLine": 227,
       "keywords": [
         "teleport",
         "session-transfer",
@@ -892,7 +891,7 @@
       "lesson_number": "54",
       "file": "06-verified-new-v2.1.90.md",
       "startLine": 231,
-      "endLine": 287,
+      "endLine": 285,
       "keywords": [
         "branch",
         "fork",
@@ -907,7 +906,7 @@
       "lesson_number": "55",
       "file": "06-verified-new-v2.1.90.md",
       "startLine": 289,
-      "endLine": 432,
+      "endLine": 430,
       "keywords": [
         "session-resume",
         "advisor-model",
@@ -937,7 +936,7 @@
       "lesson_number": "57",
       "file": "07-verified-new-v2.1.92.md",
       "startLine": 18,
-      "endLine": 136,
+      "endLine": 133,
       "keywords": [
         "setup-bedrock",
         "stop-hook",
@@ -952,7 +951,7 @@
       "lesson_number": "58",
       "file": "07-verified-new-v2.1.92.md",
       "startLine": 137,
-      "endLine": 269,
+      "endLine": 266,
       "keywords": [
         "env-vars",
         "CLAUDE_CODE_EXECPATH",
@@ -984,7 +983,7 @@
       "lesson_number": "60",
       "file": "08-verified-new-v2.1.94.md",
       "startLine": 20,
-      "endLine": 141,
+      "endLine": 139,
       "keywords": [
         "autofix-pr",
         "team-onboarding",
@@ -1022,7 +1021,7 @@
       "lesson_number": "62",
       "file": "09-verified-new-v2.1.100.md",
       "startLine": 25,
-      "endLine": 348,
+      "endLine": 346,
       "keywords": [
         "dream",
         "learn",
@@ -1048,7 +1047,7 @@
       "lesson_number": "63",
       "file": "09-verified-new-v2.1.100.md",
       "startLine": 350,
-      "endLine": 536,
+      "endLine": 534,
       "keywords": [
         "perforce",
         "CLAUDE_CODE_PERFORCE_MODE",
@@ -1085,7 +1084,7 @@
       "lesson_number": "65",
       "file": "10-verified-new-v2.1.101.md",
       "startLine": 22,
-      "endLine": 158,
+      "endLine": 156,
       "keywords": [
         "proactive",
         "away-summary",
@@ -1103,7 +1102,7 @@
       "lesson_number": "66",
       "file": "10-verified-new-v2.1.101.md",
       "startLine": 160,
-      "endLine": 303,
+      "endLine": 301,
       "keywords": [
         "CLAUDE_CODE_CERT_STORE",
         "ca-certificates",
@@ -1122,7 +1121,7 @@
       "lesson_number": "67",
       "file": "10-verified-new-v2.1.101.md",
       "startLine": 305,
-      "endLine": 495,
+      "endLine": 493,
       "keywords": [
         "loop-dynamic",
         "ScheduleWakeup",
@@ -1143,7 +1142,7 @@
       "lesson_number": "68",
       "file": "10-verified-new-v2.1.101.md",
       "startLine": 497,
-      "endLine": 743,
+      "endLine": 741,
       "keywords": [
         "update-command",
         "CLAUDE_CODE_SDK_HAS_OAUTH_REFRESH",
@@ -1200,7 +1199,7 @@
       "lesson_number": "70",
       "file": "11-verified-new-v2.1.104.md",
       "startLine": 21,
-      "endLine": 159,
+      "endLine": 157,
       "keywords": [
         "streaming",
         "partial-yield",
@@ -1239,7 +1238,7 @@
       "lesson_number": "72",
       "file": "12-verified-new-v2.1.109.md",
       "startLine": 22,
-      "endLine": 73,
+      "endLine": 71,
       "keywords": [
         "recap",
         "on-demand-recap",
@@ -1257,7 +1256,7 @@
       "lesson_number": "73",
       "file": "12-verified-new-v2.1.109.md",
       "startLine": 75,
-      "endLine": 138,
+      "endLine": 136,
       "keywords": [
         "multi-repo",
         "repo-checkouts",
@@ -1282,7 +1281,7 @@
       "lesson_number": "74",
       "file": "12-verified-new-v2.1.109.md",
       "startLine": 140,
-      "endLine": 187,
+      "endLine": 185,
       "keywords": [
         "byte-watchdog",
         "stream-watchdog",
@@ -1299,7 +1298,7 @@
       "lesson_number": "75",
       "file": "12-verified-new-v2.1.109.md",
       "startLine": 189,
-      "endLine": 308,
+      "endLine": 306,
       "keywords": [
         "repl-mode",
         "CLAUDE_CODE_REPL",
@@ -1359,7 +1358,7 @@
       "lesson_number": "77",
       "file": "13-verified-new-v2.1.111.md",
       "startLine": 37,
-      "endLine": 110,
+      "endLine": 108,
       "keywords": [
         "remote-workflow",
         "autopilot",
@@ -1382,7 +1381,7 @@
       "lesson_number": "78",
       "file": "13-verified-new-v2.1.111.md",
       "startLine": 112,
-      "endLine": 183,
+      "endLine": 181,
       "keywords": [
         "advisor-tool",
         "advisor",
@@ -1408,7 +1407,7 @@
       "lesson_number": "79",
       "file": "13-verified-new-v2.1.111.md",
       "startLine": 185,
-      "endLine": 237,
+      "endLine": 235,
       "keywords": [
         "PushNotification",
         "push-notification-tool",
@@ -1431,7 +1430,7 @@
       "lesson_number": "80",
       "file": "13-verified-new-v2.1.111.md",
       "startLine": 239,
-      "endLine": 308,
+      "endLine": 306,
       "keywords": [
         "context-hint",
         "context-hint-api",
@@ -1459,7 +1458,7 @@
       "lesson_number": "81",
       "file": "13-verified-new-v2.1.111.md",
       "startLine": 310,
-      "endLine": 368,
+      "endLine": 366,
       "keywords": [
         "fullscreen-tui",
         "tui",
@@ -1484,7 +1483,7 @@
       "lesson_number": "82",
       "file": "13-verified-new-v2.1.111.md",
       "startLine": 370,
-      "endLine": 426,
+      "endLine": 424,
       "keywords": [
         "proxy-auth-helper",
         "proxyAuthHelper",
@@ -1505,7 +1504,7 @@
       "lesson_number": "83",
       "file": "13-verified-new-v2.1.111.md",
       "startLine": 428,
-      "endLine": 499,
+      "endLine": 497,
       "keywords": [
         "system-prompt-override",
         "system-prompt-gb-override",
@@ -1725,7 +1724,7 @@
       "lesson_number": "87",
       "file": "16-verified-new-v2.1.118.md",
       "startLine": 45,
-      "endLine": 457,
+      "endLine": 455,
       "keywords": [
         "v2.1.117",
         "fork",
@@ -1981,7 +1980,7 @@
       "lesson_number": "89",
       "file": "17-verified-new-v2.1.120.md",
       "startLine": 83,
-      "endLine": 2066,
+      "endLine": 2064,
       "keywords": [
         "v2.1.119",
         "cowork",
@@ -2343,7 +2342,7 @@
       "lesson_number": "91",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 54,
-      "endLine": 92,
+      "endLine": 90,
       "keywords": [
         "dynamic-workflows",
         "workflow-tool",
@@ -2362,7 +2361,7 @@
       "lesson_number": "92",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 94,
-      "endLine": 122,
+      "endLine": 120,
       "keywords": [
         "coordinator-mode",
         "TeamCreate",
@@ -2379,7 +2378,7 @@
       "lesson_number": "93",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 124,
-      "endLine": 159,
+      "endLine": 157,
       "keywords": [
         "opus-4-8",
         "claude-opus-4-8",
@@ -2400,7 +2399,7 @@
       "lesson_number": "94",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 161,
-      "endLine": 190,
+      "endLine": 188,
       "keywords": [
         "streaming-tool-execution",
         "streaming-ga",
@@ -2417,7 +2416,7 @@
       "lesson_number": "95",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 192,
-      "endLine": 229,
+      "endLine": 227,
       "keywords": [
         "messagedisplay",
         "messagedisplay-hook",
@@ -2437,7 +2436,7 @@
       "lesson_number": "96",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 231,
-      "endLine": 259,
+      "endLine": 257,
       "keywords": [
         "auto-mode",
         "auto-mode-default",
@@ -2455,7 +2454,7 @@
       "lesson_number": "97",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 261,
-      "endLine": 281,
+      "endLine": 279,
       "keywords": [
         "cloud-gateway",
         "gateway-provider",
@@ -2473,7 +2472,7 @@
       "lesson_number": "98",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 283,
-      "endLine": 317,
+      "endLine": 315,
       "keywords": [
         "skills-sync",
         "plugins-sync",
@@ -2493,7 +2492,7 @@
       "lesson_number": "99",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 319,
-      "endLine": 360,
+      "endLine": 358,
       "keywords": [
         "host-auth",
         "host-auth-refresh",
@@ -2516,7 +2515,7 @@
       "lesson_number": "100",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 362,
-      "endLine": 405,
+      "endLine": 403,
       "keywords": [
         "binary-takeover",
         "tengu_bg_binary_takeover",
@@ -2539,7 +2538,7 @@
       "lesson_number": "101",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 407,
-      "endLine": 435,
+      "endLine": 433,
       "keywords": [
         "loop-keepalive",
         "CLAUDE_CODE_LOOP_KEEPALIVE",
@@ -2557,7 +2556,7 @@
       "lesson_number": "102",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 437,
-      "endLine": 468,
+      "endLine": 466,
       "keywords": [
         "plan-interview-removed",
         "CLAUDE_MEMORY_STORES",
@@ -2579,7 +2578,7 @@
       "lesson_number": "103",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 470,
-      "endLine": 498,
+      "endLine": 496,
       "keywords": [
         "pewter-owl",
         "CLAUDE_CODE_PEWTER_OWL",
@@ -2674,7 +2673,7 @@
       "lesson_number": "106",
       "file": "20-desktop-cli-plugin-credential-broker.md",
       "startLine": 30,
-      "endLine": 201,
+      "endLine": 209,
       "keywords": [
         "clis",
         "clis.env",
@@ -2726,7 +2725,7 @@
       "lesson_number": "107",
       "file": "21-cowork-control-protocol.md",
       "startLine": 22,
-      "endLine": 402,
+      "endLine": 435,
       "keywords": [
         "cowork-spawn-contract",
         "stream-json",
@@ -2895,7 +2894,7 @@
       "lesson_number": "109",
       "file": "23-cowork-spaces-tasks-checkpointing.md",
       "startLine": 26,
-      "endLine": 317,
+      "endLine": 331,
       "keywords": [
         "cowork-spaces",
         "CoworkSpaces",
@@ -3007,7 +3006,7 @@
       "lesson_number": "110",
       "file": "24-verified-new-v2.1.198.md",
       "startLine": 23,
-      "endLine": 48,
+      "endLine": 46,
       "keywords": [
         "sonnet-5",
         "claude-sonnet-5",
@@ -3029,7 +3028,7 @@
       "lesson_number": "111",
       "file": "24-verified-new-v2.1.198.md",
       "startLine": 50,
-      "endLine": 100,
+      "endLine": 98,
       "keywords": [
         "/cd",
         "move-session-cwd",
@@ -3060,7 +3059,7 @@
       "lesson_number": "112",
       "file": "24-verified-new-v2.1.198.md",
       "startLine": 102,
-      "endLine": 154,
+      "endLine": 152,
       "keywords": [
         "claude-design",
         "/design",
@@ -3108,7 +3107,7 @@
       "lesson_number": "114",
       "file": "25-verified-new-v1.18286.0-desktop.md",
       "startLine": 23,
-      "endLine": 197,
+      "endLine": 213,
       "keywords": [
         "cli_plugin-recheck",
         "2307090146",
@@ -3134,7 +3133,7 @@
       "lesson_number": "115",
       "file": "26-subagent-resume-semantics.md",
       "startLine": 20,
-      "endLine": 238,
+      "endLine": 251,
       "keywords": [
         "subagent-resume",
         "task-one-shot",
@@ -3276,7 +3275,7 @@
       "lesson_number": "118",
       "file": "29-skill-scope-stream-contract.md",
       "startLine": 13,
-      "endLine": 289,
+      "endLine": 303,
       "keywords": [
         "skill-scope-attribution",
         "activeSkill",
@@ -3408,7 +3407,7 @@
       "lesson_number": "120",
       "file": "31-desktop-reasoning-config-effort-thinking.md",
       "startLine": 13,
-      "endLine": 203,
+      "endLine": 202,
       "keywords": [
         "reasoning-config",
         "extended-thinking",
@@ -3470,7 +3469,7 @@
       "lesson_number": "121",
       "file": "32-cowork-subagent-execution-model.md",
       "startLine": 28,
-      "endLine": 144,
+      "endLine": 141,
       "keywords": [
         "subagent-tools",
         "sub-agent-tool-composition",
@@ -3501,7 +3500,7 @@
       "lesson_number": "122",
       "file": "32-cowork-subagent-execution-model.md",
       "startLine": 145,
-      "endLine": 225,
+      "endLine": 222,
       "keywords": [
         "subagent-cwd",
         "outputs-path",
@@ -3527,7 +3526,7 @@
       "lesson_number": "123",
       "file": "32-cowork-subagent-execution-model.md",
       "startLine": 226,
-      "endLine": 261,
+      "endLine": 258,
       "keywords": [
         "subagent_env_hl",
         "subagent_env_vm",
@@ -3580,7 +3579,7 @@
       "lesson_number": "125",
       "file": "33-desktop-device-partner-permission-tuning.md",
       "startLine": 16,
-      "endLine": 67,
+      "endLine": 66,
       "keywords": [
         "ios-simulator",
         "android-emulator",
@@ -3603,7 +3602,7 @@
       "lesson_number": "126",
       "file": "33-desktop-device-partner-permission-tuning.md",
       "startLine": 70,
-      "endLine": 85,
+      "endLine": 84,
       "keywords": [
         "remote_devices",
         "remote-devices-server",
@@ -3622,7 +3621,7 @@
       "lesson_number": "127",
       "file": "33-desktop-device-partner-permission-tuning.md",
       "startLine": 88,
-      "endLine": 107,
+      "endLine": 106,
       "keywords": [
         "grand_prix",
         "grand-prix-bridge",
@@ -3669,7 +3668,7 @@
       "lesson_number": "129",
       "file": "34-skill-discovery-vcs-events-containment.md",
       "startLine": 20,
-      "endLine": 207,
+      "endLine": 204,
       "keywords": [
         "skill-discovery-tools",
         "plugin-discovery-tools",
@@ -3751,7 +3750,7 @@
       "lesson_number": "130",
       "file": "34-skill-discovery-vcs-events-containment.md",
       "startLine": 208,
-      "endLine": 305,
+      "endLine": 302,
       "keywords": [
         "vcs-sdk-events",
         "code_change_published",
@@ -3797,7 +3796,7 @@
       "lesson_number": "131",
       "file": "34-skill-discovery-vcs-events-containment.md",
       "startLine": 306,
-      "endLine": 438,
+      "endLine": 435,
       "keywords": [
         "asar-diff",
         "1.24012.1",
@@ -3882,7 +3881,7 @@
       "lesson_number": "133",
       "file": "35-verified-new-v2.1.217.md",
       "startLine": 17,
-      "endLine": 41,
+      "endLine": 38,
       "keywords": [
         "An-provider-discriminator",
         "anthropicAws",
@@ -3913,7 +3912,7 @@
       "lesson_number": "134",
       "file": "35-verified-new-v2.1.217.md",
       "startLine": 42,
-      "endLine": 64,
+      "endLine": 61,
       "keywords": [
         "subagent-fan-out-cap",
         "CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS",
@@ -3943,7 +3942,7 @@
       "lesson_number": "135",
       "file": "35-verified-new-v2.1.217.md",
       "startLine": 65,
-      "endLine": 87,
+      "endLine": 84,
       "keywords": [
         "slash-command-refresh",
         "subtask-command",
@@ -3970,7 +3969,7 @@
       "lesson_number": "136",
       "file": "35-verified-new-v2.1.217.md",
       "startLine": 88,
-      "endLine": 101,
+      "endLine": 98,
       "keywords": [
         "tengu_artifact",
         "artifacts-cli-buildout",
@@ -4031,7 +4030,7 @@
       "lesson_number": "138",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
       "startLine": 19,
-      "endLine": 110,
+      "endLine": 106,
       "keywords": [
         "cowork-remote-lane",
         "cowork-local-lane",
@@ -4077,7 +4076,7 @@
       "lesson_number": "139",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
       "startLine": 111,
-      "endLine": 261,
+      "endLine": 258,
       "keywords": [
         "cowork-delete-semantics",
         "unlink-rmdir-denied",
@@ -4141,7 +4140,7 @@
       "lesson_number": "140",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
       "startLine": 262,
-      "endLine": 366,
+      "endLine": 363,
       "keywords": [
         "vm-multiplexing-confirmed",
         "shared-vm-guest",
@@ -4190,7 +4189,7 @@
       "lesson_number": "141",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
       "startLine": 367,
-      "endLine": 445,
+      "endLine": 442,
       "keywords": [
         "fcache-snapshot-identity",
         "fcache-content-hash",
@@ -4258,7 +4257,7 @@
       "lesson_number": "143",
       "file": "37-cowork-probe-corrections.md",
       "startLine": 22,
-      "endLine": 80,
+      "endLine": 77,
       "keywords": [
         "audit-jsonl-translated",
         "agent-transcript-authoritative",
@@ -4281,7 +4280,7 @@
       "lesson_number": "144",
       "file": "37-cowork-probe-corrections.md",
       "startLine": 81,
-      "endLine": 106,
+      "endLine": 103,
       "keywords": [
         "audit-jsonl-vs-transcript",
         "system-init-authoritative",
@@ -4298,7 +4297,7 @@
       "lesson_number": "145",
       "file": "37-cowork-probe-corrections.md",
       "startLine": 107,
-      "endLine": 147,
+      "endLine": 144,
       "keywords": [
         "egress-allowlist",
         "package-install-works",
@@ -4320,7 +4319,7 @@
       "lesson_number": "146",
       "file": "37-cowork-probe-corrections.md",
       "startLine": 148,
-      "endLine": 203,
+      "endLine": 204,
       "keywords": [
         "529-sessions",
         "session-namespace-scale",
@@ -4346,7 +4345,7 @@
       "lesson_number": "147",
       "file": "38-cowork-elicitation-flag-classes.md",
       "startLine": 20,
-      "endLine": 112,
+      "endLine": 109,
       "keywords": [
         "elicitation-skill-arguments",
         "imagineElicitationEnabled",
@@ -4372,7 +4371,7 @@
       "lesson_number": "148",
       "file": "38-cowork-elicitation-flag-classes.md",
       "startLine": 113,
-      "endLine": 151,
+      "endLine": 148,
       "keywords": [
         "built-tools-stickiness",
         "frameArtifactsTurnEnabled",
@@ -4393,7 +4392,7 @@
       "lesson_number": "149",
       "file": "38-cowork-elicitation-flag-classes.md",
       "startLine": 152,
-      "endLine": 200,
+      "endLine": 197,
       "keywords": [
         "session-config-boolean",
         "frameArtifactsEnabled",
@@ -4414,7 +4413,7 @@
       "lesson_number": "150",
       "file": "38-cowork-elicitation-flag-classes.md",
       "startLine": 201,
-      "endLine": 263,
+      "endLine": 260,
       "keywords": [
         "autoMode-rubric",
         "gate-3424551112",
@@ -4438,7 +4437,7 @@
       "lesson_number": "151",
       "file": "38-cowork-elicitation-flag-classes.md",
       "startLine": 264,
-      "endLine": 328,
+      "endLine": 325,
       "keywords": [
         "CLAUDE_CODE_COWORK_FRAME_ARTIFACTS",
         "producer-before-consumer",
@@ -4476,7 +4475,7 @@
       "lesson_number": "153",
       "file": "39-verified-new-v2.1.231.md",
       "startLine": 18,
-      "endLine": 56,
+      "endLine": 53,
       "keywords": [
         "self-hosted-runner",
         "claude self-hosted-runner",
@@ -4513,7 +4512,7 @@
       "lesson_number": "154",
       "file": "39-verified-new-v2.1.231.md",
       "startLine": 57,
-      "endLine": 91,
+      "endLine": 88,
       "keywords": [
         "device-bridge",
         "deviceBridge",
@@ -4550,7 +4549,7 @@
       "lesson_number": "155",
       "file": "39-verified-new-v2.1.231.md",
       "startLine": 92,
-      "endLine": 135,
+      "endLine": 132,
       "keywords": [
         "DirectoryAdded",
         "31-hook-events",
@@ -4579,7 +4578,7 @@
       "lesson_number": "156",
       "file": "39-verified-new-v2.1.231.md",
       "startLine": 136,
-      "endLine": 173,
+      "endLine": 170,
       "keywords": [
         "artifact-comments",
         "CLAUDE_CODE_ARTIFACT_COMMENTS",
@@ -4604,7 +4603,7 @@
       "lesson_number": "157",
       "file": "39-verified-new-v2.1.231.md",
       "startLine": 174,
-      "endLine": 215,
+      "endLine": 212,
       "keywords": [
         "dir-sync",
         "startWorkerDirSync",
@@ -4685,7 +4684,7 @@
       "lesson_number": "159",
       "file": "40-desktop-automemory-gates-1.30096.1.md",
       "startLine": 16,
-      "endLine": 65,
+      "endLine": 62,
       "keywords": [
         "auto-memory-carve-out",
         "canUseTool-fourth-link",
@@ -4711,7 +4710,7 @@
       "lesson_number": "160",
       "file": "40-desktop-automemory-gates-1.30096.1.md",
       "startLine": 66,
-      "endLine": 102,
+      "endLine": 99,
       "keywords": [
         "1942337209",
         "mcp-version-negotiation",
@@ -4741,7 +4740,7 @@
       "lesson_number": "161",
       "file": "40-desktop-automemory-gates-1.30096.1.md",
       "startLine": 103,
-      "endLine": 121,
+      "endLine": 118,
       "keywords": [
         "CLAUDE_CODE_COWORK_FRAME_ARTIFACTS",
         "consumer-landed",
@@ -4784,7 +4783,7 @@
       "lesson_number": "163",
       "file": "41-cowork-path-resolution-lanes.md",
       "startLine": 16,
-      "endLine": 87,
+      "endLine": 84,
       "keywords": [
         "bash-cwd-session-root",
         "withdrawal",
@@ -4809,7 +4808,7 @@
       "lesson_number": "164",
       "file": "41-cowork-path-resolution-lanes.md",
       "startLine": 88,
-      "endLine": 212,
+      "endLine": 209,
       "keywords": [
         "two-path-forms",
         "bare-filename-file-tools",
@@ -4851,7 +4850,7 @@
       "lesson_number": "165",
       "file": "41-cowork-path-resolution-lanes.md",
       "startLine": 213,
-      "endLine": 235,
+      "endLine": 232,
       "keywords": [
         "write-result-raw-path",
         "does-not-absolutize",
@@ -4965,7 +4964,7 @@
       "lesson_number": "168",
       "file": "43-cowork-in-app-browser-preview.md",
       "startLine": 14,
-      "endLine": 81,
+      "endLine": 78,
       "keywords": [
         "in-app-browser",
         "mcp__Claude_Browser__",
@@ -5026,7 +5025,7 @@
       "lesson_number": "170",
       "file": "44-cli-surface-2.1.233-to-2.1.250.md",
       "startLine": 15,
-      "endLine": 113,
+      "endLine": 112,
       "keywords": [
         "subagent-fanout-cap",
         "max-concurrent-subagents",
@@ -5050,7 +5049,7 @@
       "lesson_number": "171",
       "file": "44-cli-surface-2.1.233-to-2.1.250.md",
       "startLine": 114,
-      "endLine": 159,
+      "endLine": 156,
       "keywords": [
         "bundled-skill-suppression",
         "local-agent-entrypoint-early-return",
@@ -5088,7 +5087,7 @@
       "lesson_number": "173",
       "file": "45-plugin-bin-path-and-cloud-lane.md",
       "startLine": 14,
-      "endLine": 126,
+      "endLine": 123,
       "keywords": [
         "plugin-bin-on-path",
         "bin-launcher",
@@ -5171,7 +5170,7 @@
       "lesson_number": "175",
       "file": "46-narration-turn-updates-silent-turn.md",
       "startLine": 17,
-      "endLine": 109,
+      "endLine": 106,
       "keywords": [
         "narration",
         "progress-narration",
@@ -5217,7 +5216,7 @@
       "lesson_number": "176",
       "file": "46-narration-turn-updates-silent-turn.md",
       "startLine": 110,
-      "endLine": 218,
+      "endLine": 215,
       "keywords": [
         "silent_turn_reminder",
         "tengu_hushed_lark",
@@ -5260,7 +5259,7 @@
       "lesson_number": "177",
       "file": "46-narration-turn-updates-silent-turn.md",
       "startLine": 219,
-      "endLine": 272,
+      "endLine": 269,
       "keywords": [
         "brief-mode",
         "SendUserMessage",
@@ -5298,7 +5297,7 @@
       "lesson_number": "178",
       "file": "46-narration-turn-updates-silent-turn.md",
       "startLine": 273,
-      "endLine": 346,
+      "endLine": 343,
       "keywords": [
         "thinking.display",
         "thinking_display_updates",
@@ -5336,7 +5335,7 @@
       "lesson_number": "179",
       "file": "46-narration-turn-updates-silent-turn.md",
       "startLine": 347,
-      "endLine": 385,
+      "endLine": 384,
       "keywords": [
         "transcript-corpus",
         "session-transcripts",
@@ -5369,7 +5368,7 @@
       "lesson_number": "180",
       "file": "47-desktop-1.46388-lanes-computed-env-flags.md",
       "startLine": 18,
-      "endLine": 120,
+      "endLine": 117,
       "keywords": [
         "cowork-two-lanes",
         "desktop-local-lane",
@@ -5422,7 +5421,7 @@
       "lesson_number": "181",
       "file": "47-desktop-1.46388-lanes-computed-env-flags.md",
       "startLine": 121,
-      "endLine": 200,
+      "endLine": 197,
       "keywords": [
         "computed-key-env",
         "computed-property-env",
@@ -5462,7 +5461,7 @@
       "lesson_number": "182",
       "file": "47-desktop-1.46388-lanes-computed-env-flags.md",
       "startLine": 201,
-      "endLine": 263,
+      "endLine": 260,
       "keywords": [
         "CLAUDE_CODE_QUESTION_EXTENDED",
         "extendedQuestions",
@@ -5502,7 +5501,7 @@
       "lesson_number": "183",
       "file": "47-desktop-1.46388-lanes-computed-env-flags.md",
       "startLine": 264,
-      "endLine": 351,
+      "endLine": 350,
       "keywords": [
         "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS",
         "tengu_plugin_hooks_modules",
@@ -5554,7 +5553,7 @@
       "lesson_number": "184",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
       "startLine": 20,
-      "endLine": 126,
+      "endLine": 123,
       "keywords": [
         "forced-ask-conditional",
         "4202409342",
@@ -5595,7 +5594,7 @@
       "lesson_number": "185",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
       "startLine": 127,
-      "endLine": 236,
+      "endLine": 233,
       "keywords": [
         "silent_turn_reminder",
         "CLAUDE_CODE_SILENT_TURN_REMINDER",
@@ -5631,7 +5630,7 @@
       "lesson_number": "186",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
       "startLine": 237,
-      "endLine": 294,
+      "endLine": 291,
       "keywords": [
         "CLAUDE_CODE_COORDINATOR_FORCE_WORKER_INHERIT_MODEL",
         "CLAUDE_CODE_SUBAGENT_MODEL_FORCE",
@@ -5657,7 +5656,7 @@
       "lesson_number": "187",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
       "startLine": 295,
-      "endLine": 355,
+      "endLine": 352,
       "keywords": [
         "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS",
         "tengu_plugin_hooks_modules",
@@ -5684,7 +5683,7 @@
       "lesson_number": "188",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
       "startLine": 356,
-      "endLine": 429,
+      "endLine": 426,
       "keywords": [
         "thirty-three-hook-events",
         "33-hook-events",
@@ -5721,7 +5720,7 @@
       "lesson_number": "189",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
       "startLine": 430,
-      "endLine": 463,
+      "endLine": 462,
       "keywords": [
         "manifest.zst.json",
         "compressed-release-channel",
@@ -5747,7 +5746,7 @@
       "lesson_number": "190",
       "file": "49-desktop-2.7032-cwd-rc-builds.md",
       "startLine": 19,
-      "endLine": 164,
+      "endLine": 162,
       "keywords": [
         "/var/empty",
         "host-cwd",
@@ -5793,7 +5792,7 @@
       "lesson_number": "191",
       "file": "49-desktop-2.7032-cwd-rc-builds.md",
       "startLine": 166,
-      "endLine": 218,
+      "endLine": 216,
       "keywords": [
         "TaskOutput-removed",
         "TaskOutput",
@@ -5828,7 +5827,7 @@
       "lesson_number": "192",
       "file": "49-desktop-2.7032-cwd-rc-builds.md",
       "startLine": 220,
-      "endLine": 264,
+      "endLine": 262,
       "keywords": [
         "release-candidate",
         "rc-channel",
@@ -5857,7 +5856,7 @@
       "lesson_number": "193",
       "file": "49-desktop-2.7032-cwd-rc-builds.md",
       "startLine": 266,
-      "endLine": 318,
+      "endLine": 316,
       "keywords": [
         "fcache-2026-09-23",
         "f82df085d027eff0",
@@ -5888,7 +5887,7 @@
       "lesson_number": "194",
       "file": "49-desktop-2.7032-cwd-rc-builds.md",
       "startLine": 320,
-      "endLine": 372,
+      "endLine": 371,
       "keywords": [
         "memory-mcp-relay",
         "mcp__memory__memory_read",
@@ -5925,7 +5924,7 @@
       "lesson_number": "195",
       "file": "50-artifact-host-tools-inbox-folder-skills.md",
       "startLine": 18,
-      "endLine": 80,
+      "endLine": 77,
       "keywords": [
         "artifact-host-tools",
         "ArtifactHostTools",
@@ -5952,7 +5951,7 @@
       "lesson_number": "196",
       "file": "50-artifact-host-tools-inbox-folder-skills.md",
       "startLine": 81,
-      "endLine": 126,
+      "endLine": 123,
       "keywords": [
         "FetchInboxMessage",
         "session-inbox",
@@ -5978,7 +5977,7 @@
       "lesson_number": "197",
       "file": "50-artifact-host-tools-inbox-folder-skills.md",
       "startLine": 127,
-      "endLine": 181,
+      "endLine": 178,
       "keywords": [
         "folder-skills",
         "remote-folder-skill-staging",
@@ -6005,7 +6004,7 @@
       "lesson_number": "198",
       "file": "50-artifact-host-tools-inbox-folder-skills.md",
       "startLine": 182,
-      "endLine": 238,
+      "endLine": 237,
       "keywords": [
         "four-surfaces",
         "surface-fingerprint",
@@ -6034,7 +6033,7 @@
       "lesson_number": "199",
       "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
       "startLine": 17,
-      "endLine": 91,
+      "endLine": 89,
       "keywords": [
         "plugin-mcp-zero-tools",
         "cowork-plugin-mcp-shadow.json",
@@ -6062,7 +6061,7 @@
       "lesson_number": "200",
       "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
       "startLine": 93,
-      "endLine": 128,
+      "endLine": 126,
       "keywords": [
         "plugin-dir-precedence",
         "overrides installed version",
@@ -6081,7 +6080,7 @@
       "lesson_number": "201",
       "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
       "startLine": 130,
-      "endLine": 174,
+      "endLine": 172,
       "keywords": [
         "skill-listing-budget",
         "skillListingBudgetFraction",
@@ -6103,7 +6102,7 @@
       "lesson_number": "202",
       "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
       "startLine": 176,
-      "endLine": 217,
+      "endLine": 215,
       "keywords": [
         "claude --cloud",
         "device-hooks",
@@ -6123,7 +6122,7 @@
       "lesson_number": "203",
       "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
       "startLine": 219,
-      "endLine": 250,
+      "endLine": 249,
       "keywords": [
         "hook-frame-gating",
         "include-hook-events",
@@ -6143,7 +6142,7 @@
       "lesson_number": "204",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
       "startLine": 18,
-      "endLine": 59,
+      "endLine": 57,
       "keywords": [
         "fork-skill-relay",
         "context fork",
@@ -6162,7 +6161,7 @@
       "lesson_number": "205",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
       "startLine": 61,
-      "endLine": 100,
+      "endLine": 98,
       "keywords": [
         "visualize-server",
         "mcp__visualize__show_widget",
@@ -6186,7 +6185,7 @@
       "lesson_number": "206",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
       "startLine": 102,
-      "endLine": 129,
+      "endLine": 127,
       "keywords": [
         "save_skill",
         "canSaveSkill",
@@ -6231,7 +6230,7 @@
       "lesson_number": "208",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
       "startLine": 17,
-      "endLine": 60,
+      "endLine": 57,
       "keywords": [
         "RemoteMigrationSweep",
         "remote migration",
@@ -6253,7 +6252,7 @@
       "lesson_number": "209",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
       "startLine": 61,
-      "endLine": 118,
+      "endLine": 115,
       "keywords": [
         "cowork plugin hook events",
         "cowork cloud hooks",
@@ -6302,7 +6301,7 @@
       "lesson_number": "211",
       "file": "54-desktop-2.9939-artifacts-gates-egress.md",
       "startLine": 18,
-      "endLine": 96,
+      "endLine": 94,
       "keywords": [
         "artifact call local MCP server",
         "host: server artifact",
@@ -6340,7 +6339,7 @@
       "lesson_number": "212",
       "file": "54-desktop-2.9939-artifacts-gates-egress.md",
       "startLine": 98,
-      "endLine": 148,
+      "endLine": 146,
       "keywords": [
         "create_artifact",
         "update_artifact",
@@ -6372,7 +6371,7 @@
       "lesson_number": "213",
       "file": "54-desktop-2.9939-artifacts-gates-egress.md",
       "startLine": 150,
-      "endLine": 209,
+      "endLine": 207,
       "keywords": [
         "2.9939.2 new gates",
         "822840158",
@@ -6434,7 +6433,7 @@
       "lesson_number": "215",
       "file": "55-cloud-session-device-tools.md",
       "startLine": 16,
-      "endLine": 101,
+      "endLine": 98,
       "keywords": [
         "device tools",
         "mcp__remote-devices",
@@ -6483,7 +6482,7 @@
       "lesson_number": "217",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 16,
-      "endLine": 69,
+      "endLine": 66,
       "keywords": [
         "upload skill",
         "uploaded skill",

@@ -16,7 +16,9 @@ const fs = require('fs');
 const path = require('path');
 
 // --- Paths ---
-const REFS_DIR = path.join(__dirname, '..', 'references');
+// BUILD_RVF_REFS points the builder at another references/ directory (build.js
+// uses it to rebuild a scratch copy in tests); the algorithm is unchanged.
+const REFS_DIR = process.env.BUILD_RVF_REFS || path.join(__dirname, '..', 'references');
 const TOPIC_INDEX = path.join(REFS_DIR, 'topic-index.json');
 const SEMANTIC_INDEX = path.join(REFS_DIR, 'semantic-index.json');
 

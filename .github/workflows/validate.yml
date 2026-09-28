@@ -15,6 +15,10 @@ jobs:
         run: node --test 'skill-package/skills/claude-code-internals/scripts/tests/*.test.js'
       - name: JSON index format
         run: node skill-package/skills/claude-code-internals/scripts/check-json-format.js
+      # Lesson bounds, lesson/chapter counts and the semantic index's embedded
+      # bounds are derived from the reference files; fail if any is stale.
+      - name: Derived fields
+        run: node skill-package/skills/claude-code-internals/scripts/build.js --check
       - name: State-layer integrity
         run: node skill-package/skills/claude-code-internals/scripts/validate-state.js
       - name: State-layer reconciliation

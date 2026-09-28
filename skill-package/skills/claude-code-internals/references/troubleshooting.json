@@ -1,5 +1,4 @@
 {
- "generated": "2026-09-28",
  "description": "Maps common symptoms/problems to relevant lessons for debugging Claude Code internals",
  "symptoms": [
   {
