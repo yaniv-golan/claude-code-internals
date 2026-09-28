@@ -179,6 +179,14 @@ Cowork (Desktop store `local-agent-mode-sessions/skills-plugin/<org>/<account>/s
 staged via `claude-hostloop-plugins/<hash>`, read-only at `/sessions/<slug>/mnt/.claude/skills/`),
 **whole**, scripts runnable (`dash` in both Cowork lanes). Measured 2026-09-27.
 
+## Creating and changing skills in chat (L217)
+
+`save_skill` (L206) posts one `SKILL.md` to the same `/skills/upload-skill` endpoint as Customize
+(`upload_source=cowork_save_skill`); the user confirms a **Save skill** / **Update skill** card. Create is
+body-only; `overwrite` replaces `SKILL.md` and keeps the skill's other files (carry-forward, else download +
+re-upload) — measured 2026-09-29 on an uploaded skill with a script. Only user-created skills are updatable.
+Propagates in under a minute, CLI included. **Skills are scoped to an organization.**
+
 ## Plugin prompt blocks and MCP placeholders by lane (L218)
 
 Measured 2026-09-27/28 (Desktop 2.9939.2, agent 2.1.281). UserPromptSubmit blocks (JSON

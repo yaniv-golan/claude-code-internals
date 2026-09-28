@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.59.0 — 2026-09-29 (this fork) — creating and changing a skill by asking in chat
+
+No new lessons; counts stay 218/59. Measured live on 2026-09-29 (Desktop 2.9939.4, agent 2.1.284) and read from the
+Desktop's code, prompted by a GitHub thread asking for skills to be editable from chat.
+
+- **L217.** A Cowork session with `save_skill` can create a skill and change an existing one.
+  - The user confirms each save on a **Save skill** or **Update skill** card.
+  - The Desktop posts one `SKILL.md` to the same upload endpoint as Customize.
+  - A new skill is instructions-only.
+  - An update replaces `SKILL.md` and keeps every other file. An uploaded skill with a script and a reference file
+    kept both.
+  - Both propagated in under a minute, to the CLI as well.
+- **Skills belong to an organization.** A session could not find a skill uploaded in another organization. This also
+  explains the "two stores" noted in L217.
+- New fact `plugins.edit-a-skill-in-chat`; `plugins.upload-a-personal-skill` gains an organization caveat.
+- fcache re-captured 2026-09-29 (`36b3e84b66a67870`, 384 features, 3 more than the last capture). All 79 pinned gates
+  re-observed, none changed.
+
 ## v2.58.7 — 2026-09-29 (this fork) — agent 2.1.284 checks plugin `bin/` before adding it to PATH
 
 No new lessons; counts stay 218/59. Prompted by a sibling session reading the 2.1.284 changelog, then diffed 2.1.283 →
