@@ -26,6 +26,8 @@ const TOPIC_INDEX = path.join(REFS_DIR, 'topic-index.json');
 // Tokenizer (query stop words: the index's plus "claude" and "code") and the
 // in-memory TF-IDF index, shared with search.js.
 const { tokenizeQuery: tokenize, loadIndex } = require('./lib/tfidf-index.js');
+// Output shows hand keywords only (generated identifier keys are not printed).
+const { handKeywords } = require('./lib/keyword-provenance.js');
 
 /**
  * Cosine similarity between two sparse TF-IDF vectors (objects).
@@ -163,7 +165,7 @@ function main() {
     const l = lessonById.get(entry.id);
     return {
       id: entry.id, title: l.title, file: l.file, startLine: l.startLine,
-      endLine: l.endLine, keywords: l.keywords || [], score,
+      endLine: l.endLine, keywords: handKeywords(l), score,
     };
   });
 

@@ -37,7 +37,7 @@ function fixture() {
   fs.mkdirSync(refs);
   const src = path.join(SKILL_DIR, 'references');
   for (const f of fs.readdirSync(src)) {
-    if (/^\d\d-.*\.md$/.test(f) || /^(topic-index|cross-references|troubleshooting)\.json$/.test(f)) {
+    if (/^\d\d-.*\.md$/.test(f) || /^(topic-index|hand-keywords|cross-references|troubleshooting)\.json$/.test(f)) {
       fs.copyFileSync(path.join(src, f), path.join(refs, f));
     }
   }
@@ -176,7 +176,8 @@ test('a new lesson entry without startLine/endLine gets them at the canonical po
   const after = JSON.parse(raw).lessons;
   const added = after.find((l) => l.id === newId);
   assert.deepStrictEqual(Object.keys(added), ['id', 'title', 'lesson_number', 'file', 'startLine', 'endLine', 'keywords']);
-  assert.deepStrictEqual(Object.keys(added), Object.keys(after.find((l) => l.id === 107)));
+  // identifier_keys is prepare-lessons.js's record, appended after the hand-written fields.
+  assert.deepStrictEqual(Object.keys(added), Object.keys(after.find((l) => l.id === 107)).filter((k) => k !== 'identifier_keys'));
   assert.strictEqual(added.startLine, headingLine);
   assert.strictEqual(added.endLine, headingLine + 2);
   assert.strictEqual(JSON.parse(raw).total_lessons, topic.lessons.length + 1);

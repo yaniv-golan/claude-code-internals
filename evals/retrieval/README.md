@@ -11,7 +11,9 @@ design this implements.
   (it has no `module.exports`, so it can't be required — it's always spawned with `--json
   --top=N`), slices lesson text the same way `fetch-lesson.js` does, the identifier extractor
   (published rules: inline code spans, `CAPS_ENV_VARS`, 7–10-digit GrowthBook gate ids, slash
-  commands, `tengu_*` names, `mcp__x__y` tool names), a seeded PRNG + lesson-holdout/dev split
+  commands, `tengu_*` names, `mcp__x__y` tool names — implemented in the skill package's
+  `scripts/lib/identifiers.js`, shared with `prepare-lessons.js`, and re-exported here
+  unchanged), a seeded PRNG + lesson-holdout/dev split
   (Node has no builtin seeded RNG), and the MRR/nDCG@5 formulas.
 - **`gen-registry-top1.js`** — deterministic, no model calls. For every `state/registry.json`
   entry whose `name` has exactly one provenance lesson, searches for that name and records
@@ -75,8 +77,9 @@ node evals/retrieval/run.js --baseline evals/retrieval/baseline-v1.json --questi
   results.
 - **Failures stay recorded.** A `passes_today:false` case in `registry-top1.json` or a known gap
   in a question set is not silently dropped or "fixed" by regenerating until it passes — that
-  would launder a real ranking gap into a green build. Fix the ranking (a `keyword_map`
-  addition, under its own gate per the maintainability plan) or leave the miss recorded.
+  would launder a real ranking gap into a green build. Fix the ranking (a rule change in
+  `prepare-lessons.js`, which derives the `keyword_map` keys, under its own gate per the
+  maintainability plan; keywords are never hand-edited) or leave the miss recorded.
 - **Whole-set replacement only.** `questions-vN.json` is replaced as a whole new version on a
   fixed schedule (the plan says yearly or after 50 new lessons) — never edited piecemeal to drop
   an inconvenient question.

@@ -39,15 +39,24 @@
  * when stored bounds would silently drop content: it reports each uncovered or
  * doubly-covered line, beside the stale-field diff.
  *
- * WRITES. Every file read is hashed. Before writing, build.js re-reads and
- * re-hashes all of them (and re-lists the reference files); if anything
- * changed since the run started (a peer session editing a lesson) it aborts
- * and writes nothing. Each output is written to a temp file beside it and
- * renamed into place.
+ * WRITES. Every file read is hashed, and git HEAD is recorded before the first
+ * read (skipped when the skill is not in a git work tree). Before writing,
+ * build.js re-reads and re-hashes all of them (and re-lists the reference
+ * files, and re-reads HEAD); if anything changed since the run started (a peer
+ * session editing a lesson or committing) it aborts and writes nothing. Each
+ * output is written to a temp file beside it and renamed into place. --check
+ * never runs git.
  *
  * CHAPTERS. Distinct `# Chapter N` headings (outside fences) plus chapters 1-8,
  * which predate the one-chapter-per-file convention and live, unheaded, in the
  * legacy files 01-05.
+ *
+ * LESSON KEYWORDS (--check only; a write just prints a note). topic-index.json's
+ * keyword fields are exactly what prepare-lessons.js derives: the frozen
+ * references/hand-keywords.json projected onto the live lessons, then the
+ * generated keys derived from the current lesson text, with the unreachable
+ * count within its ceiling (see prepare-lessons.js --check). build.js never
+ * writes keyword fields; prepare-lessons.js is the fix.
  *
  * JSON is rewritten through check-json-format.js's order-preserving parser and
  * emitter, so integer-like keys keep their order and only changed values move.
@@ -66,6 +75,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { execFileSync } = require('child_process');
 const { parseOrdered, emit, PINNED } = require('./check-json-format.js');
 
 const LESSON_HEADING = /^#{1,4}\s*LESSON\s+0*(\d+)/i;
@@ -320,10 +330,12 @@ function build(skillDir) {
   }
 
   // references from other indexes
-  const kmap = topic.keyword_map || {};
-  for (const [k, list] of Object.entries(kmap)) {
-    for (const id of list) if (!ids.has(id)) errors.push(`keyword_map["${k}"] references missing lesson ${id}`);
-  }
+  // keyword_map is not checked here: it is build output (lib/keyword-provenance.js).
+  // Its hand part is hand-keywords.json projected onto the live lessons and its
+  // generated part is derived from them, so after a lesson is deleted it can point
+  // at the missing lesson only until prepare-lessons.js next runs, and
+  // build.js --check fails until it has (the LESSON KEYWORDS check). Refusing to
+  // build would stop prepare-lessons.js from running at all.
   const xrefRel = 'cross-references.json';
   const xrefRaw = read(path.join(refs, xrefRel));
   const xref = JSON.parse(xrefRaw);
@@ -373,8 +385,26 @@ function build(skillDir) {
 }
 
 /**
+ * The git HEAD commit of the work tree containing `dir`, or null when there is
+ * none (a standalone package or zip, no git installed, no commit yet). Only the
+ * write paths call this; --check never needs git.
+ */
+function gitHead(dir) {
+  try {
+    const out = execFileSync('git', ['-C', dir, 'rev-parse', '--verify', '--quiet', 'HEAD'], {
+      encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+    return /^[0-9a-f]{40,64}$/.test(out) ? out : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Inputs that changed on disk since build() read them: a different hash, a
- * vanished file, or a reference file added/removed. Empty when nothing moved.
+ * vanished file, or a reference file added/removed; and git HEAD when the
+ * caller recorded it (derived.head, from gitHead(derived.headDir) before
+ * reading). Empty when nothing moved.
  */
 function changedInputs(derived) {
   const changed = [];
@@ -385,6 +415,10 @@ function changedInputs(derived) {
   }
   const listed = listReferenceFiles(derived.refsDir);
   if (listed.join('\n') !== derived.referenceFiles.join('\n')) changed.push(`${derived.refsDir} (reference files added or removed)`);
+  if (typeof derived.head === 'string') {
+    const now = gitHead(derived.headDir);
+    if (now !== derived.head) changed.push(`git HEAD moved from ${derived.head.slice(0, 12)} to ${now ? now.slice(0, 12) : '(none)'} (a commit, checkout or reset by another session?)`);
+  }
   return changed;
 }
 
@@ -447,7 +481,11 @@ function main(argv) {
   if (rootIdx >= 0 && !argv[rootIdx + 1]) { console.error('build.js: --root needs a skill directory'); return 2; }
   const skillDir = rootIdx >= 0 ? path.resolve(argv[rootIdx + 1]) : path.resolve(__dirname, '..');
 
+  // A write aborts if HEAD moves while it runs (recorded before anything is read).
+  const head = check ? null : gitHead(skillDir);
   const derived = build(skillDir);
+  derived.head = head;
+  derived.headDir = skillDir;
   if (derived.errors.length) {
     console.error(`build.js: ${derived.errors.length} validation error(s):`);
     for (const e of derived.errors) console.error(`  ${e}`);
@@ -455,6 +493,7 @@ function main(argv) {
   }
 
   const changed = derived.outputs.filter((o) => o.text !== o.before);
+  const lessons = lessonChecks(skillDir, derived);
 
   if (check) {
     const stale = [];
@@ -469,8 +508,13 @@ function main(argv) {
       for (const s of shown) console.error(`  ${s}`);
       if (derived.coverage.length > shown.length) console.error(`  ... and ${derived.coverage.length - shown.length} more`);
     }
-    if (stale.length || derived.coverage.length) return 1;
+    if (lessons.errors.length) {
+      console.error('build.js --check: lesson keywords incomplete — the fix is a script run, never a hand edit:');
+      for (const e of lessons.errors) console.error(`  ${e}`);
+    }
+    if (stale.length || derived.coverage.length || lessons.errors.length) return 1;
     console.log(`derived fields OK (${derived.lessonsCount} lessons, ${derived.chaptersCount} chapters)`);
+    console.log(`lesson keywords OK (${lessons.notes.join('; ')})`);
     return 0;
   }
 
@@ -484,11 +528,35 @@ function main(argv) {
   }
   for (const o of written) console.log(`wrote ${o.rel}`);
   if (!written.length) console.log('derived fields already up to date');
+  // Bounds are written regardless: prepare-lessons.js needs them before it can run.
+  for (const e of lessons.errors) console.log(`note: ${e}`);
   return 0;
+}
+
+/**
+ * The lesson-keyword check (plan §4.7: every extracted identifier is
+ * reachable), run over the DERIVED bounds, so it reads the same text
+ * prepare-lessons.js will. Kept out of build().errors so that a write still
+ * writes bounds. prepare-lessons.js requires this file, so it is required
+ * lazily here.
+ */
+function lessonChecks(skillDir, derived) {
+  const { checkLessons } = require('./prepare-lessons.js');
+  const { loadHandSource } = require('./lib/keyword-provenance.js');
+  let hand;
+  try { hand = loadHandSource(skillDir); } catch (e) { return { errors: [e.message], notes: [] }; }
+  // The topic-index text with the derived bounds (the one this run writes).
+  const raw = derived.outputs.find((o) => o.rel === 'references/topic-index.json').text;
+  const cache = new Map();
+  const lessonText = (l) => {
+    if (!cache.has(l.file)) cache.set(l.file, fs.readFileSync(path.join(skillDir, 'references', l.file), 'utf8').split('\n'));
+    return cache.get(l.file).slice(l.startLine - 1, l.endLine).join('\n');
+  };
+  return checkLessons({ raw, lessonText, hand });
 }
 
 module.exports = {
   scanLines, isThematicBreak, isSeparator, trimEnd, findHeadings,
-  lessonMatchesHeading, checkCoverage, build, changedInputs, writeOutputs,
+  lessonMatchesHeading, checkCoverage, build, gitHead, changedInputs, writeAtomic, writeOutputs,
 };
 if (require.main === module) process.exitCode = main(process.argv.slice(2));

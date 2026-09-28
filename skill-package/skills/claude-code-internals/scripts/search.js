@@ -36,6 +36,10 @@ const RRF_K = 60;
 // drops the stop words plus "claude" and "code", which appear in every lesson.
 // ---------------------------------------------------------------------------
 const { tokenizeQuery: tokenize, loadIndex } = require('./lib/tfidf-index.js');
+const { compileKey, keyHitsToken } = require('./lib/keyword-match.js');
+// Output shows hand keywords only: generated identifier keys (prepare-lessons.js)
+// still rank, but printing them doubled some lessons' output. Ranking is unchanged.
+const { handKeywords } = require('./lib/keyword-provenance.js');
 
 // ---------------------------------------------------------------------------
 // Layer 1: Keyword search (mirrors lookup.sh logic)
@@ -68,20 +72,14 @@ function keywordSearch(tokens, topicIndex) {
   // form. Substring matching on these is what made the generic token 'path' hit every
   // *_PATHS variable and drag their lesson to the top of unrelated queries. Natural-language
   // keys keep the original substring behaviour.
-  const normalizedKeywords = Object.entries(keywordMap).map(([keyword, lessonIds]) => {
-    const lower = keyword.toLowerCase();
-    const joined = lower.replace(/[._\-\s]+/g, '');
-    const isIdentifier = !/\s/.test(lower) && /[._-]/.test(lower);
-    return [lower, joined, lessonIds, isIdentifier];
-  });
+  // The rule itself lives in lib/keyword-match.js, shared with prepare-lessons.js's
+  // collision rule.
+  const normalizedKeywords = Object.entries(keywordMap).map(([keyword, lessonIds]) => [compileKey(keyword), lessonIds]);
 
   for (const token of tokens) {
     const matchedIds = new Set();
-    for (const [keyword, keywordJoined, lessonIds, isIdentifier] of normalizedKeywords) {
-      const hit = isIdentifier
-        ? (token === keyword || token === keywordJoined)
-        : (keyword.includes(token) || keywordJoined.includes(token));
-      if (hit) {
+    for (const [ck, lessonIds] of normalizedKeywords) {
+      if (keyHitsToken(ck, token)) {
         for (const id of lessonIds) {
           matchedIds.add(id);
         }
@@ -467,7 +465,7 @@ function main() {
       file: lesson.file,
       startLine: lesson.startLine,
       endLine: lesson.endLine,
-      keywords: lesson.keywords,
+      keywords: handKeywords(lesson),
     };
   }).filter(Boolean);
 

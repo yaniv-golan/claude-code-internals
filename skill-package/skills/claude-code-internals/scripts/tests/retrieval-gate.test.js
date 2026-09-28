@@ -66,7 +66,7 @@ test('compareToBaseline: an identical report passes', (t) => {
   if (!PRESENT) { t.skip(SKIP); return; }
   const R = require(RUN_JS);
   const cmp = R.compareToBaseline(report(1, clone(BASE_QS)), report(1, clone(BASE_QS)), R.DEFAULT_THRESHOLDS);
-  assert.deepStrictEqual(cmp, { ok: true, failures: [] });
+  assert.deepStrictEqual(cmp, { ok: true, failures: [], waived: [] });
 });
 
 test('compareToBaseline: a different or missing question-set version fails', (t) => {
@@ -111,6 +111,36 @@ test('compareToBaseline: an identifier question losing top-1 fails, even by one 
   const b2 = clone(BASE_QS); b2[1] = q('pl-0002', 'plain', 'dev', 1);
   const c2 = clone(BASE_QS); c2[1] = q('pl-0002', 'plain', 'dev', 2);
   assert.strictEqual(R.compareToBaseline(report(1, c2), report(1, b2), loose).ok, true);
+});
+
+test('compareToBaseline: a waiver covers one question up to its recorded rank, and a stale waiver fails', (t) => {
+  if (!PRESENT) { t.skip(SKIP); return; }
+  const R = require(RUN_JS);
+  const loose = { ...R.DEFAULT_THRESHOLDS, mrr_ndcg_drop: 1 };
+  const withWaiver = (rank) => {
+    const b = report(1, clone(BASE_QS));
+    b.waivers = [{ qid: 'id-0001', rank, reason: 'r', commit: 'c' }];
+    return b;
+  };
+  const at = (rank) => { const qs = clone(BASE_QS); qs[0] = q('id-0001', 'identifier', 'dev', rank); return report(1, qs); };
+
+  // Waived at rank 2: a drop to 2 passes but is still reported.
+  const ok = R.compareToBaseline(at(2), withWaiver(2), loose);
+  assert.strictEqual(ok.ok, true);
+  assert.strictEqual(ok.waived.length, 1);
+  assert.match(ok.waived[0], /id-0001.*WAIVED/);
+  // Getting worse than the waived rank fails.
+  const worse = R.compareToBaseline(at(3), withWaiver(2), loose);
+  assert.strictEqual(worse.ok, false);
+  assert.match(worse.failures.join('\n'), /id-0001.*lost top-1/);
+  // A waiver that matches nothing (the question recovered) is stale and fails.
+  const stale = R.compareToBaseline(at(1), withWaiver(2), loose);
+  assert.strictEqual(stale.ok, false);
+  assert.match(stale.failures.join('\n'), /id-0001.*waiver is stale/);
+  // A waiver for one question never covers another.
+  const other = clone(BASE_QS); other[0] = q('id-0001', 'identifier', 'dev', 2);
+  const b = report(1, clone(BASE_QS)); b.waivers = [{ qid: 'id-0003', rank: 5, reason: 'r', commit: 'c' }];
+  assert.strictEqual(R.compareToBaseline(report(1, other), b, loose).ok, false);
 });
 
 test('compareToBaseline: rank-drop, top-10 and not-found rules use the given thresholds', (t) => {

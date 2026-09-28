@@ -365,6 +365,22 @@ function compareToBaseline(report, baseline, thresholdsIn) {
 
   // qids are unique only within a version, so every comparison is keyed by both.
   const qkey = (v, qid) => `v${v}:${qid}`;
+  // Waivers: known, explained regressions recorded in the baseline. A waiver
+  // covers one question up to its recorded rank, so the same question getting
+  // worse still fails. Waived failures are always printed, never hidden.
+  const waivers = new Map();
+  for (const w of baseline.waivers || []) waivers.set(qkey(baseV, w.qid), w);
+  const waived = [];
+  const usedWaivers = new Set();
+  const qFail = (b, newRank, msg) => {
+    const w = waivers.get(qkey(baseV, b.qid));
+    if (w && newRank !== null && newRank <= w.rank) {
+      waived.push(`${msg} — WAIVED: ${w.reason} (${w.commit})`);
+      usedWaivers.add(qkey(baseV, b.qid));
+    } else {
+      failures.push(msg);
+    }
+  };
   const reportById = new Map();
   for (const q of report.queries.lesson) reportById.set(qkey(repV, q.qid), q);
   for (const b of baseline.queries.lesson) {
@@ -377,23 +393,30 @@ function compareToBaseline(report, baseline, thresholdsIn) {
     const oldRank = b.rank;
     const newRank = q.rank;
     if (t.identifier_top1_loss && b.stratum === 'identifier' && oldRank === 1 && newRank !== 1) {
-      failures.push(`[${b.qid}] "identifier" lost top-1 (1 -> ${newRank === null ? `not in top ${report.top}` : newRank})`);
+      qFail(b, newRank, `[${b.qid}] "identifier" lost top-1 (1 -> ${newRank === null ? `not in top ${report.top}` : newRank})`);
     }
     if (oldRank === null) continue;
     if (newRank === null) {
-      failures.push(`[${b.qid}] "${b.stratum}" was found at rank ${oldRank}, now not found in top ${report.top}`);
+      qFail(b, newRank, `[${b.qid}] "${b.stratum}" was found at rank ${oldRank}, now not found in top ${report.top}`);
       continue;
     }
     const drop = newRank - oldRank;
     if (drop > t.rank_drop_k) {
-      failures.push(`[${b.qid}] "${b.stratum}" rank dropped ${oldRank} -> ${newRank} (> ${t.rank_drop_k} ranks)`);
+      qFail(b, newRank, `[${b.qid}] "${b.stratum}" rank dropped ${oldRank} -> ${newRank} (> ${t.rank_drop_k} ranks)`);
     }
     if (oldRank <= t.top_k_floor && newRank > t.top_k_floor) {
-      failures.push(`[${b.qid}] "${b.stratum}" fell out of top ${t.top_k_floor} (${oldRank} -> ${newRank})`);
+      qFail(b, newRank, `[${b.qid}] "${b.stratum}" fell out of top ${t.top_k_floor} (${oldRank} -> ${newRank})`);
     }
   }
 
-  return { ok: failures.length === 0, failures };
+  // A waiver that matched nothing is stale: the question recovered, or the
+  // waiver names a question that doesn't exist. Stale waivers fail, so the
+  // list can only shrink deliberately.
+  for (const [k, w] of waivers) {
+    if (!usedWaivers.has(k)) failures.push(`[${w.qid}] waiver is stale (no longer needed or no such question) — remove it from the baseline`);
+  }
+
+  return { ok: failures.length === 0, failures, waived };
 }
 
 // ---------------------------------------------------------------------------
@@ -456,6 +479,7 @@ function main() {
     const cmp = compareToBaseline(report, baseline, thresholds);
     console.log('\nBaseline comparison:');
     console.log(`  thresholds: ${Object.keys(thresholds).map((k) => `${k}=${thresholds[k]} (${sources[k]})`).join(', ')}`);
+    for (const w of cmp.waived || []) console.log(`  ${w}`);
     if (cmp.ok) {
       console.log('  OK — no regressions beyond threshold.');
     } else {

@@ -121,150 +121,15 @@ function rankOf(id, results) {
 }
 
 // ---------------------------------------------------------------------------
-// Identifier extraction — published rules (spec §4.7 / this task's §1)
+// Identifier extraction — published rules (spec §4.7). The implementation lives
+// in the skill package (scripts/lib/identifiers.js) because the package ships
+// without evals/ and prepare-lessons.js needs the same extractor. Behaviour is
+// unchanged from the copy that generated questions-v1.json.
 // ---------------------------------------------------------------------------
-//
-// Rules, applied to a lesson's canonical text:
-//   - inline code spans:            `...`
-//   - CAPS env-var-shaped names:    CLAUDE_CODE_*, or any ALLCAPS_WITH_UNDERSCORES
-//   - numeric GrowthBook gate ids:  7-10 digit runs
-//   - slash commands:               /foo-bar
-//   - tengu_* identifiers
-//   - mcp__x__y tool names
-//
-// Normalization: lowercase, runs of non-alphanumeric characters collapsed to
-// a single space, trimmed. Fenced code blocks (``` ... ```) are stripped
-// before the inline-code-span pass only — a fence's own backtick delimiters
-// and its contents would otherwise be mismatched as spans; the other five
-// patterns run over the FULL original text (fences don't confuse them).
 
-const CODE_SPAN_RE = /`([^`\n]+)`/g;
-const CAPS_ENV_RE = /\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b/g;
-const GATE_ID_RE = /\b\d{7,10}\b/g;
-// Negative lookbehind excludes URL paths (preceded by a word char or another slash).
-const SLASH_CMD_RE = /(?<![\w/])\/[a-z][a-z0-9]*(?:-[a-z0-9]+)*\b/g;
-const TENGU_RE = /\btengu_[a-z0-9_]+\b/gi;
-const MCP_TOOL_RE = /\bmcp__[A-Za-z0-9_]+\b/g;
-
-function normalize(s) {
-  return String(s).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-}
-
-/** Strip fenced code blocks (```...```), replacing fence lines and their
- * contents with blank lines so line numbers/positions are otherwise stable. */
-function stripFencedCode(text) {
-  const lines = text.split('\n');
-  let inFence = false;
-  const out = [];
-  for (const line of lines) {
-    if (/^\s*```/.test(line)) {
-      inFence = !inFence;
-      out.push('');
-      continue;
-    }
-    out.push(inFence ? '' : line);
-  }
-  return out.join('\n');
-}
-
-/**
- * True if a raw identifier candidate is "identifier-shaped" rather than a
- * plain English word/phrase that happened to sit in backticks (e.g. `hooks`,
- * `fork`, `outputs`). Used to decide leak-masking triggers for gen-questions.js
- * (open decision, see README): a lowercase single English word inside a code
- * span should not block a plain-language question from using that word in
- * ordinary prose, but CLAUDE_CODE_ENABLE_TASKS, tengu_saddle_lantern,
- * mcp__skills__list_skills, a 9-digit gate id, or `list_skills` all should.
- */
-function isIdentifierShaped(raw) {
-  if (/_/.test(raw)) return true;
-  if (/\d/.test(raw)) return true;
-  if (/[a-z][A-Z]/.test(raw)) return true; // camelCase boundary
-  const norm = normalize(raw);
-  const tokenCount = norm ? norm.split(' ').filter(Boolean).length : 0;
-  return tokenCount >= 2;
-}
-
-/**
- * Extract identifiers from lesson (or any) text using the published rules.
- *
- * @param {string} text
- * @returns {Array<{raw: string, normalized: string, kind: string, leakTrigger: boolean}>}
- *   Deduped by (kind, normalized) pair — the same normalized form found via
- *   two different rules is kept once per kind since `kind` changes how a
- *   leak check applies (slash commands are checked as a literal substring,
- *   not a normalized-phrase containment; see findLeaks()).
- */
-function extractIdentifiers(text) {
-  const stripped = stripFencedCode(text);
-  const out = [];
-  const seen = new Set();
-
-  const push = (raw, kind, leakTrigger) => {
-    const normalized = normalize(raw);
-    if (!normalized) return;
-    const key = kind + '\u0000' + normalized;
-    if (seen.has(key)) return;
-    seen.add(key);
-    out.push({ raw, normalized, kind, leakTrigger });
-  };
-
-  for (const m of stripped.matchAll(CODE_SPAN_RE)) {
-    const raw = m[1].trim();
-    if (raw.length < 2) continue;
-    push(raw, 'code-span', isIdentifierShaped(raw));
-  }
-  for (const m of text.matchAll(CAPS_ENV_RE)) {
-    push(m[0], 'caps-env', true);
-  }
-  for (const m of text.matchAll(GATE_ID_RE)) {
-    push(m[0], 'gate-id', true);
-  }
-  for (const m of text.matchAll(SLASH_CMD_RE)) {
-    // leakTrigger is meaningless for slash commands (checked literally, see
-    // findLeaks()); recorded true for consistency/inventory purposes.
-    push(m[0], 'slash', true);
-  }
-  for (const m of text.matchAll(TENGU_RE)) {
-    push(m[0], 'tengu', true);
-  }
-  for (const m of text.matchAll(MCP_TOOL_RE)) {
-    push(m[0], 'mcp', true);
-  }
-
-  return out;
-}
-
-/**
- * Find identifiers from `identifiers` (as returned by extractIdentifiers)
- * that leak into `questionText`.
- *
- * - 'slash' kind: literal substring match against the RAW question text
- *   (normalizing "/config" loses the slash and collides with the ordinary
- *   English word "config").
- * - all other kinds: only identifiers with leakTrigger===true are checked,
- *   as a normalized, space-padded phrase containment against the normalized
- *   question text (so "fork" from a code span doesn't block "how do I fork a
- *   conversation" unless "fork" was judged identifier-shaped, which a bare
- *   single common word is not).
- *
- * @param {string} questionText
- * @param {Array<object>} identifiers
- * @returns {Array<object>} the leaking identifiers (subset of `identifiers`)
- */
-function findLeaks(questionText, identifiers) {
-  const normQ = ' ' + normalize(questionText) + ' ';
-  const leaks = [];
-  for (const ident of identifiers) {
-    if (ident.kind === 'slash') {
-      if (questionText.includes(ident.raw)) leaks.push(ident);
-      continue;
-    }
-    if (!ident.leakTrigger || !ident.normalized) continue;
-    if (normQ.includes(' ' + ident.normalized + ' ')) leaks.push(ident);
-  }
-  return leaks;
-}
+const {
+  normalize, stripFencedCode, isIdentifierShaped, extractIdentifiers, findLeaks,
+} = require(path.join(SCRIPTS_DIR, 'lib', 'identifiers.js'));
 
 // ---------------------------------------------------------------------------
 // Seeded RNG — Node has no seeded RNG builtin

@@ -330,7 +330,7 @@ bash scripts/check-version.sh
 
 There is nothing to rebuild. `search.js` and `semantic-search.js` derive their TF-IDF layer from `references/topic-index.json` each time they load it (`scripts/lib/tfidf-index.js`), caching the result under `$XDG_CACHE_HOME/claude-code-internals` (or `~/.cache/`, else the system temp dir) keyed by a hash of topic-index. Set `CCI_NO_INDEX_CACHE=1` to skip the cache.
 
-Vectors are built from each lesson's title, keywords, `description` and the `keyword_map` keys that point at it — not from the chapter prose — so new body text is invisible to search until its keywords land in `topic-index.json`.
+Vectors are built from each lesson's title, keywords, `description` and the `keyword_map` keys that point at it — not from the chapter prose — so new body text is invisible to search until `prepare-lessons.js` derives keys from it. Identifier keys are derived from the lesson text by `node skill-package/skills/claude-code-internals/scripts/prepare-lessons.js` (never by hand): each run adds, re-homes and removes them to match the current lessons, and `build.js --check` fails until it has run. Those generated keys, recorded per lesson in `identifier_keys`, feed the keyword layer only, not the TF-IDF vectors, and `lookup.sh` and the printed keyword lists leave them out. The hand-written keys are frozen in `references/hand-keywords.json`, which no script writes and nobody edits (`build.js --check` pins its bytes); `topic-index.json` projects them onto the lessons that exist, so deleting a lesson drops its keys on the next `prepare-lessons.js` run with no keyword edit and no flag. Every keyword field in `topic-index.json` is build output: never edit it by hand.
 
 ## Troubleshooting
 
@@ -411,6 +411,7 @@ claude-code-internals/
 │           │   │   ├── registry.json       Structured records (env vars, gates, commands, IPC…)
 │           │   │   └── *.md                One page per domain (Cowork architecture, permissions…)
 │           │   ├── topic-index.json    Lesson index; the TF-IDF search index is derived from it
+│           │   ├── hand-keywords.json  Frozen hand-written keywords (never edited; projected into topic-index)
 │           │   ├── cross-references.json
 │           │   └── troubleshooting.json
 │           └── scripts/
@@ -422,6 +423,7 @@ claude-code-internals/
 │               ├── search.js               Unified RRF search (keyword + TF-IDF)
 │               ├── semantic-search.js      TF-IDF search
 │               ├── lib/tfidf-index.js      In-memory TF-IDF index (built from topic-index, cached)
+│               ├── prepare-lessons.js      Derives keyword_map keys from lesson identifiers
 │               ├── lookup.sh               Keyword search
 │               ├── check-version.sh        Version staleness detection
 │               ├── state.js                Current-state lookup + --audit CLI

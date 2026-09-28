@@ -16,7 +16,10 @@ jobs:
       - name: JSON index format
         run: node skill-package/skills/claude-code-internals/scripts/check-json-format.js
       # Lesson bounds and lesson/chapter counts are derived from the reference
-      # files; fail if any is stale.
+      # files; fail if any is stale, or if topic-index.json's keyword fields are
+      # not what prepare-lessons.js derives (the frozen hand-keywords.json
+      # projected onto the live lessons, plus keys derived from the lesson text),
+      # hand-keywords.json was edited, or the unreachable count rose.
       - name: Derived fields
         run: node skill-package/skills/claude-code-internals/scripts/build.js --check
       # Retrieval quality gate: the generated question set (evals/retrieval/)

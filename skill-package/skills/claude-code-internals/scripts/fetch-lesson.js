@@ -16,6 +16,8 @@
 const fs = require('fs');
 const path = require('path');
 const { loadSiteLinks, lessonFooter } = require('./site-links.js');
+// --meta shows hand keywords only (generated identifier keys are not printed).
+const { handKeywords } = require('./lib/keyword-provenance.js');
 
 const SKILL_DIR = path.resolve(__dirname, '..');
 const TOPIC_INDEX = path.join(SKILL_DIR, 'references', 'topic-index.json');
@@ -175,7 +177,7 @@ if (args.includes('--meta')) {
     startLine: lesson.startLine,
     endLine: lesson.endLine,
     lineCount: (lesson.endLine - lesson.startLine) + 1,
-    keywords: lesson.keywords || [],
+    keywords: handKeywords(lesson),
   }, null, 2));
   process.exit(0);
 }

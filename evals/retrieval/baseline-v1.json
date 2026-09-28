@@ -12,6 +12,14 @@
     "top_k_floor": 10,
     "identifier_top1_loss": true
   },
+  "waivers": [
+    {
+      "qid": "id-0033",
+      "rank": 2,
+      "reason": "phase 3 counts member-access mentions correctly; .consolidate-lock moved from a false tie [L16, L62] to L62, which mentions it 3 times vs L16's 2. Remove when questions-v2 adds acceptable-answer sets",
+      "commit": "phase 3 (after 6f9595c)"
+    }
+  ],
   "by_stratum_split": {
     "identifier|dev": {
       "n": 142,

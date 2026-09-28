@@ -5,7 +5,8 @@
  *
  * There is no committed index file. The index is a pure function of
  * topic-index.json (lesson title + keywords + description + every keyword_map
- * key that points at the lesson), so it is derived on load and cached, keyed by
+ * key that points at the lesson, minus the keys prepare-lessons.js appended —
+ * see generatedKeys()), so it is derived on load and cached, keyed by
  * a hash of the topic-index bytes and BUILDER_VERSION.
  *
  * RANKINGS ARE A CONTRACT. The arithmetic below reproduces the retired
@@ -129,18 +130,35 @@ function computeIDF(docTokenSets) {
   return idf;
 }
 
-/** The text a lesson is indexed under. */
-function lessonText(lesson, keywordMap) {
+/**
+ * Keys scripts/prepare-lessons.js appended, as recorded per lesson in
+ * `identifier_keys`. They reach the KEYWORD layer only: the TF-IDF text leaves
+ * them out, so every pre-existing lesson vector, idf value and vocabulary entry
+ * is exactly what it was before any append. Feeding them in shifted TF
+ * normalisation and vector norms across hundreds of lessons and flipped
+ * registry top-1 cases on exact RRF ties (plan §4.7, "Prototype result").
+ * A later generated-key record (phase 3b vocabulary) joins this set.
+ */
+function generatedKeys(lesson) {
+  return new Set(lesson.identifier_keys || []);
+}
+
+/**
+ * The text a lesson is indexed under. A generated key only ever maps to the
+ * lessons that recorded it, so excluding a lesson's OWN records is exact.
+ */
+function lessonText(lesson, keywordMap, generated = generatedKeys(lesson)) {
+  const keywords = (lesson.keywords || []).filter((kw) => !generated.has(kw));
   const relatedTopics = new Set();
   if (keywordMap) {
     for (const [kw, ids] of Object.entries(keywordMap)) {
-      if (ids.includes(lesson.id)) relatedTopics.add(kw);
+      if (ids.includes(lesson.id) && !generated.has(kw)) relatedTopics.add(kw);
     }
   }
-  for (const kw of (lesson.keywords || [])) relatedTopics.add(kw);
+  for (const kw of keywords) relatedTopics.add(kw);
   return [
     lesson.title,
-    (lesson.keywords || []).join(' '),
+    keywords.join(' '),
     lesson.description || '',
     [...relatedTopics].join(' '),
   ].join(' ');
@@ -311,6 +329,6 @@ function loadIndex({ topicIndexPath, topicBytes, topicIndex, env = process.env }
 
 module.exports = {
   BUILDER_VERSION, INDEX_STOP_WORDS, QUERY_STOP_WORDS,
-  tokenize, tokenizeQuery, termFrequency, computeIDF, lessonText, buildIndex,
+  tokenize, tokenizeQuery, termFrequency, computeIDF, generatedKeys, lessonText, buildIndex,
   cacheDirs, selectCacheDir, isTrustedDir, validCacheEntry, cacheKey, loadIndex,
 };

@@ -438,7 +438,8 @@ claude-code-internals-skill/
 |   |   +-- 03-interface-infrastructure.md
 |   |   +-- 04-connectivity-plugins.md
 |   |   +-- 05-unreleased-bigpicture.md
-|   |   +-- topic-index.json        Lesson index and keyword map
+|   |   +-- topic-index.json        Lesson index and keyword map (keyword fields are build output)
+|   |   +-- hand-keywords.json      Frozen hand-written keywords (never edited)
 |   +-- scripts/
 |       +-- lookup.sh               Keyword search (jq)
 |       +-- semantic-search.js      TF-IDF search (Node.js)
@@ -476,12 +477,13 @@ The `claude-code-internals.zip` file is the complete, shareable package. It cont
 | `version.json` | Version metadata plus the cumulative per-release verification record |
 | `hooks-config.json` | Example PreToolUse hook definition (portable paths) |
 | `references/*.md` | The chapter files holding every lesson |
-| `references/topic-index.json` | Per-lesson bounds and keywords, plus the keyword map |
+| `references/topic-index.json` | Per-lesson bounds and keywords, plus the keyword map (keyword fields derived by `prepare-lessons.js`) |
+| `references/hand-keywords.json` | The frozen hand-written keywords that `topic-index.json` projects; never edited, never written by a script |
 | `references/cross-references.json` | Lesson-to-lesson links |
 | `references/troubleshooting.json` | Symptom entries with lesson pointers and hints |
 | `references/state/` | Current-state layer — domain pages, `registry.json`, `author-facts.json` |
 | `scripts/` (query) | `search.js` (unified RRF — use this by default), `semantic-search.js`, `lib/tfidf-index.js` (the TF-IDF index, derived from `topic-index.json` at load and cached outside the skill directory), `lookup.sh`, `fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `state.js` |
-| `scripts/` (maintenance) | `build.js`, `validate-state.js`, `check-json-format.js`, `count-symbol.js`, `check-version.sh`, `extract-bundle.sh`, `diff-versions.sh`, `config-aware-hook.sh` |
+| `scripts/` (maintenance) | `build.js`, `prepare-lessons.js`, `validate-state.js`, `check-json-format.js`, `count-symbol.js`, `check-version.sh`, `extract-bundle.sh`, `diff-versions.sh`, `config-aware-hook.sh` |
 | `scripts/tests/` | Tests guarding release consistency, derived fields, JSON canonical format, search and the state layer |
 
 The zip is exactly `skill-package/skills/claude-code-internals/`, so it does **not** contain this README or the LICENSE — those live in the repository.
@@ -500,7 +502,7 @@ See `version.json` for the real, current values of the fields above. When Claude
 
 1. Re-download lessons from the source
 2. Replace the files in `references/`
-3. Run `node scripts/build.js` to re-derive lesson bounds and counts (the TF-IDF index is derived from `topic-index.json` at search time; nothing to rebuild)
+3. Run `node scripts/build.js` to re-derive lesson bounds and counts (the TF-IDF index is derived from `topic-index.json` at search time; nothing to rebuild), then `node scripts/prepare-lessons.js` to derive the keyword fields of `topic-index.json` (`build.js --check` fails until it has run). Never edit keywords by hand: the hand-written ones are frozen in `references/hand-keywords.json`, and adding or deleting a lesson needs no keyword edit and no flag
 4. Update `version.json` with the new version
 
 ## Platform Compatibility

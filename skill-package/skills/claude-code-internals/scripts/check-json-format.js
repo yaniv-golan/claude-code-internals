@@ -54,6 +54,7 @@ const PINNED = {
   'cross-references.json':     { indent: 1, trailingNewline: true },
   'troubleshooting.json':      { indent: 1, trailingNewline: true },
   'topic-index.json':          { indent: 2, trailingNewline: true },
+  'hand-keywords.json':        { indent: 2, trailingNewline: true }, // frozen; no script writes it
   'state/registry.json':       { indent: 2, trailingNewline: true },
   'state/author-facts.json':   { indent: 2, trailingNewline: true },
   'site-links.json':           { indent: 2, trailingNewline: true }, // written by site/generator/build.js
