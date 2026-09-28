@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.59.1 — 2026-09-29 (this fork) — saving skills from chat can be blocked by plan
+
+No new lessons; counts stay 218/59.
+
+- `plugins.edit-a-skill-in-chat` now says what gates it. In Desktop 2.9939.4 the tool is registered only when the
+  session may save skills. The `skill_creation` access-list entry blocks it for `blocked_by_org_admin`,
+  `blocked_by_org_tier` or `blocked_by_entitlement`, and a server gate (`3469616823`) bypasses that check. So an admin
+  can turn it off, and a plan tier or entitlement can withhold it. Verified in the asar after a sibling session
+  flagged it.
+
 ## v2.59.0 — 2026-09-29 (this fork) — creating and changing a skill by asking in chat
 
 No new lessons; counts stay 218/59. Measured live on 2026-09-29 (Desktop 2.9939.4, agent 2.1.284) and read from the

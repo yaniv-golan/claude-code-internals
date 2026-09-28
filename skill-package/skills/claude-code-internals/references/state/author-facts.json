@@ -1093,7 +1093,7 @@
       },
       "caveats": [
         "Skills belong to an organization. A skill uploaded while the application was in one organization is not visible to, and cannot be changed from, a session in another.",
-        "Whether a session may save skills depends on organization settings and an access list, so not every user will be offered it. Measured on one account, 2026-09-29."
+        "Whether a session may save skills depends on the organization's settings and plan: an admin can turn it off, and the access list can block it by plan tier or entitlement, so not every user will be offered it. The live behaviour was measured on one account, 2026-09-29; the gating is read from the desktop application's code."
       ],
       "verified": {
         "date": "2026-09-29",
