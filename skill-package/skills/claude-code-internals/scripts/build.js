@@ -19,9 +19,11 @@
  * fetch-lesson.js slices with.
  *
  * HEADINGS. A lesson heading is a line matching /^#{1,4}\s*LESSON\s+0*\d+/i
- * OUTSIDE fenced code (``` or ~~~). Its lesson number is the parenthesised
- * "(Lesson N)" when present (legacy files number lessons within the file and
- * put the real number in parens), else the leading number. A topic-index
+ * OUTSIDE fenced code (``` or ~~~). A fence still open at EOF is a validation
+ * error naming the file and the fence's line. Its lesson number is the leading
+ * number, except in the legacy files 01-05, which number lessons within the
+ * file and put the real number in a parenthesised "(Lesson N)" (only 03 does
+ * today); outside those files a "(Lesson N)" is a cross-reference. A topic-index
  * lesson with a numeric lesson_number matches the heading carrying that number;
  * the ten legacy lessons with a word lesson_number ("KAIROS", ...) match by the
  * first distinctive token of their title. Lessons are matched by (file, heading)
@@ -30,7 +32,18 @@
  *
  * COVERAGE. Every non-blank, non-separator line from a file's first lesson
  * heading to EOF must belong to exactly one lesson. Lines before the first
- * lesson heading (title, TOC) are out of scope.
+ * lesson heading (title, TOC) are out of scope. The invariant is checked twice:
+ * on the derived bounds (a guard on the bounds algorithm itself; they cover by
+ * construction) and, in --check mode, on the STORED bounds in topic-index.json,
+ * which are what fetch-lesson.js slices. The second is the check that fails
+ * when stored bounds would silently drop content: it reports each uncovered or
+ * doubly-covered line, beside the stale-field diff.
+ *
+ * WRITES. Every file read is hashed. Before writing, build.js re-reads and
+ * re-hashes all of them (and re-lists the reference files); if anything
+ * changed since the run started (a peer session editing a lesson) it aborts
+ * and writes nothing. Each output is written to a temp file beside it and
+ * renamed into place.
  *
  * CHAPTERS. Distinct `# Chapter N` headings (outside fences) plus chapters 1-8,
  * which predate the one-chapter-per-file convention and live, unheaded, in the
@@ -38,6 +51,10 @@
  *
  * JSON is rewritten through check-json-format.js's order-preserving parser and
  * emitter, so integer-like keys keep their order and only changed values move.
+ * A derived key that is missing (a new lesson entry written without bounds) is
+ * inserted where existing entries carry it: startLine/endLine after `file`,
+ * total_lessons after `source`, lessons_count/chapters_count after
+ * `verified_against_binary`.
  *
  *   node scripts/build.js            write derived fields
  *   node scripts/build.js --check    compare only; exit 1 listing every stale field/file
@@ -48,6 +65,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { parseOrdered, emit, PINNED } = require('./check-json-format.js');
 
 const LESSON_HEADING = /^#{1,4}\s*LESSON\s+0*(\d+)/i;
@@ -59,21 +77,25 @@ const REFERENCE_FILE = /^\d\d-.*\.md$/;
 
 // --- scanning -----------------------------------------------------------------
 
-/** Split text into lines and record, per line, whether it is inside (or is) a fence. */
+/**
+ * Split text into lines and record, per line, whether it is inside (or is) a fence.
+ * `unclosedFence` is the 1-based line of a fence still open at EOF, else null.
+ */
 function scanLines(text) {
   const lines = text.split('\n');
   const inFence = new Array(lines.length).fill(false);
   let fence = null; // the opening marker, e.g. '```' or '~~~~'
+  let fenceLine = null;
   for (let i = 0; i < lines.length; i++) {
     const m = lines[i].match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
     if (!fence) {
-      if (m && !(m[1][0] === '`' && m[2].includes('`'))) { fence = m[1]; inFence[i] = true; }
+      if (m && !(m[1][0] === '`' && m[2].includes('`'))) { fence = m[1]; fenceLine = i + 1; inFence[i] = true; }
       continue;
     }
     inFence[i] = true;
-    if (m && m[1][0] === fence[0] && m[1].length >= fence.length && m[2].trim() === '') fence = null;
+    if (m && m[1][0] === fence[0] && m[1].length >= fence.length && m[2].trim() === '') { fence = null; fenceLine = null; }
   }
-  return { lines, inFence };
+  return { lines, inFence, unclosedFence: fence ? fenceLine : null };
 }
 
 const isBlank = (s) => s.trim() === '';
@@ -103,15 +125,19 @@ function trimEnd(lines, inFence, start, stop) {
   return e;
 }
 
-/** Lesson headings and chapter numbers outside fences. Lines are 1-based. */
-function findHeadings(lines, inFence) {
+/**
+ * Lesson headings and chapter numbers outside fences. Lines are 1-based.
+ * `legacy` (files 01-05) enables the parenthesised "(Lesson N)" numbering rule;
+ * elsewhere a "(Lesson N)" in a heading is a cross-reference, not its number.
+ */
+function findHeadings(lines, inFence, { legacy = false } = {}) {
   const headings = [];
   const chapters = [];
   for (let i = 0; i < lines.length; i++) {
     if (inFence[i]) continue;
     const m = lines[i].match(LESSON_HEADING);
     if (m) {
-      const p = lines[i].match(PAREN_NUMBER);
+      const p = legacy ? lines[i].match(PAREN_NUMBER) : null;
       headings.push({ line: i + 1, text: lines[i], number: Number(p ? p[1] : m[1]) });
     }
     const c = lines[i].match(CHAPTER_HEADING);
@@ -156,10 +182,21 @@ function checkCoverage(lines, inFence, bounds, file = '') {
 
 const entryIndex = (obj, key) => obj.entries.findIndex(([k]) => k === JSON.stringify(key));
 const getNode = (obj, key) => { const i = entryIndex(obj, key); return i < 0 ? null : obj.entries[i][1]; };
-function setRaw(obj, key, value) {
+/**
+ * Set a key's raw value. A missing key is inserted at its canonical position:
+ * right after the last of `after` (its predecessors, nearest first) that is
+ * present, else at the end — so a new lesson entry written without bounds
+ * gets them in the same place every other entry carries them.
+ */
+function setRaw(obj, key, value, after = []) {
   const node = getNode(obj, key);
-  if (!node) throw new Error(`missing key ${key}`);
-  node.text = JSON.stringify(value);
+  if (node) { node.text = JSON.stringify(value); return; }
+  const entry = [JSON.stringify(key), { t: 'raw', text: JSON.stringify(value) }];
+  for (const prev of after) {
+    const i = entryIndex(obj, prev);
+    if (i >= 0) { obj.entries.splice(i + 1, 0, entry); return; }
+  }
+  obj.entries.push(entry);
 }
 function dropKey(obj, key) {
   const i = entryIndex(obj, key);
@@ -172,15 +209,26 @@ function serialize(tree, rel, fallback) {
 
 // --- the build ----------------------------------------------------------------
 
+const sha256 = (s) => crypto.createHash('sha256').update(s).digest('hex');
+const listReferenceFiles = (refs) => fs.readdirSync(refs).filter((f) => REFERENCE_FILE.test(f)).sort();
+
 /**
  * Compute everything in memory. Returns
- *   { errors, outputs: [{rel, abs, text}], bounds: Map(id -> {startLine,endLine}),
- *     lessonsCount, chaptersCount, topic }
+ *   { errors, coverage, outputs: [{rel, abs, before, text}],
+ *     bounds: Map(id -> {startLine,endLine}), lessonsCount, chaptersCount, topic,
+ *     inputs: Map(abs -> sha256), refsDir, referenceFiles }
+ * `coverage` lists the coverage problems of the STORED bounds (see COVERAGE);
+ * main() reports them in --check mode.
  */
 function build(skillDir) {
   const refs = path.join(skillDir, 'references');
   const errors = [];
-  const read = (p) => fs.readFileSync(p, 'utf8');
+  const inputs = new Map(); // every file read -> sha256 of the content read
+  const read = (p) => {
+    const text = fs.readFileSync(p, 'utf8');
+    inputs.set(p, sha256(text));
+    return text;
+  };
 
   const topicRel = 'topic-index.json';
   const topicAbs = path.join(refs, topicRel);
@@ -198,12 +246,15 @@ function build(skillDir) {
   }
 
   // scan every reference file
-  const files = fs.readdirSync(refs).filter((f) => REFERENCE_FILE.test(f)).sort();
+  const files = listReferenceFiles(refs);
   const scanned = new Map();
   const explicitChapters = new Set();
   for (const f of files) {
     const s = scanLines(read(path.join(refs, f)));
-    const h = findHeadings(s.lines, s.inFence);
+    if (s.unclosedFence !== null) {
+      errors.push(`${f}:${s.unclosedFence} opens a code fence that is never closed (everything after it is treated as code)`);
+    }
+    const h = findHeadings(s.lines, s.inFence, { legacy: LEGACY_FILES.test(f) });
     scanned.set(f, { ...s, ...h });
     for (const c of h.chapters) explicitChapters.add(c);
     if (LEGACY_FILES.test(f) && h.chapters.length) {
@@ -242,7 +293,16 @@ function build(skillDir) {
   }
 
   // bounds + coverage, per file
+  const coverage = [];
   for (const [f, s] of scanned) {
+    // The STORED bounds, as fetch-lesson.js will slice them. Derived bounds
+    // cover by construction; these are what can silently drop content.
+    const stored = topic.lessons
+      .filter((l) => l.file === f && Number.isInteger(l.startLine) && Number.isInteger(l.endLine)
+        && l.startLine >= 1 && l.endLine >= l.startLine) // garbage bounds fail on the diff instead
+      .map((l) => ({ id: l.id, startLine: l.startLine, endLine: l.endLine }));
+    coverage.push(...checkCoverage(s.lines, s.inFence, stored, f).map((p) => `stored bounds: ${p}`));
+
     const heads = s.headings
       .map((h) => ({ ...h, owners: headingOwner.get(`${f}:${h.line}`) || [] }))
       .filter((h) => h.owners.length === 1);
@@ -279,17 +339,20 @@ function build(skillDir) {
     for (const id of s.lessons || []) if (!ids.has(id)) errors.push(`troubleshooting.json symptoms[${i}] references missing lesson ${id}`);
   });
 
+  const vAbs = path.join(skillDir, 'version.json');
+  const vRaw = read(vAbs);
+
   const outputs = [];
   const lessonsCount = topic.lessons.length;
   if (!errors.length) {
     // topic-index
     dropKey(topicTree, 'generated');
-    setRaw(topicTree, 'total_lessons', lessonsCount);
+    setRaw(topicTree, 'total_lessons', lessonsCount, ['source']);
     for (const item of getNode(topicTree, 'lessons').items) {
       const id = Number(getNode(item, 'id').text);
       const b = bounds.get(id);
-      setRaw(item, 'startLine', b.startLine);
-      setRaw(item, 'endLine', b.endLine);
+      setRaw(item, 'startLine', b.startLine, ['file', 'lesson_number', 'description', 'title']);
+      setRaw(item, 'endLine', b.endLine, ['startLine']);
     }
     outputs.push({ rel: `references/${topicRel}`, abs: topicAbs, before: topicRaw, text: serialize(topicTree, topicRel) });
 
@@ -300,15 +363,59 @@ function build(skillDir) {
     }
 
     // version.json (not pinned by check-json-format; its canonical form is indent 2 + newline)
-    const vAbs = path.join(skillDir, 'version.json');
-    const vRaw = read(vAbs);
     const vTree = parseOrdered(vRaw);
-    setRaw(vTree, 'lessons_count', lessonsCount);
-    setRaw(vTree, 'chapters_count', chaptersCount);
+    setRaw(vTree, 'lessons_count', lessonsCount, ['verified_against_binary', 'source', 'captured_date']);
+    setRaw(vTree, 'chapters_count', chaptersCount, ['lessons_count']);
     outputs.push({ rel: 'version.json', abs: vAbs, before: vRaw, text: serialize(vTree, null, { indent: 2, trailingNewline: true }) });
   }
 
-  return { errors, outputs, bounds, lessonsCount, chaptersCount, topic };
+  return { errors, coverage, outputs, bounds, lessonsCount, chaptersCount, topic, inputs, refsDir: refs, referenceFiles: files };
+}
+
+/**
+ * Inputs that changed on disk since build() read them: a different hash, a
+ * vanished file, or a reference file added/removed. Empty when nothing moved.
+ */
+function changedInputs(derived) {
+  const changed = [];
+  for (const [abs, hash] of derived.inputs) {
+    let now = null;
+    try { now = sha256(fs.readFileSync(abs, 'utf8')); } catch { /* vanished */ }
+    if (now !== hash) changed.push(abs);
+  }
+  const listed = listReferenceFiles(derived.refsDir);
+  if (listed.join('\n') !== derived.referenceFiles.join('\n')) changed.push(`${derived.refsDir} (reference files added or removed)`);
+  return changed;
+}
+
+/** Write via a temp file in the same directory, then rename over the target. */
+function writeAtomic(abs, text) {
+  const tmp = `${abs}.${process.pid}.${crypto.randomBytes(4).toString('hex')}.tmp`;
+  try {
+    fs.writeFileSync(tmp, text);
+    fs.renameSync(tmp, abs);
+  } finally {
+    try { fs.unlinkSync(tmp); } catch { /* renamed away, or never created */ }
+  }
+}
+
+/**
+ * Write the changed outputs, but only if no input changed since build() read
+ * it (a peer session editing a lesson mid-run): otherwise throw and write
+ * nothing, since the derived fields describe content that is no longer there.
+ * Returns the outputs written.
+ */
+function writeOutputs(derived) {
+  const changed = derived.outputs.filter((o) => o.text !== o.before);
+  if (!changed.length) return changed;
+  const moved = changedInputs(derived);
+  if (moved.length) {
+    const err = new Error(`inputs changed while build.js was running; nothing written. Re-run build.js.\n  ${moved.join('\n  ')}`);
+    err.code = 'EINPUTCHANGED';
+    throw err;
+  }
+  for (const o of changed) writeAtomic(o.abs, o.text);
+  return changed;
 }
 
 /** Human-readable list of what differs between two versions of an output file. */
@@ -355,22 +462,33 @@ function main(argv) {
     if (stale.length) {
       console.error(`build.js --check: ${stale.length} stale derived field(s) — run node scripts/build.js`);
       for (const s of stale) console.error(`  ${s}`);
-      return 1;
     }
+    if (derived.coverage.length) {
+      const shown = derived.coverage.slice(0, 20);
+      console.error(`build.js --check: ${derived.coverage.length} line(s) not covered exactly once by the stored bounds — run node scripts/build.js`);
+      for (const s of shown) console.error(`  ${s}`);
+      if (derived.coverage.length > shown.length) console.error(`  ... and ${derived.coverage.length - shown.length} more`);
+    }
+    if (stale.length || derived.coverage.length) return 1;
     console.log(`derived fields OK (${derived.lessonsCount} lessons, ${derived.chaptersCount} chapters)`);
     return 0;
   }
 
-  for (const o of changed) {
-    fs.writeFileSync(o.abs, o.text);
-    console.log(`wrote ${o.rel}`);
+  let written;
+  try {
+    written = writeOutputs(derived);
+  } catch (e) {
+    if (e.code !== 'EINPUTCHANGED') throw e;
+    console.error(`build.js: ${e.message}`);
+    return 1;
   }
-  if (!changed.length) console.log('derived fields already up to date');
+  for (const o of written) console.log(`wrote ${o.rel}`);
+  if (!written.length) console.log('derived fields already up to date');
   return 0;
 }
 
 module.exports = {
   scanLines, isThematicBreak, isSeparator, trimEnd, findHeadings,
-  lessonMatchesHeading, checkCoverage, build,
+  lessonMatchesHeading, checkCoverage, build, changedInputs, writeOutputs,
 };
 if (require.main === module) process.exitCode = main(process.argv.slice(2));

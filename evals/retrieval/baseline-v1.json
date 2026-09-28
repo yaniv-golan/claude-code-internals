@@ -6,6 +6,12 @@
     "model": "claude-sonnet-5"
   },
   "top": 20,
+  "thresholds": {
+    "mrr_ndcg_drop": 0.02,
+    "rank_drop_k": 3,
+    "top_k_floor": 10,
+    "identifier_top1_loss": true
+  },
   "by_stratum_split": {
     "identifier|dev": {
       "n": 142,

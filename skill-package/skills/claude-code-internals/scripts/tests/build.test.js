@@ -18,6 +18,7 @@ const SCRIPTS = path.join(__dirname, '..');
 const SKILL_DIR = path.join(SCRIPTS, '..');
 const BUILD = path.join(SCRIPTS, 'build.js');
 const B = require('../build.js');
+const { parseOrdered, emit } = require('../check-json-format.js');
 
 function run(args) {
   try {
@@ -127,6 +128,117 @@ test('a reference to a missing lesson id fails validation', () => {
   assert.match(r.out, /troubleshooting\.json symptoms\[0\] references missing lesson 9999/);
 });
 
+const LAST_FILE = '21-cowork-control-protocol.md';
+
+test('a fence left open at EOF fails validation, naming the file and line', () => {
+  const dir = fixture();
+  const file = path.join(dir, 'references', LAST_FILE);
+  const n = fs.readFileSync(file, 'utf8').split('\n').length;
+  fs.appendFileSync(file, '\n```js\nconst x = 1;\n\n---\n');
+  const r = run(['--check', '--root', dir]);
+  assert.strictEqual(r.code, 1, r.out);
+  assert.match(r.out, new RegExp(`${LAST_FILE.replace(/\./g, '\\.')}:${n + 1} opens a code fence that is never closed`));
+});
+
+test('a "(Lesson N)" cross-reference in a modern heading does not renumber it', () => {
+  const dir = fixture();
+  const file = path.join(dir, 'references', LAST_FILE);
+  const start = topicOf(dir).lessons.find((l) => l.id === 107).startLine;
+  editLines(file, (l) => { l[start - 1] += ' (Lesson 5)'; return l; });
+  const r = run(['--check', '--root', dir]);
+  assert.strictEqual(r.code, 0, r.out);
+});
+
+test('a new lesson entry without startLine/endLine gets them at the canonical position', () => {
+  const dir = fixture();
+  const ti = path.join(dir, 'references', 'topic-index.json');
+  const file = path.join(dir, 'references', LAST_FILE);
+  const topic = topicOf(dir);
+  const newId = Math.max(...topic.lessons.map((l) => l.id)) + 1;
+  const newNum = Math.max(...topic.lessons.map((l) => Number(l.lesson_number) || 0)) + 1;
+  fs.appendFileSync(file, `\n---\n\n# LESSON ${newNum} — A brand new lesson\n\nbody text\n`);
+  const headingLine = fs.readFileSync(file, 'utf8').split('\n').indexOf(`# LESSON ${newNum} — A brand new lesson`) + 1;
+  // Append through the order-preserving parser: keyword_map has integer-like
+  // keys that a JSON.parse/stringify round trip would reorder.
+  const tree = parseOrdered(fs.readFileSync(ti, 'utf8'));
+  const lessons = tree.entries.find(([k]) => k === '"lessons"')[1];
+  lessons.items.push(parseOrdered(JSON.stringify({ id: newId, title: 'A brand new lesson', lesson_number: newNum, file: LAST_FILE, keywords: [] })));
+  fs.writeFileSync(ti, emit(tree, 2) + '\n');
+
+  const stale = run(['--check', '--root', dir]);
+  assert.strictEqual(stale.code, 1, stale.out);
+  assert.match(stale.out, new RegExp(`lesson ${newId} startLine undefined, expected ${headingLine}`));
+
+  const w = run(['--root', dir]);
+  assert.strictEqual(w.code, 0, w.out);
+  const raw = fs.readFileSync(ti, 'utf8');
+  assert.strictEqual(raw, emit(parseOrdered(raw), 2) + '\n', 'topic-index.json is not in canonical form after the write');
+  const after = JSON.parse(raw).lessons;
+  const added = after.find((l) => l.id === newId);
+  assert.deepStrictEqual(Object.keys(added), ['id', 'title', 'lesson_number', 'file', 'startLine', 'endLine', 'keywords']);
+  assert.deepStrictEqual(Object.keys(added), Object.keys(after.find((l) => l.id === 107)));
+  assert.strictEqual(added.startLine, headingLine);
+  assert.strictEqual(added.endLine, headingLine + 2);
+  assert.strictEqual(JSON.parse(raw).total_lessons, topic.lessons.length + 1);
+  assert.strictEqual(run(['--check', '--root', dir]).code, 0);
+});
+
+test('version.json missing lessons_count/chapters_count gets them after verified_against_binary', () => {
+  const dir = fixture();
+  const vp = path.join(dir, 'version.json');
+  const tree = parseOrdered(fs.readFileSync(vp, 'utf8'));
+  const keys0 = tree.entries.map(([k]) => k);
+  tree.entries = tree.entries.filter(([k]) => k !== '"lessons_count"' && k !== '"chapters_count"');
+  fs.writeFileSync(vp, emit(tree, 2) + '\n');
+  const w = run(['--root', dir]);
+  assert.strictEqual(w.code, 0, w.out);
+  assert.deepStrictEqual(parseOrdered(fs.readFileSync(vp, 'utf8')).entries.map(([k]) => k), keys0);
+  assert.strictEqual(run(['--check', '--root', dir]).code, 0);
+});
+
+test('stored bounds that leave content uncovered fail --check with a coverage message', () => {
+  const dir = fixture();
+  const ti = path.join(dir, 'references', 'topic-index.json');
+  const raw = fs.readFileSync(ti, 'utf8');
+  const l107 = topicOf(dir).lessons.find((l) => l.id === 107);
+  // Cut lesson 107 short by ten lines: those lines now belong to no lesson.
+  const re = new RegExp(`("startLine": ${l107.startLine},\\s*"endLine": )${l107.endLine}`);
+  assert.match(raw, re);
+  fs.writeFileSync(ti, raw.replace(re, `$1${l107.endLine - 10}`));
+  const r = run(['--check', '--root', dir]);
+  assert.strictEqual(r.code, 1, r.out);
+  assert.match(r.out, /line\(s\) not covered exactly once by the stored bounds/);
+  assert.match(r.out, new RegExp(`stored bounds: ${LAST_FILE.replace(/\./g, '\\.')}:\\d+ belongs to no lesson`));
+});
+
+test('an input edited while the build runs aborts the write, and nothing is written', () => {
+  const dir = fixture();
+  const file = path.join(dir, 'references', LAST_FILE);
+  editLines(file, (l) => [l[0], 'an inserted preamble line', ...l.slice(1)]); // make outputs stale
+  const ti = path.join(dir, 'references', 'topic-index.json');
+  const tiBefore = fs.readFileSync(ti, 'utf8');
+  const d = B.build(dir);
+  assert.deepStrictEqual(d.errors, []);
+  assert.ok(d.outputs.some((o) => o.text !== o.before), 'fixture should need a write');
+  fs.appendFileSync(file, '\nedited by a peer mid-run\n');
+  assert.throws(() => B.writeOutputs(d), (e) => e.code === 'EINPUTCHANGED' && e.message.includes(LAST_FILE));
+  assert.strictEqual(fs.readFileSync(ti, 'utf8'), tiBefore, 'topic-index.json was written despite the abort');
+
+  // A reference file appearing mid-run is a change too.
+  const d2 = B.build(fixture());
+  fs.writeFileSync(path.join(d2.refsDir, '99-new.md'), '# new\n');
+  assert.deepStrictEqual(B.changedInputs(d2).length, 1);
+});
+
+test('writes are atomic: no temp files are left beside the outputs', () => {
+  const dir = fixture();
+  editLines(path.join(dir, 'references', LAST_FILE), (l) => [l[0], 'x', ...l.slice(1)]);
+  assert.strictEqual(run(['--root', dir]).code, 0);
+  for (const d of [dir, path.join(dir, 'references')]) {
+    assert.deepStrictEqual(fs.readdirSync(d).filter((f) => f.endsWith('.tmp')), [], d);
+  }
+});
+
 // --- unit: scanner, trim rule, coverage -------------------------------------------
 
 const scan = (text) => B.scanLines(text);
@@ -137,9 +249,20 @@ test('headings inside ``` and ~~~ fences are not lesson headings', () => {
   assert.deepStrictEqual(h.map((x) => [x.line, x.number]), [[1, 1], [10, 4]]);
 });
 
-test('a parenthesised "(Lesson N)" is the heading\'s lesson number', () => {
+test('in a legacy file a parenthesised "(Lesson N)" is the heading\'s lesson number', () => {
   const s = scan('# LESSON 5: Permissions System (Lesson 06)');
-  assert.strictEqual(B.findHeadings(s.lines, s.inFence).headings[0].number, 6);
+  assert.strictEqual(B.findHeadings(s.lines, s.inFence, { legacy: true }).headings[0].number, 6);
+});
+
+test('outside the legacy files a "(Lesson N)" in a heading is a cross-reference, not its number', () => {
+  const s = scan('# LESSON 150 — follows on from hooks (Lesson 5)');
+  assert.strictEqual(B.findHeadings(s.lines, s.inFence).headings[0].number, 150);
+});
+
+test('the scanner reports a fence left open at EOF, with its line', () => {
+  assert.strictEqual(scan(['# LESSON 1', '```js', 'x', '```', 'y'].join('\n')).unclosedFence, null);
+  assert.strictEqual(scan(['# LESSON 1', 'a', '```js', 'x', '', '---'].join('\n')).unclosedFence, 3);
+  assert.strictEqual(scan(['~~~~', 'x', '~~~'].join('\n')).unclosedFence, 1); // a shorter fence does not close it
 });
 
 test('trim removes trailing blanks, one thematic break, and blanks again', () => {

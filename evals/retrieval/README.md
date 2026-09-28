@@ -27,15 +27,23 @@ design this implements.
   plain question per lesson, plus a sample of current-state questions and a batch of negatives.
   Writes `questions-v<N>.json`. Supports `--dry-run` (prints prompts, no calls), `--limit`,
   `--concurrency`, and resumes automatically from a `.partial` checkpoint (refuses to resume one
-  whose seed/model/prompt_version/version header doesn't match).
+  whose seed/model/prompt_version/version header doesn't match; a resumed run keeps the
+  checkpoint's lesson split). From v2 on, qids carry the version (`v2-id-0001`); v1's bare qids
+  are frozen. A plain question that never stops leaking is dropped, but its lesson's identifier
+  question is kept.
 - **`run.js`** — the scorer. Loads a `questions-vN.json` (latest by default) plus
   `registry-top1.json`, runs every question through `search.js`, reports MRR/nDCG@5 per
   stratum × split, a state-question reachability report, and a negatives score distribution.
-  `--save <file>` writes the report; `--baseline <file>` compares against a saved report and
-  exits 1 on a regression.
-- **`questions-v1.json`** — not yet generated in this pass (requires a real model call, which
-  this task was explicitly scoped to never make). Generate it by hand later with
-  `node gen-questions.js`.
+  `--save <file>` writes the report (with the thresholds in effect); `--baseline <file>` compares
+  against a saved report and exits 1 on a regression. The gate thresholds (`mrr_ndcg_drop`,
+  `rank_drop_k`, `top_k_floor`, `identifier_top1_loss`) are read from the baseline's
+  `thresholds`; `--mrr-threshold`, `--rank-drop-k` and `--top-k-floor` override one for a run, and
+  each value's source is printed. It fails, never passes vacuously, when the questions file has
+  no gated questions, its version differs from the baseline's, or a gated stratum × split or
+  question in the baseline is missing from the report; and on any identifier question that
+  loses top-1.
+- **`questions-v1.json`** + **`baseline-v1.json`** — the committed v1 question set and its
+  scored baseline, which CI gates on.
 
 ## How to (re)generate
 
@@ -50,10 +58,10 @@ node --test skill-package/skills/claude-code-internals/scripts/tests/registry-to
 node evals/retrieval/gen-questions.js --version 2   # v1, v2, ... never overwritten
 
 # 4. Score it and save a baseline:
-node evals/retrieval/run.js --save evals/retrieval/baseline-report.json
+node evals/retrieval/run.js --questions evals/retrieval/questions-v2.json --save evals/retrieval/baseline-v2.json
 
-# 5. On a later change, check for regressions:
-node evals/retrieval/run.js --baseline evals/retrieval/baseline-report.json
+# 5. On a later change, check for regressions (always name the question set the baseline scored):
+node evals/retrieval/run.js --baseline evals/retrieval/baseline-v1.json --questions evals/retrieval/questions-v1.json
 ```
 
 ## Rules
@@ -72,10 +80,8 @@ node evals/retrieval/run.js --baseline evals/retrieval/baseline-report.json
 - **Whole-set replacement only.** `questions-vN.json` is replaced as a whole new version on a
   fixed schedule (the plan says yearly or after 50 new lessons) — never edited piecemeal to drop
   an inconvenient question.
-- **CI runs only `registry-top1.test.js`** today. `run.js --baseline` is meant to gate CI once a
-  `questions-v1.json` and a saved baseline report exist (phase 3+); wiring that into
-  `validate.yml` is out of this task's scope (that file is owned by a concurrently-running
-  session per this task's brief).
+- **CI gates on `baseline-v1.json`** (`validate.yml`, `scripts/check-clean.sh`), scoring
+  `questions-v1.json` named explicitly, alongside `registry-top1.test.js`.
 
 ## Open decisions (flagged, not resolved here)
 

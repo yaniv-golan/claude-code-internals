@@ -21,12 +21,17 @@
  *   - entries are in topic-index lesson order (score ties keep that order).
  * Change any of that knowing results will move (the cache key follows the source).
  *
- * CACHE. One JSON file per (topic-index bytes, this file's source) in the first
- * writable directory of: $CCI_INDEX_CACHE_DIR (tests), else
- * $XDG_CACHE_HOME/claude-code-internals, ~/.cache/claude-code-internals,
- * <os.tmpdir()>/claude-code-internals. Never inside the skill directory, which
- * can be a read-only plugin mount. Any cache failure (unwritable, unreadable,
- * corrupt, wrong key) silently falls back to building in memory.
+ * CACHE. One JSON file per (topic-index bytes, this file's source) in ONE
+ * directory: the first of $CCI_INDEX_CACHE_DIR (tests), else
+ * $XDG_CACHE_HOME/claude-code-internals (only if absolute, per the XDG spec),
+ * ~/.cache/claude-code-internals, <os.tmpdir()>/claude-code-internals that
+ * exists or can be created, is owned by this user, is not group- or
+ * world-writable, and is writable. The cache is read only from that directory,
+ * never from a lower-priority one (a planted file in a shared tmpdir is never
+ * consulted). Never inside the skill directory, which can be a read-only plugin
+ * mount. An entry is used only after a deep shape check against the lessons
+ * (see validCacheEntry). Any cache failure (no usable directory, unreadable,
+ * corrupt, wrong key or shape) silently falls back to building in memory.
  * CCI_NO_INDEX_CACHE=1 disables the cache entirely. The key hashes this
  * module's own source as well as BUILDER_VERSION, so any edit to the arithmetic
  * invalidates old entries without anyone remembering to bump the constant. The
@@ -165,13 +170,52 @@ function buildIndex(topicIndex) {
 
 // --- Cache ------------------------------------------------------------------------
 
+/** Candidate cache directories, most preferred first. */
 function cacheDirs(env = process.env) {
   if (env.CCI_INDEX_CACHE_DIR) return [env.CCI_INDEX_CACHE_DIR];
   const dirs = [];
-  if (env.XDG_CACHE_HOME) dirs.push(path.join(env.XDG_CACHE_HOME, 'claude-code-internals'));
+  // The XDG spec says a relative $XDG_CACHE_HOME is invalid and must be ignored.
+  if (env.XDG_CACHE_HOME && path.isAbsolute(env.XDG_CACHE_HOME)) {
+    dirs.push(path.join(env.XDG_CACHE_HOME, 'claude-code-internals'));
+  }
   try { dirs.push(path.join(os.homedir(), '.cache', 'claude-code-internals')); } catch { /* no home */ }
   dirs.push(path.join(os.tmpdir(), 'claude-code-internals'));
   return dirs;
+}
+
+/**
+ * Is `dir` safe to trust as our cache? It must be a directory owned by this
+ * user and not group- or world-writable -- otherwise another local user could
+ * have planted an index there (a shared /tmp) that would steer every search.
+ * A symlinked leaf must itself be ours. Skipped where there are no uids (Windows).
+ */
+function isTrustedDir(dir) {
+  const uid = typeof process.getuid === 'function' ? process.getuid() : null;
+  const link = fs.lstatSync(dir);
+  const st = link.isSymbolicLink() ? fs.statSync(dir) : link;
+  if (!st.isDirectory()) return false;
+  if (uid === null) return true;
+  if (link.uid !== uid || st.uid !== uid) return false;
+  return (st.mode & 0o022) === 0;
+}
+
+/**
+ * The ONE directory this process reads the cache from and writes it to: the
+ * first candidate that exists (or can be created, mode 0700), is trusted, and
+ * is writable. Null when none qualifies (the index is then built in memory).
+ * Reading only from the directory we would write to means an entry planted in
+ * a lower-priority directory is never consulted.
+ */
+function selectCacheDir(dirs) {
+  for (const dir of dirs) {
+    try {
+      fs.mkdirSync(dir, { recursive: true, mode: 0o700 });
+      if (!isTrustedDir(dir)) continue;
+      fs.accessSync(dir, fs.constants.R_OK | fs.constants.W_OK);
+      return dir;
+    } catch { /* unusable: try the next one */ }
+  }
+  return null;
 }
 
 let builderSource = null;
@@ -182,42 +226,67 @@ function cacheKey(topicBytes) {
     .update(topicBytes).digest('hex');
 }
 
-function readCache(dirs, key) {
-  for (const dir of dirs) {
-    try {
-      const data = JSON.parse(fs.readFileSync(path.join(dir, `${CACHE_PREFIX}${key}.json`), 'utf8'));
-      if (data && data.key === key && Array.isArray(data.entries) && Array.isArray(data.vocabulary) && data.idf) {
-        return { entries: data.entries, vocabulary: data.vocabulary, idf: data.idf };
-      }
-    } catch { /* missing or unreadable: try the next one */ }
+const isPlainObject = (o) => o !== null && typeof o === 'object' && !Array.isArray(o)
+  && Object.getPrototypeOf(o) === Object.prototype;
+const allFinite = (o) => Object.values(o).every((v) => typeof v === 'number' && Number.isFinite(v));
+
+/**
+ * A cache entry is used only if it has exactly the shape buildIndex() returns
+ * for these lessons: one entry per lesson, same ids in the same order, tfidf
+ * and idf plain objects of finite numbers, vocabulary the sorted idf terms.
+ * Anything else is treated as a miss and rebuilt.
+ */
+function validCacheEntry(data, key, lessons) {
+  if (!isPlainObject(data) || data.key !== key) return false;
+  const { entries, vocabulary, idf } = data;
+  if (!Array.isArray(entries) || entries.length !== lessons.length) return false;
+  for (let i = 0; i < entries.length; i++) {
+    const e = entries[i];
+    if (!isPlainObject(e) || e.id !== lessons[i].id || !isPlainObject(e.tfidf) || !allFinite(e.tfidf)) return false;
   }
+  if (!isPlainObject(idf) || !allFinite(idf)) return false;
+  if (!Array.isArray(vocabulary) || !vocabulary.every((t) => typeof t === 'string')) return false;
+  const terms = Object.keys(idf).sort();
+  if (terms.length !== vocabulary.length || terms.some((t, i) => t !== vocabulary[i])) return false;
+  return true;
+}
+
+function readCache(dir, key, lessons) {
+  try {
+    const data = JSON.parse(fs.readFileSync(path.join(dir, `${CACHE_PREFIX}${key}.json`), 'utf8'));
+    if (validCacheEntry(data, key, lessons)) {
+      return { entries: data.entries, vocabulary: data.vocabulary, idf: data.idf };
+    }
+  } catch { /* missing, unreadable or corrupt: a miss */ }
   return null;
 }
 
-function writeCache(dirs, key, index) {
+function writeCache(dir, key, index) {
   const body = JSON.stringify({ key, builder: BUILDER_VERSION, ...index });
-  for (const dir of dirs) {
-    try {
-      fs.mkdirSync(dir, { recursive: true });
-      const file = path.join(dir, `${CACHE_PREFIX}${key}.json`);
-      const tmp = `${file}.${process.pid}.${crypto.randomBytes(4).toString('hex')}.tmp`;
-      fs.writeFileSync(tmp, body);
-      fs.renameSync(tmp, file);
-      // Best effort: keep only the newest CACHE_KEEP entries (never another
-      // process's in-flight .tmp file).
-      const old = fs.readdirSync(dir)
-        .filter((f) => f.startsWith(CACHE_PREFIX) && f.endsWith('.json') && f !== path.basename(file))
-        .map((f) => { try { return [f, fs.statSync(path.join(dir, f)).mtimeMs]; } catch { return null; } })
-        .filter(Boolean)
-        .sort((a, b) => b[1] - a[1])
-        .slice(CACHE_KEEP - 1);
-      for (const [f] of old) {
-        try { fs.unlinkSync(path.join(dir, f)); } catch { /* another process may own it */ }
-      }
-      return dir;
-    } catch { /* unwritable: try the next one */ }
+  const file = path.join(dir, `${CACHE_PREFIX}${key}.json`);
+  const tmp = `${file}.${process.pid}.${crypto.randomBytes(4).toString('hex')}.tmp`;
+  let renamed = false;
+  try {
+    fs.writeFileSync(tmp, body, { mode: 0o600 });
+    fs.renameSync(tmp, file);
+    renamed = true;
+    // Best effort: keep only the newest CACHE_KEEP entries (never another
+    // process's in-flight .tmp file).
+    const old = fs.readdirSync(dir)
+      .filter((f) => f.startsWith(CACHE_PREFIX) && f.endsWith('.json') && f !== path.basename(file))
+      .map((f) => { try { return [f, fs.statSync(path.join(dir, f)).mtimeMs]; } catch { return null; } })
+      .filter(Boolean)
+      .sort((a, b) => b[1] - a[1])
+      .slice(CACHE_KEEP - 1);
+    for (const [f] of old) {
+      try { fs.unlinkSync(path.join(dir, f)); } catch { /* another process may own it */ }
+    }
+    return true;
+  } catch {
+    return false; // unwritable or full: the in-memory index is still returned
+  } finally {
+    if (!renamed) { try { fs.unlinkSync(tmp); } catch { /* never created */ } }
   }
-  return null;
 }
 
 /**
@@ -227,20 +296,21 @@ function writeCache(dirs, key, index) {
  */
 function loadIndex({ topicIndexPath, topicBytes, topicIndex, env = process.env } = {}) {
   if (topicBytes === undefined) topicBytes = fs.readFileSync(topicIndexPath);
-  if (env.CCI_NO_INDEX_CACHE === '1') {
-    return buildIndex(topicIndex || JSON.parse(String(topicBytes)));
-  }
-  const dirs = cacheDirs(env);
+  if (!topicIndex) topicIndex = JSON.parse(String(topicBytes));
+  if (env.CCI_NO_INDEX_CACHE === '1') return buildIndex(topicIndex);
+  const dir = selectCacheDir(cacheDirs(env));
   const key = cacheKey(topicBytes);
-  const cached = readCache(dirs, key);
-  if (cached) return cached;
-  const index = buildIndex(topicIndex || JSON.parse(String(topicBytes)));
-  writeCache(dirs, key, index);
+  if (dir) {
+    const cached = readCache(dir, key, topicIndex.lessons);
+    if (cached) return cached;
+  }
+  const index = buildIndex(topicIndex);
+  if (dir) writeCache(dir, key, index);
   return index;
 }
 
 module.exports = {
   BUILDER_VERSION, INDEX_STOP_WORDS, QUERY_STOP_WORDS,
   tokenize, tokenizeQuery, termFrequency, computeIDF, lessonText, buildIndex,
-  cacheDirs, cacheKey, loadIndex,
+  cacheDirs, selectCacheDir, isTrustedDir, validCacheEntry, cacheKey, loadIndex,
 };

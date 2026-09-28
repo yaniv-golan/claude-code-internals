@@ -43,7 +43,18 @@
  * Usage:
  *   node run.js [--questions <file>] [--top 20]
  *   node run.js --save <report.json>
- *   node run.js --baseline <report.json> [--mrr-threshold 0.02] [--rank-drop-k 3]
+ *   node run.js --baseline <report.json> [--mrr-threshold F] [--rank-drop-k N] [--top-k-floor N]
+ *
+ * Gate thresholds live IN the baseline file (`thresholds`), so the numbers a
+ * baseline was accepted under travel with it. A CLI flag overrides one for a
+ * single run, and every run prints each value's source. `--save` embeds the
+ * thresholds that were in effect.
+ *
+ * The gate never passes vacuously: it fails when the questions file is
+ * missing or has no gated questions, when the report's question-set version
+ * differs from the baseline's, when a gated stratum x split or a gated
+ * question in the baseline is missing from the report, and on any
+ * identifier question that was top-1 and no longer is.
  */
 
 'use strict';
@@ -56,16 +67,31 @@ const lib = require('./lib.js');
 // CLI args
 // ---------------------------------------------------------------------------
 
+/** Used only when neither the baseline nor the command line sets a threshold. */
+const DEFAULT_THRESHOLDS = Object.freeze({
+  mrr_ndcg_drop: 0.02,          // max per-stratum x split drop in MRR or nDCG@5
+  rank_drop_k: 3,               // max ranks a single gated question may lose
+  top_k_floor: 10,              // a question in the top N must stay in it
+  identifier_top1_loss: true,   // an identifier question at rank 1 must stay at rank 1
+});
+
 function parseArgs(argv) {
-  const opts = { top: 20, questions: null, save: null, baseline: null, mrrThreshold: 0.02, rankDropK: 3 };
+  // Threshold flags stay undefined unless given, so the baseline's own values apply.
+  const opts = { top: 20, questions: null, save: null, baseline: null, mrrThreshold: undefined, rankDropK: undefined, topKFloor: undefined };
+  const num = (flag, v, parse) => {
+    const n = parse(v);
+    if (!Number.isFinite(n)) { process.stderr.write(`ERROR: ${flag} needs a number, got "${v}"\n`); process.exit(1); }
+    return n;
+  };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--questions') opts.questions = argv[++i];
     else if (a === '--top') opts.top = parseInt(argv[++i], 10);
     else if (a === '--save') opts.save = argv[++i];
     else if (a === '--baseline') opts.baseline = argv[++i];
-    else if (a === '--mrr-threshold') opts.mrrThreshold = parseFloat(argv[++i]);
-    else if (a === '--rank-drop-k') opts.rankDropK = parseInt(argv[++i], 10);
+    else if (a === '--mrr-threshold') opts.mrrThreshold = num(a, argv[++i], parseFloat);
+    else if (a === '--rank-drop-k') opts.rankDropK = num(a, argv[++i], (v) => parseInt(v, 10));
+    else if (a === '--top-k-floor') opts.topKFloor = num(a, argv[++i], (v) => parseInt(v, 10));
     else if (a === '--help' || a === '-h') { printUsage(); process.exit(0); }
     else { process.stderr.write(`ERROR: unknown argument "${a}"\n`); printUsage(); process.exit(1); }
   }
@@ -75,9 +101,30 @@ function parseArgs(argv) {
 function printUsage() {
   process.stderr.write(
     'Usage: run.js [--questions <file>] [--top N] [--save <report.json>]\n' +
-    '              [--baseline <report.json>] [--mrr-threshold F] [--rank-drop-k N]\n'
+    '              [--baseline <report.json>] [--mrr-threshold F] [--rank-drop-k N] [--top-k-floor N]\n'
   );
 }
+
+/**
+ * Resolve the gate thresholds: CLI flag, else the baseline's `thresholds`,
+ * else DEFAULT_THRESHOLDS. Returns { thresholds, sources } (source per key:
+ * "cli", "baseline" or "default").
+ */
+function resolveThresholds(opts, baseline) {
+  const fromBaseline = (baseline && baseline.thresholds) || {};
+  const cli = { mrr_ndcg_drop: opts.mrrThreshold, rank_drop_k: opts.rankDropK, top_k_floor: opts.topKFloor };
+  const thresholds = {};
+  const sources = {};
+  for (const k of Object.keys(DEFAULT_THRESHOLDS)) {
+    if (cli[k] !== undefined) { thresholds[k] = cli[k]; sources[k] = 'cli'; }
+    else if (fromBaseline[k] !== undefined) { thresholds[k] = fromBaseline[k]; sources[k] = 'baseline'; }
+    else { thresholds[k] = DEFAULT_THRESHOLDS[k]; sources[k] = 'default'; }
+  }
+  return { thresholds, sources };
+}
+
+const GATED_STRATA = new Set(['identifier', 'plain']);
+const countGated = (questionsData) => (questionsData.questions || []).filter((q) => GATED_STRATA.has(q.stratum)).length;
 
 /** Latest questions-v<N>.json in evals/retrieval/ by numeric N, or null. */
 function findLatestQuestions() {
@@ -248,6 +295,7 @@ function buildReport(questionsData, opts) {
     generated_at: new Date().toISOString(),
     questions_source: questionsData.version !== undefined ? { version: questionsData.version, seed: questionsData.seed, model: questionsData.model } : null,
     top: opts.top,
+    thresholds: opts.thresholds || { ...DEFAULT_THRESHOLDS },
     by_stratum_split: byStratumSplit,
     negatives,
     state_reachability: stateReachability,
@@ -265,53 +313,83 @@ function buildReport(questionsData, opts) {
 
 /**
  * Compare a fresh report against a saved baseline report. Returns
- * {ok, failures: string[]}. Fails on: any per-stratum×split MRR or nDCG@5
- * drop beyond `mrrThreshold`; any single lesson/state query whose rank
- * worsens by more than `rankDropK` ranks, or that falls out of the top 10
- * when it was previously in it (or was found and is now not found at all).
+ * {ok, failures: string[]}. `thresholds` is resolveThresholds()'s output
+ * (the legacy {mrrThreshold, rankDropK} opts shape is also accepted).
+ *
+ * Fails on:
+ *   - a question-set version that differs from the baseline's (or is missing),
+ *     since qids are only comparable within one version;
+ *   - a gated stratum x split in the baseline that the report lacks;
+ *   - a gated baseline question (keyed by version + qid) the report lacks;
+ *   - any per-stratum x split MRR or nDCG@5 drop beyond `mrr_ndcg_drop`;
+ *   - an identifier question at rank 1 in the baseline that is not at rank 1 now;
+ *   - any single gated question whose rank worsens by more than `rank_drop_k`,
+ *     falls out of the top `top_k_floor`, or was found and now is not.
+ * A stratum x split or question only in the report is new, not a regression.
  * Only the GATED_STRATA are compared. State questions are reported, not gated:
  * state.js cannot resolve a free-text question, and scoring them against
  * provenance lessons would count historical lessons as correct answers.
  * Negatives are reported, never gated (see file header).
  */
-const GATED_STRATA = new Set(['identifier', 'plain']);
-function compareToBaseline(report, baseline, opts) {
+function compareToBaseline(report, baseline, thresholdsIn) {
+  const t = thresholdsIn && thresholdsIn.mrrThreshold !== undefined
+    ? { ...DEFAULT_THRESHOLDS, mrr_ndcg_drop: thresholdsIn.mrrThreshold, rank_drop_k: thresholdsIn.rankDropK }
+    : { ...DEFAULT_THRESHOLDS, ...(thresholdsIn || {}) };
   const failures = [];
 
-  for (const key of new Set([...Object.keys(report.by_stratum_split), ...Object.keys(baseline.by_stratum_split)])) {
+  const versionOf = (r) => (r && r.questions_source && r.questions_source.version !== undefined ? r.questions_source.version : null);
+  const repV = versionOf(report);
+  const baseV = versionOf(baseline);
+  if (repV === null || baseV === null || repV !== baseV) {
+    failures.push(`question-set version mismatch: report is v${repV}, baseline is v${baseV} — score the baseline's question set (--questions questions-v${baseV}.json) or record a new baseline`);
+    return { ok: false, failures };
+  }
+
+  const isGatedKey = (key) => GATED_STRATA.has(key.split('|')[0]);
+  for (const key of Object.keys(baseline.by_stratum_split)) {
+    if (isGatedKey(key) && !report.by_stratum_split[key]) {
+      failures.push(`[${key}] gated stratum x split is in the baseline but missing from the report`);
+    }
+  }
+  for (const key of Object.keys(report.by_stratum_split)) {
     const cur = report.by_stratum_split[key];
     const base = baseline.by_stratum_split[key];
-    if (!cur || !base) continue; // stratum/split only in one report — not a regression to score here
-    if (!GATED_STRATA.has(key.split('|')[0])) continue;
-    if (base.mrr - cur.mrr > opts.mrrThreshold) {
-      failures.push(`[${key}] MRR dropped ${base.mrr.toFixed(4)} -> ${cur.mrr.toFixed(4)} (> ${opts.mrrThreshold})`);
+    if (!base || !isGatedKey(key)) continue; // new in the report, or not gated
+    if (base.mrr - cur.mrr > t.mrr_ndcg_drop) {
+      failures.push(`[${key}] MRR dropped ${base.mrr.toFixed(4)} -> ${cur.mrr.toFixed(4)} (> ${t.mrr_ndcg_drop})`);
     }
-    if (base.ndcg5 - cur.ndcg5 > opts.mrrThreshold) {
-      failures.push(`[${key}] nDCG@5 dropped ${base.ndcg5.toFixed(4)} -> ${cur.ndcg5.toFixed(4)} (> ${opts.mrrThreshold})`);
+    if (base.ndcg5 - cur.ndcg5 > t.mrr_ndcg_drop) {
+      failures.push(`[${key}] nDCG@5 dropped ${base.ndcg5.toFixed(4)} -> ${cur.ndcg5.toFixed(4)} (> ${t.mrr_ndcg_drop})`);
     }
   }
 
-  const baseById = new Map();
-  for (const q of baseline.queries.lesson) baseById.set(q.qid, q);
-  for (const q of report.queries.lesson) {
-    if (!GATED_STRATA.has(q.stratum)) continue;
-    const b = baseById.get(q.qid);
-    if (!b) continue; // new query, no baseline to compare
-    const oldRank = b.rank;
-    const newRank = q.rank;
-    if (oldRank === null && newRank === null) continue;
-    if (oldRank !== null && newRank === null) {
-      failures.push(`[${q.qid}] "${q.stratum}" was found at rank ${oldRank}, now not found in top ${report.top}`);
+  // qids are unique only within a version, so every comparison is keyed by both.
+  const qkey = (v, qid) => `v${v}:${qid}`;
+  const reportById = new Map();
+  for (const q of report.queries.lesson) reportById.set(qkey(repV, q.qid), q);
+  for (const b of baseline.queries.lesson) {
+    if (!GATED_STRATA.has(b.stratum)) continue;
+    const q = reportById.get(qkey(baseV, b.qid));
+    if (!q) {
+      failures.push(`[${b.qid}] gated "${b.stratum}" question is in the baseline but missing from the report`);
       continue;
     }
-    if (oldRank !== null && newRank !== null) {
-      const drop = newRank - oldRank;
-      if (drop > opts.rankDropK) {
-        failures.push(`[${q.qid}] "${q.stratum}" rank dropped ${oldRank} -> ${newRank} (> ${opts.rankDropK} ranks)`);
-      }
-      if (oldRank <= 10 && newRank > 10) {
-        failures.push(`[${q.qid}] "${q.stratum}" fell out of top 10 (${oldRank} -> ${newRank})`);
-      }
+    const oldRank = b.rank;
+    const newRank = q.rank;
+    if (t.identifier_top1_loss && b.stratum === 'identifier' && oldRank === 1 && newRank !== 1) {
+      failures.push(`[${b.qid}] "identifier" lost top-1 (1 -> ${newRank === null ? `not in top ${report.top}` : newRank})`);
+    }
+    if (oldRank === null) continue;
+    if (newRank === null) {
+      failures.push(`[${b.qid}] "${b.stratum}" was found at rank ${oldRank}, now not found in top ${report.top}`);
+      continue;
+    }
+    const drop = newRank - oldRank;
+    if (drop > t.rank_drop_k) {
+      failures.push(`[${b.qid}] "${b.stratum}" rank dropped ${oldRank} -> ${newRank} (> ${t.rank_drop_k} ranks)`);
+    }
+    if (oldRank <= t.top_k_floor && newRank > t.top_k_floor) {
+      failures.push(`[${b.qid}] "${b.stratum}" fell out of top ${t.top_k_floor} (${oldRank} -> ${newRank})`);
     }
   }
 
@@ -356,9 +434,17 @@ function main() {
     process.exit(1);
   }
   const questionsData = JSON.parse(fs.readFileSync(questionsPath, 'utf8'));
+  const gated = countGated(questionsData);
+  if (!gated) {
+    process.stderr.write(`ERROR: ${questionsPath} has no gated (identifier/plain) questions — nothing to score.\n`);
+    process.exit(1);
+  }
+  const baseline = opts.baseline ? JSON.parse(fs.readFileSync(path.resolve(opts.baseline), 'utf8')) : null;
+  const { thresholds, sources } = resolveThresholds(opts, baseline);
 
-  const report = buildReport(questionsData, opts);
+  const report = buildReport(questionsData, { ...opts, thresholds });
   report.top = opts.top; // ensure present even if buildReport's local shadow changes
+  console.log(`questions file: ${path.relative(process.cwd(), questionsPath) || questionsPath} (${gated} gated questions)`);
   printHumanTable(report);
 
   if (opts.save) {
@@ -366,10 +452,10 @@ function main() {
     console.log(`\nSaved report to ${opts.save}`);
   }
 
-  if (opts.baseline) {
-    const baseline = JSON.parse(fs.readFileSync(path.resolve(opts.baseline), 'utf8'));
-    const cmp = compareToBaseline(report, baseline, opts);
+  if (baseline) {
+    const cmp = compareToBaseline(report, baseline, thresholds);
     console.log('\nBaseline comparison:');
+    console.log(`  thresholds: ${Object.keys(thresholds).map((k) => `${k}=${thresholds[k]} (${sources[k]})`).join(', ')}`);
     if (cmp.ok) {
       console.log('  OK — no regressions beyond threshold.');
     } else {
@@ -381,6 +467,7 @@ function main() {
 }
 
 module.exports = {
+  DEFAULT_THRESHOLDS, GATED_STRATA, resolveThresholds, countGated,
   parseArgs, findLatestQuestions, scoreLessonQuestion, scoreStateQuestion, scoreNegativeQuestion,
   aggregateByStratumSplit, summarizeNegatives, buildReport, compareToBaseline,
 };

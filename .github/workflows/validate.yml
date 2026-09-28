@@ -21,9 +21,12 @@ jobs:
         run: node skill-package/skills/claude-code-internals/scripts/build.js --check
       # Retrieval quality gate: the generated question set (evals/retrieval/)
       # scored against the recorded baseline. Fails on a per-stratum MRR/nDCG
-      # drop or any single question losing more than a few ranks.
+      # drop, any identifier question losing top-1, or any single question
+      # losing more than a few ranks (thresholds are stored in the baseline).
+      # The question set is named explicitly: a newer questions-vN.json must
+      # never be scored against the v1 baseline.
       - name: Retrieval baseline
-        run: node evals/retrieval/run.js --baseline evals/retrieval/baseline-v1.json
+        run: node evals/retrieval/run.js --baseline evals/retrieval/baseline-v1.json --questions evals/retrieval/questions-v1.json
       - name: State-layer integrity
         run: node skill-package/skills/claude-code-internals/scripts/validate-state.js
       - name: State-layer reconciliation

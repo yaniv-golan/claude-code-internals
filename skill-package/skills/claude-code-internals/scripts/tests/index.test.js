@@ -150,3 +150,95 @@ test('cache directory candidates: override, else XDG, home, tmpdir — never the
   const skillDir = path.resolve(SCRIPTS, '..');
   for (const d of lib.cacheDirs({})) assert.ok(!path.resolve(d).startsWith(skillDir), `${d} is inside the skill directory`);
 });
+
+test('a relative $XDG_CACHE_HOME is ignored (XDG spec)', () => {
+  const dirs = lib.cacheDirs({ XDG_CACHE_HOME: 'relative/cache' });
+  assert.ok(dirs.every((d) => path.isAbsolute(d)), JSON.stringify(dirs));
+  assert.ok(!dirs.some((d) => d.includes('relative')), JSON.stringify(dirs));
+});
+
+const noPosixOwnership = () => process.platform === 'win32' || typeof process.getuid !== 'function' || process.getuid() === 0;
+
+test('a group- or world-writable cache directory is never read or written', (t) => {
+  if (noPosixOwnership()) { t.skip('no POSIX ownership/permission semantics here'); return; }
+  const loose = scratch('cci-index-loose-');
+  fs.chmodSync(loose, 0o777);
+  t.after(() => fs.chmodSync(loose, 0o700));
+  const good = scratch('cci-index-good-');
+  assert.strictEqual(lib.isTrustedDir(loose), false);
+  assert.strictEqual(lib.isTrustedDir(good), true);
+  assert.strictEqual(lib.selectCacheDir([loose, good]), good, 'the loose directory was selected');
+  // A symlink to a loose directory is judged by its target's mode.
+  const link = path.join(scratch('cci-index-link-'), 'cache');
+  fs.symlinkSync(loose, link);
+  assert.strictEqual(lib.isTrustedDir(link), false);
+
+  // A crafted entry in the loose directory is not consulted, and nothing is written there.
+  const key = lib.cacheKey(fs.readFileSync(TOPIC));
+  const topic = JSON.parse(fs.readFileSync(TOPIC, 'utf8'));
+  const ix = lib.buildIndex(topic);
+  ix.entries[0].tfidf = { hooks: 50, hook: 50 };
+  fs.writeFileSync(path.join(loose, `tfidf-index-${key}.json`), JSON.stringify({ key, ...ix }));
+  const got = lib.loadIndex({ topicIndexPath: TOPIC, env: { CCI_INDEX_CACHE_DIR: loose } });
+  assert.strictEqual(JSON.stringify(got), JSON.stringify(lib.buildIndex(topic)));
+  assert.strictEqual(fs.readdirSync(loose).length, 1);
+});
+
+test('a crafted entry in a lower-priority cache directory is never read (end to end)', (t) => {
+  if (noPosixOwnership()) { t.skip('no POSIX ownership/permission semantics here'); return; }
+  const home = scratch('cci-index-home-');
+  const tmpd = scratch('cci-index-tmp-');
+  const planted = path.join(tmpd, 'claude-code-internals');
+  fs.mkdirSync(planted, { mode: 0o700 });
+  const bytes = fs.readFileSync(TOPIC);
+  const key = lib.cacheKey(bytes);
+  const ix = lib.buildIndex(JSON.parse(bytes));
+  ix.entries.find((e) => e.id === 1).tfidf = { hooks: 50, hook: 50 }; // steer "hook" queries to lesson 1
+  fs.writeFileSync(path.join(planted, `tfidf-index-${key}.json`), JSON.stringify({ key, ...ix }));
+  const run = (env) => execFileSync('node', [path.join(SCRIPTS, 'search.js'), 'hook events', '--json', '--top=3'],
+    { encoding: 'utf8', env: { ...process.env, CCI_INDEX_CACHE_DIR: '', XDG_CACHE_HOME: '', ...env } });
+  const off = run({ CCI_NO_INDEX_CACHE: '1' });
+  const got = run({ CCI_NO_INDEX_CACHE: '', HOME: home, TMPDIR: tmpd });
+  assert.strictEqual(got, off, 'the planted tmpdir entry changed the results');
+  assert.strictEqual(cacheFiles(path.join(home, '.cache', 'claude-code-internals')).length, 1, 'the home cache was not used');
+});
+
+test('a cache entry of the wrong shape is rebuilt, never used', () => {
+  const topic = JSON.parse(fs.readFileSync(TOPIC, 'utf8'));
+  const fresh = JSON.stringify(lib.buildIndex(topic));
+  const key = lib.cacheKey(fs.readFileSync(TOPIC));
+  const mutations = {
+    'wrong id': (ix) => { ix.entries[0].id = 99999; },
+    'entry not an object': (ix) => { ix.entries[0] = {}; },
+    'missing entry': (ix) => { ix.entries.pop(); },
+    'swapped order': (ix) => { [ix.entries[0], ix.entries[1]] = [ix.entries[1], ix.entries[0]]; },
+    'tfidf is an array': (ix) => { ix.entries[3].tfidf = [1, 2]; },
+    'non-number weight': (ix) => { ix.entries[3].tfidf.hooks = '50'; },
+    'null weight': (ix) => { ix.entries[3].tfidf.hooks = null; },
+    'idf missing': (ix) => { delete ix.idf; },
+    'idf non-number': (ix) => { ix.idf[Object.keys(ix.idf)[0]] = 'x'; },
+    'vocabulary not the idf terms': (ix) => { ix.vocabulary.push('zzz'); },
+    'vocabulary not an array': (ix) => { ix.vocabulary = {}; },
+  };
+  for (const [label, mutate] of Object.entries(mutations)) {
+    const dir = scratch('cci-index-shape-');
+    const ix = lib.buildIndex(topic);
+    mutate(ix);
+    assert.strictEqual(lib.validCacheEntry({ key, ...ix }, key, topic.lessons), false, label);
+    fs.writeFileSync(path.join(dir, `tfidf-index-${key}.json`), JSON.stringify({ key, ...ix }));
+    const got = lib.loadIndex({ topicIndexPath: TOPIC, env: { CCI_INDEX_CACHE_DIR: dir } });
+    assert.strictEqual(JSON.stringify(got), fresh, `${label}: the malformed entry was used`);
+  }
+  assert.strictEqual(lib.validCacheEntry({ key, ...lib.buildIndex(topic) }, key, topic.lessons), true);
+});
+
+test('a failed cache write leaves no temp file behind', () => {
+  const dir = scratch('cci-index-full-');
+  const key = lib.cacheKey(fs.readFileSync(TOPIC));
+  // A directory where the cache file should go makes the rename fail after the temp write.
+  fs.mkdirSync(path.join(dir, `tfidf-index-${key}.json`));
+  const fresh = lib.loadIndex({ topicIndexPath: TOPIC, env: { CCI_NO_INDEX_CACHE: '1' } });
+  const got = lib.loadIndex({ topicIndexPath: TOPIC, env: { CCI_INDEX_CACHE_DIR: dir } });
+  assert.strictEqual(JSON.stringify(got), JSON.stringify(fresh));
+  assert.deepStrictEqual(fs.readdirSync(dir).filter((f) => f.endsWith('.tmp')), []);
+});

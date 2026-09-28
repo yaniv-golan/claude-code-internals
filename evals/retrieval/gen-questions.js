@@ -22,7 +22,16 @@
  * written; bump --version for a new generation. Progress is checkpointed to
  * questions-v<version>.json.partial (atomic tmp+rename writes) and resumed
  * automatically if present and its header (seed/model/prompt_version/version)
- * matches the current invocation; a header mismatch refuses to resume.
+ * matches the current invocation; a header mismatch refuses to resume. A
+ * resumed run keeps the partial's lesson split (never recomputes it), so a
+ * topic-index change between runs cannot move a lesson across dev/holdout.
+ *
+ * qids: v1 used bare `id-0001`, `pl-0002`, ... (frozen). From v2 on they carry
+ * the version (`v2-id-0001`) so they are unique across versions; run.js also
+ * keys every comparison by version + qid.
+ *
+ * A plain question that still leaks after MAX_LEAK_RETRIES is dropped (and
+ * recorded in `dropped`), but that lesson's identifier question is kept.
  */
 
 'use strict';
@@ -203,6 +212,19 @@ async function mapPool(items, concurrency, fn) {
 }
 
 // ---------------------------------------------------------------------------
+// qids
+// ---------------------------------------------------------------------------
+
+/**
+ * v1 qids are bare (`id-0001`) and frozen as committed. From v2 on they are
+ * prefixed with the version (`v2-id-0001`) so no qid is reused across versions.
+ */
+function qidFor(version, stratum, n) {
+  const base = `${stratum}-${String(n).padStart(4, '0')}`;
+  return version >= 2 ? `v${version}-${base}` : base;
+}
+
+// ---------------------------------------------------------------------------
 // Partial-progress checkpointing (atomic tmp+rename)
 // ---------------------------------------------------------------------------
 
@@ -246,12 +268,6 @@ async function generate(opts, deps) {
   const topicIndex = lib.loadTopicIndex();
   const registry = lib.loadRegistry();
 
-  const lessonIds = topicIndex.lessons.map(l => l.id);
-  const split = lib.splitLessons(lessonIds, opts.seed);
-  const splitOf = new Map();
-  for (const id of split.holdout) splitOf.set(id, 'holdout');
-  for (const id of split.dev) splitOf.set(id, 'dev');
-
   const header = { seed: opts.seed, model: opts.model, prompt_version: PROMPT_VERSION, version: opts.version };
 
   const outPath = path.join(opts.outDir || lib.EVALS_DIR, `questions-v${opts.version}.json`);
@@ -261,16 +277,22 @@ async function generate(opts, deps) {
 
   let state = readPartial(outPath, header) || {
     header,
-    split,
+    split: lib.splitLessons(topicIndex.lessons.map(l => l.id), opts.seed),
     questions: [],
     done: { lessons: [], state_entries: [], negatives: false },
     dropped: [], // leaked questions that never resolved, for audit
   };
+  // Always the split recorded in the state: on resume that is the partial's,
+  // never one recomputed from a topic-index that may have changed since.
+  const split = state.split;
+  const splitOf = new Map();
+  for (const id of split.holdout) splitOf.set(id, 'holdout');
+  for (const id of split.dev) splitOf.set(id, 'dev');
 
   let qidCounter = state.questions.length
     ? Math.max(...state.questions.map(q => parseInt(q.qid.split('-').pop(), 10) || 0)) + 1
     : 1;
-  const nextQid = (stratum) => `${stratum}-${String(qidCounter++).padStart(4, '0')}`;
+  const nextQid = (stratum) => qidFor(opts.version, stratum, qidCounter++);
 
   const lessonsToDo = topicIndex.lessons
     .filter(l => !state.done.lessons.includes(l.id))
@@ -285,6 +307,7 @@ async function generate(opts, deps) {
     let leakRetries = 0;
     let accepted = null;
     let modelFailed = false;
+    let lastIdentifierQ = ''; // kept even if the plain question never stops leaking
 
     for (let attempt = 0; attempt <= MAX_LEAK_RETRIES; attempt++) {
       const prompt = buildLessonPrompt(lesson, lessonText, feedback);
@@ -298,6 +321,7 @@ async function generate(opts, deps) {
       }
       const plain = String(parsed.plain_question || '');
       const identifierQ = String(parsed.identifier_question || '');
+      if (identifierQ.trim()) lastIdentifierQ = identifierQ;
       const leaks = lib.findLeaks(plain, identifiers);
       if (leaks.length === 0) {
         accepted = { identifierQ, plain };
@@ -308,7 +332,15 @@ async function generate(opts, deps) {
       leakRetries = attempt + 1;
     }
 
-    if (!accepted) {
+    if (!accepted && !modelFailed && lastIdentifierQ) {
+      // Only the plain question failed: keep the identifier one, drop the plain one.
+      state.questions.push({
+        qid: nextQid('id'), stratum: 'identifier', lesson_id: lesson.id, registry_id: null,
+        split: lessonSplit, text: lastIdentifierQ, leak_retries: leakRetries,
+      });
+      state.dropped.push({ lesson_id: lesson.id, stratum: 'plain', reason: 'plain_question leaked an identifier after max retries (identifier question kept)', leak_retries: leakRetries });
+      process.stderr.write(`lesson ${lesson.id}: plain question dropped after ${leakRetries} leak retries; identifier question kept\n`);
+    } else if (!accepted) {
       const reason = modelFailed ? 'model call failed' : 'plain_question leaked an identifier after max retries';
       if (!modelFailed) state.dropped.push({ lesson_id: lesson.id, reason, leak_retries: leakRetries });
       process.stderr.write(`lesson ${lesson.id}: dropped (${reason}) after ${leakRetries} leak retries\n`);
@@ -443,7 +475,7 @@ module.exports = {
   PROMPT_VERSION, DEFAULT_MODEL,
   buildLessonPrompt, buildStatePrompt, buildNegativePrompt,
   unwrapEnvelope, extractJSON, callModelJSON, callModelDefault,
-  mapPool, writePartial, readPartial, partialPath,
+  mapPool, writePartial, readPartial, partialPath, qidFor,
   generate, parseArgs,
 };
 
