@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.58.6 — 2026-09-29 (this fork) — the shell-commands page summary matches its rule
+
+No new lessons; counts stay 218/59.
+
+- The first paragraph of the site's shell-commands page still said inline shell execution is disabled in Cowork
+  entirely, contradicting the rule below it as corrected in v2.58.3. It now says the syntax does not run in a local
+  Cowork session, and that elsewhere it depends on the sandbox and on how the skill was installed. Flagged by a sibling
+  session. The summary's other two claims, that the shell is sealed and that its tool name differs from the CLI's, are
+  now scoped to the local session. In the remote sandbox the shell is `Bash`, the same as the CLI's (L198).
+
 ## v2.58.5 — 2026-09-28 (this fork) — the outputs mount and outputs delivery are separate switches
 
 No new lessons; counts stay 218/59.

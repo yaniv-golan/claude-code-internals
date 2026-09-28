@@ -90,7 +90,7 @@
       "nav_label": "Shell commands",
       "nav_group": "Runtime",
       "blurb": "Sealed environment, no arbitrary network, a large preinstalled stack.",
-      "summary": "The shell your skill runs commands in is sealed: environment variables you set on the host do not reach it, and neither do exports written by hooks. The inline shell-execution syntax some skills use in their instructions is disabled in Cowork entirely. The shell tool is also not the same tool as the CLI's, so branching on tool names is a reliable signal where branching on environment variables is not.",
+      "summary": "In a local Cowork session the shell your skill runs commands in is sealed: environment variables you set on the host do not reach it, and neither do exports written by hooks. The inline shell-execution syntax some skills use in their instructions does not run there, and whether it runs elsewhere depends on the sandbox and on how the skill was installed. The local shell tool is also not the same tool as the CLI's (in the remote sandbox it is), so branching on which tools you have is a more reliable signal than branching on environment variables.",
       "open_questions": [
         "Network egress is allowed through a fetch capability rather than arbitrary outbound sockets, and the routing has changed across releases. Assume fetch works and arbitrary sockets do not, and degrade gracefully rather than probing."
       ]
