@@ -3172,7 +3172,7 @@
       "lesson_number": "116",
       "file": "27-skill-runtime-detection.md",
       "startLine": 19,
-      "endLine": 246,
+      "endLine": 248,
       "keywords": [
         "runtime-detection",
         "detect-cowork",
@@ -6478,7 +6478,7 @@
       "lesson_number": "217",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 16,
-      "endLine": 47,
+      "endLine": 69,
       "keywords": [
         "upload skill",
         "uploaded skill",
@@ -6489,7 +6489,12 @@
         "skills-plugin store",
         "skill zip top-level folder",
         "~/.claude/skills in Cowork",
-        "account skill sync"
+        "account skill sync",
+        "!cmd in uploaded skill",
+        "inline shell execution cloud Cowork",
+        "shell command execution disabled by policy",
+        "syncedSkills",
+        "CLAUDE_SKILL_DIR"
       ]
     },
     {
@@ -6497,8 +6502,8 @@
       "title": "Plugin Blocks and MCP Placeholders, Lane by Lane",
       "lesson_number": "218",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
-      "startLine": 48,
-      "endLine": 108,
+      "startLine": 70,
+      "endLine": 130,
       "keywords": [
         "UserPromptSubmit block",
         "decision block",
@@ -22083,6 +22088,21 @@
     ],
     "set env var not passed to plugin MCP server": [
       218
+    ],
+    "!cmd in uploaded skill": [
+      217
+    ],
+    "inline shell execution cloud Cowork": [
+      217
+    ],
+    "shell command execution disabled by policy": [
+      217
+    ],
+    "syncedSkills": [
+      217
+    ],
+    "CLAUDE_SKILL_DIR": [
+      217
     ]
   }
 }

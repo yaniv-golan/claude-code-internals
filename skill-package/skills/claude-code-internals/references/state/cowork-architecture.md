@@ -379,8 +379,9 @@ the host-side agent process (`CLAUDE_CODE_IS_COWORK=1`,
 in-VM shell (`mcp__workspace__bash`, **sealed** — no `CLAUDE_CODE_*` markers
 survive; v2.12.2 probe). A skill's shell commands run in the third, so a bare
 `$CLAUDE_CODE_IS_COWORK` check false-negatives in production Cowork. Inline
-`` !`cmd` `` skill-shell execution is force-disabled under Cowork
-(`disableSkillShellExecution` short-circuit), and hook env-exports don't cross
+`` !`cmd` `` skill-shell execution is force-disabled under local Cowork
+(`disableSkillShellExecution` short-circuit on `CLAUDE_CODE_IS_COWORK`; cloud Cowork runs it, and an
+uploaded skill's is left raw in the CLI — L217), and hook env-exports don't cross
 the host/VM bridge — neither can serve as a probe.
 
 Reliable recipe (ordered): `$CLAUDE_CODE_IS_COWORK` set → cowork (host-side or

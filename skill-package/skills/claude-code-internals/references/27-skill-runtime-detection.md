@@ -42,8 +42,8 @@ So a shell probe that checks `$CLAUDE_CODE_IS_COWORK` concludes "not Cowork" pre
 when it *is* Cowork. Two more Cowork-specific channels a detection scheme might reach
 for are also closed:
 
-- **Inline dynamic-context execution is force-disabled.** The CLI's
-  `disableSkillShellExecution` resolver short-circuits on Cowork before consulting any
+- **Inline dynamic-context execution is force-disabled wherever `CLAUDE_CODE_IS_COWORK` is set** — local Cowork, host-loop or VM-loop. The CLI's
+  `disableSkillShellExecution` resolver short-circuits on it before consulting any
   policy or setting:
 
   ```js
@@ -52,8 +52,10 @@ for are also closed:
     return Qo().disableSkillShellExecution===!0}
   ```
 
-  A skill's `` !`cmd` `` preprocessing blocks simply never execute in a Cowork session —
-  they can't be used as a probe (or for anything else).
+  A skill's `` !`cmd` `` blocks never execute in a local Cowork session (each is replaced by
+  `[shell command execution disabled by policy]`), so they can't be used as a probe there. Cloud
+  Cowork does not set `CLAUDE_CODE_IS_COWORK`, and there they run; for an uploaded skill in the
+  CLI they are left unexecuted for a different reason (L217).
 - **Hook env-exports and host file writes do not cross into the VM** (the v2.12.1
   `coworkroot-probe`, L89). A `SessionStart` hook cannot hand the script side a
   "you are in Cowork" flag.

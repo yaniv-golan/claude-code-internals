@@ -423,6 +423,10 @@
       [
         "plugins-and-plugin-root",
         1
+      ],
+      [
+        "shell-commands",
+        1
       ]
     ],
     "218": [

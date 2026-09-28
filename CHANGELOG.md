@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.58.3 — 2026-09-28 (this fork) — whether a skill's inline command runs depends on how it was installed
+
+No new lessons; counts stay 218/59. Read from agent 2.1.281 while reviewing a sibling project's test plan.
+
+- **L217 addendum.** For a skill's `` !`cmd` `` blocks:
+  - A plugin skill runs them unless the agent has `CLAUDE_CODE_IS_COWORK` or a `disableSkillShellExecution` setting.
+  - An uploaded skill (`loadedFrom: "syncedSkills"`) also needs `CLAUDE_CODE_REMOTE` or `CLAUDE_CODE_IS_COWORK` to be
+    trusted.
+  - So an uploaded skill's commands run in cloud Cowork and are left as raw text in the CLI. In local Cowork every
+    skill's commands are replaced by `[shell command execution disabled by policy]`.
+  - The same trust check decides whether `${CLAUDE_PROJECT_DIR}` and `${CLAUDE_SESSION_ID}` are substituted in an
+    uploaded skill.
+  - Cloud execution is read from the code, not run live.
+- **Corrected:** L116, the Cowork state page and `shell.inline-execution-disabled` said inline execution is disabled
+  across Cowork and yields an empty result. It is disabled in local Cowork only, and a disabled command becomes a
+  visible notice.
+
 ## v2.58.2 — 2026-09-28 (this fork) — the six names were already in L61
 
 No new lessons; counts stay 218/59.

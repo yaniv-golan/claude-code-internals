@@ -1287,27 +1287,29 @@
     {
       "id": "shell.inline-execution-disabled",
       "page": "shell-commands",
-      "rule": "Do not use the inline shell-execution syntax in skill instructions and expect it to run.",
-      "detail": "The syntax that lets a skill embed a command in its own instructions and have the result substituted is disabled in Cowork. It fails quietly rather than erroring, so a skill that relies on it to gather context gets an empty result and carries on with wrong assumptions.",
+      "rule": "Do not depend on the inline shell-execution syntax in skill instructions; whether it runs depends on the sandbox and on how the skill was installed.",
+      "detail": "The syntax that lets a skill embed a command in its own instructions and have the output substituted does not run in a local Cowork session: each command is replaced by a notice that shell execution is disabled by policy. In the remote sandbox it runs. In the command-line tool it runs for a plugin's skills, but a skill the user uploaded to their account has its commands left as raw text. None of these cases raises an error, so a skill that gathers context this way carries on with the notice or the raw command in place of the output.",
       "tier": "binary",
       "verified": {
-        "date": "2026-08-05",
-        "desktop_asar": "1.25927.0",
-        "cli": "2.1.217",
-        "basis": "history",
-        "from_commit": "dbcee41"
+        "date": "2026-09-28",
+        "desktop_asar": "2.9939.2",
+        "cli": "2.1.231",
+        "agent": "2.1.281",
+        "basis": "code"
       },
       "severity": "silent",
       "durability": "durable",
       "volatile_dependency": true,
       "sources": {
         "lessons": [
-          116
+          116,
+          217
         ],
         "state_page": "cowork-architecture"
       },
       "caveats": [
-        "Controlled by a setting rather than hardcoded, so the behaviour is configuration-dependent."
+        "Read from the shipped agent, not run live in the remote sandbox; managed settings there could still switch it off.",
+        "Controlled by a setting as well as by the sandbox, so an organization can switch it off anywhere."
       ]
     },
     {

@@ -33,6 +33,27 @@ The Desktop logged the download (`[SkillsPlugin] Delta: 1 to download … 1 down
 
 On this machine the Desktop keeps a skill store for two account/org pairs, and the uploaded skill appeared in both. The CLI used one, local Cowork the other. Why both received it was not determined.
 
+## What the agent does with a skill's text, by how it was installed
+
+Read from agent 2.1.281. Uploaded skills load with `loadedFrom: "syncedSkills"`, and the agent treats them differently from plugin skills and skills in `.claude/skills`:
+
+```js
+function BHe(e){if(e.loadedFrom==="syncedSkills")return!eSr();return r(e)}
+function eSr(){return Boolean(a.CLAUDE_CODE_REMOTE)||Boolean(a.CLAUDE_CODE_IS_COWORK)||Bj()}
+// standalone skill: if (MMo(loadedFrom, source) && Z4()) disable; else if (!BHe(...)) run the !`cmd` blocks
+// plugin skill:     if (Z4()) disable; else run
+```
+
+`Z4()` is the switch-off: it is true when the agent process has `CLAUDE_CODE_IS_COWORK`, or when managed or user settings set `disableSkillShellExecution`. A disabled block is replaced by the literal text `[shell command execution disabled by policy]`, not removed.
+
+| surface | plugin skill's `` !`cmd` `` | uploaded skill's `` !`cmd` `` |
+|---|---|---|
+| Claude Code CLI | runs | **not run, left as raw text** (a synced skill is untrusted there) |
+| cloud Cowork (`CLAUDE_CODE_REMOTE` set, `CLAUDE_CODE_IS_COWORK` absent) | runs | runs |
+| local Cowork (`CLAUDE_CODE_IS_COWORK` set) | replaced by the marker | replaced by the marker |
+
+The cloud rows assume the runner sets no managed `disableSkillShellExecution`; that was not checked live. The same trust check decides `${CLAUDE_PROJECT_DIR}` and `${CLAUDE_SESSION_ID}` in an uploaded skill: substituted in the cloud, left as written in the CLI. `${CLAUDE_SKILL_DIR}` is substituted with the skill's own folder for every kind of skill, and the body starts with a "Base directory for this skill:" line. An uploaded skill is registered under a qualified name (`anthropic-skills:<name>` in the CLI) with the bare name as an alias.
+
 ## A conversation that changed runtime
 
 In the cloud run, the session reported that the first invocation, earlier in the same conversation, had given the base directory `/mnt/skills/plugins/cci-upload-probe`. That is the chat runtime's flat skills mount. The second invocation gave the Cowork container path. So that conversation started on the chat runtime and was moved into a Cowork workspace, as L216 describes. This rests on the model's report of its own earlier turn, a single observation.
@@ -42,6 +63,7 @@ In the cloud run, the session reported that the first invocation, earlier in the
 - To give a user a personal skill in Cowork, have them upload it as a skill. Scripts come with it and run on every surface.
 - Write the scripts for Linux as well as macOS: in both Cowork lanes they run under `dash`.
 - In local Cowork the skill's files are read-only, so write anything to the outputs folder, not next to the skill.
+- Do not depend on `` !`cmd` `` in a skill: whether it runs depends on the lane and on how the skill was installed. Tested only in the CLI with an uploaded skill, it looks broken when it is not.
 
 ---
 
