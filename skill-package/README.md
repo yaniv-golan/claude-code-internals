@@ -60,8 +60,6 @@ This is because Claude's training data doesn't include Claude Code's source code
 
 ### Architecture
 
-![Search architecture flow — user query fans out to 3 search layers then merges into synthesis](assets/diagrams/architecture.svg)
-
 <details>
 <summary>ASCII Version (for AI/accessibility)</summary>
 
@@ -116,19 +114,17 @@ This is because Claude's training data doesn't include Claude Code's source code
 
 | Layer | Script | Speed | Best For | Requires |
 |-------|--------|-------|----------|----------|
-| **Unified (RRF)** | `search.js` | ~60ms | **Use this by default** — combines keyword + TF-IDF via Reciprocal Rank Fusion | Node.js + `jq` |
+| **Unified (RRF)** | `search.js` | ~60ms | **Use this by default** — combines keyword + TF-IDF via Reciprocal Rank Fusion | Node.js |
 | **1. Keyword** | `lookup.sh` | Instant | Exact terms: "hooks", "permissions", "KAIROS" | `jq` |
 | **2. TF-IDF** | `semantic-search.js` | ~50ms | Natural language: "how does Claude decide what tools to use" | Node.js |
 
 - **Layer 1** uses `jq` to search the keyword map, which points at exact file:line ranges.
-- **Layer 2** tokenizes your query and computes cosine similarity against pre-built TF-IDF vectors for all 218 lessons. Pure Node.js, no dependencies.
+- **Layer 2** tokenizes your query and computes cosine similarity against per-lesson TF-IDF vectors covering all 218 lessons. The index is not shipped: it is built in memory from `topic-index.json` on first use (then cached under your user cache directory; `CCI_NO_INDEX_CACHE=1` disables the cache). Pure Node.js, no dependencies.
 - **`search.js`** runs both and fuses the rankings. It is the one to reach for unless you specifically want a single layer's behaviour.
 
 ### Auto-Trigger Hook
 
 A PreToolUse hook fires whenever Claude is about to edit files under `.claude/`. It injects a reminder into the model's context:
-
-![PreToolUse hook flow — detects .claude/ paths and injects reminder](assets/diagrams/hook-flow.svg)
 
 <details>
 <summary>ASCII Version (for AI/accessibility)</summary>
@@ -170,7 +166,7 @@ This means Claude gets a nudge to consult the architecture docs before modifying
 | Requirement | Minimum Version | Check Command | Notes |
 |-------------|----------------|---------------|-------|
 | **Claude Code** | v2.1.0+ | `claude --version` | Skills require a recent version |
-| **Node.js** | v18+ | `node --version` | Required for Layer 2 (TF-IDF search) |
+| **Node.js** | v18+ | `node --version` | Required for `search.js` (the default) and Layer 2 (TF-IDF search) |
 | **jq** | Any | `jq --version` | Required for `lookup.sh`, the keyword fallback used when `search.js` cannot run |
 
 **Install missing prerequisites:**
@@ -183,8 +179,6 @@ brew install jq node
 ## Installation — Turn This Into Your Own Local Skill
 
 ### Overview
-
-![Installation flow — from zip to working skill in 5 steps](assets/diagrams/installation-flow.svg)
 
 <details>
 <summary>ASCII Version (for AI/accessibility)</summary>
@@ -223,12 +217,12 @@ chmod +x scripts/*.sh scripts/*.js
 
 # 5. Verify it works — type this in Claude Code:
 #   /claude-code-internals hooks
-# You should see a detailed response about all 27 hook events,
+# You should see a detailed response about all 31 hook events,
 # exit code semantics, and configuration format. If you see
 # "Unknown skill" instead, Claude Code needs a restart.
 ```
 
-That's it. The zip contains everything the skill needs — the SKILL.md brain, all 218 lessons, both search indexes, the current-state layer, and the scripts. No npm install, no server, no API keys.
+That's it. The zip contains everything the skill needs — the SKILL.md brain, all 218 lessons, the lesson index (`topic-index.json`), the current-state layer, and the scripts. The TF-IDF search index is built in memory from `topic-index.json` on first use, so there is nothing extra to ship. No npm install, no server, no API keys.
 
 ### From This Repo
 
@@ -273,7 +267,7 @@ Returns all 31 hook event types, exit code semantics (0=proceed, 1=proceed+warn,
 ```
 /claude-code-internals permissions
 ```
-Returns the 7-phase permission pipeline, 5 permission modes, the 23 Bash security validators, rule matching (exact, prefix, wildcard), rule sources and priority order, auto-mode fast paths, and bypass mode limitations.
+Returns the 7-phase permission pipeline, 6 permission modes, the 23 Bash security validators, rule matching (exact, prefix, wildcard), rule sources and priority order, auto-mode fast paths, and bypass mode limitations.
 
 ### Natural Language Questions
 
@@ -307,33 +301,33 @@ The keyword "compaction" doesn't appear in the query, but the TF-IDF layer match
 
 Here's what the search layers actually return:
 
-**Keyword lookup** (`lookup.sh hooks`):
+**Keyword lookup** (`lookup.sh hooks`, first matches):
 ```
-claude-code-deep-dive-all-10-lessons.md:236:501 "Query Engine & LLM API"
-claude-code-deep-dive-all-10-lessons.md:1032:1261 "Architecture Overview (Capstone)"
-claude-code-deep-dive-batch2-10-lessons.md:324:456 "Hooks System"
+48-forced-ask-deferral-silent-turn-2.1.260.md:295:352 "Function Hooks: A Second Hook-Authoring Surface"
+04-connectivity-plugins.md:699:841 "Hooks System"
+47-desktop-1.46388-lanes-computed-env-flags.md:264:350 "Four Flags Named: ENABLE_FUNCTION_HOOKS, COZY_TEAPOT, WISE_COMET, MODEL_CATALOG"
 ```
 
-**TF-IDF search** (`semantic-search.js "how does context compaction work"`):
+**TF-IDF search** (`semantic-search.js "how does context compaction work"`, top 3; long keyword lists trimmed):
 ```
 Query: "how does context compaction work"
 Tokens: [context, compaction, work]
 ============================================================
 
-  1. Context Compaction (Lesson 28)
-     Score: 0.2256  #########
-     File:  claude-code-deep-dive-lessons.md:952-1040
+  1. Context Compaction (Lesson 28) [MEDIUM]
+     Score: 0.1685  #######
+     File:  03-interface-infrastructure.md:973-1059
      Keywords: compaction, context-window, microcompact, summarization, token-management
 
-  2. Architecture Overview (Capstone) (Lesson 5)
-     Score: 0.0816  ###
-     File:  claude-code-deep-dive-all-10-lessons.md:1032-1261
-     Keywords: architecture, capstone, data-flow, timeline, overview
+  2. Context Hint API (Server-Driven Micro-Compaction) (Lesson 80) [MEDIUM]
+     Score: 0.1334  #####
+     File:  13-verified-new-v2.1.111.md:239-306
+     Keywords: context-hint, context-hint-api, context-hint-2026-04-09, tengu_hazel_osprey, YE5, …
 
-  3. MCP System (Lesson 10)
-     Score: 0.0591  ##
-     File:  claude-code-deep-dive-all-10-lessons.md:2105-2207
-     Keywords: mcp, model-context-protocol, oauth, transport, elicitation
+  3. Marble Origami: Reversible Context Collapse Persistence (Lesson 69) [MEDIUM]
+     Score: 0.1332  #####
+     File:  10-verified-new-v2.1.101.md:745-872
+     Keywords: marble-origami, context-collapse, contextCollapse, compaction, reversible, …
 ```
 
 The skill then reads the matched section with exact line offsets and synthesizes a focused answer under 5KB.
@@ -346,7 +340,7 @@ The skill then reads the matched section with exact line offsets and synthesizes
 
 3. **Know its limits.** This is captured from a specific Claude Code build — see `version.json`'s `captured_version` for the exact one. If Claude Code has updated since, some internals may have changed. The `check-version.sh` script detects this automatically.
 
-## Smart Features (v2.0)
+## Smart Features
 
 ### Unified Search (Reciprocal Rank Fusion)
 
@@ -374,7 +368,7 @@ bash scripts/check-version.sh
 
 ### Troubleshooting Index
 
-25 common problems mapped to relevant lessons with one-line hints:
+180 common problems mapped to relevant lessons with one-line hints:
 
 ```bash
 # When the skill sees a debugging query like "hook not firing", it checks
@@ -385,7 +379,7 @@ bash scripts/check-version.sh
 
 ### Cross-Reference Map
 
-200 lesson-to-lesson connections enable multi-topic synthesis. When you ask "how do hooks interact with permissions?", the skill reads both the Hooks lesson AND the Permissions lesson because the cross-reference map links them (relevance: 0.85).
+758 lesson-to-lesson connections enable multi-topic synthesis. When you ask "how do hooks interact with permissions?", the skill reads both the Hooks lesson AND the Permissions lesson because the cross-reference map links them (relevance: 0.85).
 
 ## RuFlo Task Orchestration (hook only)
 
@@ -422,50 +416,26 @@ Try a different query phrasing. Layer 1 (keyword) is exact-match only. Layer 2 (
 <summary>Directory Structure (click to expand)</summary>
 
 ```
-claude-code-internals-skill/
+skill-package/skills/claude-code-internals/   (the skill — exactly what the zip contains)
 |
-+-- README.md                       This file
-+-- LICENSE                         MIT license
-+-- claude-code-internals.zip       Shareable package (attached to each GitHub Release)
-|
-+-- skill-package/                  Mirror of installed skill
-|   +-- SKILL.md                    Skill brain (search strategy + topic index)
-|   +-- version.json                Version tracking (see file)
-|   +-- hooks-config.json           PreToolUse hook definition
-|   +-- references/                 Source material
-|   |   +-- 01-core-architecture-tools.md
-|   |   +-- 02-agents-intelligence-interface.md
-|   |   +-- 03-interface-infrastructure.md
-|   |   +-- 04-connectivity-plugins.md
-|   |   +-- 05-unreleased-bigpicture.md
-|   |   +-- topic-index.json        Lesson index and keyword map (keyword fields are build output)
-|   |   +-- hand-keywords.json      Frozen hand-written keywords (never edited)
-|   +-- scripts/
-|       +-- lookup.sh               Keyword search (jq)
-|       +-- semantic-search.js      TF-IDF search (Node.js)
-|       +-- lib/tfidf-index.js      In-memory TF-IDF index (from topic-index)
-|       +-- config-aware-hook.sh    PreToolUse .claude/ detector
-|
-+-- assets/diagrams/                SVG diagrams for this README
-+-- .ascii-to-svg-manifest.json     Diagram change tracking
-+-- .gitignore
-+-- .gitmodules
++-- SKILL.md              Skill brain (search strategy + topic index)
++-- version.json          Version tracking (see file)
++-- hooks-config.json     PreToolUse hook definition
++-- references/           Chapter .md files plus the JSON indexes
+|                         (topic-index, hand-keywords, cross-references,
+|                          troubleshooting) and the state/ current-state layer
++-- scripts/              Search scripts (search.js, semantic-search.js,
+                          lookup.sh, ...), lib/, maintenance scripts, and tests/
 ```
 
-</details>
-
-<details>
-<summary>The 50 Lessons — 8 Chapters (click to expand)</summary>
-
-| Ch | File | Lessons |
-|----|------|---------|
-| 1-2 | `01-core-architecture-tools.md` | Boot Sequence, Query Engine, State Management, System Prompt, Architecture Overview, Tool System, Bash Tool, File Tools, Search Tools, MCP System |
-| 3-4 | `02-agents-intelligence-interface.md` | Skills System, Agent System, Coordinator Mode, Teams/Swarm, Memory System, Auto-Memory/Dreams, Ink Renderer, Commands System, Dialog/UI, Notifications |
-| 4-5 | `03-interface-infrastructure.md` | Vim Mode, Keybindings, Fullscreen, Theme/Styling, Permissions, Settings/Config, Session Management, Context Compaction, Analytics/Telemetry, Migrations |
-| 5-6 | `04-connectivity-plugins.md` | Plugin System, Hooks System, Error Handling, Bridge/Remote, OAuth, Git Integration, Upstream Proxy, Cron/Scheduling, Voice System, BUDDY Companion |
-| 7-8 | `05-unreleased-bigpicture.md` | ULTRAPLAN, Entrypoints/SDK, KAIROS Always-On, Cost Analytics, Desktop App, Model System, Sandbox/Security, Message Processing, Task System, REPL Screen |
+The repository also holds this README, the LICENSE, and the root README and
+plugin manifest — none of which are part of the zip. See **What's in the Zip**
+below for the file-by-file breakdown.
 
 </details>
+
+The lessons are organized into chapters across the `references/*.md` files; see
+`version.json` for the current lesson and chapter counts.
 
 ### What's in the Zip
 
@@ -501,7 +471,7 @@ See `version.json` for the real, current values; per-release history is in the r
 
 1. Re-download lessons from the source
 2. Replace the files in `references/`
-3. Run `node scripts/build.js` to re-derive lesson bounds and counts (the TF-IDF index is derived from `topic-index.json` at search time; nothing to rebuild), then `node scripts/prepare-lessons.js` to derive the keyword fields of `topic-index.json` (`build.js --check` fails until it has run). Never edit keywords by hand: the hand-written ones are frozen in `references/hand-keywords.json`, and adding or deleting a lesson needs no keyword edit and no flag
+3. Run `node scripts/build.js` to re-derive lesson bounds and counts (the TF-IDF index is derived from `topic-index.json` at search time; nothing to rebuild), then `node scripts/prepare-lessons.js` to derive the keyword fields of `topic-index.json` (`build.js --check` fails until it has run). Never edit keywords by hand: the hand-written ones are frozen in `references/hand-keywords.json`. Deleting a lesson needs no keyword edit, but a **new** lesson also needs `node scripts/prepare-lessons.js --generate` (the one model-calling step) to propose its vocabulary — `build.js --check` fails until that has run
 4. Update `version.json` with the new version
 
 ## Platform Compatibility
