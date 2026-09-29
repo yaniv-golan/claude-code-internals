@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.59.2 — 2026-09-29 (this fork) — better search, and releases by script
+
+No new lessons; counts stay 218/59. No lesson content changed.
+
+- **Search finds the right lesson more often.** Keyword hits are weighted by how specific the keyword is, and every
+  lesson gains search terms: identifiers taken from its text, plus model-written phrases for how people ask about it.
+  On 508 generated questions, the mean reciprocal rank of the right lesson roughly doubled for plain questions
+  (about 0.25 to 0.51) and rose from about 0.85 to 0.95 for identifier questions, including lessons held out from
+  tuning. On the hand-written troubleshooting phrases it rose from 0.62 to 0.76.
+- **The search index is built in memory.** `semantic-index.json` and `build-rvf-index.js` are gone; `search.js` builds
+  the index on first use and caches it.
+- **Search quality is checked in CI.** A retrieval evaluation (`evals/retrieval/`) fails the build on a regression.
+- **`version.json` has five fields**: `skill_version`, `captured_version`, `captured_date` and the two counts. Release
+  history lives here, in the changelog.
+- **Releases run through `scripts/release.js`**, which bumps every version pin, validates the tree, commits, pushes one
+  tag and checks the published zip against the tag. This release is the first one made with it.
+
 ## v2.59.1 — 2026-09-29 (this fork) — saving skills from chat can be blocked by plan
 
 No new lessons; counts stay 218/59.
