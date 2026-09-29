@@ -212,7 +212,7 @@ function main() {
         const r = results[i];
         const scoreBar = '#'.repeat(Math.round(r.score * 40));
         const conf = confidence(r.score);
-        console.log(`  ${i + 1}. ${r.title} (Lesson ${r.id}) [${conf}]`);
+        console.log(`  ${i + 1}. ${r.title} (id ${r.id}) [${conf}]`);
         console.log(`     Score: ${r.score.toFixed(4)}  ${scoreBar}`);
         console.log(`     File:  ${r.file}:${r.startLine}-${r.endLine}`);
         console.log(`     Keywords: ${r.keywords.join(', ')}`);

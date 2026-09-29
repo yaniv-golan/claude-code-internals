@@ -524,8 +524,13 @@ function main() {
         const r = enriched[i];
         const conf = r.confidence;
         const layers = r.layers;
+        // Print the `id` — the value fetch-lesson.js and xref.js take. For the
+        // legacy lessons 1-50 the id and the printed lesson_number disagree, so
+        // append the legacy number when it differs, but never lead with it.
+        const legacy = /^\d+$/.test(String(r.lessonNumber)) && Number(r.lessonNumber) !== r.id
+          ? `, numbered "Lesson ${r.lessonNumber}"` : '';
         process.stdout.write(
-          `  ${i + 1}. ${r.title} (Lesson ${/^\d+$/.test(r.lessonNumber) ? r.lessonNumber : r.id}) [${conf} - ${layers}]\n`
+          `  ${i + 1}. ${r.title} (id ${r.id}${legacy}) [${conf} - ${layers}]\n`
         );
         process.stdout.write(
           `     RRF Score: ${r.rrfScore.toFixed(4)}\n`

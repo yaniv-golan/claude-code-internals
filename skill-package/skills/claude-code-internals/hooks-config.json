@@ -1,14 +1,15 @@
 {
   "_comment": [
-    "Claude-Internals Skill <-> Ruflo Task Orchestration Integration",
+    "Claude Code Internals skill -- config-aware PreToolUse hook",
     "",
-    "PURPOSE: When Ruflo routes a task that involves Claude Code configuration",
-    "(anything under .claude/), this PreToolUse hook fires a non-blocking",
-    "reminder to consult /claude-code-internals before making changes.",
+    "PURPOSE: When a task involves Claude Code configuration (anything under",
+    ".claude/), this PreToolUse hook fires a non-blocking reminder to consult",
+    "/claude-code-internals before making changes.",
     "",
-    "HOW TO INSTALL: Merge the 'PreToolUse' array below into the 'hooks'",
-    "object in ~/.claude/settings.json, alongside the existing SessionStart",
-    "and UserPromptSubmit hooks.",
+    "HOW TO INSTALL: This hook is opt-in. Merge the 'PreToolUse' array below into",
+    "the 'hooks' object in ~/.claude/settings.json. This applies to plugin and",
+    "manual installs alike -- the plugin does not register it. For a plugin",
+    "install, point 'command' at the plugin's cache copy of config-aware-hook.sh.",
     "",
     "EXIT CODE STRATEGY:",
     "  - Exit 0 + stdout: Tool targets .claude/ -- proceed, stdout injected as additionalContext to model.",
@@ -30,7 +31,7 @@
           {
             "type": "command",
             "command": "~/.claude/skills/claude-code-internals/scripts/config-aware-hook.sh",
-            "timeout": 2000
+            "timeout": 5
           }
         ]
       }

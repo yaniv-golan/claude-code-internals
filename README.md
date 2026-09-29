@@ -96,7 +96,7 @@ chmod +x ~/.claude/skills/claude-code-internals/scripts/*.sh \
          ~/.claude/skills/claude-code-internals/scripts/*.js
 ```
 
-**Optional PreToolUse hook** — a gentle reminder whenever Claude edits `.claude/` config. Add to `hooks` in `~/.claude/settings.json`, pointing at the manual-install path (stable across releases):
+**Optional PreToolUse hook** — a gentle reminder whenever Claude edits `.claude/` config. This is opt-in for **every** install type (plugin or manual copy); the plugin does not register it for you. To enable it, add it to the `hooks` object in `~/.claude/settings.json`:
 
 ```json
 "PreToolUse": [
@@ -105,13 +105,13 @@ chmod +x ~/.claude/skills/claude-code-internals/scripts/*.sh \
     "hooks": [
       { "type": "command",
         "command": "~/.claude/skills/claude-code-internals/scripts/config-aware-hook.sh",
-        "timeout": 2000 }
+        "timeout": 5 }
     ]
   }
 ]
 ```
 
-> If you installed as a plugin instead of copying, the script lives under a per-release cache path (`~/.claude/plugins/cache/claude-code-internals-marketplace/claude-code-internals/<version>/skills/claude-code-internals/scripts/config-aware-hook.sh`) that changes every version — so the hook is easiest to wire for manual installs.
+> The `command` path above is for a manual/copy install and is stable across releases. For a plugin install, point `command` at the plugin's cache copy instead — `~/.claude/plugins/cache/claude-code-internals-marketplace/claude-code-internals/<version>/skills/claude-code-internals/scripts/config-aware-hook.sh` — which changes each release, so re-point it after updating. (`${CLAUDE_PLUGIN_ROOT}` only expands inside a plugin-declared hook, not in `settings.json`.)
 
 </details>
 

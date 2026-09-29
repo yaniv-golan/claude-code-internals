@@ -50,6 +50,23 @@ const DOCS = {
 
 const allNumbers = (text, re) => [...new Set([...text.matchAll(re)].map((m) => m[1]))];
 
+// --- SKILL.md rendered budget (plan §4.5) -----------------------------------
+
+test('SKILL.md renders within the 18,000 UTF-16 budget', () => {
+  // The loader budgets on RENDERED length (L167): ${CLAUDE_SKILL_DIR} /
+  // ${CLAUDE_PLUGIN_ROOT} expand to an install path (~200 chars each), and the
+  // fork wrapper plus a long $ARGUMENTS value add a little more. Hold the
+  // rendered length at or under 18,000 so the tail (the routing table) is never
+  // truncated away.
+  const raw = readText(path.join(SKILL_DIR, 'SKILL.md'));
+  const rendered = raw
+    .split('${CLAUDE_SKILL_DIR}').join('x'.repeat(200))
+    .split('${CLAUDE_PLUGIN_ROOT}').join('x'.repeat(200));
+  const HEADROOM = 300; // fork wrapper (L204) + a long $ARGUMENTS value
+  assert.ok(rendered.length + HEADROOM <= 18000,
+    `SKILL.md rendered length ${rendered.length} + ${HEADROOM} headroom exceeds 18000`);
+});
+
 // --- the counts must match reality, not merely each other -------------------
 
 test('version.json lessons_count matches the actual lesson inventory', () => {
@@ -215,7 +232,7 @@ test('docs that pin a "captured from" CLI version pin the current one', () => {
   const claims = [
     ['README.md', /\*\*Captured from:\*\*\s*Claude Code v(2\.1\.\d+)/g],
     ['README.md', /currently v(2\.1\.\d+)\)/g],
-    ['SKILL.md', /differs from v(2\.1\.\d+)\./g],
+    ['SKILL.md', /differs from v(2\.1\.\d+)\b/g],
   ];
   for (const [label, re] of claims) {
     requireEveryMatch(label, re, captured, 'pins CLI v');

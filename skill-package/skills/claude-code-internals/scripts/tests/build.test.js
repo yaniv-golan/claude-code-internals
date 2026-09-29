@@ -45,7 +45,10 @@ function fixture() {
   fs.mkdirSync(refs, { recursive: true });
   const src = path.join(SKILL_DIR, 'references');
   for (const f of fs.readdirSync(src)) {
-    if (/^\d\d-.*\.md$/.test(f) || /^(topic-index|hand-keywords|cross-references|troubleshooting)\.json$/.test(f)) {
+    // catalog.md is a derived output, but copy it so a fixture that changes
+    // nothing catalog depends on still sees a clean --check (it is regenerated
+    // by any write, and reported stale by any edit that does touch it).
+    if (/^\d\d-.*\.md$/.test(f) || f === 'catalog.md' || /^(topic-index|hand-keywords|cross-references|troubleshooting)\.json$/.test(f)) {
       fs.copyFileSync(path.join(src, f), path.join(refs, f));
     }
   }
@@ -75,6 +78,34 @@ test('the committed version.json counts are the derived ones', () => {
   const v = JSON.parse(fs.readFileSync(path.join(SKILL_DIR, 'version.json'), 'utf8'));
   assert.strictEqual(v.lessons_count, d.lessonsCount);
   assert.strictEqual(v.chapters_count, d.chaptersCount);
+});
+
+test('references/catalog.md is the committed derived routing table', () => {
+  const catalog = fs.readFileSync(path.join(SKILL_DIR, 'references', 'catalog.md'), 'utf8');
+  const topic = JSON.parse(fs.readFileSync(path.join(SKILL_DIR, 'references', 'topic-index.json'), 'utf8'));
+  // No line may be a "# Chapter N" heading: release-consistency scans every .md
+  // in references/ for those to count chapters.
+  assert.doesNotMatch(catalog, /^#\s*Chapter\s+\d+/m, 'catalog.md carries a "# Chapter N" heading');
+  // A row per reference file that owns at least one lesson, with its id range.
+  const files = [...new Set(topic.lessons.map((l) => l.file))];
+  for (const f of files) {
+    const ids = topic.lessons.filter((l) => l.file === f).map((l) => l.id);
+    const range = Math.min(...ids) === Math.max(...ids) ? String(ids[0]) : `${Math.min(...ids)}–${Math.max(...ids)}`;
+    assert.ok(catalog.includes(`\`${f}\``), `catalog.md has no row for ${f}`);
+    assert.ok(catalog.includes(`| ${range} |`), `catalog.md is missing the id range ${range} for ${f}`);
+  }
+});
+
+test('an edited lesson title makes catalog.md stale, and a write fixes it', () => {
+  const dir = fixture();
+  const ti = path.join(dir, 'references', 'topic-index.json');
+  const raw = fs.readFileSync(ti, 'utf8');
+  fs.writeFileSync(ti, raw.replace('"Hooks System"', '"Hooks System (renamed)"'));
+  const stale = run(['--check', '--root', dir]);
+  assert.strictEqual(stale.code, 1, stale.out);
+  assert.match(stale.out, /catalog\.md: routing table is stale/);
+  assert.strictEqual(run(['--root', dir]).code, 0);
+  assert.strictEqual(run(['--check', '--root', dir]).code, 0);
 });
 
 // --- integration on a scratch copy ------------------------------------------------

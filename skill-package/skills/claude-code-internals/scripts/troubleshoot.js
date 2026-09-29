@@ -11,8 +11,7 @@
  * is passed as a proper argv argument, not string-interpolated into a script.
  *
  * Exit codes:
- *   0 — matches found (or --list)
- *   1 — no matches found
+ *   0 — success (matches found, no matches, or --list)
  *   2 — error (missing file, bad args)
  */
 
@@ -132,7 +131,10 @@ if (matches.length === 0) {
     console.log(`No troubleshooting hints matched: "${query}"`);
     console.log('Try --list to see all symptom patterns.');
   }
-  process.exit(1);
+  // A no-match is a valid result, not an error — exit 0, matching state.js's
+  // "no matches" behavior. (A shell caller counting non-zero exits as tool
+  // errors should not be tripped by an empty result.)
+  process.exit(0);
 }
 
 if (asJson) {

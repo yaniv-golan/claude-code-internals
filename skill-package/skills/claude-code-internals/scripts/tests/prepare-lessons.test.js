@@ -63,7 +63,9 @@ function fixture() {
   fs.mkdirSync(refs, { recursive: true });
   const src = path.join(SKILL_DIR, 'references');
   for (const f of fs.readdirSync(src)) {
-    if (/^\d\d-.*\.md$/.test(f) || /^(topic-index|hand-keywords|cross-references|troubleshooting)\.json$/.test(f)) {
+    // catalog.md is a build.js-derived output; copy it so build.js --check on an
+    // unedited fixture stays clean (any lesson-affecting edit regenerates it).
+    if (/^\d\d-.*\.md$/.test(f) || f === 'catalog.md' || /^(topic-index|hand-keywords|cross-references|troubleshooting)\.json$/.test(f)) {
       fs.copyFileSync(path.join(src, f), path.join(refs, f));
     }
   }

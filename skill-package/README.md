@@ -232,7 +232,7 @@ cp -r skill-package/* ~/.claude/skills/claude-code-internals/
 
 ### Activate the PreToolUse Hook (Optional)
 
-This adds a gentle nudge whenever Claude is about to modify `.claude/` config files. Add this to the `hooks` object in `~/.claude/settings.json`:
+This adds a gentle nudge whenever Claude is about to modify `.claude/` config files. It is opt-in for **every** install type — a plugin install does not register it for you either, so this step applies whether you installed as a plugin or copied the files above. To enable it, add it to the `hooks` object in `~/.claude/settings.json`:
 
 ```json
 "PreToolUse": [
@@ -242,7 +242,7 @@ This adds a gentle nudge whenever Claude is about to modify `.claude/` config fi
       {
         "type": "command",
         "command": "~/.claude/skills/claude-code-internals/scripts/config-aware-hook.sh",
-        "timeout": 2000
+        "timeout": 5
       }
     ]
   }
@@ -254,6 +254,8 @@ This adds a gentle nudge whenever Claude is about to modify `.claude/` config fi
 > { "hooks": { "PreToolUse": [ ... ] } }
 > ```
 > If `settings.json` doesn't exist at all, create it with that content.
+>
+> The `command` path above is for a manual/copy install and is stable across releases. For a plugin install, point `command` at the plugin's cache copy instead — `~/.claude/plugins/cache/claude-code-internals-marketplace/claude-code-internals/<version>/skills/claude-code-internals/scripts/config-aware-hook.sh` — which changes each release, so re-point it after updating. (`${CLAUDE_PLUGIN_ROOT}` only expands inside a plugin-declared hook, not in `settings.json`.)
 
 ## Usage Examples
 
