@@ -221,7 +221,7 @@ A method note from this diff: each agent binary embeds the last ten or so versio
 
 **A Desktop release can pin its bundled agent to a release-candidate build. An RC has three possible fates, and in one of them the stable channel later serves a *different* binary under the same version number. A version string does not identify an agent build; a checksum or a manifest commit does.**
 
-Probed live, 2026-09-23, against `https://downloads.claude.ai/claude-code-releases`.
+Probed live, 2026-09-23 and again 2026-09-29, against `https://downloads.claude.ai/claude-code-releases`.
 
 ## Where the pin lives
 
@@ -242,6 +242,9 @@ Scanning `2.1.200`–`2.1.285` under each RC base returns exactly one hit per ba
 | `rc/7006c4c3…` | 2.1.219 | same `commit` 7006c4c3, same `buildDate` 2026-07-24T03:34:26Z | **promoted unchanged** |
 | `rc/aa8f2d98…` | 2.1.255 | **404** on `manifest.json` and `manifest.zst.json` | **never promoted** |
 | `rc/bddba3ab…` | 2.1.280 | 200, but `commit` 80abbfe7, `modsCommit` 8187baaa, `buildDate` 2026-09-21T20:55:27Z | **superseded by a different build** |
+| `rc/16cbb4dd…` | 2.1.284 | 200, `commit` 2b8ce618, `modsCommit` 7779afb1 (same as the RC), `buildDate` 2026-09-28T02:36:51Z; linux-arm64 the same size 242,409,464 B, a different checksum | **superseded by a different build** |
+
+Naming, made precise (both 2.1.280 and 2.1.284 confirm it): the "unprefixed path" column above is what the **`latest`** pointer serves, not `stable`. On 2026-09-29 `latest` → 2.1.284 while `stable` → **2.1.277**, so `stable` was two releases behind. The 2.1.284 RC (`rc/16cbb4dd…`, `commit` 16cbb4dd, `buildDate` 2026-09-27) is the build a Desktop stages into `claude-code-vm/2.1.284/` and `claude-code/2.1.284/`; the `latest` build (`commit` 2b8ce618) is the one the CLI installer fetches. Same version string, same `modsCommit`, same binary size — two different builds. **Record the commit, not the version:** `16cbb4dd` (staged) vs `2b8ce618` (`latest`).
 
 For 2.1.280 the two manifests disagree on everything that identifies a build:
 

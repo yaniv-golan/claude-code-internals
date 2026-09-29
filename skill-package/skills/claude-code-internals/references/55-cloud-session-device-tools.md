@@ -90,8 +90,27 @@ Each cloud session gets its own VM user, `rcw-<id>`. The granted folder is mount
 
 `/bin/sh` is `dash` both in the cloud container and in the Mac's Cowork VM (both measured here). That settles L209's open point: a hook script that is missing exits 2 in both places, while local host-loop hooks run on macOS, whose `sh` exits 127.
 
+## `computer://` links: which ones work
+
+Measured on 2026-09-29 (Desktop 2.9939.4, agent 2.1.284) with the same links written by the model in a cloud conversation and in a local session. The model's own text contained every link in both cases (confirmed from the model's echo in the cloud and from the transcript locally), so what differs is how the app renders them.
+
+| link target | cloud conversation (Desktop and claude.ai web alike) | local session |
+|---|---|---|
+| a file the conversation wrote with Write (working directory `/home/claude`, or the outputs mount) — in any earlier turn too | link, opens | link, opens |
+| a file the conversation sent with `SendUserFile` | link, opens | not tested |
+| a file the conversation wrote under `/mnt/user-data/working/` | **plain text** | — |
+| an existing file the conversation never wrote (`/home/claude/.bashrc`) | **plain text** | — |
+| a file on the user's computer, folder granted | **plain text** | link, opens, and a file card is added |
+| an existing file in a connected folder the session never wrote | — | link, opens, and a file card is added |
+| a `/sessions/<name>/mnt/outputs/…` VM path | — | link, opens: the Desktop rewrites it to the host path, URL-encoding spaces, before it is displayed |
+
+So in the cloud, only a file this conversation's own tools produced gets a working link; everything else is shown as plain text, with no error. Locally, any link to a real file works, and every linked file also gets a file card.
+
+The client code (the claude.ai interface, builds of 2026-09-24/25) carries a path-based rule for cloud sessions — handed-over files, the outputs mount, `/mnt/user-data/working/` and host paths are openable — that does not match these results; the rendering follows the conversation's own list of produced files instead, which leaves out writes it marks as working-document writes. That the list is the mechanism is inferred from the code; the behaviour is measured. What happens after a cloud conversation is archived was not tested: the archive action was not offered in the app on this account, and the code says only handed-over files stay openable.
+
 ## For a skill author
 
+- In a cloud session, link only to files the session wrote or sent in this conversation, and prefer handing the file over. A `computer://` link to anything else, including the user's own files on their computer, shows as plain text. Locally any real file can be linked, and a link written with the VM path still works.
 - In a cloud session, a path on the user's computer means nothing to the file tools or the shell. To read a file there, stage it and read the staged copy. To deliver onto the computer, write into the outputs folder and let the session commit it. Do not name the device tools from a skill (see `delivery.never-commit-to-disk`); the platform's own tool descriptions already tell the model to commit deliverables.
 - Do not trust a successful Write to a `/Users/…` path in a cloud session. Check where the session is: `pwd` is `/home/claude` there.
 - A shell command meant for the user's files must go through `device_bash` and `$HOME/mnt/<folder>`, and it runs on Linux, not macOS.

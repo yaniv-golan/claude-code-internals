@@ -458,6 +458,33 @@
       ]
     },
     {
+      "id": "delivery.link-only-to-files-you-produced",
+      "page": "delivering-outputs",
+      "rule": "In a remote session, only link to files your session wrote or sent in this conversation.",
+      "detail": "A link to a file in the session is shown as a working link only when it points at a file this conversation's own tools produced — written with the write tool, or sent to the user — in the current turn or an earlier one. A link to anything else is shown as plain text with no error: an existing file the session never wrote, a file in the working area, and a file on the user's own computer even after they granted the folder. On the user's own machine any link to a real file works. Hand the file over rather than relying on a link, and never link to something you did not produce.",
+      "tier": "measured",
+      "severity": "silent",
+      "durability": "durable",
+      "lane": "remote",
+      "volatile_dependency": true,
+      "sources": {
+        "lessons": [
+          215
+        ],
+        "state_page": "cowork-architecture"
+      },
+      "caveats": [
+        "Measured on one account on 2026-09-29, in the desktop application and on the web. After a conversation is archived, the code suggests only files that were sent stay reachable; that was not tested."
+      ],
+      "verified": {
+        "date": "2026-09-29",
+        "desktop_asar": "2.9939.4",
+        "cli": "2.1.231",
+        "agent": "2.1.284",
+        "basis": "live"
+      }
+    },
+    {
       "id": "delivery.never-commit-to-disk",
       "page": "delivering-outputs",
       "rule": "Never call a tool that writes to the user's own disk from inside a skill.",

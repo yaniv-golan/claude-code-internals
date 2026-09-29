@@ -8392,7 +8392,7 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.281",
-      "summary": "New in Desktop 2.9939.2 (kx default true; unserved). Permission answers from Desktop's local card carry approvalSurface:\"host_dialog\"; the agent recognises it (oPo, 2.1.281+) and 2.1.283 adds a hostDialogAttestations map. Its downstream use is not traced.",
+      "summary": "New in Desktop 2.9939.2 (kx default true; unserved). Permission answers from Desktop's local card carry approvalSurface:\"host_dialog\"; the agent recognises it (oPo, 2.1.281+) and 2.1.283 adds a hostDialogAttestations map. Traced through 2.1.284: the attestation recorder, its matching consumer and the paired /settings-review settings-edit staging are all present but compiled off behind constant-false gates, so none of that downstream runs (see cowork-permissions).",
       "provenance": [
         {
           "lesson": 213

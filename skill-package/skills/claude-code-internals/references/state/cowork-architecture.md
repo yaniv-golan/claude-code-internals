@@ -541,7 +541,8 @@ agent binary, so it is runner-placed); the container agent **does not start plug
 "Local MCP bridge" below; `CLAUDE_CODE_DESKTOP_APP_VERSION` is
 unset and would be ignored under `remote_cowork` anyway (agent reads it only under
 `claude-desktop`/`local-agent`); Cowork ships its own Stop/UserPromptSubmit hooks under
-`/home/claude/.claude/`; every `computer://` link form renders inert and a bare path becomes a
+`/home/claude/.claude/`; a `computer://` link renders as a link only when it names a file the conversation's own
+tools produced (L215, measured 2026-09-29), and a bare path becomes a
 broken `claude.ai` URL — the presented file card is the only delivery, and it works from
 `/home/claude`, outside `outputs/`.
 
@@ -678,6 +679,15 @@ did run locally. The bundled interface and three builds fetched from
 - **Fast mode on 3p.** `CLAUDE_CODE_DISABLE_FAST_MODE` is set for every
   third-party deployment; it changes behaviour only for a gateway with a static
   credential (L214).
+
+## `computer://` links by lane (L215)
+
+Measured 2026-09-29 (Desktop 2.9939.4, agent 2.1.284). **Cloud conversation** (Desktop and web
+alike): a link is rendered only for a file the conversation's own Write / `SendUserFile` calls
+produced (any turn); writes under `/mnt/user-data/working/`, never-written existing files and host
+paths (even granted) render as plain text. **Local session**: any real file links and opens and gets a
+file card; `/sessions/<name>/mnt/…` paths are rewritten to host paths (spaces URL-encoded) before
+display. The client's path-based cloud rule does not match what renders. Archived sessions: untested.
 
 ## A cloud session and the user's computer (L215)
 

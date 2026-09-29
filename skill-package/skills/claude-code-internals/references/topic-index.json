@@ -18695,7 +18695,7 @@
       "lesson_number": "192",
       "file": "49-desktop-2.7032-cwd-rc-builds.md",
       "startLine": 220,
-      "endLine": 262,
+      "endLine": 265,
       "keywords": [
         "release-candidate",
         "rc-channel",
@@ -18765,8 +18765,8 @@
       "title": "The 2026-09-23 fcache, and What the VM Bundle Directories Really Are",
       "lesson_number": "193",
       "file": "49-desktop-2.7032-cwd-rc-builds.md",
-      "startLine": 266,
-      "endLine": 316,
+      "startLine": 269,
+      "endLine": 319,
       "keywords": [
         "fcache-2026-09-23",
         "f82df085d027eff0",
@@ -18844,8 +18844,8 @@
       "title": "What Else Changed in the Cowork Spawn: a Cloud Memory Server, Env Stripping, and Smaller Changes",
       "lesson_number": "194",
       "file": "49-desktop-2.7032-cwd-rc-builds.md",
-      "startLine": 320,
-      "endLine": 371,
+      "startLine": 323,
+      "endLine": 374,
       "keywords": [
         "memory-mcp-relay",
         "mcp__memory__memory_read",
@@ -20463,7 +20463,7 @@
       "lesson_number": "215",
       "file": "55-cloud-session-device-tools.md",
       "startLine": 16,
-      "endLine": 98,
+      "endLine": 117,
       "keywords": [
         "device tools",
         "mcp__remote-devices",
@@ -20566,8 +20566,8 @@
       "title": "One Conversation, Two Runtimes: How claude.ai Moves a Chat Into a Cowork Workspace",
       "lesson_number": "216",
       "file": "55-cloud-session-device-tools.md",
-      "startLine": 102,
-      "endLine": 148,
+      "startLine": 121,
+      "endLine": 167,
       "keywords": [
         "chat and Cowork merged",
         "hub backend",

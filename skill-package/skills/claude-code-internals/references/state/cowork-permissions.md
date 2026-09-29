@@ -3,8 +3,8 @@ domain: cowork-permissions
 title: Cowork permission stack (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [89, 107, 108, 109, 115, 121, 122, 124, 128, 148, 150, 184, 190]
-updated: 2026-09-23
+sources: [89, 107, 108, 109, 115, 121, 122, 124, 128, 148, 150, 184, 190, 213]
+updated: 2026-09-29
 ---
 
 # Cowork permission stack (current)
@@ -280,6 +280,25 @@ capture; its call site was not traced this pass.
 A separate Desktop UI-suggestion gate, `1942781881` (`promptSuggestions`),
 was also observed in this capture — OFF (defaultValue), not otherwise
 detailed.
+
+## Host-dialog approval attestation and `/settings-review` staging — shipped, compiled off (agent 2.1.281–2.1.284)
+
+Desktop's local permission card marks an allow with `approvalSurface:"host_dialog"` (gate
+`3067718716`, L213). The agent carries a matching machinery around it — a recorder that would store
+the attestation (`{toolName, filePath, writeDigest}`, `hostAttests=true`) per approved
+`tool_use_id`, two consumers that would use it to pick a `card`/`linked`/`policy`/`review` edit
+outcome and to match a later write's digest, and a separate entry point that would stage a
+settings-file edit into a `/settings-review` store — but **every arm is behind a constant-false
+gate** (`h3n(){return!1}` on both the recorder and its consumer check; `Ne(){return!1}` inside
+`w7n` on the staging path). So on **2.1.281–2.1.284** nothing records an attestation, nothing
+matches one, and no settings edit is ever staged for `/settings-review`: the feature is present but
+dead on both sides, not merely "recorded but consumer off". The recorder body first appears behind
+its false gate in 2.1.282 and the managed drop-in resolution in 2.1.283; nothing structural changed
+2.1.283 → 2.1.284. **Absent from the official CHANGELOG** for every one of 2.1.281–2.1.284 — a dark
+ship, not a new feature, and not "new in 2.1.284". `/settings-review` itself sits only in a
+command-category map beside internal commands (`mock-limits`, `thrash`, `simulate-usage`); its
+registration was not traced, so it is deliberately **not** in the `cmd.*` inventory (the three-gate
+reachability rule).
 
 ## Not part of the stack (adjacent, don't conflate)
 

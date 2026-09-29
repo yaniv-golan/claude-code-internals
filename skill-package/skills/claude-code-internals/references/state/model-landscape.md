@@ -32,6 +32,23 @@ stale — the default changed twice across this span). Sonnet 5 has a
 promotional pricing of $2/$10 per Mtok through 2026-08-31. Opus 4.8 remains
 selectable; it is no longer what a fresh install defaults to.
 
+## Bundled model catalog and per-model default effort (Desktop 2.9939.4)
+
+Opus 5.5 ships with a **per-model default effort of `medium`** — other current models (Sonnet 5,
+Fable 5.1) default to `high`. Because `/effort` is per-model now, effort saved before that change no
+longer applies to a newly released model, so Opus 5.5 starts at its own default (medium) rather than
+inheriting a saved level. Desktop **2.9939.4 is the first bundled catalog to list Opus 5.5**
+(`claude-opus-5-5`, `min_claude_code_version` 2.1.280), and it lists it **first** on the Code
+surfaces (cc/ccd/ccr).
+
+Being listed first is **not** being the default. The bundled catalog's default model is still
+`claude-opus-5` (at high effort) on the Code surfaces and `claude-sonnet-4-6` on chat and cowork.
+The catalog is only a fallback (`selection_source: "global_default"`); the server's
+`model_selector_state` endpoint can override it, so the asar does not settle what a live session
+actually starts on. **Do not read this as "Desktop defaults to Opus 5.5"** — the per-surface
+bundled default is unchanged. (asar 2.9939.4, read 2026-09-29; Ch52/L193 for Opus 5.5 joining the
+Cowork model allow-list.)
+
 ## Fable 5
 
 **Claude Fable 5** (v2.1.170) is a Mythos-class model "made safe for

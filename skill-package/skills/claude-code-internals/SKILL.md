@@ -147,15 +147,21 @@ printed, keep only the one or two most directly answering the question. You run
 forked, so this line must be in the message you return. No links for general
 CLI-internals answers, and never invent a URL.
 
-If no script printed a page, pick the one matching row below and copy its URL
-verbatim (with `?ref=skill`). These are the only URLs that exist:
+If no script printed a page **and the answer itself is about running a skill or
+plugin in Cowork**, pick the one matching row below and copy its URL verbatim
+(with `?ref=skill`). Every row is a **Cowork-lane** symptom — so if the answer is
+a core Claude Code topic (hooks, permissions, settings, versions, ids, sessions,
+MCP) with no Cowork angle, append **no** `Read more:` line at all. Match the row
+only when the Cowork wording fits the question; the site is Cowork
+skill-authoring pages, and a link on an off-topic answer is wrong. These are the
+only URLs that exist:
 
-| Symptom / topic | Page |
+| Cowork symptom / topic | Page |
 |---|---|
 | Tool refused the path your shell printed; where to write; attached file "missing" | `https://ccinternals.dev/cowork/files-and-paths/?ref=skill` |
 | File exists but the user never saw it; long run goes silent | `https://ccinternals.dev/cowork/delivering-outputs/?ref=skill` |
 | `rm`/`rmdir` permission error; moving a file between mounts fails | `https://ccinternals.dev/cowork/deleting-files/?ref=skill` |
-| Env var empty inside the shell; global install fails or disappears | `https://ccinternals.dev/cowork/shell-commands/?ref=skill` |
+| Env var empty inside the Cowork VM shell; global install fails or disappears there | `https://ccinternals.dev/cowork/shell-commands/?ref=skill` |
 | Detecting Cowork; skill ran but its scripts/sub-agents didn't | `https://ccinternals.dev/cowork/detecting-cowork/?ref=skill` |
 | Plugin hooks, `CLAUDE_PLUGIN_ROOT`, plugin MCP tools missing in cloud | `https://ccinternals.dev/cowork/plugins-and-plugin-root/?ref=skill` |
 | Sub-agent dispatch in Cowork | `https://ccinternals.dev/cowork/sub-agents/?ref=skill` |

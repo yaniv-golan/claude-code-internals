@@ -414,7 +414,7 @@
     "215": [
       [
         "delivering-outputs",
-        1
+        2
       ],
       [
         "files-and-paths",
@@ -449,12 +449,12 @@
         11
       ],
       [
-        "files-and-paths",
+        "delivering-outputs",
         10
       ],
       [
-        "delivering-outputs",
-        9
+        "files-and-paths",
+        10
       ],
       [
         "shell-commands",
@@ -524,6 +524,7 @@
     "delete.truncate-and-rename-permitted": "deleting-files#fact-delete-truncate-and-rename-permitted",
     "delivery.act-not-location": "delivering-outputs#fact-delivery-act-not-location",
     "delivery.capability-conditional": "delivering-outputs#fact-delivery-capability-conditional",
+    "delivery.link-only-to-files-you-produced": "delivering-outputs#fact-delivery-link-only-to-files-you-produced",
     "delivery.name-the-path-anyway": "delivering-outputs#fact-delivery-name-the-path-anyway",
     "delivery.narration-is-yours-to-write": "delivering-outputs#fact-delivery-narration-is-yours-to-write",
     "delivery.never-commit-to-disk": "delivering-outputs#fact-delivery-never-commit-to-disk",

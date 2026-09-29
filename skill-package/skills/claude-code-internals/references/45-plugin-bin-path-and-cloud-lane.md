@@ -198,7 +198,7 @@ The canary's measurements are the `founder-skills` project's (`docs/internal/202
 - **Cowork ships its own hooks on the cloud lane**, under `/home/claude/.claude/`: `stop-hook-reply-gate.py`, `stop-hook-git-check.sh`, `user-prompt-submit-reply-reminder.py`. Ordering against a plugin's Stop hook is untested.
 - **Plugin `SessionStart` fired on `source:"resume"` only** — no `startup` entry, though the same plugin's Stop hook fired minutes earlier. One observation; the canary's inference (plugins are synced after the session starts, `CLAUDE_CODE_SYNC_PLUGINS=1`, so `startup` is missed) is plausible and unverified.
 - **A Stop-hook block shows nothing in the app UI**; the CLI's `stop-hook-error` notification has no counterpart there. The blocked message stays visible with the corrected one beneath it.
-- **Link rendering:** every `computer://` form rendered as plain text; a bare absolute path rendered as `https://claude.ai/home/claude/x.md` and 404'd. The presented file card was the only working delivery — and it worked from `/home/claude`, outside `outputs/`.
+- **Link rendering:** every `computer://` form rendered as plain text (the rule, measured later: in a cloud conversation only a file the conversation's own tools produced gets a working link — L215); a bare absolute path rendered as `https://claude.ai/home/claude/x.md` and 404'd. The presented file card was the only working delivery — and it worked from `/home/claude`, outside `outputs/`.
 
 ## Honest scope
 
