@@ -79,9 +79,12 @@
  *      else; then each step is reconciled against the remote first (branch SHA,
  *      tag, run state), so a crash between an action and its journal record
  *      neither repeats nor skips it. A completed journal is renamed to
- *      release-journal.v<version>.done.json.
- *   7. --publish also: scripts/sync-repo-description.sh --repo <repo> --push
- *      (then --check);
+ *      release-journal.v<version>.done.json. The journal also names the temporary
+ *      candidate worktree and asset directory while they exist; a resume (after
+ *      integrating) or an abandon removes the ones a crash left behind, when they
+ *      are provably this run's, and reports any other.
+ *   7. --publish also: scripts/sync-repo-description.sh --repo <repo> --gh <gh>
+ *      --push (then --check), <gh> being the exact executable step 6 uses;
  *      `claude plugin marketplace update` + `claude plugin update` (or
  *      `install` when not yet installed); then reads the installed skill's
  *      version.json back through installed_plugins.json.
@@ -185,6 +188,18 @@ const revParse = (cwd, ref) => {
 const isAncestor = (cwd, a, b) => git(cwd, ['merge-base', '--is-ancestor', a, b], { allowFail: true }).code === 0;
 const hasObject = (cwd, sha) => git(cwd, ['cat-file', '-e', `${sha}^{commit}`], { allowFail: true }).code === 0;
 
+/**
+ * Split git's `-z` output into paths. Without -z git C-quotes any path holding a
+ * tab, newline, double quote, backslash or (core.quotePath) non-ASCII byte, so
+ * `docs/internal/a<TAB>.md` would read as `"docs/internal/a\t.md"` and slip past a
+ * prefix test. Every path a safety decision reads goes through -z and this.
+ */
+function splitNul(out) { return out.split('\0').filter(Boolean); }
+/** `git <args> -z`, untrimmed (a path may begin or end in whitespace), as a path list. */
+const gitPaths = (cwd, [sub, ...rest]) => splitNul(git(cwd, [sub, '-z', ...rest], { trim: false }).out);
+const INTERNAL = 'docs/internal/';
+const internalPaths = (paths) => [...new Set(paths)].filter((p) => p.startsWith(INTERNAL)).sort();
+
 function sleep(ms) { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); }
 
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
@@ -254,10 +269,11 @@ function outgoingProblems(cwd, base, tip) {
     const found = forbiddenTrailers(gitOut(cwd, ['log', '-1', '--format=%B', sha]));
     if (found.length) problems.push(`commit ${sha.slice(0, 12)} carries ${found.join(' and ')}`);
   }
-  const paths = new Set(gitOut(cwd, ['log', '--format=', '--name-only', '--no-renames', '-m', ...range]).split('\n').filter(Boolean));
-  if (base) for (const p of gitOut(cwd, ['diff', '--name-only', '--no-renames', base, tip]).split('\n').filter(Boolean)) paths.add(p);
-  const internal = [...paths].filter((p) => p.startsWith('docs/internal/')).sort();
-  if (internal.length) problems.push(`the outgoing commits touch docs/internal/: ${internal.join(', ')}`);
+  // -z (NUL-separated, never quoted): see splitNul. `--` ends the options.
+  const paths = gitPaths(cwd, ['log', '--format=', '--name-only', '--no-renames', '-m', ...range, '--']);
+  if (base) paths.push(...gitPaths(cwd, ['diff', '--name-only', '--no-renames', base, tip, '--']));
+  const internal = internalPaths(paths);
+  if (internal.length) problems.push(`the outgoing commits touch docs/internal/: ${internal.map((p) => JSON.stringify(p)).join(', ')}`);
   return problems;
 }
 function assertOutgoing(ctx, base, tip, when) {
@@ -352,11 +368,15 @@ function makeContext() {
   const commonDir = path.resolve(root, gitOut(root, ['rev-parse', '--git-common-dir']));
   const tmpBase = fs.realpathSync(process.env.RELEASE_TMPDIR || os.tmpdir());
   const num = (k, d) => (process.env[k] ? Number(process.env[k]) : d);
+  // A stand-in given as a path is made absolute here, against the directory the
+  // user ran from, so every consumer (gh(), sync-repo-description.sh) runs that
+  // one file whatever its cwd. A bare name (the default `gh`) stays a PATH lookup.
+  const exe = (v, d) => (!v ? d : /[\\/]/.test(v) ? path.resolve(v) : v);
   return {
     root, remote, remoteUrl, local,
     repo: process.env.RELEASE_REPO || 'yaniv-golan/claude-code-internals',
-    gh: process.env.RELEASE_GH || 'gh',
-    claude: process.env.RELEASE_CLAUDE || 'claude',
+    gh: exe(process.env.RELEASE_GH, 'gh'),
+    claude: exe(process.env.RELEASE_CLAUDE, 'claude'),
     tmpBase,
     journalPath: path.join(commonDir, 'release-journal.json'),
     commonDir,
@@ -404,6 +424,63 @@ function record(ctx, j, step, state, extra = {}) {
   saveJournal(ctx, j);
 }
 
+/**
+ * Temporary paths a run creates, journaled as `temp.<kind>` while they exist so a
+ * crash (SIGKILL runs no finally block) leaves a record. Resume and abandon remove
+ * one only when it is provably ours: the exact journaled path, directly in the
+ * temp root with the name mkdtemp gave it, and for the candidate a worktree git
+ * still has registered; anything else is reported and left alone.
+ */
+const TEMP_KINDS = {
+  candidate_worktree: /^cci-release-[A-Za-z0-9]{6}$/,
+  asset_dir: /^cci-asset-[A-Za-z0-9]{6}$/,
+};
+function rememberTemp(ctx, j, kind, dir) {
+  j.temp = { ...(j.temp || {}), [kind]: dir };
+  saveJournal(ctx, j);
+}
+function forgetTemp(ctx, j, kind) {
+  if (!j.temp || !(kind in j.temp)) return;
+  delete j.temp[kind];
+  if (!Object.keys(j.temp).length) delete j.temp;
+  // Never re-create a journal that fresh() dropped or publish() closed.
+  if (fs.existsSync(ctx.journalPath)) saveJournal(ctx, j);
+}
+function registeredWorktrees(ctx) {
+  return splitNul(git(ctx.root, ['worktree', 'list', '--porcelain', '-z'], { trim: false }).out)
+    .filter((l) => l.startsWith('worktree ')).map((l) => l.slice('worktree '.length));
+}
+/** Why a journaled temp path is not provably ours (null when it is). */
+function tempNotOwned(ctx, kind, dir) {
+  if (!TEMP_KINDS[kind]) return `unknown kind ${kind}`;
+  if (typeof dir !== 'string' || !path.isAbsolute(dir)) return 'not an absolute path';
+  if (path.dirname(dir) !== ctx.tmpBase) return `not directly in the temp root ${ctx.tmpBase}`;
+  if (!TEMP_KINDS[kind].test(path.basename(dir))) return 'not a name this script creates';
+  return null;
+}
+/** Remove the crash leftovers the journal records (see TEMP_KINDS), then prune worktrees. */
+function reconcileTemps(ctx, j) {
+  for (const [kind, dir] of Object.entries(j.temp || {})) {
+    const left = (why) => log(`  left in place: ${JSON.stringify(dir)} (journaled ${kind}; ${why}); remove it by hand if it is yours`);
+    const why = tempNotOwned(ctx, kind, dir);
+    let st = null;
+    try { st = fs.lstatSync(dir); } catch { /* gone */ }
+    if (why) { if (st) left(why); }
+    else if (kind === 'candidate_worktree') {
+      if (registeredWorktrees(ctx).includes(dir)) {
+        git(ctx.root, ['worktree', 'remove', '--force', dir], { allowFail: true });
+        if (fs.existsSync(dir)) left('git worktree remove did not delete it');
+        else log(`  removed the crashed run's candidate worktree ${dir}`);
+      } else if (st) left('not a registered worktree of this repository');
+    } else if (st) {
+      if (!st.isDirectory() || st.isSymbolicLink()) left('not a plain directory');
+      else { fs.rmSync(dir, { recursive: true, force: true }); log(`  removed the crashed run's temp directory ${dir}`); }
+    }
+    forgetTemp(ctx, j, kind);
+  }
+  git(ctx.root, ['worktree', 'prune'], { allowFail: true });
+}
+
 const SHA_RE = /^[0-9a-f]{40}(?:[0-9a-f]{24})?$/;
 const STEP_STATES = new Set(['pending', 'done', 'rejected', 'failed', 'no-run', 'mismatch']);
 
@@ -420,6 +497,10 @@ function journalSchemaProblems(j) {
   for (const k of ['parent', 'candidate', 'tree']) if (typeof j[k] === 'string' && !SHA_RE.test(j[k])) p.push(`${k} is not an object id`);
   if (!Array.isArray(j.files) || !j.files.length || !j.files.every((f) => typeof f === 'string')) p.push('files is not a non-empty list of paths');
   if (typeof j.publish !== 'boolean') p.push('publish is not a boolean');
+  if (j.temp !== undefined) {
+    if (!j.temp || typeof j.temp !== 'object' || Array.isArray(j.temp)) p.push('temp is not an object');
+    else for (const [k, v] of Object.entries(j.temp)) if (!TEMP_KINDS[k] || typeof v !== 'string') p.push(`temp.${k} is not a known temp path`);
+  }
   if (!j.steps || typeof j.steps !== 'object' || Array.isArray(j.steps)) p.push('steps is not an object');
   else {
     for (const [k, v] of Object.entries(j.steps)) {
@@ -448,8 +529,10 @@ function candidateProblems(ctx, j) {
   let v = null;
   try { v = JSON.parse(vj.out).skill_version; } catch { /* reported below */ }
   if (v !== j.version) p.push(`the candidate's version.json says ${v}, the journal says ${j.version}`);
-  const names = gitOut(ctx.root, ['diff-tree', '--no-commit-id', '--name-only', '-r', c]).split('\n').filter(Boolean).sort();
+  const names = gitPaths(ctx.root, ['diff-tree', '--no-commit-id', '--name-only', '--no-renames', '-r', c]).sort();
   const files = [...j.files].sort();
+  const internal = internalPaths(names);
+  if (internal.length) p.push(`the candidate includes docs/internal/ paths: ${internal.map((n) => JSON.stringify(n)).join(', ')}`);
   if (JSON.stringify(names) !== JSON.stringify(files)) p.push(`the candidate touches ${names.join(', ') || 'nothing'}; the journal recorded ${files.join(', ')}`);
   const { required, allowed } = releaseFiles();
   const outside = names.filter((n) => !allowed.has(n));
@@ -611,8 +694,8 @@ function assertCandidateIs(cand, tree, when) {
   const now = gitOut(cand, ['write-tree']);
   if (now !== tree) throw new Stop(`${when}: the candidate's index is tree ${now}, not the validated ${tree}`);
   const unstaged = git(cand, ['diff', '--quiet'], { allowFail: true }).code;
-  const untracked = gitOut(cand, ['ls-files', '--others', '--exclude-standard']);
-  if (unstaged !== 0 || untracked) throw new Stop(`${when}: the candidate worktree has changes beyond the validated tree (${untracked ? `untracked: ${untracked.split('\n')[0]}` : 'unstaged edits'})`);
+  const untracked = gitPaths(cand, ['ls-files', '--others', '--exclude-standard']);
+  if (unstaged !== 0 || untracked.length) throw new Stop(`${when}: the candidate worktree has changes beyond the validated tree (${untracked.length ? `untracked: ${untracked[0]}` : 'unstaged edits'})`);
 }
 
 function commitCandidate(ctx, cand, { head, list, tree, message }) {
@@ -632,10 +715,10 @@ function commitCandidate(ctx, cand, { head, list, tree, message }) {
   if (commitTree !== tree) problems.push(`the commit's tree ${commitTree} is not the validated tree ${tree} (a hook changed it)`);
   const parents = gitOut(cand, ['rev-list', '--parents', '-n', '1', sha]).split(' ').slice(1);
   if (parents.length !== 1 || parents[0] !== head) problems.push(`the commit's parents are ${parents.join(' ') || 'none'}, expected ${head}`);
-  const names = gitOut(cand, ['diff-tree', '--no-commit-id', '--name-only', '-r', sha]).split('\n').filter(Boolean).sort();
+  const names = gitPaths(cand, ['diff-tree', '--no-commit-id', '--name-only', '--no-renames', '-r', sha]).sort();
   if (JSON.stringify(names) !== JSON.stringify(list)) problems.push(`the commit touches ${names.join(', ')}; expected exactly ${list.join(', ')}`);
-  const internal = names.filter((n) => n.startsWith('docs/internal/'));
-  if (internal.length) problems.push(`the commit includes docs/internal/ paths: ${internal.join(', ')}`);
+  const internal = internalPaths(names);
+  if (internal.length) problems.push(`the commit includes docs/internal/ paths: ${internal.map((n) => JSON.stringify(n)).join(', ')}`);
   const committed = gitOut(cand, ['log', '-1', '--format=%B', sha]);
   const trailers = forbiddenTrailers(committed);
   if (trailers.length) problems.push(`the committed message carries ${trailers.join(' and ')} (added by a hook?)`);
@@ -809,6 +892,7 @@ function stepRun(ctx, j) {
 function stepAsset(ctx, j) {
   const dir = fs.mkdtempSync(path.join(ctx.tmpBase, 'cci-asset-'));
   try {
+    rememberTemp(ctx, j, 'asset_dir', dir);
     const dl = path.join(dir, 'download');
     fs.mkdirSync(dl);
     gh(ctx, ['release', 'download', j.tag, '-R', ctx.repo, '-p', ZIP_NAME, '-D', dl, '--clobber']);
@@ -830,20 +914,17 @@ function stepAsset(ctx, j) {
     record(ctx, j, 'asset', 'done');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
+    forgetTemp(ctx, j, 'asset_dir');
   }
-}
-
-function ghPathEnv(ctx) {
-  if (!process.env.RELEASE_GH) return childEnv();
-  const dir = path.dirname(path.resolve(process.env.RELEASE_GH));
-  return childEnv({ PATH: `${dir}${path.delimiter}${process.env.PATH}` });
 }
 
 function stepDescription(ctx, j) {
   const script = path.join(ctx.root, 'scripts', 'sync-repo-description.sh');
-  const env = ghPathEnv(ctx);
+  const env = childEnv();
   // The validated repo, explicitly: the script's own default is the real one.
-  const repo = ['--repo', ctx.repo];
+  // The exact gh executable too: the script would otherwise run whatever `gh`
+  // comes first on PATH, which for a stand-in not named `gh` is the real one.
+  const repo = ['--repo', ctx.repo, '--gh', ctx.gh];
   if (run('bash', [script, ...repo, '--check'], { cwd: ctx.root, env, allowFail: true }).code !== 0) {
     run('bash', [script, ...repo, '--push'], { cwd: ctx.root, env });
     run('bash', [script, ...repo, '--check'], { cwd: ctx.root, env });
@@ -932,6 +1013,7 @@ function abandon(ctx, j) {
   if (remoteTag || j.steps.tag?.state === 'done') {
     throw new Stop(`tag ${j.tag} is already on ${ctx.remote}; a published release cannot be abandoned. Finish it with --resume.`);
   }
+  reconcileTemps(ctx, j);
   const localTag = revParse(ctx.root, `refs/tags/${j.tag}`);
   const kept = path.join(ctx.commonDir, `release-journal.v${j.version}.abandoned.json`);
   fs.renameSync(ctx.journalPath, kept);
@@ -951,6 +1033,9 @@ function resume(ctx, j, opts) {
   if (opts.publish && !j.publish) { j.publish = true; saveJournal(ctx, j); }
   log(`resuming v${j.version} (candidate ${j.candidate})`);
   integrate(ctx, j);
+  // After integrating: until main holds the candidate, its worktree is what keeps
+  // the commit reachable.
+  reconcileTemps(ctx, j);
   publish(ctx, j);
 }
 
@@ -1003,6 +1088,7 @@ function fresh(ctx, opts) {
       schema: 1, version, tag, branch: BRANCH, remote: ctx.remote, remote_url: ctx.remoteUrl, repo: ctx.repo,
       parent: pre.head, candidate: sha, tree, files: list, publish: opts.publish,
       created: new Date().toISOString(), steps: { integrate: { state: 'pending', at: new Date().toISOString() } },
+      temp: { candidate_worktree: cand },          // a crash from here on leaves it behind: see reconcileTemps
     };
     saveJournal(ctx, j);
     try {
@@ -1014,6 +1100,7 @@ function fresh(ctx, opts) {
     }
   } finally {
     removeCandidate(ctx, cand);
+    if (j) forgetTemp(ctx, j, 'candidate_worktree');
   }
   log('step 6: publish');
   publish(ctx, j);
@@ -1058,5 +1145,5 @@ if (require.main === module) {
 
 module.exports = {
   isLocalRemote, forbiddenTrailers, parseChangelogEntry, insertChangelog, nextVersion, cmpSemver, hashTree, diffTrees, Stop,
-  journalSchemaProblems, outgoingProblems, releaseFiles,
+  journalSchemaProblems, outgoingProblems, releaseFiles, splitNul, internalPaths,
 };

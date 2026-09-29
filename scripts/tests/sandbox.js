@@ -9,6 +9,12 @@
  *   node scripts/tests/sandbox.js <dir>     create a sandbox in <dir> (must not exist)
  *                                           and print the env to run release.js in it
  *
+ * The fake gh is named `gh` unless makeSandbox(dir, { ghName }) says otherwise, and
+ * a tripwire directory comes first on the release's PATH: its `gh` and `claude`
+ * fail loudly and log to <base>/tripwire.log, so anything that resolves either by
+ * name instead of through RELEASE_GH / RELEASE_CLAUDE is caught, and the user's
+ * real, authenticated gh is never reachable from a test.
+ *
  * Git runs with GIT_CONFIG_NOSYSTEM=1 and GIT_CONFIG_GLOBAL pointing at the
  * sandbox's own config, so the user's global hooksPath / signing settings do not
  * leak in, and inherited GIT_DIR & co. are dropped.
@@ -90,18 +96,25 @@ function template(full = false) {
  * Create a sandbox. Returns {base, work, origin, env, version, changelog, ...helpers}.
  * `version` is the next patch version; `changelog` a valid entry file for it.
  */
-function makeSandbox(base, { full = false } = {}) {
+function makeSandbox(base, { full = false, ghName = 'gh' } = {}) {
   if (!base) base = fs.mkdtempSync(path.join(os.tmpdir(), 'cci-release-test-'));
   else fs.mkdirSync(base, { recursive: true });
   const work = path.join(base, 'work');
   const origin = path.join(base, 'origin.git');
   const bin = path.join(base, 'bin');
   const tmp = path.join(base, 'tmp');
-  for (const d of [bin, tmp, path.join(base, 'claude-config')]) fs.mkdirSync(d, { recursive: true });
+  const tripwire = path.join(base, 'tripwire');
+  const tripwireLog = path.join(base, 'tripwire.log');
+  for (const d of [bin, tmp, tripwire, path.join(base, 'claude-config')]) fs.mkdirSync(d, { recursive: true });
   const cfg = path.join(base, 'gitconfig');
   writeGitConfig(cfg);
-  for (const [name, file] of [['gh', 'fake-gh.js'], ['claude', 'fake-claude.js']]) {
+  for (const [name, file] of [[ghName, 'fake-gh.js'], ['claude', 'fake-claude.js']]) {
     fs.writeFileSync(path.join(bin, name), `#!/bin/sh\nexec "${process.execPath}" "${path.join(FIXTURES, file)}" "$@"\n`, { mode: 0o755 });
+  }
+  for (const name of ['gh', 'claude']) {
+    fs.writeFileSync(path.join(tripwire, name),
+      `#!/bin/sh\necho "TRIPWIRE: ${name} was run by name from PATH, not through its RELEASE_ stand-in: $*" >&2\n` +
+      `printf '%s\\n' "${name} $*" >> "${tripwireLog}"\nexit 97\n`, { mode: 0o755 });
   }
   const gitEnv = { ...baseEnv(), GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: cfg };
   const tpl = template(full);
@@ -114,7 +127,8 @@ function makeSandbox(base, { full = false } = {}) {
   fs.writeFileSync(descFile, 'an old About text');
   const env = {
     ...gitEnv,
-    RELEASE_GH: path.join(bin, 'gh'),
+    PATH: `${tripwire}${path.delimiter}${gitEnv.PATH || ''}`,
+    RELEASE_GH: path.join(bin, ghName),
     RELEASE_CLAUDE: path.join(bin, 'claude'),
     RELEASE_TMPDIR: tmp,
     RELEASE_POLL_INTERVAL_MS: '5',
@@ -150,11 +164,12 @@ function makeSandbox(base, { full = false } = {}) {
     child.stderr.on('data', (d) => { out += d; });
     child.on('close', (code, signal) => { clearTimeout(timer); resolve({ code, signal, out }); });
   });
+  const tripwireCalls = () => (fs.existsSync(tripwireLog) ? fs.readFileSync(tripwireLog, 'utf8').split('\n').filter(Boolean) : []);
   const ghCalls = () => (fs.existsSync(env.FAKE_GH_LOG) ? fs.readFileSync(env.FAKE_GH_LOG, 'utf8').split('\n').filter(Boolean).map(JSON.parse) : []);
   const journal = path.join(work, '.git', 'release-journal.json');
   const hook = (name, body) => fs.writeFileSync(path.join(work, '.git', 'hooks', name), `#!/bin/sh\n${body}\n`, { mode: 0o755 });
   const cleanup = () => fs.rmSync(base, { recursive: true, force: true });
-  return { base, work, origin, bin, tmp, env, gitEnv, current, version, changelog, git, gitOrigin, release, ghCalls, journal, hook, cleanup, script };
+  return { base, work, origin, bin, tmp, tripwireCalls, env, gitEnv, current, version, changelog, git, gitOrigin, release, ghCalls, journal, hook, cleanup, script };
 }
 
 module.exports = { makeSandbox, FAST_VALIDATE, SKILL_REL, REPO_ROOT };

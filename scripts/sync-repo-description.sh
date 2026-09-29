@@ -12,11 +12,15 @@
 #   sync-repo-description.sh --push    set the live description from the file
 #   ... --repo OWNER/NAME              act on that repo (default yaniv-golan/claude-code-internals;
 #                                      scripts/release.js passes the repo it validated)
+#   ... --gh PATH                      the gh executable to run (default: `gh` on PATH;
+#                                      scripts/release.js passes its RELEASE_GH, so a
+#                                      stand-in is the only gh a test release can reach)
 #
 # `gh` defaults to the upstream fork parent, so -R / the full path is mandatory.
 set -euo pipefail
 
 REPO="yaniv-golan/claude-code-internals"
+GH="gh"
 mode="--check"
 while (($#)); do
   case "$1" in
@@ -24,7 +28,10 @@ while (($#)); do
     --repo)
       [[ $# -ge 2 && "$2" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]] || { echo "--repo needs OWNER/NAME" >&2; exit 2; }
       REPO="$2"; shift ;;
-    *) echo "usage: $0 [--check|--push] [--repo OWNER/NAME]" >&2; exit 2 ;;
+    --gh)
+      [[ $# -ge 2 && -n "$2" ]] || { echo "--gh needs a path" >&2; exit 2; }
+      GH="$2"; shift ;;
+    *) echo "usage: $0 [--check|--push] [--repo OWNER/NAME] [--gh PATH]" >&2; exit 2 ;;
   esac
   shift
 done
@@ -36,7 +43,7 @@ want="$(tr -d '\n' < "$FILE")"
 
 case "$mode" in
   --check)
-    have="$(gh api "repos/$REPO" --jq '.description')"
+    have="$("$GH" api "repos/$REPO" --jq '.description')"
     if [[ "$have" == "$want" ]]; then
       echo "repo description matches .github/repo-description.txt"
     else
@@ -48,7 +55,7 @@ case "$mode" in
     fi
     ;;
   --push)
-    gh api -X PATCH "repos/$REPO" -f description="$want" --jq '.description'
+    "$GH" api -X PATCH "repos/$REPO" -f description="$want" --jq '.description'
     echo "pushed."
     ;;
 esac

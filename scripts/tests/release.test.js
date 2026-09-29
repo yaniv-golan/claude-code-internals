@@ -50,6 +50,8 @@ function assertReleased(s, { baseHead }) {
   assert.ok(!fs.existsSync(s.journal), 'the journal is closed');
   assert.ok(fs.existsSync(path.join(s.work, '.git', `release-journal.v${s.version}.done.json`)));
   assert.deepStrictEqual(fs.readdirSync(s.tmp).filter((f) => f.startsWith('cci-')), [], 'no temp dirs left');
+  assert.strictEqual(s.git(['worktree', 'list']).split('\n').length, 1, 'no candidate worktree left');
+  assert.deepStrictEqual(s.tripwireCalls(), [], 'nothing ran gh or claude by name from PATH');
 }
 
 /** Nothing happened: HEAD, worktree, origin and journal as before. */
@@ -72,6 +74,9 @@ function assertCrashed(r) {
 }
 
 const releaseArgs = (s, extra = []) => ['--version', s.version, '--changelog', s.changelog, ...extra];
+
+// File names git C-quotes in its line-oriented output (core.quotePath covers the last).
+const ODD_NAMES = ['private\t.md', 'two\nlines.md', 'say "hi".md', 'résumé.md'];
 
 // --- pure helpers -----------------------------------------------------------------
 
@@ -120,7 +125,22 @@ test('journal schema: the shape fresh() writes passes; missing or inconsistent f
   assert.match(bad({ steps: undefined }), /steps is not an object/);
   assert.match(bad({ steps: { push: { state: 'weird' } } }), /step push has no known state/);
   assert.match(bad({ schema: 2 }), /schema/);
+  assert.deepStrictEqual(rel.journalSchemaProblems({ ...good, temp: { candidate_worktree: '/t/cci-release-abcdef' } }), []);
+  assert.match(bad({ temp: { elsewhere: '/x' } }), /temp\.elsewhere is not a known temp path/);
+  assert.match(bad({ temp: ['/x'] }), /temp is not an object/);
   assert.deepStrictEqual(rel.journalSchemaProblems([]), ['not a JSON object']);
+});
+
+test('path lists are read NUL-separated: names git would quote keep their docs/internal/ prefix', () => {
+  const names = [...ODD_NAMES.map((n) => `docs/internal/${n}`), ' lead.md', 'docs/public.md'];
+  // What `git ... -z --name-only` prints: each path raw, NUL-terminated, never quoted.
+  const raw = `${names.join('\0')}\0\0`;
+  assert.deepStrictEqual(rel.splitNul(raw), names);
+  assert.deepStrictEqual(rel.internalPaths(rel.splitNul(raw)), names.slice(0, ODD_NAMES.length).sort());
+  // Negative control: the quoted, line-oriented form the old parser read hides every one.
+  const quoted = ['"docs/internal/private\\t.md"', '"docs/internal/two\\nlines.md"', '"docs/internal/say \\"hi\\".md"',
+    '"docs/internal/r\\303\\251sum\\303\\251.md"'].join('\n');
+  assert.deepStrictEqual(rel.internalPaths(quoted.split('\n')), []);
 });
 
 test('forbidden trailers are detected wherever a hook might put them', () => {
@@ -405,8 +425,27 @@ test('sandbox runs', { concurrency: 6 }, async (t) => {
     s2.git(['commit', '-q', '-m', 'remove it again']);
     const r2 = await s2.release(releaseArgs(s2, ['--dry-run']));
     assert.strictEqual(r2.code, 1, r2.out);
-    assert.match(r2.out, /touch docs\/internal\/: docs\/internal\/plan\.md/);
+    assert.match(r2.out, /touch docs\/internal\/: "docs\/internal\/plan\.md"/);
     assertUntouched(s2, { baseHead: s2.git(['rev-parse', 'HEAD']), originHead: o2 });
+  });
+
+  add('docs/internal/ files whose names git would C-quote (tab, newline, double quote, non-ASCII): each is refused', async () => {
+    const s = sandbox();
+    const originHead = s.gitOrigin(['rev-parse', 'refs/heads/main']);
+    const names = ODD_NAMES.map((n) => `docs/internal/${n}`);
+    fs.mkdirSync(path.join(s.work, 'docs', 'internal'), { recursive: true });
+    for (const n of names) fs.writeFileSync(path.join(s.work, n), 'private\n');
+    s.git(['add', '-f', '--', ...names]);
+    s.git(['commit', '-q', '-m', 'odd names']);
+    // Two deleted again inside the range (only the per-commit listing sees them),
+    // two still present at the tip (the range diff sees them too).
+    s.git(['rm', '-q', '--', names[0], names[2]]);
+    s.git(['commit', '-q', '-m', 'remove two again']);
+    const r = await s.release(releaseArgs(s, ['--dry-run']));
+    assert.strictEqual(r.code, 1, r.out);
+    assert.match(r.out, /preconditions: the push would publish commits that break the hard rules/);
+    for (const n of names) assert.ok(r.out.includes(JSON.stringify(n)), `${JSON.stringify(n)} is named:\n${r.out}`);
+    assertUntouched(s, { baseHead: s.git(['rev-parse', 'HEAD']), originHead });
   });
 
   add('the pre-push re-check: a resume after the remote was rewound refuses to re-publish an offending commit', async () => {
@@ -427,7 +466,7 @@ test('sandbox runs', { concurrency: 6 }, async (t) => {
     assert.strictEqual(again.code, 1, again.out);
     assert.match(again.out, /before the push: the push would publish commits that break the hard rules/);
     assert.match(again.out, /carries Co-Authored-By: Claude/);
-    assert.match(again.out, /touch docs\/internal\/: docs\/internal\/x\.md/);
+    assert.match(again.out, /touch docs\/internal\/: "docs\/internal\/x\.md"/);
     assert.strictEqual(s.gitOrigin(['rev-parse', 'refs/heads/main']), base, 'nothing pushed');
     assert.strictEqual(s.gitOrigin(['tag', '--list']), '');
   });
@@ -564,6 +603,22 @@ test('sandbox runs', { concurrency: 6 }, async (t) => {
     assert.ok(api.length >= 2, 'check + push');
     for (const a of api) assert.ok(a.includes('repos/sandbox-owner/sandbox-repo'), JSON.stringify(a));
     assert.ok(!s.ghCalls().some((a) => a.join(' ').includes('yaniv-golan/claude-code-internals')), 'the real repo is never named');
+  });
+
+  add('--publish with a gh stand-in not named gh: it is the only gh the description sync runs', async () => {
+    const s = makeSandbox(undefined, { ghName: 'fake-gh' });
+    sandboxes.push(s);
+    const baseHead = s.git(['rev-parse', 'HEAD']);
+    assert.ok(!fs.existsSync(path.join(s.bin, 'gh')) && fs.existsSync(path.join(s.bin, 'fake-gh')));
+    const r = await s.release(releaseArgs(s, ['--publish']));
+    assert.strictEqual(r.code, 0, r.out);
+    assert.deepStrictEqual(s.tripwireCalls(), [], 'the PATH gh (a tripwire standing in for the real one) never ran');
+    assert.doesNotMatch(r.out, /TRIPWIRE/);
+    const api = s.ghCalls().filter((a) => a[0] === 'api');
+    assert.ok(api.some((a) => a.includes('PATCH')) && api.length >= 2, 'the stand-in served check + push + check');
+    const want = fs.readFileSync(path.join(s.work, '.github', 'repo-description.txt'), 'utf8').replace(/\n/g, '');
+    assert.strictEqual(fs.readFileSync(s.env.FAKE_GH_DESCRIPTION_FILE, 'utf8'), want);
+    assertReleased(s, { baseHead });
   });
 
   add('a local (test) remote without RELEASE_GH / RELEASE_CLAUDE stand-ins: refused before anything', async () => {
@@ -771,12 +826,47 @@ test('sandbox runs', { concurrency: 6 }, async (t) => {
       const again = await s.release(['--resume']);
       assert.strictEqual(again.code, 0, again.out);
       assert.strictEqual(s.git(['rev-parse', 'HEAD']), candidate, 'resume integrated the journaled candidate, not a new one');
-      // A crash before the candidate cleanup leaves it behind (as a real crash would).
-      for (const d of fs.readdirSync(s.tmp)) fs.rmSync(path.join(s.tmp, d), { recursive: true, force: true });
-      s.git(['worktree', 'prune']);
+      // No harness cleanup: the resume itself must have removed what the crash
+      // left (the candidate worktree at integrate:*, the asset dir at asset:*).
       assertReleased(s, { baseHead });
     });
   }
+
+  add('a crash leaves the candidate worktree: --abandon removes it (journaled, in the temp root, registered)', async () => {
+    const s = sandbox();
+    const r = await s.release(releaseArgs(s), { RELEASE_CRASH_AT: 'integrate:before-action' });
+    assertCrashed(r);
+    const dir = JSON.parse(fs.readFileSync(s.journal, 'utf8')).temp.candidate_worktree;
+    assert.ok(fs.existsSync(dir), 'the crash left the candidate behind');
+    assert.strictEqual(s.git(['worktree', 'list']).split('\n').length, 2);
+    const ab = await s.release(['--abandon']);
+    assert.strictEqual(ab.code, 0, ab.out);
+    assert.ok(!fs.existsSync(dir), ab.out);
+    assert.strictEqual(s.git(['worktree', 'list']).split('\n').length, 1);
+    assert.deepStrictEqual(fs.readdirSync(s.tmp).filter((f) => f.startsWith('cci-')), []);
+  });
+
+  add('a journaled temp path that is not provably ours is reported and left alone', async () => {
+    const s = sandbox();
+    const baseHead = s.git(['rev-parse', 'HEAD']);
+    const r = await s.release(releaseArgs(s), { RELEASE_CRASH_AT: 'integrate:after-record' });
+    assertCrashed(r);
+    const j = JSON.parse(fs.readFileSync(s.journal, 'utf8'));
+    s.git(['worktree', 'remove', '--force', j.temp.candidate_worktree]);   // the real one, so the release can finish clean
+    // A well-named directory outside the temp root, and one in the temp root that
+    // git does not have registered as a worktree: neither is provably ours.
+    const outside = path.join(s.base, 'cci-asset-AAAAAA');
+    const unregistered = path.join(fs.realpathSync(s.tmp), 'cci-release-ZZZZZZ');
+    for (const d of [outside, unregistered]) { fs.mkdirSync(d); fs.writeFileSync(path.join(d, 'keep.txt'), 'x\n'); }
+    fs.writeFileSync(s.journal, JSON.stringify({ ...j, temp: { candidate_worktree: unregistered, asset_dir: outside } }, null, 2));
+    const again = await s.release(['--resume']);
+    assert.strictEqual(again.code, 0, again.out);
+    assert.match(again.out, /left in place: ".*cci-release-ZZZZZZ" \(journaled candidate_worktree; not a registered worktree/);
+    assert.match(again.out, /left in place: ".*cci-asset-AAAAAA" \(journaled asset_dir; not directly in the temp root/);
+    for (const d of [outside, unregistered]) assert.ok(fs.existsSync(path.join(d, 'keep.txt')), `${d} not removed`);
+    fs.rmSync(unregistered, { recursive: true });                    // planted by this test
+    assertReleased(s, { baseHead });
+  });
 
   await Promise.all(cases);
 });
