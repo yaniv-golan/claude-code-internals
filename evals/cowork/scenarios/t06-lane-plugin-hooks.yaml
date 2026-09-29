@@ -1,0 +1,17 @@
+# Targeted: B3 lane qualification
+# Checks: as t05
+# 'completed \(forked execution\)' anchors a regex on the skill's OWN return (the Skill tool_result;
+# the skill is context: fork), not on the parent's relay or a nested sub-agent's result.
+name: t06-lane-plugin-hooks
+session: ../sessions/hostloop-sonnet5.yaml
+fidelity: hostloop
+on_unanswered: fail
+timeout_ms: 900000
+prompt: 'Using the claude-code-internals skill: do my plugin''s hooks fire when the plugin runs inside Claude Cowork?'
+assert:
+  - skill_triggered: 'claude-code-internals'
+  - tool_no_error: '.*'
+  - max_tool_errors: 0
+  - tool_result_matches: 'completed \(forked execution\)[\s\S]*(host[- ]?loop|vm[- ]?loop|cloud|remote|local lane|on (your|the user''s) computer)'
+  - transcript_matches: 'host[- ]?loop|vm[- ]?loop|cloud|remote|local lane|on (your|the user''s) computer'
+  - tool_result_not_matches: 'completed \(forked execution\)[\s\S]*(ccinternals\.dev/(?![^\s)\]>]*\?ref=skill)[^\s)\]>]*)'

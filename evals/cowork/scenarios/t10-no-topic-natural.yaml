@@ -1,0 +1,18 @@
+# Targeted: B5 no-topic behavior + core menu
+# Checks: as t09, natural-language invocation
+# 'completed \(forked execution\)' anchors a regex on the skill's OWN return (the Skill tool_result;
+# the skill is context: fork), not on the parent's relay or a nested sub-agent's result.
+name: t10-no-topic-natural
+session: ../sessions/hostloop-sonnet5.yaml
+fidelity: hostloop
+on_unanswered: fail
+timeout_ms: 900000
+prompt: 'Run the claude-code-internals skill with no topic. I don''t have a specific question yet.'
+assert:
+  - skill_triggered: 'claude-code-internals'
+  - tool_no_error: '.*'
+  - max_tool_errors: 0
+  - tool_result_matches: 'completed \(forked execution\)(?=[\s\S]*\bhooks?\b)(?=[\s\S]*\bpermissions?\b)(?=[\s\S]*\b(compaction|memory)\b)(?=[\s\S]*\b(mcp|plugins?)\b)'
+  - transcript_matches: '(?=[\s\S]*\bhooks?\b)(?=[\s\S]*\bpermissions?\b)(?=[\s\S]*\b(compaction|memory)\b)(?=[\s\S]*\b(mcp|plugins?)\b)'
+  - no_observed_reference_access: 'scripts/fetch-lesson\.js'
+  - allow_stall: true

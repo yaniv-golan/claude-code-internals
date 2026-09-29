@@ -1,0 +1,14 @@
+# Targeted: B5 no-topic behavior + core menu
+# Checks: bare slash invocation, no argument: the user-visible menu names several core subsystems; no lesson fetched; ends asking (allow_stall). UNVERIFIED path: a slash-expanded skill may not go through the Skill tool, so skill_triggered and fork-anchored checks are deliberately omitted here (t10 covers the fork path)
+# 'completed \(forked execution\)' anchors a regex on the skill's OWN return (the Skill tool_result;
+# the skill is context: fork), not on the parent's relay or a nested sub-agent's result.
+name: t09-no-topic-slash
+session: ../sessions/hostloop-sonnet5.yaml
+fidelity: hostloop
+on_unanswered: fail
+timeout_ms: 900000
+prompt: '/claude-code-internals:claude-code-internals'
+assert:
+  - transcript_matches: '(?=[\s\S]*\bhooks?\b)(?=[\s\S]*\bpermissions?\b)(?=[\s\S]*\b(compaction|memory)\b)(?=[\s\S]*\b(mcp|plugins?)\b)'
+  - no_observed_reference_access: 'scripts/fetch-lesson\.js'
+  - allow_stall: true

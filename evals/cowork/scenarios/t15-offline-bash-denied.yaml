@@ -1,0 +1,18 @@
+# Targeted: B8 offline Read/Grep fallback
+# Checks: shell denied by a scripted rule; the skill still answers from references/ via Read/Grep. The deny only bites if the fork reaches for mcp__workspace__bash (in the 2026-09-29 smoke it did not)
+# 'completed \(forked execution\)' anchors a regex on the skill's OWN return (the Skill tool_result;
+# the skill is context: fork), not on the parent's relay or a nested sub-agent's result.
+name: t15-offline-bash-denied
+session: ../sessions/hostloop-sonnet5.yaml
+fidelity: hostloop
+on_unanswered: fail
+timeout_ms: 900000
+answers:
+  - when_tool: 'mcp__workspace__bash'
+    decide: 'deny'
+prompt: 'Using the claude-code-internals skill: what exit code makes a PreToolUse hook block the tool call?'
+assert:
+  - skill_triggered: 'claude-code-internals'
+  - reference_read: 'references/'
+  - tool_no_error: '^(Read|Grep|Glob)$'
+  - tool_result_matches: 'completed \(forked execution\)[\s\S]*(exit code 2|exit 2\b|code 2\b)'

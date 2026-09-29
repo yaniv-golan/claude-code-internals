@@ -1,0 +1,18 @@
+# Targeted: B7 Read more return contract
+# Checks: the skill's return carries 'Read more: <ccinternals.dev url>?ref=skill'; no site link without ?ref (fork and relay); the relay keeping the link is recorded separately (Sonnet is known to drop it)
+# 'completed \(forked execution\)' anchors a regex on the skill's OWN return (the Skill tool_result;
+# the skill is context: fork), not on the parent's relay or a nested sub-agent's result.
+name: t13-readmore-delivery
+session: ../sessions/hostloop-sonnet5.yaml
+fidelity: hostloop
+on_unanswered: fail
+timeout_ms: 900000
+prompt: 'Using the claude-code-internals skill: I''m writing a skill for Claude Cowork. My script writes report.md, but users say they never see the file. How should my skill deliver it?'
+assert:
+  - skill_triggered: 'claude-code-internals'
+  - tool_no_error: '.*'
+  - max_tool_errors: 0
+  - tool_result_matches: 'completed \(forked execution\)[\s\S]*(Read more:\s*<?https://ccinternals\.dev/cowork/[a-z-]*/?\?ref=skill)'
+  - tool_result_not_matches: 'completed \(forked execution\)[\s\S]*(ccinternals\.dev/(?![^\s)\]>]*\?ref=skill)[^\s)\]>]*)'
+  - transcript_matches: 'https://ccinternals\.dev/cowork/[a-z-]*/?\?ref=skill'
+  - transcript_not_matches: 'ccinternals\.dev/(?![^\s)\]>]*\?ref=skill)[^\s)\]>]*'

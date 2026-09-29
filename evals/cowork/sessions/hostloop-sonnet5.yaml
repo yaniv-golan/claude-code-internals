@@ -1,0 +1,18 @@
+# Pre-prompt setup shared by every scenario in ../scenarios/.
+# Despite the file name it carries no tier: the hostloop scenarios (t*, g-pl-*) and the container copies
+# (c*) share it, so the two lanes differ only in `fidelity:`.
+# Held constant across the before / after / ablation arms: only SKILL.md may differ between arms.
+#
+# - model pinned (result.json `models` is read back by run-suite.js to confirm; a fallback voids the rep)
+# - effort pinned (Cowork always emits --effort; pinning keeps it out of the diff)
+# - NO folders / uploads: the agent's working folder is the harness's neutral outputs dir, never this
+#   repo, so the repo's own CLAUDE.md cannot steer the answer.
+# - the plugin is declared under remote_plugins, not local_plugins: it then stages at
+#   mnt/.remote-plugins/plugin_<id>/, the shape a UI-installed plugin has in a live local-lane Cowork
+#   session (skills/claude-code-internals/scripts/state.js lands at depth 8 under /sessions). local_plugins
+#   stages it at mnt/.local-plugins/marketplaces/local-desktop-app-uploads/<dir>/ (state.js at depth 10).
+model: claude-sonnet-5
+effort: medium
+plugins:
+  enabled: [claude-code-internals@local]
+  remote_plugins: [../../../skill-package]

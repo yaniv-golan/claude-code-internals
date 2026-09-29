@@ -1,0 +1,21 @@
+# CONTAINER-tier copy of t07-id-vs-number-hooks: same prompt, session and assertions; only fidelity differs.
+# At container the plugin is staged inside the sandbox, so the fork's `node ${CLAUDE_SKILL_DIR}/scripts/...`
+# resolves and runs: this copy measures the SCRIPT path. t07-id-vs-number-hooks (hostloop) measures the local lane
+# and the offline Read/Grep fallback. Keep the two in sync.
+# Targeted: B4 id != lesson_number trap
+# Checks: the Hooks lesson body (id 32, printed by search.js as 'Lesson 10') reached a tool result - fetch-lesson.js 10 returns the MCP lesson instead; the skill's answer states exit code 2 blocks. Blind spot: a Read done by a sub-agent the fork dispatches is not observed
+# 'completed \(forked execution\)' anchors a regex on the skill's OWN return (the Skill tool_result;
+# the skill is context: fork), not on the parent's relay or a nested sub-agent's result.
+name: c07-id-vs-number-hooks
+session: ../sessions/hostloop-sonnet5.yaml
+fidelity: container
+on_unanswered: fail
+timeout_ms: 900000
+prompt: 'Using the claude-code-internals skill: summarize what Lesson 10 (the Hooks System lesson) says about exit codes.'
+assert:
+  - skill_triggered: 'claude-code-internals'
+  - tool_no_error: '.*'
+  - max_tool_errors: 0
+  - tool_result_contains: 'All 27 Hook Events'
+  - tool_result_matches: 'completed \(forked execution\)[\s\S]*(exit code 2|exit 2\b|code 2\b)'
+  - tool_result_not_matches: 'completed \(forked execution\)[\s\S]*(ccinternals\.dev)'

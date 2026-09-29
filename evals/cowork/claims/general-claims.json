@@ -1,0 +1,210 @@
+{
+  "generator": {
+    "model": "claude-fable-5-1",
+    "flags": "--safe-mode --tools ",
+    "prompt_version": "claims-v1",
+    "prompt_sha256": "1eed6d38641e023812502c2af8636be7e6c2986a478a65dd7d59c326dd20a18d",
+    "generated_at": "2026-09-29T08:16:16.203Z"
+  },
+  "selection": {
+    "source": "evals/retrieval/questions-v2.json",
+    "stratum": "plain",
+    "split": "dev",
+    "method": "qid-sorted, lib.seededShuffle(mulberry32(seed)), first N",
+    "seed": 1,
+    "count": 10,
+    "questions_sha256": "982f085f40ac4470d2266417eb58a8c6cac107a041b49e313cab5e1d774104e5"
+  },
+  "judge_model": "claude-opus-5-5",
+  "questions": [
+    {
+      "qid": "pl-0274",
+      "lesson_id": 141,
+      "lesson_title": "Snapshot Discipline: the fcache Is a Moving Target with Two Absence Axes",
+      "lesson_file": "36-cowork-lanes-mounts-snapshot-discipline.md",
+      "lesson_lines": [
+        367,
+        442
+      ],
+      "lesson_sha256": "5701250d7739aae2bef8034c94bf3038bb9602d7c303298e264e3e11b31cccaa",
+      "question": "If I build a list of enabled features by reading only what the server sends down in its config, why might I undercount what's actually running, and why can a feature I don't see listed still be switched on?",
+      "claims": [
+        "A served feature's value can omit individual keys that the code still reads; when a key is missing, the code's own per-call default applies, and that default can be true (or equivalent wording).",
+        "Because of this, 'key absent means off' is false, and an inventory built only from the keys in the served config under-reports the behaviour that is actually enabled.",
+        "The answer gives the measured example: on one served, switched-on gate the code requests about 21 keys while the served object carries only 8, and two of the missing keys default to true (for example the scheduled-task stale-reap setting), so they run enabled while invisible in the served config.",
+        "A feature missing from the payload altogether only means it was not evaluated in that snapshot, not that it is off; membership can change between any two reads because refetches are irregular (activity-driven, not on a fixed period).",
+        "Equal feature counts across two reads do not mean the same payload: one feature can drop out while another comes in, leaving the count unchanged (241 both times in the observed case)."
+      ]
+    },
+    {
+      "qid": "pl-0240",
+      "lesson_id": 123,
+      "lesson_title": "The Sub-Agent Prompt Append: subagent_env_hl / subagent_env_vm",
+      "lesson_file": "32-cowork-subagent-execution-model.md",
+      "lesson_lines": [
+        226,
+        258
+      ],
+      "lesson_sha256": "add2a0177a041d267506864f43ac3f8d4a74e9a4cbf981330ac1d2a873b02377",
+      "question": "I'm building my own app that talks to the Cowork agent and I pass it extra instructions meant for its helper agents at startup, but the helper agents never seem to receive them and I get no error. What's going wrong, and what else do I need to set up?",
+      "claims": [
+        "Sending the sub-agent prompt append only through the initialize (startup) control request is not enough: it is applied only when an enabling environment variable, CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT (or equivalent wording), is also set in the agent process's environment — both the option and the env var are required.",
+        "The initialize handler only stores the option and does not set that environment variable itself, so without the env var the append is silently ignored (inert) rather than producing an error.",
+        "The fix is for the integrator to set that environment variable (to \"1\" or an equivalent truthy value) themselves in the environment of the agent process they spawn, which is what the Desktop app does unconditionally for every Cowork spawn.",
+        "Even when working, the append applies only to Task-tool sub-agents (not fork / exact-tools dispatches), and it propagates to nested sub-agents.",
+        "The hidden command-line flag for appending a sub-agent system prompt (or equivalent wording) is the one path that sets the enabling env var automatically; the initialize path does not."
+      ]
+    },
+    {
+      "qid": "pl-0116",
+      "lesson_id": 59,
+      "lesson_title": "AskUserQuestionTool",
+      "lesson_file": "07-verified-new-v2.1.92.md",
+      "lesson_lines": [
+        270,
+        371
+      ],
+      "lesson_sha256": "7be5f0c259fa3b317d5f7b35baab70ac58a5f6f1ba94d88579282e2f057e1d98",
+      "question": "Why can't Claude skip the multiple-choice prompt it shows me, even when I've turned on the mode that auto-approves everything, and does that prompt ever appear while another approval dialog is already open?",
+      "claims": [
+        "The multiple-choice question prompt always requires human involvement and cannot be auto-approved, even in the bypass-permissions (auto-approve everything) mode.",
+        "The reason is that the tool's permission check always returns an \"ask\" result (or equivalent wording: it is hard-wired to always prompt the user regardless of permission mode).",
+        "The tool is marked as requiring user interaction, and the conversation blocks until the user explicitly makes a selection (or declines).",
+        "The prompt does not appear while another interactive approval/prompt is already pending: the tool reports itself as disabled (its enabled-check returns false) in that situation.",
+        "The purpose of that guard is to prevent overlapping permission prompts."
+      ]
+    },
+    {
+      "qid": "pl-0330",
+      "lesson_id": 168,
+      "lesson_title": "Cowork Has Its Own Browser, With a Persistent Signed-In Profile",
+      "lesson_file": "43-cowork-in-app-browser-preview.md",
+      "lesson_lines": [
+        14,
+        78
+      ],
+      "lesson_sha256": "4e40d54677edcfc6b2bcf538303d3bf02e806d57f4faa6ae8d9cc7264cfd6c56",
+      "question": "If I use the browser built into the app instead of my regular Chrome, will it already be signed in to my accounts from earlier sessions, and what limits does the app place on how Claude uses those logins?",
+      "claims": [
+        "The in-app browser keeps its own persistent profile that is shared across the app's sessions, so the user (or an earlier session) may already be signed in to sites there (or equivalent wording).",
+        "The in-app browser is a separate browser surface from the user's regular Chrome, with its own profile rather than Chrome's, so its logins are those made within the in-app browser.",
+        "Sign-ins that Claude completes in the in-app browser also persist for later sessions.",
+        "Claude is instructed to treat existing signed-in sessions as the person's and to never sign out, change credentials, or act on an account beyond what the task needs (or equivalent wording).",
+        "Per-site approval may be required and some sites are blocked outright; the limits on how Claude uses the logins are otherwise stated as instructions to Claude rather than enforced by a mechanism."
+      ]
+    },
+    {
+      "qid": "pl-0166",
+      "lesson_id": 83,
+      "lesson_title": "System Prompt Modifications (GB Override, Append-Subagent, Verified-vs-Assumed)",
+      "lesson_file": "13-verified-new-v2.1.111.md",
+      "lesson_lines": [
+        428,
+        497
+      ],
+      "lesson_sha256": "036cc9222c185910a225020b6c9c53cd6659a5a48b470038e58aed8605302332",
+      "question": "Can someone add extra instructions to just one helper agent's prompt for a single call, without changing the main prompt? What has to be turned on for that to work?",
+      "claims": [
+        "Yes — extra instructions can be supplied per call on an individual subagent (Task/Agent) dispatch via an append-subagent-system-prompt option (or equivalent wording), and the text is appended to that subagent's prompt rather than replacing it.",
+        "The addition applies only to the subagent's prompt for that dispatch; the main/top-level system prompt is not changed (it is the per-call, subagent-only counterpart of the top-level append option).",
+        "An environment variable enabling subagent prompt appending must be set to a truthy value (CLAUDE_CODE_ENABLE_APPEND_SUBAGENT_PROMPT, or equivalent wording) for the feature to work.",
+        "The append only takes effect when the subagent is running with the parent's composed prompt, not when its prompt is being wholesale overridden/replaced.",
+        "All three conditions must hold together: the enabling environment variable is set, the call itself supplies the append text, and the subagent prompt is not a wholesale override."
+      ]
+    },
+    {
+      "qid": "pl-0168",
+      "lesson_id": 84,
+      "lesson_title": "v2.1.110-v2.1.111 Command & Env Var Changes",
+      "lesson_file": "13-verified-new-v2.1.111.md",
+      "lesson_lines": [
+        501,
+        655
+      ],
+      "lesson_sha256": "0b188ea83d895e9826cef6f95de128e8b1bda34252d06a4d02e2cd9e8839808e",
+      "question": "Sometimes the first response data takes a long time to arrive after a request is sent. How does the tool detect this delay, how long does it wait by default before flagging it, and does it cancel the request?",
+      "claims": [
+        "The delay is detected by a timer (watchdog) that starts when a streaming request begins and fires if no stream chunk has arrived within the threshold.",
+        "The default threshold is 30000 ms (30 seconds).",
+        "The threshold can be changed through an environment variable (CLAUDE_SLOW_FIRST_BYTE_MS or equivalent wording).",
+        "When the timer fires, it emits a telemetry event and logs a warning about the slow first byte (or equivalent wording).",
+        "The request is not cancelled or aborted; the watchdog is purely observational."
+      ]
+    },
+    {
+      "qid": "pl-0420",
+      "lesson_id": 214,
+      "lesson_title": "HIPAA Egress and Fast Mode on Third-Party Providers",
+      "lesson_file": "54-desktop-2.9939-artifacts-gates-egress.md",
+      "lesson_lines": [
+        211,
+        248
+      ],
+      "lesson_sha256": "ea8cb02bc391a41499ff4642da69c68d4153d002027dbb1036c41ba5f283562e",
+      "question": "If my company's account is flagged as a healthcare-compliance organization and our sandboxed agent was allowed to reach any website, what changes after this update, and will anyone be told that the access was narrowed?",
+      "claims": [
+        "For an organization marked as HIPAA, the wildcard (\"allow everything\") entry is removed from the sandboxed VM's egress allowlist after this update, so the agent can no longer reach any website.",
+        "The wildcard is replaced by four Anthropic and Claude domains — anthropic.com, *.anthropic.com, claude.com, and *.claude.com (or equivalent wording) — and the VM can reach only those (plus any other specific domains that were already listed).",
+        "No message or notification is shown to anyone about the narrowing; the only signal is an internal telemetry event being recorded.",
+        "The narrowing applies only when both conditions hold: the organization is marked HIPAA and the allowlist contained the wildcard; allowlists without a wildcard, or organizations not marked HIPAA, pass through unchanged.",
+        "This egress filter is new in this update; the previous version had no such filter on the VM's allowlist."
+      ]
+    },
+    {
+      "qid": "pl-0004",
+      "lesson_id": 3,
+      "lesson_title": "State Management",
+      "lesson_file": "01-core-architecture-tools.md",
+      "lesson_lines": [
+        505,
+        893
+      ],
+      "lesson_sha256": "b6b99b2f01157279ad8da43a9ad4f32f122791ac0eee3ff1c5cc2e41f92341ce",
+      "question": "Why does my component keep re-rendering forever when the function I use to pick values out of the app's shared state builds a brand new object each time, and what's the right way to pick several values?",
+      "claims": [
+        "The selected value (snapshot) is compared using Object.is reference equality (or equivalent wording: compared by identity/reference, not by contents).",
+        "A selector that builds a new object or array returns a new reference on every call, so the comparison always sees it as changed, which triggers the infinite re-render loop.",
+        "The rule is that selectors must not return newly created objects or arrays; they should return an existing reference from the state.",
+        "To get several values, select an existing object/slice already in state that contains them and destructure the result outside the selector (e.g., select the whole sub-object, then pull the fields out), and/or make separate selector calls each returning a single existing value."
+      ]
+    },
+    {
+      "qid": "pl-0390",
+      "lesson_id": 198,
+      "lesson_title": "One Probe, Four Surfaces: What a Relative Path Means Where",
+      "lesson_file": "50-artifact-host-tools-inbox-folder-skills.md",
+      "lesson_lines": [
+        182,
+        237
+      ],
+      "lesson_sha256": "fe744977f75dd4fc9abab0eade6d34ab49bb6cfd577615f2f76b6c4a28aa9a92",
+      "question": "If I write a skill that saves a file using a relative path, what happens on each of the places a Claude agent can run it (desktop app, cloud version, web coding tool, and chat with code execution), and how can the skill tell which one it's running in?",
+      "claims": [
+        "In the local desktop app (local Cowork), a write to a relative path is refused with a permission-denied style error (or equivalent wording).",
+        "In a claude.ai chat with code execution, a relative-path write is also refused: relative paths are not supported, and files for the user belong under /mnt/user-data/outputs (or equivalent wording).",
+        "In cloud Cowork, the relative-path write succeeds but the file lands in the container's home/working directory (/home/claude), which is not the outputs location, so the file is not shown or delivered to the user.",
+        "In Claude Code on the web, the relative-path write succeeds and resolves to the repository root, making it the only surface where a relative path is safe.",
+        "The skill can tell the surfaces apart by fingerprinting the environment: the CLAUDE_CODE_ENTRYPOINT variable is 'remote_cowork' in cloud Cowork, 'remote' in Claude Code on the web, and unset in chat, while local Cowork is identified by its shell user and home directory being the per-session slug under /sessions (or equivalent wording)."
+      ]
+    },
+    {
+      "qid": "pl-0382",
+      "lesson_id": 193,
+      "lesson_title": "The 2026-09-23 fcache, and What the VM Bundle Directories Really Are",
+      "lesson_file": "49-desktop-2.7032-cwd-rc-builds.md",
+      "lesson_lines": [
+        266,
+        316
+      ],
+      "lesson_sha256": "4fb44dfa688fa325d761dd6daf72e696bfc2b30fc83d578da9677b3d739e73d9",
+      "question": "I keep seeing empty folders under the VM downloads directory on my machine. Do they mean several sessions are sharing one already-running VM, and how can I tell which VM image a session actually used after the app updates?",
+      "claims": [
+        "The folders under the VM bundles \"warm\" directory are a download/prefetch cache where VM images are fetched ahead of an update (keyed by image sha), not a pool of running VMs (or equivalent wording).",
+        "The warm directories are left empty because the downloaded image file is deleted once the image has been promoted.",
+        "An empty warm directory does not indicate that several sessions share one running/warm VM; it says nothing about how sessions map to VMs.",
+        "To find which VM image a session actually used, read the `.origin` files in the VM bundle directory (e.g. the one next to the rootfs image), which record the image sha, rather than relying on the app version (or equivalent wording).",
+        "A Desktop app update is not a VM image update: the app pins its VM image by sha, and different Desktop versions can pin the same image (e.g. 2.2553.1 and 2.7032.0 both pin the same sha), so the upgrade did not replace the VM image."
+      ]
+    }
+  ]
+}

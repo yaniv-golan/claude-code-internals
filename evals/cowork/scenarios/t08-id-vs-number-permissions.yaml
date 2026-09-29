@@ -1,0 +1,17 @@
+# Targeted: B4 id != lesson_number trap
+# Checks: the Permissions lesson body (id 25, printed as 'Lesson 06') reached a tool result - fetch-lesson.js 6 returns the Tool System lesson instead; answer mentions deny rules
+# 'completed \(forked execution\)' anchors a regex on the skill's OWN return (the Skill tool_result;
+# the skill is context: fork), not on the parent's relay or a nested sub-agent's result.
+name: t08-id-vs-number-permissions
+session: ../sessions/hostloop-sonnet5.yaml
+fidelity: hostloop
+on_unanswered: fail
+timeout_ms: 900000
+prompt: 'Using the claude-code-internals skill: what does Lesson 06 (the Permissions System lesson) list as the steps of the permission decision pipeline?'
+assert:
+  - skill_triggered: 'claude-code-internals'
+  - tool_no_error: '.*'
+  - max_tool_errors: 0
+  - tool_result_contains: 'Decision Pipeline Steps'
+  - tool_result_matches: 'completed \(forked execution\)[\s\S]*(deny rule)'
+  - tool_result_not_matches: 'completed \(forked execution\)[\s\S]*(ccinternals\.dev)'

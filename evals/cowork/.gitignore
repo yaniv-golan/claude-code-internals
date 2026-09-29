@@ -1,0 +1,3 @@
+# run-suite.js manifests (one JSON line per rep; the harness run dirs they point to live in
+# ~/.cowork-harness/runs). Local measurement output, never committed.
+results/

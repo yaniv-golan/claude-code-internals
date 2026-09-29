@@ -1,0 +1,16 @@
+# Targeted: B9 runtime-observation caveat
+# Checks: the skill's answer defers to / reconciles with the user's runtime observation, or flags its own version baseline
+# 'completed \(forked execution\)' anchors a regex on the skill's OWN return (the Skill tool_result;
+# the skill is context: fork), not on the parent's relay or a nested sub-agent's result.
+name: t17-observation-conflict-command
+session: ../sessions/hostloop-sonnet5.yaml
+fidelity: hostloop
+on_unanswered: fail
+timeout_ms: 900000
+prompt: 'Using the claude-code-internals skill: on my Claude Code 2.1.290, /toggle-memory works as its own command. The skill''s notes say it was renamed. Which is right?'
+assert:
+  - skill_triggered: 'claude-code-internals'
+  - tool_no_error: '.*'
+  - max_tool_errors: 0
+  - tool_result_matches: 'completed \(forked execution\)[\s\S]*(your (own )?(observation|runtime|install(ation)?|build|version|binary|account)|what you(''re| are) (seeing|observing)|trust what you|newer (build|version|release)|than the skill|2\.1\.231)'
+  - tool_result_not_matches: 'completed \(forked execution\)[\s\S]*(ccinternals\.dev)'

@@ -1,0 +1,17 @@
+# Targeted: B2 version qualification
+# Checks: the skill's answer carries a concrete version stamp (CLI 2.1.x or Desktop N.NNNN.N); relay checked separately
+# 'completed \(forked execution\)' anchors a regex on the skill's OWN return (the Skill tool_result;
+# the skill is context: fork), not on the parent's relay or a nested sub-agent's result.
+name: t03-version-default-model
+session: ../sessions/hostloop-sonnet5.yaml
+fidelity: hostloop
+on_unanswered: fail
+timeout_ms: 900000
+prompt: 'Using the claude-code-internals skill: which model does Claude Code use by default when I don''t pick one?'
+assert:
+  - skill_triggered: 'claude-code-internals'
+  - tool_no_error: '.*'
+  - max_tool_errors: 0
+  - tool_result_matches: 'completed \(forked execution\)[\s\S]*(\bv?2\.1\.\d{2,3}\b|\b[12]\.\d{4,5}\.\d+\b)'
+  - transcript_matches: '\bv?2\.1\.\d{2,3}\b|\b[12]\.\d{4,5}\.\d+\b'
+  - tool_result_not_matches: 'completed \(forked execution\)[\s\S]*(ccinternals\.dev)'
