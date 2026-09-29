@@ -74,6 +74,32 @@ function fixture() {
 }
 const topicPath = (dir) => path.join(dir, 'references', 'topic-index.json');
 const topicOf = (dir) => JSON.parse(fs.readFileSync(topicPath(dir), 'utf8'));
+
+/** Lessons in `dir` whose proposal's input_sha256 differs from the current prompt, in index order. */
+function staleIn(dir) {
+  const loaded = P.load(dir);
+  return V.staleProposals(loaded.topic.lessons, loaded.lessonText, loadProposals(dir).byId).stale;
+}
+/**
+ * In a fixture copy only: re-stamp every stale proposal (except the ids in `keep`) with its
+ * lesson's current input_sha256, so the fixture starts with no stale lesson whatever the
+ * committed tree carries (a lesson prose edit leaves its proposal stale, by design, until the
+ * next --generate). Terms are untouched, so vocab_keys and stamps still derive. A rewritten
+ * file is no longer the pinned one: returns the file's sha256, to pass as proposalsPin.
+ */
+function freshen(dir, keep = []) {
+  const loaded = P.load(dir);
+  const props = loadProposals(dir);
+  const redo = staleIn(dir).filter((id) => !keep.includes(id));
+  for (const id of redo) {
+    const l = loaded.topic.lessons.find((x) => x.id === id);
+    props.byId.get(id).input_sha256 = V.inputSha256(l, loaded.lessonText(l));
+  }
+  if (redo.length) fs.writeFileSync(proposalsPath(dir), V.renderProposals(props.byId));
+  const left = staleIn(dir);
+  assert.ok(left.every((id) => keep.includes(id)), `freshen left only \`keep\` stale: ${left}`);
+  return loadProposals(dir).sha256;
+}
 const KNOB = 'CLAUDE_CODE_PREPARE_LESSONS_TEST_KNOB';
 
 /** Edit topic-index.json through the order-preserving tree (JSON.parse hoists integer-like keys). */
@@ -298,7 +324,7 @@ const handPath = (dir) => path.join(dir, 'references', HAND_FILE);
 
 test('hand-keywords.json is the frozen snapshot, and the committed index is exactly its derived form', () => {
   assert.strictEqual(HAND.sha256, HAND_SHA256);
-  assert.strictEqual(HAND.keys.length, 4993);
+  assert.strictEqual(HAND.keys.length, 5000);
   const cur = committed();
   const raw = fs.readFileSync(TOPIC, 'utf8');
   const lessonText = P.load(SKILL_DIR).lessonText;
@@ -933,6 +959,7 @@ test('stored vocab_keys and vocab stamps must equal the derivation from the prop
 
 test('--generate asks the model only for lessons without proposals, adds them, and derives their keys (stubbed model)', async () => {
   const dir = fixture();
+  freshen(dir); // no committed-stale lesson: every model call below is for a missing proposal
   const props = loadProposals(dir);
   props.byId.delete(107);
   props.byId.delete(12);
@@ -991,21 +1018,29 @@ const stubTerms = (terms) => async () => JSON.stringify({ type: 'result', is_err
 
 test('a lesson edited after its vocabulary was generated: --check warns by id (no failure), --generate regenerates only it', async () => {
   const dir = fixture();
+  // The CLI checks only the pinned proposals file, so the fixture keeps the committed one here and
+  // this part asserts on the delta: whatever the committed tree already has stale, plus 89.
+  const baseline = staleIn(dir);
+  assert.ok(!baseline.includes(89), 'lesson 89 starts current');
   const l89 = topicOf(dir).lessons.find((x) => x.id === 89);
   const word = P.load(dir).lessonText(l89).split('\n').slice(2).join(' ').match(/\b(the|a|is|and)\b/)[0];
   editLessonLine(dir, 89, ` ${word} `, ` ${word} quite `);
   assert.strictEqual(run(BUILD, ['--root', dir]).code, 0);
+  const expected = topicOf(dir).lessons.map((l) => l.id).filter((id) => id === 89 || baseline.includes(id));
+  assert.deepStrictEqual(staleIn(dir), expected, 'the edit made 89 stale, and nothing else');
+  const staleLine = `${expected.length} lesson\\(s\\) changed since their vocabulary proposal was generated \\(${expected.join(', ')}\\).*--generate`;
   // P.STALE_VOCAB_BLOCKS (false: the design) decides warn vs fail; both branches are pinned here.
   const blocks = P.STALE_VOCAB_BLOCKS;
   for (const script of [BUILD, PREP]) {
     const sp = spawnSync('node', [script, '--check', '--root', dir], { encoding: 'utf8' });
     const r = { code: sp.status, out: sp.stdout + sp.stderr };
     assert.strictEqual(r.code, blocks ? 1 : 0, `${path.basename(script)} --check ${blocks ? 'must fail' : 'must not fail'} on a prose edit:\n${r.out}`);
-    assert.match(sp.stderr, blocks
-      ? /1 lesson\(s\) changed since their vocabulary proposal was generated \(89\).*--generate/
-      : /WARNING: .*1 lesson\(s\) changed since their vocabulary proposal was generated \(89\).*--generate/);
+    assert.match(sp.stderr, new RegExp(blocks ? staleLine : `WARNING: .*${staleLine}`));
   }
-  const res = P.checkLessons({ raw: fs.readFileSync(topicPath(dir), 'utf8'), lessonText: P.load(dir).lessonText, hand: HAND, proposals: loadProposals(dir) });
+  // From here on the fixture starts fresh: only 89 is stale (the file is re-pinned in-process).
+  const pin = freshen(dir, [89]);
+  assert.deepStrictEqual(staleIn(dir), [89]);
+  const res = P.checkLessons({ raw: fs.readFileSync(topicPath(dir), 'utf8'), lessonText: P.load(dir).lessonText, hand: HAND, proposals: loadProposals(dir), proposalsPin: pin });
   assert.strictEqual(res.errors.filter((e) => /changed since their vocabulary proposal/.test(e)).length, blocks ? 1 : 0);
   assert.strictEqual(res.warnings.length, blocks ? 0 : 1);
   if (!blocks) assert.deepStrictEqual(res.errors, []);
@@ -1013,7 +1048,7 @@ test('a lesson edited after its vocabulary was generated: --check warns by id (n
   const prompts = [];
   const callModel = async (prompt) => { prompts.push(prompt); return stubTerms(['a regenerated phrase for testing'])(); };
   const lines = [];
-  await P.runGenerate(dir, {}, { callModel, date: '2026-09-29' }, (l) => lines.push(l));
+  await P.runGenerate(dir, { proposalsPin: pin }, { callModel, date: '2026-09-29' }, (l) => lines.push(l));
   assert.strictEqual(prompts.length, 1, lines.join('\n'));
   assert.match(prompts[0], new RegExp(`LESSON TITLE: ${l89.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
   assert.ok(prompts[0].includes(` ${word} quite `), 'the prompt carries the edited text');
@@ -1026,6 +1061,7 @@ test('a lesson edited after its vocabulary was generated: --check warns by id (n
 
 test('a proposal without input_sha256 has unknown inputs: warned, kept by --generate, replaced by --regen', async () => {
   const dir = fixture();
+  freshen(dir); // no committed-stale lesson: --generate has nothing else to regenerate
   const props = loadProposals(dir);
   delete props.byId.get(89).input_sha256;
   fs.writeFileSync(proposalsPath(dir), V.renderProposals(props.byId));
@@ -1059,6 +1095,7 @@ test('a lesson edited while the model runs aborts the write: nothing written', a
 
 test('--generate refuses to start from an unpinned (hand-edited) or missing proposals file; --bootstrap is explicit', async () => {
   const dir = fixture();
+  freshen(dir); // no committed-stale lesson: the --bootstrap run below regenerates only lesson 2
   const props = loadProposals(dir);
   props.byId.get(1).terms[0] = 'a manual phrase';
   fs.writeFileSync(proposalsPath(dir), V.renderProposals(props.byId));

@@ -778,6 +778,13 @@ test('sandbox runs', { concurrency: 6 }, async (t) => {
   add('a lesson with a stale vocabulary proposal: warns (does not block) and step 3 lists it with the regenerate command', async () => {
     const s = sandbox();
     const skill = path.join(s.work, SKILL_REL);
+    // The release validates the pinned proposals file, so the sandbox keeps the committed one and this
+    // asserts on the delta: whatever the committed tree already has stale (warn-only), plus 89.
+    const P = require(path.join(skill, 'scripts', 'prepare-lessons.js'));
+    const V = require(path.join(skill, 'scripts', 'lib', 'vocab.js'));
+    const staleNow = () => { const ld = P.load(skill); return V.staleProposals(ld.topic.lessons, ld.lessonText, V.loadProposals(skill).byId).stale; };
+    const baseline = staleNow();
+    assert.ok(!baseline.includes(89), 'lesson 89 starts current');
     const l = JSON.parse(fs.readFileSync(path.join(skill, 'references', 'topic-index.json'), 'utf8')).lessons.find((x) => x.id === 89);
     const file = path.join(skill, 'references', l.file);
     const lines = fs.readFileSync(file, 'utf8').split('\n');
@@ -786,9 +793,12 @@ test('sandbox runs', { concurrency: 6 }, async (t) => {
     lines[i] = lines[i].replace(' the ', ' the quite ');
     fs.writeFileSync(file, lines.join('\n'));
     s.git(['commit', '-q', '-am', 'a prose edit to lesson 89']);
+    const expected = JSON.parse(fs.readFileSync(path.join(skill, 'references', 'topic-index.json'), 'utf8')).lessons
+      .map((x) => x.id).filter((id) => id === 89 || baseline.includes(id));
+    assert.deepStrictEqual(staleNow(), expected, 'the edit made 89 stale, and nothing else');
     const r = await s.release(releaseArgs(s, ['--dry-run']));
     assert.strictEqual(r.code, 0, r.out);
-    assert.match(r.out, /STALE VOCABULARY: 1 lesson\(s\) changed since their vocabulary proposal was generated:\nrelease: {3}89\n/);
+    assert.match(r.out, new RegExp(`STALE VOCABULARY: ${expected.length} lesson\\(s\\) changed since their vocabulary proposal was generated:\\nrelease: {3}${expected.join(', ')}\\n`));
     assert.match(r.out, /Not blocking \(STALE_VOCAB_BLOCKS in prepare-lessons\.js is off\)/);
     assert.match(r.out, /prepare-lessons\.js --generate/);
   });

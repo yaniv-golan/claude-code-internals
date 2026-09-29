@@ -1,5 +1,58 @@
 # Changelog
 
+## v2.59.1 — 2026-09-29 (this fork) — saving skills from chat can be blocked by plan
+
+No new lessons; counts stay 218/59.
+
+- `plugins.edit-a-skill-in-chat` now says what gates it. In Desktop 2.9939.4 the tool is registered only when the
+  session may save skills. The `skill_creation` access-list entry blocks it for `blocked_by_org_admin`,
+  `blocked_by_org_tier` or `blocked_by_entitlement`, and a server gate (`3469616823`) bypasses that check. So an admin
+  can turn it off, and a plan tier or entitlement can withhold it. Verified in the asar after a sibling session
+  flagged it.
+
+## v2.59.0 — 2026-09-29 (this fork) — creating and changing a skill by asking in chat
+
+No new lessons; counts stay 218/59. Measured live on 2026-09-29 (Desktop 2.9939.4, agent 2.1.284) and read from the
+Desktop's code, prompted by a GitHub thread asking for skills to be editable from chat.
+
+- **L217.** A Cowork session with `save_skill` can create a skill and change an existing one.
+  - The user confirms each save on a **Save skill** or **Update skill** card.
+  - The Desktop posts one `SKILL.md` to the same upload endpoint as Customize.
+  - A new skill is instructions-only.
+  - An update replaces `SKILL.md` and keeps every other file. An uploaded skill with a script and a reference file
+    kept both.
+  - Both propagated in under a minute, to the CLI as well.
+- **Skills belong to an organization.** A session could not find a skill uploaded in another organization. This also
+  explains the "two stores" noted in L217.
+- New fact `plugins.edit-a-skill-in-chat`; `plugins.upload-a-personal-skill` gains an organization caveat.
+- fcache re-captured 2026-09-29 (`36b3e84b66a67870`, 384 features, 3 more than the last capture). All 79 pinned gates
+  re-observed, none changed.
+
+## v2.58.7 — 2026-09-29 (this fork) — agent 2.1.284 checks plugin `bin/` before adding it to PATH
+
+No new lessons; counts stay 218/59. Prompted by a sibling session reading the 2.1.284 changelog, then diffed 2.1.283 →
+2.1.284.
+
+- **L173.** From agent 2.1.284 each plugin `bin/` is `stat`ed before it joins PATH, with a 2-second timeout. A
+  directory that does not exist is left out, and any other failure keeps it with a log line.
+  - There is no platform branch, although the changelog frames the fix as a Windows one.
+  - Cowork's Desktop-managed agent is 2.1.284 too, from Desktop 2.9939.4.
+  - The `plugins.ship-a-launcher` caveat, "the entry is added whether or not the directory is there", now applies
+    before 2.1.284 only.
+  - How the check treats local Cowork's VM-side paths was not measured.
+- **Model state.** From 2.1.284 the `sonnet` alias resolves to `claude-sonnet-5-5` on first-party. Bedrock, Vertex,
+  Foundry and Mantle keep `claude-sonnet-4-5`.
+
+## v2.58.6 — 2026-09-29 (this fork) — the shell-commands page summary matches its rule
+
+No new lessons; counts stay 218/59.
+
+- The first paragraph of the site's shell-commands page still said inline shell execution is disabled in Cowork
+  entirely, contradicting the rule below it as corrected in v2.58.3. It now says the syntax does not run in a local
+  Cowork session, and that elsewhere it depends on the sandbox and on how the skill was installed. Flagged by a sibling
+  session. The summary's other two claims, that the shell is sealed and that its tool name differs from the CLI's, are
+  now scoped to the local session. In the remote sandbox the shell is `Bash`, the same as the CLI's (L198).
+
 ## v2.58.5 — 2026-09-28 (this fork) — the outputs mount and outputs delivery are separate switches
 
 No new lessons; counts stay 218/59.

@@ -5,7 +5,7 @@
  * build.js and the query scripts (which print hand keywords only).
  *
  * THE HAND SOURCE. references/hand-keywords.json is the frozen snapshot of the
- * hand-written keywords: `keyword_map` (4,993 keys, in their original order,
+ * hand-written keywords: `keyword_map` (5,000 keys, in their original order,
  * with their original lesson lists) and `lesson_keywords` (each lesson's
  * original `keywords` array, keyed by lesson id). It was created once, from
  * topic-index.json at 6f9595c, and nothing writes it: no script has a path
@@ -44,7 +44,7 @@ const crypto = require('crypto');
 const BOUNDARY_FIELD = 'keyword_boundary';
 const HAND_FILE = 'hand-keywords.json';
 /** sha256 of references/hand-keywords.json. The file is frozen; see the header. */
-const HAND_SHA256 = '6d46c2947cd3b8a76bdbead3e6860482402780dac7a767dd9abffb4e2ff8032b';
+const HAND_SHA256 = '8830b05fda93703b4bb06f9fcf0dea9154e4008b0593d3b911d3c2bc3c8df55c';
 
 const sha256 = (s) => crypto.createHash('sha256').update(s).digest('hex');
 

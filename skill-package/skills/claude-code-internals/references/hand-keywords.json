@@ -1,5 +1,5 @@
 {
-  "about": "Frozen hand-written keywords: keyword_map and each lesson's keywords as they stood before scripts took over (topic-index.json at 6f9595c). No script writes this file and nobody edits it. topic-index.json projects it onto the live lessons and appends the generated keys; see scripts/lib/keyword-provenance.js.",
+  "about": "Frozen hand-written keywords: keyword_map and each lesson's keywords as they stood before scripts took over (topic-index.json at 6f9595c, plus the lesson-217 keys main added by hand before merging, v2.59.0). No script writes this file and nobody edits it. topic-index.json projects it onto the live lessons and appends the generated keys; see scripts/lib/keyword-provenance.js.",
   "keyword_map": {
     "409": [
       80
@@ -15593,6 +15593,27 @@
     ],
     "/mnt/user-data/outputs empty": [
       198
+    ],
+    "Save skill card": [
+      217
+    ],
+    "Update skill card": [
+      217
+    ],
+    "create skill in chat": [
+      217
+    ],
+    "edit skill in chat": [
+      217
+    ],
+    "save_skill update overwrite": [
+      217
+    ],
+    "skill not found other org": [
+      217
+    ],
+    "skills per organization": [
+      217
     ]
   },
   "lesson_keywords": {
@@ -20354,7 +20375,14 @@
       "inline shell execution cloud Cowork",
       "shell command execution disabled by policy",
       "syncedSkills",
-      "CLAUDE_SKILL_DIR"
+      "CLAUDE_SKILL_DIR",
+      "create skill in chat",
+      "edit skill in chat",
+      "save_skill update overwrite",
+      "Save skill card",
+      "Update skill card",
+      "skills per organization",
+      "skill not found other org"
     ],
     "218": [
       "UserPromptSubmit block",

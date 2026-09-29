@@ -3,7 +3,7 @@ domain: model-landscape
 title: Model landscape (current)
 as_of_cli: 2.1.231
 sources: [108, 110, 133, 186, 193]
-updated: 2026-09-23
+updated: 2026-09-29
 ---
 
 # Model landscape (current)
@@ -25,7 +25,7 @@ lessons (see frontmatter).
 
 ## Default model
 
-**Claude Sonnet 5 is the CLI default as of v2.1.197** (`claude-sonnet-5`),
+**From v2.1.284 the `sonnet` alias resolves to `claude-sonnet-5-5` ("Sonnet 5.5") on first-party**; Bedrock, Vertex, Foundry and Mantle keep `claude-sonnet-4-5`, and `opus` resolves to `claude-opus-5-5`. **Claude Sonnet 5 is the CLI default as of v2.1.197** (`claude-sonnet-5`),
 **superseding Opus 4.8** (Ch21/L91's "Opus 4.8 is the new default" is
 stale — the default changed twice across this span). Sonnet 5 has a
 **native 1M-token context** (`claude-sonnet-5 | 1M`) and shipped with

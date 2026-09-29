@@ -31,7 +31,7 @@ A skill with a body marker, a script and a reference file was zipped with its fo
 
 The Desktop logged the download (`[SkillsPlugin] Delta: 1 to download … 1 downloaded`) and stored the skill under `local-agent-mode-sessions/skills-plugin/<org>/<account>/skills/`. The host-loop staging is the same symlink mechanism as plugin files (L89). In the local shell, a host path to the skill given to a command was translated to the shell's own `/sessions/…` path.
 
-On this machine the Desktop keeps a skill store for two account/org pairs, and the uploaded skill appeared in both. The CLI used one, local Cowork the other. Why both received it was not determined.
+On this machine the Desktop keeps a skill store per organization/account pair. The uploaded skill appeared in two of them, and the CLI used one while local Cowork used the other: each surface reads the store of the organization it is in (see below).
 
 ## What the agent does with a skill's text, by how it was installed
 
@@ -53,6 +53,19 @@ function eSr(){return Boolean(a.CLAUDE_CODE_REMOTE)||Boolean(a.CLAUDE_CODE_IS_CO
 | local Cowork (`CLAUDE_CODE_IS_COWORK` set) | replaced by the marker | replaced by the marker |
 
 The cloud rows assume the runner sets no managed `disableSkillShellExecution`; that was not checked live. The same trust check decides `${CLAUDE_PROJECT_DIR}` and `${CLAUDE_SESSION_ID}` in an uploaded skill: substituted in the cloud, left as written in the CLI. `${CLAUDE_SKILL_DIR}` is substituted with the skill's own folder for every kind of skill, and the body starts with a "Base directory for this skill:" line. An uploaded skill is registered under a qualified name (`anthropic-skills:<name>` in the CLI) with the bare name as an alias.
+
+## Creating and changing a skill by asking in chat
+
+A Cowork session with `save_skill` (granted as described in L206) can create a skill and change an existing one. Measured on 2026-09-29 (Desktop 2.9939.4) and read from its code:
+
+- **The user confirms each save.** Asked to create a skill, the model showed a **Save skill** card (name, description, the content behind a disclosure, **Dismiss** / **Save**); nothing was saved until the user clicked Save. Asked in a later, separate task to change it, it showed an **Update skill** card reading "Replaces your current /cci-chat-skill", with **Update**.
+- **It goes through the same upload as Customize.** The Desktop writes one `SKILL.md` from the name, description and content, zips it and posts it to the account's `/skills/upload-skill` endpoint, tagged `upload_source=cowork_save_skill`. The result is an ordinary account skill.
+- **A new skill is body-only.** The tool takes a name, a description and the instructions; it has no way to add scripts or reference files.
+- **An update replaces `SKILL.md` and keeps everything else.** With `overwrite`, the Desktop first asks the server to carry the other files forward; if that fails, it downloads the existing skill and re-uploads it with the new `SKILL.md`. Measured: an uploaded skill with a script and a reference file was changed in chat; its `SKILL.md` gained the new line and both other files were still there. Only the user's own skills can be updated, not Anthropic's or a plugin's.
+- **It propagates like an upload.** The Desktop pulled the new skill 50 seconds after the create and the new version under a minute after the update, and the CLI received the updated body.
+- **The tool says it is the only way to change a saved skill:** editing the skill's files on disk does not persist.
+
+**Skills belong to an organization.** Asked to change `cci-upload-probe`, a session in one organization answered that no such skill existed: it had been uploaded while the Desktop was in a different organization. After it was uploaded again in the session's organization, the update worked. This is also why the same skill had appeared in two stores above: each is one organization/account pair.
 
 ## A conversation that changed runtime
 

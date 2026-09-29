@@ -16985,7 +16985,7 @@
       "lesson_number": "173",
       "file": "45-plugin-bin-path-and-cloud-lane.md",
       "startLine": 14,
-      "endLine": 123,
+      "endLine": 125,
       "keywords": [
         "plugin-bin-on-path",
         "bin-launcher",
@@ -17065,8 +17065,8 @@
       "title": "The Cloud Lane's Environment Is Not a Subset of the CLI's",
       "lesson_number": "174",
       "file": "45-plugin-bin-path-and-cloud-lane.md",
-      "startLine": 127,
-      "endLine": 203,
+      "startLine": 129,
+      "endLine": 205,
       "keywords": [
         "cloud-lane-env-census",
         "remote-cowork-entrypoint",
@@ -20674,7 +20674,7 @@
       "lesson_number": "217",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 16,
-      "endLine": 66,
+      "endLine": 79,
       "keywords": [
         "upload skill",
         "uploaded skill",
@@ -20691,7 +20691,17 @@
         "shell command execution disabled by policy",
         "syncedSkills",
         "CLAUDE_SKILL_DIR",
+        "create skill in chat",
+        "edit skill in chat",
+        "save_skill update overwrite",
+        "Save skill card",
+        "Update skill card",
+        "skills per organization",
+        "skill not found other org",
         "cci-upload-probe",
+        "upload_source",
+        "cowork_save_skill",
+        "/cci-chat-skill",
         "uploaded skill not showing in cowork",
         "how do i get my own skill into cowork",
         "upload a skill zip to my account",
@@ -20709,7 +20719,10 @@
         "personal skill cut down to a stub in cloud session"
       ],
       "identifier_keys": [
-        "cci-upload-probe"
+        "cci-upload-probe",
+        "upload_source",
+        "cowork_save_skill",
+        "/cci-chat-skill"
       ],
       "vocab_keys": [
         "uploaded skill not showing in cowork",
@@ -20740,8 +20753,8 @@
       "title": "Plugin Blocks and MCP Placeholders, Lane by Lane",
       "lesson_number": "218",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
-      "startLine": 70,
-      "endLine": 130,
+      "startLine": 83,
+      "endLine": 143,
       "keywords": [
         "UserPromptSubmit block",
         "decision block",
@@ -36405,6 +36418,27 @@
     "/mnt/user-data/outputs empty": [
       198
     ],
+    "Save skill card": [
+      217
+    ],
+    "Update skill card": [
+      217
+    ],
+    "create skill in chat": [
+      217
+    ],
+    "edit skill in chat": [
+      217
+    ],
+    "save_skill update overwrite": [
+      217
+    ],
+    "skill not found other org": [
+      217
+    ],
+    "skills per organization": [
+      217
+    ],
     "cli.tsx": [
       1
     ],
@@ -44394,6 +44428,15 @@
       216
     ],
     "cci-upload-probe": [
+      217
+    ],
+    "upload_source": [
+      217
+    ],
+    "cowork_save_skill": [
+      217
+    ],
+    "/cci-chat-skill": [
       217
     ],
     "CCI_PROBE_TOKEN": [

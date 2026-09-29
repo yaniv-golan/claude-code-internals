@@ -2455,6 +2455,19 @@
     218
    ],
    "hint": "UserPromptSubmit blocks stop the turn on both lanes; locally the app shows 'Blocked by your organization's policy', in the cloud the message just gets no reply. PreToolUse denies work on both. Plugin MCP config: only HOME/LOGNAME/PATH/SHELL/TERM/USER and CLAUDE_PLUGIN_ROOT are filled in; any other ${VAR} arrives as literal text even when set (${VAR:-d} gives d), ${user_config.*} is dropped in the cloud (get_device_info shows not_started/user_config_unsupported)."
+  },
+  {
+   "pattern": [
+    "edit my skill by chatting",
+    "update a skill in Cowork",
+    "save_skill",
+    "skill not found in Cowork but I uploaded it"
+   ],
+   "lessons": [
+    217,
+    206
+   ],
+   "hint": "Ask Claude in Cowork to create or change the skill; confirm the Save skill / Update skill card. An update keeps the skill's scripts and other files. A skill created in chat is instructions-only. Skills belong to an organization: a skill uploaded in another org is not found."
   }
  ]
 }
