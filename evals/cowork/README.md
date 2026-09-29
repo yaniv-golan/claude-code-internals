@@ -1,7 +1,7 @@
-# Cowork regression suite (phase 0c)
+# Cowork regression suite
 
 A live [`cowork-harness`](https://github.com/yaniv-golan/cowork-harness) suite (CLI ≥ 3.10.0) that
-protects the behaviours `SKILL.md` must keep when it is rewritten (phase 5). It runs the skill the way
+protects the behaviours `SKILL.md` must keep when it is rewritten. It runs the skill the way
 Claude Cowork does (`fidelity: hostloop`, plus six `fidelity: container` copies, see [Lanes](#lanes)), answers with a pinned model, and compares the same prompts
 before and after the rewrite, one prompt at a time.
 
@@ -28,8 +28,8 @@ non-recursive and would report a session file as a scenario that fails to load.
 
 The skill runs `context: fork`. Its own answer comes back to the parent as a `Skill` tool_result that
 starts `Skill "claude-code-internals" completed (forked execution).`, and the parent (Sonnet) then
-rewrites it for the user. Phase 5 changes what the fork does, so the targeted checks read the **fork's
-return**. They use `tool_result_matches` / `tool_result_not_matches` anchored on
+rewrites it for the user. The `SKILL.md` rewrite changes what the fork does, so the targeted checks
+read the **fork's return**. They use `tool_result_matches` / `tool_result_not_matches` anchored on
 `completed \(forked execution\)`, which matches the Skill result and nothing else. Where the user-visible
 relay matters too, a second `transcript_*` check reads it separately. Those relay checks are expected to
 fail for reasons outside `SKILL.md`: Sonnet is known to drop `Read more` links when it relays.
@@ -62,7 +62,7 @@ baseline pins (2.1.281 → 2.1.284). `container` does not. Point `COWORK_AGENT_B
 (`~/Library/Application Support/Claude/claude-code-vm/<ver>/claude`). Otherwise `run-suite.js` prints a
 note and the `c` scenarios fail before they start. Use the same binary for both arms.
 
-## Targeted behaviours (the §4.5 keep-list)
+## Targeted behaviours (the keep-list)
 
 Every targeted scenario also asserts `skill_triggered: claude-code-internals`, `tool_no_error: .*` and
 `max_tool_errors: 0`, except the two offline scenarios, where a denied or failing shell call is the
@@ -123,7 +123,7 @@ node evals/cowork/run-suite.js run --arm before --reps 3 --dotenv <path>
 # ABLATION arm, once: the 10 general prompts with every skill removed (--ablate-skill), x 3 = 30 runs
 node evals/cowork/run-suite.js run --arm ablation --reps 3 --dotenv <path>
 
-# ...phase 5 rewrites SKILL.md, commit it...
+# ...the SKILL.md rewrite lands, commit it...
 
 # AFTER arm: same prompts, same session, same COWORK_AGENT_BINARY, new SKILL.md (108 runs)
 node evals/cowork/run-suite.js run --arm after --reps 3 --dotenv <path>

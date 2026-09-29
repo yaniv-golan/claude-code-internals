@@ -1,9 +1,9 @@
-# Retrieval eval suite (phase 0b)
+# Retrieval eval suite
 
 Token-free-in-CI retrieval regression suite for `skill-package/skills/claude-code-internals`'s
-search stack (`scripts/search.js` + `scripts/state.js`). See
-`docs/internal/maintainability-refactor-plan-2026-09-28.md` §4.6(a) and §5 (phase 0b) for the
-design this implements.
+search stack (`scripts/search.js` + `scripts/state.js`). It scores retrieval quality against a
+committed question set and gates against a saved baseline, so a change to the search stack cannot
+silently regress ranking.
 
 ## Files
 
@@ -64,7 +64,7 @@ design this implements.
   recovers the file's random split (holdout plus the lessons already moved), so re-running is a
   no-op, and `--check` exits 1 when the file is out of date.
 - **`gen-relevance.js`** — derives a question set with **acceptable-answer sets** from an
-  existing one without regenerating questions (§4.7b item 5): `--from questions-v1.json
+  existing one without regenerating questions: `--from questions-v1.json
   --version 2`. Same texts, qids, strata and `dropped` list, and the source's random split with
   the split rule applied (so `--from questions-v1.json --version 2` reproduces today's v2 split);
   each identifier and plain
@@ -89,7 +89,8 @@ design this implements.
   acceptable-answer sets, under the split rule (lessons 88, 129 and 173 moved to dev: see
   `split.moved_to_dev`), and its baseline (same thresholds as v1 and v2, no `waivers`).
   `baseline-v3.json` also records, in `accepted_vs_previous`, the per-question drops against
-  `baseline-v2.json` that the maintainer accepted when the phase 3b ranker landed (qid, stratum,
+  `baseline-v2.json` that the maintainer accepted when the weighted keyword ranker
+  (`scripts/lib/keyword-match.js`) landed (qid, stratum,
   label before and after the resplit, rank before and after, and which rule each tripped), and
   that a fusion-method change is deferred. `run.js`
   scores a question carrying `relevant` by its first acceptable lesson (MRR, every per-question
@@ -104,7 +105,7 @@ design this implements.
   refuses it with "lesson split mismatch" (6 gated questions changed label). To score against
   it, use questions-v2.json as committed with it.
 - **`questions-v1.json`** + **`baseline-v1.json`** — the v1 set (source lesson only, binary) and
-  its baseline with the one phase-3 waiver. Kept for trend, **not gated**. v1 keeps its original
+  its baseline with its one waiver. Kept for trend, **not gated**. v1 keeps its original
   random split (88, 129 and 173 are holdout there): it is never tuned against, so it is left as
   recorded and still compares with baseline-v1. A question without `relevant` is scored exactly
   as before (the v1 report differs only in `generated_at` and the added
@@ -177,14 +178,15 @@ node evals/retrieval/run.js --baseline evals/retrieval/baseline-v1.json --questi
 - **Failures stay recorded.** A `passes_today:false` case in `registry-top1.json` or a known gap
   in a question set is not silently dropped or "fixed" by regenerating until it passes — that
   would launder a real ranking gap into a green build. Fix the ranking (a rule change in
-  `prepare-lessons.js`, which derives the `keyword_map` keys, under its own gate per the
-  maintainability plan; keywords are never hand-edited) or leave the miss recorded.
+  `prepare-lessons.js`, which derives the `keyword_map` keys; keywords are never hand-edited) or
+  leave the miss recorded.
 - **Whole-set replacement only.** `questions-vN.json` is replaced as a whole new version on a
-  fixed schedule (the plan says yearly or after 50 new lessons) — never edited piecemeal to drop
-  an inconvenient question.
-- **CI gates on `baseline-v3.json`** (`validate.yml`, `scripts/check-clean.sh`), scoring
-  `questions-v2.json` named explicitly, alongside `registry-top1.test.js` and
-  `corpus-ranking.test.js`. baseline-v2 and v1 stay for trend. The pair is named once, as
+  fixed schedule (yearly, or after 50 new lessons) — never edited piecemeal to drop an
+  inconvenient question.
+- **The gate runs on `baseline-v3.json`**, scoring `questions-v2.json` named explicitly, alongside
+  `registry-top1.test.js` and `corpus-ranking.test.js`. `validate.yml` runs the gate in CI;
+  `scripts/check-clean.sh` is the local/release-time counterpart, run by `release.js` as its
+  consistency-check step. baseline-v2 and v1 stay for trend. The pair is named once, as
   `CURRENT_QUESTIONS` / `CURRENT_BASELINE` in `lib.js`; `gen-registry-top1.js` and the tests
   read those, and `retrieval-gate.test.js` fails unless `validate.yml` and `check-clean.sh`
   name exactly those two files. `check-clean.sh` fails if either is missing.
@@ -221,7 +223,8 @@ node evals/retrieval/run.js --baseline evals/retrieval/baseline-v1.json --questi
    lookup()` finds the entry by its *own name* (state-layer reachability, independent of any
    generated question). These are reported side by side and never combined.
 4. **Split assignment for state and negative questions.** The lesson holdout/dev split is the
-   only split defined by the plan. This suite extends it pragmatically: a state question
+   only split the suite defines directly. It extends that split pragmatically: a state question
    inherits the split of its registry entry's *first* provenance lesson; a negative question is
    assigned holdout/dev via the same seeded RNG family (no natural lesson to inherit from).
-   Neither is specified by the plan; both are documented here rather than picked silently.
+   Neither extension is forced by the split rule; both are documented here rather than picked
+   silently.

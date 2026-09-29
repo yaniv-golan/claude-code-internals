@@ -3,7 +3,6 @@
  * gen-relevance.js — derive a question set with acceptable-answer sets
  * (questions-v<N>.json) from an existing one, without regenerating questions.
  *
- * Spec: docs/internal/maintainability-refactor-plan-2026-09-28.md §4.7b item 5.
  * Nothing here is hand-adjudicated: identifier questions get their sets from a
  * published deterministic rule, plain questions from a one-time model judgment
  * that is frozen into the output file.
