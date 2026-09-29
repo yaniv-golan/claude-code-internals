@@ -4,7 +4,7 @@ This directory is the **mutable "as of version X" truth layer**. The lesson
 chapters (`../NN-*.md`) are provenance, and each carries the **current correct
 state** of what it covers: a corrected fact is edited in place, and the
 retraction narrative (what was claimed, why it was wrong, what falsified it)
-lives in `CHANGELOG.md` and `version.json`, never in the lesson. Facts about
+lives in `CHANGELOG.md`, never in the lesson. Facts about
 one feature still scatter across chapters, which is why this layer exists. Each file here
 states the *current* behavior of one domain, stamped with the binary versions
 it reflects, and cites its source lessons in frontmatter.

@@ -512,10 +512,13 @@ claude-code-internals/
 {
   "skill_version": "2.58.5",
   "captured_version": "2.1.231",
-  "verified_against_binary": "2.1.231",
   "captured_date": "2026-08-14"
 }
 ```
+
+The file also carries `lessons_count` and `chapters_count`, which `scripts/build.js` derives from the
+reference files. Per-release history lives in `CHANGELOG.md`. A release is cut with
+`node scripts/release.js` from the repository root, which bumps every skill-version pin.
 
 To update when Claude Code releases a new version:
 

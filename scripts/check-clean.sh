@@ -31,6 +31,8 @@ step() { printf '\n== %s\n' "$1"; }
 
 step "Script tests"
 node --test "$skill/scripts/tests/"*.test.js
+step "Repository script tests (release.js, offline sandboxes)"
+node --test scripts/tests/*.test.js
 step "JSON index format"
 node "$skill/scripts/check-json-format.js"
 step "State-layer integrity"

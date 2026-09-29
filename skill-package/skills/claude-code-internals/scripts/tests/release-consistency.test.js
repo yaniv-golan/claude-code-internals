@@ -25,6 +25,8 @@ const SKILL_DIR = path.resolve(__dirname, '..', '..');            // skills/clau
 const PKG_DIR = path.resolve(SKILL_DIR, '..', '..');              // skill-package
 const REPO_DIR = path.resolve(PKG_DIR, '..');                     // repo root
 
+const { SKILL_VERSION_PINS, pinMatches } = require('../lib/version-pins.js');
+
 const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
 const readText = (p) => fs.readFileSync(p, 'utf8');
 
@@ -220,31 +222,65 @@ test('docs that pin a "captured from" CLI version pin the current one', () => {
   }
 });
 
-test('docs that pin the skill version pin the current one', () => {
-  // Same shape as the "captured from" CLI-version test above, but for the
-  // skill_version stamps — the pinning the plugin.json test (above) already
-  // checks against version.json, but only the README copies drift silently.
-  // At v2.49.8 the root README's four stamps (the banner line, the file-tree
-  // comment, the version.json example block, and the "what this fork adds"
-  // changelog line) sat stale at 2.46.12. Only the specific pinned forms below
-  // count; README legitimately mentions other version numbers (CLI 2.1.x,
-  // asar/Mach-O 1.x/2.1.x, historical skill versions in prose like
-  // "Chapter 9 ... v2.1.90"), so this does NOT do a broad x.y.z scan.
+test('every skill-version pin states the current one', () => {
+  // The pins live in one table, lib/version-pins.js, which scripts/release.js
+  // (repository root) also reads to bump them, so the check and the bump cannot
+  // disagree about where the version is written. At v2.49.8 the root README's
+  // four stamps (the banner line, the file-tree comment, the version.json
+  // example block, and the "what this fork adds" changelog line) sat stale at
+  // 2.46.12. Only the pinned forms in the table count; README legitimately
+  // mentions other version numbers, so this does NOT do a broad x.y.z scan.
   //
-  // skill-package/README.md is NOT in this list: it used to pin its own stale
+  // skill-package/README.md is NOT in the table: it used to pin its own stale
   // "Skill Version: 2.0.0" banner, untouched since the very first release, and
   // rather than keep a second stamp in sync forever, that file now points at
   // version.json instead of restating the number — see the dedicated negative
   // test below, which guards that a pin doesn't creep back in unchecked.
   const expected = version.skill_version;
-  const claims = [
-    ['README.md', /\*\*Skill Version:\*\*\s*(\d+\.\d+\.\d+)/g],
-    ['README.md', /Version tracking \(v(\d+\.\d+\.\d+)/g],
-    ['README.md', /"skill_version":\s*"(\d+\.\d+\.\d+)"/g],
-    ['README.md', /v2\.2\.0.v(\d+\.\d+\.\d+),/g],
-  ];
-  for (const [label, re] of claims) {
-    requireEveryMatch(label, re, expected, 'pins skill version');
+  for (const pin of SKILL_VERSION_PINS) {
+    const found = pinMatches(readText(path.join(REPO_DIR, pin.file)), pin.re);
+    assert.ok(found.length > 0, `${pin.file}: no ${pin.describe} matching ${pin.re} — reworded or removed?`);
+    for (const m of found) {
+      assert.strictEqual(m.version, expected,
+        `${pin.file} ${pin.describe} states ${m.version} but version.json skill_version is ${expected}`);
+    }
+  }
+});
+
+test('version.json holds exactly the five current fields', () => {
+  // source, total_size_kb, keywords_indexed, verified_against_binary and note were
+  // dropped (per-release history lives in CHANGELOG.md). A sixth key must be a
+  // decision made here, not a field that creeps back.
+  assert.deepStrictEqual(
+    Object.keys(version),
+    ['skill_version', 'captured_version', 'captured_date', 'lessons_count', 'chapters_count'],
+  );
+});
+
+test('captured_version equals the state registry\'s as_of.cli', () => {
+  const registry = readJson(path.join(SKILL_DIR, 'references', 'state', 'registry.json'));
+  assert.strictEqual(
+    version.captured_version, registry.as_of.cli,
+    `version.json captured_version ${version.captured_version} != registry.json as_of.cli ${registry.as_of.cli}`,
+  );
+});
+
+test('the README version.json example equals version.json on every field it shows', () => {
+  // An equality check, not a spot check: the example drifted before (captured_date,
+  // and a verified_against_binary field that version.json no longer has). It may
+  // omit only the two derived counts, which build.js writes and a README cannot track.
+  const text = readText(DOCS['README.md']);
+  const at = text.indexOf('## Version Tracking');
+  assert.ok(at >= 0, 'README.md: no "## Version Tracking" section');
+  const block = text.slice(at).match(/```json\n([\s\S]*?)\n```/);
+  assert.ok(block, 'README.md: no json block under "## Version Tracking"');
+  const example = JSON.parse(block[1]);
+  const omitted = Object.keys(version).filter((k) => !(k in example));
+  assert.deepStrictEqual(omitted, ['lessons_count', 'chapters_count'], 'the example may omit only the derived counts');
+  for (const [k, v] of Object.entries(example)) {
+    assert.ok(k in version, `README example shows "${k}", which version.json does not have`);
+    assert.strictEqual(v, version[k],
+      `README example "${k}" is ${JSON.stringify(v)}, version.json has ${JSON.stringify(version[k])}`);
   }
 });
 

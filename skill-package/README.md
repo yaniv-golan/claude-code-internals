@@ -474,7 +474,7 @@ The `claude-code-internals.zip` file is the complete, shareable package. It cont
 | File | Purpose |
 |------|---------|
 | `SKILL.md` | The skill brain — seven-step workflow, gotchas, and the reference-file map |
-| `version.json` | Version metadata plus the cumulative per-release verification record |
+| `version.json` | Skill version, captured CLI version and date, and the derived lesson and chapter counts |
 | `hooks-config.json` | Example PreToolUse hook definition (portable paths) |
 | `references/*.md` | The chapter files holding every lesson |
 | `references/topic-index.json` | Per-lesson bounds and keywords, plus the keyword map (keyword fields derived by `prepare-lessons.js`) |
@@ -490,15 +490,14 @@ The zip is exactly `skill-package/skills/claude-code-internals/`, so it does **n
 
 ## Version Tracking
 
-```json
-{
-  "captured_version": "x.y.z",
-  "captured_date": "YYYY-MM-DD",
-  "source": "https://www.markdown.engineering/learn-claude-code/"
-}
-```
+`version.json` holds five fields:
 
-See `version.json` for the real, current values of the fields above. When Claude Code updates beyond the pinned `captured_version`, the internals knowledge may be stale. To update:
+- `skill_version` — this skill's release version (also in `.claude-plugin/plugin.json`);
+- `captured_version` — the Claude Code CLI build the content baseline was read from;
+- `captured_date` — when that baseline was captured;
+- `lessons_count` and `chapters_count` — derived from the reference files by `scripts/build.js`.
+
+See `version.json` for the real, current values; per-release history is in the repository's `CHANGELOG.md`. When Claude Code updates beyond the pinned `captured_version`, the internals knowledge may be stale. To update:
 
 1. Re-download lessons from the source
 2. Replace the files in `references/`

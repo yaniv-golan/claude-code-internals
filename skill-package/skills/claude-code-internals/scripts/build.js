@@ -58,14 +58,16 @@
  * count within its ceiling (see prepare-lessons.js --check). build.js never
  * writes keyword fields; prepare-lessons.js is the fix. A lesson whose
  * vocabulary proposal is stale (the lesson changed since the model saw it,
- * lib/vocab.js) is a WARNING naming the lesson, not a failure.
+ * lib/vocab.js) is a WARNING naming the lesson, not a failure (one constant,
+ * STALE_VOCAB_BLOCKS in prepare-lessons.js, turns it into a failure).
  *
  * JSON is rewritten through check-json-format.js's order-preserving parser and
  * emitter, so integer-like keys keep their order and only changed values move.
  * A derived key that is missing (a new lesson entry written without bounds) is
  * inserted where existing entries carry it: startLine/endLine after `file`,
  * total_lessons after `source`, lessons_count/chapters_count after
- * `verified_against_binary`.
+ * `captured_date` (version.json holds exactly skill_version, captured_version,
+ * captured_date and the two counts; release-consistency.test.js pins that shape).
  *
  *   node scripts/build.js            write derived fields
  *   node scripts/build.js --check    compare only; exit 1 listing every stale field/file
@@ -378,7 +380,7 @@ function build(skillDir) {
 
     // version.json (not pinned by check-json-format; its canonical form is indent 2 + newline)
     const vTree = parseOrdered(vRaw);
-    setRaw(vTree, 'lessons_count', lessonsCount, ['verified_against_binary', 'source', 'captured_date']);
+    setRaw(vTree, 'lessons_count', lessonsCount, ['captured_date']);
     setRaw(vTree, 'chapters_count', chaptersCount, ['lessons_count']);
     outputs.push({ rel: 'version.json', abs: vAbs, before: vRaw, text: serialize(vTree, null, { indent: 2, trailingNewline: true }) });
   }

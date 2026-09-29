@@ -167,6 +167,14 @@ const {
 } = require('./lib/keyword-provenance.js');
 
 const MAX_HOMES = 2;
+/**
+ * Whether a STALE vocabulary proposal (the lesson changed since the model saw it)
+ * fails --check (and so build.js --check, check-clean.sh, CI and a release) or
+ * only warns. Warn is the current design: a lesson prose edit must not fail CI.
+ * Flipping this one line to true makes stale block; prepare-lessons.test.js and
+ * scripts/release.js read it, so nothing else needs to change.
+ */
+const STALE_VOCAB_BLOCKS = false;
 
 // ---------------------------------------------------------------------------
 // Loading
@@ -602,7 +610,9 @@ function checkLessons({ raw, lessonText, hand, proposals = { abs: null, raw: nul
     errors.push(`topic-index.json keyword fields are not in derived form (key order, stray fields or ${BOUNDARY_FIELD} layout)${fix}`);
   }
   const notes = [`identifiers: ${summarize(report)}; unreachable ceiling ${ceiling.error ? 'invalid' : ceiling.value}`, `vocabulary: ${summarizeVocab(vocab)}`];
-  const warnings = vocabWarnings(staleProposals(topic.lessons, lessonText, proposals.byId));
+  const { stale, unknown } = staleProposals(topic.lessons, lessonText, proposals.byId);
+  if (STALE_VOCAB_BLOCKS) errors.push(...vocabWarnings({ stale, unknown: [] }));
+  const warnings = vocabWarnings({ stale: STALE_VOCAB_BLOCKS ? [] : stale, unknown });
   return { errors, warnings, notes, report, derived, vocab };
 }
 
@@ -909,6 +919,6 @@ async function main(argv) {
 
 module.exports = {
   KeyState, surfaceTokens, selfReachable, planIdentifiers, planAll, storedKeyList, storedGenerated, diffGenerated,
-  ceilingOf, renderTopic, checkLessons, runIdentifiers, runGenerate, parseArgs, load, main, MAX_HOMES,
+  ceilingOf, renderTopic, checkLessons, runIdentifiers, runGenerate, parseArgs, load, main, MAX_HOMES, STALE_VOCAB_BLOCKS,
 };
 if (require.main === module) main(process.argv.slice(2)).then((code) => { process.exitCode = code; });

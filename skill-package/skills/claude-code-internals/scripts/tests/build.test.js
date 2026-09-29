@@ -200,7 +200,7 @@ test('a new lesson entry without startLine/endLine gets them at the canonical po
   assert.doesNotMatch(check.out, /startLine|endLine|total_lessons/);
 });
 
-test('version.json missing lessons_count/chapters_count gets them after verified_against_binary', () => {
+test('version.json missing lessons_count/chapters_count gets them after captured_date', () => {
   const dir = fixture();
   const vp = path.join(dir, 'version.json');
   const tree = parseOrdered(fs.readFileSync(vp, 'utf8'));

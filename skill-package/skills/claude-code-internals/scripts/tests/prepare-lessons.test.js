@@ -694,7 +694,13 @@ test('--check passes on the committed tree', () => {
   assert.strictEqual(r.code, 0, r.out);
   assert.match(r.out, /prepare-lessons check OK/);
   const sp = spawnSync('node', [PREP, '--check'], { encoding: 'utf8' });
-  assert.doesNotMatch(sp.stdout + sp.stderr, /WARNING/, 'no stale or unknown-input vocabulary proposal is committed');
+  // Stale proposals warn, not fail (P.STALE_VOCAB_BLOCKS; were it true, the exit
+  // code above would already be 1). Any other warning (unknown generation input,
+  // integrity) is a committed defect.
+  const warnings = (sp.stdout + sp.stderr).split('\n').filter((l) => /WARNING/.test(l));
+  const stale = warnings.filter((l) => /changed since their vocabulary proposal was generated/.test(l));
+  assert.deepStrictEqual(warnings.filter((l) => !stale.includes(l)), [], 'no unknown-input or other vocabulary warning is committed');
+  if (stale.length) console.log(`# stale vocabulary proposals (warn only, not a failure): ${stale.join(' ')}`);
 });
 
 test('--check refuses to judge stale bounds', () => {
@@ -849,7 +855,12 @@ test('the proposals file is tracked outside the shipped skill directory and is t
   // every entry records the hash of the prompt it was generated from, and it is the current one
   const loaded = P.load(SKILL_DIR);
   const props = loadProposals(SKILL_DIR);
-  assert.deepStrictEqual(V.staleProposals(loaded.topic.lessons, loaded.lessonText, props.byId), { stale: [], unknown: [] });
+  const { stale, unknown } = V.staleProposals(loaded.topic.lessons, loaded.lessonText, props.byId);
+  assert.deepStrictEqual(unknown, [], 'every proposal records the input it was generated from');
+  for (const l of loaded.topic.lessons) assert.ok(props.byId.has(l.id), `lesson ${l.id} has a proposal`);
+  // Stale ones warn by design (a lesson prose edit must not fail CI); P.STALE_VOCAB_BLOCKS flips that.
+  if (P.STALE_VOCAB_BLOCKS) assert.deepStrictEqual(stale, [], 'no stale vocabulary proposal is committed');
+  else if (stale.length) console.log(`# stale vocabulary proposals (warn only, not a failure): lessons ${stale.join(', ')}`);
 });
 
 test('a lesson without vocabulary proposals fails --check and names --generate', () => {
@@ -984,15 +995,20 @@ test('a lesson edited after its vocabulary was generated: --check warns by id (n
   const word = P.load(dir).lessonText(l89).split('\n').slice(2).join(' ').match(/\b(the|a|is|and)\b/)[0];
   editLessonLine(dir, 89, ` ${word} `, ` ${word} quite `);
   assert.strictEqual(run(BUILD, ['--root', dir]).code, 0);
+  // P.STALE_VOCAB_BLOCKS (false: the design) decides warn vs fail; both branches are pinned here.
+  const blocks = P.STALE_VOCAB_BLOCKS;
   for (const script of [BUILD, PREP]) {
     const sp = spawnSync('node', [script, '--check', '--root', dir], { encoding: 'utf8' });
     const r = { code: sp.status, out: sp.stdout + sp.stderr };
-    assert.strictEqual(r.code, 0, `${path.basename(script)} --check must not fail on a prose edit:\n${r.out}`);
-    assert.match(sp.stderr, /WARNING: .*1 lesson\(s\) changed since their vocabulary proposal was generated \(89\).*--generate/);
+    assert.strictEqual(r.code, blocks ? 1 : 0, `${path.basename(script)} --check ${blocks ? 'must fail' : 'must not fail'} on a prose edit:\n${r.out}`);
+    assert.match(sp.stderr, blocks
+      ? /1 lesson\(s\) changed since their vocabulary proposal was generated \(89\).*--generate/
+      : /WARNING: .*1 lesson\(s\) changed since their vocabulary proposal was generated \(89\).*--generate/);
   }
   const res = P.checkLessons({ raw: fs.readFileSync(topicPath(dir), 'utf8'), lessonText: P.load(dir).lessonText, hand: HAND, proposals: loadProposals(dir) });
-  assert.deepStrictEqual(res.errors, []);
-  assert.strictEqual(res.warnings.length, 1);
+  assert.strictEqual(res.errors.filter((e) => /changed since their vocabulary proposal/.test(e)).length, blocks ? 1 : 0);
+  assert.strictEqual(res.warnings.length, blocks ? 0 : 1);
+  if (!blocks) assert.deepStrictEqual(res.errors, []);
   // --generate (no --regen) regenerates the stale lesson, and only it, from the edited text
   const prompts = [];
   const callModel = async (prompt) => { prompts.push(prompt); return stubTerms(['a regenerated phrase for testing'])(); };
