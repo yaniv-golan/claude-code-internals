@@ -111,6 +111,60 @@ silently regress ranking.
   as before (the v1 report differs only in `generated_at` and the added
   `questions_source.split_sha256`).
 
+### The search-removal eval (v3/v4, agentic)
+
+These files support the plan to replace the search stack with model-driven file lookup. None of
+them is gated in CI.
+
+- **`claude-call.js`**: the one way these scripts call `claude -p`. The prompt goes on stdin from a
+  file, and cwd is an empty temp dir. The `--setting-sources project` flag is added by callers, so
+  user settings such as an advisor model can't join the call. Each call's cost goes to a ledger
+  when `CCI_EVAL_LEDGER` is set, and `CCI_EVAL_BUDGET_USD` refuses new calls once the ledger total
+  reaches it.
+- **`gen-questions.js` options**:
+  - `--split-from <questions file>` copies that file's lesson split instead of deriving one from
+    `--seed`. The split rule is re-applied, which is a no-op unless a hard test changed. The source
+    is recorded as top-level `split_source`, and `split` keeps the shape `resplit.js --check`
+    expects.
+  - `--strata` chooses what to generate.
+  - `--holdout-per-lesson N` makes N independent calls of the same prompt per holdout lesson.
+  - The `terse` stratum is a question of 12 words or fewer, written from the lesson title (plus
+    its description when there is one) and never from the lesson text. It is leak-masked like
+    plain questions. The prompt was frozen before any output; the file records the prompt version,
+    template and sha256 under `generation.terse_prompt`.
+- **`questions-v3.json`**: new questions under v2's exact split, from
+  `--split-from questions-v2.json --strata identifier,plain,terse,state --holdout-per-lesson 2`.
+  No relevance sets.
+- **`index-picks.js`** + **`index-picks-v3.json`**: the router experiment's C arm, run offline.
+  For each question the model picks 3 lessons from the full routing index. The index and prompt
+  are identified by sha256. The picks only widen the judge pool.
+- **`gen-relevance.js` options**:
+  - `--strata` (an entry may name one split, e.g. `terse:holdout`).
+  - `--index-picks` switches to pool-v3: source ∪ state provenance ∪ keyword top 10 ∪ fused top 10
+    ∪ index picks.
+  - `--append-judged <qid→ids json>` does append-only judging after an agentic run. It uses the same
+    judge; `relevant` stays strict and `relevant_pooled` is added. It is implemented but has not
+    been run yet.
+  - See the file header for how each stratum is graded.
+- **`questions-v4.json`**: v3 judged under pool-v3. See `relevance.judge` for the judge model and
+  which strata were judged. Unjudged strata carry no `relevant`, and the scorers below then use the
+  source lesson alone.
+- **`baseline-search.js`** + **`baseline-v3-search.json`**: keyword-only and fused any@1/3/5 on
+  v4, per stratum × split, with Wilson intervals and per-question top 10s. They were computed with
+  the search stack before its deletion.
+- **`agentic-run.js`** (+ `agentic-run.test.js`, offline): runs a SKILL body (`arms/arm-*.md`) one
+  question per `claude -p` call, against a staged copy of the skill.
+  - Tools: Read, Grep, Glob, and read-only Bash only. Permission prompts are denied rather than
+    asked.
+  - It scores the frozen read@ rule (≥50% of a lesson's range or one of its sub-ranges; a Read with
+    no limit counts only lessons wholly inside its first 2000 lines; only the first 4 lessons read
+    count) and cited@ (the `IDS:` line).
+  - It reports Read-limit errors, permission denials, tokens, cost and latency, with Wilson
+    intervals.
+  - With `--baseline` it adds a paired McNemar comparison against keyword-only and fused.
+  - Results are cached per question, so a rerun resumes.
+- Real-invocation samples are local transcripts. They stay outside the repository.
+
 ## How to (re)generate
 
 ```bash
@@ -139,6 +193,19 @@ node evals/retrieval/run.js --questions evals/retrieval/questions-v2.json --save
 node evals/retrieval/run.js --baseline evals/retrieval/baseline-v3.json --questions evals/retrieval/questions-v2.json
 # v1, for trend (not gated):
 node evals/retrieval/run.js --baseline evals/retrieval/baseline-v1.json --questions evals/retrieval/questions-v1.json
+
+# Search-removal eval (model calls; set CCI_EVAL_LEDGER / CCI_EVAL_BUDGET_USD):
+node evals/retrieval/gen-questions.js --version 3 --split-from evals/retrieval/questions-v2.json \
+  --strata identifier,plain,terse,state --holdout-per-lesson 2
+node evals/retrieval/index-picks.js --questions evals/retrieval/questions-v3.json --index <index.txt> \
+  --prompt <prompt.txt> --out evals/retrieval/index-picks-v3.json
+node evals/retrieval/gen-relevance.js --from evals/retrieval/questions-v3.json --version 4 \
+  --strata plain,state --index-picks evals/retrieval/index-picks-v3.json --judge-model claude-sonnet-5
+node evals/retrieval/baseline-search.js --questions evals/retrieval/questions-v4.json --out evals/retrieval/baseline-v3-search.json
+node evals/retrieval/agentic-run.js --arm-file evals/retrieval/arms/arm-D.md \
+  --skill-dir skill-package/skills/claude-code-internals --questions evals/retrieval/questions-v4.json \
+  --split dev --strata plain,identifier,terse --baseline evals/retrieval/baseline-v3-search.json --out <run dir>
+node --test evals/retrieval/agentic-run.test.js
 ```
 
 ## Rules

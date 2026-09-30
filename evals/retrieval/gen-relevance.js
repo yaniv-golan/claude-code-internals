@@ -63,47 +63,87 @@
  *   C1..Cn; the judge is not told which one is the source. Each verdict is
  *   yes/no with a one-line reason; all are stored, including the verdict on
  *   the source lesson (a calibration signal: the source is grade 2 regardless).
- *   The judge runs `claude -p --model <judge> --safe-mode --tools ""` with
- *   stdin ignored and a fresh temp cwd: no tools (the excerpt is all it sees),
- *   no CLAUDE.md, skills, plugins, hooks or MCP servers.
+ *   The judge runs `claude -p --model <judge> --safe-mode --setting-sources project
+ *   --tools ""` with the prompt on stdin from a file and a fresh empty temp cwd
+ *   (claude-call.js): no tools (the excerpt is all it sees), no CLAUDE.md, skills,
+ *   plugins, hooks, MCP servers or user settings. (questions-v2 was judged before
+ *   --setting-sources project was added, with the prompt as an argument.)
  *
  * The pools are computed once, before any call, and stored in the checkpoint
  * (questions-v<N>.json.partial, atomic writes) with the judgments made so far;
  * only a fully parsed judgment marks a question done, so a rerun retries only
  * failures. The checkpoint refuses to resume under a different header
  * (source sha256, version, judge model, prompt version, excerpt size). The
- * final file is written only when every plain question is judged; it refuses
+ * final file is written only when every question of the judged strata is judged; it refuses
  * to overwrite an existing questions-v<N>.json.
+ *
+ * ALL-STRATA POOL (POOL_V3, from questions-v4 on; search-removal plan §4.2):
+ *   --strata identifier,plain,terse,state,real   judge these strata (default: plain); an entry
+ *                                                 may name one split: terse:holdout
+ *   --index-picks <file>                          index-picks.js output; switches the pool to POOL_V3:
+ *   Candidate pool per question = union of
+ *     - the source lesson (questions with a lesson_id),
+ *     - for a state question, its registry entry's provenance lessons (as the registry now stands),
+ *     - the keyword layer's top 10 (search.js keyword_rank <= 10),
+ *     - the fused top 10 (search.js rank <= 10),
+ *     - the index picks: 3 ids a model chose for the question from the full routing index,
+ *       blind to everything else (the router experiment's C arm; index-picks.js).
+ *   No TF-IDF layer: the pool is what keyword-only, fused and an index-reading model can reach.
+ *   Same judge prompt (judge-relevance-v1: it is not stratum-specific), same excerpt.
+ *   Grades: identifier -> the identifier rule's set, plus every lesson the judge accepts (grade 1);
+ *   plain, terse -> source 2, judge-accepted 1; state -> provenance lessons 2, judge-accepted 1;
+ *   real (a real-invocation sample, no source) -> judge-accepted 1 (possibly none).
+ *   Strata are judged in the order given, so a budget stop (claude-call.js) hits the last ones;
+ *   the checkpoint resumes under a different --strata (judgments are per question), and the final
+ *   file is written once every question of the requested strata is judged.
+ *
+ * APPEND-ONLY JUDGING (--append-judged <file>, search-removal plan §4.2 "after the holdout run"):
+ *   node gen-relevance.js --from questions-v4.json --version 5 --append-judged seen.json [--append-tag T]
+ *   seen.json: {"<qid>": [lesson ids], ...} -- lessons an agentic run relied on (read or cited).
+ *   For each qid, the ids its verdicts do not already cover are judged (one call per question,
+ *   the same judge prompt, model and excerpt as the source's relevance header -- refused if the
+ *   judge model or prompt version differs), blind, in lesson-id order. Nothing already recorded
+ *   changes: `relevant` stays the strict set (graded before the run); each touched question gains
+ *   `relevance_basis.appended` (verdicts with their round) and `relevant_pooled` = strict (or the
+ *   previous pooled set) plus every appended yes at grade 1. Report both scores.
  */
 
 'use strict';
 
 const fs = require('fs');
-const os = require('os');
 const path = require('path');
 const crypto = require('crypto');
-const { execFile, execFileSync } = require('child_process');
+const { execFileSync } = require('child_process');
 const lib = require('./lib.js');
 const G = require('./gen-questions.js');
+const CC = require('./claude-call.js');
 const I = require(path.join(lib.SCRIPTS_DIR, 'lib', 'identifiers.js'));
 
 const IDENTIFIER_RULE_VERSION = 'identifier-rule-v1';
 const JUDGE_PROMPT_VERSION = 'judge-relevance-v1';
 const DEFAULT_JUDGE_MODEL = 'claude-fable-5-1';
-const JUDGE_FLAGS = ['--safe-mode', '--tools', ''];
+// --setting-sources project: the empty cwd has no project settings, so this loads none; the
+// user's settings (an advisor model, hooks) cannot join the judge call.
+const JUDGE_FLAGS = ['--safe-mode', '--setting-sources', 'project', '--tools', ''];
 const EXCERPT_CHARS = 1800;
 const POOL_TOP = 10;
 const SEARCH_DEPTH = 200; // search.js --top, deep enough to see every keyword/tfidf rank <= 10
 const DEFAULT_CONCURRENCY = 4;
 const MIN_TOKEN_LEN = 3;
 const SEMANTIC_JS = path.join(lib.SCRIPTS_DIR, 'semantic-search.js');
+const POOL_V2 = 'pool-v2';
+const POOL_V3 = 'pool-v3';
+const JUDGEABLE = ['identifier', 'plain', 'terse', 'state', 'real'];
 
 // ---------------------------------------------------------------------------
 // CLI
 // ---------------------------------------------------------------------------
 
 function parseArgs(argv) {
-  const opts = { from: null, version: null, judgeModel: DEFAULT_JUDGE_MODEL, concurrency: DEFAULT_CONCURRENCY, dryRun: false, limit: Infinity, outDir: null };
+  const opts = {
+    from: null, version: null, judgeModel: DEFAULT_JUDGE_MODEL, concurrency: DEFAULT_CONCURRENCY, dryRun: false, limit: Infinity, outDir: null,
+    strata: ['plain'], indexPicks: null, appendJudged: null, appendTag: null,
+  };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--from') opts.from = argv[++i];
@@ -113,16 +153,25 @@ function parseArgs(argv) {
     else if (a === '--dry-run') opts.dryRun = true;
     else if (a === '--limit') opts.limit = parseInt(argv[++i], 10);
     else if (a === '--out-dir') opts.outDir = path.resolve(argv[++i]); // testing only
+    else if (a === '--strata') opts.strata = argv[++i].split(',').map((x) => x.trim()).filter(Boolean);
+    else if (a === '--index-picks') opts.indexPicks = path.resolve(argv[++i]);
+    else if (a === '--append-judged') opts.appendJudged = path.resolve(argv[++i]);
+    else if (a === '--append-tag') opts.appendTag = argv[++i];
     else if (a === '--help' || a === '-h') { printUsage(); process.exit(0); }
     else { process.stderr.write(`ERROR: unknown argument "${a}"\n`); printUsage(); process.exit(1); }
   }
+  const bad = opts.strata.map((s) => s.split(':')[0]).filter((s) => !JUDGEABLE.includes(s));
+  if (bad.length) { process.stderr.write(`ERROR: cannot judge stratum ${bad.join(', ')} (judgeable: ${JUDGEABLE.join(', ')})\n`); process.exit(1); }
   return opts;
 }
 
 function printUsage() {
   process.stderr.write(
     'Usage: gen-relevance.js --from questions-v1.json --version 2 [--dry-run]\n' +
-    '                        [--judge-model M] [--concurrency N] [--limit N]\n'
+    '                        [--judge-model M] [--concurrency N] [--limit N]\n' +
+    '                        [--strata identifier,plain,terse,state,real] [--index-picks <file>]\n' +
+    '       gen-relevance.js --from questions-v4.json --version 5 --append-judged <qid->ids json>\n' +
+    '                        [--append-tag T] [--concurrency N] [--dry-run]\n'
   );
 }
 
@@ -209,7 +258,7 @@ function identifierRelevance(questionText, sourceId, positions, keyIndex) {
 
 function runJSON(script, query, top) {
   try {
-    return JSON.parse(execFileSync('node', [script, query, '--json', `--top=${top}`], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }));
+    return JSON.parse(execFileSync('node', [script, query, '--json', `--top=${top}`], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] }));
   } catch (err) {
     const stderr = err && err.stderr ? String(err.stderr) : '';
     if (/only stop words/i.test(stderr)) return [];
@@ -239,6 +288,45 @@ function candidatePool(questionText, sourceId) {
   const fused = runJSON(lib.SEARCH_JS, questionText, SEARCH_DEPTH);
   const semantic = runJSON(SEMANTIC_JS, questionText, POOL_TOP);
   return poolFrom(fused, semantic, sourceId);
+}
+
+/**
+ * The POOL_V3 pool from already-fetched inputs (pure): fused = search.js --json output,
+ * extra = [{id, layer}] (source, provenance, index picks). Only ids in `known` (the corpus's
+ * lesson ids) enter. Returns [{id, layers}] in lesson-id order.
+ */
+function poolV3From(fused, extra, known, top = POOL_TOP) {
+  const layers = new Map();
+  const add = (id, layer) => { if (!known.has(id)) return; if (!layers.has(id)) layers.set(id, new Set()); layers.get(id).add(layer); };
+  fused.forEach((r, i) => {
+    if (i < top) add(r.id, 'fused');
+    if (r.keyword_rank !== null && r.keyword_rank !== undefined && r.keyword_rank <= top) add(r.id, 'keyword');
+  });
+  for (const e of extra) add(e.id, e.layer);
+  return [...layers.entries()].sort((a, b) => a[0] - b[0]).map(([id, s]) => ({ id, layers: [...s].sort() }));
+}
+
+/** A --strata entry ("terse" or "terse:holdout") matches a question of that stratum (and split). */
+function specMatches(spec, q) {
+  const [stratum, split] = spec.split(':');
+  return q.stratum === stratum && (!split || q.split === split);
+}
+
+/** Provenance lesson ids of a state question's registry entry (as the registry now stands). */
+function provenanceOf(q, registryById) {
+  const e = registryById.get(q.registry_id);
+  return e && e.provenance ? [...new Set(e.provenance.map((p) => p.lesson))] : [];
+}
+
+function candidatePoolV3(q, ctx) {
+  const fused = runJSON(lib.SEARCH_JS, q.text, SEARCH_DEPTH);
+  const extra = [];
+  if (q.lesson_id !== null && q.lesson_id !== undefined) extra.push({ id: q.lesson_id, layer: 'source' });
+  if (q.stratum === 'state') for (const id of provenanceOf(q, ctx.registryById)) extra.push({ id, layer: 'provenance' });
+  const picks = ctx.picks[q.qid];
+  if (!picks) throw new Error(`${q.qid}: no index picks in ${ctx.picksFile}`);
+  for (const id of picks) extra.push({ id, layer: 'index' });
+  return poolV3From(fused, extra, ctx.known);
 }
 
 // ---------------------------------------------------------------------------
@@ -290,20 +378,9 @@ function parseVerdicts(parsed, labels) {
   return byLabel;
 }
 
+/** `claude -p --model <judge> JUDGE_FLAGS`, prompt on stdin from a file, empty cwd (claude-call.js). */
 function callJudgeDefault(prompt, opts) {
-  return new Promise((resolve, reject) => {
-    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gen-relevance-cwd-'));
-    execFile(
-      'claude',
-      ['-p', '--model', opts.judgeModel, ...JUDGE_FLAGS, '--output-format', 'json', prompt],
-      { cwd: tmpDir, stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 16 * 1024 * 1024 },
-      (err, stdout, stderr) => {
-        fs.rmSync(tmpDir, { recursive: true, force: true });
-        if (err) reject(new Error(`claude -p failed: ${err.message}\n${stderr}`));
-        else resolve(stdout);
-      }
-    );
-  });
+  return CC.callJSON(prompt, { model: opts.judgeModel, flags: JUDGE_FLAGS, tag: 'gen-relevance-judge' });
 }
 
 /**
@@ -336,13 +413,33 @@ function loadCorpus() {
   return { topicIndex, lessonById, lessonTexts };
 }
 
+/** Judge `todo` questions into state.judged with a pool of workers; a budget stop ends the run. */
+async function judgeAll(todo, state, outPath, ctx) {
+  let failures = 0;
+  let budgetStop = null;
+  await G.mapPool(todo, ctx.opts.concurrency, async (q) => {
+    if (budgetStop) return;
+    try {
+      state.judged[q.qid] = await judgeQuestion(q.text, ctx.poolOf(q), ctx.lessonById, ctx.lessonTexts, ctx.callJudge, ctx.opts);
+    } catch (err) {
+      if (err instanceof CC.BudgetExceededError) { budgetStop = err.message; return; }
+      failures++;
+      process.stderr.write(`${q.qid}: judge failed: ${err.message.split('\n')[0]}\n`);
+    }
+    G.writePartial(outPath, state);
+  });
+  if (budgetStop) process.stderr.write(`stopped: ${budgetStop}\n`);
+  return { failures, budgetStop };
+}
+
 /**
  * @param {object} opts  parseArgs() output
- * @param {{callJudge?: function, pools?: function}} deps  injectable judge + pool source (tests)
+ * @param {{callJudge?: function, pools?: function}} deps  injectable judge + pool source (tests);
+ *   pools(text, sourceId, question) -> [{id, layers}]
  */
 async function generate(opts, deps = {}) {
+  if (opts.appendJudged) return appendJudged(opts, deps);
   const callJudge = deps.callJudge || callJudgeDefault;
-  const poolFor = deps.pools || candidatePool;
   if (!opts.from || !Number.isInteger(opts.version)) throw new Error('--from <questions file> and --version N are required');
   const fromPath = path.resolve(opts.from);
   const fromRaw = fs.readFileSync(fromPath);
@@ -356,10 +453,19 @@ async function generate(opts, deps = {}) {
   const { topicIndex, lessonById, lessonTexts } = loadCorpus();
   const positions = buildPositions(lessonTexts);
   const keyIndex = buildKeyIndex(topicIndex.keyword_map, new Set(topicIndex.lessons.flatMap((l) => l.vocab_keys || [])));
+  const registryById = new Map(lib.loadRegistry().entries.map((e) => [e.id, e]));
 
+  const strata = opts.strata || ['plain'];
+  const poolMode = opts.indexPicks ? POOL_V3 : POOL_V2;
+  let picksDoc = null;
+  if (poolMode === POOL_V3) {
+    const raw = fs.readFileSync(opts.indexPicks);
+    picksDoc = { raw, data: JSON.parse(raw), file: path.basename(opts.indexPicks) };
+  }
   const header = {
     from_sha256: sha256(fromRaw), version: opts.version, judge_model: opts.judgeModel,
     judge_prompt_version: JUDGE_PROMPT_VERSION, excerpt_chars: EXCERPT_CHARS, identifier_rule: IDENTIFIER_RULE_VERSION,
+    ...(poolMode === POOL_V3 ? { pool: POOL_V3, index_picks_sha256: sha256(picksDoc.raw) } : {}),
   };
   let state;
   const pPath = G.partialPath(outPath);
@@ -368,28 +474,42 @@ async function generate(opts, deps = {}) {
     const mismatch = Object.keys(header).filter((k) => (state.header || {})[k] !== header[k]);
     if (mismatch.length) throw new Error(`refusing to resume ${pPath}: header mismatch on [${mismatch.join(', ')}]. Delete it to start over.`);
   } else {
-    state = { header, search_head: gitHead(), pools: {}, judged: {} };
+    state = { header, search_head: gitHead(), index_hashes: lib.indexHashes(), pools: {}, judged: {} };
   }
 
-  const plain = source.questions.filter((q) => q.stratum === 'plain');
+  // Questions to judge, in the order of --strata (a budget stop hits the last strata).
+  const judgeSet = strata.flatMap((spec) => source.questions.filter((q) => specMatches(spec, q)));
+  const ctxPool = {
+    picks: picksDoc ? picksDoc.data.picks : {}, picksFile: picksDoc && picksDoc.file,
+    known: new Set(lessonById.keys()), registryById,
+  };
+  const poolFor = deps.pools
+    ? (q) => deps.pools(q.text, q.lesson_id, q)
+    : (q) => (poolMode === POOL_V3 ? candidatePoolV3(q, ctxPool) : candidatePool(q.text, q.lesson_id));
   // Pools first, once, before any call; stored so a resume judges the same pool.
   let newPools = 0;
-  for (const q of plain) {
+  for (const q of judgeSet) {
     if (state.pools[q.qid]) continue;
-    state.pools[q.qid] = poolFor(q.text, q.lesson_id);
+    state.pools[q.qid] = poolFor(q);
     newPools++;
   }
-  if (newPools) G.writePartial(outPath, state);
+  if (newPools) {
+    const now = lib.indexHashes();
+    if (JSON.stringify(now) !== JSON.stringify(state.index_hashes || now)) {
+      throw new Error(`topic-index.json or registry.json changed while pools were being built (${JSON.stringify(state.index_hashes)} -> ${JSON.stringify(now)}); delete ${pPath} and rerun`);
+    }
+    G.writePartial(outPath, state);
+  }
 
-  const todo = plain.filter((q) => !state.judged[q.qid]);
-  const poolSizes = plain.map((q) => state.pools[q.qid].length);
+  const todo = judgeSet.filter((q) => !state.judged[q.qid]);
+  const poolSizes = judgeSet.map((q) => state.pools[q.qid].length);
   const estimate = {
-    plain_questions: plain.length, already_judged: plain.length - todo.length, calls_needed: todo.length,
+    strata, pool: poolMode, questions: judgeSet.length, already_judged: judgeSet.length - todo.length, calls_needed: todo.length,
     mean_pool: poolSizes.reduce((a, b) => a + b, 0) / (poolSizes.length || 1), max_pool: Math.max(0, ...poolSizes),
   };
   process.stderr.write(`judge estimate: ${JSON.stringify(estimate)}\n`);
   if (opts.dryRun) {
-    const q = todo[0] || plain[0];
+    const q = todo[0] || judgeSet[0];
     if (q) {
       const cands = state.pools[q.qid].map((p, i) => ({ ...p, label: `C${i + 1}`, excerpt: excerptOf(lessonById.get(p.id), lessonTexts.get(p.id)) }));
       console.log(buildJudgePrompt(q.text, cands));
@@ -398,70 +518,195 @@ async function generate(opts, deps = {}) {
   }
 
   const batch = todo.slice(0, Number.isFinite(opts.limit) ? opts.limit : todo.length);
-  let failures = 0;
-  await G.mapPool(batch, opts.concurrency, async (q) => {
-    try {
-      state.judged[q.qid] = await judgeQuestion(q.text, state.pools[q.qid], lessonById, lessonTexts, callJudge, opts);
-    } catch (err) {
-      failures++;
-      process.stderr.write(`${q.qid}: judge failed: ${err.message.split('\n')[0]}\n`);
-    }
-    G.writePartial(outPath, state);
+  const { failures, budgetStop } = await judgeAll(batch, state, outPath, {
+    opts, callJudge, lessonById, lessonTexts, poolOf: (q) => state.pools[q.qid],
   });
 
-  const remaining = plain.filter((q) => !state.judged[q.qid]).length;
+  const remaining = judgeSet.filter((q) => !state.judged[q.qid]).length;
   if (remaining) {
-    process.stderr.write(`${remaining} plain question(s) not judged yet (${failures} failed this run); rerun to resume from ${pPath}\n`);
-    return { complete: false, failures, remaining };
+    process.stderr.write(`${remaining} question(s) not judged yet (${failures} failed this run${budgetStop ? ', budget stop' : ''}); rerun to resume from ${pPath}\n`);
+    return { complete: false, failures, remaining, budgetStop };
   }
 
-  const registryById = new Map(lib.loadRegistry().entries.map((e) => [e.id, e]));
+  const inSpec = (q) => strata.some((spec) => specMatches(spec, q));
+  const yesOf = (qid, exclude) => (state.judged[qid] || []).filter((v) => v.answers && !exclude.has(v.id)).map((v) => v.id);
   const questions = source.questions.map((q) => {
     if (q.stratum === 'identifier') {
       const { relevant, basis } = identifierRelevance(q.text, q.lesson_id, positions, keyIndex);
-      return { ...q, relevant, relevance_basis: { rule: IDENTIFIER_RULE_VERSION, ...basis } };
+      if (!inSpec(q)) return { ...q, relevant, relevance_basis: { rule: IDENTIFIER_RULE_VERSION, ...basis } };
+      const merged = { ...relevant };
+      for (const id of yesOf(q.qid, new Set(Object.keys(relevant).map(Number)))) merged[id] = 1;
+      return { ...q, relevant: merged, relevance_basis: { rule: IDENTIFIER_RULE_VERSION, ...basis, rule_relevant: relevant, judge: JUDGE_PROMPT_VERSION, verdicts: state.judged[q.qid] } };
     }
-    if (q.stratum === 'plain') {
-      const verdicts = state.judged[q.qid];
+    if ((q.stratum === 'plain' || q.stratum === 'terse') && inSpec(q)) {
       const relevant = { [q.lesson_id]: 2 };
-      for (const v of verdicts) if (v.answers && v.id !== q.lesson_id) relevant[v.id] = 1;
-      return { ...q, relevant, relevance_basis: { judge: JUDGE_PROMPT_VERSION, verdicts } };
+      for (const id of yesOf(q.qid, new Set([q.lesson_id]))) relevant[id] = 1;
+      return { ...q, relevant, relevance_basis: { judge: JUDGE_PROMPT_VERSION, verdicts: state.judged[q.qid] } };
     }
+    let out = q;
     if (q.stratum === 'state' && !('split_lesson_id' in q)) {
       const entry = registryById.get(q.registry_id);
       if (!entry) throw new Error(`${q.qid}: registry entry ${q.registry_id} not found; cannot record its split lesson`);
-      return { ...q, split_lesson_id: lib.stateSplitLessonId(entry) };
+      out = { ...q, split_lesson_id: lib.stateSplitLessonId(entry) };
     }
-    return q;
+    if (q.stratum === 'state' && inSpec(q)) {
+      const prov = (state.pools[q.qid] || []).filter((p) => p.layers.includes('provenance')).map((p) => p.id);
+      const relevant = {};
+      for (const id of prov) relevant[id] = 2;
+      for (const id of yesOf(q.qid, new Set(prov))) relevant[id] = 1;
+      out = { ...out, relevant, relevance_basis: { judge: JUDGE_PROMPT_VERSION, provenance: prov, verdicts: state.judged[q.qid] } };
+    }
+    if (q.stratum === 'real' && inSpec(q)) {
+      const relevant = {};
+      for (const id of yesOf(q.qid, new Set())) relevant[id] = 1;
+      out = { ...out, relevant, relevance_basis: { judge: JUDGE_PROMPT_VERSION, verdicts: state.judged[q.qid] } };
+    }
+    return out;
   });
 
   // The split rule (lib.applyHardTestRule): the source's random split, then every
   // lesson a hard ranking test asserts is moved to dev, and its questions relabelled.
-  const split = lib.applyHardTestRule(source.split, lib.loadHardTestLessons());
+  // A source without a split (a real-invocation sample) stays without one.
+  const split = source.split ? lib.applyHardTestRule(source.split, lib.loadHardTestLessons()) : null;
+  const splitSource = source.split_source ? { split_source: source.split_source } : {};
+  const poolText = poolMode === POOL_V3
+    ? `union of source lesson, state provenance lessons, keyword top ${POOL_TOP}, fused top ${POOL_TOP}, index picks (${picksDoc.file})`
+    : `union of keyword top ${POOL_TOP}, TF-IDF top ${POOL_TOP} (semantic-search.js and search.js tfidf_rank), fused top ${POOL_TOP}, source lesson`;
   const output = {
     version: opts.version,
     seed: source.seed,
     model: source.model,
     prompt_version: source.prompt_version,
     generated_at: source.generated_at,
+    ...(source.generation ? { generation: source.generation } : {}),
     derived_from: { version: source.version, file: path.basename(fromPath), sha256: header.from_sha256 },
+    ...splitSource,
     relevance: {
       generated_at: new Date().toISOString(),
       search_head: state.search_head,
+      ...(state.index_hashes ? { index_hashes: state.index_hashes } : {}),
       grades: { 2: 'source lesson (always)', 1: 'other acceptable lesson' },
       identifier_rule: IDENTIFIER_RULE_VERSION,
       judge: {
         model: opts.judgeModel, prompt_version: JUDGE_PROMPT_VERSION, date: new Date().toISOString().slice(0, 10),
         flags: JUDGE_FLAGS.map((f) => (f === '' ? '""' : f)).join(' '), excerpt_chars: EXCERPT_CHARS,
-        pool: `union of keyword top ${POOL_TOP}, TF-IDF top ${POOL_TOP} (semantic-search.js and search.js tfidf_rank), fused top ${POOL_TOP}, source lesson`,
+        pool: poolText,
+        ...(poolMode === POOL_V3 ? {
+          pool_version: POOL_V3, strata,
+          index_picks: { file: picksDoc.file, sha256: header.index_picks_sha256, model: picksDoc.data.model, index_sha256: picksDoc.data.index_sha256, prompt_sha256: picksDoc.data.prompt_sha256 },
+          grading: 'identifier: rule set + judge-accepted (1); plain/terse: source 2 + judge-accepted 1; state: provenance 2 + judge-accepted 1; real: judge-accepted 1',
+        } : {}),
       },
       rules: 'see evals/retrieval/gen-relevance.js header',
     },
     split,
     // previous = the source's split, so a lesson the source had moved to dev and the
     // rule no longer moves (its hard test removed) sends its questions back to holdout.
-    questions: lib.relabelQuestions(questions, split, source.split),
-    dropped: source.dropped,
+    questions: split ? lib.relabelQuestions(questions, split, source.split) : questions,
+    dropped: source.dropped || [],
+  };
+  fs.writeFileSync(outPath, JSON.stringify(output, null, 2) + '\n');
+  fs.rmSync(pPath, { force: true });
+  return { complete: true, output };
+}
+
+// ---------------------------------------------------------------------------
+// Append-only judging (implemented; run only after an agentic run, never before)
+// ---------------------------------------------------------------------------
+
+/** Load --append-judged: {qid: [ids]} or {lessons: {qid: [ids]}}. */
+function loadSeen(file) {
+  const d = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const m = d && d.lessons && typeof d.lessons === 'object' ? d.lessons : d;
+  const out = {};
+  for (const [qid, ids] of Object.entries(m)) if (Array.isArray(ids)) out[qid] = [...new Set(ids.map(Number).filter(Number.isInteger))];
+  return out;
+}
+
+/** Candidates a question still needs judged: ids in `seen` its recorded verdicts don't cover. */
+function unjudgedFor(q, seenIds, known) {
+  const b = q.relevance_basis || {};
+  const covered = new Set([...(b.verdicts || []), ...(b.appended || [])].map((v) => v.id));
+  if (q.relevant) for (const id of Object.keys(q.relevant)) covered.add(Number(id)); // rule / source grades count as graded
+  return seenIds.filter((id) => known.has(id) && !covered.has(id)).sort((a, b) => a - b);
+}
+
+async function appendJudged(opts, deps = {}) {
+  const callJudge = deps.callJudge || callJudgeDefault;
+  if (!opts.from || !Number.isInteger(opts.version)) throw new Error('--from <judged questions file> and --version N are required');
+  const fromPath = path.resolve(opts.from);
+  const fromRaw = fs.readFileSync(fromPath);
+  const source = JSON.parse(fromRaw);
+  if (opts.version <= source.version) throw new Error(`--version ${opts.version} must be greater than the source's version ${source.version}`);
+  const j = source.relevance && source.relevance.judge;
+  if (!j) throw new Error(`${path.basename(fromPath)} has no relevance.judge header; append-only judging needs a judged set`);
+  if (j.prompt_version !== JUDGE_PROMPT_VERSION) throw new Error(`judge prompt ${JUDGE_PROMPT_VERSION} differs from the source's ${j.prompt_version}`);
+  if (opts.judgeModel !== j.model) {
+    if (opts.judgeModel !== DEFAULT_JUDGE_MODEL) throw new Error(`--judge-model ${opts.judgeModel} differs from the source's judge ${j.model}; append-only judging uses the same judge`);
+    opts = { ...opts, judgeModel: j.model }; // default: follow the source
+  }
+  if (j.excerpt_chars !== EXCERPT_CHARS) throw new Error(`excerpt size ${EXCERPT_CHARS} differs from the source's ${j.excerpt_chars}`);
+  const outPath = path.join(opts.outDir || lib.EVALS_DIR, `questions-v${opts.version}.json`);
+  if (fs.existsSync(outPath)) throw new Error(`${outPath} already exists — versions are immutable once written.`);
+
+  const seenRaw = fs.readFileSync(opts.appendJudged);
+  const seen = loadSeen(opts.appendJudged);
+  const tag = opts.appendTag || path.basename(opts.appendJudged).replace(/\.json$/, '');
+  const { lessonById, lessonTexts } = loadCorpus();
+  const known = new Set(lessonById.keys());
+  const byQid = new Map(source.questions.map((q) => [q.qid, q]));
+  const unknownQids = Object.keys(seen).filter((qid) => !byQid.has(qid));
+  if (unknownQids.length) throw new Error(`--append-judged names qids not in the source: ${unknownQids.slice(0, 5).join(', ')}${unknownQids.length > 5 ? ', ...' : ''}`);
+
+  const header = { from_sha256: sha256(fromRaw), version: opts.version, judge_model: opts.judgeModel, judge_prompt_version: JUDGE_PROMPT_VERSION, excerpt_chars: EXCERPT_CHARS, seen_sha256: sha256(seenRaw), round: tag };
+  const pPath = G.partialPath(outPath);
+  let state;
+  if (fs.existsSync(pPath)) {
+    state = JSON.parse(fs.readFileSync(pPath, 'utf8'));
+    const mismatch = Object.keys(header).filter((k) => (state.header || {})[k] !== header[k]);
+    if (mismatch.length) throw new Error(`refusing to resume ${pPath}: header mismatch on [${mismatch.join(', ')}]. Delete it to start over.`);
+  } else {
+    state = { header, pools: {}, judged: {} };
+    for (const [qid, ids] of Object.entries(seen)) {
+      const cands = unjudgedFor(byQid.get(qid), ids, known);
+      if (cands.length) state.pools[qid] = cands.map((id) => ({ id, layers: [`appended:${tag}`] }));
+    }
+    G.writePartial(outPath, state);
+  }
+  const todo = Object.keys(state.pools).filter((qid) => !state.judged[qid]).map((qid) => byQid.get(qid));
+  const nCands = Object.values(state.pools).reduce((t, p) => t + p.length, 0);
+  process.stderr.write(`append estimate: ${JSON.stringify({ round: tag, questions: Object.keys(state.pools).length, candidates: nCands, calls_needed: todo.length })}\n`);
+  if (opts.dryRun) {
+    const q = todo[0];
+    if (q) console.log(buildJudgePrompt(q.text, state.pools[q.qid].map((p, i) => ({ ...p, label: `C${i + 1}`, excerpt: excerptOf(lessonById.get(p.id), lessonTexts.get(p.id)) }))));
+    return { dryRun: true };
+  }
+  const { failures, budgetStop } = await judgeAll(todo, state, outPath, { opts, callJudge, lessonById, lessonTexts, poolOf: (q) => state.pools[q.qid] });
+  const remaining = Object.keys(state.pools).filter((qid) => !state.judged[qid]).length;
+  if (remaining) {
+    process.stderr.write(`${remaining} question(s) not judged yet (${failures} failed${budgetStop ? ', budget stop' : ''}); rerun to resume from ${pPath}\n`);
+    return { complete: false, failures, remaining, budgetStop };
+  }
+  const questions = source.questions.map((q) => {
+    const v = state.judged[q.qid];
+    if (!v) return q;
+    const b = q.relevance_basis || {};
+    const appended = [...(b.appended || []), ...v.map((x) => ({ ...x, round: tag }))];
+    const pooled = { ...(q.relevant_pooled || q.relevant || {}) };
+    for (const x of v) if (x.answers && !(x.id in pooled)) pooled[x.id] = 1;
+    return { ...q, relevant_pooled: pooled, relevance_basis: { ...b, appended } };
+  });
+  const rounds = [...((source.relevance && source.relevance.appended) || []), {
+    round: tag, date: new Date().toISOString().slice(0, 10), judge_model: opts.judgeModel, prompt_version: JUDGE_PROMPT_VERSION,
+    seen_file: path.basename(opts.appendJudged), seen_sha256: header.seen_sha256, questions: Object.keys(state.pools).length, candidates: nCands,
+    accepted: Object.values(state.judged).flat().filter((x) => x.answers).length,
+  }];
+  const output = {
+    ...source,
+    version: opts.version,
+    derived_from: { version: source.version, file: path.basename(fromPath), sha256: header.from_sha256 },
+    relevance: { ...source.relevance, appended: rounds, strict_vs_pooled: '`relevant` = graded before any agentic run (strict); `relevant_pooled` = strict plus append-only verdicts' },
+    questions,
   };
   fs.writeFileSync(outPath, JSON.stringify(output, null, 2) + '\n');
   fs.rmSync(pPath, { force: true });
@@ -477,9 +722,10 @@ async function main() {
 }
 
 module.exports = {
-  IDENTIFIER_RULE_VERSION, JUDGE_PROMPT_VERSION, DEFAULT_JUDGE_MODEL, EXCERPT_CHARS, POOL_TOP,
+  IDENTIFIER_RULE_VERSION, JUDGE_PROMPT_VERSION, DEFAULT_JUDGE_MODEL, JUDGE_FLAGS, EXCERPT_CHARS, POOL_TOP, POOL_V2, POOL_V3,
   parseArgs, buildKeyIndex, buildPositions, questionTokens, identifierRelevance,
-  poolFrom, candidatePool, excerptOf, buildJudgePrompt, parseVerdicts, judgeQuestion, generate,
+  poolFrom, poolV3From, candidatePool, candidatePoolV3, provenanceOf, specMatches, excerptOf, buildJudgePrompt, parseVerdicts, judgeQuestion, generate,
+  appendJudged, loadSeen, unjudgedFor,
 };
 
 if (require.main === module) {
