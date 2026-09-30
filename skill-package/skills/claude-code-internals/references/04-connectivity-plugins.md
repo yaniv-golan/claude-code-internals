@@ -706,7 +706,10 @@ If a Cowork session is using stale `pdf` / `xlsx` / etc. content, the cause is h
 - Session hooks: `sessionHooks.ts`
 - Hook events (telemetry): `hookEvents.ts`
 
-## All 27 Hook Events (Categorized)
+## The 27 Hook Events of v2.1.88 (Categorized)
+
+> 27 is the v2.1.88–v2.1.90 count. The master array holds **33 as of 2.1.260** (unchanged at
+> 2.1.280); the current list is in `state/plugins-skills-hooks.md` (L95, L155, L188).
 
 **Lifecycle:** SessionStart, SessionEnd, Setup, Stop, StopFailure
 **Tool execution:** PreToolUse, PostToolUse, PostToolUseFailure

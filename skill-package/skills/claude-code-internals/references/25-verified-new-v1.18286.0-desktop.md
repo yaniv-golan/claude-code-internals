@@ -75,48 +75,43 @@ identical in 1.18286.0:
 - **All 11 previously-catalogued GrowthBook gate IDs** (Ch25/L108's table) are present in the
   bundle's compiled string table.
 
-In short: nothing in the four prior Desktop chapters has been walked back by this build. The rest
-of this lesson covers what's actually new or corrected.
+In short: nothing in the four prior Desktop chapters is contradicted by this build. The rest
+of this lesson covers what's new, or newly traced.
 
-## Part C — correction to Ch24/L107: the `--effort` spawn value is not a hardcoded literal
+## Part C — the `--effort` spawn value is a variable, not a hardcoded literal
 
-Ch24/L107 states that the desktop "passes `--effort medium` explicitly" as if it were a fixed,
-driver-supplied literal distinct from the agent's own default. Re-reading the spawn path in
-1.18286.0 shows this framing is wrong: the value is a **variable**, not a constant —
+The `--effort medium` on the desktop's spawn argv (Ch24/L107's logged argv) looks like a fixed,
+driver-supplied literal distinct from the agent's own default. In 1.18286.0 the value is a
+**variable**, not a constant —
 
 ```js
 this.options.effort && Y.push("--effort", this.options.effort)
 ```
 
-— backed by a genuine settings-driven resolver:
+— and a **`LocalSessions` IPC family** sets it per session: `setEffort(sessionId, effort)`,
+`getEffort(sessionId)`, `getDefaultEffort()`, `setFastMode(sessionId, fastMode)` — alongside a managed-settings key — letting a user (or
+org policy) set a Cowork session's effort level directly rather than it being baked into the spawn
+call. **"medium" in a captured argv is the observed value of that setting at capture time** — read
+Ch24/L107's "passes `--effort medium` explicitly" as "the setting happened to be `medium`," not
+"Desktop hardcodes medium" (though `"medium"` is also the final fallback, below).
 
-```js
-async getDefaultEffort() {
-  return await Uq(), RT().CLAUDE_CODE_EFFORT_LEVEL ?? process.env.CLAUDE_CODE_EFFORT_LEVEL ?? null
-}
-```
-
-and a previously undocumented **`LocalSessions` IPC family**: `setEffort(sessionId, effort)`,
-`getEffort(sessionId)`, `getDefaultEffort()`, `setFastMode(sessionId, fastMode)`. This ties directly
-into the CLI-side effort mechanism already documented at lesson 93 (`CLAUDE_CODE_EFFORT_LEVEL`,
-the global effort-tier pin) — Desktop has its own per-session UI/IPC layer on top of that same
-env var and a managed-settings key, letting a user (or org policy) set a Cowork session's effort
-level directly rather than it being baked into the spawn call. **"medium" was simply the observed
-value of that setting at the time of the original capture, not a compiled-in constant.** Anyone
-citing Ch24/L107's "passes `--effort medium` explicitly" claim going forward should read it as "the
-setting happened to be `medium`," not "Desktop hardcodes medium."
-
-> **FURTHER CORRECTED in Ch34/L120 (2026-07-08, against a fresh 1.19367.0 build):** the "backed by
-> `CLAUDE_CODE_EFFORT_LEVEL`" half of this claim doesn't hold up under a full spawn-path trace. Two
-> distinct `getDefaultEffort()` implementations coexist in the bundle — a thin IPC passthrough and a
-> separate env-var reader that genuinely reads `CLAUDE_CODE_EFFORT_LEVEL` — but the value that
-> actually reaches `--effort <level>` at spawn (`qgi(effortOverride, A1e(model), E2t())`) resolves
-> exclusively from a **local settings-file object** (`effort`/`effortByModel` fields), with a
-> hardcoded `"medium"` string as the final fallback, never touching `CLAUDE_CODE_EFFORT_LEVEL` or
-> `process.env` in that chain. The IPC family name and existence documented here are still accurate;
-> only the "backed by that env var" causal link is wrong. See Ch34/L120 Part C for the full trace,
-> and Parts A–B for the accompanying extended-thinking (boolean, 31999-or-0) and four-class
-> per-model effort mechanics.
+> **Trap — an env-var reader that is not on the spawn path** (Ch34/L120, traced 2026-07-08 against
+> 1.19367.0). The 1.18286.0 bundle carries an env-var-backed resolver:
+>
+> ```js
+> async getDefaultEffort() {
+>   return await Uq(), RT().CLAUDE_CODE_EFFORT_LEVEL ?? process.env.CLAUDE_CODE_EFFORT_LEVEL ?? null
+> }
+> ```
+>
+> which makes the spawn value look backed by `CLAUDE_CODE_EFFORT_LEVEL` (the CLI's global
+> effort-tier pin, lesson 93). It is not. Two distinct `getDefaultEffort()` implementations coexist in
+> the bundle — a thin IPC passthrough and this env-var reader — but the value that actually reaches
+> `--effort <level>` at spawn (`qgi(effortOverride, A1e(model), E2t())`) resolves exclusively from a
+> **local settings-file object** (`effort`/`effortByModel` fields), with a hardcoded `"medium"` string
+> as the final fallback, never touching `CLAUDE_CODE_EFFORT_LEVEL` or `process.env` in that chain. See
+> Ch34/L120 Part C for the full trace, and Parts A–B for the accompanying extended-thinking (boolean,
+> 31999-or-0) and four-class per-model effort mechanics.
 
 ## Part D — promotion: `CLAUDE_CODE_SUBAGENT_MODEL` is now confirmed wired, not speculative
 
@@ -147,7 +142,7 @@ passing, which two initial candidates turned out to be — see the note on
 | `CLAUDE_CODE_SUBAGENT_MODEL` | env var | See Part D | Promotion, not new — see above. |
 | `CLAUDE_CODE_QUESTION_PREVIEW_FORMAT` | env var | Set from `P?.askUserQuestion?.previewFormat` at spawn | The settings→env wiring behind Ch24/L107's `AskUserQuestion` documentation; the tool's reachability mechanism was documented, this specific formatting knob wasn't. |
 | `CLAUDE_CODE_ENABLE_ASK_USER_QUESTION_TOOL` | env var | Set unconditionally to `"true"` in the main Cowork spawn env | Not previously named as its own enable-flag; Ch24/L107 only documented `--permission-prompt-tool stdio` as the mechanism that keeps `AskUserQuestion` from being silently auto-dismissed. |
-| `CLAUDE_CODE_DISABLE_AGENTS_FLEET` (Desktop sense) | env var | ~~Set to `"1"` alongside `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS:"1"` in a Tasks-tool-child spawn path~~ **CORRECTED in L115 Part D:** each of the two vars appears **exactly once** in this same 1.18286.0 asar, and the site is the **main** local-agent spawn env builder — the object literal that also sets `CLAUDE_CODE_IS_COWORK:"1"` and `CLAUDE_CODE_ENTRYPOINT:"local-agent"`. There is no separate Tasks-tool-child spawn site in this build; backgrounding and Fleet/agent-view are suppressed for **every** Cowork session. | Lesson 100 documents this name only as the *old*, renamed-away name for `CLAUDE_CODE_DISABLE_AGENT_VIEW` (Fleet view → agent view rename). The old name is still live in the Cowork spawn env — but session-wide, not (as this row originally claimed) in a narrower nested-task path. See Ch29/L115 Part D for the re-grep. |
+| `CLAUDE_CODE_DISABLE_AGENTS_FLEET` (Desktop sense) | env var | Set to `"1"` alongside `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS:"1"` in the **main** Cowork spawn env, not a Tasks-tool-child spawn path (Ch29/L115 Part D): each of the two vars appears **exactly once** in this same 1.18286.0 asar, and the site is the **main** local-agent spawn env builder — the object literal that also sets `CLAUDE_CODE_IS_COWORK:"1"` and `CLAUDE_CODE_ENTRYPOINT:"local-agent"`. There is no separate Tasks-tool-child spawn site in this build; backgrounding and Fleet/agent-view are suppressed for **every** Cowork session. | Lesson 100 documents this name only as the *old*, renamed-away name for `CLAUDE_CODE_DISABLE_AGENT_VIEW` (Fleet view → agent view rename). The old name is still live in the Cowork spawn env — session-wide, not in a narrower nested-task path. See Ch29/L115 Part D for the grep. |
 | `CLAUDE_CODE_DISABLE_AUTO_MEMORY` | env var | Fallback set to `"1"` when no memory path is resolvable | Companion to the next entry. |
 | `CLAUDE_COWORK_MEMORY_PATH_OVERRIDE` | env var | The concrete env-var wiring between Ch26/L109's `CoworkSpaces.getAutoMemoryDir` (Space-scoped auto-memory directory) and the agent's spawn env | L109 documented the Desktop IPC method; this is the actual variable that carries its result to the agent process. |
 | `MCP_LIST_SCHEDULED_TASKS` | MCP tool | A 5th scheduled-tasks tool, alongside the four (`CREATE`/`UPDATE`/`START_WATCHING`/`STOP_WATCHING`) in Ch26/L109's forced-ask matcher | List-only, lower-privilege — confirmed **not** part of the 8-tool forced-ask set, plausibly an intentional exclusion (read-only ops don't need the same explicit-approval gate as create/update/watch ops). |
@@ -177,7 +172,7 @@ uninformative rather than a regression.
 | `CLAUDE_CODE_DISABLE_CRON` (Desktop sense) | env var | Cowork session spawn | Session-scoped `disableCron` setting, distinct from lesson 38's CLI-level `AGENT_TRIGGERS` kill switch of the same name |
 | `CLAUDE_CODE_QUESTION_PREVIEW_FORMAT` | env var | Cowork session spawn | `askUserQuestion.previewFormat` settings wiring |
 | `CLAUDE_CODE_ENABLE_ASK_USER_QUESTION_TOOL` | env var | Cowork session spawn | Explicit enable-flag, set unconditionally |
-| `CLAUDE_CODE_DISABLE_AGENTS_FLEET` (Desktop sense) | env var | Main Cowork spawn env (corrected in L115 — not a Tasks-tool-child path) | Old Fleet-view name, still live: session-wide Fleet/background suppression |
+| `CLAUDE_CODE_DISABLE_AGENTS_FLEET` (Desktop sense) | env var | Main Cowork spawn env (L115 — not a Tasks-tool-child path) | Old Fleet-view name, still live: session-wide Fleet/background suppression |
 | `CLAUDE_CODE_DISABLE_AUTO_MEMORY` / `CLAUDE_COWORK_MEMORY_PATH_OVERRIDE` | env vars | Cowork session spawn | Concrete wiring for lesson 109's `CoworkSpaces.getAutoMemoryDir` |
 | `MCP_LIST_SCHEDULED_TASKS` | MCP tool | Scheduled Tasks module | List-only 5th tool, excluded from the 8-tool forced-ask matcher |
 | `mcp__cowork__propose_skills` / `send_user_message` / `present_files` | MCP tools | `cowork`-namespaced tool set | New tools, none in the forced-ask matcher |

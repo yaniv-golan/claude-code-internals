@@ -79,7 +79,7 @@ Desktop drives this agent with.
 
 ## Filesystem & mounts
 
-**Two tool families, two path forms — the shared-scratch claim is WITHDRAWN
+**Two tool families, two path forms — there is no shared scratch space
 (Ch44/L163).** The file tools (`Read`/`Write`/`Edit`) take the **host-absolute
 outputs path**, which the model is given in its system prompt. **From Desktop
 2.7032.0 (Ch52/L190) the host-loop agent process's cwd is `/var/empty`** (when
@@ -219,18 +219,17 @@ re-verified at Desktop 1.20186.1 / agent 2.1.205):
   non-determinism in practice is the *model* choosing which path form to
   construct (e.g. echoing a VM-absolute path captured from bash output),
   not a product-side namespace flip.
-- **Depth cap 5, no fan-out cap.** Dispatch throws at nesting depth ≥ 5
+- **Depth ceiling 5; Task fan-out caps from CLI 2.1.217.** Dispatch throws at nesting depth ≥ 5
   ("Subagent nesting limit reached (depth ${g} of 5)"), and the base
   subagent tool filter hides the `Agent`/`Task` tool itself once
   `agentDepth>=5` — enforced independently in both the host bundle
-  (`NMr=5`) and the in-VM ELF (`BLr=5`). No `Task`-specific concurrency or
-  fan-out limiter exists anywhere in either binary; the only bound on how
-  many sub-agents can be *running* at once is the generic per-turn tool
-  scheduler window, `env.CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY` (default
-  10, queues rather than refuses). The 25-agent/1.5M-token "workflow size"
+  (`NMr=5`) and the in-VM ELF (`BLr=5`). Through the 2.1.205-era binaries no
+  `Task`-specific concurrency or fan-out limiter existed in either binary;
+  the only bound on how many sub-agents could be *running* at once was the
+  generic per-turn tool scheduler window, `env.CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY`
+  (default 10, queues rather than refuses). The 25-agent/1.5M-token "workflow size"
   figure is prompt guidance only, telemetry, not enforcement.
-  **CORRECTED as of CLI 2.1.217 (L134):** the "no fan-out cap" clause no
-  longer holds — the standalone agent binary now enforces real Task
+  **As of CLI 2.1.217 (L134)** the standalone agent binary enforces real Task
   fan-out caps via `taskRegistry`: concurrent sub-agents default **20**
   (`CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`, throws `subagent_concurrency_cap`,
   bypass gate `tengu_amber_kestrel`), total spawns/session default **200**

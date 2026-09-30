@@ -1,10 +1,10 @@
 Updated: 2026-08-05 | Source: **four live Cowork probes** run by the operator on this installation (host agent **2.1.221**, Desktop `app.asar` **1.25927.0**), the agent's own per-session transcripts under `.claude/projects/`, the Desktop's per-session `audit.jsonl`, and `app.asar` 1.25927.0 (plus 1.24012.1 and 1.22209.0 for the path-gate comparison). Sessions: `tender-inspiring-mendel` (`local_33f9bc8e…`, probe 1), `gallant-sleepy-clarke` (`local_01dc2a61…`, probe 2), `busy-eager-bell` (`local_1fdd9e8c…`, probe 3), and one **remote-lane** session (probe 4).
 
-**Tier discipline, corrected.** v2.36.0 of this chapter claimed its evidence was read *"first-party from each session's own on-disk `audit.jsonl`"* and treated that as authoritative. **It is not, for paths** — `audit.jsonl` is a translated projection (L143), and two published claims were wrong because of it. Both are retracted here. Where this chapter now makes a claim about a path, a command as issued, or a tool result as the model received it, the source is the **agent transcript**, corroborated against the binary that implements the behaviour. Claims that remain inference are marked inline.
+**Tier discipline.** A session's on-disk `audit.jsonl` looks like first-party evidence, but **for paths it is not authoritative** — it is a translated projection (L143). Where this chapter makes a claim about a path, a command as issued, or a tool result as the model received it, the source is the **agent transcript**, corroborated against the binary that implements the behaviour. Claims that remain inference are marked inline.
 
-**Prior-lesson corrections landed by this chapter:** the published author-fact `shell.no-package-installs` is **falsified** (L145). Ch31/L117's multiplexing inference is **given a scale** — though not, on this evidence, a concurrency claim (L146). **Ch35/L122 is NOT corrected** — v2.36.0 claimed it was, and that claim is withdrawn (L143); L122's "rewrites outbound messages only" stands.
+**What this chapter settles for earlier lessons:** the published author-fact `shell.no-package-installs` is **falsified** (L145). Ch31/L117's multiplexing inference is **given a scale** — though not, on this evidence, a concurrency claim (L146). **Ch35/L122's "rewrites outbound messages only" holds** (L143).
 
-**Retracted from v2.36.0 by v2.36.1:** the read-after-write race (there is none), inbound host→VM path translation (the agent never sent a host path), and the rewrite of `paths.session-paths-denied`, which replaced a correct rule with advice that would have sent an author into an unbounded retry loop. The original rule was right.
+**Three things `audit.jsonl` makes look true that are not:** a read-after-write race (there is none), inbound host→VM path translation (the agent never sends a host path), and a reason to retry past `paths.session-paths-denied` — that rule is right as written, and retry advice would send an author into an unbounded retry loop.
 
 # Chapter 40: What Four Live Probes Corrected — Two Records, Egress & Multiplexing
 
@@ -21,7 +21,7 @@ Updated: 2026-08-05 | Source: **four live Cowork probes** run by the operator on
 
 # LESSON 143 — `audit.jsonl` IS A TRANSLATED PROJECTION
 
-**The Desktop's per-session `audit.jsonl` rewrites VM paths to their host equivalents, in both tool inputs and tool results. The agent's own transcript under `.claude/projects/` is the faithful record. Reading `audit.jsonl` for any question about path form produces confident, wrong answers — this lesson exists because it produced two of them, published in v2.36.0 and retracted here.**
+**The Desktop's per-session `audit.jsonl` rewrites VM paths to their host equivalents, in both tool inputs and tool results. The agent's own transcript under `.claude/projects/` is the faithful record. Reading `audit.jsonl` for any question about path form produces confident, wrong answers — two of them are worked below.**
 
 ## The measurement
 
@@ -41,9 +41,9 @@ AUDIT : {"command":"cd /Users/yaniv/Library/Application Support/Claude/local-age
 CLI   : {"command":"cd /sessions/brave-exciting-gates/mnt/outputs && pip install cairosvg --break-…
 ```
 
-## What this retracts
+## Two wrong answers `audit.jsonl` produces
 
-**v2.36.0's L143 claimed a read-after-write race.** Two `Read` calls appeared in `audit.jsonl` with byte-identical 207-character host paths, the first failing *"is a VM path"* and the second succeeding 4.2 s later. The agent's own transcript shows what was actually sent:
+**An apparent read-after-write race.** Two `Read` calls appear in `audit.jsonl` with byte-identical 207-character host paths, the first failing *"is a VM path"* and the second succeeding 4.2 s later. The agent's own transcript shows what was actually sent:
 
 | call | path the agent actually sent | result |
 |---|---|---|
@@ -52,9 +52,9 @@ CLI   : {"command":"cd /sessions/brave-exciting-gates/mnt/outputs && pip install
 
 Two different path forms, behaving exactly as documented. **There is no race, no index lag, and no retry to perform.** The elapsed 4.2 s was the agent composing a second, different call.
 
-**v2.36.0's L144 claimed inbound host→VM translation** on the strength of a host-form write succeeding inside the VM. The transcript shows the agent sent `echo hello-K4M2 > /sessions/busy-eager-bell/mnt/outputs/k4m2.txt` — the VM form. It never sent a host path. **The inbound claim is withdrawn.**
+**Apparent inbound host→VM translation.** In `audit.jsonl` a host-form write appears to succeed inside the VM. The transcript shows the agent sent `echo hello-K4M2 > /sessions/busy-eager-bell/mnt/outputs/k4m2.txt` — the VM form. It never sent a host path. **There is no inbound translation.**
 
-**Ch35/L122 stands.** Its *"the K6-cmJAJ VM↔host index rewrites outbound messages only"* was correct; v2.36.0's correction of it was the error. What the index rewrites is the **host-facing** surface — the audit record and what the user sees — not what the agent sends or receives. The agent works in `/sessions/…` throughout.
+**Ch35/L122 stands.** Its *"the K6-cmJAJ VM↔host index rewrites outbound messages only"* is correct. What the index rewrites is the **host-facing** surface — the audit record and what the user sees — not what the agent sends or receives. The agent works in `/sessions/…` throughout.
 
 ## Why the binary settles it and the record could not
 
@@ -74,7 +74,7 @@ function ut(e, n) {
 
 Both call sites — a `PreToolUse` hook and `canUseTool` — pass the **raw** tool input. A path beginning `/Users/` cannot reach this branch. So the moment the record showed a host path producing this message, the record had to be wrong; no amount of re-reading it would have revealed that.
 
-> **Method, the hard way.** The v2.36.0 pass stated, repeatedly and prominently, that its evidence was read *"first-party from each session's own on-disk `audit.jsonl` rather than from the pasted transcript."* For path questions that is exactly backwards. A record maintained by the component under study is not a neutral observer, and "first-party" is not a synonym for "authoritative" — **ask what the artifact is for**. The audit log exists to show a human what happened in terms they can act on, so it speaks in host paths by design. Corroborate any path claim against the agent's own transcript, or against the binary that implements the check.
+> **Method.** Reading evidence *"first-party from each session's own on-disk `audit.jsonl` rather than from the pasted transcript"* sounds like the stronger tier. For path questions it is exactly backwards. A record maintained by the component under study is not a neutral observer, and "first-party" is not a synonym for "authoritative" — **ask what the artifact is for**. The audit log exists to show a human what happened in terms they can act on, so it speaks in host paths by design. Corroborate any path claim against the agent's own transcript, or against the binary that implements the check.
 
 ---
 
@@ -100,7 +100,7 @@ Both are first-party. Neither is a substitute for the other.
 
 The translation maps the **current session's** mounts only. Paths belonging to another session have no mapping and pass through unchanged — which is why a listing of a stranger's directory appears identically in both records while the session's own `outputs` path does not. A mixture of both forms inside a single `audit.jsonl` record is therefore not evidence about the shell; it is the translator's coverage showing through.
 
-**Author consequence — HALF OF THIS WAS WRONG; corrected by Ch44/L163.** What stands, and is reinforced by this chapter's own probes: the shell operates and reports in `/sessions/…`, while the file tools require the host form and **deny** `/sessions/…` outright, exactly as Ch35/L122 documented. What does **not** stand is the clause *"a relative filename is correct for both"* — the two do **not** name the same place. The shell's cwd is the session root (measured in this very chapter, see the lane table under L146), so a relative filename there resolves into VM-only scratch, not into `outputs`. `paths.relative-filenames` has been rewritten accordingly: bare filenames for the file tools, absolute `/sessions/<id>/mnt/outputs/…` for the shell.
+**Author consequence (see Ch44/L163).** The shell operates and reports in `/sessions/…`, while the file tools require the host form and **deny** `/sessions/…` outright, exactly as Ch35/L122 documented. **Trap: a relative filename is not correct for both** — the two do **not** name the same place. The shell's cwd is the session root (measured in this very chapter, see the lane table under L146), so a relative filename there resolves into VM-only scratch, not into `outputs`. `paths.relative-filenames` says: bare filenames for the file tools, absolute `/sessions/<id>/mnt/outputs/…` for the shell.
 
 ---
 

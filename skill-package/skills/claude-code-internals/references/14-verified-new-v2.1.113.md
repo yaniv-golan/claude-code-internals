@@ -7,7 +7,7 @@ Updated: 2026-04-18 | Source: Binary extraction from claude v2.1.112/v2.1.113
 > vars, slash commands, hook event types, or API betas (bugfix/refactor-only release).
 > v2.1.113 is where the visible surface moved.
 
-> **Narrative for this chapter — v2.1.113 is a direction correction.** Chapter 16 framed
+> **Narrative for this chapter — v2.1.113 is a direction change.** Chapter 16 framed
 > v2.1.110–v2.1.111 as "the binary thins, the server thickens," with Remote Workflow
 > Commands as the headline expression of that pattern. v2.1.113 **partially reverses that
 > arc.** Four threads run through the release, and they add up to a course change rather

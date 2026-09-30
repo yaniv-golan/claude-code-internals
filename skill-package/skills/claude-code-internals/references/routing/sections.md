@@ -181,122 +181,122 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 11 · 02-agents-intelligence-interface.md:49 · Skill Sources & Priority
 11 · 02-agents-intelligence-interface.md:61 · Listing Format Injected to the Model
 11 · 02-agents-intelligence-interface.md:73 · Budget Algorithm (`kr6`)
-11 · 02-agents-intelligence-interface.md:137 · SKILL.md Format & Frontmatter Reference
-11 · 02-agents-intelligence-interface.md:165 · Field Reference Table
-11 · 02-agents-intelligence-interface.md:188 · Advanced Patterns
-11 · 02-agents-intelligence-interface.md:239 · Permission & Auto-Allow Logic
-11 · 02-agents-intelligence-interface.md:262 · Live Reloading
-11 · 02-agents-intelligence-interface.md:271 · skillOverrides Setting (UI-only in v2.1.116)
-11 · 02-agents-intelligence-interface.md:283 · progressMessage (plumbed but unrendered in v2.1.116)
-11 · 02-agents-intelligence-interface.md:333 · Legacy Support
-12 · 02-agents-intelligence-interface.md:338 · LESSON 05: THE AGENT SYSTEM
-12 · 02-agents-intelligence-interface.md:340 · Architecture Overview
-12 · 02-agents-intelligence-interface.md:343 · Three Agent Type Definitions
-12 · 02-agents-intelligence-interface.md:378 · Built-In Agent Types
-12 · 02-agents-intelligence-interface.md:389 · Sync vs Async Lifecycle
-12 · 02-agents-intelligence-interface.md:413 · Fork Path (Experimental)
-12 · 02-agents-intelligence-interface.md:455 · Worktree Isolation
-12 · 02-agents-intelligence-interface.md:482 · SendMessageTool & Swarm Protocol
-12 · 02-agents-intelligence-interface.md:515 · Agent Frontmatter Schema
-12 · 02-agents-intelligence-interface.md:536 · Custom Agent Markdown Format
-12 · 02-agents-intelligence-interface.md:564 · Explore Agent Implementation
-12 · 02-agents-intelligence-interface.md:586 · Type Guards
-12 · 02-agents-intelligence-interface.md:600 · Key Design Patterns
-13 · 02-agents-intelligence-interface.md:609 · LESSON 21: COORDINATOR MODE
-13 · 02-agents-intelligence-interface.md:611 · Architecture Overview
-13 · 02-agents-intelligence-interface.md:616 · Tool Restrictions
-13 · 02-agents-intelligence-interface.md:630 · Core Functions
-13 · 02-agents-intelligence-interface.md:695 · Task Notification Format
-13 · 02-agents-intelligence-interface.md:711 · Four-Phase Workflow
-13 · 02-agents-intelligence-interface.md:720 · Parallelism Rules
-13 · 02-agents-intelligence-interface.md:725 · Continue vs. Spawn Fresh Decision Matrix
-13 · 02-agents-intelligence-interface.md:736 · Mode Comparison Table
-13 · 02-agents-intelligence-interface.md:750 · Scratchpad Implementation
-13 · 02-agents-intelligence-interface.md:755 · Feature Gates
-13 · 02-agents-intelligence-interface.md:760 · Critical Design Constraint
-14 · 02-agents-intelligence-interface.md:765 · LESSON 22: TEAMS & SWARM
-14 · 02-agents-intelligence-interface.md:767 · Core Architecture
-14 · 02-agents-intelligence-interface.md:772 · TeamCreate Workflow (Five Steps)
-14 · 02-agents-intelligence-interface.md:780 · TeamCreate Source Code
-14 · 02-agents-intelligence-interface.md:823 · File Structure
-14 · 02-agents-intelligence-interface.md:839 · TeamFile Type Definition
-14 · 02-agents-intelligence-interface.md:873 · Three Spawn Backends
-14 · 02-agents-intelligence-interface.md:913 · iTerm2 Dead-Session Recovery
-14 · 02-agents-intelligence-interface.md:931 · In-Process Backend
-14 · 02-agents-intelligence-interface.md:941 · CLI Flags and Environment Variables
-14 · 02-agents-intelligence-interface.md:949 · Mailbox Messaging
-14 · 02-agents-intelligence-interface.md:965 · Permission Sync -- SwarmPermissionRequest Schema
-14 · 02-agents-intelligence-interface.md:991 · Leader Permission Bridge (In-Process Only)
-14 · 02-agents-intelligence-interface.md:1003 · Full Lifecycle
-14 · 02-agents-intelligence-interface.md:1013 · TeamDelete Tool
-14 · 02-agents-intelligence-interface.md:1017 · UI Components
-15 · 02-agents-intelligence-interface.md:1032 · LESSON 08: MEMORY SYSTEM
-15 · 02-agents-intelligence-interface.md:1034 · Three Memory Layers
-15 · 02-agents-intelligence-interface.md:1042 · Auto Memory -- MEMORY.md Index File
-15 · 02-agents-intelligence-interface.md:1051 · Topic File Format
-15 · 02-agents-intelligence-interface.md:1063 · Type Taxonomy (Closed to Four)
-15 · 02-agents-intelligence-interface.md:1070 · Excluded Content Categories
-15 · 02-agents-intelligence-interface.md:1080 · Path Resolution & Security
-15 · 02-agents-intelligence-interface.md:1093 · Extraction Pipeline
-15 · 02-agents-intelligence-interface.md:1101 · Mutual Exclusion Logic
-15 · 02-agents-intelligence-interface.md:1118 · Selector Model for Relevance
-15 · 02-agents-intelligence-interface.md:1122 · Staleness Detection
-15 · 02-agents-intelligence-interface.md:1136 · Session Memory
-15 · 02-agents-intelligence-interface.md:1153 · Team Memory Sync
-15 · 02-agents-intelligence-interface.md:1179 · KAIROS / Assistant Mode
-15 · 02-agents-intelligence-interface.md:1190 · Feature Flags & Disable Mechanisms
-16 · 02-agents-intelligence-interface.md:1199 · LESSON 40: AUTO MEMORY & DREAMS
-16 · 02-agents-intelligence-interface.md:1201 · Two-Layer Memory Lifecycle
-16 · 02-agents-intelligence-interface.md:1207 · Memory Directory Structure
-16 · 02-agents-intelligence-interface.md:1227 · Memory Taxonomy (Four Types)
-16 · 02-agents-intelligence-interface.md:1250 · Layer 1 -- Extract Memories
-16 · 02-agents-intelligence-interface.md:1284 · Layer 2 -- Auto Dream (Consolidation)
-16 · 02-agents-intelligence-interface.md:1322 · Recall -- findRelevantMemories
-16 · 02-agents-intelligence-interface.md:1342 · Cache Efficiency
-16 · 02-agents-intelligence-interface.md:1351 · KAIROS / Assistant Mode
-17 · 02-agents-intelligence-interface.md:1357 · LESSON 11: INK RENDERER
-17 · 02-agents-intelligence-interface.md:1359 · Seven-Stage Pipeline
-17 · 02-agents-intelligence-interface.md:1402 · Reconciler Implementation
-17 · 02-agents-intelligence-interface.md:1432 · Node Type System
-17 · 02-agents-intelligence-interface.md:1442 · Dirty Flag System
-17 · 02-agents-intelligence-interface.md:1448 · Yoga Layout Adapter
-17 · 02-agents-intelligence-interface.md:1477 · Blit Fast Path (Six Conditions)
-17 · 02-agents-intelligence-interface.md:1493 · ScrollBox Hardware Scroll
-17 · 02-agents-intelligence-interface.md:1499 · Screen Buffer Design
-17 · 02-agents-intelligence-interface.md:1505 · StylePool
-17 · 02-agents-intelligence-interface.md:1515 · Wide Character Handling
-17 · 02-agents-intelligence-interface.md:1528 · Renderer Alt-Screen Invariants
-18 · 02-agents-intelligence-interface.md:1550 · LESSON 13: COMMANDS SYSTEM
-18 · 02-agents-intelligence-interface.md:1552 · Core Architecture
-18 · 02-agents-intelligence-interface.md:1561 · Three Command Execution Types
-18 · 02-agents-intelligence-interface.md:1569 · CommandBase Contract Fields
-18 · 02-agents-intelligence-interface.md:1585 · Registration Pipeline
-18 · 02-agents-intelligence-interface.md:1607 · Lazy Loading Pattern
-18 · 02-agents-intelligence-interface.md:1617 · Shell Substitution in Prompts
-18 · 02-agents-intelligence-interface.md:1632 · REPL Integration & Dispatch -- Three Paths
-18 · 02-agents-intelligence-interface.md:1640 · onDone Callback Contract (Local JSX)
-18 · 02-agents-intelligence-interface.md:1655 · Availability & Feature Gating
-18 · 02-agents-intelligence-interface.md:1673 · Internal-Only Commands Gate
-18 · 02-agents-intelligence-interface.md:1685 · Cache Management -- Three Layers
-18 · 02-agents-intelligence-interface.md:1695 · Bridge & Remote Mode
-19 · 02-agents-intelligence-interface.md:1710 · LESSON 35: DIALOG UI
-19 · 02-agents-intelligence-interface.md:1712 · Four-Layer Architecture
-19 · 02-agents-intelligence-interface.md:1722 · Dialog Launcher Pattern
-19 · 02-agents-intelligence-interface.md:1736 · showDialog Primitive
-19 · 02-agents-intelligence-interface.md:1750 · showSetupDialog Wrapper
-19 · 02-agents-intelligence-interface.md:1765 · Design System Components
-19 · 02-agents-intelligence-interface.md:1786 · Permission Request System
-19 · 02-agents-intelligence-interface.md:1813 · CustomSelect Widget
-19 · 02-agents-intelligence-interface.md:1834 · Wizard Pattern
-19 · 02-agents-intelligence-interface.md:1857 · Onboarding Component
-20 · 02-agents-intelligence-interface.md:1871 · LESSON 30: NOTIFICATION SYSTEM
-20 · 02-agents-intelligence-interface.md:1873 · Two Separate Notification Pipelines
-20 · 02-agents-intelligence-interface.md:1881 · Pipeline 1: In-REPL Toast Queue
-20 · 02-agents-intelligence-interface.md:1969 · Complete Hook Inventory
-20 · 02-agents-intelligence-interface.md:1989 · Pipeline 2: OS/Terminal Notifier
-20 · 02-agents-intelligence-interface.md:2053 · Background Task Notification Collapsing
-20 · 02-agents-intelligence-interface.md:2067 · MCP Channel Notifications (Kairos)
-20 · 02-agents-intelligence-interface.md:2077 · Key Design Patterns
+11 · 02-agents-intelligence-interface.md:132 · SKILL.md Format & Frontmatter Reference
+11 · 02-agents-intelligence-interface.md:160 · Field Reference Table
+11 · 02-agents-intelligence-interface.md:183 · Advanced Patterns
+11 · 02-agents-intelligence-interface.md:234 · Permission & Auto-Allow Logic
+11 · 02-agents-intelligence-interface.md:257 · Live Reloading
+11 · 02-agents-intelligence-interface.md:266 · skillOverrides Setting (UI-only in v2.1.116)
+11 · 02-agents-intelligence-interface.md:278 · progressMessage (plumbed but unrendered in v2.1.116)
+11 · 02-agents-intelligence-interface.md:328 · Legacy Support
+12 · 02-agents-intelligence-interface.md:333 · LESSON 05: THE AGENT SYSTEM
+12 · 02-agents-intelligence-interface.md:335 · Architecture Overview
+12 · 02-agents-intelligence-interface.md:338 · Three Agent Type Definitions
+12 · 02-agents-intelligence-interface.md:373 · Built-In Agent Types
+12 · 02-agents-intelligence-interface.md:384 · Sync vs Async Lifecycle
+12 · 02-agents-intelligence-interface.md:408 · Fork Path (Experimental)
+12 · 02-agents-intelligence-interface.md:450 · Worktree Isolation
+12 · 02-agents-intelligence-interface.md:477 · SendMessageTool & Swarm Protocol
+12 · 02-agents-intelligence-interface.md:510 · Agent Frontmatter Schema
+12 · 02-agents-intelligence-interface.md:531 · Custom Agent Markdown Format
+12 · 02-agents-intelligence-interface.md:559 · Explore Agent Implementation
+12 · 02-agents-intelligence-interface.md:581 · Type Guards
+12 · 02-agents-intelligence-interface.md:595 · Key Design Patterns
+13 · 02-agents-intelligence-interface.md:604 · LESSON 21: COORDINATOR MODE
+13 · 02-agents-intelligence-interface.md:606 · Architecture Overview
+13 · 02-agents-intelligence-interface.md:611 · Tool Restrictions
+13 · 02-agents-intelligence-interface.md:625 · Core Functions
+13 · 02-agents-intelligence-interface.md:690 · Task Notification Format
+13 · 02-agents-intelligence-interface.md:706 · Four-Phase Workflow
+13 · 02-agents-intelligence-interface.md:715 · Parallelism Rules
+13 · 02-agents-intelligence-interface.md:720 · Continue vs. Spawn Fresh Decision Matrix
+13 · 02-agents-intelligence-interface.md:731 · Mode Comparison Table
+13 · 02-agents-intelligence-interface.md:745 · Scratchpad Implementation
+13 · 02-agents-intelligence-interface.md:750 · Feature Gates
+13 · 02-agents-intelligence-interface.md:755 · Critical Design Constraint
+14 · 02-agents-intelligence-interface.md:760 · LESSON 22: TEAMS & SWARM
+14 · 02-agents-intelligence-interface.md:762 · Core Architecture
+14 · 02-agents-intelligence-interface.md:767 · TeamCreate Workflow (Five Steps)
+14 · 02-agents-intelligence-interface.md:775 · TeamCreate Source Code
+14 · 02-agents-intelligence-interface.md:818 · File Structure
+14 · 02-agents-intelligence-interface.md:834 · TeamFile Type Definition
+14 · 02-agents-intelligence-interface.md:868 · Three Spawn Backends
+14 · 02-agents-intelligence-interface.md:908 · iTerm2 Dead-Session Recovery
+14 · 02-agents-intelligence-interface.md:926 · In-Process Backend
+14 · 02-agents-intelligence-interface.md:936 · CLI Flags and Environment Variables
+14 · 02-agents-intelligence-interface.md:944 · Mailbox Messaging
+14 · 02-agents-intelligence-interface.md:960 · Permission Sync -- SwarmPermissionRequest Schema
+14 · 02-agents-intelligence-interface.md:986 · Leader Permission Bridge (In-Process Only)
+14 · 02-agents-intelligence-interface.md:998 · Full Lifecycle
+14 · 02-agents-intelligence-interface.md:1008 · TeamDelete Tool
+14 · 02-agents-intelligence-interface.md:1012 · UI Components
+15 · 02-agents-intelligence-interface.md:1027 · LESSON 08: MEMORY SYSTEM
+15 · 02-agents-intelligence-interface.md:1029 · Three Memory Layers
+15 · 02-agents-intelligence-interface.md:1037 · Auto Memory -- MEMORY.md Index File
+15 · 02-agents-intelligence-interface.md:1046 · Topic File Format
+15 · 02-agents-intelligence-interface.md:1058 · Type Taxonomy (Closed to Four)
+15 · 02-agents-intelligence-interface.md:1065 · Excluded Content Categories
+15 · 02-agents-intelligence-interface.md:1075 · Path Resolution & Security
+15 · 02-agents-intelligence-interface.md:1088 · Extraction Pipeline
+15 · 02-agents-intelligence-interface.md:1096 · Mutual Exclusion Logic
+15 · 02-agents-intelligence-interface.md:1113 · Selector Model for Relevance
+15 · 02-agents-intelligence-interface.md:1117 · Staleness Detection
+15 · 02-agents-intelligence-interface.md:1131 · Session Memory
+15 · 02-agents-intelligence-interface.md:1148 · Team Memory Sync
+15 · 02-agents-intelligence-interface.md:1174 · KAIROS / Assistant Mode
+15 · 02-agents-intelligence-interface.md:1185 · Feature Flags & Disable Mechanisms
+16 · 02-agents-intelligence-interface.md:1194 · LESSON 40: AUTO MEMORY & DREAMS
+16 · 02-agents-intelligence-interface.md:1196 · Two-Layer Memory Lifecycle
+16 · 02-agents-intelligence-interface.md:1202 · Memory Directory Structure
+16 · 02-agents-intelligence-interface.md:1222 · Memory Taxonomy (Four Types)
+16 · 02-agents-intelligence-interface.md:1245 · Layer 1 -- Extract Memories
+16 · 02-agents-intelligence-interface.md:1279 · Layer 2 -- Auto Dream (Consolidation)
+16 · 02-agents-intelligence-interface.md:1317 · Recall -- findRelevantMemories
+16 · 02-agents-intelligence-interface.md:1337 · Cache Efficiency
+16 · 02-agents-intelligence-interface.md:1346 · KAIROS / Assistant Mode
+17 · 02-agents-intelligence-interface.md:1352 · LESSON 11: INK RENDERER
+17 · 02-agents-intelligence-interface.md:1354 · Seven-Stage Pipeline
+17 · 02-agents-intelligence-interface.md:1397 · Reconciler Implementation
+17 · 02-agents-intelligence-interface.md:1427 · Node Type System
+17 · 02-agents-intelligence-interface.md:1437 · Dirty Flag System
+17 · 02-agents-intelligence-interface.md:1443 · Yoga Layout Adapter
+17 · 02-agents-intelligence-interface.md:1472 · Blit Fast Path (Six Conditions)
+17 · 02-agents-intelligence-interface.md:1488 · ScrollBox Hardware Scroll
+17 · 02-agents-intelligence-interface.md:1494 · Screen Buffer Design
+17 · 02-agents-intelligence-interface.md:1500 · StylePool
+17 · 02-agents-intelligence-interface.md:1510 · Wide Character Handling
+17 · 02-agents-intelligence-interface.md:1523 · Renderer Alt-Screen Invariants
+18 · 02-agents-intelligence-interface.md:1545 · LESSON 13: COMMANDS SYSTEM
+18 · 02-agents-intelligence-interface.md:1547 · Core Architecture
+18 · 02-agents-intelligence-interface.md:1556 · Three Command Execution Types
+18 · 02-agents-intelligence-interface.md:1564 · CommandBase Contract Fields
+18 · 02-agents-intelligence-interface.md:1580 · Registration Pipeline
+18 · 02-agents-intelligence-interface.md:1602 · Lazy Loading Pattern
+18 · 02-agents-intelligence-interface.md:1612 · Shell Substitution in Prompts
+18 · 02-agents-intelligence-interface.md:1627 · REPL Integration & Dispatch -- Three Paths
+18 · 02-agents-intelligence-interface.md:1635 · onDone Callback Contract (Local JSX)
+18 · 02-agents-intelligence-interface.md:1650 · Availability & Feature Gating
+18 · 02-agents-intelligence-interface.md:1668 · Internal-Only Commands Gate
+18 · 02-agents-intelligence-interface.md:1680 · Cache Management -- Three Layers
+18 · 02-agents-intelligence-interface.md:1690 · Bridge & Remote Mode
+19 · 02-agents-intelligence-interface.md:1705 · LESSON 35: DIALOG UI
+19 · 02-agents-intelligence-interface.md:1707 · Four-Layer Architecture
+19 · 02-agents-intelligence-interface.md:1717 · Dialog Launcher Pattern
+19 · 02-agents-intelligence-interface.md:1731 · showDialog Primitive
+19 · 02-agents-intelligence-interface.md:1745 · showSetupDialog Wrapper
+19 · 02-agents-intelligence-interface.md:1760 · Design System Components
+19 · 02-agents-intelligence-interface.md:1781 · Permission Request System
+19 · 02-agents-intelligence-interface.md:1808 · CustomSelect Widget
+19 · 02-agents-intelligence-interface.md:1829 · Wizard Pattern
+19 · 02-agents-intelligence-interface.md:1852 · Onboarding Component
+20 · 02-agents-intelligence-interface.md:1866 · LESSON 30: NOTIFICATION SYSTEM
+20 · 02-agents-intelligence-interface.md:1868 · Two Separate Notification Pipelines
+20 · 02-agents-intelligence-interface.md:1876 · Pipeline 1: In-REPL Toast Queue
+20 · 02-agents-intelligence-interface.md:1964 · Complete Hook Inventory
+20 · 02-agents-intelligence-interface.md:1984 · Pipeline 2: OS/Terminal Notifier
+20 · 02-agents-intelligence-interface.md:2048 · Background Task Notification Collapsing
+20 · 02-agents-intelligence-interface.md:2062 · MCP Channel Notifications (Kairos)
+20 · 02-agents-intelligence-interface.md:2072 · Key Design Patterns
 21 · 03-interface-infrastructure.md:9 · Overview
 21 · 03-interface-infrastructure.md:12 · Core Architecture Files
 21 · 03-interface-infrastructure.md:14 · 1. types.ts -- State Machine Types
@@ -446,104 +446,104 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 31 · 04-connectivity-plugins.md:609 · Settings UI's marketplace listing is single-`(accountId, orgId)` per IPC call
 31 · 04-connectivity-plugins.md:615 · Anthropic-managed skills cache (`skills-plugin/`)
 32 · 04-connectivity-plugins.md:701 · Core Files
-32 · 04-connectivity-plugins.md:709 · All 27 Hook Events (Categorized)
-32 · 04-connectivity-plugins.md:720 · Exit Code Semantics
-32 · 04-connectivity-plugins.md:744 · Five Hook Command Types
-32 · 04-connectivity-plugins.md:746 · 1. `command` (Shell subprocess)
-32 · 04-connectivity-plugins.md:749 · 2. `prompt` (LLM prompt)
-32 · 04-connectivity-plugins.md:754 · 3. `agent` (Agentic verifier)
-32 · 04-connectivity-plugins.md:766 · 4. `http` (HTTP POST)
-32 · 04-connectivity-plugins.md:770 · 5. `function` (TypeScript callback)
-32 · 04-connectivity-plugins.md:774 · Configuration Sources (6 total, merged)
-32 · 04-connectivity-plugins.md:785 · Session Hooks API
-32 · 04-connectivity-plugins.md:799 · Async and asyncRewake
-32 · 04-connectivity-plugins.md:804 · HTTP Hooks Security (Three Layers)
-32 · 04-connectivity-plugins.md:810 · The `if` Filter Field
-32 · 04-connectivity-plugins.md:814 · Hook Event Bus (SDK Telemetry)
-32 · 04-connectivity-plugins.md:818 · Real-World Patterns
-33 · 04-connectivity-plugins.md:847 · Four-Layer Architecture
-33 · 04-connectivity-plugins.md:854 · Error Taxonomy
-33 · 04-connectivity-plugins.md:866 · Three-Way Abort Check
-33 · 04-connectivity-plugins.md:878 · Normalization Helpers
-33 · 04-connectivity-plugins.md:890 · Filesystem Error Helpers
-33 · 04-connectivity-plugins.md:898 · Tool Error Formatting
-33 · 04-connectivity-plugins.md:911 · Error Log Sink
-33 · 04-connectivity-plugins.md:915 · API Retry Engine
-33 · 04-connectivity-plugins.md:917 · Retry Delay Formula
-33 · 04-connectivity-plugins.md:928 · 529 Overload Handling
-33 · 04-connectivity-plugins.md:931 · Context Overflow Auto-Adjustment
-33 · 04-connectivity-plugins.md:934 · 10+ Failure Modes Handled
-33 · 04-connectivity-plugins.md:937 · Persistent Retry Mode
-33 · 04-connectivity-plugins.md:940 · Conversation Recovery
-33 · 04-connectivity-plugins.md:942 · Four-Stage Deserialization
-33 · 04-connectivity-plugins.md:948 · Interruption Classification
-33 · 04-connectivity-plugins.md:960 · Synthetic Continuation
-34 · 04-connectivity-plugins.md:967 · Architecture Overview
-34 · 04-connectivity-plugins.md:971 · Bridge v1 vs v2
-34 · 04-connectivity-plugins.md:977 · WorkSecret (v1)
-34 · 04-connectivity-plugins.md:990 · Session ID Compatibility
-34 · 04-connectivity-plugins.md:1008 · Transport Layer
-34 · 04-connectivity-plugins.md:1027 · FlushGate
-34 · 04-connectivity-plugins.md:1039 · Permission Bridge Protocol
-34 · 04-connectivity-plugins.md:1043 · Standalone Bridge
-34 · 04-connectivity-plugins.md:1063 · Key Design Patterns
-35 · 04-connectivity-plugins.md:1074 · Architecture
-35 · 04-connectivity-plugins.md:1079 · PKCE Primitives
-35 · 04-connectivity-plugins.md:1093 · OAuth Flow
-35 · 04-connectivity-plugins.md:1102 · Scopes
-35 · 04-connectivity-plugins.md:1110 · Token Storage
-35 · 04-connectivity-plugins.md:1120 · Token Refresh
-35 · 04-connectivity-plugins.md:1126 · Logout
-35 · 04-connectivity-plugins.md:1133 · Authorization URL
-35 · 04-connectivity-plugins.md:1141 · Enterprise/FedStart
-36 · 04-connectivity-plugins.md:1149 · Design Philosophy: Filesystem-First
-36 · 04-connectivity-plugins.md:1153 · Config Parser
-36 · 04-connectivity-plugins.md:1163 · Git Filesystem Reading
-36 · 04-connectivity-plugins.md:1165 · resolveGitDir
-36 · 04-connectivity-plugins.md:1168 · readGitHead
-36 · 04-connectivity-plugins.md:1175 · resolveRef
-36 · 04-connectivity-plugins.md:1178 · GitFileWatcher
-36 · 04-connectivity-plugins.md:1188 · Security: Ref Validation
-36 · 04-connectivity-plugins.md:1201 · Operation Tracking
-36 · 04-connectivity-plugins.md:1213 · GitHub Auth
-36 · 04-connectivity-plugins.md:1217 · Gitignore
-37 · 04-connectivity-plugins.md:1225 · Architecture
-37 · 04-connectivity-plugins.md:1229 · Initialization (6 steps)
-37 · 04-connectivity-plugins.md:1238 · CONNECT-over-WebSocket Relay
-37 · 04-connectivity-plugins.md:1243 · Protobuf Encoding
-37 · 04-connectivity-plugins.md:1252 · Runtime Dispatch
-37 · 04-connectivity-plugins.md:1258 · Environment Variables
-37 · 04-connectivity-plugins.md:1271 · Security
-37 · 04-connectivity-plugins.md:1277 · Keepalive and Chunking
-37 · 04-connectivity-plugins.md:1281 · ConnState Guards
-38 · 04-connectivity-plugins.md:1289 · Five Layers
-38 · 04-connectivity-plugins.md:1297 · CronTask Model
-38 · 04-connectivity-plugins.md:1307 · Scheduler State Machine
-38 · 04-connectivity-plugins.md:1311 · Jitter System
-38 · 04-connectivity-plugins.md:1326 · Tools
-38 · 04-connectivity-plugins.md:1332 · REPL Integration
-38 · 04-connectivity-plugins.md:1336 · Missed Tasks
-38 · 04-connectivity-plugins.md:1341 · Feature Gates
-39 · 04-connectivity-plugins.md:1349 · Architecture
-39 · 04-connectivity-plugins.md:1355 · Feature Gating
-39 · 04-connectivity-plugins.md:1361 · Audio Backends (Priority Order)
-39 · 04-connectivity-plugins.md:1367 · WebSocket STT Protocol
-39 · 04-connectivity-plugins.md:1376 · Hold-to-Talk
-39 · 04-connectivity-plugins.md:1388 · Silent-Drop Replay
-39 · 04-connectivity-plugins.md:1392 · Focus Mode
-39 · 04-connectivity-plugins.md:1396 · Language and Keyterms
-39 · 04-connectivity-plugins.md:1400 · Audio Levels
-40 · 04-connectivity-plugins.md:1413 · Overview
-40 · 04-connectivity-plugins.md:1417 · Bones/Soul Split
-40 · 04-connectivity-plugins.md:1425 · Mulberry32 PRNG
-40 · 04-connectivity-plugins.md:1441 · Rarity
-40 · 04-connectivity-plugins.md:1453 · Stats
-40 · 04-connectivity-plugins.md:1457 · Species (18 total)
-40 · 04-connectivity-plugins.md:1466 · Sprite Engine
-40 · 04-connectivity-plugins.md:1470 · Animation
-40 · 04-connectivity-plugins.md:1484 · Context Injection
-40 · 04-connectivity-plugins.md:1488 · Launch Strategy
-40 · 04-connectivity-plugins.md:1492 · Anti-Cheat
+32 · 04-connectivity-plugins.md:709 · The 27 Hook Events of v2.1.88 (Categorized)
+32 · 04-connectivity-plugins.md:723 · Exit Code Semantics
+32 · 04-connectivity-plugins.md:747 · Five Hook Command Types
+32 · 04-connectivity-plugins.md:749 · 1. `command` (Shell subprocess)
+32 · 04-connectivity-plugins.md:752 · 2. `prompt` (LLM prompt)
+32 · 04-connectivity-plugins.md:757 · 3. `agent` (Agentic verifier)
+32 · 04-connectivity-plugins.md:769 · 4. `http` (HTTP POST)
+32 · 04-connectivity-plugins.md:773 · 5. `function` (TypeScript callback)
+32 · 04-connectivity-plugins.md:777 · Configuration Sources (6 total, merged)
+32 · 04-connectivity-plugins.md:788 · Session Hooks API
+32 · 04-connectivity-plugins.md:802 · Async and asyncRewake
+32 · 04-connectivity-plugins.md:807 · HTTP Hooks Security (Three Layers)
+32 · 04-connectivity-plugins.md:813 · The `if` Filter Field
+32 · 04-connectivity-plugins.md:817 · Hook Event Bus (SDK Telemetry)
+32 · 04-connectivity-plugins.md:821 · Real-World Patterns
+33 · 04-connectivity-plugins.md:850 · Four-Layer Architecture
+33 · 04-connectivity-plugins.md:857 · Error Taxonomy
+33 · 04-connectivity-plugins.md:869 · Three-Way Abort Check
+33 · 04-connectivity-plugins.md:881 · Normalization Helpers
+33 · 04-connectivity-plugins.md:893 · Filesystem Error Helpers
+33 · 04-connectivity-plugins.md:901 · Tool Error Formatting
+33 · 04-connectivity-plugins.md:914 · Error Log Sink
+33 · 04-connectivity-plugins.md:918 · API Retry Engine
+33 · 04-connectivity-plugins.md:920 · Retry Delay Formula
+33 · 04-connectivity-plugins.md:931 · 529 Overload Handling
+33 · 04-connectivity-plugins.md:934 · Context Overflow Auto-Adjustment
+33 · 04-connectivity-plugins.md:937 · 10+ Failure Modes Handled
+33 · 04-connectivity-plugins.md:940 · Persistent Retry Mode
+33 · 04-connectivity-plugins.md:943 · Conversation Recovery
+33 · 04-connectivity-plugins.md:945 · Four-Stage Deserialization
+33 · 04-connectivity-plugins.md:951 · Interruption Classification
+33 · 04-connectivity-plugins.md:963 · Synthetic Continuation
+34 · 04-connectivity-plugins.md:970 · Architecture Overview
+34 · 04-connectivity-plugins.md:974 · Bridge v1 vs v2
+34 · 04-connectivity-plugins.md:980 · WorkSecret (v1)
+34 · 04-connectivity-plugins.md:993 · Session ID Compatibility
+34 · 04-connectivity-plugins.md:1011 · Transport Layer
+34 · 04-connectivity-plugins.md:1030 · FlushGate
+34 · 04-connectivity-plugins.md:1042 · Permission Bridge Protocol
+34 · 04-connectivity-plugins.md:1046 · Standalone Bridge
+34 · 04-connectivity-plugins.md:1066 · Key Design Patterns
+35 · 04-connectivity-plugins.md:1077 · Architecture
+35 · 04-connectivity-plugins.md:1082 · PKCE Primitives
+35 · 04-connectivity-plugins.md:1096 · OAuth Flow
+35 · 04-connectivity-plugins.md:1105 · Scopes
+35 · 04-connectivity-plugins.md:1113 · Token Storage
+35 · 04-connectivity-plugins.md:1123 · Token Refresh
+35 · 04-connectivity-plugins.md:1129 · Logout
+35 · 04-connectivity-plugins.md:1136 · Authorization URL
+35 · 04-connectivity-plugins.md:1144 · Enterprise/FedStart
+36 · 04-connectivity-plugins.md:1152 · Design Philosophy: Filesystem-First
+36 · 04-connectivity-plugins.md:1156 · Config Parser
+36 · 04-connectivity-plugins.md:1166 · Git Filesystem Reading
+36 · 04-connectivity-plugins.md:1168 · resolveGitDir
+36 · 04-connectivity-plugins.md:1171 · readGitHead
+36 · 04-connectivity-plugins.md:1178 · resolveRef
+36 · 04-connectivity-plugins.md:1181 · GitFileWatcher
+36 · 04-connectivity-plugins.md:1191 · Security: Ref Validation
+36 · 04-connectivity-plugins.md:1204 · Operation Tracking
+36 · 04-connectivity-plugins.md:1216 · GitHub Auth
+36 · 04-connectivity-plugins.md:1220 · Gitignore
+37 · 04-connectivity-plugins.md:1228 · Architecture
+37 · 04-connectivity-plugins.md:1232 · Initialization (6 steps)
+37 · 04-connectivity-plugins.md:1241 · CONNECT-over-WebSocket Relay
+37 · 04-connectivity-plugins.md:1246 · Protobuf Encoding
+37 · 04-connectivity-plugins.md:1255 · Runtime Dispatch
+37 · 04-connectivity-plugins.md:1261 · Environment Variables
+37 · 04-connectivity-plugins.md:1274 · Security
+37 · 04-connectivity-plugins.md:1280 · Keepalive and Chunking
+37 · 04-connectivity-plugins.md:1284 · ConnState Guards
+38 · 04-connectivity-plugins.md:1292 · Five Layers
+38 · 04-connectivity-plugins.md:1300 · CronTask Model
+38 · 04-connectivity-plugins.md:1310 · Scheduler State Machine
+38 · 04-connectivity-plugins.md:1314 · Jitter System
+38 · 04-connectivity-plugins.md:1329 · Tools
+38 · 04-connectivity-plugins.md:1335 · REPL Integration
+38 · 04-connectivity-plugins.md:1339 · Missed Tasks
+38 · 04-connectivity-plugins.md:1344 · Feature Gates
+39 · 04-connectivity-plugins.md:1352 · Architecture
+39 · 04-connectivity-plugins.md:1358 · Feature Gating
+39 · 04-connectivity-plugins.md:1364 · Audio Backends (Priority Order)
+39 · 04-connectivity-plugins.md:1370 · WebSocket STT Protocol
+39 · 04-connectivity-plugins.md:1379 · Hold-to-Talk
+39 · 04-connectivity-plugins.md:1391 · Silent-Drop Replay
+39 · 04-connectivity-plugins.md:1395 · Focus Mode
+39 · 04-connectivity-plugins.md:1399 · Language and Keyterms
+39 · 04-connectivity-plugins.md:1403 · Audio Levels
+40 · 04-connectivity-plugins.md:1416 · Overview
+40 · 04-connectivity-plugins.md:1420 · Bones/Soul Split
+40 · 04-connectivity-plugins.md:1428 · Mulberry32 PRNG
+40 · 04-connectivity-plugins.md:1444 · Rarity
+40 · 04-connectivity-plugins.md:1456 · Stats
+40 · 04-connectivity-plugins.md:1460 · Species (18 total)
+40 · 04-connectivity-plugins.md:1469 · Sprite Engine
+40 · 04-connectivity-plugins.md:1473 · Animation
+40 · 04-connectivity-plugins.md:1487 · Context Injection
+40 · 04-connectivity-plugins.md:1491 · Launch Strategy
+40 · 04-connectivity-plugins.md:1495 · Anti-Cheat
 41 · 05-unreleased-bigpicture.md:5 · LESSON 1: ULTRAPLAN -- Remote Planning via Claude Code on the Web
 41 · 05-unreleased-bigpicture.md:21 · Four Phases
 41 · 05-unreleased-bigpicture.md:31 · Keyword Trigger: Smart Disambiguation
@@ -569,97 +569,97 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 42 · 05-unreleased-bigpicture.md:455 · Control Protocol (SDK Builders)
 42 · 05-unreleased-bigpicture.md:468 · Initialize Request Example
 42 · 05-unreleased-bigpicture.md:484 · 26 Hook Events
-42 · 05-unreleased-bigpicture.md:502 · Daemon & Bridge Mode (@internal)
-42 · 05-unreleased-bigpicture.md:539 · sandboxTypes.ts -- Process Isolation Config
-42 · 05-unreleased-bigpicture.md:565 · Complete Invocation Flow
-43 · 05-unreleased-bigpicture.md:586 · LESSON 3: KAIROS -- ALWAYS-ON AUTONOMOUS DAEMON
-43 · 05-unreleased-bigpicture.md:597 · Feature Flag Architecture
-43 · 05-unreleased-bigpicture.md:620 · Runtime State Pivot: `kairosActive`
-43 · 05-unreleased-bigpicture.md:641 · The Tick Loop & Sleep Mechanism
-43 · 05-unreleased-bigpicture.md:660 · Queue Priority System
-43 · 05-unreleased-bigpicture.md:669 · KAIROS Tool Suite
-43 · 05-unreleased-bigpicture.md:682 · BriefTool Entitlement vs Activation
-43 · 05-unreleased-bigpicture.md:695 · Cron Scheduling System
-43 · 05-unreleased-bigpicture.md:717 · AutoDream: Background Memory Consolidation
-43 · 05-unreleased-bigpicture.md:742 · Assistant-Mode Memory: Daily Logs
-43 · 05-unreleased-bigpicture.md:750 · Settings Schema
-43 · 05-unreleased-bigpicture.md:762 · GrowthBook Kill-Switch Architecture
-44 · 05-unreleased-bigpicture.md:779 · LESSON 4: COST ANALYTICS & OBSERVABILITY
-44 · 05-unreleased-bigpicture.md:781 · Two-Pipeline Architecture
-44 · 05-unreleased-bigpicture.md:786 · Cost Tracking: cost-tracker.ts
-44 · 05-unreleased-bigpicture.md:826 · Session Persistence
-44 · 05-unreleased-bigpicture.md:848 · costHook.ts React Bridge
-44 · 05-unreleased-bigpicture.md:867 · Analytics Sink & Queue
-44 · 05-unreleased-bigpicture.md:890 · Datadog Pipeline
-44 · 05-unreleased-bigpicture.md:909 · PII Segregation -- _PROTO_ Pattern
-44 · 05-unreleased-bigpicture.md:937 · First-Party Pipeline & OpenTelemetry
-44 · 05-unreleased-bigpicture.md:956 · GrowthBook Dynamic Config & Sampling
-44 · 05-unreleased-bigpicture.md:970 · Policy Limits
-45 · 05-unreleased-bigpicture.md:986 · LESSON 5: DESKTOP APP INTEGRATION
-45 · 05-unreleased-bigpicture.md:988 · Four Integration Layers
-45 · 05-unreleased-bigpicture.md:995 · Layer 1: Claude Desktop Handoff
-45 · 05-unreleased-bigpicture.md:1028 · Layer 2: IDE Integration
-45 · 05-unreleased-bigpicture.md:1049 · Layer 3: Claude in Chrome -- Native Messaging
-45 · 05-unreleased-bigpicture.md:1062 · Layer 4: Computer Use MCP (Chicago/Malort)
-45 · 05-unreleased-bigpicture.md:1103 · Native Installer Directory Layout
-46 · 05-unreleased-bigpicture.md:1116 · LESSON 6: MODEL SYSTEM
-46 · 05-unreleased-bigpicture.md:1118 · File Map
-46 · 05-unreleased-bigpicture.md:1136 · Four-Provider Registry
-46 · 05-unreleased-bigpicture.md:1163 · Provider Detection
-46 · 05-unreleased-bigpicture.md:1177 · Selection Priority Chain (Five Layers)
-46 · 05-unreleased-bigpicture.md:1197 · Model Aliases & [1m] Suffix
-46 · 05-unreleased-bigpicture.md:1226 · 1M Context Window Access
-46 · 05-unreleased-bigpicture.md:1236 · Effort Levels
-46 · 05-unreleased-bigpicture.md:1246 · Fast Mode
-46 · 05-unreleased-bigpicture.md:1258 · Three-Tier Allowlist (availableModels)
-46 · 05-unreleased-bigpicture.md:1266 · Subagent Model Inheritance
-46 · 05-unreleased-bigpicture.md:1274 · Model Migrations
-46 · 05-unreleased-bigpicture.md:1284 · Validation & Deprecation
-47 · 05-unreleased-bigpicture.md:1301 · LESSON 7: SANDBOX & SECURITY
-47 · 05-unreleased-bigpicture.md:1303 · Core Bridge Pattern
-47 · 05-unreleased-bigpicture.md:1307 · Platform Backends
-47 · 05-unreleased-bigpicture.md:1315 · Three Sandbox Modes
-47 · 05-unreleased-bigpicture.md:1327 · Network Control
-47 · 05-unreleased-bigpicture.md:1335 · Filesystem Control
-47 · 05-unreleased-bigpicture.md:1345 · Bare Git Repo Sandbox Escape (Issue #29316)
-47 · 05-unreleased-bigpicture.md:1363 · Path Resolution Convention Divergence (Issue #30067)
-47 · 05-unreleased-bigpicture.md:1371 · Secure Storage
-47 · 05-unreleased-bigpicture.md:1385 · Keychain Cache
-47 · 05-unreleased-bigpicture.md:1410 · Fallback Storage Combinator
-48 · 05-unreleased-bigpicture.md:1433 · LESSON 8: MESSAGE PROCESSING PIPELINE
-48 · 05-unreleased-bigpicture.md:1441 · Stage 1: Submit & Route
-48 · 05-unreleased-bigpicture.md:1465 · Stage 2: Input Classification
-48 · 05-unreleased-bigpicture.md:1480 · Stage 3: Message Construction
-48 · 05-unreleased-bigpicture.md:1501 · Stage 4: API Normalization
-48 · 05-unreleased-bigpicture.md:1527 · Message Taxonomy
-48 · 05-unreleased-bigpicture.md:1538 · Memory Correction Hint Pattern
-49 · 05-unreleased-bigpicture.md:1551 · LESSON 9: TASK SYSTEM
-49 · 05-unreleased-bigpicture.md:1553 · Seven Task Types
-49 · 05-unreleased-bigpicture.md:1566 · Shared State Base
-49 · 05-unreleased-bigpicture.md:1583 · Lifecycle State Machine
-49 · 05-unreleased-bigpicture.md:1598 · LocalShellTask
-49 · 05-unreleased-bigpicture.md:1612 · LocalAgentTask
-49 · 05-unreleased-bigpicture.md:1618 · RemoteAgentTask
-49 · 05-unreleased-bigpicture.md:1623 · InProcessTeammateTask
-49 · 05-unreleased-bigpicture.md:1631 · DreamTask
-49 · 05-unreleased-bigpicture.md:1637 · Notification System
-49 · 05-unreleased-bigpicture.md:1652 · Output Management
-49 · 05-unreleased-bigpicture.md:1673 · Type Comparison
-50 · 05-unreleased-bigpicture.md:1687 · LESSON 10: REPL & SCREEN
-50 · 05-unreleased-bigpicture.md:1693 · Six Internal Layers
-50 · 05-unreleased-bigpicture.md:1704 · Turn Lifecycle: Three-Function Chain
-50 · 05-unreleased-bigpicture.md:1723 · QueryGuard State Machine
-50 · 05-unreleased-bigpicture.md:1741 · Loading State: Three Independent Sources
-50 · 05-unreleased-bigpicture.md:1749 · Dialog Priority Queue
-50 · 05-unreleased-bigpicture.md:1760 · Messages Array Management
-50 · 05-unreleased-bigpicture.md:1780 · toolJSX Overlay System
-50 · 05-unreleased-bigpicture.md:1795 · Two Render Paths
-50 · 05-unreleased-bigpicture.md:1800 · Session Resume Flow (15 Steps)
-50 · 05-unreleased-bigpicture.md:1818 · Auto-Restore on Interrupt
-50 · 05-unreleased-bigpicture.md:1837 · Main Render Tree
-50 · 05-unreleased-bigpicture.md:1870 · Key Design Patterns
-50 · 05-unreleased-bigpicture.md:1882 · Local JSX Command Categories
-50 · 05-unreleased-bigpicture.md:1890 · Important Constants
+42 · 05-unreleased-bigpicture.md:505 · Daemon & Bridge Mode (@internal)
+42 · 05-unreleased-bigpicture.md:542 · sandboxTypes.ts -- Process Isolation Config
+42 · 05-unreleased-bigpicture.md:568 · Complete Invocation Flow
+43 · 05-unreleased-bigpicture.md:589 · LESSON 3: KAIROS -- ALWAYS-ON AUTONOMOUS DAEMON
+43 · 05-unreleased-bigpicture.md:600 · Feature Flag Architecture
+43 · 05-unreleased-bigpicture.md:623 · Runtime State Pivot: `kairosActive`
+43 · 05-unreleased-bigpicture.md:644 · The Tick Loop & Sleep Mechanism
+43 · 05-unreleased-bigpicture.md:663 · Queue Priority System
+43 · 05-unreleased-bigpicture.md:672 · KAIROS Tool Suite
+43 · 05-unreleased-bigpicture.md:685 · BriefTool Entitlement vs Activation
+43 · 05-unreleased-bigpicture.md:698 · Cron Scheduling System
+43 · 05-unreleased-bigpicture.md:720 · AutoDream: Background Memory Consolidation
+43 · 05-unreleased-bigpicture.md:745 · Assistant-Mode Memory: Daily Logs
+43 · 05-unreleased-bigpicture.md:753 · Settings Schema
+43 · 05-unreleased-bigpicture.md:765 · GrowthBook Kill-Switch Architecture
+44 · 05-unreleased-bigpicture.md:782 · LESSON 4: COST ANALYTICS & OBSERVABILITY
+44 · 05-unreleased-bigpicture.md:784 · Two-Pipeline Architecture
+44 · 05-unreleased-bigpicture.md:789 · Cost Tracking: cost-tracker.ts
+44 · 05-unreleased-bigpicture.md:829 · Session Persistence
+44 · 05-unreleased-bigpicture.md:851 · costHook.ts React Bridge
+44 · 05-unreleased-bigpicture.md:870 · Analytics Sink & Queue
+44 · 05-unreleased-bigpicture.md:893 · Datadog Pipeline
+44 · 05-unreleased-bigpicture.md:912 · PII Segregation -- _PROTO_ Pattern
+44 · 05-unreleased-bigpicture.md:940 · First-Party Pipeline & OpenTelemetry
+44 · 05-unreleased-bigpicture.md:959 · GrowthBook Dynamic Config & Sampling
+44 · 05-unreleased-bigpicture.md:973 · Policy Limits
+45 · 05-unreleased-bigpicture.md:989 · LESSON 5: DESKTOP APP INTEGRATION
+45 · 05-unreleased-bigpicture.md:991 · Four Integration Layers
+45 · 05-unreleased-bigpicture.md:998 · Layer 1: Claude Desktop Handoff
+45 · 05-unreleased-bigpicture.md:1031 · Layer 2: IDE Integration
+45 · 05-unreleased-bigpicture.md:1052 · Layer 3: Claude in Chrome -- Native Messaging
+45 · 05-unreleased-bigpicture.md:1065 · Layer 4: Computer Use MCP (Chicago/Malort)
+45 · 05-unreleased-bigpicture.md:1106 · Native Installer Directory Layout
+46 · 05-unreleased-bigpicture.md:1119 · LESSON 6: MODEL SYSTEM
+46 · 05-unreleased-bigpicture.md:1121 · File Map
+46 · 05-unreleased-bigpicture.md:1139 · Four-Provider Registry
+46 · 05-unreleased-bigpicture.md:1166 · Provider Detection
+46 · 05-unreleased-bigpicture.md:1180 · Selection Priority Chain (Five Layers)
+46 · 05-unreleased-bigpicture.md:1200 · Model Aliases & [1m] Suffix
+46 · 05-unreleased-bigpicture.md:1229 · 1M Context Window Access
+46 · 05-unreleased-bigpicture.md:1239 · Effort Levels
+46 · 05-unreleased-bigpicture.md:1249 · Fast Mode
+46 · 05-unreleased-bigpicture.md:1261 · Three-Tier Allowlist (availableModels)
+46 · 05-unreleased-bigpicture.md:1269 · Subagent Model Inheritance
+46 · 05-unreleased-bigpicture.md:1277 · Model Migrations
+46 · 05-unreleased-bigpicture.md:1287 · Validation & Deprecation
+47 · 05-unreleased-bigpicture.md:1304 · LESSON 7: SANDBOX & SECURITY
+47 · 05-unreleased-bigpicture.md:1306 · Core Bridge Pattern
+47 · 05-unreleased-bigpicture.md:1310 · Platform Backends
+47 · 05-unreleased-bigpicture.md:1318 · Three Sandbox Modes
+47 · 05-unreleased-bigpicture.md:1330 · Network Control
+47 · 05-unreleased-bigpicture.md:1338 · Filesystem Control
+47 · 05-unreleased-bigpicture.md:1348 · Bare Git Repo Sandbox Escape (Issue #29316)
+47 · 05-unreleased-bigpicture.md:1366 · Path Resolution Convention Divergence (Issue #30067)
+47 · 05-unreleased-bigpicture.md:1374 · Secure Storage
+47 · 05-unreleased-bigpicture.md:1388 · Keychain Cache
+47 · 05-unreleased-bigpicture.md:1413 · Fallback Storage Combinator
+48 · 05-unreleased-bigpicture.md:1436 · LESSON 8: MESSAGE PROCESSING PIPELINE
+48 · 05-unreleased-bigpicture.md:1444 · Stage 1: Submit & Route
+48 · 05-unreleased-bigpicture.md:1468 · Stage 2: Input Classification
+48 · 05-unreleased-bigpicture.md:1483 · Stage 3: Message Construction
+48 · 05-unreleased-bigpicture.md:1504 · Stage 4: API Normalization
+48 · 05-unreleased-bigpicture.md:1530 · Message Taxonomy
+48 · 05-unreleased-bigpicture.md:1541 · Memory Correction Hint Pattern
+49 · 05-unreleased-bigpicture.md:1554 · LESSON 9: TASK SYSTEM
+49 · 05-unreleased-bigpicture.md:1556 · Seven Task Types
+49 · 05-unreleased-bigpicture.md:1569 · Shared State Base
+49 · 05-unreleased-bigpicture.md:1586 · Lifecycle State Machine
+49 · 05-unreleased-bigpicture.md:1601 · LocalShellTask
+49 · 05-unreleased-bigpicture.md:1615 · LocalAgentTask
+49 · 05-unreleased-bigpicture.md:1621 · RemoteAgentTask
+49 · 05-unreleased-bigpicture.md:1626 · InProcessTeammateTask
+49 · 05-unreleased-bigpicture.md:1634 · DreamTask
+49 · 05-unreleased-bigpicture.md:1640 · Notification System
+49 · 05-unreleased-bigpicture.md:1655 · Output Management
+49 · 05-unreleased-bigpicture.md:1676 · Type Comparison
+50 · 05-unreleased-bigpicture.md:1690 · LESSON 10: REPL & SCREEN
+50 · 05-unreleased-bigpicture.md:1696 · Six Internal Layers
+50 · 05-unreleased-bigpicture.md:1707 · Turn Lifecycle: Three-Function Chain
+50 · 05-unreleased-bigpicture.md:1726 · QueryGuard State Machine
+50 · 05-unreleased-bigpicture.md:1744 · Loading State: Three Independent Sources
+50 · 05-unreleased-bigpicture.md:1752 · Dialog Priority Queue
+50 · 05-unreleased-bigpicture.md:1763 · Messages Array Management
+50 · 05-unreleased-bigpicture.md:1783 · toolJSX Overlay System
+50 · 05-unreleased-bigpicture.md:1798 · Two Render Paths
+50 · 05-unreleased-bigpicture.md:1803 · Session Resume Flow (15 Steps)
+50 · 05-unreleased-bigpicture.md:1821 · Auto-Restore on Interrupt
+50 · 05-unreleased-bigpicture.md:1840 · Main Render Tree
+50 · 05-unreleased-bigpicture.md:1873 · Key Design Patterns
+50 · 05-unreleased-bigpicture.md:1885 · Local JSX Command Categories
+50 · 05-unreleased-bigpicture.md:1893 · Important Constants
 51 · 06-verified-new-v2.1.90.md:39 · Official docs coverage
 51 · 06-verified-new-v2.1.90.md:45 · Confirmed from source
 51 · 06-verified-new-v2.1.90.md:52 · How It Works
@@ -695,7 +695,7 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 55 · 06-verified-new-v2.1.90.md:350 · New env vars in v2.1.90 (not in v2.1.88)
 55 · 06-verified-new-v2.1.90.md:370 · Removed from v2.1.88
 55 · 06-verified-new-v2.1.90.md:379 · API Betas active in v2.1.90
-55 · 06-verified-new-v2.1.90.md:407 · Correction to existing lessons
+55 · 06-verified-new-v2.1.90.md:407 · Hook event count at v2.1.90
 56 · 06-verified-new-v2.1.90.md:436 · Documentation status
 56 · 06-verified-new-v2.1.90.md:453 · /autocompact [tokens|reset]
 56 · 06-verified-new-v2.1.90.md:495 · /buddy [pet|off|on]
@@ -1141,95 +1141,95 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 89 · 17-verified-new-v2.1.120.md:962 · Public Settings Added in v2.1.119 (Confirmed via Official Changelog)
 89 · 17-verified-new-v2.1.120.md:978 · What Did NOT Change in v2.1.119
 89 · 17-verified-new-v2.1.120.md:991 · Cowork's Tool Architecture: Why `Bash` Isn't Where You Expect It (And Where It Is)
-89 · 17-verified-new-v2.1.120.md:1003 · The simple story
-89 · 17-verified-new-v2.1.120.md:1033 · Mechanism: desktop-side host-loop registration excludes the names
-89 · 17-verified-new-v2.1.120.md:1054 · Cowork's tool tiers
-89 · 17-verified-new-v2.1.120.md:1080 · Why `SKILL.md` works without `allowed-tools`
-89 · 17-verified-new-v2.1.120.md:1096 · Why a narrow-`tools:` sub-agent doesn't get the same behavior
-89 · 17-verified-new-v2.1.120.md:1118 · What the founder-skills v0.3.0 incident actually was
-89 · 17-verified-new-v2.1.120.md:1151 · `mcp__workspace__bash` operational contract
-89 · 17-verified-new-v2.1.120.md:1198 · What the CLI's async sub-agent filter actually does (for completeness)
-89 · 17-verified-new-v2.1.120.md:1219 · Plugin hooks in Cowork sessions
-89 · 17-verified-new-v2.1.120.md:1233 · What was wrong: `--setting-sources=user` does NOT exclude plugin hooks
-89 · 17-verified-new-v2.1.120.md:1255 · New verified finding: there are THREE plugin roots (the namespace split is subtler than ph5())
-89 · 17-verified-new-v2.1.120.md:1274 · RESOLVED: plugin hooks DO fire in Cowork (host-loop execution)
-89 · 17-verified-new-v2.1.120.md:1294 · What the hook-firing test did NOT prove — and the in-VM `${CLAUDE_PLUGIN_ROOT}` resolution (tested 2026-06-01)
-89 · 17-verified-new-v2.1.120.md:1334 · CORRECTION (static re-verification, 2026-07-07): `${CLAUDE_PLUGIN_ROOT}` is host-side *only under host-loop*
-89 · 17-verified-new-v2.1.120.md:1370 · host-loop vs VM-loop: where the agent loop actually runs (gate `1143815894`)
-89 · 17-verified-new-v2.1.120.md:1417 · Split execution: host-side MCP servers vs the sealed in-VM shell (verified 2026-06-03)
-89 · 17-verified-new-v2.1.120.md:1438 · Verified: the desktop launch argv
-89 · 17-verified-new-v2.1.120.md:1472 · Upstream tracking
-89 · 17-verified-new-v2.1.120.md:1493 · Reported impact (from issue thread — symptoms, cause now reattributed)
-89 · 17-verified-new-v2.1.120.md:1501 · Workaround
-89 · 17-verified-new-v2.1.120.md:1509 · Implication for the `userconfig-probe` plugin
-89 · 17-verified-new-v2.1.120.md:1518 · Original v2.11.3 trace (preserved for archaeology)
-89 · 17-verified-new-v2.1.120.md:1527 · The mechanism
-89 · 17-verified-new-v2.1.120.md:1561 · `Jl_` allowlist contents — CORRECTED v2.11.13
-89 · 17-verified-new-v2.1.120.md:1604 · `r3H` / `F_8` drop set
-89 · 17-verified-new-v2.1.120.md:1621 · Tool-name parse and canonicalization
-89 · 17-verified-new-v2.1.120.md:1660 · Why `general-purpose` works in Cowork-async but plugin fork-skills don't
-89 · 17-verified-new-v2.1.120.md:1687 · Empirical confirmation
-89 · 17-verified-new-v2.1.120.md:1703 · Implications — UPDATED v2.11.13 (revised 2026-05-10)
-89 · 17-verified-new-v2.1.120.md:1759 · Cross-references
-89 · 17-verified-new-v2.1.120.md:1770 · MCP path: the same filter, the other direction
-89 · 17-verified-new-v2.1.120.md:1787 · How parent MCP state reaches the fork
-89 · 17-verified-new-v2.1.120.md:1821 · `requiredMcpServers` enforces presence at dispatch with a 30-second poll
-89 · 17-verified-new-v2.1.120.md:1852 · Negative finding: there is no skill-callable runtime MCP registration
-89 · 17-verified-new-v2.1.120.md:1877 · Agent `tools:` matches MCP names exactly — no `mcp__server__*` expansion
-89 · 17-verified-new-v2.1.120.md:1895 · Status of the symbol resolutions — CORRECTED v2.11.13
-89 · 17-verified-new-v2.1.120.md:1936 · Risks Worth Flagging
-89 · 17-verified-new-v2.1.120.md:2006 · Source-of-Truth Cross-Check (v2.11.2 audit)
-89 · 17-verified-new-v2.1.120.md:2037 · Cross-References — The Cowork Runtime Stack
-89 · 17-verified-new-v2.1.120.md:2052 · Summary for v2.1.119
-90 · 17-verified-new-v2.1.120.md:2070 · What this release is
-90 · 17-verified-new-v2.1.120.md:2104 · Daemon On-Demand Cold-Start Model
-90 · 17-verified-new-v2.1.120.md:2106 · The kill switch
-90 · 17-verified-new-v2.1.120.md:2123 · Cold-start mode env var
-90 · 17-verified-new-v2.1.120.md:2149 · Daemon hot-upgrade on binary change
-90 · 17-verified-new-v2.1.120.md:2171 · Auto-relaunch rate limits
-90 · 17-verified-new-v2.1.120.md:2199 · `CLAUDE_CODE_LEAN_PROMPT` — Per-Section Prompt-Shaping Toggle
-90 · 17-verified-new-v2.1.120.md:2201 · Pattern: granular, not wholesale
-90 · 17-verified-new-v2.1.120.md:2217 · Two leanable sections in v2.1.120
-90 · 17-verified-new-v2.1.120.md:2224 · Bash/ripgrep variant (`Fz` and `ci6(H)`)
-90 · 17-verified-new-v2.1.120.md:2241 · Memory-types variant (`cK8()` and `zXH(H, _)`)
-90 · 17-verified-new-v2.1.120.md:2264 · Why two patterns coexist
-90 · 17-verified-new-v2.1.120.md:2280 · `CLAUDE_EFFORT` — A Frontmatter Field, a Template Token, and an OUTBOUND Env Var
-90 · 17-verified-new-v2.1.120.md:2322 · Two surfaces
-90 · 17-verified-new-v2.1.120.md:2330 · Substitution mechanism
-90 · 17-verified-new-v2.1.120.md:2342 · Value space
-90 · 17-verified-new-v2.1.120.md:2371 · Critical implication for skill authors
-90 · 17-verified-new-v2.1.120.md:2397 · `CLAUDE_COWORK_MEMORY_GUIDELINES` — The Cowork Memory-Bypass Escape Hatch
-90 · 17-verified-new-v2.1.120.md:2399 · Two-tier memory injection
-90 · 17-verified-new-v2.1.120.md:2409 · Replace path (`Bf_(H)`)
-90 · 17-verified-new-v2.1.120.md:2429 · Why both forms exist
-90 · 17-verified-new-v2.1.120.md:2436 · Implication for users running auto-memory pipelines
-90 · 17-verified-new-v2.1.120.md:2445 · `tengu_memory_write_survey_event` — Approve/Reject Dialog for Memory Writes
-90 · 17-verified-new-v2.1.120.md:2449 · How the summary is generated
-90 · 17-verified-new-v2.1.120.md:2479 · The prompts (constants `$03` and `A03`)
-90 · 17-verified-new-v2.1.120.md:2488 · Dialog state machine
-90 · 17-verified-new-v2.1.120.md:2511 · Telemetry constant
-90 · 17-verified-new-v2.1.120.md:2515 · Implication for users running auto-memory pipelines
-90 · 17-verified-new-v2.1.120.md:2526 · `CLAUDE_CODE_VERIFY_PROMPT` — Debugging-Workflow Discipline (NOT Safety)
-90 · 17-verified-new-v2.1.120.md:2532 · Gate function (`VA3`)
-90 · 17-verified-new-v2.1.120.md:2549 · Injected text (`yA3`)
-90 · 17-verified-new-v2.1.120.md:2561 · Mechanism
-90 · 17-verified-new-v2.1.120.md:2572 · Bonus: prompt-section literals discovered in same region
-90 · 17-verified-new-v2.1.120.md:2598 · `tengu_plan_mode_violated` — Observability Tripwire (NOT Enforcement)
-90 · 17-verified-new-v2.1.120.md:2602 · Logic
-90 · 17-verified-new-v2.1.120.md:2631 · What this tripwire catches
-90 · 17-verified-new-v2.1.120.md:2640 · Why this matters
-90 · 17-verified-new-v2.1.120.md:2652 · `tengu_bg_retired` — Idle Worker Reaper (NOT Feature Sunset)
-90 · 17-verified-new-v2.1.120.md:2657 · Six "do not retire" guards
-90 · 17-verified-new-v2.1.120.md:2693 · `/schedule` Description Simplified (Not a New Registration)
-90 · 17-verified-new-v2.1.120.md:2720 · New Environment Variables (4)
-90 · 17-verified-new-v2.1.120.md:2731 · New GrowthBook Feature Flags (in v2.1.120)
-90 · 17-verified-new-v2.1.120.md:2744 · Removed GrowthBook Feature Flags (11)
-90 · 17-verified-new-v2.1.120.md:2756 · New Telemetry Events (5)
-90 · 17-verified-new-v2.1.120.md:2769 · Removed Env Vars (1)
-90 · 17-verified-new-v2.1.120.md:2777 · What Did NOT Change in v2.1.120
-90 · 17-verified-new-v2.1.120.md:2788 · Cross-References
-90 · 17-verified-new-v2.1.120.md:2800 · Risks Worth Flagging
-90 · 17-verified-new-v2.1.120.md:2823 · Summary for v2.1.120
+89 · 17-verified-new-v2.1.120.md:998 · The simple story
+89 · 17-verified-new-v2.1.120.md:1028 · Mechanism: desktop-side host-loop registration excludes the names
+89 · 17-verified-new-v2.1.120.md:1049 · Cowork's tool tiers
+89 · 17-verified-new-v2.1.120.md:1075 · Why `SKILL.md` works without `allowed-tools`
+89 · 17-verified-new-v2.1.120.md:1091 · Why a narrow-`tools:` sub-agent doesn't get the same behavior
+89 · 17-verified-new-v2.1.120.md:1113 · What the founder-skills v0.3.0 incident actually was
+89 · 17-verified-new-v2.1.120.md:1146 · `mcp__workspace__bash` operational contract
+89 · 17-verified-new-v2.1.120.md:1193 · What the CLI's async sub-agent filter actually does (for completeness)
+89 · 17-verified-new-v2.1.120.md:1212 · Plugin hooks in Cowork sessions
+89 · 17-verified-new-v2.1.120.md:1223 · Trap: `--setting-sources=user` does NOT exclude plugin hooks
+89 · 17-verified-new-v2.1.120.md:1245 · New verified finding: there are THREE plugin roots (the namespace split is subtler than ph5())
+89 · 17-verified-new-v2.1.120.md:1264 · RESOLVED: plugin hooks DO fire in Cowork (host-loop execution)
+89 · 17-verified-new-v2.1.120.md:1284 · What the hook-firing test did NOT prove — and the in-VM `${CLAUDE_PLUGIN_ROOT}` resolution (tested 2026-06-01)
+89 · 17-verified-new-v2.1.120.md:1324 · `${CLAUDE_PLUGIN_ROOT}` is host-side *only under host-loop* (static verification, 2026-07-07)
+89 · 17-verified-new-v2.1.120.md:1360 · host-loop vs VM-loop: where the agent loop actually runs (gate `1143815894`)
+89 · 17-verified-new-v2.1.120.md:1407 · Split execution: host-side MCP servers vs the sealed in-VM shell (verified 2026-06-03)
+89 · 17-verified-new-v2.1.120.md:1428 · Verified: the desktop launch argv
+89 · 17-verified-new-v2.1.120.md:1462 · Upstream tracking
+89 · 17-verified-new-v2.1.120.md:1483 · Reported impact (from issue thread)
+89 · 17-verified-new-v2.1.120.md:1491 · Workaround
+89 · 17-verified-new-v2.1.120.md:1500 · Implication for the `userconfig-probe` plugin
+89 · 17-verified-new-v2.1.120.md:1508 · The async sub-agent filter trace (v2.1.120 bundle)
+89 · 17-verified-new-v2.1.120.md:1517 · The mechanism
+89 · 17-verified-new-v2.1.120.md:1551 · `Jl_` allowlist contents
+89 · 17-verified-new-v2.1.120.md:1594 · `r3H` / `F_8` drop set
+89 · 17-verified-new-v2.1.120.md:1611 · Tool-name parse and canonicalization
+89 · 17-verified-new-v2.1.120.md:1650 · Why `general-purpose` works in Cowork-async but plugin fork-skills don't
+89 · 17-verified-new-v2.1.120.md:1677 · Empirical confirmation
+89 · 17-verified-new-v2.1.120.md:1693 · Implications
+89 · 17-verified-new-v2.1.120.md:1749 · Cross-references
+89 · 17-verified-new-v2.1.120.md:1760 · MCP path: the same filter, the other direction
+89 · 17-verified-new-v2.1.120.md:1777 · How parent MCP state reaches the fork
+89 · 17-verified-new-v2.1.120.md:1811 · `requiredMcpServers` enforces presence at dispatch with a 30-second poll
+89 · 17-verified-new-v2.1.120.md:1842 · Negative finding: there is no skill-callable runtime MCP registration
+89 · 17-verified-new-v2.1.120.md:1867 · Agent `tools:` matches MCP names exactly — no `mcp__server__*` expansion
+89 · 17-verified-new-v2.1.120.md:1885 · Status of the symbol resolutions
+89 · 17-verified-new-v2.1.120.md:1926 · Risks Worth Flagging
+89 · 17-verified-new-v2.1.120.md:1996 · Source-of-Truth Cross-Check (v2.11.2 audit)
+89 · 17-verified-new-v2.1.120.md:2027 · Cross-References — The Cowork Runtime Stack
+89 · 17-verified-new-v2.1.120.md:2042 · Summary for v2.1.119
+90 · 17-verified-new-v2.1.120.md:2060 · What this release is
+90 · 17-verified-new-v2.1.120.md:2094 · Daemon On-Demand Cold-Start Model
+90 · 17-verified-new-v2.1.120.md:2096 · The kill switch
+90 · 17-verified-new-v2.1.120.md:2113 · Cold-start mode env var
+90 · 17-verified-new-v2.1.120.md:2139 · Daemon hot-upgrade on binary change
+90 · 17-verified-new-v2.1.120.md:2161 · Auto-relaunch rate limits
+90 · 17-verified-new-v2.1.120.md:2189 · `CLAUDE_CODE_LEAN_PROMPT` — Per-Section Prompt-Shaping Toggle
+90 · 17-verified-new-v2.1.120.md:2191 · Pattern: granular, not wholesale
+90 · 17-verified-new-v2.1.120.md:2207 · Two leanable sections in v2.1.120
+90 · 17-verified-new-v2.1.120.md:2214 · Bash/ripgrep variant (`Fz` and `ci6(H)`)
+90 · 17-verified-new-v2.1.120.md:2231 · Memory-types variant (`cK8()` and `zXH(H, _)`)
+90 · 17-verified-new-v2.1.120.md:2254 · Why two patterns coexist
+90 · 17-verified-new-v2.1.120.md:2270 · `CLAUDE_EFFORT` — A Frontmatter Field, a Template Token, and an OUTBOUND Env Var
+90 · 17-verified-new-v2.1.120.md:2308 · Two surfaces
+90 · 17-verified-new-v2.1.120.md:2316 · Substitution mechanism
+90 · 17-verified-new-v2.1.120.md:2328 · Value space
+90 · 17-verified-new-v2.1.120.md:2357 · Critical implication for skill authors
+90 · 17-verified-new-v2.1.120.md:2383 · `CLAUDE_COWORK_MEMORY_GUIDELINES` — The Cowork Memory-Bypass Escape Hatch
+90 · 17-verified-new-v2.1.120.md:2385 · Two-tier memory injection
+90 · 17-verified-new-v2.1.120.md:2395 · Replace path (`Bf_(H)`)
+90 · 17-verified-new-v2.1.120.md:2415 · Why both forms exist
+90 · 17-verified-new-v2.1.120.md:2422 · Implication for users running auto-memory pipelines
+90 · 17-verified-new-v2.1.120.md:2431 · `tengu_memory_write_survey_event` — Approve/Reject Dialog for Memory Writes
+90 · 17-verified-new-v2.1.120.md:2435 · How the summary is generated
+90 · 17-verified-new-v2.1.120.md:2465 · The prompts (constants `$03` and `A03`)
+90 · 17-verified-new-v2.1.120.md:2474 · Dialog state machine
+90 · 17-verified-new-v2.1.120.md:2497 · Telemetry constant
+90 · 17-verified-new-v2.1.120.md:2501 · Implication for users running auto-memory pipelines
+90 · 17-verified-new-v2.1.120.md:2512 · `CLAUDE_CODE_VERIFY_PROMPT` — Debugging-Workflow Discipline (NOT Safety)
+90 · 17-verified-new-v2.1.120.md:2518 · Gate function (`VA3`)
+90 · 17-verified-new-v2.1.120.md:2535 · Injected text (`yA3`)
+90 · 17-verified-new-v2.1.120.md:2547 · Mechanism
+90 · 17-verified-new-v2.1.120.md:2558 · Bonus: prompt-section literals discovered in same region
+90 · 17-verified-new-v2.1.120.md:2584 · `tengu_plan_mode_violated` — Observability Tripwire (NOT Enforcement)
+90 · 17-verified-new-v2.1.120.md:2588 · Logic
+90 · 17-verified-new-v2.1.120.md:2617 · What this tripwire catches
+90 · 17-verified-new-v2.1.120.md:2626 · Why this matters
+90 · 17-verified-new-v2.1.120.md:2638 · `tengu_bg_retired` — Idle Worker Reaper (NOT Feature Sunset)
+90 · 17-verified-new-v2.1.120.md:2643 · Six "do not retire" guards
+90 · 17-verified-new-v2.1.120.md:2679 · `/schedule` Description Simplified (Not a New Registration)
+90 · 17-verified-new-v2.1.120.md:2706 · New Environment Variables (4)
+90 · 17-verified-new-v2.1.120.md:2717 · New GrowthBook Feature Flags (in v2.1.120)
+90 · 17-verified-new-v2.1.120.md:2730 · Removed GrowthBook Feature Flags (11)
+90 · 17-verified-new-v2.1.120.md:2742 · New Telemetry Events (5)
+90 · 17-verified-new-v2.1.120.md:2755 · Removed Env Vars (1)
+90 · 17-verified-new-v2.1.120.md:2763 · What Did NOT Change in v2.1.120
+90 · 17-verified-new-v2.1.120.md:2774 · Cross-References
+90 · 17-verified-new-v2.1.120.md:2786 · Risks Worth Flagging
+90 · 17-verified-new-v2.1.120.md:2809 · Summary for v2.1.120
 105 · 19-desktop-mcp-apps-elicitation.md:37 · Part A — the MCP Apps bridge dialect (UI ⇄ host)
 105 · 19-desktop-mcp-apps-elicitation.md:85 · Part B — elicitation as a host control-request (the private channel)
 105 · 19-desktop-mcp-apps-elicitation.md:110 · Why it matters (the practical rule)
@@ -1245,9 +1245,9 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 107 · 21-cowork-control-protocol.md:123 · Part C2 — control-protocol request subtypes (newly surfaced in verification)
 107 · 21-cowork-control-protocol.md:146 · Part D — MCP delivery: the non-obvious one
 107 · 21-cowork-control-protocol.md:173 · Part E — Permission model and tool registry (layered, not blanket-allow)
-107 · 21-cowork-control-protocol.md:235 · ADDENDUM (2026-08-13) — the `Skill` matcher's `additionalContext` is the elicitation injection
-107 · 21-cowork-control-protocol.md:371 · Part F — Auth & runtime gotchas (for a faithful driver)
-107 · 21-cowork-control-protocol.md:401 · Methodology
+107 · 21-cowork-control-protocol.md:234 · ADDENDUM (2026-08-13) — the `Skill` matcher's `additionalContext` is the elicitation injection
+107 · 21-cowork-control-protocol.md:369 · Part F — Auth & runtime gotchas (for a faithful driver)
+107 · 21-cowork-control-protocol.md:399 · Methodology
 108 · 22-cowork-env-gates-protocol.md:39 · Part A — environment variables (binary-verified, current as of 2.1.170 / asar 1.12603.1)
 108 · 22-cowork-env-gates-protocol.md:50 · Model / effort / thinking control
 108 · 22-cowork-env-gates-protocol.md:62 · Cowork / background-session runtime
@@ -1282,11 +1282,11 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 113 · 24-verified-new-v2.1.198.md:190 · Cross-references
 114 · 25-verified-new-v1.18286.0-desktop.md:25 · Part A — the `cli_plugin` gate, re-checked
 114 · 25-verified-new-v1.18286.0-desktop.md:56 · Part B — broader re-verification: Ch24–26 mechanisms unchanged
-114 · 25-verified-new-v1.18286.0-desktop.md:81 · Part C — correction to Ch24/L107: the `--effort` spawn value is not a hardcoded literal
-114 · 25-verified-new-v1.18286.0-desktop.md:121 · Part D — promotion: `CLAUDE_CODE_SUBAGENT_MODEL` is now confirmed wired, not speculative
-114 · 25-verified-new-v1.18286.0-desktop.md:137 · Part E — new Cowork/Desktop surface (not in any of the four prior chapters or `registry.json`)
-114 · 25-verified-new-v1.18286.0-desktop.md:169 · Identifier table
-114 · 25-verified-new-v1.18286.0-desktop.md:186 · Methodology note (the transferable lesson)
+114 · 25-verified-new-v1.18286.0-desktop.md:81 · Part C — the `--effort` spawn value is a variable, not a hardcoded literal
+114 · 25-verified-new-v1.18286.0-desktop.md:116 · Part D — promotion: `CLAUDE_CODE_SUBAGENT_MODEL` is now confirmed wired, not speculative
+114 · 25-verified-new-v1.18286.0-desktop.md:132 · Part E — new Cowork/Desktop surface (not in any of the four prior chapters or `registry.json`)
+114 · 25-verified-new-v1.18286.0-desktop.md:164 · Identifier table
+114 · 25-verified-new-v1.18286.0-desktop.md:181 · Methodology note (the transferable lesson)
 115 · 26-subagent-resume-semantics.md:22 · The short answer
 115 · 26-subagent-resume-semantics.md:61 · Part A — the Task tool really is one-shot per call (both products)
 115 · 26-subagent-resume-semantics.md:83 · Part B — the CLI's first-class resume path: SendMessage
@@ -1295,9 +1295,9 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 115 · 26-subagent-resume-semantics.md:132 · Availability
 115 · 26-subagent-resume-semantics.md:142 · Three continuation primitives
 115 · 26-subagent-resume-semantics.md:166 · Part C — Cowork severs the resume path at spawn time
-115 · 26-subagent-resume-semantics.md:201 · Part D — correction to Ch28/L114: where the two disable vars are actually set
-115 · 26-subagent-resume-semantics.md:216 · Identifier table
-115 · 26-subagent-resume-semantics.md:233 · Methodology note (the transferable lesson)
+115 · 26-subagent-resume-semantics.md:201 · Part D — where the two disable vars are actually set
+115 · 26-subagent-resume-semantics.md:215 · Identifier table
+115 · 26-subagent-resume-semantics.md:232 · Methodology note (the transferable lesson)
 116 · 27-skill-runtime-detection.md:21 · The question, and why the obvious answer is wrong
 116 · 27-skill-runtime-detection.md:63 · Part A — the signal inventory (what is actually set, where)
 116 · 27-skill-runtime-detection.md:65 · CLI shell subprocesses: `CLAUDECODE=1` and friends
@@ -1333,7 +1333,7 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 119 · 30-desktop-cloud-tasks-teleport-bridge.md:15 · The question this closes out
 119 · 30-desktop-cloud-tasks-teleport-bridge.md:21 · Part A — the IPC surface diff: confirmed zero, first-party
 119 · 30-desktop-cloud-tasks-teleport-bridge.md:40 · The one genuine code delta: a newly vendored, currently-unused SDK helper
-119 · 30-desktop-cloud-tasks-teleport-bridge.md:71 · Part B — `teleportToCloud`: confirmed, with three corrections to the external doc
+119 · 30-desktop-cloud-tasks-teleport-bridge.md:71 · Part B — `teleportToCloud`: three progress events, a readiness gate, an absolute URL
 119 · 30-desktop-cloud-tasks-teleport-bridge.md:83 · Part C — the bridge-session worker model
 119 · 30-desktop-cloud-tasks-teleport-bridge.md:85 · Two runtimes, one API family
 119 · 30-desktop-cloud-tasks-teleport-bridge.md:100 · Call ordering — the external doc's first open question, resolved for the production path
@@ -1347,14 +1347,14 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 120 · 31-desktop-reasoning-config-effort-thinking.md:15 · The question this closes out
 120 · 31-desktop-reasoning-config-effort-thinking.md:21 · Part A — extended thinking: a boolean, budget strictly 31999-or-0
 120 · 31-desktop-reasoning-config-effort-thinking.md:42 · Part B — effort: a per-model enum, four model-config classes, hardcoded `"medium"` fallback
-120 · 31-desktop-reasoning-config-effort-thinking.md:77 · Part C — correcting Ch28/L114 Part C: `CLAUDE_CODE_EFFORT_LEVEL` does not back this spawn value
+120 · 31-desktop-reasoning-config-effort-thinking.md:77 · Part C — `CLAUDE_CODE_EFFORT_LEVEL` does not back this spawn value
 120 · 31-desktop-reasoning-config-effort-thinking.md:95 · Part D — the live-update path also drives `apply_flag_settings`
 120 · 31-desktop-reasoning-config-effort-thinking.md:103 · ADDENDUM (2026-08-13) — `applyFlagSettings` has a SECOND payload shape: live path grants, not a settings toggle
 120 · 31-desktop-reasoning-config-effort-thinking.md:136 · Part E — externally-sourced, not independently re-derived here: the default-effort live-log confirmation
 120 · 31-desktop-reasoning-config-effort-thinking.md:140 · Identifier table
 120 · 31-desktop-reasoning-config-effort-thinking.md:155 · What this means
 120 · 31-desktop-reasoning-config-effort-thinking.md:161 · Honesty & scope caveats
-120 · 31-desktop-reasoning-config-effort-thinking.md:171 · ADDENDUM (2026-08-30) — the per-model table at `app.asar` 1.40609.0, and a correction to what the "default class" is
+120 · 31-desktop-reasoning-config-effort-thinking.md:171 · ADDENDUM (2026-08-30) — the per-model table at `app.asar` 1.40609.0, and what the "default class" is
 121 · 32-cowork-subagent-execution-model.md:32 · The composer and its identifier key
 121 · 32-cowork-subagent-execution-model.md:36 · Frontmatter normalization, and a doc bug
 121 · 32-cowork-subagent-execution-model.md:49 · The six-step algorithm
@@ -1375,7 +1375,7 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 123 · 32-cowork-subagent-execution-model.md:254 · The gate that does *not* gate this, and the one env-var gap that does
 124 · 32-cowork-subagent-execution-model.md:266 · Sub-agent env & model resolution
 124 · 32-cowork-subagent-execution-model.md:287 · ToolSearch enablement
-124 · 32-cowork-subagent-execution-model.md:295 · Lifecycle re-verification and the two new correction points
+124 · 32-cowork-subagent-execution-model.md:295 · Lifecycle re-verification and two product changes
 124 · 32-cowork-subagent-execution-model.md:307 · Host-loop vs VM-loop: the decision function and its deltas
 124 · 32-cowork-subagent-execution-model.md:334 · Stream observability
 124 · 32-cowork-subagent-execution-model.md:349 · ADDENDUM (2026-08-13) — the full `sessionType` enum, and a new sticky-cached gate that excludes two of its members
@@ -1385,22 +1385,22 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 125 · 33-desktop-device-partner-permission-tuning.md:20 · The tool schemas
 125 · 33-desktop-device-partner-permission-tuning.md:30 · The gating chain — why Cowork structurally never sees these
 125 · 33-desktop-device-partner-permission-tuning.md:47 · Per-platform enablement gates, and the sandbox
-125 · 33-desktop-device-partner-permission-tuning.md:64 · New managed setting
-126 · 33-desktop-device-partner-permission-tuning.md:74 · Server and tools
-126 · 33-desktop-device-partner-permission-tuning.md:78 · Backing infrastructure
-126 · 33-desktop-device-partner-permission-tuning.md:82 · What's confirmed vs. inferred
-127 · 33-desktop-device-partner-permission-tuning.md:92 · Core mechanics
-127 · 33-desktop-device-partner-permission-tuning.md:100 · What's new in 1.22209.0 vs. 1.21459.0
-127 · 33-desktop-device-partner-permission-tuning.md:104 · Reading
-128 · 33-desktop-device-partner-permission-tuning.md:114 · `tool_approval_default_always_allow` — gate `4200321681` (`coworkAutoModeAlwaysAllowOverride`)
-128 · 33-desktop-device-partner-permission-tuning.md:120 · Scheduled-task auto-approval — gate `1447478638` (`scheduledTaskToolsApprovableByAutoMode`)
-128 · 33-desktop-device-partner-permission-tuning.md:124 · Session sleep/auto-resume — gate `1076115445` (`tryBeginSleepAutoResume`)
-128 · 33-desktop-device-partner-permission-tuning.md:128 · OTLP tracing — new managed setting `otlpTracesEnabled`, default OFF
-128 · 33-desktop-device-partner-permission-tuning.md:140 · Protected-folder grant hardening
-128 · 33-desktop-device-partner-permission-tuning.md:144 · Extension/plugin signing hardened
-128 · 33-desktop-device-partner-permission-tuning.md:148 · Two new managed flatKeys, total
-128 · 33-desktop-device-partner-permission-tuning.md:154 · Identifier table
-128 · 33-desktop-device-partner-permission-tuning.md:174 · What this means for skill and agent authors
+125 · 33-desktop-device-partner-permission-tuning.md:62 · New managed setting
+126 · 33-desktop-device-partner-permission-tuning.md:72 · Server and tools
+126 · 33-desktop-device-partner-permission-tuning.md:76 · Backing infrastructure
+126 · 33-desktop-device-partner-permission-tuning.md:80 · What's confirmed vs. inferred
+127 · 33-desktop-device-partner-permission-tuning.md:90 · Core mechanics
+127 · 33-desktop-device-partner-permission-tuning.md:98 · What's new in 1.22209.0 vs. 1.21459.0
+127 · 33-desktop-device-partner-permission-tuning.md:102 · Reading
+128 · 33-desktop-device-partner-permission-tuning.md:112 · `tool_approval_default_always_allow` — gate `4200321681` (`coworkAutoModeAlwaysAllowOverride`)
+128 · 33-desktop-device-partner-permission-tuning.md:118 · Scheduled-task auto-approval — gate `1447478638` (`scheduledTaskToolsApprovableByAutoMode`)
+128 · 33-desktop-device-partner-permission-tuning.md:122 · Session sleep/auto-resume — gate `1076115445` (`tryBeginSleepAutoResume`)
+128 · 33-desktop-device-partner-permission-tuning.md:126 · OTLP tracing — new managed setting `otlpTracesEnabled`, default OFF
+128 · 33-desktop-device-partner-permission-tuning.md:138 · Protected-folder grant hardening
+128 · 33-desktop-device-partner-permission-tuning.md:142 · Extension/plugin signing hardened
+128 · 33-desktop-device-partner-permission-tuning.md:146 · Two new managed flatKeys, total
+128 · 33-desktop-device-partner-permission-tuning.md:152 · Identifier table
+128 · 33-desktop-device-partner-permission-tuning.md:172 · What this means for skill and agent authors
 129 · 34-skill-discovery-vcs-events-containment.md:24 · Two components, one concept
 129 · 34-skill-discovery-vcs-events-containment.md:33 · The `vLt`/`Vne` predicate was reshaped mid-series
 129 · 34-skill-discovery-vcs-events-containment.md:51 · `tengu_saddle_lantern` is the master switch, not just a deferral gate
@@ -1410,7 +1410,7 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 129 · 34-skill-discovery-vcs-events-containment.md:105 · This inverts the "model sees native tools" claim
 129 · 34-skill-discovery-vcs-events-containment.md:111 · The `CLAUDE_CODE_REMOTE`/`vLt` puzzle is moot for the model surface
 129 · 34-skill-discovery-vcs-events-containment.md:115 · Gating & live state
-129 · 34-skill-discovery-vcs-events-containment.md:119 · ADDENDUM (2026-07-24) — verbatim `isEnabled` predicates, the three-state builder, and a stickiness CORRECTION
+129 · 34-skill-discovery-vcs-events-containment.md:119 · ADDENDUM (2026-07-24) — verbatim `isEnabled` predicates, the three-state builder, and exact stickiness
 129 · 34-skill-discovery-vcs-events-containment.md:157 · ADDENDUM 2026-08-05 — the gate is now ON, and it has a THIRD effect
 130 · 34-skill-discovery-vcs-events-containment.md:212 · Emit floor is 2.1.216, not 2.1.217
 130 · 34-skill-discovery-vcs-events-containment.md:216 · Agent-side emit is ungated
@@ -1425,14 +1425,13 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 131 · 34-skill-discovery-vcs-events-containment.md:349 · `coworkTokens` — usage accounting (`0→2`, NEW)
 131 · 34-skill-discovery-vcs-events-containment.md:353 · `harnessCwd` — NEW (`0→5`) and a naming trap
 131 · 34-skill-discovery-vcs-events-containment.md:357 · OAuth-refresh gates (both `0→1`, NEW)
-131 · 34-skill-discovery-vcs-events-containment.md:364 · Gate-state correction from the live fcache
-131 · 34-skill-discovery-vcs-events-containment.md:411 · ADDENDUM (2026-08-13, fcache 254 features) — the original four "absent" ids, re-checked: half have moved again
-132 · 34-skill-discovery-vcs-events-containment.md:443 · What was observed (first-party)
-132 · 34-skill-discovery-vcs-events-containment.md:455 · Why the obvious explanation is wrong
-132 · 34-skill-discovery-vcs-events-containment.md:459 · What is NOT confirmed
-132 · 34-skill-discovery-vcs-events-containment.md:463 · Why it matters (the payload of this lesson)
-132 · 34-skill-discovery-vcs-events-containment.md:469 · Identifier table
-132 · 34-skill-discovery-vcs-events-containment.md:490 · What this means for skill and agent authors
+131 · 34-skill-discovery-vcs-events-containment.md:364 · Gate state from the live fcache — absence belongs to a snapshot
+132 · 34-skill-discovery-vcs-events-containment.md:419 · What was observed (first-party)
+132 · 34-skill-discovery-vcs-events-containment.md:431 · Why the obvious explanation is wrong
+132 · 34-skill-discovery-vcs-events-containment.md:435 · What is NOT confirmed
+132 · 34-skill-discovery-vcs-events-containment.md:439 · Why it matters (the payload of this lesson)
+132 · 34-skill-discovery-vcs-events-containment.md:445 · Identifier table
+132 · 34-skill-discovery-vcs-events-containment.md:466 · What this means for skill and agent authors
 137 · 35-verified-new-v2.1.217.md:123 · The bigger picture — what Anthropic is doing across v2.1.198 → v2.1.217
 137 · 35-verified-new-v2.1.217.md:139 · What this means for skill and agent authors
 138 · 36-cowork-lanes-mounts-snapshot-discipline.md:23 · The oracle
@@ -1440,39 +1439,39 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 138 · 36-cowork-lanes-mounts-snapshot-discipline.md:38 · A live remote-lane record
 138 · 36-cowork-lanes-mounts-snapshot-discipline.md:60 · Lane selection is renderer-side — no fcache gate can answer it
 138 · 36-cowork-lanes-mounts-snapshot-discipline.md:66 · What differs across the lanes
-138 · 36-cowork-lanes-mounts-snapshot-discipline.md:79 · ⚠️ CORRECTED — "remote is the default" is withdrawn
-138 · 36-cowork-lanes-mounts-snapshot-discipline.md:97 · Lane usage is per-account and observable
-138 · 36-cowork-lanes-mounts-snapshot-discipline.md:101 · METHODOLOGY — the Chromium cache is a readable artifact class
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:115 · The measured matrix
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:132 · Approval is per-mount, live, and involves no remount
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:142 · The host-loop / VM-loop split
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:154 · Mechanism: established vs inference
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:164 · Agent-facing behaviour
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:170 · ADDENDUM — mount-mode CONSTRUCTION, and what `isBridgeSession` actually selects
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:187 · ⚠️ `isBridgeSession` is NOT L138's `environment_kind:"bridge"`
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:199 · Only two mounts are resolver-driven — and the two builders differ
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:215 · A THIRD construction site — `[VMCLIRunner]`, and it is NOT a session mount
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:244 · CORRECTION to this lesson's own wording
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:250 · METHODOLOGY — an older asar is a Rosetta stone for a newer one
-140 · 36-cowork-lanes-mounts-snapshot-discipline.md:266 · Confirmed
-140 · 36-cowork-lanes-mounts-snapshot-discipline.md:270 · Isolation holds — the per-session uid carries it
-140 · 36-cowork-lanes-mounts-snapshot-discipline.md:283 · What 522 means for a skill that searches the session tree
-140 · 36-cowork-lanes-mounts-snapshot-discipline.md:295 · The full per-session mount inventory (29)
-140 · 36-cowork-lanes-mounts-snapshot-discipline.md:311 · CORRECTION (2026-08-29): `.local-plugins` has no fixed depth
-140 · 36-cowork-lanes-mounts-snapshot-discipline.md:325 · Live confirmation from inside a running session (2026-08-29)
-140 · 36-cowork-lanes-mounts-snapshot-discipline.md:341 · ⚠️ METHODOLOGY — agent-reported paths are not evidence
-140 · 36-cowork-lanes-mounts-snapshot-discipline.md:349 · ADDENDUM — this inventory is the RUNTIME view; the modes come from the builder
-141 · 36-cowork-lanes-mounts-snapshot-discipline.md:371 · Axis 1 — gate-level: membership churns, count-neutrally
-141 · 36-cowork-lanes-mounts-snapshot-discipline.md:385 · Snapshot identity must be a CONTENT hash
-141 · 36-cowork-lanes-mounts-snapshot-discipline.md:396 · Axis 2 — key-level: a served gate can omit keys that default TRUE
-141 · 36-cowork-lanes-mounts-snapshot-discipline.md:416 · The four-state vocabulary
-141 · 36-cowork-lanes-mounts-snapshot-discipline.md:425 · Extraction: gate ids are always STRING literals
-141 · 36-cowork-lanes-mounts-snapshot-discipline.md:438 · What this changed in the state layer
-142 · 36-cowork-lanes-mounts-snapshot-discipline.md:456 · Two modes, a key grammar, and a startup invariant
-142 · 36-cowork-lanes-mounts-snapshot-discipline.md:473 · Server-supplied entries are validated at RESOLUTION, not load
-142 · 36-cowork-lanes-mounts-snapshot-discipline.md:477 · Why `replace` matters more than `append`
+138 · 36-cowork-lanes-mounts-snapshot-discipline.md:79 · ⚠️ "Remote is the default" is not established
+138 · 36-cowork-lanes-mounts-snapshot-discipline.md:96 · Lane usage is per-account and observable
+138 · 36-cowork-lanes-mounts-snapshot-discipline.md:100 · METHODOLOGY — the Chromium cache is a readable artifact class
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:114 · The measured matrix
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:131 · Approval is per-mount, live, and involves no remount
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:141 · The host-loop / VM-loop split
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:153 · Mechanism: established vs inference
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:163 · Agent-facing behaviour
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:169 · ADDENDUM — mount-mode CONSTRUCTION, and what `isBridgeSession` actually selects
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:186 · ⚠️ `isBridgeSession` is NOT L138's `environment_kind:"bridge"`
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:198 · Only two mounts are resolver-driven — and the two builders differ
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:214 · A THIRD construction site — `[VMCLIRunner]`, and it is NOT a session mount
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:243 · Host-loop mount restore is per bash call, not spawn-time
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:249 · METHODOLOGY — an older asar is a Rosetta stone for a newer one
+140 · 36-cowork-lanes-mounts-snapshot-discipline.md:265 · Confirmed
+140 · 36-cowork-lanes-mounts-snapshot-discipline.md:269 · Isolation holds — the per-session uid carries it
+140 · 36-cowork-lanes-mounts-snapshot-discipline.md:282 · What 522 means for a skill that searches the session tree
+140 · 36-cowork-lanes-mounts-snapshot-discipline.md:294 · The full per-session mount inventory (29)
+140 · 36-cowork-lanes-mounts-snapshot-discipline.md:310 · `.local-plugins` has no fixed depth (2026-08-29)
+140 · 36-cowork-lanes-mounts-snapshot-discipline.md:324 · Live confirmation from inside a running session (2026-08-29)
+140 · 36-cowork-lanes-mounts-snapshot-discipline.md:340 · ⚠️ METHODOLOGY — agent-reported paths are not evidence
+140 · 36-cowork-lanes-mounts-snapshot-discipline.md:348 · ADDENDUM — this inventory is the RUNTIME view; the modes come from the builder
+141 · 36-cowork-lanes-mounts-snapshot-discipline.md:370 · Axis 1 — gate-level: membership churns, count-neutrally
+141 · 36-cowork-lanes-mounts-snapshot-discipline.md:384 · Snapshot identity must be a CONTENT hash
+141 · 36-cowork-lanes-mounts-snapshot-discipline.md:395 · Axis 2 — key-level: a served gate can omit keys that default TRUE
+141 · 36-cowork-lanes-mounts-snapshot-discipline.md:415 · The four-state vocabulary
+141 · 36-cowork-lanes-mounts-snapshot-discipline.md:424 · Extraction: gate ids are always STRING literals
+141 · 36-cowork-lanes-mounts-snapshot-discipline.md:437 · What this changed in the state layer
+142 · 36-cowork-lanes-mounts-snapshot-discipline.md:455 · Two modes, a key grammar, and a startup invariant
+142 · 36-cowork-lanes-mounts-snapshot-discipline.md:472 · Server-supplied entries are validated at RESOLUTION, not load
+142 · 36-cowork-lanes-mounts-snapshot-discipline.md:476 · Why `replace` matters more than `append`
 143 · 37-cowork-probe-corrections.md:26 · The measurement
-143 · 37-cowork-probe-corrections.md:44 · What this retracts
+143 · 37-cowork-probe-corrections.md:44 · Two wrong answers `audit.jsonl` produces
 143 · 37-cowork-probe-corrections.md:59 · Why the binary settles it and the record could not
 144 · 37-cowork-probe-corrections.md:99 · The one place the translation is visible without a second record
 145 · 37-cowork-probe-corrections.md:111 · Installs, live at agent 2.1.221
@@ -1510,7 +1509,7 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 152 · 38-cowork-elicitation-flag-classes.md:347 · 3. `rg -c` counts matching lines, not occurrences
 152 · 38-cowork-elicitation-flag-classes.md:351 · 4. Per-string occurrence locator, not a set diff
 158 · 39-verified-new-v2.1.231.md:247 · ADDENDUM — what a registry-vs-bundle sweep found
-163 · 41-cowork-path-resolution-lanes.md:20 · What was published, and where it came from
+163 · 41-cowork-path-resolution-lanes.md:20 · The guidance the old prompt suggests, and why it is wrong
 163 · 41-cowork-path-resolution-lanes.md:24 · The measurement that settles it
 163 · 41-cowork-path-resolution-lanes.md:46 · What actually changed at 1.32885.1: the text
 163 · 41-cowork-path-resolution-lanes.md:57 · The annotation never described bash
@@ -1777,28 +1776,28 @@ state:command-surface · state/command-surface.md:119 · Three commands left the
 state:cowork-architecture · state/cowork-architecture.md:16 · Host-loop vs VM-loop
 state:cowork-architecture · state/cowork-architecture.md:80 · Filesystem & mounts
 state:cowork-architecture · state/cowork-architecture.md:178 · Sub-agent execution (host-loop)
-state:cowork-architecture · state/cowork-architecture.md:267 · Session storage
-state:cowork-architecture · state/cowork-architecture.md:312 · Plugin roots
-state:cowork-architecture · state/cowork-architecture.md:375 · Runtime detection from a skill (lesson 116)
-state:cowork-architecture · state/cowork-architecture.md:422 · Re-verification at Desktop 1.18286.0 (2026-07-04)
-state:cowork-architecture · state/cowork-architecture.md:433 · Re-verification at Desktop 1.19367.0 (2026-07-08): cloud tasks are not new
-state:cowork-architecture · state/cowork-architecture.md:449 · Device automation surfaces (Desktop 1.22209.0, lessons 125-126)
-state:cowork-architecture · state/cowork-architecture.md:484 · LEAD (unconfirmed): 1.24012.1 may move session state off the host (L132)
-state:cowork-architecture · state/cowork-architecture.md:502 · Execution lanes (L138)
-state:cowork-architecture · state/cowork-architecture.md:550 · Lane facts re-derived at Desktop 1.46388.4 / agent 2.1.260 (L180)
-state:cowork-architecture · state/cowork-architecture.md:576 · Cloud Cowork's outputs contract is switched per session (L198)
-state:cowork-architecture · state/cowork-architecture.md:584 · A THIRD surface Desktop calls "cloud" — the claude.ai code-execution container (relayed, 2026-09-22)
-state:cowork-architecture · state/cowork-architecture.md:617 · Four surfaces, one probe (L198, 2026-09-23, first-party)
-state:cowork-architecture · state/cowork-architecture.md:634 · Scheduled tasks migrate themselves to the cloud (L208)
-state:cowork-architecture · state/cowork-architecture.md:647 · Where a new task runs (L210)
-state:cowork-architecture · state/cowork-architecture.md:662 · Desktop 2.9939.2 additions (L212–L214)
-state:cowork-architecture · state/cowork-architecture.md:684 · `computer://` links by lane (L215)
-state:cowork-architecture · state/cowork-architecture.md:693 · A cloud session and the user's computer (L215)
-state:cowork-architecture · state/cowork-architecture.md:710 · One conversation, two runtimes (L216)
-state:cowork-architecture · state/cowork-architecture.md:723 · Credential delivery and build identity (L207)
-state:cowork-architecture · state/cowork-architecture.md:733 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
-state:cowork-architecture · state/cowork-architecture.md:770 · Mount model and delete policy (L139, L140)
-state:cowork-architecture · state/cowork-architecture.md:876 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
+state:cowork-architecture · state/cowork-architecture.md:266 · Session storage
+state:cowork-architecture · state/cowork-architecture.md:311 · Plugin roots
+state:cowork-architecture · state/cowork-architecture.md:374 · Runtime detection from a skill (lesson 116)
+state:cowork-architecture · state/cowork-architecture.md:421 · Re-verification at Desktop 1.18286.0 (2026-07-04)
+state:cowork-architecture · state/cowork-architecture.md:432 · Re-verification at Desktop 1.19367.0 (2026-07-08): cloud tasks are not new
+state:cowork-architecture · state/cowork-architecture.md:448 · Device automation surfaces (Desktop 1.22209.0, lessons 125-126)
+state:cowork-architecture · state/cowork-architecture.md:483 · LEAD (unconfirmed): 1.24012.1 may move session state off the host (L132)
+state:cowork-architecture · state/cowork-architecture.md:501 · Execution lanes (L138)
+state:cowork-architecture · state/cowork-architecture.md:549 · Lane facts re-derived at Desktop 1.46388.4 / agent 2.1.260 (L180)
+state:cowork-architecture · state/cowork-architecture.md:575 · Cloud Cowork's outputs contract is switched per session (L198)
+state:cowork-architecture · state/cowork-architecture.md:583 · A THIRD surface Desktop calls "cloud" — the claude.ai code-execution container (relayed, 2026-09-22)
+state:cowork-architecture · state/cowork-architecture.md:616 · Four surfaces, one probe (L198, 2026-09-23, first-party)
+state:cowork-architecture · state/cowork-architecture.md:633 · Scheduled tasks migrate themselves to the cloud (L208)
+state:cowork-architecture · state/cowork-architecture.md:646 · Where a new task runs (L210)
+state:cowork-architecture · state/cowork-architecture.md:661 · Desktop 2.9939.2 additions (L212–L214)
+state:cowork-architecture · state/cowork-architecture.md:683 · `computer://` links by lane (L215)
+state:cowork-architecture · state/cowork-architecture.md:692 · A cloud session and the user's computer (L215)
+state:cowork-architecture · state/cowork-architecture.md:709 · One conversation, two runtimes (L216)
+state:cowork-architecture · state/cowork-architecture.md:722 · Credential delivery and build identity (L207)
+state:cowork-architecture · state/cowork-architecture.md:732 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
+state:cowork-architecture · state/cowork-architecture.md:769 · Mount model and delete policy (L139, L140)
+state:cowork-architecture · state/cowork-architecture.md:875 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
 state:cowork-control-protocol · state/cowork-control-protocol.md:17 · Spawn contract
 state:cowork-control-protocol · state/cowork-control-protocol.md:78 · Handshake
 state:cowork-control-protocol · state/cowork-control-protocol.md:119 · Subtype inventory pointer

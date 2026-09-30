@@ -198,16 +198,15 @@ verbatim error) are the only continuation primitives available to the model. But
 is because the Desktop *removes* the resume path at spawn — not because the Task tool
 "is one-shot" in some deeper sense than it is everywhere.
 
-## Part D — correction to Ch28/L114: where the two disable vars are actually set
+## Part D — where the two disable vars are actually set
 
-L114 Part E catalogued `CLAUDE_CODE_DISABLE_AGENTS_FLEET` as "set to \"1\" alongside
-`CLAUDE_CODE_DISABLE_BACKGROUND_TASKS:\"1\"` in a **Tasks-tool-child spawn path**."
-Re-grepping the same 1.18286.0 asar: each variable appears **exactly once** in the
-whole bundle, and the site is the **main local-agent spawn env builder** — the same
+`CLAUDE_CODE_DISABLE_AGENTS_FLEET` and `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS` (both `"1"`) are not
+set in a Tasks-tool-child spawn path. In the 1.18286.0 asar each variable appears **exactly once** in
+the whole bundle, and the site is the **main local-agent spawn env builder** — the same
 object literal that sets `CLAUDE_CODE_IS_COWORK:"1"`, `CLAUDE_CODE_ENTRYPOINT:
 "local-agent"`, `CLAUDE_CODE_TAGS: lam_session_type:${sessionType??"chat"}`, and
 `CLAUDE_CODE_ENABLE_TASKS:"true"`. There is no separate Tasks-tool-child spawn site in
-this build. The practical consequence is bigger than L114 implied: backgrounding and
+this build. So backgrounding and
 Fleet/agent-view are suppressed for **every** Cowork session, not just nested
 Tasks-tool children. (Note the adjacent `CLAUDE_CODE_ENABLE_TASKS:"true"` — the
 Ch26/L109 Tasks *tool family* is ON in Cowork even while *background* tasks are

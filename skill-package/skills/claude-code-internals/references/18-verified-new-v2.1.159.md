@@ -195,8 +195,9 @@ for stalled/idle connections and a byte-level idle watchdog.
 complete) and can rewrite what's shown on screen — **without** changing the stored transcript — by
 returning `hookSpecificOutput.displayContent`. It is the **30th** entry in the master hook-event array.
 
-> **Count correction.** Older chapters cite "27" (ch9/L10, correct for v2.1.90) and "19" (ch17/L85-era
-> — a `diff-versions.sh` undercount artifact). The live master array is **30**:
+> **Count at v2.1.159: 30** (33 as of 2.1.260, unchanged at 2.1.280 — see `state/plugins-skills-hooks.md`).
+> "27" is the v2.1.90 count (ch9/L10); "19" (ch17/L85-era) is a `diff-versions.sh` undercount artifact.
+> The v2.1.159 master array:
 > `PreToolUse, PostToolUse, PostToolUseFailure, PostToolBatch, Notification, UserPromptSubmit,
 > UserPromptExpansion, SessionStart, SessionEnd, Stop, StopFailure, SubagentStart, SubagentStop,
 > PreCompact, PostCompact, PermissionRequest, PermissionDenied, Setup, TeammateIdle, TaskCreated,

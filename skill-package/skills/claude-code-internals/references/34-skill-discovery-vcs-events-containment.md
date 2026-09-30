@@ -1,6 +1,6 @@
 Updated: 2026-07-24 | Source: Multi-artifact first-party, prompted by the `claude-cowork-headless-emulator` project's `docs/internal/desktop-1.24012.0-unmodeled-surfaces-2026-07-21.md` (the recurring lead-source) then independently re-derived against THIS installation's own artifacts before any claim was written. Artifacts: host CLI bundles **2.1.215 / 2.1.216 / 2.1.217** (extracted via `extract-bundle.sh`, greppable) + the Desktop-managed host agent Mach-O **2.1.217** (`~/Library/Application Support/Claude/claude-code/2.1.217/…/claude`, confirmed byte-identical string-tables to the host CLI for the tool surface) + Desktop `app.asar` **1.24012.1** (live) diffed against **1.22209.0** (Ch36 baseline; both extracted with `@electron/asar` v4.2.1, `rg` over `.vite/build/*.js`) + the live GrowthBook `fcache` (2026-07-22 **07:48 boot snapshot**, gzip-wrapped — `tail -c +9 fcache | gunzip`, per Ch35 methodology) + an on-disk `audit.jsonl` corpus from **10+ real Cowork sessions, agent 2.1.165 → 2.1.209** (`local-agent-mode-sessions/**/audit.jsonl` — the load-bearing `system/init` `tools`-array ground truth) + Desktop `main.log`/`cowork_vm_node.log`. **Tier discipline:** L129, L130, L131 are all first-party verified this session (L131's asar diff was run 2026-07-22; every emulator-relayed claim re-derived). L132 is a **flagged lead / negative observation** — a single fresh 1.24012.1 session left no host-side transcript; the host-loop→VM-loop inference is explicitly unconfirmed. The `fcache` is a boot snapshot, so gate on/off states are that-capture, not per-session live reads.
 
-**2026-07-24 addendum pass** (three `### ADDENDUM` blocks below, under L129's ground-truth and gating sections and L131's `allowedTools` section): prompted by the emulator project's `docs/internal/2026-07-24-a2-sdk-mcp-discovery-confirmation.md`, then re-derived first-party against the same `app.asar` **1.24012.1** plus two *upgraded* evidence bases — the **full 427-file `audit.jsonl` corpus (1678 `system/init` records, agent 2.1.64 → 2.1.217**, vs the original pass's 10+ sessions / 2.1.165–2.1.209) and a **fresh gzip-wrapped `fcache` decode (2026-07-24 11:38)**. Net: the emulator doc's inventory, gate pair, `isEnabled` predicates, schemas and envelopes all **confirmed**; it **misses a 5th server** (`cowork-onboarding`, gate `2114777685` force-ON); its 4-server "12 tools" is really **13 across 5**; its version-gating recommendation is **unvalidated by this corpus** (no within-version splits); and L129's own stickiness parenthetical is **corrected** (a model switch re-reads the gates). Full verbatim schemas and output envelopes live in the state layer (`references/state/plugins-skills-hooks.md`), not inlined here.
+**2026-07-24 addendum pass** (three `### ADDENDUM` blocks below, under L129's ground-truth and gating sections and L131's `allowedTools` section): prompted by the emulator project's `docs/internal/2026-07-24-a2-sdk-mcp-discovery-confirmation.md`, then re-derived first-party against the same `app.asar` **1.24012.1** plus two *upgraded* evidence bases — the **full 427-file `audit.jsonl` corpus (1678 `system/init` records, agent 2.1.64 → 2.1.217**, vs the original pass's 10+ sessions / 2.1.165–2.1.209) and a **fresh gzip-wrapped `fcache` decode (2026-07-24 11:38)**. Net: the emulator doc's inventory, gate pair, `isEnabled` predicates, schemas and envelopes all **confirmed**; it **misses a 5th server** (`cowork-onboarding`, gate `2114777685` force-ON); its 4-server "12 tools" is really **13 across 5**; its version-gating recommendation is **unvalidated by this corpus** (no within-version splits); and the gate stickiness is pinned precisely (a model switch re-reads the gates). Full verbatim schemas and output envelopes live in the state layer (`references/state/plugins-skills-hooks.md`), not inlined here.
 
 **Methodology trap hit and recorded this pass:** extracted-asar chunks live under `.vite/build/` — a **dot-directory**, which `rg` skips by default. `rg -g '*.js' <pattern> .` from the extraction root returned **zero hits for strings that are demonstrably present**, briefly producing a false "gate absent from asar" reading. Same failure class as the gzip-wrapped-fcache trap (Ch35/L124). Always `cd` into `.vite/build` or pass `--hidden`, and run a **positive control** (grep a string you know is there) before writing any "absent from artifact X" claim.
 
@@ -116,7 +116,7 @@ The native tools (gated by `vLt`, i.e. `CLAUDE_CODE_REMOTE`) simply **never rend
 
 The SDK-MCP `skills` server appears iff `sessionType==="cowork"` (absent in chat/`ccd`), `skillsEnabled !== false`, and `suggestSkillsEnabled === true` — the last from gate **`245679952`, live `on/force`** on this machine (2026-07-22 fcache; re-confirmed `on/force`, `ruleId fr_movyeduu`, in a fresh 2026-07-24 decode). When `suggestSkillsEnabled` is false the server still ships but `suggest_skills` is filtered out and scrubbed from `list_skills`'s description, so `list_skills` renders independently. `1598976391` (`proactiveSkillSuggestEnabled`, NEW — the SDK-MCP twin of the agent-side `tengu_saddle_lantern` proactive mode) is `off/default`, so the proactive `trigger:["user_asked","proactive"]` plumbing is inert today. `3246569822` (`canSaveSkill`) `off/default`.
 
-### ADDENDUM (2026-07-24) — verbatim `isEnabled` predicates, the three-state builder, and a stickiness CORRECTION
+### ADDENDUM (2026-07-24) — verbatim `isEnabled` predicates, the three-state builder, and exact stickiness
 
 **Registry and builder.** Servers are plain objects `{serverName, tools, handleToolCall, isEnabled, getDynamicTools?}` (the 5th field is easy to miss) collected in array `si`, filtered per session by async builder `oi(model, suggestSkillsEnabled, sessionType, proactiveSkillSuggestEnabled)`, managed by class `InternalMcpServerManager` (it `logger.debug`s `Server ${serverName} not enabled, skipping`). The `serverName` constants: `$e="mcp-registry"`, `Fr="plugins"`, `kt="skills"`, `qr="cowork-onboarding"`, `jr="dev-debug"`, plus `ccd_session_mgmt`/`ccd_directory`/`ccd_session`.
 
@@ -139,7 +139,7 @@ So `skills`/`plugins` are scoped to the **`cowork` lane**, not to a protocol tie
 
 `Lr` is a shared schema constant `{type:"string", enum:["user_asked","proactive"], description:"How this started…"}`, normalized by `Ur(t)` (returns the value only if it is one of the two literals, else `undefined`). `search_plugins` references the same `Lr` **ungated** — so `trigger` is permanently present there but conditional on `skills`.
 
-**CORRECTION to the stickiness claim above.** "Flags are sticky per session (a built system prompt is not rebuilt mid-session)" is directionally right but wrong in two ways that matter. The real code:
+**Stickiness, exactly.** The flags look simply "sticky per session (a built system prompt is not rebuilt mid-session)" — directionally right, but wrong in two ways that matter. The real code:
 
 ```js
 ht = ft(K,U)
@@ -361,26 +361,24 @@ Both swap a refresher-object for a clear-cache-then-re-resolve path; live-lane a
 - `3705360580` (CCD): `isFeatureEnabled("3705360580")?(await n.expireForConfig(n.getCcdOauthConfig()), …readCc…)`.
 - `1549258603` (SDK): `isFeatureEnabled("1549258603")?(await o.clearTokenCache(), i=await this.resolveSdkOauthToken(e))`.
 
-## Gate-state correction from the live fcache
+## Gate state from the live fcache — absence belongs to a snapshot
 
-> **AMENDED 2026-08-05 (Desktop 1.25927.0, fcache `9d75909785dc344e`). Two of the four claims below
-> have rotted, and the "absent" framing itself was too strong. Read the amendment first.**
+Four of the new gate ids — `278625510`, `1311049725` (L130), `1549258603`, `3705360580` — are newly
+*present in the asar* (1.24012.1) but were absent from the fcache snapshot of 2026-07-24. Across three
+snapshots:
 
-**Original claim (fcache snapshot 2026-07-24):** four of the new gate ids — `278625510`,
-`1311049725` (L130), `1549258603`, `3705360580` — are absent from the fcache, even though all four are
-newly *present in the asar*.
+| Gate | 2026-07-24 | fcache `9d75909785dc344e` (2026-08-05, Desktop 1.25927.0) | 2026-08-13 (Desktop 1.28929.0, 254 features) |
+|---|---|---|---|
+| `278625510` (MCP-skills ext, `getMcpSkillSources`) | absent | absent | absent |
+| `3214976288` (`morning` bundled skill) | absent | absent | absent |
+| `1311049725` (VCS-events consumption, **L130**) | absent | **present, `defaultValue`, off** | — |
+| `1549258603` (SDK OAuth refresh) | absent | **present, `defaultValue`, off** | **present, `off`/`defaultValue`** |
+| `3705360580` (CCD OAuth refresh) | absent | **present, `defaultValue`, off** | **present, `off`/`defaultValue`** |
 
-**Amendment.** Re-checked against a later snapshot, **only two still hold**:
+The two OAuth-refresh ids settled into `present/defaultValue/off` and stayed there across two
+independent snapshots eight days apart, while `278625510` and `3214976288` stayed unevaluated.
 
-| Gate | 2026-07-24 | fcache `9d75909785dc344e` (2026-08-05) |
-|---|---|---|
-| `278625510` (MCP-skills ext) | absent | absent — holds |
-| `3214976288` (`morning`) | absent | absent — holds |
-| `1311049725` (VCS-events consumption, **L130**) | absent | **present, `defaultValue`, off** |
-| `1549258603` (SDK OAuth refresh) | absent | **present, `defaultValue`, off** |
-| `3705360580` (CCD OAuth refresh) | absent | **present, `defaultValue`, off** |
-
-**Why this happened, and the rule that replaces it.** The fcache is refetched irregularly — measured at
+**Why, and the rule.** The fcache is refetched irregularly — measured at
 3.7, 4.0, 9.0 and 20.8-minute intervals in one 30-minute window — and its *membership* churns
 **count-neutrally** (one id added, one removed, total unchanged at 241). So **"absent from the fcache"
 is a property of a snapshot, never of a gate**, and equal feature counts do not imply equal payloads.
@@ -396,43 +394,21 @@ Use this three-state vocabulary instead of absent/present:
 | **present + `defaultValue`** | evaluated; no server rule matched, so the coded default applies |
 | **present + `force`** | a server rule actively matched |
 
-Note that `defaultValue`-off is much closer to the original "unevaluated" reading than `force`-off is,
-so this is an **amendment, not a reversal**: the practical upshot (no server rule is driving these) was
-right; the mechanism was not.
+`defaultValue`-off is much closer to "unevaluated" than `force`-off is: in both, no server rule is
+driving the gate; the difference is only whether it was evaluated.
 
-The authoritative per-gate state now lives in `state/registry.json` as a structured
+**Absence is a state that expires.** A note that says "gate X is absent from the fcache" is only true as
+of the snapshot it was read from; carry the capture date (or the snapshot's content hash, per the rule
+above) alongside any absence claim, the same way a presence/state claim must — an undated "absent" ages
+into a false claim exactly as silently as an undated "off" would.
+
+The authoritative per-gate state lives in `state/registry.json` as a structured
 `observed: {present, source, on, at}` stamped with the snapshot's `content16`, and
 `validate-state.js` **rejects fcache-absence claims written in prose**.
 
 `1598976391` (`0→1` in asar) evaluated `off/default` at the 2026-07-24 snapshot; **at
-`9d75909785dc344e` it is `on/force`** (see the L129 amendment). `245679952` (`1→1`, pre-existing)
-remains `on/force`.
-
-### ADDENDUM (2026-08-13, fcache 254 features) — the original four "absent" ids, re-checked: half have moved again
-
-This lesson originally recorded **four** gate ids as absent from the fcache
-(`278625510`, `1311049725`, `1549258603`, `3705360580`); the 2026-08-05 amendment above already
-resolved `1311049725`. A fresh capture against Desktop **1.28929.0** (2026-08-13, `254` features)
-re-checks the remaining two OAuth-refresh ids from that original set, plus the two that this lesson's
-own "MCP-skills"/"`morning`" findings are keyed on:
-
-| id | 1.24012.1 original claim | now (2026-08-13) |
-|---|---|---|
-| `1549258603` (SDK OAuth refresh) | absent | **present, `off`/`defaultValue`** |
-| `3705360580` (CCD OAuth refresh) | absent | **present, `off`/`defaultValue`** |
-| `278625510` (`getMcpSkillSources`) | absent | still absent |
-| `3214976288` (`morning` bundled skill) | absent | still absent |
-
-Same transition already recorded once for `1549258603`/`3705360580` at 2026-08-05 — this is a
-**second, independent confirmation**, eight days later, of the same two ids settling into
-`present/defaultValue/off` and staying there, while the other two stay unevaluated. That repetition is
-itself the useful result: it turns this lesson's original principle — *absent from the fcache means
-unevaluated, not off* — from a single worked example into a **vindicated, repeatable** one, and adds a
-sharper corollary. **Absence is a state that expires.** A note that says "gate X is absent from the
-fcache" is only true as of the snapshot it was read from; carry the capture date (or the snapshot's
-content hash, per the rule established above) alongside any absence claim, the same way a presence/state
-claim already must — an undated "absent" ages into a false claim exactly as silently as an undated
-"off" would.
+`9d75909785dc344e` it is `on/force`** (see the L129 addendum of 2026-08-05). `245679952` (`1→1`,
+pre-existing) remains `on/force`.
 
 ---
 

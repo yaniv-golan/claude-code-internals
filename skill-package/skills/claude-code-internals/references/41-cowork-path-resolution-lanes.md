@@ -15,15 +15,15 @@ Updated: 2026-08-27 | Source: A **withdrawal**. First-party re-derivation agains
 
 # LESSON 163 — THE BASH cwd WAS NEVER THE OUTPUTS DIRECTORY
 
-**`mcp__workspace__bash` starts at the session root `/sessions/<id>` under host-loop — with and without a connected folder, and it always did. The Desktop's shipped system prompt claimed it started in the outputs directory until Desktop 1.32885.1 corrected the text. This skill copied that prompt and published it as behaviour. The behaviour never changed; the claim was simply wrong, and it is withdrawn here.**
+**`mcp__workspace__bash` starts at the session root `/sessions/<id>` under host-loop — with and without a connected folder, and it always did. The trap: the Desktop's shipped system prompt said it started in the outputs directory until Desktop 1.32885.1 changed the text. The behaviour never changed; only the prompt did.**
 
-## What was published, and where it came from
+## The guidance the old prompt suggests, and why it is wrong
 
-Ch24/L107 quoted the Desktop-injected prompt verbatim and drew the wrong conclusion from it: *"one shared scratch space, two path namespaces"*, with the guidance *"use bare filenames with both"*. That framing propagated to Ch35/L124's `first-folder-else-outputs` rule, to `state/cowork-architecture.md`, to `state/cowork-permissions.md`, to `troubleshooting.json`, and — worst — into `state/author-facts.json`, which is direct instruction to skill authors.
+Read at face value, the pre-1.32885.1 Desktop-injected prompt suggests *"one shared scratch space, two path namespaces"*, with the guidance *"use bare filenames with both"*, and a `first-folder-else-outputs` cwd rule. All three are wrong: the shell's cwd is the session root, so a bare filename in bash lands in VM-only scratch, not in `outputs`.
 
 ## The measurement that settles it
 
-This skill already held the disproof. Ch40's four live Cowork probes (Desktop **1.25927.0**, host agent **2.1.221**, 2026-08-05) recorded, for the local lane:
+Ch40's four live Cowork probes (Desktop **1.25927.0**, host agent **2.1.221**, 2026-08-05) recorded, for the local lane:
 
 | | local VM lane | remote lane |
 |---|---|---|
@@ -31,7 +31,7 @@ This skill already held the disproof. Ch40's four live Cowork probes (Desktop **
 
 1.25927.0 is **before** 1.32885.1, and that build still shipped the old prompt text. So the shell was already starting at the session root while the prompt said outputs. `37-cowork-probe-corrections.md:178` adds *"`$HOME` equals the session root — `/sessions/<slug>`"* from the same probes.
 
-**Corroboration — UPGRADED to first-party (2026-08-27).** Initially recorded here as relayed. The probe sessions turned out to live on this machine, so the measurements were re-read directly from the **agent transcripts** under `.claude/projects/` — the faithful record per Ch40/L143, *not* the translated `audit.jsonl`. Every exact-`pwd` tool call found across all 1589 stored transcripts:
+**Corroboration (first-party, 2026-08-27).** The probe sessions live on this machine, so the measurements were read directly from the **agent transcripts** under `.claude/projects/` — the faithful record per Ch40/L143, *not* the translated `audit.jsonl`. Every exact-`pwd` tool call found across all 1589 stored transcripts:
 
 | session | tool | `pwd` result |
 |---|---|---|
@@ -110,9 +110,9 @@ That turns the two-forms rule into **two constant prefixes**, neither of which i
 | Claude Code CLI | `outputs/` | `outputs/` (one cwd, shared) |
 | Cowork, host-loop | *(bare)* | `mnt/outputs/` |
 
-**The consequence is worth more than the form.** A skill that must run on more than one surface needs **runtime discrimination, not host-path derivation** — it never needs `/Users/…/local_<id>/outputs`, the session id, or `CLAUDE_CODE_*`. That principle stands. **The one-line probe first published here to implement it does not, and is withdrawn.**
+**The consequence is worth more than the form.** A skill that must run on more than one surface needs **runtime discrimination, not host-path derivation** — it never needs `/Users/…/local_<id>/outputs`, the session id, or `CLAUDE_CODE_*`. **A tempting one-line probe does not implement it.**
 
-**WITHDRAWN (2026-08-27, same day) — `BASE="$([ -d mnt/outputs ] && echo mnt/outputs || echo outputs)"`.** It reintroduces the doubling bug on Chat mode, silently, and **the refutation was already in this chapter** — L166's own surface table, two lessons below:
+**Trap — `BASE="$([ -d mnt/outputs ] && echo mnt/outputs || echo outputs)"`.** It looks right and reintroduces the doubling bug on Chat mode, silently — L166's surface table, two lessons below, shows why:
 
 | surface | bash cwd | `[ -d mnt/outputs ]` | `BASE` resolves to |
 |---|---|---|---|
@@ -121,7 +121,7 @@ That turns the two-forms rule into **two constant prefixes**, neither of which i
 | remote / cloud | `/home/claude` | false | `/home/claude/outputs` (discarded anyway) |
 | Claude Code CLI | the project dir | false | invents `outputs/` in the user's repo |
 
-On Chat mode the shell is *already inside* the outputs directory, finds no `mnt/outputs` beneath it, and the fallback appends `outputs/` — the exact failure L164 exists to prevent. **The root cause is that the probe has one bit of evidence and three or more surfaces to separate**, and it tests for *the Cowork mount* while assuming everything else is CLI-shaped. Its failure is silent, which by this chapter's own standard is disqualifying. *(Caught by the `skill-creator-plus` session, against this chapter's own table.)*
+On Chat mode the shell is *already inside* the outputs directory, finds no `mnt/outputs` beneath it, and the fallback appends `outputs/` — the exact failure L164 exists to prevent. **The root cause is that the probe has one bit of evidence and three or more surfaces to separate**, and it tests for *the Cowork mount* while assuming everything else is CLI-shaped. Its failure is silent, which by this chapter's own standard is disqualifying.
 
 **The better default is that a script should not self-locate at all.** Taken to its conclusion, "test for the thing you need, not who you are talking to" says the thing a script needs is **a destination**, and the component that knows it is the **caller** — which holds the file tools, has already resolved the workspace, and is the only party that can name a path the user will actually see. So: the caller resolves the destination once and passes it as an absolute argument to every shell command and every dispatch prompt; the script accepts it and **echoes back the resolved path it actually wrote**. No probe, no identity check, and nothing to revise when a lane moves.
 
@@ -131,7 +131,7 @@ Where a script genuinely must run standalone with no caller, make the destinatio
 
 Whatever the mechanism, a script should still **print the destination it resolved**, which converts the silent-misfire property of this whole failure class into a visible one — the single most useful thing an author can do here, because every bug in this chapter is silent by construction.
 
-**On the residual assumption, and why narrowing it was not enough.** The withdrawn probe inferred *"the file tools are rooted at outputs"* from *"bash can see a `mnt/outputs`"* — two different facts. That risk was correctly identified and narrowed by the adopting project as "no such runtime is known", and **that framing was itself too generous**: the counterexample was not an unknown future runtime but Chat mode, already documented two lessons below. A narrowed assumption still fails where it fails; stating an assumption is not the same as checking it against the cases you already hold. Recorded because two sessions reviewed this idiom, one of them sharpened its risk statement, and neither checked it against the table in the same file.
+**On the residual assumption, and why narrowing it is not enough.** The probe infers *"the file tools are rooted at outputs"* from *"bash can see a `mnt/outputs`"* — two different facts. Narrowing that risk to "no such runtime is known" is too generous: the counterexample is not an unknown future runtime but Chat mode, documented two lessons below. A narrowed assumption still fails where it fails; stating an assumption is not the same as checking it against the cases you already hold.
 
 **The trade-off, stated so a reader can choose.** The relative form depends on bash's cwd remaining the session root — and L163 is the record of that value being mis-described for months, so it is not immutable. The absolute form depends on obtaining `<id>`, which costs a `pwd`. Prefer relative for portability, absolute when a path must survive being passed between calls or written into a file, and never assume either is correct for the *other* tool family.
 
@@ -302,7 +302,7 @@ This chapter and Ch45/L167 accumulated four distinct wrong answers in a single d
 Two corollaries this chapter earned the hard way:
 
 - **"None is known" is a claim about the search, not about the world.** A risk statement naming an unknown *future* counterexample is a prompt to go looking for a present one in material already held — which is exactly where it was, twice.
-- **A small, plausible correction deserves more suspicion than a large implausible one.** Both marker measurements landed 2 characters from an established figure, which reads as a satisfying refinement. A wildly different number would have forced a re-check; being nearly right is what let it through.
+- **A small, plausible revision deserves more suspicion than a large implausible one.** Both marker measurements landed 2 characters from an established figure, which reads as a satisfying refinement. A wildly different number would have forced a re-check; being nearly right is what let it through.
 
 This generalises past binary archaeology to any claim of absence — a tool not in a list, a string not in a bundle, a gate not in an fcache, a lane where a rule "does not apply". **Ch37/L129's `system/init`-is-authoritative rule is the positive form of the same idea:** prefer the record that *enumerates* over the reconstruction that *infers*, because an enumeration can be checked for completeness and an inference cannot.
 

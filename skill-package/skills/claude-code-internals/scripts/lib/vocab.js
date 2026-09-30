@@ -74,7 +74,7 @@ const { extractIdentifiers, normalize } = require('./identifiers.js');
 
 const PROPOSALS_FILE = 'data/vocab-proposals.json'; // relative to the repository root
 /** sha256 of data/vocab-proposals.json. Changed only together with a --generate run (see the header). */
-const PROPOSALS_SHA256 = '707a8caa5e55a93c90d94ad011be9863bceb45da22bd1487ea38b27659985766';
+const PROPOSALS_SHA256 = 'a4f3123c744fba8e8a749b224f677890b0f171dc5584788e68ae96ae47e31157';
 const DEFAULT_MODEL = 'claude-opus-5-5'; // evals/retrieval/gen-questions.js used claude-sonnet-5
 const PROMPT_VERSION = 'vocab-v1';
 const MAX_TERMS = 15;
@@ -82,7 +82,8 @@ const MAX_TERM_CHARS = 80;
 const MAX_TERM_WORDS = 12;
 const MAX_HOMES = 2;
 const LESSON_TEXT_LIMIT = 60000; // characters of lesson text sent to the model
-const MODEL_FLAGS = ['--safe-mode', '--tools', ''];
+// --setting-sources project: --safe-mode alone still loads ~/.claude/settings.json keys such as advisorModel.
+const MODEL_FLAGS = ['--safe-mode', '--setting-sources', 'project', '--tools', ''];
 
 const sha256 = (s) => crypto.createHash('sha256').update(s).digest('hex');
 
@@ -276,7 +277,7 @@ function buildPrompt(lesson, text) {
 }
 
 /**
- * One model call: `claude -p --model <model> --safe-mode --tools "" --output-format json`,
+ * One model call: `claude -p --model <model> --safe-mode --setting-sources project --tools "" --output-format json`,
  * stdin ignored, in a fresh temp cwd (so no repository CLAUDE.md steers it).
  */
 function callModelDefault(prompt, { model }) {

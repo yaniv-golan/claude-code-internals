@@ -977,7 +977,7 @@ slipped through:
 
 ## What Did NOT Change in v2.1.119
 
-- **Hook event types**: 19, unchanged
+- **Hook event types**: unchanged (a `diff-versions.sh` count of "19" here is its suffix-allowlist undercount — the master array is enumerated in L95)
 - **API beta strings**: 32, unchanged (no new beta despite the major surface additions)
 - **Permission pipeline**: unchanged 7-phase flow (L8)
 - **OIDC Federation surface (L86)**: unchanged
@@ -990,15 +990,10 @@ slipped through:
 
 ## Cowork's Tool Architecture: Why `Bash` Isn't Where You Expect It (And Where It Is)
 
-> **History — corrected three times.** Originally added v2.11.3 with a wrong mechanism
-> (claimed the CLI's async filter strips Bash; binary shows Bash IS in that allowlist).
-> Corrected v2.11.13 (2026-05-09) but kept sub-agent-specific framing. Corrected
-> v2.11.14 (2026-05-10) widening the scope to Cowork-wide. Corrected v2.11.15
-> (2026-05-10) leading with the clean framing instead of incrementally fixing the
-> original. The empirical claim ("Cowork sub-agents declared with narrow `tools:` lists
-> that include `Bash` find it unavailable") was always correct; the mechanism
-> explanations and scope framings shipped between v2.11.3 and v2.11.14 were wrong in
-> ways that masked the actual simple story.
+> **Trap.** Cowork sub-agents declared with narrow `tools:` lists that include `Bash` find
+> it unavailable. It looks like the CLI's async-agent filter stripping Bash, but the binary
+> shows Bash IS in that allowlist (see `Jl_` below), and the effect is not sub-agent-specific:
+> it is Cowork-wide, because Cowork has no built-in `Bash` tool at all.
 
 ### The simple story
 
@@ -1210,27 +1205,22 @@ they affect behavior, and they explain why a sub-agent can't ask the user questi
 or dispatch nested sub-agents. They just don't explain Bash unavailability — Bash
 was never registered in Cowork to be in this filter's input.
 
-The original v2.11.3 source-level trace (preserved as archaeology below) accurately
-described this filter's mechanism — `Tw8`/`Jl_`/`vc`/`r3H`/`F_8`/`Sz`/`n0`/`ev6`. It
-just looked at the wrong layer for the Bash question. Skip ahead to
-[Implications](#implications--updated-v21113-revised-2026-05-10) for the actionable
-guidance; what follows is debugging archaeology of the wrong layer.
+The source-level trace below accurately describes this filter's mechanism —
+`Tw8`/`Jl_`/`vc`/`r3H`/`F_8`/`Sz`/`n0`/`ev6` — but it is the wrong layer for the Bash
+question. Skip ahead to [Implications](#implications) for the actionable guidance.
 
 ### Plugin hooks in Cowork sessions
 
-> **CORRECTION (v2.11.18, verified against CLI 2.1.159).** The original v2.11.16 version of
-> this section claimed plugin hooks "never fire in Cowork" *because* `--setting-sources=user`
-> excludes plugin scope from hook discovery. **That mechanism is empirically false** and is
-> retracted below. What remains verified: (1) the desktop *does* spawn the in-VM CLI with
-> `--setting-sources=user` + per-plugin `--plugin-dir` (the logged argv below is real); (2) the
-> "zero hook lines in `cowork_vm_node.log`" observation is real. What's corrected: the *cause*.
-> **RESOLVED (real-Cowork test, 2026-06-01):** plugin hooks DO fire in Cowork (host-loop staging);
-> the determinant is a three-root plugin namespace — a real desktop Cowork session reads only
-> `local-agent-mode-sessions/<acc>/<org>/cowork_plugins` (install via the Cowork app UI), which the
-> standalone-CLI `--cowork` install never reaches. The empty-log observation = plugins not in that
-> namespace. Full mechanism below.
+> **Plugin hooks DO fire in Cowork (host-loop staging; verified against CLI 2.1.159 and a
+> real-Cowork test, 2026-06-01).** The desktop spawns the in-VM CLI with `--setting-sources=user`
+> + per-plugin `--plugin-dir` (the logged argv below is real), and a session can show zero hook
+> lines in `cowork_vm_node.log` — but `--setting-sources=user` is **not** the cause: it does not
+> exclude plugin scope from hook discovery. The determinant is a three-root plugin namespace — a
+> real desktop Cowork session reads only `local-agent-mode-sessions/<acc>/<org>/cowork_plugins`
+> (install via the Cowork app UI), which the standalone-CLI `--cowork` install never reaches. An
+> empty hook log means the plugins are not in that namespace. Full mechanism below.
 
-#### What was wrong: `--setting-sources=user` does NOT exclude plugin hooks
+#### Trap: `--setting-sources=user` does NOT exclude plugin hooks
 
 Direct test against the live CLI 2.1.159 — a canary plugin whose `SessionStart` hook runs
 `bash ${CLAUDE_PLUGIN_ROOT}/h.sh`:
@@ -1331,10 +1321,10 @@ via the Cowork app UI, run in a real desktop session) settled them:
   connectors; the only thing the *sandbox shell* ingests from the host is Anthropic's own auth via the SDK
   RPC channel (see L99).
 
-#### CORRECTION (static re-verification, 2026-07-07): `${CLAUDE_PLUGIN_ROOT}` is host-side *only under host-loop*
+#### `${CLAUDE_PLUGIN_ROOT}` is host-side *only under host-loop* (static verification, 2026-07-07)
 
 The "do not invoke plugin scripts via `${CLAUDE_PLUGIN_ROOT}` in-VM" guidance above is **host-loop-specific**.
-A static re-verification (`app.asar` 1.18286.0 + in-VM ELF `claude-code-vm/2.1.197` + host CLI 2.1.201) shows
+A static verification (`app.asar` 1.18286.0 + in-VM ELF `claude-code-vm/2.1.197` + host CLI 2.1.201) shows
 the token resolves to **whatever `--plugin-dir` the agent was spawned with** (`CLAUDE_PLUGIN_ROOT: t.path`),
 and the Desktop picks that dir in a single branch:
 
@@ -1350,8 +1340,8 @@ const Ei = isHostLoopModeEnabled ? await qX(installPath) : sdkPath   // -> passe
 
 **Decisive negative:** the string `claude-hostloop-plugins` is **absent from both agent binaries** (host CLI
 2.1.201, in-VM ELF 2.1.197) and appears only in `app.asar` — staging is a pure Desktop-driver concern, so an
-in-VM agent structurally cannot resolve the token to a host path. The v2.12.1 "resolves host-side
-**EVERYWHERE**" wording therefore means **host-loop everywhere**, not all modes.
+in-VM agent structurally cannot resolve the token to a host path. "Resolves host-side everywhere" is
+true of **host-loop everywhere**, not of all modes.
 
 Two host-loop mechanics of the staging helper `qX`:
 
@@ -1480,44 +1470,44 @@ staging and nothing fired. The real-Cowork test (canary installed via the Cowork
   has the await guard. Affects CCD too (intermittently, per race timing).
 - [#27398 — Cowork: Plugin hooks from hooks/hooks.json never fire](https://github.com/anthropics/claude-code/issues/27398):
   the user-reported symptom. Its title attributes the cause to "`--setting-sources user` excludes
-  plugin scope" — **that attribution is the mechanism this correction retracts** (see above; closed
-  as a duplicate of #16288). The symptom reports may be real; the `--setting-sources` *cause* is not
-  the explanation. The more likely real cause is the namespace split (a normally-installed plugin
-  isn't in `cowork_plugins/`) — pending the decisive real-Cowork test.
+  plugin scope" — **that attribution is wrong** (see above; closed as a duplicate of #16288). The
+  symptom reports may be real; the `--setting-sources` *cause* is not the explanation. The cause the
+  real-Cowork test pins down is the namespace split: a normally-installed plugin isn't in the
+  desktop's account/org `cowork_plugins/` namespace.
 
-The #16288 race is a real, separate bug, independent of this correction: most CLI hook dispatchers
+The #16288 race is a real, separate bug, independent of the namespace split: most CLI hook dispatchers
 fire `loadPluginHooks()` fire-and-forget; only `processSessionStartHooks` awaits it, so a slow load
 can make plugin hooks invisible (affects CCD intermittently too). That race is orthogonal to anything
 Cowork-specific.
 
-#### Reported impact (from issue thread — symptoms, cause now reattributed)
+#### Reported impact (from issue thread)
 
 Plugin authors reported `Stop`/`SubagentStop` telemetry hooks and `PostToolUse:Skill` matchers
 silently no-opping in Cowork, and `UserPromptSubmit` working inconsistently. These symptom reports
-may be genuine, but per the correction above they are **not** explained by `--setting-sources=user`
-excluding plugin scope. If reproduced, the likely cause is the plugin not being in the Cowork
-namespace (or the #16288 race) — to be confirmed by the real-Cowork test.
+may be genuine, but they are **not** explained by `--setting-sources=user` excluding plugin scope.
+If reproduced, the likely cause is the plugin not being in the desktop Cowork namespace (or the
+#16288 race).
 
 #### Workaround
 
 Declaring hooks in `~/.claude/settings.json` (user scope) is a reliable fallback — those fire in
 both Cowork and CCD. (This works regardless of the root cause; it is *not* evidence that plugin hooks
-are excluded.) For shipping plugin hooks in Cowork, the right path is to install the plugin into the
-Cowork namespace (`claude plugin install --cowork`, user scope) so it's actually loaded — then,
-pending the decisive test, its `hooks/hooks.json` should fire like any other plugin's.
+are excluded.) For shipping plugin hooks in Cowork, install the plugin through the Cowork app UI so it
+lands in the desktop's `local-agent-mode-sessions/<acc>/<org>/cowork_plugins` namespace; its
+`hooks/hooks.json` then fires like any other plugin's. The standalone `claude plugin install --cowork`
+writes `~/.claude/cowork_plugins/`, which a desktop Cowork session does not read.
 
 #### Implication for the `userconfig-probe` plugin
 
-The `userconfig-probe` plugin declares its `SessionStart` hook in `hooks/hooks.json`. Earlier this
-section claimed that hook "will not fire in Cowork — it's plugin-scope, excluded by
-`--setting-sources=user`." **Retracted.** Whether it fires depends on whether the plugin is in the
-Cowork namespace (and, possibly, on headless-mode behavior) — not on settings-source scope. To
-validate end-to-end, install it with `--cowork` and run the real-Cowork log test above; the
-user-scope `settings.json` fallback also works.
+The `userconfig-probe` plugin declares its `SessionStart` hook in `hooks/hooks.json`. It is plugin
+scope, but `--setting-sources=user` does not exclude it: whether it fires in Cowork depends on whether
+the plugin is in the desktop Cowork namespace (and, possibly, on headless-mode behavior) — not on
+settings-source scope. To validate end-to-end, install it through the Cowork app UI and run the
+real-Cowork log test above; the user-scope `settings.json` fallback also works.
 
-### Original v2.11.3 trace (preserved for archaeology)
+### The async sub-agent filter trace (v2.1.120 bundle)
 
-What follows is the original v2.11.3 source-level trace of the CLI's async sub-agent
+What follows is a source-level trace of the CLI's async sub-agent
 filter (`Tw8`/`Jl_`/`vc`/`r3H`/`F_8`/`Sz`/`n0`/`ev6`). The trace is correct as a
 description of *that filter*, but the filter is not the gate that explains "Bash
 unavailable in Cowork." See [Cowork-wide tool architecture](#cowork-wide-tool-architecture)
@@ -1558,7 +1548,7 @@ function vc(H, _, q = false, K = false) {
 }
 ```
 
-### `Jl_` allowlist contents — CORRECTED v2.11.13
+### `Jl_` allowlist contents
 
 ```
 Bq    "Read"
@@ -1572,15 +1562,15 @@ s7    "Write"
 Af    "NotebookEdit"
 Xf    "Skill"
 cN    "TaskStop"
-...gP   (SPREAD — was unresolved at original trace time; v2.11.13 resolved it)
+...gP   (SPREAD)
         gP = VW = [wq, D9] = ["Bash", "PowerShell"]
 QW, $j, Al_, zl_, JA, FP   (other resolved members in v2.1.138 / v2.1.119:
                             "StructuredOutput", "ToolSearch", "EnterWorktree",
                             "ExitWorktree", "REPL", "Monitor")
 ```
 
-**v2.11.3 said:** `Dq = "Bash"` is not in `Jl_`. **v2.11.13 correction:** `Dq` was the
-wrong symbol to grep for — Bash's symbol was `wq` (v2.1.119) and `Vq` (v2.1.138). Bash
+**Trap:** grepping `Jl_` for `Dq = "Bash"` finds nothing, which looks like "Bash is not in
+the allowlist". `Dq` is the wrong symbol — Bash's symbol was `wq` (v2.1.119) and `Vq` (v2.1.138). Bash
 IS in `Jl_` (v2.1.119) and `Ys_` (v2.1.138), via the `...VW` / `...$2` spread member.
 Cross-version verification:
 
@@ -1700,15 +1690,15 @@ Cowork might be permission-tightening; `Task` because it was the only declaratio
 from a known-working plugin agent's frontmatter). Neither hypothesis matched the source
 trace. The fix that worked is the one the source predicted.
 
-### Implications — UPDATED v2.11.13 (revised 2026-05-10)
+### Implications
 
 For skill authors targeting Cowork (top-level main session AND forked sub-agents alike):
 
 - **Declaring `tools: [..., "Bash", ...]` is a no-op in Cowork.** The literal name
   `Bash` doesn't refer to a registered tool in any Cowork dispatch level. Declarations
-  fall into `invalidTools` silently. This is true at top-level too — the asymmetry
-  prior versions of this lesson implied (top-level has Bash, sub-agent doesn't) does
-  not exist. Cowork main sessions also lack built-in `Bash`; they just hide it well
+  fall into `invalidTools` silently. This is true at top-level too — there is no
+  "top-level has Bash, sub-agent doesn't" asymmetry, though it is easy to infer one.
+  Cowork main sessions also lack built-in `Bash`; they just hide it well
   because the model knows to use `mcp__workspace__bash` transparently when a user asks
   for shell.
 
@@ -1725,8 +1715,8 @@ For skill authors targeting Cowork (top-level main session AND forked sub-agents
 
 - **Moving shell-bound work to the top Cowork session does not give you built-in Bash.**
   Top-level lacks built-in Bash too; it just routes to `mcp__workspace__bash`
-  transparently. The "move to top session" pattern that earlier versions of this lesson
-  suggested still has merit — the top session has the `Agent` tool (sub-agents don't)
+  transparently. The "move to top session" pattern still has merit for other reasons —
+  the top session has the `Agent` tool (sub-agents don't)
   and absorbs intermediate work into parent context — but it's not "the place where
   Bash is registered." There is no such place in Cowork.
 
@@ -1892,10 +1882,10 @@ looks correct (the validator accepts it; the rule works in `allowedTools`), but 
 runtime classifier silently drops it. Authors get the same "agent has no tools"
 symptom as the Bash-strip case, and the cause looks identical from the model's side.
 
-### Status of the symbol resolutions — CORRECTED v2.11.13
+### Status of the symbol resolutions
 
-The original v2.11.3 list said `Dq=Bash`. **That was wrong.** `Dq` is unresolved (not
-Bash in any traced version). Bash's symbol in v2.1.119 was `wq`, in v2.1.138 is `Vq`,
+`Dq` is **not** Bash in any traced version (it is unresolved), though it is easy to
+mistake for it. Bash's symbol in v2.1.119 was `wq`, in v2.1.138 is `Vq`,
 and it reaches `Jl_`/`Ys_` indirectly via the spread member `VW`/`$2`.
 
 Resolved (v2.1.119 / v2.1.138 — minified symbols rename per release):
@@ -1978,12 +1968,12 @@ empirical probe was correct; the symbol trace looked at the wrong file.
    `Agent`). Most tools — including `WebSearch`, all `mcp__cowork__*`, all
    `mcp__workspace__*`, all connector tools — are in the deferred tier, name-visible
    but schema-loaded only when `ToolSearch` is called. Tools missing from the immediate
-   list may still be callable. The original v2.11.3 probe missed this and concluded
-   shell was unreachable from sub-agents — it isn't, just deferred.
+   list may still be callable. A probe that checks only the immediate tier concludes
+   shell is unreachable from sub-agents — it isn't, just deferred.
 
 9. **Plugin hooks DO fire in Cowork; the determinant is which plugin root the plugin lives in, NOT
-   `--setting-sources`** (corrected + RESOLVED v2.11.18). The earlier claim — that
-   `--setting-sources=user` silently excludes plugin-scoped hooks — is **retracted**: tested against
+   `--setting-sources`.** `--setting-sources=user` does **not** silently exclude plugin-scoped
+   hooks: tested against
    CLI 2.1.159, `--plugin-dir <plugin> --setting-sources=user` fires the `SessionStart` hook and
    resolves `${CLAUDE_PLUGIN_ROOT}`; the binary loads plugin hooks via the plugin-enablement pipeline
    (`loadPluginHooks`/`p6H`), not settings-source resolution. **End-to-end confirmed (2026-06-01):** a
@@ -1995,10 +1985,10 @@ empirical probe was correct; the symbol trace looked at the wrong file.
    writes — `ph5()`/`A41()`); and the **desktop's** account/org root
    `local-agent-mode-sessions/<acc>/<org>/cowork_plugins/cache` (+`rpm/`), which is the ONLY one a
    real Cowork session reads. A plugin not in root #3 is never loaded → no hooks — which fully
-   explains the original "zero hook lines" observation. **Fix:** install via the Cowork app UI (or
+   explains a "zero hook lines" log. **Fix:** install via the Cowork app UI (or
    org-remote/RPM); the standalone CLI `--cowork` does NOT reach the desktop's namespace. `#16288`
    (fire-and-forget `loadPluginHooks` race) remains a real separate bug; `#27398`'s `--setting-sources`
-   attribution is the retracted part. See the
+   attribution is wrong. See the
    ["Plugin hooks in Cowork sessions"](#plugin-hooks-in-cowork-sessions) subsection above.
 
 ---
@@ -2279,11 +2269,10 @@ Don't conflate them.
 
 ## `CLAUDE_EFFORT` — A Frontmatter Field, a Template Token, and an OUTBOUND Env Var
 
-> **CORRECTION (2026-08-28, verified against CLI 2.1.233 / 2.1.246 / 2.1.247 / 2.1.248 / 2.1.250).**
-> This section was headed *"NOT an Env Var"*. That is **wrong**, and the error is instructive
-> because the evidence for it was real: there genuinely is **no read site** — `process.env.CLAUDE_EFFORT`,
-> `a.CLAUDE_EFFORT` and every other read form return **zero** hits in 2.1.250. The lesson drawn from that
-> was too broad. An env var has *two* directions, and only the inbound one was checked.
+> **Write-only env var (verified 2026-08-28 against CLI 2.1.233 / 2.1.246 / 2.1.247 / 2.1.248 / 2.1.250).**
+> The trap: there genuinely is **no read site** — `process.env.CLAUDE_EFFORT`, `a.CLAUDE_EFFORT` and every
+> other read form return **zero** hits in 2.1.250 — which makes it look like "not an env var". But an env
+> var has *two* directions, and the zero-read-site evidence covers only the inbound one.
 >
 > Outbound, it is unambiguously an env var. The Bash/hook child environment is built by one function:
 >
@@ -2297,27 +2286,24 @@ Don't conflate them.
 > `TRACEPARENT`, and — decisively — the CLI's **own hook-input schema** says so in prose:
 > *"effort level for the current turn (e.g., \"low\", \"medium\", \"high\", \"xhigh\", \"max\"), after any
 > silent downgrade for the selected model. Also exposed to hook commands and Bash as the
-> `CLAUDE_EFFORT` env var."* A product that documents a variable in its own schema is not one this
-> skill should be calling absent.
+> `CLAUDE_EFFORT` env var."*
 >
-> **What survives unchanged:** the frontmatter field and the `${CLAUDE_EFFORT}` template token below
+> **Also true:** the frontmatter field and the `${CLAUDE_EFFORT}` template token below
 > (still present, still substituted via `mS(model, effort)`), and Ch24/L107's *"`CLAUDE_EFFORT`-as-env
-> is a no-op"* — setting it **inbound** still does nothing, because nothing reads it. The precise
+> is a no-op"* — setting it **inbound** does nothing, because nothing reads it. The precise
 > statement is **write-only: exported to children, never consumed**.
 >
-> **Dating it:** present in every binary available here, back to 2.1.233. v2.1.120 itself could not be
-> re-checked (that build is long gone from disk), so whether this was already true when the section was
-> written, or landed later, is **unresolved** — the claim is corrected, not back-dated.
+> **Dating it:** present in every binary available here, back to 2.1.233. v2.1.120 itself cannot be
+> checked (that build is long gone from disk), so whether the export already existed at v2.1.120 or
+> landed later is **unresolved**.
 >
-> **The method lesson**, which is the reusable part: the original correction was right that the diff tool
-> had matched a string-table literal, and right that nothing reads the variable. It then concluded "not an
-> env var", which does not follow from either. *Confirming how a symbol is **not** used does not establish
-> that it is unused* — and "is X an env var" is two questions, not one. Same shape as this skill's other
-> instrument traps, except the instrument here was the question.
+> **The method point**, which is the reusable part: *confirming how a symbol is **not** used does not
+> establish that it is unused* — and "is X an env var" is two questions (inbound read, outbound export),
+> not one. Same shape as this skill's other instrument traps, except the instrument here is the question.
 
-**The original diff-correction, preserved:** v2.1.120's env-var diff initially flagged `CLAUDE_EFFORT` as
-new, and the diff regex did pick up the literal string `"CLAUDE_EFFORT"` from a binary string-table dump
-of the template-substitution token. The rest of the section's semantics stand:
+**A diff-tool trap:** v2.1.120's env-var diff flags `CLAUDE_EFFORT` as new because the diff regex picks
+up the literal string `"CLAUDE_EFFORT"` from a binary string-table dump of the template-substitution
+token — a string-table match, not an env read. The section's semantics:
 
 ### Two surfaces
 
@@ -2776,7 +2762,7 @@ prior chapters.
 
 ## What Did NOT Change in v2.1.120
 
-- **Hook event types**: 19, unchanged
+- **Hook event types**: unchanged (a `diff-versions.sh` count of "19" here is its suffix-allowlist undercount — the master array is enumerated in L95)
 - **API beta strings**: 32, unchanged
 - **`/fork` machinery (L87)**: unchanged
 - **OIDC Federation (L86)**: unchanged

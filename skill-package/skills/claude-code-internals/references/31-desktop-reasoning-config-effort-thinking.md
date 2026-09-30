@@ -14,7 +14,7 @@ Updated: 2026-07-08 | Source: First-party binary inspection of Claude Desktop `a
 
 ## The question this closes out
 
-Ch28/L114 corrected Ch24/L107's "`--effort medium` is a driver-passed literal" claim, replacing it with "a real per-session `LocalSessions.setEffort/getEffort/getDefaultEffort/setFastMode` IPC family backed by `CLAUDE_CODE_EFFORT_LEVEL`." That correction was **half right**: the IPC family is real, but re-tracing the actual spawn-time resolver in 1.19367.0 shows the value that reaches `--effort <level>` at spawn does **not** come from `CLAUDE_CODE_EFFORT_LEVEL` at all — it comes from a **local settings-file object**, with `CLAUDE_CODE_EFFORT_LEVEL` living on a *different, non-spawn-path* `getDefaultEffort()` implementation elsewhere in the same bundle. Separately: what governs extended thinking, and is the `31999` thinking-token figure (first noted as a bare "driver-passed number" in `cowork-control-protocol.md`) an arbitrary tunable or a fixed constant?
+Where does the Cowork spawn's `--effort <level>` come from? Ch28/L114 established that it is not a driver-passed literal: a real per-session `LocalSessions.setEffort/getEffort/getDefaultEffort/setFastMode` IPC family sets it. Tracing the actual spawn-time resolver in 1.19367.0 shows the value does **not** come from `CLAUDE_CODE_EFFORT_LEVEL` at all — it comes from a **local settings-file object**, with `CLAUDE_CODE_EFFORT_LEVEL` living on a *different, non-spawn-path* `getDefaultEffort()` implementation elsewhere in the same bundle. Separately: what governs extended thinking, and is the `31999` thinking-token figure (first noted as a bare "driver-passed number" in `cowork-control-protocol.md`) an arbitrary tunable or a fixed constant?
 
 **Headline, confirmed first-party against this installation's own 1.19367.0 `app.asar`:** extended thinking is a **strict boolean** (budget is always exactly `31999` or `0`, never an arbitrary N), and effort is a **per-model enum** resolved from a settings object, with a hardcoded `"medium"` fallback — **both delivered exclusively as CLI flags** (`--effort <level>`, `--max-thinking-tokens <N>` / `--thinking disabled`), never as env vars. `CLAUDE_CODE_EFFORT_LEVEL` is real, but it backs a sibling, non-spawn-path getter, not the value that ships in the Cowork spawn argv.
 
@@ -74,13 +74,13 @@ BGr=new Set(["low","medium","high","max"])   // note: no "xhigh" in this particu
 
 **Delivery is a CLI flag, never an env var**: `effort: qgi(...)` is a JS-level object field consumed by argv construction (`--effort <level>`), and `CLAUDE_EFFORT` as a `process.env` var is confirmed (both here and in `cowork-control-protocol.md`) to be a no-op on the agent side.
 
-## Part C — correcting Ch28/L114 Part C: `CLAUDE_CODE_EFFORT_LEVEL` does not back this spawn value
+## Part C — `CLAUDE_CODE_EFFORT_LEVEL` does not back this spawn value
 
-Ch28/L114 stated the `--effort` value is backed by `getDefaultEffort()`, quoting:
+The trap: the 1.18286.0 bundle carries an env-var-backed `getDefaultEffort()` (Ch28/L114),
 ```js
 async getDefaultEffort() { return await Uq(), RT().CLAUDE_CODE_EFFORT_LEVEL ?? process.env.CLAUDE_CODE_EFFORT_LEVEL ?? null }
 ```
-and concluded "Desktop has its own per-session UI/IPC layer on top of that same env var." Re-tracing the actual spawn path in 1.19367.0 shows **this framing conflates two separate `getDefaultEffort()` implementations that coexist in the same bundle**:
+which makes it look as if Desktop's per-session UI/IPC layer sits on top of that env var. Tracing the actual spawn path in 1.19367.0 shows **two separate `getDefaultEffort()` implementations coexist in the same bundle**:
 
 ```js
 async getDefaultEffort(){return r.getDefaultEffort()}                                          // thin IPC passthrough
@@ -88,9 +88,9 @@ async getDefaultEffort(){return await n.getShellPath(), n.loadUserEnvVars().CLAU
 ```
 The **second** one (env-var-backed, same shape as Ch28/L114's quote, only re-minified — `Uq`/`RT` there vs `getShellPath`/`loadUserEnvVars` here, same mechanism) is a **standalone getter**, not proven to feed the Cowork per-session spawn's `effort:` field. The **actual** value that reaches the agent's `--effort` argv comes from `qgi(effortOverride, A1e(model), E2t())` (Part B) — and `E2t()`/`A1e()` both read exclusively from `Fl()`, the **local settings object** (`effort`/`effortByModel` fields, confirmed by the same object's schema validator: `typeof e.effort<"u"&&typeof e.effort!="string"||typeof e.effortByModel<"u"&&!Sgr(e.effortByModel)`, i.e. a Zod-style shape check on exactly those two keys), **never** touching `CLAUDE_CODE_EFFORT_LEVEL` or `process.env` anywhere in that chain.
 
-So: `CLAUDE_CODE_EFFORT_LEVEL` is real (lesson 93's CLI-side global effort-tier pin) and `getDefaultEffort()`-the-env-reader genuinely reads it — but that IPC method is a sibling accessor, not the thing that resolves a Cowork session's actual spawn-time effort. **Anyone citing Ch28/L114's "backed by `CLAUDE_CODE_EFFORT_LEVEL`" claim going forward should read it as: real env var, real getter, but not proven (and now shown not to be) the source of the per-session spawn value** — that source is the settings-file `effort`/`effortByModel` pair, with hardcoded `"medium"` as the final fallback, not the env var.
+So: `CLAUDE_CODE_EFFORT_LEVEL` is real (lesson 93's CLI-side global effort-tier pin) and `getDefaultEffort()`-the-env-reader genuinely reads it — but that IPC method is a sibling accessor, not the thing that resolves a Cowork session's actual spawn-time effort. **Real env var, real getter, but not the source of the per-session spawn value** — that source is the settings-file `effort`/`effortByModel` pair, with hardcoded `"medium"` as the final fallback.
 
-One naming note in the other direction, confirmed correct: the interface name **is** `LocalSessions` for `getEffort`/`getDefaultEffort`/`setFastMode` (verbatim `ipcRenderer` channel strings: `LocalSessions_$_getEffort`, `LocalSessions_$_getDefaultEffort`, `LocalSessions_$_setFastMode`) — Ch28/L114's naming holds. `setEffort` is unusual in being wired onto **both** `LocalSessions_$_setEffort` and `LocalAgentModeSessions_$_setEffort` channel strings — two interfaces exposing the same operation name, plausibly for the local-vs-bridge session variants Ch33/L119 documents; `setExtendedThinking` by contrast has only ever been found on `LocalAgentModeSessions`.
+One naming note, confirmed: the interface name **is** `LocalSessions` for `getEffort`/`getDefaultEffort`/`setFastMode` (verbatim `ipcRenderer` channel strings: `LocalSessions_$_getEffort`, `LocalSessions_$_getDefaultEffort`, `LocalSessions_$_setFastMode`) — Ch28/L114's naming holds. `setEffort` is unusual in being wired onto **both** `LocalSessions_$_setEffort` and `LocalAgentModeSessions_$_setEffort` channel strings — two interfaces exposing the same operation name, plausibly for the local-vs-bridge session variants Ch33/L119 documents; `setExtendedThinking` by contrast has only ever been found on `LocalAgentModeSessions`.
 
 ## Part D — the live-update path also drives `apply_flag_settings`
 
@@ -148,27 +148,27 @@ The source plan document ran a **live-log analysis** (not a static grep) against
 | `A1e(model)` / `Fl().effortByModel` | settings read | main process | Per-model effort override, settings-file-sourced, **not** env-backed |
 | `E2t()` / `BGr={low,medium,high,max}` | settings read + fallback | main process | Flat default effort; `"medium"` if unset or not in `BGr` (note: `xhigh` excluded from this particular set) |
 | `s1r` (4-class model-config map) / `o1r` (fable/mythos regex) / `i1r` (regex-default config) | data | main process | Four model-config classes: picker models, no-picker models, regex-default (fable/mythos, `disallowThinkingDisabled:!0`), unknown (Part B) |
-| `CLAUDE_CODE_EFFORT_LEVEL` | env var (cross-ref, corrected relationship) | a **sibling** `getDefaultEffort()` impl | Real, but **not** the source of the Cowork per-session spawn `effort:` value — corrects Ch28/L114 Part C |
+| `CLAUDE_CODE_EFFORT_LEVEL` | env var (cross-ref) | a **sibling** `getDefaultEffort()` impl | Real, but **not** the source of the Cowork per-session spawn `effort:` value — the trap in Ch28/L114 Part C |
 | `LocalSessions.{getEffort,getDefaultEffort,setFastMode}` / `LocalSessions`+`LocalAgentModeSessions`.`setEffort` | IPC interfaces | main process | Confirms Ch28/L114's interface naming; `setEffort` uniquely dual-wired onto both interfaces |
 | `applyFlagSettings({effortLevel})` → `apply_flag_settings` | control-protocol subtype | live-session update | First concrete payload shape confirmed for this previously name-only subtype (Part D) |
 
 ## What this means
 
 - **If you're modeling Cowork's reasoning config faithfully** (a harness, an SDK integration, a headless emulator): extended thinking is a boolean with exactly two possible resulting budgets, never an arbitrary number; effort is a per-model-validated enum with a hardcoded `"medium"` ultimate fallback, not the per-model `recommended`. Both travel exclusively as CLI flags — an env-var-based implementation of either knob does not match production.
-- **Ch28/L114's effort correction needs a further correction, not a full reversal.** The IPC family name and existence were right; the "backed by `CLAUDE_CODE_EFFORT_LEVEL`" causal claim was wrong — that env var backs an unrelated sibling getter, not the spawn path.
+- **`CLAUDE_CODE_EFFORT_LEVEL` backs an unrelated sibling getter, not the spawn path.** The `LocalSessions` IPC family (name and existence) is as Ch28/L114 describes, but the spawn `effort:` value is not env-backed.
 - **The two previously name-only control-protocol subtypes `set_max_thinking_tokens` and `apply_flag_settings` now have concrete, source-confirmed payload shapes** for the reasoning-config case specifically.
 
 ## Honesty & scope caveats
 
-- **First-party (my own greps, this pass, against this installation's own 1.19367.0 `app.asar`):** every quoted function body in Parts A–D, the four-class model-config map, the `LocalSessions`/`LocalAgentModeSessions` interface-naming disambiguation, and the correction to Ch28/L114 Part C.
+- **First-party (my own greps, this pass, against this installation's own 1.19367.0 `app.asar`):** every quoted function body in Parts A–D, the four-class model-config map, the `LocalSessions`/`LocalAgentModeSessions` interface-naming disambiguation, and the spawn-path trace behind Ch28/L114 Part C.
 - **Not independently re-derived here, relayed from the external plan document's live-log analysis:** Part E's flat-`"medium"`-not-`recommended` empirical confirmation. It is corroborated by, and consistent with, the static fallback logic in Part B, but this pass did not itself inspect a live spawn-log history to confirm it.
 - **Scope not covered:** the global settings kill-switch UI surface, and the fenced numeric escape-hatch pattern the source plan proposes for a harness's own debug affordance — both are harness-design questions for that project, not Cowork mechanism facts, and are out of scope for this skill.
 
-**Cross-references.** Ch28/L114 (`25-verified-new-v1.18286.0-desktop.md`, Part C — the `--effort` backing-store claim corrected here) · Lesson 93 (`CLAUDE_CODE_EFFORT_LEVEL`, the CLI-side global effort-tier pin this chapter confirms is real but not the Cowork spawn-path source) · `cowork-control-protocol.md` state page (the `--effort medium --max-thinking-tokens 31999` spawn-argv line and the `Bv1`/`set_max_thinking_tokens` dispatcher entry, both extended here with the full resolution mechanism) · Ch23/`23-cowork-spaces-tasks-checkpointing.md` (Ch26/L109 — first named `apply_flag_settings` without a payload; Part D supplies one) · Ch33/L119 (same first-party discipline against the same 1.19367.0 binary, and the `LocalAgentModeSessions`/`LocalSessions` interface-naming precedent this chapter extends).
+**Cross-references.** Ch28/L114 (`25-verified-new-v1.18286.0-desktop.md`, Part C — the `--effort` backing store, traced here) · Lesson 93 (`CLAUDE_CODE_EFFORT_LEVEL`, the CLI-side global effort-tier pin this chapter confirms is real but not the Cowork spawn-path source) · `cowork-control-protocol.md` state page (the `--effort medium --max-thinking-tokens 31999` spawn-argv line and the `Bv1`/`set_max_thinking_tokens` dispatcher entry, both extended here with the full resolution mechanism) · Ch23/`23-cowork-spaces-tasks-checkpointing.md` (Ch26/L109 — first named `apply_flag_settings` without a payload; Part D supplies one) · Ch33/L119 (same first-party discipline against the same 1.19367.0 binary, and the `LocalAgentModeSessions`/`LocalSessions` interface-naming precedent this chapter extends).
 
 ---
 
-### ADDENDUM (2026-08-30) — the per-model table at `app.asar` 1.40609.0, and a correction to what the "default class" is
+### ADDENDUM (2026-08-30) — the per-model table at `app.asar` 1.40609.0, and what the "default class" is
 
 Part B's mechanism holds at 1.40609.0 — per-model enum, a regex-matched class, resolution from the settings object. Two things are now pinned that were not before.
 
@@ -191,7 +191,7 @@ kvt = /^(?:claude-)?(?:fable|mythos)(?:-|$)/
 
 `recommended` is **not uniform** — `low` for sonnet-4-6, `medium` for sonnet-5 and opus-4-6, `high` for opus-4-8 and opus-5, `xhigh` for opus-4-7 — so a client that pins one effort value across models is applying a setting the product varies deliberately. Two models (sonnet-4-6, opus-4-6) have **no `xhigh`** at all, and `disallowThinkingDisabled` appears only on the Fable class and opus-5.
 
-**The correction — `Dvt` is the Fable/Mythos class, not a general fallback.** The resolver is:
+**`Dvt` is the Fable/Mythos class, not a general fallback.** The resolver is:
 
 ```js
 function Rvt(e){ let t=vw(e), n=Ovt[t] ?? (kvt.test(t) ? Dvt : void 0); if(!n) return; … }

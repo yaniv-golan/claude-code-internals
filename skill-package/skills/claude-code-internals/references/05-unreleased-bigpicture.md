@@ -483,6 +483,9 @@ export function tool<S>(name, description, schema, handler): SdkMcpToolDefinitio
 
 ### 26 Hook Events
 
+> The count in this source snapshot. 27 at v2.1.90 (L55); **33 as of 2.1.260** (unchanged at
+> 2.1.280) — see `state/plugins-skills-hooks.md`.
+
 ```javascript
 export const HOOK_EVENTS = [
   'PreToolUse', 'PostToolUse', 'PostToolUseFailure',

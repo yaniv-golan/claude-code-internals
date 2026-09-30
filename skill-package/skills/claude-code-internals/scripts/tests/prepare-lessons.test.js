@@ -1163,5 +1163,5 @@ test('--generate command line: default model, flags parsed, never part of --chec
   assert.strictEqual(P.parseArgs([]).model, 'claude-opus-5-5');
   assert.deepStrictEqual(P.parseArgs(['--regen', '3,4']).regen, [3, 4]);
   assert.throws(() => P.parseArgs(['--regen', 'x']));
-  assert.deepStrictEqual(V.MODEL_FLAGS, ['--safe-mode', '--tools', '']);
+  assert.deepStrictEqual(V.MODEL_FLAGS, ['--safe-mode', '--setting-sources', 'project', '--tools', '']);
 });

@@ -89,24 +89,20 @@ Algorithm:
 
 **Skills never disappear from the listing.**
 
-> ### ⚠️ CORRECTED 2026-08-05 — the global-collapse failure mode no longer exists
+> ### ⚠️ Current algorithm (agent 2.1.221) — the `f < 20` global collapse no longer exists
 >
-> This lesson previously stated: *"the failure mode when frontmatter bloats is silent global collapse
-> to name-only -- every skill loses its description at once… One runaway `when_to_use` can trigger
-> this for every skill in the listing."* **Withdrawn.**
->
-> L11 is inherited content (markdown.engineering, **v2.1.88**) that had never been re-verified. Read
-> first-party against the Desktop-managed agent **2.1.221**, the algorithm has been replaced. There is
-> no `f < 20` threshold and no global name-only mode. The current function returns one of two modes:
+> The algorithm above is the inherited **v2.1.88** one (L11, markdown.engineering). Read first-party
+> against the Desktop-managed agent **2.1.221**, it has been replaced: there is no `f < 20` threshold,
+> and one runaway `when_to_use` can no longer collapse every skill in the listing to name-only at
+> once. The current function returns one of two modes:
 >
 > - **`budgetMode: "fits"`** — everything fits; nothing is truncated.
 > - **`budgetMode: "priority"`** — entries are sorted by a caller-supplied priority, descriptions are
 >   kept greedily while budget remains, and whatever does not fit is reported in
 >   `budgetTruncatedSkills` and rendered name-only.
 >
-> So the failure is **partial, not global**. Beyond that, the first version of this correction said it
-> "pushes the *lowest-priority* skills to name-only" — **that was also wrong**. Re-verified against
-> 2.1.221:
+> So the failure is **partial, not global** — and it is not simply "the *lowest-priority* skills go
+> name-only". At 2.1.221:
 >
 > - The keep-loop is **first-fit greedy with no break**: an entry whose description exceeds the
 >   remaining budget is skipped and the loop continues. So a *high*-priority skill with a long
@@ -126,9 +122,8 @@ Algorithm:
 > The tunables `skillListingBudgetFraction` and `skillListingMaxDescChars` both survive, as does the
 > `SLASH_COMMAND_TOOL_CHAR_BUDGET` env override.
 >
-> **Methodology note:** this was caught by a maintainer's doubt, not by any check. Nothing in this
-> repo re-verifies inherited L1–L50 content against current binaries, so other claims of that vintage
-> should be treated as unverified until read first-party.
+> **Methodology note:** nothing in this repo re-verifies inherited L1–L50 content against current
+> binaries, so other claims of that vintage should be treated as unverified until read first-party.
 
 Tunables (in settings):
 - `skillListingBudgetFraction` -- fraction of context window for budget

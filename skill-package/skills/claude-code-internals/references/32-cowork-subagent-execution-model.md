@@ -4,15 +4,15 @@ Updated: 2026-07-11 | Source: First-party binary inspection, four artifacts, all
 
 ---
 
-## Methodology note: a six-round mutual-correction pass with the emulator project
+## Methodology note: six rounds of cross-review with the emulator project
 
-This chapter's source dossier was produced the same day the independent `claude-cowork-headless-emulator` project ran its own four-track subagent-fidelity investigation against the identical binaries (asar 1.20186.1, agent 2.1.205). The two passes cross-checked each other repeatedly rather than one simply consuming the other's output, and the correction traffic ran **both directions**:
+This chapter's source dossier was cross-checked, in both directions, against the independent `claude-cowork-headless-emulator` project's four-track subagent-fidelity investigation of the identical binaries (asar 1.20186.1, agent 2.1.205). Three findings that review settled, each written into L124:
 
-- **We disproved, then re-vindicated, their fallback-evidence datum.** Their original claim — that the type-less-`subagent_type` fallback to `general-purpose` fires routinely in production — was first checked against the specific dispatch they cited as evidence, and that dispatch turned out to be an **explicit** `"subagent_type":"general-purpose"` call, not a fallback (a resolved-type sighting can never distinguish the two — see L124). That looked like a retraction. But a **full-corpus JSON parse** of all 509 dispatches (not a substring grep, which undercounts — `subagent_type` can trail a long `prompt`) found 113 genuine type-less dispatches across 39 sessions, vindicating their underlying conclusion even though their cited datum was wrong. A retraction of a retraction, settled by exhaustive parsing rather than either side's first read.
-- **They corrected our `permission_denied` scope.** An earlier draft of this dossier's finding was broader than the evidence supported; their round-3 re-check narrowed it to the precise `decideLocation==="pre-ask"` gate condition — confirmed here first-party and re-verified against a second binary (the in-VM ELF 2.1.205) before being written into L124.
-- **They corrected our framing of the two `run_in_background`-blocking mechanisms as simple "belt-and-suspenders" redundancy.** Re-tracing the standalone-CLI `SendMessage` path shows `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS` now acts as an **awaitCompletion mode-switch** there (resume-and-run-synchronously), not merely a duplicate refusal — so calling the Desktop's Task-hook block and the env var "the same protection twice" understates what the env var does outside Cowork, even though inside Cowork both remain simultaneously present and the net effect (no backgrounding) is unchanged (L124).
+- **Type-less `subagent_type` dispatches do fall back to `general-purpose` in production.** A **full-corpus JSON parse** of all 509 dispatches found 113 genuine type-less dispatches across 39 sessions. Two traps on the way: a resolved-type sighting can never distinguish an **explicit** `"subagent_type":"general-purpose"` call from a fallback (see L124), so a single cited dispatch proves nothing either way; and a substring grep undercounts, because `subagent_type` can trail a long `prompt`.
+- **`permission_denied` fires under the precise `decideLocation==="pre-ask"` gate condition**, not more broadly — confirmed here first-party and re-verified against a second binary (the in-VM ELF 2.1.205).
+- **The two `run_in_background`-blocking mechanisms are not simple "belt-and-suspenders" redundancy.** On the standalone-CLI `SendMessage` path, `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS` acts as an **awaitCompletion mode-switch** (resume-and-run-synchronously), not merely a duplicate refusal — so "the same protection twice" understates what the env var does outside Cowork, even though inside Cowork the Desktop's Task-hook block and the env var are both present and the net effect (no backgrounding) is the same (L124).
 
-The payoff of adversarial cross-review here is structural, not cosmetic: neither project's first draft was fully right, and the errors were on different axes (evidence selection vs. scope precision vs. mechanism framing) — a single-pass verification against one set of binaries would have shipped at least two of the three mistakes.
+The method point: single-pass errors fall on different axes (evidence selection, scope precision, mechanism framing), and adversarial cross-review against the same binaries catches them where one pass against one set of binaries does not.
 
 ---
 
@@ -201,15 +201,15 @@ Production corroboration: real dispatches in the audit corpus carry **relative**
 
 **`uploads/` is read-only twice over**: in-VM mount `mode:"ro"` and host-side `qt()` blocking Write/Edit/MultiEdit (the hardlink warning). Read is allowed (uploads is in the allow-roots). **`outputs/`** is read-write for host file tools (it's cwd + an allow-root); rw (rwd after approval) for VM bash.
 
-**VM bash cwd — CORRECTED, see Ch44/L163.** `vmCwd = /sessions/<id>/mnt/<vmCwdMountName>` is still
-computed and still passed to the guest spawn (`to()` picks the mount name: first connected folder, else the
+**VM bash cwd is the session root, not `vmCwd` (Ch44/L163).** `vmCwd = /sessions/<id>/mnt/<vmCwdMountName>` is
+computed and passed to the guest spawn (`to()` picks the mount name: first connected folder, else the
 outputs mount, via an `h??(h=a)` fallback) — but **it is not what the shell observes.** `mcp__workspace__bash`
-starts at the **session root `/sessions/<id>`**, with and without a connected folder, which falsifies the
-former "first-folder-else-outputs" rule in *both* branches. This skill's own Ch40 probes measured the session
-root at Desktop 1.25927.0, and from 1.32885.1 the shipped prompt says so outright. Only the `chat` branch
-prepends an explicit `cd ${vmCwd}`, which is the tell that the spawn argument is not load-bearing. The
-downstream consequence originally recorded here still holds, for a different reason: a cwd-derived "artifacts
-root" computed inside bash yields a `/sessions/...`-absolute path that the host-side file tools then deny.
+starts at the **session root `/sessions/<id>`**, with and without a connected folder, so the
+"first-folder-else-outputs" rule the spawn code suggests is wrong in *both* branches. The Ch40 probes measured
+the session root at Desktop 1.25927.0, and from 1.32885.1 the shipped prompt says so outright. Only the `chat`
+branch prepends an explicit `cd ${vmCwd}`, which is the tell that the spawn argument is not load-bearing.
+Downstream consequence: a cwd-derived "artifacts root" computed inside bash yields a `/sessions/...`-absolute
+path that the host-side file tools then deny.
 
 ## `${CLAUDE_PLUGIN_ROOT}` in sub-agents
 
@@ -292,7 +292,7 @@ Kill switches: `IMr(){if(F_t())return"standard";...}` where `F_t()=pt(CLAUDE_COD
 
 Related gate-conditioned spawn env (live states, this capture): `434204418` off → `MCP_CONNECTION_NONBLOCKING:"0"`, `MCP_CONNECT_TIMEOUT_MS:"10000"` not injected (values match the prior v2.23.0 capture — an earlier draft's claim of a polarity change here was wrong and is withdrawn); `66187241` off → `CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES:""`; `714014285` force-on → `CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING:"1"`; `1936081873` force-on → `CLAUDE_CODE_OAUTH_SCOPES`; `4153934152` off.
 
-## Lifecycle re-verification and the two new correction points
+## Lifecycle re-verification and two product changes
 
 All Ch29/L115 conclusions **re-verified at 1.20186.1/2.1.205**: Task remains one-shot per call (schema `xgy`: `description`, `prompt`, `subagent_type?`, `model?`, `run_in_background?`, `isolation?` — no resume/agentId param; with `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1`, `run_in_background` is dropped from the schema entirely via `NVr||ime()?e.omit({run_in_background:!0}):e`).
 
@@ -302,7 +302,7 @@ Both refinements are moot in Cowork, which **still severs resume at spawn**: `Se
 
 **New continuation primitive, and it is not sub-agent resume.** Agent-type sessions (`SESSION_TYPE_AGENT`) get `mcp__dispatch__send_message` (`i5e`), plus `MCP_DISPATCH_LIST_PROJECTS` and gate-`3723845789` `LIST_CODE_WORKSPACES` — a **Desktop-mediated cross-SESSION continuation** (*"Send a user message to a local session... Use this when the user's message is a continuation of an existing session"*, handler routes via `e.sendMessage`, logs `lam_dispatch_send_message`). It is session-level, not sub-agent resume. `MCP_DISPATCH_SET_AGENT_NAME` is gated by a session-level `dispatchAgentNameEnabled` flag (destructured as `k` from the spawn-builder params `{...,dispatchAgentNameEnabled:k,...}=r`, threaded from an upstream `dispatchAgentNameEnabled:c`); when enabled the cowork MCP server exposes `setAgentName`, which calls the sessions-bridge client's `setDispatchAgentName`.
 
-**No Task fan-out/concurrency cap exists anywhere** — reaffirmed exhaustively (asar + host bundle): `maxConcurrentPerSession/Total` belongs to the dormant device-CLI queue (gate `1544796833`, null in fcache); gate `1648655587` remains the scheduled-task session limiter (`{"global":3,"perTask":1}`, force-on, confirming v2.22.1); the only "cap"-shaped thing is the workflow-size prompt guidance (Lesson 121). Depth limit: 5 (`NMr` host / `BLr` VM).
+**No Task fan-out/concurrency cap exists anywhere** — reaffirmed exhaustively (asar + host bundle): `maxConcurrentPerSession/Total` belongs to the dormant device-CLI queue (gate `1544796833`, null in fcache); gate `1648655587` remains the scheduled-task session limiter (`{"global":3,"perTask":1}`, force-on); the only "cap"-shaped thing is the workflow-size prompt guidance (Lesson 121). Depth limit: 5 (`NMr` host / `BLr` VM).
 
 ## Host-loop vs VM-loop: the decision function and its deltas
 

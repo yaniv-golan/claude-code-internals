@@ -1,6 +1,6 @@
 Updated: 2026-08-05 | Source: Multi-artifact first-party against THIS installation. Artifacts: Desktop `app.asar` **1.25927.0** (live, sha256 `a291ff78…`) diffed against **1.24012.1** (prior skill baseline) and **1.24012.11**; Desktop-managed host agent Mach-O **2.1.221**; the live gzip-wrapped GrowthBook `fcache` (5 decodes across 30 min, content `9d75909785dc344e`); Desktop's **Chromium HTTP cache** (`Cache_Data`, a previously unused artifact class); on-disk `local-agent-mode-sessions/**` session records; `swift_addon.node`; and **two live Cowork probes** run by the operator in real host-loop sessions (`awesome-intelligent-franklin`, `peaceful-hopeful-feynman`), the second with a connected-folder control. **Tier discipline:** L138 is first-party from live API traffic + asar; L139 and L140 are live-probe measurements with an explicit control; L141 is measured (60-sample sampler) plus cross-validated against the `claude-cowork-headless-emulator` project's independent implementation; L142 is first-party asar. Claims that remain inference are marked inline. The mount/delete findings were produced through a multi-round mutual-correction exchange with that project; corrections flowed both directions and are recorded where they bear on a claim.
 
-**Prior-lesson corrections landed by this chapter:** Ch31/L117's session-to-VM multiplexing inference is **confirmed** (L140). Ch26/L109's `scheduledTaskStaleReapEnabled` is **unserved and running on a code default of `true`** (L141). Ch24/L107's forced-ask matcher gains a **behavioural** confirmation (L139). Ch25/L108's Cowork spawn-env catalog is materially out of date (see the L141 addendum pointer).
+**What this chapter settles for earlier lessons:** Ch31/L117's session-to-VM multiplexing inference is **confirmed** (L140). Ch26/L109's `scheduledTaskStaleReapEnabled` is **unserved and running on a code default of `true`** (L141). Ch24/L107's forced-ask matcher gains a **behavioural** confirmation (L139). Ch25/L108's Cowork spawn-env catalog is materially out of date (see the L141 addendum pointer).
 
 # Chapter 39: Cowork Execution Lanes, Mount Semantics & Snapshot Discipline
 
@@ -76,14 +76,13 @@ Desktop main has **no lane branch**: `LocalAgentModeSessions.start` unconditiona
 
 **Skill-authoring consequence:** a skill that writes to `outputs/` and states the path delivers correctly on local and **silently loses its deliverables on remote**. Anthropic's own **Cowork-staged** `skill-creator` handles this capability-conditionally: *"Check whether you have access to a tool that presents files to the user — `present_files`, or `SendUserFile` in Cowork remote. If you have neither, skip this step."* **Name the artifact, because two ship and they disagree:** the Cowork-staged skill pack (`local-agent-mode-sessions/skills-plugin/**/skills/skill-creator/SKILL.md`, staged 2026-07-25) carries the two-tool lane-aware wording quoted here; the marketplace plugin (`~/.claude/plugins/marketplaces/claude-plugins-official/**/skill-creator/SKILL.md`) names only `present_files` and has no lane clause. An adversarial review reading the marketplace copy concluded this quotation was fabricated — it is verbatim, from the other artifact. **"Anthropic's deployed skill-creator" is ambiguous and must never be used unqualified.** Never name `device_commit_files` in a skill — it is Desktop plumbing behind consent-gated folders.
 
-## ⚠️ CORRECTED — "remote is the default" is withdrawn
+## ⚠️ "Remote is the default" is not established
 
-An earlier revision of this lesson stated that *"since 2026-07-07 remote is the default for new
-sessions on rolled-out accounts."* **Overclaimed; withdrawn.** Provenance is Anthropic's public Help
-Center (relayed via the `claude-cowork-headless-emulator` project's lane forensics), not any artifact
-on this machine — and **the same source calls remote execution "in beta and rolling out gradually
-across plans"**, a qualifier the sentence dropped. It was also stated flat, with no evidence tier,
-in a chapter whose header sets tiers for every other claim.
+A tempting reading is that *"since 2026-07-07 remote is the default for new sessions on rolled-out
+accounts."* Its only provenance is Anthropic's public Help Center (relayed via the
+`claude-cowork-headless-emulator` project's lane forensics), not any artifact on this machine — and
+**the same source calls remote execution "in beta and rolling out gradually across plans"**. It is a
+second-hand claim with no first-party evidence tier.
 
 This machine's own data does not support it: the newest **local** session is current (2026-08-05)
 while the newest **remote** record is 2026-07-23 — three weeks stale. On this account the local lane
@@ -149,7 +148,7 @@ if (e.isHostLoopMode) { e.setFileDeleteApprovedForMount(r.name); log("… (host-
 
 Under host-loop — **production's default** (`1143815894` force-ON) — the early return fires and `mountPath` never runs, yet enforcement changes. `mountFolderForSession` shows the same shape (logs *"Queued for next resume"*, returns `{ok:true, mode:"host-loop"}`), **but `request_cowork_directory` does NOT defer** — it mounted a folder immediately mid-session. Two mount routes, different host-loop behaviour.
 
-**The other consumer** — the mount-mode resolver: `(name, approvedList, flag) => flag ? "rw" : approvedList?.includes(name) ? "rwd" : "rw"`. `flag` is named, and the "spawn-time" framing corrected, in the addendum below.
+**The other consumer** — the mount-mode resolver: `(name, approvedList, flag) => flag ? "rw" : approvedList?.includes(name) ? "rwd" : "rw"`. `flag` is named, and its host-loop timing (per bash call, not spawn-time) pinned, in the addendum below.
 
 ## Mechanism: established vs inference
 
@@ -241,9 +240,9 @@ Two things this pins beyond the mounts:
 
 Adjacent, from the same function's neighbourhood: gate **`3758515526`** supplies the official plugin marketplace repo (`repo` / `repoCCD`, live value `{displayName:"Anthropic & Partners", repo:"anthropics/knowledge-work-plugins", repoCCD:"anthropics/claude-plugins-official"}`, `on:true` `source:defaultValue` at snapshot `9d75909785dc344e`) — note the code default for `repo` is `null`, so the served value is load-bearing.
 
-### CORRECTION to this lesson's own wording
+### Host-loop mount restore is per bash call, not spawn-time
 
-"Spawn-time restore" was wrong for host-loop. `ht` is wired as **`computeBashMounts`** and runs **per bash call** with a live `k()` — matching Ch35/L122's "recomputed per bash call".
+Under host-loop the restore is not a spawn-time step. `ht` is wired as **`computeBashMounts`** and runs **per bash call** with a live `k()` — matching Ch35/L122's "recomputed per bash call".
 
 This does **not** close the inference gap flagged above. The probe observed the flip inside an **already-open** shell, which a per-bash-call recompute cannot explain. These are two distinct mechanisms, and the live-flag inference still stands for the observed case.
 
@@ -253,7 +252,7 @@ This does **not** close the inference gap flagged above. The probe observed the 
 
 The quote change is a trap in its own right, but **only for plain string literals**. A backtick-anchored pattern silently misses older builds when the literal has no interpolation — `mode:` was the live case here: `` mode:`ro` `` matches 1.25927.0 and returns **zero** on 1.24012.1, where it is `mode:"ro"`.
 
-**Interpolation forces backticks in every build**, minifier preference notwithstanding, so a template literal is quote-stable across the whole version range: `` `.projects/${x.uuid}` `` matched 1.22209.0, 1.24012.1 and 1.25927.0 unchanged. The same grep session demonstrated both halves — one pattern version-fragile, the other not — which is the practical rule: **anchor on an interpolated fragment when you have one, and treat a plain-literal anchor as version-scoped.** (Correction credit: the emulator project, whose `checkMountModeFacts` is anchored on the interpolated form and is therefore unaffected.)
+**Interpolation forces backticks in every build**, minifier preference notwithstanding, so a template literal is quote-stable across the whole version range: `` `.projects/${x.uuid}` `` matched 1.22209.0, 1.24012.1 and 1.25927.0 unchanged. The same grep session demonstrated both halves — one pattern version-fragile, the other not — which is the practical rule: **anchor on an interpolated fragment when you have one, and treat a plain-literal anchor as version-scoped.** (Credit: the emulator project, whose `checkMountModeFacts` is anchored on the interpolated form and is therefore unaffected.)
 
 Both facts in this addendum verify identically in 1.22209.0 and 1.24012.1, so **neither is new**.
 
@@ -301,16 +300,16 @@ The same property is what scopes such a search to your own session **without a f
 | connected folder | 1 | `/mnt/<name>` (spaces octal-escaped, `untitled\040folder\0405`) |
 | `.claude` | 2 | `.claude/projects`, `.claude/skills` — **separate mounts** |
 | `.projects` | 1 | `.projects/<uuid>` |
-| `.local-plugins` | 3 | `.local-plugins/<install path relative to the account root>` — in **this** capture `cache/<marketplace>/<plugin>/<version>`; see the correction below, the depth is not fixed |
+| `.local-plugins` | 3 | `.local-plugins/<install path relative to the account root>` — in **this** capture `cache/<marketplace>/<plugin>/<version>`; the depth is not fixed (see below) |
 | `.remote-plugins` | 20 | `.remote-plugins/plugin_<id>` |
 
 **`.projects/<uuid>` vs a connected folder — two different things.** Connecting a *project* creates a `.projects/<uuid>` mount and populates `userSelectedProjectUuids`; connecting a *folder* creates `/mnt/<name>` and populates `userSelectedFolders` + `resolvedFolderKinds: [{display, kind:"local"}]`. A session with a project attached therefore shows an **empty `userSelectedFolders` and no folder mount** — a real source of confusion when reading session state.
 
 The plugin mount shapes confirm Ch17/L89 + v2.12.1 live. `pluginInstallPaths` on the host reads `/var/folders/…/T/claude-hostloop-plugins/<16-hex>` — the L89 staging path with the documented `sha256(installPath).slice(0,16)` hash.
 
-### CORRECTION (2026-08-29): `.local-plugins` has no fixed depth
+### `.local-plugins` has no fixed depth (2026-08-29)
 
-The table row above once read `.local-plugins/cache/<marketplace>/<plugin>/<version>` — **version-pinned**, stated as *the* shape. It is one instance of a shape, and the generalisation was wrong.
+The trap: `.local-plugins/cache/<marketplace>/<plugin>/<version>` — **version-pinned** — looks like *the* shape. It is one instance of a shape.
 
 The Desktop builds that path as `` `/sessions/${id}/mnt/${.local-plugins}/${guestCompatibleRelative(accountOrgRoot, installPath)}` `` — the tail is the **install path relative to an account/org root**, so it mirrors whatever the host layout happens to be. `cache/<marketplace>/<plugin>/<version>` is what a marketplace install looks like on disk, not a template. A live counterexample, relayed from a `cowork-harness` `container`-fidelity run:
 

@@ -97,7 +97,7 @@ The bridge URL is an **OAuth-environment-derived constant** (production / stagin
 > `MessageDisplay` is now the **33rd** entry. Everything below about `DirectoryAdded` stands; only the
 > ordinal moves. See L188.
 
-**The hook event count moved from 30 to 31 — the first change since Ch21/L94. Every "all 30 hook events" statement in this skill (including `SKILL.md` and `CLAUDE.md`) was correct through v2.1.217 and is now stale.** This is **announced** (changelog: *"Added `DirectoryAdded` hook that fires after `/add-dir` or the SDK `register_repo_root` control request registers a new working directory mid-session"*).
+**The hook event count moved from 30 to 31 (announced 2.1.219, measured at 2.1.231) — the first change since Ch21/L94. It was 30 through v2.1.217; any "all 30 hook events" statement predates 2.1.219 (and the count is 33 as of 2.1.260 — see above).** This is **announced** (changelog: *"Added `DirectoryAdded` hook that fires after `/add-dir` or the SDK `register_repo_root` control request registers a new working directory mid-session"*).
 
 Verbatim master arrays, both versions:
 

@@ -102,7 +102,7 @@ Every count above is qualified by `.vite/build`. That qualification is load-bear
 
 `isRemote` differs by 45%. The residue between build+renderer and the whole file is the asar header, `compile-cache`, and `node_modules` — including the **Agent SDK bundled inside the asar** (see L182).
 
-**A correction this produces.** The lead-source reports that 1.46388.4 moved `localAgentMode` 20 → 22 and concludes "it is not a no-op release generally." Measured in one scope across both versions, it did not move:
+**Trap: a cross-scope count looks like a change.** The lead-source reports that 1.46388.4 moved `localAgentMode` 20 → 22 and concludes "it is not a no-op release generally." Measured in one scope across both versions, it did not move:
 
 | identifier | 1.46388.3 `.vite/build` | 1.46388.4 `.vite/build` |
 |---|---|---|
@@ -245,7 +245,7 @@ Live fcache, decoded 2026-09-05 (322 features):
 | `1129419822` (`ENABLE_TOOL_SEARCH`) | **absent from the payload** | genuinely dark |
 | `96101707` (multi-account) | **absent from the payload** | genuinely dark |
 
-**A correction this produces.** The lead-source labels `2529235968` — the gate on the plugin-declared-MCP shadow file — **DARK**. It is not dark: it is present in the payload and evaluated to false by its own `defaultValue`. Dark means *absent*, and in this capture only `1129419822` and `96101707` qualify. The two states need opposite handling: a served-and-off gate has a server-side rule surface that can flip it for a cohort tomorrow; a dark gate has no rule surface at all and can only change with a client release. Calling one the other mispredicts which way a feature can arrive.
+**Served-and-off is not dark.** The lead-source labels `2529235968` — the gate on the plugin-declared-MCP shadow file — **DARK**. It is not dark: it is present in the payload and evaluated to false by its own `defaultValue`. Dark means *absent*, and in this capture only `1129419822` and `96101707` qualify. The two states need opposite handling: a served-and-off gate has a server-side rule surface that can flip it for a cohort tomorrow; a dark gate has no rule surface at all and can only change with a client release. Calling one the other mispredicts which way a feature can arrive.
 
 `source:"defaultValue"` carries a third fact worth reading: `124685897` is ON, but ON *by the gate's own default* with no rule matched — which is consistent with the harness's live probe finding the section text byte-identical to the asar's fallback. The gate enables a lookup; nothing was served into it.
 

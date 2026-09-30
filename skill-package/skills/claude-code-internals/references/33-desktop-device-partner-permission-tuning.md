@@ -46,18 +46,16 @@ sessionType === "ccd" && !requireFullVmSandbox() && isIosSimulatorEnabled()
 
 ## Per-platform enablement gates, and the sandbox
 
-`isIosSimulatorEnabled = Zht(Skn)`, `Zht(e){return Vc(e,!1)===true}` — a `default:false` read. The two gate ids: **`3577536076`** (iOS), **`1403324732`** (Android). Both gate ids were already present in 1.21459.0's manifest per this pass's diff; what's new in 1.22209.0 is the actual tool **implementation** (simctl/adb driving code, the server definitions above) sitting behind them. *(No live fcache decode was performed this pass — "defaults false" is a code-level literal, not a fresh production on/off read; treat as structurally dark-launched, not confirmed off in every deployment.)*
+`isIosSimulatorEnabled = Zht(Skn)`, `Zht(e){return Vc(e,!1)===true}` — a `default:false` read. The two gate ids: **`3577536076`** (iOS), **`1403324732`** (Android). Both gate ids were already present in 1.21459.0's manifest per this pass's diff; what's new in 1.22209.0 is the actual tool **implementation** (simctl/adb driving code, the server definitions above) sitting behind them. "Defaults false" is a code-level literal, not a production on/off read.
 
-> **CORRECTION (2026-08-13, live fcache decode against Desktop 1.28929.0, 254 features).** This
-> lesson's caveat above ("no live fcache decode was performed") has now been resolved for one of the
-> two gates, and the resolution is a real flip, not a confirmation: **`3577536076` (iOS) is now
-> `on`/`force`** — no longer "defaulting false." **`1403324732` (Android) is still `off`/`defaultValue`
-> — unchanged.** So the iOS simulator tool-group is live-enabled in production on this account, while
-> Android remains dark. **This does not reopen the structural argument below.** The `sessionType==="ccd"`
-> discrimination (a Cowork agent's `sessionType` is `"cowork"`/`"cowork-remote"`, never `"ccd"`) is
-> independent of the per-platform gate and still holds — a Cowork agent cannot see either tool-group no
-> matter how the gate resolves. What changed is only the answer to "is the iOS tool-group live for a
-> `ccd` session," not "can Cowork reach it."
+> **Live gate state (fcache decode, 2026-08-13, Desktop 1.28929.0, 254 features):** **`3577536076`
+> (iOS) is `on`/`force`** — the code default is false, but the served value flipped it on.
+> **`1403324732` (Android) is `off`/`defaultValue`.** So the iOS simulator tool-group is live-enabled in
+> production on this account, while Android remains dark. **This does not affect the structural
+> argument above.** The `sessionType==="ccd"` discrimination (a Cowork agent's `sessionType` is
+> `"cowork"`/`"cowork-remote"`, never `"ccd"`) is independent of the per-platform gate — a Cowork agent
+> cannot see either tool-group no matter how the gate resolves. The gate answers only "is the iOS
+> tool-group live for a `ccd` session," not "can Cowork reach it."
 
 A new Seatbelt sandbox wraps the iOS control sidecar: profile `claude-ios-sim.sb`, env `CLAUDE_SIM_SANDBOX` (default **on** in packaged builds; `=0` is honored only in unpackaged dev builds).
 

@@ -112,7 +112,7 @@ Cleared alongside `activeSkillThisTurn`: `cicOnceApproved` (L150) and `teachMode
 
 # LESSON 148 — THE `built-*` STICKINESS PATTERN
 
-**Four distinct flags — `builtSystemPrompt` (Ch37/L129), `frameArtifactsTurnEnabled`, `cicCanUseToolEnabled`, and `cuCanUseToolEnabled` — share one caching shape: evaluate the gate once per built-tools/built-prompt generation, cache the result on the session object, and read the cache on every call thereafter. Ch37/L129's "sticky per session, corrected to model-switch-invalidates" finding was one instance of this mechanism, not a `suggest_skills` quirk.**
+**Four distinct flags — `builtSystemPrompt` (Ch37/L129), `frameArtifactsTurnEnabled`, `cicCanUseToolEnabled`, and `cuCanUseToolEnabled` — share one caching shape: evaluate the gate once per built-tools/built-prompt generation, cache the result on the session object, and read the cache on every call thereafter. Ch37/L129's stickiness (cached per built system prompt, invalidated by a model switch) is one instance of this mechanism, not a `suggest_skills` quirk.**
 
 ## The verbatim shape, three flags at one call site
 

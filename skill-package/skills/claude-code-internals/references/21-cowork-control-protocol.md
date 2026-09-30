@@ -68,7 +68,7 @@ Ch22/L105 (`subtype:"elicitation"`/`can_use_tool`/`hook_callback`/`mcp_message`/
 - **`--permission-prompt-tool stdio`** is what routes `can_use_tool` / AskUserQuestion to the driver.
   **Without it, AskUserQuestion is silently auto-dismissed** and scripted answers never fire — a
   high-surprise failure mode for anyone building a headless driver.
-- Effort/thinking ride flags + env, **not** `CLAUDE_EFFORT`. **Correction (binary-verified):** the
+- Effort/thinking ride flags + env, **not** `CLAUDE_EFFORT`. **Binary-verified:** the
   desktop *explicitly passes* `--effort medium --max-thinking-tokens 31999`
   on the spawn argv (see the logged argv below) — those are **driver-passed values, not agent defaults**.
   The agent's own defaults differ: effort tiers are `eV = ["low","medium","high","xhigh","max"]` with
@@ -172,13 +172,12 @@ chapter, not previously documented:
 
 ## Part E — Permission model and tool registry (layered, not blanket-allow)
 
-**Re-correction (binary-verified live against app.asar 1.17377.2, 2026-07; independently cross-checked
-against the `claude-cowork-headless-emulator` project's own binary capture at 1.12603.1):** the original
-"PreToolUse hook that forces ask for ~5 cowork tools and blocks `Task run_in_background`" claim was
-**real**. A prior adversarial re-verification pass (see Methodology) wrongly retracted it — it grepped
-the CLI/in-VM agent bundle, but this config is built **Desktop-side** and passed as the `hooks` option
-when the local-agent session is spawned, so it was never going to show up there. Literal, from the live
-1.17377.2 `app.asar`:
+**The Desktop installs a PreToolUse hook that forces ask for ~5 cowork tools and blocks `Task
+run_in_background`** (binary-verified live against app.asar 1.17377.2, 2026-07; independently
+cross-checked against the `claude-cowork-headless-emulator` project's own binary capture at 1.12603.1).
+**Trap:** grepping the CLI/in-VM agent bundle for it finds nothing — this config is built
+**Desktop-side** and passed as the `hooks` option when the local-agent session is spawned, so it never
+appears in the agent binary. Literal, from the live 1.17377.2 `app.asar`:
 
 ```
 hooks:{PreToolUse:[
@@ -308,20 +307,19 @@ Full layer stack, current identifiers (unchanged 1.12603.1 → 1.17377.2 except 
   `HOST_LOOP_PATH_GATED` = `["Read","Write","Edit","Glob","Grep"]` (+`MultiEdit`) get a PreToolUse hook
   (`vZe`/`Nen`) that **denies `/sessions/…` (VM) paths on the host-side file tools** ("VM path on host —
   use the bash tool for `/sessions/` paths") and enforces working-directory scoping.
-- **WITHDRAWN — see Ch44/L163. The gate's rationale is real; the "shared scratch space" gloss was not.**
-  `[binary]` This bullet previously quoted the host-loop system prompt (verbatim 1.17377.2) as saying *"every
-  call starts in the same working directory: the sandbox's outputs directory, **the same scratch space the
-  Read/Write/Edit tools use** … **use bare filenames with both**"*, followed by a translation table whose
-  outputs row was annotated `— cwd`. **That prompt text was wrong, and this skill published it as behaviour.**
-  Retained here as history with its stamp, because the correction trail matters: the text shipped until
-  Desktop **1.32885.1**, which replaced it with *"Each bash call starts in `/sessions/<id>`; that directory and
-  `/tmp` exist only inside the Linux environment — fine for scratch, but invisible to the user and to the file
-  tools."* This skill's own Ch40 probes had already measured `cwd = /sessions/<slug>` at 1.25927.0, *before*
-  the text was fixed — so the behaviour never changed. The `— cwd` annotation marked the **agent's** cwd on
-  the host side of a host→VM mapping row, not bash's. **What stands:** the path-gate itself, and the failure
-  mode it catches — capturing a VM-absolute `/sessions/<id>/mnt/outputs/x` from bash output and handing it to
-  a host file tool, which is denied. **What replaces the guidance:** the two tool families need *different*
-  path forms — bare names for Read/Write/Edit, absolute `/sessions/<id>/mnt/outputs/...` for bash (Ch44/L164).
+- **The gate's rationale is real; there is no "shared scratch space" (Ch44/L163).**
+  `[binary]` Trap: the host-loop system prompt (verbatim at 1.17377.2) says *"every call starts in the same
+  working directory: the sandbox's outputs directory, **the same scratch space the Read/Write/Edit tools use**
+  … **use bare filenames with both**"*, followed by a translation table whose outputs row is annotated
+  `— cwd`. **That prompt text is wrong about the behaviour.** It shipped until Desktop **1.32885.1**, which
+  replaced it with *"Each bash call starts in `/sessions/<id>`; that directory and `/tmp` exist only inside
+  the Linux environment — fine for scratch, but invisible to the user and to the file tools."* Ch40 probes
+  measured `cwd = /sessions/<slug>` at 1.25927.0, *before* the text changed — so the behaviour never
+  changed. The `— cwd` annotation marks the **agent's** cwd on the host side of a host→VM mapping row, not
+  bash's. **What holds:** the path-gate itself, and the failure mode it catches — capturing a VM-absolute
+  `/sessions/<id>/mnt/outputs/x` from bash output and handing it to a host file tool, which is denied. **The
+  guidance:** the two tool families need *different* path forms — bare names for Read/Write/Edit, absolute
+  `/sessions/<id>/mnt/outputs/...` for bash (Ch44/L164).
 - **`${CLAUDE_PLUGIN_ROOT}` under host-loop: one token, two namespaces — accepted by host file tools, useless
   for in-VM bash.** `[binary/tested]` The token substitutes to a single value (`m={CLAUDE_PLUGIN_ROOT:t.path,…}`
   in the agent bundle), and under host-loop that resolves **host-side** to `claude-hostloop-plugins/<hash>`
@@ -423,12 +421,12 @@ release (decode `fcache`) and reproduce the decision logic, not one branch.
 (4) **Two binaries, two
 truths** — host-loop runtime lives in the desktop `app.asar`; the in-VM agent flags/protocol live in the
 `claude-code-vm` ELF, so a string absent from one is often present in the other. (5) **"Not found" doesn't
-survive a third binary.** The *same* re-verification pass in (1) also retracted the "PreToolUse
-forced-ask for 5 cowork tools / `Task run_in_background` block" claim as a false conflation — wrongly.
-That pass had grepped only the CLI/in-VM ELF (the two binaries in point (4)); the actual mechanism is a
+survive a third binary.** The "PreToolUse forced-ask for 5 cowork tools / `Task run_in_background`
+block" (Part E) is absent from the CLI and the in-VM ELF (the two binaries in point (4)), so a pass that
+greps only those two dismisses it as a false conflation. The actual mechanism is a
 `hooks:{PreToolUse:[...]}` object the Desktop builds and passes as a spawn option — a **third** artifact,
-the Desktop `app.asar`'s session-spawn code, distinct from both the CLI and the in-VM agent. Re-grepping
-the live 1.17377.2 `app.asar` directly found the literal hooks array (Part E), independently cross-checked
+the Desktop `app.asar`'s session-spawn code, distinct from both the CLI and the in-VM agent. Grepping
+the live 1.17377.2 `app.asar` directly finds the literal hooks array (Part E), independently cross-checked
 against the `claude-cowork-headless-emulator` project's own binary capture of the same claim. Lesson:
 before calling a multi-surface claim "overturned," enumerate *every* surface it could live on (CLI, in-VM
 agent, Desktop host, Desktop-injected runtime config) and check each — absence from the surfaces you

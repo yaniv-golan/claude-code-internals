@@ -404,11 +404,11 @@ The `advisor-tool-2026-03-01` beta is not mentioned in official docs.
 
 ---
 
-## Correction to existing lessons
+## Hook event count at v2.1.90
 
-**Hook types (Lesson 10):** The claim of "27 hook event types" is CONFIRMED CORRECT.
-Extracted directly from `xv1` array in v2.1.90 binary — all 27 are present unchanged in
-both v2.1.88 and v2.1.90. **All 27 are officially documented** at `/en/hooks`. The exact list:
+**Hook types (Lesson 10):** v2.1.90 has **27** hook events (33 as of 2.1.260, unchanged at
+2.1.280 — see `state/plugins-skills-hooks.md`, L155, L188). Extracted directly from `xv1` array in
+v2.1.90 binary — all 27 are present unchanged in both v2.1.88 and v2.1.90. **All 27 are officially documented** at `/en/hooks`. The exact list:
 
 ```
 PreToolUse, PostToolUse, PostToolUseFailure,
