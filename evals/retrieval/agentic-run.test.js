@@ -162,11 +162,10 @@ test('buildPrompt: base-directory line, $ARGUMENTS and ${CLAUDE_SKILL_DIR} subst
   assert.ok(q.includes('Topic requested: q?'));
 });
 
-test('flags: read-only Bash allowlist, no bypassPermissions, prompts denied, staged dir added', () => {
+test('flags: the shipped allowed-tools, no bypassPermissions, prompts denied, staged dir added', () => {
   const f = A.flagsFor('/s', 'claude-sonnet-5');
-  const allowed = f[f.indexOf('--allowedTools') + 1];
-  assert.ok(allowed.includes('Bash(sed -n:*)') && allowed.includes('Bash(grep:*)'));
-  assert.ok(!/Bash\)|Bash,|Bash$/.test(allowed.replace(/Bash\([^)]*\)/g, '')), 'no unrestricted Bash');
+  assert.strictEqual(f[f.indexOf('--allowedTools') + 1], 'Read,Grep,Glob,Bash');
+  assert.strictEqual(f[f.indexOf('--tools') + 1], 'Read,Grep,Glob,Bash');
   assert.ok(!f.includes('bypassPermissions') && !f.includes('--dangerously-skip-permissions'));
   assert.deepStrictEqual(f.slice(f.indexOf('--permission-prompts'), f.indexOf('--permission-prompts') + 2), ['--permission-prompts', 'none']);
   assert.strictEqual(f[f.indexOf('--add-dir') + 1], '/s');

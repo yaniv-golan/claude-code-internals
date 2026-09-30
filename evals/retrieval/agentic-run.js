@@ -18,8 +18,8 @@
  *     question and `${CLAUDE_SKILL_DIR}` -> the staged path (a body without `$ARGUMENTS` gets
  *     "Topic requested: <question>" appended) + the IDS instruction (IDS_INSTRUCTION).
  *   - Flags (FLAGS): --safe-mode --setting-sources project (no user/project settings, CLAUDE.md,
- *     plugins, hooks or advisor), --tools Read,Grep,Glob,Bash, --allowedTools with read-only Bash
- *     patterns only (READ_ONLY_BASH), --permission-prompts none (anything else is denied, never
+ *     plugins, hooks or advisor), --tools Read,Grep,Glob,Bash, --allowedTools with the same four
+ *     (ALLOWED_TOOLS, as the shipped allowed-tools grants), --permission-prompts none (never
  *     prompted), --add-dir <staged path>. No bypassPermissions.
  *   - --output-format stream-json --verbose; the whole stream is kept (<qid>.stream.jsonl) and
  *     the parsed record (<qid>.json) caches the question, so a rerun resumes.
@@ -63,7 +63,10 @@ const READ_DEFAULT_LINES = 2000;
 const HEAD_DEFAULT_LINES = 10;
 const COVER_FRACTION = 0.5;
 const IDS_INSTRUCTION = 'End your reply with a line `IDS: <comma-separated lesson ids you relied on>`.';
-const READ_ONLY_BASH = ['grep', 'sed -n', 'cat', 'head', 'tail', 'find', 'ls', 'wc', 'jq'];
+// The shipped SKILL.md grants plain `Bash` in allowed-tools, so the eval does too. A read-only
+// allowlist was tried first and denied python3, awk, cd and compound commands in 35 of 187 arm-D dev
+// questions, a handicap real use doesn't have. The staged copy is a throwaway temp dir.
+const ALLOWED_TOOLS = ['Read', 'Grep', 'Glob', 'Bash'];
 const TIMEOUT_MS = 15 * 60 * 1000;
 const READ_LIMIT_RX = /MaxFileReadTokenExceeded|exceeds maximum allowed tokens/i;
 const PERMISSION_RX = /permission|not allowed|was blocked|requires approval|denied/i;
@@ -72,7 +75,7 @@ function flagsFor(stagedDir, model) {
   return [
     '-p', '--model', model, '--safe-mode', '--setting-sources', 'project',
     '--tools', 'Read,Grep,Glob,Bash',
-    '--allowedTools', ['Read', 'Grep', 'Glob', ...READ_ONLY_BASH.map((c) => `Bash(${c}:*)`)].join(','),
+    '--allowedTools', ALLOWED_TOOLS.join(','),
     '--permission-prompts', 'none', '--add-dir', stagedDir,
     '--output-format', 'stream-json', '--verbose', '--no-session-persistence',
   ];
@@ -539,7 +542,7 @@ async function main() {
   const meta = {
     arm_file: path.basename(o.armFile), arm_sha256: armSha, skill_dir: o.skillDir, questions_file: path.basename(o.questions), questions_sha256: sha256(qRaw),
     split: o.split, strata: o.strata, model: o.model, read_rule: { cover_fraction: COVER_FRACTION, read_cap: READ_CAP, read_default_lines: READ_DEFAULT_LINES, head_default_lines: HEAD_DEFAULT_LINES },
-    ids_instruction: IDS_INSTRUCTION, read_only_bash: READ_ONLY_BASH,
+    ids_instruction: IDS_INSTRUCTION, allowed_tools: ALLOWED_TOOLS,
   };
   if (fs.existsSync(metaFile)) {
     const prev = JSON.parse(fs.readFileSync(metaFile, 'utf8'));
@@ -574,7 +577,7 @@ async function main() {
 }
 
 module.exports = {
-  READ_CAP, IDS_INSTRUCTION, READ_ONLY_BASH, flagsFor,
+  READ_CAP, IDS_INSTRUCTION, ALLOWED_TOOLS, flagsFor,
   parseIndex, loadRanges, lessonsCovered, refFile, shellSegments, shellWords, bashReadSpans,
   parseTranscript, parseIds, wilson, mcnemarExact, summarize, buildPrompt, selectQuestions, relevanceOf,
 };

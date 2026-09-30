@@ -14,14 +14,17 @@ tools a question needs. Always give tools **absolute** paths into that folder.
 - `references/NN-*.md` — 56 chapter files holding 218 lessons about Claude Code and
   Claude Cowork internals, read out of the shipping binaries. Each lesson starts at a
   `LESSON` heading. Chapters run up to 151 KB; one lesson (id 89) is 107 KB.
-- `references/routing/index-*.md` — the table of contents, in parts. One line per
-  lesson: id · title · "Lesson N" as printed in the file · `file:start-end` ·
-  description · example questions the lesson answers · a `read-more` URL on some.
-  Lessons too big to read in one go list sub-ranges beneath their line. Each part
-  fits in one Read.
+- `references/routing/index-*.md` — the table of contents, in two parts (~32k tokens
+  together; each part fits in one Read). One line per lesson: id · title · "Lesson N"
+  as printed in the file · `file:start-end` · description · example questions the
+  lesson answers, in users' own words · a `read-more` URL on some. Lessons too big to
+  read in one go list sub-ranges beneath their line. It is the only file that
+  matches a question worded differently from the lesson text — many lessons are
+  version roll-ups whose titles and headings don't name what a user would ask about.
 - `references/routing/sections.md` — every heading of every lesson and state page,
-  one per line, with its lesson id (or state page) and `file:line`. About 60 KB;
-  built to be grepped for a term.
+  one per line, with its lesson id (or state page) and `file:line`. ~150 KB, so grep
+  it rather than read it. Grep matches literal words only, so it finds exact terms
+  and misses paraphrases.
 - `references/state/*.md` — the **current-state** view, one page per domain (Cowork
   architecture, permissions, control protocol, credential channels, plugins/skills/
   hooks, models, commands, memory); `state/README.md` lists them. Each page is
@@ -52,7 +55,7 @@ tools a question needs. Always give tools **absolute** paths into that folder.
    lesson. Lessons are history, corrections and provenance.
 2. Carry a version stamp into the answer and qualify by lane (CLI, Cowork host-loop,
    VM-loop, cloud) where it matters.
-3. Cite lesson ids.
+3. Cite the ids of lessons you actually read, not ones you only saw listed.
 
 Example (one sensible path, not a required one): "what changed about /cost in
 v2.1.118?" → grep `sections.md` for `/cost` → a heading in lesson 88 with its
