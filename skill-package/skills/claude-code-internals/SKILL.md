@@ -2,7 +2,7 @@
 name: claude-code-internals
 description: "How Claude Code actually works, read out of the shipping binaries rather than the docs — including the parts the docs get wrong. Use when asked why Claude Code behaved unexpectedly, how one of its subsystems works internally, whether a behavior is really live in a given version, or before editing .claude/ config. Covers hooks, permissions, settings precedence, skills and plugins, sub-agents, MCP, memory, compaction, and sessions. A third of it is Claude Cowork's runtime: host-loop vs VM-loop, sandbox mounts, path resolution, file delivery, and the stream-json control protocol."
 user-invocable: true
-argument-hint: "[topic - e.g. hooks, permissions, memory, agents, compaction]"
+argument-hint: "[question or topic - e.g. why didn't my hook fire?, compaction]"
 context: fork
 allowed-tools:
   - Read
@@ -10,12 +10,13 @@ allowed-tools:
   - Glob
   - Bash
 ---
-Topic requested: $ARGUMENTS
+Question: $ARGUMENTS
 
 You run **forked**: the parent sees only what you return, so put the whole answer
-(and any `Read more:` line) in your final message. If the "Topic requested" line
-above is blank, no topic was given — print the menu near the end of this file and
-ask which area they want. Otherwise work the topic with the steps below.
+(and any `Read more:` line) in your final message. The "Question" line above holds
+whatever the user typed after the skill name: a full question or a single topic
+word. If it is blank, print the menu near the end of this file and ask which area
+they want. Otherwise answer it with the steps below.
 
 ## How to run the scripts
 
