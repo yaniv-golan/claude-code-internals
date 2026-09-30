@@ -89,9 +89,9 @@ this.options.effort && Y.push("--effort", this.options.effort)
 ```
 
 — and a **`LocalSessions` IPC family** sets it per session: `setEffort(sessionId, effort)`,
-`getEffort(sessionId)`, `getDefaultEffort()`, `setFastMode(sessionId, fastMode)` — alongside a managed-settings key — letting a user (or
-org policy) set a Cowork session's effort level directly rather than it being baked into the spawn
-call. **"medium" in a captured argv is the observed value of that setting at capture time** — read
+`getEffort(sessionId)`, `getDefaultEffort()`, `setFastMode(sessionId, fastMode)` — backed by the local settings file's
+`effort`/`effortByModel` fields (Ch34/L120) — letting a user set a Cowork session's effort level directly
+rather than it being baked into the spawn call. **"medium" in a captured argv is the observed value of that setting at capture time** — read
 Ch24/L107's "passes `--effort medium` explicitly" as "the setting happened to be `medium`," not
 "Desktop hardcodes medium" (though `"medium"` is also the final fallback, below).
 

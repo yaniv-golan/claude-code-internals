@@ -1210,10 +1210,11 @@
     "19 hook events"
    ],
    "lessons": [
+    188,
     95,
     10
    ],
-   "hint": "The live master hook array is 30 as of v2.1.159; older '27' (v2.1.90) and '19' (a diff-tool undercount) figures are stale."
+   "hint": "The live master hook array is 33 as of CLI 2.1.260 (Ch51/L188). It was 30 through 2.1.217 and 31 at 2.1.219-2.1.250; older '27' (v2.1.90) and '19' (a diff-tool undercount) figures are stale."
   },
   {
    "pattern": [
@@ -1304,7 +1305,7 @@
     107,
     89
    ],
-   "hint": "Chapter 25 (L108) is the binary-verified catalog. Env vars: see Part A (model/effort, cowork/bg runtime incl. CLAUDE_BG_*_AUTH single-use handshake + CLAUDE_CODE_WORKER_EPOCH, auth incl. CLAUDE_CODE_ENABLE_XAA, Agent-SDK, Desktop-only). Gates: Part B decodes the live fcache — host-loop 1143815894, Fable 3045399524, bridge-SDK-adapter 583857784, cowork-config 1978029737, scheduled-task session limiter 1648655587 {perTask:1,global:3}, sparkplug 2340532315 all ON; coworkKappa 123929380 and cli_plugin 2307090146 OFF. CORRECTED (v2.22.1): gate 1648655587 is NOT a Task-tool sub-agent dispatch cap (its original label here) — it caps concurrently-active Cowork scheduled/cron-task sessions (class L9t, Ch26/L109's scheduled-tasks feature), perTask:1/global:3 sessions, and has zero effect on in-conversation Task fan-out, which the Desktop caps nowhere. Read gate state yourself by decoding ~/Library/Application Support/Claude/fcache (8-byte CLF header + gzip). Control-protocol subtypes: Part C (get_session_cost, get_binary_version, generate_session_title, ultrareview_launch, side_question + system messages + Bv1/Uv1 sets). See L109 (scheduled tasks), L107 (spawn/protocol contract), L89 (host-loop/split execution)."
+   "hint": "Chapter 25 (L108) is the binary-verified catalog. Env vars: see Part A (model/effort, cowork/bg runtime incl. CLAUDE_BG_*_AUTH single-use handshake + CLAUDE_CODE_WORKER_EPOCH, auth incl. CLAUDE_CODE_ENABLE_XAA, Agent-SDK, Desktop-only). Gates: Part B decodes the live fcache — host-loop 1143815894, Fable 3045399524, bridge-SDK-adapter 583857784, cowork-config 1978029737, scheduled-task session limiter 1648655587 {perTask:1,global:3}, sparkplug 2340532315 all ON; coworkKappa 123929380 and cli_plugin 2307090146 OFF. Trap: gate 1648655587 is NOT a Task-tool sub-agent dispatch cap — it caps concurrently-active Cowork scheduled/cron-task sessions (class L9t, Ch26/L109's scheduled-tasks feature), perTask:1/global:3 sessions, and has zero effect on in-conversation Task fan-out, which the Desktop caps nowhere. Read gate state yourself by decoding ~/Library/Application Support/Claude/fcache (8-byte CLF header + gzip). Control-protocol subtypes: Part C (get_session_cost, get_binary_version, generate_session_title, ultrareview_launch, side_question + system messages + Bv1/Uv1 sets). See L109 (scheduled tasks), L107 (spawn/protocol contract), L89 (host-loop/split execution)."
   },
   {
    "pattern": [
@@ -1324,7 +1325,7 @@
     109,
     190
    ],
-   "hint": "CORRECTED (Ch44/L163): the file tools and mcp__workspace__bash need DIFFERENT path forms -- the old advice here ('use bare filenames with both') was copied from a Desktop prompt string that was itself wrong and was corrected upstream at app.asar 1.32885.1. Read/Write/Edit run host-side and take the HOST-ABSOLUTE outputs path (given to the model in its system prompt). Before Desktop 2.7032.0 their cwd was the session outputs dir and a bare filename also worked; from 2.7032.0 the cwd is /var/empty (or <sessionDir>/host-cwd), write-denied, and a bare filename is refused (Ch52/L190). mcp__workspace__bash starts at the session ROOT /sessions/<id>, which exists only inside the Linux environment -- a bare filename there is invisible to both the user and the file tools, so bash must use the ABSOLUTE /sessions/<id>/mnt/outputs/... form. The classic failure is the reverse trip: passing a VM-absolute /sessions/<id>/mnt/... path from bash output into a host file tool, which the PreToolUse path-gate (IeA=[Read,Write,Edit,Glob,Grep]) DENIES ('VM path on host') and never translates. Also (before 2.7032.0): from a file tool, 'outputs/x' DOUBLED to outputs/outputs/x and hid, and '<folder>/x' built a decoy directory inside outputs; from 2.7032.0 those relative forms are refused instead. Only an absolute host path reaches a connected folder. ${CLAUDE_PLUGIN_ROOT} resolves HOST-SIDE (claude-hostloop-plugins/<hash>): keep it literal for host-side Read of references; for bash-run scripts use the in-VM mount /sessions/<id>/mnt/.local-plugins/. One token can't be right for both host file tools and in-VM bash."
+   "hint": "The file tools and mcp__workspace__bash need DIFFERENT path forms (Ch44/L163-L164). Trap: Desktop prompts before app.asar 1.32885.1 said 'use bare filenames with both'; the behaviour never matched that text. Read/Write/Edit run host-side and take the HOST-ABSOLUTE outputs path (given to the model in its system prompt). Before Desktop 2.7032.0 their cwd was the session outputs dir and a bare filename also worked; from 2.7032.0 the cwd is /var/empty (or <sessionDir>/host-cwd), write-denied, and a bare filename is refused (Ch52/L190). mcp__workspace__bash starts at the session ROOT /sessions/<id>, which exists only inside the Linux environment -- a bare filename there is invisible to both the user and the file tools, so bash must use the ABSOLUTE /sessions/<id>/mnt/outputs/... form. The classic failure is the reverse trip: passing a VM-absolute /sessions/<id>/mnt/... path from bash output into a host file tool, which the PreToolUse path-gate (IeA=[Read,Write,Edit,Glob,Grep]) DENIES ('VM path on host') and never translates. Also (before 2.7032.0): from a file tool, 'outputs/x' DOUBLED to outputs/outputs/x and hid, and '<folder>/x' built a decoy directory inside outputs; from 2.7032.0 those relative forms are refused instead. Only an absolute host path reaches a connected folder. ${CLAUDE_PLUGIN_ROOT} resolves HOST-SIDE (claude-hostloop-plugins/<hash>): keep it literal for host-side Read of references; for bash-run scripts use the in-VM mount /sessions/<id>/mnt/.local-plugins/. One token can't be right for both host file tools and in-VM bash."
   },
   {
    "pattern": [
@@ -1685,10 +1686,11 @@
     "all hook event types"
    ],
    "lessons": [
+    188,
     155,
     32
    ],
-   "hint": "There are 31 as of CLI 2.1.219+, not 30 — DirectoryAdded was inserted before MessageDisplay. Any '30 events' phrasing predates 2.1.219."
+   "hint": "There are 33 as of CLI 2.1.260 (Ch51/L188): 30 through 2.1.217, 31 at 2.1.219-2.1.250 (DirectoryAdded inserted before MessageDisplay), then PreModelSwitch/PostModelSwitch added mid-array at 2.1.251. Any '30' or '31 events' phrasing predates those releases."
   },
   {
    "pattern": [

@@ -7,8 +7,7 @@
  * an outcome is wrong, the fix is a change to a rule, never a hand edit of the
  * data.
  *
- * HAND KEYS ARE FROZEN; GENERATED KEYS ARE DERIVED (plan §4.7, "Adversarial
- * review of phase 3"). The hand keys live in their own frozen file,
+ * HAND KEYS ARE FROZEN; GENERATED KEYS ARE DERIVED. The hand keys live in their own frozen file,
  * references/hand-keywords.json, which no script writes (lib/keyword-provenance.js).
  * topic-index.json's keyword_map and lessons[].keywords / identifier_keys are
  * BUILD OUTPUT, a pure function of that file, the lesson list and the lesson
@@ -42,8 +41,8 @@
  * unchanged (a test asserts the index is identical with and without them).
  * Why: feeding them into TF-IDF shifted TF normalisation and vector norms and
  * flipped registry top-1 cases on exact RRF ties broken by lowest id, which no
- * collision rule can reach because it is not a key collision (plan §4.7,
- * "Prototype result"). lookup.sh ignores generated keys, and search.js,
+ * collision rule can reach because it is not a key collision (measured in the
+ * prototype). lookup.sh ignores generated keys, and search.js,
  * semantic-search.js and fetch-lesson.js do not print them.
  *
  * MODES

@@ -17,8 +17,8 @@
  * coverage that reflects the API's input shape, not retrieval quality. So:
  *   - "search coverage": does search.js's top-5 for the question include ANY
  *     of the registry entry's provenance lessons? This is the same rank/MRR/
- *     nDCG machinery as the lesson strata, with the caveat flagged in
- *     §4.6a("historical provenance lessons are never labeled relevant") --
+ *     nDCG machinery as the lesson strata, with the caveat that historical
+ *     provenance lessons are never labeled relevant --
  *     provenance CAN include a corrected/superseded lesson (see registry.json
  *     comments), so a state-question "hit" here is looser than a lesson
  *     stratum hit and is reported as its own stratum, never merged with them.

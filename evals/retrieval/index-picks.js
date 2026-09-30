@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * index-picks.js — offline "index C" picks for the relevance pool (search-removal plan §4.2).
+ * index-picks.js — offline "index C" picks for the relevance pool.
  *
  * The offline router experiment's C arm (2026-09-30), unchanged in substance: the model sees the full routing index (one line per lesson) and a batch of
  * questions, and picks the 3 lesson ids most likely to hold each answer. It never sees the source

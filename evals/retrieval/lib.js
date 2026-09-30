@@ -129,7 +129,7 @@ function rankOf(id, results) {
 }
 
 // ---------------------------------------------------------------------------
-// Identifier extraction — published rules (spec §4.7). The implementation lives
+// Identifier extraction — published rules. The implementation lives
 // in the skill package (scripts/lib/identifiers.js) because the package ships
 // without evals/ and prepare-lessons.js needs the same extractor. Behaviour is
 // unchanged from the copy that generated questions-v1.json.

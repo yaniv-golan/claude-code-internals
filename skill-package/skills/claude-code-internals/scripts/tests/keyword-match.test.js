@@ -1,7 +1,7 @@
 'use strict';
 /**
  * keyword-match.test.js — the keyword layer's matching rule and its
- * specificity-weighted ranking (lib/keyword-match.js, plan §4.7b).
+ * specificity-weighted ranking (lib/keyword-match.js).
  */
 const test = require('node:test');
 const assert = require('node:assert');

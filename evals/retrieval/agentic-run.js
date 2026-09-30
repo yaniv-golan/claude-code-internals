@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * agentic-run.js — the agentic retrieval eval (search-removal plan §4.3, §7.1).
+ * agentic-run.js — the agentic retrieval eval.
  *
  * Runs a SKILL.md body ("arm") against questions the way a forked skill runs it: one
  * `claude -p` call per question, the model finds and reads lesson files with its own tools,
@@ -24,7 +24,7 @@
  *   - --output-format stream-json --verbose; the whole stream is kept (<qid>.stream.jsonl) and
  *     the parsed record (<qid>.json) caches the question, so a rerun resumes.
  *
- * read@ (FROZEN, plan §4.3): a lesson counts as read when one tool call covered >= 50% of its
+ * read@ (FROZEN: fixed before any run, so every arm is scored by one rule): a lesson counts as read when one tool call covered >= 50% of its
  * range, or of one of its sub-ranges when the index lists them (the "↳" lines of
  * references/routing/index-*.md in the staged folder). Coverage by call:
  *   - Read with a limit: lines [offset, offset+limit-1] (offset defaults to 1);

@@ -77,7 +77,7 @@
  * final file is written only when every question of the judged strata is judged; it refuses
  * to overwrite an existing questions-v<N>.json.
  *
- * ALL-STRATA POOL (POOL_V3, from questions-v4 on; search-removal plan §4.2):
+ * ALL-STRATA POOL (POOL_V3, from questions-v4 on):
  *   --strata identifier,plain,terse,state,real   judge these strata (default: plain); an entry
  *                                                 may name one split: terse:holdout
  *   --index-picks <file>                          index-picks.js output; switches the pool to POOL_V3:
@@ -97,7 +97,7 @@
  *   the checkpoint resumes under a different --strata (judgments are per question), and the final
  *   file is written once every question of the requested strata is judged.
  *
- * APPEND-ONLY JUDGING (--append-judged <file>, search-removal plan §4.2 "after the holdout run"):
+ * APPEND-ONLY JUDGING (--append-judged <file>, run after the holdout run):
  *   node gen-relevance.js --from questions-v4.json --version 5 --append-judged seen.json [--append-tag T]
  *   seen.json: {"<qid>": [lesson ids], ...} -- lessons an agentic run relied on (read or cited).
  *   For each qid, the ids its verdicts do not already cover are judged (one call per question,

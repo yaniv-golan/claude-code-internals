@@ -1152,7 +1152,7 @@
       "lesson_number": "03",
       "file": "02-agents-intelligence-interface.md",
       "startLine": 7,
-      "endLine": 329,
+      "endLine": 330,
       "keywords": [
         "skills",
         "skill-md",
@@ -1199,19 +1199,19 @@
         "SIMPLIFY_PROMPT",
         "how to write a custom skill",
         "skill not showing up in list",
-        "skill description getting cut off",
-        "why is my new skill ignored",
-        "make skill only activate for certain folders",
+        "skill description gets cut off",
+        "why does my new skill lose its description",
         "run skill in separate subagent",
         "pass arguments to a skill",
+        "skill only activates for certain files",
+        "which skill wins when names conflict",
         "stop claude from auto-running my skill",
-        "hide skill from slash menu",
-        "skill changes not reloading",
-        "which skill wins when names clash",
-        "old commands folder still supported",
-        "skills from mcp server not running shell commands",
+        "make skill user-only or model-only",
+        "skill changes not picked up without restart",
+        "shell commands in skill not executing from mcp server",
+        "skill override setting has no effect",
         "why does my skill ask for permission",
-        "disabling a skill in settings has no effect"
+        "old commands folder vs skills folder"
       ],
       "identifier_keys": [
         "validate-input",
@@ -1254,25 +1254,25 @@
       "vocab_keys": [
         "how to write a custom skill",
         "skill not showing up in list",
-        "skill description getting cut off",
-        "why is my new skill ignored",
-        "make skill only activate for certain folders",
+        "skill description gets cut off",
+        "why does my new skill lose its description",
         "run skill in separate subagent",
         "pass arguments to a skill",
+        "skill only activates for certain files",
+        "which skill wins when names conflict",
         "stop claude from auto-running my skill",
-        "hide skill from slash menu",
-        "skill changes not reloading",
-        "which skill wins when names clash",
-        "old commands folder still supported",
-        "skills from mcp server not running shell commands",
+        "make skill user-only or model-only",
+        "skill changes not picked up without restart",
+        "shell commands in skill not executing from mcp server",
+        "skill override setting has no effect",
         "why does my skill ask for permission",
-        "disabling a skill in settings has no effect"
+        "old commands folder vs skills folder"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
         "date": "2026-09-30",
-        "terms_sha256": "a62976c6d9509421b5e744915beda106b79a577b2bfb752f95c347528f4f3bb7"
+        "terms_sha256": "f7448644c904c24ab2eb787e582d180469cadec333c4de6dce3f2c0c27ee9f60"
       }
     },
     {
@@ -1281,8 +1281,8 @@
       "description": "Agent system: subagents, fork, async agents, agent tool, built-in and custom agents, explore agent, worktree isolation, send-message, agent frontmatter",
       "lesson_number": "05",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 333,
-      "endLine": 600,
+      "startLine": 334,
+      "endLine": 601,
       "keywords": [
         "agents",
         "subagent",
@@ -1395,8 +1395,8 @@
       "description": "Coordinator mode: dispatcher, workers, scratchpad, parallel agents, research-synthesis-implement-verify pattern",
       "lesson_number": "21",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 604,
-      "endLine": 756,
+      "startLine": 605,
+      "endLine": 757,
       "keywords": [
         "coordinator",
         "dispatcher",
@@ -1487,8 +1487,8 @@
       "description": "Teams and Swarm: multi-agent teams, tmux pane creation, mailbox communication, teammate, iTerm2, in-process backend, permission sync, shutdown",
       "lesson_number": "22",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 760,
-      "endLine": 1023,
+      "startLine": 761,
+      "endLine": 1024,
       "keywords": [
         "swarm",
         "teams",
@@ -1603,8 +1603,8 @@
       "description": "Memory system: auto-memory, MEMORY.md, team memory, session memory, memory extraction, topic files, staleness detection, secret scanning",
       "lesson_number": "08",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1027,
-      "endLine": 1190,
+      "startLine": 1028,
+      "endLine": 1191,
       "keywords": [
         "memory",
         "auto-memory",
@@ -1665,8 +1665,8 @@
       "description": "Auto memory and dreams: consolidation, extract-memories, memory recall, KAIROS memory, auto-dream, lock file, daily log",
       "lesson_number": "40",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1194,
-      "endLine": 1348,
+      "startLine": 1195,
+      "endLine": 1349,
       "keywords": [
         "dreams",
         "consolidation",
@@ -1753,8 +1753,8 @@
       "description": "Ink renderer: terminal UI rendering with React-like reconciler, Yoga layout, screen buffer, virtual DOM, blit, dirty flag, scroll, style pool, wide character, ANSI",
       "lesson_number": "11",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1352,
-      "endLine": 1541,
+      "startLine": 1353,
+      "endLine": 1542,
       "keywords": [
         "ink",
         "renderer",
@@ -1841,8 +1841,8 @@
       "description": "Commands system: slash commands, registration, local commands, prompt commands, local JSX commands, shell substitution, availability, bridge-safe",
       "lesson_number": "13",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1545,
-      "endLine": 1701,
+      "startLine": 1546,
+      "endLine": 1702,
       "keywords": [
         "commands",
         "slash-commands",
@@ -1925,8 +1925,8 @@
       "description": "Dialog UI: wizard pattern, permission dialog, onboarding, launcher pattern, custom select, pane component",
       "lesson_number": "35",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1705,
-      "endLine": 1862,
+      "startLine": 1706,
+      "endLine": 1863,
       "keywords": [
         "dialog",
         "ui",
@@ -2013,8 +2013,8 @@
       "description": "Notification system: toast notifications, terminal-notifier, OSC sequences, priority queue, Kitty, Ghostty, bell, progress reporting",
       "lesson_number": "30",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1866,
-      "endLine": 2095,
+      "startLine": 1867,
+      "endLine": 2096,
       "keywords": [
         "notifications",
         "toast",
@@ -10415,7 +10415,7 @@
       "lesson_number": "107",
       "file": "21-cowork-control-protocol.md",
       "startLine": 22,
-      "endLine": 433,
+      "endLine": 435,
       "keywords": [
         "cowork-spawn-contract",
         "stream-json",
@@ -10514,21 +10514,21 @@
         "global-this",
         "is-developer-approved-dev-url-override-enabled",
         "MCP_WORKSPACE_WEB_FETCH",
-        "build a headless driver for cowork",
-        "how to drive the cowork agent from my own program",
-        "cowork agent control protocol handshake",
-        "ask user question auto dismissed in headless mode",
-        "why are my scripted answers to questions ignored",
-        "zod error expected object received undefined control response",
-        "control response payload nested twice",
-        "enable cowork mode without the cowork flag",
-        "cowork flag can only be used with user scope",
+        "drive cowork agent from my own harness",
+        "headless driver for cowork sessions",
+        "ask user question auto dismissed headless",
+        "why are my scripted answers never used",
+        "control response zod error expected object",
+        "how do i turn on cowork mode without the flag",
+        "cowork flag rejected user scope only",
         "mcp config ignored in cowork session",
-        "act as the mcp server over the control channel",
-        "why do some cowork tools always ask for approval",
+        "how to provide custom mcp tools to cowork agent",
+        "cowork tools always ask for approval",
         "background agents disabled error in cowork",
-        "pass oauth token to headless cowork agent",
-        "which spawn flags does the desktop app use for the agent"
+        "cowork settings file not loading plugins",
+        "not logged in with fresh config directory",
+        "stream json handshake before first message",
+        "what effort and thinking budget does desktop pass"
       ],
       "identifier_keys": [
         "always-deny-rules",
@@ -10572,27 +10572,27 @@
         "MCP_WORKSPACE_WEB_FETCH"
       ],
       "vocab_keys": [
-        "build a headless driver for cowork",
-        "how to drive the cowork agent from my own program",
-        "cowork agent control protocol handshake",
-        "ask user question auto dismissed in headless mode",
-        "why are my scripted answers to questions ignored",
-        "zod error expected object received undefined control response",
-        "control response payload nested twice",
-        "enable cowork mode without the cowork flag",
-        "cowork flag can only be used with user scope",
+        "drive cowork agent from my own harness",
+        "headless driver for cowork sessions",
+        "ask user question auto dismissed headless",
+        "why are my scripted answers never used",
+        "control response zod error expected object",
+        "how do i turn on cowork mode without the flag",
+        "cowork flag rejected user scope only",
         "mcp config ignored in cowork session",
-        "act as the mcp server over the control channel",
-        "why do some cowork tools always ask for approval",
+        "how to provide custom mcp tools to cowork agent",
+        "cowork tools always ask for approval",
         "background agents disabled error in cowork",
-        "pass oauth token to headless cowork agent",
-        "which spawn flags does the desktop app use for the agent"
+        "cowork settings file not loading plugins",
+        "not logged in with fresh config directory",
+        "stream json handshake before first message",
+        "what effort and thinking budget does desktop pass"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
         "date": "2026-09-30",
-        "terms_sha256": "4133a9740609c574c9314f01200d17ad95c6a01fc04993cce02d72424831ed60"
+        "terms_sha256": "063a135372d6b0a10f8738c128586cc1d65a8ea9d30e608481cda606f0a6d247"
       }
     },
     {
@@ -11430,21 +11430,21 @@
         "preview-format",
         "04-connectivity-plugins.md",
         "31-desktop-reasoning-config-effort-thinking.md",
-        "is desktop effort level hardcoded to medium",
-        "where does cowork session effort come from",
-        "change reasoning effort for a cowork session",
-        "desktop app passes medium effort why",
-        "plugin sign-in still disabled in desktop",
-        "subagent model setting in desktop app",
-        "cowork scheduled tasks not firing in background sessions",
+        "is the desktop app hardcoding effort to medium",
+        "where does cowork session effort level come from",
+        "set reasoning effort per cowork session",
+        "desktop effort setting ignores environment variable",
+        "is plugin sign-in still disabled in desktop app",
+        "plugin oauth is not enabled for this account",
+        "choose which model subagents use in desktop",
+        "does the subagent model setting actually work",
+        "scheduled tasks not firing in background cowork sessions",
         "why are background agents disabled in cowork",
-        "new cowork tools for presenting files",
-        "listing scheduled tasks needs no approval",
+        "cowork tool that moves scratch files to outputs",
+        "list scheduled tasks without approval prompt",
         "cowork memory folder location per space",
-        "did anything change in latest desktop build",
-        "same cron disable switch different meaning",
-        "can i pick the default model for subagents",
-        "how to tell if a found feature is really new"
+        "cron disable flag means two different things",
+        "how to check a finding is really new before publishing"
       ],
       "identifier_keys": [
         "MCP_START_WATCHING",
@@ -11460,27 +11460,27 @@
         "31-desktop-reasoning-config-effort-thinking.md"
       ],
       "vocab_keys": [
-        "is desktop effort level hardcoded to medium",
-        "where does cowork session effort come from",
-        "change reasoning effort for a cowork session",
-        "desktop app passes medium effort why",
-        "plugin sign-in still disabled in desktop",
-        "subagent model setting in desktop app",
-        "cowork scheduled tasks not firing in background sessions",
+        "is the desktop app hardcoding effort to medium",
+        "where does cowork session effort level come from",
+        "set reasoning effort per cowork session",
+        "desktop effort setting ignores environment variable",
+        "is plugin sign-in still disabled in desktop app",
+        "plugin oauth is not enabled for this account",
+        "choose which model subagents use in desktop",
+        "does the subagent model setting actually work",
+        "scheduled tasks not firing in background cowork sessions",
         "why are background agents disabled in cowork",
-        "new cowork tools for presenting files",
-        "listing scheduled tasks needs no approval",
+        "cowork tool that moves scratch files to outputs",
+        "list scheduled tasks without approval prompt",
         "cowork memory folder location per space",
-        "did anything change in latest desktop build",
-        "same cron disable switch different meaning",
-        "can i pick the default model for subagents",
-        "how to tell if a found feature is really new"
+        "cron disable flag means two different things",
+        "how to check a finding is really new before publishing"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
         "date": "2026-09-30",
-        "terms_sha256": "a8e80e2e8835db4249a0775c207e727727aeed7ee16db017fcedac3e888a95d1"
+        "terms_sha256": "af38197d53b0d0f64a1f9ea142ecb59315771dd36e2209adcabe0444c720268c"
       }
     },
     {
@@ -12047,21 +12047,20 @@
         "22-cowork-env-gates-protocol.md",
         "CLAUDE_CODE_FORCE_SANDBOX",
         "CLAUDE_CODE_SESSION_ACCESS_TOKEN",
-        "desktop cloud tasks new feature",
+        "is desktop cloud tasks a new feature",
         "move local session to cloud",
-        "send my desktop session to claude.ai",
-        "how does handing off a session to the cloud work",
-        "cloud session runs on anthropic servers",
-        "remote control worker spawning child sessions",
-        "how do remote control sessions pick up work",
-        "polling for cloud work queue",
-        "bridge session permission prompt from remote",
-        "why can't i send a remote session to cloud",
-        "handoff requires clean working tree and pushed branch",
-        "how to detect a bridge-spawned session",
-        "desktop app bridge vs remote control difference",
-        "what changed in latest desktop update cloud",
-        "healthcheck work items in session queue"
+        "how does sending a session to the cloud work",
+        "session running on anthropic servers instead of my machine",
+        "what sets the bridge environment kind",
+        "how does the cloud work queue get polled",
+        "cloud session created from pushed git branch",
+        "why does moving to cloud need a clean working tree",
+        "remote session folder access permission prompt",
+        "desktop app claiming cloud work items",
+        "detecting sessions spawned by remote control",
+        "healthcheck vs session work items",
+        "cloud task progress steps pushing branch summary",
+        "does desktop use the official sdk work poller"
       ],
       "identifier_keys": [
         "index.js",
@@ -12104,27 +12103,26 @@
         "CLAUDE_CODE_SESSION_ACCESS_TOKEN"
       ],
       "vocab_keys": [
-        "desktop cloud tasks new feature",
+        "is desktop cloud tasks a new feature",
         "move local session to cloud",
-        "send my desktop session to claude.ai",
-        "how does handing off a session to the cloud work",
-        "cloud session runs on anthropic servers",
-        "remote control worker spawning child sessions",
-        "how do remote control sessions pick up work",
-        "polling for cloud work queue",
-        "bridge session permission prompt from remote",
-        "why can't i send a remote session to cloud",
-        "handoff requires clean working tree and pushed branch",
-        "how to detect a bridge-spawned session",
-        "desktop app bridge vs remote control difference",
-        "what changed in latest desktop update cloud",
-        "healthcheck work items in session queue"
+        "how does sending a session to the cloud work",
+        "session running on anthropic servers instead of my machine",
+        "what sets the bridge environment kind",
+        "how does the cloud work queue get polled",
+        "cloud session created from pushed git branch",
+        "why does moving to cloud need a clean working tree",
+        "remote session folder access permission prompt",
+        "desktop app claiming cloud work items",
+        "detecting sessions spawned by remote control",
+        "healthcheck vs session work items",
+        "cloud task progress steps pushing branch summary",
+        "does desktop use the official sdk work poller"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
         "date": "2026-09-30",
-        "terms_sha256": "5485e6eb8c79fe912c124db28af5473e740b88d74302bc3456524d15cbbfdb29"
+        "terms_sha256": "1308273b3e905c5fe0874e89e543b00f950913292cf042ded39a568c775ac18f"
       }
     },
     {
@@ -12580,20 +12578,20 @@
         "dispatch_child",
         "index.chunk-zFJ_MSb3.js",
         "which model does a subagent use",
-        "subagent model setting ignored",
-        "subagent model not in allowlist warning",
-        "why did my subagent inherit the parent model",
+        "subagent ignoring my model setting",
+        "invalid subagent model falls back to parent",
         "tool search disabled unexpectedly",
-        "tool search context percentage threshold",
-        "subagents run in background by default",
+        "tool search deferral threshold percent of context",
         "can i resume a subagent in cowork",
-        "host loop vs vm sandbox differences",
-        "cannot resume session vm sandbox policy",
-        "how to see which model a subagent actually ran",
-        "stream event when subagent starts",
-        "permission denied event missing for hook denials",
-        "feature flag cache file looks compressed",
-        "limit on how many subagents run at once"
+        "agents run in background by default",
+        "background agents disabled error",
+        "difference between host loop and vm loop",
+        "why does bash behave differently in vm sandbox",
+        "session cannot be resumed vm sandbox policy",
+        "how to see subagent type in stream output",
+        "which model did my subagent actually run on",
+        "why no permission denied event for path block",
+        "feature flag cache grep shows nothing"
       ],
       "identifier_keys": [
         "global-this",
@@ -12635,26 +12633,26 @@
       ],
       "vocab_keys": [
         "which model does a subagent use",
-        "subagent model setting ignored",
-        "subagent model not in allowlist warning",
-        "why did my subagent inherit the parent model",
+        "subagent ignoring my model setting",
+        "invalid subagent model falls back to parent",
         "tool search disabled unexpectedly",
-        "tool search context percentage threshold",
-        "subagents run in background by default",
+        "tool search deferral threshold percent of context",
         "can i resume a subagent in cowork",
-        "host loop vs vm sandbox differences",
-        "cannot resume session vm sandbox policy",
-        "how to see which model a subagent actually ran",
-        "stream event when subagent starts",
-        "permission denied event missing for hook denials",
-        "feature flag cache file looks compressed",
-        "limit on how many subagents run at once"
+        "agents run in background by default",
+        "background agents disabled error",
+        "difference between host loop and vm loop",
+        "why does bash behave differently in vm sandbox",
+        "session cannot be resumed vm sandbox policy",
+        "how to see subagent type in stream output",
+        "which model did my subagent actually run on",
+        "why no permission denied event for path block",
+        "feature flag cache grep shows nothing"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
         "date": "2026-09-30",
-        "terms_sha256": "581ce1a5a6e22f0cb1961ccbd3c0d3dd790e2915e787311f9fa1c253fa5819a0"
+        "terms_sha256": "7b3ee61f8bc23d6ce4ea74a567d3a8c0890528472eabbbffa533437e5892df69"
       }
     },
     {
@@ -14587,48 +14585,48 @@
         "tool-surface-use-audit",
         "audit_hmac",
         "relative-filenames",
-        "which cowork log should i trust",
-        "two session logs disagree",
+        "which session log should i trust",
+        "two log files disagree about paths",
+        "audit log vs conversation transcript",
         "why do paths differ between logs",
-        "audit log vs agent transcript",
-        "session log shows different file paths",
-        "where is the conversation transcript saved",
-        "find which tools and plugins a session had",
-        "check what model and permission mode session used",
-        "where are sub-agent transcripts stored",
-        "mixed path formats in audit log",
-        "host paths vs vm paths in logs",
-        "relative filename lands in wrong folder",
-        "shell saves file outside outputs folder",
-        "which log shows commands as actually run",
-        "why does file tool reject sessions path"
+        "where to find configured tools and model",
+        "log shows host paths instead of vm paths",
+        "find sub-agent transcripts for a session",
+        "which log records what actually happened",
+        "mixed path formats in one log entry",
+        "file saved with relative name went missing",
+        "shell and file tools see different paths",
+        "why did my file not land in outputs",
+        "should i use relative or absolute paths for outputs",
+        "how to check permission mode a session used",
+        "other session paths not translated in log"
       ],
       "identifier_keys": [
         "audit_hmac",
         "relative-filenames"
       ],
       "vocab_keys": [
-        "which cowork log should i trust",
-        "two session logs disagree",
+        "which session log should i trust",
+        "two log files disagree about paths",
+        "audit log vs conversation transcript",
         "why do paths differ between logs",
-        "audit log vs agent transcript",
-        "session log shows different file paths",
-        "where is the conversation transcript saved",
-        "find which tools and plugins a session had",
-        "check what model and permission mode session used",
-        "where are sub-agent transcripts stored",
-        "mixed path formats in audit log",
-        "host paths vs vm paths in logs",
-        "relative filename lands in wrong folder",
-        "shell saves file outside outputs folder",
-        "which log shows commands as actually run",
-        "why does file tool reject sessions path"
+        "where to find configured tools and model",
+        "log shows host paths instead of vm paths",
+        "find sub-agent transcripts for a session",
+        "which log records what actually happened",
+        "mixed path formats in one log entry",
+        "file saved with relative name went missing",
+        "shell and file tools see different paths",
+        "why did my file not land in outputs",
+        "should i use relative or absolute paths for outputs",
+        "how to check permission mode a session used",
+        "other session paths not translated in log"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
         "date": "2026-09-30",
-        "terms_sha256": "fc68f8661b513b6247800b9f8c95679f4fbf251efc3d1448ed532300ceed24bc"
+        "terms_sha256": "dac3d4963a79217708d32e28bd4bae3de1f87241be7745ab6059f2b4bf80597c"
       }
     },
     {
@@ -16108,19 +16106,19 @@
         "proof-engine",
         "which folder does the shell start in",
         "shell working directory in cowork",
-        "files saved from shell not showing up",
-        "bash files missing from outputs folder",
-        "where do relative paths go in the shell",
-        "shell starts in session root not outputs",
-        "why can't the user see files i made in bash",
-        "system prompt wrong about shell directory",
-        "scratch files invisible to user",
-        "shell directory vs agent working directory",
-        "does connecting a folder change the shell directory",
-        "bare filename lands in wrong place",
-        "pwd shows session folder instead of outputs",
-        "file tools can't see shell-created files",
-        "agent process working directory is outputs"
+        "files saved by shell not showing up",
+        "bare filename lands in wrong folder",
+        "shell output missing from outputs folder",
+        "does the shell start in outputs",
+        "why can't the user see files i created in bash",
+        "session root vs outputs folder",
+        "system prompt says wrong starting directory",
+        "scratch files invisible to the user",
+        "agent process directory vs shell directory",
+        "relative paths in shell go where",
+        "connected folder not the shell starting directory",
+        "pwd shows session folder not outputs",
+        "prompt text changed but behavior didn't"
       ],
       "identifier_keys": [
         "first-folder-else-outputs",
@@ -16135,25 +16133,25 @@
       "vocab_keys": [
         "which folder does the shell start in",
         "shell working directory in cowork",
-        "files saved from shell not showing up",
-        "bash files missing from outputs folder",
-        "where do relative paths go in the shell",
-        "shell starts in session root not outputs",
-        "why can't the user see files i made in bash",
-        "system prompt wrong about shell directory",
-        "scratch files invisible to user",
-        "shell directory vs agent working directory",
-        "does connecting a folder change the shell directory",
-        "bare filename lands in wrong place",
-        "pwd shows session folder instead of outputs",
-        "file tools can't see shell-created files",
-        "agent process working directory is outputs"
+        "files saved by shell not showing up",
+        "bare filename lands in wrong folder",
+        "shell output missing from outputs folder",
+        "does the shell start in outputs",
+        "why can't the user see files i created in bash",
+        "session root vs outputs folder",
+        "system prompt says wrong starting directory",
+        "scratch files invisible to the user",
+        "agent process directory vs shell directory",
+        "relative paths in shell go where",
+        "connected folder not the shell starting directory",
+        "pwd shows session folder not outputs",
+        "prompt text changed but behavior didn't"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
         "date": "2026-09-30",
-        "terms_sha256": "e9d7f28c96c0e451f5e1d3b7178aa2682c8ccfa07aa0d93edaadf797fb1bd606"
+        "terms_sha256": "b25608b6c76416a559d343d955caa5d022cda89c04e1d0031f02916546676600"
       }
     },
     {
@@ -16162,7 +16160,7 @@
       "lesson_number": "164",
       "file": "41-cowork-path-resolution-lanes.md",
       "startLine": 88,
-      "endLine": 209,
+      "endLine": 211,
       "keywords": [
         "two-path-forms",
         "bare-filename-file-tools",
@@ -16208,20 +16206,20 @@
         "slugified-cwd",
         "CLAUDE_TMPDIR",
         "file saved but user can't see it",
-        "bash wrote file to wrong folder",
-        "shell vs file tool paths differ",
-        "outputs folder nested twice",
-        "relative path works in edit but not shell",
-        "file ended up in scratch instead of outputs",
-        "file tool rejects absolute session path",
-        "why does my file not show up for the user",
-        "file not reaching connected folder",
+        "bash wrote file to wrong place in cowork",
+        "why does my file end up in outputs/outputs",
+        "doubled outputs folder",
+        "file tools and shell need different paths",
+        "relative vs absolute path in cowork shell",
+        "file written to connected folder never arrives",
         "subagent can't find connected folder path",
-        "script should take destination as argument",
-        "detect which environment a script runs in",
-        "temporary scratchpad vs deliverables folder",
-        "where should cowork save final output files",
-        "same filename different location per tool"
+        "where do deliverables need to be saved",
+        "script writes to hidden scratch directory",
+        "how should a skill locate the output folder across runtimes",
+        "file tool rejects sessions path",
+        "bare filename refused by write tool",
+        "temp directory override where do files go",
+        "shell write lands in vm scratch"
       ],
       "identifier_keys": [
         "report.md",
@@ -16238,26 +16236,26 @@
       ],
       "vocab_keys": [
         "file saved but user can't see it",
-        "bash wrote file to wrong folder",
-        "shell vs file tool paths differ",
-        "outputs folder nested twice",
-        "relative path works in edit but not shell",
-        "file ended up in scratch instead of outputs",
-        "file tool rejects absolute session path",
-        "why does my file not show up for the user",
-        "file not reaching connected folder",
+        "bash wrote file to wrong place in cowork",
+        "why does my file end up in outputs/outputs",
+        "doubled outputs folder",
+        "file tools and shell need different paths",
+        "relative vs absolute path in cowork shell",
+        "file written to connected folder never arrives",
         "subagent can't find connected folder path",
-        "script should take destination as argument",
-        "detect which environment a script runs in",
-        "temporary scratchpad vs deliverables folder",
-        "where should cowork save final output files",
-        "same filename different location per tool"
+        "where do deliverables need to be saved",
+        "script writes to hidden scratch directory",
+        "how should a skill locate the output folder across runtimes",
+        "file tool rejects sessions path",
+        "bare filename refused by write tool",
+        "temp directory override where do files go",
+        "shell write lands in vm scratch"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
         "date": "2026-09-30",
-        "terms_sha256": "333ce3b57573415101efd01dfe8900e34d74b17b7143c484504d5f032068d40a"
+        "terms_sha256": "1162f0b804418d58d77c6d2ef0bb41e91af715f8d1722ebca5b64796c1630c72"
       }
     },
     {
@@ -16265,8 +16263,8 @@
       "title": "Write's Result Carries the Raw Input",
       "lesson_number": "165",
       "file": "41-cowork-path-resolution-lanes.md",
-      "startLine": 213,
-      "endLine": 232,
+      "startLine": 215,
+      "endLine": 234,
       "keywords": [
         "write-result-raw-path",
         "does-not-absolutize",
@@ -16278,40 +16276,42 @@
         "tool-result-path",
         "file write result shows relative path",
         "write tool not returning absolute path",
-        "why does the file created message show my relative path",
-        "path in write confirmation not resolved",
-        "test assertion expects full path after writing file",
-        "capture written file location for next step",
-        "file created successfully at wrong path format",
-        "does writing a file report the full path",
-        "write result echoes input path",
-        "skill relies on absolute path from write output",
-        "chat mode says write shows full path but doesn't",
+        "why does file created message show relative path",
+        "get full path of file after writing",
+        "file created successfully message wrong path",
+        "write output echoes input path",
+        "test assertion expects absolute path fails",
+        "skill capturing written file path for later step",
         "resolved path only sent to telemetry",
-        "file has been updated message path",
-        "how to get absolute path after creating file"
+        "does write result show the full file path",
+        "chat mode prompt claims full path shown",
+        "path in file updated message not resolved",
+        "relying on written file location in next step",
+        "write confirmation path same as what i passed",
+        "file write result path inconsistent with docs"
       ],
       "vocab_keys": [
         "file write result shows relative path",
         "write tool not returning absolute path",
-        "why does the file created message show my relative path",
-        "path in write confirmation not resolved",
-        "test assertion expects full path after writing file",
-        "capture written file location for next step",
-        "file created successfully at wrong path format",
-        "does writing a file report the full path",
-        "write result echoes input path",
-        "skill relies on absolute path from write output",
-        "chat mode says write shows full path but doesn't",
+        "why does file created message show relative path",
+        "get full path of file after writing",
+        "file created successfully message wrong path",
+        "write output echoes input path",
+        "test assertion expects absolute path fails",
+        "skill capturing written file path for later step",
         "resolved path only sent to telemetry",
-        "file has been updated message path",
-        "how to get absolute path after creating file"
+        "does write result show the full file path",
+        "chat mode prompt claims full path shown",
+        "path in file updated message not resolved",
+        "relying on written file location in next step",
+        "write confirmation path same as what i passed",
+        "file write result path inconsistent with docs"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "cce03cbd27c7dd34ee7ebbacd05d03e1acc89debc4a977c8e15d22066b1ef93e"
+        "date": "2026-09-30",
+        "terms_sha256": "90ad3ed869f5f9b65b6c03022df5eb10fe1d90a27547b82b67a14aab52ec27ba"
       }
     },
     {
@@ -16319,8 +16319,8 @@
       "title": "Surface Separation, and Two Greps That Lie",
       "lesson_number": "166",
       "file": "41-cowork-path-resolution-lanes.md",
-      "startLine": 236,
-      "endLine": 309,
+      "startLine": 238,
+      "endLine": 311,
       "keywords": [
         "surface-separation",
         "chat-mode-prompt",
@@ -16348,20 +16348,20 @@
         "github-mcp-server",
         "libmsalruntime_arm64",
         "cowork bash working directory differs from file tools",
-        "does chat mode share scratch folder with bash",
-        "bare filenames work in chat but not cowork",
-        "which tools are disabled in host loop",
+        "does chat mode share scratch space with bash",
+        "shell and file tools see different folders",
+        "prompt text true for chat but not cowork",
         "grep says string missing but it exists",
         "unicode escaped characters break grep search",
-        "em dash not found in app bundle",
+        "em dash not found in bundled javascript",
         "asar extraction looks incomplete or truncated",
-        "unpacked native binaries missing after extract",
-        "why are files missing when extracting backed up archive",
-        "app updated itself during investigation mismatch",
-        "negative search result false confidence",
-        "how to verify absence claims are trustworthy",
-        "two tools agree but both wrong",
-        "separating prompt text by product surface"
+        "why are native binaries missing after extracting archive",
+        "unpacked sibling folder missing from backup extraction",
+        "file counts differ between archive listing and disk",
+        "desktop app updated during investigation mismatched files",
+        "search that cannot return the counterexample",
+        "why did two independent checks agree on wrong answer",
+        "how to verify a claim that something is absent"
       ],
       "identifier_keys": [
         "cowork-harness",
@@ -16373,26 +16373,26 @@
       ],
       "vocab_keys": [
         "cowork bash working directory differs from file tools",
-        "does chat mode share scratch folder with bash",
-        "bare filenames work in chat but not cowork",
-        "which tools are disabled in host loop",
+        "does chat mode share scratch space with bash",
+        "shell and file tools see different folders",
+        "prompt text true for chat but not cowork",
         "grep says string missing but it exists",
         "unicode escaped characters break grep search",
-        "em dash not found in app bundle",
+        "em dash not found in bundled javascript",
         "asar extraction looks incomplete or truncated",
-        "unpacked native binaries missing after extract",
-        "why are files missing when extracting backed up archive",
-        "app updated itself during investigation mismatch",
-        "negative search result false confidence",
-        "how to verify absence claims are trustworthy",
-        "two tools agree but both wrong",
-        "separating prompt text by product surface"
+        "why are native binaries missing after extracting archive",
+        "unpacked sibling folder missing from backup extraction",
+        "file counts differ between archive listing and disk",
+        "desktop app updated during investigation mismatched files",
+        "search that cannot return the counterexample",
+        "why did two independent checks agree on wrong answer",
+        "how to verify a claim that something is absent"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
         "date": "2026-09-30",
-        "terms_sha256": "d139dd4a081829212a84d4be073d72f4c01d2e7e90153eada130ad06bf98fce8"
+        "terms_sha256": "86b2a14b1fe5d8155f8b5b41940ff54a93d19f7ad21030d500c5660920ac32b9"
       }
     },
     {
@@ -44876,13 +44876,10 @@
     "skill not showing up in list": [
       11
     ],
-    "skill description getting cut off": [
+    "skill description gets cut off": [
       11
     ],
-    "why is my new skill ignored": [
-      11
-    ],
-    "make skill only activate for certain folders": [
+    "why does my new skill lose its description": [
       11
     ],
     "run skill in separate subagent": [
@@ -44891,28 +44888,31 @@
     "pass arguments to a skill": [
       11
     ],
+    "skill only activates for certain files": [
+      11
+    ],
+    "which skill wins when names conflict": [
+      11
+    ],
     "stop claude from auto-running my skill": [
       11
     ],
-    "hide skill from slash menu": [
+    "make skill user-only or model-only": [
       11
     ],
-    "skill changes not reloading": [
+    "skill changes not picked up without restart": [
       11
     ],
-    "which skill wins when names clash": [
+    "shell commands in skill not executing from mcp server": [
       11
     ],
-    "old commands folder still supported": [
-      11
-    ],
-    "skills from mcp server not running shell commands": [
+    "skill override setting has no effect": [
       11
     ],
     "why does my skill ask for permission": [
       11
     ],
-    "disabling a skill in settings has no effect": [
+    "old commands folder vs skills folder": [
       11
     ],
     "how do subagents work": [
@@ -49172,49 +49172,49 @@
     "workaround for giving cowork cli a key each session": [
       106
     ],
-    "build a headless driver for cowork": [
+    "drive cowork agent from my own harness": [
       107
     ],
-    "how to drive the cowork agent from my own program": [
+    "headless driver for cowork sessions": [
       107
     ],
-    "cowork agent control protocol handshake": [
+    "ask user question auto dismissed headless": [
       107
     ],
-    "ask user question auto dismissed in headless mode": [
+    "why are my scripted answers never used": [
       107
     ],
-    "why are my scripted answers to questions ignored": [
+    "control response zod error expected object": [
       107
     ],
-    "zod error expected object received undefined control response": [
+    "how do i turn on cowork mode without the flag": [
       107
     ],
-    "control response payload nested twice": [
-      107
-    ],
-    "enable cowork mode without the cowork flag": [
-      107
-    ],
-    "cowork flag can only be used with user scope": [
+    "cowork flag rejected user scope only": [
       107
     ],
     "mcp config ignored in cowork session": [
       107
     ],
-    "act as the mcp server over the control channel": [
+    "how to provide custom mcp tools to cowork agent": [
       107
     ],
-    "why do some cowork tools always ask for approval": [
+    "cowork tools always ask for approval": [
       107
     ],
     "background agents disabled error in cowork": [
       107
     ],
-    "pass oauth token to headless cowork agent": [
+    "cowork settings file not loading plugins": [
       107
     ],
-    "which spawn flags does the desktop app use for the agent": [
+    "not logged in with fresh config directory": [
+      107
+    ],
+    "stream json handshake before first message": [
+      107
+    ],
+    "what effort and thinking budget does desktop pass": [
       107
     ],
     "hidden settings for cowork desktop agent": [
@@ -49485,49 +49485,49 @@
     "which new betas are behind feature flags": [
       113
     ],
-    "is desktop effort level hardcoded to medium": [
+    "is the desktop app hardcoding effort to medium": [
       114
     ],
-    "where does cowork session effort come from": [
+    "where does cowork session effort level come from": [
       114
     ],
-    "change reasoning effort for a cowork session": [
+    "set reasoning effort per cowork session": [
       114
     ],
-    "desktop app passes medium effort why": [
+    "desktop effort setting ignores environment variable": [
       114
     ],
-    "plugin sign-in still disabled in desktop": [
+    "is plugin sign-in still disabled in desktop app": [
       114
     ],
-    "subagent model setting in desktop app": [
+    "plugin oauth is not enabled for this account": [
       114
     ],
-    "cowork scheduled tasks not firing in background sessions": [
+    "choose which model subagents use in desktop": [
+      114
+    ],
+    "does the subagent model setting actually work": [
+      114
+    ],
+    "scheduled tasks not firing in background cowork sessions": [
       114
     ],
     "why are background agents disabled in cowork": [
       114
     ],
-    "new cowork tools for presenting files": [
+    "cowork tool that moves scratch files to outputs": [
       114
     ],
-    "listing scheduled tasks needs no approval": [
+    "list scheduled tasks without approval prompt": [
       114
     ],
     "cowork memory folder location per space": [
       114
     ],
-    "did anything change in latest desktop build": [
+    "cron disable flag means two different things": [
       114
     ],
-    "same cron disable switch different meaning": [
-      114
-    ],
-    "can i pick the default model for subagents": [
-      114
-    ],
-    "how to tell if a found feature is really new": [
+    "how to check a finding is really new before publishing": [
       114
     ],
     "continue a finished subagent": [
@@ -49710,49 +49710,46 @@
     "tool metadata display name and icon": [
       118
     ],
-    "desktop cloud tasks new feature": [
+    "is desktop cloud tasks a new feature": [
       119
     ],
     "move local session to cloud": [
       119
     ],
-    "send my desktop session to claude.ai": [
+    "how does sending a session to the cloud work": [
       119
     ],
-    "how does handing off a session to the cloud work": [
+    "session running on anthropic servers instead of my machine": [
       119
     ],
-    "cloud session runs on anthropic servers": [
+    "what sets the bridge environment kind": [
       119
     ],
-    "remote control worker spawning child sessions": [
+    "how does the cloud work queue get polled": [
       119
     ],
-    "how do remote control sessions pick up work": [
+    "cloud session created from pushed git branch": [
       119
     ],
-    "polling for cloud work queue": [
+    "why does moving to cloud need a clean working tree": [
       119
     ],
-    "bridge session permission prompt from remote": [
+    "remote session folder access permission prompt": [
       119
     ],
-    "why can't i send a remote session to cloud": [
+    "desktop app claiming cloud work items": [
       119
     ],
-    "handoff requires clean working tree and pushed branch": [
+    "detecting sessions spawned by remote control": [
       119
     ],
-    "how to detect a bridge-spawned session": [
+    "healthcheck vs session work items": [
       119
     ],
-    "desktop app bridge vs remote control difference": [
+    "cloud task progress steps pushing branch summary": [
       119
     ],
-    "what changed in latest desktop update cloud": [
-      119
-    ],
-    "healthcheck work items in session queue": [
+    "does desktop use the official sdk work poller": [
       119
     ],
     "where does desktop effort level come from": [
@@ -49936,46 +49933,46 @@
     "which model does a subagent use": [
       124
     ],
-    "subagent model setting ignored": [
+    "subagent ignoring my model setting": [
       124
     ],
-    "subagent model not in allowlist warning": [
-      124
-    ],
-    "why did my subagent inherit the parent model": [
+    "invalid subagent model falls back to parent": [
       124
     ],
     "tool search disabled unexpectedly": [
       124
     ],
-    "tool search context percentage threshold": [
-      124
-    ],
-    "subagents run in background by default": [
+    "tool search deferral threshold percent of context": [
       124
     ],
     "can i resume a subagent in cowork": [
       124
     ],
-    "host loop vs vm sandbox differences": [
+    "agents run in background by default": [
       124
     ],
-    "cannot resume session vm sandbox policy": [
+    "background agents disabled error": [
       124
     ],
-    "how to see which model a subagent actually ran": [
+    "difference between host loop and vm loop": [
       124
     ],
-    "stream event when subagent starts": [
+    "why does bash behave differently in vm sandbox": [
       124
     ],
-    "permission denied event missing for hook denials": [
+    "session cannot be resumed vm sandbox policy": [
       124
     ],
-    "feature flag cache file looks compressed": [
+    "how to see subagent type in stream output": [
       124
     ],
-    "limit on how many subagents run at once": [
+    "which model did my subagent actually run on": [
+      124
+    ],
+    "why no permission denied event for path block": [
+      124
+    ],
+    "feature flag cache grep shows nothing": [
       124
     ],
     "ios simulator tools missing in cowork": [
@@ -50832,49 +50829,49 @@
     "which record shows what the agent actually sent": [
       143
     ],
-    "which cowork log should i trust": [
+    "which session log should i trust": [
       144
     ],
-    "two session logs disagree": [
+    "two log files disagree about paths": [
+      144
+    ],
+    "audit log vs conversation transcript": [
       144
     ],
     "why do paths differ between logs": [
       144
     ],
-    "audit log vs agent transcript": [
+    "where to find configured tools and model": [
       144
     ],
-    "session log shows different file paths": [
+    "log shows host paths instead of vm paths": [
       144
     ],
-    "where is the conversation transcript saved": [
+    "find sub-agent transcripts for a session": [
       144
     ],
-    "find which tools and plugins a session had": [
+    "which log records what actually happened": [
       144
     ],
-    "check what model and permission mode session used": [
+    "mixed path formats in one log entry": [
       144
     ],
-    "where are sub-agent transcripts stored": [
+    "file saved with relative name went missing": [
       144
     ],
-    "mixed path formats in audit log": [
+    "shell and file tools see different paths": [
       144
     ],
-    "host paths vs vm paths in logs": [
+    "why did my file not land in outputs": [
       144
     ],
-    "relative filename lands in wrong folder": [
+    "should i use relative or absolute paths for outputs": [
       144
     ],
-    "shell saves file outside outputs folder": [
+    "how to check permission mode a session used": [
       144
     ],
-    "which log shows commands as actually run": [
-      144
-    ],
-    "why does file tool reject sessions path": [
+    "other session paths not translated in log": [
       144
     ],
     "can cowork install python packages": [
@@ -51687,88 +51684,88 @@
     "shell working directory in cowork": [
       163
     ],
-    "files saved from shell not showing up": [
+    "files saved by shell not showing up": [
       163
     ],
-    "bash files missing from outputs folder": [
+    "bare filename lands in wrong folder": [
       163
     ],
-    "where do relative paths go in the shell": [
+    "shell output missing from outputs folder": [
       163
     ],
-    "shell starts in session root not outputs": [
+    "does the shell start in outputs": [
       163
     ],
-    "why can't the user see files i made in bash": [
+    "why can't the user see files i created in bash": [
       163
     ],
-    "system prompt wrong about shell directory": [
+    "session root vs outputs folder": [
       163
     ],
-    "scratch files invisible to user": [
+    "system prompt says wrong starting directory": [
       163
     ],
-    "shell directory vs agent working directory": [
+    "scratch files invisible to the user": [
       163
     ],
-    "does connecting a folder change the shell directory": [
+    "agent process directory vs shell directory": [
       163
     ],
-    "bare filename lands in wrong place": [
+    "relative paths in shell go where": [
       163
     ],
-    "pwd shows session folder instead of outputs": [
+    "connected folder not the shell starting directory": [
       163
     ],
-    "file tools can't see shell-created files": [
+    "pwd shows session folder not outputs": [
       163
     ],
-    "agent process working directory is outputs": [
+    "prompt text changed but behavior didn't": [
       163
     ],
     "file saved but user can't see it": [
       164
     ],
-    "bash wrote file to wrong folder": [
+    "bash wrote file to wrong place in cowork": [
       164
     ],
-    "shell vs file tool paths differ": [
+    "why does my file end up in outputs/outputs": [
       164
     ],
-    "outputs folder nested twice": [
+    "doubled outputs folder": [
       164
     ],
-    "relative path works in edit but not shell": [
+    "file tools and shell need different paths": [
       164
     ],
-    "file ended up in scratch instead of outputs": [
+    "relative vs absolute path in cowork shell": [
       164
     ],
-    "file tool rejects absolute session path": [
-      164
-    ],
-    "why does my file not show up for the user": [
-      164
-    ],
-    "file not reaching connected folder": [
+    "file written to connected folder never arrives": [
       164
     ],
     "subagent can't find connected folder path": [
       164
     ],
-    "script should take destination as argument": [
+    "where do deliverables need to be saved": [
       164
     ],
-    "detect which environment a script runs in": [
+    "script writes to hidden scratch directory": [
       164
     ],
-    "temporary scratchpad vs deliverables folder": [
+    "how should a skill locate the output folder across runtimes": [
       164
     ],
-    "where should cowork save final output files": [
+    "file tool rejects sessions path": [
       164
     ],
-    "same filename different location per tool": [
+    "bare filename refused by write tool": [
+      164
+    ],
+    "temp directory override where do files go": [
+      164
+    ],
+    "shell write lands in vm scratch": [
       164
     ],
     "file write result shows relative path": [
@@ -51777,52 +51774,55 @@
     "write tool not returning absolute path": [
       165
     ],
-    "why does the file created message show my relative path": [
+    "why does file created message show relative path": [
       165
     ],
-    "path in write confirmation not resolved": [
+    "get full path of file after writing": [
       165
     ],
-    "test assertion expects full path after writing file": [
+    "file created successfully message wrong path": [
       165
     ],
-    "capture written file location for next step": [
+    "write output echoes input path": [
       165
     ],
-    "file created successfully at wrong path format": [
+    "test assertion expects absolute path fails": [
       165
     ],
-    "does writing a file report the full path": [
-      165
-    ],
-    "write result echoes input path": [
-      165
-    ],
-    "skill relies on absolute path from write output": [
-      165
-    ],
-    "chat mode says write shows full path but doesn't": [
+    "skill capturing written file path for later step": [
       165
     ],
     "resolved path only sent to telemetry": [
       165
     ],
-    "file has been updated message path": [
+    "does write result show the full file path": [
       165
     ],
-    "how to get absolute path after creating file": [
+    "chat mode prompt claims full path shown": [
+      165
+    ],
+    "path in file updated message not resolved": [
+      165
+    ],
+    "relying on written file location in next step": [
+      165
+    ],
+    "write confirmation path same as what i passed": [
+      165
+    ],
+    "file write result path inconsistent with docs": [
       165
     ],
     "cowork bash working directory differs from file tools": [
       166
     ],
-    "does chat mode share scratch folder with bash": [
+    "does chat mode share scratch space with bash": [
       166
     ],
-    "bare filenames work in chat but not cowork": [
+    "shell and file tools see different folders": [
       166
     ],
-    "which tools are disabled in host loop": [
+    "prompt text true for chat but not cowork": [
       166
     ],
     "grep says string missing but it exists": [
@@ -51831,31 +51831,31 @@
     "unicode escaped characters break grep search": [
       166
     ],
-    "em dash not found in app bundle": [
+    "em dash not found in bundled javascript": [
       166
     ],
     "asar extraction looks incomplete or truncated": [
       166
     ],
-    "unpacked native binaries missing after extract": [
+    "why are native binaries missing after extracting archive": [
       166
     ],
-    "why are files missing when extracting backed up archive": [
+    "unpacked sibling folder missing from backup extraction": [
       166
     ],
-    "app updated itself during investigation mismatch": [
+    "file counts differ between archive listing and disk": [
       166
     ],
-    "negative search result false confidence": [
+    "desktop app updated during investigation mismatched files": [
       166
     ],
-    "how to verify absence claims are trustworthy": [
+    "search that cannot return the counterexample": [
       166
     ],
-    "two tools agree but both wrong": [
+    "why did two independent checks agree on wrong answer": [
       166
     ],
-    "separating prompt text by product surface": [
+    "how to verify a claim that something is absent": [
       166
     ],
     "skill instructions cut off after compaction": [

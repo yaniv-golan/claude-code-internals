@@ -58,7 +58,7 @@
  * elsewhere in the query is not a part. Needs the query text: rankLessons()'s
  * `query` argument (without it, no token is a part and no query fragment is known).
  *
- * RANKING (plan §4.7b). With N = lessons in the index:
+ * RANKING. With N = lessons in the index:
  *   spec(k)  = ln(1 + N / n_k)       n_k  = lessons key k maps to (key specificity)
  *   spec(t)  = ln(1 + N / df_t)      df_t = lessons token t reaches through any key
  *   w(t, k)  = min(spec(k), spec(t)) * kind(t, k) * cov(k) * part(t)

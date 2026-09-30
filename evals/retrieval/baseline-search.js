@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * baseline-search.js — keyword-only and fused search scores on a judged question set, computed
- * with the current search stack before it is deleted (search-removal plan §4.3 "Comparison").
+ * with the search stack, as the comparison point for the agentic eval (agentic-run.js --baseline).
  *
  * Usage:
  *   node baseline-search.js --questions questions-v4.json --out baseline-v3-search.json

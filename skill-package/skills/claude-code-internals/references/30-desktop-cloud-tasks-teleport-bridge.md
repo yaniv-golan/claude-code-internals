@@ -39,7 +39,7 @@ Every cloud-task primitive named by the trigger investigation is present in **bo
 
 ### The one genuine code delta: a newly vendored, currently-unused SDK helper
 
-The external doc's framing — "the cloud work-queue client migrated from hand-rolled HTTP to a typed SDK" — is **directionally right but imprecise**, as tracing the call sites (not just the string presence) shows, not just the string presence:
+The external doc's framing — "the cloud work-queue client migrated from hand-rolled HTTP to a typed SDK" — is **directionally right but imprecise**, as tracing the call sites (not just the string presence) shows:
 
 - `grep -rl 'environments-work-poller'`: **0 files in 1.18286.2, 1 file in 1.19367.0** (`index.chunk-CeGlUHRK.js`). This string is the `helper:` tag on a real class constructor, not a comment:
   ```js

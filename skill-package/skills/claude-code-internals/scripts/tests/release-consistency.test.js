@@ -50,7 +50,7 @@ const DOCS = {
 
 const allNumbers = (text, re) => [...new Set([...text.matchAll(re)].map((m) => m[1]))];
 
-// --- SKILL.md rendered budget (plan §4.5) -----------------------------------
+// --- SKILL.md rendered budget ----------------------------------------------
 
 test('SKILL.md renders within the 18,000 UTF-16 budget', () => {
   // The loader budgets on RENDERED length (L167): ${CLAUDE_SKILL_DIR} /

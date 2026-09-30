@@ -318,8 +318,10 @@ Full layer stack, current identifiers (unchanged 1.12603.1 → 1.17377.2 except 
   changed. The `— cwd` annotation marks the **agent's** cwd on the host side of a host→VM mapping row, not
   bash's. **What holds:** the path-gate itself, and the failure mode it catches — capturing a VM-absolute
   `/sessions/<id>/mnt/outputs/x` from bash output and handing it to a host file tool, which is denied. **The
-  guidance:** the two tool families need *different* path forms — bare names for Read/Write/Edit, absolute
-  `/sessions/<id>/mnt/outputs/...` for bash (Ch44/L164).
+  guidance:** the two tool families need *different* path forms — the absolute host outputs path for
+  Read/Write/Edit (bare names worked there only before Desktop 2.7032.0; from 2.7032.0 the agent's cwd is
+  `/var/empty` and a bare name is refused — Ch52/L190), absolute `/sessions/<id>/mnt/outputs/...` for bash
+  (Ch44/L164).
 - **`${CLAUDE_PLUGIN_ROOT}` under host-loop: one token, two namespaces — accepted by host file tools, useless
   for in-VM bash.** `[binary/tested]` The token substitutes to a single value (`m={CLAUDE_PLUGIN_ROOT:t.path,…}`
   in the agent bundle), and under host-loop that resolves **host-side** to `claude-hostloop-plugins/<hash>`

@@ -119,10 +119,10 @@ silently regress ranking.
   as before (the v1 report differs only in `generated_at` and the added
   `questions_source.split_sha256`).
 
-### The search-removal eval (v3/v4, agentic)
+### The agentic eval (v3/v4)
 
-These files support the plan to replace the search stack with model-driven file lookup. None of
-them is gated in CI.
+These files compare the search stack with model-driven file lookup (the model reading the routing
+index and lesson files with its own tools). None of them is gated in CI.
 
 - **`claude-call.js`**: the one way these scripts call `claude -p`. The prompt goes on stdin from a
   file, and cwd is an empty temp dir. The `--setting-sources project` flag is added by callers, so
@@ -202,7 +202,7 @@ node evals/retrieval/run.js --baseline evals/retrieval/baseline-v4.json --questi
 # v1, for trend (not gated):
 node evals/retrieval/run.js --baseline evals/retrieval/baseline-v1.json --questions evals/retrieval/questions-v1.json
 
-# Search-removal eval (model calls; set CCI_EVAL_LEDGER / CCI_EVAL_BUDGET_USD):
+# Agentic eval (model calls; set CCI_EVAL_LEDGER / CCI_EVAL_BUDGET_USD):
 node evals/retrieval/gen-questions.js --version 3 --split-from evals/retrieval/questions-v2.json \
   --strata identifier,plain,terse,state --holdout-per-lesson 2
 node evals/retrieval/index-picks.js --questions evals/retrieval/questions-v3.json --index <index.txt> \

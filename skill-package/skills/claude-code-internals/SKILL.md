@@ -65,6 +65,9 @@ bash <scripts-dir>/check-version.sh              # .sh — run with bash, not no
 
 **Last resort**, when no script runs at all: `Read`/`Grep` the reference files
 directly (see the routing table at the end) — the whole corpus is plain Markdown.
+`references/routing/index-*.md` has one line per lesson with file:range and example
+questions (use it for paraphrased questions); `references/routing/sections.md` has
+every heading with file:line (grep it for exact terms).
 
 ## The procedure
 
@@ -94,7 +97,7 @@ treat it as an optional nicety, not a required step.
 **Step 3 — Search.** `claude-code-internals search "$ARGUMENTS" --top=5` lists keyword
 matches in keyword order, then TF-IDF-only matches. Each result prints the lesson
 title, its **id**, file path, line range, and confidence: `[HIGH]` = both layers
-matched, `[LOW]` = TF-IDF only. Check the title before loading a section; if it
+matched, `[MEDIUM]` = keyword layer only, `[LOW]` = TF-IDF only. Check the title before loading a section; if it
 does not fit the query, try a more specific term. **Note the ids** — every other
 script takes the id.
 

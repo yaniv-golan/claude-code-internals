@@ -772,7 +772,7 @@ test('an input edited while the pass runs aborts the write; nothing is written, 
   );
 });
 
-// --- HEAD guard (plan §5: file-writing scripts stop on HEAD or content-hash changes) -----------
+// --- HEAD guard (file-writing scripts stop on HEAD or content-hash changes) ------------------
 
 /** git, isolated from the user's and the system's config and hooks. */
 function git(dir, ...args) {

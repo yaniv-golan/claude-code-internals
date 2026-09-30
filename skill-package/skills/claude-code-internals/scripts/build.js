@@ -908,7 +908,7 @@ function main(argv) {
 }
 
 /**
- * The lesson-keyword check (plan §4.7: every extracted identifier is
+ * The lesson-keyword check (every extracted identifier must be
  * reachable), run over the DERIVED bounds, so it reads the same text
  * prepare-lessons.js will. Kept out of build().errors so that a write still
  * writes bounds. prepare-lessons.js requires this file, so it is required

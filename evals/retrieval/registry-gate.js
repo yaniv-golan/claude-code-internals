@@ -4,7 +4,7 @@
  * judged. Pure; used by skill-package/.../tests/registry-top1.test.js and by
  * gen-registry-top1.js.
  *
- * The cases are provenance labels, not ground truth (plan §2.2, §4.7b), so the gate is
+ * The cases are provenance labels, not ground truth, so the gate is
  * NET, and it follows the question set's lesson split (questions-v2.json `split`),
  * because holdout is never tuned against:
  *   - a DEV case is one whose expected lesson is a dev lesson (or in neither list: a

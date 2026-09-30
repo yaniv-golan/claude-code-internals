@@ -19,7 +19,7 @@ Updated: 2026-08-27 | Source: A **withdrawal**. First-party re-derivation agains
 
 ## The guidance the old prompt suggests, and why it is wrong
 
-Read at face value, the pre-1.32885.1 Desktop-injected prompt suggests *"one shared scratch space, two path namespaces"*, with the guidance *"use bare filenames with both"*, and a `first-folder-else-outputs` cwd rule. All three are wrong: the shell's cwd is the session root, so a bare filename in bash lands in VM-only scratch, not in `outputs`.
+Read at face value, the pre-1.32885.1 Desktop-injected prompt suggests *"one shared scratch space, two path namespaces"*, with the guidance *"use bare filenames with both"*; the spawn code adds a `first-folder-else-outputs` cwd rule (the `vmCwd` it passes to the guest — first connected folder, else the outputs mount; Ch35/L122). All three are wrong: the shell's cwd is the session root, so a bare filename in bash lands in VM-only scratch, not in `outputs`.
 
 ## The measurement that settles it
 
@@ -87,9 +87,11 @@ Both were published as open and were resolved the same day from the on-disk tran
 
 # LESSON 164 — TWO TOOL FAMILIES, TWO PATH FORMS
 
-**There is no single path form that is correct for both `mcp__workspace__bash` and the file tools. A bare filename is correct for Read/Write/Edit and lands in the user-visible outputs directory; a bare filename in bash lands in VM-only scratch the user never sees. Bash needs an absolute `/sessions/<id>/mnt/outputs/...` path — the same form the file tools reject outright.**
+**The file tools and `mcp__workspace__bash` take different path forms. From Desktop 2.7032.0 the file tools need the absolute host outputs path (a bare name is refused); bash needs an absolute `/sessions/<id>/mnt/outputs/...` path — the same form the file tools reject outright. A bare filename in bash lands in VM-only scratch the user never sees.**
 
-This is the practical replacement for the withdrawn "use bare filenames with both".
+Trap: "use bare filenames with both" is wrong on every Desktop build.
+
+Before Desktop 2.7032.0:
 
 | | correct form | why |
 |---|---|---|
@@ -194,7 +196,7 @@ So host-loop has **three** distinct not-user-visible write locations, failing in
 | `/private/tmp/claude-501/…/scratchpad` | **host** | yes | **no** |
 | `CLAUDE_CODE_TMPDIR` / `CLAUDE_TMPDIR` | **not a third place** — a temp-dir *override*, default `/tmp` (so: row 1) | no | no |
 
-The authoring consequence: *"don't write the deliverable to the scratchpad"* is **under-specified guidance**, because there is more than one scratchpad and the agent is actively *instructed* to prefer the host-side one. A `/sessions/`-prefix heuristic does not catch it — that path is a host path, and it persists, so nothing fails loudly. The durable rule remains L164's: a deliverable goes to a **bare filename** (file tools) or an **absolute outputs path** (bash), and anywhere else is a temporary file by definition.
+The authoring consequence: *"don't write the deliverable to the scratchpad"* is **under-specified guidance**, because there is more than one scratchpad and the agent is actively *instructed* to prefer the host-side one. A `/sessions/`-prefix heuristic does not catch it — that path is a host path, and it persists, so nothing fails loudly. The durable rule remains L164's: a deliverable goes to the **absolute host outputs path** (file tools; a bare filename also worked there before Desktop 2.7032.0 — Ch52/L190) or the **absolute `/sessions/<id>/mnt/outputs` path** (bash), and anywhere else is a temporary file by definition.
 
 **The third row, RESOLVED (2026-08-27, agent Mach-O 2.1.246).** An earlier version of this table listed `CLAUDE_CODE_TMPDIR` as *unverified* on the grounds that the identification came from another project's guidance. That hedge was unnecessary — the answer is one `strings` away, and leaving it open let a downstream project reason from *absence in this skill* to "no independent source exists", which is the same secondary-source fallacy L166 warns about. **20 occurrences of `CLAUDE_CODE_TMPDIR` and 4 of `CLAUDE_TMPDIR`** in agent 2.1.246:
 

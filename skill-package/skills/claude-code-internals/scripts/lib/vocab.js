@@ -1,6 +1,6 @@
 'use strict';
 /**
- * vocab.js — generated user vocabulary (plan §4.7 step 2, §4.7b): the model's
+ * vocab.js — generated user vocabulary: the model's
  * proposals, frozen in a file, and the script rules that turn them into
  * keyword_map keys. prepare-lessons.js derives the keys; nothing here is
  * hand-edited.
@@ -74,7 +74,7 @@ const { extractIdentifiers, normalize } = require('./identifiers.js');
 
 const PROPOSALS_FILE = 'data/vocab-proposals.json'; // relative to the repository root
 /** sha256 of data/vocab-proposals.json. Changed only together with a --generate run (see the header). */
-const PROPOSALS_SHA256 = 'a4f3123c744fba8e8a749b224f677890b0f171dc5584788e68ae96ae47e31157';
+const PROPOSALS_SHA256 = '5cb28967528b1a1eeadaac0bcadf935a9ea5790104768d523ba47eba960a8828';
 const DEFAULT_MODEL = 'claude-opus-5-5'; // evals/retrieval/gen-questions.js used claude-sonnet-5
 const PROMPT_VERSION = 'vocab-v1';
 const MAX_TERMS = 15;

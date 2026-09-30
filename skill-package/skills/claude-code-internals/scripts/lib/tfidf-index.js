@@ -136,7 +136,7 @@ function computeIDF(docTokenSets) {
  * them out, so every pre-existing lesson vector, idf value and vocabulary entry
  * is exactly what it was before any append. Feeding them in shifted TF
  * normalisation and vector norms across hundreds of lessons and flipped
- * registry top-1 cases on exact RRF ties (plan §4.7, "Prototype result").
+ * registry top-1 cases on exact RRF ties (measured in the prototype).
  * Vocabulary keys (phase 3b) are left out too: measured on the dev split,
  * feeding them in raised plain MRR much further (0.51 -> 0.77, the most circular
  * part of the gain: vocabulary and eval questions are both model-written from

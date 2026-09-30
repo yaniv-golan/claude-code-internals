@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 # claude-code-internals — run a claude-code-internals script without knowing where the plugin is
 # staged. When installed as a plugin, this bin/ directory is on the Bash tool's
-# PATH in every lane, including Cowork host-loop, where ${CLAUDE_SKILL_DIR} /
-# ${CLAUDE_PLUGIN_ROOT} resolve to a *host* path the VM shell cannot open
-# (references/45-plugin-bin-path-and-cloud-lane.md, L173). Resolving the scripts
-# relative to this launcher's own location sidesteps that.
+# PATH on lanes that put the plugin bin/ on PATH. In the Cowork VM shell the PATH
+# entry names a runtime-provisioned mount whose bin/ exists only for plugins that
+# declare `clis`, so this launcher is not reachable there, and ${CLAUDE_SKILL_DIR} /
+# ${CLAUDE_PLUGIN_ROOT} resolve to a *host* path the VM shell cannot open; SKILL.md
+# locates the scripts instead (references/45-plugin-bin-path-and-cloud-lane.md,
+# L173). Where it is on PATH, resolving the scripts relative to this launcher's
+# own location avoids needing either variable.
 #
 # Usage: claude-code-internals <script> [args...]      (script name without the .js/.sh extension)
 #   claude-code-internals search "hooks system" --top=5    claude-code-internals state toggle-memory

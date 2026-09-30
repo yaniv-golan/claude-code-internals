@@ -91,7 +91,8 @@ Algorithm:
 
 > ### ⚠️ Current algorithm (agent 2.1.221) — the `f < 20` global collapse no longer exists
 >
-> The algorithm above is the inherited **v2.1.88** one (L11, markdown.engineering). Read first-party
+> The algorithm above was first documented from **v2.1.88** (L11, markdown.engineering); its constants,
+> including the `Zr6 = 20` collapse threshold, were re-read from the v2.1.116 bundle. Read first-party
 > against the Desktop-managed agent **2.1.221**, it has been replaced: there is no `f < 20` threshold,
 > and one runaway `when_to_use` can no longer collapse every skill in the listing to name-only at
 > once. The current function returns one of two modes:
