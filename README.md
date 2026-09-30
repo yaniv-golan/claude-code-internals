@@ -10,7 +10,7 @@
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-plugin-F97316)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/plugins)
 [![Improved with Skill Creator Plus](https://img.shields.io/badge/Improved_with-Skill_Creator_Plus-4ecdc4?style=flat-square)](https://github.com/yaniv-golan/skill-creator-plus)
 
-**Skill Version:** 2.59.2 | **Captured from:** Claude Code v2.1.231 | **Date:** 2026-08-14 | **License:** MIT
+**Skill Version:** 2.60.0 | **Captured from:** Claude Code v2.1.231 | **Date:** 2026-08-14 | **License:** MIT
 
 This is a **modified fork** of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals) that has since diverged into its own thing: **218 lessons across 59 chapters** (upstream shipped ~50) covering Claude Code's core subsystems — the boot sequence, query engine, tool system, permissions, hooks, sub-agents, MCP, memory, compaction, sessions, and OAuth — plus binary-verified command internals (`/effort`, `/rewind`, `/fork`) and CI eval gates. See [Attribution](#attribution) for the full lineage.
 
@@ -148,7 +148,7 @@ claude-code-internals/
 │   ├── .claude-plugin/plugin.json
 │   └── skills/claude-code-internals/   The skill itself
 │       ├── SKILL.md                    Search strategy + lesson index
-│       ├── version.json                Version tracking (v2.59.2 / v2.1.231)
+│       ├── version.json                Version tracking (v2.60.0 / v2.1.231)
 │       ├── references/                 Lesson chapters + state/ truth layer
 │       └── scripts/                    search.js, fetch-lesson.js, build.js, …
 ├── scripts/release.js                  Cuts a release, bumps every pin
@@ -163,7 +163,7 @@ claude-code-internals/
 
 ```json
 {
-  "skill_version": "2.59.2",
+  "skill_version": "2.60.0",
   "captured_version": "2.1.231",
   "captured_date": "2026-08-14"
 }
@@ -184,7 +184,7 @@ version.json also carries `lessons_count` and `chapters_count`, which `scripts/b
 
 This repository is a fork of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals) (v2.0.0). The foundational work is **stuinfla's**: the 50 original lessons (Chapters 1–8, reverse-engineered from Claude Code v2.1.88), the unified search engine, the topic index and cross-reference/troubleshooting data, the PreToolUse `.claude/` hook and version-check script, and the original README and diagrams.
 
-**What this fork adds** (v2.2.0–v2.59.2, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)): Chapters 9–59 — every binary-verified CLI release delta, the full Claude Desktop + Cowork corpus, the mutable `references/state/` truth layer, the shell-safe script CLIs (`fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `extract-bundle.sh`, `diff-versions.sh`), and the plugin/marketplace/release/Pages infrastructure. See [CHANGELOG.md](CHANGELOG.md) for the item-by-item breakdown.
+**What this fork adds** (v2.2.0–v2.60.0, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)): Chapters 9–59 — every binary-verified CLI release delta, the full Claude Desktop + Cowork corpus, the mutable `references/state/` truth layer, the shell-safe script CLIs (`fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `extract-bundle.sh`, `diff-versions.sh`), and the plugin/marketplace/release/Pages infrastructure. See [CHANGELOG.md](CHANGELOG.md) for the item-by-item breakdown.
 
 The architecture lesson content in `references/01–05` is sourced from [markdown.engineering](https://www.markdown.engineering/learn-claude-code/) and used for educational and tooling purposes.
 

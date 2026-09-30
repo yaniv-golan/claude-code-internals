@@ -1,5 +1,104 @@
 # Changelog
 
+## v2.60.0 — 2026-09-30 (this fork) — computer:// links by lane, keyword-first search, a slim SKILL.md, and lessons that state current facts
+
+No new lessons; counts stay 218/59. Measured live on 2026-09-29 (Desktop 2.9939.4, agent 2.1.284) and read from the
+shipped binaries.
+
+- **L215 — `computer://` links render by lane, not by path.** In a cloud conversation (Desktop and claude.ai web
+  alike) a link renders as a working link only when it points at a file this conversation's own tools produced;
+  anything else shows as inert plain text with no error — an existing file the session never wrote, a
+  `/mnt/user-data/working/` write, and a file on the user's granted computer folder all render as plain text. Locally
+  any real file links and opens (a VM `/sessions/…` path is rewritten to the host path, spaces encoded, first). The
+  client carries a path-based cloud rule that does not match what renders; the conversation's own produced-file list is
+  the mechanism (inferred from the code, behaviour measured). New fact
+  `delivery.link-only-to-files-you-produced`; L215 and the cloud-device/plugin-lane lessons and `cowork-architecture`
+  updated. For skill authors: in a cloud session link only to files the session wrote or sent, and prefer handing the
+  file over.
+- **Host-dialog approval attestation and `/settings-review` staging are shipped but compiled off.** The attestation
+  recorder, its matching consumer and the settings-edit review staging path are all present in the agent yet sit behind
+  constant-false gates across 2.1.281–2.1.284, so nothing records an attestation, matches one, or stages a settings
+  edit. Absent from the official CHANGELOG for every one of those versions — a dark ship, not "new in 2.1.284".
+  Recorded on the Cowork permission-stack page (sourced to L213). `gate.3067718716`'s summary had said the downstream
+  "is not traced"; it now records it as traced and compiled off. `/settings-review` was deliberately **not** added to
+  the `cmd.*` inventory: its registration was not traced, and the three-gate reachability rule forbids a command row
+  without it.
+- **One version number, two 2.1.284 builds (L192).** The `latest` channel serves commit `2b8ce618`; the Desktop stages
+  a release candidate, commit `16cbb4dd` (same `modsCommit`, same binary size, different checksum), into
+  `claude-code-vm/` and `claude-code/`; the true `stable` pointer lags at 2.1.277. Added a row to L192's RC-fates table
+  that records the commit, and corrected the table's wording: the unprefixed manifest path is what `latest` serves, not
+  `stable`.
+- **Model landscape (L193).** Opus 5.5 ships with a per-model default effort of `medium` (other current models default
+  `high`), and Desktop 2.9939.4 is the first bundled catalog to list it, first on the Code surfaces. But the per-surface
+  bundled default is still `claude-opus-5` (high) on the Code surfaces and `claude-sonnet-4-6` on chat and cowork, and
+  the server can override the catalog — the `model-landscape` page now says so, so it cannot be read as "Desktop
+  defaults to Opus 5.5".
+- **Read-more link scoped to Cowork topics.** SKILL.md's ccinternals.dev fallback table (the site is Cowork
+  skill-authoring pages) was letting the model append a link onto core Claude Code answers such as hooks, versions and
+  ids. It now fires only when the answer itself is about a skill or plugin running in Cowork; a core Claude Code answer
+  gets no `Read more:` line.
+
+- **SKILL.md is a short routing brain.** It drops from ~149k to ~12k rendered units: the release-history inventory and
+  the 104 KB per-lesson map are gone, replaced by a small routing table and a generated `references/catalog.md`. The
+  search → xref / troubleshoot → fetch procedure, state-layer precedence, version and lane qualification, the id vs
+  "Lesson N" rule, the offline fallback and the Read-more contract all stay.
+- **Scripts run in Cowork.** The VM shell cannot see `${CLAUDE_SKILL_DIR}` (a host path) and does not have the plugin's
+  `bin/` on PATH, so SKILL.md now names each script's interpreter (`node` / `bash`) and has the model locate the scripts
+  directory and run them by absolute path. A `bin/claude-code-internals` launcher ships for lanes that do put `bin/` on
+  PATH. `search.js` and `semantic-search.js` print the lesson **id**; `troubleshoot.js` exits 0 on no match. On the
+  Cowork eval suite: tool calls without error 76 → 80%, tool results matching 93 → 98%, transcripts matching 58 → 75%.
+- **Search ranks keyword matches first.** `search.js` lists every lesson the keyword layer found, in keyword order,
+  then the lessons only TF-IDF found. Reciprocal Rank Fusion of the two layers had been pushing the keyword layer's
+  first pick out of the top 3; it stays available as `--fused`. On 922 freshly generated and judged questions, the
+  right lesson is in the top 3 more often: plain 76 → 90%, identifier 95 → 97%, state 78 → 87%, terse 64 → 70% (dev
+  lessons; held-out lessons move the same way except state, 78 → 74%). On 100 real invocations: 84 → 88%.
+  Confidence labels now name the layers: `[HIGH]` both, `[MEDIUM]` keyword only, `[LOW]` TF-IDF only.
+- **A routing index for lookup without scripts.** `references/routing/index-1.md` and `index-2.md` list every lesson
+  with its id, title, "Lesson N", `file:start-end`, description, five example questions and its ccinternals.dev page;
+  `references/routing/sections.md` lists every heading with `file:line`. State pages that have a ccinternals.dev page
+  carry a `read_more:` field. All are generated and checked by `build.js`.
+- **Lessons state current facts; the history moves here.** 49 retraction markers ("CORRECTED …", "Retracted", "was
+  wrong", "WITHDRAWN", "AMENDED") across 20 reference files are rewritten as the current fact, or as a "Trap:" where
+  the old claim is a useful warning about the tooling. A lint (`check-history-markers.js`) now runs in CI. Two
+  statements change meaning:
+  - L89: to get plugin hooks in Cowork, install the plugin through the Cowork app; `claude plugin install --cowork`
+    writes `~/.claude/cowork_plugins/`, which desktop Cowork does not read.
+  - `cowork-architecture`: "no Task fan-out cap" is dated to the 2.1.205-era binaries; caps exist from CLI 2.1.217.
+  What the removed narration had said, by lesson:
+  - id 11 (Lesson 03): the skill-listing budget was once described as a silent global collapse to name-only.
+  - L55, L95, L155, id 32 (Lesson 10), id 42: hook event counts of 19, 27, 30 and 31 read as current. **33 as of
+    2.1.260, unchanged at 2.1.280**; 27 is v2.1.88/v2.1.90, 19 is a diff-versions.sh undercount. The package README
+    said 31.
+  - L89: plugin hooks were said never to fire in Cowork because `--setting-sources=user` excludes plugin scope (they
+    do fire; the three-root plugin namespace decides). An early trace had `Dq = "Bash"` (it is not).
+  - L90: `CLAUDE_EFFORT` was once headed "NOT an env var" (it is a write-only env var).
+  - L107: the Desktop-installed PreToolUse forced-ask / background-Task block was retracted by an adversarial pass,
+    then restored (it is real); the host-loop "shared scratch space" bullet quoted an old Desktop prompt as behaviour.
+  - L108: gate `1648655587` was labelled a Task dispatch rate-limiter (it is a scheduled-task session limiter).
+  - L114, L115, L120: the spawn `--effort` value was said to be backed by `CLAUDE_CODE_EFFORT_LEVEL`, and elsewhere
+    hardcoded to medium (it comes from the settings-file `effort`/`effortByModel`, falling back to `"medium"`);
+    `CLAUDE_CODE_DISABLE_AGENTS_FLEET` was placed on the Task-child spawn path (it is session-wide).
+  - L122, L163, L144, L164: the VM shell was said to start in `vmCwd` / the outputs folder (it starts at the session
+    root); relative filenames were said to work for both file tools and bash; a `BASE=` probe idiom was published and
+    withdrawn the same day.
+  - L125: a gate-state caveat was left unresolved (iOS `3577536076` on/force, Android `1403324732` off, 2026-08-13).
+  - L129, L148: skill-listing stickiness was "sticky per session" (it follows the built system prompt; a model switch
+    invalidates it).
+  - L131: four gate ids were recorded as absent; the three snapshots are now one table.
+  - L138: "remote is the default" for Cowork was stated flat (second-hand, in beta, contradicted by this machine).
+  - L139, L140: host-loop mount restore was "spawn-time" (it is per bash call); `.local-plugins` had a fixed depth.
+  - L143 (Ch40): `audit.jsonl` was read as showing a read-after-write race and inbound path translation (neither is
+    real).
+  - L167: the reattach marker was given as 98 characters and the budget 19,902 (100 and 19,900).
+  - L119, L180, L182: the corrected claims were an outside lead-source's, now stated as facts.
+- **Vocabulary model calls ignore user settings.** `prepare-lessons.js --generate` passes `--setting-sources project`:
+  `--safe-mode` alone still loads `~/.claude/settings.json` keys such as `advisorModel`.
+- **Path forms and dated limits restated.** L164 and the Cowork control-protocol and probe chapters now give the
+  current path forms: from Desktop 2.7032.0 the file tools take the absolute host outputs path (a bare name is
+  refused), bash takes an absolute `/sessions/<id>/mnt/outputs` path. L114 sources the Cowork effort value to the
+  settings-file `effort`/`effortByModel` fields. The "no Task fan-out cap" line in Ch35 is dated to CLI 2.1.205. The
+  troubleshooting hints give 33 hook events (as of 2.1.260).
+
 ## v2.59.2 — 2026-09-29 (this fork) — better search, and releases by script
 
 No new lessons; counts stay 218/59. No lesson content changed.
