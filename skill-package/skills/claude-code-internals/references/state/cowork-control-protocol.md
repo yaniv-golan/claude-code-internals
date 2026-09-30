@@ -4,7 +4,7 @@ title: Cowork spawn + stream-json control protocol (current)
 as_of_cli: 2.1.231
 as_of_desktop: 1.30096.1
 sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124, 129, 130, 152, 193, 196, 203, 207]
-updated: 2026-09-23
+updated: 2026-10-01
 ---
 
 # Cowork spawn + stream-json control protocol (current)
@@ -36,8 +36,11 @@ external driver) — not the Desktop app's internal IPC.
   - **`--permission-prompt-tool stdio`** routes `can_use_tool` /
     AskUserQuestion to the driver. Without it, AskUserQuestion is silently
     auto-dismissed and scripted answers never fire.
-  - **`--effort medium --max-thinking-tokens 31999`** are explicitly
-    **driver-passed** by the Desktop, not agent defaults. The agent's own
+  - **`--max-thinking-tokens 31999`** (or `--thinking disabled`) and
+    **`--effort <level>`** are **driver-passed** by the Desktop, not agent
+    defaults. `--effort` is sent only when the session carries an effort
+    value (`effort: i.effort`, no fallback at spawn); a captured
+    `--effort medium` is that session's value, not a constant. The agent's own
     defaults: effort tiers `["low","medium","high","xhigh","max"]` with
     internal default `high` (`xhigh` for opus-4-7); thinking defaults to
     `{type:"adaptive"}` when `MAX_THINKING_TOKENS` is unset. The literal

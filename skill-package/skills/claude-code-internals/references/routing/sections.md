@@ -178,125 +178,125 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 11 · 02-agents-intelligence-interface.md:7 · LESSON 03: THE SKILLS SYSTEM
 11 · 02-agents-intelligence-interface.md:9 · Core Concept
 11 · 02-agents-intelligence-interface.md:12 · Skill Lifecycle (Six Stages)
-11 · 02-agents-intelligence-interface.md:49 · Skill Sources & Priority
-11 · 02-agents-intelligence-interface.md:61 · Listing Format Injected to the Model
-11 · 02-agents-intelligence-interface.md:73 · Budget Algorithm (`kr6`)
-11 · 02-agents-intelligence-interface.md:133 · SKILL.md Format & Frontmatter Reference
-11 · 02-agents-intelligence-interface.md:161 · Field Reference Table
-11 · 02-agents-intelligence-interface.md:184 · Advanced Patterns
-11 · 02-agents-intelligence-interface.md:235 · Permission & Auto-Allow Logic
-11 · 02-agents-intelligence-interface.md:258 · Live Reloading
-11 · 02-agents-intelligence-interface.md:267 · skillOverrides Setting (UI-only in v2.1.116)
-11 · 02-agents-intelligence-interface.md:279 · progressMessage (plumbed but unrendered in v2.1.116)
-11 · 02-agents-intelligence-interface.md:329 · Legacy Support
-12 · 02-agents-intelligence-interface.md:334 · LESSON 05: THE AGENT SYSTEM
-12 · 02-agents-intelligence-interface.md:336 · Architecture Overview
-12 · 02-agents-intelligence-interface.md:339 · Three Agent Type Definitions
-12 · 02-agents-intelligence-interface.md:374 · Built-In Agent Types
-12 · 02-agents-intelligence-interface.md:385 · Sync vs Async Lifecycle
-12 · 02-agents-intelligence-interface.md:409 · Fork Path (Experimental)
-12 · 02-agents-intelligence-interface.md:451 · Worktree Isolation
-12 · 02-agents-intelligence-interface.md:478 · SendMessageTool & Swarm Protocol
-12 · 02-agents-intelligence-interface.md:511 · Agent Frontmatter Schema
-12 · 02-agents-intelligence-interface.md:532 · Custom Agent Markdown Format
-12 · 02-agents-intelligence-interface.md:560 · Explore Agent Implementation
-12 · 02-agents-intelligence-interface.md:582 · Type Guards
-12 · 02-agents-intelligence-interface.md:596 · Key Design Patterns
-13 · 02-agents-intelligence-interface.md:605 · LESSON 21: COORDINATOR MODE
-13 · 02-agents-intelligence-interface.md:607 · Architecture Overview
-13 · 02-agents-intelligence-interface.md:612 · Tool Restrictions
-13 · 02-agents-intelligence-interface.md:626 · Core Functions
-13 · 02-agents-intelligence-interface.md:691 · Task Notification Format
-13 · 02-agents-intelligence-interface.md:707 · Four-Phase Workflow
-13 · 02-agents-intelligence-interface.md:716 · Parallelism Rules
-13 · 02-agents-intelligence-interface.md:721 · Continue vs. Spawn Fresh Decision Matrix
-13 · 02-agents-intelligence-interface.md:732 · Mode Comparison Table
-13 · 02-agents-intelligence-interface.md:746 · Scratchpad Implementation
-13 · 02-agents-intelligence-interface.md:751 · Feature Gates
-13 · 02-agents-intelligence-interface.md:756 · Critical Design Constraint
-14 · 02-agents-intelligence-interface.md:761 · LESSON 22: TEAMS & SWARM
-14 · 02-agents-intelligence-interface.md:763 · Core Architecture
-14 · 02-agents-intelligence-interface.md:768 · TeamCreate Workflow (Five Steps)
-14 · 02-agents-intelligence-interface.md:776 · TeamCreate Source Code
-14 · 02-agents-intelligence-interface.md:819 · File Structure
-14 · 02-agents-intelligence-interface.md:835 · TeamFile Type Definition
-14 · 02-agents-intelligence-interface.md:869 · Three Spawn Backends
-14 · 02-agents-intelligence-interface.md:909 · iTerm2 Dead-Session Recovery
-14 · 02-agents-intelligence-interface.md:927 · In-Process Backend
-14 · 02-agents-intelligence-interface.md:937 · CLI Flags and Environment Variables
-14 · 02-agents-intelligence-interface.md:945 · Mailbox Messaging
-14 · 02-agents-intelligence-interface.md:961 · Permission Sync -- SwarmPermissionRequest Schema
-14 · 02-agents-intelligence-interface.md:987 · Leader Permission Bridge (In-Process Only)
-14 · 02-agents-intelligence-interface.md:999 · Full Lifecycle
-14 · 02-agents-intelligence-interface.md:1009 · TeamDelete Tool
-14 · 02-agents-intelligence-interface.md:1013 · UI Components
-15 · 02-agents-intelligence-interface.md:1028 · LESSON 08: MEMORY SYSTEM
-15 · 02-agents-intelligence-interface.md:1030 · Three Memory Layers
-15 · 02-agents-intelligence-interface.md:1038 · Auto Memory -- MEMORY.md Index File
-15 · 02-agents-intelligence-interface.md:1047 · Topic File Format
-15 · 02-agents-intelligence-interface.md:1059 · Type Taxonomy (Closed to Four)
-15 · 02-agents-intelligence-interface.md:1066 · Excluded Content Categories
-15 · 02-agents-intelligence-interface.md:1076 · Path Resolution & Security
-15 · 02-agents-intelligence-interface.md:1089 · Extraction Pipeline
-15 · 02-agents-intelligence-interface.md:1097 · Mutual Exclusion Logic
-15 · 02-agents-intelligence-interface.md:1114 · Selector Model for Relevance
-15 · 02-agents-intelligence-interface.md:1118 · Staleness Detection
-15 · 02-agents-intelligence-interface.md:1132 · Session Memory
-15 · 02-agents-intelligence-interface.md:1149 · Team Memory Sync
-15 · 02-agents-intelligence-interface.md:1175 · KAIROS / Assistant Mode
-15 · 02-agents-intelligence-interface.md:1186 · Feature Flags & Disable Mechanisms
-16 · 02-agents-intelligence-interface.md:1195 · LESSON 40: AUTO MEMORY & DREAMS
-16 · 02-agents-intelligence-interface.md:1197 · Two-Layer Memory Lifecycle
-16 · 02-agents-intelligence-interface.md:1203 · Memory Directory Structure
-16 · 02-agents-intelligence-interface.md:1223 · Memory Taxonomy (Four Types)
-16 · 02-agents-intelligence-interface.md:1246 · Layer 1 -- Extract Memories
-16 · 02-agents-intelligence-interface.md:1280 · Layer 2 -- Auto Dream (Consolidation)
-16 · 02-agents-intelligence-interface.md:1318 · Recall -- findRelevantMemories
-16 · 02-agents-intelligence-interface.md:1338 · Cache Efficiency
-16 · 02-agents-intelligence-interface.md:1347 · KAIROS / Assistant Mode
-17 · 02-agents-intelligence-interface.md:1353 · LESSON 11: INK RENDERER
-17 · 02-agents-intelligence-interface.md:1355 · Seven-Stage Pipeline
-17 · 02-agents-intelligence-interface.md:1398 · Reconciler Implementation
-17 · 02-agents-intelligence-interface.md:1428 · Node Type System
-17 · 02-agents-intelligence-interface.md:1438 · Dirty Flag System
-17 · 02-agents-intelligence-interface.md:1444 · Yoga Layout Adapter
-17 · 02-agents-intelligence-interface.md:1473 · Blit Fast Path (Six Conditions)
-17 · 02-agents-intelligence-interface.md:1489 · ScrollBox Hardware Scroll
-17 · 02-agents-intelligence-interface.md:1495 · Screen Buffer Design
-17 · 02-agents-intelligence-interface.md:1501 · StylePool
-17 · 02-agents-intelligence-interface.md:1511 · Wide Character Handling
-17 · 02-agents-intelligence-interface.md:1524 · Renderer Alt-Screen Invariants
-18 · 02-agents-intelligence-interface.md:1546 · LESSON 13: COMMANDS SYSTEM
-18 · 02-agents-intelligence-interface.md:1548 · Core Architecture
-18 · 02-agents-intelligence-interface.md:1557 · Three Command Execution Types
-18 · 02-agents-intelligence-interface.md:1565 · CommandBase Contract Fields
-18 · 02-agents-intelligence-interface.md:1581 · Registration Pipeline
-18 · 02-agents-intelligence-interface.md:1603 · Lazy Loading Pattern
-18 · 02-agents-intelligence-interface.md:1613 · Shell Substitution in Prompts
-18 · 02-agents-intelligence-interface.md:1628 · REPL Integration & Dispatch -- Three Paths
-18 · 02-agents-intelligence-interface.md:1636 · onDone Callback Contract (Local JSX)
-18 · 02-agents-intelligence-interface.md:1651 · Availability & Feature Gating
-18 · 02-agents-intelligence-interface.md:1669 · Internal-Only Commands Gate
-18 · 02-agents-intelligence-interface.md:1681 · Cache Management -- Three Layers
-18 · 02-agents-intelligence-interface.md:1691 · Bridge & Remote Mode
-19 · 02-agents-intelligence-interface.md:1706 · LESSON 35: DIALOG UI
-19 · 02-agents-intelligence-interface.md:1708 · Four-Layer Architecture
-19 · 02-agents-intelligence-interface.md:1718 · Dialog Launcher Pattern
-19 · 02-agents-intelligence-interface.md:1732 · showDialog Primitive
-19 · 02-agents-intelligence-interface.md:1746 · showSetupDialog Wrapper
-19 · 02-agents-intelligence-interface.md:1761 · Design System Components
-19 · 02-agents-intelligence-interface.md:1782 · Permission Request System
-19 · 02-agents-intelligence-interface.md:1809 · CustomSelect Widget
-19 · 02-agents-intelligence-interface.md:1830 · Wizard Pattern
-19 · 02-agents-intelligence-interface.md:1853 · Onboarding Component
-20 · 02-agents-intelligence-interface.md:1867 · LESSON 30: NOTIFICATION SYSTEM
-20 · 02-agents-intelligence-interface.md:1869 · Two Separate Notification Pipelines
-20 · 02-agents-intelligence-interface.md:1877 · Pipeline 1: In-REPL Toast Queue
-20 · 02-agents-intelligence-interface.md:1965 · Complete Hook Inventory
-20 · 02-agents-intelligence-interface.md:1985 · Pipeline 2: OS/Terminal Notifier
-20 · 02-agents-intelligence-interface.md:2049 · Background Task Notification Collapsing
-20 · 02-agents-intelligence-interface.md:2063 · MCP Channel Notifications (Kairos)
-20 · 02-agents-intelligence-interface.md:2073 · Key Design Patterns
+11 · 02-agents-intelligence-interface.md:51 · Skill Sources & Priority
+11 · 02-agents-intelligence-interface.md:63 · Listing Format Injected to the Model
+11 · 02-agents-intelligence-interface.md:75 · Budget Algorithm (`kr6`)
+11 · 02-agents-intelligence-interface.md:135 · SKILL.md Format & Frontmatter Reference
+11 · 02-agents-intelligence-interface.md:163 · Field Reference Table
+11 · 02-agents-intelligence-interface.md:186 · Advanced Patterns
+11 · 02-agents-intelligence-interface.md:237 · Permission & Auto-Allow Logic
+11 · 02-agents-intelligence-interface.md:260 · Live Reloading
+11 · 02-agents-intelligence-interface.md:269 · skillOverrides Setting (UI-only in v2.1.116)
+11 · 02-agents-intelligence-interface.md:281 · progressMessage (plumbed but unrendered in v2.1.116)
+11 · 02-agents-intelligence-interface.md:331 · Legacy Support
+12 · 02-agents-intelligence-interface.md:336 · LESSON 05: THE AGENT SYSTEM
+12 · 02-agents-intelligence-interface.md:338 · Architecture Overview
+12 · 02-agents-intelligence-interface.md:341 · Three Agent Type Definitions
+12 · 02-agents-intelligence-interface.md:376 · Built-In Agent Types
+12 · 02-agents-intelligence-interface.md:387 · Sync vs Async Lifecycle
+12 · 02-agents-intelligence-interface.md:411 · Fork Path (Experimental)
+12 · 02-agents-intelligence-interface.md:453 · Worktree Isolation
+12 · 02-agents-intelligence-interface.md:480 · SendMessageTool & Swarm Protocol
+12 · 02-agents-intelligence-interface.md:513 · Agent Frontmatter Schema
+12 · 02-agents-intelligence-interface.md:534 · Custom Agent Markdown Format
+12 · 02-agents-intelligence-interface.md:562 · Explore Agent Implementation
+12 · 02-agents-intelligence-interface.md:584 · Type Guards
+12 · 02-agents-intelligence-interface.md:598 · Key Design Patterns
+13 · 02-agents-intelligence-interface.md:607 · LESSON 21: COORDINATOR MODE
+13 · 02-agents-intelligence-interface.md:609 · Architecture Overview
+13 · 02-agents-intelligence-interface.md:614 · Tool Restrictions
+13 · 02-agents-intelligence-interface.md:628 · Core Functions
+13 · 02-agents-intelligence-interface.md:693 · Task Notification Format
+13 · 02-agents-intelligence-interface.md:709 · Four-Phase Workflow
+13 · 02-agents-intelligence-interface.md:718 · Parallelism Rules
+13 · 02-agents-intelligence-interface.md:723 · Continue vs. Spawn Fresh Decision Matrix
+13 · 02-agents-intelligence-interface.md:734 · Mode Comparison Table
+13 · 02-agents-intelligence-interface.md:748 · Scratchpad Implementation
+13 · 02-agents-intelligence-interface.md:753 · Feature Gates
+13 · 02-agents-intelligence-interface.md:758 · Critical Design Constraint
+14 · 02-agents-intelligence-interface.md:763 · LESSON 22: TEAMS & SWARM
+14 · 02-agents-intelligence-interface.md:765 · Core Architecture
+14 · 02-agents-intelligence-interface.md:770 · TeamCreate Workflow (Five Steps)
+14 · 02-agents-intelligence-interface.md:778 · TeamCreate Source Code
+14 · 02-agents-intelligence-interface.md:821 · File Structure
+14 · 02-agents-intelligence-interface.md:837 · TeamFile Type Definition
+14 · 02-agents-intelligence-interface.md:871 · Three Spawn Backends
+14 · 02-agents-intelligence-interface.md:911 · iTerm2 Dead-Session Recovery
+14 · 02-agents-intelligence-interface.md:929 · In-Process Backend
+14 · 02-agents-intelligence-interface.md:939 · CLI Flags and Environment Variables
+14 · 02-agents-intelligence-interface.md:947 · Mailbox Messaging
+14 · 02-agents-intelligence-interface.md:963 · Permission Sync -- SwarmPermissionRequest Schema
+14 · 02-agents-intelligence-interface.md:989 · Leader Permission Bridge (In-Process Only)
+14 · 02-agents-intelligence-interface.md:1001 · Full Lifecycle
+14 · 02-agents-intelligence-interface.md:1011 · TeamDelete Tool
+14 · 02-agents-intelligence-interface.md:1015 · UI Components
+15 · 02-agents-intelligence-interface.md:1030 · LESSON 08: MEMORY SYSTEM
+15 · 02-agents-intelligence-interface.md:1032 · Three Memory Layers
+15 · 02-agents-intelligence-interface.md:1040 · Auto Memory -- MEMORY.md Index File
+15 · 02-agents-intelligence-interface.md:1049 · Topic File Format
+15 · 02-agents-intelligence-interface.md:1061 · Type Taxonomy (Closed to Four)
+15 · 02-agents-intelligence-interface.md:1068 · Excluded Content Categories
+15 · 02-agents-intelligence-interface.md:1078 · Path Resolution & Security
+15 · 02-agents-intelligence-interface.md:1091 · Extraction Pipeline
+15 · 02-agents-intelligence-interface.md:1099 · Mutual Exclusion Logic
+15 · 02-agents-intelligence-interface.md:1116 · Selector Model for Relevance
+15 · 02-agents-intelligence-interface.md:1120 · Staleness Detection
+15 · 02-agents-intelligence-interface.md:1134 · Session Memory
+15 · 02-agents-intelligence-interface.md:1151 · Team Memory Sync
+15 · 02-agents-intelligence-interface.md:1177 · KAIROS / Assistant Mode
+15 · 02-agents-intelligence-interface.md:1188 · Feature Flags & Disable Mechanisms
+16 · 02-agents-intelligence-interface.md:1197 · LESSON 40: AUTO MEMORY & DREAMS
+16 · 02-agents-intelligence-interface.md:1199 · Two-Layer Memory Lifecycle
+16 · 02-agents-intelligence-interface.md:1205 · Memory Directory Structure
+16 · 02-agents-intelligence-interface.md:1225 · Memory Taxonomy (Four Types)
+16 · 02-agents-intelligence-interface.md:1248 · Layer 1 -- Extract Memories
+16 · 02-agents-intelligence-interface.md:1282 · Layer 2 -- Auto Dream (Consolidation)
+16 · 02-agents-intelligence-interface.md:1320 · Recall -- findRelevantMemories
+16 · 02-agents-intelligence-interface.md:1340 · Cache Efficiency
+16 · 02-agents-intelligence-interface.md:1349 · KAIROS / Assistant Mode
+17 · 02-agents-intelligence-interface.md:1355 · LESSON 11: INK RENDERER
+17 · 02-agents-intelligence-interface.md:1357 · Seven-Stage Pipeline
+17 · 02-agents-intelligence-interface.md:1400 · Reconciler Implementation
+17 · 02-agents-intelligence-interface.md:1430 · Node Type System
+17 · 02-agents-intelligence-interface.md:1440 · Dirty Flag System
+17 · 02-agents-intelligence-interface.md:1446 · Yoga Layout Adapter
+17 · 02-agents-intelligence-interface.md:1475 · Blit Fast Path (Six Conditions)
+17 · 02-agents-intelligence-interface.md:1491 · ScrollBox Hardware Scroll
+17 · 02-agents-intelligence-interface.md:1497 · Screen Buffer Design
+17 · 02-agents-intelligence-interface.md:1503 · StylePool
+17 · 02-agents-intelligence-interface.md:1513 · Wide Character Handling
+17 · 02-agents-intelligence-interface.md:1526 · Renderer Alt-Screen Invariants
+18 · 02-agents-intelligence-interface.md:1548 · LESSON 13: COMMANDS SYSTEM
+18 · 02-agents-intelligence-interface.md:1550 · Core Architecture
+18 · 02-agents-intelligence-interface.md:1559 · Three Command Execution Types
+18 · 02-agents-intelligence-interface.md:1567 · CommandBase Contract Fields
+18 · 02-agents-intelligence-interface.md:1583 · Registration Pipeline
+18 · 02-agents-intelligence-interface.md:1605 · Lazy Loading Pattern
+18 · 02-agents-intelligence-interface.md:1615 · Shell Substitution in Prompts
+18 · 02-agents-intelligence-interface.md:1630 · REPL Integration & Dispatch -- Three Paths
+18 · 02-agents-intelligence-interface.md:1638 · onDone Callback Contract (Local JSX)
+18 · 02-agents-intelligence-interface.md:1653 · Availability & Feature Gating
+18 · 02-agents-intelligence-interface.md:1671 · Internal-Only Commands Gate
+18 · 02-agents-intelligence-interface.md:1683 · Cache Management -- Three Layers
+18 · 02-agents-intelligence-interface.md:1693 · Bridge & Remote Mode
+19 · 02-agents-intelligence-interface.md:1708 · LESSON 35: DIALOG UI
+19 · 02-agents-intelligence-interface.md:1710 · Four-Layer Architecture
+19 · 02-agents-intelligence-interface.md:1720 · Dialog Launcher Pattern
+19 · 02-agents-intelligence-interface.md:1734 · showDialog Primitive
+19 · 02-agents-intelligence-interface.md:1748 · showSetupDialog Wrapper
+19 · 02-agents-intelligence-interface.md:1763 · Design System Components
+19 · 02-agents-intelligence-interface.md:1784 · Permission Request System
+19 · 02-agents-intelligence-interface.md:1811 · CustomSelect Widget
+19 · 02-agents-intelligence-interface.md:1832 · Wizard Pattern
+19 · 02-agents-intelligence-interface.md:1855 · Onboarding Component
+20 · 02-agents-intelligence-interface.md:1869 · LESSON 30: NOTIFICATION SYSTEM
+20 · 02-agents-intelligence-interface.md:1871 · Two Separate Notification Pipelines
+20 · 02-agents-intelligence-interface.md:1879 · Pipeline 1: In-REPL Toast Queue
+20 · 02-agents-intelligence-interface.md:1967 · Complete Hook Inventory
+20 · 02-agents-intelligence-interface.md:1987 · Pipeline 2: OS/Terminal Notifier
+20 · 02-agents-intelligence-interface.md:2051 · Background Task Notification Collapsing
+20 · 02-agents-intelligence-interface.md:2065 · MCP Channel Notifications (Kairos)
+20 · 02-agents-intelligence-interface.md:2075 · Key Design Patterns
 21 · 03-interface-infrastructure.md:9 · Overview
 21 · 03-interface-infrastructure.md:12 · Core Architecture Files
 21 · 03-interface-infrastructure.md:14 · 1. types.ts -- State Machine Types
@@ -1162,7 +1162,7 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 89 · 17-verified-new-v2.1.120.md:1483 · Reported impact (from issue thread)
 89 · 17-verified-new-v2.1.120.md:1491 · Workaround
 89 · 17-verified-new-v2.1.120.md:1500 · Implication for the `userconfig-probe` plugin
-89 · 17-verified-new-v2.1.120.md:1508 · The async sub-agent filter trace (v2.1.120 bundle)
+89 · 17-verified-new-v2.1.120.md:1508 · The async sub-agent filter trace (v2.1.120 bundle; symbols resolved in v2.1.119 and v2.1.138)
 89 · 17-verified-new-v2.1.120.md:1517 · The mechanism
 89 · 17-verified-new-v2.1.120.md:1551 · `Jl_` allowlist contents
 89 · 17-verified-new-v2.1.120.md:1594 · `r3H` / `F_8` drop set
@@ -1241,13 +1241,13 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 106 · 20-desktop-cli-plugin-credential-broker.md:177 · Methodology note (the transferable lesson)
 107 · 21-cowork-control-protocol.md:35 · Part A — Cowork mode is env, not a flag
 107 · 21-cowork-control-protocol.md:59 · Part B — The spawn flags that matter
-107 · 21-cowork-control-protocol.md:87 · Part C — The stream-json control protocol (the stable seam)
-107 · 21-cowork-control-protocol.md:123 · Part C2 — control-protocol request subtypes (newly surfaced in verification)
-107 · 21-cowork-control-protocol.md:146 · Part D — MCP delivery: the non-obvious one
-107 · 21-cowork-control-protocol.md:173 · Part E — Permission model and tool registry (layered, not blanket-allow)
-107 · 21-cowork-control-protocol.md:234 · ADDENDUM (2026-08-13) — the `Skill` matcher's `additionalContext` is the elicitation injection
-107 · 21-cowork-control-protocol.md:371 · Part F — Auth & runtime gotchas (for a faithful driver)
-107 · 21-cowork-control-protocol.md:401 · Methodology
+107 · 21-cowork-control-protocol.md:89 · Part C — The stream-json control protocol (the stable seam)
+107 · 21-cowork-control-protocol.md:125 · Part C2 — control-protocol request subtypes (newly surfaced in verification)
+107 · 21-cowork-control-protocol.md:148 · Part D — MCP delivery: the non-obvious one
+107 · 21-cowork-control-protocol.md:175 · Part E — Permission model and tool registry (layered, not blanket-allow)
+107 · 21-cowork-control-protocol.md:236 · ADDENDUM (2026-08-13) — the `Skill` matcher's `additionalContext` is the elicitation injection
+107 · 21-cowork-control-protocol.md:373 · Part F — Auth & runtime gotchas (for a faithful driver)
+107 · 21-cowork-control-protocol.md:403 · Methodology
 108 · 22-cowork-env-gates-protocol.md:39 · Part A — environment variables (binary-verified, current as of 2.1.170 / asar 1.12603.1)
 108 · 22-cowork-env-gates-protocol.md:50 · Model / effort / thinking control
 108 · 22-cowork-env-gates-protocol.md:62 · Cowork / background-session runtime
@@ -1799,17 +1799,17 @@ state:cowork-architecture · state/cowork-architecture.md:732 · Local MCP bridg
 state:cowork-architecture · state/cowork-architecture.md:769 · Mount model and delete policy (L139, L140)
 state:cowork-architecture · state/cowork-architecture.md:875 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
 state:cowork-control-protocol · state/cowork-control-protocol.md:17 · Spawn contract
-state:cowork-control-protocol · state/cowork-control-protocol.md:78 · Handshake
-state:cowork-control-protocol · state/cowork-control-protocol.md:119 · Subtype inventory pointer
-state:cowork-control-protocol · state/cowork-control-protocol.md:168 · AskUserQuestion answer shape
-state:cowork-control-protocol · state/cowork-control-protocol.md:177 · Per-`tool_use` stream envelope (fixed field set)
-state:cowork-control-protocol · state/cowork-control-protocol.md:196 · Sub-agent dispatch wire contract (lessons 121–124)
-state:cowork-control-protocol · state/cowork-control-protocol.md:267 · New agent→host system frames (agent 2.1.275+, L196)
-state:cowork-control-protocol · state/cowork-control-protocol.md:280 · Hook lifecycle frames are gated (L203)
-state:cowork-control-protocol · state/cowork-control-protocol.md:290 · Skill invocations and hook feedback in transcripts (L207)
-state:cowork-control-protocol · state/cowork-control-protocol.md:299 · Compaction subtypes
-state:cowork-control-protocol · state/cowork-control-protocol.md:311 · Cloud tasks: teleport-to-cloud and the bridge-session worker (Ch33/L119)
-state:cowork-control-protocol · state/cowork-control-protocol.md:388 · VCS SDK events + SDK-MCP skill servers (L129/L130)
+state:cowork-control-protocol · state/cowork-control-protocol.md:81 · Handshake
+state:cowork-control-protocol · state/cowork-control-protocol.md:122 · Subtype inventory pointer
+state:cowork-control-protocol · state/cowork-control-protocol.md:171 · AskUserQuestion answer shape
+state:cowork-control-protocol · state/cowork-control-protocol.md:180 · Per-`tool_use` stream envelope (fixed field set)
+state:cowork-control-protocol · state/cowork-control-protocol.md:199 · Sub-agent dispatch wire contract (lessons 121–124)
+state:cowork-control-protocol · state/cowork-control-protocol.md:270 · New agent→host system frames (agent 2.1.275+, L196)
+state:cowork-control-protocol · state/cowork-control-protocol.md:283 · Hook lifecycle frames are gated (L203)
+state:cowork-control-protocol · state/cowork-control-protocol.md:293 · Skill invocations and hook feedback in transcripts (L207)
+state:cowork-control-protocol · state/cowork-control-protocol.md:302 · Compaction subtypes
+state:cowork-control-protocol · state/cowork-control-protocol.md:314 · Cloud tasks: teleport-to-cloud and the bridge-session worker (Ch33/L119)
+state:cowork-control-protocol · state/cowork-control-protocol.md:391 · VCS SDK events + SDK-MCP skill servers (L129/L130)
 state:cowork-permissions · state/cowork-permissions.md:16 · The layers (all simultaneously active, host-loop production)
 state:cowork-permissions · state/cowork-permissions.md:200 · Auto-mode tuning at Desktop 1.22209.0 (lesson 128, no live gate-state capture)
 state:cowork-permissions · state/cowork-permissions.md:233 · Browser/Computer-Use permission gates + Cowork's own auto-mode rule additions (Desktop 1.28929.0)

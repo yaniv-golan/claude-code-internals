@@ -62,7 +62,7 @@ Updated: 2026-04-25 | Source: Binary extraction from claude v2.1.119/v2.1.120
 > - **`tengu_plan_mode_violated`** = telemetry-only tripwire for "plan mode should have held
 >   this but didn't." Observability over enforcement.
 >
-> **What's NOT in v2.1.119–v2.1.120:** no new hook event types (still 19), no new permission
+> **What's NOT in v2.1.119–v2.1.120:** no hook event types added or removed (the enumerated master array is in L95), no new permission
 > phases, no new API beta strings (still 32). The OIDC Federation surface from L86 is
 > unchanged. The `/fork` machinery from L87 is reused, not modified.
 >
@@ -1505,7 +1505,7 @@ the plugin is in the desktop Cowork namespace (and, possibly, on headless-mode b
 settings-source scope. To validate end-to-end, install it through the Cowork app UI and run the
 real-Cowork log test above; the user-scope `settings.json` fallback also works.
 
-### The async sub-agent filter trace (v2.1.120 bundle)
+### The async sub-agent filter trace (v2.1.120 bundle; symbols resolved in v2.1.119 and v2.1.138)
 
 What follows is a source-level trace of the CLI's async sub-agent
 filter (`Tw8`/`Jl_`/`vc`/`r3H`/`F_8`/`Sz`/`n0`/`ev6`). The trace is correct as a
@@ -2049,7 +2049,7 @@ Cowork-related):
 | Env vars added | 16 | (after diff correction — `_FORK_SUBAGENTM` was a string-table artifact) |
 | Telemetry / GB flag identifiers added | 62 | Background+daemon (36), Fleet view (4), pro-trial (4), classifier (4), codenames (5), other (9) |
 | Telemetry events removed | 1 | `tengu_thinking_clear_latched` |
-| Hook event types | 19 (unchanged) | |
+| Hook event types | unchanged | no event added or removed; `diff-versions.sh`'s count of 19 is its suffix-allowlist undercount (the master array is enumerated in L95) |
 | API beta strings | 32 (unchanged) | |
 | New product surface | Cowork runtime | The infrastructure for [Claude Cowork](https://www.anthropic.com/product/claude-cowork) — daemon, background sessions, Fleet view, classifier-summary status pipeline |
 
@@ -2816,7 +2816,7 @@ prior chapters.
 | GrowthBook flags added | 6 | `tengu_amber_anchor`, `tengu_ochre_finch` (lean prompt: memory), `tengu_quiet_harbor`, `tengu_slate_siskin`, `tengu_umber_petrel`, `tengu_vellum_lantern` (lean prompt: Bash) |
 | GrowthBook flags removed | 11 | Routine cleanup of dark-launched-and-graduated flags |
 | Telemetry events added | 6 | `tengu_bg_daemon_cold_start_ask` (+ `_answer`), `tengu_bg_retired`, `tengu_daemon_startup_crash`, `tengu_memory_write_survey_event`, `tengu_plan_mode_violated` |
-| Hook event types | 19 (unchanged) | |
+| Hook event types | unchanged | no event added or removed; `diff-versions.sh`'s count of 19 is its suffix-allowlist undercount (the master array is enumerated in L95) |
 | API beta strings | 32 (unchanged) | |
 | Daemon model | **Strictly on-demand** | Persistent install kill-switched via `xQH()`. `transient` (default) and `ask` are the only cold-start modes. |
 | Major architectural reveal | Cowork's memory-bypass | `CLAUDE_COWORK_MEMORY_GUIDELINES` lets Cowork-spawned sessions ignore user memory entirely |

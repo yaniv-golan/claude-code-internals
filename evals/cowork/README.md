@@ -50,17 +50,20 @@ The skill can be reached on three lanes, and the suite measures each one differe
 A `c` scenario and its `t` original are not two samples of one measurement. Compare each one against
 its own before arm, never against the other.
 
-**Every container run fails its verdict. Read the assertions instead.** `SKILL.md` quotes a
-`/Users/…` path, and some references do too. At `container`, the harness's `host_path_leak` guard scans
-model-visible text, finds the quote, and fails the run. The guard has no waiver. Its only opt-out is
+**A container verdict can fail on a quoted host path. Read the assertions too.** `SKILL.md` no longer
+quotes a `/Users/…` path, but nine reference files still do. At `container`, the harness's
+`host_path_leak` guard scans model-visible text and fails the run if the fork quotes one. c01 passed its
+verdict under cowork-harness 4.2.0 (one run). The guard has no waiver. Its only opt-out is
 `transcript_no_host_path: true`, which runs the same scan and fails the same way. The guard is skipped
 at `hostloop`. `compare` reads per-assertion results, not the verdict, so the before/after comparison
 is unaffected. The manifest keeps the signal (`fail:host_path_leak`), so a change in it stays visible.
 
-**Container needs a staged VM agent.** `hostloop` accepts a staged agent that is a patch newer than the
-baseline pins (2.1.281 → 2.1.284). `container` does not. Point `COWORK_AGENT_BINARY` at the staged VM ELF
-(`~/Library/Application Support/Claude/claude-code-vm/<ver>/claude`). Otherwise `run-suite.js` prints a
-note and the `c` scenarios fail before they start. Use the same binary for both arms.
+**Container needs a staged VM agent that matches the baseline.** cowork-harness 4.2.0's baseline
+(desktop-2.16120.0) pins agent 2.1.284, which is what this machine stages, so `COWORK_AGENT_BINARY` is not
+needed. When the staged agent drifts from the baseline pin, `hostloop` tolerates a patch-newer agent and
+`container` does not: point `COWORK_AGENT_BINARY` at the staged VM ELF
+(`~/Library/Application Support/Claude/claude-code-vm/<ver>/claude`), or the `c` scenarios fail before
+they start. Use the same binary for both arms.
 
 ## Targeted behaviours (the keep-list)
 
@@ -176,14 +179,14 @@ the question, not an invocation.
   `record` refuses a repo-visible path.
 - **Full compaction coverage.** `compaction_occurred` sees only `compact_boundary`.
 - **The remote (cloud) lane.** Every tier models the desktop-local lane. It is checked by hand (see [Lanes](#lanes)).
-- **A passing verdict at `container`.** `host_path_leak` fails every run, because `SKILL.md` quotes a `/Users/…` path (see [Lanes](#lanes)).
+- **A reliable verdict at `container`.** `host_path_leak` fails any run where the fork quotes one of the `/Users/…` paths still in the references (see [Lanes](#lanes)).
 - **Tool calls of a sub-agent the fork dispatches.** In the smoke, such an agent's reads were
   invisible (`toolsUsed: []`), so `reference_read` and `tool_result_contains` can miss evidence that
   exists.
 - **The fork's return, for the judge.** `semantic_matches` sees the parent's relay, never the Skill
   tool_result.
 - **Tool-call order.** No harness key checks it. `stateFirst` is derived post-hoc from `trace`.
-- **Judge cost.** `cost.usd` covers the agent only. The judge call is not reported.
+- **Judge cost, before cowork-harness 4.2.0.** From 4.2.0 each judged assertion records `judgeCostUsd` (and `judgePromptHash`); a judged run costs about twice the agent. `cost.usd` still covers the agent only, and `run-suite.js` does not yet record either field. 4.2.0 also changed the judge prompt, so a manifest judged under 4.1.1 is not comparable with one judged under 4.2.0.
 
 ## Known behaviour (from the 2026-09-29 smokes)
 
@@ -195,11 +198,14 @@ the question, not an invocation.
   The staged copy is there all the same: under `remote_plugins` at
   `/sessions/<id>/mnt/.remote-plugins/plugin_<id>/skills/claude-code-internals/scripts/state.js`
   (depth 8 under `/sessions`), which is where a live local-lane Cowork session puts a UI-installed
-  plugin. The first smokes declared the plugin under `local_plugins`, which stages it at depth 10
-  (`mnt/.local-plugins/marketplaces/local-desktop-app-uploads/skill-package/…`). The fork's
-  `find /sessions -maxdepth 8` stopped short of it and reported nothing, and the fork fell back to
-  Grep/Read over `references/`. That was the fork's shallow search, not a missing mount. The partial
-  results of that batch are kept, renamed `results/aborted-local_plugins-before-*.jsonl`.
+  plugin. Under `local_plugins` it is staged at depth 10
+  (`mnt/.local-plugins/marketplaces/local-desktop-app-uploads/skill-package/…`). The `find` that
+  `SKILL.md` now prescribes has no depth limit, and under cowork-harness 4.2.0 t01 passed 8 of 8 runs
+  with `local_plugins`; the three traced forks found the depth-10 copy and ran `state.js` /
+  `fetch-lesson.js` without error. (In the first smokes, before `SKILL.md` prescribed the search, a
+  fork chose `find /sessions -maxdepth 8`, missed the copy and fell back to Grep/Read over
+  `references/`; that batch's partial results are kept as
+  `results/aborted-local_plugins-before-*.jsonl`.)
 - When the fork does try a script with the host path first, `tool_no_error: .*` /
   `max_tool_errors: 0` go red on that attempt. The `c` copies measure the script path without that
   step.

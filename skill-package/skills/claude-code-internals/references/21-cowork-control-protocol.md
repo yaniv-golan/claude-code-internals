@@ -68,9 +68,11 @@ Ch22/L105 (`subtype:"elicitation"`/`can_use_tool`/`hook_callback`/`mcp_message`/
 - **`--permission-prompt-tool stdio`** is what routes `can_use_tool` / AskUserQuestion to the driver.
   **Without it, AskUserQuestion is silently auto-dismissed** and scripted answers never fire — a
   high-surprise failure mode for anyone building a headless driver.
-- Effort/thinking ride flags + env, **not** `CLAUDE_EFFORT`. **Binary-verified:** the
-  desktop *explicitly passes* `--effort medium --max-thinking-tokens 31999`
-  on the spawn argv (see the logged argv below) — those are **driver-passed values, not agent defaults**.
+- Effort/thinking ride CLI flags, **not** `CLAUDE_EFFORT`. The desktop passes
+  `--max-thinking-tokens 31999` (or `--thinking disabled`; thinking is a strict boolean, Ch34/L120) and
+  `--effort <level>` **only when the session carries an effort value** — the spawn reads session state
+  with no fallback and omits the flag otherwise (Ch34/L120). The `medium` in the logged argv below is that
+  session's value, not a constant. These are **driver-passed values, not agent defaults**.
   The agent's own defaults differ: effort tiers are `eV = ["low","medium","high","xhigh","max"]` with
   internal default **`high`** (`w46()` returns `high` for `claude-fable-5`/`claude-opus-4-8` and as
   fallback, `xhigh` for `claude-opus-4-7`) — there is no `.default("medium")`; and thinking defaults to
@@ -81,8 +83,8 @@ Ch22/L105 (`subtype:"elicitation"`/`can_use_tool`/`hook_callback`/`mcp_message`/
   Ch17/L90 and the Ch21/L93 `bk()` substituter; no env read of it exists near `eV`/`w46()`).
 - The logged real desktop argv (Ch20/L89): `--output-format stream-json --verbose --input-format
   stream-json --max-thinking-tokens 31999 --effort medium --model … --setting-sources=user
-  --permission-mode default --allow-dangerously-skip-permissions --plugin-dir …` — i.e. the desktop
-  pins effort/thinking explicitly rather than relying on the agent defaults.
+  --permission-mode default --allow-dangerously-skip-permissions --plugin-dir …` — one session's argv;
+  the thinking flag is always sent, `--effort` only when the session has a level.
 
 ## Part C — The stream-json control protocol (the stable seam)
 

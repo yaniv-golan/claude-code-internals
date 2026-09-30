@@ -4,7 +4,7 @@ title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
 sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207, 209, 211, 217, 218]
-updated: 2026-09-28
+updated: 2026-10-01
 read_more: ["https://ccinternals.dev/cowork/plugins-and-plugin-root/?ref=skill"]
 ---
 
@@ -274,7 +274,7 @@ exec python3 "$(cd "$(dirname "$0")/.." && pwd)/scripts/$1.py" "${@:2}"
 
 **Why not the token in a `references/*.md`.** Substitution happens in the files the runtime **loads** as definitions — a SKILL.md body, a command, a hook. A reference file your skill **reads at run time** is not substituted: the token arrives literally and names nothing.
 
-**Three ways `bin/` fails, all silent.** A PATH entry is **not** evidence the directory exists: the PATH builder performs no existence check, mapping `<path>/bin` for every enabled non-builtin plugin unconditionally, so a count of entries is a fact about the plugin count and says nothing about what is on disk (35 entries on one machine, zero directories). A `bin/` committed in plugin source **does** survive installation; install narrows the mode but the execute bit survives. The Cowork mount is **read-only**, so a launcher cannot write beside itself. And a plugin path containing shell metacharacters is dropped from PATH with no model-visible error. So: **construct, verify, fall back** — and have the step that cannot resolve stop and say so, because a resolution that fails quietly is indistinguishable from a feature that was never shipped.
+**Three ways `bin/` fails, all silent.** Before agent 2.1.284 a PATH entry is **not** evidence the directory exists: the PATH builder performed no existence check, mapping `<path>/bin` for every enabled non-builtin plugin unconditionally (35 entries on one machine, zero directories). From 2.1.284 each entry is `stat`-checked and dropped on `ENOENT`/`ENOTDIR`, but kept on any other `stat` failure. A `bin/` committed in plugin source **does** survive a standalone-CLI installation; install narrows the mode but the execute bit survives. Whether Cowork local staging keeps it is **untested**: the staged org-remote copies inspected carry `bin/` only for a plugin that declares `clis` (a runtime-generated shim), and none of them committed a `bin/` in source. The Cowork mount is **read-only**, so a launcher cannot write beside itself. And a plugin path containing shell metacharacters is dropped from PATH with no model-visible error. So: **construct, verify, fall back** — and have the step that cannot resolve stop and say so, because a resolution that fails quietly is indistinguishable from a feature that was never shipped.
 
 ## `${CLAUDE_PLUGIN_ROOT}` resolves to wherever the agent loaded the plugin from
 

@@ -36,8 +36,8 @@ claude-code-internals troubleshoot "<symptom>"      # problem-shaped queries (sh
 claude-code-internals fetch-lesson <id>             # a lesson's full body by id
 ```
 
-**If `claude-code-internals` is not found** — expect this in Cowork, whose VM
-shell does not get the plugin `bin/` on its PATH — locate the scripts directory
+**If `claude-code-internals` is not found** — expect this in Cowork, where the
+launcher has not been seen on the VM shell's PATH — locate the scripts directory
 first. Do **not** build the path from the CLAUDE_SKILL_DIR / CLAUDE_PLUGIN_ROOT
 environment variables: they hold a *host* path the VM shell cannot open. Instead:
 

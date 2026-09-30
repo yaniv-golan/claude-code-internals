@@ -6,14 +6,14 @@ Updated: 2026-09-22 | Source: **live probes in three lanes** — a standalone CL
 
 ## TABLE OF CONTENTS
 
-173. [Lesson 173 — Plugin `bin/` Is on the Shell's PATH, Namespace-Correct, in Every Lane](#lesson-173--plugin-bin-is-on-the-shells-path)
+173. [Lesson 173 — Plugin `bin/` Is on the Shell's PATH, in the Shell's Own Namespace](#lesson-173--plugin-bin-is-on-the-shells-path)
 174. [Lesson 174 — The Cloud Lane's Environment Is Not a Subset of the CLI's](#lesson-174--the-cloud-lanes-environment)
 
 ---
 
 # LESSON 173 — PLUGIN `bin/` IS ON THE SHELL'S PATH
 
-**Claude Code puts every enabled non-builtin plugin's `bin/` directory on the Bash tool's PATH, and the path it uses is correct for the namespace that shell lives in — including Cowork host-loop, where the file tools and the shell disagree about every other path. This is the only channel measured that hands a plugin its own root in the shell's own terms, and it is undocumented.**
+**Claude Code puts every enabled non-builtin plugin's `bin/` directory on the Bash tool's PATH (from agent 2.1.284, only a `bin/` that exists), and the path it uses is correct for the namespace that shell lives in — including Cowork host-loop, where the file tools and the shell disagree about every other path. This is the only channel measured that hands a plugin its own root in the shell's own terms, and it is undocumented.**
 
 ## The mechanism
 
@@ -114,7 +114,7 @@ Every previously-documented approach — Ch17/L89, the `env.CLAUDE_PLUGIN_ROOT` 
 
 ## Three caveats, all of them silent failures
 
-1. **PATH advertises directories that do not exist**, because `Z$n()` performs **no existence check** — it maps `<path>/bin` for every enabled non-builtin plugin unconditionally. 35 entries locally, **zero** on disk. That number is a function of the enabled-plugin count and can take no other value, so it is evidence about neither provisioning nor stripping — a count read off an unconditional function is a fact about the function. **A PATH entry is not evidence the directory exists** — and the natural first check (`echo $PATH`, see your plugin listed) reads healthy on exactly this failure.
+1. **Before agent 2.1.284, PATH advertises directories that do not exist**, because `Z$n()` performs **no existence check** — it maps `<path>/bin` for every enabled non-builtin plugin unconditionally. 35 entries locally, **zero** on disk. From 2.1.284 the `stat` check above drops missing directories, but a `stat` failure other than `ENOENT`/`ENOTDIR` still keeps the entry. That number is a function of the enabled-plugin count and can take no other value, so it is evidence about neither provisioning nor stripping — a count read off an unconditional function is a fact about the function. **A PATH entry is not evidence the directory exists** — and the natural first check (`echo $PATH`, see your plugin listed) reads healthy on exactly this failure.
 2. **The mount is read-only** (`dr-x------`, files `-r-x------`). A launcher can execute but cannot write beside itself.
 3. **Metacharacter paths vanish without an error the model can see.** A plugin installed under a path containing `$`, a quote or a backtick gets no PATH entry at all.
 
@@ -122,7 +122,7 @@ So the pattern is *construct, verify, fall back* — the same discipline the dis
 
 ## Not established
 
-The commonly-cited **v2.1.91** origin could not be verified: the CHANGELOG embedded in these binaries reaches back only to **2.1.220**, so its absence there is expected and proves nothing. Treat the version floor as unknown. Whether the cloud lane's 20 directories exist was not tested.
+The commonly-cited **v2.1.91** origin could not be verified: the CHANGELOG embedded in these binaries reaches back only to **2.1.220**, so its absence there is expected and proves nothing. Treat the version floor as unknown. Whether the cloud lane's 20 directories exist was not tested. **Whether Cowork local staging keeps a `bin/` committed in plugin source is also untested:** in every staged org-remote copy inspected (24 plugins, one machine, 2026-10-01), `bin/` exists only for the one plugin that declares `clis`, and none of the 24 committed a `bin/` in source, so the population cannot distinguish "dropped at staging" from "never shipped". Until it is measured, a skill must not rely on its own `bin/` launcher being on the Cowork VM shell's PATH.
 
 ---
 

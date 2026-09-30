@@ -33,15 +33,17 @@ A skill is a named, reusable prompt workflow that Claude Code can discover and e
 
 **Substitute** -- Argument substitution order:
 1. Named args: `$foo`, `$bar` (mapped by position from `arguments` frontmatter)
-2. Indexed args: `$ARGUMENTS[0]`, `$0`, `$1`
-3. Full arg string: `$ARGUMENTS`
+2. Indexed args: `$ARGUMENTS[0]`, `$0`, `$1` (0-based: `$0` is the first argument; an out-of-range index stays literal)
+3. Full arg string: `$ARGUMENTS` (exact and case-sensitive; with no argument it becomes the empty string)
 4. If no placeholder found and args exist: append as `ARGUMENTS: ...`
+- A lowercase or undeclared `$token` (e.g. `$argument`) matches none of these and survives as literal text; only names declared in `arguments` frontmatter substitute (agent 2.1.284)
 5. Shell injection: `` !`command` `` or ` ```! ` blocks (local skills only)
 6. Special vars: `${CLAUDE_SKILL_DIR}`, `${CLAUDE_SESSION_ID}`
 
 **Execute** -- Two modes via `context: fork` frontmatter:
 - **Inline (default)**: Expanded prompt injected as user message in same context window
 - **Forked**: Isolated sub-agent (`runAgent()`) with own token budget; parent receives final text output
+- **Slash invocation skips the Skill tool.** `/<skill> <args>` for a plugin skill resolves to the qualified `/<plugin>:<skill>` (the expansion in the transcript names the qualified form), and the argument reaches a forked skill's body verbatim through `$ARGUMENTS`. No `Skill` tool call is made, so there is no `completed (forked execution)` tool_result: anything that detects a skill run by its `Skill` tool_use misses slash-invoked runs. Measured on CLI 2.1.285 and the Cowork host-loop agent 2.1.284, one run per form.
 
 **Inject**
 - Skill tool returns `ToolResult`. Inline skills carry `allowedTools` and optional `model` override for subsequent tool calls. Forked skills display "Done" byline and feed sub-agent output back as context.
