@@ -85,7 +85,15 @@ silently regress ranking.
   questions are carried over unchanged, except that a state question from a source without
   `split_lesson_id` (questions-v1) gets it once (see below). See the file header for the exact
   rules.
-- **`questions-v2.json`** + **`baseline-v3.json`** — the gated set: v1's questions with
+- **`questions-v2.json`** + **`baseline-v4.json`** — the gated set and its baseline since
+  `search.js`'s default ranking became keyword-first (the keyword layer's results in keyword
+  order, then TF-IDF-only results in TF-IDF order; RRF fusion stays behind `--fused`). Same
+  thresholds, no `waivers`; `accepted_vs_previous` lists every question that fails
+  baseline-v4 against baseline-v3 (qid, stratum, lesson, split, rank before and after, rules
+  tripped), the losses accepted with that change. The registry gate's losses from the same
+  change are named in `registry-top1-losses.json`.
+- **`questions-v2.json`** + **`baseline-v3.json`** — the gated set under RRF fusion, kept for trend
+  since baseline-v4: v1's questions with
   acceptable-answer sets, under the split rule (lessons 88, 129 and 173 moved to dev: see
   `split.moved_to_dev`), and its baseline (same thresholds as v1 and v2, no `waivers`).
   `baseline-v3.json` also records, in `accepted_vs_previous`, the per-question drops against
@@ -187,10 +195,10 @@ node evals/retrieval/gen-registry-top1.js      # the registry cases record the s
 # ...then cut a new baseline (step 4): the old one can no longer be compared.
 
 # 4. Score it and save a baseline:
-node evals/retrieval/run.js --questions evals/retrieval/questions-v2.json --save evals/retrieval/baseline-v3.json
+node evals/retrieval/run.js --questions evals/retrieval/questions-v2.json --save evals/retrieval/baseline-v5.json
 
 # 5. On a later change, check for regressions (always name the question set the baseline scored):
-node evals/retrieval/run.js --baseline evals/retrieval/baseline-v3.json --questions evals/retrieval/questions-v2.json
+node evals/retrieval/run.js --baseline evals/retrieval/baseline-v4.json --questions evals/retrieval/questions-v2.json
 # v1, for trend (not gated):
 node evals/retrieval/run.js --baseline evals/retrieval/baseline-v1.json --questions evals/retrieval/questions-v1.json
 
@@ -250,10 +258,10 @@ node --test evals/retrieval/agentic-run.test.js
 - **Whole-set replacement only.** `questions-vN.json` is replaced as a whole new version on a
   fixed schedule (yearly, or after 50 new lessons) — never edited piecemeal to drop an
   inconvenient question.
-- **The gate runs on `baseline-v3.json`**, scoring `questions-v2.json` named explicitly, alongside
+- **The gate runs on `baseline-v4.json`**, scoring `questions-v2.json` named explicitly, alongside
   `registry-top1.test.js` and `corpus-ranking.test.js`. `validate.yml` runs the gate in CI;
   `scripts/check-clean.sh` is the local/release-time counterpart, run by `release.js` as its
-  consistency-check step. baseline-v2 and v1 stay for trend. The pair is named once, as
+  consistency-check step. baseline-v3, baseline-v2 and v1 stay for trend. The pair is named once, as
   `CURRENT_QUESTIONS` / `CURRENT_BASELINE` in `lib.js`; `gen-registry-top1.js` and the tests
   read those, and `retrieval-gate.test.js` fails unless `validate.yml` and `check-clean.sh`
   name exactly those two files. `check-clean.sh` fails if either is missing.

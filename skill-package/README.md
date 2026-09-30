@@ -30,7 +30,7 @@
 
 This is a Claude Code skill (a local knowledge package that Claude Code loads automatically) containing a complete reverse-engineering of Claude Code's internal architecture. 218 detailed lessons cover every major subsystem — from the boot sequence to unreleased features. When you type `/claude-code-internals hooks` or `/claude-code-internals permissions`, Claude doesn't guess or hallucinate. It reads actual architecture documentation, searches through indexed reference material, and gives you source-level answers with code examples and type definitions.
 
-Without this skill, Claude knows *how to use* Claude Code but doesn't know *how Claude Code works internally*. With it, Claude becomes an expert on its own implementation — the query engine's retry logic, the 31 hook event types, the 7-phase permission pipeline, the compaction algorithm, the agent spawn lifecycle, all of it.
+Without this skill, Claude knows *how to use* Claude Code but doesn't know *how Claude Code works internally*. With it, Claude becomes an expert on its own implementation — the query engine's retry logic, the 33 hook event types (as of 2.1.280), the 7-phase permission pipeline, the compaction algorithm, the agent spawn lifecycle, all of it.
 
 ## Why This Skill Is Useful
 
@@ -42,7 +42,7 @@ This is because Claude's training data doesn't include Claude Code's source code
 
 ### What Changes With This Skill
 
-- **Claude stops guessing.** Every answer comes from indexed architecture documentation, not training data. When you ask about hooks, Claude reads the actual hook system lesson that documents all 31 event types, exit code semantics, and 5 command types.
+- **Claude stops guessing.** Every answer comes from indexed architecture documentation, not training data. When you ask about hooks, Claude reads the actual hook system lesson that documents the hook event types (33 as of 2.1.280), exit code semantics, and 5 command types.
 
 - **You get source-level depth.** Not "hooks let you run commands before and after tool use" but "PreToolUse hooks receive `{tool_name, tool_input}` as JSON on stdin, exit 0 proceeds silently, exit 1 proceeds with stderr shown to user, exit 2 blocks the tool and sends stderr to the model."
 
@@ -78,17 +78,17 @@ This is because Claude's training data doesn't include Claude Code's source code
                    v                v                v
           +-------------+  +---------------+  +----------------+
           | lookup.sh   |  | semantic-     |  | search.js      |
-          | (keyword)   |  | search.js     |  | (unified RRF)  |
+          | (keyword)   |  | search.js     |  | (unified)      |
           |             |  | (TF-IDF)      |  |                |
-          | jq query    |  | cosine sim    |  | fuses keyword  |
-          | against     |  | against       |  | + TF-IDF via   |
-          | the keyword |  | per-lesson    |  | reciprocal     |
-          | map         |  | TF-IDF        |  | rank fusion    |
+          | jq query    |  | cosine sim    |  | keyword rank   |
+          | against     |  | against       |  | first, then    |
+          | the keyword |  | per-lesson    |  | TF-IDF-only    |
+          | map         |  | TF-IDF        |  | matches        |
           |             |  | vectors       |  |                |
           +------+------+  +-------+-------+  +-------+--------+
                  |                 |                   |
                  v                 v                   v
-          file:line refs     ranked lessons     fused ranking
+          file:line refs     ranked lessons     one ranking
                  |                 |                   |
                  +--------+-------+-------------------+
                           |
@@ -114,13 +114,13 @@ This is because Claude's training data doesn't include Claude Code's source code
 
 | Layer | Script | Speed | Best For | Requires |
 |-------|--------|-------|----------|----------|
-| **Unified (RRF)** | `search.js` | ~60ms | **Use this by default** — combines keyword + TF-IDF via Reciprocal Rank Fusion | Node.js |
+| **Unified** | `search.js` | ~60ms | **Use this by default** — keyword matches in keyword order, then TF-IDF-only matches | Node.js |
 | **1. Keyword** | `lookup.sh` | Instant | Exact terms: "hooks", "permissions", "KAIROS" | `jq` |
 | **2. TF-IDF** | `semantic-search.js` | ~50ms | Natural language: "how does Claude decide what tools to use" | Node.js |
 
 - **Layer 1** uses `jq` to search the keyword map, which points at exact file:line ranges.
 - **Layer 2** tokenizes your query and computes cosine similarity against per-lesson TF-IDF vectors covering all 218 lessons. The index is not shipped: it is built in memory from `topic-index.json` on first use (then cached under your user cache directory; `CCI_NO_INDEX_CACHE=1` disables the cache). Pure Node.js, no dependencies.
-- **`search.js`** runs both and fuses the rankings. It is the one to reach for unless you specifically want a single layer's behaviour.
+- **`search.js`** runs both: the keyword layer's results lead, and TF-IDF adds the lessons the keyword layer missed. It is the one to reach for unless you specifically want a single layer's behaviour.
 
 ### Auto-Trigger Hook
 
@@ -217,7 +217,7 @@ chmod +x scripts/*.sh scripts/*.js
 
 # 5. Verify it works — type this in Claude Code:
 #   /claude-code-internals hooks
-# You should see a detailed response about all 31 hook events,
+# You should see a detailed response about all 33 hook events,
 # exit code semantics, and configuration format. If you see
 # "Unknown skill" instead, Claude Code needs a restart.
 ```
@@ -264,7 +264,7 @@ This adds a gentle nudge whenever Claude is about to modify `.claude/` config fi
 ```
 /claude-code-internals hooks
 ```
-Returns all 31 hook event types, exit code semantics (0=proceed, 1=proceed+warn, 2=block), 5 command types, configuration format, and the critical detail that hook config is snapshot-captured at startup.
+Returns all 33 hook event types (as of 2.1.280), exit code semantics (0=proceed, 1=proceed+warn, 2=block), 5 command types, configuration format, and the critical detail that hook config is snapshot-captured at startup.
 
 ```
 /claude-code-internals permissions
@@ -344,9 +344,9 @@ The skill then reads the matched section with exact line offsets and synthesizes
 
 ## Smart Features
 
-### Unified Search (Reciprocal Rank Fusion)
+### Unified Search (keyword first)
 
-Instead of choosing between keyword search and TF-IDF, `search.js` runs both and merges results using [Reciprocal Rank Fusion](https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf) — a proven technique from information retrieval that consistently outperforms either individual ranker.
+Instead of choosing between keyword search and TF-IDF, `search.js` runs both. Every lesson the keyword layer returns comes first, in keyword order; the lessons only TF-IDF found follow, in TF-IDF order. On the repository's retrieval question sets this order beat [Reciprocal Rank Fusion](https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf) of the two layers, which pushed the keyword layer's first pick out of the top 3; `--fused` still ranks by RRF, for comparison.
 
 ```bash
 node scripts/search.js "hook events"
@@ -354,9 +354,9 @@ node scripts/search.js "hook events"
 ```
 
 Results are labeled with confidence:
-- **HIGH** — Both keyword and TF-IDF agree this is a top match
-- **MEDIUM** — One layer ranks it highly
-- **LOW** — Appears in lower ranks only
+- **HIGH** — Both keyword and TF-IDF returned it
+- **MEDIUM** — Keyword layer only
+- **LOW** — TF-IDF layer only
 
 ### Version Staleness Detection
 
@@ -454,8 +454,8 @@ The `claude-code-internals.zip` file is the complete, shareable package. It cont
 | `references/cross-references.json` | Lesson-to-lesson links |
 | `references/troubleshooting.json` | Symptom entries with lesson pointers and hints |
 | `references/state/` | Current-state layer — domain pages, `registry.json`, `author-facts.json` |
-| `scripts/` (query) | `search.js` (unified RRF — use this by default), `semantic-search.js`, `lib/tfidf-index.js` (the TF-IDF index, derived from `topic-index.json` at load and cached outside the skill directory), `lookup.sh`, `fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `state.js` |
-| `scripts/` (maintenance) | `build.js`, `prepare-lessons.js`, `validate-state.js`, `check-json-format.js`, `count-symbol.js`, `check-version.sh`, `extract-bundle.sh`, `diff-versions.sh`, `config-aware-hook.sh` |
+| `scripts/` (query) | `search.js` (unified, keyword first — use this by default), `semantic-search.js`, `lib/tfidf-index.js` (the TF-IDF index, derived from `topic-index.json` at load and cached outside the skill directory), `lookup.sh`, `fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `state.js` |
+| `scripts/` (maintenance) | `build.js`, `prepare-lessons.js`, `validate-state.js`, `check-json-format.js`, `check-history-markers.js`, `count-symbol.js`, `check-version.sh`, `extract-bundle.sh`, `diff-versions.sh`, `config-aware-hook.sh` |
 | `scripts/tests/` | Tests guarding release consistency, derived fields, JSON canonical format, search and the state layer |
 
 The zip is exactly `skill-package/skills/claude-code-internals/`, so it does **not** contain this README or the LICENSE — those live in the repository.

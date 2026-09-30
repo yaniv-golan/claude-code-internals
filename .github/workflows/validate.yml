@@ -19,6 +19,10 @@ jobs:
         run: node --test 'scripts/tests/*.test.js'
       - name: JSON index format
         run: node skill-package/skills/claude-code-internals/scripts/check-json-format.js
+      # Lessons and state pages carry current facts only; retraction narration
+      # ("CORRECTED (…): we previously said X") belongs in CHANGELOG.md.
+      - name: History markers
+        run: node skill-package/skills/claude-code-internals/scripts/check-history-markers.js
       # Lesson bounds and lesson/chapter counts are derived from the reference
       # files; fail if any is stale, or if topic-index.json's keyword fields are
       # not what prepare-lessons.js derives (the frozen hand-keywords.json
@@ -33,12 +37,13 @@ jobs:
       # The question set is named explicitly: a questions-vN.json is only ever
       # scored against its own baseline. v2 carries acceptable-answer sets
       # (evals/retrieval/gen-relevance.js): a question's rank is its first
-      # acceptable lesson's. baseline-v3 scores questions-v2 under the split
-      # rule (every lesson a hard ranking test asserts is dev); baseline-v2
-      # (the split before it) and questions-v1/baseline-v1 stay in the repo for
-      # trend and are not gated.
+      # acceptable lesson's. baseline-v4 scores questions-v2 under the split
+      # rule (every lesson a hard ranking test asserts is dev) with search.js's
+      # keyword-first ranking; baseline-v3 (RRF fusion), baseline-v2 (the split
+      # before it) and questions-v1/baseline-v1 stay in the repo for trend and
+      # are not gated.
       - name: Retrieval baseline
-        run: node evals/retrieval/run.js --baseline evals/retrieval/baseline-v3.json --questions evals/retrieval/questions-v2.json
+        run: node evals/retrieval/run.js --baseline evals/retrieval/baseline-v4.json --questions evals/retrieval/questions-v2.json
       - name: State-layer integrity
         run: node skill-package/skills/claude-code-internals/scripts/validate-state.js
       - name: State-layer reconciliation

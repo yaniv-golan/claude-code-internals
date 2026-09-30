@@ -39,7 +39,7 @@ const REGISTRY_PATH = path.join(REFS_DIR, 'state', 'registry.json');
 // guard (tests/repo-context.js) all follow these; retrieval-gate.test.js asserts
 // validate.yml and check-clean.sh name exactly these files.
 const CURRENT_QUESTIONS = 'questions-v2.json';
-const CURRENT_BASELINE = 'baseline-v3.json';
+const CURRENT_BASELINE = 'baseline-v4.json';
 
 // ---------------------------------------------------------------------------
 // Index loading
@@ -105,6 +105,7 @@ function getLessonText(lesson) {
 function runSearch(query, opts = {}) {
   const top = opts.top || 5;
   const args = [SEARCH_JS, query, '--json', `--top=${top}`];
+  if (opts.fused) args.push('--fused');
   try {
     const out = execFileSync('node', args, { encoding: 'utf8' });
     return JSON.parse(out);

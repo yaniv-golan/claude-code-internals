@@ -300,8 +300,8 @@ test('baseline-v2.json uses v1\'s thresholds, has an empty waiver list and score
 test('baseline-v3.json uses v2\'s thresholds, has no waivers, records the accepted drops and scores the current split', (t) => {
   if (!PRESENT) { t.skip(SKIP); return; }
   const lib = require(path.join(EVALS, 'lib.js'));
-  // the gated pair (lib.js CURRENT_*), and the baseline it was accepted against
-  const v3 = JSON.parse(fs.readFileSync(path.join(EVALS, lib.CURRENT_BASELINE), 'utf8'));
+  // baseline-v3 (kept for trend since baseline-v4), and the baseline it was accepted against
+  const v3 = JSON.parse(fs.readFileSync(path.join(EVALS, 'baseline-v3.json'), 'utf8'));
   const v2 = JSON.parse(fs.readFileSync(path.join(EVALS, v3.accepted_vs_previous.vs), 'utf8'));
   const qs = JSON.parse(fs.readFileSync(path.join(EVALS, lib.CURRENT_QUESTIONS), 'utf8'));
   assert.deepStrictEqual(v3.thresholds, v2.thresholds);
@@ -327,26 +327,47 @@ test('baseline-v3.json uses v2\'s thresholds, has no waivers, records the accept
   assert.deepStrictEqual(changed, v3.queries.lesson.filter((q) => moved.has(q.lesson_id)).map((q) => q.qid));
 });
 
-test('baseline-v3 accepted_vs_previous names exactly the questions that fail baseline-v3 vs baseline-v2 (labels equalised)', (t) => {
+test('the gated baseline (lib.js CURRENT_BASELINE) keeps its predecessor\'s thresholds and questions, has no waivers, and scores the current split', (t) => {
   if (!PRESENT) { t.skip(SKIP); return; }
-  const { compareToBaseline } = require(path.join(EVALS, 'run.js'));
   const lib = require(path.join(EVALS, 'lib.js'));
-  const v3 = JSON.parse(fs.readFileSync(path.join(EVALS, lib.CURRENT_BASELINE), 'utf8'));
-  const v2 = JSON.parse(fs.readFileSync(path.join(EVALS, v3.accepted_vs_previous.vs), 'utf8'));
-  // Give baseline-v2 baseline-v3's split labels, so the comparison is per question, not refused.
-  const labelV3 = new Map(v3.queries.lesson.map((q) => [q.qid, q.split]));
-  const v2eq = { ...v2, queries: { ...v2.queries, lesson: v2.queries.lesson.map((q) => ({ ...q, split: labelV3.get(q.qid) || q.split })) } };
-  const { failures } = compareToBaseline(v3, v2eq, v2.thresholds);
-  const perQ = new Map();
-  for (const f of failures) {
-    const m = f.match(/^\[([a-z]{2}-\d+)\] (.*)$/);
-    if (m) (perQ.get(m[1]) || perQ.set(m[1], []).get(m[1])).push(m[2]);
-  }
-  assert.ok(!failures.some((f) => /version mismatch|split mismatch|scoring mode/.test(f)), failures.join('\n'));
-  const accepted = v3.accepted_vs_previous.drops;
-  assert.deepStrictEqual([...perQ.keys()].sort(), accepted.map((d) => d.qid).sort(), 'accepted drops differ from the failing questions');
-  for (const d of accepted) assert.deepStrictEqual(perQ.get(d.qid).slice().sort(), d.rules.slice().sort(), `${d.qid}: rules`);
+  const cur = JSON.parse(fs.readFileSync(path.join(EVALS, lib.CURRENT_BASELINE), 'utf8'));
+  const a = cur.accepted_vs_previous;
+  assert.ok(a && a.vs && a.vs !== lib.CURRENT_BASELINE, 'the gated baseline names the baseline it was accepted against');
+  const prev = JSON.parse(fs.readFileSync(path.join(EVALS, a.vs), 'utf8'));
+  const qs = JSON.parse(fs.readFileSync(path.join(EVALS, lib.CURRENT_QUESTIONS), 'utf8'));
+  assert.deepStrictEqual(cur.thresholds, prev.thresholds);
+  assert.deepStrictEqual(cur.waivers, []);
+  assert.strictEqual(cur.questions_source.version, qs.version);
+  assert.strictEqual(cur.questions_source.split_sha256, lib.splitHash(qs.split), `${lib.CURRENT_BASELINE} was cut under another split`);
+  assert.ok(cur.relevance && cur.top1_breakdown);
+  assert.strictEqual(a.accepted_by, 'maintainer');
+  assert.ok(a.reason, 'the accepted change is named');
+  assert.deepStrictEqual(cur.queries.lesson.map((q) => q.qid), prev.queries.lesson.map((q) => q.qid));
 });
+
+// accepted_vs_previous names exactly the questions that fail a baseline vs the one it replaced
+// (split labels equalised, so a resplit compares per question instead of being refused).
+for (const name of ['baseline-v3.json', 'CURRENT_BASELINE']) {
+  test(`${name} accepted_vs_previous names exactly the questions that fail it vs its predecessor`, (t) => {
+    if (!PRESENT) { t.skip(SKIP); return; }
+    const { compareToBaseline } = require(path.join(EVALS, 'run.js'));
+    const lib = require(path.join(EVALS, 'lib.js'));
+    const cur = JSON.parse(fs.readFileSync(path.join(EVALS, name === 'CURRENT_BASELINE' ? lib.CURRENT_BASELINE : name), 'utf8'));
+    const prev = JSON.parse(fs.readFileSync(path.join(EVALS, cur.accepted_vs_previous.vs), 'utf8'));
+    const label = new Map(cur.queries.lesson.map((q) => [q.qid, q.split]));
+    const prevEq = { ...prev, queries: { ...prev.queries, lesson: prev.queries.lesson.map((q) => ({ ...q, split: label.get(q.qid) || q.split })) } };
+    const { failures } = compareToBaseline(cur, prevEq, prev.thresholds);
+    const perQ = new Map();
+    for (const f of failures) {
+      const m = f.match(/^\[([a-z]{2}-\d+)\] (.*)$/);
+      if (m) (perQ.get(m[1]) || perQ.set(m[1], []).get(m[1])).push(m[2]);
+    }
+    assert.ok(!failures.some((f) => /version mismatch|split mismatch|scoring mode/.test(f)), failures.join('\n'));
+    const accepted = cur.accepted_vs_previous.drops;
+    assert.deepStrictEqual([...perQ.keys()].sort(), accepted.map((d) => d.qid).sort(), 'accepted drops differ from the failing questions');
+    for (const d of accepted) assert.deepStrictEqual(perQ.get(d.qid).slice().sort(), d.rules.slice().sort(), `${d.qid}: rules`);
+  });
+}
 
 test('the split rule: a random split, then every lesson a hard ranking test asserts is moved to dev', (t) => {
   if (!PRESENT) { t.skip(SKIP); return; }

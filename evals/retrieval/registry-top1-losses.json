@@ -1,4 +1,25 @@
 {
   "comment": "Named losses of the registry top-1 gate (registry-gate.js): dev-lesson cases recorded passing in registry-top1.json that no longer rank their lesson first. Each entry names the case, the lesson it now loses to, and why. A stale entry fails; the list empties when registry-top1.json is regenerated.",
-  "losses": []
+  "losses": [
+    {
+      "name": "artifacts",
+      "lost_to": 112,
+      "reason": "keyword-first ranking replaced RRF as search.js's default: the keyword layer ranks L112 first and L135 second; under RRF L135's better TF-IDF rank (6 vs 9) had lifted it above L112."
+    },
+    {
+      "name": "/dream",
+      "lost_to": 62,
+      "reason": "keyword-first ranking replaced RRF as search.js's default: the keyword layer ranks L62 first and L101 second; under RRF L101's TF-IDF rank 1 (L62: 2) broke the swapped-rank tie in its favour."
+    },
+    {
+      "name": "tengu_plugin_hooks_modules",
+      "lost_to": 183,
+      "reason": "keyword-first ranking replaced RRF as search.js's default: the keyword layer ranks L183 first and L187 second; under RRF L187's TF-IDF rank 1 (L183: 2) broke the swapped-rank tie in its favour."
+    },
+    {
+      "name": "4018447017 (remote-folder .claude context staging)",
+      "lost_to": 194,
+      "reason": "keyword-first ranking replaced RRF as search.js's default: the keyword layer ranks L194 first and L197 second; under RRF L197's TF-IDF rank 1 (L194: 2) broke the swapped-rank tie in its favour."
+    }
+  ]
 }

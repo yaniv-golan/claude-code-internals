@@ -8,9 +8,9 @@
  *   node baseline-search.js --questions <real-invocation judged file> --out <scratch file>
  *
  * Deterministic, no model calls. For every question with a lesson answer set (identifier, plain,
- * terse, state, real) it spawns search.js --json --top=200 (lib.runSearch) and records:
+ * terse, state, real) it spawns search.js --json --fused --top=200 (lib.runSearch) and records:
  *   - keyword: results ordered by keyword_rank (the keyword layer alone), top 10;
- *   - fused:   search.js's own order (RRF), top 10;
+ *   - fused:   search.js --fused order (RRF), top 10;
  *   and for each, the first acceptable rank and hit@1/3/5 (any lesson with relevant[id] >= 1),
  *   plus src@3 (the source lesson in the top 3). "Only stop words" queries score as misses.
  * A question without `relevant` (a stratum or split left unjudged) falls back to its source
@@ -55,7 +55,7 @@ function scoreList(ids, rel, src) {
 
 function rankedLists(text) {
   let res;
-  try { res = lib.runSearch(text, { top: DEPTH }); } catch (err) {
+  try { res = lib.runSearch(text, { top: DEPTH, fused: true }); } catch (err) {
     if (err.stopWordsOnly) return { fused: [], keyword: [], stop_words_only: true };
     throw err;
   }

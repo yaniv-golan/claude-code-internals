@@ -21,7 +21,7 @@ const { execFileSync } = require('node:child_process');
 const { IN_REPO, STANDALONE_SKIP, loadSplit } = require('./repo-context.js');
 const { cases: CASES } = require('./ranking-cases.json');
 
-const searchTop1 = (query) => JSON.parse(execFileSync('node', [path.join(__dirname, '..', 'search.js'), query, '--json', '--top=1'],
+const searchTop1 = (query, fused) => JSON.parse(execFileSync('node', [path.join(__dirname, '..', 'search.js'), query, '--json', '--top=1', ...(fused ? ['--fused'] : [])],
   // CCI_NO_INDEX_CACHE: build the index in memory; tests never write the user's cache.
   { encoding: 'utf8', env: { ...process.env, CCI_NO_INDEX_CACHE: '1' } }));
 
@@ -32,6 +32,7 @@ test('ranking-cases.json is well formed', () => {
     assert.strictEqual(typeof c.query, 'string', JSON.stringify(c));
     assert.ok(Number.isInteger(c.lesson), JSON.stringify(c));
     assert.ok(c.why, `"${c.query}" says why it exists`);
+    assert.ok(c.fused === undefined || c.fused === true, `"${c.query}": fused is true or absent`);
     assert.ok(!seen.has(c.query), `"${c.query}" is listed twice`);
     seen.add(c.query);
   }
@@ -46,12 +47,12 @@ test('guard: no corpus ranking case names a holdout lesson', (t) => {
 });
 
 for (const c of CASES) {
-  test(`search.js ranks lesson id ${c.lesson} first for "${c.query}"`, () => {
+  test(`search.js${c.fused ? ' --fused' : ''} ranks lesson id ${c.lesson} first for "${c.query}"`, () => {
     if (c.key) {
       const topic = require('../../references/topic-index.json');
       assert.deepStrictEqual(topic.keyword_map[c.key], [c.lesson], `the key ${c.key} names lesson ${c.lesson}`);
     }
-    const r = searchTop1(c.query);
+    const r = searchTop1(c.query, c.fused);
     assert.ok(r.length, `no result for "${c.query}"`);
     assert.strictEqual(r[0].id, c.lesson);
   });

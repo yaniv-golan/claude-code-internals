@@ -91,10 +91,10 @@ prints a drift warning when your running version differs from v2.1.231, but only
 when the `claude` CLI is on PATH — it is silent otherwise (as in Cowork), so
 treat it as an optional nicety, not a required step.
 
-**Step 3 — Search.** `claude-code-internals search "$ARGUMENTS" --top=5` runs Reciprocal Rank
-Fusion over the keyword and TF-IDF layers. Each result prints the lesson title,
-its **id**, file path, line range, and confidence. `[HIGH]` = both layers
-matched — strongly prefer those. Check the title before loading a section; if it
+**Step 3 — Search.** `claude-code-internals search "$ARGUMENTS" --top=5` lists keyword
+matches in keyword order, then TF-IDF-only matches. Each result prints the lesson
+title, its **id**, file path, line range, and confidence: `[HIGH]` = both layers
+matched, `[LOW]` = TF-IDF only. Check the title before loading a section; if it
 does not fit the query, try a more specific term. **Note the ids** — every other
 script takes the id.
 

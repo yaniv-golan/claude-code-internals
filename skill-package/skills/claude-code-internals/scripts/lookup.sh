@@ -10,7 +10,7 @@
 # search.js's keyword layer (lib/keyword-match.js) weights each hit by key and
 # token specificity, distinguishes whole-key / word / substring hits, matches
 # identifier-shaped keys exactly and ignores substrings under 3 characters, and
-# is fused with TF-IDF. Porting that to jq would triple this script for a path
+# is topped up with TF-IDF matches. Porting that to jq would triple this script for a path
 # used only when node is broken, so the two diverge on purpose: expect a longer,
 # noisier list here, and use search.js whenever it runs.
 

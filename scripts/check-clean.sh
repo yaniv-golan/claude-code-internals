@@ -35,6 +35,8 @@ step "Repository script tests (release.js, offline sandboxes)"
 node --test scripts/tests/*.test.js
 step "JSON index format"
 node "$skill/scripts/check-json-format.js"
+step "History markers"
+node "$skill/scripts/check-history-markers.js"
 step "State-layer integrity"
 node "$skill/scripts/validate-state.js"
 step "State-layer reconciliation"
@@ -49,13 +51,13 @@ fi
 # CURRENT_BASELINE; retrieval-gate.test.js checks this file names exactly those).
 # A missing one fails: it must not silently turn the retrieval gate off.
 step "Retrieval baseline"
-for f in evals/retrieval/baseline-v3.json evals/retrieval/questions-v2.json; do
+for f in evals/retrieval/baseline-v4.json evals/retrieval/questions-v2.json; do
   if [[ ! -f "$f" ]]; then
     echo "missing $f (not tracked?): the retrieval gate cannot run" >&2
     exit 1
   fi
 done
-node evals/retrieval/run.js --baseline evals/retrieval/baseline-v3.json --questions evals/retrieval/questions-v2.json | tail -2
+node evals/retrieval/run.js --baseline evals/retrieval/baseline-v4.json --questions evals/retrieval/questions-v2.json | tail -2
 test "${PIPESTATUS[0]}" -eq 0
 step "Site generator tests"
 node --test site/generator/tests/*.test.js

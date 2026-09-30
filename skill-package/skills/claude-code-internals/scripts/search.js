@@ -1,16 +1,21 @@
 #!/usr/bin/env node
 /**
- * search.js — Unified search with Reciprocal Rank Fusion (RRF)
+ * search.js — Unified search: keyword ranking first, TF-IDF to fill
  *
- * Combines keyword lookup (topic-index.json) and TF-IDF cosine similarity
- * (an in-memory index derived from topic-index.json by lib/tfidf-index.js)
- * into a single ranked result set using RRF scoring.
+ * Runs keyword lookup (topic-index.json) and TF-IDF cosine similarity (an
+ * in-memory index derived from topic-index.json by lib/tfidf-index.js) and
+ * returns one ranked list, keyword-first: every lesson the keyword layer
+ * returned, in keyword order, then the lessons only the TF-IDF layer returned,
+ * in TF-IDF order, up to --top. --fused ranks by Reciprocal Rank Fusion (RRF)
+ * of the two layers instead, kept for comparison: on the committed question
+ * sets RRF pushed keyword-#1 lessons out of the top 3 (evals/retrieval).
  *
  * Usage:
  *   node search.js "hook events"
  *   node search.js "permission system" --top=10
  *   node search.js "streaming retry" --json
  *   node search.js "state management" --top=3 --json
+ *   node search.js "hook events" --fused
  *
  * No external dependencies required.
  */
@@ -266,7 +271,21 @@ function gcd(a, b) {
 }
 
 /**
- * Order of fused results: RRF score descending, compared EXACTLY as the
+ * The default order (keyword-first): lessons the keyword layer returned, by
+ * keyword rank, then lessons only the TF-IDF layer returned, by TF-IDF rank.
+ * Both ranks are already total orders (each layer breaks its own ties), so no
+ * further tie-break is needed. Entries come from reciprocalRankFusion(), which
+ * records each layer's rank (null when that layer did not return the lesson).
+ */
+function keywordFirstOrder(a, b) {
+  if (a.keywordRank !== null && b.keywordRank !== null) return a.keywordRank - b.keywordRank;
+  if (a.keywordRank !== null) return -1;
+  if (b.keywordRank !== null) return 1;
+  return a.tfidfRank - b.tfidfRank;
+}
+
+/**
+ * The --fused order: RRF score descending, compared EXACTLY as the
  * fractions rrfNum/rrfDen by integer cross-multiplication (the float rrfScore
  * is for display: 1/90 + 1/78 and 1/117 + 1/65 are both 14/585, but their
  * float sums differ in the last bit). An exact tie (ranks 1+2 vs 2+1, or 30+18
@@ -286,22 +305,20 @@ function fusedOrder(a, b) {
 // ---------------------------------------------------------------------------
 
 /**
- * Determine confidence label based on which layers matched and at what rank.
+ * Confidence label from which layers returned the lesson (the same in both
+ * orders):
  *
- * HIGH:   Both layers agree in top 3
- * MEDIUM: At least one layer has it in top 3
- * LOW:    Present but only at lower ranks
+ * HIGH:   Both layers returned it
+ * MEDIUM: Keyword layer only
+ * LOW:    TF-IDF layer only (in the default order, the appended tail)
  *
  * @param {number|null} keywordRank
  * @param {number|null} tfidfRank
  * @returns {string}
  */
 function confidenceLabel(keywordRank, tfidfRank) {
-  const kwTop3 = keywordRank !== null && keywordRank <= 3;
-  const tfTop3 = tfidfRank !== null && tfidfRank <= 3;
-
-  if (kwTop3 && tfTop3) return 'HIGH';
-  if (kwTop3 || tfTop3) return 'MEDIUM';
+  if (keywordRank !== null && tfidfRank !== null) return 'HIGH';
+  if (keywordRank !== null) return 'MEDIUM';
   return 'LOW';
 }
 
@@ -368,12 +385,13 @@ function parseJSON(raw, filePath, label) {
  * Parse CLI arguments into a structured options object.
  *
  * @param {string[]} argv - process.argv.slice(2)
- * @returns {{ query: string, topN: number, jsonOutput: boolean }}
+ * @returns {{ query: string, topN: number, jsonOutput: boolean, fusedOrdering: boolean }}
  */
 function parseArgs(argv) {
   let query = '';
   let topN = 5;
   let jsonOutput = false;
+  let fusedOrdering = false;
 
   for (const arg of argv) {
     if (arg.startsWith('--top=')) {
@@ -385,6 +403,8 @@ function parseArgs(argv) {
       topN = parsed;
     } else if (arg === '--json') {
       jsonOutput = true;
+    } else if (arg === '--fused') {
+      fusedOrdering = true;
     } else if (arg === '--help' || arg === '-h') {
       printUsage();
       process.exit(0);
@@ -403,17 +423,18 @@ function parseArgs(argv) {
     process.exit(1);
   }
 
-  return { query, topN, jsonOutput };
+  return { query, topN, jsonOutput, fusedOrdering };
 }
 
 function printUsage() {
   process.stderr.write(
-    'Usage: search.js "your query" [--top=N] [--json]\n\n' +
-    'Unified search combining keyword lookup and TF-IDF cosine similarity\n' +
-    'using Reciprocal Rank Fusion (RRF).\n\n' +
+    'Usage: search.js "your query" [--top=N] [--json] [--fused]\n\n' +
+    'Unified search over keyword lookup and TF-IDF cosine similarity:\n' +
+    'keyword results in keyword order, then TF-IDF-only results in TF-IDF order.\n\n' +
     'Options:\n' +
     '  --top=N   Number of results to return (default: 5)\n' +
     '  --json    Output results as JSON\n' +
+    '  --fused   Rank by Reciprocal Rank Fusion of the two layers instead (for comparison)\n' +
     '  --help    Show this help message\n'
   );
 }
@@ -425,9 +446,11 @@ function printUsage() {
 /**
  * Rank `query` against the loaded indexes. Returns the enriched top-N results
  * (the --json shape) or throws {stopWordsOnly: true} when the query tokenizes to
- * nothing. Pure given its inputs; main() is the CLI around it.
+ * nothing. Keyword-first order unless `fused` (RRF order); every result carries
+ * its RRF score and both layer ranks either way. Pure given its inputs; main()
+ * is the CLI around it.
  */
-function search(query, { topicIndex, semanticIndex, topN = 5 }) {
+function search(query, { topicIndex, semanticIndex, topN = 5, fused: fusedOrdering = false }) {
   const lessonById = new Map();
   for (const lesson of topicIndex.lessons) {
     lessonById.set(lesson.id, lesson);
@@ -444,12 +467,12 @@ function search(query, { topicIndex, semanticIndex, topN = 5 }) {
   const keywordResults = keywordSearch(tokens, topicIndex, query);
   const tfidfResults = tfidfSearch(tokens, semanticIndex);
 
-  // Fuse with RRF
+  // One entry per lesson either layer returned, with both ranks and the RRF score
   const fused = reciprocalRankFusion(keywordResults, tfidfResults, RRF_K);
 
   const ranked = Array.from(fused.entries())
     .map(([id, data]) => ({ id, ...data }))
-    .sort(fusedOrder);
+    .sort(fusedOrdering ? fusedOrder : keywordFirstOrder);
 
   return ranked.slice(0, topN).map(r => {
     const lesson = lessonById.get(r.id);
@@ -474,7 +497,7 @@ function search(query, { topicIndex, semanticIndex, topN = 5 }) {
 }
 
 function main() {
-  const { query, topN, jsonOutput } = parseArgs(process.argv.slice(2));
+  const { query, topN, jsonOutput, fusedOrdering } = parseArgs(process.argv.slice(2));
 
   // Load both indexes
   const topicRaw = loadRaw(TOPIC_INDEX_PATH, 'topic-index.json');
@@ -483,7 +506,7 @@ function main() {
 
   let enriched;
   try {
-    enriched = search(query, { topicIndex, semanticIndex, topN });
+    enriched = search(query, { topicIndex, semanticIndex, topN, fused: fusedOrdering });
   } catch (err) {
     if (!err.stopWordsOnly) throw err;
     process.stderr.write(
@@ -511,7 +534,9 @@ function main() {
     process.stdout.write(JSON.stringify(output, null, 2) + '\n');
   } else {
     process.stdout.write(`\nQuery: "${query}"\n`);
-    process.stdout.write('Strategy: Reciprocal Rank Fusion (keyword + TF-IDF)\n');
+    process.stdout.write(fusedOrdering
+      ? 'Strategy: Reciprocal Rank Fusion (keyword + TF-IDF)\n'
+      : 'Strategy: keyword ranking, then TF-IDF-only matches\n');
     process.stdout.write('='.repeat(60) + '\n\n');
 
     if (enriched.length === 0) {
@@ -532,8 +557,10 @@ function main() {
         process.stdout.write(
           `  ${i + 1}. ${r.title} (id ${r.id}${legacy}) [${conf} - ${layers}]\n`
         );
-        process.stdout.write(
-          `     RRF Score: ${r.rrfScore.toFixed(4)}\n`
+        const rank = (n) => (n === null ? '-' : `#${n}`);
+        process.stdout.write(fusedOrdering
+          ? `     RRF Score: ${r.rrfScore.toFixed(4)}\n`
+          : `     Ranks: keyword ${rank(r.keywordRank)}, TF-IDF ${rank(r.tfidfRank)}\n`
         );
         process.stdout.write(
           `     File: ${r.file}:${r.startLine}-${r.endLine}\n`
@@ -547,6 +574,6 @@ function main() {
   }
 }
 
-module.exports = { search, keywordSearch, tfidfSearch, reciprocalRankFusion, fusedOrder };
+module.exports = { search, keywordSearch, tfidfSearch, reciprocalRankFusion, fusedOrder, keywordFirstOrder };
 
 if (require.main === module) main();

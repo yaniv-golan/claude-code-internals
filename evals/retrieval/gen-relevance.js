@@ -256,9 +256,9 @@ function identifierRelevance(questionText, sourceId, positions, keyIndex) {
 // Candidate pool (spawns the search scripts)
 // ---------------------------------------------------------------------------
 
-function runJSON(script, query, top) {
+function runJSON(script, query, top, extra = []) {
   try {
-    return JSON.parse(execFileSync('node', [script, query, '--json', `--top=${top}`], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] }));
+    return JSON.parse(execFileSync('node', [script, query, '--json', `--top=${top}`, ...extra], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] }));
   } catch (err) {
     const stderr = err && err.stderr ? String(err.stderr) : '';
     if (/only stop words/i.test(stderr)) return [];
@@ -285,7 +285,7 @@ function poolFrom(fused, semantic, sourceId, top = POOL_TOP) {
 }
 
 function candidatePool(questionText, sourceId) {
-  const fused = runJSON(lib.SEARCH_JS, questionText, SEARCH_DEPTH);
+  const fused = runJSON(lib.SEARCH_JS, questionText, SEARCH_DEPTH, ['--fused']);
   const semantic = runJSON(SEMANTIC_JS, questionText, POOL_TOP);
   return poolFrom(fused, semantic, sourceId);
 }

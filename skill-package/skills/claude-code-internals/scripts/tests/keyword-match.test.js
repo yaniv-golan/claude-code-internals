@@ -170,6 +170,23 @@ test('fused order: RRF score, then keyword score, then TF-IDF score, then lowest
   assert.deepStrictEqual(order([{ id: 2, score: 0 }, { id: 1, score: 9 }], []), [2, 1], 'RRF score first');
 });
 
+test('keyword-first order (the default): keyword results by keyword rank, then TF-IDF-only by TF-IDF rank', () => {
+  const S = require('../search.js');
+  const order = (kw, tf) => {
+    const fused = S.reciprocalRankFusion(kw, tf, 60);
+    return [...fused].map(([id, e]) => ({ id, ...e })).sort(S.keywordFirstOrder).map((x) => x.id);
+  };
+  // lesson 3 is TF-IDF #1 and keyword #2: keyword rank decides; it would win under RRF
+  const kw = [{ id: 1, score: 2 }, { id: 3, score: 2 }];
+  const tf = [{ id: 3, score: 0.9 }, { id: 5, score: 0.8 }, { id: 1, score: 0.1 }, { id: 4, score: 0.05 }];
+  assert.deepStrictEqual(order(kw, tf), [1, 3, 5, 4], 'keyword order, then TF-IDF-only lessons in TF-IDF order');
+  const fused = S.reciprocalRankFusion(kw, tf, 60);
+  assert.deepStrictEqual([...fused].map(([id, e]) => ({ id, ...e })).sort(S.fusedOrder).map((x) => x.id)[0], 3, 'RRF puts lesson 3 first');
+  // a TF-IDF-only lesson never outranks a keyword result, however high its TF-IDF rank
+  assert.deepStrictEqual(order([{ id: 9, score: 0.1 }], [{ id: 2, score: 1 }]), [9, 2]);
+  assert.deepStrictEqual(order([], [{ id: 2, score: 1 }, { id: 1, score: 0.5 }]), [2, 1], 'no keyword results: TF-IDF order');
+});
+
 test('fused order: an exact RRF tie of non-swapped ranks is a tie, whatever the float sums say', () => {
   const S = require('../search.js');
   // 1/(60+30) + 1/(60+18) = 168/7020 = 14/585 and 1/(60+57) + 1/(60+5) = 182/7605 = 14/585,
