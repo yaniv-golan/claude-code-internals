@@ -48,10 +48,13 @@ function fixture() {
     // catalog.md is a derived output, but copy it so a fixture that changes
     // nothing catalog depends on still sees a clean --check (it is regenerated
     // by any write, and reported stale by any edit that does touch it).
-    if (/^\d\d-.*\.md$/.test(f) || f === 'catalog.md' || /^(topic-index|hand-keywords|cross-references|troubleshooting)\.json$/.test(f)) {
+    if (/^\d\d-.*\.md$/.test(f) || f === 'catalog.md' || /^(topic-index|hand-keywords|cross-references|troubleshooting|site-links)\.json$/.test(f)) {
       fs.copyFileSync(path.join(src, f), path.join(refs, f));
     }
   }
+  // The routing files are derived too, and read state pages (their headings, and
+  // the read_more: field build.js writes into them): copy both for a clean --check.
+  for (const d of ['routing', 'state']) fs.cpSync(path.join(src, d), path.join(refs, d), { recursive: true });
   // prepare-lessons.js --check (run by build.js --check) derives vocabulary keys from the proposals.
   fs.mkdirSync(path.dirname(proposalsPath(dir)));
   fs.copyFileSync(proposalsPath(SKILL_DIR), proposalsPath(dir));
@@ -106,6 +109,81 @@ test('an edited lesson title makes catalog.md stale, and a write fixes it', () =
   assert.match(stale.out, /catalog\.md: routing table is stale/);
   assert.strictEqual(run(['--root', dir]).code, 0);
   assert.strictEqual(run(['--check', '--root', dir]).code, 0);
+});
+
+test('an edited lesson heading makes routing/sections.md stale, and a write fixes it', () => {
+  const dir = fixture();
+  const file = path.join(dir, 'references', '21-cowork-control-protocol.md');
+  const sections = path.join(dir, 'references', 'routing', 'sections.md');
+  const lesson = topicOf(dir).lessons.find((l) => l.id === 107);
+  let at = -1;
+  editLines(file, (l) => {
+    at = l.findIndex((s, i) => i >= lesson.startLine && /^##\s/.test(s));
+    return l.map((s, i) => (i === at ? `${s} (renamed)` : s));
+  });
+  const stale = run(['--check', '--root', dir]);
+  assert.strictEqual(stale.code, 1, stale.out);
+  assert.match(stale.out, /routing\/sections\.md: stale/);
+  assert.strictEqual(run(['--root', dir]).code, 0);
+  assert.match(fs.readFileSync(sections, 'utf8'), new RegExp(`^107 · 21-cowork-control-protocol\\.md:${at + 1} · .* \\(renamed\\)$`, 'm'));
+  assert.strictEqual(run(['--check', '--root', dir]).code, 0);
+});
+
+test('an index part the index no longer fills fails --check and a write deletes it', () => {
+  const dir = fixture();
+  const extra = path.join(dir, 'references', 'routing', 'index-9.md');
+  fs.writeFileSync(extra, 'left over\n');
+  const stale = run(['--check', '--root', dir]);
+  assert.strictEqual(stale.code, 1, stale.out);
+  assert.match(stale.out, /index-9\.md: the index no longer needs this part/);
+  const w = run(['--root', dir]);
+  assert.match(w.out, /deleted references\/routing\/index-9\.md/);
+  assert.ok(!fs.existsSync(extra));
+  assert.strictEqual(run(['--check', '--root', dir]).code, 0);
+});
+
+test('state pages get a generated read_more: field, and a hand edit to it is reverted', () => {
+  const dir = fixture();
+  const page = path.join(dir, 'references', 'state', 'cowork-permissions.md');
+  const text = fs.readFileSync(page, 'utf8');
+  assert.match(text, /^read_more: \["https:\/\/[^"]+"\]$/m);
+  fs.writeFileSync(page, text.replace(/^read_more: .*$/m, 'read_more: ["https://example.com/"]'));
+  const stale = run(['--check', '--root', dir]);
+  assert.strictEqual(stale.code, 1, stale.out);
+  assert.match(stale.out, /cowork-permissions\.md: generated read_more: frontmatter is stale/);
+  assert.strictEqual(run(['--root', dir]).code, 0);
+  assert.strictEqual(fs.readFileSync(page, 'utf8'), text);
+});
+
+test('without site-links.json --check fails naming it', () => {
+  const dir = fixture();
+  fs.rmSync(path.join(dir, 'references', 'site-links.json'));
+  const r = run(['--check', '--root', dir]);
+  assert.strictEqual(r.code, 1, r.out);
+  assert.match(r.out, /site-links\.json is missing/);
+});
+
+test('withReadMore is idempotent, keeps the rest of the page, and omits the field with no URL', () => {
+  const page = '---\ndomain: x\nupdated: 2026-01-01\nsources: [1]\n---\n\n# X\n';
+  const one = B.withReadMore(page, ['https://a/']);
+  assert.strictEqual(one, '---\ndomain: x\nupdated: 2026-01-01\nread_more: ["https://a/"]\nsources: [1]\n---\n\n# X\n');
+  assert.strictEqual(B.withReadMore(one, ['https://a/']), one);
+  assert.strictEqual(B.withReadMore(one, []), page);
+});
+
+test('splitRange tiles a range with pieces within budget, merging adjacent sections', () => {
+  const kb = (n) => 'x'.repeat(n * 1024);
+  const lines = ['# LESSON 1', 'intro', '## A', kb(10), '## B', kb(10), '## C', kb(30), '## D', 'd', '### D1', kb(30), '### D2', kb(30),
+    '## E', kb(40), kb(40), kb(20)];
+  const { inFence } = B.scanLines(lines.join('\n'));
+  const pieces = B.splitRange(lines, inFence, 1, lines.length, 1, 'LESSON 1');
+  assert.strictEqual(pieces[0].start, 1);
+  assert.strictEqual(pieces[pieces.length - 1].end, lines.length);
+  for (let i = 1; i < pieces.length; i++) assert.strictEqual(pieces[i].start, pieces[i - 1].end + 1);
+  for (const p of pieces) assert.ok(Buffer.byteLength(lines.slice(p.start - 1, p.end).join('\n')) <= B.READ_BUDGET, JSON.stringify(p));
+  // A+B merge, C alone, D (60 KB) is split one level down, E (100 KB, no deeper heading) at line boundaries.
+  assert.deepStrictEqual(pieces.map((p) => p.label.replace(/ \(no heading.*part (\d) of (\d)\)$/, ' [$1/$2]')),
+    ['A', 'C', 'D', 'D2', 'E [1/3]', 'E [2/3]', 'E [3/3]']);
 });
 
 // --- integration on a scratch copy ------------------------------------------------

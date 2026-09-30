@@ -5,6 +5,7 @@ as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
 sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198, 207, 208, 210, 211, 212, 213, 214, 215, 216]
 updated: 2026-09-27
+read_more: ["https://ccinternals.dev/cowork/?ref=skill"]
 ---
 
 # Cowork runtime architecture (current)

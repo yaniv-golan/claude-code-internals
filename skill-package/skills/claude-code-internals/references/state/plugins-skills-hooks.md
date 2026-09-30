@@ -5,6 +5,7 @@ as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
 sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207, 209, 211, 217, 218]
 updated: 2026-09-28
+read_more: ["https://ccinternals.dev/cowork/plugins-and-plugin-root/?ref=skill"]
 ---
 
 # Plugins, skills & hooks (current)

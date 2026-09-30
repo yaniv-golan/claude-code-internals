@@ -5,6 +5,7 @@ as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
 sources: [89, 107, 108, 109, 115, 121, 122, 124, 128, 148, 150, 184, 190, 213]
 updated: 2026-09-29
+read_more: ["https://ccinternals.dev/cowork/deleting-files/?ref=skill"]
 ---
 
 # Cowork permission stack (current)

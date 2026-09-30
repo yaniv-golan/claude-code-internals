@@ -8,6 +8,9 @@
  *   version.json                  lessons_count, chapters_count
  *   references/catalog.md         the file -> chapters -> lesson-ids -> titles routing
  *                                 table SKILL.md points at (replaces the hand map)
+ *   references/routing/index-N.md the lesson index the model reads (see ROUTING)
+ *   references/routing/sections.md every ##-#### heading of every lesson and state page
+ *   references/state/*.md         the `read_more:` frontmatter field only
  * (The TF-IDF search index is not a file: search.js and semantic-search.js
  * derive it from topic-index.json at load time, see lib/tfidf-index.js.)
  * It also removes the `generated:` date stamps from topic-index.json,
@@ -63,6 +66,18 @@
  * lib/vocab.js) is a WARNING naming the lesson, not a failure (one constant,
  * STALE_VOCAB_BLOCKS in prepare-lessons.js, turns it into a failure).
  *
+ * ROUTING. The index parts carry one line per lesson (bounds as derived here,
+ * the first ASKS_PER_LESSON terms of its frozen vocabulary proposal in
+ * data/vocab-proposals.json, read-only), split so each part fits one Read
+ * (READ_BUDGET); a lesson over the budget also lists sub-ranges that do.
+ * Read-more URLs come from references/site-links.json through site-links.js,
+ * the same functions fetch-lesson.js and state.js print their footers with, so
+ * site/generator/build.js (which writes site-links.json) runs before this.
+ * State pages are inputs and outputs: build.js owns only their `read_more:`
+ * line, and sections.md numbers their lines as written. A lesson with fewer
+ * than MIN_ASKS terms, or a missing site-links.json, fails --check; a write
+ * still writes everything (with a note).
+ *
  * JSON is rewritten through check-json-format.js's order-preserving parser and
  * emitter, so integer-like keys keep their order and only changed values move.
  * A derived key that is missing (a new lesson entry written without bounds) is
@@ -83,6 +98,10 @@ const path = require('path');
 const crypto = require('crypto');
 const { execFileSync } = require('child_process');
 const { parseOrdered, emit, PINNED } = require('./check-json-format.js');
+const {
+  loadSiteLinks, lessonFooter, footerUrls, mergeWeights, slugsForStatePage, LABEL: SITE_LABEL,
+} = require('./site-links.js');
+const { loadProposals } = require('./lib/vocab.js');
 
 const LESSON_HEADING = /^#{1,4}\s*LESSON\s+0*(\d+)/i;
 const PAREN_NUMBER = /\(Lesson\s+0*(\d+)\)/i;
@@ -277,6 +296,217 @@ function buildCatalog(topic, scanned, files) {
   ].join('\n');
 }
 
+// --- routing: the lesson index, sections.md, read-more ---------------------------
+
+/**
+ * Claude Code's Read refuses a result over 25,000 tokens, and this text runs
+ * about 2.7 bytes per token, so every file or range the model is told to Read
+ * is kept to 48 KB (~18k tokens). Measured as the UTF-8 bytes of the lines
+ * joined with '\n', without Read's line-number prefixes (the margin to 25k
+ * absorbs them).
+ */
+const READ_BUDGET = 48 * 1024;
+const ASKS_PER_LESSON = 5; // the router experiment's cut of the frozen vocabulary terms
+const MIN_ASKS = 3;
+const ROUTING_DIR = 'routing';
+const INDEX_PART = /^index-(\d+)\.md$/;
+const MD_HEADING = /^(#{1,6})\s+(\S.*?)\s*$/;
+const SEP = ' · ';
+
+/** Collapse whitespace (a title or term must stay on one index line). */
+const oneLine = (s) => String(s).replace(/\s+/g, ' ').trim();
+/**
+ * An asks term, cleaned as the router experiment cleaned it (build-prep.js):
+ * whitespace collapsed, and `|` turned into `/` (its separator; kept so the
+ * index lines are the ones the experiment measured).
+ */
+const cleanAsk = (s) => oneLine(s).replace(/\|/g, '/');
+/** The heading text of a heading line: the line without its leading #s. */
+const headingText = (line) => line.replace(/^#+\s+/, '').trimEnd();
+const rangeBytes = (lines, start, end) => Buffer.byteLength(lines.slice(start - 1, end).join('\n'), 'utf8');
+
+/** Markdown headings (outside fences) at 1-based lines in [from, to]: [{line, level, text}]. */
+function headingsIn(lines, inFence, from, to) {
+  const out = [];
+  for (let n = from; n <= to; n++) {
+    if (inFence[n - 1]) continue;
+    const m = lines[n - 1].match(MD_HEADING);
+    if (m) out.push({ line: n, level: m[1].length, text: headingText(lines[n - 1]) });
+  }
+  return out;
+}
+
+/**
+ * Split [start, end] into contiguous pieces of at most READ_BUDGET bytes. The
+ * pieces start at the shallowest heading level deeper than `level` found in
+ * the range (the range's top-level sections; the text before the first one
+ * rides with it), and adjacent sections are merged greedily. A section still
+ * over budget is split the same way one level down; one with no deeper
+ * heading is cut at line boundaries, and its label says so. Each piece is
+ * labelled with its first section heading; `leads` says the range opens with
+ * a heading that `label` names (a section being split), which then labels the
+ * first piece — a lesson's first piece is labelled with its first section,
+ * not the lesson title the index line already shows. Returns [{start, end, label}].
+ */
+function splitRange(lines, inFence, start, end, level, label, leads = false) {
+  const inner = headingsIn(lines, inFence, start + 1, end).filter((h) => h.level > level);
+  if (!inner.length) return splitLines(lines, start, end, label);
+  const top = Math.min(...inner.map((h) => h.level));
+  const heads = inner.filter((h) => h.level === top);
+  const units = heads.map((h, i) => ({
+    start: i === 0 ? start : h.line,
+    end: i + 1 < heads.length ? heads[i + 1].line - 1 : end,
+    label: i === 0 && leads && start < h.line ? label : h.text,
+  }));
+  const pieces = [];
+  for (const u of units) {
+    const last = pieces[pieces.length - 1];
+    if (last && !last.split && rangeBytes(lines, last.start, u.end) <= READ_BUDGET) { last.end = u.end; continue; }
+    if (rangeBytes(lines, u.start, u.end) <= READ_BUDGET) { pieces.push({ ...u }); continue; }
+    // The first unit carries the text before its heading; split the section proper one level down.
+    const sectionStart = u.start === start ? heads[0].line : u.start;
+    if (sectionStart > u.start) pieces.push({ start: u.start, end: sectionStart - 1, label: leads ? label : `${label} (introduction)` });
+    const section = heads.find((h) => h.line === sectionStart).text;
+    for (const p of splitRange(lines, inFence, sectionStart, u.end, top, section, true)) pieces.push({ ...p, split: true });
+  }
+  return pieces.map(({ start: s, end: e, label: l }) => ({ start: s, end: e, label: l }));
+}
+
+/** Last resort: cut [start, end] at line boundaries into pieces within budget. */
+function splitLines(lines, start, end, label) {
+  const pieces = [];
+  let s = start;
+  for (let n = start; n <= end; n++) {
+    if (n > s && rangeBytes(lines, s, n) > READ_BUDGET) { pieces.push({ start: s, end: n - 1 }); s = n; }
+  }
+  pieces.push({ start: s, end });
+  return pieces.map((p, i) => ({ ...p, label: pieces.length > 1 ? `${label} (no heading to split at: cut at line boundaries, part ${i + 1} of ${pieces.length})` : label }));
+}
+
+/**
+ * The read-more URL(s) for a lesson, exactly as fetch-lesson.js prints them in
+ * its "Skill-author page:" footer: site-links.js lessonFooter, whose
+ * id-vs-lesson_number guard returns no lines and an error.
+ */
+function lessonReadMore(links, lesson) {
+  const r = lessonFooter(links, lesson);
+  return { urls: r.lines.map((l) => l.slice(SITE_LABEL.length + 1)), error: r.error };
+}
+
+/** A state page's read-more URL(s), exactly as state.js's footer prints them for that page alone. */
+function statePageReadMore(links, domain) {
+  return footerUrls(links, mergeWeights(slugsForStatePage(links, domain)));
+}
+
+/**
+ * A state page with its generated `read_more:` frontmatter field: any existing
+ * one removed, then (when site-links maps the page) a JSON array — the form
+ * validate-state.js's parseFrontmatter reads as a list — inserted after
+ * `updated:` (else last). Idempotent. A page without frontmatter is returned
+ * unchanged (validate-state.js reports it).
+ */
+function withReadMore(text, urls) {
+  const m = text.match(/^---\n([\s\S]*?)\n---(?=\n|$)/);
+  if (!m) return text;
+  const fm = m[1].split('\n').filter((l) => !/^read_more:/.test(l));
+  if (urls.length) {
+    const at = fm.findIndex((l) => /^updated:/.test(l));
+    fm.splice(at < 0 ? fm.length : at + 1, 0, `read_more: ${JSON.stringify(urls)}`);
+  }
+  return `---\n${fm.join('\n')}\n---${text.slice(m[0].length)}`;
+}
+
+/**
+ * The lesson index parts. One line per lesson in id order:
+ *   id · title · Lesson N · file:start-end · description · asks: t1; ...; t5 · read-more: url[, url]
+ * (no description segment when the lesson has none; no read-more when
+ * site-links maps nothing). Lesson N is topic-index lesson_number, printed
+ * as-is (a word for ten legacy lessons). A lesson over READ_BUDGET is followed
+ * by indented `↳ file:start-end · heading` lines tiling its range (splitRange).
+ * Parts are filled greedily in id order to READ_BUDGET, each with a two-line
+ * header; a lesson and its sub-range lines never straddle two parts.
+ * Returns { parts: [text], subRanges: Map(id -> [{start,end,label}]), problems }.
+ */
+function buildIndex({ topic, bounds, scanned, asksById, links }) {
+  const problems = [];
+  const subRanges = new Map();
+  const blocks = [];
+  for (const l of [...topic.lessons].sort((a, b) => a.id - b.id)) {
+    const b = bounds.get(l.id);
+    const s = scanned.get(l.file);
+    const asks = (asksById.get(l.id) || []).slice(0, ASKS_PER_LESSON).map(cleanAsk).filter(Boolean);
+    if (asks.length < MIN_ASKS) {
+      problems.push(`lesson ${l.id} has ${asks.length} asks terms (needs ${MIN_ASKS}): generate its vocabulary proposal with prepare-lessons.js --generate`);
+    }
+    const rm = links ? lessonReadMore(links, l) : { urls: [], error: null };
+    if (rm.error) problems.push(rm.error);
+    const segs = [String(l.id), oneLine(l.title), `Lesson ${oneLine(l.lesson_number ?? l.id)}`, `${l.file}:${b.startLine}-${b.endLine}`];
+    if (l.description) segs.push(oneLine(l.description));
+    if (asks.length) segs.push(`asks: ${asks.join('; ')}`);
+    if (rm.urls.length) segs.push(`read-more: ${rm.urls.join(', ')}`);
+    const block = [segs.join(SEP)];
+    if (rangeBytes(s.lines, b.startLine, b.endLine) > READ_BUDGET) {
+      const level = s.lines[b.startLine - 1].match(/^#+/)[0].length;
+      const pieces = splitRange(s.lines, s.inFence, b.startLine, b.endLine, level, headingText(s.lines[b.startLine - 1]));
+      subRanges.set(l.id, pieces);
+      for (const p of pieces) block.push(`    ↳ ${l.file}:${p.start}-${p.end}${SEP}${p.label}`);
+    }
+    blocks.push({ id: l.id, text: block.join('\n') });
+  }
+
+  const header = (k, n, first, last) => [
+    `# Lesson index, part ${k} of ${n} (ids ${first}${EN_DASH}${last}). Generated by scripts/build.js from topic-index.json; do not edit.`,
+    'One line per lesson: id · title · Lesson N (the lesson number its heading carries, or a name for legacy lessons whose headings number within their file) · file:start-end (under references/; Read that line range) · description · asks: questions it answers · read-more: its ccinternals.dev page. Indented ↳ lines split a lesson too big for one Read.',
+  ].join('\n');
+  // Fill against the widest header this index could carry, then render the real one.
+  const reserve = Buffer.byteLength(header(99, 99, 99999, 99999), 'utf8') + 2;
+  const groups = [];
+  let cur = null;
+  for (const bl of blocks) {
+    const size = Buffer.byteLength(bl.text, 'utf8') + 1;
+    if (!cur || cur.bytes + size > READ_BUDGET) { cur = { blocks: [], bytes: reserve }; groups.push(cur); }
+    cur.blocks.push(bl);
+    cur.bytes += size;
+  }
+  const parts = groups.map((g, i) => `${header(i + 1, groups.length, g.blocks[0].id, g.blocks[g.blocks.length - 1].id)}\n\n${g.blocks.map((bl) => bl.text).join('\n')}\n`);
+  parts.forEach((p, i) => {
+    const bytes = Buffer.byteLength(p, 'utf8');
+    if (bytes > READ_BUDGET) problems.push(`${ROUTING_DIR}/index-${i + 1}.md is ${bytes} bytes, over the ${READ_BUDGET}-byte Read budget (one lesson line alone?)`);
+  });
+  return { parts, subRanges, problems };
+}
+
+/**
+ * sections.md: every `##`-`####` heading outside fences, per lesson range (id
+ * order; the lesson's own heading included when it is one) and per state page
+ * (by name; README.md is not a page), one per line:
+ *   id · file:line · heading text          (file under references/)
+ *   state:<page> · state/<page>.md:line · heading text
+ * `statePages` is [{domain, file, text}] with the text as this run writes it,
+ * so the line numbers already count a generated read_more: line.
+ */
+function buildSections({ topic, bounds, scanned, statePages }) {
+  const out = [
+    '# Headings of every lesson and state page. Generated by scripts/build.js; do not edit. Meant to be grepped, not read whole.',
+    'Format: `id · file:line · heading` for lessons, `state:<page> · file:line · heading` for state pages (file under references/). A section runs from its line to the line before the next heading of the same or a higher level; use the lesson index for lesson ranges.',
+    '',
+  ];
+  for (const l of [...topic.lessons].sort((a, b) => a.id - b.id)) {
+    const b = bounds.get(l.id);
+    const s = scanned.get(l.file);
+    for (const h of headingsIn(s.lines, s.inFence, b.startLine, b.endLine)) {
+      if (h.level >= 2 && h.level <= 4) out.push(`${l.id}${SEP}${l.file}:${h.line}${SEP}${h.text}`);
+    }
+  }
+  for (const p of statePages) {
+    const { lines, inFence } = scanLines(p.text);
+    for (const h of headingsIn(lines, inFence, 1, lines.length)) {
+      if (h.level >= 2 && h.level <= 4) out.push(`state:${p.domain}${SEP}state/${p.file}:${h.line}${SEP}${h.text}`);
+    }
+  }
+  return `${out.join('\n')}\n`;
+}
+
 // --- the build ----------------------------------------------------------------
 
 const sha256 = (s) => crypto.createHash('sha256').update(s).digest('hex');
@@ -449,7 +679,60 @@ function build(skillDir) {
     outputs.push({ rel: 'references/catalog.md', abs: catalogAbs, before: catalogBefore, text: buildCatalog(topic, scanned, files) });
   }
 
-  return { errors, coverage, outputs, bounds, lessonsCount, chaptersCount, topic, inputs, refsDir: refs, referenceFiles: files };
+  // Routing (see ROUTING in the header). Its problems (a lesson without enough
+  // asks, no site-links.json) fail --check but never block the bounds write:
+  // prepare-lessons.js --generate, which supplies a new lesson's asks, needs
+  // the bounds first.
+  const routing = { problems: [], subRanges: new Map(), indexParts: 0, statePages: [] };
+  if (!errors.length) {
+    const proposals = loadProposals(skillDir);
+    if (proposals.raw !== null) inputs.set(proposals.abs, proposals.sha256);
+    const asksById = new Map([...proposals.byId].map(([id, p]) => [id, p.terms]));
+
+    const linksAbs = path.join(refs, 'site-links.json');
+    let links = null;
+    if (fs.existsSync(linksAbs)) { read(linksAbs); links = loadSiteLinks(refs); }
+    if (!links) routing.problems.push('references/site-links.json is missing or has no valid base: no read-more links generated. Run site/generator/build.js first.');
+
+    // State pages first: their read_more: line shifts every heading below it,
+    // and sections.md must count lines in the text as written.
+    const stateDir = path.join(refs, 'state');
+    const pageFiles = fs.existsSync(stateDir) ? fs.readdirSync(stateDir).filter((f) => f.endsWith('.md') && f !== 'README.md').sort() : [];
+    for (const f of pageFiles) {
+      const abs = path.join(stateDir, f);
+      const before = read(abs);
+      const domain = path.basename(f, '.md');
+      const text = withReadMore(before, links ? statePageReadMore(links, domain) : []);
+      routing.statePages.push({ domain, file: f, text });
+      outputs.push({ rel: `references/state/${f}`, abs, before, text });
+    }
+
+    const index = buildIndex({ topic, bounds, scanned, asksById, links });
+    routing.problems.push(...index.problems);
+    routing.subRanges = index.subRanges;
+    routing.indexParts = index.parts.length;
+    const routingAbs = path.join(refs, ROUTING_DIR);
+    const readOutput = (abs) => { try { return fs.readFileSync(abs, 'utf8'); } catch { return ''; } };
+    index.parts.forEach((text, i) => {
+      const abs = path.join(routingAbs, `index-${i + 1}.md`);
+      outputs.push({ rel: `references/${ROUTING_DIR}/index-${i + 1}.md`, abs, before: readOutput(abs), text });
+    });
+    // A part the index no longer fills is deleted (text null), never left to ship stale.
+    const existing = fs.existsSync(routingAbs) ? fs.readdirSync(routingAbs).filter((f) => INDEX_PART.test(f)) : [];
+    for (const f of existing) {
+      if (Number(f.match(INDEX_PART)[1]) > index.parts.length) {
+        const abs = path.join(routingAbs, f);
+        outputs.push({ rel: `references/${ROUTING_DIR}/${f}`, abs, before: readOutput(abs), text: null });
+      }
+    }
+    const sectionsAbs = path.join(routingAbs, 'sections.md');
+    outputs.push({
+      rel: `references/${ROUTING_DIR}/sections.md`, abs: sectionsAbs, before: readOutput(sectionsAbs),
+      text: buildSections({ topic, bounds, scanned, statePages: routing.statePages }),
+    });
+  }
+
+  return { errors, coverage, outputs, bounds, lessonsCount, chaptersCount, topic, inputs, refsDir: refs, referenceFiles: files, routing };
 }
 
 /**
@@ -516,7 +799,11 @@ function writeOutputs(derived) {
     err.code = 'EINPUTCHANGED';
     throw err;
   }
-  for (const o of changed) writeAtomic(o.abs, o.text);
+  for (const o of changed) {
+    if (o.text === null) { fs.unlinkSync(o.abs); continue; }
+    fs.mkdirSync(path.dirname(o.abs), { recursive: true }); // references/routing/ on the first run
+    writeAtomic(o.abs, o.text);
+  }
   return changed;
 }
 
@@ -538,6 +825,12 @@ function describeDiff(out, derived) {
     if (before.chapters_count !== derived.chaptersCount) lines.push(`version.json: chapters_count ${before.chapters_count}, expected ${derived.chaptersCount}`);
   } else if (out.rel === 'references/catalog.md') {
     lines.push(out.before === '' ? 'references/catalog.md: missing — run node scripts/build.js' : 'references/catalog.md: routing table is stale (a lesson\'s file, id, title or a chapter changed)');
+  } else if (out.rel.startsWith(`references/${ROUTING_DIR}/`)) {
+    if (out.text === null) lines.push(`${out.rel}: the index no longer needs this part — build.js deletes it`);
+    else lines.push(out.before === '' ? `${out.rel}: missing — run node scripts/build.js`
+      : `${out.rel}: stale (a lesson, its bounds, asks, headings, a state page heading or site-links.json changed)`);
+  } else if (out.rel.startsWith('references/state/')) {
+    lines.push(`${out.rel}: generated read_more: frontmatter is stale (site-links.json changed)`);
   } else if ('generated' in JSON.parse(out.before)) {
     lines.push(`${out.rel}: "generated" stamp should be removed`);
   }
@@ -585,8 +878,14 @@ function main(argv) {
     // Stale vocabulary proposals (a lesson changed since the model saw it) are
     // reported by id, never failed: a lesson prose edit must not fail CI.
     for (const w of lessons.warnings || []) console.warn(`build.js --check: WARNING: ${w}`);
-    if (stale.length || derived.coverage.length || lessons.errors.length) return 1;
-    console.log(`derived fields OK (${derived.lessonsCount} lessons, ${derived.chaptersCount} chapters)`);
+    const routingProblems = derived.routing.problems;
+    if (routingProblems.length) {
+      console.error('build.js --check: routing index incomplete:');
+      for (const p of routingProblems) console.error(`  ${p}`);
+    }
+    if (stale.length || derived.coverage.length || lessons.errors.length || routingProblems.length) return 1;
+    console.log(`derived fields OK (${derived.lessonsCount} lessons, ${derived.chaptersCount} chapters, ` +
+      `${derived.routing.indexParts} index parts, ${derived.routing.statePages.length} state pages)`);
     console.log(`lesson keywords OK (${lessons.notes.join('; ')})`);
     return 0;
   }
@@ -599,7 +898,8 @@ function main(argv) {
     console.error(`build.js: ${e.message}`);
     return 1;
   }
-  for (const o of written) console.log(`wrote ${o.rel}`);
+  for (const o of written) console.log(`${o.text === null ? 'deleted' : 'wrote'} ${o.rel}`);
+  for (const p of derived.routing.problems) console.log(`note: ${p}`);
   if (!written.length) console.log('derived fields already up to date');
   // Bounds are written regardless: prepare-lessons.js needs them before it can run.
   for (const e of lessons.errors) console.log(`note: ${e}`);
@@ -635,5 +935,6 @@ function lessonChecks(skillDir, derived) {
 module.exports = {
   scanLines, isThematicBreak, isSeparator, trimEnd, findHeadings,
   lessonMatchesHeading, checkCoverage, build, gitHead, changedInputs, writeAtomic, writeOutputs,
+  READ_BUDGET, MIN_ASKS, ASKS_PER_LESSON, headingsIn, splitRange, withReadMore, lessonReadMore, statePageReadMore,
 };
 if (require.main === module) process.exitCode = main(process.argv.slice(2));

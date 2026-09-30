@@ -65,10 +65,12 @@ function fixture() {
   for (const f of fs.readdirSync(src)) {
     // catalog.md is a build.js-derived output; copy it so build.js --check on an
     // unedited fixture stays clean (any lesson-affecting edit regenerates it).
-    if (/^\d\d-.*\.md$/.test(f) || f === 'catalog.md' || /^(topic-index|hand-keywords|cross-references|troubleshooting)\.json$/.test(f)) {
+    if (/^\d\d-.*\.md$/.test(f) || f === 'catalog.md' || /^(topic-index|hand-keywords|cross-references|troubleshooting|site-links)\.json$/.test(f)) {
       fs.copyFileSync(path.join(src, f), path.join(refs, f));
     }
   }
+  // build.js also derives references/routing/ and the state pages' read_more: field.
+  for (const d of ['routing', 'state']) fs.cpSync(path.join(src, d), path.join(refs, d), { recursive: true });
   fs.mkdirSync(path.dirname(proposalsPath(dir)));
   fs.copyFileSync(proposalsPath(SKILL_DIR), proposalsPath(dir));
   fs.copyFileSync(path.join(SKILL_DIR, 'version.json'), path.join(dir, 'version.json'));

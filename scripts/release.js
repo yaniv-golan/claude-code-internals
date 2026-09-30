@@ -122,11 +122,20 @@ const BRANCH = 'main';
 const PLUGIN_ID = 'claude-code-internals@claude-code-internals-marketplace';
 const MARKETPLACE = 'claude-code-internals-marketplace';
 const CHANGELOG = 'CHANGELOG.md';
+// The routing parts are listed up to index-3 (the index may grow a part), and
+// the state pages as they are on disk: build.js writes their read_more: field.
 const BUILD_OUTPUTS = [
   `${SKILL_REL}/version.json`,
   `${SKILL_REL}/references/topic-index.json`,
   `${SKILL_REL}/references/cross-references.json`,
   `${SKILL_REL}/references/troubleshooting.json`,
+  `${SKILL_REL}/references/catalog.md`,
+  ...[1, 2, 3].map((n) => `${SKILL_REL}/references/routing/index-${n}.md`),
+  `${SKILL_REL}/references/routing/sections.md`,
+  ...(() => {
+    const dir = path.join(__dirname, '..', SKILL_REL, 'references', 'state');
+    try { return fs.readdirSync(dir).filter((f) => f.endsWith('.md') && f !== 'README.md').sort().map((f) => `${SKILL_REL}/references/state/${f}`); } catch { return []; }
+  })(),
 ];
 const FORBIDDEN_TRAILERS = [
   { name: 'Co-Authored-By: Claude', re: /^[ \t]*co-authored-by:.*claude/im },

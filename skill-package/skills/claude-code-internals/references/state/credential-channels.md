@@ -5,6 +5,7 @@ as_of_cli: 2.1.231
 as_of_desktop: 1.30096.1
 sources: [105, 106, 107, 114, 127, 195, 211]
 updated: 2026-09-27
+read_more: ["https://ccinternals.dev/cowork/plugins-and-plugin-root/?ref=skill"]
 ---
 
 # Desktop/Cowork credential channels (current)
