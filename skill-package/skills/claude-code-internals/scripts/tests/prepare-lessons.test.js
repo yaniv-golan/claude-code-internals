@@ -1071,16 +1071,17 @@ test('a lesson edited after its vocabulary was generated: --check warns by id (n
   assert.notStrictEqual(after.byId.get(89).input_sha256, require('crypto').createHash('sha256').update(prompts[0]).digest('hex'));
   assert.strictEqual(after.byId.get(89).prompt_version, V.UPDATE_PROMPT_VERSION);
   assert.strictEqual(after.byId.get(89).prior_terms_sha256, V.termsSha256(priorTerms));
-  // The stub dropped every term, so the title guard put the first title-topic term back; every
-  // other previous term is recorded as replaced, verbatim, so the churn is auditable.
-  const restored = after.byId.get(89).title_term_restored;
-  assert.ok(restored && priorTerms.includes(restored), 'a title-topic term was restored');
-  assert.deepStrictEqual(after.byId.get(89).replaced, priorTerms.filter((t) => t !== restored));
-  // The fixture is not a git checkout, so the previous text is not found and no swap is allowed.
-  assert.match(prompts[0], /Do NOT replace a term that is still true/);
+  // The stub's bare {"terms"} reply mentions no previous term: every one is kept by rule (a
+  // reply that leaves a term out never drops it), and its one phrase is added, under the cap.
+  const p89 = after.byId.get(89);
+  assert.deepStrictEqual(p89.terms, [...priorTerms, 'a regenerated phrase for testing']);
+  assert.deepStrictEqual(p89.replaced, []);
+  assert.deepStrictEqual(p89.kept_by_rule.map((k) => k.term), priorTerms);
+  assert.ok(p89.kept_by_rule.every((k) => k.reason === 'not listed in keep or drop'));
+  // The fixture is not a git checkout, so the previous text is not found and nothing is added for a topic.
+  assert.match(prompts[0], /ADD nothing/);
   assert.doesNotMatch(prompts[0], /LESSON TEXT BEFORE THE EDIT/);
-  assert.strictEqual(after.byId.get(89).previous_text, 'not found');
-  assert.deepStrictEqual(after.byId.get(89).terms, [restored]);
+  assert.strictEqual(p89.previous_text, 'not found');
   const now = P.checkLessons({ raw: fs.readFileSync(topicPath(dir), 'utf8'), lessonText: P.load(dir).lessonText, hand: HAND, proposals: after, proposalsPin: after.sha256 });
   assert.deepStrictEqual([now.errors, now.warnings], [[], []]);
 });
@@ -1211,7 +1212,7 @@ test('--fresh and --regen redraw a stale lesson with the fresh prompt', async ()
 
 test('the proposals file keeps prior_terms_sha256, collision_check and withheld through render and load', () => {
   const byId = new Map([[7, { model: 'm', prompt_version: V.UPDATE_PROMPT_VERSION, date: 'd', input_sha256: 'a'.repeat(64),
-    prior_terms_sha256: 'b'.repeat(64), collision_check: 'questions-v2.json dev', previous_text: 'c'.repeat(40), replaced: ['an old phrase'], title_term_restored: 'an old phrase', terms: ['x y', 'z w'], withheld: [{ term: 'z w', qid: 'pl-0001' }] }]]);
+    prior_terms_sha256: 'b'.repeat(64), collision_check: 'questions-v2.json dev', previous_text: 'c'.repeat(40), replaced: ['an old phrase'], dropped: [{ term: 'an old phrase', why: 'inaccurate', replacement: 'x y' }], kept_by_rule: [{ term: 'k', reason: 'r' }], title_term_restored: 'an old phrase', terms: ['x y', 'z w'], withheld: [{ term: 'z w', qid: 'pl-0001' }] }]]);
   const text = V.renderProposals(byId);
   assert.deepStrictEqual(V.proposalErrors(JSON.parse(text)), []);
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cci-props-'));
@@ -1260,49 +1261,88 @@ test('collision check reads only dev identifier/plain questions of the current g
   assert.strictEqual(q.source, `${lib.CURRENT_QUESTIONS} dev`);
 });
 
-test('--generate records the collision check and withholds a colliding new term from the derived keys', async () => {
-  const dir = fixture();
-  editLessonLine(dir, 89, ' the ', ' the quite ');
-  assert.strictEqual(run(BUILD, ['--root', dir]).code, 0);
-  const pin = freshen(dir, [89]);
-  const prior = loadProposals(dir).byId.get(89).terms.slice(0, V.MAX_TERMS - 1); // room for one new term
-  const odd = 'zebra quokka marmalade';
-  const questions = [{ qid: 'pl-9001', text: `why does ${odd} happen`, lesson_id: 12, relevant: { 12: 2 } }];
-  const lines = [];
-  await P.runGenerate(dir, { proposalsPin: pin }, { callModel: stubTerms([...prior, odd]), questions }, (l) => lines.push(l));
-  const p = loadProposals(dir).byId.get(89);
-  assert.strictEqual(p.collision_check, 'injected questions');
-  assert.deepStrictEqual(p.withheld, [{ term: odd, qid: 'pl-9001' }]);
-  assert.deepStrictEqual(p.terms, [...prior, odd], 'terms stay the model output, unfiltered');
-  assert.ok(!(odd in topicOf(dir).keyword_map), 'a withheld term is never a key');
-  assert.ok(lines.some((l) => /lesson 89: withheld 1 new term/.test(l)), lines.join('\n'));
-});
+const stubUpdate = (reply) => async () => JSON.stringify({ type: 'result', is_error: false, total_cost_usd: 0.0123, result: JSON.stringify(reply) });
 
-test('an update keeps kept terms out of replaced and compares them normalized', async () => {
+test('--generate withholds a colliding new term; a withheld replacement gives back the term it replaced', async () => {
   const dir = fixture();
   editLessonLine(dir, 89, ' the ', ' the quite ');
   assert.strictEqual(run(BUILD, ['--root', dir]).code, 0);
   const pin = freshen(dir, [89]);
   const prior = loadProposals(dir).byId.get(89).terms;
-  // Keep all but the last two (one restated with other case and punctuation), add one new term.
-  const out = [...prior.slice(0, -2), `${prior[prior.length - 2].toUpperCase()}?`, 'a new topic phrase for testing'];
-  await P.runGenerate(dir, { proposalsPin: pin }, { callModel: stubTerms(out), questions: [] }, () => {});
+  const odd = 'zebra quokka marmalade';
+  const questions = [{ qid: 'pl-9001', text: `why does ${odd} happen`, lesson_id: 12, relevant: { 12: 2 } }];
+  const lines = [];
+  const reply = { keep: prior.slice(0, -1), drop: [{ term: prior[prior.length - 1], why: 'inaccurate', replacement: odd }], add: [] };
+  await P.runGenerate(dir, { proposalsPin: pin }, { callModel: stubUpdate(reply), questions }, (l) => lines.push(l));
   const p = loadProposals(dir).byId.get(89);
-  assert.strictEqual(p.prompt_version, V.UPDATE_PROMPT_VERSION);
-  assert.deepStrictEqual(p.replaced, [prior[prior.length - 1]]);
+  assert.strictEqual(p.collision_check, 'injected questions');
+  assert.deepStrictEqual(p.withheld, [{ term: odd, qid: 'pl-9001' }]);
+  assert.deepStrictEqual(p.terms, prior, 'the replaced term is back, the withheld replacement gone');
+  assert.deepStrictEqual(p.replaced, []);
+  assert.strictEqual(p.dropped, undefined);
+  assert.deepStrictEqual(p.kept_by_rule, [{ term: prior[prior.length - 1], reason: `replacement withheld ("${odd}", pl-9001)` }]);
+  assert.ok(!(odd in topicOf(dir).keyword_map), 'a withheld term is never a key');
+  assert.ok(lines.some((l) => /lesson 89: withheld 1 new term/.test(l)), lines.join('\n'));
+  assert.ok(lines.some((l) => /lesson 89: model call \$0\.0123/.test(l)), 'the per-call cost is logged');
+  assert.ok(lines.some((l) => /model calls cost \$0\.0123 in total/.test(l)), lines.join('\n'));
+  // A withheld ADDED term just stays out.
+  const dir2 = fixture();
+  editLessonLine(dir2, 89, ' the ', ' the quite ');
+  assert.strictEqual(run(BUILD, ['--root', dir2]).code, 0);
+  const pin2 = freshen(dir2, [89]);
+  await P.runGenerate(dir2, { proposalsPin: pin2 }, { callModel: stubUpdate({ keep: prior, drop: [], add: [odd] }), questions }, () => {});
+  const p2 = loadProposals(dir2).byId.get(89);
+  assert.deepStrictEqual(p2.withheld, [{ term: odd, qid: 'pl-9001' }]);
+  assert.deepStrictEqual(p2.terms, [...prior, odd], 'an added term stays in terms as the model wrote it; derivation drops it');
+  assert.strictEqual(p2.kept_by_rule, undefined);
 });
 
-test('the update prompt shows the text before the edit and allows bounded new-topic swaps only then', () => {
+test('resolveUpdate: true terms survive any reply; only inaccurate or named-duplicate drops stand', () => {
+  const prior = ['alpha one', 'beta two', 'gamma three', 'delta four', 'Epsilon five?'];
+  // Planted-false-term control: the inaccurate term goes (with its replacement), the true ones stay verbatim.
+  let r = V.resolveUpdate(prior, { keep: ['alpha one', 'beta two', 'gamma three', 'EPSILON FIVE'], drop: [{ term: 'delta four', why: 'inaccurate', duplicate_of: null, replacement: 'delta now' }], add: [] });
+  assert.deepStrictEqual(r.terms, ['alpha one', 'beta two', 'gamma three', 'Epsilon five?', 'delta now'], 'kept terms are the previous spelling');
+  assert.deepStrictEqual(r.dropped, [{ term: 'delta four', why: 'inaccurate', replacement: 'delta now' }]);
+  assert.strictEqual(r.swaps.get('delta now'), 'delta four');
+  // L215-style: a new topic must not cost true terms. Drops without a valid reason are refused,
+  // an omitted term is kept, and the new topic is ADDED.
+  r = V.resolveUpdate(prior, {
+    keep: ['alpha one'],
+    drop: [
+      { term: 'beta two', why: 'duplicate', duplicate_of: 'not a kept term', replacement: null },
+      { term: 'gamma three', why: 'room for the new topic', duplicate_of: null, replacement: null },
+      { term: 'delta four', why: 'duplicate', duplicate_of: 'alpha one', replacement: null },
+    ],
+    add: ['new topic a', 'new topic b'],
+  });
+  assert.deepStrictEqual(r.terms, ['alpha one', 'beta two', 'gamma three', 'Epsilon five?', 'new topic a', 'new topic b']);
+  assert.deepStrictEqual(r.dropped, [{ term: 'delta four', why: 'duplicate', duplicate_of: 'alpha one' }]);
+  assert.deepStrictEqual(r.keptByRule.map((k) => [k.term, k.reason]), [
+    ['beta two', 'duplicate_of names no kept term'],
+    ['gamma three', 'drop reason is neither inaccurate nor duplicate'],
+    ['Epsilon five?', 'not listed in keep or drop'],
+  ]);
+  // The cap: added terms are cut, kept terms never.
+  const full = Array.from({ length: 15 }, (_, i) => `kept term ${i}`);
+  r = V.resolveUpdate(full, { keep: full, drop: [], add: Array.from({ length: 6 }, (_, i) => `added term ${i}`) });
+  assert.strictEqual(r.terms.length, V.MAX_TERMS_CAP);
+  assert.deepStrictEqual(r.terms.slice(0, 15), full);
+  assert.deepStrictEqual(r.terms.slice(15), ['added term 0', 'added term 1', 'added term 2']);
+  // A bare {"terms"} reply reads as keep/add.
+  assert.deepStrictEqual(V.parseUpdate(JSON.stringify({ result: JSON.stringify({ terms: ['x y'] }) })), { keep: ['x y'], drop: [], add: [] });
+});
+
+test('the update prompt asks for keep/drop/add, shows the text before the edit, and adds for a new topic only then', () => {
   const l = { title: 'Screenshot Tools for Artifacts', description: 'd' };
   const without = V.buildUpdatePrompt(l, 'TEXT NOW', ['a term'], null);
-  assert.match(without, /Do NOT replace a term that is still true/);
-  assert.doesNotMatch(without, /NEW TOPIC/);
+  assert.match(without, /ADD nothing/);
+  assert.match(without, /Never drop a term that is true and distinct/);
+  assert.match(without, /"keep": \["\.\.\."\], "drop": \[\{"term"/);
   const withPrev = V.buildUpdatePrompt(l, 'TEXT NOW', ['a term'], 'TEXT BEFORE');
   assert.match(withPrev, /LESSON TEXT BEFORE THE EDIT:\nTEXT BEFORE\n\nLESSON TEXT NOW:\nTEXT NOW/);
-  assert.match(withPrev, new RegExp(`replace up to ${V.NEW_TOPIC_SWAPS} terms for the new topic`));
-  assert.match(withPrev, /already\s+in the lesson before the edit is NOT new/);
-  assert.match(withPrev, /nearly duplicates another term/);
-  assert.match(withPrev, /Never replace the last term that asks\s+about the subject of the lesson title/);
+  assert.match(withPrev, /already in\s+the lesson before the edit is NOT new/);
+  assert.match(withPrev, new RegExp(`at most ${V.MAX_TERMS_CAP} terms`));
+  assert.doesNotMatch(withPrev, /replace up to/);
 });
 
 test('keepTitleTerm puts back a title-topic term only when the update dropped the last one', () => {
@@ -1345,24 +1385,24 @@ test('findPreviousText finds the committed lesson text a proposal was written fr
   assert.strictEqual(H.findPreviousText(SKILL_DIR, l, '0'.repeat(64), V.inputSha256), null, 'an unknown hash finds nothing');
 });
 
-test('--fill-gaps reviews a current lesson with the update prompt, allows bounded swaps for old gaps, and records them', async () => {
+test('--fill-gaps reviews a current lesson under the same rules: adds for an old gap, drops nothing true', async () => {
   const dir = fixture();
   const pin = freshen(dir);
   assert.ok(!staleIn(dir).includes(89), 'lesson 89 is current: --fill-gaps does not need it stale');
   const prior = loadProposals(dir).byId.get(89).terms;
   const prompts = [];
-  const out = [...prior.slice(0, -1), 'a gap phrase for testing'];
-  const callModel = async (p) => { prompts.push(p); return stubTerms(out)(); };
+  // The reply tries to swap a true term out for the gap; the rule keeps it and adds the gap term.
+  const reply = { keep: prior.slice(0, -1), drop: [{ term: prior[prior.length - 1], why: 'make room', replacement: null }], add: ['a gap phrase for testing'] };
+  const callModel = async (p) => { prompts.push(p); return stubUpdate(reply)(); };
   await P.runGenerate(dir, { proposalsPin: pin, fillGaps: [89] }, { callModel, questions: [], previous: () => { throw new Error('no history lookup for --fill-gaps'); } }, () => {});
   assert.strictEqual(prompts.length, 1);
-  assert.match(prompts[0], /COVERAGE GAP/);
-  assert.match(prompts[0], new RegExp(`replace up to ${V.NEW_TOPIC_SWAPS} terms`));
+  assert.match(prompts[0], /covers a topic that none of the terms reaches/);
   assert.doesNotMatch(prompts[0], /LESSON TEXT BEFORE THE EDIT|The lesson was edited/);
   const p = loadProposals(dir).byId.get(89);
   assert.strictEqual(p.prompt_version, V.FILL_GAPS_PROMPT_VERSION);
   assert.strictEqual(p.previous_text, undefined);
-  assert.deepStrictEqual(p.replaced, [prior[prior.length - 1]]);
-  assert.ok(p.terms.includes('a gap phrase for testing'));
+  assert.deepStrictEqual(p.replaced, []);
+  assert.deepStrictEqual(p.terms, [...prior, 'a gap phrase for testing']);
   assert.deepStrictEqual(P.parseArgs(['--fill-gaps', '221']).fillGaps, [221]);
   assert.strictEqual(P.parseArgs(['--fill-gaps', '221']).generate, true);
   await assert.rejects(P.runGenerate(dir, { proposalsPin: loadProposals(dir).sha256, fillGaps: [89], regen: [89] }, { callModel }, () => {}), /both --regen .* and --fill-gaps/);

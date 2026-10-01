@@ -289,9 +289,12 @@ node --test evals/retrieval/agentic-run.test.js
   `prepare-lessons.js`, which derives the `keyword_map` keys; keywords are never hand-edited) or
   leave the miss recorded.
 - **Vocabulary changes are made by rule, never to pass the gate.** `prepare-lessons.js --generate`
-  updates a stale lesson's model-written terms from its previous ones (it keeps every term still
-  true, verbatim) and withholds new terms that together would make their lesson first on another
-  lesson's **dev** question (`scripts/lib/vocab-collision.js`; holdout questions are never read).
+  updates a stale lesson's model-written terms from its previous ones under rules enforced in code
+  (`resolveUpdate()` in `scripts/lib/vocab.js`): every term still true is kept verbatim; a term
+  goes only as inaccurate or as a named near-duplicate of a kept term; a topic the edit added gets
+  added terms, up to 18 in all, never a swap. It withholds new terms that together would make
+  their lesson first on another lesson's **dev** question (`scripts/lib/vocab-collision.js`;
+  holdout questions are never read), and a withheld replacement gives back the term it replaced.
   A gate trip after a regeneration is accepted with a new baseline or fixed by a rule change;
   re-rolling or rewording one lesson's terms until a question ranks again is tuning.
 - **Whole-set replacement only.** `questions-vN.json` is replaced as a whole new version on a

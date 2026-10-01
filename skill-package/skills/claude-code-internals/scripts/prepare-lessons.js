@@ -167,7 +167,7 @@ const { compileKey, keyHitsToken, surfaceTokens: keySurfaceTokens, MIN_SUBSTRING
 const { tokenizeQuery } = require('./lib/tfidf-index.js');
 const {
   PROPOSALS_FILE, PROPOSALS_SHA256, DEFAULT_MODEL, loadProposals, integrityErrors, renderProposals, planVocab, generateProposals,
-  inputSha256, staleProposals, cleanTerm, MAX_TERMS, MAX_TERM_CHARS, MAX_TERM_WORDS,
+  inputSha256, staleProposals, cleanTerm, MAX_TERMS_CAP, MAX_TERM_CHARS, MAX_TERM_WORDS,
 } = require('./lib/vocab.js');
 const {
   BOUNDARY_FIELD, loadHandSource, handSourceErrors, projectHand, handTopic,
@@ -845,7 +845,7 @@ function withholdCollisions(skillDir, topic, added, prior, questionsDep, log) {
     const before = new Set((prior.get(id) || []).map((t) => normalize(cleanTerm(t))));
     const keptKeys = [];
     const candidates = [];
-    for (const raw of p.terms.slice(0, MAX_TERMS)) {
+    for (const raw of p.terms.slice(0, MAX_TERMS_CAP)) {
       const key = keyOf(raw);
       if (before.has(normalize(cleanTerm(raw)))) { if (key) keptKeys.push(key); } else candidates.push({ term: raw, key });
     }
@@ -853,6 +853,17 @@ function withholdCollisions(skillDir, topic, added, prior, questionsDep, log) {
     p.collision_check = q.source;
     if (withheld.length) {
       p.withheld = withheld;
+      // A withheld REPLACEMENT gives back the previous term it replaced (vocab.js, WITHHELD TERMS).
+      const swaps = p.swaps || new Map();
+      for (const w of withheld) {
+        const back = swaps.get(normalize(cleanTerm(w.term)));
+        if (!back) continue;
+        p.terms = p.terms.map((t) => (t === w.term ? back : t));
+        p.replaced = (p.replaced || []).filter((t) => t !== back);
+        if (p.dropped) { p.dropped = p.dropped.filter((d) => d.term !== back); if (!p.dropped.length) delete p.dropped; }
+        p.kept_by_rule = [...(p.kept_by_rule || []), { term: back, reason: `replacement withheld ("${w.term}", ${w.qid})` }];
+        log(`vocab: lesson ${id}: restored "${back}": its replacement "${w.term}" was withheld`);
+      }
       log(`vocab: lesson ${id}: withheld ${withheld.length} new term(s) that would take another lesson's dev question: ` +
         withheld.map((w) => `"${w.term}" (${w.qid})`).join(', '));
     }

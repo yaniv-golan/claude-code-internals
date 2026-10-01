@@ -43,32 +43,35 @@
  *
  * UPDATE, NOT REDRAW. A stale lesson that has terms is regenerated with the
  * update prompt (buildUpdatePrompt(), prompt_version UPDATE_PROMPT_VERSION):
- * its previous terms plus its current text, keeping every term still true,
- * copied exactly, and replacing only the ones the text no longer supports. A
- * fresh draw replaces 12-15 of 15 terms even when nothing they say became false,
- * and keyword hits are exact tokens, so a reworded term ("save" for "saving")
- * silently stops matching the questions the old one carried. Such an entry
- * also records `prior_terms_sha256` (termsSha256() of the previous terms) and
- * `replaced`, the previous terms it no longer carries (normalized comparison),
- * so every update's churn is auditable in the file.
+ * its previous terms plus its current text. A fresh draw replaces 12-15 of 15
+ * terms even when nothing they say became false, and keyword hits are exact
+ * tokens, so a reworded term ("save" for "saving") silently stops matching the
+ * questions the old one carried.
  *
- * NEW TOPICS. The prompt shows the lesson text BEFORE the edit next to the text
- * now (lib/vocab-history.js finds it in git by input_sha256; `previous_text`
- * records the commit, or "not found"). When the edit added a topic no term
- * reaches and the list is full, the model may swap up to NEW_TOPIC_SWAPS terms
- * for it, near-duplicates first, then the least specific; a topic that was
- * already in the lesson is not new, however uncovered. With no previous text
- * the prompt allows no such swap. Terms the text no longer supports are
- * replaced regardless (the bound is the prompt's; `replaced` is the record).
- * One rule is enforced in code (keepTitleTerm()): an update never leaves the
- * lesson without a term asking about its title's subject when it had one; the
- * first dropped such term is put back (`title_term_restored`).
+ * THE UPDATE RULES. The model answers {keep, drop, add}, and resolveUpdate()
+ * enforces the rules in code rather than trusting the prompt:
+ *   - a kept term is the previous term verbatim;
+ *   - a drop stands only as "inaccurate" (the text no longer supports it; it
+ *     may come with a replacement) or as "duplicate" naming a term that is
+ *     kept. Any other drop, and any previous term the reply leaves out, is kept
+ *     (`kept_by_rule`). A true, distinct term is never removed, not to make
+ *     room and not for a new topic;
+ *   - a topic the EDIT added gets ADDED terms, up to MAX_TERMS_CAP (18) in all;
+ *     added terms are cut first, then replacements, never a kept term. To tell
+ *     an added topic from an old gap the prompt shows the text BEFORE the edit
+ *     (lib/vocab-history.js finds it in git by input_sha256; `previous_text`
+ *     records the commit, or "not found", in which case nothing is added);
+ *   - keepTitleTerm(): an update never leaves the lesson without a term on its
+ *     title's subject when it had one (`title_term_restored`).
+ * The entry records `prior_terms_sha256`, `replaced` (previous terms no longer
+ * carried), `dropped` ([{term, why, duplicate_of?, replacement?}]) and
+ * `kept_by_rule`, so every update's churn is auditable in the file. Each model
+ * call's cost (the reply envelope's total_cost_usd) is logged.
  *
- * FILLING GAPS. `--fill-gaps <ids>` runs the update prompt on named lessons,
- * stale or not, allowing the same bounded swaps (NEW_TOPIC_SWAPS, near-duplicates
- * first, title guard) for any topic already in the lesson that no term reaches
- * (prompt_version FILL_GAPS_PROMPT_VERSION; `replaced` records the swaps). It
- * is the deliberate way to cover an old gap, which a stale-lesson update never
+ * FILLING GAPS. `--fill-gaps <ids>` runs the same rules on named lessons,
+ * stale or not, adding terms (up to the cap) for any topic already in the
+ * lesson that no term reaches (prompt_version FILL_GAPS_PROMPT_VERSION). It is
+ * the deliberate way to cover an old gap, which a stale-lesson update never
  * does.
  * The fresh prompt is used for a lesson without terms, for --regen, and for
  * every stale lesson under --fresh.
@@ -78,12 +81,15 @@
  * The entry keeps the model's `terms` unfiltered and records `withheld`
  * ([{term, qid}]) and `collision_check` (what it ran against, or why it was
  * skipped); planVocab() drops withheld terms on every derivation (rule 4,
- * reason "withheld at generation"). (The 218 first-pass entries
+ * reason "withheld at generation"). When a withheld term replaced a previous
+ * term, that previous term is restored to `terms` (`kept_by_rule`, reason
+ * "replacement withheld"): a withheld replacement must not cost the lesson
+ * the term it was meant to replace. (The 218 first-pass entries
  * carry the hash of the current lessons: the prototype's prompt builder and
  * lesson text, at commit 55c5dca, are byte-identical to today's.)
  *
  * RULE 4 — VOCABULARY KEYS. For each lesson in topic-index order, its first
- * MAX_TERMS proposed terms, in proposal order, are cleaned (curly quotes
+ * MAX_TERMS_CAP proposed terms, in proposal order, are cleaned (curly quotes
  * straightened, surrounding quotes and trailing ?.!,;: removed, whitespace
  * collapsed, lowercased) and dropped when:
  *   4a. empty, longer than MAX_TERM_CHARS characters or MAX_TERM_WORDS words,
@@ -122,10 +128,10 @@ const PROPOSALS_FILE = 'data/vocab-proposals.json'; // relative to the repositor
 const PROPOSALS_SHA256 = '105fa84e9989d58b1c5d13a4d529be10a5daf6b0d325e61b760e3b64349adf2e';
 const DEFAULT_MODEL = 'claude-opus-5-5'; // evals/retrieval/gen-questions.js used claude-sonnet-5
 const PROMPT_VERSION = 'vocab-v1';
-const UPDATE_PROMPT_VERSION = 'vocab-v3-update'; // buildUpdatePrompt(): prior terms + previous and current text (v3: up to NEW_TOPIC_SWAPS for a topic the edit added)
-const NEW_TOPIC_SWAPS = 3;
-const FILL_GAPS_PROMPT_VERSION = 'vocab-v3-fill-gaps'; // buildUpdatePrompt(..., {fillGaps: true}): --fill-gaps <ids>
-const MAX_TERMS = 15;
+const UPDATE_PROMPT_VERSION = 'vocab-v4-update'; // buildUpdatePrompt(): keep/drop/add over prior terms, previous + current text
+const FILL_GAPS_PROMPT_VERSION = 'vocab-v4-fill-gaps'; // buildUpdatePrompt(..., {fillGaps: true}): --fill-gaps <ids>
+const MAX_TERMS = 15; // a fresh draw asks for this many
+const MAX_TERMS_CAP = 18; // hard cap on a stored proposal: an update may ADD terms for a new topic up to here
 const MAX_TERM_CHARS = 80;
 const MAX_TERM_WORDS = 12;
 const MAX_HOMES = 2;
@@ -158,6 +164,9 @@ function proposalErrors(data) {
     else if (p.replaced !== undefined && !(Array.isArray(p.replaced) && p.replaced.every((t) => typeof t === 'string'))) errs.push(`lesson ${id}: replaced must be string[]`);
     else if (p.previous_text !== undefined && typeof p.previous_text !== 'string') errs.push(`lesson ${id}: previous_text must be a string`);
     else if (p.title_term_restored !== undefined && typeof p.title_term_restored !== 'string') errs.push(`lesson ${id}: title_term_restored must be a string`);
+    else if (p.dropped !== undefined && !(Array.isArray(p.dropped) && p.dropped.every((d) => d && typeof d.term === 'string' && (d.why === 'inaccurate' || d.why === 'duplicate')))) errs.push(`lesson ${id}: dropped must be [{term, why: inaccurate|duplicate}]`);
+    else if (p.kept_by_rule !== undefined && !(Array.isArray(p.kept_by_rule) && p.kept_by_rule.every((k) => k && typeof k.term === 'string' && typeof k.reason === 'string'))) errs.push(`lesson ${id}: kept_by_rule must be [{term, reason}]`);
+    else if (p.terms.length > MAX_TERMS_CAP) errs.push(`lesson ${id}: ${p.terms.length} terms, more than ${MAX_TERMS_CAP}`);
     else if (p.withheld !== undefined && !(Array.isArray(p.withheld) && p.withheld.every((w) => w && typeof w.term === 'string' && typeof w.qid === 'string'))) {
       errs.push(`lesson ${id}: withheld must be [{term, qid}]`);
     }
@@ -248,6 +257,8 @@ function renderProposals(byId) {
     if (p.collision_check !== undefined) e.collision_check = p.collision_check;
     if (p.previous_text !== undefined) e.previous_text = p.previous_text;
     if (p.replaced !== undefined) e.replaced = p.replaced.slice();
+    if (p.dropped !== undefined) e.dropped = p.dropped.map((d) => ({ ...d }));
+    if (p.kept_by_rule !== undefined) e.kept_by_rule = p.kept_by_rule.map((k) => ({ term: k.term, reason: k.reason }));
     if (p.title_term_restored !== undefined) e.title_term_restored = p.title_term_restored;
     e.terms = p.terms.slice();
     if (p.withheld !== undefined) e.withheld = p.withheld.map((w) => ({ term: w.term, qid: w.qid }));
@@ -284,7 +295,7 @@ function planVocab(lessons, state, handKw, byId) {
     stamps.set(l.id, { model: p.model, prompt_version: p.prompt_version, date: p.date, terms_sha256: termsSha256(p.terms) });
     const seen = new Set();
     const withheld = new Set((p.withheld || []).map((w) => normalize(cleanTerm(w.term))));
-    for (const rawTerm of p.terms.slice(0, MAX_TERMS)) {
+    for (const rawTerm of p.terms.slice(0, MAX_TERMS_CAP)) {
       proposed++;
       const term = cleanTerm(rawTerm);
       const n = normalize(term);
@@ -349,32 +360,18 @@ function buildPrompt(lesson, text) {
  */
 function buildUpdatePrompt(lesson, text, priorTerms, previousText = null, { fillGaps = false } = {}) {
   const clip = (t) => (t.length > LESSON_TEXT_LIMIT ? t.slice(0, LESSON_TEXT_LIMIT) + '\n[...truncated]' : t);
-  const swapRule = [
-    `  With fewer than ${MAX_TERMS} terms, add. With ${MAX_TERMS}, you may replace up to ${NEW_TOPIC_SWAPS} terms for it,`,
-    '  choosing first a term that nearly duplicates another term in the list, then the least specific',
-    '  term (the one most likely to fit other lessons too). Never replace the last term that asks',
-    '  about the subject of the lesson title. Never replace a term to reword, tidy or "improve" it.',
-  ];
-  const newTopic = fillGaps
+  const addRule = fillGaps
     ? [
-      '- COVERAGE GAP: if the lesson covers a topic that none of the terms above reaches, add terms',
-      '  for it. If every topic is reached, return the list unchanged.',
-      ...swapRule,
+      '- ADD: if the lesson covers a topic that none of the terms reaches, put new terms for it in "add".',
+      '  If every topic is reached, "add" is empty.',
     ]
     : previousText === null
-    ? [
-      '- Do NOT replace a term that is still true, not even to make room for something the lesson',
-      '  covers that no term reaches. Only an untrue term may go.',
-    ]
-    : [
-      `- NEW TOPIC: compare the lesson BEFORE the edit (given below) with the lesson NOW. If the edit`,
-      '  ADDED a topic that none of the terms above reaches, add terms for it. A topic that was already',
-      '  in the lesson before the edit is NOT new, even if no term covers it: leave it alone.',
-      `  With fewer than ${MAX_TERMS} terms, add. With ${MAX_TERMS}, you may replace up to ${NEW_TOPIC_SWAPS} terms for the new topic,`,
-      '  choosing first a term that nearly duplicates another term in the list, then the least specific',
-      '  term (the one most likely to fit other lessons too). Never replace the last term that asks',
-      '  about the subject of the lesson title. Never replace a term to reword, tidy or "improve" it.',
-    ];
+      ? ['- ADD nothing: "add" is empty. (The text before the edit is not available, so nothing counts as new.)']
+      : [
+        '- ADD: compare the lesson BEFORE the edit (given below) with the lesson NOW. If the edit ADDED a',
+        '  topic that none of the terms reaches, put new terms for it in "add". A topic that was already in',
+        '  the lesson before the edit is NOT new, even if no term covers it: add nothing for it.',
+      ];
   return [
     'You are helping index a technical reference so people can find the right lesson with the',
     'words they would actually type. Below is one lesson from a reference about how Claude Code',
@@ -383,29 +380,95 @@ function buildUpdatePrompt(lesson, text, priorTerms, previousText = null, { fill
     fillGaps ? 'These search terms were written for it:' : 'The lesson was edited. Before the edit, these search terms were written for it:',
     ...priorTerms.map((t) => `- ${t}`),
     '',
-    fillGaps ? 'Review that list for coverage of the lesson as it reads now:' : 'Update that list for the lesson as it reads NOW:',
-    '- KEEP every term that is still true of the lesson and still a fair way to ask for it. Copy a',
-    '  kept term EXACTLY, character for character: same words, same word forms, same order. Do not',
-    '  shorten, reword, re-tense or tidy it. Small wording changes are not improvements here: people',
-    '  type the old wording and the search matches words exactly.',
-    '- REPLACE a term that the edited lesson no longer supports (it now states something different,',
-    '  or no longer covers that topic) with a new term for what the lesson now says.',
-    ...newTopic,
-    `- At most ${MAX_TERMS} terms in total.`,
-    '- New terms follow the original rules: plain words a user who has NOT read the lesson would',
-    '  type, short phrases (2-6 words) or short questions (at most 12 words); no identifiers of any',
-    '  kind (no environment variable names, code, function or tool names, file names, numeric ids,',
-    '  version numbers, slash commands or backticks); not the lesson title or its headings; specific',
-    '  to this lesson, not true of the whole product.',
-    '- Output ONLY a JSON object: {"terms": ["...", "..."]}, kept terms first in their old order.',
+    fillGaps ? 'Review that list for the lesson as it reads now. Every term above goes into "keep" or "drop":' : 'Update that list for the lesson as it reads NOW. Every term above goes into "keep" or "drop":',
+    '- KEEP every term that is still true of the lesson and still a fair way to ask for it, copied',
+    '  EXACTLY, character for character. People type the old wording and the search matches words exactly.',
+    '- DROP a term only for one of two reasons:',
+    '  "inaccurate": the lesson no longer supports it (it now states something different, or no longer',
+    '    covers that topic). Give a "replacement" saying what the lesson says now, or null.',
+    '  "duplicate": it nearly repeats another term that you KEEP; name that term in "duplicate_of",',
+    '    copied exactly.',
+    '  Never drop a term that is true and distinct: not to make room, not to reword or tidy it.',
+    ...addRule,
+    `- In total (kept + replacements + added) at most ${MAX_TERMS_CAP} terms.`,
+    '- New terms (replacements and added) follow the original rules: plain words a user who has NOT read',
+    '  the lesson would type, short phrases (2-6 words) or short questions (at most 12 words); no',
+    '  identifiers of any kind (no environment variable names, code, function or tool names, file names,',
+    '  numeric ids, version numbers, slash commands or backticks); not the lesson title or its headings;',
+    '  specific to this lesson, not true of the whole product.',
+    '- Output ONLY a JSON object:',
+    '  {"keep": ["..."], "drop": [{"term": "...", "why": "inaccurate" | "duplicate", "duplicate_of": "..." | null, "replacement": "..." | null}], "add": ["..."]}',
     '',
     `LESSON TITLE: ${lesson.title}`,
     lesson.description ? `SUMMARY: ${lesson.description}` : '',
     '',
-    ...(previousText === null ? [] : ['LESSON TEXT BEFORE THE EDIT:', clip(previousText), '', 'LESSON TEXT NOW:']),
-    ...(previousText === null ? ['LESSON TEXT:'] : []),
+    ...(previousText === null || fillGaps ? ['LESSON TEXT:'] : ['LESSON TEXT BEFORE THE EDIT:', clip(previousText), '', 'LESSON TEXT NOW:']),
     clip(text),
   ].join('\n');
+}
+
+/** The {keep, drop, add} object of an update reply (a bare {"terms"} reply reads as keep/add, nothing dropped). */
+function parseUpdate(raw) {
+  const envelope = JSON.parse(raw);
+  if (envelope && envelope.is_error) throw new Error(`model error: ${String(envelope.result).slice(0, 200)}`);
+  let text = envelope && envelope.result !== undefined ? envelope.result : envelope;
+  if (typeof text !== 'string') text = JSON.stringify(text);
+  const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+  const body = (fenced ? fenced[1] : text).trim();
+  const start = body.indexOf('{');
+  const obj = JSON.parse(start > 0 ? body.slice(start, body.lastIndexOf('}') + 1) : body);
+  const strs = (a) => (Array.isArray(a) ? a.filter((t) => typeof t === 'string') : []);
+  if (obj && Array.isArray(obj.terms) && !obj.keep) return { keep: strs(obj.terms), drop: [], add: [] };
+  if (!obj || !Array.isArray(obj.keep)) throw new Error('no "keep" array');
+  const drop = (Array.isArray(obj.drop) ? obj.drop : []).filter((d) => d && typeof d.term === 'string')
+    .map((d) => ({ term: d.term, why: d.why, duplicate_of: typeof d.duplicate_of === 'string' ? d.duplicate_of : null,
+      replacement: typeof d.replacement === 'string' && d.replacement.trim() ? d.replacement : null }));
+  return { keep: strs(obj.keep), drop, add: strs(obj.add) };
+}
+
+/**
+ * The rules of an update, enforced on the model's {keep, drop, add} (pure):
+ *  - a kept term is the PREVIOUS term verbatim (matched normalized);
+ *  - a drop stands only as "inaccurate", or as "duplicate" naming a term that is kept;
+ *    any other drop, and any previous term the reply does not mention, is KEPT
+ *    (`kept_by_rule`, with the reason);
+ *  - terms = kept (previous order), then replacements, then added, deduplicated, at most
+ *    MAX_TERMS_CAP; added terms are cut first, then replacements, never a kept term.
+ * Returns {terms, dropped: [{term, why, duplicate_of?, replacement?}], keptByRule: [{term, reason}],
+ *          swaps: Map(normalized replacement -> the previous term it replaced)}.
+ */
+function resolveUpdate(prior, reply) {
+  const n = (t) => normalize(cleanTerm(t));
+  const priorBy = new Map(prior.map((t) => [n(t), t]));
+  const kept = new Set();
+  const extra = [];
+  for (const t of reply.keep) { if (priorBy.has(n(t))) kept.add(n(t)); else extra.push(t); }
+  const dropped = [];
+  const keptByRule = [];
+  const swaps = new Map();
+  const replacements = [];
+  for (const d of reply.drop) {
+    const k = n(d.term);
+    if (!priorBy.has(k) || kept.has(k) || dropped.some((x) => n(x.term) === k)) continue;
+    const ok = d.why === 'inaccurate' || (d.why === 'duplicate' && d.duplicate_of !== null && kept.has(n(d.duplicate_of)) && n(d.duplicate_of) !== k);
+    if (!ok) { kept.add(k); keptByRule.push({ term: priorBy.get(k), reason: d.why === 'duplicate' ? 'duplicate_of names no kept term' : 'drop reason is neither inaccurate nor duplicate' }); continue; }
+    const e = { term: priorBy.get(k), why: d.why };
+    if (d.why === 'duplicate') e.duplicate_of = priorBy.get(n(d.duplicate_of));
+    if (d.why === 'inaccurate' && d.replacement) { e.replacement = d.replacement; replacements.push(d.replacement); swaps.set(n(d.replacement), priorBy.get(k)); }
+    dropped.push(e);
+  }
+  for (const [k, t] of priorBy) {
+    if (!kept.has(k) && !dropped.some((x) => n(x.term) === k)) { kept.add(k); keptByRule.push({ term: t, reason: 'not listed in keep or drop' }); }
+  }
+  const out = [];
+  const seen = new Set();
+  const push = (t) => { const k = n(t); if (k && !seen.has(k)) { seen.add(k); out.push(t); } };
+  for (const t of prior) if (kept.has(n(t))) push(t);
+  const keptCount = out.length;
+  const rest = [];
+  for (const t of [...replacements, ...extra, ...reply.add]) { const k = n(t); if (k && !seen.has(k) && !rest.some((r) => n(r) === k)) rest.push(t); }
+  for (const t of rest.slice(0, Math.max(0, MAX_TERMS_CAP - keptCount))) push(t);
+  return { terms: out, dropped, keptByRule, swaps };
 }
 
 /**
@@ -424,7 +487,7 @@ function coversTitle(term, words) {
 /**
  * The title guard: if the previous terms had one asking about the lesson title's subject and
  * the update dropped every such term, put the first dropped one back in place of the last new
- * term (or append it under MAX_TERMS). Returns {terms, restored: string | null}. Pure.
+ * term (or append it under MAX_TERMS_CAP). Returns {terms, restored: string | null}. Pure.
  */
 function keepTitleTerm(lesson, priorTerms, terms) {
   const words = titleWords(lesson.title);
@@ -432,11 +495,11 @@ function keepTitleTerm(lesson, priorTerms, terms) {
   const back = priorTerms.find((t) => coversTitle(t, words));
   if (!back) return { terms, restored: null };
   const before = new Set(priorTerms.map((t) => normalize(cleanTerm(t))));
-  const out = terms.slice(0, MAX_TERMS);
+  const out = terms.slice(0, MAX_TERMS_CAP);
   let i = -1;
   for (let k = out.length - 1; k >= 0; k--) if (!before.has(normalize(cleanTerm(out[k])))) { i = k; break; }
   if (i >= 0) out[i] = back;
-  else if (out.length < MAX_TERMS) out.push(back);
+  else if (out.length < MAX_TERMS_CAP) out.push(back);
   else return { terms, restored: null };
   return { terms: out, restored: back };
 }
@@ -492,6 +555,7 @@ async function generateProposals(lessons, lessonText, { model = DEFAULT_MODEL, c
   const failed = [];
   const today = date || new Date().toISOString().slice(0, 10);
   let done = 0;
+  let cost = 0;
   await mapPool(lessons, concurrency, async (l) => {
     try {
       const text = lessonText(l);
@@ -499,27 +563,39 @@ async function generateProposals(lessons, lessonText, { model = DEFAULT_MODEL, c
       const gaps = old && fillGaps.has(l.id);
       const prev = old && !gaps ? previous.get(l.id) || null : null; // {text, commit} or null
       const prompt = old ? buildUpdatePrompt(l, text, old, prev && prev.text, { fillGaps: gaps }) : buildPrompt(l, text);
-      let terms = parseTerms(await callModel(prompt, { model }));
-      let restored = null;
-      if (old) ({ terms, restored } = keepTitleTerm(l, old, terms));
-      if (restored) log(`vocab: lesson ${l.id}: the update dropped every title-topic term; restored "${restored}"`);
-      const now = new Set(terms.map((t) => normalize(cleanTerm(t))));
-      added.set(l.id, old
-        ? { model, prompt_version: gaps ? FILL_GAPS_PROMPT_VERSION : UPDATE_PROMPT_VERSION, date: today, input_sha256: inputSha256(l, text), prior_terms_sha256: termsSha256(old),
-          ...(gaps ? {} : { previous_text: prev ? prev.commit : 'not found' }), replaced: old.filter((t) => !now.has(normalize(cleanTerm(t)))),
-          ...(restored ? { title_term_restored: restored } : {}), terms }
-        : { model, prompt_version: PROMPT_VERSION, date: today, input_sha256: sha256(prompt), terms });
+      const raw = await callModel(prompt, { model });
+      try { const c = JSON.parse(raw).total_cost_usd; if (typeof c === 'number') { cost += c; log(`vocab: lesson ${l.id}: model call $${c.toFixed(4)}`); } } catch { /* parse errors surface below */ }
+      if (!old) {
+        added.set(l.id, { model, prompt_version: PROMPT_VERSION, date: today, input_sha256: sha256(prompt), terms: parseTerms(raw) });
+      } else {
+        const r = resolveUpdate(old, parseUpdate(raw));
+        const { terms, restored } = keepTitleTerm(l, old, r.terms);
+        if (restored) log(`vocab: lesson ${l.id}: the update dropped every title-topic term; restored "${restored}"`);
+        for (const k of r.keptByRule) log(`vocab: lesson ${l.id}: kept "${k.term}" (${k.reason})`);
+        const now = new Set(terms.map((t) => normalize(cleanTerm(t))));
+        const p = {
+          model, prompt_version: gaps ? FILL_GAPS_PROMPT_VERSION : UPDATE_PROMPT_VERSION, date: today, input_sha256: inputSha256(l, text), prior_terms_sha256: termsSha256(old),
+          ...(gaps ? {} : { previous_text: prev ? prev.commit : 'not found' }),
+          replaced: old.filter((t) => !now.has(normalize(cleanTerm(t)))),
+          ...(r.dropped.length ? { dropped: r.dropped } : {}),
+          ...(r.keptByRule.length ? { kept_by_rule: r.keptByRule } : {}),
+          ...(restored ? { title_term_restored: restored } : {}), terms,
+        };
+        Object.defineProperty(p, 'swaps', { value: r.swaps, enumerable: false }); // for the collision check; never written
+        added.set(l.id, p);
+      }
     } catch (e) {
       failed.push({ id: l.id, error: e.message });
     }
     done++;
     if (done % 10 === 0) log(`vocab: ${done}/${lessons.length} model calls finished`);
   });
-  return { added, failed };
+  if (cost > 0) log(`vocab: model calls cost $${cost.toFixed(4)} in total`);
+  return { added, failed, cost };
 }
 
 module.exports = {
-  PROPOSALS_FILE, PROPOSALS_SHA256, DEFAULT_MODEL, PROMPT_VERSION, NEW_TOPIC_SWAPS, MAX_TERMS, MAX_TERM_CHARS, MAX_TERM_WORDS, MAX_HOMES, MODEL_FLAGS,
-  cleanTerm, proposalErrors, proposalsPath, loadProposals, integrityErrors, termsSha256, inputSha256, staleProposals, renderProposals, planVocab, buildPrompt, buildUpdatePrompt, UPDATE_PROMPT_VERSION, FILL_GAPS_PROMPT_VERSION, keepTitleTerm, titleWords,
+  PROPOSALS_FILE, PROPOSALS_SHA256, DEFAULT_MODEL, PROMPT_VERSION, MAX_TERMS, MAX_TERMS_CAP, MAX_TERM_CHARS, MAX_TERM_WORDS, MAX_HOMES, MODEL_FLAGS,
+  cleanTerm, proposalErrors, proposalsPath, loadProposals, integrityErrors, termsSha256, inputSha256, staleProposals, renderProposals, planVocab, buildPrompt, buildUpdatePrompt, UPDATE_PROMPT_VERSION, FILL_GAPS_PROMPT_VERSION, parseUpdate, resolveUpdate, keepTitleTerm, titleWords,
   callModelDefault, parseTerms, generateProposals,
 };
