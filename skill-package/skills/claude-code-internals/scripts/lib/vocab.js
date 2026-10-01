@@ -35,7 +35,11 @@
  * entry without the field has UNKNOWN inputs: warned about the same way, but
  * regenerated only on request (--regen <id>). --generate re-reads the lessons
  * from disk after the model calls and aborts, writing nothing, if any
- * lesson's prompt changed while the model ran.
+ * lesson's prompt changed while the model ran. The hash covers buildPrompt()'s
+ * template text too, so editing that template marks EVERY lesson stale (each
+ * then costs one update call, which keeps its still-true terms); the
+ * prompt_version strings and buildUpdatePrompt() are not hashed, so changing
+ * them marks nothing stale.
  *
  * UPDATE, NOT REDRAW. A stale lesson that has terms is regenerated with the
  * update prompt (buildUpdatePrompt(), prompt_version UPDATE_PROMPT_VERSION):

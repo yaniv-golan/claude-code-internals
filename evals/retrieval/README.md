@@ -288,6 +288,12 @@ node --test evals/retrieval/agentic-run.test.js
   would launder a real ranking gap into a green build. Fix the ranking (a rule change in
   `prepare-lessons.js`, which derives the `keyword_map` keys; keywords are never hand-edited) or
   leave the miss recorded.
+- **Vocabulary changes are made by rule, never to pass the gate.** `prepare-lessons.js --generate`
+  updates a stale lesson's model-written terms from its previous ones (it keeps every term still
+  true, verbatim) and withholds new terms that together would make their lesson first on another
+  lesson's **dev** question (`scripts/lib/vocab-collision.js`; holdout questions are never read).
+  A gate trip after a regeneration is accepted with a new baseline or fixed by a rule change;
+  re-rolling or rewording one lesson's terms until a question ranks again is tuning.
 - **Whole-set replacement only.** `questions-vN.json` is replaced as a whole new version on a
   fixed schedule (yearly, or after 50 new lessons) — never edited piecemeal to drop an
   inconvenient question.
