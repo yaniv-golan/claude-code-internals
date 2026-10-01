@@ -1270,7 +1270,7 @@
         "desktop_asar": "1.30096.1",
         "cli": "2.1.231",
         "basis": "history",
-        "from_commit": "d5ab0c6"
+        "from_commit": "49cdbb0"
       },
       "severity": "silent",
       "durability": "durable",
@@ -1903,7 +1903,7 @@
         "desktop_asar": "1.30096.1",
         "cli": "2.1.231",
         "basis": "history",
-        "from_commit": "9638176"
+        "from_commit": "49cdbb0"
       },
       "severity": "silent",
       "durability": "durable",
