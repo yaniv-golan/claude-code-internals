@@ -162,14 +162,25 @@ index and lesson files with its own tools). None of them is gated in CI.
   the search stack before its deletion.
 - **`agentic-run.js`** (+ `agentic-run.test.js`, offline): runs a SKILL body (`arms/arm-*.md`) one
   question per `claude -p` call, against a staged copy of the skill.
-  - Tools: Read, Grep, Glob, and read-only Bash only. Permission prompts are denied rather than
-    asked.
+  - Tools: Read, Grep, Glob and plain Bash, as the shipped SKILL.md grants. Permission prompts are
+    denied rather than asked.
   - It scores the frozen read@ rule (≥50% of a lesson's range or one of its sub-ranges; a Read with
     no limit counts only lessons wholly inside its first 2000 lines; only the first 4 lessons read
     count) and cited@ (the `IDS:` line).
   - It reports Read-limit errors, permission denials, tokens, cost and latency, with Wilson
     intervals.
   - With `--baseline` it adds a paired McNemar comparison against keyword-only and fused.
+  - It also scores **what the model saw**, with `content-score.js` (+ `content-score.test.js`):
+    tool-result text is matched to unique corpus lines, so Grep with context, piped or multi-line
+    `sed`, `$VAR` paths and `fetch-lesson.js` output all count, whatever the command. Per stratum:
+    lesson@ (>= 20 lines of an acceptable lesson in one result), grounded@ (an acceptable lesson both
+    cited and seen), lesson|registry@ (or, for a registry-sourced question, its registry entry), and
+    an unjudged +any-state-section@, whose state-section-only questions need a correctness judge.
+  - `--plugin-bin <plugin>/bin` stages the plugin layout (`skills/<name>` beside `bin/`) and puts
+    `bin/` on PATH, as a CLI plugin install does, so a SKILL.md that calls the bundled launcher runs as
+    it would for a user. A SKILL.md passed as `--arm-file` has its frontmatter stripped.
+  - `--rescore` recomputes the content fields from stored transcripts without model calls; pass the
+    `--skill-dir` the run was staged from. Copy the run dir first: the summary is rewritten.
   - Results are cached per question, so a rerun resumes.
 - Real-invocation samples are local transcripts. They stay outside the repository.
 

@@ -55,6 +55,7 @@ const crypto = require('crypto');
 const CC = require('./claude-call.js');
 const lib = require('./lib.js');
 const G = require('./gen-questions.js');
+const CS = require('./content-score.js');
 
 const DEFAULT_MODEL = 'claude-sonnet-5';
 const DEFAULT_CONCURRENCY = 6;
@@ -86,7 +87,7 @@ function flagsFor(stagedDir, model) {
 // ---------------------------------------------------------------------------
 
 function parseArgs(argv) {
-  const o = { armFile: null, skillDir: null, questions: null, split: null, strata: null, out: null, baseline: null, concurrency: DEFAULT_CONCURRENCY, limit: Infinity, model: DEFAULT_MODEL, summaryOnly: false, qids: null };
+  const o = { armFile: null, skillDir: null, questions: null, split: null, strata: null, out: null, baseline: null, concurrency: DEFAULT_CONCURRENCY, limit: Infinity, model: DEFAULT_MODEL, summaryOnly: false, qids: null, pluginBin: null, rescore: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--arm-file') o.armFile = path.resolve(argv[++i]);
@@ -101,6 +102,8 @@ function parseArgs(argv) {
     else if (a === '--model') o.model = argv[++i];
     else if (a === '--qids') o.qids = argv[++i].split(',').filter(Boolean);
     else if (a === '--summary-only') o.summaryOnly = true;
+    else if (a === '--plugin-bin') o.pluginBin = path.resolve(argv[++i]);
+    else if (a === '--rescore') { o.rescore = true; o.summaryOnly = true; }
     else { process.stderr.write(`ERROR: unknown argument "${a}"\n`); process.exit(1); }
   }
   for (const k of ['armFile', 'skillDir', 'questions', 'out']) if (!o[k]) { process.stderr.write(`ERROR: --${k.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase())} is required\n`); process.exit(1); }
@@ -426,11 +429,26 @@ function summarize(records, questions, baseline) {
     const n = items.length;
     const readHits = items.filter(({ r, q }) => hitAny(r.read_counted, relOf(q))).length;
     const citeHits = items.filter(({ r, q }) => hitAny(r.ids, relOf(q))).length;
+    const scored = items.filter(({ r }) => Array.isArray(r.content_lessons));
+    const lessonHit = ({ r, q }) => hitAny(r.content_lessons, relOf(q));
+    const groundedHit = ({ r, q }) => { const rel = relOf(q); return !!(r.ids && rel && r.ids.some((id) => (rel[id] || 0) >= 1 && r.content_lessons.includes(id))); };
+    const registryHit = ({ r, q }) => !!(q.registry_id && (r.content_registry || []).includes(q.registry_id));
+    const stateSecHit = ({ r }) => (r.content_state_sections || []).length > 0;
+    const content = scored.length ? {
+      n: scored.length,
+      lesson_at: (() => { const x = scored.filter(lessonHit).length; return { k: x, ...wilson(x, scored.length) }; })(),
+      grounded_at: (() => { const x = scored.filter(groundedHit).length; return { k: x, ...wilson(x, scored.length) }; })(),
+      lesson_or_registry_at: (() => { const x = scored.filter((it) => lessonHit(it) || registryHit(it)).length; return { k: x, ...wilson(x, scored.length) }; })(),
+      // Unjudged: ANY state section read counts here, relevant or not. Read with the correctness judge.
+      lesson_or_any_state_at: (() => { const x = scored.filter((it) => lessonHit(it) || registryHit(it) || stateSecHit(it)).length; return { k: x, ...wilson(x, scored.length) }; })(),
+      state_section_only: scored.filter((it) => !lessonHit(it) && !registryHit(it) && stateSecHit(it)).map(({ q }) => q.qid),
+    } : null;
     const hasPooled = items.some(({ q }) => q.relevant_pooled);
     const row = {
       stratum, split, n,
       read_at: { k: readHits, ...wilson(readHits, n) },
       cited_at: { k: citeHits, ...wilson(citeHits, n) },
+      content,
       ...(hasPooled ? {
         read_at_pooled: (() => { const x = items.filter(({ r, q }) => hitAny(r.read_counted, q.relevant_pooled || relOf(q))).length; return { k: x, ...wilson(x, n) }; })(),
       } : {}),
@@ -476,17 +494,32 @@ const sha256 = (b) => crypto.createHash('sha256').update(b).digest('hex');
 
 /** The prompt for one question (pure). */
 function buildPrompt(armText, question, stagedDir) {
-  let body = armText.split('${CLAUDE_SKILL_DIR}').join(stagedDir);
+  // A SKILL.md used as an arm carries YAML frontmatter; the runtime never shows it to the fork.
+  const text = armText.replace(/^---\n[\s\S]*?\n---\n/, '');
+  let body = text.split('${CLAUDE_SKILL_DIR}').join(stagedDir);
   const q = String(question).replace(/\s+/g, ' ').trim();
   body = body.includes('$ARGUMENTS') ? body.split('$ARGUMENTS').join(q) : `${body.trimEnd()}\n\nTopic requested: ${q}`;
   return `Base directory for this skill: ${stagedDir}\n\n${body.trimEnd()}\n\n${IDS_INSTRUCTION}\n`;
 }
 
-function stageSkill(skillDir) {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'cci-agentic-'));
-  const staged = path.join(fs.realpathSync(root), path.basename(skillDir));
-  fs.cpSync(skillDir, staged, { recursive: true, filter: (src) => !/\/(node_modules|\.git)(\/|$)/.test(src) });
-  return staged;
+/**
+ * Copy the skill to a temp dir. With pluginBin, stage the plugin layout a CLI install has —
+ * <root>/skills/<name> beside <root>/bin — so the bundled launcher resolves its scripts, and return
+ * the bin dir to put on PATH (a standard CLI install puts plugin bin/ on the Bash tool's PATH).
+ */
+function stageSkill(skillDir, pluginBin) {
+  const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'cci-agentic-')));
+  const filter = (src) => !/\/(node_modules|\.git)(\/|$)/.test(src);
+  if (!pluginBin) {
+    const staged = path.join(root, path.basename(skillDir));
+    fs.cpSync(skillDir, staged, { recursive: true, filter });
+    return { staged, binDir: null, root };
+  }
+  const staged = path.join(root, 'skills', path.basename(skillDir));
+  fs.cpSync(skillDir, staged, { recursive: true, filter });
+  const binDir = path.join(root, 'bin');
+  fs.cpSync(pluginBin, binDir, { recursive: true });
+  return { staged, binDir, root };
 }
 
 async function runOne(q, ctx) {
@@ -495,11 +528,12 @@ async function runOne(q, ctx) {
   const prompt = buildPrompt(ctx.armText, q.text, ctx.staged);
   const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'cci-agentic-cwd-'));
   const t0 = Date.now();
-  const r = await CC.spawnClaude(prompt, flagsFor(ctx.staged, ctx.model), { cwd, timeoutMs: TIMEOUT_MS });
+  const env = ctx.binDir ? { PATH: `${ctx.binDir}${path.delimiter}${process.env.PATH}` } : undefined;
+  const r = await CC.spawnClaude(prompt, flagsFor(ctx.staged, ctx.model), { cwd, timeoutMs: TIMEOUT_MS, env });
   fs.rmSync(cwd, { recursive: true, force: true });
   fs.writeFileSync(path.join(ctx.out, `${q.qid}.stream.jsonl`), r.stdout);
   const events = r.stdout.split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
-  const parsed = parseTranscript(events, ctx.staged, ctx.ranges);
+  const parsed = { ...parseTranscript(events, ctx.staged, ctx.ranges), ...CS.scoreTranscript(events, ctx.corpus) };
   CC.record({ tag: 'agentic-run', model: ctx.model, cost_usd: parsed.cost_usd, ms: Date.now() - t0, code: r.code, qid: q.qid, ...(parsed.usage || {}) });
   const rec = { qid: q.qid, stratum: q.stratum, split: q.split, exit_code: r.code, wall_ms: Date.now() - t0, stderr: r.stderr.slice(0, 2000), ...parsed };
   if (r.code !== 0 || !events.some((e) => e.type === 'result')) {
@@ -521,6 +555,10 @@ function printTable(rows) {
   console.log('stratum     split     n   read@ [95% CI]          cited@ [95% CI]         rlimErr perm  $med   calls');
   for (const r of rows) {
     console.log(`${r.stratum.padEnd(11)} ${r.split.padEnd(8)} ${String(r.n).padStart(3)}  ${ci(r.read_at)}  ${ci(r.cited_at)}  ${String(r.read_limit_errors).padStart(6)} ${String(r.permission_denials).padStart(4)}  ${(r.median_cost_usd || 0).toFixed(3)}  ${r.median_tool_calls}`);
+    if (r.content) {
+      const c = r.content;
+      console.log(`    content (n=${c.n}): lesson@ ${pct(c.lesson_at.p)}  grounded@ ${pct(c.grounded_at.p)}  lesson|registry@ ${pct(c.lesson_or_registry_at.p)}  +any-state-section@ ${pct(c.lesson_or_any_state_at.p)}  state-section-only ${c.state_section_only.length}`);
+    }
     for (const [arm, p] of Object.entries(r.paired || {})) {
       console.log(`    vs ${arm.padEnd(7)} n=${p.n} agent ${pct(p.agent.p)} search ${pct(p.search.p)} agent-only ${p.agent_only} search-only ${p.search_only} net ${p.net >= 0 ? '+' : ''}${p.net} McNemar p=${p.mcnemar_p.toFixed(3)}`);
     }
@@ -543,6 +581,8 @@ async function main() {
     arm_file: path.basename(o.armFile), arm_sha256: armSha, skill_dir: o.skillDir, questions_file: path.basename(o.questions), questions_sha256: sha256(qRaw),
     split: o.split, strata: o.strata, model: o.model, read_rule: { cover_fraction: COVER_FRACTION, read_cap: READ_CAP, read_default_lines: READ_DEFAULT_LINES, head_default_lines: HEAD_DEFAULT_LINES },
     ids_instruction: IDS_INSTRUCTION, allowed_tools: ALLOWED_TOOLS,
+    plugin_bin: o.pluginBin ? path.basename(path.dirname(o.pluginBin)) + '/bin' : null,
+    content_rule: { min_chars: CS.MIN_CHARS, min_lines: CS.MIN_LINES, gap: CS.GAP },
   };
   if (fs.existsSync(metaFile)) {
     const prev = JSON.parse(fs.readFileSync(metaFile, 'utf8'));
@@ -550,12 +590,13 @@ async function main() {
   }
   let records = [];
   if (!o.summaryOnly) {
-    const staged = stageSkill(o.skillDir);
+    const { staged, binDir, root } = stageSkill(o.skillDir, o.pluginBin);
     const ranges = loadRanges(staged);
+    const corpus = CS.buildCorpus(staged);
     meta.flags = flagsFor('<staged>', o.model).join(' ');
     meta.lessons_in_index = ranges.lessons.length;
     fs.writeFileSync(metaFile, JSON.stringify({ ...meta, started_at: new Date().toISOString() }, null, 1) + '\n');
-    const ctx = { out: o.out, armText, staged, ranges, model: o.model };
+    const ctx = { out: o.out, armText, staged, binDir, ranges, corpus, model: o.model };
     let budgetStop = null;
     records = await G.mapPool(ordered, o.concurrency, async (q) => {
       if (budgetStop) return null;
@@ -565,10 +606,21 @@ async function main() {
       }
     });
     if (budgetStop) process.stderr.write(`stopped: ${budgetStop}\n`);
-    fs.rmSync(path.dirname(staged), { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true });
   }
   // Summary over every cached record of the selected questions (so --summary-only and resumes agree).
   records = ordered.map((q) => path.join(o.out, `${q.qid}.json`)).filter((f) => fs.existsSync(f)).map((f) => JSON.parse(fs.readFileSync(f, 'utf8')));
+  // --rescore: (re)compute the content-matched fields from each stored transcript against --skill-dir,
+  // which must be the tree the run was staged from. Nothing is written back to the records.
+  if (o.rescore) {
+    const corpus = CS.buildCorpus(o.skillDir);
+    records = records.map((r) => {
+      const sf = path.join(o.out, `${r.qid}.stream.jsonl`);
+      if (!fs.existsSync(sf)) return r;
+      const events = fs.readFileSync(sf, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+      return { ...r, ...CS.scoreTranscript(events, corpus) };
+    });
+  }
   const rows = summarize(records, qdoc.questions, baseline);
   const summary = { ...meta, generated_at: new Date().toISOString(), selected: ordered.length, completed: records.length, baseline_file: o.baseline ? path.basename(o.baseline) : null, rows };
   fs.writeFileSync(path.join(o.out, 'summary.json'), JSON.stringify(summary, null, 1) + '\n');
@@ -579,7 +631,7 @@ async function main() {
 module.exports = {
   READ_CAP, IDS_INSTRUCTION, ALLOWED_TOOLS, flagsFor,
   parseIndex, loadRanges, lessonsCovered, refFile, shellSegments, shellWords, bashReadSpans,
-  parseTranscript, parseIds, wilson, mcnemarExact, summarize, buildPrompt, selectQuestions, relevanceOf,
+  parseTranscript, parseIds, wilson, mcnemarExact, summarize, buildPrompt, selectQuestions, relevanceOf, stageSkill,
 };
 
 if (require.main === module) {
