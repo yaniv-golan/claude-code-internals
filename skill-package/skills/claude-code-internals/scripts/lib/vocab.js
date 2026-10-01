@@ -25,16 +25,35 @@
  * pass come from the phase-3 prototype run (model claude-opus-5-5, prompt
  * vocab-v1, 2026-09-28).
  *
- * STALENESS. `input_sha256` is the sha256 of the exact prompt the model was
- * sent (buildPrompt(): the template, the lesson title and summary, and the
- * lesson text as truncated at LESSON_TEXT_LIMIT). When the lesson's current
- * prompt hashes differently, its proposal is STALE: `build.js --check` and
+ * STALENESS. `input_sha256` is the sha256 of the lesson's FRESH prompt
+ * (buildPrompt(): the template, the lesson title and summary, and the lesson
+ * text as truncated at LESSON_TEXT_LIMIT), whichever prompt was sent: it
+ * identifies the lesson text the terms describe. When the lesson's current
+ * fresh prompt hashes differently, its proposal is STALE: `build.js --check` and
  * `prepare-lessons.js --check` warn, naming the lesson (a warning, not a
  * failure: a prose edit must not fail CI), and `--generate` regenerates it. An
  * entry without the field has UNKNOWN inputs: warned about the same way, but
  * regenerated only on request (--regen <id>). --generate re-reads the lessons
  * from disk after the model calls and aborts, writing nothing, if any
- * lesson's prompt changed while the model ran. (The 218 first-pass entries
+ * lesson's prompt changed while the model ran.
+ *
+ * UPDATE, NOT REDRAW. A stale lesson that has terms is regenerated with the
+ * update prompt (buildUpdatePrompt(), prompt_version UPDATE_PROMPT_VERSION):
+ * its previous terms plus its current text, keeping every term still true,
+ * copied exactly, and replacing only the ones the text no longer supports. A
+ * fresh draw replaces 12-15 of 15 terms even when nothing they say became false,
+ * and keyword hits are exact tokens, so a reworded term ("save" for "saving")
+ * silently stops matching the questions the old one carried. Such an entry
+ * also records `prior_terms_sha256` (termsSha256() of the previous terms).
+ * The fresh prompt is used for a lesson without terms, for --regen, and for
+ * every stale lesson under --fresh.
+ *
+ * WITHHELD TERMS. At generation, lib/vocab-collision.js withholds a new term
+ * that would make its lesson first on a gated dev question of another lesson.
+ * The entry keeps the model's `terms` unfiltered and records `withheld`
+ * ([{term, qid}]) and `collision_check` (what it ran against, or why it was
+ * skipped); planVocab() drops withheld terms on every derivation (rule 4,
+ * reason "withheld at generation"). (The 218 first-pass entries
  * carry the hash of the current lessons: the prototype's prompt builder and
  * lesson text, at commit 55c5dca, are byte-identical to today's.)
  *
@@ -55,6 +74,7 @@
  *       MAX_HOMES (it names no lesson in particular); with at most MAX_HOMES the
  *       key maps to all of them, in lesson order, spelled as the first lesson
  *       wrote it.
+ *   4e. the proposal lists it as withheld at generation (WITHHELD TERMS above).
  * Survivors are appended after the identifier keys, in order of first
  * proposal. Each lesson records its keys in `vocab_keys` and the proposal's
  * {model, prompt_version, date, terms_sha256} in `vocab` (terms_sha256 = sha256
@@ -77,6 +97,7 @@ const PROPOSALS_FILE = 'data/vocab-proposals.json'; // relative to the repositor
 const PROPOSALS_SHA256 = '58c920c90baab7c50e5f8b532d673f6253da2457a985d8d77ccbc3aa9ecbcb82';
 const DEFAULT_MODEL = 'claude-opus-5-5'; // evals/retrieval/gen-questions.js used claude-sonnet-5
 const PROMPT_VERSION = 'vocab-v1';
+const UPDATE_PROMPT_VERSION = 'vocab-v2-update'; // buildUpdatePrompt(): prior terms + current text
 const MAX_TERMS = 15;
 const MAX_TERM_CHARS = 80;
 const MAX_TERM_WORDS = 12;
@@ -105,6 +126,11 @@ function proposalErrors(data) {
     else if (!p || typeof p.model !== 'string' || typeof p.prompt_version !== 'string' || typeof p.date !== 'string'
       || !Array.isArray(p.terms) || !p.terms.every((t) => typeof t === 'string')) errs.push(`lesson ${id}: needs {model, prompt_version, date, terms: string[]}`);
     else if (p.input_sha256 !== undefined && !/^[0-9a-f]{64}$/.test(p.input_sha256)) errs.push(`lesson ${id}: input_sha256 must be a sha256 hex digest`);
+    else if (p.prior_terms_sha256 !== undefined && !/^[0-9a-f]{64}$/.test(p.prior_terms_sha256)) errs.push(`lesson ${id}: prior_terms_sha256 must be a sha256 hex digest`);
+    else if (p.collision_check !== undefined && typeof p.collision_check !== 'string') errs.push(`lesson ${id}: collision_check must be a string`);
+    else if (p.withheld !== undefined && !(Array.isArray(p.withheld) && p.withheld.every((w) => w && typeof w.term === 'string' && typeof w.qid === 'string'))) {
+      errs.push(`lesson ${id}: withheld must be [{term, qid}]`);
+    }
   }
   return errs;
 }
@@ -188,7 +214,10 @@ function renderProposals(byId) {
     const p = byId.get(id);
     const e = { model: p.model, prompt_version: p.prompt_version, date: p.date };
     if (p.input_sha256 !== undefined) e.input_sha256 = p.input_sha256;
+    if (p.prior_terms_sha256 !== undefined) e.prior_terms_sha256 = p.prior_terms_sha256;
+    if (p.collision_check !== undefined) e.collision_check = p.collision_check;
     e.terms = p.terms.slice();
+    if (p.withheld !== undefined) e.withheld = p.withheld.map((w) => ({ term: w.term, qid: w.qid }));
     lessons[String(id)] = e;
   }
   return JSON.stringify({ format: 1, lessons }, null, 2) + '\n';
@@ -221,6 +250,7 @@ function planVocab(lessons, state, handKw, byId) {
     if (!p) { missing.push(l.id); continue; }
     stamps.set(l.id, { model: p.model, prompt_version: p.prompt_version, date: p.date, terms_sha256: termsSha256(p.terms) });
     const seen = new Set();
+    const withheld = new Set((p.withheld || []).map((w) => normalize(cleanTerm(w.term))));
     for (const rawTerm of p.terms.slice(0, MAX_TERMS)) {
       proposed++;
       const term = cleanTerm(rawTerm);
@@ -232,7 +262,8 @@ function planVocab(lessons, state, handKw, byId) {
               : /`/.test(rawTerm) || extractIdentifiers(rawTerm).some((i) => i.kind !== 'code-span') ? 'contains an identifier'
                 : state.map.has(term) || state.byNorm.has(n) ? 'already a key'
                   : seen.has(n) ? 'repeated in the lesson'
-                    : null;
+                    : withheld.has(n) ? 'withheld at generation (collision)'
+                      : null;
       if (why) { drop(why); continue; }
       seen.add(n);
       if (!byNorm.has(n)) byNorm.set(n, { key: term, lessons: [] });
@@ -267,6 +298,45 @@ function buildPrompt(lesson, text) {
     '- Do not copy the lesson title or its headings; say it the way a user would.',
     '- Each term must be specific to this lesson, not true of the whole product.',
     '- Output ONLY a JSON object: {"terms": ["...", "..."]}',
+    '',
+    `LESSON TITLE: ${lesson.title}`,
+    lesson.description ? `SUMMARY: ${lesson.description}` : '',
+    '',
+    'LESSON TEXT:',
+    text.length > LESSON_TEXT_LIMIT ? text.slice(0, LESSON_TEXT_LIMIT) + '\n[...truncated]' : text,
+  ].join('\n');
+}
+
+/**
+ * The UPDATE prompt (UPDATE_PROMPT_VERSION): a stale lesson's previous terms plus
+ * its current text. The model keeps every term the text still supports, copied
+ * exactly, and replaces only the ones it no longer supports, so a prose edit
+ * moves the vocabulary by what changed, not by a fresh draw of 15 phrasings.
+ * The lesson part (title, summary, text) is the same as buildPrompt()'s.
+ */
+function buildUpdatePrompt(lesson, text, priorTerms) {
+  return [
+    'You are helping index a technical reference so people can find the right lesson with the',
+    'words they would actually type. Below is one lesson from a reference about how Claude Code',
+    '(Anthropic\'s CLI coding agent) and Claude Cowork work internally.',
+    '',
+    'The lesson was edited. Before the edit, these search terms were written for it:',
+    ...priorTerms.map((t) => `- ${t}`),
+    '',
+    'Update that list for the lesson as it reads NOW:',
+    '- KEEP every term that is still true of the lesson and still a fair way to ask for it. Copy a',
+    '  kept term EXACTLY, character for character: same words, same word forms, same order. Do not',
+    '  shorten, reword, re-tense or tidy it. Small wording changes are not improvements here: people',
+    '  type the old wording and the search matches words exactly.',
+    '- REPLACE only a term that the edited lesson no longer supports (it now states something',
+    '  different, or no longer covers that topic), with a new term for what the lesson now says.',
+    `- You may add terms for genuinely new content, up to ${MAX_TERMS} terms in total.`,
+    '- New terms follow the original rules: plain words a user who has NOT read the lesson would',
+    '  type, short phrases (2-6 words) or short questions (at most 12 words); no identifiers of any',
+    '  kind (no environment variable names, code, function or tool names, file names, numeric ids,',
+    '  version numbers, slash commands or backticks); not the lesson title or its headings; specific',
+    '  to this lesson, not true of the whole product.',
+    '- Output ONLY a JSON object: {"terms": ["...", "..."]}, kept terms first in their old order.',
     '',
     `LESSON TITLE: ${lesson.title}`,
     lesson.description ? `SUMMARY: ${lesson.description}` : '',
@@ -315,21 +385,27 @@ async function mapPool(items, concurrency, fn) {
 
 /**
  * Ask the model for proposals for `lessons`. Returns {added: Map(id -> proposal),
- * failed: [{id, error}]}; failures are left for the next run. Each proposal
- * records input_sha256, the hash of the prompt actually sent (the caller
- * re-verifies it against the lessons on disk before accepting the output).
- * `callModel` is injectable for tests.
+ * failed: [{id, error}]}; failures are left for the next run. A lesson in
+ * `prior` (id -> its previous terms) gets the UPDATE prompt and records
+ * prior_terms_sha256; the others get the fresh prompt. Each proposal records
+ * input_sha256 = inputSha256() of the lesson as sent, which for a fresh prompt is
+ * the hash of the prompt itself (the caller re-verifies it against the lessons on
+ * disk before accepting the output). `callModel` is injectable for tests.
  */
-async function generateProposals(lessons, lessonText, { model = DEFAULT_MODEL, concurrency = 4, callModel = callModelDefault, date, log = () => {} } = {}) {
+async function generateProposals(lessons, lessonText, { model = DEFAULT_MODEL, concurrency = 4, callModel = callModelDefault, date, log = () => {}, prior = new Map() } = {}) {
   const added = new Map();
   const failed = [];
   const today = date || new Date().toISOString().slice(0, 10);
   let done = 0;
   await mapPool(lessons, concurrency, async (l) => {
     try {
-      const prompt = buildPrompt(l, lessonText(l));
+      const text = lessonText(l);
+      const old = prior.get(l.id);
+      const prompt = old ? buildUpdatePrompt(l, text, old) : buildPrompt(l, text);
       const terms = parseTerms(await callModel(prompt, { model }));
-      added.set(l.id, { model, prompt_version: PROMPT_VERSION, date: today, input_sha256: sha256(prompt), terms });
+      added.set(l.id, old
+        ? { model, prompt_version: UPDATE_PROMPT_VERSION, date: today, input_sha256: inputSha256(l, text), prior_terms_sha256: termsSha256(old), terms }
+        : { model, prompt_version: PROMPT_VERSION, date: today, input_sha256: sha256(prompt), terms });
     } catch (e) {
       failed.push({ id: l.id, error: e.message });
     }
@@ -341,6 +417,6 @@ async function generateProposals(lessons, lessonText, { model = DEFAULT_MODEL, c
 
 module.exports = {
   PROPOSALS_FILE, PROPOSALS_SHA256, DEFAULT_MODEL, PROMPT_VERSION, MAX_TERMS, MAX_TERM_CHARS, MAX_TERM_WORDS, MAX_HOMES, MODEL_FLAGS,
-  cleanTerm, proposalErrors, proposalsPath, loadProposals, integrityErrors, termsSha256, inputSha256, staleProposals, renderProposals, planVocab, buildPrompt,
+  cleanTerm, proposalErrors, proposalsPath, loadProposals, integrityErrors, termsSha256, inputSha256, staleProposals, renderProposals, planVocab, buildPrompt, buildUpdatePrompt, UPDATE_PROMPT_VERSION,
   callModelDefault, parseTerms, generateProposals,
 };

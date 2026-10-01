@@ -987,8 +987,11 @@ test('--generate asks the model only for lessons without proposals, adds them, a
   const loaded = P.load(dir);
   for (const id of [12, 107]) {
     const l = loaded.topic.lessons.find((x) => x.id === id);
+    // A lesson without terms gets the fresh prompt; outside a repository (no evals/) the collision
+    // check cannot run, and the proposal says so.
     assert.deepStrictEqual(after.byId.get(id), { model: V.DEFAULT_MODEL, prompt_version: V.PROMPT_VERSION, date: '2026-09-28',
-      input_sha256: V.inputSha256(l, loaded.lessonText(l)), terms: ['a stubbed phrase for testing', 'CLAUDE_CODE_NOPE is dropped'] });
+      input_sha256: V.inputSha256(l, loaded.lessonText(l)), collision_check: 'skipped: no evals/retrieval next to the skill package',
+      terms: ['a stubbed phrase for testing', 'CLAUDE_CODE_NOPE is dropped'] });
   }
   const t = topicOf(dir);
   assert.deepStrictEqual(t.keyword_map['a stubbed phrase for testing'], [12, 107]);
@@ -1048,7 +1051,8 @@ test('a lesson edited after its vocabulary was generated: --check warns by id (n
   assert.strictEqual(res.errors.filter((e) => /changed since their vocabulary proposal/.test(e)).length, blocks ? 1 : 0);
   assert.strictEqual(res.warnings.length, blocks ? 0 : 1);
   if (!blocks) assert.deepStrictEqual(res.errors, []);
-  // --generate (no --regen) regenerates the stale lesson, and only it, from the edited text
+  // --generate (no --regen) UPDATES the stale lesson, and only it: its previous terms plus the edited text
+  const priorTerms = loadProposals(dir).byId.get(89).terms;
   const prompts = [];
   const callModel = async (prompt) => { prompts.push(prompt); return stubTerms(['a regenerated phrase for testing'])(); };
   const lines = [];
@@ -1056,8 +1060,17 @@ test('a lesson edited after its vocabulary was generated: --check warns by id (n
   assert.strictEqual(prompts.length, 1, lines.join('\n'));
   assert.match(prompts[0], new RegExp(`LESSON TITLE: ${l89.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
   assert.ok(prompts[0].includes(` ${word} quite `), 'the prompt carries the edited text');
+  for (const t of priorTerms) assert.ok(prompts[0].includes(`\n- ${t}\n`), `the update prompt lists the previous term "${t}"`);
+  assert.match(prompts[0], /KEEP every term that is still true/);
+  assert.ok(lines.some((l) => /1 proposal\(s\) are stale .* updated from their previous terms: 89/.test(l)), lines.join('\n'));
   const after = loadProposals(dir);
-  assert.strictEqual(after.byId.get(89).input_sha256, require('crypto').createHash('sha256').update(prompts[0]).digest('hex'));
+  const l89now = P.load(dir).topic.lessons.find((x) => x.id === 89);
+  // input_sha256 identifies the lesson text (the fresh prompt's hash), not the update prompt sent,
+  // so the updated proposal is current at once.
+  assert.strictEqual(after.byId.get(89).input_sha256, V.inputSha256(l89now, P.load(dir).lessonText(l89now)));
+  assert.notStrictEqual(after.byId.get(89).input_sha256, require('crypto').createHash('sha256').update(prompts[0]).digest('hex'));
+  assert.strictEqual(after.byId.get(89).prompt_version, V.UPDATE_PROMPT_VERSION);
+  assert.strictEqual(after.byId.get(89).prior_terms_sha256, V.termsSha256(priorTerms));
   assert.deepStrictEqual(after.byId.get(89).terms, ['a regenerated phrase for testing']);
   const now = P.checkLessons({ raw: fs.readFileSync(topicPath(dir), 'utf8'), lessonText: P.load(dir).lessonText, hand: HAND, proposals: after, proposalsPin: after.sha256 });
   assert.deepStrictEqual([now.errors, now.warnings], [[], []]);
@@ -1164,4 +1177,93 @@ test('--generate command line: default model, flags parsed, never part of --chec
   assert.deepStrictEqual(P.parseArgs(['--regen', '3,4']).regen, [3, 4]);
   assert.throws(() => P.parseArgs(['--regen', 'x']));
   assert.deepStrictEqual(V.MODEL_FLAGS, ['--safe-mode', '--setting-sources', 'project', '--tools', '']);
+});
+
+// --- update mode, --fresh, and the collision check ----------------------------------------
+
+test('--fresh and --regen redraw a stale lesson with the fresh prompt', async () => {
+  for (const opts of [{ fresh: true }, { regen: [89] }]) {
+    const dir = fixture();
+    editLessonLine(dir, 89, ' the ', ' the quite ');
+    assert.strictEqual(run(BUILD, ['--root', dir]).code, 0);
+    const pin = freshen(dir, [89]);
+    const prompts = [];
+    const callModel = async (prompt) => { prompts.push(prompt); return stubTerms(['a redrawn phrase for testing'])(); };
+    await P.runGenerate(dir, { proposalsPin: pin, ...opts }, { callModel, questions: null }, () => {});
+    assert.strictEqual(prompts.length, 1, JSON.stringify(opts));
+    assert.doesNotMatch(prompts[0], /KEEP every term/, JSON.stringify(opts));
+    const p = loadProposals(dir).byId.get(89);
+    assert.strictEqual(p.prompt_version, V.PROMPT_VERSION);
+    assert.strictEqual(p.prior_terms_sha256, undefined);
+    assert.strictEqual(p.input_sha256, require('crypto').createHash('sha256').update(prompts[0]).digest('hex'));
+  }
+  assert.throws(() => P.parseArgs(['--fresh']), /--fresh only applies to --generate/);
+});
+
+test('the proposals file keeps prior_terms_sha256, collision_check and withheld through render and load', () => {
+  const byId = new Map([[7, { model: 'm', prompt_version: V.UPDATE_PROMPT_VERSION, date: 'd', input_sha256: 'a'.repeat(64),
+    prior_terms_sha256: 'b'.repeat(64), collision_check: 'questions-v2.json dev', terms: ['x y', 'z w'], withheld: [{ term: 'z w', qid: 'pl-0001' }] }]]);
+  const text = V.renderProposals(byId);
+  assert.deepStrictEqual(V.proposalErrors(JSON.parse(text)), []);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cci-props-'));
+  SCRATCH.push(dir);
+  fs.writeFileSync(path.join(dir, 'p.json'), text);
+  assert.deepStrictEqual(V.loadProposals(dir, path.join(dir, 'p.json')).byId.get(7), byId.get(7));
+  assert.match(V.proposalErrors({ lessons: { 7: { ...byId.get(7), withheld: [{ term: 'x' }] } } }).join('\n'), /withheld must be/);
+});
+
+test('planVocab drops a withheld term', () => {
+  const state = { map: new Map(), byNorm: new Map() };
+  const prop = { model: 'm', prompt_version: 'v', date: 'd', terms: ['kept phrase here', 'withheld phrase here'], withheld: [{ term: 'Withheld phrase here?', qid: 'q' }] };
+  const r = V.planVocab([{ id: 1 }], state, new Map(), new Map([[1, prop]]));
+  assert.deepStrictEqual(r.derived.map((d) => d.key), ['kept phrase here']);
+  assert.deepStrictEqual(r.report.dropped, { 'withheld at generation (collision)': 1 });
+});
+
+test('collision check: a new term that takes another lesson\'s dev question is withheld; kept terms and acceptable lessons are not', () => {
+  const C = require(path.join(SKILL_DIR, 'scripts', 'lib', 'vocab-collision.js'));
+  const topic = JSON.parse(fs.readFileSync(path.join(SKILL_DIR, 'references', 'topic-index.json'), 'utf8'));
+  const odd = 'zebra quokka marmalade';
+  const qs = [
+    { qid: 'pl-9001', text: `why does ${odd} happen`, lesson_id: 12, relevant: { 12: 2 } },
+    { qid: 'pl-9002', text: `why does ${odd} happen`, lesson_id: 12, relevant: { 12: 2, 89: 1 } },
+  ];
+  const cand = [{ term: odd, key: odd }, { term: 'an unrelated phrase nobody asks', key: 'an unrelated phrase nobody asks' }];
+  assert.deepStrictEqual(C.findCollisions({ topic, lessonId: 89, candidates: cand, keptKeys: [], questions: qs }), [{ term: odd, qid: 'pl-9001' }]);
+  // Lesson 89 acceptable for the only question: nothing to withhold.
+  assert.deepStrictEqual(C.findCollisions({ topic, lessonId: 89, candidates: cand, keptKeys: [], questions: [qs[1]] }), []);
+  // Already first without the term (a kept term carries it): the new term takes nothing.
+  assert.deepStrictEqual(C.findCollisions({ topic, lessonId: 89, candidates: [cand[0]], keptKeys: [odd], questions: qs }), []);
+  // A term planVocab drops anyway (key null) is never simulated.
+  assert.deepStrictEqual(C.findCollisions({ topic, lessonId: 89, candidates: [{ term: odd, key: null }], keptKeys: [], questions: qs }), []);
+});
+
+test('collision check reads only dev identifier/plain questions of the current gated set', (t) => {
+  const C = require(path.join(SKILL_DIR, 'scripts', 'lib', 'vocab-collision.js'));
+  const q = C.loadDevQuestions(SKILL_DIR);
+  if (!q.questions) { t.skip(q.reason); return; }
+  const lib = require(path.join(SKILL_DIR, '..', '..', '..', 'evals', 'retrieval', 'lib.js'));
+  const all = JSON.parse(fs.readFileSync(path.join(SKILL_DIR, '..', '..', '..', 'evals', 'retrieval', lib.CURRENT_QUESTIONS), 'utf8')).questions;
+  const dev = all.filter((x) => (x.stratum === 'identifier' || x.stratum === 'plain') && x.split === 'dev').map((x) => x.qid);
+  assert.deepStrictEqual(q.questions.map((x) => x.qid), dev);
+  assert.ok(all.some((x) => x.split === 'holdout'), 'control: the set has holdout questions to leave out');
+  assert.strictEqual(q.source, `${lib.CURRENT_QUESTIONS} dev`);
+});
+
+test('--generate records the collision check and withholds a colliding new term from the derived keys', async () => {
+  const dir = fixture();
+  editLessonLine(dir, 89, ' the ', ' the quite ');
+  assert.strictEqual(run(BUILD, ['--root', dir]).code, 0);
+  const pin = freshen(dir, [89]);
+  const prior = loadProposals(dir).byId.get(89).terms.slice(0, V.MAX_TERMS - 1); // room for one new term
+  const odd = 'zebra quokka marmalade';
+  const questions = [{ qid: 'pl-9001', text: `why does ${odd} happen`, lesson_id: 12, relevant: { 12: 2 } }];
+  const lines = [];
+  await P.runGenerate(dir, { proposalsPin: pin }, { callModel: stubTerms([...prior, odd]), questions }, (l) => lines.push(l));
+  const p = loadProposals(dir).byId.get(89);
+  assert.strictEqual(p.collision_check, 'injected questions');
+  assert.deepStrictEqual(p.withheld, [{ term: odd, qid: 'pl-9001' }]);
+  assert.deepStrictEqual(p.terms, [...prior, odd], 'terms stay the model output, unfiltered');
+  assert.ok(!(odd in topicOf(dir).keyword_map), 'a withheld term is never a key');
+  assert.ok(lines.some((l) => /lesson 89: withheld 1 new term/.test(l)), lines.join('\n'));
 });

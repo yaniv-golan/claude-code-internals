@@ -50,12 +50,15 @@
  *   node scripts/prepare-lessons.js [identifiers]   derive and write the generated keys (identifiers + vocabulary)
  *   node scripts/prepare-lessons.js --check         offline, no git; exit 1 unless the stored state is the derived one
  *   node scripts/prepare-lessons.js --generate      MODEL CALLS: add vocabulary proposals for lessons that have
- *                                                   none and regenerate STALE ones (the lesson changed since;
- *                                                   lib/vocab.js), then derive (--model M, default
+ *                                                   none and UPDATE stale ones (the lesson changed since: the
+ *                                                   model gets the old terms and keeps every one still true;
+ *                                                   lib/vocab.js), withhold new terms that would take another
+ *                                                   lesson's dev question (lib/vocab-collision.js), then derive (--model M, default
  *                                                   claude-opus-5-5; --concurrency N). Refuses to start unless
  *                                                   data/vocab-proposals.json is the pinned file (PROPOSALS_SHA256)
  *   node scripts/prepare-lessons.js --regen <ids>   MODEL CALLS: as --generate, and also replace those lessons'
- *                                                   proposals deliberately
+ *                                                   proposals deliberately, with a fresh draw
+ *   --fresh               with --generate: redraw stale lessons from scratch instead of updating them
  *   --bootstrap           with --generate/--regen: accept a proposals file that is
  *                         missing (the first-ever run) or not the pinned one (an
  *                         intentional re-pin, after inspecting its diff). Never
@@ -161,7 +164,7 @@ const { compileKey, keyHitsToken, surfaceTokens: keySurfaceTokens, MIN_SUBSTRING
 const { tokenizeQuery } = require('./lib/tfidf-index.js');
 const {
   PROPOSALS_FILE, PROPOSALS_SHA256, DEFAULT_MODEL, loadProposals, integrityErrors, renderProposals, planVocab, generateProposals,
-  inputSha256, staleProposals,
+  inputSha256, staleProposals, cleanTerm, MAX_TERMS, MAX_TERM_CHARS, MAX_TERM_WORDS,
 } = require('./lib/vocab.js');
 const {
   BOUNDARY_FIELD, loadHandSource, handSourceErrors, projectHand, handTopic,
@@ -779,6 +782,7 @@ function parseArgs(argv) {
     else if (a === '--concurrency') { opts.concurrency = parseInt(need(a, argv[++i]), 10); if (!(opts.concurrency > 0)) throw new Error('--concurrency must be a positive integer'); }
     else if (a === '--dry-run') opts.dryRun = true;
     else if (a === '--bootstrap') opts.bootstrap = true;
+    else if (a === '--fresh') opts.fresh = true;
     else if (a === '--accept-unreachable') opts.acceptUnreachable = true;
     else if (a === '--root') { if (!argv[i + 1]) throw new Error('--root needs a skill directory'); opts.root = path.resolve(argv[++i]); }
     else if (a === '--report') { if (!argv[i + 1]) throw new Error('--report needs a file'); opts.reportFile = path.resolve(argv[++i]); }
@@ -786,6 +790,7 @@ function parseArgs(argv) {
     else throw new Error(`unknown argument "${a}"`);
   }
   if (opts.bootstrap && !opts.generate) throw new Error('--bootstrap only applies to --generate / --regen');
+  if (opts.fresh && !opts.generate) throw new Error('--fresh only applies to --generate');
   return opts;
 }
 
@@ -807,6 +812,49 @@ function parseArgs(argv) {
  * scripts/lib/vocab.js must be set to it (build.js --check fails until then).
  * deps.callModel is a test hook.
  */
+/**
+ * The collision check (lib/vocab-collision.js) on freshly generated proposals, in
+ * place: each gets `collision_check` and, when a term is withheld, `withheld`.
+ * A term is NEW when its normalized form is not among the lesson's previous terms;
+ * kept terms are never checked. deps.questions (tests) replaces the repository's
+ * dev questions; null means the check cannot run here.
+ */
+function withholdCollisions(skillDir, topic, added, prior, questionsDep, log) {
+  const { loadDevQuestions, findCollisions } = require('./lib/vocab-collision.js');
+  const { normalize } = require('./lib/identifiers.js');
+  const q = questionsDep !== undefined
+    ? (questionsDep ? { questions: questionsDep, source: 'injected questions' } : { questions: null, reason: 'no questions' })
+    : loadDevQuestions(skillDir);
+  if (!q.questions) {
+    log(`vocab: WARNING: collision check skipped (${q.reason}); the proposals record it`);
+    for (const p of added.values()) p.collision_check = `skipped: ${q.reason}`;
+    return;
+  }
+  // A term planVocab() would drop anyway is never simulated (key null).
+  const keyOf = (raw) => {
+    const t = cleanTerm(raw);
+    const n = normalize(t);
+    if (!n || t.length > MAX_TERM_CHARS || n.split(' ').length > MAX_TERM_WORDS || /[^\x20-\x7e]/.test(t) || /`/.test(raw)) return null;
+    return t;
+  };
+  for (const [id, p] of added) {
+    const before = new Set((prior.get(id) || []).map((t) => normalize(cleanTerm(t))));
+    const keptKeys = [];
+    const candidates = [];
+    for (const raw of p.terms.slice(0, MAX_TERMS)) {
+      const key = keyOf(raw);
+      if (before.has(normalize(cleanTerm(raw)))) { if (key) keptKeys.push(key); } else candidates.push({ term: raw, key });
+    }
+    const withheld = findCollisions({ topic, lessonId: id, candidates, keptKeys, questions: q.questions });
+    p.collision_check = q.source;
+    if (withheld.length) {
+      p.withheld = withheld;
+      log(`vocab: lesson ${id}: withheld ${withheld.length} new term(s) that would take another lesson's dev question: ` +
+        withheld.map((w) => `"${w.term}" (${w.qid})`).join(', '));
+    }
+  }
+}
+
 async function runGenerate(skillDir, opts = {}, deps = {}, log = console.log) {
   const loaded = load(skillDir);
   const proposals = loadProposals(skillDir);
@@ -834,7 +882,9 @@ async function runGenerate(skillDir, opts = {}, deps = {}, log = console.log) {
   const changed = staleProposals(loaded.topic.lessons, loaded.lessonText, proposals.byId);
   const changedSet = new Set(changed.stale);
   const todo = loaded.topic.lessons.filter((l) => regen.has(l.id) || !proposals.byId.has(l.id) || changedSet.has(l.id));
-  if (changed.stale.length) log(`vocab: ${changed.stale.length} proposal(s) are stale (the lesson changed since) and are regenerated: ${listed(changed.stale.map(String))}`);
+  if (changed.stale.length) {
+    log(`vocab: ${changed.stale.length} proposal(s) are stale (the lesson changed since) and are ${opts.fresh ? 'redrawn from scratch (--fresh)' : 'updated from their previous terms'}: ${listed(changed.stale.map(String))}`);
+  }
   const unknownLeft = changed.unknown.filter((id) => !regen.has(id));
   if (unknownLeft.length) log(`vocab: ${unknownLeft.length} proposal(s) have unknown generation inputs and are kept (--regen <ids> replaces them): ${listed(unknownLeft.map(String))}`);
   if (todo.length) log(`vocab: ${todo.length} lesson(s) need proposals (model ${opts.model || DEFAULT_MODEL})`);
@@ -844,12 +894,18 @@ async function runGenerate(skillDir, opts = {}, deps = {}, log = console.log) {
     if (todo.length) log(`dry run: would call the model ${todo.length} time(s): ${listed(todo.map((l) => String(l.id)))}`);
     return { generated: 0 };
   }
+  // A stale lesson is UPDATED from its previous terms; a lesson without terms, a --regen id and,
+  // under --fresh, every stale lesson get a fresh draw (vocab.js, UPDATE, NOT REDRAW).
+  const prior = new Map(todo
+    .filter((l) => proposals.byId.has(l.id) && changedSet.has(l.id) && !regen.has(l.id) && !opts.fresh)
+    .map((l) => [l.id, proposals.byId.get(l.id).terms]));
   const { added, failed } = todo.length
     ? await generateProposals(todo, loaded.lessonText, {
-      model: opts.model || DEFAULT_MODEL, concurrency: opts.concurrency || 4, callModel: deps.callModel, date: deps.date, log,
+      model: opts.model || DEFAULT_MODEL, concurrency: opts.concurrency || 4, callModel: deps.callModel, date: deps.date, log, prior,
     })
     : { added: new Map(), failed: [] };
   for (const f of failed) log(`vocab: lesson ${f.id} failed (retried on the next run): ${f.error.split('\n')[0]}`);
+  if (added.size) withholdCollisions(skillDir, loaded.topic, added, prior, deps.questions, log);
   if (added.size) {
     // Re-verify the inputs against the lessons as they are on disk NOW. A fresh
     // load(): the first one caches file text, so it would always agree.
