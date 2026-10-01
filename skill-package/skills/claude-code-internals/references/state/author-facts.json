@@ -1366,7 +1366,7 @@
         "state_page": "cowork-architecture"
       },
       "caveats": [
-        "The behaviour by surface and the permission check are read from the shipped agent. Which commands the check allows was not traced, and the handoff is behind flags that are on by default. The remote sandbox's rewrite and its first-message raw text were seen live by a sibling session on one account (2026-10-01) and are relayed, not repeated here; managed settings there could still switch it off.",
+        "The behaviour by surface and the permission check are read from the shipped agent. Which commands the check allows was not traced, and the handoff is behind flags that are on by default. In the remote sandbox a sibling session saw, on one account (2026-10-01, agent 2.1.286), an allowed read inside the working directory run, a write and a read outside it rewritten, and first-message raw text; these are relayed, not repeated here; managed settings there could still switch it off.",
         "Controlled by a setting as well as by the sandbox, so an organization can switch it off anywhere."
       ]
     },

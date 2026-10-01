@@ -383,9 +383,10 @@ survive; v2.12.2 probe). A skill's shell commands run in the third, so a bare
 (`disableSkillShellExecution` short-circuit on `CLAUDE_CODE_IS_COWORK`; elsewhere each command
 goes through the shell tool's permission check (CLI 2.1.286 `Cle`): allowed → run and substituted; needs
 approval in auto mode → rewritten to `[run this first, exactly as written, and use its output: …]` for the
-model to run or not (seen in cloud Cowork, relayed 2026-10-01); otherwise the skill fails to load. In cloud
+model to run or not; otherwise the skill fails to load. In cloud
 Cowork a skill invoked before the container is set up (lazily, e.g. on the first shell call) keeps it raw with no marker (relayed,
-untraced); an uploaded skill's is left raw in the CLI — L217), and hook env-exports don't cross
+untraced); after setup, an allowed read inside `/home/claude` ran and a write or a read outside it was handed
+off (relayed 2026-10-01, agent 2.1.286); an uploaded skill's is left raw in the CLI — L217), and hook env-exports don't cross
 the host/VM bridge — neither can serve as a probe.
 
 Reliable recipe (ordered): `$CLAUDE_CODE_IS_COWORK` set → cowork (host-side or
