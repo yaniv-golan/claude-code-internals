@@ -148,13 +148,13 @@ Under the hood, `search.js` ranks lessons by keyword and TF-IDF match, and Claud
 
 ## Version Tracking
 
-**Skill Version:** 2.60.0 | **Captured from:** Claude Code v2.1.231 | **Date:** 2026-08-14 | **License:** MIT
+**Skill Version:** 2.60.1 | **Captured from:** Claude Code v2.1.231 | **Date:** 2026-08-14 | **License:** MIT
 
 The CLI baseline is Claude Code v2.1.231. Claude Desktop and Cowork facts are measured on newer builds, through Desktop 2.9939.4 and agent 2.1.284, and each lesson and state entry names the version it was measured on.
 
 ```json
 {
-  "skill_version": "2.60.0",
+  "skill_version": "2.60.1",
   "captured_version": "2.1.231",
   "captured_date": "2026-08-14"
 }
@@ -187,7 +187,7 @@ claude-code-internals/
 │   ├── .claude-plugin/plugin.json
 │   └── skills/claude-code-internals/   The skill itself
 │       ├── SKILL.md                    How Claude looks things up and answers
-│       ├── version.json                Version tracking (v2.60.0 / v2.1.231)
+│       ├── version.json                Version tracking (v2.60.1 / v2.1.231)
 │       ├── references/                 Lesson chapters, routing index, state/ layer
 │       └── scripts/                    search.js, fetch-lesson.js, build.js, …
 ├── scripts/release.js                  Cuts a release, bumps every pin
@@ -203,7 +203,7 @@ claude-code-internals/
 
 This repository began as a fork of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals) (v2.0.0) and has since grown into its own project: 218 lessons across 59 chapters, where upstream shipped about 50. The foundational work is **stuinfla's**: the 50 original lessons (Chapters 1–8, reverse-engineered from Claude Code v2.1.88), the unified search engine, the topic index and cross-reference/troubleshooting data, the PreToolUse `.claude/` hook and version-check script, and the original README and diagrams.
 
-**What this fork adds** (v2.2.0–v2.60.0, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)): Chapters 9–59 — every binary-verified CLI release delta, the full Claude Desktop + Cowork corpus, the mutable `references/state/` truth layer, the shell-safe script CLIs (`fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `extract-bundle.sh`, `diff-versions.sh`), and the plugin/marketplace/release/Pages infrastructure. See [CHANGELOG.md](CHANGELOG.md) for the item-by-item breakdown.
+**What this fork adds** (v2.2.0–v2.60.1, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)): Chapters 9–59 — every binary-verified CLI release delta, the full Claude Desktop + Cowork corpus, the mutable `references/state/` truth layer, the shell-safe script CLIs (`fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `extract-bundle.sh`, `diff-versions.sh`), and the plugin/marketplace/release/Pages infrastructure. See [CHANGELOG.md](CHANGELOG.md) for the item-by-item breakdown.
 
 The architecture lesson content in `references/01–05` is sourced from [markdown.engineering](https://www.markdown.engineering/learn-claude-code/) and used for educational and tooling purposes.
 

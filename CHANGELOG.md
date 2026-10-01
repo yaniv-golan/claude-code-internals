@@ -1,5 +1,27 @@
 # Changelog
 
+## v2.60.1 — 2026-10-01 (this fork) — no bin/ launcher, so the plugin can go through an organization again
+
+No new lessons; counts stay 218/59.
+
+- **The plugin no longer ships a `bin/` launcher.** claude.ai organization distribution rejects any plugin whose root
+  holds a non-empty `bin/`, through marketplace sync and direct upload alike ("Plugin contains a top-level bin/
+  directory"), and `claude plugin validate --strict` does not warn. v2.60.0 shipped `bin/claude-code-internals`, so it
+  could not be synced into an organization; GitHub and local CLI installs were unaffected. SKILL.md now runs the scripts
+  by the path it was loaded with, and in Cowork locates them from the shell's side. A test fails if `bin/` comes back.
+- **L173 and the plugin-root guidance are corrected.** Plugin `bin/` on PATH is real, but not a channel to rely on:
+  organization distribution rejects it, and no authored `bin/` has been seen on the local Cowork shell's PATH. The site
+  rule now advises running scripts by path instead of shipping a launcher.
+- **Stale claims fixed in five lessons.** The Desktop sends `--effort` only when the session has a level (Ch24 and the
+  control-protocol page); the v2.1.120 hook-event rows no longer repeat the diff tool's undercount; the Desktop-side
+  "no Task dispatch cap" line points to the agent-side caps (L134, L170); Lesson 03 records that `$0` is the first
+  argument, that undeclared lowercase `$tokens` stay literal, and that a slash-invoked skill runs without a `Skill`
+  tool call.
+- **Registry provenance.** `CLAUDE_PROJECT_UUID` and `CLAUDE_PROJECT_TOOL` now cite L108, which documents them.
+- **Retrieval eval tooling.** `evals/retrieval/content-score.js` scores agentic runs by what the model actually saw
+  (tool-result text matched to the corpus), so Grep with context, piped `sed` and `fetch-lesson.js` output all count;
+  `agentic-run.js` gains `--rescore` and `--plugin-bin`.
+
 ## v2.60.0 — 2026-09-30 (this fork) — computer:// links by lane, keyword-first search, a slim SKILL.md, and lessons that state current facts
 
 No new lessons; counts stay 218/59. Measured live on 2026-09-29 (Desktop 2.9939.4, agent 2.1.284) and read from the
