@@ -20710,19 +20710,20 @@
         "tengu_iterative_falcon",
         "tengu_glowing_orbit",
         "get my own skill into cowork",
-        "upload skill zip to account",
-        "skill zip upload rejected",
-        "does an uploaded skill sync to the cli",
-        "skill scripts not included in cowork",
+        "upload a skill zip to my account",
+        "skill scripts not included in cloud session",
+        "why does my skill zip upload get rejected",
+        "uploaded skill shows up in terminal too",
         "inline shell command in skill not running",
-        "skill shows raw command text instead of output",
+        "skill command shows as raw text",
+        "shell command execution disabled by policy message",
         "skill fails to load permission check failed",
-        "why can't cowork find my skill in another organization",
-        "edit a skill by asking in chat",
-        "save skill card in chat",
-        "skill files read-only in local cowork",
-        "install skill with scripts from a sent file",
-        "how long until an uploaded skill appears everywhere"
+        "edit a saved skill by asking in chat",
+        "changing skill files on disk doesn't stick",
+        "skill missing after switching organization",
+        "install a skill file with its scripts",
+        "why does my skill script fail in cowork but work on mac",
+        "can't write files next to skill in local cowork"
       ],
       "identifier_keys": [
         "cci-upload-probe",
@@ -20737,25 +20738,26 @@
       ],
       "vocab_keys": [
         "get my own skill into cowork",
-        "upload skill zip to account",
-        "skill zip upload rejected",
-        "does an uploaded skill sync to the cli",
-        "skill scripts not included in cowork",
+        "upload a skill zip to my account",
+        "skill scripts not included in cloud session",
+        "why does my skill zip upload get rejected",
+        "uploaded skill shows up in terminal too",
         "inline shell command in skill not running",
-        "skill shows raw command text instead of output",
+        "skill command shows as raw text",
+        "shell command execution disabled by policy message",
         "skill fails to load permission check failed",
-        "why can't cowork find my skill in another organization",
-        "edit a skill by asking in chat",
-        "save skill card in chat",
-        "skill files read-only in local cowork",
-        "install skill with scripts from a sent file",
-        "how long until an uploaded skill appears everywhere"
+        "edit a saved skill by asking in chat",
+        "changing skill files on disk doesn't stick",
+        "skill missing after switching organization",
+        "install a skill file with its scripts",
+        "why does my skill script fail in cowork but work on mac",
+        "can't write files next to skill in local cowork"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
         "date": "2026-10-01",
-        "terms_sha256": "c9d953d17f1007cd20ce8992d39761d79e880a6e0c22bff01bac6f85f991dfd5"
+        "terms_sha256": "b86c5ccee00260aa0fc75e3a2a1806d1b75f79eecb7887e9a1a20d30c5ecb231"
       }
     },
     {
@@ -54143,43 +54145,46 @@
     "get my own skill into cowork": [
       217
     ],
-    "upload skill zip to account": [
+    "upload a skill zip to my account": [
       217
     ],
-    "skill zip upload rejected": [
+    "skill scripts not included in cloud session": [
       217
     ],
-    "does an uploaded skill sync to the cli": [
+    "why does my skill zip upload get rejected": [
       217
     ],
-    "skill scripts not included in cowork": [
+    "uploaded skill shows up in terminal too": [
       217
     ],
     "inline shell command in skill not running": [
       217
     ],
-    "skill shows raw command text instead of output": [
+    "skill command shows as raw text": [
+      217
+    ],
+    "shell command execution disabled by policy message": [
       217
     ],
     "skill fails to load permission check failed": [
       217
     ],
-    "why can't cowork find my skill in another organization": [
+    "edit a saved skill by asking in chat": [
       217
     ],
-    "edit a skill by asking in chat": [
+    "changing skill files on disk doesn't stick": [
       217
     ],
-    "save skill card in chat": [
+    "skill missing after switching organization": [
       217
     ],
-    "skill files read-only in local cowork": [
+    "install a skill file with its scripts": [
       217
     ],
-    "install skill with scripts from a sent file": [
+    "why does my skill script fail in cowork but work on mac": [
       217
     ],
-    "how long until an uploaded skill appears everywhere": [
+    "can't write files next to skill in local cowork": [
       217
     ],
     "plugin hook blocks prompt with no message in cloud": [
