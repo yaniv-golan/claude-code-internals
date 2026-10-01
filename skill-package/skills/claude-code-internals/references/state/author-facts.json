@@ -1345,8 +1345,8 @@
     {
       "id": "shell.inline-execution-disabled",
       "page": "shell-commands",
-      "rule": "Do not depend on the inline shell-execution syntax in skill instructions; whether it runs depends on the sandbox, on how the skill was installed and on when in the conversation it is used.",
-      "detail": "The syntax that lets a skill embed a command in its own instructions and have the output substituted does not run in a local Cowork session: each command is replaced by a notice that shell execution is disabled by policy. In the remote sandbox it runs once the session's container exists. That container is created by the first shell command in a conversation, so a skill used before then, for example in the conversation's first message, has its commands left as raw text whichever way it was installed. In the command-line tool it runs for a plugin's skills, but a skill the user uploaded to their account has its commands left as raw text. None of these cases raises an error, so a skill that gathers context this way carries on with the notice or the raw command in place of the output.",
+      "rule": "Do not depend on the inline shell-execution syntax in skill instructions; whether it runs depends on the sandbox, on how the skill was installed, on whether the command needs approval and on when in the conversation it is used.",
+      "detail": "The syntax that lets a skill embed a command in its own instructions and have the output substituted does not run in a local Cowork session: each command is replaced by a notice that shell execution is disabled by policy. Where it is not switched off, each command first goes through the same permission check as a shell command: one that is allowed runs and its output is substituted; one that needs approval, in auto mode, is not run but rewritten into an instruction asking the model to run it, which the model may or may not do; in any other mode such a command makes the skill fail to load. In the remote sandbox, a skill used before the session's container exists, for example in the conversation's first message, has its commands left as raw text whichever way it was installed. In the command-line tool a plugin's skills go through that check, but a skill the user uploaded to their account has its commands left as raw text. Apart from the failed load, none of these cases raises an error, so a skill that gathers context this way carries on with the notice, the raw command or the instruction in place of the output.",
       "tier": "binary",
       "verified": {
         "date": "2026-09-28",
@@ -1366,7 +1366,7 @@
         "state_page": "cowork-architecture"
       },
       "caveats": [
-        "The behaviour by surface is read from the shipped agent. The remote sandbox, including the first-message exception, was run live by a sibling session on one account (2026-10-01) and is relayed, not repeated here; managed settings there could still switch it off.",
+        "The behaviour by surface and the permission check are read from the shipped agent. Which commands the check allows was not traced, and the handoff is behind flags that are on by default. The remote sandbox's rewrite and its first-message raw text were seen live by a sibling session on one account (2026-10-01) and are relayed, not repeated here; managed settings there could still switch it off.",
         "Controlled by a setting as well as by the sandbox, so an organization can switch it off anywhere."
       ]
     },

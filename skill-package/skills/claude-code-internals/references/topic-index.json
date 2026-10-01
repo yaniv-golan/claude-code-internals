@@ -20676,7 +20676,7 @@
       "lesson_number": "217",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 16,
-      "endLine": 83,
+      "endLine": 97,
       "keywords": [
         "upload skill",
         "uploaded skill",
@@ -20701,10 +20701,14 @@
         "skills per organization",
         "skill not found other org",
         "cci-upload-probe",
+        "per-source",
         "upload_source",
         "cowork_save_skill",
         "propose_skills",
+        "handed-off",
         "/cci-chat-skill",
+        "tengu_iterative_falcon",
+        "tengu_glowing_orbit",
         "upload personal skill to cowork",
         "skill zip upload rejected",
         "how do i get my own skill into cowork",
@@ -20723,10 +20727,14 @@
       ],
       "identifier_keys": [
         "cci-upload-probe",
+        "per-source",
         "upload_source",
         "cowork_save_skill",
         "propose_skills",
-        "/cci-chat-skill"
+        "handed-off",
+        "/cci-chat-skill",
+        "tengu_iterative_falcon",
+        "tengu_glowing_orbit"
       ],
       "vocab_keys": [
         "upload personal skill to cowork",
@@ -20757,8 +20765,8 @@
       "title": "Plugin Blocks and MCP Placeholders, Lane by Lane",
       "lesson_number": "218",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
-      "startLine": 87,
-      "endLine": 147,
+      "startLine": 101,
+      "endLine": 161,
       "keywords": [
         "UserPromptSubmit block",
         "decision block",
@@ -44440,6 +44448,9 @@
     "cci-upload-probe": [
       217
     ],
+    "per-source": [
+      217
+    ],
     "upload_source": [
       217
     ],
@@ -44449,7 +44460,16 @@
     "propose_skills": [
       217
     ],
+    "handed-off": [
+      217
+    ],
     "/cci-chat-skill": [
+      217
+    ],
+    "tengu_iterative_falcon": [
+      217
+    ],
+    "tengu_glowing_orbit": [
       217
     ],
     "CCI_PROBE_TOKEN": [
