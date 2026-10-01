@@ -1553,19 +1553,20 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 172 · 44-cli-surface-2.1.233-to-2.1.250.md:168 · The environment surface
 172 · 44-cli-surface-2.1.233-to-2.1.250.md:196 · The gate↔variable pairings needed re-deriving, and two were wrong
 172 · 44-cli-surface-2.1.233-to-2.1.250.md:206 · One removal
-173 · 45-plugin-bin-path-and-cloud-lane.md:18 · The mechanism
-173 · 45-plugin-bin-path-and-cloud-lane.md:35 · Measured in three lanes — three path shapes, each correct locally
-173 · 45-plugin-bin-path-and-cloud-lane.md:71 · Two mechanisms put files in `bin/`, and only one is the author's
-173 · 45-plugin-bin-path-and-cloud-lane.md:80 · Nobody uses this yet — and that is all it says
-173 · 45-plugin-bin-path-and-cloud-lane.md:96 · Resolution is live, not merely emitted
-173 · 45-plugin-bin-path-and-cloud-lane.md:102 · The asymmetry that makes this matter
-173 · 45-plugin-bin-path-and-cloud-lane.md:115 · Three caveats, all of them silent failures
-173 · 45-plugin-bin-path-and-cloud-lane.md:123 · Not established
-174 · 45-plugin-bin-path-and-cloud-lane.md:133 · The three that exist nowhere in the CLI
-174 · 45-plugin-bin-path-and-cloud-lane.md:147 · `CLAUDE_CODE_VERSION` is not the agent's version
-174 · 45-plugin-bin-path-and-cloud-lane.md:181 · What the same dump confirms first-party
-174 · 45-plugin-bin-path-and-cloud-lane.md:190 · What the 2026-09-21 canary adds (relayed measurements; semantics verified first-party)
-174 · 45-plugin-bin-path-and-cloud-lane.md:203 · Honest scope
+173 · 45-plugin-bin-path-and-cloud-lane.md:18 · Organization distribution rejects a top-level `bin/`
+173 · 45-plugin-bin-path-and-cloud-lane.md:35 · The mechanism
+173 · 45-plugin-bin-path-and-cloud-lane.md:52 · Measured in three lanes — three path shapes, each correct locally
+173 · 45-plugin-bin-path-and-cloud-lane.md:88 · Two mechanisms put files in `bin/`, and only one is the author's
+173 · 45-plugin-bin-path-and-cloud-lane.md:97 · A `bin/` elsewhere in a repo is not this pattern
+173 · 45-plugin-bin-path-and-cloud-lane.md:112 · Resolution is live, not merely emitted
+173 · 45-plugin-bin-path-and-cloud-lane.md:118 · The asymmetry that makes this matter
+173 · 45-plugin-bin-path-and-cloud-lane.md:131 · Three caveats, all of them silent failures
+173 · 45-plugin-bin-path-and-cloud-lane.md:139 · Not established
+174 · 45-plugin-bin-path-and-cloud-lane.md:149 · The three that exist nowhere in the CLI
+174 · 45-plugin-bin-path-and-cloud-lane.md:163 · `CLAUDE_CODE_VERSION` is not the agent's version
+174 · 45-plugin-bin-path-and-cloud-lane.md:197 · What the same dump confirms first-party
+174 · 45-plugin-bin-path-and-cloud-lane.md:206 · What the 2026-09-21 canary adds (relayed measurements; semantics verified first-party)
+174 · 45-plugin-bin-path-and-cloud-lane.md:219 · Honest scope
 175 · 46-narration-turn-updates-silent-turn.md:21 · The mechanism
 175 · 46-narration-turn-updates-silent-turn.md:55 · The selector is not a gate you can read
 175 · 46-narration-turn-updates-silent-turn.md:71 · `CLAUDE_CODE_TURN_UPDATES` — closing a lead

@@ -25,21 +25,27 @@ Each script takes its **own interpreter**: run the `.js` tools (`search`, `state
 (`check-version`, `lookup`) with **`bash`**. Never run a `.sh` with `node` or a
 `.js` with `bash` — that is the one invocation mistake to avoid.
 
-**Preferred — the bundled launcher** (it picks the interpreter for you), whenever
-`claude-code-internals` is on your PATH:
+**The scripts directory** is this one, the absolute path this file was loaded with:
+
+    ${CLAUDE_SKILL_DIR}/scripts
+
+Below it is written `<scripts-dir>`. Paste the absolute path in every time, with
+the right interpreter and extension:
 
 ```bash
-claude-code-internals search "$ARGUMENTS" --top=5   # unified keyword + TF-IDF search
-claude-code-internals state <name>                  # is a flag/command/gate live, dark, renamed, removed?
-claude-code-internals xref <id> [id...]             # related lessons across subsystems
-claude-code-internals troubleshoot "<symptom>"      # problem-shaped queries (short symptom phrase)
-claude-code-internals fetch-lesson <id>             # a lesson's full body by id
+node <scripts-dir>/search.js "$ARGUMENTS" --top=5   # unified keyword + TF-IDF search
+node <scripts-dir>/state.js <name>                  # is a flag/command/gate live, dark, renamed, removed?
+node <scripts-dir>/xref.js <id> [id...]             # related lessons across subsystems
+node <scripts-dir>/troubleshoot.js "<symptom>"      # a short 2-5 word symptom, not a full sentence
+node <scripts-dir>/fetch-lesson.js <id>             # a lesson's full body by id
+bash <scripts-dir>/check-version.sh                 # .sh: run with bash, not node (optional; see Step 2)
 ```
 
-**If `claude-code-internals` is not found** — expect this in Cowork, where the
-launcher has not been seen on the VM shell's PATH — locate the scripts directory
-first. Do **not** build the path from the CLAUDE_SKILL_DIR / CLAUDE_PLUGIN_ROOT
-environment variables: they hold a *host* path the VM shell cannot open. Instead:
+**In Cowork — the shell's working directory is under `/sessions`, or the shell
+tool is `mcp__workspace__bash` — or if the path above is reported missing**
+(`Cannot find module`, `No such file`): the shell and the file tools are different
+mounts of the same files, and the path above is a *host* path the VM shell cannot
+open. Locate the scripts from the shell's side instead:
 
 ```bash
 find /sessions -type d -path '*/skills/claude-code-internals/scripts' 2>/dev/null | head -1
@@ -47,22 +53,13 @@ find /sessions -type d -path '*/skills/claude-code-internals/scripts' 2>/dev/nul
 
 It prints **one absolute path** (covering both install shapes,
 `.remote-plugins/plugin_<id>/skills/…` and
-`.local-plugins/marketplaces/…/skill-package/skills/…`). **Paste that whole
-absolute path in as the script argument every time.** Do **not** `cd` into the
-directory and run a relative name, and do **not** stash it in a shell variable —
-both hide the path and make the run look like it consulted nothing. So if `find`
-printed `/sessions/S/…/claude-code-internals/scripts`, run
-`node /sessions/S/…/claude-code-internals/scripts/state.js <name>` — the full path
-inline, with the right interpreter and extension:
-
-```bash
-node <scripts-dir>/search.js "$ARGUMENTS" --top=5
-node <scripts-dir>/state.js <name>
-node <scripts-dir>/xref.js <id> [id...]
-node <scripts-dir>/troubleshoot.js "<symptom>"   # a short 2-5 word symptom, not a full sentence
-node <scripts-dir>/fetch-lesson.js <id>
-bash <scripts-dir>/check-version.sh              # .sh — run with bash, not node (optional; see Step 2)
-```
+`.local-plugins/marketplaces/…/skill-package/skills/…`); use it as `<scripts-dir>`.
+Do **not** type `$CLAUDE_SKILL_DIR` or `$CLAUDE_PLUGIN_ROOT` into a shell command:
+neither is a usable environment variable there. Do **not** `cd` into the directory
+and run a relative name, and do **not** stash the path in a shell variable — both
+hide the path and make the run look like it consulted nothing. So if `find` printed
+`/sessions/S/…/claude-code-internals/scripts`, run
+`node /sessions/S/…/claude-code-internals/scripts/state.js <name>`.
 
 **Last resort**, when no script runs at all: `Read`/`Grep` the reference files
 directly (see the routing table at the end) — the whole corpus is plain Markdown.
@@ -78,8 +75,8 @@ every heading with file:line (grep it for exact terms).
 and provenance; the state layer is current behavior, and it **supersedes any
 conflicting statement in an older lesson**.
 
-- Is a flag/command/gate live, dark, renamed, or removed? `claude-code-internals state <name>`
-  (e.g. `claude-code-internals state toggle-memory`).
+- Is a flag/command/gate live, dark, renamed, or removed? `node <scripts-dir>/state.js <name>`
+  (e.g. `node <scripts-dir>/state.js toggle-memory`).
 - How does a domain work now (Cowork permissions, control protocol, credential
   channels, models, plugins/hooks, memory)? Read the matching
   `references/state/<domain>.md`.
@@ -95,7 +92,7 @@ prints a drift warning when your running version differs from v2.1.231, but only
 when the `claude` CLI is on PATH — it is silent otherwise (as in Cowork), so
 treat it as an optional nicety, not a required step.
 
-**Step 3 — Search.** `claude-code-internals search "$ARGUMENTS" --top=5` lists keyword
+**Step 3 — Search.** `node <scripts-dir>/search.js "$ARGUMENTS" --top=5` lists keyword
 matches in keyword order, then TF-IDF-only matches. Each result prints the lesson
 title, its **id**, file path, line range, and confidence: `[HIGH]` = both layers
 matched, `[MEDIUM]` = keyword layer only, `[LOW]` = TF-IDF only. Check the title before loading a section; if it
@@ -104,17 +101,17 @@ script takes the id.
 
 **Step 4 — Cross-references (multi-topic queries only).** For queries spanning
 subsystems ("hooks and permissions", "agents and memory"), pass the ids from
-Step 3: `claude-code-internals xref 32 25`. Skip for single-concept queries.
+Step 3: `node <scripts-dir>/xref.js 32 25`. Skip for single-concept queries.
 
 **Step 5 — Troubleshooting (problem queries).** If the query describes a problem
 ("not working", "why", "broken", "keeps", "error", "won't", "fails"):
-`claude-code-internals troubleshoot "<symptom>"`. Pass a short 2-5 word symptom
+`node <scripts-dir>/troubleshoot.js "<symptom>"`. Pass a short 2-5 word symptom
 phrase (e.g. `hook not firing`), not the full sentence — it matches on symptom
 patterns, so a whole question may return no hints.
 
-**Step 6 — Fetch the matched lessons.** `claude-code-internals fetch-lesson <id>` returns a
+**Step 6 — Fetch the matched lessons.** `node <scripts-dir>/fetch-lesson.js <id>` returns a
 lesson's body by id — no need to track file paths or offsets.
-`claude-code-internals fetch-lesson --list` lists every lesson; add `--meta` for metadata only. If
+`node <scripts-dir>/fetch-lesson.js --list` lists every lesson; add `--meta` for metadata only. If
 `fetch-lesson` is unavailable, `Read` the file at the line range from the search
 result, or `Grep` across `references/`.
 
@@ -138,7 +135,7 @@ what `cross-references.json` and `troubleshooting.json` use. For the legacy
 lessons 1–50 the id and the "Lesson N" number in the file headings **disagree**
 (the Hooks System is `id 32`, numbered "Lesson 10"), so `search.js` prints, e.g.,
 `Hooks System (id 32, numbered "Lesson 10")`. Always pass the **id** to
-`fetch-lesson`/`xref` (`claude-code-internals fetch-lesson 32`, `claude-code-internals xref 32 25`), never the
+`fetch-lesson`/`xref` (`node <scripts-dir>/fetch-lesson.js 32`, `node <scripts-dir>/xref.js 32 25`), never the
 "Lesson N" number.
 
 ## Read more (Cowork skill-authoring answers only)
@@ -213,7 +210,7 @@ Available topics (218 lessons across 59 chapters):
 ## Reference routing
 
 The exact `file → chapters → lesson ids → titles` map is generated into
-`references/catalog.md` — read it (or `claude-code-internals fetch-lesson --list`) to pick a file by
+`references/catalog.md` — read it (or `node <scripts-dir>/fetch-lesson.js --list`) to pick a file by
 chapter or lesson. Quick bands:
 
 | Files | Chapters | Lesson ids | Area |

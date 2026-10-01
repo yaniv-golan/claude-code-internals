@@ -6,14 +6,31 @@ Updated: 2026-09-22 | Source: **live probes in three lanes** — a standalone CL
 
 ## TABLE OF CONTENTS
 
-173. [Lesson 173 — Plugin `bin/` Is on the Shell's PATH, in the Shell's Own Namespace](#lesson-173--plugin-bin-is-on-the-shells-path)
+173. [Lesson 173 — Plugin `bin/` Is on the Shell's PATH, but Not a Channel to Rely On](#lesson-173--plugin-bin-is-on-the-shells-path)
 174. [Lesson 174 — The Cloud Lane's Environment Is Not a Subset of the CLI's](#lesson-174--the-cloud-lanes-environment)
 
 ---
 
 # LESSON 173 — PLUGIN `bin/` IS ON THE SHELL'S PATH
 
-**Claude Code puts every enabled non-builtin plugin's `bin/` directory on the Bash tool's PATH (from agent 2.1.284, only a `bin/` that exists), and the path it uses is correct for the namespace that shell lives in — including Cowork host-loop, where the file tools and the shell disagree about every other path. This is the only channel measured that hands a plugin its own root in the shell's own terms, and it is undocumented.**
+**Claude Code puts every enabled non-builtin plugin's `bin/` directory on the Bash tool's PATH (from agent 2.1.284, only a `bin/` that exists), and the path it uses is correct for the namespace that shell lives in. On a GitHub or local CLI install a launcher committed in `bin/` works. It is still not a channel to rely on: claude.ai organization distribution rejects any plugin that has a top-level `bin/`, and in local Cowork no authored `bin/` has been seen on the shell's PATH. Run bundled scripts by path instead (the `${CLAUDE_SKILL_DIR}` read path, then a search from the shell's side).**
+
+## Organization distribution rejects a top-level `bin/`
+
+A plugin whose root (the directory holding `.claude-plugin/plugin.json`) contains a non-empty `bin/` is refused by claude.ai organization distribution, through marketplace sync and direct upload alike. The server's reason, as logged by the Desktop renderer on this machine (2026-09-01, plugin `creative-problem-solving`):
+
+```
+MARKETPLACE_ERROR:REMOTE_SYNC_FAILED sync did not succeed (status: failed_content):
+{"plugins": [{"name": "creative-problem-solving", "error": "Plugin contains a top-level bin/ directory ('bin/cps').
+claude.ai-hosted plugins may not ship bin/ executables because they are added to PATH on the CLI …
+```
+
+The rule is the PATH affordance itself, seen from the admin side: `bin/` entries reach the CLI's PATH without appearing on the admin approval surface. Two traps make it expensive:
+
+- **`claude plugin validate` does not warn**, with or without `--strict` (measured on 2.1.252 by the skill-creator-plus project against a plugin carrying `bin/binprobe`). The pre-flight gate is green on a plugin that cannot be distributed.
+- **The admin sees a generic error**, "Marketplace sync failed. Check the repository URL and try again". The real reason is only in `~/Library/Logs/Claude/claude.ai-web.log` (grep `MARKETPLACE_ERROR`).
+
+GitHub and local CLI installs are unaffected. A `bin/` inside a skill directory, or at the outer root of a marketplace repo, is not the plugin root and is not what the rule reads.
 
 ## The mechanism
 
@@ -77,9 +94,9 @@ exec -a "$0" /opt/cowork/cli-wrapper "$@"
 
 A source-committed `bin/` is carried through install. Install narrows the mode (`755` → `700`); the execute bit survives.
 
-## Nobody uses this yet — and that is all it says
+## A `bin/` elsewhere in a repo is not this pattern
 
-Across a 35-plugin standalone install base plus the Cowork marketplace cache, **not one plugin ships `bin/` at its plugin root.**
+Across a 35-plugin standalone install base plus the Cowork marketplace cache inspected for this lesson, **no plugin shipped `bin/` at its plugin root.** (Later attempts exist: `creative-problem-solving`'s `bin/cps`, rejected by organization sync as logged above, and a launcher this skill's own plugin shipped in v2.60.0 and removed in v2.60.1 for the same rule.)
 
 Three of those repos do contain a `bin/` somewhere. None is an attempt at this pattern:
 
@@ -91,13 +108,12 @@ Three of those repos do contain a `bin/` somewhere. None is an attempt at this p
 
 **A `bin/` elsewhere in a repo is normally an ordinary project CLI, correctly placed where it is.** Do not read one as a misplaced plugin launcher and do not tell an author to move it: the plugin affordance is a *different* directory that simply is not there yet. A lint rule keying on "a `bin/` exists in this repo" would fire on all three and be wrong on all three.
 
-So the record is **zero attempts**, not failures. "No adopters" is not evidence against a mechanism whose every link is separately verified; it is evidence the mechanism is undocumented.
 
 ## Resolution is live, not merely emitted
 
 The last link was closed by direct test rather than inference (probe run and removed by a peer session, standalone CLI lane): an enabled plugin's `<root>/bin` was already a PATH entry while the directory did **not** exist; creating the directory and dropping an executable in it made the bare command resolve **immediately from an already-running shell** — no restart, no plugin reload — and `cd "$(dirname "$0")/.." && pwd` returned the plugin root exactly.
 
-Composed with copy fidelity above and the PATH mapping read from the bundle, the chain is complete: a `bin/` committed beside `.claude-plugin/plugin.json` reaches PATH and executes, and a self-locating launcher recovers the plugin root **without consulting `CLAUDE_PLUGIN_ROOT` at all**. The pattern is *proven* and *unadopted*.
+Composed with copy fidelity above and the PATH mapping read from the bundle, the chain is complete: a `bin/` committed beside `.claude-plugin/plugin.json` reaches PATH and executes, and a self-locating launcher recovers the plugin root **without consulting `CLAUDE_PLUGIN_ROOT` at all**. On the standalone CLI lane the pattern is *proven*; the limits are the distribution rule and the Cowork lane, above and below.
 
 ## The asymmetry that makes this matter
 
@@ -108,9 +124,9 @@ In **one** Cowork host-loop session, the runtime resolves a plugin's location tw
 | `CLAUDE_PLUGIN_ROOT` (substituted into definition text) | **host** staging path | **no** |
 | `<plugin>/bin` on `PATH` | `/sessions/…/mnt/.remote-plugins/<id>/bin` | **yes** |
 
-Every previously-documented approach — Ch17/L89, the `env.CLAUDE_PLUGIN_ROOT` registry entry, the discovery ladders built on them — reads the channel that resolves **host-side**. This one is built for the shell that will use it. That is why a `bin/` launcher collapses the problem instead of mitigating it: **PATH lookup is performed by the shell, in the shell's namespace, so no path crosses the boundary and the model derives nothing.**
+Every other documented channel — Ch17/L89, the `env.CLAUDE_PLUGIN_ROOT` registry entry — resolves **host-side**. The PATH entry is built for the shell that will use it, so where an authored `bin/` is present no path has to cross the boundary.
 
-**This corrects the standing advice** in `env.CLAUDE_PLUGIN_ROOT` that *"a skill needing its own root shell-side must DISCOVER it."* Discovery remains the fallback; it is no longer the only option.
+In practice that case has not been seen in local Cowork. The only populated `bin/` in that lane was the runtime's own `clis` shim, and the skill-creator-plus project measured a host-loop workspace shell whose PATH was eight stock entries with no plugin `bin/` at all. So a skill needing its own root shell-side still has to **discover** it there, with a search from the shell's side.
 
 ## Three caveats, all of them silent failures
 
@@ -118,11 +134,11 @@ Every previously-documented approach — Ch17/L89, the `env.CLAUDE_PLUGIN_ROOT` 
 2. **The mount is read-only** (`dr-x------`, files `-r-x------`). A launcher can execute but cannot write beside itself.
 3. **Metacharacter paths vanish without an error the model can see.** A plugin installed under a path containing `$`, a quote or a backtick gets no PATH entry at all.
 
-So the pattern is *construct, verify, fall back* — the same discipline the discovery ladders already use, with a much better first rung.
+So even where it is reachable the pattern is *construct, verify, fall back*. For any plugin that might go through an organization, ship no `bin/`: the read path plus a search from the shell's side is the whole answer without one.
 
 ## Not established
 
-The commonly-cited **v2.1.91** origin could not be verified: the CHANGELOG embedded in these binaries reaches back only to **2.1.220**, so its absence there is expected and proves nothing. Treat the version floor as unknown. Whether the cloud lane's 20 directories exist was not tested. **Whether Cowork local staging keeps a `bin/` committed in plugin source is also untested:** in every staged org-remote copy inspected (24 plugins, one machine, 2026-10-01), `bin/` exists only for the one plugin that declares `clis`, and none of the 24 committed a `bin/` in source, so the population cannot distinguish "dropped at staging" from "never shipped". Until it is measured, a skill must not rely on its own `bin/` launcher being on the Cowork VM shell's PATH.
+The commonly-cited **v2.1.91** origin could not be verified: the CHANGELOG embedded in these binaries reaches back only to **2.1.220**, so its absence there is expected and proves nothing. Treat the version floor as unknown. Whether the cloud lane's 20 directories exist was not tested. **Whether Cowork local staging keeps a `bin/` committed in plugin source is also untested:** in every staged org-remote copy inspected (24 plugins, one machine, 2026-10-01), `bin/` exists only for the one plugin that declares `clis`, and none of the 24 committed a `bin/` in source, so the population cannot distinguish "dropped at staging" from "never shipped". Until it is measured, a skill must not rely on its own `bin/` launcher being on the Cowork VM shell's PATH, and the organization-distribution rule above makes the question moot for any plugin distributed that way.
 
 ---
 

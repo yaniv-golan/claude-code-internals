@@ -16969,11 +16969,11 @@
     },
     {
       "id": 173,
-      "title": "Plugin bin/ Is on the Shell's PATH, in the Shell's Own Namespace",
+      "title": "Plugin bin/ Is on the Shell's PATH, but Not a Channel to Rely On",
       "lesson_number": "173",
       "file": "45-plugin-bin-path-and-cloud-lane.md",
       "startLine": 14,
-      "endLine": 125,
+      "endLine": 141,
       "keywords": [
         "plugin-bin-on-path",
         "bin-launcher",
@@ -16998,10 +16998,14 @@
         "invoke-bundled-executable",
         "skill trigger",
         "bundled scripts",
+        "creative-problem-solving",
+        "claude.ai-web.log",
+        "MARKETPLACE_ERROR",
         "cli-wrapper",
         "xev-cli",
         "XEV_VERSION",
         "chrome-devtools",
+        "REMOTE_SYNC_FAILED",
         "ship executable with my plugin",
         "run plugin script as bare command",
         "plugin command not found in shell",
@@ -17019,10 +17023,14 @@
         "declared plugin cli name collides with my script"
       ],
       "identifier_keys": [
+        "creative-problem-solving",
+        "claude.ai-web.log",
+        "MARKETPLACE_ERROR",
         "cli-wrapper",
         "xev-cli",
         "XEV_VERSION",
-        "chrome-devtools"
+        "chrome-devtools",
+        "REMOTE_SYNC_FAILED"
       ],
       "vocab_keys": [
         "ship executable with my plugin",
@@ -17053,8 +17061,8 @@
       "title": "The Cloud Lane's Environment Is Not a Subset of the CLI's",
       "lesson_number": "174",
       "file": "45-plugin-bin-path-and-cloud-lane.md",
-      "startLine": 129,
-      "endLine": 205,
+      "startLine": 145,
+      "endLine": 221,
       "keywords": [
         "cloud-lane-env-census",
         "remote-cowork-entrypoint",
@@ -43005,7 +43013,8 @@
       140
     ],
     "creative-problem-solving": [
-      140
+      140,
+      173
     ],
     "plugin-install-paths": [
       140
@@ -43643,6 +43652,12 @@
     "COMMENT_FAST_ACK": [
       172
     ],
+    "claude.ai-web.log": [
+      173
+    ],
+    "MARKETPLACE_ERROR": [
+      173
+    ],
     "cli-wrapper": [
       173
     ],
@@ -43653,6 +43668,9 @@
       173
     ],
     "chrome-devtools": [
+      173
+    ],
+    "REMOTE_SYNC_FAILED": [
       173
     ],
     "container_cc_version_observed": [

@@ -261,9 +261,9 @@ not for this token. "Does substitution happen in commands?" answers yes and misl
 to an absolute mount path and the reference line untouched. Read from the event stream rather than the
 model's answer, which rules out the model expanding it from a path it had already seen.
 
-**The operative rule, stated once:** `${CLAUDE_SKILL_DIR}` is a **SKILL.md-body-text feature**. The moment a path must reach a shell it has to be an absolute path the model already resolved and passes explicitly, or a `bin/` launcher that locates itself from `$0`.
+**The operative rule, stated once:** `${CLAUDE_SKILL_DIR}` is a **SKILL.md-body-text feature**. The moment a path must reach a shell it has to be an absolute path the model already resolved and passes explicitly — and where the shell is a different mount (Cowork host-loop), a path the model located from the shell's side with a search.
 
-**Why `bin/` is the answer and not a workaround (L173).** Claude Code puts every enabled non-builtin plugin's `<plugin>/bin` on the Bash tool's PATH, and the path is correct for the namespace of the shell that will use it — measured in all three lanes, including Cowork host-loop where the file tools and the shell disagree about every other path. PATH lookup is performed by the shell, in the shell's own namespace, so **no path crosses the boundary and the model derives nothing**. A launcher self-locates in one line:
+**Plugin `bin/` on PATH: real, but not a channel to rely on (L173).** Claude Code puts every enabled non-builtin plugin's `<plugin>/bin` on the Bash tool's PATH, in the namespace of the shell that will use it, and on a GitHub or local CLI install a committed launcher works. But **claude.ai organization distribution rejects any plugin with a top-level `bin/`** (marketplace sync and direct upload; logged reason "Plugin contains a top-level bin/ directory … claude.ai-hosted plugins may not ship bin/ executables because they are added to PATH on the CLI"), `claude plugin validate --strict` does not warn, and the admin sees only "Marketplace sync failed". In local Cowork no authored `bin/` has been seen on the shell's PATH. So for any plugin that might go through an organization, ship no `bin/` and run scripts by path. Where a launcher is used anyway (CLI-only plugins), it self-locates in one line:
 
 ```bash
 #!/usr/bin/env bash

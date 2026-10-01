@@ -6,12 +6,14 @@
  *   - SKILL.md's search command uses the literal $ARGUMENTS placeholder (the
  *     harness substitution token) and never the lowercase $argument, which would
  *     be passed through verbatim and break the command.
- *   - bin/claude-code-internals resolves its own scripts and runs them.
+ *   - the plugin root carries no top-level bin/: claude.ai organization distribution rejects such a
+ *     plugin outright ("Plugin contains a top-level bin/ directory"), and `claude plugin validate`
+ *     does not warn. SKILL.md runs the scripts by path instead.
  *   - search.js prints results in the "(id N" form the SKILL.md routing relies on.
  *
- * bin/ lives under skill-package/ and is NOT in the shipped skill zip, so that
- * guard skips in the standalone package (repo-context.js). SKILL.md and search.js
- * both ship, so their guards run everywhere.
+ * The plugin root (skill-package/) is NOT in the shipped skill zip, so that guard
+ * skips in the standalone package (repo-context.js). SKILL.md and search.js both
+ * ship, so their guards run everywhere.
  */
 
 const test = require('node:test');
@@ -30,14 +32,18 @@ test('SKILL.md uses $ARGUMENTS and never the lowercase $argument', () => {
   assert.doesNotMatch(skill, /\$argument\b/, 'SKILL.md uses the lowercase $argument (harness would not substitute it)');
 });
 
-test('bin/claude-code-internals resolves its scripts and runs fetch-lesson', (t) => {
+test('the plugin root ships no top-level bin/ (org distribution rejects it)', (t) => {
   if (!IN_REPO) { t.skip(STANDALONE_SKIP); return; }
-  const launcher = path.join(PKG_DIR, 'bin', 'claude-code-internals');
-  assert.ok(fs.existsSync(launcher), 'skill-package/bin/claude-code-internals is missing');
-  // Invoke via an explicit `bash` so the guard does not depend on the exec bit
-  // surviving the test copy; the launcher resolves the scripts relative to itself.
-  const out = execFileSync('bash', [launcher, 'fetch-lesson', '32'], { encoding: 'utf8' });
-  assert.match(out, /Hooks System/, 'launcher did not print lesson 32 (Hooks System)');
+  assert.ok(fs.existsSync(path.join(PKG_DIR, '.claude-plugin', 'plugin.json')), 'skill-package is no longer the plugin root');
+  const bin = path.join(PKG_DIR, 'bin');
+  const entries = fs.existsSync(bin) ? fs.readdirSync(bin) : [];
+  assert.deepStrictEqual(entries, [], 'skill-package/bin/ is back; a plugin with a top-level bin/ cannot be distributed through a claude.ai organization');
+});
+
+test('SKILL.md runs the scripts by path, not through a PATH launcher', () => {
+  const skill = fs.readFileSync(path.join(SKILL_DIR, 'SKILL.md'), 'utf8');
+  assert.match(skill, /\$\{CLAUDE_SKILL_DIR\}\/scripts/, 'SKILL.md no longer names ${CLAUDE_SKILL_DIR}/scripts');
+  assert.doesNotMatch(skill, /`claude-code-internals (search|state|xref|troubleshoot|fetch-lesson)\b/, 'SKILL.md calls the removed launcher');
 });
 
 test('search.js prints results in the "(id N" form', () => {
