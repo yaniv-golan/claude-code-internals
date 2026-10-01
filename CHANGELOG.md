@@ -1,5 +1,31 @@
 # Changelog
 
+## v2.60.2 — 2026-10-01 (this fork) — simpler search, a ranking fix, and how a skill's `!cmd` really runs
+
+No new lessons; counts stay 218/59.
+
+- **Search ranks Hooks System first for "hooks".** When two lessons tie on every keyword score, the one with more of
+  its keys hit by the query now wins, instead of the lower id. On the generated question set this changed only exact
+  ties: holdout any@3 rose for plain (82.9 → 83.6), state (73.9 → 78.3) and terse (64.3 → 66.4), with no stratum
+  falling.
+- **`search.js --fused` is gone.** The Reciprocal Rank Fusion order had been kept only for comparison since v2.60.0.
+  `--json` drops `rrf_score` and reports `keyword_score` and `tfidf_score`. The ranking the skill uses is unchanged.
+- **A skill's inline `` !`cmd` `` goes through the shell's permission check.** Read from CLI 2.1.286, the build the
+  cloud agent reports: an allowed command runs and its output is substituted; one that would need approval is, in auto
+  mode, rewritten into an instruction for the model to run it ("[run this first, exactly as written, and use its
+  output: …]", gates `tengu_iterative_falcon` and `tengu_glowing_orbit`, on by default); anything else fails the skill
+  load (L217). In cloud Cowork (agent 2.1.286, relayed live runs) an allowed read inside the working directory ran and
+  was substituted, while a write and a read outside it were handed to the model; a skill invoked before the container
+  is set up keeps its commands as raw text with no marker, plugin and uploaded skills alike. An earlier draft of this finding, from probes whose output could be
+  guessed, said the commands simply run once the container exists; a nonce-to-file probe showed the rewrite instead,
+  and L217 now carries a trap about probing `!cmd` with guessable values.
+- **Cloud Cowork: a sent `.skill` file can be saved whole.** Its card's Save skill installs the full package, scripts
+  included, in a session without `save_skill` (L217). L215 adds `device_commit_files` and
+  `device_request_folder_access` input details.
+- **Fresher vocabulary.** The model-written search phrases of the lessons whose text changed were regenerated.
+  An ablation run showed this vocabulary is worth keeping: without it, search alone found the right lesson for about
+  half as many plain-English questions, and the skill end to end lost 4 of 50 plain questions at higher cost.
+
 ## v2.60.1 — 2026-10-01 (this fork) — no bin/ launcher, so the plugin can go through an organization again
 
 No new lessons; counts stay 218/59.
