@@ -1197,21 +1197,21 @@
         "mcp_progress",
         "repl_tool_call",
         "SIMPLIFY_PROMPT",
-        "how to write a custom skill",
+        "how to create a custom skill",
         "skill not showing up in list",
-        "skill description gets cut off",
-        "why does my new skill lose its description",
-        "run skill in separate subagent",
-        "pass arguments to a skill",
-        "skill only activates for certain files",
-        "which skill wins when names conflict",
+        "skill description getting cut off",
+        "why is my skill description truncated",
+        "new skill loses its description",
+        "make a skill only run on certain files",
         "stop claude from auto-running my skill",
-        "make skill user-only or model-only",
-        "skill changes not picked up without restart",
-        "shell commands in skill not executing from mcp server",
-        "skill override setting has no effect",
-        "why does my skill ask for permission",
-        "old commands folder vs skills folder"
+        "prevent users from calling a skill directly",
+        "pass arguments into a skill",
+        "skill arguments not being replaced",
+        "run skill in separate subagent",
+        "skill changes not picked up after editing",
+        "which skill wins with duplicate names",
+        "skill shell commands not running from mcp server",
+        "skill override setting has no effect"
       ],
       "identifier_keys": [
         "validate-input",
@@ -1252,27 +1252,27 @@
         "SIMPLIFY_PROMPT"
       ],
       "vocab_keys": [
-        "how to write a custom skill",
+        "how to create a custom skill",
         "skill not showing up in list",
-        "skill description gets cut off",
-        "why does my new skill lose its description",
-        "run skill in separate subagent",
-        "pass arguments to a skill",
-        "skill only activates for certain files",
-        "which skill wins when names conflict",
+        "skill description getting cut off",
+        "why is my skill description truncated",
+        "new skill loses its description",
+        "make a skill only run on certain files",
         "stop claude from auto-running my skill",
-        "make skill user-only or model-only",
-        "skill changes not picked up without restart",
-        "shell commands in skill not executing from mcp server",
-        "skill override setting has no effect",
-        "why does my skill ask for permission",
-        "old commands folder vs skills folder"
+        "prevent users from calling a skill directly",
+        "pass arguments into a skill",
+        "skill arguments not being replaced",
+        "run skill in separate subagent",
+        "skill changes not picked up after editing",
+        "which skill wins with duplicate names",
+        "skill shell commands not running from mcp server",
+        "skill override setting has no effect"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "f7448644c904c24ab2eb787e582d180469cadec333c4de6dce3f2c0c27ee9f60"
+        "date": "2026-10-01",
+        "terms_sha256": "7cfadcd6ee0e8025336900bc9d51f0b651f68bbd19b219b24515d2ee4ed0607a"
       }
     },
     {
@@ -8919,18 +8919,18 @@
         "background daemon won't install as a service",
         "why does the daemon only start on demand",
         "ask before starting background daemon",
-        "daemon restarts itself after an update",
+        "daemon restarts itself after update",
         "crashed background agent relaunched automatically",
-        "shorter trimmed system prompt option",
+        "how often are background agents auto relaunched",
+        "trim system prompt sections to save tokens",
+        "shorter tool descriptions in the prompt",
         "approve or reject dialog when saving memory",
-        "confirmation popup every memory write",
+        "why am i asked to confirm memory writes",
         "my memory not showing in cowork session",
-        "cowork replaces my memory instructions",
-        "effort level in skill frontmatter",
-        "does skill effort setting add thinking tokens",
+        "cowork overriding user memory",
         "plan mode let an edit through",
-        "idle background worker shut down",
-        "reproduce and verify bug fix prompt instructions"
+        "effort level in skill frontmatter",
+        "reproduce and verify fix before finishing"
       ],
       "identifier_keys": [
         "tengu_slate_ribbon",
@@ -8984,24 +8984,24 @@
         "background daemon won't install as a service",
         "why does the daemon only start on demand",
         "ask before starting background daemon",
-        "daemon restarts itself after an update",
+        "daemon restarts itself after update",
         "crashed background agent relaunched automatically",
-        "shorter trimmed system prompt option",
+        "how often are background agents auto relaunched",
+        "trim system prompt sections to save tokens",
+        "shorter tool descriptions in the prompt",
         "approve or reject dialog when saving memory",
-        "confirmation popup every memory write",
+        "why am i asked to confirm memory writes",
         "my memory not showing in cowork session",
-        "cowork replaces my memory instructions",
-        "effort level in skill frontmatter",
-        "does skill effort setting add thinking tokens",
+        "cowork overriding user memory",
         "plan mode let an edit through",
-        "idle background worker shut down",
-        "reproduce and verify bug fix prompt instructions"
+        "effort level in skill frontmatter",
+        "reproduce and verify fix before finishing"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "a949ac4657463a5509e01194dd7ca9637d05b405fa7a00f7549b6c805cbe7c97"
+        "date": "2026-10-01",
+        "terms_sha256": "d58894f2c2b698e8459d1b4d85f996f5c04b0056361eaae9398ba0a88db5fcb2"
       }
     },
     {
@@ -10514,21 +10514,21 @@
         "global-this",
         "is-developer-approved-dev-url-override-enabled",
         "MCP_WORKSPACE_WEB_FETCH",
-        "drive cowork agent from my own harness",
-        "headless driver for cowork sessions",
-        "ask user question auto dismissed headless",
-        "why are my scripted answers never used",
-        "control response zod error expected object",
-        "how do i turn on cowork mode without the flag",
-        "cowork flag rejected user scope only",
+        "build headless driver for cowork agent",
+        "how to drive cowork agent from my own program",
+        "ask user question auto dismissed in headless mode",
+        "scripted answers to agent questions never fire",
+        "zod error expected object received undefined",
+        "control response payload wrong nesting",
+        "how to enable cowork mode without a flag",
+        "cowork plugins env var breaks settings",
         "mcp config ignored in cowork session",
-        "how to provide custom mcp tools to cowork agent",
-        "cowork tools always ask for approval",
+        "how do i give the cowork agent custom mcp tools",
+        "driver acting as mcp server over stdin",
+        "why do some cowork tools always ask for approval",
         "background agents disabled error in cowork",
-        "cowork settings file not loading plugins",
         "not logged in with fresh config directory",
-        "stream json handshake before first message",
-        "what effort and thinking budget does desktop pass"
+        "plugin root path fails in bash but works for read"
       ],
       "identifier_keys": [
         "always-deny-rules",
@@ -10572,27 +10572,27 @@
         "MCP_WORKSPACE_WEB_FETCH"
       ],
       "vocab_keys": [
-        "drive cowork agent from my own harness",
-        "headless driver for cowork sessions",
-        "ask user question auto dismissed headless",
-        "why are my scripted answers never used",
-        "control response zod error expected object",
-        "how do i turn on cowork mode without the flag",
-        "cowork flag rejected user scope only",
+        "build headless driver for cowork agent",
+        "how to drive cowork agent from my own program",
+        "ask user question auto dismissed in headless mode",
+        "scripted answers to agent questions never fire",
+        "zod error expected object received undefined",
+        "control response payload wrong nesting",
+        "how to enable cowork mode without a flag",
+        "cowork plugins env var breaks settings",
         "mcp config ignored in cowork session",
-        "how to provide custom mcp tools to cowork agent",
-        "cowork tools always ask for approval",
+        "how do i give the cowork agent custom mcp tools",
+        "driver acting as mcp server over stdin",
+        "why do some cowork tools always ask for approval",
         "background agents disabled error in cowork",
-        "cowork settings file not loading plugins",
         "not logged in with fresh config directory",
-        "stream json handshake before first message",
-        "what effort and thinking budget does desktop pass"
+        "plugin root path fails in bash but works for read"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "063a135372d6b0a10f8738c128586cc1d65a8ea9d30e608481cda606f0a6d247"
+        "date": "2026-10-01",
+        "terms_sha256": "dce5f6a2dfc764305a655b4285c651ef2bcf1c938d40587ec59a31f2b326a3a8"
       }
     },
     {
@@ -10743,20 +10743,20 @@
         "message_rated",
         "tengu_request_user_dialog",
         "hidden settings for cowork desktop agent",
-        "force effort level on unsupported model",
-        "turn off 1m context for proxy gateway",
-        "disable adaptive thinking",
+        "force effort level on any model",
+        "turn off 1m context for my proxy",
+        "disable extended thinking in cowork",
+        "stop shell commands inheriting my environment",
         "which feature flags are on in claude desktop",
-        "how to read the desktop feature flag cache file",
-        "scheduled tasks limited to three at once",
+        "how to read the desktop feature flag cache",
+        "why only three scheduled tasks run at once",
         "does desktop limit parallel subagents",
-        "why is model not found error retried automatically",
-        "skills and plugins sync interval",
-        "hermetic bash without inherited environment",
-        "cross-app authentication for mcp oauth",
-        "get remote session cost instead of zero dollars",
-        "which control messages block processing",
-        "why can't my skill see the agent's env vars"
+        "model not found errors silently retried",
+        "how often do skills and plugins sync in cowork",
+        "web fetch deduplication cache duration",
+        "show remote session cost instead of zero",
+        "background worker hangs on startup timeout",
+        "messages the agent sends to the desktop host"
       ],
       "identifier_keys": [
         "tool_use_id",
@@ -10810,26 +10810,26 @@
       ],
       "vocab_keys": [
         "hidden settings for cowork desktop agent",
-        "force effort level on unsupported model",
-        "turn off 1m context for proxy gateway",
-        "disable adaptive thinking",
+        "force effort level on any model",
+        "turn off 1m context for my proxy",
+        "disable extended thinking in cowork",
+        "stop shell commands inheriting my environment",
         "which feature flags are on in claude desktop",
-        "how to read the desktop feature flag cache file",
-        "scheduled tasks limited to three at once",
+        "how to read the desktop feature flag cache",
+        "why only three scheduled tasks run at once",
         "does desktop limit parallel subagents",
-        "why is model not found error retried automatically",
-        "skills and plugins sync interval",
-        "hermetic bash without inherited environment",
-        "cross-app authentication for mcp oauth",
-        "get remote session cost instead of zero dollars",
-        "which control messages block processing",
-        "why can't my skill see the agent's env vars"
+        "model not found errors silently retried",
+        "how often do skills and plugins sync in cowork",
+        "web fetch deduplication cache duration",
+        "show remote session cost instead of zero",
+        "background worker hangs on startup timeout",
+        "messages the agent sends to the desktop host"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "537aa31dd08b6a710c7d5bde5dcd5ebc00da8ac96978868ebea409e3010b75d2"
+        "date": "2026-10-01",
+        "terms_sha256": "c25b8af4e34cde7523eaebaefc93eb0a0a0a7079f0084f287c617fa03071ede9"
       }
     },
     {
@@ -17006,21 +17006,21 @@
         "XEV_VERSION",
         "chrome-devtools",
         "REMOTE_SYNC_FAILED",
-        "ship executable with my plugin",
-        "run plugin script as bare command",
-        "plugin command not found in shell",
-        "how do plugin scripts get on path",
-        "plugin root path wrong inside cowork vm",
-        "find plugin folder from a shell script",
-        "plugin launcher script self-locate",
-        "plugin directory added to path but missing",
-        "why does path list folders that don't exist",
-        "cowork plugin path points to host not vm",
-        "plugin cli shim wrapper generated automatically",
-        "plugin path with special characters ignored",
-        "can plugin scripts write next to themselves",
-        "does new plugin script need shell restart",
-        "declared plugin cli name collides with my script"
+        "plugin executables added to shell path",
+        "can my plugin ship its own command line launcher",
+        "marketplace sync failed check the repository url",
+        "organization plugin upload rejected",
+        "why was my plugin rejected by organization sync",
+        "plugin scripts not found as bare commands",
+        "plugin launcher missing in cowork shell",
+        "path lists plugin folders that don't exist",
+        "plugin validate passes but upload fails",
+        "find plugin root from inside a script",
+        "run bundled plugin scripts by path",
+        "plugin path dropped because of special characters",
+        "does new plugin command work without restart",
+        "read-only plugin folder in cowork vm",
+        "who creates the launcher file in cowork plugins"
       ],
       "identifier_keys": [
         "creative-problem-solving",
@@ -17033,27 +17033,27 @@
         "REMOTE_SYNC_FAILED"
       ],
       "vocab_keys": [
-        "ship executable with my plugin",
-        "run plugin script as bare command",
-        "plugin command not found in shell",
-        "how do plugin scripts get on path",
-        "plugin root path wrong inside cowork vm",
-        "find plugin folder from a shell script",
-        "plugin launcher script self-locate",
-        "plugin directory added to path but missing",
-        "why does path list folders that don't exist",
-        "cowork plugin path points to host not vm",
-        "plugin cli shim wrapper generated automatically",
-        "plugin path with special characters ignored",
-        "can plugin scripts write next to themselves",
-        "does new plugin script need shell restart",
-        "declared plugin cli name collides with my script"
+        "plugin executables added to shell path",
+        "can my plugin ship its own command line launcher",
+        "marketplace sync failed check the repository url",
+        "organization plugin upload rejected",
+        "why was my plugin rejected by organization sync",
+        "plugin scripts not found as bare commands",
+        "plugin launcher missing in cowork shell",
+        "path lists plugin folders that don't exist",
+        "plugin validate passes but upload fails",
+        "find plugin root from inside a script",
+        "run bundled plugin scripts by path",
+        "plugin path dropped because of special characters",
+        "does new plugin command work without restart",
+        "read-only plugin folder in cowork vm",
+        "who creates the launcher file in cowork plugins"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "910694efe7bf633bf5ad8fc3f5a4abfdafb9273b16b726bef3428f3bf5bb8521"
+        "date": "2026-10-01",
+        "terms_sha256": "f9fa993e9780dd7962b2a4744cae78036eccc43bd52cc2eab6ad6aa9b72e7b8e"
       }
     },
     {
@@ -20499,21 +20499,21 @@
         "native-write.txt",
         "never-commit-to-disk",
         "PRETTY_NAME",
-        "cloud task file not appearing on my mac",
-        "write succeeded but file missing on computer",
-        "cloud cowork access local folder",
-        "why did the file save to the cloud instead of my laptop",
-        "give cloud session permission to my folder",
-        "copy file from mac into cloud session",
-        "save output file back to my computer from cloud",
-        "run shell commands on my mac from cloud task",
-        "cloud session cannot delete files in folder",
-        "commit rejected because file changed since copied",
-        "overwrite protection when user edited the file",
-        "what can a cloud session see on my computer",
-        "file link shows as plain text in cloud chat",
-        "cloud session commands run on linux not macos",
-        "how does cloud cowork reach my local files"
+        "cloud task can't see files on my mac",
+        "file written but not on my computer",
+        "why does write succeed but file is missing",
+        "save output file to my laptop from cloud session",
+        "read local file from cloud task",
+        "grant cloud session access to a folder",
+        "run shell commands on my mac from cloud",
+        "delete files operation not permitted in connected folder",
+        "commit refused because file changed since staged",
+        "overwrite protection for user edited files",
+        "cloud session sees my home folder names",
+        "links to files show as plain text",
+        "why is my file link not clickable in cloud",
+        "upload file size limits from computer to cloud",
+        "remote commands run in linux not macos"
       ],
       "identifier_keys": [
         "app-version",
@@ -20540,27 +20540,27 @@
         "PRETTY_NAME"
       ],
       "vocab_keys": [
-        "cloud task file not appearing on my mac",
-        "write succeeded but file missing on computer",
-        "cloud cowork access local folder",
-        "why did the file save to the cloud instead of my laptop",
-        "give cloud session permission to my folder",
-        "copy file from mac into cloud session",
-        "save output file back to my computer from cloud",
-        "run shell commands on my mac from cloud task",
-        "cloud session cannot delete files in folder",
-        "commit rejected because file changed since copied",
-        "overwrite protection when user edited the file",
-        "what can a cloud session see on my computer",
-        "file link shows as plain text in cloud chat",
-        "cloud session commands run on linux not macos",
-        "how does cloud cowork reach my local files"
+        "cloud task can't see files on my mac",
+        "file written but not on my computer",
+        "why does write succeed but file is missing",
+        "save output file to my laptop from cloud session",
+        "read local file from cloud task",
+        "grant cloud session access to a folder",
+        "run shell commands on my mac from cloud",
+        "delete files operation not permitted in connected folder",
+        "commit refused because file changed since staged",
+        "overwrite protection for user edited files",
+        "cloud session sees my home folder names",
+        "links to files show as plain text",
+        "why is my file link not clickable in cloud",
+        "upload file size limits from computer to cloud",
+        "remote commands run in linux not macos"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "0cac1d55ddce1921e210aa03ae7217325ab859072724e443197a56b51bbc0cde"
+        "date": "2026-10-01",
+        "terms_sha256": "a95b4f9a4406257d0612476749d6e04f6da7f9b2728a594429d73c5382ac1b71"
       }
     },
     {
@@ -20705,21 +20705,21 @@
         "cowork_save_skill",
         "propose_skills",
         "/cci-chat-skill",
-        "upload a personal skill to cowork",
-        "does an uploaded skill work in the cli too",
+        "upload personal skill to cowork",
         "skill zip upload rejected",
-        "how to zip a skill for upload",
-        "uploaded skill scripts not running",
-        "inline shell command in skill shows as raw text",
-        "shell command execution disabled by policy in skill",
-        "skill missing in a different organization",
-        "why can't cowork find my skill",
-        "edit a skill by asking claude in chat",
-        "changes to skill files on disk not saved",
+        "how do i get my own skill into cowork",
+        "uploaded skill scripts not working in cowork",
+        "skill shell commands show as raw text",
+        "shell command execution disabled by policy message",
+        "does an uploaded skill sync to the cli",
+        "skill missing in other organization",
+        "edit a saved skill by asking in chat",
+        "save skill card in chat",
+        "skill reference files missing in cloud session",
         "skill files read-only in local cowork",
-        "how long until an uploaded skill syncs",
-        "skill scripts fail on linux but work on mac",
-        "update a skill without losing its scripts"
+        "why does my skill command not run on first message",
+        "share skill with scripts as a file",
+        "skill edits on disk not saved"
       ],
       "identifier_keys": [
         "cci-upload-probe",
@@ -20729,27 +20729,27 @@
         "/cci-chat-skill"
       ],
       "vocab_keys": [
-        "upload a personal skill to cowork",
-        "does an uploaded skill work in the cli too",
+        "upload personal skill to cowork",
         "skill zip upload rejected",
-        "how to zip a skill for upload",
-        "uploaded skill scripts not running",
-        "inline shell command in skill shows as raw text",
-        "shell command execution disabled by policy in skill",
-        "skill missing in a different organization",
-        "why can't cowork find my skill",
-        "edit a skill by asking claude in chat",
-        "changes to skill files on disk not saved",
+        "how do i get my own skill into cowork",
+        "uploaded skill scripts not working in cowork",
+        "skill shell commands show as raw text",
+        "shell command execution disabled by policy message",
+        "does an uploaded skill sync to the cli",
+        "skill missing in other organization",
+        "edit a saved skill by asking in chat",
+        "save skill card in chat",
+        "skill reference files missing in cloud session",
         "skill files read-only in local cowork",
-        "how long until an uploaded skill syncs",
-        "skill scripts fail on linux but work on mac",
-        "update a skill without losing its scripts"
+        "why does my skill command not run on first message",
+        "share skill with scripts as a file",
+        "skill edits on disk not saved"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "1a63ee43475240590572ee008365ebbc648f988eec0d71147db5524392ea48c2"
+        "date": "2026-10-01",
+        "terms_sha256": "329fee7baa98cf316fbbe83b960289c057e1947914b155492b37f2d74d82d9b3"
       }
     },
     {
@@ -44908,49 +44908,49 @@
     "websocket or http mcp server setup": [
       10
     ],
-    "how to write a custom skill": [
+    "how to create a custom skill": [
       11
     ],
     "skill not showing up in list": [
       11
     ],
-    "skill description gets cut off": [
+    "skill description getting cut off": [
       11
     ],
-    "why does my new skill lose its description": [
+    "why is my skill description truncated": [
       11
     ],
-    "run skill in separate subagent": [
+    "new skill loses its description": [
       11
     ],
-    "pass arguments to a skill": [
-      11
-    ],
-    "skill only activates for certain files": [
-      11
-    ],
-    "which skill wins when names conflict": [
+    "make a skill only run on certain files": [
       11
     ],
     "stop claude from auto-running my skill": [
       11
     ],
-    "make skill user-only or model-only": [
+    "prevent users from calling a skill directly": [
       11
     ],
-    "skill changes not picked up without restart": [
+    "pass arguments into a skill": [
       11
     ],
-    "shell commands in skill not executing from mcp server": [
+    "skill arguments not being replaced": [
+      11
+    ],
+    "run skill in separate subagent": [
+      11
+    ],
+    "skill changes not picked up after editing": [
+      11
+    ],
+    "which skill wins with duplicate names": [
+      11
+    ],
+    "skill shell commands not running from mcp server": [
       11
     ],
     "skill override setting has no effect": [
-      11
-    ],
-    "why does my skill ask for permission": [
-      11
-    ],
-    "old commands folder vs skills folder": [
       11
     ],
     "how do subagents work": [
@@ -48456,40 +48456,40 @@
     "ask before starting background daemon": [
       90
     ],
-    "daemon restarts itself after an update": [
+    "daemon restarts itself after update": [
       90
     ],
     "crashed background agent relaunched automatically": [
       90
     ],
-    "shorter trimmed system prompt option": [
+    "how often are background agents auto relaunched": [
+      90
+    ],
+    "trim system prompt sections to save tokens": [
+      90
+    ],
+    "shorter tool descriptions in the prompt": [
       90
     ],
     "approve or reject dialog when saving memory": [
       90
     ],
-    "confirmation popup every memory write": [
+    "why am i asked to confirm memory writes": [
       90
     ],
     "my memory not showing in cowork session": [
       90
     ],
-    "cowork replaces my memory instructions": [
-      90
-    ],
-    "effort level in skill frontmatter": [
-      90
-    ],
-    "does skill effort setting add thinking tokens": [
+    "cowork overriding user memory": [
       90
     ],
     "plan mode let an edit through": [
       90
     ],
-    "idle background worker shut down": [
+    "effort level in skill frontmatter": [
       90
     ],
-    "reproduce and verify bug fix prompt instructions": [
+    "reproduce and verify fix before finishing": [
       90
     ],
     "run many subagents in parallel from a script": [
@@ -49210,94 +49210,94 @@
     "workaround for giving cowork cli a key each session": [
       106
     ],
-    "drive cowork agent from my own harness": [
+    "build headless driver for cowork agent": [
       107
     ],
-    "headless driver for cowork sessions": [
+    "how to drive cowork agent from my own program": [
       107
     ],
-    "ask user question auto dismissed headless": [
+    "ask user question auto dismissed in headless mode": [
       107
     ],
-    "why are my scripted answers never used": [
+    "scripted answers to agent questions never fire": [
       107
     ],
-    "control response zod error expected object": [
+    "zod error expected object received undefined": [
       107
     ],
-    "how do i turn on cowork mode without the flag": [
+    "control response payload wrong nesting": [
       107
     ],
-    "cowork flag rejected user scope only": [
+    "how to enable cowork mode without a flag": [
+      107
+    ],
+    "cowork plugins env var breaks settings": [
       107
     ],
     "mcp config ignored in cowork session": [
       107
     ],
-    "how to provide custom mcp tools to cowork agent": [
+    "how do i give the cowork agent custom mcp tools": [
       107
     ],
-    "cowork tools always ask for approval": [
+    "driver acting as mcp server over stdin": [
+      107
+    ],
+    "why do some cowork tools always ask for approval": [
       107
     ],
     "background agents disabled error in cowork": [
       107
     ],
-    "cowork settings file not loading plugins": [
-      107
-    ],
     "not logged in with fresh config directory": [
       107
     ],
-    "stream json handshake before first message": [
-      107
-    ],
-    "what effort and thinking budget does desktop pass": [
+    "plugin root path fails in bash but works for read": [
       107
     ],
     "hidden settings for cowork desktop agent": [
       108
     ],
-    "force effort level on unsupported model": [
+    "force effort level on any model": [
       108
     ],
-    "turn off 1m context for proxy gateway": [
+    "turn off 1m context for my proxy": [
       108
     ],
-    "disable adaptive thinking": [
+    "disable extended thinking in cowork": [
+      108
+    ],
+    "stop shell commands inheriting my environment": [
       108
     ],
     "which feature flags are on in claude desktop": [
       108
     ],
-    "how to read the desktop feature flag cache file": [
+    "how to read the desktop feature flag cache": [
       108
     ],
-    "scheduled tasks limited to three at once": [
+    "why only three scheduled tasks run at once": [
       108
     ],
     "does desktop limit parallel subagents": [
       108
     ],
-    "why is model not found error retried automatically": [
+    "model not found errors silently retried": [
       108
     ],
-    "skills and plugins sync interval": [
+    "how often do skills and plugins sync in cowork": [
       108
     ],
-    "hermetic bash without inherited environment": [
+    "web fetch deduplication cache duration": [
       108
     ],
-    "cross-app authentication for mcp oauth": [
+    "show remote session cost instead of zero": [
       108
     ],
-    "get remote session cost instead of zero dollars": [
+    "background worker hangs on startup timeout": [
       108
     ],
-    "which control messages block processing": [
-      108
-    ],
-    "why can't my skill see the agent's env vars": [
+    "messages the agent sends to the desktop host": [
       108
     ],
     "where are cowork chat transcripts saved": [
@@ -52157,49 +52157,49 @@
     "artifact custom types catalog": [
       172
     ],
-    "ship executable with my plugin": [
+    "plugin executables added to shell path": [
       173
     ],
-    "run plugin script as bare command": [
+    "can my plugin ship its own command line launcher": [
       173
     ],
-    "plugin command not found in shell": [
+    "marketplace sync failed check the repository url": [
       173
     ],
-    "how do plugin scripts get on path": [
+    "organization plugin upload rejected": [
       173
     ],
-    "plugin root path wrong inside cowork vm": [
+    "why was my plugin rejected by organization sync": [
       173
     ],
-    "find plugin folder from a shell script": [
+    "plugin scripts not found as bare commands": [
       173
     ],
-    "plugin launcher script self-locate": [
+    "plugin launcher missing in cowork shell": [
       173
     ],
-    "plugin directory added to path but missing": [
+    "path lists plugin folders that don't exist": [
       173
     ],
-    "why does path list folders that don't exist": [
+    "plugin validate passes but upload fails": [
       173
     ],
-    "cowork plugin path points to host not vm": [
+    "find plugin root from inside a script": [
       173
     ],
-    "plugin cli shim wrapper generated automatically": [
+    "run bundled plugin scripts by path": [
       173
     ],
-    "plugin path with special characters ignored": [
+    "plugin path dropped because of special characters": [
       173
     ],
-    "can plugin scripts write next to themselves": [
+    "does new plugin command work without restart": [
       173
     ],
-    "does new plugin script need shell restart": [
+    "read-only plugin folder in cowork vm": [
       173
     ],
-    "declared plugin cli name collides with my script": [
+    "who creates the launcher file in cowork plugins": [
       173
     ],
     "cloud session environment variables differ from cli": [
@@ -54032,49 +54032,49 @@
     "can hipaa orgs reach external sites from cowork": [
       214
     ],
-    "cloud task file not appearing on my mac": [
+    "cloud task can't see files on my mac": [
       215
     ],
-    "write succeeded but file missing on computer": [
+    "file written but not on my computer": [
       215
     ],
-    "cloud cowork access local folder": [
+    "why does write succeed but file is missing": [
       215
     ],
-    "why did the file save to the cloud instead of my laptop": [
+    "save output file to my laptop from cloud session": [
       215
     ],
-    "give cloud session permission to my folder": [
+    "read local file from cloud task": [
       215
     ],
-    "copy file from mac into cloud session": [
+    "grant cloud session access to a folder": [
       215
     ],
-    "save output file back to my computer from cloud": [
+    "run shell commands on my mac from cloud": [
       215
     ],
-    "run shell commands on my mac from cloud task": [
+    "delete files operation not permitted in connected folder": [
       215
     ],
-    "cloud session cannot delete files in folder": [
+    "commit refused because file changed since staged": [
       215
     ],
-    "commit rejected because file changed since copied": [
+    "overwrite protection for user edited files": [
       215
     ],
-    "overwrite protection when user edited the file": [
+    "cloud session sees my home folder names": [
       215
     ],
-    "what can a cloud session see on my computer": [
+    "links to files show as plain text": [
       215
     ],
-    "file link shows as plain text in cloud chat": [
+    "why is my file link not clickable in cloud": [
       215
     ],
-    "cloud session commands run on linux not macos": [
+    "upload file size limits from computer to cloud": [
       215
     ],
-    "how does cloud cowork reach my local files": [
+    "remote commands run in linux not macos": [
       215
     ],
     "chat turned into cowork mid-conversation": [
@@ -54122,49 +54122,49 @@
     "can a workspace go back to chat": [
       216
     ],
-    "upload a personal skill to cowork": [
-      217
-    ],
-    "does an uploaded skill work in the cli too": [
+    "upload personal skill to cowork": [
       217
     ],
     "skill zip upload rejected": [
       217
     ],
-    "how to zip a skill for upload": [
+    "how do i get my own skill into cowork": [
       217
     ],
-    "uploaded skill scripts not running": [
+    "uploaded skill scripts not working in cowork": [
       217
     ],
-    "inline shell command in skill shows as raw text": [
+    "skill shell commands show as raw text": [
       217
     ],
-    "shell command execution disabled by policy in skill": [
+    "shell command execution disabled by policy message": [
       217
     ],
-    "skill missing in a different organization": [
+    "does an uploaded skill sync to the cli": [
       217
     ],
-    "why can't cowork find my skill": [
+    "skill missing in other organization": [
       217
     ],
-    "edit a skill by asking claude in chat": [
+    "edit a saved skill by asking in chat": [
       217
     ],
-    "changes to skill files on disk not saved": [
+    "save skill card in chat": [
+      217
+    ],
+    "skill reference files missing in cloud session": [
       217
     ],
     "skill files read-only in local cowork": [
       217
     ],
-    "how long until an uploaded skill syncs": [
+    "why does my skill command not run on first message": [
       217
     ],
-    "skill scripts fail on linux but work on mac": [
+    "share skill with scripts as a file": [
       217
     ],
-    "update a skill without losing its scripts": [
+    "skill edits on disk not saved": [
       217
     ],
     "plugin hook blocks prompt with no message in cloud": [
