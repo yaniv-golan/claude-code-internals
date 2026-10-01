@@ -20459,7 +20459,7 @@
       "lesson_number": "215",
       "file": "55-cloud-session-device-tools.md",
       "startLine": 16,
-      "endLine": 117,
+      "endLine": 119,
       "keywords": [
         "device tools",
         "mcp__remote-devices",
@@ -20493,6 +20493,9 @@
         "files-api",
         "cci-device-probe",
         "seed.txt",
+        "file-uuid",
+        "staged-path",
+        "device-path",
         "native-write.txt",
         "never-commit-to-disk",
         "PRETTY_NAME",
@@ -20529,6 +20532,9 @@
         "files-api",
         "cci-device-probe",
         "seed.txt",
+        "file-uuid",
+        "staged-path",
+        "device-path",
         "native-write.txt",
         "never-commit-to-disk",
         "PRETTY_NAME"
@@ -20562,8 +20568,8 @@
       "title": "One Conversation, Two Runtimes: How claude.ai Moves a Chat Into a Cowork Workspace",
       "lesson_number": "216",
       "file": "55-cloud-session-device-tools.md",
-      "startLine": 121,
-      "endLine": 167,
+      "startLine": 123,
+      "endLine": 169,
       "keywords": [
         "chat and Cowork merged",
         "hub backend",
@@ -20670,7 +20676,7 @@
       "lesson_number": "217",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 16,
-      "endLine": 79,
+      "endLine": 83,
       "keywords": [
         "upload skill",
         "uploaded skill",
@@ -20697,6 +20703,7 @@
         "cci-upload-probe",
         "upload_source",
         "cowork_save_skill",
+        "propose_skills",
         "/cci-chat-skill",
         "upload a personal skill to cowork",
         "does an uploaded skill work in the cli too",
@@ -20718,6 +20725,7 @@
         "cci-upload-probe",
         "upload_source",
         "cowork_save_skill",
+        "propose_skills",
         "/cci-chat-skill"
       ],
       "vocab_keys": [
@@ -20749,8 +20757,8 @@
       "title": "Plugin Blocks and MCP Placeholders, Lane by Lane",
       "lesson_number": "218",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
-      "startLine": 83,
-      "endLine": 143,
+      "startLine": 87,
+      "endLine": 147,
       "keywords": [
         "UserPromptSubmit block",
         "decision block",
@@ -44345,6 +44353,15 @@
     "seed.txt": [
       215
     ],
+    "file-uuid": [
+      215
+    ],
+    "staged-path": [
+      215
+    ],
+    "device-path": [
+      215
+    ],
     "native-write.txt": [
       215
     ],
@@ -44427,6 +44444,9 @@
       217
     ],
     "cowork_save_skill": [
+      217
+    ],
+    "propose_skills": [
       217
     ],
     "/cci-chat-skill": [

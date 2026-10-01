@@ -1105,7 +1105,7 @@
       "id": "plugins.edit-a-skill-in-chat",
       "page": "plugins-and-plugin-root",
       "rule": "A user can create and change their own skills by asking Claude in Cowork; point them there before suggesting a re-upload.",
-      "detail": "In a Cowork session that is allowed to save skills, asking Claude to create a skill, or to change one the user already has, produces a card the user confirms; the result is saved to their account and reaches their other sessions and the command-line tool within about a minute. A change replaces only the skill's instructions and keeps its other files, so an uploaded skill with scripts can be edited this way. A new skill created in chat has instructions only; one that needs scripts or reference files still has to be uploaded.",
+      "detail": "In a Cowork session that is allowed to save skills, asking Claude to create a skill, or to change one the user already has, produces a card the user confirms; the result is saved to their account and reaches their other sessions and the command-line tool within about a minute. A change replaces only the skill's instructions and keeps its other files, so an uploaded skill with scripts can be edited this way. A new skill created in chat has instructions only. One that needs scripts or reference files can be uploaded, or, in a cloud session, packaged as a .skill file and sent to the user: the Save skill button on that file installs every file.",
       "tier": "measured",
       "severity": "friction",
       "durability": "durable",
@@ -1120,7 +1120,8 @@
       },
       "caveats": [
         "Skills belong to an organization. A skill uploaded while the application was in one organization is not visible to, and cannot be changed from, a session in another.",
-        "Whether a session may save skills depends on the organization's settings and plan: an admin can turn it off, and the access list can block it by plan tier or entitlement, so not every user will be offered it. The live behaviour was measured on one account, 2026-09-29; the gating is read from the desktop application's code."
+        "Whether a session may save skills depends on the organization's settings and plan: an admin can turn it off, and the access list can block it by plan tier or entitlement, so not every user will be offered it. The live behaviour was measured on one account, 2026-09-29; the gating is read from the desktop application's code.",
+        "The Save skill button on a sent .skill file was seen in one cloud session on one account (2026-10-01), relayed from a sibling session."
       ],
       "verified": {
         "date": "2026-09-29",
@@ -1344,8 +1345,8 @@
     {
       "id": "shell.inline-execution-disabled",
       "page": "shell-commands",
-      "rule": "Do not depend on the inline shell-execution syntax in skill instructions; whether it runs depends on the sandbox and on how the skill was installed.",
-      "detail": "The syntax that lets a skill embed a command in its own instructions and have the output substituted does not run in a local Cowork session: each command is replaced by a notice that shell execution is disabled by policy. In the remote sandbox it runs. In the command-line tool it runs for a plugin's skills, but a skill the user uploaded to their account has its commands left as raw text. None of these cases raises an error, so a skill that gathers context this way carries on with the notice or the raw command in place of the output.",
+      "rule": "Do not depend on the inline shell-execution syntax in skill instructions; whether it runs depends on the sandbox, on how the skill was installed and on when in the conversation it is used.",
+      "detail": "The syntax that lets a skill embed a command in its own instructions and have the output substituted does not run in a local Cowork session: each command is replaced by a notice that shell execution is disabled by policy. In the remote sandbox it runs once the session's container exists. That container is created by the first shell command in a conversation, so a skill used before then, for example in the conversation's first message, has its commands left as raw text whichever way it was installed. In the command-line tool it runs for a plugin's skills, but a skill the user uploaded to their account has its commands left as raw text. None of these cases raises an error, so a skill that gathers context this way carries on with the notice or the raw command in place of the output.",
       "tier": "binary",
       "verified": {
         "date": "2026-09-28",
@@ -1365,7 +1366,7 @@
         "state_page": "cowork-architecture"
       },
       "caveats": [
-        "Read from the shipped agent, not run live in the remote sandbox; managed settings there could still switch it off.",
+        "The behaviour by surface is read from the shipped agent. The remote sandbox, including the first-message exception, was run live by a sibling session on one account (2026-10-01) and is relayed, not repeated here; managed settings there could still switch it off.",
         "Controlled by a setting as well as by the sandbox, so an organization can switch it off anywhere."
       ]
     },

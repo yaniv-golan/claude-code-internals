@@ -186,7 +186,10 @@ staged via `claude-hostloop-plugins/<hash>`, read-only at `/sessions/<slug>/mnt/
 (`upload_source=cowork_save_skill`); the user confirms a **Save skill** / **Update skill** card. Create is
 body-only; `overwrite` replaces `SKILL.md` and keeps the skill's other files (carry-forward, else download +
 re-upload) — measured 2026-09-29 on an uploaded skill with a script. Only user-created skills are updatable.
-Propagates in under a minute, CLI included. **Skills are scoped to an organization.**
+Propagates in under a minute, CLI included. **Skills are scoped to an organization.** A second route
+installs the **whole** package: a `.skill` sent with `SendUserFile` (cloud) or `present_files` (chat runtime)
+renders a card whose **Save skill** creates the skill with its scripts — seen 2026-10-01 (Desktop 2.16120.0,
+relayed) in a cloud session that had no `save_skill`.
 
 ## Plugin prompt blocks and MCP placeholders by lane (L218)
 

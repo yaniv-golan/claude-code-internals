@@ -1,4 +1,4 @@
-Updated: 2026-09-27 | Source: **`app.asar` 2.9939.2** (the live install), **a live probe in a cloud Cowork task on 2026-09-27** (Desktop 2.9939.2 connected, `CLAUDE_CODE_ENTRYPOINT=remote_cowork`), this machine's Desktop log and the probe folder on disk, and the claude.ai interface code the Desktop fetched on 2026-09-24/25 (three builds, including the protobuf descriptors embedded in it). **Does NOT move the CLI or Desktop baselines.**
+Updated: 2026-10-01 | Source: **`app.asar` 2.9939.2** (the live install), **a live probe in a cloud Cowork task on 2026-09-27** (Desktop 2.9939.2 connected, `CLAUDE_CODE_ENTRYPOINT=remote_cowork`), this machine's Desktop log and the probe folder on disk, and the claude.ai interface code the Desktop fetched on 2026-09-24/25 (three builds, including the protobuf descriptors embedded in it); plus the device tools' schemas and one commit run relayed from a peer session's cloud Cowork probes on 2026-10-01 (Desktop 2.16120.0). **Does NOT move the CLI or Desktop baselines.**
 
 Prompted by a review request from the skill-creator-plus project, whose maintainer had watched a cloud session started from the web list folders on their Mac.
 
@@ -38,6 +38,8 @@ So a cloud session learns the names of the user's home folders and local servers
 
 `device_request_folder_access` takes paths and a reason. The user sees "Claude wants to use a folder on your computer", with the path, the reason, a note that files the task uses will leave the device because it runs in the cloud, and **Decline** / **Allow once**. The grant covers that session only. Home directories, system roots and protected locations cannot be requested. On approval the tool returns `{"granted":["/Users/<user>/<folder>"]}` and the folder appears in `connectedFolders`.
 
+From the tool's schema (2026-10-01): one call takes 1 to 8 canonical absolute paths (symlinks and `.`/`..` are refused) and a `reason` of at most 500 characters. The user approves or declines the set as a whole, and after a decline the schema tells the model not to repeat the request.
+
 ## Paths
 
 | Where | Path form |
@@ -54,7 +56,7 @@ So a cloud session learns the names of the user's home folders and local servers
 
 ## Writing: commit from the outputs folder
 
-`device_commit_files` does not take content. It takes a file already written under the container's outputs folder (or a `SendUserFile` id), and a destination that must be an absolute path inside a connected folder. The probe's committed file arrived with mode `0600`. Its own description tells the model to commit every file deliverable the user asked for, since an uncommitted file never reaches the disk. Limits: 50 files, 10 or 20 MB per file depending on the session host, 100 MB per call.
+`device_commit_files` does not take content. Each file is named either by `fileUuid`, from an earlier `SendUserFile` (the schema calls it preferred when available), or by `stagedPath`, an absolute path under `/mnt/user-data/outputs/`; paths outside that root are rejected. So no `SendUserFile` is needed first: a 2026-10-01 run wrote the file into the outputs folder with the shell and committed it by `stagedPath`. The destination, `devicePath`, must be an absolute path inside a connected folder (`~` allowed). The committed files arrived with mode `0600` and, in the 2026-10-01 run, a `com.apple.provenance` extended attribute. Its own description tells the model to commit every file deliverable the user asked for, since an uncommitted file never reaches the disk. Limits: 50 files, 10 or 20 MB per file depending on the session host, 100 MB per call.
 
 **The overwrite guard.** When the destination exists, the commit compares the modification time the model passes (`expectedMtimeMs`, normally from the stage result) with the file on the computer, and refuses on a mismatch:
 

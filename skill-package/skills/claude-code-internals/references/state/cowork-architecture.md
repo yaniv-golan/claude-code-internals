@@ -4,7 +4,7 @@ title: Cowork runtime architecture (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
 sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198, 207, 208, 210, 211, 212, 213, 214, 215, 216]
-updated: 2026-09-27
+updated: 2026-10-01
 read_more: ["https://ccinternals.dev/cowork/?ref=skill"]
 ---
 
@@ -380,8 +380,9 @@ in-VM shell (`mcp__workspace__bash`, **sealed** — no `CLAUDE_CODE_*` markers
 survive; v2.12.2 probe). A skill's shell commands run in the third, so a bare
 `$CLAUDE_CODE_IS_COWORK` check false-negatives in production Cowork. Inline
 `` !`cmd` `` skill-shell execution is force-disabled under local Cowork
-(`disableSkillShellExecution` short-circuit on `CLAUDE_CODE_IS_COWORK`; cloud Cowork runs it, and an
-uploaded skill's is left raw in the CLI — L217), and hook env-exports don't cross
+(`disableSkillShellExecution` short-circuit on `CLAUDE_CODE_IS_COWORK`; cloud Cowork runs it once the
+container exists — a skill invoked before the conversation's first shell call keeps it raw, plugin or
+uploaded, relayed 2026-10-01 at agent 2.1.286 — and an uploaded skill's is left raw in the CLI — L217), and hook env-exports don't cross
 the host/VM bridge — neither can serve as a probe.
 
 Reliable recipe (ordered): `$CLAUDE_CODE_IS_COWORK` set → cowork (host-side or

@@ -1,4 +1,4 @@
-Updated: 2026-09-28 | Source: **live probes on 2026-09-27/28** with Desktop **2.9939.2** and agent **2.1.281** on the local lane, a cloud Cowork task (`remote_cowork`) on the same account, and this Claude Code CLI session; **`app.asar` 2.9939.2** for the code paths; the Desktop log and the probes' own log files. **Does NOT move the CLI or Desktop baselines.**
+Updated: 2026-10-01 | Source: **live probes on 2026-09-27/28** with Desktop **2.9939.2** and agent **2.1.281** on the local lane, a cloud Cowork task (`remote_cowork`) on the same account, and this Claude Code CLI session; **`app.asar` 2.9939.2** for the code paths; the Desktop log and the probes' own log files; and **relayed live runs in cloud Cowork on 2026-10-01** (Desktop 2.16120.0, cloud agent 2.1.286, a peer session's probes) for the first-turn exception and the `.skill` card. **Does NOT move the CLI or Desktop baselines.**
 
 Prompted by three open GitHub threads a sibling session was answering: a user who wants a personal skill in Cowork, a plugin whose prompt-blocking hook seemed to do nothing, and plugins whose MCP tools never appeared in Cowork.
 
@@ -54,6 +54,8 @@ function eSr(){return Boolean(a.CLAUDE_CODE_REMOTE)||Boolean(a.CLAUDE_CODE_IS_CO
 
 The cloud rows assume the runner sets no managed `disableSkillShellExecution`; that was not checked live. The same trust check decides `${CLAUDE_PROJECT_DIR}` and `${CLAUDE_SESSION_ID}` in an uploaded skill: substituted in the cloud, left as written in the CLI. `${CLAUDE_SKILL_DIR}` is substituted with the skill's own folder for every kind of skill, and the body starts with a "Base directory for this skill:" line. An uploaded skill is registered under a qualified name (`anthropic-skills:<name>` in the CLI) with the bare name as an alias.
 
+**In cloud Cowork, not before the container exists.** The cloud container is created on the conversation's first shell call (the "Getting set up for this session" notice), not when the conversation starts; the full tool list is there from the first turn. A skill invoked before that call, for example as the conversation's first message, comes back with its `` !`cmd` `` as raw text and no `[shell command execution disabled by policy]` marker. This held for an uploaded skill (two of two runs) and for a plugin skill, so it is not the uploaded-skill trust check above. After a shell call had created the container, the same skills ran their commands (`/home/claude RAN-42`). Relayed from a peer session's runs on 2026-10-01 (Desktop 2.16120.0, cloud agent 2.1.286); what expands the skill on the first turn, outside the container, was not traced.
+
 ## Creating and changing a skill by asking in chat
 
 A Cowork session with `save_skill` (granted as described in L206) can create a skill and change an existing one. Measured on 2026-09-29 (Desktop 2.9939.4) and read from its code:
@@ -64,6 +66,7 @@ A Cowork session with `save_skill` (granted as described in L206) can create a s
 - **An update replaces `SKILL.md` and keeps everything else.** With `overwrite`, the Desktop first asks the server to carry the other files forward; if that fails, it downloads the existing skill and re-uploads it with the new `SKILL.md`. Measured: an uploaded skill with a script and a reference file was changed in chat; its `SKILL.md` gained the new line and both other files were still there. Only the user's own skills can be updated, not Anthropic's or a plugin's.
 - **It propagates like an upload.** The Desktop pulled the new skill 50 seconds after the create and the new version under a minute after the update, and the CLI received the updated body.
 - **The tool says it is the only way to change a saved skill:** editing the skill's files on disk does not persist.
+- **A sent `.skill` file has its own Save skill button, and it installs the whole package.** In cloud Cowork, a `.skill` file sent with `SendUserFile` renders as a card with **Download** and **Save skill**; the preview pane has another **Save skill**. Clicking it created the skill in Customize → Skills with its script included ("Contents · 2"). That session had no `save_skill`, only `propose_skills`, so this route does not depend on the L206 grant. On the chat runtime, `present_files` renders the same card for a `.skill`. Relayed from a peer session's runs on 2026-10-01 (Desktop 2.16120.0), one observation each.
 
 **Skills belong to an organization.** Asked to change `cci-upload-probe`, a session in one organization answered that no such skill existed: it had been uploaded while the Desktop was in a different organization. After it was uploaded again in the session's organization, the update worked. This is also why the same skill had appeared in two stores above: each is one organization/account pair.
 
@@ -76,7 +79,8 @@ In the cloud run, the session reported that the first invocation, earlier in the
 - To give a user a personal skill in Cowork, have them upload it as a skill. Scripts come with it and run on every surface.
 - Write the scripts for Linux as well as macOS: in both Cowork lanes they run under `dash`.
 - In local Cowork the skill's files are read-only, so write anything to the outputs folder, not next to the skill.
-- Do not depend on `` !`cmd` `` in a skill: whether it runs depends on the lane and on how the skill was installed. Tested only in the CLI with an uploaded skill, it looks broken when it is not.
+- To hand a user a skill with scripts in cloud Cowork, package it as a `.skill` file and send it: the card's Save skill installs every file. `save_skill` saves the instructions only.
+- Do not depend on `` !`cmd` `` in a skill: whether it runs depends on the lane, on how the skill was installed and, in cloud Cowork, on whether a shell call has already happened in the conversation. Tested only in the CLI with an uploaded skill, it looks broken when it is not; tested only mid-conversation in the cloud, it looks working when a first-message invocation is not.
 
 ---
 
