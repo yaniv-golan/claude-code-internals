@@ -153,20 +153,20 @@ test('identifier rule: homed keys and mention counts >= the source lesson', (t) 
 test('candidate pool: union of the layers top 10 plus the source, with provenance', (t) => {
   if (!PRESENT) { t.skip(SKIP); return; }
   const G = require(GEN_REL);
-  const fused = [
+  const ranked = [
     { id: 10, keyword_rank: 1, tfidf_rank: null },
     { id: 11, keyword_rank: null, tfidf_rank: 1 },
     ...Array.from({ length: 12 }, (_, i) => ({ id: 20 + i, keyword_rank: null, tfidf_rank: null })),
-    { id: 40, keyword_rank: 3, tfidf_rank: 30 }, // fused rank 15, keyword top 10
+    { id: 40, keyword_rank: 3, tfidf_rank: 30 }, // search.js rank 15, keyword top 10
   ];
-  const pool = G.poolFrom(fused, [{ id: 50 }], 99, 10);
+  const pool = G.poolFrom(ranked, [{ id: 50 }], 99, 10);
   const byId = Object.fromEntries(pool.map((p) => [p.id, p.layers]));
-  assert.deepStrictEqual(byId[10], ['fused', 'keyword']);
-  assert.deepStrictEqual(byId[11], ['fused', 'tfidf-search']);
+  assert.deepStrictEqual(byId[10], ['keyword', 'search']);
+  assert.deepStrictEqual(byId[11], ['search', 'tfidf-search']);
   assert.deepStrictEqual(byId[40], ['keyword']);
   assert.deepStrictEqual(byId[50], ['tfidf-semantic']);
   assert.deepStrictEqual(byId[99], ['source']);
-  assert.ok(!(30 in byId) && !(31 in byId), 'fused ranks 11+ are out');
+  assert.ok(!(30 in byId) && !(31 in byId), 'search.js ranks 11+ are out');
   assert.deepStrictEqual(pool.map((p) => p.id), [...pool.map((p) => p.id)].sort((a, b) => a - b));
 });
 
@@ -191,7 +191,7 @@ test('gen-relevance: stub judge, resumable checkpoint, source always grade 2, ne
       { qid: 'st-0005', stratum: 'state', lesson_id: null, registry_id: 'gone.entry', split_lesson_id: a, split: 'dev', text: 'state r' },
     ],
   }));
-  const pools = (text, src) => [{ id: a, layers: ['fused'] }, { id: b, layers: ['keyword'] }, { id: c, layers: ['tfidf-semantic'] }]
+  const pools = (text, src) => [{ id: a, layers: ['search'] }, { id: b, layers: ['keyword'] }, { id: c, layers: ['tfidf-semantic'] }]
     .map((p) => (p.id === src ? { ...p, layers: [...p.layers, 'source'] } : p));
   const calls = [];
   // The judge says "no" to every source lesson and "yes" to lesson c; "plain two" fails once.
@@ -278,9 +278,9 @@ test('gen-relevance: parseVerdicts rejects a missing, duplicate or unknown candi
 test('gen-relevance: the judge prompt does not reveal which candidate is the source', (t) => {
   if (!PRESENT) { t.skip(SKIP); return; }
   const G = require(GEN_REL);
-  const cands = [{ id: 1, label: 'C1', excerpt: 'Title: A', layers: ['source', 'fused'] }, { id: 2, label: 'C2', excerpt: 'Title: B', layers: ['keyword'] }];
+  const cands = [{ id: 1, label: 'C1', excerpt: 'Title: A', layers: ['source', 'search'] }, { id: 2, label: 'C2', excerpt: 'Title: B', layers: ['keyword'] }];
   const p = G.buildJudgePrompt('q?', cands);
-  assert.doesNotMatch(p, /source|fused|layer/i);
+  assert.doesNotMatch(p, /source|layer/i); // layer names ('search', 'keyword') are ordinary words; the line below proves they don't leak
   assert.strictEqual(p, G.buildJudgePrompt('q?', cands.map((c) => ({ ...c, layers: [] }))));
 });
 

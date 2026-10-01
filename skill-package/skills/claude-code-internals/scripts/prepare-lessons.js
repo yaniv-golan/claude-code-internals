@@ -40,7 +40,8 @@
  * keys reach the KEYWORD layer only and every hand-built TF-IDF vector is
  * unchanged (a test asserts the index is identical with and without them).
  * Why: feeding them into TF-IDF shifted TF normalisation and vector norms and
- * flipped registry top-1 cases on exact RRF ties broken by lowest id, which no
+ * flipped registry top-1 cases on exact ties broken by lowest id (measured under
+ * the Reciprocal Rank Fusion order search.js used then), which no
  * collision rule can reach because it is not a key collision (measured in the
  * prototype). lookup.sh ignores generated keys, and search.js,
  * semantic-search.js and fetch-lesson.js do not print them.

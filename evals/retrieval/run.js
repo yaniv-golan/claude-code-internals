@@ -28,17 +28,12 @@
  *     lookup path is reachable for this record at all, independent of
  *     whether a generated natural-language question could ever reach it.
  *
- * Negatives: search.js's rrf_score is RANK-derived (1/(60+rank) per layer,
- * summed), not a similarity/confidence score -- any single-layer hit lands
- * near 0.0164 (1/61) and any double-layer top-1 hit lands near 0.0328
- * regardless of how relevant the match actually is. So there is no
- * "similarity threshold" in this number worth gating on; a discriminating
- * negative-rejection score would need the raw TF-IDF cosine, which
- * `search.js --json` does not expose (see semantic-search.js internals) --
- * extending search.js is out of scope here (open decision, see README).
- * This script instead records, per negative question: whether search.js
- * returned anything at all, its top rrf_score, confidence label and which
- * layer(s) hit, and reports the DISTRIBUTION of those — not a pass/fail.
+ * Negatives: search.js has no similarity threshold, so a negative question
+ * almost always gets results. This script records, per negative question:
+ * whether search.js returned anything at all, the best raw TF-IDF cosine among
+ * its results (`tfidf_score` in --json; 0 when only the keyword layer hit), the
+ * top result's confidence label and which layer(s) hit, and reports the
+ * DISTRIBUTION of those — not a pass/fail.
  *
  * Acceptable-answer sets (questions-v2+, made by gen-relevance.js): a question
  * that carries `relevant: {lessonId: grade}` (2 = source lesson, 1 = other
@@ -265,7 +260,7 @@ function scoreNegativeQuestion(q, top) {
   return {
     qid: q.qid, stratum: q.stratum, split: q.split,
     has_hit: !!topHit,
-    top_rrf_score: topHit ? topHit.rrf_score : null,
+    top_tfidf_score: results.length ? Math.max(...results.map((r) => r.tfidf_score || 0)) : null,
     top_confidence: topHit ? topHit.confidence : null,
     top_layers: topHit ? topHit.layers : null,
     error,
@@ -301,7 +296,7 @@ function aggregateByStratumSplit(scored) {
 }
 
 function summarizeNegatives(scored) {
-  const scores = scored.filter(s => s.top_rrf_score !== null).map(s => s.top_rrf_score);
+  const scores = scored.filter(s => s.top_tfidf_score !== null).map(s => s.top_tfidf_score);
   const sorted = [...scores].sort((a, b) => a - b);
   const pct = (p) => sorted.length ? sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))] : null;
   const confCounts = {};
@@ -545,10 +540,10 @@ function printHumanTable(report) {
   }
   console.log('\nState-layer lookup() reachability by entry name (informational, not gated):');
   console.log(`  ${report.state_reachability.n_reachable_by_name}/${report.state_reachability.n} sampled registry entries are found by state.js lookup() on their own name`);
-  console.log('\nNegatives (reported, not gated — see run.js header comment on rrf_score):');
+  console.log('\nNegatives (reported, not gated — see run.js header comment):');
   const n = report.negatives;
   console.log(`  n=${n.n}, with a hit: ${n.n_with_hit}`);
-  console.log(`  top rrf_score: min=${n.score_min} p50=${n.score_p50} p90=${n.score_p90} max=${n.score_max} mean=${n.score_mean.toFixed(4)}`);
+  console.log(`  best TF-IDF cosine: min=${n.score_min} p50=${n.score_p50} p90=${n.score_p90} max=${n.score_max} mean=${n.score_mean.toFixed(4)}`);
   console.log(`  confidence distribution: ${JSON.stringify(n.confidence_distribution)}`);
 }
 

@@ -55,7 +55,8 @@
  *     - the TF-IDF layer's top 10: semantic-search.js's top 10, plus
  *       search.js's own tfidf_rank <= 10 (the two TF-IDF paths do not always
  *       agree; both are included),
- *     - the fused top 10 (search.js rank <= 10),
+ *     - search.js's own top 10 (search.js rank <= 10; the RRF order when
+ *       questions-v2 was judged, keyword-first since search.js lost --fused),
  *     - the source lesson.
  *   Every candidate records which layer(s) put it in the pool. One model call
  *   per question judges every candidate (title + description + the first
@@ -85,10 +86,11 @@
  *     - the source lesson (questions with a lesson_id),
  *     - for a state question, its registry entry's provenance lessons (as the registry now stands),
  *     - the keyword layer's top 10 (search.js keyword_rank <= 10),
- *     - the fused top 10 (search.js rank <= 10),
+ *     - search.js's own top 10 (search.js rank <= 10; the RRF order when questions-v4/v5
+ *       were judged, keyword-first since search.js lost --fused),
  *     - the index picks: 3 ids a model chose for the question from the full routing index,
  *       blind to everything else (the router experiment's C arm; index-picks.js).
- *   No TF-IDF layer: the pool is what keyword-only, fused and an index-reading model can reach.
+ *   No separate TF-IDF layer: the pool is what keyword-only, search.js and an index-reading model can reach.
  *   Same judge prompt (judge-relevance-v1: it is not stratum-specific), same excerpt.
  *   Grades: identifier -> the identifier rule's set, plus every lesson the judge accepts (grade 1);
  *   plain, terse -> source 2, judge-accepted 1; state -> provenance lessons 2, judge-accepted 1;
@@ -267,15 +269,15 @@ function runJSON(script, query, top, extra = []) {
 }
 
 /**
- * Pool from already-fetched result lists (pure): fused = search.js --json
+ * Pool from already-fetched result lists (pure): ranked = search.js --json
  * output (ranked, with keyword_rank / tfidf_rank), semantic = semantic-search.js
  * --json output (ranked). Returns [{id, layers: [...]}] in lesson-id order.
  */
-function poolFrom(fused, semantic, sourceId, top = POOL_TOP) {
+function poolFrom(ranked, semantic, sourceId, top = POOL_TOP) {
   const layers = new Map();
   const add = (id, layer) => { if (!layers.has(id)) layers.set(id, new Set()); layers.get(id).add(layer); };
-  fused.forEach((r, i) => {
-    if (i < top) add(r.id, 'fused');
+  ranked.forEach((r, i) => {
+    if (i < top) add(r.id, 'search');
     if (r.keyword_rank !== null && r.keyword_rank <= top) add(r.id, 'keyword');
     if (r.tfidf_rank !== null && r.tfidf_rank <= top) add(r.id, 'tfidf-search');
   });
@@ -285,21 +287,21 @@ function poolFrom(fused, semantic, sourceId, top = POOL_TOP) {
 }
 
 function candidatePool(questionText, sourceId) {
-  const fused = runJSON(lib.SEARCH_JS, questionText, SEARCH_DEPTH, ['--fused']);
+  const ranked = runJSON(lib.SEARCH_JS, questionText, SEARCH_DEPTH);
   const semantic = runJSON(SEMANTIC_JS, questionText, POOL_TOP);
-  return poolFrom(fused, semantic, sourceId);
+  return poolFrom(ranked, semantic, sourceId);
 }
 
 /**
- * The POOL_V3 pool from already-fetched inputs (pure): fused = search.js --json output,
+ * The POOL_V3 pool from already-fetched inputs (pure): ranked = search.js --json output,
  * extra = [{id, layer}] (source, provenance, index picks). Only ids in `known` (the corpus's
  * lesson ids) enter. Returns [{id, layers}] in lesson-id order.
  */
-function poolV3From(fused, extra, known, top = POOL_TOP) {
+function poolV3From(ranked, extra, known, top = POOL_TOP) {
   const layers = new Map();
   const add = (id, layer) => { if (!known.has(id)) return; if (!layers.has(id)) layers.set(id, new Set()); layers.get(id).add(layer); };
-  fused.forEach((r, i) => {
-    if (i < top) add(r.id, 'fused');
+  ranked.forEach((r, i) => {
+    if (i < top) add(r.id, 'search');
     if (r.keyword_rank !== null && r.keyword_rank !== undefined && r.keyword_rank <= top) add(r.id, 'keyword');
   });
   for (const e of extra) add(e.id, e.layer);
@@ -319,14 +321,14 @@ function provenanceOf(q, registryById) {
 }
 
 function candidatePoolV3(q, ctx) {
-  const fused = runJSON(lib.SEARCH_JS, q.text, SEARCH_DEPTH);
+  const ranked = runJSON(lib.SEARCH_JS, q.text, SEARCH_DEPTH);
   const extra = [];
   if (q.lesson_id !== null && q.lesson_id !== undefined) extra.push({ id: q.lesson_id, layer: 'source' });
   if (q.stratum === 'state') for (const id of provenanceOf(q, ctx.registryById)) extra.push({ id, layer: 'provenance' });
   const picks = ctx.picks[q.qid];
   if (!picks) throw new Error(`${q.qid}: no index picks in ${ctx.picksFile}`);
   for (const id of picks) extra.push({ id, layer: 'index' });
-  return poolV3From(fused, extra, ctx.known);
+  return poolV3From(ranked, extra, ctx.known);
 }
 
 // ---------------------------------------------------------------------------
@@ -570,8 +572,8 @@ async function generate(opts, deps = {}) {
   const split = source.split ? lib.applyHardTestRule(source.split, lib.loadHardTestLessons()) : null;
   const splitSource = source.split_source ? { split_source: source.split_source } : {};
   const poolText = poolMode === POOL_V3
-    ? `union of source lesson, state provenance lessons, keyword top ${POOL_TOP}, fused top ${POOL_TOP}, index picks (${picksDoc.file})`
-    : `union of keyword top ${POOL_TOP}, TF-IDF top ${POOL_TOP} (semantic-search.js and search.js tfidf_rank), fused top ${POOL_TOP}, source lesson`;
+    ? `union of source lesson, state provenance lessons, keyword top ${POOL_TOP}, search.js top ${POOL_TOP}, index picks (${picksDoc.file})`
+    : `union of keyword top ${POOL_TOP}, TF-IDF top ${POOL_TOP} (semantic-search.js and search.js tfidf_rank), search.js top ${POOL_TOP}, source lesson`;
   const output = {
     version: opts.version,
     seed: source.seed,

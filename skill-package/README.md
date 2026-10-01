@@ -135,7 +135,6 @@ Without Node, `references/routing/index-*.md` (one line per lesson, with example
 
 ```bash
 node scripts/search.js "hook events" --top=5
-node scripts/search.js "hook events" --fused   # reciprocal rank fusion, for comparison
 ```
 
 The TF-IDF index is not shipped: it is built in memory from `topic-index.json` on first use, then cached under your user cache directory (`CCI_NO_INDEX_CACHE=1` disables the cache).

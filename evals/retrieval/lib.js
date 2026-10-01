@@ -105,7 +105,6 @@ function getLessonText(lesson) {
 function runSearch(query, opts = {}) {
   const top = opts.top || 5;
   const args = [SEARCH_JS, query, '--json', `--top=${top}`];
-  if (opts.fused) args.push('--fused');
   try {
     const out = execFileSync('node', args, { encoding: 'utf8' });
     return JSON.parse(out);

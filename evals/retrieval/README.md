@@ -75,8 +75,8 @@ silently regress ranking.
   mentions it at least as often as the source, counted with `occurrencePositions`, the
   arithmetic `prepare-lessons.js` homes keys with). Plain questions: a one-time model judgment,
   frozen in the file — the candidate pool is the union of the keyword layer's top 10, the TF-IDF
-  top 10 (`semantic-search.js` and `search.js`'s own TF-IDF rank), the fused top 10 and the
-  source lesson; one `claude -p --safe-mode --tools ""` call per question judges every
+  top 10 (`semantic-search.js` and `search.js`'s own TF-IDF rank), `search.js`'s own top 10
+  (its RRF order at the time; keyword-first now) and the source lesson; one `claude -p --safe-mode --tools ""` call per question judges every
   candidate from its title, summary and a bounded excerpt, blind to which one is the source.
   Judge model, prompt version, date, flags and pool rule are recorded in the file's `relevance`
   header, every verdict and reason per question. Human-triggered only; `--dry-run` prints the
@@ -87,13 +87,14 @@ silently regress ranking.
   rules.
 - **`questions-v2.json`** + **`baseline-v4.json`** — the gated set and its baseline since
   `search.js`'s default ranking became keyword-first (the keyword layer's results in keyword
-  order, then TF-IDF-only results in TF-IDF order; RRF fusion stays behind `--fused`). Same
+  order, then TF-IDF-only results in TF-IDF order). The RRF order and its `--fused` flag have since
+  been removed from `search.js`. Same
   thresholds, no `waivers`; `accepted_vs_previous` lists every question that fails
   baseline-v4 against baseline-v3 (qid, stratum, lesson, split, rank before and after, rules
   tripped), the losses accepted with that change. The registry gate's losses from the same
   change are named in `registry-top1-losses.json`.
-- **`questions-v2.json`** + **`baseline-v3.json`** — the gated set under RRF fusion, kept for trend
-  since baseline-v4: v1's questions with
+- **`questions-v2.json`** + **`baseline-v3.json`** — the gated set under RRF fusion, kept as a record
+  since baseline-v4 (no longer reproducible: `search.js` has no RRF order now): v1's questions with
   acceptable-answer sets, under the split rule (lessons 88, 129 and 173 moved to dev: see
   `split.moved_to_dev`), and its baseline (same thresholds as v1 and v2, no `waivers`).
   `baseline-v3.json` also records, in `accepted_vs_previous`, the per-question drops against
@@ -148,8 +149,8 @@ index and lesson files with its own tools). None of them is gated in CI.
   are identified by sha256. The picks only widen the judge pool.
 - **`gen-relevance.js` options**:
   - `--strata` (an entry may name one split, e.g. `terse:holdout`).
-  - `--index-picks` switches to pool-v3: source ∪ state provenance ∪ keyword top 10 ∪ fused top 10
-    ∪ index picks.
+  - `--index-picks` switches to pool-v3: source ∪ state provenance ∪ keyword top 10 ∪ `search.js`
+    top 10 ∪ index picks. (The pool layer was named `fused` in files judged under the RRF order.)
   - `--append-judged <qid→ids json>` does append-only judging after an agentic run. It uses the same
     judge; `relevant` stays strict and `relevant_pooled` is added. It is implemented but has not
     been run yet.
@@ -157,9 +158,10 @@ index and lesson files with its own tools). None of them is gated in CI.
 - **`questions-v4.json`**: v3 judged under pool-v3. See `relevance.judge` for the judge model and
   which strata were judged. Unjudged strata carry no `relevant`, and the scorers below then use the
   source lesson alone.
-- **`baseline-search.js`** + **`baseline-v3-search.json`**: keyword-only and fused any@1/3/5 on
-  v4, per stratum × split, with Wilson intervals and per-question top 10s. They were computed with
-  the search stack before its deletion.
+- **`baseline-search.js`** + **`baseline-v3-search.json`** / **`baseline-v5-search.json`**: keyword-only
+  and `search.js`-order any@1/3/5 per stratum × split, with Wilson intervals and per-question top 10s.
+  The two committed files carry a `fused` (RRF) arm instead of `search`: they were cut before
+  `--fused` was removed.
 - **`agentic-run.js`** (+ `agentic-run.test.js`, offline): runs a SKILL body (`arms/arm-*.md`) one
   question per `claude -p` call, against a staged copy of the skill.
   - Tools: Read, Grep, Glob and plain Bash, as the shipped SKILL.md grants. Permission prompts are
@@ -169,7 +171,8 @@ index and lesson files with its own tools). None of them is gated in CI.
     count) and cited@ (the `IDS:` line).
   - It reports Read-limit errors, permission denials, tokens, cost and latency, with Wilson
     intervals.
-  - With `--baseline` it adds a paired McNemar comparison against keyword-only and fused.
+  - With `--baseline` it adds a paired McNemar comparison against each search arm the baseline
+    carries (`keyword`, and `search` — `fused` in older baselines).
   - It also scores **what the model saw**, with `content-score.js` (+ `content-score.test.js`):
     tool-result text is matched to unique corpus lines, so Grep with context, piped or multi-line
     `sed`, `$VAR` paths and `fetch-lesson.js` output all count, whatever the command. Per stratum:
@@ -295,12 +298,10 @@ node --test evals/retrieval/agentic-run.test.js
    Slash commands are checked as a literal `/name` substring against the RAW question text, not
    a normalized-phrase containment, since normalizing `/config` collides with the ordinary word
    "config". See `lib.js`'s `isIdentifierShaped()` / `findLeaks()`.
-2. **Negatives have no score threshold.** `search.js`'s `rrf_score` is rank-derived
-   (`1/(60+rank)` per layer, summed) — a single-layer top-1 hit and a barely-there hit land at
-   nearly the same value (~0.016–0.033) regardless of actual relevance. `run.js` reports the
-   score/confidence distribution for negatives but does not gate on it. A real threshold would
-   need the raw TF-IDF cosine, which `search.js --json` doesn't expose; extending `search.js` was
-   out of this task's scope.
+2. **Negatives have no score threshold.** `search.js` returns results for almost any query. `run.js`
+   reports, for negatives, the best raw TF-IDF cosine among the results (`tfidf_score` in
+   `search.js --json`) and the confidence distribution, but does not gate on either. Baselines cut
+   before this change record a rank-derived RRF score there instead.
 3. **State-question scoring is two separate numbers, not one.** `state.js`'s `lookup()` is a
    substring match on an entry's name/id/renamed_to — a generated sentence essentially never
    matches it directly. `run.js` reports (a) whether `search.js`'s top-N for the *generated

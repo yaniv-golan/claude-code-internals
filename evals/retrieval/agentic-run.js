@@ -42,7 +42,8 @@
  * "exceeds maximum allowed tokens"), permission denials, other tool errors, input/output/cache
  * tokens, cost (the CLI's total_cost_usd, also appended to the CCI_EVAL_LEDGER ledger), latency,
  * turns. Summary: per stratum x split, read@ and cited@ with Wilson 95% intervals, medians, and
- * (with --baseline) a paired comparison against keyword-only and fused search top-3 on the same
+ * (with --baseline) a paired comparison against each search arm the baseline file carries (keyword-only,
+ * and search.js's own order — `fused` in baselines written before --fused was removed) top-3 on the same
  * questions (discordant counts and an exact two-sided McNemar p).
  */
 
@@ -468,7 +469,8 @@ function summarize(records, questions, baseline) {
     };
     if (base) {
       row.paired = {};
-      for (const arm of ['keyword', 'fused']) {
+      const arms = ['keyword', 'search', 'fused'].filter((a) => baseline.questions.some((b) => b[a]));
+      for (const arm of arms) {
         let both = 0; let agentOnly = 0; let baseOnly = 0; let neither = 0; let m = 0;
         for (const { r, q } of items) {
           const b = base.get(q.qid);

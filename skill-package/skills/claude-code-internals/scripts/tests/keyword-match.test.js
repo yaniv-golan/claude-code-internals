@@ -156,62 +156,24 @@ test('a word typed only inside a compound identifier never ties the identifier i
   assert.strictEqual(K.rankLessons(tokenizeQuery(q), map, 100)[0].id, 1);
 });
 
-// --- fused order (search.js) ------------------------------------------------------
+// --- result order (search.js) ------------------------------------------------------
 
-test('fused order: RRF score, then keyword score, then TF-IDF score, then lowest id', () => {
+test('keyword-first order: keyword results by keyword rank, then TF-IDF-only by TF-IDF rank', () => {
   const S = require('../search.js');
-  // Entries are built by reciprocalRankFusion(), as search() builds them: fusedOrder
-  // compares its exact rrfNum/rrfDen, never the display float.
-  const order = (kw, tf) => {
-    const fused = S.reciprocalRankFusion(kw, tf, 60);
-    return [...fused].map(([id, e]) => ({ id, ...e })).sort(S.fusedOrder).map((x) => x.id);
-  };
-  // ranks 1+2 vs 2+1 are an exact RRF tie
-  const fused = S.reciprocalRankFusion([{ id: 1, score: 3 }, { id: 2, score: 3 }], [{ id: 2, score: 0.4 }, { id: 1, score: 0.2 }], 60);
-  const e = (id) => ({ id, ...fused.get(id) });
-  assert.strictEqual(e(1).rrfScore, e(2).rrfScore);
-  assert.deepStrictEqual([e(1).rrfNum, e(1).rrfDen], [e(2).rrfNum, e(2).rrfDen]);
-  assert.deepStrictEqual([e(1), e(2)].sort(S.fusedOrder).map((x) => x.id), [2, 1], 'equal keyword scores: TF-IDF decides');
-  // keyword score first (ranks 1+2 vs 2+1 again, keyword scores differ)
-  assert.deepStrictEqual(order([{ id: 1, score: 1 }, { id: 2, score: 2 }], [{ id: 2, score: 0.1 }, { id: 1, score: 0.9 }]), [2, 1], 'keyword score first');
-  // then lowest id: id 2 at keyword rank 1 and id 1 at TF-IDF rank 1, both scores 0
-  assert.deepStrictEqual(order([{ id: 2, score: 0 }], [{ id: 1, score: 0 }]), [1, 2], 'then lowest id');
-  assert.deepStrictEqual(order([{ id: 1, score: 0 }], [{ id: 2, score: 0 }]), [1, 2]);
-  // RRF score first: keyword rank 1 beats keyword rank 2 whatever the keyword scores
-  assert.deepStrictEqual(order([{ id: 2, score: 0 }, { id: 1, score: 9 }], []), [2, 1], 'RRF score first');
-});
-
-test('keyword-first order (the default): keyword results by keyword rank, then TF-IDF-only by TF-IDF rank', () => {
-  const S = require('../search.js');
-  const order = (kw, tf) => {
-    const fused = S.reciprocalRankFusion(kw, tf, 60);
-    return [...fused].map(([id, e]) => ({ id, ...e })).sort(S.keywordFirstOrder).map((x) => x.id);
-  };
-  // lesson 3 is TF-IDF #1 and keyword #2: keyword rank decides; it would win under RRF
+  const order = (kw, tf) => [...S.mergeLayers(kw, tf)].map(([id, e]) => ({ id, ...e })).sort(S.keywordFirstOrder).map((x) => x.id);
+  // lesson 3 is TF-IDF #1 but keyword #2: keyword rank decides
   const kw = [{ id: 1, score: 2 }, { id: 3, score: 2 }];
   const tf = [{ id: 3, score: 0.9 }, { id: 5, score: 0.8 }, { id: 1, score: 0.1 }, { id: 4, score: 0.05 }];
   assert.deepStrictEqual(order(kw, tf), [1, 3, 5, 4], 'keyword order, then TF-IDF-only lessons in TF-IDF order');
-  const fused = S.reciprocalRankFusion(kw, tf, 60);
-  assert.deepStrictEqual([...fused].map(([id, e]) => ({ id, ...e })).sort(S.fusedOrder).map((x) => x.id)[0], 3, 'RRF puts lesson 3 first');
   // a TF-IDF-only lesson never outranks a keyword result, however high its TF-IDF rank
   assert.deepStrictEqual(order([{ id: 9, score: 0.1 }], [{ id: 2, score: 1 }]), [9, 2]);
   assert.deepStrictEqual(order([], [{ id: 2, score: 1 }, { id: 1, score: 0.5 }]), [2, 1], 'no keyword results: TF-IDF order');
 });
 
-test('fused order: an exact RRF tie of non-swapped ranks is a tie, whatever the float sums say', () => {
+test('mergeLayers records each layer\'s 1-based rank and score, null rank where a layer missed', () => {
   const S = require('../search.js');
-  // 1/(60+30) + 1/(60+18) = 168/7020 = 14/585 and 1/(60+57) + 1/(60+5) = 182/7605 = 14/585,
-  // but as floats 1/90 + 1/78 < 1/117 + 1/65 in the last bit.
-  assert.strictEqual(1 / 90 + 1 / 78 < 1 / 117 + 1 / 65, true, 'the float sums differ (else this fixture tests nothing)');
-  const filler = (n, from) => Array.from({ length: n }, (_, i) => ({ id: from + i, score: 0.5 }));
-  // lesson 1: keyword rank 30, TF-IDF rank 18, keyword score 2; lesson 2: keyword rank 57, TF-IDF rank 5, keyword score 1
-  const kw = [...filler(29, 100), { id: 1, score: 2 }, ...filler(26, 200), { id: 2, score: 1 }];
-  const tf = [...filler(4, 300), { id: 2, score: 0.3 }, ...filler(12, 400), { id: 1, score: 0.3 }];
-  const fused = S.reciprocalRankFusion(kw, tf, 60);
-  const [a, b] = [{ id: 1, ...fused.get(1) }, { id: 2, ...fused.get(2) }];
-  assert.deepStrictEqual([a.keywordRank, a.tfidfRank, b.keywordRank, b.tfidfRank], [30, 18, 57, 5]);
-  assert.deepStrictEqual([a.rrfNum, a.rrfDen], [14, 585]);
-  assert.deepStrictEqual([b.rrfNum, b.rrfDen], [14, 585]);
-  assert.ok(a.rrfScore < b.rrfScore, 'the display floats disagree');
-  assert.deepStrictEqual([b, a].sort(S.fusedOrder).map((x) => x.id), [1, 2], 'the tie goes to the higher keyword score');
+  const m = S.mergeLayers([{ id: 1, score: 2 }, { id: 3, score: 1 }], [{ id: 3, score: 0.9 }, { id: 5, score: 0.8 }]);
+  assert.deepStrictEqual(m.get(1), { keywordRank: 1, tfidfRank: null, keywordScore: 2, tfidfScore: 0 });
+  assert.deepStrictEqual(m.get(3), { keywordRank: 2, tfidfRank: 1, keywordScore: 1, tfidfScore: 0.9 });
+  assert.deepStrictEqual(m.get(5), { keywordRank: null, tfidfRank: 2, keywordScore: 0, tfidfScore: 0.8 });
 });

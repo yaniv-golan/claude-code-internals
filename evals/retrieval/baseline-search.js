@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * baseline-search.js — keyword-only and fused search scores on a judged question set, computed
+ * baseline-search.js — keyword-only and full search.js scores on a judged question set, computed
  * with the search stack, as the comparison point for the agentic eval (agentic-run.js --baseline).
  *
  * Usage:
@@ -8,16 +8,17 @@
  *   node baseline-search.js --questions <real-invocation judged file> --out <scratch file>
  *
  * Deterministic, no model calls. For every question with a lesson answer set (identifier, plain,
- * terse, state, real) it spawns search.js --json --fused --top=200 (lib.runSearch) and records:
+ * terse, state, real) it spawns search.js --json --top=200 (lib.runSearch) and records:
  *   - keyword: results ordered by keyword_rank (the keyword layer alone), top 10;
- *   - fused:   search.js --fused order (RRF), top 10;
+ *   - search:  search.js's own order (keyword results, then TF-IDF-only ones), top 10;
  *   and for each, the first acceptable rank and hit@1/3/5 (any lesson with relevant[id] >= 1),
  *   plus src@3 (the source lesson in the top 3). "Only stop words" queries score as misses.
  * A question without `relevant` (a stratum or split left unjudged) falls back to its source
  * lesson alone ({lesson_id: 2}, relevance "source-only"), and each row counts those.
  * Rows: stratum x split, with Wilson 95% intervals. The file records the question set's sha256,
  * the git HEAD, topic-index/registry hashes (checked unchanged across the run) and search.js's
- * sha256; agentic-run.js --baseline pairs its results with these per question.
+ * sha256; agentic-run.js --baseline pairs its results with these per question. Baselines written
+ * before search.js lost its --fused option carry a `fused` arm (RRF order) in place of `search`.
  */
 
 'use strict';
@@ -55,13 +56,13 @@ function scoreList(ids, rel, src) {
 
 function rankedLists(text) {
   let res;
-  try { res = lib.runSearch(text, { top: DEPTH, fused: true }); } catch (err) {
-    if (err.stopWordsOnly) return { fused: [], keyword: [], stop_words_only: true };
+  try { res = lib.runSearch(text, { top: DEPTH }); } catch (err) {
+    if (err.stopWordsOnly) return { search: [], keyword: [], stop_words_only: true };
     throw err;
   }
-  const fused = res.map((r) => r.id);
+  const search = res.map((r) => r.id);
   const keyword = res.filter((r) => r.keyword_rank !== null && r.keyword_rank !== undefined).sort((a, b) => a.keyword_rank - b.keyword_rank).map((r) => r.id);
-  return { fused, keyword, stop_words_only: false };
+  return { search, keyword, stop_words_only: false };
 }
 
 function main() {
@@ -79,7 +80,7 @@ function main() {
     out.push({
       qid: q.qid, stratum: q.stratum, split: q.split, relevance: basis, n_acceptable: Object.values(rel).filter((g) => g >= 1).length,
       stop_words_only: lists.stop_words_only,
-      keyword: scoreList(lists.keyword, rel, q.lesson_id), fused: scoreList(lists.fused, rel, q.lesson_id),
+      keyword: scoreList(lists.keyword, rel, q.lesson_id), search: scoreList(lists.search, rel, q.lesson_id),
     });
   }
   const after = lib.indexHashes();
@@ -91,7 +92,7 @@ function main() {
     const n = rs.length;
     const cnt = (arm, f) => rs.filter((r) => r[arm][f]).length;
     const arm = (a) => ({ any1: { k: cnt(a, 'hit1'), ...wilson(cnt(a, 'hit1'), n) }, any3: { k: cnt(a, 'hit3'), ...wilson(cnt(a, 'hit3'), n) }, any5: { k: cnt(a, 'hit5'), ...wilson(cnt(a, 'hit5'), n) }, src3: rs[0].keyword.src3 === null ? null : { k: cnt(a, 'src3'), ...wilson(cnt(a, 'src3'), n) } });
-    return { stratum, split, n, source_only_relevance: rs.filter((r) => r.relevance === 'source-only').length, stop_words_only: rs.filter((r) => r.stop_words_only).length, mean_acceptable: rs.reduce((t, r) => t + r.n_acceptable, 0) / n, keyword: arm('keyword'), fused: arm('fused') };
+    return { stratum, split, n, source_only_relevance: rs.filter((r) => r.relevance === 'source-only').length, stop_words_only: rs.filter((r) => r.stop_words_only).length, mean_acceptable: rs.reduce((t, r) => t + r.n_acceptable, 0) / n, keyword: arm('keyword'), search: arm('search') };
   });
   let head = null;
   try { head = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: lib.REPO_ROOT, encoding: 'utf8' }).trim(); } catch { /* not a checkout */ }
@@ -99,13 +100,13 @@ function main() {
     generated_at: new Date().toISOString(), questions_file: path.basename(o.questions), questions_sha256: sha256(raw), questions_version: doc.version,
     judge: doc.relevance && doc.relevance.judge ? { model: doc.relevance.judge.model, prompt_version: doc.relevance.judge.prompt_version, strata: doc.relevance.judge.strata || null } : null,
     search_head: head, index_hashes: before, search_js_sha256: sha256(fs.readFileSync(lib.SEARCH_JS)), depth: DEPTH,
-    scoring: 'any@k = an acceptable lesson (relevant[id] >= 1) in the top k; keyword = the keyword layer alone (keyword_rank order); fused = search.js order; unjudged questions use the source lesson alone',
+    scoring: 'any@k = an acceptable lesson (relevant[id] >= 1) in the top k; keyword = the keyword layer alone (keyword_rank order); search = search.js order (keyword results, then TF-IDF-only); unjudged questions use the source lesson alone',
     rows, questions: out,
   };
   fs.writeFileSync(o.out, JSON.stringify(doc2, null, 1) + '\n');
   const pct = (x) => (x == null ? '  -  ' : (100 * x).toFixed(1).padStart(5));
-  console.log('stratum     split     n   kw any@3 [95% CI]        fused any@3 [95% CI]     srcOnly');
-  for (const r of rows) console.log(`${r.stratum.padEnd(11)} ${r.split.padEnd(8)} ${String(r.n).padStart(3)}  ${pct(r.keyword.any3.p)} [${pct(r.keyword.any3.lo)},${pct(r.keyword.any3.hi)}]   ${pct(r.fused.any3.p)} [${pct(r.fused.any3.lo)},${pct(r.fused.any3.hi)}]   ${r.source_only_relevance}`);
+  console.log('stratum     split     n   kw any@3 [95% CI]        search any@3 [95% CI]    srcOnly');
+  for (const r of rows) console.log(`${r.stratum.padEnd(11)} ${r.split.padEnd(8)} ${String(r.n).padStart(3)}  ${pct(r.keyword.any3.p)} [${pct(r.keyword.any3.lo)},${pct(r.keyword.any3.hi)}]   ${pct(r.search.any3.p)} [${pct(r.search.any3.lo)},${pct(r.search.any3.hi)}]   ${r.source_only_relevance}`);
   console.log(`wrote ${o.out}`);
 }
 
