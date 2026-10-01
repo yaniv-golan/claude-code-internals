@@ -54,8 +54,11 @@ silently regress ranking.
   `thresholds`; `--mrr-threshold`, `--rank-drop-k` and `--top-k-floor` override one for a run, and
   each value's source is printed. It fails, never passes vacuously, when the questions file has
   no gated questions, its version or lesson split differs from the baseline's, or a gated
-  stratum × split or question in the baseline is missing from the report; and on any identifier
-  question that loses top-1. A report records its split as `questions_source.split_sha256`; a
+  stratum × split or question in the baseline is missing from the report; and on any dev
+  identifier question that loses top-1. The per-question rules (rank drop, top-k floor,
+  found → not found, identifier top-1) gate **dev questions only**: on a holdout question they
+  are printed as "holdout per-question change(s), reported, not gated" and never fail. The
+  per stratum × split aggregates (MRR, nDCG@5) gate both splits, holdout included. A report records its split as `questions_source.split_sha256`; a
   baseline recorded before that field existed is judged by its questions' own `split` labels, so
   a baseline cut under another split is refused with "lesson split mismatch" rather than compared
   over different question populations.
@@ -85,7 +88,11 @@ silently regress ranking.
   questions are carried over unchanged, except that a state question from a source without
   `split_lesson_id` (questions-v1) gets it once (see below). See the file header for the exact
   rules.
-- **`questions-v2.json`** + **`baseline-v4.json`** — the gated set and its baseline since
+- **`questions-v2.json`** + **`baseline-v5.json`** — the gated pair since the Desktop 2.16120.0
+  content change (lessons 219–221). Same questions and thresholds as baseline-v4, no `waivers`;
+  `accepted_vs_previous` (vs baseline-v4) accepts pl-0418 (holdout, lesson 212, 1 → 5, lost to a
+  vocabulary regeneration) and records the sub-threshold drift it absorbed.
+- **`questions-v2.json`** + **`baseline-v4.json`** — the gated pair, until baseline-v5, since
   `search.js`'s default ranking became keyword-first (the keyword layer's results in keyword
   order, then TF-IDF-only results in TF-IDF order). The RRF order and its `--fused` flag have since
   been removed from `search.js`. Same
@@ -212,7 +219,7 @@ node evals/retrieval/gen-registry-top1.js      # the registry cases record the s
 node evals/retrieval/run.js --questions evals/retrieval/questions-v2.json --save evals/retrieval/baseline-v5.json
 
 # 5. On a later change, check for regressions (always name the question set the baseline scored):
-node evals/retrieval/run.js --baseline evals/retrieval/baseline-v4.json --questions evals/retrieval/questions-v2.json
+node evals/retrieval/run.js --baseline evals/retrieval/baseline-v5.json --questions evals/retrieval/questions-v2.json
 # v1, for trend (not gated):
 node evals/retrieval/run.js --baseline evals/retrieval/baseline-v1.json --questions evals/retrieval/questions-v1.json
 
@@ -237,7 +244,9 @@ node --test evals/retrieval/agentic-run.test.js
   should change. Old versions are kept for trend, never deleted.
 - **Holdout is never used for tuning.** The seeded lesson split reserves ~1/3 of lessons as
   holdout; `run.js` reports holdout scores on every run, but nothing in this suite (or in
-  `prepare-lessons.js`) should special-case or optimize against holdout results.
+  `prepare-lessons.js`) should special-case or optimize against holdout results. For the same
+  reason no single holdout question can fail the gate: a build that turns red on one holdout
+  question invites a fix aimed at that question. Holdout moves only the gated aggregates.
 - **The split rule: random split, then every lesson a hard ranking test depends on is moved to
   dev.** A test that pins a lesson's rank is tuning. Every such assertion in the skill package's
   test suite is declared in one table,
@@ -272,10 +281,10 @@ node --test evals/retrieval/agentic-run.test.js
 - **Whole-set replacement only.** `questions-vN.json` is replaced as a whole new version on a
   fixed schedule (yearly, or after 50 new lessons) — never edited piecemeal to drop an
   inconvenient question.
-- **The gate runs on `baseline-v4.json`**, scoring `questions-v2.json` named explicitly, alongside
+- **The gate runs on `baseline-v5.json`**, scoring `questions-v2.json` named explicitly, alongside
   `registry-top1.test.js` and `corpus-ranking.test.js`. `validate.yml` runs the gate in CI;
   `scripts/check-clean.sh` is the local/release-time counterpart, run by `release.js` as its
-  consistency-check step. baseline-v3, baseline-v2 and v1 stay for trend. The pair is named once, as
+  consistency-check step. baseline-v4, baseline-v3, baseline-v2 and v1 stay for trend. The pair is named once, as
   `CURRENT_QUESTIONS` / `CURRENT_BASELINE` in `lib.js`; `gen-registry-top1.js` and the tests
   read those, and `retrieval-gate.test.js` fails unless `validate.yml` and `check-clean.sh`
   name exactly those two files. `check-clean.sh` fails if either is missing.

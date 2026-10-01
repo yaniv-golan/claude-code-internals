@@ -58,6 +58,10 @@
  * single run, and every run prints each value's source. `--save` embeds the
  * thresholds that were in effect.
  *
+ * Per-question rules (rank drop, top-k floor, found -> not found, identifier
+ * top-1) gate DEV questions only; on a holdout question they are printed as
+ * reported, never failed. The per stratum x split aggregates gate both splits.
+ *
  * The gate never passes vacuously: it fails when the questions file is
  * missing or has no gated questions, when the report's question-set version
  * or lesson split differs from the baseline's, when a gated stratum x split or a gated
@@ -392,7 +396,7 @@ function splitMismatch(report, baseline) {
 
 /**
  * Compare a fresh report against a saved baseline report. Returns
- * {ok, failures: string[]}. `thresholds` is resolveThresholds()'s output
+ * {ok, failures: string[], waived: string[], reported: string[]}. `thresholds` is resolveThresholds()'s output
  * (the legacy {mrrThreshold, rankDropK} opts shape is also accepted).
  *
  * Fails on:
@@ -403,9 +407,12 @@ function splitMismatch(report, baseline) {
  *   - a gated stratum x split in the baseline that the report lacks;
  *   - a gated baseline question (keyed by version + qid) the report lacks;
  *   - any per-stratum x split MRR or nDCG@5 drop beyond `mrr_ndcg_drop`;
- *   - an identifier question at rank 1 in the baseline that is not at rank 1 now;
- *   - any single gated question whose rank worsens by more than `rank_drop_k`,
+ *   - a DEV identifier question at rank 1 in the baseline that is not at rank 1 now;
+ *   - any single DEV gated question whose rank worsens by more than `rank_drop_k`,
  *     falls out of the top `top_k_floor`, or was found and now is not.
+ * The same per-question rules on a HOLDOUT question go to `reported`, not
+ * `failures` (holdout must never drive tuning); a waiver naming a holdout
+ * question is therefore never used, and fails as stale.
  * A stratum x split or question only in the report is new, not a regression.
  * Only the GATED_STRATA are compared. State questions are reported, not gated:
  * state.js cannot resolve a free-text question, and scoring them against
@@ -466,7 +473,14 @@ function compareToBaseline(report, baseline, thresholdsIn) {
   for (const w of baseline.waivers || []) waivers.set(qkey(baseV, w.qid), w);
   const waived = [];
   const usedWaivers = new Set();
+  // Holdout questions are never gated one by one: a per-question failure on a
+  // holdout question is reported, not failed. Holdout exists to measure the
+  // ranking without anyone tuning toward it, and a single-question rule that
+  // fails the build is exactly what invites that tuning. Holdout still counts in
+  // the per stratum x split aggregates above, which stay gated.
+  const reported = [];
   const qFail = (b, newRank, msg) => {
+    if (b.split === 'holdout') { reported.push(msg); return; }
     const w = waivers.get(qkey(baseV, b.qid));
     if (w && newRank !== null && newRank <= w.rank) {
       waived.push(`${msg} — WAIVED: ${w.reason} (${w.commit})`);
@@ -510,7 +524,7 @@ function compareToBaseline(report, baseline, thresholdsIn) {
     if (!usedWaivers.has(k)) failures.push(`[${w.qid}] waiver is stale (no longer needed or no such question) — remove it from the baseline`);
   }
 
-  return { ok: failures.length === 0, failures, waived };
+  return { ok: failures.length === 0, failures, waived, reported };
 }
 
 // ---------------------------------------------------------------------------
@@ -582,6 +596,10 @@ function main() {
     console.log('\nBaseline comparison:');
     console.log(`  thresholds: ${Object.keys(thresholds).map((k) => `${k}=${thresholds[k]} (${sources[k]})`).join(', ')}`);
     for (const w of cmp.waived || []) console.log(`  ${w}`);
+    if ((cmp.reported || []).length) {
+      console.log(`  ${cmp.reported.length} holdout per-question change(s), reported, not gated:`);
+      for (const r of cmp.reported) console.log(`    ${r}`);
+    }
     if (cmp.ok) {
       console.log('  OK — no regressions beyond threshold.');
     } else {

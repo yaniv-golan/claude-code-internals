@@ -356,9 +356,11 @@ for (const name of ['baseline-v3.json', 'CURRENT_BASELINE']) {
     const prev = JSON.parse(fs.readFileSync(path.join(EVALS, cur.accepted_vs_previous.vs), 'utf8'));
     const label = new Map(cur.queries.lesson.map((q) => [q.qid, q.split]));
     const prevEq = { ...prev, queries: { ...prev.queries, lesson: prev.queries.lesson.map((q) => ({ ...q, split: label.get(q.qid) || q.split })) } };
-    const { failures } = compareToBaseline(cur, prevEq, prev.thresholds);
+    // Holdout drops are reported, not failed, since baseline-v5; an accepted drop
+    // is recorded either way, so both lists are matched.
+    const { failures, reported } = compareToBaseline(cur, prevEq, prev.thresholds);
     const perQ = new Map();
-    for (const f of failures) {
+    for (const f of [...failures, ...reported]) {
       const m = f.match(/^\[([a-z]{2}-\d+)\] (.*)$/);
       if (m) (perQ.get(m[1]) || perQ.set(m[1], []).get(m[1])).push(m[2]);
     }

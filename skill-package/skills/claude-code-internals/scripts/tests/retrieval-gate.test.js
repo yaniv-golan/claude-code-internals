@@ -75,7 +75,7 @@ test('compareToBaseline: an identical report passes', (t) => {
   if (!PRESENT) { t.skip(SKIP); return; }
   const R = require(RUN_JS);
   const cmp = R.compareToBaseline(report(1, clone(BASE_QS)), report(1, clone(BASE_QS)), R.DEFAULT_THRESHOLDS);
-  assert.deepStrictEqual(cmp, { ok: true, failures: [], waived: [] });
+  assert.deepStrictEqual(cmp, { ok: true, failures: [], waived: [], reported: [] });
 });
 
 test('compareToBaseline: a different or missing question-set version fails', (t) => {
@@ -179,13 +179,53 @@ test('compareToBaseline: rank-drop, top-10 and not-found rules use the given thr
   const loose = { ...R.DEFAULT_THRESHOLDS, mrr_ndcg_drop: 1 };
   const cur = clone(BASE_QS);
   cur[1] = q('pl-0002', 'plain', 'dev', 12);   // 4 -> 12: drop > 3 and out of the top 10
-  cur[3] = q('pl-0004', 'plain', 'holdout', null);
+  cur[0] = q('id-0001', 'identifier', 'dev', null);
   const f = R.compareToBaseline(report(1, cur), report(1, clone(BASE_QS)), loose).failures;
   assert.ok(f.includes('[pl-0002] "plain" rank dropped 4 -> 12 (> 3 ranks)'), f.join('\n'));
   assert.ok(f.includes('[pl-0002] "plain" fell out of top 10 (4 -> 12)'), f.join('\n'));
-  assert.ok(f.includes('[pl-0004] "plain" was found at rank 7, now not found in top 20'), f.join('\n'));
-  const wide = R.compareToBaseline(report(1, cur), report(1, clone(BASE_QS)), { ...loose, rank_drop_k: 10, top_k_floor: 15 }).failures;
-  assert.deepStrictEqual(wide, ['[pl-0004] "plain" was found at rank 7, now not found in top 20']);
+  assert.ok(f.includes('[id-0001] "identifier" was found at rank 1, now not found in top 20'), f.join('\n'));
+  const wide = R.compareToBaseline(report(1, cur), report(1, clone(BASE_QS)), { ...loose, rank_drop_k: 10, top_k_floor: 15, identifier_top1_loss: false }).failures;
+  assert.deepStrictEqual(wide, ['[id-0001] "identifier" was found at rank 1, now not found in top 20']);
+});
+
+test('compareToBaseline: on a holdout question every per-question rule reports and never fails', (t) => {
+  if (!PRESENT) { t.skip(SKIP); return; }
+  const R = require(RUN_JS);
+  const loose = { ...R.DEFAULT_THRESHOLDS, mrr_ndcg_drop: 1 }; // isolate the per-question rules
+  const base = clone(BASE_QS);
+  base[2] = q('id-0003', 'identifier', 'holdout', 1);
+  const cur = clone(base);
+  cur[2] = q('id-0003', 'identifier', 'holdout', 12);  // top-1 loss, drop > 3, out of the top 10
+  cur[3] = q('pl-0004', 'plain', 'holdout', null);     // found -> not found
+  const cmp = R.compareToBaseline(report(1, cur), report(1, base), loose);
+  assert.strictEqual(cmp.ok, true, cmp.failures.join('\n'));
+  assert.deepStrictEqual(cmp.reported.slice().sort(), [
+    '[id-0003] "identifier" fell out of top 10 (1 -> 12)',
+    '[id-0003] "identifier" lost top-1 (1 -> 12)',
+    '[id-0003] "identifier" rank dropped 1 -> 12 (> 3 ranks)',
+    '[pl-0004] "plain" was found at rank 7, now not found in top 20',
+  ]);
+  // The same changes on dev questions fail.
+  const devBase = base.map((x) => ({ ...x, split: 'dev' }));
+  const devCur = cur.map((x) => ({ ...x, split: 'dev' }));
+  const dev = R.compareToBaseline(report(1, devCur), report(1, devBase), loose);
+  assert.strictEqual(dev.ok, false);
+  assert.strictEqual(dev.failures.length, 4, dev.failures.join('\n'));
+  assert.deepStrictEqual(dev.reported, []);
+  // A waiver naming a holdout question is never used, so it is stale and fails.
+  const waived = report(1, base);
+  waived.waivers = [{ qid: 'pl-0004', rank: 20, reason: 'r', commit: 'c' }];
+  assert.match(R.compareToBaseline(report(1, cur), waived, loose).failures.join('\n'), /pl-0004.*waiver is stale/);
+});
+
+test('compareToBaseline: a holdout stratum x split aggregate drop still fails', (t) => {
+  if (!PRESENT) { t.skip(SKIP); return; }
+  const R = require(RUN_JS);
+  const cur = clone(BASE_QS);
+  cur[3] = q('pl-0004', 'plain', 'holdout', 9);        // 7 -> 9: under every per-question rule
+  const cmp = R.compareToBaseline(report(1, cur), report(1, clone(BASE_QS)), R.DEFAULT_THRESHOLDS);
+  assert.deepStrictEqual(cmp.reported, []);
+  assert.deepStrictEqual(cmp.failures, ['[plain|holdout] MRR dropped 0.1429 -> 0.1111 (> 0.02)']);
 });
 
 test('thresholds resolve CLI over baseline over default, and the v1 baseline records them', (t) => {
