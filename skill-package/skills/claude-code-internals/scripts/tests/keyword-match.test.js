@@ -177,3 +177,55 @@ test('mergeLayers records each layer\'s 1-based rank and score, null rank where 
   assert.deepStrictEqual(m.get(3), { keywordRank: 2, tfidfRank: 1, keywordScore: 1, tfidfScore: 0.9 });
   assert.deepStrictEqual(m.get(5), { keywordRank: null, tfidfRank: 2, keywordScore: 0, tfidfScore: 0.8 });
 });
+
+// The collision rule (prepare-lessons.js rule 3c) decides which keys may be appended from
+// surfaceTokens(); search.js counts hits through hitKind() + hitCounts(). If the two drift apart, 3c
+// either lets a key steal tokens it did not check (surface too small) or refuses keys for no ranking
+// reason. For every generated key in the committed index: the surface must contain every token whose
+// hit counts, and for an all-digit key it must be exactly those tokens (its whole number).
+test('surfaceTokens covers every token whose hit counts, for every generated key; exactly those for a digit key', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const topic = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'references', 'topic-index.json'), 'utf8'));
+  const generated = new Set(topic.lessons.flatMap((l) => [...(l.identifier_keys || []), ...(l.vocab_keys || [])]));
+  const NONE = new Set();
+  const universe = (ck) => {
+    const out = new Set([...ck.forms, ...ck.words, ck.joined]);
+    for (const form of [ck.lower, ck.joined]) {
+      for (const run of form.split(/[^a-z0-9]+/)) {
+        for (let len = 2; len <= run.length; len++) for (let i = 0; i + len <= run.length; i++) out.add(run.slice(i, i + len));
+      }
+    }
+    return [...out].filter((t) => /^[a-z0-9]{2,}$/.test(t));
+  };
+  let digits = 0;
+  const problems = [];
+  for (const key of generated) {
+    const ck = K.compileKey(key, { exactOnly: true });
+    const surface = new Set(K.surfaceTokens(ck));
+    const counted = universe(ck).filter((t) => { const k = K.hitKind(ck, t); return k !== null && K.hitCounts(ck, t, k, NONE); });
+    const missing = counted.filter((t) => !surface.has(t));
+    if (missing.length) problems.push(`${key}: counted but not in surface: ${missing.slice(0, 3).join(', ')}`);
+    if (/^[0-9]+$/.test(ck.joined) && ck.phrase) {
+      digits++;
+      const extra = [...surface].filter((t) => !counted.includes(t));
+      if (extra.length) problems.push(`${key}: digit key surface lists tokens that never count: ${extra.slice(0, 3).join(', ')}`);
+    }
+  }
+  assert.deepStrictEqual(problems.slice(0, 10), [], `${problems.length} key(s) out of step`);
+  assert.ok(digits >= 41, `control: the index has generated digit keys to check (${digits})`);
+});
+
+test('a generated digit key is hit by its whole number only, never by a proper substring', () => {
+  const ck = K.compileKey('2742800629', { exactOnly: true });
+  assert.strictEqual(ck.phrase, true);
+  assert.deepStrictEqual([...K.surfaceTokens(ck)], ['2742800629']);
+  for (const t of ['274', '2742800', '42800629']) {
+    const k = K.hitKind(ck, t);
+    assert.ok(k === null || !K.hitCounts(ck, t, k, new Set()), `${t} must not count`);
+  }
+  // A HAND digit key keeps substring matching, and its surface says so.
+  const hand = K.compileKey('2742800629');
+  assert.strictEqual(K.hitKind(hand, '274'), 'partial');
+  assert.ok([...K.surfaceTokens(hand)].includes('274'));
+});

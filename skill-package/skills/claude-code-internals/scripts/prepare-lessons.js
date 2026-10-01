@@ -129,9 +129,12 @@
  *       existing key's is skipped.
  *   3c. APPENDS OPEN ONLY NEW TOKENS: skip the candidate if any token it would
  *       hit is live. For an identifier-shaped key that is its joined form;
- *       for any other key (bare numbers, /commands, letter+digit tokens) it is
- *       EVERY substring of length >= 2 of its alphanumeric form, because that
- *       is what search.js's substring match hits. Such a skipped identifier
+ *       for any other key (/commands, letter+digit tokens) it is EVERY
+ *       substring of length >= 2 of its alphanumeric form, because that is
+ *       what search.js's substring match hits. A bare number is the exception:
+ *       as a generated key it is a phrase, whose PARTIAL hits never count
+ *       (keyword-match.js hitCounts()), so it hits only as the whole number and
+ *       3c checks only that token. Gate ids are reachable that way. Such a skipped identifier
  *       stays UNREACHABLE and is counted. The count has a ceiling
  *       (topic-index.json keyword_boundary.unreachable_max, a non-negative
  *       integer that must be present): --check fails if it is missing or

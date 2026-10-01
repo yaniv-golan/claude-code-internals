@@ -167,8 +167,11 @@ function keyHitsToken(ck, token) {
 /**
  * Every query token that hits compiled key `ck`, as far as it can be listed:
  * WHOLE forms and WORD words exactly, PARTIAL as every [a-z0-9] substring of at
- * least MIN_SUBSTRING characters of the key's lowercase and joined forms. Used
- * by prepare-lessons.js's collision rule. Tokens are [a-z0-9]+, so a form with
+ * least MIN_SUBSTRING characters of the key's lowercase and joined forms, except
+ * for a generated all-digit key, which lists only its whole number (the only
+ * token whose hit counts). Used by prepare-lessons.js's collision rule; a test
+ * holds it to "a superset of the tokens whose hits count, for every generated
+ * key, and exactly those for an all-digit one". Tokens are [a-z0-9]+, so a form with
  * other characters is left out (nothing can equal it).
  */
 function* surfaceTokens(ck) {
@@ -180,6 +183,10 @@ function* surfaceTokens(ck) {
     return;
   }
   yield* emit(ck.joined);
+  // A generated all-digit key (a gate id) is a phrase: hitCounts() never counts a PARTIAL hit on
+  // it and it has no words, so its whole number is the only token that can count. Listing its
+  // substrings too would only make the collision rule refuse it for no ranking reason.
+  if (ck.phrase && /^[0-9]+$/.test(ck.joined)) return;
   if (ck.words.length > 1) for (const w of ck.words) yield* emit(w);
   for (const form of [ck.lower, ck.joined]) {
     for (const run of form.split(/[^a-z0-9]+/)) {

@@ -261,10 +261,15 @@ test('collision rule: substring keys may not hit any live token; fresh identifie
   // camelCase is stored in separator form, hit only by its joined token, so the live
   // words send/message no longer block it
   assert.deepStrictEqual(derived.find((a) => a.key === 'send-message').lessons, [1]);
-  // a bare number is a substring key: '45' is live (hand key 'build 4567'), so it is UNREACHABLE
-  assert.ok(!keys.includes('45678901'));
-  assert.ok(report.fragment.some((f) => f.raw === '45678901' && f.shape === 'digits'));
+  // a bare number, as a generated key, is hit only by its whole number (a phrase: no partial
+  // credit), so a live substring ('456', inside hand key 'build 4567') no longer blocks it
+  assert.deepStrictEqual(derived.find((a) => a.key === '45678901').lessons, [1]);
+  assert.ok(!report.fragment.some((f) => f.raw === '45678901'));
   assert.strictEqual(report.unreachable, report.fragment.length);
+  // ...but its whole number taken by a hand key still blocks it (claimed: reachable via that key)
+  const taken = planOf({ 'gate 45678901': [5] }, [[1, 'gate 45678901 is on'], [5, '']]);
+  assert.ok(!taken.derived.some((a) => a.key === '45678901'));
+  assert.ok(taken.report.claimed.some((c) => c.raw === '45678901'));
   // Multi-lesson rule: the lesson with the most occurrences is the home; others are reported.
   const flag = derived.find((a) => a.key === 'brand_new_flag');
   assert.deepStrictEqual(flag.lessons, [1]);

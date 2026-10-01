@@ -2915,6 +2915,7 @@
         "firstPartyEventLogger.ts",
         "shutdown-datadog",
         "SINK_KILLSWITCH_CONFIG_NAME",
+        "20251124",
         "does claude code send usage data",
         "what data does claude code collect",
         "how to turn off telemetry",
@@ -2971,7 +2972,8 @@
         "growthbook.ts",
         "firstPartyEventLogger.ts",
         "shutdown-datadog",
-        "SINK_KILLSWITCH_CONFIG_NAME"
+        "SINK_KILLSWITCH_CONFIG_NAME",
+        "20251124"
       ],
       "vocab_keys": [
         "does claude code send usage data",
@@ -3154,6 +3156,7 @@
         "local-manifest",
         "BLOCKED_OFFICIAL_NAME_PATTERN",
         "NON_ASCII_PATTERN",
+        "9086500",
         "plugin update says already up to date but new version exists",
         "how does claude plugin update detect a new version",
         "plugin update badge not showing in desktop app",
@@ -3243,7 +3246,8 @@
         "calculate-delta",
         "local-manifest",
         "BLOCKED_OFFICIAL_NAME_PATTERN",
-        "NON_ASCII_PATTERN"
+        "NON_ASCII_PATTERN",
+        "9086500"
       ],
       "vocab_keys": [
         "plugin update says already up to date but new version exists",
@@ -3904,6 +3908,7 @@
         "FADE_WINDOW",
         "PET_BURST_MS",
         "IDLE_SEQUENCE",
+        "4294967296",
         "hidden virtual pet in claude code",
         "tamagotchi easter egg in the terminal",
         "april fools pet companion",
@@ -3928,7 +3933,8 @@
         "BUBBLE_SHOW",
         "FADE_WINDOW",
         "PET_BURST_MS",
-        "IDLE_SEQUENCE"
+        "IDLE_SEQUENCE",
+        "4294967296"
       ],
       "vocab_keys": [
         "hidden virtual pet in claude code",
@@ -4476,6 +4482,7 @@
         "CLAUDE_OPUS_4_5_CONFIG",
         "ANTHROPIC_MODEL",
         "MODEL_ALIASES",
+        "20251101",
         "which model does claude code use by default",
         "change model for one session",
         "model setting ignored in settings",
@@ -4528,7 +4535,8 @@
         "CLAUDE_OPUS_4_1_CONFIG",
         "CLAUDE_OPUS_4_5_CONFIG",
         "ANTHROPIC_MODEL",
-        "MODEL_ALIASES"
+        "MODEL_ALIASES",
+        "20251101"
       ],
       "vocab_keys": [
         "which model does claude code use by default",
@@ -6174,6 +6182,7 @@
         "MIN_LOOP_DELAY",
         "make-loop-short-id",
         "tengu_surreal_dali",
+        "4294967295",
         "let claude decide how often a loop runs",
         "loop without a fixed interval",
         "self-paced recurring task",
@@ -6210,7 +6219,8 @@
         "tengu_loop_dynamic_wakeup_scheduled",
         "MIN_LOOP_DELAY",
         "make-loop-short-id",
-        "tengu_surreal_dali"
+        "tengu_surreal_dali",
+        "4294967295"
       ],
       "vocab_keys": [
         "let claude decide how often a loop runs",
@@ -8916,6 +8926,7 @@
         "PACKAGE_URL",
         "README_URL",
         "FEEDBACK_CHANNEL",
+        "21600000",
         "background daemon won't install as a service",
         "why does the daemon only start on demand",
         "ask before starting background daemon",
@@ -8978,7 +8989,8 @@
         "ISSUES_EXPLAINER",
         "PACKAGE_URL",
         "README_URL",
-        "FEEDBACK_CHANNEL"
+        "FEEDBACK_CHANNEL",
+        "21600000"
       ],
       "vocab_keys": [
         "background daemon won't install as a service",
@@ -9254,6 +9266,7 @@
         "tengu_media_block_strip_retry",
         "tengu_reorder_tool_uses_skipped_for_thinking",
         "tengu_message_delta_usage_missing",
+        "1800000",
         "can i turn off streaming tool execution",
         "tools start running before input finishes",
         "disable tools running while model is still typing",
@@ -9280,7 +9293,8 @@
         "tengu_thinking_signature_strip_retry",
         "tengu_media_block_strip_retry",
         "tengu_reorder_tool_uses_skipped_for_thinking",
-        "tengu_message_delta_usage_missing"
+        "tengu_message_delta_usage_missing",
+        "1800000"
       ],
       "vocab_keys": [
         "can i turn off streaming tool execution",
@@ -10219,6 +10233,7 @@
         "client-capabilities",
         "create-elicitation-completion-notifier",
         "elicit-result",
+        "2204227020",
         "can my mcp app ui send data back to the server",
         "mcp app form submits into the chat",
         "how to collect an api key from user in mcp server",
@@ -10251,7 +10266,8 @@
         "elicit-input-stream",
         "client-capabilities",
         "create-elicitation-completion-notifier",
-        "elicit-result"
+        "elicit-result",
+        "2204227020"
       ],
       "vocab_keys": [
         "can my mcp app ui send data back to the server",
@@ -10696,6 +10712,7 @@
         "memory-extra-guidelines-value-gate",
         "tool_use_id",
         "user-selected-folders",
+        "3600000",
         "SUPPORTED_CAPABILITIES",
         "missing_epoch",
         "host_paths",
@@ -10741,6 +10758,7 @@
         "mcp_toggle",
         "message_rated",
         "tengu_request_user_dialog",
+        "1200000",
         "hidden settings for cowork desktop agent",
         "force effort level on any model",
         "turn off 1m context for my proxy",
@@ -10760,6 +10778,7 @@
       "identifier_keys": [
         "tool_use_id",
         "user-selected-folders",
+        "3600000",
         "SUPPORTED_CAPABILITIES",
         "missing_epoch",
         "host_paths",
@@ -10804,7 +10823,8 @@
         "set_color",
         "mcp_toggle",
         "message_rated",
-        "tengu_request_user_dialog"
+        "tengu_request_user_dialog",
+        "1200000"
       ],
       "vocab_keys": [
         "hidden settings for cowork desktop agent",
@@ -11531,6 +11551,7 @@
         "LIST_CODE_WORKSPACES",
         "DISABLE_AGENTS_FLEET",
         "resume-from-run-id",
+        "3723845789",
         "continue a finished subagent",
         "resume subagent with previous context",
         "can i resume a completed subagent",
@@ -11561,7 +11582,8 @@
         "MCP_DISPATCH_SET_AGENT_NAME",
         "LIST_CODE_WORKSPACES",
         "DISABLE_AGENTS_FLEET",
-        "resume-from-run-id"
+        "resume-from-run-id",
+        "3723845789"
       ],
       "vocab_keys": [
         "continue a finished subagent",
@@ -12388,6 +12410,19 @@
         "OUTPUT_PATH",
         "resolve-workspace-mount-mode",
         "get-prompt-for-command",
+        "10544400",
+        "1079437",
+        "11196689",
+        "2353747",
+        "18620434",
+        "12222753",
+        "12196439",
+        "18314820",
+        "2360204",
+        "5239784",
+        "12380427",
+        "7272673",
+        "5044379",
         "subagent write file denied sessions path",
         "where do subagent files get saved",
         "relative path lands in outputs folder",
@@ -12415,7 +12450,20 @@
         "translate-message-paths",
         "OUTPUT_PATH",
         "resolve-workspace-mount-mode",
-        "get-prompt-for-command"
+        "get-prompt-for-command",
+        "10544400",
+        "1079437",
+        "11196689",
+        "2353747",
+        "18620434",
+        "12222753",
+        "12196439",
+        "18314820",
+        "2360204",
+        "5239784",
+        "12380427",
+        "7272673",
+        "5044379"
       ],
       "vocab_keys": [
         "subagent write file denied sessions path",
@@ -12462,6 +12510,8 @@
         "dispatch_child_fs_hl",
         "skeleton_home",
         "resolve-section",
+        "3789393",
+        "10546804",
         "cowork subagent extra system prompt",
         "text added to every subagent's instructions",
         "subagent told about sandbox vs real filesystem",
@@ -12482,7 +12532,9 @@
         "index.chunk-CCRuCFON.js",
         "dispatch_child_fs_hl",
         "skeleton_home",
-        "resolve-section"
+        "resolve-section",
+        "3789393",
+        "10546804"
       ],
       "vocab_keys": [
         "cowork subagent extra system prompt",
@@ -12547,6 +12599,7 @@
         "dispatch-agent-name-enabled",
         "MCP_DISPATCH_SET_AGENT_NAME",
         "LIST_CODE_WORKSPACES",
+        "3723845789",
         "pre-ask",
         "index.chunk-CS-g0Skn.js",
         "WORKSPACE_ALLOWED_TOOLS",
@@ -12575,6 +12628,10 @@
         "decide-location",
         "dispatch_child",
         "index.chunk-zFJ_MSb3.js",
+        "10166687",
+        "10167214",
+        "2583812",
+        "1544796833",
         "which model does a subagent use",
         "subagent ignoring my model setting",
         "invalid subagent model falls back to parent",
@@ -12600,6 +12657,7 @@
         "dispatch-agent-name-enabled",
         "MCP_DISPATCH_SET_AGENT_NAME",
         "LIST_CODE_WORKSPACES",
+        "3723845789",
         "pre-ask",
         "index.chunk-CS-g0Skn.js",
         "WORKSPACE_ALLOWED_TOOLS",
@@ -12627,7 +12685,11 @@
         "decision_reason_type",
         "decide-location",
         "dispatch_child",
-        "index.chunk-zFJ_MSb3.js"
+        "index.chunk-zFJ_MSb3.js",
+        "10166687",
+        "10167214",
+        "2583812",
+        "1544796833"
       ],
       "vocab_keys": [
         "which model does a subagent use",
@@ -12995,6 +13057,7 @@
         "D3da7joD.js",
         "DPf0hBOc.js",
         "DD6nxfJK.js",
+        "1076115445",
         "auto mode still asks before destructive connector actions",
         "why does auto mode keep prompting me",
         "always allow not saving for some tools",
@@ -13036,7 +13099,8 @@
         "qQnbF6Q.js",
         "D3da7joD.js",
         "DPf0hBOc.js",
-        "DD6nxfJK.js"
+        "DD6nxfJK.js",
+        "1076115445"
       ],
       "vocab_keys": [
         "auto mode still asks before destructive connector actions",
@@ -14375,6 +14439,7 @@
         "embedded_timestamp",
         "feature_count",
         "observed_at",
+        "2403605075",
         "feature flag missing but still enabled",
         "does a missing feature flag mean it's off",
         "cached feature flags change between reads",
@@ -14396,7 +14461,8 @@
         "fcache_capture",
         "embedded_timestamp",
         "feature_count",
-        "observed_at"
+        "observed_at",
+        "2403605075"
       ],
       "vocab_keys": [
         "feature flag missing but still enabled",
@@ -15898,6 +15964,8 @@
         "record-by-record-sweep",
         "removed_in",
         "1.28929.0",
+        "574905726",
+        "1101873029",
         "new feature flags in latest desktop build",
         "feature flag defined but never used",
         "flag registered with no code reading it",
@@ -15916,7 +15984,9 @@
       ],
       "identifier_keys": [
         "removed_in",
-        "1.28929.0"
+        "1.28929.0",
+        "574905726",
+        "1101873029"
       ],
       "vocab_keys": [
         "new feature flags in latest desktop build",
@@ -20076,6 +20146,7 @@
         "local_auto_permission_forced",
         "local_bypass_permission_forced",
         "disabled_by_org_policy",
+        "259200000",
         "cowork task runs in cloud instead of locally",
         "force cowork task to run on my machine",
         "why does my new task run in the cloud",
@@ -20102,7 +20173,8 @@
         "local_space_forced",
         "local_auto_permission_forced",
         "local_bypass_permission_forced",
-        "disabled_by_org_policy"
+        "disabled_by_org_policy",
+        "259200000"
       ],
       "vocab_keys": [
         "cowork task runs in cloud instead of locally",
@@ -20346,6 +20418,11 @@
         "sessionId-suffix",
         "mcp__ccd_session__move_to_cloud",
         "cowork-session-seed",
+        "1093656152",
+        "1997501558",
+        "1658632017",
+        "1709592054",
+        "3112015973",
         "what changed in the latest desktop app feature flags",
         "new feature flags in claude desktop update",
         "is a feature flag on if the server never sent it",
@@ -20366,7 +20443,12 @@
         "DzZc-q0x",
         "sessionId-suffix",
         "mcp__ccd_session__move_to_cloud",
-        "cowork-session-seed"
+        "cowork-session-seed",
+        "1093656152",
+        "1997501558",
+        "1658632017",
+        "1709592054",
+        "3112015973"
       ],
       "vocab_keys": [
         "what changed in the latest desktop app feature flags",
@@ -20981,6 +21063,7 @@
         "screenshot_file_preview",
         "screenshot_artifact",
         "can-verify-artifacts",
+        "2742800629",
         "claude check how my html report looks",
         "screenshot of generated html file",
         "verify svg output visually",
@@ -21003,7 +21086,8 @@
         "auto-publish-enabled",
         "screenshot_file_preview",
         "screenshot_artifact",
-        "can-verify-artifacts"
+        "can-verify-artifacts",
+        "2742800629"
       ],
       "vocab_keys": [
         "claude check how my html report looks",
@@ -38666,6 +38750,9 @@
     "CLAUDE_CODE_USE_VERTEX": [
       64
     ],
+    "20251124": [
+      29
+    ],
     "run-migrations": [
       30
     ],
@@ -38913,6 +39000,9 @@
       31
     ],
     "NON_ASCII_PATTERN": [
+      31
+    ],
+    "9086500": [
       31
     ],
     "coreTypes.ts": [
@@ -39173,6 +39263,9 @@
       40
     ],
     "IDLE_SEQUENCE": [
+      40
+    ],
+    "4294967296": [
       40
     ],
     "ultraplan.tsx": [
@@ -39543,6 +39636,9 @@
       46
     ],
     "MODEL_ALIASES": [
+      46
+    ],
+    "20251101": [
       46
     ],
     "anthropic-ai": [
@@ -40193,6 +40289,9 @@
       67
     ],
     "tengu_surreal_dali": [
+      67
+    ],
+    "4294967295": [
       67
     ],
     "request-o-auth-token-refresh": [
@@ -41116,6 +41215,12 @@
     "FEEDBACK_CHANNEL": [
       90
     ],
+    "3600000": [
+      108
+    ],
+    "21600000": [
+      90
+    ],
     "journal.jsonl": [
       91
     ],
@@ -41201,6 +41306,9 @@
       94
     ],
     "tengu_message_delta_usage_missing": [
+      94
+    ],
+    "1800000": [
       94
     ],
     "hook-specific-output": [
@@ -41612,6 +41720,9 @@
     "elicit-result": [
       105
     ],
+    "2204227020": [
+      105
+    ],
     "unless_flag": [
       106
     ],
@@ -41937,6 +42048,9 @@
     "tengu_request_user_dialog": [
       108
     ],
+    "1200000": [
+      108
+    ],
     "sender-frame": [
       109
     ],
@@ -42240,6 +42354,10 @@
     ],
     "resume-from-run-id": [
       115
+    ],
+    "3723845789": [
+      115,
+      124
     ],
     "CLAUDE_CODE_ACTION": [
       116
@@ -42552,6 +42670,45 @@
     "get-prompt-for-command": [
       122
     ],
+    "10544400": [
+      122
+    ],
+    "1079437": [
+      122
+    ],
+    "11196689": [
+      122
+    ],
+    "2353747": [
+      122
+    ],
+    "18620434": [
+      122
+    ],
+    "12222753": [
+      122
+    ],
+    "12196439": [
+      122
+    ],
+    "18314820": [
+      122
+    ],
+    "2360204": [
+      122
+    ],
+    "5239784": [
+      122
+    ],
+    "12380427": [
+      122
+    ],
+    "7272673": [
+      122
+    ],
+    "5044379": [
+      122
+    ],
     "index.chunk-CCRuCFON.js": [
       123,
       124
@@ -42563,6 +42720,12 @@
       123
     ],
     "resolve-section": [
+      123
+    ],
+    "3789393": [
+      123
+    ],
+    "10546804": [
       123
     ],
     "SUBAGENT_MODEL_FORCE": [
@@ -42629,6 +42792,18 @@
       124
     ],
     "index.chunk-zFJ_MSb3.js": [
+      124
+    ],
+    "10166687": [
+      124
+    ],
+    "10167214": [
+      124
+    ],
+    "2583812": [
+      124
+    ],
+    "1544796833": [
       124
     ],
     "SIMULATOR_MCP_TOOL_NAME": [
@@ -42850,6 +43025,9 @@
       128
     ],
     "DD6nxfJK.js": [
+      128
+    ],
+    "1076115445": [
       128
     ],
     "local_ditto": [
@@ -43241,6 +43419,9 @@
     "observed_at": [
       141
     ],
+    "2403605075": [
+      141
+    ],
     "memory-guidelines-template": [
       142
     ],
@@ -43592,6 +43773,12 @@
       158
     ],
     "1.28929.0": [
+      160
+    ],
+    "574905726": [
+      160
+    ],
+    "1101873029": [
       160
     ],
     "CLAUDE_CODE_WORKFLOW_PREFIX_STAGGER_MS": [
@@ -44471,6 +44658,9 @@
     "disabled_by_org_policy": [
       210
     ],
+    "259200000": [
+      210
+    ],
     "ccinternals-probe": [
       211
     ],
@@ -44522,6 +44712,21 @@
       213
     ],
     "cowork-session-seed": [
+      213
+    ],
+    "1093656152": [
+      213
+    ],
+    "1997501558": [
+      213
+    ],
+    "1658632017": [
+      213
+    ],
+    "1709592054": [
+      213
+    ],
+    "3112015973": [
       213
     ],
     "CLAUDE_CODE_USE": [
@@ -44733,6 +44938,9 @@
       221
     ],
     "can-verify-artifacts": [
+      221
+    ],
+    "2742800629": [
       221
     ],
     "why is claude startup slow": [
@@ -54623,6 +54831,6 @@
     ]
   },
   "keyword_boundary": {
-    "unreachable_max": 66
+    "unreachable_max": 25
   }
 }
