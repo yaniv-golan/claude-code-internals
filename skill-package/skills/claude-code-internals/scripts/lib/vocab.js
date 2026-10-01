@@ -48,7 +48,21 @@
  * fresh draw replaces 12-15 of 15 terms even when nothing they say became false,
  * and keyword hits are exact tokens, so a reworded term ("save" for "saving")
  * silently stops matching the questions the old one carried. Such an entry
- * also records `prior_terms_sha256` (termsSha256() of the previous terms).
+ * also records `prior_terms_sha256` (termsSha256() of the previous terms) and
+ * `replaced`, the previous terms it no longer carries (normalized comparison),
+ * so every update's churn is auditable in the file.
+ *
+ * NEW TOPICS. The prompt shows the lesson text BEFORE the edit next to the text
+ * now (lib/vocab-history.js finds it in git by input_sha256; `previous_text`
+ * records the commit, or "not found"). When the edit added a topic no term
+ * reaches and the list is full, the model may swap up to NEW_TOPIC_SWAPS terms
+ * for it, near-duplicates first, then the least specific; a topic that was
+ * already in the lesson is not new, however uncovered. With no previous text
+ * the prompt allows no such swap. Terms the text no longer supports are
+ * replaced regardless (the bound is the prompt's; `replaced` is the record).
+ * One rule is enforced in code (keepTitleTerm()): an update never leaves the
+ * lesson without a term asking about its title's subject when it had one; the
+ * first dropped such term is put back (`title_term_restored`).
  * The fresh prompt is used for a lesson without terms, for --regen, and for
  * every stale lesson under --fresh.
  *
@@ -98,10 +112,11 @@ const { extractIdentifiers, normalize } = require('./identifiers.js');
 
 const PROPOSALS_FILE = 'data/vocab-proposals.json'; // relative to the repository root
 /** sha256 of data/vocab-proposals.json. Changed only together with a --generate run (see the header). */
-const PROPOSALS_SHA256 = '0ddb219c7f038b44cc8a745416fa39158786e47ff96c39ba90438b13eb89c38c';
+const PROPOSALS_SHA256 = 'e789710f73f99e13de1e96b83efc41afb72462454f72d19b443d7da7d588c52f';
 const DEFAULT_MODEL = 'claude-opus-5-5'; // evals/retrieval/gen-questions.js used claude-sonnet-5
 const PROMPT_VERSION = 'vocab-v1';
-const UPDATE_PROMPT_VERSION = 'vocab-v2-update'; // buildUpdatePrompt(): prior terms + current text
+const UPDATE_PROMPT_VERSION = 'vocab-v3-update'; // buildUpdatePrompt(): prior terms + previous and current text (v3: up to NEW_TOPIC_SWAPS for a topic the edit added)
+const NEW_TOPIC_SWAPS = 3;
 const MAX_TERMS = 15;
 const MAX_TERM_CHARS = 80;
 const MAX_TERM_WORDS = 12;
@@ -132,6 +147,9 @@ function proposalErrors(data) {
     else if (p.input_sha256 !== undefined && !/^[0-9a-f]{64}$/.test(p.input_sha256)) errs.push(`lesson ${id}: input_sha256 must be a sha256 hex digest`);
     else if (p.prior_terms_sha256 !== undefined && !/^[0-9a-f]{64}$/.test(p.prior_terms_sha256)) errs.push(`lesson ${id}: prior_terms_sha256 must be a sha256 hex digest`);
     else if (p.collision_check !== undefined && typeof p.collision_check !== 'string') errs.push(`lesson ${id}: collision_check must be a string`);
+    else if (p.replaced !== undefined && !(Array.isArray(p.replaced) && p.replaced.every((t) => typeof t === 'string'))) errs.push(`lesson ${id}: replaced must be string[]`);
+    else if (p.previous_text !== undefined && typeof p.previous_text !== 'string') errs.push(`lesson ${id}: previous_text must be a string`);
+    else if (p.title_term_restored !== undefined && typeof p.title_term_restored !== 'string') errs.push(`lesson ${id}: title_term_restored must be a string`);
     else if (p.withheld !== undefined && !(Array.isArray(p.withheld) && p.withheld.every((w) => w && typeof w.term === 'string' && typeof w.qid === 'string'))) {
       errs.push(`lesson ${id}: withheld must be [{term, qid}]`);
     }
@@ -220,6 +238,9 @@ function renderProposals(byId) {
     if (p.input_sha256 !== undefined) e.input_sha256 = p.input_sha256;
     if (p.prior_terms_sha256 !== undefined) e.prior_terms_sha256 = p.prior_terms_sha256;
     if (p.collision_check !== undefined) e.collision_check = p.collision_check;
+    if (p.previous_text !== undefined) e.previous_text = p.previous_text;
+    if (p.replaced !== undefined) e.replaced = p.replaced.slice();
+    if (p.title_term_restored !== undefined) e.title_term_restored = p.title_term_restored;
     e.terms = p.terms.slice();
     if (p.withheld !== undefined) e.withheld = p.withheld.map((w) => ({ term: w.term, qid: w.qid }));
     lessons[String(id)] = e;
@@ -318,7 +339,22 @@ function buildPrompt(lesson, text) {
  * moves the vocabulary by what changed, not by a fresh draw of 15 phrasings.
  * The lesson part (title, summary, text) is the same as buildPrompt()'s.
  */
-function buildUpdatePrompt(lesson, text, priorTerms) {
+function buildUpdatePrompt(lesson, text, priorTerms, previousText = null) {
+  const clip = (t) => (t.length > LESSON_TEXT_LIMIT ? t.slice(0, LESSON_TEXT_LIMIT) + '\n[...truncated]' : t);
+  const newTopic = previousText === null
+    ? [
+      '- Do NOT replace a term that is still true, not even to make room for something the lesson',
+      '  covers that no term reaches. Only an untrue term may go.',
+    ]
+    : [
+      `- NEW TOPIC: compare the lesson BEFORE the edit (given below) with the lesson NOW. If the edit`,
+      '  ADDED a topic that none of the terms above reaches, add terms for it. A topic that was already',
+      '  in the lesson before the edit is NOT new, even if no term covers it: leave it alone.',
+      `  With fewer than ${MAX_TERMS} terms, add. With ${MAX_TERMS}, you may replace up to ${NEW_TOPIC_SWAPS} terms for the new topic,`,
+      '  choosing first a term that nearly duplicates another term in the list, then the least specific',
+      '  term (the one most likely to fit other lessons too). Never replace the last term that asks',
+      '  about the subject of the lesson title. Never replace a term to reword, tidy or "improve" it.',
+    ];
   return [
     'You are helping index a technical reference so people can find the right lesson with the',
     'words they would actually type. Below is one lesson from a reference about how Claude Code',
@@ -332,9 +368,10 @@ function buildUpdatePrompt(lesson, text, priorTerms) {
     '  kept term EXACTLY, character for character: same words, same word forms, same order. Do not',
     '  shorten, reword, re-tense or tidy it. Small wording changes are not improvements here: people',
     '  type the old wording and the search matches words exactly.',
-    '- REPLACE only a term that the edited lesson no longer supports (it now states something',
-    '  different, or no longer covers that topic), with a new term for what the lesson now says.',
-    `- You may add terms for genuinely new content, up to ${MAX_TERMS} terms in total.`,
+    '- REPLACE a term that the edited lesson no longer supports (it now states something different,',
+    '  or no longer covers that topic) with a new term for what the lesson now says.',
+    ...newTopic,
+    `- At most ${MAX_TERMS} terms in total.`,
     '- New terms follow the original rules: plain words a user who has NOT read the lesson would',
     '  type, short phrases (2-6 words) or short questions (at most 12 words); no identifiers of any',
     '  kind (no environment variable names, code, function or tool names, file names, numeric ids,',
@@ -345,9 +382,43 @@ function buildUpdatePrompt(lesson, text, priorTerms) {
     `LESSON TITLE: ${lesson.title}`,
     lesson.description ? `SUMMARY: ${lesson.description}` : '',
     '',
-    'LESSON TEXT:',
-    text.length > LESSON_TEXT_LIMIT ? text.slice(0, LESSON_TEXT_LIMIT) + '\n[...truncated]' : text,
+    ...(previousText === null ? [] : ['LESSON TEXT BEFORE THE EDIT:', clip(previousText), '', 'LESSON TEXT NOW:']),
+    ...(previousText === null ? ['LESSON TEXT:'] : []),
+    clip(text),
   ].join('\n');
+}
+
+/**
+ * Words of a lesson title that say what it is about (query tokens: lowercase, stop words out),
+ * and whether a term asks about it. Used to keep at least one title-topic term through an update.
+ */
+function titleWords(title) {
+  const { tokenizeQuery } = require('./tfidf-index.js');
+  return new Set(tokenizeQuery(String(title).replace(/\([^)]*\)/g, ' ')).filter((w) => w.length >= 4));
+}
+function coversTitle(term, words) {
+  const { tokenizeQuery } = require('./tfidf-index.js');
+  return tokenizeQuery(term).some((w) => words.has(w));
+}
+
+/**
+ * The title guard: if the previous terms had one asking about the lesson title's subject and
+ * the update dropped every such term, put the first dropped one back in place of the last new
+ * term (or append it under MAX_TERMS). Returns {terms, restored: string | null}. Pure.
+ */
+function keepTitleTerm(lesson, priorTerms, terms) {
+  const words = titleWords(lesson.title);
+  if (!words.size || terms.some((t) => coversTitle(t, words))) return { terms, restored: null };
+  const back = priorTerms.find((t) => coversTitle(t, words));
+  if (!back) return { terms, restored: null };
+  const before = new Set(priorTerms.map((t) => normalize(cleanTerm(t))));
+  const out = terms.slice(0, MAX_TERMS);
+  let i = -1;
+  for (let k = out.length - 1; k >= 0; k--) if (!before.has(normalize(cleanTerm(out[k])))) { i = k; break; }
+  if (i >= 0) out[i] = back;
+  else if (out.length < MAX_TERMS) out.push(back);
+  else return { terms, restored: null };
+  return { terms: out, restored: back };
 }
 
 /**
@@ -396,7 +467,7 @@ async function mapPool(items, concurrency, fn) {
  * the hash of the prompt itself (the caller re-verifies it against the lessons on
  * disk before accepting the output). `callModel` is injectable for tests.
  */
-async function generateProposals(lessons, lessonText, { model = DEFAULT_MODEL, concurrency = 4, callModel = callModelDefault, date, log = () => {}, prior = new Map() } = {}) {
+async function generateProposals(lessons, lessonText, { model = DEFAULT_MODEL, concurrency = 4, callModel = callModelDefault, date, log = () => {}, prior = new Map(), previous = new Map() } = {}) {
   const added = new Map();
   const failed = [];
   const today = date || new Date().toISOString().slice(0, 10);
@@ -405,10 +476,17 @@ async function generateProposals(lessons, lessonText, { model = DEFAULT_MODEL, c
     try {
       const text = lessonText(l);
       const old = prior.get(l.id);
-      const prompt = old ? buildUpdatePrompt(l, text, old) : buildPrompt(l, text);
-      const terms = parseTerms(await callModel(prompt, { model }));
+      const prev = old ? previous.get(l.id) || null : null; // {text, commit} or null
+      const prompt = old ? buildUpdatePrompt(l, text, old, prev && prev.text) : buildPrompt(l, text);
+      let terms = parseTerms(await callModel(prompt, { model }));
+      let restored = null;
+      if (old) ({ terms, restored } = keepTitleTerm(l, old, terms));
+      if (restored) log(`vocab: lesson ${l.id}: the update dropped every title-topic term; restored "${restored}"`);
+      const now = new Set(terms.map((t) => normalize(cleanTerm(t))));
       added.set(l.id, old
-        ? { model, prompt_version: UPDATE_PROMPT_VERSION, date: today, input_sha256: inputSha256(l, text), prior_terms_sha256: termsSha256(old), terms }
+        ? { model, prompt_version: UPDATE_PROMPT_VERSION, date: today, input_sha256: inputSha256(l, text), prior_terms_sha256: termsSha256(old),
+          previous_text: prev ? prev.commit : 'not found', replaced: old.filter((t) => !now.has(normalize(cleanTerm(t)))),
+          ...(restored ? { title_term_restored: restored } : {}), terms }
         : { model, prompt_version: PROMPT_VERSION, date: today, input_sha256: sha256(prompt), terms });
     } catch (e) {
       failed.push({ id: l.id, error: e.message });
@@ -420,7 +498,7 @@ async function generateProposals(lessons, lessonText, { model = DEFAULT_MODEL, c
 }
 
 module.exports = {
-  PROPOSALS_FILE, PROPOSALS_SHA256, DEFAULT_MODEL, PROMPT_VERSION, MAX_TERMS, MAX_TERM_CHARS, MAX_TERM_WORDS, MAX_HOMES, MODEL_FLAGS,
-  cleanTerm, proposalErrors, proposalsPath, loadProposals, integrityErrors, termsSha256, inputSha256, staleProposals, renderProposals, planVocab, buildPrompt, buildUpdatePrompt, UPDATE_PROMPT_VERSION,
+  PROPOSALS_FILE, PROPOSALS_SHA256, DEFAULT_MODEL, PROMPT_VERSION, NEW_TOPIC_SWAPS, MAX_TERMS, MAX_TERM_CHARS, MAX_TERM_WORDS, MAX_HOMES, MODEL_FLAGS,
+  cleanTerm, proposalErrors, proposalsPath, loadProposals, integrityErrors, termsSha256, inputSha256, staleProposals, renderProposals, planVocab, buildPrompt, buildUpdatePrompt, UPDATE_PROMPT_VERSION, keepTitleTerm, titleWords,
   callModelDefault, parseTerms, generateProposals,
 };

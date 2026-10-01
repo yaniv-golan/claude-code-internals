@@ -899,9 +899,21 @@ async function runGenerate(skillDir, opts = {}, deps = {}, log = console.log) {
   const prior = new Map(todo
     .filter((l) => proposals.byId.has(l.id) && changedSet.has(l.id) && !regen.has(l.id) && !opts.fresh)
     .map((l) => [l.id, proposals.byId.get(l.id).terms]));
+  // The text each updated lesson's terms were written from, so the prompt can tell a topic the
+  // edit added from one that was always there (lib/vocab-history.js; deps.previous in tests).
+  const previous = new Map();
+  if (!opts.dryRun) {
+    const { findPreviousText } = require('./lib/vocab-history.js');
+    for (const id of prior.keys()) {
+      const l = loaded.topic.lessons.find((x) => x.id === id);
+      const found = deps.previous ? deps.previous(id) : findPreviousText(skillDir, l, proposals.byId.get(id).input_sha256, inputSha256);
+      if (found) previous.set(id, found);
+      else log(`vocab: lesson ${id}: the text its terms were written from is not in git history; this update allows no new-topic swaps`);
+    }
+  }
   const { added, failed } = todo.length
     ? await generateProposals(todo, loaded.lessonText, {
-      model: opts.model || DEFAULT_MODEL, concurrency: opts.concurrency || 4, callModel: deps.callModel, date: deps.date, log, prior,
+      model: opts.model || DEFAULT_MODEL, concurrency: opts.concurrency || 4, callModel: deps.callModel, date: deps.date, log, prior, previous,
     })
     : { added: new Map(), failed: [] };
   for (const f of failed) log(`vocab: lesson ${f.id} failed (retried on the next run): ${f.error.split('\n')[0]}`);

@@ -1071,7 +1071,16 @@ test('a lesson edited after its vocabulary was generated: --check warns by id (n
   assert.notStrictEqual(after.byId.get(89).input_sha256, require('crypto').createHash('sha256').update(prompts[0]).digest('hex'));
   assert.strictEqual(after.byId.get(89).prompt_version, V.UPDATE_PROMPT_VERSION);
   assert.strictEqual(after.byId.get(89).prior_terms_sha256, V.termsSha256(priorTerms));
-  assert.deepStrictEqual(after.byId.get(89).terms, ['a regenerated phrase for testing']);
+  // The stub dropped every term, so the title guard put the first title-topic term back; every
+  // other previous term is recorded as replaced, verbatim, so the churn is auditable.
+  const restored = after.byId.get(89).title_term_restored;
+  assert.ok(restored && priorTerms.includes(restored), 'a title-topic term was restored');
+  assert.deepStrictEqual(after.byId.get(89).replaced, priorTerms.filter((t) => t !== restored));
+  // The fixture is not a git checkout, so the previous text is not found and no swap is allowed.
+  assert.match(prompts[0], /Do NOT replace a term that is still true/);
+  assert.doesNotMatch(prompts[0], /LESSON TEXT BEFORE THE EDIT/);
+  assert.strictEqual(after.byId.get(89).previous_text, 'not found');
+  assert.deepStrictEqual(after.byId.get(89).terms, [restored]);
   const now = P.checkLessons({ raw: fs.readFileSync(topicPath(dir), 'utf8'), lessonText: P.load(dir).lessonText, hand: HAND, proposals: after, proposalsPin: after.sha256 });
   assert.deepStrictEqual([now.errors, now.warnings], [[], []]);
 });
@@ -1202,7 +1211,7 @@ test('--fresh and --regen redraw a stale lesson with the fresh prompt', async ()
 
 test('the proposals file keeps prior_terms_sha256, collision_check and withheld through render and load', () => {
   const byId = new Map([[7, { model: 'm', prompt_version: V.UPDATE_PROMPT_VERSION, date: 'd', input_sha256: 'a'.repeat(64),
-    prior_terms_sha256: 'b'.repeat(64), collision_check: 'questions-v2.json dev', terms: ['x y', 'z w'], withheld: [{ term: 'z w', qid: 'pl-0001' }] }]]);
+    prior_terms_sha256: 'b'.repeat(64), collision_check: 'questions-v2.json dev', previous_text: 'c'.repeat(40), replaced: ['an old phrase'], title_term_restored: 'an old phrase', terms: ['x y', 'z w'], withheld: [{ term: 'z w', qid: 'pl-0001' }] }]]);
   const text = V.renderProposals(byId);
   assert.deepStrictEqual(V.proposalErrors(JSON.parse(text)), []);
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cci-props-'));
@@ -1210,6 +1219,7 @@ test('the proposals file keeps prior_terms_sha256, collision_check and withheld 
   fs.writeFileSync(path.join(dir, 'p.json'), text);
   assert.deepStrictEqual(V.loadProposals(dir, path.join(dir, 'p.json')).byId.get(7), byId.get(7));
   assert.match(V.proposalErrors({ lessons: { 7: { ...byId.get(7), withheld: [{ term: 'x' }] } } }).join('\n'), /withheld must be/);
+  assert.match(V.proposalErrors({ lessons: { 7: { ...byId.get(7), replaced: [1] } } }).join('\n'), /replaced must be/);
 });
 
 test('planVocab drops a withheld term', () => {
@@ -1266,4 +1276,71 @@ test('--generate records the collision check and withholds a colliding new term 
   assert.deepStrictEqual(p.terms, [...prior, odd], 'terms stay the model output, unfiltered');
   assert.ok(!(odd in topicOf(dir).keyword_map), 'a withheld term is never a key');
   assert.ok(lines.some((l) => /lesson 89: withheld 1 new term/.test(l)), lines.join('\n'));
+});
+
+test('an update keeps kept terms out of replaced and compares them normalized', async () => {
+  const dir = fixture();
+  editLessonLine(dir, 89, ' the ', ' the quite ');
+  assert.strictEqual(run(BUILD, ['--root', dir]).code, 0);
+  const pin = freshen(dir, [89]);
+  const prior = loadProposals(dir).byId.get(89).terms;
+  // Keep all but the last two (one restated with other case and punctuation), add one new term.
+  const out = [...prior.slice(0, -2), `${prior[prior.length - 2].toUpperCase()}?`, 'a new topic phrase for testing'];
+  await P.runGenerate(dir, { proposalsPin: pin }, { callModel: stubTerms(out), questions: [] }, () => {});
+  const p = loadProposals(dir).byId.get(89);
+  assert.strictEqual(p.prompt_version, V.UPDATE_PROMPT_VERSION);
+  assert.deepStrictEqual(p.replaced, [prior[prior.length - 1]]);
+});
+
+test('the update prompt shows the text before the edit and allows bounded new-topic swaps only then', () => {
+  const l = { title: 'Screenshot Tools for Artifacts', description: 'd' };
+  const without = V.buildUpdatePrompt(l, 'TEXT NOW', ['a term'], null);
+  assert.match(without, /Do NOT replace a term that is still true/);
+  assert.doesNotMatch(without, /NEW TOPIC/);
+  const withPrev = V.buildUpdatePrompt(l, 'TEXT NOW', ['a term'], 'TEXT BEFORE');
+  assert.match(withPrev, /LESSON TEXT BEFORE THE EDIT:\nTEXT BEFORE\n\nLESSON TEXT NOW:\nTEXT NOW/);
+  assert.match(withPrev, new RegExp(`replace up to ${V.NEW_TOPIC_SWAPS} terms for the new topic`));
+  assert.match(withPrev, /already\s+in the lesson before the edit is NOT new/);
+  assert.match(withPrev, /nearly duplicates another term/);
+  assert.match(withPrev, /Never replace the last term that asks\s+about the subject of the lesson title/);
+});
+
+test('keepTitleTerm puts back a title-topic term only when the update dropped the last one', () => {
+  const l = { title: 'Screenshot Tools for Artifacts (L221)' };
+  const prior = ['why is the screenshot tool unavailable?', 'an unrelated phrase', 'another phrase'];
+  // One title-topic term survives: nothing to do.
+  assert.deepStrictEqual(V.keepTitleTerm(l, prior, ['an unrelated phrase', 'screenshot of html']), { terms: ['an unrelated phrase', 'screenshot of html'], restored: null });
+  // All dropped: the first dropped one replaces the last NEW term, kept terms untouched.
+  assert.deepStrictEqual(V.keepTitleTerm(l, prior, ['an unrelated phrase', 'another phrase', 'a brand new term']),
+    { terms: ['an unrelated phrase', 'another phrase', prior[0]], restored: prior[0] });
+  // No title-topic term before: nothing to keep.
+  assert.deepStrictEqual(V.keepTitleTerm(l, ['x y z'], ['a b c']).restored, null);
+});
+
+test('--generate passes the previous text to an update and records its commit', async () => {
+  const dir = fixture();
+  editLessonLine(dir, 89, ' the ', ' the quite ');
+  assert.strictEqual(run(BUILD, ['--root', dir]).code, 0);
+  const pin = freshen(dir, [89]);
+  const prior = loadProposals(dir).byId.get(89).terms;
+  const prompts = [];
+  const callModel = async (p) => { prompts.push(p); return stubTerms(prior)(); };
+  await P.runGenerate(dir, { proposalsPin: pin }, { callModel, questions: [], previous: () => ({ text: 'THE TEXT BEFORE', commit: 'f'.repeat(40) }) }, () => {});
+  assert.match(prompts[0], /LESSON TEXT BEFORE THE EDIT:\nTHE TEXT BEFORE\n/);
+  const p = loadProposals(dir).byId.get(89);
+  assert.strictEqual(p.previous_text, 'f'.repeat(40));
+  assert.deepStrictEqual(p.replaced, []);
+});
+
+test('findPreviousText finds the committed lesson text a proposal was written from', (t) => {
+  const H = require(path.join(SKILL_DIR, 'scripts', 'lib', 'vocab-history.js'));
+  const loaded = P.load(SKILL_DIR);
+  const props = loadProposals(SKILL_DIR);
+  // A lesson whose proposal is current: its text now is the text it was written from.
+  const l = loaded.topic.lessons.find((x) => props.byId.get(x.id) && props.byId.get(x.id).input_sha256 === V.inputSha256(x, loaded.lessonText(x)));
+  const found = H.findPreviousText(SKILL_DIR, l, props.byId.get(l.id).input_sha256, V.inputSha256);
+  if (!found) { t.skip('no git history here (e.g. a tracked-only copy without .git)'); return; }
+  assert.strictEqual(found.text, loaded.lessonText(l));
+  assert.match(found.commit, /^[0-9a-f]{40}$/);
+  assert.strictEqual(H.findPreviousText(SKILL_DIR, l, '0'.repeat(64), V.inputSha256), null, 'an unknown hash finds nothing');
 });

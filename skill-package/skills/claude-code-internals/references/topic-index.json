@@ -20262,8 +20262,6 @@
         "legacy artifact tools in cowork",
         "which artifact tool does a session get",
         "artifact tools missing in unattended session",
-        "tool listed but call refused",
-        "why is a listed tool still blocked",
         "disallowed mcp tool still shows in tool list",
         "save html page from scheduled task",
         "local artifacts folder in cowork sidebar",
@@ -20271,7 +20269,9 @@
         "bridge session can only list artifacts",
         "verify artifact tool not available",
         "migrate old live artifacts to new artifacts",
-        "does bypass mode skip artifact approval"
+        "does bypass mode skip artifact approval",
+        "cannot update artifact shared with me",
+        "why does sharing say not enabled"
       ],
       "identifier_keys": [
         "ccd_session",
@@ -20289,8 +20289,6 @@
         "legacy artifact tools in cowork",
         "which artifact tool does a session get",
         "artifact tools missing in unattended session",
-        "tool listed but call refused",
-        "why is a listed tool still blocked",
         "disallowed mcp tool still shows in tool list",
         "save html page from scheduled task",
         "local artifacts folder in cowork sidebar",
@@ -20298,13 +20296,15 @@
         "bridge session can only list artifacts",
         "verify artifact tool not available",
         "migrate old live artifacts to new artifacts",
-        "does bypass mode skip artifact approval"
+        "does bypass mode skip artifact approval",
+        "cannot update artifact shared with me",
+        "why does sharing say not enabled"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v2-update",
+        "prompt_version": "vocab-v3-update",
         "date": "2026-10-01",
-        "terms_sha256": "224fe76798fad8768322351d1a0d6cd39b195823754bbe39f7ea294fc0861699"
+        "terms_sha256": "8068408030ea9542e6aedad09701163d94eea6d680727edf946f823844ca1c5f"
       }
     },
     {
@@ -21024,7 +21024,7 @@
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v2-update",
+        "prompt_version": "vocab-v3-update",
         "date": "2026-10-01",
         "terms_sha256": "8c4d2bc06f6a0d1e45e243fcf4e73bd5b34e6e3e4268ab49acbf769c89deb876"
       }
@@ -54186,12 +54186,6 @@
     "artifact tools missing in unattended session": [
       212
     ],
-    "tool listed but call refused": [
-      212
-    ],
-    "why is a listed tool still blocked": [
-      212
-    ],
     "disallowed mcp tool still shows in tool list": [
       212
     ],
@@ -54214,6 +54208,12 @@
       212
     ],
     "does bypass mode skip artifact approval": [
+      212
+    ],
+    "cannot update artifact shared with me": [
+      212
+    ],
+    "why does sharing say not enabled": [
       212
     ],
     "what changed in the latest desktop app feature flags": [

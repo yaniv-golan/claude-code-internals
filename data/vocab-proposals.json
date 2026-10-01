@@ -4857,19 +4857,22 @@
     },
     "212": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v2-update",
+      "prompt_version": "vocab-v3-update",
       "date": "2026-10-01",
-      "input_sha256": "010c7297aa4a26796f90d146f8b6765b960d86eb2594f13411e7bee165773fb0",
+      "input_sha256": "e931ad0eddf6023ef0fe93ae6277f276f752240f619cb4e91cc715af7d92a022",
       "prior_terms_sha256": "224fe76798fad8768322351d1a0d6cd39b195823754bbe39f7ea294fc0861699",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "a583a52a0c6179edab6b93de6eafd2801ad96abb",
+      "replaced": [
+        "tool listed but call refused",
+        "why is a listed tool still blocked?"
+      ],
       "terms": [
         "scheduled task cannot use new artifact tool",
         "why does my scheduled task use old artifact tools",
         "legacy artifact tools in Cowork",
         "which artifact tool does a session get",
         "artifact tools missing in unattended session",
-        "tool listed but call refused",
-        "why is a listed tool still blocked?",
         "disallowed MCP tool still shows in tool list",
         "save HTML page from scheduled task",
         "local artifacts folder in Cowork sidebar",
@@ -4877,7 +4880,9 @@
         "bridge session can only list artifacts",
         "verify artifact tool not available",
         "migrate old live artifacts to new artifacts",
-        "does bypass mode skip artifact approval?"
+        "does bypass mode skip artifact approval?",
+        "cannot update artifact shared with me",
+        "why does sharing say not enabled?"
       ]
     },
     "213": {
@@ -5066,11 +5071,13 @@
     },
     "221": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v2-update",
+      "prompt_version": "vocab-v3-update",
       "date": "2026-10-01",
-      "input_sha256": "4e518ad47ca8103d432822a9a2a997fe65934f25ddc23d945dbf352d1767ff30",
+      "input_sha256": "8740384327e117cf8e9103ccdb6a01f5b36e74089a49e550ab2e3f633dfde1a5",
       "prior_terms_sha256": "8c4d2bc06f6a0d1e45e243fcf4e73bd5b34e6e3e4268ab49acbf769c89deb876",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "a583a52a0c6179edab6b93de6eafd2801ad96abb",
+      "replaced": [],
       "terms": [
         "claude check how my html report looks",
         "screenshot of generated html file",
