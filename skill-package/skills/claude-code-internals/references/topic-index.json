@@ -20225,7 +20225,7 @@
       "lesson_number": "212",
       "file": "54-desktop-2.9939-artifacts-gates-egress.md",
       "startLine": 98,
-      "endLine": 147,
+      "endLine": 155,
       "keywords": [
         "create_artifact",
         "update_artifact",
@@ -20252,6 +20252,11 @@
         "ccd_session",
         "debug-log-enabled",
         "share_from_content",
+        "synthetic_stub",
+        "client_session_ref",
+        "source_kind",
+        "artifact_share",
+        "auto-publish-enabled",
         "scheduled task cannot use new artifact tool",
         "why does my scheduled task use old artifact tools",
         "legacy artifact tools in cowork",
@@ -20271,7 +20276,12 @@
       "identifier_keys": [
         "ccd_session",
         "debug-log-enabled",
-        "share_from_content"
+        "share_from_content",
+        "synthetic_stub",
+        "client_session_ref",
+        "source_kind",
+        "artifact_share",
+        "auto-publish-enabled"
       ],
       "vocab_keys": [
         "scheduled task cannot use new artifact tool",
@@ -20302,8 +20312,8 @@
       "title": "What Desktop 2.9939.2's New Gates Do",
       "lesson_number": "213",
       "file": "54-desktop-2.9939-artifacts-gates-egress.md",
-      "startLine": 151,
-      "endLine": 208,
+      "startLine": 159,
+      "endLine": 216,
       "keywords": [
         "2.9939.2 new gates",
         "822840158",
@@ -20387,8 +20397,8 @@
       "title": "HIPAA Egress and Fast Mode on Third-Party Providers",
       "lesson_number": "214",
       "file": "54-desktop-2.9939-artifacts-gates-egress.md",
-      "startLine": 212,
-      "endLine": 249,
+      "startLine": 220,
+      "endLine": 257,
       "keywords": [
         "HIPAA egress",
         "vm_egress_allowlist",
@@ -20963,19 +20973,14 @@
       "lesson_number": "221",
       "file": "57-desktop-2.16120-scheduled-artifacts-permissions.md",
       "startLine": 89,
-      "endLine": 124,
+      "endLine": 116,
       "keywords": [
         "cowork-native-file-preview",
         "debug-log-enabled",
-        "share_from_content",
+        "auto-publish-enabled",
         "screenshot_file_preview",
         "screenshot_artifact",
         "can-verify-artifacts",
-        "auto-publish-enabled",
-        "synthetic_stub",
-        "client_session_ref",
-        "source_kind",
-        "artifact_share",
         "claude check how my html report looks",
         "screenshot of generated html file",
         "verify svg output visually",
@@ -20995,15 +21000,10 @@
       "identifier_keys": [
         "cowork-native-file-preview",
         "debug-log-enabled",
-        "share_from_content",
+        "auto-publish-enabled",
         "screenshot_file_preview",
         "screenshot_artifact",
-        "can-verify-artifacts",
-        "auto-publish-enabled",
-        "synthetic_stub",
-        "client_session_ref",
-        "source_kind",
-        "artifact_share"
+        "can-verify-artifacts"
       ],
       "vocab_keys": [
         "claude check how my html report looks",
@@ -44497,6 +44497,21 @@
       221
     ],
     "share_from_content": [
+      212
+    ],
+    "synthetic_stub": [
+      212
+    ],
+    "client_session_ref": [
+      212
+    ],
+    "source_kind": [
+      212
+    ],
+    "artifact_share": [
+      212
+    ],
+    "auto-publish-enabled": [
       212,
       221
     ],
@@ -44718,21 +44733,6 @@
       221
     ],
     "can-verify-artifacts": [
-      221
-    ],
-    "auto-publish-enabled": [
-      221
-    ],
-    "synthetic_stub": [
-      221
-    ],
-    "client_session_ref": [
-      221
-    ],
-    "source_kind": [
-      221
-    ],
-    "artifact_share": [
       221
     ],
     "why is claude startup slow": [

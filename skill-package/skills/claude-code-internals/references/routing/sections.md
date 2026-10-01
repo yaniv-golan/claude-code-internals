@@ -1736,12 +1736,13 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:86 · For an author
 212 · 54-desktop-2.9939-artifacts-gates-egress.md:102 · One switch, two families
 212 · 54-desktop-2.9939-artifacts-gates-egress.md:128 · What the tools do
-212 · 54-desktop-2.9939-artifacts-gates-egress.md:140 · Listed is not callable
-212 · 54-desktop-2.9939-artifacts-gates-egress.md:144 · For an author or tester
-213 · 54-desktop-2.9939-artifacts-gates-egress.md:161 · Reading them
-213 · 54-desktop-2.9939-artifacts-gates-egress.md:181 · The ones that matter
-214 · 54-desktop-2.9939-artifacts-gates-egress.md:216 · The egress filter
-214 · 54-desktop-2.9939-artifacts-gates-egress.md:232 · Fast mode on third-party
+212 · 54-desktop-2.9939-artifacts-gates-egress.md:140 · Sharing a local artifact
+212 · 54-desktop-2.9939-artifacts-gates-egress.md:148 · Listed is not callable
+212 · 54-desktop-2.9939-artifacts-gates-egress.md:152 · For an author or tester
+213 · 54-desktop-2.9939-artifacts-gates-egress.md:169 · Reading them
+213 · 54-desktop-2.9939-artifacts-gates-egress.md:189 · The ones that matter
+214 · 54-desktop-2.9939-artifacts-gates-egress.md:224 · The egress filter
+214 · 54-desktop-2.9939-artifacts-gates-egress.md:240 · Fast mode on third-party
 215 · 55-cloud-session-device-tools.md:20 · When it applies
 215 · 55-cloud-session-device-tools.md:26 · What a session sees before any grant
 215 · 55-cloud-session-device-tools.md:37 · Getting a folder
@@ -1779,9 +1780,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 220 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:81 · For an author
 221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:93 · What they do
 221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:100 · When they are served
-221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:109 · Sharing a local artifact
-221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:117 · Imagine availability
-221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:121 · For an author
+221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:109 · Imagine availability
+221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:113 · For an author
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

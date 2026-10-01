@@ -104,15 +104,7 @@ Both return a JPEG of what is visible without scrolling, at the panel's width (n
 | `screenshot_file_preview` | `canVerifyArtifacts` and native file preview (`1978029737.coworkNativeFilePreview`), not a bridge session or dispatch child |
 | `screenshot_artifact` | inside the `mcp__cowork__` artifact family (L212), with `canVerifyArtifacts` |
 
-`canVerifyArtifacts` is `3229517805.verifyToolsEnabled` alone in 2.16120.0; in 2.9939.4 it also required the artifact family's gate `2940196192`. On 2026-10-01 `3229517805` is served force-on with `verifyToolsEnabled`, `debugLogEnabled`, `sharingEnabled` and `autoPublishEnabled` all true, and `coworkNativeFilePreview` is true. All six sessions since the install list `screenshot_file_preview`.
-
-## Sharing a local artifact
-
-With `sharingEnabled` served, the Desktop's sharing calls are live (the code is the same in 2.9939.4; only the served value changed). They act on the local Artifacts store, which is the store the `mcp__cowork__` artifact tools write (the tools' module imports it), so an artifact made by `create_artifact` can be shared like any other. No model tool shares; the calls are the interface's: share, unshare, auto-publish on or off, and refresh of an imported artifact. While `sharingEnabled` is off, share answers "Sharing is not enabled." and the others do nothing.
-
-- **Share** reads the artifact's HTML and posts it to `/api/organizations/<org>/artifacts/share_from_content` as `{filename, content, operation: "share", anchor: {kind: "synthetic_stub", client_session_ref: "cowork-artifact:<id>#shareCounter=<n>", source_kind, display_name}}`. It is refused under the Cowork HIPAA restriction (surface `artifact_share`), for an artifact over 1M characters, and without an organization.
-- **Auto-publish** needs `sharingEnabled` and `autoPublishEnabled` and an artifact that is already shared with auto-publish turned on. Every later write through the store's update, an `update_artifact` call included, then republishes it without asking.
-- An artifact shared WITH the user is read-only to `update_artifact`, which says so and suggests `create_artifact` under a new id.
+`canVerifyArtifacts` is `3229517805.verifyToolsEnabled` alone in 2.16120.0; in 2.9939.4 it also required the artifact family's gate `2940196192`. On 2026-10-01 `3229517805` is served force-on with `verifyToolsEnabled`, `debugLogEnabled`, `sharingEnabled` and `autoPublishEnabled` all true, and `coworkNativeFilePreview` is true. All six sessions since the install list `screenshot_file_preview`. The same gate's `sharingEnabled` is covered with the artifact store it shares from (L212).
 
 ## Imagine availability
 

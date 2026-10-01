@@ -127,7 +127,7 @@ Across 912 `audit.jsonl` files (3,032 init frames, all before 2.16120.0) there a
 
 ## What the tools do
 
-They work on the local Artifacts store, the Claude/Artifacts folder shown in the Cowork sidebar, and make no network call of their own. Sharing from that store (`POST …/artifacts/share_from_content`) is a user action in the Desktop behind `3229517805.sharingEnabled`, served true on 2026-10-01; it covers artifacts these tools made, and once a shared artifact has auto-publish on, an `update_artifact` call republishes it (L221). Permissions:
+They work on the local Artifacts store, the Claude/Artifacts folder shown in the Cowork sidebar, and make no network call of their own. Sharing from that store (`POST …/artifacts/share_from_content`) is a user action in the Desktop behind `3229517805.sharingEnabled`, served true on 2026-10-01; it covers artifacts these tools made, and once a shared artifact has auto-publish on, an `update_artifact` call republishes it (below). Permissions:
 - `list_artifacts`, `verify_artifact` and `read_widget_context` are pre-approved in `allowedTools`.
 - `create_artifact` and `update_artifact` get the normal permission prompt, which shows the call's `update_summary`. They are not in the forced-ask hook set, so bypass mode skips it.
 
@@ -136,6 +136,14 @@ Desktop treats them as the old path. The separate `remote-devices` bridge (the M
 All five names are in the oldest backed-up asar, 1.18286.2. The predicate was the gate alone through 1.26832.0. 1.28929.0 added the `frameArtifactsEnabled` exclusion and an `!isHostLoop` term, and 1.32352.0 dropped `!isHostLoop` again. The native `Artifact` tool has reached host-loop sessions since then (L149's "VM-loop-only" reading applies only to the builds in between). The code is identical between 2.7032.0 and 2.9939.2.
 
 Calls recorded on the capturing machine: `update_artifact` 31, `verify_artifact` 17, `create_artifact` 8, `list_artifacts` 2, `read_widget_context` 1, all in interactive sessions between April and August. There are 30 native `Artifact` calls.
+
+## Sharing a local artifact
+
+`3229517805.sharingEnabled` (default false) is served true on 2026-10-01, so the Desktop's sharing calls are live; the code is the same in 2.9939.4 and 2.16120.0. They act on the local Artifacts store, the one these tools write (their module imports it), so an artifact made by `create_artifact` can be shared like any other. No model tool shares; the calls are the interface's: share, unshare, auto-publish on or off, and refresh of an imported artifact. While `sharingEnabled` is off, share answers "Sharing is not enabled." and the others do nothing.
+
+- **Share** reads the artifact's HTML and posts it to `/api/organizations/<org>/artifacts/share_from_content` as `{filename, content, operation: "share", anchor: {kind: "synthetic_stub", client_session_ref: "cowork-artifact:<id>#shareCounter=<n>", source_kind, display_name}}`. It is refused under the Cowork HIPAA restriction (surface `artifact_share`), for an artifact over 1M characters, and without an organization.
+- **Auto-publish** needs `sharingEnabled` and `autoPublishEnabled` and an artifact that is already shared with auto-publish turned on. Every later write through the store's update, an `update_artifact` call included, then republishes it without asking.
+- An artifact shared WITH the user is read-only to `update_artifact`, which says so and suggests `create_artifact` under a new id.
 
 ## Listed is not callable
 

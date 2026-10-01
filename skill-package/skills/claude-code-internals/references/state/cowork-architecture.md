@@ -717,7 +717,7 @@ setting (gate `3634338308`, off here), unchanged. Check `pwd`/`CLAUDE_CODE_ENTRY
   store the `mcp__cowork__` tools write: a user can share a legacy-made artifact
   (`share_from_content`; refused under HIPAA or over 1M characters), and with
   auto-publish on (`autoPublishEnabled`) an `update_artifact` call republishes it.
-  No model tool shares (L221).
+  No model tool shares (L212).
 
 ## `computer://` links by lane (L215)
 
