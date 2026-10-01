@@ -4994,10 +4994,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-01",
-      "input_sha256": "24f5e4d3717f894cdbbdc7c3fd74c57840dcb6668476eac316c68f58f24f36d1",
-      "prior_terms_sha256": "b86c5ccee00260aa0fc75e3a2a1806d1b75f79eecb7887e9a1a20d30c5ecb231",
+      "input_sha256": "a58fa4fe87cfc0b3b068bbf7914eaf0c18f999f8b2df30e1b18a3e226774148c",
+      "prior_terms_sha256": "38b12b0d40b464a11b9752da9a9ce5c34d356289c75d43e2abed9a9e559b918e",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "73efe2660a7deb0ec98bd07ac6223d29097ca687",
+      "previous_text": "f2bbb19c8f2611ac3d253a2e7c870fbb934547ac",
       "replaced": [],
       "terms": [
         "get my own skill into Cowork",

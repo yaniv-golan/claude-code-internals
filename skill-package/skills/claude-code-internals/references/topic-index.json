@@ -20786,7 +20786,7 @@
       "lesson_number": "217",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 16,
-      "endLine": 102,
+      "endLine": 105,
       "keywords": [
         "upload skill",
         "uploaded skill",
@@ -20811,6 +20811,7 @@
         "skills per organization",
         "skill not found other org",
         "CLAUDE_PLUGIN_DATA",
+        "CLAUDE_PROJECT_DIR",
         "cci-upload-probe",
         "per-source",
         "tengu_iterative_falcon",
@@ -20841,6 +20842,7 @@
       ],
       "identifier_keys": [
         "CLAUDE_PLUGIN_DATA",
+        "CLAUDE_PROJECT_DIR",
         "cci-upload-probe",
         "per-source",
         "tengu_iterative_falcon",
@@ -20883,8 +20885,8 @@
       "title": "Plugin Blocks and MCP Placeholders, Lane by Lane",
       "lesson_number": "218",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
-      "startLine": 106,
-      "endLine": 166,
+      "startLine": 109,
+      "endLine": 169,
       "keywords": [
         "UserPromptSubmit block",
         "decision block",
@@ -42699,6 +42701,9 @@
     "resolve-workspace-mount-mode": [
       122,
       124
+    ],
+    "CLAUDE_PROJECT_DIR": [
+      217
     ],
     "get-prompt-for-command": [
       122

@@ -1762,13 +1762,13 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:20 · The probe
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:36 · What the agent does with a skill's text, by how it was installed
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:71 · Creating and changing a skill by asking in chat
-217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:89 · A conversation that changed runtime
-217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:93 · For an author
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:110 · The probe
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:120 · Prompt blocks
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:132 · Tool denies
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:136 · MCP server placeholders
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:161 · For an author
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:92 · A conversation that changed runtime
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:96 · For an author
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:113 · The probe
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:123 · Prompt blocks
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:135 · Tool denies
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:139 · MCP server placeholders
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:164 · For an author
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:19 · Native Artifact in scheduled runs
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:32 · A publish grant per scheduled task
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:38 · Attached files no longer pin a task to this computer
