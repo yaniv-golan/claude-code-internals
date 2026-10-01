@@ -37,13 +37,13 @@ jobs:
       # The question set is named explicitly: a questions-vN.json is only ever
       # scored against its own baseline. v2 carries acceptable-answer sets
       # (evals/retrieval/gen-relevance.js): a question's rank is its first
-      # acceptable lesson's. baseline-v5 scores questions-v2 under the split
+      # acceptable lesson's. baseline-v6 scores questions-v2 under the split
       # rule (every lesson a hard ranking test asserts is dev) with search.js's
       # keyword-first ranking; baseline-v3 (RRF fusion, which search.js no longer
       # has), baseline-v2 (the split before it) and questions-v1/baseline-v1
       # stay in the repo as records and are not gated.
       - name: Retrieval baseline
-        run: node evals/retrieval/run.js --baseline evals/retrieval/baseline-v5.json --questions evals/retrieval/questions-v2.json
+        run: node evals/retrieval/run.js --baseline evals/retrieval/baseline-v6.json --questions evals/retrieval/questions-v2.json
       - name: State-layer integrity
         run: node skill-package/skills/claude-code-internals/scripts/validate-state.js
       - name: State-layer reconciliation

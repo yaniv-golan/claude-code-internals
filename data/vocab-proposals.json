@@ -4765,9 +4765,13 @@
     },
     "208": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
+      "prompt_version": "vocab-v4-update",
       "date": "2026-10-01",
-      "input_sha256": "c3df4662da045e0b47fd15539b0c41ae2515c616a23710ae37b56b9e8e85a86a",
+      "input_sha256": "5c3dca7d5fc94f0fe98b82826c7386e37f8869bbee9a920a1d1c11efdb6ab90a",
+      "prior_terms_sha256": "d607bf4b15fd63c4a0939bf9a6d1c0bcea759b93f604ce5b70a845c9996e1389",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "73efe2660a7deb0ec98bd07ac6223d29097ca687",
+      "replaced": [],
       "terms": [
         "scheduled task stopped running locally",
         "why did my scheduled task move to the cloud?",
@@ -4783,7 +4787,9 @@
         "which scheduled tasks stay local",
         "files from scheduled task not appearing on Mac",
         "editing prompt resets migration count",
-        "how to tell if a scheduled task ran locally?"
+        "how to tell if a scheduled task ran locally?",
+        "does using Chrome keep a task local?",
+        "scheduled task using in-app browser moved to cloud"
       ]
     },
     "209": {
@@ -4933,9 +4939,13 @@
     },
     "215": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
+      "prompt_version": "vocab-v4-update",
       "date": "2026-10-01",
-      "input_sha256": "644170c9fb137f123fc9200ed0b5edfb129eafa8e3fa3ee26ecf5d6d3189e4fa",
+      "input_sha256": "8cbe09e7aeb53011120c43d2cc9f74295704f6baeaa28c0f6fbd9cc1dcd64807",
+      "prior_terms_sha256": "a95b4f9a4406257d0612476749d6e04f6da7f9b2728a594429d73c5382ac1b71",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "73efe2660a7deb0ec98bd07ac6223d29097ca687",
+      "replaced": [],
       "terms": [
         "cloud task can't see files on my Mac",
         "file written but not on my computer",
@@ -4951,7 +4961,10 @@
         "links to files show as plain text",
         "why is my file link not clickable in cloud?",
         "upload file size limits from computer to cloud",
-        "remote commands run in Linux not macOS"
+        "remote commands run in Linux not macOS",
+        "cloud session can't access my Claude settings folder",
+        "clicked allow but folder access still refused",
+        "which folders are protected from cloud access"
       ]
     },
     "216": {
@@ -4979,9 +4992,13 @@
     },
     "217": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
+      "prompt_version": "vocab-v4-update",
       "date": "2026-10-01",
-      "input_sha256": "0bf1a367d690936a1f3c136236c6137947039f8fdce908b8e1775269c845969e",
+      "input_sha256": "24f5e4d3717f894cdbbdc7c3fd74c57840dcb6668476eac316c68f58f24f36d1",
+      "prior_terms_sha256": "b86c5ccee00260aa0fc75e3a2a1806d1b75f79eecb7887e9a1a20d30c5ecb231",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "73efe2660a7deb0ec98bd07ac6223d29097ca687",
+      "replaced": [],
       "terms": [
         "get my own skill into Cowork",
         "upload a skill zip to my account",
@@ -4997,7 +5014,10 @@
         "skill missing after switching organization",
         "install a skill file with its scripts",
         "why does my skill script fail in Cowork but work on Mac?",
-        "can't write files next to skill in local Cowork"
+        "can't write files next to skill in local Cowork",
+        "skill folder placeholder not filled in cloud",
+        "skill allowed tools ignored by managed policy",
+        "auto mode won't approve skill inline command"
       ]
     },
     "218": {
@@ -5025,9 +5045,13 @@
     },
     "219": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
+      "prompt_version": "vocab-v4-update",
       "date": "2026-10-01",
-      "input_sha256": "14bb4afbb55b3d597db7ff9579cb2cc5d19c4b7063a7847eec1781180ddc67c8",
+      "input_sha256": "765e109ac7feb0573b519498f338a1e79f807d8a7a1077f42be002583ede30f8",
+      "prior_terms_sha256": "6ae4a6ec0874e6eff9794a433019a80c036776315acdd72cd072391ead924f3e",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "73efe2660a7deb0ec98bd07ac6223d29097ca687",
+      "replaced": [],
       "terms": [
         "scheduled task artifact tool changed",
         "scheduled run creates artifacts differently now",
@@ -5043,7 +5067,8 @@
         "scheduled task files limit when migrating",
         "unshareable parent folder scheduled task migration",
         "HTML output from scheduled task",
-        "should my scheduled task prompt name the artifact tool?"
+        "should my scheduled task prompt name the artifact tool?",
+        "what still blocks scheduled task moving to cloud"
       ]
     },
     "220": {

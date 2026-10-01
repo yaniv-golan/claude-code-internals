@@ -29,7 +29,7 @@ The family, as the Desktop registers it (asar 2.9939.2): `list_devices`, `get_de
 
 - `platform`, `arch`, `appVersion` (the Desktop build), `electronVersion`, `nodeVersion`, `deviceName`;
 - `connectedFolders`, empty until a grant;
-- `homeDirectories`: the name of **every top-level entry in the user's home folder**, dotfiles included. `Desktop`, `Documents` and `Downloads` are marked `requiresGrantBeforeListing`; their names are shown, their contents are not;
+- `homeDirectories`: the names of the **top-level folders in the user's home folder, minus protected ones** (asar 2.16120.0). Plain files are left out, and so is any folder that is, or lies inside, a protected location (see "Getting a folder"), so `.claude`, `.ssh`, `.aws`, `.gnupg`, `.kube` and `.docker` never appear even though other dotfolders do. Folders under the app's own storage or on a mount the policy refuses are dropped too. The list is capped at 500. `Desktop`, `Documents` and `Downloads` are marked `requiresGrantBeforeListing`; their names are shown, their contents are not. The field is sent only while gate `2745857735` is on and `device_request_folder_access` is available (both true on 2026-10-01);
 - `localMcpServers`: every local MCP server the Desktop knows, with its state (`announced`, `failed`) and, for a failed one, its error text (labelled as untrusted server output).
 
 So a cloud session learns the names of the user's home folders and local servers without asking.
@@ -37,6 +37,28 @@ So a cloud session learns the names of the user's home folders and local servers
 ## Getting a folder
 
 `device_request_folder_access` takes paths and a reason. The user sees "Claude wants to use a folder on your computer", with the path, the reason, a note that files the task uses will leave the device because it runs in the cloud, and **Decline** / **Allow once**. The grant covers that session only. Home directories, system roots and protected locations cannot be requested. On approval the tool returns `{"granted":["/Users/<user>/<folder>"]}` and the folder appears in `connectedFolders`.
+
+That prompt is drawn by the client the user is chatting in, not by the Desktop app: its wording is not in the asar. Where the user approves depends on the tool's mode, which the Desktop picks from three gates (asar 2.16120.0, values from the 2026-10-01 cache):
+
+| Mode | Gates | Where the user approves |
+|---|---|---|
+| off | `2745857735` off | the tool is not offered |
+| dialog | `2745857735` on, `49458538` off | a native dialog on the computer ("Folder access request") |
+| card | `49458538` on, `733405693` off | a prompt in the user's client, before the call reaches the computer |
+| classifier | `733405693` on | as card, or in auto mode a native dialog on the computer |
+
+On 2026-10-01 all three gates were on, so the mode was classifier. `2745857735` was forced on; the other two were served with their default values (source `defaultValue` in the cache, not absent from it).
+
+The computer checks the paths only after the request arrives, and it checks for protected locations before anything else, ahead of its own native dialog. In card or classifier mode the user can therefore click **Allow once** for a protected folder and still get a refusal: "paths[0] is a protected system or credential location and can't be connected. Nothing was granted." The message names the parameter, not the path. That wording is used only when the path was written with `~`; the same folder written as an absolute path gets the general "A requested folder can't be granted to this session" text.
+
+The protected locations, all relative to the home folder (asar 2.16120.0):
+
+- Claude's own configuration: `.claude`, `.claude.json` (and its backup), and Claude Code's install and state folders under `.local`;
+- credential folders: `.ssh`, `.aws`, `.gnupg`, `.kube`, `.docker`, `.config/gcloud`, `.config/gh`, and on macOS `Library/Keychains`, `Library/Cookies` and `Library/Application Support`;
+- folders that start programs at login: `Library/LaunchAgents`, `Library/LaunchDaemons`;
+- shell startup files (`.zshrc`, `.bashrc`, `.profile` and their siblings), `.netrc`, and `.config/powershell`.
+
+A folder inside one of these counts as protected too. Both `~/.claude` and `~/.claude/skills` were refused in a cloud session on 2026-10-01 (relayed, one try each).
 
 From the tool's schema (2026-10-01): one call takes 1 to 8 canonical absolute paths (symlinks and `.`/`..` are refused) and a `reason` of at most 500 characters. The user approves or declines the set as a whole, and after a decline the schema tells the model not to repeat the request.
 
@@ -117,6 +139,7 @@ The client code (the claude.ai interface, builds of 2026-09-24/25) carries a pat
 - Do not trust a successful Write to a `/Users/…` path in a cloud session. Check where the session is: `pwd` is `/home/claude` there.
 - A shell command meant for the user's files must go through `device_bash` and `$HOME/mnt/<folder>`, and it runs on Linux, not macOS.
 - Deleting in a connected folder needs its own approval. Plan for it being declined.
+- A cloud session cannot be granted `~/.claude` or anything inside it, and `get_device_info` does not list it. A skill that needs the user's local skills or settings has to ask the user to bring the files in another way.
 
 ---
 

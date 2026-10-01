@@ -37,12 +37,12 @@ The grant is offered only for a plain publish call (`Artifact` with a file path,
 
 ## Attached files no longer pin a task to this computer
 
-In 2.9939.4 any attached file (`userSelectedFiles`) made the sweep classify the task `local_folders` and hold it. In 2.16120.0 attached files hold it only when the remote side cannot take files, which the code computes as `boundEnabled && boundFilesEnabled` from the sweep's config gate `2974609625`. Both are true in the served value on 2026-10-01.
+In 2.9939.4 any attached file (`userSelectedFiles`) made the sweep classify the task `local_folders` and keep it local. In 2.16120.0 attached files keep it local only when the remote side cannot take files, which the code computes as `boundEnabled && boundFilesEnabled` from the sweep's config gate `2974609625`. Both are true in the served value on 2026-10-01.
 
 A task with files moves only in the **bound** mode (tied to this device), never the device-free one, and only if:
 - after app-storage paths are dropped there are at most 16 files, none blank and none on a network path;
 - their parent folders can be shared;
-- the served `heldBlockReasons` does not itself list `local_folders`.
+- the served `heldBlockReasons` does not itself list `local_folders`. On 2026-10-01 it listed only `space` (L208).
 
 The moved task carries the files, the parent folders it added and its folders. A parent folder that cannot be shared at copy time is reported as `unshareable_parent` in the migration telemetry.
 

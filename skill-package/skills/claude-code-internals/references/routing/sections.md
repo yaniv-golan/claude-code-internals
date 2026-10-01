@@ -1716,18 +1716,18 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 207 · 52-fork-relay-input-channels-save-skill-mechanics.md:154 · Desktop can receive a build the public feed never lists
 208 · 53-routine-migration-plugin-hooks-by-lane.md:21 · Observed
 208 · 53-routine-migration-plugin-hooks-by-lane.md:35 · The sweep
-208 · 53-routine-migration-plugin-hooks-by-lane.md:47 · What decides local or cloud for a new task
-208 · 53-routine-migration-plugin-hooks-by-lane.md:55 · Why it matters
-209 · 53-routine-migration-plugin-hooks-by-lane.md:65 · Cloud lane (live)
-209 · 53-routine-migration-plugin-hooks-by-lane.md:79 · Local lane (live)
-209 · 53-routine-migration-plugin-hooks-by-lane.md:95 · Matchers and the Cowork shell
-209 · 53-routine-migration-plugin-hooks-by-lane.md:105 · Two traps
-209 · 53-routine-migration-plugin-hooks-by-lane.md:110 · For a plugin author
-210 · 53-routine-migration-plugin-hooks-by-lane.md:123 · Three controls with one name
-210 · 53-routine-migration-plugin-hooks-by-lane.md:135 · The account setting
-210 · 53-routine-migration-plugin-hooks-by-lane.md:149 · The routing function
-210 · 53-routine-migration-plugin-hooks-by-lane.md:165 · What happened
-210 · 53-routine-migration-plugin-hooks-by-lane.md:182 · For an author or tester
+208 · 53-routine-migration-plugin-hooks-by-lane.md:52 · What decides local or cloud for a new task
+208 · 53-routine-migration-plugin-hooks-by-lane.md:60 · Why it matters
+209 · 53-routine-migration-plugin-hooks-by-lane.md:70 · Cloud lane (live)
+209 · 53-routine-migration-plugin-hooks-by-lane.md:84 · Local lane (live)
+209 · 53-routine-migration-plugin-hooks-by-lane.md:100 · Matchers and the Cowork shell
+209 · 53-routine-migration-plugin-hooks-by-lane.md:110 · Two traps
+209 · 53-routine-migration-plugin-hooks-by-lane.md:115 · For a plugin author
+210 · 53-routine-migration-plugin-hooks-by-lane.md:128 · Three controls with one name
+210 · 53-routine-migration-plugin-hooks-by-lane.md:140 · The account setting
+210 · 53-routine-migration-plugin-hooks-by-lane.md:154 · The routing function
+210 · 53-routine-migration-plugin-hooks-by-lane.md:170 · What happened
+210 · 53-routine-migration-plugin-hooks-by-lane.md:187 · For an author or tester
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:22 · The three layers
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:32 · Layer 1: publishing refuses `host:`
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:48 · Layer 2: the viewer enforces the manifest
@@ -1746,29 +1746,29 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 215 · 55-cloud-session-device-tools.md:20 · When it applies
 215 · 55-cloud-session-device-tools.md:26 · What a session sees before any grant
 215 · 55-cloud-session-device-tools.md:37 · Getting a folder
-215 · 55-cloud-session-device-tools.md:43 · Paths
-215 · 55-cloud-session-device-tools.md:53 · Reading: stage a copy
-215 · 55-cloud-session-device-tools.md:57 · Writing: commit from the outputs folder
-215 · 55-cloud-session-device-tools.md:71 · The ordinary Write tool does not reach the Mac
-215 · 55-cloud-session-device-tools.md:75 · Commands: `device_bash` runs in the Mac's Cowork VM
-215 · 55-cloud-session-device-tools.md:91 · The shells
-215 · 55-cloud-session-device-tools.md:95 · `computer://` links: which ones work
-215 · 55-cloud-session-device-tools.md:113 · For a skill author
-216 · 55-cloud-session-device-tools.md:129 · What the composer decides
-216 · 55-cloud-session-device-tools.md:141 · The hub can turn a chat into a workspace
-216 · 55-cloud-session-device-tools.md:153 · A Cowork session can become, or be shown as, a chat
-216 · 55-cloud-session-device-tools.md:161 · Not the same as the Desktop's Chat mode
-216 · 55-cloud-session-device-tools.md:165 · Why it matters
+215 · 55-cloud-session-device-tools.md:65 · Paths
+215 · 55-cloud-session-device-tools.md:75 · Reading: stage a copy
+215 · 55-cloud-session-device-tools.md:79 · Writing: commit from the outputs folder
+215 · 55-cloud-session-device-tools.md:93 · The ordinary Write tool does not reach the Mac
+215 · 55-cloud-session-device-tools.md:97 · Commands: `device_bash` runs in the Mac's Cowork VM
+215 · 55-cloud-session-device-tools.md:113 · The shells
+215 · 55-cloud-session-device-tools.md:117 · `computer://` links: which ones work
+215 · 55-cloud-session-device-tools.md:135 · For a skill author
+216 · 55-cloud-session-device-tools.md:152 · What the composer decides
+216 · 55-cloud-session-device-tools.md:164 · The hub can turn a chat into a workspace
+216 · 55-cloud-session-device-tools.md:176 · A Cowork session can become, or be shown as, a chat
+216 · 55-cloud-session-device-tools.md:184 · Not the same as the Desktop's Chat mode
+216 · 55-cloud-session-device-tools.md:188 · Why it matters
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:20 · The probe
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:36 · What the agent does with a skill's text, by how it was installed
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:71 · Creating and changing a skill by asking in chat
-217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:85 · A conversation that changed runtime
-217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:89 · For an author
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:105 · The probe
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:115 · Prompt blocks
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:127 · Tool denies
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:131 · MCP server placeholders
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:156 · For an author
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:89 · A conversation that changed runtime
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:93 · For an author
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:110 · The probe
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:120 · Prompt blocks
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:132 · Tool denies
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:136 · MCP server placeholders
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:161 · For an author
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:19 · Native Artifact in scheduled runs
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:32 · A publish grant per scheduled task
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:38 · Attached files no longer pin a task to this computer

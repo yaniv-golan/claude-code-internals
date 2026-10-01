@@ -19976,7 +19976,7 @@
       "lesson_number": "208",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
       "startLine": 17,
-      "endLine": 57,
+      "endLine": 62,
       "keywords": [
         "RemoteMigrationSweep",
         "remote migration",
@@ -19994,9 +19994,11 @@
         "keep-awake",
         "complete-remote-migration",
         "held-block-reasons",
+        "built_in_browser",
+        "bound-enabled",
+        "bound-files-enabled",
         "migrated-from-remote",
         "migrated-to-remote-at",
-        "bound-enabled",
         "disable-desktop-local-sessions",
         "no-self-hosted-endpoint",
         "scheduled task stopped running locally",
@@ -20013,16 +20015,20 @@
         "which scheduled tasks stay local",
         "files from scheduled task not appearing on mac",
         "editing prompt resets migration count",
-        "how to tell if a scheduled task ran locally"
+        "how to tell if a scheduled task ran locally",
+        "does using chrome keep a task local",
+        "scheduled task using in-app browser moved to cloud"
       ],
       "identifier_keys": [
         "remote-tools-device",
         "keep-awake",
         "complete-remote-migration",
         "held-block-reasons",
+        "built_in_browser",
+        "bound-enabled",
+        "bound-files-enabled",
         "migrated-from-remote",
         "migrated-to-remote-at",
-        "bound-enabled",
         "disable-desktop-local-sessions",
         "no-self-hosted-endpoint"
       ],
@@ -20041,13 +20047,15 @@
         "which scheduled tasks stay local",
         "files from scheduled task not appearing on mac",
         "editing prompt resets migration count",
-        "how to tell if a scheduled task ran locally"
+        "how to tell if a scheduled task ran locally",
+        "does using chrome keep a task local",
+        "scheduled task using in-app browser moved to cloud"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
+        "prompt_version": "vocab-v4-update",
         "date": "2026-10-01",
-        "terms_sha256": "d607bf4b15fd63c4a0939bf9a6d1c0bcea759b93f604ce5b70a845c9996e1389"
+        "terms_sha256": "29a2c970770ea5454eafebedf7882315e1dd25378d1ee4804ba8d03caa2120d7"
       }
     },
     {
@@ -20055,8 +20063,8 @@
       "title": "Plugin Hooks in Cowork, Event by Event and Lane by Lane",
       "lesson_number": "209",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
-      "startLine": 61,
-      "endLine": 115,
+      "startLine": 66,
+      "endLine": 120,
       "keywords": [
         "cowork plugin hook events",
         "cowork cloud hooks",
@@ -20116,8 +20124,8 @@
       "title": "Where a New Cowork Task Runs, and the Switch That Did Not Keep It Local",
       "lesson_number": "210",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
-      "startLine": 119,
-      "endLine": 186,
+      "startLine": 124,
+      "endLine": 191,
       "keywords": [
         "Only on this computer",
         "dramatic_shrimp_enabled",
@@ -20549,7 +20557,7 @@
       "lesson_number": "215",
       "file": "55-cloud-session-device-tools.md",
       "startLine": 16,
-      "endLine": 119,
+      "endLine": 142,
       "keywords": [
         "device tools",
         "mcp__remote-devices",
@@ -20589,6 +20597,9 @@
         "native-write.txt",
         "never-commit-to-disk",
         "PRETTY_NAME",
+        "2745857735",
+        "49458538",
+        "733405693",
         "cloud task can't see files on my mac",
         "file written but not on my computer",
         "why does write succeed but file is missing",
@@ -20603,7 +20614,10 @@
         "links to files show as plain text",
         "why is my file link not clickable in cloud",
         "upload file size limits from computer to cloud",
-        "remote commands run in linux not macos"
+        "remote commands run in linux not macos",
+        "cloud session can't access my claude settings folder",
+        "clicked allow but folder access still refused",
+        "which folders are protected from cloud access"
       ],
       "identifier_keys": [
         "app-version",
@@ -20627,7 +20641,10 @@
         "device-path",
         "native-write.txt",
         "never-commit-to-disk",
-        "PRETTY_NAME"
+        "PRETTY_NAME",
+        "2745857735",
+        "49458538",
+        "733405693"
       ],
       "vocab_keys": [
         "cloud task can't see files on my mac",
@@ -20644,13 +20661,16 @@
         "links to files show as plain text",
         "why is my file link not clickable in cloud",
         "upload file size limits from computer to cloud",
-        "remote commands run in linux not macos"
+        "remote commands run in linux not macos",
+        "cloud session can't access my claude settings folder",
+        "clicked allow but folder access still refused",
+        "which folders are protected from cloud access"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
+        "prompt_version": "vocab-v4-update",
         "date": "2026-10-01",
-        "terms_sha256": "a95b4f9a4406257d0612476749d6e04f6da7f9b2728a594429d73c5382ac1b71"
+        "terms_sha256": "fbd19bdd9d9d5187ebe4a6dd3ee5bbee4be2e521ac2fe940a534947a030d5a5e"
       }
     },
     {
@@ -20658,8 +20678,8 @@
       "title": "One Conversation, Two Runtimes: How claude.ai Moves a Chat Into a Cowork Workspace",
       "lesson_number": "216",
       "file": "55-cloud-session-device-tools.md",
-      "startLine": 123,
-      "endLine": 169,
+      "startLine": 146,
+      "endLine": 192,
       "keywords": [
         "chat and Cowork merged",
         "hub backend",
@@ -20766,7 +20786,7 @@
       "lesson_number": "217",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 16,
-      "endLine": 97,
+      "endLine": 102,
       "keywords": [
         "upload skill",
         "uploaded skill",
@@ -20790,14 +20810,15 @@
         "Update skill card",
         "skills per organization",
         "skill not found other org",
+        "CLAUDE_PLUGIN_DATA",
         "cci-upload-probe",
         "per-source",
+        "tengu_iterative_falcon",
         "upload_source",
         "cowork_save_skill",
         "propose_skills",
         "handed-off",
         "/cci-chat-skill",
-        "tengu_iterative_falcon",
         "tengu_glowing_orbit",
         "get my own skill into cowork",
         "upload a skill zip to my account",
@@ -20813,17 +20834,21 @@
         "skill missing after switching organization",
         "install a skill file with its scripts",
         "why does my skill script fail in cowork but work on mac",
-        "can't write files next to skill in local cowork"
+        "can't write files next to skill in local cowork",
+        "skill folder placeholder not filled in cloud",
+        "skill allowed tools ignored by managed policy",
+        "auto mode won't approve skill inline command"
       ],
       "identifier_keys": [
+        "CLAUDE_PLUGIN_DATA",
         "cci-upload-probe",
         "per-source",
+        "tengu_iterative_falcon",
         "upload_source",
         "cowork_save_skill",
         "propose_skills",
         "handed-off",
         "/cci-chat-skill",
-        "tengu_iterative_falcon",
         "tengu_glowing_orbit"
       ],
       "vocab_keys": [
@@ -20841,13 +20866,16 @@
         "skill missing after switching organization",
         "install a skill file with its scripts",
         "why does my skill script fail in cowork but work on mac",
-        "can't write files next to skill in local cowork"
+        "can't write files next to skill in local cowork",
+        "skill folder placeholder not filled in cloud",
+        "skill allowed tools ignored by managed policy",
+        "auto mode won't approve skill inline command"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
+        "prompt_version": "vocab-v4-update",
         "date": "2026-10-01",
-        "terms_sha256": "b86c5ccee00260aa0fc75e3a2a1806d1b75f79eecb7887e9a1a20d30c5ecb231"
+        "terms_sha256": "38b12b0d40b464a11b9752da9a9ce5c34d356289c75d43e2abed9a9e559b918e"
       }
     },
     {
@@ -20855,8 +20883,8 @@
       "title": "Plugin Blocks and MCP Placeholders, Lane by Lane",
       "lesson_number": "218",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
-      "startLine": 101,
-      "endLine": 161,
+      "startLine": 106,
+      "endLine": 166,
       "keywords": [
         "UserPromptSubmit block",
         "decision block",
@@ -20956,7 +20984,8 @@
         "scheduled task files limit when migrating",
         "unshareable parent folder scheduled task migration",
         "html output from scheduled task",
-        "should my scheduled task prompt name the artifact tool"
+        "should my scheduled task prompt name the artifact tool",
+        "what still blocks scheduled task moving to cloud"
       ],
       "identifier_keys": [
         "held-block-reasons",
@@ -20984,13 +21013,14 @@
         "scheduled task files limit when migrating",
         "unshareable parent folder scheduled task migration",
         "html output from scheduled task",
-        "should my scheduled task prompt name the artifact tool"
+        "should my scheduled task prompt name the artifact tool",
+        "what still blocks scheduled task moving to cloud"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
+        "prompt_version": "vocab-v4-update",
         "date": "2026-10-01",
-        "terms_sha256": "6ae4a6ec0874e6eff9794a433019a80c036776315acdd72cd072391ead924f3e"
+        "terms_sha256": "c627f9f08cd61a96c3e775c50651f3366776f19320854771336a1f596e7986a1"
       }
     },
     {
@@ -39002,6 +39032,9 @@
     "NON_ASCII_PATTERN": [
       31
     ],
+    "CLAUDE_PLUGIN_DATA": [
+      217
+    ],
     "9086500": [
       31
     ],
@@ -44610,13 +44643,19 @@
       208,
       219
     ],
+    "built_in_browser": [
+      208
+    ],
+    "bound-enabled": [
+      208
+    ],
+    "bound-files-enabled": [
+      208
+    ],
     "migrated-from-remote": [
       208
     ],
     "migrated-to-remote-at": [
-      208
-    ],
-    "bound-enabled": [
       208
     ],
     "disable-desktop-local-sessions": [
@@ -44799,6 +44838,15 @@
     "PRETTY_NAME": [
       215
     ],
+    "2745857735": [
+      215
+    ],
+    "49458538": [
+      215
+    ],
+    "733405693": [
+      215
+    ],
     "chat_backend": [
       216
     ],
@@ -44871,6 +44919,9 @@
     "per-source": [
       217
     ],
+    "tengu_iterative_falcon": [
+      217
+    ],
     "upload_source": [
       217
     ],
@@ -44884,9 +44935,6 @@
       217
     ],
     "/cci-chat-skill": [
-      217
-    ],
-    "tengu_iterative_falcon": [
       217
     ],
     "tengu_glowing_orbit": [
@@ -54250,6 +54298,12 @@
     "how to tell if a scheduled task ran locally": [
       208
     ],
+    "does using chrome keep a task local": [
+      208
+    ],
+    "scheduled task using in-app browser moved to cloud": [
+      208
+    ],
     "plugin hook not firing in cowork": [
       209
     ],
@@ -54559,6 +54613,15 @@
     "remote commands run in linux not macos": [
       215
     ],
+    "cloud session can't access my claude settings folder": [
+      215
+    ],
+    "clicked allow but folder access still refused": [
+      215
+    ],
+    "which folders are protected from cloud access": [
+      215
+    ],
     "chat turned into cowork mid-conversation": [
       216
     ],
@@ -54649,6 +54712,15 @@
     "can't write files next to skill in local cowork": [
       217
     ],
+    "skill folder placeholder not filled in cloud": [
+      217
+    ],
+    "skill allowed tools ignored by managed policy": [
+      217
+    ],
+    "auto mode won't approve skill inline command": [
+      217
+    ],
     "plugin hook blocks prompt with no message in cloud": [
       218
     ],
@@ -54737,6 +54809,9 @@
       219
     ],
     "should my scheduled task prompt name the artifact tool": [
+      219
+    ],
+    "what still blocks scheduled task moving to cloud": [
       219
     ],
     "approved file edit ran with different input": [
