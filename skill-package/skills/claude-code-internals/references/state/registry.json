@@ -8064,7 +8064,7 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.280",
-      "summary": "Value gate for Cowork Artifacts: sharingEnabled (default false; gates getArtifactRepublishContent), mcpCallsPerMinute (default 30), debugLogEnabled, verifyToolsEnabled. At the 2026-09-23 capture it serves {debugLogEnabled:true, verifyToolsEnabled:true} with no sharingEnabled. verifyToolsEnabled && debugLogEnabled also enable mcp__cowork__verify_artifact (L212); both true from the 2026-09-26 capture. From Desktop 2.16120.0 verifyToolsEnabled alone is canVerifyArtifacts (no longer also coworkArtifacts 2940196192), which serves mcp__cowork__screenshot_file_preview; on 2026-10-01 it was served force-on with autoPublishEnabled, debugLogEnabled, sharingEnabled and verifyToolsEnabled all true (L221).",
+      "summary": "Value gate for Cowork Artifacts: sharingEnabled (default false; gates every Desktop sharing call of the local Artifacts store: share via share_from_content, unshare, auto-publish, getArtifactRepublishContent), autoPublishEnabled (only with sharingEnabled), mcpCallsPerMinute (default 30), debugLogEnabled, verifyToolsEnabled. verifyToolsEnabled && debugLogEnabled also enable mcp__cowork__verify_artifact (L212). From Desktop 2.16120.0 verifyToolsEnabled alone is canVerifyArtifacts (no longer also coworkArtifacts 2940196192), which serves mcp__cowork__screenshot_file_preview; On 2026-10-01 it is served force-on with autoPublishEnabled, debugLogEnabled, sharingEnabled and verifyToolsEnabled all true, so a user can share local artifacts, legacy-made ones included, and an update_artifact call republishes a shared one with auto-publish on (L221).",
       "provenance": [
         {
           "lesson": 195
@@ -8092,7 +8092,7 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.280",
-      "summary": "Mode for staging <folder>/.claude/skills into a cloud Cowork session granted a local folder: off | stubs | full. stubs uploads only a rewritten SKILL.md (frontmatter kept, body replaced by a pointer to run the skill on the device via device_bash). From Desktop 1.44121.1. 'stubs' (force, fr_mtkk8tfg) at the 2026-09-23 capture.",
+      "summary": "Mode for staging <folder>/.claude/skills into a cloud Cowork session granted a local folder: off | stubs | full. stubs uploads only a rewritten SKILL.md (frontmatter kept, body replaced by a pointer to run the skill on the device via device_bash). From Desktop 1.44121.1. 'stubs' (force, fr_mtkk8tfg), read 2026-10-01.",
       "provenance": [
         {
           "lesson": 197

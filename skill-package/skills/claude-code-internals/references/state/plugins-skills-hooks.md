@@ -84,7 +84,7 @@ Ship skills in a plugin.
 **Cloud Cowork with a granted local folder** (from Desktop 1.44121.1): the
 Desktop scans `<folder>/.claude/skills/*/SKILL.md` and uploads them to
 `/mnt/user-data/uploads/cowork-folders/<slug>-<hash>/.claude/skills/`. Mode gate
-`2877254163` is **`"stubs"`** at the 2026-09-23 capture: only the frontmatter
+`2877254163` is **`"stubs"`** (force), read 2026-10-01: only the frontmatter
 survives, and the body becomes a notice to run the skill on the device via
 `device_bash`. Limits: 100 skills per folder (the only one surfaced, via
 `onFolderSkillsCapped`), `SKILL.md` ≤ 1 MiB, frontmatter ≤ 8 KiB with no

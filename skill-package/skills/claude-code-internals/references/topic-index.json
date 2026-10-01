@@ -19136,6 +19136,7 @@
         "skills in connected folder not loading",
         "5e9zc-d-zm",
         "cowork-session-directories-staged",
+        "fr_mtkk8tfg",
         "lam_remote_folder_skills_staged",
         "project skills missing in cloud cowork session",
         "cloud session only sees skill description",
@@ -19156,6 +19157,7 @@
       "identifier_keys": [
         "5e9zc-d-zm",
         "cowork-session-directories-staged",
+        "fr_mtkk8tfg",
         "lam_remote_folder_skills_staged"
       ],
       "vocab_keys": [
@@ -19177,8 +19179,8 @@
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
+        "prompt_version": "vocab-v2-update",
+        "date": "2026-10-01",
         "terms_sha256": "ee4dcd96f6737a99280e74649a7872847f2c8caa1b373c1e2429773ab4fcf624"
       }
     },
@@ -20290,7 +20292,7 @@
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
+        "prompt_version": "vocab-v2-update",
         "date": "2026-10-01",
         "terms_sha256": "224fe76798fad8768322351d1a0d6cd39b195823754bbe39f7ea294fc0861699"
       }
@@ -20961,14 +20963,19 @@
       "lesson_number": "221",
       "file": "57-desktop-2.16120-scheduled-artifacts-permissions.md",
       "startLine": 89,
-      "endLine": 116,
+      "endLine": 124,
       "keywords": [
         "cowork-native-file-preview",
         "debug-log-enabled",
+        "share_from_content",
         "screenshot_file_preview",
         "screenshot_artifact",
         "can-verify-artifacts",
         "auto-publish-enabled",
+        "synthetic_stub",
+        "client_session_ref",
+        "source_kind",
+        "artifact_share",
         "claude check how my html report looks",
         "screenshot of generated html file",
         "verify svg output visually",
@@ -20988,10 +20995,15 @@
       "identifier_keys": [
         "cowork-native-file-preview",
         "debug-log-enabled",
+        "share_from_content",
         "screenshot_file_preview",
         "screenshot_artifact",
         "can-verify-artifacts",
-        "auto-publish-enabled"
+        "auto-publish-enabled",
+        "synthetic_stub",
+        "client_session_ref",
+        "source_kind",
+        "artifact_share"
       ],
       "vocab_keys": [
         "claude check how my html report looks",
@@ -21012,7 +21024,7 @@
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
+        "prompt_version": "vocab-v2-update",
         "date": "2026-10-01",
         "terms_sha256": "8c4d2bc06f6a0d1e45e243fcf4e73bd5b34e6e3e4268ab49acbf769c89deb876"
       }
@@ -44262,6 +44274,9 @@
     "cowork-session-directories-staged": [
       197
     ],
+    "fr_mtkk8tfg": [
+      197
+    ],
     "lam_remote_folder_skills_staged": [
       197
     ],
@@ -44482,7 +44497,8 @@
       221
     ],
     "share_from_content": [
-      212
+      212,
+      221
     ],
     "sessionId-suffix": [
       213
@@ -44705,6 +44721,18 @@
       221
     ],
     "auto-publish-enabled": [
+      221
+    ],
+    "synthetic_stub": [
+      221
+    ],
+    "client_session_ref": [
+      221
+    ],
+    "source_kind": [
+      221
+    ],
+    "artifact_share": [
       221
     ],
     "why is claude startup slow": [

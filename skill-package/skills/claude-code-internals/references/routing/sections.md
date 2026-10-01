@@ -1779,8 +1779,9 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 220 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:81 · For an author
 221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:93 · What they do
 221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:100 · When they are served
-221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:109 · Imagine availability
-221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:113 · For an author
+221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:109 · Sharing a local artifact
+221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:117 · Imagine availability
+221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:121 · For an author
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)
@@ -1806,13 +1807,13 @@ state:cowork-architecture · state/cowork-architecture.md:638 · Scheduled tasks
 state:cowork-architecture · state/cowork-architecture.md:651 · Where a new task runs (L210)
 state:cowork-architecture · state/cowork-architecture.md:672 · Desktop 2.9939.2 additions (L212–L214)
 state:cowork-architecture · state/cowork-architecture.md:696 · Desktop 2.16120.0 additions (L219–L221)
-state:cowork-architecture · state/cowork-architecture.md:716 · `computer://` links by lane (L215)
-state:cowork-architecture · state/cowork-architecture.md:725 · A cloud session and the user's computer (L215)
-state:cowork-architecture · state/cowork-architecture.md:742 · One conversation, two runtimes (L216)
-state:cowork-architecture · state/cowork-architecture.md:755 · Credential delivery and build identity (L207)
-state:cowork-architecture · state/cowork-architecture.md:765 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
-state:cowork-architecture · state/cowork-architecture.md:802 · Mount model and delete policy (L139, L140)
-state:cowork-architecture · state/cowork-architecture.md:908 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
+state:cowork-architecture · state/cowork-architecture.md:722 · `computer://` links by lane (L215)
+state:cowork-architecture · state/cowork-architecture.md:731 · A cloud session and the user's computer (L215)
+state:cowork-architecture · state/cowork-architecture.md:748 · One conversation, two runtimes (L216)
+state:cowork-architecture · state/cowork-architecture.md:761 · Credential delivery and build identity (L207)
+state:cowork-architecture · state/cowork-architecture.md:771 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
+state:cowork-architecture · state/cowork-architecture.md:808 · Mount model and delete policy (L139, L140)
+state:cowork-architecture · state/cowork-architecture.md:914 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
 state:cowork-control-protocol · state/cowork-control-protocol.md:17 · Spawn contract
 state:cowork-control-protocol · state/cowork-control-protocol.md:81 · Handshake
 state:cowork-control-protocol · state/cowork-control-protocol.md:122 · Subtype inventory pointer

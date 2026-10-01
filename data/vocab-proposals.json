@@ -4510,9 +4510,11 @@
     },
     "197": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "c870dba9c6319c944d0249cbcf23d3f64c436dcb3623c499803c994f5fabfa80",
+      "prompt_version": "vocab-v2-update",
+      "date": "2026-10-01",
+      "input_sha256": "aa031c67ed7647743f2dbc0b8c830f0b6ce478f868fa60373f6d2b9713dfe15f",
+      "prior_terms_sha256": "ee4dcd96f6737a99280e74649a7872847f2c8caa1b373c1e2429773ab4fcf624",
+      "collision_check": "questions-v2.json dev",
       "terms": [
         "project skills missing in cloud Cowork session",
         "cloud session only sees skill description",
@@ -4855,9 +4857,11 @@
     },
     "212": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
+      "prompt_version": "vocab-v2-update",
       "date": "2026-10-01",
-      "input_sha256": "e3a225269737bf0f33c3ababe0c2c010fad456b5dc4c0c5e672adc65ec965ec8",
+      "input_sha256": "010c7297aa4a26796f90d146f8b6765b960d86eb2594f13411e7bee165773fb0",
+      "prior_terms_sha256": "224fe76798fad8768322351d1a0d6cd39b195823754bbe39f7ea294fc0861699",
+      "collision_check": "questions-v2.json dev",
       "terms": [
         "scheduled task cannot use new artifact tool",
         "why does my scheduled task use old artifact tools",
@@ -5062,9 +5066,11 @@
     },
     "221": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
+      "prompt_version": "vocab-v2-update",
       "date": "2026-10-01",
-      "input_sha256": "e52b1be12c2c95b749e2a317cfcbeef717ad056432050ca9f9cc4cc0a6e76232",
+      "input_sha256": "4e518ad47ca8103d432822a9a2a997fe65934f25ddc23d945dbf352d1767ff30",
+      "prior_terms_sha256": "8c4d2bc06f6a0d1e45e243fcf4e73bd5b34e6e3e4268ab49acbf769c89deb876",
+      "collision_check": "questions-v2.json dev",
       "terms": [
         "claude check how my html report looks",
         "screenshot of generated html file",

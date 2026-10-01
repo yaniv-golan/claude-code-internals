@@ -138,7 +138,7 @@ Only a **cloud (remote) Cowork session** that has been granted a local folder, t
 2. **Upload** through the Files API to `/mnt/user-data/uploads/cowork-folders/<slug>-<sha256(path)[:12]>/.claude/skills/<name>/…`.
 3. **Hand off** the staged directory to the claude.ai front end (IPC `cowork-session-directories-staged`); the cloud agent then finds `<dir>/.claude/skills` through ordinary project-skill discovery. The agent binary has no staging-specific code (`cowork-folders`: 0 in both 2.1.280 binaries).
 
-The mode comes from gate **`2877254163`**, `"off" | "stubs" | "full"`, which is **`"stubs"` (force) at the 2026-09-23 capture**:
+The mode comes from gate **`2877254163`**, `"off" | "stubs" | "full"`, which is **`"stubs"` (force, rule `fr_mtkk8tfg`) when read on 2026-10-01**:
 
 - **`stubs`** uploads only a rewritten `SKILL.md`: the frontmatter is kept (a description is made from the first body line if there is none), and the body is replaced with a notice beginning "This is a staged stub. The full skill lives on the user's device…", telling the model to run the skill's scripts on the device with `device_bash`. Without a paired, online device, the stub tells the model to say the skill cannot be reached.
 - **`full`** copies the whole skill tree.
