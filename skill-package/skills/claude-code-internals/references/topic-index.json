@@ -1,6 +1,6 @@
 {
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 218,
+  "total_lessons": 221,
   "lessons": [
     {
       "id": 1,
@@ -10724,7 +10724,6 @@
         "get-all-with-disk-status",
         "ask-claude",
         "DARK_GATES",
-        "cowork-native-file-preview",
         "cowork-web-fetch-prompt",
         "workspace-bash-wait-longer",
         "cowork-web-fetch-dedup",
@@ -10789,7 +10788,6 @@
         "get-all-with-disk-status",
         "ask-claude",
         "DARK_GATES",
-        "cowork-native-file-preview",
         "cowork-web-fetch-prompt",
         "workspace-bash-wait-longer",
         "cowork-web-fetch-dedup",
@@ -11595,7 +11593,7 @@
       "lesson_number": "116",
       "file": "27-skill-runtime-detection.md",
       "startLine": 19,
-      "endLine": 248,
+      "endLine": 249,
       "keywords": [
         "runtime-detection",
         "detect-cowork",
@@ -11648,21 +11646,21 @@
         "sdk-cli",
         "cowork-vm-env-injection.md",
         "IS_COWORK",
-        "how can my skill tell if it's running in cowork",
-        "detect cowork vs claude code cli from a script",
-        "skill thinks it's not in cowork when it is",
+        "skill detect if running in cowork",
+        "how can a script tell it's inside cowork",
         "cowork environment variable missing in shell",
-        "is my skill running in the terminal or the desktop app",
-        "check which app is running my skill",
-        "cowork sandbox shell can't see host environment variables",
-        "detect cowork virtual machine by folder path",
-        "inline shell commands in skill never run in cowork",
-        "session start hook can't pass flag into cowork sandbox",
-        "tell claude code apart from cursor or plain terminal",
-        "how do i know my script runs inside claude code",
-        "branch skill instructions based on available bash tool",
-        "runtime detection breaks in desktop cowork",
-        "why does my cowork check return false"
+        "cowork check returns false inside vm",
+        "tell claude code apart from cursor",
+        "is my skill running in claude code or elsewhere",
+        "detect desktop app vs terminal cli",
+        "env vars not visible in cowork sandbox",
+        "inline shell commands in skill not running",
+        "shell command execution disabled by policy in skill",
+        "hook can't pass flag to cowork vm",
+        "sessions folder path means cowork",
+        "which surface launched claude code",
+        "how do i branch skill behavior per runtime",
+        "workspace bash vs regular bash tool"
       ],
       "summary": "How a skill reliably detects whether it runs in the Claude Code CLI, Claude Cowork, or elsewhere. The trap: host-loop Cowork splits a skill across a host-side agent process (CLAUDE_CODE_IS_COWORK=1, CLAUDE_CODE_ENTRYPOINT=local-agent) and a sealed-env VM shell (mcp__workspace__bash) where no CLAUDE_CODE_* marker survives -- a bare env check yields a false negative exactly when it matters. Inline !`cmd` skill-shell execution is force-disabled in Cowork (q5n) and hook exports don't cross the host/VM bridge, so neither can probe. Recipe: script-side ordered checks (IS_COWORK -> /sessions/<id> path signature -> CLAUDECODE=1 from bmt -> other), refined by the CLAUDE_CODE_ENTRYPOINT value sets (c2u/u2u/d2u, normalizer cvs); content-side, branch on the tool surface (Bash vs mcp__workspace__bash). Artifact-drift caveat: the old MGn host->VM env allowlist from asar v1.6259.1 is gone from 1.18286.0 (only the unrelated SSH-MCP jBo filter remains) -- the sealed-env fact now rests on the v2.12.2 empirical probe.",
       "identifier_keys": [
@@ -11674,27 +11672,27 @@
         "IS_COWORK"
       ],
       "vocab_keys": [
-        "how can my skill tell if it's running in cowork",
-        "detect cowork vs claude code cli from a script",
-        "skill thinks it's not in cowork when it is",
+        "skill detect if running in cowork",
+        "how can a script tell it's inside cowork",
         "cowork environment variable missing in shell",
-        "is my skill running in the terminal or the desktop app",
-        "check which app is running my skill",
-        "cowork sandbox shell can't see host environment variables",
-        "detect cowork virtual machine by folder path",
-        "inline shell commands in skill never run in cowork",
-        "session start hook can't pass flag into cowork sandbox",
-        "tell claude code apart from cursor or plain terminal",
-        "how do i know my script runs inside claude code",
-        "branch skill instructions based on available bash tool",
-        "runtime detection breaks in desktop cowork",
-        "why does my cowork check return false"
+        "cowork check returns false inside vm",
+        "tell claude code apart from cursor",
+        "is my skill running in claude code or elsewhere",
+        "detect desktop app vs terminal cli",
+        "env vars not visible in cowork sandbox",
+        "inline shell commands in skill not running",
+        "shell command execution disabled by policy in skill",
+        "hook can't pass flag to cowork vm",
+        "sessions folder path means cowork",
+        "which surface launched claude code",
+        "how do i branch skill behavior per runtime",
+        "workspace bash vs regular bash tool"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "ad74010b1dbda5cbe8d22afeafc5c9a36310b0e4fb30d94b4e73a11bccef9cb7"
+        "date": "2026-10-01",
+        "terms_sha256": "1cd4542ed5cc347728115f42e6c0a75eb3b96bbd536933eb04716afc140cc8ed"
       }
     },
     {
@@ -19929,21 +19927,21 @@
         "bound-enabled",
         "disable-desktop-local-sessions",
         "no-self-hosted-endpoint",
-        "scheduled task suddenly running in the cloud",
-        "local scheduled tasks stopped running on my mac",
-        "why did my scheduled task become a cloud routine",
-        "cowork stopped starting local sessions",
-        "scheduled task moved to cloud without asking",
-        "prevent scheduled task from migrating to cloud",
-        "how do i move a routine back to this computer",
-        "scheduled task location changed by itself",
-        "keep scheduled task running locally",
+        "scheduled task stopped running locally",
+        "why did my scheduled task move to the cloud",
+        "scheduled task converted to cloud routine automatically",
+        "local scheduled task disabled without warning",
+        "cowork sessions no longer start on my mac",
+        "how do i keep a scheduled task on this computer",
+        "move routine back to this computer",
+        "scheduled task runs remotely after a few runs",
         "automatic migration of scheduled tasks",
-        "which scheduled tasks get moved to the cloud",
-        "scheduled task files not saved on my mac anymore",
-        "scheduled task working directory changed after migration",
-        "how to tell if a scheduled task ran locally",
-        "desktop app converted my task to a routine"
+        "why does my task run in a different directory now",
+        "stop desktop migrating tasks to cloud",
+        "which scheduled tasks stay local",
+        "files from scheduled task not appearing on mac",
+        "editing prompt resets migration count",
+        "how to tell if a scheduled task ran locally"
       ],
       "identifier_keys": [
         "remote-tools-device",
@@ -19957,27 +19955,27 @@
         "no-self-hosted-endpoint"
       ],
       "vocab_keys": [
-        "scheduled task suddenly running in the cloud",
-        "local scheduled tasks stopped running on my mac",
-        "why did my scheduled task become a cloud routine",
-        "cowork stopped starting local sessions",
-        "scheduled task moved to cloud without asking",
-        "prevent scheduled task from migrating to cloud",
-        "how do i move a routine back to this computer",
-        "scheduled task location changed by itself",
-        "keep scheduled task running locally",
+        "scheduled task stopped running locally",
+        "why did my scheduled task move to the cloud",
+        "scheduled task converted to cloud routine automatically",
+        "local scheduled task disabled without warning",
+        "cowork sessions no longer start on my mac",
+        "how do i keep a scheduled task on this computer",
+        "move routine back to this computer",
+        "scheduled task runs remotely after a few runs",
         "automatic migration of scheduled tasks",
-        "which scheduled tasks get moved to the cloud",
-        "scheduled task files not saved on my mac anymore",
-        "scheduled task working directory changed after migration",
-        "how to tell if a scheduled task ran locally",
-        "desktop app converted my task to a routine"
+        "why does my task run in a different directory now",
+        "stop desktop migrating tasks to cloud",
+        "which scheduled tasks stay local",
+        "files from scheduled task not appearing on mac",
+        "editing prompt resets migration count",
+        "how to tell if a scheduled task ran locally"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "2262ab794ff1f12b8aea1b8ba8f151feacf805448a0c4062af1a3db6468723d5"
+        "date": "2026-10-01",
+        "terms_sha256": "d607bf4b15fd63c4a0939bf9a6d1c0bcea759b93f604ce5b70a845c9996e1389"
       }
     },
     {
@@ -20047,7 +20045,7 @@
       "lesson_number": "210",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
       "startLine": 119,
-      "endLine": 184,
+      "endLine": 186,
       "keywords": [
         "Only on this computer",
         "dramatic_shrimp_enabled",
@@ -20077,20 +20075,19 @@
         "local_bypass_permission_forced",
         "disabled_by_org_policy",
         "cowork task runs in cloud instead of locally",
-        "turned off cloud but tasks still remote",
-        "force cowork to run on my computer",
-        "only on this computer setting not working",
-        "how to tell if a task ran locally or in the cloud",
+        "force cowork task to run on my machine",
         "why does my new task run in the cloud",
-        "opt out of cloud cowork sessions",
-        "cloud opt-out reset after three days",
-        "local setting not saved after cancel",
-        "scheduled task run locally on my mac",
-        "run now to get a local session",
-        "who decides cloud or local for a new task",
-        "auto mode still runs in the cloud",
-        "cloud task using my mac's files",
-        "working directory shows home claude"
+        "opted out of cloud but still remote",
+        "how to tell if task ran locally or in cloud",
+        "cowork local vs cloud session routing",
+        "local setting not saving after cancel",
+        "cloud opt-out reverts after three days",
+        "scheduled task to get a local session",
+        "who decides where a cowork task runs",
+        "auto mode task still goes to cloud",
+        "check working directory to see where task ran",
+        "local mode works only sometimes",
+        "cloud task using my mac through bridge"
       ],
       "identifier_keys": [
         "dramatic_shrimp_disabled_at",
@@ -20107,26 +20104,25 @@
       ],
       "vocab_keys": [
         "cowork task runs in cloud instead of locally",
-        "turned off cloud but tasks still remote",
-        "force cowork to run on my computer",
-        "only on this computer setting not working",
-        "how to tell if a task ran locally or in the cloud",
+        "force cowork task to run on my machine",
         "why does my new task run in the cloud",
-        "opt out of cloud cowork sessions",
-        "cloud opt-out reset after three days",
-        "local setting not saved after cancel",
-        "scheduled task run locally on my mac",
-        "run now to get a local session",
-        "who decides cloud or local for a new task",
-        "auto mode still runs in the cloud",
-        "cloud task using my mac's files",
-        "working directory shows home claude"
+        "opted out of cloud but still remote",
+        "how to tell if task ran locally or in cloud",
+        "cowork local vs cloud session routing",
+        "local setting not saving after cancel",
+        "cloud opt-out reverts after three days",
+        "scheduled task to get a local session",
+        "who decides where a cowork task runs",
+        "auto mode task still goes to cloud",
+        "check working directory to see where task ran",
+        "local mode works only sometimes",
+        "cloud task using my mac through bridge"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "4c38e7552dd6d2c3b15d9b226da92e96a6c83678c9c01a0eb48b9b60b7ea6eab"
+        "date": "2026-10-01",
+        "terms_sha256": "d3041b440241dccabc8b30981be6c31d0f37c23745589557b62f7ea9f1c72c2b"
       }
     },
     {
@@ -20227,7 +20223,7 @@
       "lesson_number": "212",
       "file": "54-desktop-2.9939-artifacts-gates-egress.md",
       "startLine": 98,
-      "endLine": 146,
+      "endLine": 147,
       "keywords": [
         "create_artifact",
         "update_artifact",
@@ -20254,21 +20250,21 @@
         "ccd_session",
         "debug-log-enabled",
         "share_from_content",
-        "scheduled task can't use the new artifact tool",
+        "scheduled task cannot use new artifact tool",
         "why does my scheduled task use old artifact tools",
         "legacy artifact tools in cowork",
         "which artifact tool does a session get",
-        "saving an html page from a scheduled task",
-        "artifact tool missing in unattended session",
-        "tool listed but call is refused",
-        "tool shows in session tools list but blocked",
-        "can i trust the startup tool list for mcp tools",
-        "artifacts sidebar folder in cowork",
-        "does creating an artifact prompt for permission",
-        "old versus new artifact tools",
-        "migrating legacy live artifacts",
-        "artifact tools disabled in dispatched sub-sessions",
-        "why can't the agent create an artifact"
+        "artifact tools missing in unattended session",
+        "tool listed but call refused",
+        "why is a listed tool still blocked",
+        "disallowed mcp tool still shows in tool list",
+        "save html page from scheduled task",
+        "local artifacts folder in cowork sidebar",
+        "create or update artifact permission prompt",
+        "bridge session can only list artifacts",
+        "verify artifact tool not available",
+        "migrate old live artifacts to new artifacts",
+        "does bypass mode skip artifact approval"
       ],
       "identifier_keys": [
         "ccd_session",
@@ -20276,27 +20272,27 @@
         "share_from_content"
       ],
       "vocab_keys": [
-        "scheduled task can't use the new artifact tool",
+        "scheduled task cannot use new artifact tool",
         "why does my scheduled task use old artifact tools",
         "legacy artifact tools in cowork",
         "which artifact tool does a session get",
-        "saving an html page from a scheduled task",
-        "artifact tool missing in unattended session",
-        "tool listed but call is refused",
-        "tool shows in session tools list but blocked",
-        "can i trust the startup tool list for mcp tools",
-        "artifacts sidebar folder in cowork",
-        "does creating an artifact prompt for permission",
-        "old versus new artifact tools",
-        "migrating legacy live artifacts",
-        "artifact tools disabled in dispatched sub-sessions",
-        "why can't the agent create an artifact"
+        "artifact tools missing in unattended session",
+        "tool listed but call refused",
+        "why is a listed tool still blocked",
+        "disallowed mcp tool still shows in tool list",
+        "save html page from scheduled task",
+        "local artifacts folder in cowork sidebar",
+        "create or update artifact permission prompt",
+        "bridge session can only list artifacts",
+        "verify artifact tool not available",
+        "migrate old live artifacts to new artifacts",
+        "does bypass mode skip artifact approval"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "09c786947be8a9e2699a6367be8b87fc4196665b1a5957fbe883b475c0ab7443"
+        "date": "2026-10-01",
+        "terms_sha256": "224fe76798fad8768322351d1a0d6cd39b195823754bbe39f7ea294fc0861699"
       }
     },
     {
@@ -20304,8 +20300,8 @@
       "title": "What Desktop 2.9939.2's New Gates Do",
       "lesson_number": "213",
       "file": "54-desktop-2.9939-artifacts-gates-egress.md",
-      "startLine": 150,
-      "endLine": 207,
+      "startLine": 151,
+      "endLine": 208,
       "keywords": [
         "2.9939.2 new gates",
         "822840158",
@@ -20389,8 +20385,8 @@
       "title": "HIPAA Egress and Fast Mode on Third-Party Providers",
       "lesson_number": "214",
       "file": "54-desktop-2.9939-artifacts-gates-egress.md",
-      "startLine": 211,
-      "endLine": 248,
+      "startLine": 212,
+      "endLine": 249,
       "keywords": [
         "HIPAA egress",
         "vm_egress_allowlist",
@@ -20833,6 +20829,192 @@
         "prompt_version": "vocab-v1",
         "date": "2026-09-28",
         "terms_sha256": "e8a515ce4a35864729cb5cafc0778bc7f33f7ca455af550ebb4893cd67dbb9d0"
+      }
+    },
+    {
+      "id": 219,
+      "title": "Scheduled Runs Get the Native Artifact Tool and Carry Their Files to the Cloud",
+      "lesson_number": "219",
+      "file": "57-desktop-2.16120-scheduled-artifacts-permissions.md",
+      "startLine": 15,
+      "endLine": 52,
+      "keywords": [
+        "held-block-reasons",
+        "scheduled-run-frame-artifacts",
+        "scheduled-task-grants",
+        "account-org",
+        "artifact-publish-grants.json",
+        "permission_auto_approved",
+        "user-selected-files",
+        "local_folders",
+        "unshareable_parent",
+        "scheduled task artifact tool changed",
+        "scheduled run creates artifacts differently now",
+        "scheduled task stopped using create artifact",
+        "always allow publish for scheduled task",
+        "scheduled task keeps asking to publish",
+        "why doesn't my scheduled run ask to publish anymore",
+        "remember publish permission per scheduled task",
+        "scheduled task with attached files moved to cloud",
+        "attached files no longer keep task local",
+        "why did my scheduled task with files move to the cloud",
+        "how to keep a scheduled task on my computer",
+        "scheduled task files limit when migrating",
+        "unshareable parent folder scheduled task migration",
+        "html output from scheduled task",
+        "should my scheduled task prompt name the artifact tool"
+      ],
+      "identifier_keys": [
+        "held-block-reasons",
+        "scheduled-run-frame-artifacts",
+        "scheduled-task-grants",
+        "account-org",
+        "artifact-publish-grants.json",
+        "permission_auto_approved",
+        "user-selected-files",
+        "local_folders",
+        "unshareable_parent"
+      ],
+      "vocab_keys": [
+        "scheduled task artifact tool changed",
+        "scheduled run creates artifacts differently now",
+        "scheduled task stopped using create artifact",
+        "always allow publish for scheduled task",
+        "scheduled task keeps asking to publish",
+        "why doesn't my scheduled run ask to publish anymore",
+        "remember publish permission per scheduled task",
+        "scheduled task with attached files moved to cloud",
+        "attached files no longer keep task local",
+        "why did my scheduled task with files move to the cloud",
+        "how to keep a scheduled task on my computer",
+        "scheduled task files limit when migrating",
+        "unshareable parent folder scheduled task migration",
+        "html output from scheduled task",
+        "should my scheduled task prompt name the artifact tool"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-01",
+        "terms_sha256": "6ae4a6ec0874e6eff9794a433019a80c036776315acdd72cd072391ead924f3e"
+      }
+    },
+    {
+      "id": 220,
+      "title": "Host-Loop File Permissions: Approvals Pinned, Org Asks Reach the User",
+      "lesson_number": "220",
+      "file": "57-desktop-2.16120-scheduled-artifacts-permissions.md",
+      "startLine": 56,
+      "endLine": 85,
+      "keywords": [
+        "cowork-permissions",
+        "pre-fork",
+        "API_TIMEOUT_MS",
+        "approved file edit ran with different input",
+        "permission prompt changes ignored in cowork",
+        "can approval modify file tool arguments",
+        "organization policy requires approval for file reads",
+        "why was file tool blocked by org policy",
+        "side chat cannot prompt for file access",
+        "file delete refused without asking me",
+        "delete request rejected before approval prompt",
+        "cannot delete file in read-only folder",
+        "delete path with dot dot segments refused",
+        "pycache folders no longer created",
+        "why no __pycache__ after running python agent",
+        "python bytecode files missing in agent",
+        "hook rewriting file path not applied after approval",
+        "admin managed ask shows prompt instead of blocking"
+      ],
+      "identifier_keys": [
+        "cowork-permissions",
+        "pre-fork",
+        "API_TIMEOUT_MS"
+      ],
+      "vocab_keys": [
+        "approved file edit ran with different input",
+        "permission prompt changes ignored in cowork",
+        "can approval modify file tool arguments",
+        "organization policy requires approval for file reads",
+        "why was file tool blocked by org policy",
+        "side chat cannot prompt for file access",
+        "file delete refused without asking me",
+        "delete request rejected before approval prompt",
+        "cannot delete file in read-only folder",
+        "delete path with dot dot segments refused",
+        "pycache folders no longer created",
+        "why no __pycache__ after running python agent",
+        "python bytecode files missing in agent",
+        "hook rewriting file path not applied after approval",
+        "admin managed ask shows prompt instead of blocking"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-01",
+        "terms_sha256": "5016fc62743152d792df019dd6c30a39c463f93ac2cf634948ef83c23393a8e4"
+      }
+    },
+    {
+      "id": 221,
+      "title": "Screenshot Tools for Artifacts and the File Preview",
+      "lesson_number": "221",
+      "file": "57-desktop-2.16120-scheduled-artifacts-permissions.md",
+      "startLine": 89,
+      "endLine": 116,
+      "keywords": [
+        "cowork-native-file-preview",
+        "debug-log-enabled",
+        "screenshot_file_preview",
+        "screenshot_artifact",
+        "can-verify-artifacts",
+        "auto-publish-enabled",
+        "claude check how my html report looks",
+        "screenshot of generated html file",
+        "verify svg output visually",
+        "can the model see its own artifact",
+        "preview panel external scripts not loading",
+        "why do web fonts not show in preview",
+        "html preview missing images from urls",
+        "screenshot artifact side panel",
+        "inline css required for file preview",
+        "how does claude verify rendered output",
+        "screenshot tool missing in bridge session",
+        "visual check of presented files",
+        "preview panel narrower than browser",
+        "why is the screenshot tool unavailable",
+        "inline visualizations blocked by organization"
+      ],
+      "identifier_keys": [
+        "cowork-native-file-preview",
+        "debug-log-enabled",
+        "screenshot_file_preview",
+        "screenshot_artifact",
+        "can-verify-artifacts",
+        "auto-publish-enabled"
+      ],
+      "vocab_keys": [
+        "claude check how my html report looks",
+        "screenshot of generated html file",
+        "verify svg output visually",
+        "can the model see its own artifact",
+        "preview panel external scripts not loading",
+        "why do web fonts not show in preview",
+        "html preview missing images from urls",
+        "screenshot artifact side panel",
+        "inline css required for file preview",
+        "how does claude verify rendered output",
+        "screenshot tool missing in bridge session",
+        "visual check of presented files",
+        "preview panel narrower than browser",
+        "why is the screenshot tool unavailable",
+        "inline visualizations blocked by organization"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-01",
+        "terms_sha256": "8c4d2bc06f6a0d1e45e243fcf4e73bd5b34e6e3e4268ab49acbf769c89deb876"
       }
     }
   ],
@@ -41687,7 +41869,7 @@
       108
     ],
     "cowork-native-file-preview": [
-      108
+      221
     ],
     "cowork-web-fetch-prompt": [
       108
@@ -44223,7 +44405,8 @@
       208
     ],
     "held-block-reasons": [
-      208
+      208,
+      219
     ],
     "migrated-from-remote": [
       208
@@ -44295,7 +44478,8 @@
       211
     ],
     "debug-log-enabled": [
-      212
+      212,
+      221
     ],
     "share_from_content": [
       212
@@ -44477,6 +44661,51 @@
     ],
     "fallback-value": [
       218
+    ],
+    "scheduled-run-frame-artifacts": [
+      219
+    ],
+    "scheduled-task-grants": [
+      219
+    ],
+    "account-org": [
+      219
+    ],
+    "artifact-publish-grants.json": [
+      219
+    ],
+    "permission_auto_approved": [
+      219
+    ],
+    "user-selected-files": [
+      219
+    ],
+    "local_folders": [
+      219
+    ],
+    "unshareable_parent": [
+      219
+    ],
+    "cowork-permissions": [
+      220
+    ],
+    "pre-fork": [
+      220
+    ],
+    "API_TIMEOUT_MS": [
+      220
+    ],
+    "screenshot_file_preview": [
+      221
+    ],
+    "screenshot_artifact": [
+      221
+    ],
+    "can-verify-artifacts": [
+      221
+    ],
+    "auto-publish-enabled": [
+      221
     ],
     "why is claude startup slow": [
       1
@@ -49633,49 +49862,49 @@
     "fork subagent inherits conversation context": [
       115
     ],
-    "how can my skill tell if it's running in cowork": [
+    "skill detect if running in cowork": [
       116
     ],
-    "detect cowork vs claude code cli from a script": [
-      116
-    ],
-    "skill thinks it's not in cowork when it is": [
+    "how can a script tell it's inside cowork": [
       116
     ],
     "cowork environment variable missing in shell": [
       116
     ],
-    "is my skill running in the terminal or the desktop app": [
+    "cowork check returns false inside vm": [
       116
     ],
-    "check which app is running my skill": [
+    "tell claude code apart from cursor": [
       116
     ],
-    "cowork sandbox shell can't see host environment variables": [
+    "is my skill running in claude code or elsewhere": [
       116
     ],
-    "detect cowork virtual machine by folder path": [
+    "detect desktop app vs terminal cli": [
       116
     ],
-    "inline shell commands in skill never run in cowork": [
+    "env vars not visible in cowork sandbox": [
       116
     ],
-    "session start hook can't pass flag into cowork sandbox": [
+    "inline shell commands in skill not running": [
       116
     ],
-    "tell claude code apart from cursor or plain terminal": [
+    "shell command execution disabled by policy in skill": [
       116
     ],
-    "how do i know my script runs inside claude code": [
+    "hook can't pass flag to cowork vm": [
       116
     ],
-    "branch skill instructions based on available bash tool": [
+    "sessions folder path means cowork": [
       116
     ],
-    "runtime detection breaks in desktop cowork": [
+    "which surface launched claude code": [
       116
     ],
-    "why does my cowork check return false": [
+    "how do i branch skill behavior per runtime": [
+      116
+    ],
+    "workspace bash vs regular bash tool": [
       116
     ],
     "which cowork folders are actually shared with my mac": [
@@ -53740,49 +53969,49 @@
     "teammate idle or task hook feedback message": [
       207
     ],
-    "scheduled task suddenly running in the cloud": [
+    "scheduled task stopped running locally": [
       208
     ],
-    "local scheduled tasks stopped running on my mac": [
+    "why did my scheduled task move to the cloud": [
       208
     ],
-    "why did my scheduled task become a cloud routine": [
+    "scheduled task converted to cloud routine automatically": [
       208
     ],
-    "cowork stopped starting local sessions": [
+    "local scheduled task disabled without warning": [
       208
     ],
-    "scheduled task moved to cloud without asking": [
+    "cowork sessions no longer start on my mac": [
       208
     ],
-    "prevent scheduled task from migrating to cloud": [
+    "how do i keep a scheduled task on this computer": [
       208
     ],
-    "how do i move a routine back to this computer": [
+    "move routine back to this computer": [
       208
     ],
-    "scheduled task location changed by itself": [
-      208
-    ],
-    "keep scheduled task running locally": [
+    "scheduled task runs remotely after a few runs": [
       208
     ],
     "automatic migration of scheduled tasks": [
       208
     ],
-    "which scheduled tasks get moved to the cloud": [
+    "why does my task run in a different directory now": [
       208
     ],
-    "scheduled task files not saved on my mac anymore": [
+    "stop desktop migrating tasks to cloud": [
       208
     ],
-    "scheduled task working directory changed after migration": [
+    "which scheduled tasks stay local": [
+      208
+    ],
+    "files from scheduled task not appearing on mac": [
+      208
+    ],
+    "editing prompt resets migration count": [
       208
     ],
     "how to tell if a scheduled task ran locally": [
-      208
-    ],
-    "desktop app converted my task to a routine": [
       208
     ],
     "plugin hook not firing in cowork": [
@@ -53833,46 +54062,43 @@
     "cowork task runs in cloud instead of locally": [
       210
     ],
-    "turned off cloud but tasks still remote": [
-      210
-    ],
-    "force cowork to run on my computer": [
-      210
-    ],
-    "only on this computer setting not working": [
-      210
-    ],
-    "how to tell if a task ran locally or in the cloud": [
+    "force cowork task to run on my machine": [
       210
     ],
     "why does my new task run in the cloud": [
       210
     ],
-    "opt out of cloud cowork sessions": [
+    "opted out of cloud but still remote": [
       210
     ],
-    "cloud opt-out reset after three days": [
+    "how to tell if task ran locally or in cloud": [
       210
     ],
-    "local setting not saved after cancel": [
+    "cowork local vs cloud session routing": [
       210
     ],
-    "scheduled task run locally on my mac": [
+    "local setting not saving after cancel": [
       210
     ],
-    "run now to get a local session": [
+    "cloud opt-out reverts after three days": [
       210
     ],
-    "who decides cloud or local for a new task": [
+    "scheduled task to get a local session": [
       210
     ],
-    "auto mode still runs in the cloud": [
+    "who decides where a cowork task runs": [
       210
     ],
-    "cloud task using my mac's files": [
+    "auto mode task still goes to cloud": [
       210
     ],
-    "working directory shows home claude": [
+    "check working directory to see where task ran": [
+      210
+    ],
+    "local mode works only sometimes": [
+      210
+    ],
+    "cloud task using my mac through bridge": [
       210
     ],
     "artifact calling local mcp server": [
@@ -53917,7 +54143,7 @@
     "publishing artifact refused local server declaration": [
       211
     ],
-    "scheduled task can't use the new artifact tool": [
+    "scheduled task cannot use new artifact tool": [
       212
     ],
     "why does my scheduled task use old artifact tools": [
@@ -53929,37 +54155,37 @@
     "which artifact tool does a session get": [
       212
     ],
-    "saving an html page from a scheduled task": [
+    "artifact tools missing in unattended session": [
       212
     ],
-    "artifact tool missing in unattended session": [
+    "tool listed but call refused": [
       212
     ],
-    "tool listed but call is refused": [
+    "why is a listed tool still blocked": [
       212
     ],
-    "tool shows in session tools list but blocked": [
+    "disallowed mcp tool still shows in tool list": [
       212
     ],
-    "can i trust the startup tool list for mcp tools": [
+    "save html page from scheduled task": [
       212
     ],
-    "artifacts sidebar folder in cowork": [
+    "local artifacts folder in cowork sidebar": [
       212
     ],
-    "does creating an artifact prompt for permission": [
+    "create or update artifact permission prompt": [
       212
     ],
-    "old versus new artifact tools": [
+    "bridge session can only list artifacts": [
       212
     ],
-    "migrating legacy live artifacts": [
+    "verify artifact tool not available": [
       212
     ],
-    "artifact tools disabled in dispatched sub-sessions": [
+    "migrate old live artifacts to new artifacts": [
       212
     ],
-    "why can't the agent create an artifact": [
+    "does bypass mode skip artifact approval": [
       212
     ],
     "what changed in the latest desktop app feature flags": [
@@ -54231,9 +54457,144 @@
     ],
     "how to give a plugin server a credential": [
       218
+    ],
+    "scheduled task artifact tool changed": [
+      219
+    ],
+    "scheduled run creates artifacts differently now": [
+      219
+    ],
+    "scheduled task stopped using create artifact": [
+      219
+    ],
+    "always allow publish for scheduled task": [
+      219
+    ],
+    "scheduled task keeps asking to publish": [
+      219
+    ],
+    "why doesn't my scheduled run ask to publish anymore": [
+      219
+    ],
+    "remember publish permission per scheduled task": [
+      219
+    ],
+    "scheduled task with attached files moved to cloud": [
+      219
+    ],
+    "attached files no longer keep task local": [
+      219
+    ],
+    "why did my scheduled task with files move to the cloud": [
+      219
+    ],
+    "how to keep a scheduled task on my computer": [
+      219
+    ],
+    "scheduled task files limit when migrating": [
+      219
+    ],
+    "unshareable parent folder scheduled task migration": [
+      219
+    ],
+    "html output from scheduled task": [
+      219
+    ],
+    "should my scheduled task prompt name the artifact tool": [
+      219
+    ],
+    "approved file edit ran with different input": [
+      220
+    ],
+    "permission prompt changes ignored in cowork": [
+      220
+    ],
+    "can approval modify file tool arguments": [
+      220
+    ],
+    "organization policy requires approval for file reads": [
+      220
+    ],
+    "why was file tool blocked by org policy": [
+      220
+    ],
+    "side chat cannot prompt for file access": [
+      220
+    ],
+    "file delete refused without asking me": [
+      220
+    ],
+    "delete request rejected before approval prompt": [
+      220
+    ],
+    "cannot delete file in read-only folder": [
+      220
+    ],
+    "delete path with dot dot segments refused": [
+      220
+    ],
+    "pycache folders no longer created": [
+      220
+    ],
+    "why no __pycache__ after running python agent": [
+      220
+    ],
+    "python bytecode files missing in agent": [
+      220
+    ],
+    "hook rewriting file path not applied after approval": [
+      220
+    ],
+    "admin managed ask shows prompt instead of blocking": [
+      220
+    ],
+    "claude check how my html report looks": [
+      221
+    ],
+    "screenshot of generated html file": [
+      221
+    ],
+    "verify svg output visually": [
+      221
+    ],
+    "can the model see its own artifact": [
+      221
+    ],
+    "preview panel external scripts not loading": [
+      221
+    ],
+    "why do web fonts not show in preview": [
+      221
+    ],
+    "html preview missing images from urls": [
+      221
+    ],
+    "screenshot artifact side panel": [
+      221
+    ],
+    "inline css required for file preview": [
+      221
+    ],
+    "how does claude verify rendered output": [
+      221
+    ],
+    "screenshot tool missing in bridge session": [
+      221
+    ],
+    "visual check of presented files": [
+      221
+    ],
+    "preview panel narrower than browser": [
+      221
+    ],
+    "why is the screenshot tool unavailable": [
+      221
+    ],
+    "inline visualizations blocked by organization": [
+      221
     ]
   },
   "keyword_boundary": {
-    "unreachable_max": 65
+    "unreachable_max": 66
   }
 }

@@ -1309,7 +1309,7 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 116 · 27-skill-runtime-detection.md:201 · Content-side (the model decides before any script runs)
 116 · 27-skill-runtime-detection.md:210 · What not to rely on
 116 · 27-skill-runtime-detection.md:221 · Identifier table
-116 · 27-skill-runtime-detection.md:234 · Methodology note (the transferable lesson)
+116 · 27-skill-runtime-detection.md:235 · Methodology note (the transferable lesson)
 117 · 28-vm-rootfs-forensics.md:15 · The question this closes out
 117 · 28-vm-rootfs-forensics.md:27 · Part A — a third artifact class: the raw guest disk image
 117 · 28-vm-rootfs-forensics.md:55 · Part B — the mount inventory
@@ -1727,7 +1727,7 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 210 · 53-routine-migration-plugin-hooks-by-lane.md:135 · The account setting
 210 · 53-routine-migration-plugin-hooks-by-lane.md:149 · The routing function
 210 · 53-routine-migration-plugin-hooks-by-lane.md:165 · What happened
-210 · 53-routine-migration-plugin-hooks-by-lane.md:180 · For an author or tester
+210 · 53-routine-migration-plugin-hooks-by-lane.md:182 · For an author or tester
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:22 · The three layers
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:32 · Layer 1: publishing refuses `host:`
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:48 · Layer 2: the viewer enforces the manifest
@@ -1735,13 +1735,13 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:77 · One local server, two processes
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:86 · For an author
 212 · 54-desktop-2.9939-artifacts-gates-egress.md:102 · One switch, two families
-212 · 54-desktop-2.9939-artifacts-gates-egress.md:127 · What the tools do
-212 · 54-desktop-2.9939-artifacts-gates-egress.md:139 · Listed is not callable
-212 · 54-desktop-2.9939-artifacts-gates-egress.md:143 · For an author or tester
-213 · 54-desktop-2.9939-artifacts-gates-egress.md:160 · Reading them
-213 · 54-desktop-2.9939-artifacts-gates-egress.md:180 · The ones that matter
-214 · 54-desktop-2.9939-artifacts-gates-egress.md:215 · The egress filter
-214 · 54-desktop-2.9939-artifacts-gates-egress.md:231 · Fast mode on third-party
+212 · 54-desktop-2.9939-artifacts-gates-egress.md:128 · What the tools do
+212 · 54-desktop-2.9939-artifacts-gates-egress.md:140 · Listed is not callable
+212 · 54-desktop-2.9939-artifacts-gates-egress.md:144 · For an author or tester
+213 · 54-desktop-2.9939-artifacts-gates-egress.md:161 · Reading them
+213 · 54-desktop-2.9939-artifacts-gates-egress.md:181 · The ones that matter
+214 · 54-desktop-2.9939-artifacts-gates-egress.md:216 · The egress filter
+214 · 54-desktop-2.9939-artifacts-gates-egress.md:232 · Fast mode on third-party
 215 · 55-cloud-session-device-tools.md:20 · When it applies
 215 · 55-cloud-session-device-tools.md:26 · What a session sees before any grant
 215 · 55-cloud-session-device-tools.md:37 · Getting a folder
@@ -1768,6 +1768,19 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:127 · Tool denies
 218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:131 · MCP server placeholders
 218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:156 · For an author
+219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:19 · Native Artifact in scheduled runs
+219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:32 · A publish grant per scheduled task
+219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:38 · Attached files no longer pin a task to this computer
+219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:49 · For an author
+220 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:60 · The approval is pinned to the judged input
+220 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:64 · Organization asks on file tools
+220 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:73 · `allow_cowork_file_delete` refuses before the prompt
+220 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:77 · `PYTHONDONTWRITEBYTECODE=1`
+220 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:81 · For an author
+221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:93 · What they do
+221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:100 · When they are served
+221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:109 · Imagine availability
+221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:113 · For an author
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)
@@ -1791,14 +1804,15 @@ state:cowork-architecture · state/cowork-architecture.md:588 · A THIRD surface
 state:cowork-architecture · state/cowork-architecture.md:621 · Four surfaces, one probe (L198, 2026-09-23, first-party)
 state:cowork-architecture · state/cowork-architecture.md:638 · Scheduled tasks migrate themselves to the cloud (L208)
 state:cowork-architecture · state/cowork-architecture.md:651 · Where a new task runs (L210)
-state:cowork-architecture · state/cowork-architecture.md:666 · Desktop 2.9939.2 additions (L212–L214)
-state:cowork-architecture · state/cowork-architecture.md:688 · `computer://` links by lane (L215)
-state:cowork-architecture · state/cowork-architecture.md:697 · A cloud session and the user's computer (L215)
-state:cowork-architecture · state/cowork-architecture.md:714 · One conversation, two runtimes (L216)
-state:cowork-architecture · state/cowork-architecture.md:727 · Credential delivery and build identity (L207)
-state:cowork-architecture · state/cowork-architecture.md:737 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
-state:cowork-architecture · state/cowork-architecture.md:774 · Mount model and delete policy (L139, L140)
-state:cowork-architecture · state/cowork-architecture.md:880 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
+state:cowork-architecture · state/cowork-architecture.md:672 · Desktop 2.9939.2 additions (L212–L214)
+state:cowork-architecture · state/cowork-architecture.md:696 · Desktop 2.16120.0 additions (L219–L221)
+state:cowork-architecture · state/cowork-architecture.md:716 · `computer://` links by lane (L215)
+state:cowork-architecture · state/cowork-architecture.md:725 · A cloud session and the user's computer (L215)
+state:cowork-architecture · state/cowork-architecture.md:742 · One conversation, two runtimes (L216)
+state:cowork-architecture · state/cowork-architecture.md:755 · Credential delivery and build identity (L207)
+state:cowork-architecture · state/cowork-architecture.md:765 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
+state:cowork-architecture · state/cowork-architecture.md:802 · Mount model and delete policy (L139, L140)
+state:cowork-architecture · state/cowork-architecture.md:908 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
 state:cowork-control-protocol · state/cowork-control-protocol.md:17 · Spawn contract
 state:cowork-control-protocol · state/cowork-control-protocol.md:81 · Handshake
 state:cowork-control-protocol · state/cowork-control-protocol.md:122 · Subtype inventory pointer
@@ -1812,11 +1826,11 @@ state:cowork-control-protocol · state/cowork-control-protocol.md:302 · Compact
 state:cowork-control-protocol · state/cowork-control-protocol.md:314 · Cloud tasks: teleport-to-cloud and the bridge-session worker (Ch33/L119)
 state:cowork-control-protocol · state/cowork-control-protocol.md:391 · VCS SDK events + SDK-MCP skill servers (L129/L130)
 state:cowork-permissions · state/cowork-permissions.md:16 · The layers (all simultaneously active, host-loop production)
-state:cowork-permissions · state/cowork-permissions.md:200 · Auto-mode tuning at Desktop 1.22209.0 (lesson 128, no live gate-state capture)
-state:cowork-permissions · state/cowork-permissions.md:233 · Browser/Computer-Use permission gates + Cowork's own auto-mode rule additions (Desktop 1.28929.0)
-state:cowork-permissions · state/cowork-permissions.md:285 · Host-dialog approval attestation and `/settings-review` staging — shipped, compiled off (agent 2.1.281–2.1.284)
-state:cowork-permissions · state/cowork-permissions.md:304 · Not part of the stack (adjacent, don't conflate)
-state:cowork-permissions · state/cowork-permissions.md:315 · Known past errors (do not re-introduce)
+state:cowork-permissions · state/cowork-permissions.md:204 · Auto-mode tuning at Desktop 1.22209.0 (lesson 128, no live gate-state capture)
+state:cowork-permissions · state/cowork-permissions.md:237 · Browser/Computer-Use permission gates + Cowork's own auto-mode rule additions (Desktop 1.28929.0)
+state:cowork-permissions · state/cowork-permissions.md:289 · Host-dialog approval attestation and `/settings-review` staging — shipped, compiled off (agent 2.1.281–2.1.284)
+state:cowork-permissions · state/cowork-permissions.md:308 · Not part of the stack (adjacent, don't conflate)
+state:cowork-permissions · state/cowork-permissions.md:319 · Known past errors (do not re-introduce)
 state:credential-channels · state/credential-channels.md:16 · The four Desktop credential channels
 state:credential-channels · state/credential-channels.md:103 · Auth at spawn
 state:credential-channels · state/credential-channels.md:123 · What NOT to use

@@ -229,6 +229,7 @@ into the "elsewhere" branch.
 | `q5n` | fn | CLI 2.1.198 | `disableSkillShellExecution` forced true under `CLAUDE_CODE_IS_COWORK` — inline `` !`cmd` `` never runs in Cowork |
 | local-agent spawn env block | spawn config | asar 1.18286.0 | Sets `CLAUDE_CODE_IS_COWORK:"1"` + `CLAUDE_CODE_ENTRYPOINT:"local-agent"` on the **host-side agent process only** |
 | `jBo` | regex allowlist | asar 1.18286.0 | SSH-MCP env-forward filter — the only surviving `PYTHONDONTWRITEBYTECODE` hit; **not** the old VM allowlist |
+| base spawn env | literal | asar 2.16120.0 | `PYTHONDONTWRITEBYTECODE:"1"` set for every agent Desktop spawns — the agent process, not the sealed VM shell (L220) |
 | `/sessions/<id>/mnt/…` | path signature | VM image / in-VM ELF | The structural, env-independent Cowork-VM discriminator |
 
 ## Methodology note (the transferable lesson)

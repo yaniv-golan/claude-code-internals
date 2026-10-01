@@ -2462,6 +2462,11 @@
     "id": 117,
     "relevance": 0.75,
     "reason": "L117's rootfs-forensics per-session mount inventory (outputs/uploads/.claude/.claude-skills/.claude-projects, no home/tmp mount unit) is the VM-side ground truth L122's VM-loop mount table (.claude rwd, .claude/skills ro, uploads ro, projects/artifacts/scheduled ro) matches"
+   },
+   {
+    "id": 220,
+    "relevance": 0.85,
+    "reason": "approvals pinned to the judged input"
    }
   ],
   "123": [
@@ -3956,6 +3961,11 @@
     "id": 198,
     "relevance": 0.6,
     "reason": "what changes for a skill on each surface"
+   },
+   {
+    "id": 219,
+    "relevance": 0.85,
+    "reason": "attached files move with the task from 2.16120.0"
    }
   ],
   "209": [
@@ -4054,6 +4064,16 @@
     "id": 208,
     "relevance": 0.5,
     "reason": "scheduled tasks, which always get the mcp__cowork__ artifact family"
+   },
+   {
+    "id": 219,
+    "relevance": 0.85,
+    "reason": "scheduled runs get native Artifact from 2.16120.0"
+   },
+   {
+    "id": 221,
+    "relevance": 0.85,
+    "reason": "screenshot tools for artifacts and previews"
    }
   ],
   "213": [
@@ -4191,6 +4211,57 @@
     "id": 215,
     "relevance": 0.6,
     "reason": "get_device_info reports plugin server states"
+   }
+  ],
+  "219": [
+   {
+    "id": 212,
+    "relevance": 0.95,
+    "reason": "the artifact family scheduled runs had before"
+   },
+   {
+    "id": 208,
+    "relevance": 0.9,
+    "reason": "the migration sweep and its hold reasons"
+   },
+   {
+    "id": 210,
+    "relevance": 0.6,
+    "reason": "where a new task runs"
+   }
+  ],
+  "220": [
+   {
+    "id": 122,
+    "relevance": 0.85,
+    "reason": "host-loop path gate and canUseTool chain"
+   },
+   {
+    "id": 184,
+    "relevance": 0.8,
+    "reason": "organization forced-ask and per-call approval"
+   },
+   {
+    "id": 116,
+    "relevance": 0.6,
+    "reason": "the sealed VM shell environment"
+   }
+  ],
+  "221": [
+   {
+    "id": 212,
+    "relevance": 0.85,
+    "reason": "the artifact family and verify_artifact"
+   },
+   {
+    "id": 205,
+    "relevance": 0.75,
+    "reason": "visualize tools and the elicitation instruction"
+   },
+   {
+    "id": 147,
+    "relevance": 0.7,
+    "reason": "the imagine elicitation gate"
    }
   ]
  }

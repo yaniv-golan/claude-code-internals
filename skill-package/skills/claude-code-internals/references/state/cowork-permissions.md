@@ -122,7 +122,11 @@ lessons (see frontmatter).
    `request_cowork_directory`. **Second enforcement layer**:
    `canUseTool=async(g,S,k)=>xe(g,S)??Qt(g,S,...)??Se(g,S,k)` — a
    conditional wrapper (`Se&&`) that still funnels through the same
-   `/sessions/` deny even on a hook bypass. The rationale previously
+   `/sessions/` deny even on a hook bypass. From Desktop 2.16120.0 the
+   chain's last step pins an `allow` for a path-gated file tool to the
+   judged input (the card's `updatedInput` is replaced), and an
+   organization per-call-approval policy on a file tool is passed on to
+   the prompt instead of refused; side chats still refuse it (L220). The rationale previously
    printed here — "one shared scratch space, use bare filenames with
    both" — is **withdrawn** (Ch44/L163): it was copied from a Desktop
    prompt string that was wrong, and corrected upstream at 1.32885.1.

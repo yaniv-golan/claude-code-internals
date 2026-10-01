@@ -97,11 +97,11 @@ Both live copies negotiated protocol `2025-11-25` with the MCP-Apps extension (`
 
 # LESSON 212 — COWORK'S OTHER ARTIFACT TOOLS
 
-**Desktop's own `cowork` server has five artifact tools: `create_artifact`, `update_artifact`, `list_artifacts`, `verify_artifact` and `read_widget_context`. The first four are the other side of the native `Artifact` tool's switch: a session gets one family or the other, and every scheduled task gets these. Desktop calls them legacy. `system/init` lists an MCP tool even when it is disallowed, so listed does not mean callable.**
+**Desktop's own `cowork` server has five artifact tools: `create_artifact`, `update_artifact`, `list_artifacts`, `verify_artifact` and `read_widget_context`. The first four are the other side of the native `Artifact` tool's switch: a session gets one family or the other. Through Desktop 2.9939.x every scheduled task gets these; from 2.16120.0 a scheduled run gets the native tool (L219). Desktop calls them legacy. `system/init` lists an MCP tool even when it is disallowed, so listed does not mean callable.**
 
 ## One switch, two families
 
-Session setup (2.9939.2, chunk `Cb2x-E4A`) computes one predicate and uses it both ways:
+Session setup (2.9939.2, chunk `Cb2x-E4A`) computes one predicate and uses it both ways. From 2.16120.0 the predicate admits `sessionType` "scheduled" and drops the scheduled-task term (L219):
 
 ```
 vu = frameArtifactsEnabled && !scheduled && !bridge && !dispatchChild && !HIPAA
@@ -112,14 +112,15 @@ mcp__cowork__ artifact family (hasHtmlArtifacts):                      gate 2940
 | Session | Gets |
 |---|---|
 | interactive, frame artifacts on | native `Artifact` |
-| scheduled task (never satisfies `vu`) | `create_artifact`, `list_artifacts`, `update_artifact` (+ `verify_artifact` when enabled) |
+| scheduled task, through 2.9939.x (never satisfies `vu`) | `create_artifact`, `list_artifacts`, `update_artifact` (+ `verify_artifact` when enabled) |
+| scheduled task, from 2.16120.0 | native `Artifact` when frame artifacts are on (L219) |
 | frame artifacts off | the `mcp__cowork__` family |
 | interactive, frame artifacts on, **unattended** | **neither** |
 | bridge or dispatch child | the family, with `create`/`update`/`verify` in `disallowedTools`: only `list` and `read_widget_context` usable |
 
 `read_widget_context` is pushed in every session; a second copy lives on the `ccd_session` server for Code sessions. `verify_artifact` also needs gate `3229517805`'s `verifyToolsEnabled` and `debugLogEnabled` (both default false; both true at the capture) and a session type other than `chat`.
 
-Across 912 `audit.jsonl` files (3,032 init frames) there are no exceptions to three statements:
+Across 912 `audit.jsonl` files (3,032 init frames, all before 2.16120.0) there are no exceptions to three statements:
 - a frame-artifact session never carries the `mcp__cowork__` artifact tools;
 - the native `Artifact` tool appears exactly when `frameArtifactsEnabled` is true;
 - scheduled sessions always carry `create`, `list` and `update`.
@@ -142,7 +143,7 @@ Calls recorded on the capturing machine: `update_artifact` 31, `verify_artifact`
 
 ## For an author or tester
 
-- A skill that saves an HTML page from a scheduled task gets `mcp__cowork__create_artifact`, not the `Artifact` tool. Name neither in instructions; describe the outcome.
+- A skill that saves an HTML page from a scheduled task gets `mcp__cowork__create_artifact` on Desktop builds through 2.9939.x and the `Artifact` tool from 2.16120.0 (L219). Name neither in instructions; describe the outcome.
 - Don't assert a tool's availability from `init.tools` alone when it is an MCP tool.
 
 ---

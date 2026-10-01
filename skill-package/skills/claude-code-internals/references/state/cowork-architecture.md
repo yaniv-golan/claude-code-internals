@@ -662,13 +662,20 @@ setting saved and the app restarted, new tasks still ran in the cloud (`/home/cl
 `CLAUDE_CODE_ENTRYPOINT=remote_cowork`), in Auto mode too; a local-only scheduled task
 did run locally. The bundled interface and three builds fetched from
 `assets-proxy.anthropic.com` route identically, so the cause lies outside that code.
+On Desktop 2.16120.0 (from 2026-09-30) plain new tasks have run locally again: four local
+sessions on disk with no scheduled task, parent or bridge, and a relayed run on 2026-10-01
+(`/sessions/<slug>`, entrypoint unset) with the setting on; the user reports it is honoured
+only some of the time. The Desktop app (main process and interface bundle, 2.9939.4 and
+2.16120.0) has no lane choice of its own: its only veto is the organization local-tasks-off
+setting (gate `3634338308`, off here), unchanged. Check `pwd`/`CLAUDE_CODE_ENTRYPOINT` per run.
 
 ## Desktop 2.9939.2 additions (L212–L214)
 
 - **Artifact tools by session kind.** One predicate (`frameArtifactsEnabled`,
   not scheduled/bridge/dispatch child/HIPAA) picks the family: eligible
   sessions get the native `Artifact` tool; every other session, including every
-  scheduled task, gets `mcp__cowork__create_artifact` / `update_artifact` /
+  scheduled task through 2.9939.x (from 2.16120.0 scheduled runs are eligible, L219),
+  gets `mcp__cowork__create_artifact` / `update_artifact` /
   `list_artifacts` (+ `verify_artifact` under `3229517805`) when `2940196192`
   is on. `read_widget_context` is always present. Desktop calls the family
   legacy (L212).
@@ -684,6 +691,27 @@ did run locally. The bundled interface and three builds fetched from
 - **Fast mode on 3p.** `CLAUDE_CODE_DISABLE_FAST_MODE` is set for every
   third-party deployment; it changes behaviour only for a gateway with a static
   credential (L214).
+
+
+## Desktop 2.16120.0 additions (L219–L221)
+
+- **Scheduled runs get native `Artifact`.** The family predicate admits
+  `sessionType` "scheduled"; session start clears `frameArtifactsEnabled` for a
+  scheduled run unless `1978029737.scheduledRunFrameArtifacts` (default true,
+  unserved 2026-10-01). An always-allow on a scheduled publish prompt is stored per
+  task (`scheduled-task-grants/…/artifact-publish-grants.json`, keyed task id +
+  creation time) and auto-approves later runs (L219).
+- **Sweep carries attached files.** `local_folders` for attached files only when
+  `!(boundEnabled && boundFilesEnabled)` (`2974609625`, both true 2026-10-01);
+  bound mode only, at most 16 files, shareable parents (L219).
+- **Host-loop file permissions.** An approved file-tool call runs on the judged
+  input; an org per-call-approval policy reaches the prompt (side chats still
+  refuse); `allow_cowork_file_delete` refuses invalid requests before the prompt;
+  `PYTHONDONTWRITEBYTECODE=1` in every spawn env (L220).
+- **Screenshot tools.** `screenshot_file_preview` (`verifyToolsEnabled` +
+  `coworkNativeFilePreview`, not bridge/dispatch child) and `screenshot_artifact`
+  (artifact family); `canVerifyArtifacts` = `3229517805.verifyToolsEnabled` alone.
+  Imagine availability = `3444158716`, not HIPAA, not org-blocked (`2742800629`) (L221).
 
 ## `computer://` links by lane (L215)
 

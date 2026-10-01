@@ -192,7 +192,7 @@ only URLs that exist:
 Print this and ask what they want to know:
 
 ```
-Available topics (218 lessons across 59 chapters):
+Available topics (221 lessons across 60 chapters):
   Boot & Core:    boot sequence, query engine, state management, system prompt, architecture overview
   Tools:          tool system, bash tool, file tools, search tools, MCP system
   Agents & AI:    skills system, agent system, coordinator mode, teams/swarm
@@ -222,4 +222,4 @@ chapter or lesson. Quick bands:
 | `24`–`34` | 27–37 | 110–132 | CLI refresh v2.1.198 + Desktop/Cowork internals: runtime detection, VM rootfs forensics, stream contract, cloud tasks/bridge, reasoning config, sub-agent execution, device/partner bridges, skill discovery |
 | `35`–`43` | 38–46 | 133–169 | CLI refresh v2.1.217/v2.1.231 + Cowork lanes & mounts, probe corrections, elicitation classes, auto-memory gates, path resolution, compaction budget, in-app browser |
 | `44`–`50` | 47–53 | 170–198 | CLI surface v2.1.250 + plugin `bin/` PATH & cloud lane, narration/silent-turn, Desktop 1.46388/2.7032, artifact host-tools & folder skills |
-| `51`–`56` | 54–59 | 199–218 | Plugin MCP stubs & hooks by lane, forked-skill relay & input channels, routine migration, Desktop 2.9939 artifacts/gates/egress, cloud device tools, uploaded skills |
+| `51`–`57` | 54–60 | 199–221 | Plugin MCP stubs & hooks by lane, forked-skill relay & input channels, routine migration, Desktop 2.9939 artifacts/gates/egress, cloud device tools, uploaded skills, Desktop 2.16120 scheduled artifacts & host-loop permissions |

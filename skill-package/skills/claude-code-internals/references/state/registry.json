@@ -8064,13 +8064,16 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.280",
-      "summary": "Value gate for Cowork Artifacts: sharingEnabled (default false; gates getArtifactRepublishContent), mcpCallsPerMinute (default 30), debugLogEnabled, verifyToolsEnabled. At the 2026-09-23 capture it serves {debugLogEnabled:true, verifyToolsEnabled:true} with no sharingEnabled. verifyToolsEnabled && debugLogEnabled also enable mcp__cowork__verify_artifact (L212); both true from the 2026-09-26 capture.",
+      "summary": "Value gate for Cowork Artifacts: sharingEnabled (default false; gates getArtifactRepublishContent), mcpCallsPerMinute (default 30), debugLogEnabled, verifyToolsEnabled. At the 2026-09-23 capture it serves {debugLogEnabled:true, verifyToolsEnabled:true} with no sharingEnabled. verifyToolsEnabled && debugLogEnabled also enable mcp__cowork__verify_artifact (L212); both true from the 2026-09-26 capture. From Desktop 2.16120.0 verifyToolsEnabled alone is canVerifyArtifacts (no longer also coworkArtifacts 2940196192), which serves mcp__cowork__screenshot_file_preview; on 2026-10-01 it was served force-on with autoPublishEnabled, debugLogEnabled, sharingEnabled and verifyToolsEnabled all true (L221).",
       "provenance": [
         {
           "lesson": 195
         },
         {
           "lesson": 212
+        },
+        {
+          "lesson": 221
         }
       ],
       "namespace": "desktop_fcache",
@@ -8333,10 +8336,13 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.280",
-      "summary": "Config for Desktop's [RemoteMigrationSweep] (from 1.44121.1): hourly pass that converts a local scheduled task into a cloud routine once it has run >=2 times over >=0.5 days (minRunsObserved/minObservedDays), among other conditions; tasks attached to a Space (heldBlockReasons ['space']), sub-hourly/custom-cron, with attachments etc. are held back; device-tied tasks move as bound routines; reverted tasks are skipped; disables the local copy and stamps migratedToRemote={triggerId, via:'sweep'}. Force-on; observed migrating a local hourly task on the capturing machine on 2026-09-24 (Ch56/L208).",
+      "summary": "Config for Desktop's [RemoteMigrationSweep] (from 1.44121.1): hourly pass that converts a local scheduled task into a cloud routine once it has run >=2 times over >=0.5 days (minRunsObserved/minObservedDays), among other conditions; tasks attached to a Space (heldBlockReasons ['space']), sub-hourly/custom-cron, etc. are held back (attached files too, until Desktop 2.16120.0 added boundFilesEnabled: with boundEnabled && boundFilesEnabled, both served true on 2026-10-01, a task with at most 16 attached files can move as a bound routine, L219); device-tied tasks move as bound routines; reverted tasks are skipped; disables the local copy and stamps migratedToRemote={triggerId, via:'sweep'}. Force-on; observed migrating a local hourly task on the capturing machine on 2026-09-24 (Ch56/L208).",
       "provenance": [
         {
           "lesson": 208
+        },
+        {
+          "lesson": 219
         }
       ],
       "namespace": "desktop_fcache",
@@ -8604,6 +8610,55 @@
         },
         {
           "lesson": 58
+        }
+      ]
+    },
+    {
+      "id": "env.PYTHONDONTWRITEBYTECODE",
+      "kind": "env-var",
+      "name": "PYTHONDONTWRITEBYTECODE",
+      "status": "live",
+      "first_seen": "2.16120.0",
+      "removed_in": null,
+      "as_of": "2.1.284",
+      "summary": "Desktop sets PYTHONDONTWRITEBYTECODE=1 in the base environment of every agent it spawns, first-party and third-party, from Desktop 2.16120.0 (next to MCP_CONNECTION_NONBLOCKING and API_TIMEOUT_MS). It reaches the agent process and its children, not the sealed VM shell of the host loop. Its other occurrence is the regex list of variables Desktop forwards to MCP server processes.",
+      "provenance": [
+        {
+          "lesson": 220
+        },
+        {
+          "lesson": 116,
+          "note": "the MCP env-forward list occurrence"
+        }
+      ]
+    },
+    {
+      "id": "tool.mcp__cowork__screenshot_file_preview",
+      "kind": "tool",
+      "name": "mcp__cowork__screenshot_file_preview",
+      "status": "live",
+      "first_seen": "2.16120.0",
+      "removed_in": null,
+      "as_of": "2.1.284",
+      "summary": "Returns a JPEG of a .html/.htm/.svg file the session wrote and presented, as the file preview panel renders it (visible area, panel width) plus a note. Served when canVerifyArtifacts (3229517805.verifyToolsEnabled) and 1978029737.coworkNativeFilePreview, not in bridge sessions or dispatch children; independent of the artifact family. The preview loads nothing by URL. In all six local sessions started after the 2.16120.0 install.",
+      "provenance": [
+        {
+          "lesson": 221
+        }
+      ]
+    },
+    {
+      "id": "tool.mcp__cowork__screenshot_artifact",
+      "kind": "tool",
+      "name": "mcp__cowork__screenshot_artifact",
+      "status": "live",
+      "first_seen": "2.16120.0",
+      "removed_in": null,
+      "as_of": "2.1.284",
+      "summary": "Returns a JPEG of an artifact (by slug id) as the artifact side panel renders it. Served inside the mcp__cowork__ artifact family (L212) when canVerifyArtifacts and the artifact view capture are available.",
+      "provenance": [
+        {
+          "lesson": 221
         }
       ]
     }

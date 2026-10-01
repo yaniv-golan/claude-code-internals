@@ -2470,6 +2470,52 @@
     206
    ],
    "hint": "Ask Claude in Cowork to create or change the skill; confirm the Save skill / Update skill card. An update keeps the skill's scripts and other files. A skill created in chat is instructions-only. Skills belong to an organization: a skill uploaded in another org is not found."
+  },
+  {
+   "pattern": [
+    "scheduled task Artifact tool",
+    "scheduled task create_artifact missing",
+    "scheduled run publishes without asking"
+   ],
+   "lessons": [
+    219,
+    212
+   ],
+   "hint": "From Desktop 2.16120.0 a scheduled run gets the native Artifact tool, not create_artifact. An always-allow on its publish prompt is stored for that task, so later runs publish without asking."
+  },
+  {
+   "pattern": [
+    "scheduled task moved to cloud with attached files",
+    "attached files did not keep task local"
+   ],
+   "lessons": [
+    219,
+    208
+   ],
+   "hint": "From Desktop 2.16120.0 attached files no longer keep a scheduled task local when the cloud side accepts files; it can move as a bound routine. Set the task to run only on this computer if it must stay local."
+  },
+  {
+   "pattern": [
+    "permission hook updatedInput ignored in Cowork",
+    "organization policy file tool prompt",
+    "allow_cowork_file_delete refused without prompt",
+    "__pycache__ not written"
+   ],
+   "lessons": [
+    220
+   ],
+   "hint": "From Desktop 2.16120.0 an approved host-loop file tool runs on the judged input, an org per-call-approval policy shows a prompt (side chats still refuse), invalid delete requests are refused before the prompt, and PYTHONDONTWRITEBYTECODE=1 is set for the agent."
+  },
+  {
+   "pattern": [
+    "screenshot_file_preview",
+    "check my HTML render",
+    "preview panel external scripts not loading"
+   ],
+   "lessons": [
+    221
+   ],
+   "hint": "screenshot_file_preview returns an image of a presented .html/.htm/.svg file as the preview panel renders it. The panel loads nothing by URL: keep scripts, styles and data inline."
   }
  ]
 }

@@ -42,7 +42,7 @@ The migration ran under Desktop 2.7032.0, a day before the machine updated to 2.
  nextFireBufferMinutes:15, …}
 ```
 
-So a local scheduled task that has run at least twice, with at least half a day between its first and last counted run, is a candidate — among other conditions. It is held back by any of a list of block reasons: attached to a Space (`heldBlockReasons`), a schedule more often than hourly or a custom cron expression, a working directory, worktree or source branch, a dispatch hook, Chrome use, attached files, no prompt, or its next run less than 15 minutes away. Runs are counted against the task's current prompt, so editing the prompt restarts the count. Tasks already marked `migratedFromRemote` or `migratedToRemoteAt`, and watcher tasks, are skipped. A task tied to the device (local MCP servers, Chrome, computer use, folders) can still move, as a routine **bound** to this computer (`boundEnabled`). First present in the backed-up builds from Desktop 1.44121.1 (0 in every backup through 1.40609.1).
+So a local scheduled task that has run at least twice, with at least half a day between its first and last counted run, is a candidate — among other conditions. It is held back by any of a list of block reasons: attached to a Space (`heldBlockReasons`), a schedule more often than hourly or a custom cron expression, a working directory, worktree or source branch, a dispatch hook, Chrome use, attached files (through Desktop 2.9939.x; from 2.16120.0 they move with the task when the cloud side accepts files, L219), no prompt, or its next run less than 15 minutes away. Runs are counted against the task's current prompt, so editing the prompt restarts the count. Tasks already marked `migratedFromRemote` or `migratedToRemoteAt`, and watcher tasks, are skipped. A task tied to the device (local MCP servers, Chrome, computer use, folders) can still move, as a routine **bound** to this computer (`boundEnabled`). First present in the backed-up builds from Desktop 1.44121.1 (0 in every backup through 1.40609.1).
 
 ## What decides local or cloud for a new task
 
@@ -118,7 +118,7 @@ Local host-loop Cowork passes the alias `Bash` → `mcp__workspace__bash` (a fir
 
 # LESSON 210 — WHERE A NEW COWORK TASK RUNS
 
-**The claude.ai interface, not the Desktop, picks the lane for a new Cowork task. Its code says an account that has opted out of cloud always gets a local session. On the capturing machine the opt-out was saved, the app restarted, and new tasks still ran in the cloud — with and without Auto mode. The one route shown to produce local sessions was a scheduled task with its own "Only on this computer" switch on.**
+**The claude.ai interface, not the Desktop, picks the lane for a new Cowork task. Its code says an account that has opted out of cloud always gets a local session. On the capturing machine with Desktop 2.9939.2 the opt-out was saved, the app restarted, and new tasks still ran in the cloud — with and without Auto mode. With Desktop 2.16120.0 plain new tasks have run locally again on the same machine, but not every time. Check where each task ran.**
 
 ## Three controls with one name
 
@@ -175,10 +175,12 @@ Desktop 2.9939.2, 2026-09-25, a new task with no folder, the message `pwd; echo 
 
 So the code predicts local for all three plain tasks, and all three ran in the cloud. What makes the difference was not found. The interface code is not a fixed part of the app: the Desktop's `app://` handler serves a claude.ai build fetched from `assets-proxy.anthropic.com` and falls back to the copy in the app, and the Desktop's cache held three builds of the routing file from the previous day. All three, and the bundled copy, route step 3 identically, so the gap lies outside the code read here — most plausibly in what the server returns as the account's setting, which cannot be checked from the machine.
 
+On Desktop 2.16120.0 (from 2026-09-30) the same machine has four plain local sessions on disk (no scheduled task, parent session or bridge), and a run on 2026-10-01 with the setting on came back `/sessions/<slug>` with `CLAUDE_CODE_ENTRYPOINT` unset (relayed from a sibling session). The user reports that the setting is honoured only some of the time. The Desktop app itself still contains no lane choice for a new task, in its main process or its interface bundle: "Only on this computer" occurs in neither 2.9939.4 nor 2.16120.0, and its only veto, an organization's local-tasks-off setting, is the same in both and allows local here.
+
 A cloud task can still use the Mac: its "Computer" tools reach the Mac through the device bridge, but the shell there works only after a folder is connected to the task (`[remote-bash] … mounts=<folder>:rw` in the Desktop log). That is still a cloud session.
 
 ## For an author or tester
 
-- Do not assume the Settings switch keeps a new task local. Check where it ran: `pwd` is `/sessions/<slug>` locally and `/home/claude` in the cloud, where `CLAUDE_CODE_ENTRYPOINT` is `remote_cowork`.
+- Do not assume the Settings switch keeps a new task local, or that it sends it to the cloud. Check where each run went: `pwd` is `/sessions/<slug>` locally and `/home/claude` in the cloud, where `CLAUDE_CODE_ENTRYPOINT` is `remote_cowork`.
 - To get a local session on demand, use a scheduled task with its own "Only on this computer" switch on, set to manual, and start it with Run now. Remember L208: a scheduled task that is not local-only can be moved to the cloud after two runs.
 - When reporting it, say which control was set, and include the `pwd` output.
