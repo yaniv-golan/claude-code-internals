@@ -62,6 +62,16 @@ silently regress ranking.
   baseline recorded before that field existed is judged by its questions' own `split` labels, so
   a baseline cut under another split is refused with "lesson split mismatch" rather than compared
   over different question populations.
+  With `--baseline`, after the verdict, it prints a **drift report** that never fails: per gated
+  stratum × split the MRR and nDCG@5 delta against the baseline and the budget left before
+  `mrr_ndcg_drop` trips; every gated question that left or reached rank 1; and the **fragile**
+  rank-1 questions, whose acceptable lesson leads the best non-acceptable one by less than
+  `FRAGILE_MARGIN` (1.0) keyword-score points (`margin1` on each scored question). The threshold is
+  about the 10th percentile of rank-1 leads, and covers three of the four plain top-1 losses that
+  corpus growth alone caused in the 2.16120.0 chapter. Fragile dev questions are named; holdout
+  ones are only counted, so the list cannot become a to-do list of holdout items. Read it before
+  and after a content change: a small budget left or a lesson you are editing on the fragile list
+  says the next edit may trip the gate.
 - **`resplit.js`** — applies the split rule to a committed question set:
   `node evals/retrieval/resplit.js <questions-vN.json> [--check]`. Deterministic, no model calls;
   recovers the file's random split (holdout plus the lessons already moved), so re-running is a

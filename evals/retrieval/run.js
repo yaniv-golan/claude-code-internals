@@ -196,8 +196,24 @@ function scoreWithRelevant(q, results, error) {
     rank_source: lib.rankOf(q.lesson_id, results),
     n_acceptable: Object.keys(q.relevant).length,
     top1,
+    margin1: rank === 1 ? rankOneMargin(results, q.relevant) : null,
     error,
   };
+}
+
+/**
+ * How far an acceptable lesson at rank 1 leads: its keyword score minus the
+ * keyword score of the best-ranked lesson that is NOT acceptable (only a
+ * non-acceptable lesson overtaking it changes the question's rank). null when
+ * either has no keyword score (a TF-IDF-tail result) or nothing else ranks.
+ * Reported only (driftReport's "fragile" list); never gated.
+ */
+function rankOneMargin(results, relevant) {
+  const lead = results[0];
+  const rival = results.find((r) => !((relevant[r.id] || 0) > 0));
+  if (!lead || !rival || typeof lead.keyword_score !== 'number' || typeof rival.keyword_score !== 'number') return null;
+  if (!(rival.keyword_score > 0)) return null;
+  return Math.round((lead.keyword_score - rival.keyword_score) * 1e4) / 1e4;
 }
 
 /** Per stratum x split: how often the top-1 is the source vs another acceptable lesson. */
@@ -528,6 +544,73 @@ function compareToBaseline(report, baseline, thresholdsIn) {
 }
 
 // ---------------------------------------------------------------------------
+// Drift report (never gated)
+// ---------------------------------------------------------------------------
+
+/**
+ * A rank-1 question whose acceptable lesson leads the best non-acceptable one
+ * by less than this many keyword-score points is "fragile". Picked from the data
+ * (questions-v2 under baseline-v5's corpus): it is about the 10th percentile of
+ * rank-1 margins (0.99), and three of the four plain dev top-1 losses that the
+ * Desktop 2.16120.0 chapter caused through corpus growth alone (no edit to their
+ * lessons) had leads of 0.02, 0.22 and 0.31 (the fourth, 1.04). Report only.
+ */
+const FRAGILE_MARGIN = 1.0;
+
+/**
+ * What has moved since the gated baseline, below the gate. Pure; never fails.
+ *  - aggregates: per gated stratum x split, the MRR and nDCG@5 delta and the
+ *    budget left before `mrr_ndcg_drop` trips (the smaller of the two);
+ *  - top1: questions that left or reached rank 1, gated or not;
+ *  - fragile: rank-1 questions leading by less than FRAGILE_MARGIN. Dev ones are
+ *    named; holdout ones are only counted, so the list cannot become a to-do list
+ *    of holdout items.
+ */
+function driftReport(report, baseline, thresholdsIn, fragileMargin = FRAGILE_MARGIN) {
+  const t = { ...DEFAULT_THRESHOLDS, ...(thresholdsIn || {}) };
+  const aggregates = [];
+  for (const key of Object.keys(report.by_stratum_split).sort()) {
+    const cur = report.by_stratum_split[key];
+    const base = baseline.by_stratum_split[key];
+    if (!base || !GATED_STRATA.has(key.split('|')[0])) continue;
+    const dMrr = cur.mrr - base.mrr;
+    const dNdcg = cur.ndcg5 - base.ndcg5;
+    aggregates.push({ key, mrr: cur.mrr, d_mrr: dMrr, ndcg5: cur.ndcg5, d_ndcg5: dNdcg, budget_left: t.mrr_ndcg_drop + Math.min(dMrr, dNdcg) });
+  }
+  const baseById = new Map(baseline.queries.lesson.map((q) => [q.qid, q]));
+  const top1 = { lost: [], gained: [] };
+  const fragile = { dev: [], holdout_count: 0 };
+  for (const q of report.queries.lesson) {
+    if (!GATED_STRATA.has(q.stratum)) continue;
+    const b = baseById.get(q.qid);
+    if (b && b.rank === 1 && q.rank !== 1) top1.lost.push({ qid: q.qid, key: `${q.stratum}|${q.split}`, lesson_id: q.lesson_id, from: 1, to: q.rank });
+    if (b && b.rank !== 1 && q.rank === 1) top1.gained.push({ qid: q.qid, key: `${q.stratum}|${q.split}`, lesson_id: q.lesson_id, from: b.rank, to: 1 });
+    if (q.rank === 1 && typeof q.margin1 === 'number' && q.margin1 < fragileMargin) {
+      if (q.split === 'holdout') fragile.holdout_count++;
+      else fragile.dev.push({ qid: q.qid, key: `${q.stratum}|${q.split}`, lesson_id: q.lesson_id, margin1: q.margin1 });
+    }
+  }
+  fragile.dev.sort((a, b) => a.margin1 - b.margin1);
+  return { aggregates, top1, fragile, fragile_margin: fragileMargin };
+}
+
+function printDrift(d, baselineName) {
+  const f4 = (x) => (x >= 0 ? '+' : '') + x.toFixed(4);
+  console.log(`\nDrift since ${baselineName} (reported, never gated):`);
+  console.log('  stratum|split        MRR      dMRR     nDCG@5   dnDCG    budget left');
+  for (const a of d.aggregates) {
+    console.log(`  ${a.key.padEnd(18)} ${a.mrr.toFixed(4)}  ${f4(a.d_mrr)}  ${a.ndcg5.toFixed(4)}  ${f4(a.d_ndcg5)}  ${a.budget_left.toFixed(4)}`);
+  }
+  const row = (x) => `${x.qid} (${x.key}, L${x.lesson_id}) ${x.from} -> ${x.to === null ? 'not found' : x.to}`;
+  console.log(`  top-1 lost: ${d.top1.lost.length}${d.top1.lost.length ? '' : ' (none)'}`);
+  for (const x of d.top1.lost) console.log(`    ${row(x)}`);
+  console.log(`  top-1 gained: ${d.top1.gained.length}${d.top1.gained.length ? '' : ' (none)'}`);
+  for (const x of d.top1.gained) console.log(`    ${row(x)}`);
+  console.log(`  fragile rank-1 (lead < ${d.fragile_margin} keyword points): ${d.fragile.dev.length} dev, ${d.fragile.holdout_count} holdout (holdout counted, not named)`);
+  for (const x of d.fragile.dev) console.log(`    ${x.qid} (${x.key}, L${x.lesson_id}) lead ${x.margin1.toFixed(4)}`);
+}
+
+// ---------------------------------------------------------------------------
 // Human table
 // ---------------------------------------------------------------------------
 
@@ -607,6 +690,9 @@ function main() {
       for (const f of cmp.failures) console.log(`    ${f}`);
       process.exitCode = 1;
     }
+    if (report.queries.lesson.some((q) => q.margin1 !== undefined)) {
+      printDrift(driftReport(report, baseline, thresholds), path.basename(opts.baseline));
+    }
   }
 }
 
@@ -614,6 +700,7 @@ module.exports = {
   DEFAULT_THRESHOLDS, GATED_STRATA, resolveThresholds, countGated,
   parseArgs, findLatestQuestions, scoreLessonQuestion, scoreWithRelevant, top1Breakdown, scoreStateQuestion, scoreNegativeQuestion,
   aggregateByStratumSplit, summarizeNegatives, buildReport, splitMismatch, compareToBaseline,
+  FRAGILE_MARGIN, rankOneMargin, driftReport,
 };
 
 if (require.main === module) main();

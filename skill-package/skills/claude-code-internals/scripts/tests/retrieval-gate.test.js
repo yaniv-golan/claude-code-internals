@@ -383,3 +383,39 @@ test('gen-questions: a resumed run uses the split stored in the partial, never a
   assert.ok(lessonQs.length > 0);
   for (const x of lessonQs) assert.strictEqual(x.split, holdout.has(x.lesson_id) ? 'holdout' : 'dev', `lesson ${x.lesson_id}`);
 });
+
+test('rankOneMargin: the lead over the best non-acceptable lesson, by keyword score', (t) => {
+  if (!PRESENT) { t.skip(SKIP); return; }
+  const R = require(RUN_JS);
+  const r = (id, k) => ({ id, keyword_score: k });
+  assert.strictEqual(R.rankOneMargin([r(1, 5), r(2, 4.5), r(3, 4)], { 1: 2 }), 0.5);
+  // Another acceptable lesson in between is not a rival.
+  assert.strictEqual(R.rankOneMargin([r(1, 5), r(2, 4.9), r(3, 4)], { 1: 2, 2: 1 }), 1);
+  // A rival from the TF-IDF tail (no keyword score) or nothing else ranked: no margin.
+  assert.strictEqual(R.rankOneMargin([r(1, 5), { id: 2, keyword_score: 0, tfidf_score: 0.1 }], { 1: 2 }), null);
+  assert.strictEqual(R.rankOneMargin([r(1, 5)], { 1: 2 }), null);
+});
+
+test('driftReport: aggregate deltas and budget, top-1 moves, fragile dev named and holdout counted', (t) => {
+  if (!PRESENT) { t.skip(SKIP); return; }
+  const R = require(RUN_JS);
+  const base = report(1, clone(BASE_QS));
+  const cur = clone(BASE_QS);
+  cur[0] = { ...q('id-0001', 'identifier', 'dev', 2) };                   // top-1 lost
+  cur[1] = { ...q('pl-0002', 'plain', 'dev', 1), margin1: 0.3 };          // top-1 gained, fragile
+  cur[2] = { ...q('id-0003', 'identifier', 'holdout', 2) };
+  cur[3] = { ...q('pl-0004', 'plain', 'holdout', 1), margin1: 0.1 };     // fragile holdout: counted only
+  const d = R.driftReport(report(1, cur), base, R.DEFAULT_THRESHOLDS);
+  const id = d.aggregates.find((a) => a.key === 'identifier|dev');
+  assert.strictEqual(id.d_mrr, -0.5);
+  assert.strictEqual(id.budget_left, 0.02 - 0.5);
+  const pl = d.aggregates.find((a) => a.key === 'plain|dev');
+  assert.strictEqual(pl.d_mrr, 0.75);
+  assert.strictEqual(pl.budget_left, 0.02, 'nDCG unchanged: the smaller delta (0) sets the budget');
+  assert.deepStrictEqual(d.top1.lost.map((x) => x.qid), ['id-0001']);
+  assert.deepStrictEqual(d.top1.gained.map((x) => [x.qid, x.from]), [['pl-0002', 4], ['pl-0004', 7]]);
+  assert.deepStrictEqual(d.fragile.dev.map((x) => x.qid), ['pl-0002']);
+  assert.strictEqual(d.fragile.holdout_count, 1);
+  assert.ok(!JSON.stringify(d.fragile).includes('pl-0004'), 'a holdout question is never named as fragile');
+  assert.strictEqual(R.FRAGILE_MARGIN, d.fragile_margin);
+});
