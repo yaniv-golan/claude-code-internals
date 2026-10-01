@@ -43,17 +43,18 @@ bash <scripts-dir>/check-version.sh                 # .sh: run with bash, not no
 
 **In Cowork — the shell's working directory is under `/sessions`, or the shell
 tool is `mcp__workspace__bash` — or if the path above is reported missing**
-(`Cannot find module`, `No such file`): the shell and the file tools are different
-mounts of the same files, and the path above is a *host* path the VM shell cannot
-open. Locate the scripts from the shell's side instead:
+(`Cannot find module`, `No such file`): the shell and the file tools may be different
+mounts of the same files, and the path above may be one the shell cannot open.
+Locate the scripts from the shell's side instead:
 
 ```bash
-find /sessions -type d -path '*/skills/claude-code-internals/scripts' 2>/dev/null | head -1
+find /sessions /root/.claude/plugins -type d -path '*/skills/claude-code-internals/scripts' 2>/dev/null | head -1
 ```
 
-It prints **one absolute path** (covering both install shapes,
+It prints **one absolute path** (covering the install shapes,
 `.remote-plugins/plugin_<id>/skills/…` and
-`.local-plugins/marketplaces/…/skill-package/skills/…`); use it as `<scripts-dir>`.
+`.local-plugins/marketplaces/…/skill-package/skills/…` in local Cowork, and
+`/root/.claude/plugins/synced/…/skills/…` in cloud Cowork); use it as `<scripts-dir>`.
 Do **not** type `$CLAUDE_SKILL_DIR` or `$CLAUDE_PLUGIN_ROOT` into a shell command:
 neither is a usable environment variable there. Do **not** `cd` into the directory
 and run a relative name, and do **not** stash the path in a shell variable — both
