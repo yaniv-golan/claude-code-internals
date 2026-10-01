@@ -63,6 +63,13 @@
  * One rule is enforced in code (keepTitleTerm()): an update never leaves the
  * lesson without a term asking about its title's subject when it had one; the
  * first dropped such term is put back (`title_term_restored`).
+ *
+ * FILLING GAPS. `--fill-gaps <ids>` runs the update prompt on named lessons,
+ * stale or not, allowing the same bounded swaps (NEW_TOPIC_SWAPS, near-duplicates
+ * first, title guard) for any topic already in the lesson that no term reaches
+ * (prompt_version FILL_GAPS_PROMPT_VERSION; `replaced` records the swaps). It
+ * is the deliberate way to cover an old gap, which a stale-lesson update never
+ * does.
  * The fresh prompt is used for a lesson without terms, for --regen, and for
  * every stale lesson under --fresh.
  *
@@ -112,11 +119,12 @@ const { extractIdentifiers, normalize } = require('./identifiers.js');
 
 const PROPOSALS_FILE = 'data/vocab-proposals.json'; // relative to the repository root
 /** sha256 of data/vocab-proposals.json. Changed only together with a --generate run (see the header). */
-const PROPOSALS_SHA256 = 'e789710f73f99e13de1e96b83efc41afb72462454f72d19b443d7da7d588c52f';
+const PROPOSALS_SHA256 = '105fa84e9989d58b1c5d13a4d529be10a5daf6b0d325e61b760e3b64349adf2e';
 const DEFAULT_MODEL = 'claude-opus-5-5'; // evals/retrieval/gen-questions.js used claude-sonnet-5
 const PROMPT_VERSION = 'vocab-v1';
 const UPDATE_PROMPT_VERSION = 'vocab-v3-update'; // buildUpdatePrompt(): prior terms + previous and current text (v3: up to NEW_TOPIC_SWAPS for a topic the edit added)
 const NEW_TOPIC_SWAPS = 3;
+const FILL_GAPS_PROMPT_VERSION = 'vocab-v3-fill-gaps'; // buildUpdatePrompt(..., {fillGaps: true}): --fill-gaps <ids>
 const MAX_TERMS = 15;
 const MAX_TERM_CHARS = 80;
 const MAX_TERM_WORDS = 12;
@@ -339,9 +347,21 @@ function buildPrompt(lesson, text) {
  * moves the vocabulary by what changed, not by a fresh draw of 15 phrasings.
  * The lesson part (title, summary, text) is the same as buildPrompt()'s.
  */
-function buildUpdatePrompt(lesson, text, priorTerms, previousText = null) {
+function buildUpdatePrompt(lesson, text, priorTerms, previousText = null, { fillGaps = false } = {}) {
   const clip = (t) => (t.length > LESSON_TEXT_LIMIT ? t.slice(0, LESSON_TEXT_LIMIT) + '\n[...truncated]' : t);
-  const newTopic = previousText === null
+  const swapRule = [
+    `  With fewer than ${MAX_TERMS} terms, add. With ${MAX_TERMS}, you may replace up to ${NEW_TOPIC_SWAPS} terms for it,`,
+    '  choosing first a term that nearly duplicates another term in the list, then the least specific',
+    '  term (the one most likely to fit other lessons too). Never replace the last term that asks',
+    '  about the subject of the lesson title. Never replace a term to reword, tidy or "improve" it.',
+  ];
+  const newTopic = fillGaps
+    ? [
+      '- COVERAGE GAP: if the lesson covers a topic that none of the terms above reaches, add terms',
+      '  for it. If every topic is reached, return the list unchanged.',
+      ...swapRule,
+    ]
+    : previousText === null
     ? [
       '- Do NOT replace a term that is still true, not even to make room for something the lesson',
       '  covers that no term reaches. Only an untrue term may go.',
@@ -360,10 +380,10 @@ function buildUpdatePrompt(lesson, text, priorTerms, previousText = null) {
     'words they would actually type. Below is one lesson from a reference about how Claude Code',
     '(Anthropic\'s CLI coding agent) and Claude Cowork work internally.',
     '',
-    'The lesson was edited. Before the edit, these search terms were written for it:',
+    fillGaps ? 'These search terms were written for it:' : 'The lesson was edited. Before the edit, these search terms were written for it:',
     ...priorTerms.map((t) => `- ${t}`),
     '',
-    'Update that list for the lesson as it reads NOW:',
+    fillGaps ? 'Review that list for coverage of the lesson as it reads now:' : 'Update that list for the lesson as it reads NOW:',
     '- KEEP every term that is still true of the lesson and still a fair way to ask for it. Copy a',
     '  kept term EXACTLY, character for character: same words, same word forms, same order. Do not',
     '  shorten, reword, re-tense or tidy it. Small wording changes are not improvements here: people',
@@ -467,7 +487,7 @@ async function mapPool(items, concurrency, fn) {
  * the hash of the prompt itself (the caller re-verifies it against the lessons on
  * disk before accepting the output). `callModel` is injectable for tests.
  */
-async function generateProposals(lessons, lessonText, { model = DEFAULT_MODEL, concurrency = 4, callModel = callModelDefault, date, log = () => {}, prior = new Map(), previous = new Map() } = {}) {
+async function generateProposals(lessons, lessonText, { model = DEFAULT_MODEL, concurrency = 4, callModel = callModelDefault, date, log = () => {}, prior = new Map(), previous = new Map(), fillGaps = new Set() } = {}) {
   const added = new Map();
   const failed = [];
   const today = date || new Date().toISOString().slice(0, 10);
@@ -476,16 +496,17 @@ async function generateProposals(lessons, lessonText, { model = DEFAULT_MODEL, c
     try {
       const text = lessonText(l);
       const old = prior.get(l.id);
-      const prev = old ? previous.get(l.id) || null : null; // {text, commit} or null
-      const prompt = old ? buildUpdatePrompt(l, text, old, prev && prev.text) : buildPrompt(l, text);
+      const gaps = old && fillGaps.has(l.id);
+      const prev = old && !gaps ? previous.get(l.id) || null : null; // {text, commit} or null
+      const prompt = old ? buildUpdatePrompt(l, text, old, prev && prev.text, { fillGaps: gaps }) : buildPrompt(l, text);
       let terms = parseTerms(await callModel(prompt, { model }));
       let restored = null;
       if (old) ({ terms, restored } = keepTitleTerm(l, old, terms));
       if (restored) log(`vocab: lesson ${l.id}: the update dropped every title-topic term; restored "${restored}"`);
       const now = new Set(terms.map((t) => normalize(cleanTerm(t))));
       added.set(l.id, old
-        ? { model, prompt_version: UPDATE_PROMPT_VERSION, date: today, input_sha256: inputSha256(l, text), prior_terms_sha256: termsSha256(old),
-          previous_text: prev ? prev.commit : 'not found', replaced: old.filter((t) => !now.has(normalize(cleanTerm(t)))),
+        ? { model, prompt_version: gaps ? FILL_GAPS_PROMPT_VERSION : UPDATE_PROMPT_VERSION, date: today, input_sha256: inputSha256(l, text), prior_terms_sha256: termsSha256(old),
+          ...(gaps ? {} : { previous_text: prev ? prev.commit : 'not found' }), replaced: old.filter((t) => !now.has(normalize(cleanTerm(t)))),
           ...(restored ? { title_term_restored: restored } : {}), terms }
         : { model, prompt_version: PROMPT_VERSION, date: today, input_sha256: sha256(prompt), terms });
     } catch (e) {
@@ -499,6 +520,6 @@ async function generateProposals(lessons, lessonText, { model = DEFAULT_MODEL, c
 
 module.exports = {
   PROPOSALS_FILE, PROPOSALS_SHA256, DEFAULT_MODEL, PROMPT_VERSION, NEW_TOPIC_SWAPS, MAX_TERMS, MAX_TERM_CHARS, MAX_TERM_WORDS, MAX_HOMES, MODEL_FLAGS,
-  cleanTerm, proposalErrors, proposalsPath, loadProposals, integrityErrors, termsSha256, inputSha256, staleProposals, renderProposals, planVocab, buildPrompt, buildUpdatePrompt, UPDATE_PROMPT_VERSION, keepTitleTerm, titleWords,
+  cleanTerm, proposalErrors, proposalsPath, loadProposals, integrityErrors, termsSha256, inputSha256, staleProposals, renderProposals, planVocab, buildPrompt, buildUpdatePrompt, UPDATE_PROMPT_VERSION, FILL_GAPS_PROMPT_VERSION, keepTitleTerm, titleWords,
   callModelDefault, parseTerms, generateProposals,
 };

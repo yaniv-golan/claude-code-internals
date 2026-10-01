@@ -1344,3 +1344,26 @@ test('findPreviousText finds the committed lesson text a proposal was written fr
   assert.match(found.commit, /^[0-9a-f]{40}$/);
   assert.strictEqual(H.findPreviousText(SKILL_DIR, l, '0'.repeat(64), V.inputSha256), null, 'an unknown hash finds nothing');
 });
+
+test('--fill-gaps reviews a current lesson with the update prompt, allows bounded swaps for old gaps, and records them', async () => {
+  const dir = fixture();
+  const pin = freshen(dir);
+  assert.ok(!staleIn(dir).includes(89), 'lesson 89 is current: --fill-gaps does not need it stale');
+  const prior = loadProposals(dir).byId.get(89).terms;
+  const prompts = [];
+  const out = [...prior.slice(0, -1), 'a gap phrase for testing'];
+  const callModel = async (p) => { prompts.push(p); return stubTerms(out)(); };
+  await P.runGenerate(dir, { proposalsPin: pin, fillGaps: [89] }, { callModel, questions: [], previous: () => { throw new Error('no history lookup for --fill-gaps'); } }, () => {});
+  assert.strictEqual(prompts.length, 1);
+  assert.match(prompts[0], /COVERAGE GAP/);
+  assert.match(prompts[0], new RegExp(`replace up to ${V.NEW_TOPIC_SWAPS} terms`));
+  assert.doesNotMatch(prompts[0], /LESSON TEXT BEFORE THE EDIT|The lesson was edited/);
+  const p = loadProposals(dir).byId.get(89);
+  assert.strictEqual(p.prompt_version, V.FILL_GAPS_PROMPT_VERSION);
+  assert.strictEqual(p.previous_text, undefined);
+  assert.deepStrictEqual(p.replaced, [prior[prior.length - 1]]);
+  assert.ok(p.terms.includes('a gap phrase for testing'));
+  assert.deepStrictEqual(P.parseArgs(['--fill-gaps', '221']).fillGaps, [221]);
+  assert.strictEqual(P.parseArgs(['--fill-gaps', '221']).generate, true);
+  await assert.rejects(P.runGenerate(dir, { proposalsPin: loadProposals(dir).sha256, fillGaps: [89], regen: [89] }, { callModel }, () => {}), /both --regen .* and --fill-gaps/);
+});

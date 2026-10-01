@@ -59,6 +59,9 @@
  *   node scripts/prepare-lessons.js --regen <ids>   MODEL CALLS: as --generate, and also replace those lessons'
  *                                                   proposals deliberately, with a fresh draw
  *   --fresh               with --generate: redraw stale lessons from scratch instead of updating them
+ *   node scripts/prepare-lessons.js --fill-gaps <ids>  MODEL CALLS: as --generate, and also review those lessons'
+ *                                                   terms for topics already in the lesson that no term reaches
+ *                                                   (up to 3 swaps each, recorded in "replaced"); deliberate only
  *   --bootstrap           with --generate/--regen: accept a proposals file that is
  *                         missing (the first-ever run) or not the pinned one (an
  *                         intentional re-pin, after inspecting its diff). Never
@@ -769,7 +772,7 @@ function runIdentifiers(skillDir, opts = {}, log = console.log) {
 function parseArgs(argv) {
   const opts = {
     check: false, dryRun: false, root: null, reportFile: null, acceptUnreachable: false,
-    generate: false, regen: [], model: DEFAULT_MODEL, concurrency: 4, bootstrap: false,
+    generate: false, regen: [], fillGaps: [], model: DEFAULT_MODEL, concurrency: 4, bootstrap: false,
   };
   const need = (a, v) => { if (v === undefined) throw new Error(`${a} needs a value`); return v; };
   for (let i = 0; i < argv.length; i++) {
@@ -778,6 +781,7 @@ function parseArgs(argv) {
     else if (a === '--check') opts.check = true;
     else if (a === '--generate') opts.generate = true;
     else if (a === '--regen') { opts.generate = true; opts.regen = need(a, argv[++i]).split(',').map((x) => { if (!/^\d+$/.test(x)) throw new Error(`--regen takes lesson ids, got "${x}"`); return Number(x); }); }
+    else if (a === '--fill-gaps') { opts.generate = true; opts.fillGaps = need(a, argv[++i]).split(',').map((x) => { if (!/^\d+$/.test(x)) throw new Error(`--fill-gaps takes lesson ids, got "${x}"`); return Number(x); }); }
     else if (a === '--model') opts.model = need(a, argv[++i]);
     else if (a === '--concurrency') { opts.concurrency = parseInt(need(a, argv[++i]), 10); if (!(opts.concurrency > 0)) throw new Error('--concurrency must be a positive integer'); }
     else if (a === '--dry-run') opts.dryRun = true;
@@ -875,13 +879,18 @@ async function runGenerate(skillDir, opts = {}, deps = {}, log = console.log) {
     log(`vocab: --bootstrap: starting from ${proposals.raw === null ? 'no proposals file' : `the proposals file as it is (sha256 ${proposals.sha256})`}`);
   }
   const regen = new Set(opts.regen || []);
+  const fill = new Set(opts.fillGaps || []);
+  const both = [...fill].filter((id) => regen.has(id));
+  if (both.length) throw new Error(`lesson ${both.join(', ')} is in both --regen (a fresh draw) and --fill-gaps (an update); pick one`);
+  const noTerms = [...fill].filter((id) => !proposals.byId.has(id));
+  if (noTerms.length) throw new Error(`--fill-gaps: lesson ${noTerms.join(', ')} has no terms to review; --generate drafts them`);
   const live = new Set(loaded.topic.lessons.map((l) => l.id));
   const unknownIds = [...regen].filter((id) => !live.has(id));
   if (unknownIds.length) throw new Error(`--regen: no such lesson ${unknownIds.join(', ')}`);
   const stale = [...proposals.byId.keys()].filter((id) => !live.has(id));
   const changed = staleProposals(loaded.topic.lessons, loaded.lessonText, proposals.byId);
   const changedSet = new Set(changed.stale);
-  const todo = loaded.topic.lessons.filter((l) => regen.has(l.id) || !proposals.byId.has(l.id) || changedSet.has(l.id));
+  const todo = loaded.topic.lessons.filter((l) => regen.has(l.id) || fill.has(l.id) || !proposals.byId.has(l.id) || changedSet.has(l.id));
   if (changed.stale.length) {
     log(`vocab: ${changed.stale.length} proposal(s) are stale (the lesson changed since) and are ${opts.fresh ? 'redrawn from scratch (--fresh)' : 'updated from their previous terms'}: ${listed(changed.stale.map(String))}`);
   }
@@ -897,7 +906,7 @@ async function runGenerate(skillDir, opts = {}, deps = {}, log = console.log) {
   // A stale lesson is UPDATED from its previous terms; a lesson without terms, a --regen id and,
   // under --fresh, every stale lesson get a fresh draw (vocab.js, UPDATE, NOT REDRAW).
   const prior = new Map(todo
-    .filter((l) => proposals.byId.has(l.id) && changedSet.has(l.id) && !regen.has(l.id) && !opts.fresh)
+    .filter((l) => proposals.byId.has(l.id) && (fill.has(l.id) || (changedSet.has(l.id) && !regen.has(l.id) && !opts.fresh)))
     .map((l) => [l.id, proposals.byId.get(l.id).terms]));
   // The text each updated lesson's terms were written from, so the prompt can tell a topic the
   // edit added from one that was always there (lib/vocab-history.js; deps.previous in tests).
@@ -905,6 +914,7 @@ async function runGenerate(skillDir, opts = {}, deps = {}, log = console.log) {
   if (!opts.dryRun) {
     const { findPreviousText } = require('./lib/vocab-history.js');
     for (const id of prior.keys()) {
+      if (fill.has(id)) continue; // --fill-gaps reviews coverage of the text as it is: no previous text
       const l = loaded.topic.lessons.find((x) => x.id === id);
       const found = deps.previous ? deps.previous(id) : findPreviousText(skillDir, l, proposals.byId.get(id).input_sha256, inputSha256);
       if (found) previous.set(id, found);
@@ -913,7 +923,7 @@ async function runGenerate(skillDir, opts = {}, deps = {}, log = console.log) {
   }
   const { added, failed } = todo.length
     ? await generateProposals(todo, loaded.lessonText, {
-      model: opts.model || DEFAULT_MODEL, concurrency: opts.concurrency || 4, callModel: deps.callModel, date: deps.date, log, prior, previous,
+      model: opts.model || DEFAULT_MODEL, concurrency: opts.concurrency || 4, callModel: deps.callModel, date: deps.date, log, prior, previous, fillGaps: fill,
     })
     : { added: new Map(), failed: [] };
   for (const f of failed) log(`vocab: lesson ${f.id} failed (retried on the next run): ${f.error.split('\n')[0]}`);

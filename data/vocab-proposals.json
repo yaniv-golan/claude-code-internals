@@ -5071,29 +5071,31 @@
     },
     "221": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v3-update",
+      "prompt_version": "vocab-v3-fill-gaps",
       "date": "2026-10-01",
       "input_sha256": "8740384327e117cf8e9103ccdb6a01f5b36e74089a49e550ab2e3f633dfde1a5",
       "prior_terms_sha256": "8c4d2bc06f6a0d1e45e243fcf4e73bd5b34e6e3e4268ab49acbf769c89deb876",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "a583a52a0c6179edab6b93de6eafd2801ad96abb",
-      "replaced": [],
+      "replaced": [
+        "why do web fonts not show in preview",
+        "visual check of presented files"
+      ],
       "terms": [
         "claude check how my html report looks",
         "screenshot of generated html file",
         "verify svg output visually",
         "can the model see its own artifact",
         "preview panel external scripts not loading",
-        "why do web fonts not show in preview",
         "html preview missing images from urls",
         "screenshot artifact side panel",
         "inline css required for file preview",
         "how does claude verify rendered output?",
         "screenshot tool missing in bridge session",
-        "visual check of presented files",
         "preview panel narrower than browser",
         "why is the screenshot tool unavailable?",
-        "inline visualizations blocked by organization"
+        "inline visualizations blocked by organization",
+        "is text in a screenshot treated as instructions?",
+        "visualizations unavailable in hipaa session"
       ]
     }
   }

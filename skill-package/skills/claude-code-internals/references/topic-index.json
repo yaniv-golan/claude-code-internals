@@ -20986,16 +20986,16 @@
         "verify svg output visually",
         "can the model see its own artifact",
         "preview panel external scripts not loading",
-        "why do web fonts not show in preview",
         "html preview missing images from urls",
         "screenshot artifact side panel",
         "inline css required for file preview",
         "how does claude verify rendered output",
         "screenshot tool missing in bridge session",
-        "visual check of presented files",
         "preview panel narrower than browser",
         "why is the screenshot tool unavailable",
-        "inline visualizations blocked by organization"
+        "inline visualizations blocked by organization",
+        "is text in a screenshot treated as instructions",
+        "visualizations unavailable in hipaa session"
       ],
       "identifier_keys": [
         "cowork-native-file-preview",
@@ -21011,22 +21011,22 @@
         "verify svg output visually",
         "can the model see its own artifact",
         "preview panel external scripts not loading",
-        "why do web fonts not show in preview",
         "html preview missing images from urls",
         "screenshot artifact side panel",
         "inline css required for file preview",
         "how does claude verify rendered output",
         "screenshot tool missing in bridge session",
-        "visual check of presented files",
         "preview panel narrower than browser",
         "why is the screenshot tool unavailable",
-        "inline visualizations blocked by organization"
+        "inline visualizations blocked by organization",
+        "is text in a screenshot treated as instructions",
+        "visualizations unavailable in hipaa session"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v3-update",
+        "prompt_version": "vocab-v3-fill-gaps",
         "date": "2026-10-01",
-        "terms_sha256": "8c4d2bc06f6a0d1e45e243fcf4e73bd5b34e6e3e4268ab49acbf769c89deb876"
+        "terms_sha256": "3a3b8ffceedfc62713f3692bf8b191ef22bb145d79f3a05fc59151eb2f315573"
       }
     }
   ],
@@ -54591,9 +54591,6 @@
     "preview panel external scripts not loading": [
       221
     ],
-    "why do web fonts not show in preview": [
-      221
-    ],
     "html preview missing images from urls": [
       221
     ],
@@ -54609,9 +54606,6 @@
     "screenshot tool missing in bridge session": [
       221
     ],
-    "visual check of presented files": [
-      221
-    ],
     "preview panel narrower than browser": [
       221
     ],
@@ -54619,6 +54613,12 @@
       221
     ],
     "inline visualizations blocked by organization": [
+      221
+    ],
+    "is text in a screenshot treated as instructions": [
+      221
+    ],
+    "visualizations unavailable in hipaa session": [
       221
     ]
   },
