@@ -60,7 +60,8 @@ const { handKeywords, lessonGenerated } = require('./lib/keyword-provenance.js')
  *              word of a multi-word key -- times the query's coverage of a hand
  *              kebab key -- and 0.25 for a substring)
  *   score(L) = sum over distinct query tokens t of max w(t, k) over keys k -> L
- * ordered by score, then the best single hit, then tokens hit, then lowest id.
+ * ordered by score, then the best single hit, then tokens hit, then keys hit,
+ * then lowest id.
  * A token shorter than 3 characters never matches inside a word. A vocabulary
  * key is hit by its content words only; a word the query has only inside a
  * compound identifier counts half (see keyword-match.js).
@@ -68,7 +69,7 @@ const { handKeywords, lessonGenerated } = require('./lib/keyword-provenance.js')
  * @param {string[]} tokens - Query tokens
  * @param {object} topicIndex - Parsed topic-index.json
  * @param {string} [query] - The query text the tokens came from
- * @returns {{ id: number, score: number, best: number, hits: number }[]} - Ranked results
+ * @returns {{ id: number, score: number, best: number, hits: number, keys: number }[]} - Ranked results
  */
 const generatedSets = new WeakMap();
 function keywordSearch(tokens, topicIndex, query = null) {

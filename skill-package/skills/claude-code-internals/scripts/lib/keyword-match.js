@@ -76,8 +76,12 @@
  * hit, so many keys sharing one word cannot outvote one precise key. A token
  * repeated in the query counts once.
  * Order: score desc, then the best single hit weight desc (the most specific key
- * matched), then the number of tokens that hit, then lowest id. Scores are
- * rounded to 1e-9 before comparing, so float summation order cannot break a tie.
+ * matched), then the number of tokens that hit, then the number of the lesson's
+ * keys the query hit (counted per token; a lesson with many keys about the query
+ * is more about it: `hooks` hits nine of Hooks System's keys and three of the
+ * capstone's, which share the bare `hooks` key and tie on everything above), then
+ * lowest id. Scores are rounded to 1e-9 before comparing, so float summation order
+ * cannot break a tie.
  */
 
 const { QUERY_STOP_WORDS } = require('./tfidf-index.js');
@@ -222,13 +226,13 @@ function hitCounts(ck, token, kind, fragments) {
  * Rank lessons for query `tokens` against `keywordMap`. `nLessons` is N;
  * `exactOnly` is the set of generated keys (never hand kebab keys); `query` is
  * the query text the tokens came from (compound parts and contraction
- * fragments; optional). Returns [{id, score, best, hits}] in rank order (see
+ * fragments; optional). Returns [{id, score, best, hits, keys}] in rank order (see
  * the header).
  */
 function rankLessons(tokens, keywordMap, nLessons, exactOnly = EMPTY, query = null) {
   if (!keywordMap || typeof keywordMap !== 'object') return [];
   const compiled = compileMap(keywordMap, exactOnly);
-  const byLesson = new Map(); // id -> {id, score, best, hits}
+  const byLesson = new Map(); // id -> {id, score, best, hits, keys}
   const qset = new Set(tokens);
   const { parts, fragments } = query === null ? { parts: EMPTY, fragments: EMPTY } : queryStructure(query);
   for (const token of qset) {
@@ -243,21 +247,26 @@ function rankLessons(tokens, keywordMap, nLessons, exactOnly = EMPTY, query = nu
     const tokenSpec = specificity(nLessons, reached.size);
     const part = parts.has(token) ? KIND_WEIGHT.word : 1;
     const bestHere = new Map(); // id -> best weight for this token
+    const keysHere = new Map(); // id -> keys of that lesson this token hits
     for (const [kind, spec, ids, ck] of hits) {
       const w = Math.min(spec, tokenSpec) * KIND_WEIGHT[kind] * (kind === KIND.WORD ? coverage(ck, qset) : 1) * part;
-      for (const id of ids) if (!(bestHere.get(id) >= w)) bestHere.set(id, w);
+      for (const id of ids) {
+        if (!(bestHere.get(id) >= w)) bestHere.set(id, w);
+        keysHere.set(id, (keysHere.get(id) || 0) + 1);
+      }
     }
     for (const [id, w] of bestHere) {
-      const e = byLesson.get(id) || { id, score: 0, best: 0, hits: 0 };
+      const e = byLesson.get(id) || { id, score: 0, best: 0, hits: 0, keys: 0 };
       e.score += w;
       e.best = Math.max(e.best, w);
       e.hits += 1;
+      e.keys += keysHere.get(id);
       byLesson.set(id, e);
     }
   }
   return [...byLesson.values()]
     .map((e) => ({ ...e, score: round9(e.score), best: round9(e.best) }))
-    .sort((a, b) => b.score - a.score || b.best - a.best || b.hits - a.hits || a.id - b.id);
+    .sort((a, b) => b.score - a.score || b.best - a.best || b.hits - a.hits || b.keys - a.keys || a.id - b.id);
 }
 
 module.exports = {

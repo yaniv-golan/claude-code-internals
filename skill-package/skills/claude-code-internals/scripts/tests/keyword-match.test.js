@@ -98,6 +98,17 @@ test('with equal score and best hit, more tokens hit wins over the lower id', ()
   assert.deepStrictEqual(r.slice(0, 2).map((x) => x.id), [2, 1]);
 });
 
+test('a tie on score, best hit and tokens goes to the lesson with more keys hit, then the lower id', () => {
+  // `hooks` names both lessons; lesson 2 also has two weaker keys the token hits, which cannot raise its
+  // score (one best hit per token) but say it is more about hooks than lesson 1 is.
+  const map = { hooks: [1, 2], 'session hooks': [2], 'http hooks': [2] };
+  const r = K.rankLessons(['hooks'], map, 100);
+  assert.deepStrictEqual(r.map((x) => [x.id, x.keys]), [[2, 3], [1, 1]]);
+  assert.strictEqual(r[0].score, r[1].score);
+  // equal key counts fall through to the lower id
+  assert.deepStrictEqual(K.rankLessons(['hooks'], { hooks: [1, 2] }, 100).map((x) => x.id), [1, 2]);
+});
+
 test('a hand kebab key counts in proportion to the query words it covers', () => {
   // same key and token specificity; 'alpha' covers 1 of 3 content words of the kebab key
   const r = K.rankLessons(['alpha'], { 'alpha-beta-gamma': [1], 'alpha delta': [2] }, 100);

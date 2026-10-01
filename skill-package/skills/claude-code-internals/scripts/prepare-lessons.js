@@ -107,7 +107,8 @@
  * any other key when the key CONTAINS t. A token is LIVE when a key already
  * hits it. Appending a key k -> [L] adds L to the hit set of every token k
  * hits; when that token is live, L now competes with the lessons that owned
- * it, and search.js breaks hit-count ties by LOWEST id — that is how
+ * it, and search.js breaks the remaining ties by the number of keys hit, then by
+ * LOWEST id — that is how
  * `when_to_use` flipped 88 -> 11 in an earlier prototype (a raw identifier
  * with the same joined form). So:
  *   3a. EXACT: a candidate (or its key form) that already is a hand key, or a

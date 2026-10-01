@@ -42,14 +42,13 @@
     {
       "query": "plugin bin PATH",
       "lesson": 173,
-      "why": "identifier-shaped keys match exactly: with substring matching, 'path' hit every *_PATHS variable and displaced the lesson about plugin bin/ on PATH Asserted under --fused: in the default keyword-first order L173 is keyword #2 behind L89 (measured 2026-09-30).",
-      "fused": true
+      "why": "identifier-shaped keys match exactly: with substring matching, 'path' hit every *_PATHS variable and displaced the lesson about plugin bin/ on PATH. First in the default order since ties on score break by the number of keys hit (2026-10-01); it had been keyword #2 behind L89 on a lowest-id tie."
     },
     {
       "query": "hooks not firing",
       "lesson": 32,
-      "why": "a natural-language query is not displaced by identifier keys Asserted under --fused: in the default keyword-first order L32 is keyword #3 behind L209 and L5 (measured 2026-09-30).",
-      "fused": true
+      "why": "a natural-language query is not displaced by identifier keys. Asserted within the top 3, the depth the skill fetches: L209 (plugin hooks in Cowork, event by event) and L89 match 'firing' as well as 'hooks' and rank above L32 in the keyword-first order (2026-10-01).",
+      "within": 3
     },
     {
       "query": "compaction budget",
