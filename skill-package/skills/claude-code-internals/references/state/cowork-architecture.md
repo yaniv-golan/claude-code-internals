@@ -370,11 +370,13 @@ value in both skill content and hooks — **one token, two namespaces**):
   tools want host paths — keep the token literal there), and
 - **rewritten for in-VM bash** (`mcp__workspace__bash`): before a command
   reaches the VM, the Desktop replaces each plugin's staging and install
-  path in its text with the plugin's VM mount,
-  `/sessions/<slug>/mnt/.remote-plugins/plugin_<id>` (org-remote) or
-  `/sessions/<slug>/mnt/.local-plugins/<install path>` (marketplace), so
-  `bash ${CLAUDE_PLUGIN_ROOT}/x.sh` works from skill text (asar 2.19675.0,
-  live 2026-10-02; L122). Not rewritten: the config-dir staging path behind
+  path in its text with the plugin's VM mount: for an org-remote plugin
+  `/sessions/<slug>/mnt/.remote-plugins/plugin_<id>` (seen live 2026-10-02,
+  Desktop 2.19675.0), for a marketplace plugin its `.local-plugins/…` mount
+  (from the code only). So `${CLAUDE_PLUGIN_ROOT}` in a shell command from
+  skill text reaches the VM as the mount path (the rewrite was measured on a
+  `printf`; running a script through it was not tried). The table is in
+  asars from 1.40609.0 on, not in 1.37937.3 (L122). Not rewritten: the config-dir staging path behind
   `${CLAUDE_PLUGIN_DATA}` and the host outputs path. The trap runs the
   other way now: a root the shell *prints* is the VM path, which the file
   tools refuse. Hook commands run on the Mac and need no rewrite.

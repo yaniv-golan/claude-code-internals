@@ -55,7 +55,7 @@ The moved task carries the files, the parent folders it added and its folders. A
 
 # LESSON 220 — HOST-LOOP FILE PERMISSIONS: APPROVALS PINNED, ORG ASKS REACH THE USER
 
-**In the host loop, Desktop's permission handler for the file tools changed in 2.16120.0 in three ways. When the user approves Read, Write, Edit, Glob or Grep, the call runs with the input that was judged, not with whatever the approval came back with. An organization policy that requires approval for a file tool now shows the user a prompt instead of refusing outright. And `allow_cowork_file_delete` refuses some requests before any prompt appears. Every agent Desktop spawns also gets `PYTHONDONTWRITEBYTECODE=1`.**
+**In the host loop, Desktop's permission handler for the file tools changed in 2.16120.0 in three ways. When the user approves Read, Write, Edit, Glob or Grep, the call runs with the input that was judged, not with whatever the approval came back with. An organization policy that requires approval for a file tool now shows the user a prompt instead of refusing outright. And `allow_cowork_file_delete` refuses some requests before any prompt appears. Separately, the outputs folder is now mounted with deletes allowed from the start. Every agent Desktop spawns also gets `PYTHONDONTWRITEBYTECODE=1`.**
 
 ## The approval is pinned to the judged input
 

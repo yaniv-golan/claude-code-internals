@@ -194,7 +194,7 @@ A cloud task can still use the Mac: its "Computer" tools reach the Mac through t
 
 ## The composer decides (Desktop 2.19675.0, 2026-10-02)
 
-In a Personal organization with "Only on this computer" on, New opened one of two composers, and that decided the lane (composer shapes observed in the UI; lanes from each run's output and, for local runs, the config record on disk):
+In a Personal organization with "Only on this computer" on, New opened one of two composers, and that decided the lane (composer shapes, and the cloud runs' output, observed in the UI; the local runs also from their config records on disk):
 
 | Composer | First message | Result |
 |---|---|---|

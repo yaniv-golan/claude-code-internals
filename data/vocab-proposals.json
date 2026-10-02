@@ -2827,10 +2827,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "d5ed7090efffb246b3ec7981559a95659bbcbcf43fa2290da5c3152f4dc945e8",
-      "prior_terms_sha256": "d13eb2d1d5983c2ed25e62a5b9b5bf6e82bd90895bd1caa9d46be3c37efd79d6",
+      "input_sha256": "f2c89c9dd1dbe443307ec1ac63da503828cb7502fc5b16e1774e423f7ec169a4",
+      "prior_terms_sha256": "8c35a49aefb7e820fb9c5586d837f700ba6bee409afe96a86637a8823b9f5366",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
+      "previous_text": "9cc0ea67b8c58acfaec3fe07324c192441e3c330",
       "replaced": [],
       "terms": [
         "subagent write file denied sessions path",
@@ -4938,20 +4938,11 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "fae6b47aa404ef0b620d8c20c973928cb8fa15bdc2f690c0ea95622aaaffcf29",
-      "prior_terms_sha256": "359884202a4966870e07e651d669cb0f20f1308e2517e5289b064dc85afb986e",
+      "input_sha256": "7358f5031854d3a5338f460d5d8d37b3ef4964942dba268b5f04eb67378deabc",
+      "prior_terms_sha256": "cc18dfde8e8f37d396e7bc33fb30b5765dff6a06c7e28ca421f1b36fa436ef08",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
-      "replaced": [
-        "opted out of cloud but still remote"
-      ],
-      "dropped": [
-        {
-          "term": "opted out of cloud but still remote",
-          "why": "duplicate",
-          "duplicate_of": "only on this computer setting ignored"
-        }
-      ],
+      "previous_text": "9cc0ea67b8c58acfaec3fe07324c192441e3c330",
+      "replaced": [],
       "terms": [
         "cowork task runs in cloud instead of locally",
         "only on this computer setting ignored",
@@ -5232,10 +5223,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "1babbd9ab566008df7ee22b8fca9a4c5aa090329c49c0c98acd2650aea8e8d5b",
-      "prior_terms_sha256": "5016fc62743152d792df019dd6c30a39c463f93ac2cf634948ef83c23393a8e4",
+      "input_sha256": "6d613dc6b01128b3f4161f3e9b89539d9204325d6fd198aa82cab686f1b0043e",
+      "prior_terms_sha256": "80467bdb50fab1904179d86106879d9ee58f25246b5eaff3099739a4c1c2f9c0",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
+      "previous_text": "9cc0ea67b8c58acfaec3fe07324c192441e3c330",
       "replaced": [],
       "terms": [
         "approved file edit ran with different input",
