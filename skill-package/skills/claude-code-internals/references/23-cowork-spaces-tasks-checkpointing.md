@@ -211,7 +211,10 @@ shipped UI.
 ## Part G — Session & log storage layout (host-loop, macOS, on-disk verified)
 
 Where Cowork actually persists sessions, chat transcripts and logs — verified on-disk (macOS,
-2026-07-02), not from the binary. Everything lives under `~/Library/Application Support/Claude/`
+2026-07-02), not from the binary. **This is the layout as of 2026-07-02.** Sessions created from Desktop 2.110.0
+on use a directory named by the first 8 hex digits of the session id and keep the transcript in
+`projects/session/`, and host-loop log lines moved to `main.log`; the current layout is in the state page
+`cowork-architecture.md`, "Session storage". Everything lives under `~/Library/Application Support/Claude/`
 (session data) and `~/Library/Logs/Claude/` (runtime logs); **not** under `~/.claude/`. Each session is a
 **self-contained sandbox directory with its own `.claude` config dir** — which, under host-loop, IS the host
 CLI's `CLAUDE_CONFIG_DIR` (reconciling Ch24/L107: `/sessions/<id>/mnt/.claude` is the *VM-loop* path; the

@@ -354,6 +354,7 @@ So the value is not something the agent decides alone — a driver can set it at
 |---|---|---|
 | CLI | `~/.claude/projects/<slug>/<sessionId>.jsonl` | 23,695 |
 | Cowork | `…/Claude/local-agent-mode-sessions/<acc>/<org>/local_<id>/.claude/projects/<slug>/<cliSessionId>.jsonl` | 2,250 |
+| Cowork, sessions created on Desktop 2.110.0 or later | `…/<acc>/<org>/<first 8 hex of the id>/.claude/projects/session/<cliSessionId>.jsonl` | not in this count |
 
 Each record carries `type` (`assistant` / `user` / `attachment`), `isSidechain`, `isMeta`, and a `version` field naming the agent build — which is what makes per-version slicing possible.
 

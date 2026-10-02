@@ -695,10 +695,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "033e968f1ef35ad0405ea51de4945ae07c5535b6e87b53ac52742c13a6173e03",
-      "prior_terms_sha256": "d00811d2c02a3a117a44a88e895d22c4435c5f5fb33d679fe0071cac0e497268",
+      "input_sha256": "1c333bcdf1005a408e75949ef66807eb8b0c7ac6b3a24d432baefd68014dfbbf",
+      "prior_terms_sha256": "aeeb8d7c33af4272191b4eab67456e76070c4e4e0817146dc0ab346096618feb",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
+      "previous_text": "65b3a9e82c7c10a022bc703406e71a69cd7d7bc3",
       "replaced": [],
       "terms": [
         "plugin update says already up to date but new version exists",
@@ -716,7 +716,9 @@
         "add a private git marketplace for plugins",
         "plugin asks for API key when enabled",
         "can plugins ship language servers or MCP servers",
-        "new plugin changes need a task run on this computer"
+        "new plugin changes need a task run on this computer",
+        "cowork session folder named with short hex",
+        "where are per-session marketplace files stored"
       ]
     },
     "32": {
@@ -2497,9 +2499,13 @@
     },
     "109": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "d44968706791376dcacecb1a8bb1ba7485f59a618e867fc8e007c6befcc94b6d",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "c5c10b1a05c7f7abcf58ded19da23eb22ca9370e9a3be310c6a4d3c6c624c15e",
+      "prior_terms_sha256": "e12e08d73574e7bef0ef84ab7dc77eb396be866a969d53f3d53b692e761de810",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "65b3a9e82c7c10a022bc703406e71a69cd7d7bc3",
+      "replaced": [],
       "terms": [
         "where are cowork chat transcripts saved",
         "cowork session logs location on mac",
@@ -2515,7 +2521,10 @@
         "task list tool in cowork sessions",
         "background sub-agent transcript not persisted",
         "cowork scheduled task browser permissions",
-        "how are cowork sessions auto organized?"
+        "how are cowork sessions auto organized?",
+        "cowork session folder layout changed in newer versions",
+        "cowork session folder named by short id",
+        "cowork host loop logs moved to main log"
       ]
     },
     "110": {
@@ -2803,9 +2812,13 @@
     },
     "122": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-30",
-      "input_sha256": "9c84de5b43e8566109525647f8d184651ba4f6a2baa4660498ff62e2b8242b33",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "14c7254f83c7ea27eb1a7d30072580ec1aae1e11aeaee25f693b449b66550924",
+      "prior_terms_sha256": "5abec045815f9e00516a26c9848edb3cfe1d1afbb450deba20297123b6ba7e17",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "65b3a9e82c7c10a022bc703406e71a69cd7d7bc3",
+      "replaced": [],
       "terms": [
         "subagent write file denied sessions path",
         "where do subagent files get saved",
@@ -2821,7 +2834,9 @@
         "plugin root variable empty in bash",
         "can a plugin subagent read its reference files?",
         "bash starts at session root not outputs",
-        "subagent sandbox isolation separate environment"
+        "subagent sandbox isolation separate environment",
+        "shorter session folder path newer versions",
+        "why is my session folder name so short?"
       ]
     },
     "123": {
@@ -3040,9 +3055,13 @@
     },
     "132": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "c8f4cb2fad93b3d64ef25c63c467ca1b440b192163b7769eedb33b3dd58b54d9",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "6198cec414253f48f8911d899fa09ddf22fafde8412e74df4c265a3940f42a36",
+      "prior_terms_sha256": "e7a06c1e4b4790aa9a756f0b22780fa54625c2bbfff9a7dde79ab6de0bf925d7",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "65b3a9e82c7c10a022bc703406e71a69cd7d7bc3",
+      "replaced": [],
       "terms": [
         "cowork session left no transcript on my mac",
         "where does cowork save conversation history now",
@@ -3058,7 +3077,10 @@
         "did cowork move sessions into the sandbox VM",
         "check where a desktop build writes its transcript",
         "cowork audit log empty for new sessions",
-        "host loop versus VM loop change in latest desktop"
+        "host loop versus VM loop change in latest desktop",
+        "cowork session files moved to new folder",
+        "my search misses recent cowork sessions",
+        "cowork sub-agent transcript location on mac"
       ]
     },
     "133": {
@@ -4124,9 +4146,13 @@
     },
     "179": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "a0c4958c011248d15ac8291a105edc935c829e86e53781e34532272cb9a885eb",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "43eef520d797725600972d849505ec662e6008bc1a04b724b78f6ef184238100",
+      "prior_terms_sha256": "ccb7dfe6369cfb0728827fe26a086f232304583604c7df5c6b86f4c59a7c72cc",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "65b3a9e82c7c10a022bc703406e71a69cd7d7bc3",
+      "replaced": [],
       "terms": [
         "where are session transcripts stored locally",
         "analyze past session logs for model behavior",
@@ -4142,7 +4168,9 @@
         "Cowork session transcripts location",
         "impossible result means analysis bug",
         "count files two ways before trusting",
-        "did the model actually do this in past sessions?"
+        "did the model actually do this in past sessions?",
+        "newer Cowork sessions stored in different folder",
+        "why are recent Cowork transcripts missing from my count?"
       ]
     },
     "180": {

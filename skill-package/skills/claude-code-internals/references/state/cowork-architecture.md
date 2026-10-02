@@ -272,11 +272,16 @@ re-verified at Desktop 1.20186.1 / agent 2.1.205):
 ## Session storage
 
 Host-loop session data (macOS) lives under
-`~/Library/Application Support/Claude/`, not `~/.claude/`. Each session is
-a self-contained sandbox directory with its own `.claude` config dir,
-which under host-loop **is** the host CLI's `CLAUDE_CONFIG_DIR` (the
+`~/Library/Application Support/Claude/`, not `~/.claude/`. Each session has
+its own data directory with its own `.claude` config dir, which under
+host-loop **is** the host CLI's `CLAUDE_CONFIG_DIR` (the
 `/sessions/<id>/mnt/.claude` path from Part A above is the VM-loop path
 only). The session config record carries `"hostLoopMode": true`.
+
+Layout of a session created on Desktop 2.110.0 or later (first such
+directory on this machine 2026-09-15 21:05, right after the update to
+2.110.0; re-verified on a live local session, Desktop 2.19675.0 + agent
+2.1.286, 2026-10-02):
 
 ```
 ~/Library/Application Support/Claude/local-agent-mode-sessions/
@@ -285,28 +290,52 @@ only). The session config record carries `"hostLoopMode": true`.
                                        #   systemPrompt, hostLoopMode,
                                        #   cliSessionId, cwd, enabledMcpTools,
                                        #   egressAllowedDomains, etc.
-    local_<sessionId>/                # the session SANDBOX directory
-      outputs/                        #   user-visible deliverables; agent cwd
-                                       #   before Desktop 2.7032.0 (NOT bash's — L163)
-      host-cwd/                       #   agent cwd from 2.7032.0 ONLY when
-                                       #   /var/empty is unusable; holds a
-                                       #   {"private": true} package.json (L190)
+    <first 8 hex of sessionId>/       # the session DATA directory
+      outputs/                        #   user-visible deliverables
+      host-cwd/                       #   agent cwd ONLY when /var/empty is
+                                       #   unusable (L190; code, none on disk)
       uploads/                        #   user-attached files
       audit.jsonl  +  .audit-key      #   signed per-session audit log
       .claude/                        #   per-session CLAUDE_CONFIG_DIR
-        projects/<cwd-slug>/<cliSessionId>.jsonl   # THE CHAT TRANSCRIPT
-        sessions/
-        tasks/<cliSessionId>/1.json,2.json,…       # Tasks-tool state
-        session-env/<cliSessionId>
-        plugins/  backups/  policy-limits.json  mcp-needs-auth-cache.json
+        projects/session/<cliSessionId>.jsonl      # THE CHAT TRANSCRIPT
+        projects/session/<cliSessionId>/subagents/agent-<id>.jsonl + .meta.json
+        sessions/  session-env/<cliSessionId>/
+        plugins/data/<plugin>-inline/              # ${CLAUDE_PLUGIN_DATA}
+        backups/  cache/  policy-limits.json  .claude.json
 ```
+
+- **Directory name.** The Desktop shortens `local_<uuid>` to the uuid's first
+  8 hex digits (regex `^local_([0-9a-f]{8})-…$`) when it creates a session,
+  unless that name is taken; a session whose full-name directory already
+  exists keeps it. So older sessions stay in `local_<sessionId>/` beside the
+  new 8-hex ones. Gate `2375401243` (code default on) selects the short form
+  (asar 2.19675.0). Only the config record keeps the `local_` prefix.
+- **Project directory.** All 178 short-name directories on this machine use
+  `projects/session/`. The Desktop sets `CLAUDE_CODE_PROJECT_DIR_NAME` to
+  `session` (asar 2.19675.0). Sessions from before 2.110.0 have a slug of
+  their working directory there instead.
+- **How the agent reaches it.** `CLAUDE_CONFIG_DIR` is not the data directory
+  itself but a staging link, `$TMPDIR/claude-hostloop-plugins/<hash>` →
+  `<8 hex>/.claude` (main.log: `[HostLoop] Staged plugin: <staging> -> …/.claude`),
+  the same mechanism that stages plugins (L89). `${CLAUDE_PLUGIN_DATA}`
+  therefore expands under that staging path.
+- **From the VM.** The bash shell sees the transcripts read-only at
+  `/sessions/<slug>/mnt/.claude/projects` and can grep the live transcript.
+- **Config record.** `cwd` is `<8 hex>/outputs`; `processName` and
+  `vmProcessName` are the VM slug; there is no `fileDeleteApprovedMounts` key
+  until a delete is first approved (see "Mount model and delete policy").
 
 The chat log is a standard Claude Code JSONL transcript, keyed by the host
 CLI's `cliSessionId` (distinct from the Cowork `<sessionId>`; linked via
-the config record's `cliSessionId` field). Runtime/debug logs live
-separately in `~/Library/Logs/Claude/` (`cowork_host_loop_debug.log` is
-the primary host-loop agent log) and are operational telemetry only — not
-conversation content.
+the config record's `cliSessionId` field).
+
+**Logs.** Host-loop lines go to the rotating `~/Library/Logs/Claude/main*.log`
+(`[HostLoop]`, `[canUseTool:HostLoop]`, `[workspaceMcpServer] bash: … vmCwd=…,
+mounts=<name>:<mode>,…`, and `Starting local session local_<uuid> in
+/home/<slug>`). `cowork_host_loop_debug.log` (with the `latest` link pointing
+at it) was last written on 2026-06-04 on this machine; which build stopped
+writing it is not known. Logs are operational telemetry, not conversation
+content.
 
 A top-level Cowork chat can be silently missing from disk: spawned with
 `persistSession:false`/`--no-session-persistence`, a non-force-persisted
@@ -510,6 +539,13 @@ and `requireCoworkFullVmSandbox` (the `f_()` override) is not fcache-readable.
 and future `init.tools` checks need live `rootfs.img` forensics (Ch31). Verify
 where a build writes before relying on the recovery path. Full detail: Chapter
 37, L132, `references/34-skill-discovery-vcs-events-containment.md`.
+
+**On Desktop 2.19675.0 (2026-10-02) the host-side path works.** A local
+session (agent 2.1.286, `hostLoopMode: true`) wrote its transcript, sub-agent
+transcript and `audit.jsonl` on the Mac, in the short-name session directory
+(see "Session storage"), and its `init.tools` array could be read from there.
+Look in `<org>/<8 hex>/.claude/projects/session/`, not only in `local_<id>/`
+directories. Why the 1.24012.1 session left nothing is still unexplained.
 
 ## Execution lanes (L138)
 

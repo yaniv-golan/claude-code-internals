@@ -436,6 +436,10 @@ A bare greeting ("hello") does not spawn the agent at all — the first probe pr
 
 Whether this is a genuine host-loop → VM-loop routing flip in 1.24012.x, or merely a host-loop transcript-path change. Evidence against a naive "gate flipped" read: the live fcache host-loop gate `1143815894` is still `true/force` — **but that is a 07:48 boot snapshot, not a live per-session read**, and org-policy `requireCoworkFullVmSandbox` (which overrides the gate per Ch24/L107's `f_()` decision) is not a boolean recoverable from the fcache. Note also that the in-VM SDK is staged for *every* Cowork session regardless of loop mode (bash-in-VM needs it), so `cowork_vm_node.log` alone does not decide loop mode.
 
+## Status on Desktop 2.19675.0 (2026-10-02)
+
+A local session on Desktop 2.19675.0 with agent 2.1.286 ran host-loop and wrote everything on the Mac: the transcript, the sub-agent transcript and `audit.jsonl` (with `system/init`), under `local-agent-mode-sessions/<acc>/<org>/<first 8 hex of the session id>/.claude/projects/session/`. So on that build the host-side recovery path below works, at the new location (layout: the state page `cowork-architecture.md`, "Session storage"). A search that only walks `local_<id>/` directories misses every session created since Desktop 2.110.0. What happened to the 1.24012.1 session is still unexplained.
+
 ## Why it matters (the payload of this lesson)
 
 If 1.24012.x moves real Desktop sessions' transcripts into the VM, **the host-side `audit.jsonl` disk-recovery path that settled L129 goes dark on newer builds.** Future `init.tools` verification would then require live VM `rootfs.img` forensics (Ch31 method) — which needs the image at rest, impossible while a session is live. This is a **methodology tripwire for the next Desktop lesson**: confirm where a given build writes its transcript before assuming the L129 recovery path still works.

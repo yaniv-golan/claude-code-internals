@@ -602,7 +602,7 @@ Practical implication: any tool that hand-writes `installed_plugins.json` should
 
 #### Per-session `known_marketplaces.json` files (CLI-internal, not consulted by Desktop IPC)
 
-Cowork sessions create per-session known-marketplaces files at `<userData>/local-agent-mode-sessions/<accountId>/<orgId>/local_<UUID>/.claude/plugins/known_marketplaces.json`. These are written by the **in-VM CLI** when a session activates a marketplace. The giveaway is the `installLocation` field — VM-relative paths like `/sessions/<vm-name>/mnt/.claude/plugins/marketplaces/...`, not host paths.
+Cowork sessions create per-session known-marketplaces files at `<userData>/local-agent-mode-sessions/<accountId>/<orgId>/local_<UUID>/.claude/plugins/known_marketplaces.json` (for a session created on Desktop 2.110.0 or later the directory is `<first 8 hex of the UUID>/` instead of `local_<UUID>/`). These are written by the **in-VM CLI** when a session activates a marketplace. The giveaway is the `installLocation` field — VM-relative paths like `/sessions/<vm-name>/mnt/.claude/plugins/marketplaces/...`, not host paths.
 
 Desktop's IPC handlers (`listMarketplaces`, `installPlugin`, etc.) do NOT read these files. They consult `<accountId>/<orgId>/cowork_plugins/known_marketplaces.json`. Treat the per-session file as a CLI-internal cache with no Desktop-side significance.
 

@@ -3172,7 +3172,9 @@
         "add a private git marketplace for plugins",
         "plugin asks for api key when enabled",
         "can plugins ship language servers or mcp servers",
-        "new plugin changes need a task run on this computer"
+        "new plugin changes need a task run on this computer",
+        "cowork session folder named with short hex",
+        "where are per-session marketplace files stored"
       ],
       "identifier_keys": [
         "refresh-marketplace",
@@ -3266,13 +3268,15 @@
         "add a private git marketplace for plugins",
         "plugin asks for api key when enabled",
         "can plugins ship language servers or mcp servers",
-        "new plugin changes need a task run on this computer"
+        "new plugin changes need a task run on this computer",
+        "cowork session folder named with short hex",
+        "where are per-session marketplace files stored"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "aeeb8d7c33af4272191b4eab67456e76070c4e4e0817146dc0ab346096618feb"
+        "terms_sha256": "48106c8ee0f4878b90cafaed8133f11b19001579553396678f29f14a477b86f3"
       }
     },
     {
@@ -10860,7 +10864,7 @@
       "lesson_number": "109",
       "file": "23-cowork-spaces-tasks-checkpointing.md",
       "startLine": 26,
-      "endLine": 331,
+      "endLine": 334,
       "keywords": [
         "cowork-spaces",
         "CoworkSpaces",
@@ -11013,6 +11017,7 @@
         "echo_unified_login",
         "dismiss_feedback",
         "silent_auto_update",
+        "main.log",
         "queue-operation",
         "last-prompt",
         "git-branch",
@@ -11040,7 +11045,10 @@
         "task list tool in cowork sessions",
         "background sub-agent transcript not persisted",
         "cowork scheduled task browser permissions",
-        "how are cowork sessions auto organized"
+        "how are cowork sessions auto organized",
+        "cowork session folder layout changed in newer versions",
+        "cowork session folder named by short id",
+        "cowork host loop logs moved to main log"
       ],
       "identifier_keys": [
         "in_progress",
@@ -11092,6 +11100,7 @@
         "echo_unified_login",
         "dismiss_feedback",
         "silent_auto_update",
+        "main.log",
         "queue-operation",
         "last-prompt",
         "git-branch",
@@ -11121,13 +11130,16 @@
         "task list tool in cowork sessions",
         "background sub-agent transcript not persisted",
         "cowork scheduled task browser permissions",
-        "how are cowork sessions auto organized"
+        "how are cowork sessions auto organized",
+        "cowork session folder layout changed in newer versions",
+        "cowork session folder named by short id",
+        "cowork host loop logs moved to main log"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "e12e08d73574e7bef0ef84ab7dc77eb396be866a969d53f3d53b692e761de810"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-02",
+        "terms_sha256": "74c78c1368fa5445e289439132656d9c57959310872882d3bc6cd6c028de8b7d"
       }
     },
     {
@@ -12446,7 +12458,9 @@
         "plugin root variable empty in bash",
         "can a plugin subagent read its reference files",
         "bash starts at session root not outputs",
-        "subagent sandbox isolation separate environment"
+        "subagent sandbox isolation separate environment",
+        "shorter session folder path newer versions",
+        "why is my session folder name so short"
       ],
       "identifier_keys": [
         "registered-hooks",
@@ -12489,13 +12503,15 @@
         "plugin root variable empty in bash",
         "can a plugin subagent read its reference files",
         "bash starts at session root not outputs",
-        "subagent sandbox isolation separate environment"
+        "subagent sandbox isolation separate environment",
+        "shorter session folder path newer versions",
+        "why is my session folder name so short"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "5abec045815f9e00516a26c9848edb3cfe1d1afbb450deba20297123b6ba7e17"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-02",
+        "terms_sha256": "d13eb2d1d5983c2ed25e62a5b9b5bf6e82bd90895bd1caa9d46be3c37efd79d6"
       }
     },
     {
@@ -13520,7 +13536,7 @@
       "lesson_number": "132",
       "file": "34-skill-discovery-vcs-events-containment.md",
       "startLine": 415,
-      "endLine": 474,
+      "endLine": 478,
       "keywords": [
         "session-containment",
         "vm-loop-shift",
@@ -13562,7 +13578,10 @@
         "did cowork move sessions into the sandbox vm",
         "check where a desktop build writes its transcript",
         "cowork audit log empty for new sessions",
-        "host loop versus vm loop change in latest desktop"
+        "host loop versus vm loop change in latest desktop",
+        "cowork session files moved to new folder",
+        "my search misses recent cowork sessions",
+        "cowork sub-agent transcript location on mac"
       ],
       "identifier_keys": [
         "clear-harness-move-state",
@@ -13584,13 +13603,16 @@
         "did cowork move sessions into the sandbox vm",
         "check where a desktop build writes its transcript",
         "cowork audit log empty for new sessions",
-        "host loop versus vm loop change in latest desktop"
+        "host loop versus vm loop change in latest desktop",
+        "cowork session files moved to new folder",
+        "my search misses recent cowork sessions",
+        "cowork sub-agent transcript location on mac"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "e7a06c1e4b4790aa9a756f0b22780fa54625c2bbfff9a7dde79ab6de0bf925d7"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-02",
+        "terms_sha256": "69f4472f73e0b7f670d30aa8d9ea334929edf7a3a6809201619e562762037172"
       }
     },
     {
@@ -17643,7 +17665,7 @@
       "lesson_number": "179",
       "file": "46-narration-turn-updates-silent-turn.md",
       "startLine": 347,
-      "endLine": 384,
+      "endLine": 385,
       "keywords": [
         "transcript-corpus",
         "session-transcripts",
@@ -17684,7 +17706,9 @@
         "cowork session transcripts location",
         "impossible result means analysis bug",
         "count files two ways before trusting",
-        "did the model actually do this in past sessions"
+        "did the model actually do this in past sessions",
+        "newer cowork sessions stored in different folder",
+        "why are recent cowork transcripts missing from my count"
       ],
       "identifier_keys": [
         "total_tokens_reminder",
@@ -17705,13 +17729,15 @@
         "cowork session transcripts location",
         "impossible result means analysis bug",
         "count files two ways before trusting",
-        "did the model actually do this in past sessions"
+        "did the model actually do this in past sessions",
+        "newer cowork sessions stored in different folder",
+        "why are recent cowork transcripts missing from my count"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "ccb7dfe6369cfb0728827fe26a086f232304583604c7df5c6b86f4c59a7c72cc"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-02",
+        "terms_sha256": "34239a08f561911a682fe51fbbbb2685479f326ddf447abaa3552755d1fdd332"
       }
     },
     {
@@ -42284,6 +42310,13 @@
     "silent_auto_update": [
       109
     ],
+    "main.log": [
+      109,
+      211
+    ],
+    "cowork-architecture.md": [
+      117
+    ],
     "queue-operation": [
       109
     ],
@@ -42307,9 +42340,6 @@
     ],
     "cowork_vm_swift.log": [
       109
-    ],
-    "main.log": [
-      211
     ],
     "mcp.log": [
       109
@@ -42460,9 +42490,6 @@
     ],
     "sdk-cli": [
       116
-    ],
-    "cowork-architecture.md": [
-      117
     ],
     "cowork-vm-env-injection.md": [
       116
@@ -46459,6 +46486,12 @@
     "new plugin changes need a task run on this computer": [
       31
     ],
+    "cowork session folder named with short hex": [
+      31
+    ],
+    "where are per-session marketplace files stored": [
+      31
+    ],
     "run a script before every tool call": [
       32
     ],
@@ -49957,6 +49990,15 @@
     "how are cowork sessions auto organized": [
       109
     ],
+    "cowork session folder layout changed in newer versions": [
+      109
+    ],
+    "cowork session folder named by short id": [
+      109
+    ],
+    "cowork host loop logs moved to main log": [
+      109
+    ],
     "default model changed to sonnet": [
       110
     ],
@@ -50544,6 +50586,12 @@
     "subagent sandbox isolation separate environment": [
       122
     ],
+    "shorter session folder path newer versions": [
+      122
+    ],
+    "why is my session folder name so short": [
+      122
+    ],
     "cowork subagent extra system prompt": [
       123
     ],
@@ -51001,6 +51049,15 @@
       132
     ],
     "host loop versus vm loop change in latest desktop": [
+      132
+    ],
+    "cowork session files moved to new folder": [
+      132
+    ],
+    "my search misses recent cowork sessions": [
+      132
+    ],
+    "cowork sub-agent transcript location on mac": [
       132
     ],
     "which cloud providers can claude code use": [
@@ -53094,6 +53151,12 @@
       179
     ],
     "did the model actually do this in past sessions": [
+      179
+    ],
+    "newer cowork sessions stored in different folder": [
+      179
+    ],
+    "why are recent cowork transcripts missing from my count": [
       179
     ],
     "cowork remote vs local session": [

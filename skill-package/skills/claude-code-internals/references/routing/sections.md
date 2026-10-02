@@ -1268,8 +1268,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 109 · 23-cowork-spaces-tasks-checkpointing.md:135 · Part E — Extended stream-json control-protocol surface (in-VM ELF 2.1.197)
 109 · 23-cowork-spaces-tasks-checkpointing.md:182 · Part F — Production `fcache` gate posture (snapshot 2026-07-02)
 109 · 23-cowork-spaces-tasks-checkpointing.md:211 · Part G — Session & log storage layout (host-loop, macOS, on-disk verified)
-109 · 23-cowork-spaces-tasks-checkpointing.md:279 · When a transcript is *not* written to disk
-109 · 23-cowork-spaces-tasks-checkpointing.md:320 · Cross-references
+109 · 23-cowork-spaces-tasks-checkpointing.md:282 · When a transcript is *not* written to disk
+109 · 23-cowork-spaces-tasks-checkpointing.md:323 · Cross-references
 111 · 24-verified-new-v2.1.198.md:54 · New / changed slash commands
 111 · 24-verified-new-v2.1.198.md:64 · Permissions, sandbox & auto-mode
 111 · 24-verified-new-v2.1.198.md:77 · Agents, sandboxing depth & Chrome
@@ -1429,9 +1429,10 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 132 · 34-skill-discovery-vcs-events-containment.md:419 · What was observed (first-party)
 132 · 34-skill-discovery-vcs-events-containment.md:431 · Why the obvious explanation is wrong
 132 · 34-skill-discovery-vcs-events-containment.md:435 · What is NOT confirmed
-132 · 34-skill-discovery-vcs-events-containment.md:439 · Why it matters (the payload of this lesson)
-132 · 34-skill-discovery-vcs-events-containment.md:445 · Identifier table
-132 · 34-skill-discovery-vcs-events-containment.md:466 · What this means for skill and agent authors
+132 · 34-skill-discovery-vcs-events-containment.md:439 · Status on Desktop 2.19675.0 (2026-10-02)
+132 · 34-skill-discovery-vcs-events-containment.md:443 · Why it matters (the payload of this lesson)
+132 · 34-skill-discovery-vcs-events-containment.md:449 · Identifier table
+132 · 34-skill-discovery-vcs-events-containment.md:470 · What this means for skill and agent authors
 137 · 35-verified-new-v2.1.217.md:123 · The bigger picture — what Anthropic is doing across v2.1.198 → v2.1.217
 137 · 35-verified-new-v2.1.217.md:139 · What this means for skill and agent authors
 138 · 36-cowork-lanes-mounts-snapshot-discipline.md:23 · The oracle
@@ -1589,10 +1590,10 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 178 · 46-narration-turn-updates-silent-turn.md:317 · Not this: the spinner's narration pipeline
 178 · 46-narration-turn-updates-silent-turn.md:334 · ADDENDUM (2026-08-30) — `thinking.display` also has a COMMAND-LINE delivery path
 179 · 46-narration-turn-updates-silent-turn.md:351 · Where they are
-179 · 46-narration-turn-updates-silent-turn.md:360 · Trap 1 — the glob that skipped 75% of the corpus
-179 · 46-narration-turn-updates-silent-turn.md:366 · Trap 2 — `type:"user"` is mostly not a user
-179 · 46-narration-turn-updates-silent-turn.md:374 · Trap 3 — a string hit is not an event
-179 · 46-narration-turn-updates-silent-turn.md:380 · The discipline that made the negative usable
+179 · 46-narration-turn-updates-silent-turn.md:361 · Trap 1 — the glob that skipped 75% of the corpus
+179 · 46-narration-turn-updates-silent-turn.md:367 · Trap 2 — `type:"user"` is mostly not a user
+179 · 46-narration-turn-updates-silent-turn.md:375 · Trap 3 — a string hit is not an event
+179 · 46-narration-turn-updates-silent-turn.md:381 · The discipline that made the negative usable
 180 · 47-desktop-1.46388-lanes-computed-env-flags.md:22 · The remote prompt is not in any artifact we hold
 180 · 47-desktop-1.46388-lanes-computed-env-flags.md:33 · Desktop constructs one entrypoint literal, and the agent knows two
 180 · 47-desktop-1.46388-lanes-computed-env-flags.md:52 · The structural reason remote-lane features are inert locally
@@ -1794,29 +1795,29 @@ state:cowork-architecture · state/cowork-architecture.md:22 · Host-loop vs VM-
 state:cowork-architecture · state/cowork-architecture.md:86 · Filesystem & mounts
 state:cowork-architecture · state/cowork-architecture.md:184 · Sub-agent execution (host-loop)
 state:cowork-architecture · state/cowork-architecture.md:272 · Session storage
-state:cowork-architecture · state/cowork-architecture.md:317 · Plugin roots
-state:cowork-architecture · state/cowork-architecture.md:380 · Runtime detection from a skill (lesson 116)
-state:cowork-architecture · state/cowork-architecture.md:434 · Re-verification at Desktop 1.18286.0 (2026-07-04)
-state:cowork-architecture · state/cowork-architecture.md:445 · Re-verification at Desktop 1.19367.0 (2026-07-08): cloud tasks are not new
-state:cowork-architecture · state/cowork-architecture.md:461 · Device automation surfaces (Desktop 1.22209.0, lessons 125-126)
-state:cowork-architecture · state/cowork-architecture.md:496 · LEAD (unconfirmed): 1.24012.1 may move session state off the host (L132)
-state:cowork-architecture · state/cowork-architecture.md:514 · Execution lanes (L138)
-state:cowork-architecture · state/cowork-architecture.md:563 · Lane facts re-derived at Desktop 1.46388.4 / agent 2.1.260 (L180)
-state:cowork-architecture · state/cowork-architecture.md:589 · A cloud session's outputs contract is switched per session (L198; formerly "Cloud Cowork's outputs contract")
-state:cowork-architecture · state/cowork-architecture.md:597 · A THIRD surface Desktop calls "cloud" — the claude.ai code-execution container (relayed, 2026-09-22)
-state:cowork-architecture · state/cowork-architecture.md:630 · Four surfaces, one probe (L198, 2026-09-23, first-party)
-state:cowork-architecture · state/cowork-architecture.md:647 · Scheduled tasks migrate themselves to the cloud (L208)
-state:cowork-architecture · state/cowork-architecture.md:660 · Where a new task runs (L210)
-state:cowork-architecture · state/cowork-architecture.md:686 · Desktop 2.9939.2 additions (L212–L214)
-state:cowork-architecture · state/cowork-architecture.md:710 · Desktop 2.16120.0 additions (L219–L221)
-state:cowork-architecture · state/cowork-architecture.md:736 · `computer://` links by lane (L215)
-state:cowork-architecture · state/cowork-architecture.md:745 · A cloud session and the user's computer (L215)
-state:cowork-architecture · state/cowork-architecture.md:763 · What Anthropic's help center says (relayed, read 2026-10-02)
-state:cowork-architecture · state/cowork-architecture.md:778 · One conversation, two runtimes (L216)
-state:cowork-architecture · state/cowork-architecture.md:793 · Credential delivery and build identity (L207)
-state:cowork-architecture · state/cowork-architecture.md:803 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
-state:cowork-architecture · state/cowork-architecture.md:840 · Mount model and delete policy (L139, L140)
-state:cowork-architecture · state/cowork-architecture.md:946 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
+state:cowork-architecture · state/cowork-architecture.md:346 · Plugin roots
+state:cowork-architecture · state/cowork-architecture.md:409 · Runtime detection from a skill (lesson 116)
+state:cowork-architecture · state/cowork-architecture.md:463 · Re-verification at Desktop 1.18286.0 (2026-07-04)
+state:cowork-architecture · state/cowork-architecture.md:474 · Re-verification at Desktop 1.19367.0 (2026-07-08): cloud tasks are not new
+state:cowork-architecture · state/cowork-architecture.md:490 · Device automation surfaces (Desktop 1.22209.0, lessons 125-126)
+state:cowork-architecture · state/cowork-architecture.md:525 · LEAD (unconfirmed): 1.24012.1 may move session state off the host (L132)
+state:cowork-architecture · state/cowork-architecture.md:550 · Execution lanes (L138)
+state:cowork-architecture · state/cowork-architecture.md:599 · Lane facts re-derived at Desktop 1.46388.4 / agent 2.1.260 (L180)
+state:cowork-architecture · state/cowork-architecture.md:625 · A cloud session's outputs contract is switched per session (L198; formerly "Cloud Cowork's outputs contract")
+state:cowork-architecture · state/cowork-architecture.md:633 · A THIRD surface Desktop calls "cloud" — the claude.ai code-execution container (relayed, 2026-09-22)
+state:cowork-architecture · state/cowork-architecture.md:666 · Four surfaces, one probe (L198, 2026-09-23, first-party)
+state:cowork-architecture · state/cowork-architecture.md:683 · Scheduled tasks migrate themselves to the cloud (L208)
+state:cowork-architecture · state/cowork-architecture.md:696 · Where a new task runs (L210)
+state:cowork-architecture · state/cowork-architecture.md:722 · Desktop 2.9939.2 additions (L212–L214)
+state:cowork-architecture · state/cowork-architecture.md:746 · Desktop 2.16120.0 additions (L219–L221)
+state:cowork-architecture · state/cowork-architecture.md:772 · `computer://` links by lane (L215)
+state:cowork-architecture · state/cowork-architecture.md:781 · A cloud session and the user's computer (L215)
+state:cowork-architecture · state/cowork-architecture.md:799 · What Anthropic's help center says (relayed, read 2026-10-02)
+state:cowork-architecture · state/cowork-architecture.md:814 · One conversation, two runtimes (L216)
+state:cowork-architecture · state/cowork-architecture.md:829 · Credential delivery and build identity (L207)
+state:cowork-architecture · state/cowork-architecture.md:839 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
+state:cowork-architecture · state/cowork-architecture.md:876 · Mount model and delete policy (L139, L140)
+state:cowork-architecture · state/cowork-architecture.md:982 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
 state:cowork-control-protocol · state/cowork-control-protocol.md:23 · Spawn contract
 state:cowork-control-protocol · state/cowork-control-protocol.md:87 · Handshake
 state:cowork-control-protocol · state/cowork-control-protocol.md:128 · Subtype inventory pointer
