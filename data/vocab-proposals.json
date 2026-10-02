@@ -2918,9 +2918,13 @@
     },
     "127": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "c9e80bb2b7f86f74077693104778ab979391e71263b4d2d025e1fdcce435d607",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "5f7c2d9d980155a249f5ca889976190f1b0c8e0e822ea0bb991d135915476b83",
+      "prior_terms_sha256": "5690b68d79ea8e18a92cb455411da768cfe2de18ff6d8adfeb2fd72d40b07b7e",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
+      "replaced": [],
       "terms": [
         "can Claude fill in my saved passwords",
         "Claude autofill credit card at checkout",
@@ -2936,7 +2940,10 @@
         "credential tool disabled by organization policy",
         "Claude filling address forms on websites",
         "is browser autofill available to everyone",
-        "third-party tools added to Claude's prompt"
+        "third-party tools added to Claude's prompt",
+        "why does Cowork need desktop app open",
+        "cloud task accessing my local files",
+        "files leave my device warning"
       ]
     },
     "128": {
@@ -4138,17 +4145,25 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "084c946c7f2f88d16cf3cb720736c6c364288db17ef33f37a8acf343097009be",
-      "prior_terms_sha256": "ea440fa68f0ca6be883e48dbdd488301e10bd88801ae65cbf23a7661dc844291",
+      "input_sha256": "66927b2b50cfee02a007b0e01a8fad8f1cb17b5232ac92a06cd100d855f42e9a",
+      "prior_terms_sha256": "a7a3c45dcb5dad82d74128639ac9db3f965451dbdc0189f8e218baa7fb68e434",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
-      "replaced": [],
+      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
+      "replaced": [
+        "why is cowork memory unavailable on my computer"
+      ],
+      "dropped": [
+        {
+          "term": "why is cowork memory unavailable on my computer",
+          "why": "duplicate",
+          "duplicate_of": "cowork memory not working locally"
+        }
+      ],
       "terms": [
         "cowork remote vs local session",
         "where does the remote cowork prompt come from",
         "remote session prompt not in desktop app",
         "cowork memory not working locally",
-        "why is cowork memory unavailable on my computer",
         "run cowork only on this computer setting",
         "how is local or remote cowork chosen",
         "cowork shows same name for local and remote",
@@ -4161,7 +4176,8 @@
         "how to tell if a session ran in the cloud",
         "where is the run locally setting",
         "cowork ignores only on this computer",
-        "local cowork option being removed"
+        "local cowork option being removed",
+        "which plans lose local cowork tasks"
       ]
     },
     "181": {
@@ -4534,11 +4550,13 @@
     },
     "197": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v2-update",
-      "date": "2026-10-01",
-      "input_sha256": "aa031c67ed7647743f2dbc0b8c830f0b6ce478f868fa60373f6d2b9713dfe15f",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "7de1b0ce3e92f5942ce4ed40a141a7a37a7bbe818c39c5424f487c46be84a437",
       "prior_terms_sha256": "ee4dcd96f6737a99280e74649a7872847f2c8caa1b373c1e2429773ab4fcf624",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
+      "replaced": [],
       "terms": [
         "project skills missing in cloud Cowork session",
         "cloud session only sees skill description",
@@ -4554,7 +4572,9 @@
         "admin policy blocks folder skills upload",
         "granting a folder uploads its skills",
         "write skill description for cloud stub",
-        "folder rules and project instructions copied to cloud"
+        "folder rules and project instructions copied to cloud",
+        "cloud task needs desktop app open",
+        "granted folder unreachable when desktop app closed"
       ]
     },
     "198": {
@@ -4797,11 +4817,11 @@
     "208": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-01",
-      "input_sha256": "5c3dca7d5fc94f0fe98b82826c7386e37f8869bbee9a920a1d1c11efdb6ab90a",
-      "prior_terms_sha256": "d607bf4b15fd63c4a0939bf9a6d1c0bcea759b93f604ce5b70a845c9996e1389",
+      "date": "2026-10-02",
+      "input_sha256": "bf5abbd470c9daf57c41be9200e09d9443d7b1ce7e65c2629b95d825a9aab91e",
+      "prior_terms_sha256": "29a2c970770ea5454eafebedf7882315e1dd25378d1ee4804ba8d03caa2120d7",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "73efe2660a7deb0ec98bd07ac6223d29097ca687",
+      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
       "replaced": [],
       "terms": [
         "scheduled task stopped running locally",
@@ -4827,10 +4847,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "3497a8b6bbb214af08fc7d3f511d42fb4354ae2ae5711be61348799825e3a8f2",
+      "input_sha256": "f0444395c5899935fe15724a5f952c333b41598817dbe8cdf5dde254b7181721",
       "prior_terms_sha256": "1f30e5da2f2f2d41adf2e7f7979932e68f0aac5508f1d2a1f0fe3710b4dad99d",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
+      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
       "replaced": [],
       "terms": [
         "plugin hook not firing in cowork",
@@ -4854,20 +4874,11 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "831ee2050b3d6d6ec0f75d90e5df95e60b05b32b40d3d1476bb86a50269b9704",
-      "prior_terms_sha256": "139860b61512bcf390886dc24a643e018dc03b3c9689039b9e9bbfb623f9439c",
+      "input_sha256": "03524ba44da7759a1257c2926cf303a11f50b0ffc4856a4569f3954e74315c58",
+      "prior_terms_sha256": "359884202a4966870e07e651d669cb0f20f1308e2517e5289b064dc85afb986e",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "eee4f6704a1ac8463931266fefe1bb09b1aaa92c",
-      "replaced": [
-        "why does my new task run in the cloud?"
-      ],
-      "dropped": [
-        {
-          "term": "why does my new task run in the cloud?",
-          "why": "duplicate",
-          "duplicate_of": "cowork task runs in cloud instead of locally"
-        }
-      ],
+      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
+      "replaced": [],
       "terms": [
         "cowork task runs in cloud instead of locally",
         "only on this computer setting ignored",
@@ -5001,10 +5012,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "05ac7ef63ac2060e00b8ec11a57beb29d3d40a1b375f0c2d7cedbdfaab0fa820",
+      "input_sha256": "f6e03683cad3f5c6fdf24bcb21c2e67875bbf0742069dbd2c2bea533e4929add",
       "prior_terms_sha256": "72abd934a16a797d69c0f27cc0eae821e2183e876f7648806158767db09d9268",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "eee4f6704a1ac8463931266fefe1bb09b1aaa92c",
+      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
       "replaced": [],
       "terms": [
         "cloud task can't see files on my Mac",
@@ -5031,10 +5042,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "62b2a558878dc896e7d597673fea23c823037d77d56191f02dbb42761b9a6ab1",
-      "prior_terms_sha256": "1137c7dcc357ad94ed47e55ddb48e5d826c60f75b68e4ad9a486b782f0b2b740",
+      "input_sha256": "a76bc00eaf62389151765adc34729723cf5bfd555083b520f5fea3dcfae9e940",
+      "prior_terms_sha256": "567f5c8fc3d19b9e2bc3f5ac2f823170642d9ce5b934c77fde6cf5063304dbf2",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
+      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
       "replaced": [],
       "terms": [
         "chat turned into Cowork mid-conversation",
@@ -5061,10 +5072,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "fa841dc51e54d2369d831bd55774383bffe1a1406a1e53a60bc4a2b29eb59598",
+      "input_sha256": "d0101b223efb66ddff537e4a080bcedcc08d035e99c134dfb907bfb28d474e76",
       "prior_terms_sha256": "38b12b0d40b464a11b9752da9a9ce5c34d356289c75d43e2abed9a9e559b918e",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "eee4f6704a1ac8463931266fefe1bb09b1aaa92c",
+      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
       "replaced": [],
       "terms": [
         "get my own skill into Cowork",
@@ -5091,10 +5102,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "3d5597fc5c64d3a9746d15b3f94a4bce4644a959929159ee107a07d1611a6d84",
+      "input_sha256": "b71f97e80af3a42f6f27d5362291841643d25df5b94a2cba79e13b5380ac0909",
       "prior_terms_sha256": "e8a515ce4a35864729cb5cafc0778bc7f33f7ca455af550ebb4893cd67dbb9d0",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "eee4f6704a1ac8463931266fefe1bb09b1aaa92c",
+      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
       "replaced": [],
       "terms": [
         "plugin hook blocks prompt with no message in cloud",
@@ -5144,9 +5155,13 @@
     },
     "220": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-10-01",
-      "input_sha256": "017bc85c5dd6027d6c8963a4a70a11a617d6bf7f34e94f45af063d245e55755d",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "6483b08446f99cc59acfb685c821f9939fb0e125786a35bb14dfacc1e40c6054",
+      "prior_terms_sha256": "5016fc62743152d792df019dd6c30a39c463f93ac2cf634948ef83c23393a8e4",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
+      "replaced": [],
       "terms": [
         "approved file edit ran with different input",
         "permission prompt changes ignored in Cowork",

@@ -90,7 +90,7 @@
       "nav_label": "Shell commands",
       "nav_group": "Runtime",
       "blurb": "Sealed environment, no arbitrary network, a large preinstalled stack.",
-      "summary": "In a local Cowork session the shell your skill runs commands in is sealed: environment variables you set on the host do not reach it, and neither do exports written by hooks. The inline shell-execution syntax some skills use in their instructions does not run there, and whether it runs elsewhere depends on the sandbox and on how the skill was installed. The local shell tool is also not the same tool as the CLI's (in the remote sandbox it is), so branching on which tools you have is a more reliable signal than branching on environment variables.",
+      "summary": "In a local session the shell your skill runs commands in is sealed: environment variables you set on the host do not reach it, and neither do exports written by hooks. The inline shell-execution syntax some skills use in their instructions does not run there, and whether it runs elsewhere depends on the sandbox and on how the skill was installed. The local shell tool is also not the same tool as the CLI's (in the remote sandbox it is), so branching on which tools you have is a more reliable signal than branching on environment variables.",
       "open_questions": [
         "Network egress is allowed through a fetch capability rather than arbitrary outbound sockets, and the routing has changed across releases. Assume fetch works and arbitrary sockets do not, and degrade gracefully rather than probing."
       ]
@@ -112,7 +112,7 @@
       "nav_label": "Plugins & plugin root",
       "nav_group": "Extending",
       "blurb": "Hooks do fire. Plugin root resolves differently per consumer.",
-      "summary": "Yes — plugin hooks do fire in Cowork. The determinant is where the plugin was installed from: a plugin installed through the Cowork application is visible to Cowork sessions, and one installed through the CLI's own path is not, because they occupy different namespaces. The plugin-root token resolves differently depending on which consumer expands it, so use it for file-tool reads and discover the mounted path at runtime for anything you shell out to.",
+      "summary": "Yes — plugin hooks do fire in Cowork. The determinant is where the plugin was installed from: a plugin installed through the Cowork application is visible to Cowork tasks, and one installed through the CLI's own path is not, because they occupy different namespaces. The plugin-root token resolves differently depending on which consumer expands it, so use it for file-tool reads and discover the mounted path at runtime for anything you shell out to.",
       "open_questions": [
         "Plugin-root resolution differs between the two sandboxes. The plugin-root rule is written to be correct in both, at the cost of being less direct than a sandbox-specific answer would be."
       ]
@@ -205,7 +205,7 @@
       "caveats": [
         "This is a steer, not an enforcement boundary. AskUserQuestion remains callable and functional; what was verified is that Cowork injects the instruction, not that a model obeys it in any particular run.",
         "Delivery is gated server-side and read on at the 2026-08-13 and 2026-09-23 captures. A session where that flag is off receives no such instruction, and the guidance does not apply.",
-        "Measured on one machine: in 71 Cowork sessions that asked the user anything after receiving the instruction, the model used the form in 31, AskUserQuestion in 27 and both in 13 — so your skill must handle answers arriving either way."
+        "Measured on one machine: in 71 Cowork tasks that asked the user anything after receiving the instruction, the model used the form in 31, AskUserQuestion in 27 and both in 13 — so your skill must handle answers arriving either way."
       ]
     },
     {
@@ -590,7 +590,7 @@
       "id": "delivery.two-lanes",
       "page": "delivering-outputs",
       "rule": "Assume your skill may run in either sandbox, and never assume which one.",
-      "detail": "A Cowork session runs in one of two sandboxes: a local one on the user's own machine, or a remote one on Anthropic's infrastructure. They differ in where the filesystem lives, whether it survives the session, and how a file reaches the user. Which one a session gets depends on how it was created and on account configuration, neither of which a skill can control or reliably detect — so write for both.",
+      "detail": "A Cowork task runs in one of two sandboxes: a local one on the user's own machine, or a remote one on Anthropic's infrastructure. They differ in where the filesystem lives, whether it survives the session, and how a file reaches the user. Which one a session gets depends on how it was created and on account configuration, neither of which a skill can control or reliably detect — so write for both.",
       "tier": "measured",
       "verified": {
         "date": "2026-08-05",
@@ -693,7 +693,7 @@
       "id": "detect.ordered-recipe",
       "page": "detecting-cowork",
       "rule": "Detect the runtime with an ordered sequence of checks, not a single environment test.",
-      "detail": "Run three checks in order. First, is `CLAUDE_CODE_IS_COWORK` set — if so you are in Cowork. Otherwise, is the working directory under `/sessions/` — that catches the shell context, where the marker is absent. Otherwise, is `CLAUDECODE` set — then it is Claude Code, and `CLAUDE_CODE_ENTRYPOINT` says which: `remote_cowork` is Cowork running in the cloud, `remote` is Claude Code on the web, and anything else is the CLI. Skipping that last refinement misreads a cloud Cowork session as the CLI, because its shell sets `CLAUDECODE` but not `CLAUDE_CODE_IS_COWORK`. Each step only adds coverage and a later one never contradicts an earlier one, so a missing marker should fall through rather than fail.",
+      "detail": "Run three checks in order. First, is `CLAUDE_CODE_IS_COWORK` set — if so you are in Cowork. Otherwise, is the working directory under `/sessions/` — that catches the shell context, where the marker is absent. Otherwise, is `CLAUDECODE` set — then it is Claude Code, and `CLAUDE_CODE_ENTRYPOINT` says which: `remote_cowork` is Cowork running in the cloud, `remote` is Claude Code on the web, and anything else is the CLI. Skipping that last refinement misreads a cloud session as the CLI, because its shell sets `CLAUDECODE` but not `CLAUDE_CODE_IS_COWORK`. Each step only adds coverage and a later one never contradicts an earlier one, so a missing marker should fall through rather than fail.",
       "tier": "measured",
       "verified": {
         "date": "2026-09-23",
@@ -994,7 +994,7 @@
       "id": "plugins.hooks-do-fire",
       "page": "plugins-and-plugin-root",
       "rule": "Expect plugin hooks to fire in Cowork.",
-      "detail": "Hooks shipped by a plugin do run in Cowork, in both the local and the cloud lane: in live checks, prompt, before-tool, after-tool and stop hooks fired on both lanes, and the session-start hook on the local lane. Two things make it look otherwise. A plugin installed where Cowork sessions do not look appears to have no hooks at all. And a hook that succeeds without printing anything leaves no trace in the session's record, so check a side effect it produces rather than the record.",
+      "detail": "Hooks shipped by a plugin do run in Cowork, in both the local and the cloud lane: in live checks, prompt, before-tool, after-tool and stop hooks fired on both lanes, and the session-start hook on the local lane. Two things make it look otherwise. A plugin installed where Cowork tasks do not look appears to have no hooks at all. And a hook that succeeds without printing anything leaves no trace in the session's record, so check a side effect it produces rather than the record.",
       "tier": "measured",
       "verified": {
         "date": "2026-09-28",
@@ -1024,7 +1024,7 @@
       "id": "plugins.match-both-shell-names",
       "page": "plugins-and-plugin-root",
       "rule": "Match the shell under both of its names in a before-tool hook.",
-      "detail": "The shell tool is called one thing in the command-line tool and in cloud Cowork, and another in local Cowork. The agent translates between the two when matching hooks only if the session carries a mapping between the names, which current desktop builds pass but older ones and other launchers may not. Listing both names in the matcher works either way, on both lanes.",
+      "detail": "The shell tool is called one thing in the command-line tool and in a cloud session, and another in a local session. The agent translates between the two when matching hooks only if the session carries a mapping between the names, which current desktop builds pass but older ones and other launchers may not. Listing both names in the matcher works either way, on both lanes.",
       "tier": "binary",
       "severity": "silent",
       "durability": "durable",
@@ -1036,7 +1036,7 @@
         "state_page": "plugins-skills-hooks"
       },
       "caveats": [
-        "Checked live on both lanes: in cloud Cowork the command-line name matched the shell; in local Cowork the command-line name, the local name and a match-all each fired for the same shell call."
+        "Checked live on both lanes: in a cloud session the command-line name matched the shell; in a local session the command-line name, the local name and a match-all each fired for the same shell call."
       ],
       "verified": {
         "date": "2026-09-25",
@@ -1063,7 +1063,7 @@
         "state_page": "plugins-skills-hooks"
       },
       "caveats": [
-        "The agent's handling is read from the shipped agent; a blocked tool call from a missing script was not reproduced in a live session. The usual shell was measured as dash in the cloud Cowork container and in the Cowork virtual machine on the user's computer; hooks of a local session on a Mac run under the macOS shell."
+        "The agent's handling is read from the shipped agent; a blocked tool call from a missing script was not reproduced in a live session. The usual shell was measured as dash in a cloud session's container and in the Cowork virtual machine on the user's computer; hooks of a local session on a Mac run under the macOS shell."
       ],
       "verified": {
         "date": "2026-09-27",
@@ -1077,7 +1077,7 @@
       "id": "plugins.upload-a-personal-skill",
       "page": "plugins-and-plugin-root",
       "rule": "To get a personal skill into Cowork, upload it as a skill rather than packaging it as a plugin.",
-      "detail": "A skill uploaded from the Skills section of the desktop application's Customize screen becomes part of the user's account. Within about a minute it reached the command-line tool, a remote Cowork session and a local one, each time with its full instructions, its scripts and its reference files, and the scripts ran. Zip the skill with its folder at the top level; the uploader refuses a zip that also contains a plugin manifest.",
+      "detail": "A skill uploaded from the Skills section of the desktop application's Customize screen becomes part of the user's account. Within about a minute it reached the command-line tool, a cloud session and a local one, each time with its full instructions, its scripts and its reference files, and the scripts ran. Zip the skill with its folder at the top level; the uploader refuses a zip that also contains a plugin manifest.",
       "tier": "measured",
       "severity": "friction",
       "durability": "durable",
@@ -1105,7 +1105,7 @@
       "id": "plugins.edit-a-skill-in-chat",
       "page": "plugins-and-plugin-root",
       "rule": "A user can create and change their own skills by asking Claude in Cowork; point them there before suggesting a re-upload.",
-      "detail": "In a Cowork session that is allowed to save skills, asking Claude to create a skill, or to change one the user already has, produces a card the user confirms; the result is saved to their account and reaches their other sessions and the command-line tool within about a minute. A change replaces only the skill's instructions and keeps its other files, so an uploaded skill with scripts can be edited this way. A new skill created in chat has instructions only. One that needs scripts or reference files can be uploaded, or, in a cloud session, packaged as a .skill file and sent to the user: the Save skill button on that file installs every file.",
+      "detail": "In a Cowork task that is allowed to save skills, asking Claude to create a skill, or to change one the user already has, produces a card the user confirms; the result is saved to their account and reaches their other sessions and the command-line tool within about a minute. A change replaces only the skill's instructions and keeps its other files, so an uploaded skill with scripts can be edited this way. A new skill created in chat has instructions only. One that needs scripts or reference files can be uploaded, or, in a cloud session, packaged as a .skill file and sent to the user: the Save skill button on that file installs every file.",
       "tier": "measured",
       "severity": "friction",
       "durability": "durable",
@@ -1190,8 +1190,8 @@
     {
       "id": "plugins.install-through-the-app",
       "page": "plugins-and-plugin-root",
-      "rule": "Install a plugin through the Cowork application if you want Cowork sessions to see it.",
-      "detail": "Plugins installed through the CLI's own installation path land in a namespace that Cowork sessions never read, so the plugin appears installed and is simply invisible. This is the usual explanation for 'my plugin works in the CLI but not in Cowork'.",
+      "rule": "Install a plugin through the Cowork application if you want Cowork tasks to see it.",
+      "detail": "Plugins installed through the CLI's own installation path land in a namespace that Cowork tasks never read, so the plugin appears installed and is simply invisible. This is the usual explanation for 'my plugin works in the CLI but not in Cowork'.",
       "tier": "measured",
       "verified": {
         "date": "2026-08-05",
@@ -1346,7 +1346,7 @@
       "id": "shell.inline-execution-disabled",
       "page": "shell-commands",
       "rule": "Do not depend on the inline shell-execution syntax in skill instructions; whether it runs depends on the sandbox, on how the skill was installed, on whether the command needs approval and on when in the conversation it is used.",
-      "detail": "The syntax that lets a skill embed a command in its own instructions and have the output substituted does not run in a local Cowork session: each command is replaced by a notice that shell execution is disabled by policy. Where it is not switched off, each command first goes through the same permission check as a shell command: one that is allowed runs and its output is substituted; one that needs approval, in auto mode, is not run but rewritten into an instruction asking the model to run it, which the model may or may not do; in any other mode such a command makes the skill fail to load. In the remote sandbox, a skill used before the conversation's session exists, for example as its first message, is expanded outside the agent and keeps its commands as raw text whichever way it was installed; once the session exists the agent runs them, and a command the skill allows that then fails when it runs leaves a typed slash command with no reply and no error and makes the model's own invocation fail to load (a failing command the skill does not allow was not tested). In the command-line tool a plugin's skills go through that check, but a skill the user uploaded to their account has its commands left as raw text. Apart from the failed load and that hang, none of these cases raises an error, so a skill that gathers context this way carries on with the notice, the raw command or the instruction in place of the output.",
+      "detail": "The syntax that lets a skill embed a command in its own instructions and have the output substituted does not run in a local session: each command is replaced by a notice that shell execution is disabled by policy. Where it is not switched off, each command first goes through the same permission check as a shell command: one that is allowed runs and its output is substituted; one that needs approval, in auto mode, is not run but rewritten into an instruction asking the model to run it, which the model may or may not do; in any other mode such a command makes the skill fail to load. In the remote sandbox, a skill used before the conversation's session exists, for example as its first message, is expanded outside the agent and keeps its commands as raw text whichever way it was installed; once the session exists the agent runs them, and a command the skill allows that then fails when it runs leaves a typed slash command with no reply and no error and makes the model's own invocation fail to load (a failing command the skill does not allow was not tested). In the command-line tool a plugin's skills go through that check, but a skill the user uploaded to their account has its commands left as raw text. Apart from the failed load and that hang, none of these cases raises an error, so a skill that gathers context this way carries on with the notice, the raw command or the instruction in place of the output.",
       "tier": "binary",
       "verified": {
         "date": "2026-09-28",
@@ -1742,7 +1742,7 @@
       "id": "change.never-assert-on-prompt-wording",
       "page": "what-can-change-under-you",
       "rule": "Never write a skill that depends on the exact wording of the system prompt.",
-      "detail": "The instructions a Cowork session runs with can be patched from the operator's side, including a mode that replaces the computed instructions wholesale rather than adding to them. So a model of the session prompt as 'the standard preset plus my additions' can be wrong at any time, with no local artifact changing. Depend on behaviour you can observe, not on text you expect to be present.",
+      "detail": "The instructions a Cowork task runs with can be patched from the operator's side, including a mode that replaces the computed instructions wholesale rather than adding to them. So a model of the session prompt as 'the standard preset plus my additions' can be wrong at any time, with no local artifact changing. Depend on behaviour you can observe, not on text you expect to be present.",
       "tier": "binary",
       "verified": {
         "date": "2026-08-05",
@@ -1889,7 +1889,7 @@
       "caveats": [
         "The exact limits are numbers a future release can change, so treat 'roughly twenty thousand characters' as an order of magnitude rather than a threshold to optimise against. The behaviours — shortened then written back, or emptied outright, both silently — are the durable part.",
         "A recovery instruction of the form \"if a later section appears to be missing, re-read this file\" addresses the shortened case, may still fail there if the recorded location has gone stale, and cannot fire at all for the emptied one, where there is no signal. Phrase it so it does not read as covering both.",
-        "Recovery is best-effort, and how likely it is to fail depends on the surface. Where a skill's files are staged differs between products: on one, recorded locations are stamped with a version and most of the ones examined no longer existed after updates; on the Cowork sessions examined here the staged location was still present, but that sample was very small. Neither number should be read as a rate. What is established is that the location is captured at first invocation rather than resolved when read; that a later re-read fails as a result is inferred, not observed. Front-loading is the only mitigation here that does not depend on recovery at all.",
+        "Recovery is best-effort, and how likely it is to fail depends on the surface. Where a skill's files are staged differs between products: on one, recorded locations are stamped with a version and most of the ones examined no longer existed after updates; on the Cowork tasks examined here the staged location was still present, but that sample was very small. Neither number should be read as a rate. What is established is that the location is captured at first invocation rather than resolved when read; that a later re-read fails as a result is inferred, not observed. Front-loading is the only mitigation here that does not depend on recovery at all.",
         "There is a one-line version of this check: find the first heading in your skill and see whether it falls inside the part that survives. If it does not, everything structural is in the discarded half, and what the reader keeps is whatever prose happens to open the file — which in one measured case was release history, leaving no instructions at all. Counting characters tells you whether you are over; finding the first heading tells you whether being over actually costs you anything."
       ]
     },
@@ -2017,7 +2017,7 @@
       "id": "paths.always-pass-a-search-path",
       "page": "files-and-paths",
       "rule": "Always give search tools an explicit folder.",
-      "detail": "A search with no folder means something different on every surface. In local Cowork it searches the outputs location; in a Cowork session running in the cloud it walks the whole container home, thousands of package-cache files and the agent's own credential directory included; in Claude Code on the web it searches the repository; in a claude.ai chat there are no search tools at all. Pass the folder you mean, usually the outputs location or a connected folder, and the result is the same everywhere.",
+      "detail": "A search with no folder means something different on every surface. In a local session it searches the outputs location; in a cloud session it walks the whole container home, thousands of package-cache files and the agent's own credential directory included; in Claude Code on the web it searches the repository; in a claude.ai chat there are no search tools at all. Pass the folder you mean, usually the outputs location or a connected folder, and the result is the same everywhere.",
       "tier": "measured",
       "verified": {
         "date": "2026-09-23",
@@ -2043,7 +2043,7 @@
     {
       "caveats": [
         "One remote session, one account, relayed from another project's instrumented run. The local-sandbox half of this rule is the long-measured one.",
-        "Re-measured 2026-09-23 on a cloud Cowork session: the shell showed CLAUDECODE=1, CLAUDE_CODE_ENTRYPOINT=remote_cowork and CLAUDE_CODE_REMOTE=true, and no CLAUDE_CODE_IS_COWORK."
+        "Re-measured 2026-09-23 on a cloud session: the shell showed CLAUDECODE=1, CLAUDE_CODE_ENTRYPOINT=remote_cowork and CLAUDE_CODE_REMOTE=true, and no CLAUDE_CODE_IS_COWORK."
       ],
       "volatile_dependency": false,
       "durability": "durable",
@@ -2188,7 +2188,7 @@
       "id": "plugins.folder-skills-are-not-a-channel",
       "page": "plugins-and-plugin-root",
       "rule": "Ship Cowork skills in a plugin, not in a project's `.claude/skills` folder.",
-      "detail": "A skill left in a folder's `.claude/skills` does not load in a local Cowork session, as far as the shipped code shows: the desktop starts the agent with user settings only, and project skills load from project settings. In a cloud Cowork session that the user grants the folder to, the desktop does upload those skills, but by default only as stubs: the model sees your frontmatter, the body is replaced by a note to run the skill on the user's device, and your scripts never run in the cloud. Past 100 skills in one folder, or 32 MiB in total, skills are dropped with little or no notice. A plugin is the only route that delivers the whole skill on both lanes.",
+      "detail": "A skill left in a folder's `.claude/skills` does not load in a local session, as far as the shipped code shows: the desktop starts the agent with user settings only, and project skills load from project settings. In a cloud session that the user grants the folder to, the desktop does upload those skills, but by default only as stubs: the model sees your frontmatter, the body is replaced by a note to run the skill on the user's device, and your scripts never run in the cloud. Past 100 skills in one folder, or 32 MiB in total, skills are dropped with little or no notice. A plugin is the only route that delivers the whole skill on both lanes.",
       "tier": "binary",
       "verified": {
         "date": "2026-09-23",
@@ -2215,7 +2215,7 @@
       "id": "plugins.mcp-server-may-be-stubbed",
       "page": "plugins-and-plugin-root",
       "rule": "Expect your plugin's local MCP server to work in Cowork, and a remote one to be replaced when the user already has that service connected.",
-      "detail": "A plugin's MCP server that runs locally over stdio gets its real tools in local Cowork: the desktop application starts it on the user's machine and hands its tools to the session. Two things replace a server with an empty stand-in that lists no tools. An organisation's MCP policy can do it to local servers and packaged extensions. And a remote server, one reached over HTTP, is replaced when the user already has the same service connected through a claude.ai connector, because the connector then serves it. Earlier desktop releases replaced every remote plugin server while that behaviour was switched on. The desktop application's log records each replacement by name, which is the quickest way to tell which case you are in.",
+      "detail": "A plugin's MCP server that runs locally over stdio gets its real tools in a local session: the desktop application starts it on the user's machine and hands its tools to the session. Two things replace a server with an empty stand-in that lists no tools. An organisation's MCP policy can do it to local servers and packaged extensions. And a remote server, one reached over HTTP, is replaced when the user already has the same service connected through a claude.ai connector, because the connector then serves it. Earlier desktop releases replaced every remote plugin server while that behaviour was switched on. The desktop application's log records each replacement by name, which is the quickest way to tell which case you are in.",
       "tier": "measured",
       "severity": "silent",
       "durability": "durable",
@@ -2345,8 +2345,8 @@
     {
       "id": "plugins.cowork-records-hide-hooks",
       "page": "plugins-and-plugin-root",
-      "rule": "Do not conclude your hook did not fire because a local Cowork session's records do not show it.",
-      "detail": "The agent reports hook activity in its output stream only for session-start hooks unless it is started with an option the desktop application never passes. So a local Cowork session's records show session-start hooks and nothing else, even when your other hooks ran. Check your hook's own side effects instead, or reproduce outside Cowork with hook events switched on. Cloud sessions report every hook.",
+      "rule": "Do not conclude your hook did not fire because a local session's records do not show it.",
+      "detail": "The agent reports hook activity in its output stream only for session-start hooks unless it is started with an option the desktop application never passes. So a local session's records show session-start hooks and nothing else, even when your other hooks ran. Check your hook's own side effects instead, or reproduce outside Cowork with hook events switched on. Cloud sessions report every hook.",
       "tier": "measured",
       "severity": "silent",
       "durability": "durable",

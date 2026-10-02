@@ -44,7 +44,7 @@ lessons (see frontmatter).
    paths, the full host shell `PATH`, and its own `env:`-block marker).
    This is genuinely read by the Desktop app (not just the CLI's
    import-only `claude mcp add-from-claude-desktop` path) and is available
-   in every Cowork session after a Desktop restart — the validated route
+   in every Cowork task after a Desktop restart — the validated route
    for giving an MCP-shaped integration a key without re-supplying it each
    session.
 
@@ -151,4 +151,4 @@ the Artifacts service refuses a `host:` declaration at publish, and the frame
 shell refuses an undeclared `host:` call with `not_in_manifest` before it
 reaches the Desktop (both measured 2026-09-27, L211). `CLAUDE_ARTIFACT_HOST_GRANT` (agent
 ≥ 2.1.275) limits which `host:` servers an Artifact published from an
-interactive Cowork session may declare.
+interactive Cowork task may declare.

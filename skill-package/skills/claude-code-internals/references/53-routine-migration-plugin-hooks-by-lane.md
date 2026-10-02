@@ -16,7 +16,7 @@ Prompted by a cowork-harness session that could not get a local Cowork session a
 
 # LESSON 208 — DESKTOP MOVES LOCAL SCHEDULED TASKS TO THE CLOUD
 
-**A background sweep in Claude Desktop converts a local scheduled task into a cloud routine once it has a short track record. The task then runs in the cloud and reaches the user's Mac as a connected device. It is switched on server-side, present since Desktop 1.44121.1, and it is why a machine can stop starting local Cowork sessions without any update or setting change.**
+**A background sweep in Claude Desktop converts a local scheduled task into a cloud routine once it has a short track record. The task then runs in the cloud and reaches the user's Mac as a connected device. It is switched on server-side, present since Desktop 1.44121.1, and it is why a machine can stop starting local sessions without any update or setting change.**
 
 ## Observed
 
@@ -65,7 +65,7 @@ When a scheduled task moves, it changes lane: its working directory, what a rela
 
 # LESSON 209 — PLUGIN HOOKS IN COWORK, EVENT BY EVENT
 
-**Plugin hooks fire in both Cowork lanes, with one exception: SessionStart did not fire in a new cloud session (it did on the local lane). A `Bash` matcher matches Cowork's `mcp__workspace__bash` only through a tool alias the session must carry. And a hook that succeeds silently leaves no record, so "it didn't fire" is easy to conclude wrongly.**
+**Plugin hooks fire in both lanes, local and cloud sessions, with one exception: SessionStart did not fire in a new cloud session (it did on the local lane). A `Bash` matcher matches a local session's `mcp__workspace__bash` only through a tool alias the session must carry. And a hook that succeeds silently leaves no record, so "it didn't fire" is easy to conclude wrongly.**
 
 ## Cloud lane (live)
 
@@ -97,7 +97,7 @@ The run made no Read call, so the `Read` matcher was not exercised. Agent 2.1.28
 
 A `claude` session started outside Cowork (an SDK harness, a CLI run) can load the same plugin and write to the same log; tell the runs apart by session time against the Desktop's `LocalAgentModeSessions.start` lines.
 
-## Matchers and the Cowork shell
+## Matchers and the local session's shell
 
 A matcher made only of letters, digits, `_` and `|` is an exact, case-sensitive list (for some events `,`, space and `-` also separate entries); `*` or an empty matcher matches everything; anything else is an unanchored regular expression, which is also tested against alias names. Each list entry is expanded through the session's tool aliases — present in every agent checked, from 2.1.197 to 2.1.280:
 
@@ -105,7 +105,7 @@ A matcher made only of letters, digits, `_` and `|` is an exact, case-sensitive 
 function Ope(e,n){let t=n&&Object.hasOwn(n,e)?n[e]:void 0;return t!==void 0&&t!==e?[e,t]:[e]}
 ```
 
-Local host-loop Cowork passes the alias `Bash` → `mcp__workspace__bash` (a first-class spawn option since about Desktop 1.20186.1, Ch35/L121), so a `Bash` matcher also matches the Cowork shell, and the hook receives `tool_name` `mcp__workspace__bash` — seen live above. A session without that alias — older Desktop builds, or anything that starts the agent without it — gives a `Bash` matcher nothing to match; a reported `Bash` hook that never ran (May 2026) predates the alias. In a cloud session the shell is `Bash` itself. The file tools keep their names (`Read`, `Write`, `Edit`) on both lanes.
+A host-loop local session passes the alias `Bash` → `mcp__workspace__bash` (a first-class spawn option since about Desktop 1.20186.1, Ch35/L121), so a `Bash` matcher also matches the local session's shell, and the hook receives `tool_name` `mcp__workspace__bash` — seen live above. A session without that alias — older Desktop builds, or anything that starts the agent without it — gives a `Bash` matcher nothing to match; a reported `Bash` hook that never ran (May 2026) predates the alias. In a cloud session the shell is `Bash` itself. The file tools keep their names (`Read`, `Write`, `Edit`) on both lanes.
 
 ## Two traps
 
@@ -125,7 +125,7 @@ Local host-loop Cowork passes the alias `Bash` → `mcp__workspace__bash` (a fir
 
 **The claude.ai interface, not the Desktop, picks the lane for a new Cowork task. Its code says an account that has opted out of cloud always gets a local session. On the capturing machine with Desktop 2.9939.2 the opt-out was saved, the app restarted, and new tasks still ran in the cloud — with and without Auto mode. With Desktop 2.16120.0 plain new tasks have run locally again on the same machine, but not every time. Check where each task ran.**
 
-**Announced: local Cowork tasks end on 2026-10-06 (not yet observed).** Anthropic's support article "Use Claude Cowork on web, desktop, and mobile" (read 2026-10-02) says "Claude Cowork is now just Claude. Ask for what you need, and Claude decides whether that's a quick answer or a task", "rolling out gradually to Pro and Max plans, with more plans to follow", and "On October 6, 2026, new Cowork tasks run in the cloud and the **Only on your computer** option in **Settings > General** will be removed." It adds: "Tasks you already started on your computer stay there, and you can keep working on them until they're done" and "Your scheduled tasks move to the cloud too, including ones that use files on your computer." On 2026-10-02 the setting read "Only on this computer", under Settings → General → Tasks on the merged interface and under Settings → Cowork on the older one. Press reports also give Team and Free plans a later date and Enterprise admins at least 30 days' notice; the article does not say so, and that was not checked. What this lesson says about the local lane still describes existing local tasks and builds before the change.
+**Announced for Pro and Max plans: new tasks run only in the cloud from 2026-10-06 (not yet observed).** Anthropic's support article "Use Claude Cowork on web, desktop, and mobile" (page modified 2026-09-30, read 2026-10-02) opens: "Claude Cowork is now just Claude. Ask for what you need, and Claude decides whether that's a quick answer or a task. This is rolling out gradually to Pro and Max plans, with more plans to follow." Its notice reads: "Heads-up for Pro and Max plans: On October 6, 2026, new Cowork tasks run in the cloud and the Only on your computer option in Settings > General will be removed. Tasks you already started on your computer stay there." And: "Your scheduled tasks move to the cloud too, including ones that use files on your computer. Tasks that use files on your computer need the desktop app open." So a cloud task working on the user's files still depends on the desktop app being open (the device bridge, L215). Other plans are "to follow", with no date. On 2026-10-02 the setting read "Only on this computer", under Settings → General → Tasks on the merged interface and under Settings → Cowork on the older one. Press reports also give Team and Free plans a later date and Enterprise admins at least 30 days' notice; the article does not say so, and that was not checked. What this lesson says about the local lane still describes existing local tasks, plans the change has not reached, and builds before it.
 
 ## Three controls with one name
 
@@ -157,7 +157,7 @@ An unset value means cloud. For accounts carrying the internal flag, an opt-out 
 
 Every new Cowork task from the composer goes through one function (`fy` in the bundled build; the same text in the live builds fetched on 2026-09-25). It returns the first reason that applies:
 
-1. `local_ungated` — the org has no cloud Cowork
+1. `local_ungated` — the org has no cloud sessions
 2. `local_override_forced` — flag `dramatic_shrimp_force_local`, Desktop only
 3. **`local_opted_out` — the account setting says local**
 4. `local_folder_forced` / `local_space_forced` — a folder or Space that cannot go to the cloud
@@ -165,7 +165,7 @@ Every new Cowork task from the composer goes through one function (`fy` in the b
 6. Chrome skip-approvals, options that need local, computer use, plugin stdio servers
 7. otherwise `remote`
 
-The value it reads for step 3 comes from the same formula as the Settings switch. Inside the Desktop it differs from the switch in one case: when the org forbids local Cowork (`disabled_by_org_policy`, which the Desktop derives from `placementRules`), the router is told cloud while the switch still shows the account value. That case did not apply here (see L208).
+The value it reads for step 3 comes from the same formula as the Settings switch. Inside the Desktop it differs from the switch in one case: when the org forbids local sessions (`disabled_by_org_policy`, which the Desktop derives from `placementRules`), the router is told cloud while the switch still shows the account value. That case did not apply here (see L208).
 
 The start event carries the chosen reason as `routing_reason` in telemetry; nothing on disk records it. The Desktop log shows only the outcome: `LocalAgentModeSessions.start` for local, nothing for cloud.
 
@@ -189,5 +189,5 @@ A cloud task can still use the Mac: its "Computer" tools reach the Mac through t
 ## For an author or tester
 
 - Do not assume the Settings switch keeps a new task local, or that it sends it to the cloud. Check where each run went: `pwd` is `/sessions/<slug>` locally and `/home/claude` in the cloud, where `CLAUDE_CODE_ENTRYPOINT` is `remote_cowork`.
-- To get a local session on demand, use a scheduled task with its own "Only on this computer" switch on, set to manual, and start it with Run now. Remember L208: a scheduled task that is not local-only can be moved to the cloud after two runs.
+- To get a local session on demand, use a scheduled task with its own "Only on this computer" switch on, set to manual, and start it with Run now. On Pro and Max plans this ends on 2026-10-06, when scheduled tasks move to the cloud (announced, not yet observed). Remember L208: a scheduled task that is not local-only can be moved to the cloud after two runs.
 - When reporting it, say which control was set, and include the `pwd` output.

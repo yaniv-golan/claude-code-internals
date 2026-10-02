@@ -53,8 +53,8 @@ find /sessions /root/.claude/plugins -type d -path '*/skills/claude-code-interna
 
 It prints **one absolute path** (covering the install shapes,
 `.remote-plugins/plugin_<id>/skills/…` and
-`.local-plugins/marketplaces/…/skill-package/skills/…` in local Cowork, and
-`/root/.claude/plugins/synced/…/skills/…` in cloud Cowork); use it as `<scripts-dir>`.
+`.local-plugins/marketplaces/…/skill-package/skills/…` in a local session, and
+`/root/.claude/plugins/synced/…/skills/…` in a cloud session); use it as `<scripts-dir>`.
 Do **not** type `$CLAUDE_SKILL_DIR` or `$CLAUDE_PLUGIN_ROOT` into a shell command:
 neither is a usable environment variable there. Do **not** `cd` into the directory
 and run a relative name, and do **not** stash the path in a shell variable — both

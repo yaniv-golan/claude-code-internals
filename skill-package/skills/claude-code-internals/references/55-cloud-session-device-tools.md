@@ -8,7 +8,7 @@ Prompted by a review request from the skill-creator-plus project, whose maintain
 
 ## TABLE OF CONTENTS
 
-215. [Lesson 215 — The Device Tools: How a Cloud Cowork Session Reads, Writes and Runs Commands on the Mac](#lesson-215--the-device-tools)
+215. [Lesson 215 — The Device Tools: How a Cloud Session Reads, Writes and Runs Commands on the Mac](#lesson-215--the-device-tools)
 216. [Lesson 216 — One Conversation, Two Runtimes: How claude.ai Moves a Chat Into a Cowork Workspace](#lesson-216--one-conversation-two-runtimes)
 
 ---
@@ -108,7 +108,7 @@ PRETTY_NAME="Ubuntu 22.04.5 LTS"
 
 Each cloud session gets its own VM user, `rcw-<id>`. The granted folder is mounted read-write at `$HOME/mnt/<folder>`. The Desktop logs each call as `[remote-bash] vmUser=rcw-… mounts=<folder>:rw`. A file written there appeared on the Mac, owned by the user, with mode `0644`. A call runs 45 seconds by default. If the VM is still starting or fails, the tool says so and points to stage and commit instead. A folder that cannot be mounted, such as a network drive, stays reachable only through list, stage and commit.
 
-**Deleting needs a second grant.** `rm` in the mounted folder failed with "Operation not permitted", and the tool appended a note naming `device_request_delete_permission`. That tool shows "Allow Claude to permanently delete files in this folder on your computer?" with **Allow for this session**. After approval the mount became `rwd` (`mounts=<folder>:rwd` in the log) and `rm` worked. The code grants it without a prompt in a task set to skip all approvals. This is the same per-mount delete model as local Cowork (L109).
+**Deleting needs a second grant.** `rm` in the mounted folder failed with "Operation not permitted", and the tool appended a note naming `device_request_delete_permission`. That tool shows "Allow Claude to permanently delete files in this folder on your computer?" with **Allow for this session**. After approval the mount became `rwd` (`mounts=<folder>:rwd` in the log) and `rm` worked. The code grants it without a prompt in a task set to skip all approvals. This is the same per-mount delete model as a local session (L109).
 
 ## The shells
 
@@ -151,7 +151,7 @@ The browser list can be empty while the extension looks fine, seen in the Claude
 
 # LESSON 216 — ONE CONVERSATION, TWO RUNTIMES
 
-**In the current claude.ai client, "chat" and "Cowork" are not two separate products that a conversation belongs to for good. A conversation carries a work mode, and a chat can be upgraded into a cloud session (a Cowork workspace) partway through, by the client, the server or the model. A Cowork session can also be continued as, or shown as, a chat. So the runtime a skill finds itself in is not fixed by what the user opened.**
+**In the current claude.ai client, "chat" and "Cowork" are not two separate products that a conversation belongs to for good. A conversation carries a work mode, and a chat can be upgraded into a cloud session (a Cowork workspace) partway through, by the client, the server or the model. A cloud session can also be continued as, or shown as, a chat. So the runtime a skill finds itself in is not fixed by what the user opened.**
 
 The mechanism is read from the client code and the API schema it embeds; the server's decision logic is not visible. The upgrade itself is seen live (2026-10-02, claude.ai web and Desktop 2.19675.0, an organization on the merged composer, which has no Chat/Cowork choice): a new conversation gets a `claude.ai/chat/<uuid>` URL and no cloud session. The first turn that needs a shell or file tool shows a status line "Getting set up for this session  Ns ›" with an elapsed counter for about 5 to 7 seconds, a cloud session (`cse_…`) is created, and the header's computer icon gets a green dot and reads "Claude Desktop (macOS), Connected". The URL stays `/chat/`. Which actor triggers it, and whether it is the workspace upgrade below, was not traced. L217 covers what it means for skills.
 
@@ -165,25 +165,25 @@ V=E?So?"session":za?"hub":"rest":rt&&a?"session":O===null?"rest":"hub"
 // rt: the page is a Cowork route;  a: an onSessionCreate handler;  O: the hub client is available
 ```
 
-A conversation that already has a Cowork session goes to that session. An ordinary conversation goes to the **hub** backend (the "bard" API, reported as `chat_backend "c3"`) when the hub client is available, else to the older REST backend. A new message on a Cowork page (`/cowork/…`, reached from the Chat/Cowork choice where an organization still has it) starts a session. The model, the tools and the message text are not inputs.
+A conversation that already has a cloud session goes to that session. An ordinary conversation goes to the **hub** backend (the "bard" API, reported as `chat_backend "c3"`) when the hub client is available, else to the older REST backend. A new message on a Cowork page (`/cowork/…`, reached from the Chat/Cowork choice where an organization still has it) starts a session. The model, the tools and the message text are not inputs.
 
 ## The hub can turn a chat into a workspace
 
 The hub API's schema is embedded in the client as protobuf descriptors (`anthropic/bard/api/v1alpha/bard_api.proto` and `conversation.proto`, base64 string literals, so plain text search misses them):
 
 - **A conversation has a work mode**: `WORK_MODE_CHAT`, `WORK_MODE_WORKSPACE_PROXY`, `WORK_MODE_TOOL_FAULT_PROXY` or `WORK_MODE_FULL_PROXY`.
-- **A `WorkspaceUpgrade`** moves it into a workspace on the lane `WORKSPACE_UPGRADE_LANE_COWORK_REMOTE`, a cloud session. It can use a pre-provisioned session (`pre_rented_session_id`) and can continue an existing Cowork session (`continue_cowork_session_id`).
+- **A `WorkspaceUpgrade`** moves it into a workspace on the lane `WORKSPACE_UPGRADE_LANE_COWORK_REMOTE`, a cloud session. It can use a pre-provisioned session (`pre_rented_session_id`) and can continue an existing cloud session (`continue_cowork_session_id`).
 - **Upgrade triggers**: `OPEN_WORKSPACE`, `INTERCEPTED_TOOL`, `FULL_PROXY_SEND`, `DEVICE_ELECTION`, `COWORK_CONTINUATION`, `ATTACHMENT`, `MEDIA_LIMIT`, `ARTIFACT_START` and `CCS_FIRST_SEND`.
 - **The client requests it on a send**, with `workModeOverride: "workspace_proxy"`, when the user has picked a local folder and a target device (device election).
 - **The model can start it mid-turn** through a tool named `hub_workspace_setup`. The client renders it as a workspace being set up, then tells the model the workspace is ready and to carry on with the task.
 
 Several triggers name things the server sees and the client does not, such as an intercepted tool call, an attachment or a media limit. So the server most likely upgrades conversations on its own; that is inferred from the schema, and what makes it choose is not visible. The client reads the tool-fault and full-proxy modes but never sets them. No path from a workspace back to plain chat was found.
 
-## A Cowork session can become, or be shown as, a chat
+## A cloud session can become, or be shown as, a chat
 
-- Opening a Cowork session's link has three outcomes: render it inside the chat interface (`HubCoworkSessionChat`), redirect to a chat conversation, or show the older Cowork page.
+- Opening a cloud session's link (`/cowork/…`) has three outcomes: render it inside the chat interface (`HubCoworkSessionChat`), redirect to a chat conversation, or show the older Cowork page.
 - Reading a session can return a `continuation` pointing at a conversation. Two server reasons, `cowork_session_presented_as_chat` and `cowork_read_belongs_to_conversation`, send the visitor to that conversation.
-- The recent-items list can include Cowork sessions presented as chats (`served-cowork-recents`), controlled by the flag `cai_serene_pine`, whose default comes from `cai_ticklish_lemon`.
+- The recent-items list can include cloud sessions presented as chats (`served-cowork-recents`), controlled by the flag `cai_serene_pine`, whose default comes from `cai_ticklish_lemon`.
 
 Other flags in this area include `claude_ai_hub_web_delivery` and `cai_hub_preview_optout`. None of their values were read.
 

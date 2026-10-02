@@ -12903,7 +12903,7 @@
       "lesson_number": "127",
       "file": "33-desktop-device-partner-permission-tuning.md",
       "startLine": 86,
-      "endLine": 104,
+      "endLine": 106,
       "keywords": [
         "grand_prix",
         "grand-prix-bridge",
@@ -12948,6 +12948,7 @@
         "list_outcome",
         "pair_outcome",
         "code_prompt_outcome",
+        "15520349",
         "can claude fill in my saved passwords",
         "claude autofill credit card at checkout",
         "claude filling login forms in my browser",
@@ -12962,7 +12963,10 @@
         "credential tool disabled by organization policy",
         "claude filling address forms on websites",
         "is browser autofill available to everyone",
-        "third-party tools added to claude's prompt"
+        "third-party tools added to claude's prompt",
+        "why does cowork need desktop app open",
+        "cloud task accessing my local files",
+        "files leave my device warning"
       ],
       "identifier_keys": [
         "index.chunk-zzrNR3X_.js",
@@ -12994,7 +12998,8 @@
         "fill_outcome",
         "list_outcome",
         "pair_outcome",
-        "code_prompt_outcome"
+        "code_prompt_outcome",
+        "15520349"
       ],
       "vocab_keys": [
         "can claude fill in my saved passwords",
@@ -13011,13 +13016,16 @@
         "credential tool disabled by organization policy",
         "claude filling address forms on websites",
         "is browser autofill available to everyone",
-        "third-party tools added to claude's prompt"
+        "third-party tools added to claude's prompt",
+        "why does cowork need desktop app open",
+        "cloud task accessing my local files",
+        "files leave my device warning"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "5690b68d79ea8e18a92cb455411da768cfe2de18ff6d8adfeb2fd72d40b07b7e"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-02",
+        "terms_sha256": "b77f4b9e1fb53b43d60be1e49f8b4ec3bb97e3cfb70ca542de6d390dc7d88145"
       }
     },
     {
@@ -13025,8 +13033,8 @@
       "title": "Auto-Mode Tuning, Scheduled-Task Approval, OTLP Tracing & Hardening",
       "lesson_number": "128",
       "file": "33-desktop-device-partner-permission-tuning.md",
-      "startLine": 108,
-      "endLine": 180,
+      "startLine": 110,
+      "endLine": 182,
       "keywords": [
         "tool_approval_default_always_allow",
         "coworkAutoModeAlwaysAllowOverride",
@@ -17775,7 +17783,6 @@
         "where does the remote cowork prompt come from",
         "remote session prompt not in desktop app",
         "cowork memory not working locally",
-        "why is cowork memory unavailable on my computer",
         "run cowork only on this computer setting",
         "how is local or remote cowork chosen",
         "cowork shows same name for local and remote",
@@ -17788,7 +17795,8 @@
         "how to tell if a session ran in the cloud",
         "where is the run locally setting",
         "cowork ignores only on this computer",
-        "local cowork option being removed"
+        "local cowork option being removed",
+        "which plans lose local cowork tasks"
       ],
       "identifier_keys": [
         "node_modules",
@@ -17811,7 +17819,6 @@
         "where does the remote cowork prompt come from",
         "remote session prompt not in desktop app",
         "cowork memory not working locally",
-        "why is cowork memory unavailable on my computer",
         "run cowork only on this computer setting",
         "how is local or remote cowork chosen",
         "cowork shows same name for local and remote",
@@ -17824,13 +17831,14 @@
         "how to tell if a session ran in the cloud",
         "where is the run locally setting",
         "cowork ignores only on this computer",
-        "local cowork option being removed"
+        "local cowork option being removed",
+        "which plans lose local cowork tasks"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "a7a3c45dcb5dad82d74128639ac9db3f965451dbdc0189f8e218baa7fb68e434"
+        "terms_sha256": "91c5debe345588e99143e70a1eba7d86518942c540f65fefd8a76896e0636312"
       }
     },
     {
@@ -19220,6 +19228,7 @@
         "settingSources-user",
         "does Cowork load .claude/skills from my folder",
         "skills in connected folder not loading",
+        "15520349",
         "5e9zc-d-zm",
         "cowork-session-directories-staged",
         "fr_mtkk8tfg",
@@ -19238,9 +19247,12 @@
         "admin policy blocks folder skills upload",
         "granting a folder uploads its skills",
         "write skill description for cloud stub",
-        "folder rules and project instructions copied to cloud"
+        "folder rules and project instructions copied to cloud",
+        "cloud task needs desktop app open",
+        "granted folder unreachable when desktop app closed"
       ],
       "identifier_keys": [
+        "15520349",
         "5e9zc-d-zm",
         "cowork-session-directories-staged",
         "fr_mtkk8tfg",
@@ -19261,13 +19273,15 @@
         "admin policy blocks folder skills upload",
         "granting a folder uploads its skills",
         "write skill description for cloud stub",
-        "folder rules and project instructions copied to cloud"
+        "folder rules and project instructions copied to cloud",
+        "cloud task needs desktop app open",
+        "granted folder unreachable when desktop app closed"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v2-update",
-        "date": "2026-10-01",
-        "terms_sha256": "ee4dcd96f6737a99280e74649a7872847f2c8caa1b373c1e2429773ab4fcf624"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-02",
+        "terms_sha256": "7f4a41e2846d7080d3acf953ca500001e8c4a74ea3298ae80bd79732450475d5"
       }
     },
     {
@@ -20076,7 +20090,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-01",
+        "date": "2026-10-02",
         "terms_sha256": "29a2c970770ea5454eafebedf7882315e1dd25378d1ee4804ba8d03caa2120d7"
       }
     },
@@ -21118,8 +21132,8 @@
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-10-01",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-02",
         "terms_sha256": "5016fc62743152d792df019dd6c30a39c463f93ac2cf634948ef83c23393a8e4"
       }
     },
@@ -43047,6 +43061,10 @@
     "code_prompt_outcome": [
       127
     ],
+    "15520349": [
+      127,
+      197
+    ],
     "on-auto-mode-override-always-allow": [
       128
     ],
@@ -50746,6 +50764,15 @@
     "third-party tools added to claude's prompt": [
       127
     ],
+    "why does cowork need desktop app open": [
+      127
+    ],
+    "cloud task accessing my local files": [
+      127
+    ],
+    "files leave my device warning": [
+      127
+    ],
     "auto mode still asks before destructive connector actions": [
       128
     ],
@@ -53076,9 +53103,6 @@
     "cowork memory not working locally": [
       180
     ],
-    "why is cowork memory unavailable on my computer": [
-      180
-    ],
     "run cowork only on this computer setting": [
       180
     ],
@@ -53116,6 +53140,9 @@
       180
     ],
     "local cowork option being removed": [
+      180
+    ],
+    "which plans lose local cowork tasks": [
       180
     ],
     "missing environment variables in desktop spawned agent": [
@@ -53878,6 +53905,12 @@
       197
     ],
     "folder rules and project instructions copied to cloud": [
+      197
+    ],
+    "cloud task needs desktop app open": [
+      197
+    ],
+    "granted folder unreachable when desktop app closed": [
       197
     ],
     "relative path works differently in cloud vs local cowork": [

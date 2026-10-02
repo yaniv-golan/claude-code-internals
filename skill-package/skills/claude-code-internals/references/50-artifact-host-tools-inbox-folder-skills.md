@@ -130,7 +130,7 @@ Listed in L191; one detail matters to anyone reading sub-agent output. When the 
 
 ## Which sessions
 
-Only a **cloud (remote) Cowork session** that has been granted a local folder, through `LocalAgentModeSessions.grantRemoteSessionFolders` after the consent dialog. Skipped when the org is HIPAA-restricted, when the target is a chat rather than a Cowork session, and when the user declines the dialog. The local lane never calls it.
+Only a **cloud session** (a Cowork task running in the cloud) that has been granted a local folder, through `LocalAgentModeSessions.grantRemoteSessionFolders` after the consent dialog. Skipped when the org is HIPAA-restricted, when the target is a chat rather than a Cowork session, and when the user declines the dialog. The folder itself stays reachable only while the Desktop app is open: "Tasks that use files on your computer need the desktop app open" (Anthropic's support article 15520349, relayed, modified 2026-09-30; the device bridge, L126, L215). The local lane never calls it.
 
 ## The mechanism (chunk `5e9zcDZm`)
 

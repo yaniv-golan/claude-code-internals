@@ -9,6 +9,12 @@ updated: 2026-10-01
 
 # Cowork spawn + stream-json control protocol (current)
 
+Terms: Cowork is now part of Claude ("Claude Cowork is now just Claude", Anthropic's support
+articles, modified 2026-09-30); a Cowork task runs in a **cloud session** (a `cse_` code session,
+`CLAUDE_CODE_ENTRYPOINT=remote_cowork`) or, while the "Only on this computer" option exists, a
+**local session** (host-loop or VM-loop on the user's computer). "Cowork" here names the product,
+the Chat/Cowork choice where it still exists, and identifiers such as `remote_cowork`.
+
 One page, current truth. History and correction trail live in the source
 lessons (see frontmatter). This is the contract to implement if you want to
 *drive* the agent faithfully (a headless harness, an SDK integration, any
@@ -25,7 +31,7 @@ external driver) — not the Desktop app's internal IPC.
 - **Do not set `CLAUDE_CODE_USE_COWORK_PLUGINS`.** The Desktop never sets
   it. Its only effect is to flip user-settings to `cowork_settings.json`
   and the plugin cache dir to `cowork_plugins/` — files the host never
-  populates in a real Cowork session, so setting it silently breaks
+  populates in a real Cowork task, so setting it silently breaks
   settings + plugin reads. That namespace belongs to the *standalone*
   `--cowork` path, not the Desktop's account/org root (see
   `cowork-architecture.md`).
@@ -104,7 +110,7 @@ external driver) — not the Desktop app's internal IPC.
     capture — the hardcoded text ships).
   - **`toolAliases`** is a first-class SDK option (new at
     1.20186.1/2.1.205; lesson 121): `{Bash: "mcp__workspace__bash",
-    WebFetch: "mcp__workspace__web_fetch"}` in Cowork host-loop. When the
+    WebFetch: "mcp__workspace__web_fetch"}` in a host-loop local session. When the
     model emits a `tool_use` whose name is a key in this map, execution
     resolves the mapped name instead (single-hop, no chains) — this is
     now the documented form of the mechanism formerly described only as
@@ -285,7 +291,7 @@ active.
 `hook_started`/`hook_progress`/`hook_response` are emitted only for
 `SessionStart` and `Setup` unless the agent runs with `--include-hook-events`
 (SDK `includeHookEvents`) or `CLAUDE_CODE_REMOTE`. Desktop 2.7032.0 never sets
-the option, so local Cowork streams show only `SessionStart` hooks.
+the option, so local-session streams show only `SessionStart` hooks.
 `stop_hook_summary` is built but never mapped into stream-json. A
 `hook_response` with `outcome:"error"` and no `exit_code` is an HTTP hook whose
 request failed outright.

@@ -95,6 +95,6 @@ swapping.
 ## What to say if asked "what's the default model"
 
 As of CLI v2.1.198: **Sonnet 5**, not Opus 4.8. If the session is a
-Cowork session, the live model is **Fable 5** regardless of the
+Cowork task, the live model is **Fable 5** regardless of the
 standalone-CLI default — a separate, fcache-gated selection (`gate.
 3045399524` in `registry.json`), not the `/model` default.

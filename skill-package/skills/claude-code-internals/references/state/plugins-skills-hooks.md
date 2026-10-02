@@ -10,6 +10,12 @@ read_more: ["https://ccinternals.dev/cowork/plugins-and-plugin-root/?ref=skill"]
 
 # Plugins, skills & hooks (current)
 
+Terms: Cowork is now part of Claude ("Claude Cowork is now just Claude", Anthropic's support
+articles, modified 2026-09-30); a Cowork task runs in a **cloud session** (a `cse_` code session,
+`CLAUDE_CODE_ENTRYPOINT=remote_cowork`) or, while the "Only on this computer" option exists, a
+**local session** (host-loop or VM-loop on the user's computer). "Cowork" here names the product,
+the Chat/Cowork choice where it still exists, and identifiers such as `remote_cowork`.
+
 One page, current truth. History and correction trail live in the source
 lessons (see frontmatter). Cowork's plugin *mounting* mechanics (mount
 paths, symlink staging, session storage) are covered in full in
@@ -19,7 +25,7 @@ hook contract.
 
 ## Plugin hooks fire in Cowork — the three-root namespace is the gotcha
 
-Plugin-scoped hooks **do** fire in Cowork sessions; the earlier belief
+Plugin-scoped hooks **do** fire in Cowork tasks; the earlier belief
 that `--setting-sources=user` silently excludes them was wrong and has
 been retracted. The real determinant is **which of three plugin roots**
 a plugin is installed into:
@@ -29,11 +35,11 @@ a plugin is installed into:
    `claude plugin install --cowork` writes.
 3. **Desktop's** account/org root
    `local-agent-mode-sessions/<acc>/<org>/cowork_plugins/cache` (+`rpm/`)
-   — the **only** root a real Desktop Cowork session reads.
+   — the **only** root a real local session started by the Desktop reads.
 
-A plugin not installed into root #3 is simply never loaded into a Cowork
-session — no hooks fire, no error shown. Fix: install via the Cowork app
-UI (or org-remote/RPM); the standalone CLI's `--cowork` install path does
+A plugin not installed into root #3 is simply never loaded into a local
+session — no hooks fire, no error shown. Fix: install or upload it in the Desktop app
+(Customize → Plugins; or org-remote/RPM); the standalone CLI's `--cowork` install path does
 **not** reach the Desktop namespace.
 
 Mechanism: the host loop symlinks each enabled plugin into a temp
@@ -76,12 +82,12 @@ disk.
 
 ## Skills in a user's folder (L197)
 
-**Local Cowork:** a connected folder's `.claude/skills` is not loaded as far as
+**Local session:** a connected folder's `.claude/skills` is not loaded as far as
 the code shows — the local spawn passes `settingSources:["user"]`, and project
 skills load only with `projectSettings` (agent symbols matched by shape).
 Ship skills in a plugin.
 
-**Cloud Cowork with a granted local folder** (from Desktop 1.44121.1): the
+**A cloud session with a granted local folder** (from Desktop 1.44121.1; formerly "Cloud Cowork with a granted local folder"): the
 Desktop scans `<folder>/.claude/skills/*/SKILL.md` and uploads them to
 `/mnt/user-data/uploads/cowork-folders/<slug>-<hash>/.claude/skills/`. Mode gate
 `2877254163` is **`"stubs"`** (force), read 2026-10-01: only the frontmatter
@@ -94,10 +100,14 @@ by managed `strictPluginOnlyCustomization` (`true` or including `"skills"`),
 failing closed. From 2.7032.0 the folder's `.claude/CLAUDE.md` and
 `.claude/rules/**/*.md` are staged too (gate `4018447017`).
 
+**Help-center statement (relayed, article 13345190, modified 2026-09-30):** "A plugin you add is
+saved to your account, so it works in chat and Claude Code as well as Cowork." Measured here: an
+uploaded plugin reached a new cloud session in under 2 minutes (L217, 2026-10-02).
+
 ## Plugin MCP servers in Cowork (L199)
 
 With no MCP policy, a plugin's **local stdio** MCP server gets its real tools in
-local Cowork: the Desktop's `LocalMcpServerManager` runs it host-side and
+a local session: the Desktop's `LocalMcpServerManager` runs it host-side and
 `localMcpBridge` announces it (observed: `plugin:pdf-viewer:pdf`, through Desktop
 2.7032.0). A server is replaced by `createSdkMcpServer({name, tools:[]})` — zero
 tools, keyed `plugin:<p>:<s>`, delivered in the SDK map (and, while the gate is
@@ -150,20 +160,20 @@ Needs per-machine consent in `/hooks`; a pinned script changed after
 registration is refused. Account flags `tengu_violin_wood` (master) + `_amati`
 (wood off for the capturing account). Separately, stream hook frames are emitted only for
 `SessionStart`/`Setup` unless `--include-hook-events` or `CLAUDE_CODE_REMOTE`;
-Desktop never sets the former, so local Cowork records show only `SessionStart`
+Desktop never sets the former, so local-session records show only `SessionStart`
 hooks (20,106/20,106 in one machine's audit logs; that others ran unseen is
 code-derived).
 
 ## Plugin hooks by lane and event (L209)
 
-Cloud Cowork (live, probe plugin, Desktop 2.9939.2): UserPromptSubmit, PreToolUse,
+A cloud session (live, probe plugin, Desktop 2.9939.2): UserPromptSubmit, PreToolUse,
 PostToolUse and Stop fire; **SessionStart did not fire in a new session**; the shell
-is `Bash` there. Local Cowork (live, same probe in a local scheduled task, agent 2.1.281):
+is `Bash` there. A local session (live, same probe in a local scheduled task, agent 2.1.281):
 SessionStart (`startup` each run, `resume` on reopen), UserPromptSubmit, PreToolUse,
 PostToolUse and Stop all fire; `Bash`, `mcp__workspace__bash` and `*` matchers each
 fired for the shell, with `tool_name` `mcp__workspace__bash`. Matchers: letters/digits/`_`/`|` form an exact
 list, expanded through the session's tool aliases (every agent checked, 2.1.197 on) —
-so with Desktop's `Bash`→`mcp__workspace__bash` alias, `Bash` matches the local Cowork
+so with Desktop's `Bash`→`mcp__workspace__bash` alias, `Bash` matches the local session's
 shell; without the alias it does not. `tool_name` is the resolved name. Traps: a hook that exits 0 with no output leaves **no transcript
 record**; a missing hook script exits 2 (the block code) under `dash` but 127 under macOS
 `sh`/`bash` — the agent turns that exit 2 into a visible non-blocking error only for a
@@ -175,10 +185,10 @@ for other events (PreToolUse included) it blocks.
 A skill uploaded via Customize → Skills → Add skill → Upload skill (zip with one top-level
 folder containing `SKILL.md`; a `.claude-plugin/plugin.json` is refused) becomes an account
 skill: within about a minute it reached the CLI (`~/.claude/skills/synced/<org>_<account>/`,
-listed as `anthropic-skills:<name>`), cloud Cowork (`/root/.claude/skills/synced/…`) and local
-Cowork (Desktop store `local-agent-mode-sessions/skills-plugin/<org>/<account>/skills/`,
+listed as `anthropic-skills:<name>`), a cloud session (`/root/.claude/skills/synced/…`) and a local
+session (Desktop store `local-agent-mode-sessions/skills-plugin/<org>/<account>/skills/`,
 staged via `claude-hostloop-plugins/<hash>`, read-only at `/sessions/<slug>/mnt/.claude/skills/`),
-**whole**, scripts runnable (`dash` in both Cowork lanes). Measured 2026-09-27.
+**whole**, scripts runnable (`dash` in both the local and the cloud session). Measured 2026-09-27.
 
 ## Creating and changing skills in chat (L217)
 

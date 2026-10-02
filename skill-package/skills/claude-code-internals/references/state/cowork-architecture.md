@@ -10,12 +10,18 @@ read_more: ["https://ccinternals.dev/cowork/?ref=skill"]
 
 # Cowork runtime architecture (current)
 
+Terms: Cowork is now part of Claude ("Claude Cowork is now just Claude", Anthropic's support
+articles, modified 2026-09-30); a Cowork task runs in a **cloud session** (a `cse_` code session,
+`CLAUDE_CODE_ENTRYPOINT=remote_cowork`) or, while the "Only on this computer" option exists, a
+**local session** (host-loop or VM-loop on the user's computer). "Cowork" here names the product,
+the Chat/Cowork choice where it still exists, and identifiers such as `remote_cowork`.
+
 One page, current truth. History and correction trail live in the source
 lessons (see frontmatter).
 
 ## Host-loop vs VM-loop
 
-Whether a Cowork session's agent loop runs on the host or inside the VM is
+Whether a local session's agent loop runs on the host or inside the VM is
 a single server-side decision, not a per-feature toggle. Re-verified at
 Desktop 1.20186.1 / host + in-VM agent 2.1.205 (lesson 124); the decision
 function is now `Pm()` (successor of the L107-era `f_()`):
@@ -236,7 +242,7 @@ re-verified at Desktop 1.20186.1 / agent 2.1.205):
   (`CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION`, `subagent_count_cap`), WebSearch
   200/session, and **nesting off by default** (`CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`
   default 1; the depth-5 above is now the *ceiling*, not the default). These
-  run in the shared agent binary host-loop Cowork executes, so they apply
+  run in the shared agent binary a host-loop local session executes, so they apply
   here; the Desktop-hook/VM-loop interaction was not separately traced.
 - **Tool composition is a per-dispatch recomputed universe, not
   inheritance-plus-injection.** A sub-agent's frontmatter `tools:` list is
@@ -320,9 +326,9 @@ Plugin hooks **do** fire in Cowork; the earlier belief that
    `claude plugin install --cowork` writes.
 3. The **Desktop's** account/org root
    `local-agent-mode-sessions/<acc>/<org>/cowork_plugins/cache` (+`rpm/`)
-   — the **only** one a real Desktop Cowork session reads.
+   — the **only** one a real local session started by the Desktop reads.
 
-A plugin not installed into root #3 is simply never loaded into a Cowork
+A plugin not installed into root #3 is simply never loaded into a local
 session — no hooks fire, with no error. Fix: install or upload it in the Desktop app
 (Customize → Plugins; or org-remote/RPM); the standalone CLI `--cowork` path does not reach the
 Desktop's namespace.
@@ -379,7 +385,7 @@ the host-side agent process (`CLAUDE_CODE_IS_COWORK=1`,
 in-VM shell (`mcp__workspace__bash`, **sealed** — no `CLAUDE_CODE_*` markers
 survive; v2.12.2 probe). A skill's shell commands run in the third, so a bare
 `$CLAUDE_CODE_IS_COWORK` check false-negatives in production Cowork. Inline
-`` !`cmd` `` skill-shell execution is force-disabled under local Cowork
+`` !`cmd` `` skill-shell execution is force-disabled in a local session
 (`disableSkillShellExecution` short-circuit on `CLAUDE_CODE_IS_COWORK`; elsewhere each command
 goes through the shell tool's permission check (CLI 2.1.286 `Cle`): allowed → run and substituted; needs
 approval in auto mode → rewritten to `[run this first, exactly as written, and use its output: …]` for the
@@ -394,10 +400,10 @@ the host/VM bridge — neither can serve as a probe.
 Reliable recipe (ordered): `$CLAUDE_CODE_IS_COWORK` set → cowork (host-side or
 VM-loop); cwd under `/sessions/<id>` → cowork VM shell (host-loop); `$CLAUDECODE
 = 1` → Claude Code, refined via `CLAUDE_CODE_ENTRYPOINT` — **measured
-2026-09-23 (L198):** `remote_cowork` = Cowork in the cloud (its shell has
+2026-09-23 (L198):** `remote_cowork` = a cloud session (its shell has
 `CLAUDECODE=1` but **no** `CLAUDE_CODE_IS_COWORK` and no `/sessions`, so
 without this refinement the recipe calls it the CLI), `remote` = Claude Code
-on the web, `local-agent` = local Cowork's agent context, otherwise the CLI;
+on the web, `local-agent` = a local session's agent context, otherwise the CLI;
 no `CLAUDECODE` and no `claude` binary → e.g. a claude.ai chat; else → other
 harness. Content-side, branch on the tool surface: plain `Bash` vs
 `mcp__workspace__bash`. The old host→VM env allowlist (`MGn`, asar v1.6259.1)
@@ -513,7 +519,7 @@ Cowork runs in **two structurally different lanes**. The discriminator on a sess
 | `environment_kind` | `config.origin` | lane |
 |---|---|---|
 | `bridge` | `claude_code_cli` | locally-executing session registered for watch/remote-control (Ch33/L119) |
-| `anthropic_cloud` | `desktop_app` | **remote Cowork** — agent loop + execution on Anthropic servers |
+| `anthropic_cloud` | `desktop_app` | **cloud session** — agent loop + execution on Anthropic servers |
 
 **`cse_<ULID>` is NOT a lane oracle** — it is the id space for any server-registered Claude Code
 session, local ones included.
@@ -579,7 +585,7 @@ differently — `isRemote` is 60 in build and 87 whole-file. 1.46388.3 → 1.463
 identifier (`localAgentMode` 20 → 20, `isRemote` 60 → 60, `remoteSession` 59 → 59, `deviceLink`
 6 → 6, `device_bash` 34 → 34); the real delta is three build chunks and −859 bytes.
 
-## Cloud Cowork's outputs contract is switched per session (L198)
+## A cloud session's outputs contract is switched per session (L198; formerly "Cloud Cowork's outputs contract")
 
 Two independent client features: `ccr_outputs_filestore_mount` (is `/mnt/user-data/outputs` →
 `/mnt/attach/outputs` mounted) and `ccr_outputs_path_delivery` (is a Write/Edit there the delivery, named in
@@ -593,7 +599,7 @@ A Desktop "cloud session" served, on 2026-09-22, a runtime that is **not Claude 
 after the same Desktop gave the `remote_cowork` lane. Measured in-session by the `founder-skills`
 project (relayed; the artifact half is first-party below):
 
-| | Cowork remote lane | this third surface |
+| | cloud session | this third surface |
 |---|---|---|
 | `CLAUDE_CODE_ENTRYPOINT` / `_REMOTE` / `_VERSION` | `remote_cowork` / `true` / `2.1.42` (the variable's value — **runner-set metadata, NOT the agent's build**, which is ≥ 2.1.248; see above) | **all empty** |
 | cwd | `/home/claude` | `/` |
@@ -624,7 +630,7 @@ ran no gates, and shipped a report indistinguishable from a checked one. Publish
 
 The same probe on each surface an agent can receive a skill on:
 
-| | Cowork local | Cowork cloud | Claude Code on the web | claude.ai chat |
+| | local session | cloud session | Claude Code on the web | claude.ai chat |
 |---|---|---|---|---|
 | `CLAUDE_CODE_ENTRYPOINT` (shell) | not visible (sealed) | `remote_cowork` | `remote` | unset |
 | shell `pwd` / `$HOME` | `/sessions/<slug>` / same | `/home/claude` / `/root` | `/home/user/<repo>` / `/root` | `/` / `/root` |
@@ -659,10 +665,10 @@ Auto/Bypass-forced, Chrome/options/computer-use/plugin-stdio, else `remote`. The
 setting is what "Only on this computer" (row `cowork-backend`; 2026-10-02, Desktop 2.19675.0:
 Settings → General → Tasks on the merged interface, Settings → Cowork on the older one) and,
 per the code, the task-header Cloud popover (not seen on 2026-10-02: the older header's popup showed
-only "Connected" and "Manage computers") both write (announced, not yet observed: from 2026-10-06 new Cowork
-tasks run in the cloud and the option, "Only on your computer" in Settings > General per Anthropic's
-support article read 2026-10-02, is removed; tasks already started locally stay local; scheduled
-tasks move to the cloud; L210); switching to local saves only after the
+only "Connected" and "Manage computers") both write (announced for Pro and Max plans, not yet observed: from 2026-10-06
+new tasks run in the cloud and the option, "Only on your computer" in Settings > General per
+Anthropic's support article read 2026-10-02, is removed; tasks already started locally stay local;
+scheduled tasks move to the cloud; other plans to follow; L210); switching to local saves only after the
 feedback dialog's main button. A scheduled task's own "Only on this computer" switch is a
 separate, per-task setting. Measured 2026-09-25 on Desktop 2.9939.2: with the account
 setting saved and the app restarted, new tasks still ran in the cloud (`/home/claude`,
@@ -753,6 +759,21 @@ at `$HOME/mnt/<folder>`, `/bin/sh` → dash); deleting needs
 `/Users/…` path succeeds silently **inside the container**. The cloud container's
 `/bin/sh` is dash too.
 
+## What Anthropic's help center says (relayed, read 2026-10-02)
+
+"Get started with Claude Cowork" (support article 13345190, modified 2026-09-30) describes the
+cloud model this page measures: "Cowork runs your tasks in the cloud (in beta). Claude's work runs
+on Anthropic's servers, in an isolated environment … When a task needs something on your computer,
+like a local file or your browser, Claude reaches it through the Claude Desktop app on that
+computer" (the device bridge, L215). "Scheduled tasks run in the cloud, with no device online."
+"Network egress permissions don't apply to the web fetch or web search tools or MCPs, including
+Claude in Chrome. Web fetch runs server-side". Permission modes are Manual, Auto and Skip; "If you
+have the new Claude experience, the permission setting in the message box offers Auto and Manual
+(default)." Article 15520349 adds, for Pro and Max: from 2026-10-06 new tasks run in the cloud and
+"Only on your computer" is removed, and "Tasks that use files on your computer need the desktop app
+open" (L210). Both open with the per-plan note that matches the merged interface seen in a Personal
+organization and the Chat/Cowork choice still seen in a Team organization on 2026-10-02 (L216, L217).
+
 ## One conversation, two runtimes (L216)
 
 Code-level (claude.ai client + its embedded `bard_api.proto`/`conversation.proto`); seen live
@@ -764,7 +785,7 @@ conversation record, not by message. A hub conversation has a work mode
 a cloud session, a Cowork workspace (`WorkspaceUpgrade`, lane `COWORK_REMOTE`; triggers incl.
 `INTERCEPTED_TOOL`, `ATTACHMENT`, `MEDIA_LIMIT`, `DEVICE_ELECTION`), by the client
 (`workModeOverride:"workspace_proxy"` on folder+device pick), the model
-(`hub_workspace_setup` tool) or presumably the server. A Cowork session can be continued
+(`hub_workspace_setup` tool) or presumably the server. A cloud session can be continued
 or shown as a chat (`continuation`, `cowork_session_presented_as_chat`, flag
 `cai_serene_pine`). Unrelated to the Desktop's local Chat mode.
 
@@ -957,7 +978,7 @@ Consequences:
   Cowork spawn with no explicit model, and the agent resolves `"default"` to its own
   configured default. Consequences: `claude-opus-5` appears exactly **once** in
   `app.asar` 1.40609.0 — inside the per-model *effort* table, never as a spawn
-  default — so **no client can re-derive which model a Cowork session will run** by
+  default — so **no client can re-derive which model a Cowork task will run** by
   reading the Desktop build; and the effective model can change with no local
   artifact changing, which is what makes the L175 capability tier unknowable. The
   only model-keyed remote config, `coworkModelAutoFallbackByAccount`, is an

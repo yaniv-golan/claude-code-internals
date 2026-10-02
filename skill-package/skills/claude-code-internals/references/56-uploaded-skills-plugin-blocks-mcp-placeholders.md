@@ -15,13 +15,13 @@ Prompted by three open GitHub threads a sibling session was answering: a user wh
 
 # LESSON 217 — AN UPLOADED SKILL REACHES EVERY SURFACE WHOLE
 
-**A skill uploaded through Customize → Skills → Add skill → Upload skill becomes an account skill. Within about a minute it reached the Claude Code CLI, a cloud Cowork session and a local Cowork session, each time with its full body, its scripts and its reference files. That is the simplest way to get a personal skill into Cowork, and unlike a skill from a folder granted to a cloud session (L197) it is not reduced to a stub.**
+**A skill uploaded through Customize → Skills → Add skill → Upload skill becomes an account skill. Within about a minute it reached the Claude Code CLI, a cloud session and a local session, each time with its full body, its scripts and its reference files. That is the simplest way to get a personal skill into Cowork, and unlike a skill from a folder granted to a cloud session (L197) it is not reduced to a stub.**
 
 ## The probe
 
 A skill with a body marker, a script and a reference file was zipped with its folder at the top level and uploaded. The uploader requires that layout: it refuses a zip whose files are not inside one top-level folder, a zip without `SKILL.md`, and a zip containing `.claude-plugin/plugin.json` ("upload this content as a plugin instead"). Each surface was then asked to run it.
 
-| | Claude Code CLI | cloud Cowork | local Cowork (host-loop) |
+| | Claude Code CLI | cloud session | local session (host-loop) |
 |---|---|---|---|
 | listed as | `anthropic-skills:cci-upload-probe` | a synced skill | a synced skill |
 | loaded from | `~/.claude/skills/synced/<org>_<account>/<skill>` | `/root/.claude/skills/synced/<org>_<account>/<skill>` | the Desktop's skill store, reached through `/var/folders/…/claude-hostloop-plugins/<hash>/<account>/skills/<skill>`; the shell sees `/sessions/<slug>/mnt/.claude/skills/<skill>` |
@@ -31,7 +31,7 @@ A skill with a body marker, a script and a reference file was zipped with its fo
 
 The Desktop logged the download (`[SkillsPlugin] Delta: 1 to download … 1 downloaded`) and stored the skill under `local-agent-mode-sessions/skills-plugin/<org>/<account>/skills/`. The host-loop staging is the same symlink mechanism as plugin files (L89). In the local shell, a host path to the skill given to a command was translated to the shell's own `/sessions/…` path.
 
-On this machine the Desktop keeps a skill store per organization/account pair. The uploaded skill appeared in two of them, and the CLI used one while local Cowork used the other: each surface reads the store of the organization it is in (see below).
+On this machine the Desktop keeps a skill store per organization/account pair. The uploaded skill appeared in two of them, and the CLI used one while a local session used the other: each surface reads the store of the organization it is in (see below).
 
 ## What the agent does with a skill's text, by how it was installed
 
@@ -50,7 +50,7 @@ function eSr(){return Boolean(a.CLAUDE_CODE_REMOTE)||Boolean(a.CLAUDE_CODE_IS_CO
 |---|---|---|
 | Claude Code CLI | expanded (below) | **not run, left as raw text** (a synced skill is untrusted there) |
 | cloud session (`CLAUDE_CODE_REMOTE` set, `CLAUDE_CODE_IS_COWORK` absent) | expanded (below) | expanded (below) |
-| local Cowork (`CLAUDE_CODE_IS_COWORK` set) | replaced by the marker | replaced by the marker |
+| local session (`CLAUDE_CODE_IS_COWORK` set) | replaced by the marker | replaced by the marker |
 
 The cloud rows assume the runner sets no managed `disableSkillShellExecution`; that was not checked live. The same trust check decides `${CLAUDE_PROJECT_DIR}` and `${CLAUDE_SESSION_ID}` in an uploaded skill: substituted in the cloud, left as written in the CLI. In the agent's code (CLI 2.1.286), `${CLAUDE_SKILL_DIR}` is substituted with the skill's own folder for every kind of skill that gets a "Base directory for this skill:" line. The line and the substitution hang on the same condition in each loader, and a plugin skill also always gets `${CLAUDE_PLUGIN_DATA}` substituted. A cloud session does not always match this (see below). An uploaded skill is registered under a qualified name (`anthropic-skills:<name>` in the CLI) with the bare name as an alias.
 
@@ -68,7 +68,7 @@ In cloud Cowork, a run on 2026-10-01 (Desktop 2.16120.0, cloud agent 2.1.286, re
 
 ## Creating and changing a skill by asking in chat
 
-A Cowork session with `save_skill` (granted as described in L206) can create a skill and change an existing one. Measured on 2026-09-29 (Desktop 2.9939.4) and read from its code:
+A Cowork task with `save_skill` (granted as described in L206) can create a skill and change an existing one. Measured on 2026-09-29 (Desktop 2.9939.4) and read from its code:
 
 - **The user confirms each save.** Asked to create a skill, the model showed a **Save skill** card (name, description, the content behind a disclosure, **Dismiss** / **Save**); nothing was saved until the user clicked Save. Asked in a later, separate task to change it, it showed an **Update skill** card reading "Replaces your current /cci-chat-skill", with **Update**.
 - **It goes through the same upload as Customize.** The Desktop writes one `SKILL.md` from the name, description and content, zips it and posts it to the account's `/skills/upload-skill` endpoint, tagged `upload_source=cowork_save_skill`. The result is an ordinary account skill.
@@ -76,7 +76,7 @@ A Cowork session with `save_skill` (granted as described in L206) can create a s
 - **An update replaces `SKILL.md` and keeps everything else.** With `overwrite`, the Desktop first asks the server to carry the other files forward; if that fails, it downloads the existing skill and re-uploads it with the new `SKILL.md`. Measured: an uploaded skill with a script and a reference file was changed in chat; its `SKILL.md` gained the new line and both other files were still there. Only the user's own skills can be updated, not Anthropic's or a plugin's.
 - **It propagates like an upload.** The Desktop pulled the new skill 50 seconds after the create and the new version under a minute after the update, and the CLI received the updated body.
 - **The tool says it is the only way to change a saved skill:** editing the skill's files on disk does not persist.
-- **A sent `.skill` file has its own Save skill button, and it installs the whole package.** In cloud Cowork, a `.skill` file sent with `SendUserFile` renders as a card with **Download** and **Save skill**; the preview pane has another **Save skill**. Clicking it created the skill in Customize → Skills with its script included ("Contents · 2"). That session had no `save_skill`, only `propose_skills`, so this route does not depend on the L206 grant. On the chat runtime, `present_files` renders the same card for a `.skill`. Relayed from a peer session's runs on 2026-10-01 (Desktop 2.16120.0), one observation each.
+- **A sent `.skill` file has its own Save skill button, and it installs the whole package.** In a cloud session, a `.skill` file sent with `SendUserFile` renders as a card with **Download** and **Save skill**; the preview pane has another **Save skill**. Clicking it created the skill in Customize → Skills with its script included ("Contents · 2"). That session had no `save_skill`, only `propose_skills`, so this route does not depend on the L206 grant. On the chat runtime, `present_files` renders the same card for a `.skill`. Relayed from a peer session's runs on 2026-10-01 (Desktop 2.16120.0), one observation each.
 
 **Skills belong to an organization.** Asked to change `cci-upload-probe`, a session in one organization answered that no such skill existed: it had been uploaded while the Desktop was in a different organization. After it was uploaded again in the session's organization, the update worked. This is also why the same skill had appeared in two stores above: each is one organization/account pair.
 
@@ -106,13 +106,13 @@ Claude Code's loader is the plugin loader described above (CLI 2.1.286, read her
 
 ## A conversation that changed runtime
 
-In the cloud run, the session reported that the first invocation, earlier in the same conversation, had given the base directory `/mnt/skills/plugins/cci-upload-probe`. That is the chat runtime's flat skills mount. The second invocation gave the Cowork container path. So that conversation's first invocation took the path outside the agent and the second Claude Code's loader, which fits the rule above if the session was created between them (not recorded for that run). This rests on the model's report of its own earlier turn, a single observation.
+In the cloud run, the session reported that the first invocation, earlier in the same conversation, had given the base directory `/mnt/skills/plugins/cci-upload-probe`. That is the chat runtime's flat skills mount. The second invocation gave the cloud session's container path. So that conversation's first invocation took the path outside the agent and the second Claude Code's loader, which fits the rule above if the session was created between them (not recorded for that run). This rests on the model's report of its own earlier turn, a single observation.
 
 ## For an author
 
 - To give a user a personal skill in Cowork, have them upload it as a skill. Scripts come with it and run on every surface.
-- Write the scripts for Linux as well as macOS: in both Cowork lanes they run under `dash`.
-- In local Cowork the skill's files are read-only, so write anything to the outputs folder, not next to the skill.
+- Write the scripts for Linux as well as macOS: in both local and cloud sessions they run under `dash`.
+- In a local session the skill's files are read-only, so write anything to the outputs folder, not next to the skill.
 - A skill that may be the first message of a cloud conversation cannot rely on `${CLAUDE_SKILL_DIR}`, `${CLAUDE_PLUGIN_ROOT}`, `${CLAUDE_PLUGIN_DATA}` or `` !`cmd` ``: before the session exists they arrive as written and the command is never run. Give a script path a fallback that finds the skill's folder, for example by searching `/root/.claude/plugins` for it.
 - To hand a user a skill with scripts in a cloud session, package it as a `.skill` file and send it: the card's Save skill installs every file. `save_skill` saves the instructions only.
 - Do not depend on `` !`cmd` `` in a skill: whether it runs depends on the lane, on how the skill was installed, on the permission check for that command and, in the cloud, on whether the conversation's session exists yet. A command that needs approval is handed to the model in auto mode, which may or may not run it, and makes the skill fail to load in any other mode. Tested only in the CLI with an uploaded skill, it looks broken when it is not.
@@ -124,7 +124,7 @@ In the cloud run, the session reported that the first invocation, earlier in the
 
 # LESSON 218 — PLUGIN BLOCKS AND MCP PLACEHOLDERS, LANE BY LANE
 
-**A plugin's UserPromptSubmit hook can block a prompt in both Cowork lanes. Locally the user sees why. In the cloud the prompt simply disappears: no reply, no notice, and the model never sees it. PreToolUse denies work in both lanes. For a plugin's MCP servers, only a few standard variables are ever filled in: any other `${VAR}` reaches the server as literal text, even when the variable is set, and a plugin-setting placeholder (`${user_config.…}`) stops the server in the cloud.**
+**A plugin's UserPromptSubmit hook can block a prompt in both local and cloud sessions. Locally the user sees why. In the cloud the prompt simply disappears: no reply, no notice, and the model never sees it. PreToolUse denies work in both lanes. For a plugin's MCP servers, only a few standard variables are ever filled in: any other `${VAR}` reaches the server as literal text, even when the variable is set, and a plugin-setting placeholder (`${user_config.…}`) stops the server in the cloud.**
 
 ## The probe
 
@@ -175,11 +175,11 @@ In the cloud, each call to a bridged server was approved through the Desktop's o
 
 The rule is old. Builds 1.18286.2 to 1.46388.4 log it as "config references environment variables outside the MCP stdio safelist … left unexpanded"; from 2.2553.1 the wording is the one above. On the local lane the set variable also arrived literal. That lane has its own copy of the same six-name list: the local agent runs with the `local-agent` entrypoint, where `CLAUDE_CODE_MCP_ALLOWLIST_ENV` defaults on and a server it spawns gets only `HOME`, `LOGNAME`, `PATH`, `SHELL`, `TERM` and `USER` plus its own `env` block (L61). That the placeholder expansion draws on the same restricted set is consistent with the measurement, but was not traced in the agent.
 
-**Where the full environment does reach a server.** A server listed in the Desktop's own `claude_desktop_config.json` is started by the Desktop with the full host environment plus its `env` block, and Cowork sessions see it on both lanes (L89, measured 2026-06-02). So a credential that a plugin server cannot receive can be given to the same server there, in its `env` block.
+**Where the full environment does reach a server.** A server listed in the Desktop's own `claude_desktop_config.json` is started by the Desktop with the full host environment plus its `env` block, and Cowork tasks see it in both local and cloud sessions (L89, measured 2026-06-02). So a credential that a plugin server cannot receive can be given to the same server there, in its `env` block.
 
 ## For an author
 
 - A blocking prompt hook works in Cowork, but in the cloud the user gets no feedback at all. If the block matters to the user, tell them another way, or block at the tool level, where the model sees and reports the denial.
-- Do not pass a credential to a plugin's MCP server through an environment placeholder. Outside the standard variables it arrives as literal text in both Cowork lanes, set or not, so the server starts and then fails to authenticate. A `:-` default only hides this. Have the server read its credential itself, for example from a file under the user's home folder or from the system keychain, and treat a value that still looks like `${…}` as missing. A user can also add the server to `claude_desktop_config.json` with the key in its `env` block.
+- Do not pass a credential to a plugin's MCP server through an environment placeholder. Outside the standard variables it arrives as literal text in both local and cloud sessions, set or not, so the server starts and then fails to authenticate. A `:-` default only hides this. Have the server read its credential itself, for example from a file under the user's home folder or from the system keychain, and treat a value that still looks like `${…}` as missing. A user can also add the server to `claude_desktop_config.json` with the key in its `env` block.
 - Do not use `${user_config.…}` in a plugin MCP server that must work in a cloud session: the server is silently left out there.
 - To see why a plugin server is missing from a cloud session, ask the session to call `get_device_info`: its `localMcpServers` entries carry each server's state and the reason it did not start.

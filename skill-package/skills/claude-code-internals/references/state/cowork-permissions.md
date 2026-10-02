@@ -10,6 +10,12 @@ read_more: ["https://ccinternals.dev/cowork/deleting-files/?ref=skill"]
 
 # Cowork permission stack (current)
 
+Terms: Cowork is now part of Claude ("Claude Cowork is now just Claude", Anthropic's support
+articles, modified 2026-09-30); a Cowork task runs in a **cloud session** (a `cse_` code session,
+`CLAUDE_CODE_ENTRYPOINT=remote_cowork`) or, while the "Only on this computer" option exists, a
+**local session** (host-loop or VM-loop on the user's computer). "Cowork" here names the product,
+the Chat/Cowork choice where it still exists, and identifiers such as `remote_cowork`.
+
 One page, current truth. History and correction trail live in the source
 lessons (see frontmatter).
 
@@ -327,7 +333,7 @@ reachability rule).
 - **"`--setting-sources=user` excludes plugin-scoped hooks in Cowork"** —
   WRONG. Plugin hooks DO fire in Cowork (host-loop symlink staging); the
   real determinant is the **three-root plugin namespace** — a desktop
-  Cowork session reads only
+  local session reads only
   `local-agent-mode-sessions/<acc>/<org>/cowork_plugins/cache` (+`rpm/`),
   which the standalone-CLI `--cowork` install does not reach. Install or upload
   it in the Desktop app, Customize → Plugins (or org-remote/RPM), to land in the namespace a real

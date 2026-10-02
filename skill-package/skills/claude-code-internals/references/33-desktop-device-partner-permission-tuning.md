@@ -87,6 +87,8 @@ A device registry fetched via `GET /api/organizations/{org}/cowork/remote_device
 
 **`grand_prix` is a signed, single-partner tool/prompt-injection framework: one hardcoded, HMAC-verified trusted partner can inject host tools, append text to the agent's system prompt, and service tab-scoped credential, address, and payment-card autofill requests against the user's live browser tab — built out substantially in 1.22209.0 from what was a bare skeleton in 1.21459.0.**
 
+**What it means for users now (relayed, Anthropic's support article 15520349, modified 2026-09-30):** "Tasks that use files on your computer need the desktop app open." A Cowork task runs in a cloud session and reaches the user's files only through this bridge, served by the running Desktop app. First-hand instance (L215, 2026-10-02): a cloud conversation asked for a folder, and the card read "Because this task runs in the cloud, files Claude uses leave your device."
+
 ## Core mechanics
 
 Code lives in `index.chunk-DD6nxfJK.js` (host, exports `buildGrandPrixHostTools`, `handleGrandPrixHostTool`, `getGrandPrixSystemPromptAppend`, `isGrandPrixCcrBridgeEnabled`, `resolveGrandPrixCcrBridgeToolDefs`, `buildGrandPrixHostToolAllowRules`) and a remote variant in `index.chunk-zzrNR3X_.js` (`[remoteGrandPrix]`, `buildRemoteGrandPrixTools` — the same builder Lesson 126 lists among the remote-device tool set).

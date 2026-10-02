@@ -80,7 +80,7 @@ The base environment Desktop builds for every agent it spawns sets `PYTHONDONTWR
 
 ## For an author
 
-- Do not expect a permission hook or an approval to change a file tool's input in Cowork's host loop: the approved call runs on the judged input.
+- Do not expect a permission hook or an approval to change a file tool's input in a host-loop local session: the approved call runs on the judged input.
 - Under an organization policy that requires approval for file tools, expect a prompt in the main session, and still a refusal in side chats.
 - Do not rely on `__pycache__` being written, or on its absence in the VM shell.
 
