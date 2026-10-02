@@ -134,8 +134,8 @@ Local host-loop Cowork passes the alias `Bash` → `mcp__workspace__bash` (a fir
 | Where | What it stores |
 |---|---|
 | "Only on this computer", described "Stops when the app closes or this computer sleeps" (row id `cowork-backend` in the code). Where it sits depends on the interface generation (Desktop 2.19675.0, 2026-10-02): on the merged interface (no Chat/Cowork choice; a Personal organization) under Settings → General → Tasks, next to "Trusted folders" and "Preferred browser"; on the older interface (a Team organization) under Settings → Cowork, next to "Cowork files", "Trusted Cowork folders", "Preferred browser", "Open links in built-in browser" and "Allowed sites" | the account setting below |
-| the Cloud/"Beta" popover in the task header | the same account setting |
-| a scheduled task's form ("Advanced" badge) | that task's own location, `local` or `remote` |
+| the Cloud/"Beta" popover in the task header, as the code has it; on 2026-10-02 (Desktop 2.19675.0) the older interface's header popup showed only "Claude Desktop (macOS)", "Connected" and "Manage computers", with no such setting, and on the merged interface clicking the header opened nothing | the same account setting |
+| a scheduled task's form ("Advanced" badge; on 2026-10-02 the form also offered Frequency "Manual" and the note "Only runs while your computer is awake", and an existing local task showed Run now) | that task's own location, `local` or `remote` |
 
 On a routine's card the same words are also a status label, next to "This computer", "Now runs in the cloud" and "Asleep or app closed".
 

@@ -2750,9 +2750,13 @@
     },
     "120": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-30",
-      "input_sha256": "4eea8a0e4be1e59b600c50566a7d4b11543accfbd8810da16286f577492d29eb",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "e036192b15cc76779a565ac99be4e350f9209c09298dfaf5b41a9679b59ef3c6",
+      "prior_terms_sha256": "0aad225d8dd46b1d1319dd53b58e0c8244afc5d1676312d67e1ac75c3923393a",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "eee4f6704a1ac8463931266fefe1bb09b1aaa92c",
+      "replaced": [],
       "terms": [
         "where does desktop effort level come from",
         "cowork default effort always medium",
@@ -2768,7 +2772,10 @@
         "effort setting stored in settings file",
         "recommended effort differs by model",
         "does effort get passed as flag or environment",
-        "live grant read access to artifact folder"
+        "live grant read access to artifact folder",
+        "thinking checkbox missing for newer model",
+        "does max effort cost more usage",
+        "effort submenu in model menu"
       ]
     },
     "121": {
@@ -4847,16 +4854,24 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "2b655f116c3890942cd15f9d44c302403af301d577bcfc33d4e12021ac6a0a62",
-      "prior_terms_sha256": "d3041b440241dccabc8b30981be6c31d0f37c23745589557b62f7ea9f1c72c2b",
+      "input_sha256": "831ee2050b3d6d6ec0f75d90e5df95e60b05b32b40d3d1476bb86a50269b9704",
+      "prior_terms_sha256": "139860b61512bcf390886dc24a643e018dc03b3c9689039b9e9bbfb623f9439c",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
-      "replaced": [],
+      "previous_text": "eee4f6704a1ac8463931266fefe1bb09b1aaa92c",
+      "replaced": [
+        "why does my new task run in the cloud?"
+      ],
+      "dropped": [
+        {
+          "term": "why does my new task run in the cloud?",
+          "why": "duplicate",
+          "duplicate_of": "cowork task runs in cloud instead of locally"
+        }
+      ],
       "terms": [
         "cowork task runs in cloud instead of locally",
         "only on this computer setting ignored",
         "force cowork task to run on my machine",
-        "why does my new task run in the cloud?",
         "opted out of cloud but still remote",
         "how to tell if task ran locally or in cloud",
         "cowork local vs cloud session routing",
@@ -4870,7 +4885,8 @@
         "cloud task using my mac through bridge",
         "are local cowork tasks being removed?",
         "scheduled tasks moving to the cloud",
-        "where is the only on this computer setting?"
+        "where is the only on this computer setting?",
+        "task header popup has no cloud setting"
       ]
     },
     "211": {
@@ -4898,15 +4914,21 @@
     },
     "212": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v3-update",
-      "date": "2026-10-01",
-      "input_sha256": "e931ad0eddf6023ef0fe93ae6277f276f752240f619cb4e91cc715af7d92a022",
-      "prior_terms_sha256": "224fe76798fad8768322351d1a0d6cd39b195823754bbe39f7ea294fc0861699",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "a755daa9cfaf1a934f7e0afbe1d73ead425f43aaee95f30a0314a0a3ce13cd3f",
+      "prior_terms_sha256": "8068408030ea9542e6aedad09701163d94eea6d680727edf946f823844ca1c5f",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "a583a52a0c6179edab6b93de6eafd2801ad96abb",
+      "previous_text": "eee4f6704a1ac8463931266fefe1bb09b1aaa92c",
       "replaced": [
-        "tool listed but call refused",
-        "why is a listed tool still blocked?"
+        "local artifacts folder in Cowork sidebar"
+      ],
+      "dropped": [
+        {
+          "term": "local artifacts folder in Cowork sidebar",
+          "why": "inaccurate",
+          "replacement": "Cowork sidebar artifacts gallery"
+        }
       ],
       "terms": [
         "scheduled task cannot use new artifact tool",
@@ -4916,14 +4938,17 @@
         "artifact tools missing in unattended session",
         "disallowed MCP tool still shows in tool list",
         "save HTML page from scheduled task",
-        "local artifacts folder in Cowork sidebar",
         "create or update artifact permission prompt",
         "bridge session can only list artifacts",
         "verify artifact tool not available",
         "migrate old live artifacts to new artifacts",
         "does bypass mode skip artifact approval?",
         "cannot update artifact shared with me",
-        "why does sharing say not enabled?"
+        "why does sharing say not enabled?",
+        "Cowork sidebar artifacts gallery",
+        "do legacy artifacts show in the gallery?",
+        "artifacts folder on disk",
+        "gallery tabs pinned yours shared with you"
       ]
     },
     "213": {
@@ -4976,26 +5001,11 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "2ecfb533178bfc884961db755242ee5494f084077e151419454b2baad16d7055",
-      "prior_terms_sha256": "fbd19bdd9d9d5187ebe4a6dd3ee5bbee4be2e521ac2fe940a534947a030d5a5e",
+      "input_sha256": "05ac7ef63ac2060e00b8ec11a57beb29d3d40a1b375f0c2d7cedbdfaab0fa820",
+      "prior_terms_sha256": "72abd934a16a797d69c0f27cc0eae821e2183e876f7648806158767db09d9268",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
-      "replaced": [
-        "file written but not on my computer",
-        "links to files show as plain text"
-      ],
-      "dropped": [
-        {
-          "term": "file written but not on my computer",
-          "why": "duplicate",
-          "duplicate_of": "why does write succeed but file is missing?"
-        },
-        {
-          "term": "links to files show as plain text",
-          "why": "duplicate",
-          "duplicate_of": "why is my file link not clickable in cloud?"
-        }
-      ],
+      "previous_text": "eee4f6704a1ac8463931266fefe1bb09b1aaa92c",
+      "replaced": [],
       "terms": [
         "cloud task can't see files on my Mac",
         "why does write succeed but file is missing?",
@@ -5051,10 +5061,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "7224d5b13dbc1757c22dde2794f74a0633e34e48035ee2c738bae822c4ae428f",
+      "input_sha256": "fa841dc51e54d2369d831bd55774383bffe1a1406a1e53a60bc4a2b29eb59598",
       "prior_terms_sha256": "38b12b0d40b464a11b9752da9a9ce5c34d356289c75d43e2abed9a9e559b918e",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
+      "previous_text": "eee4f6704a1ac8463931266fefe1bb09b1aaa92c",
       "replaced": [],
       "terms": [
         "get my own skill into Cowork",
@@ -5081,10 +5091,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "41acc7dd1b508b795a88a2559ae072567bbd426fb8f1d480e34fad2df9348ee5",
+      "input_sha256": "3d5597fc5c64d3a9746d15b3f94a4bce4644a959929159ee107a07d1611a6d84",
       "prior_terms_sha256": "e8a515ce4a35864729cb5cafc0778bc7f33f7ca455af550ebb4893cd67dbb9d0",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
+      "previous_text": "eee4f6704a1ac8463931266fefe1bb09b1aaa92c",
       "replaced": [],
       "terms": [
         "plugin hook blocks prompt with no message in cloud",

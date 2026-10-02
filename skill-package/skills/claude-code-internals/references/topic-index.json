@@ -12238,7 +12238,10 @@
         "effort setting stored in settings file",
         "recommended effort differs by model",
         "does effort get passed as flag or environment",
-        "live grant read access to artifact folder"
+        "live grant read access to artifact folder",
+        "thinking checkbox missing for newer model",
+        "does max effort cost more usage",
+        "effort submenu in model menu"
       ],
       "summary": "First-party binary trace of Cowork's two reasoning knobs against app.asar 1.19367.0. Extended thinking is a strict boolean -- maxThinkingTokens resolves to exactly 31999 or 0 (zgi/NX), never an arbitrary budget, delivered as --max-thinking-tokens/--thinking disabled flags with no MAX_THINKING_TOKENS env var at spawn; a live-session toggle calls query.setMaxThinkingTokens, confirming the payload behind the already-named set_max_thinking_tokens control-protocol subtype. Effort is a per-model enum (low/medium/high/xhigh(\"extra\")/max) resolved via qgi(override, A1e(model), E2t()) across FOUR model-config classes -- literal picker models, no-picker models that still emit --effort medium, a fable/mythos regex-default class with disallowThinkingDisabled, and unknown models with no config -- all sourced from a local settings-file object (effort/effortByModel), falling back to a hardcoded \"medium\" string, never CLAUDE_CODE_EFFORT_LEVEL. Corrects Ch28/L114's claim that the Desktop's LocalSessions effort IPC family is backed by CLAUDE_CODE_EFFORT_LEVEL: that env var is real but backs a separate, non-spawn-path getDefaultEffort() implementation -- the actual spawn value never touches it. Confirms setEffort's live-session branch calls applyFlagSettings({effortLevel}), giving the previously name-only apply_flag_settings control-protocol subtype its first concrete payload shape. Prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan (itself not yet implemented); every load-bearing binary claim independently re-derived first-party against this installation's own binary before folding in; the plan's own live-spawn-log analysis (flat 'medium' default, never per-model recommended) is relayed, not independently re-verified here.",
       "identifier_keys": [
@@ -12274,13 +12277,16 @@
         "effort setting stored in settings file",
         "recommended effort differs by model",
         "does effort get passed as flag or environment",
-        "live grant read access to artifact folder"
+        "live grant read access to artifact folder",
+        "thinking checkbox missing for newer model",
+        "does max effort cost more usage",
+        "effort submenu in model menu"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "0aad225d8dd46b1d1319dd53b58e0c8244afc5d1676312d67e1ac75c3923393a"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-02",
+        "terms_sha256": "e2e3ca8c594f46fcdd247b989eedc0e841dfddb0461960d1e9882d9770bbecce"
       }
     },
     {
@@ -20173,7 +20179,6 @@
         "259200000",
         "cowork task runs in cloud instead of locally",
         "force cowork task to run on my machine",
-        "why does my new task run in the cloud",
         "opted out of cloud but still remote",
         "how to tell if task ran locally or in cloud",
         "cowork local vs cloud session routing",
@@ -20187,7 +20192,8 @@
         "cloud task using my mac through bridge",
         "are local cowork tasks being removed",
         "scheduled tasks moving to the cloud",
-        "where is the only on this computer setting"
+        "where is the only on this computer setting",
+        "task header popup has no cloud setting"
       ],
       "identifier_keys": [
         "dramatic_shrimp_disabled_at",
@@ -20206,7 +20212,6 @@
       "vocab_keys": [
         "cowork task runs in cloud instead of locally",
         "force cowork task to run on my machine",
-        "why does my new task run in the cloud",
         "opted out of cloud but still remote",
         "how to tell if task ran locally or in cloud",
         "cowork local vs cloud session routing",
@@ -20220,13 +20225,14 @@
         "cloud task using my mac through bridge",
         "are local cowork tasks being removed",
         "scheduled tasks moving to the cloud",
-        "where is the only on this computer setting"
+        "where is the only on this computer setting",
+        "task header popup has no cloud setting"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "139860b61512bcf390886dc24a643e018dc03b3c9689039b9e9bbfb623f9439c"
+        "terms_sha256": "359884202a4966870e07e651d669cb0f20f1308e2517e5289b064dc85afb986e"
       }
     },
     {
@@ -20366,14 +20372,17 @@
         "artifact tools missing in unattended session",
         "disallowed mcp tool still shows in tool list",
         "save html page from scheduled task",
-        "local artifacts folder in cowork sidebar",
         "create or update artifact permission prompt",
         "bridge session can only list artifacts",
         "verify artifact tool not available",
         "migrate old live artifacts to new artifacts",
         "does bypass mode skip artifact approval",
         "cannot update artifact shared with me",
-        "why does sharing say not enabled"
+        "why does sharing say not enabled",
+        "cowork sidebar artifacts gallery",
+        "do legacy artifacts show in the gallery",
+        "artifacts folder on disk",
+        "gallery tabs pinned yours shared with you"
       ],
       "identifier_keys": [
         "ccd_session",
@@ -20393,20 +20402,23 @@
         "artifact tools missing in unattended session",
         "disallowed mcp tool still shows in tool list",
         "save html page from scheduled task",
-        "local artifacts folder in cowork sidebar",
         "create or update artifact permission prompt",
         "bridge session can only list artifacts",
         "verify artifact tool not available",
         "migrate old live artifacts to new artifacts",
         "does bypass mode skip artifact approval",
         "cannot update artifact shared with me",
-        "why does sharing say not enabled"
+        "why does sharing say not enabled",
+        "cowork sidebar artifacts gallery",
+        "do legacy artifacts show in the gallery",
+        "artifacts folder on disk",
+        "gallery tabs pinned yours shared with you"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v3-update",
-        "date": "2026-10-01",
-        "terms_sha256": "8068408030ea9542e6aedad09701163d94eea6d680727edf946f823844ca1c5f"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-02",
+        "terms_sha256": "fe215f81cd7784215c8907ee6acbb7ea566eed8f241e2e45a22b21b66c0fb748"
       }
     },
     {
@@ -50412,6 +50424,15 @@
     "live grant read access to artifact folder": [
       120
     ],
+    "thinking checkbox missing for newer model": [
+      120
+    ],
+    "does max effort cost more usage": [
+      120
+    ],
+    "effort submenu in model menu": [
+      120
+    ],
     "which tools does a subagent get": [
       121
     ],
@@ -54417,9 +54438,6 @@
     "force cowork task to run on my machine": [
       210
     ],
-    "why does my new task run in the cloud": [
-      210
-    ],
     "opted out of cloud but still remote": [
       210
     ],
@@ -54460,6 +54478,9 @@
       210
     ],
     "where is the only on this computer setting": [
+      210
+    ],
+    "task header popup has no cloud setting": [
       210
     ],
     "artifact calling local mcp server": [
@@ -54525,9 +54546,6 @@
     "save html page from scheduled task": [
       212
     ],
-    "local artifacts folder in cowork sidebar": [
-      212
-    ],
     "create or update artifact permission prompt": [
       212
     ],
@@ -54547,6 +54565,18 @@
       212
     ],
     "why does sharing say not enabled": [
+      212
+    ],
+    "cowork sidebar artifacts gallery": [
+      212
+    ],
+    "do legacy artifacts show in the gallery": [
+      212
+    ],
+    "artifacts folder on disk": [
+      212
+    ],
+    "gallery tabs pinned yours shared with you": [
       212
     ],
     "what changed in the latest desktop app feature flags": [

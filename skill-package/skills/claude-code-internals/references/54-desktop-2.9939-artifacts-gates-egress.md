@@ -127,7 +127,7 @@ Across 912 `audit.jsonl` files (3,032 init frames, all before 2.16120.0) there a
 
 ## What the tools do
 
-They work on the local Artifacts store, the Claude/Artifacts folder shown in the Cowork sidebar, and make no network call of their own. Sharing from that store (`POST …/artifacts/share_from_content`) is a user action in the Desktop behind `3229517805.sharingEnabled`, served true on 2026-10-01; it covers artifacts these tools made, and once a shared artifact has auto-publish on, an `update_artifact` call republishes it (below). Permissions:
+They work on the local Artifacts store, a Claude/Artifacts folder on disk, and make no network call of their own. On 2026-10-02 (Desktop 2.19675.0) the sidebar's Artifacts entry opened a gallery with All, Pinned, Yours and Shared with you, not a folder view; whether items these tools make appear there was not checked. Sharing from that store (`POST …/artifacts/share_from_content`) is a user action in the Desktop behind `3229517805.sharingEnabled`, served true on 2026-10-01; it covers artifacts these tools made, and once a shared artifact has auto-publish on, an `update_artifact` call republishes it (below). Permissions:
 - `list_artifacts`, `verify_artifact` and `read_widget_context` are pre-approved in `allowedTools`.
 - `create_artifact` and `update_artifact` get the normal permission prompt, which shows the call's `update_summary`. They are not in the forced-ask hook set, so bypass mode skips it.
 

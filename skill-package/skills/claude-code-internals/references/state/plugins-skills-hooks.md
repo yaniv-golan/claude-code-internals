@@ -172,7 +172,7 @@ for other events (PreToolUse included) it blocks.
 
 ## Uploaded skills (L217)
 
-A skill uploaded via Customize → Skills → + Add → Upload skill (zip with one top-level
+A skill uploaded via Customize → Skills → Add skill → Upload skill (zip with one top-level
 folder containing `SKILL.md`; a `.claude-plugin/plugin.json` is refused) becomes an account
 skill: within about a minute it reached the CLI (`~/.claude/skills/synced/<org>_<account>/`,
 listed as `anthropic-skills:<name>`), cloud Cowork (`/root/.claude/skills/synced/…`) and local

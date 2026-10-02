@@ -2440,7 +2440,7 @@
    "lessons": [
     217
    ],
-   "hint": "Upload it via Customize → Skills → + Add → Upload skill (zip with one top-level folder holding SKILL.md, no .claude-plugin/plugin.json). It becomes an account skill and reached the CLI, cloud and local Cowork whole, scripts runnable (dash in Cowork; read-only locally)."
+   "hint": "Upload it via Customize → Skills → Add skill → Upload skill (zip with one top-level folder holding SKILL.md, no .claude-plugin/plugin.json). It becomes an account skill and reached the CLI, cloud and local Cowork whole, scripts runnable (dash in Cowork; read-only locally)."
   },
   {
    "pattern": [

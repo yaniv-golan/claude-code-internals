@@ -386,8 +386,8 @@ approval in auto mode → rewritten to `[run this first, exactly as written, and
 model to run or not; otherwise the skill fails to load. In the cloud
 a skill invoked before the conversation's session exists (it is set up lazily by the first turn needing a shell or file
 tool) is expanded outside the agent (most likely the chat backend): `!cmd` raw and never run, plugin tokens literal, base `/mnt/skills/plugins/<p>:<s>`
-(2026-10-02, Desktop 2.19675.0 + web, agent 2.1.287); after setup Claude Code's loader expands it, and a failing `!cmd`
-leaves a typed slash command with no reply or error (L217). After setup, an allowed read inside `/home/claude` ran and a write or a read outside it was handed
+(2026-10-02, Desktop 2.19675.0 + web, agent 2.1.287); after setup Claude Code's loader expands it, and a `!cmd` the skill allows in `allowed-tools`
+that then fails leaves a typed slash command with no reply or error (L217; unlisted commands not tested). After setup, an allowed read inside `/home/claude` ran and a write or a read outside it was handed
 off (relayed 2026-10-01, agent 2.1.286); an uploaded skill's is left raw in the CLI — L217), and hook env-exports don't cross
 the host/VM bridge — neither can serve as a probe.
 
@@ -657,8 +657,9 @@ The claude.ai interface picks the lane per new task. Its router returns the firs
 `dramatic_shrimp_enabled` false; unset means cloud), folder/Space-forced,
 Auto/Bypass-forced, Chrome/options/computer-use/plugin-stdio, else `remote`. The account
 setting is what "Only on this computer" (row `cowork-backend`; 2026-10-02, Desktop 2.19675.0:
-Settings → General → Tasks on the merged interface, Settings → Cowork on the older one) and
-the task-header Cloud popover both write (announced, not yet observed: from 2026-10-06 new Cowork
+Settings → General → Tasks on the merged interface, Settings → Cowork on the older one) and,
+per the code, the task-header Cloud popover (not seen on 2026-10-02: the older header's popup showed
+only "Connected" and "Manage computers") both write (announced, not yet observed: from 2026-10-06 new Cowork
 tasks run in the cloud and the option, "Only on your computer" in Settings > General per Anthropic's
 support article read 2026-10-02, is removed; tasks already started locally stay local; scheduled
 tasks move to the cloud; L210); switching to local saves only after the
