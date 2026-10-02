@@ -5072,10 +5072,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "d0101b223efb66ddff537e4a080bcedcc08d035e99c134dfb907bfb28d474e76",
+      "input_sha256": "aeafef706dd764e785d96d8ef7e4b8372de149067469d42a7f34e5d23cf53214",
       "prior_terms_sha256": "38b12b0d40b464a11b9752da9a9ce5c34d356289c75d43e2abed9a9e559b918e",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
+      "previous_text": "2cc81e94e6bbe3389a60e0d2e249d78877931e71",
       "replaced": [],
       "terms": [
         "get my own skill into Cowork",

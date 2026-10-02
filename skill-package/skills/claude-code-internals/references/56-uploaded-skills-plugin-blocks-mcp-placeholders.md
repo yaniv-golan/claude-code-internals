@@ -92,11 +92,22 @@ A cloud conversation reaches a skill by one of two paths, and the path is set by
 | UI, typed invocation | a "Loaded skill <plugin> (<skill>)" row | no such row (a model invocation shows "Loaded a skill" / "Running skill: …" on this path too) |
 | base-directory line | `/mnt/skills/plugins/<plugin>:<skill>`, which does not exist in the container | the synced plugin's real folder under `/root/.claude/plugins/synced/<organization>_<account>/<plugin>/` |
 | `${CLAUDE_PLUGIN_ROOT}`, `${CLAUDE_SKILL_DIR}`, `${CLAUDE_PLUGIN_DATA}` | left as written | filled (data under `/root/.claude/plugins/data/<plugin>-synced`) |
+| `$ARGUMENTS` (the text after the slash command) | left as written | replaced with the typed argument |
 | `` !`cmd` `` | left as raw text, never run, no marker | run, through the permission check above (in every probe run the command was in the skill's `allowed-tools`) |
 | an allowed `` !`cmd` `` that then fails | shown raw; the turn goes on | see below |
 | runs | 5 (web and Desktop, two accounts) | 2 on the merged composer after a shell turn, 6 on the older composer |
 
 Claude Code's loader is the plugin loader described above (CLI 2.1.286, read here): it replaces `${CLAUDE_PLUGIN_ROOT}` and `${CLAUDE_PROJECT_DIR}`, `${CLAUDE_PLUGIN_DATA}` when the plugin has a source, and `${CLAUDE_SKILL_DIR}` in skill mode. The other path is not in Claude Code: `/mnt/skills` occurs in neither the CLI nor Desktop 2.16120.0, and in the web log the skill was expanded before any session existed, so something outside the container expands it, most likely the claude.ai chat backend (inferred, not traced). The probe skill's text matched the copy on disk on both paths, so neither serves a stale version. A new version uploaded through Customize → Plugins (replacing the user's own upload, not published to the organization) was already in the first cloud session started after it: the upload was confirmed at 12:14:30Z and the session's skill ran at 12:16:18Z, so it arrived in under 2 minutes (one run, one Team organization). In a container started by the older composer, `/mnt/skills/plugins` did not exist at all (one run).
+
+**Only the skill's own text differs between the paths.** In the same turn as a skill expanded outside the agent (2026-10-02, Desktop 2.19675.0 and the web, a Personal organization on the merged composer; two runs on one machine, so not independent; the other path checked once), the rest of the plugin worked as on Claude Code's path:
+
+- the plugin's sub-agent (`subagent_type` `<plugin>:<agent>`) resolved and ran, and its body's `${CLAUDE_PLUGIN_ROOT}` was filled with the synced plugin root (found in the session transcript next to a value only that agent could have written);
+- `Read` on the synced plugin's absolute path worked (a line only that file held came back);
+- a file the sub-agent wrote under `/home/claude` was visible to the main conversation;
+- the plugin's `PreToolUse` hook (matcher `Agent|Task`) and `Stop` hook fired, and `Stop` also fired on turns that did not use the skill;
+- `AskUserQuestion` rendered its form on the first turn.
+
+The Desktop and web interfaces do not expand `Read` or agent rows, so those were checked through values the model could not have guessed.
 
 **A `` !`cmd` `` the skill allows that then fails in the container.** Every probe declared its command in the skill's `allowed-tools`, so the permission check let it run and it then failed: one probe used `uuidgen`, which the cloud container does not have, another a command that does not exist. A failing command the skill does not list was not tested; under the rule above it is handed to the model or fails the load at the permission check, before it runs. For an allowed command, what the user sees depends on how the skill was invoked:
 
@@ -113,7 +124,7 @@ In the cloud run, the session reported that the first invocation, earlier in the
 - To give a user a personal skill in Cowork, have them upload it as a skill. Scripts come with it and run on every surface.
 - Write the scripts for Linux as well as macOS: in both local and cloud sessions they run under `dash`.
 - In a local session the skill's files are read-only, so write anything to the outputs folder, not next to the skill.
-- A skill that may be the first message of a cloud conversation cannot rely on `${CLAUDE_SKILL_DIR}`, `${CLAUDE_PLUGIN_ROOT}`, `${CLAUDE_PLUGIN_DATA}` or `` !`cmd` ``: before the session exists they arrive as written and the command is never run. Give a script path a fallback that finds the skill's folder, for example by searching `/root/.claude/plugins` for it.
+- A skill that may be the first message of a cloud conversation cannot rely on `${CLAUDE_SKILL_DIR}`, `${CLAUDE_PLUGIN_ROOT}`, `${CLAUDE_PLUGIN_DATA}`, `$ARGUMENTS` or `` !`cmd` `` in its `SKILL.md`: before the session exists they arrive as written and the command is never run. Give a script path a fallback that finds the skill's folder, for example by searching `/root/.claude/plugins` for it, and have the skill read its argument from the user's message when `$ARGUMENTS` comes through literally. Only `SKILL.md` needs this: the plugin's agent bodies, hooks and files work on both paths.
 - To hand a user a skill with scripts in a cloud session, package it as a `.skill` file and send it: the card's Save skill installs every file. `save_skill` saves the instructions only.
 - Do not depend on `` !`cmd` `` in a skill: whether it runs depends on the lane, on how the skill was installed, on the permission check for that command and, in the cloud, on whether the conversation's session exists yet. A command that needs approval is handed to the model in auto mode, which may or may not run it, and makes the skill fail to load in any other mode. Tested only in the CLI with an uploaded skill, it looks broken when it is not.
 - A `` !`cmd` `` that fails the check turns the skill load into a permission error the model sees, and a model can respond by trying to widen its own permissions. Keep inline commands to reads inside the working directory, or declare them in `allowed-tools`.

@@ -20842,7 +20842,7 @@
       "lesson_number": "217",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 16,
-      "endLine": 121,
+      "endLine": 132,
       "keywords": [
         "upload skill",
         "uploaded skill",
@@ -20941,8 +20941,8 @@
       "title": "Plugin Blocks and MCP Placeholders, Lane by Lane",
       "lesson_number": "218",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
-      "startLine": 125,
-      "endLine": 185,
+      "startLine": 136,
+      "endLine": 196,
       "keywords": [
         "UserPromptSubmit block",
         "decision block",
