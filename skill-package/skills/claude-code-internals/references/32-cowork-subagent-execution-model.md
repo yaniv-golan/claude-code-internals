@@ -135,6 +135,8 @@ then `configureHostLoopExecution` (`et(e,o)` in `index.chunk-CS-g0Skn.js`) mutat
 
 **Practical reading:** `tools: [Read, Edit, Glob, Grep]` in frontmatter yields **exactly those four** — `mcp__workspace__bash`/`mcp__workspace__web_fetch` are MCP tools that must be inherited (wildcard) or explicitly named, never auto-injected. `tools:` omitted or `"*"` inherits the full session universe, which in Cowork host-loop includes the workspace MCP tools. A literal `Bash` in frontmatter never binds in host-loop (absent from the recomputed universe, lands in the silently-dropped `invalidTools`) — but a model that *emits* a `tool_use` named `Bash` at runtime is alias-routed to `mcp__workspace__bash` by `rc()`, **iff** that tool is in the sub-agent's already-bound set. No Desktop-side per-sub-agent tool override exists — no `agents:` SDK option is passed at spawn (zero hits across the relevant chunks); the only Task-specific Desktop control is the PreToolUse "Task" hook (telemetry + `run_in_background` block, discussed in L124 — it never touches tools).
 
+**Live confirmation (Desktop 2.19675.0, agent 2.1.286, 2026-10-02).** A plugin agent declaring `tools: Bash, Read, Write`, dispatched in a local session, had Read and Write only: no shell, and its own reply said so. Its records carry `cwd` `/private/var/empty` (L190). The main session's `system/init` lists `Task`, not `Agent`, while the model's dispatch was a `tool_use` named `Agent`, and PreToolUse hooks received `tool_name` `Agent`; match both names.
+
 ## Corrections to earlier lessons
 
 - **Ch24/L107 partition symbols renamed, and now exported unminified.** `gre→p5e` (`HOST_LOOP_EXCLUDED_BUILTIN_TOOLS`), `PNt→h5e` (`HOST_LOOP_SAFE_BUILTIN_TOOLS`), path-gated set now `g5e` (L122); `BDt`/`QDt` injection is superseded by the first-class SDK option **`toolAliases`** described above.
@@ -176,6 +178,14 @@ Nuance: `xe` checks membership in `g5e` (no MultiEdit in that set), so a `/sessi
 **Mutating special-casing** (`Jt=["Write","Edit","MultiEdit"]`, `qt()` offset 31711): writes into uploads → blocked (*"it is a hardlink to the user's original file, so writing here would overwrite it on their disk"*); spooled projects → *"read-only in this session (spooled tool results)"*; plugin paths → *"read-only in this session (plugin, skill, or knowledge content)"*. Outside all roots → block with *"...is outside this session's connected folders, so ${tool} can't reach it. If this is a user project or working folder, request it with the `request_cowork_directory` tool..."*.
 
 **Second enforcement layer**: the `canUseTool` wrapper composes the same deny ahead of everything else — `e.canUseTool=async(g,S,k)=>xe(g,S)??Qt(g,S,...)??Se(g,S,k)` — so even a hook-bypass hits the same `/sessions/` deny.
+
+## Shell commands are rewritten for plugin paths; file-tool paths are not (Desktop 2.19675.0)
+
+The file tools deny a `/sessions/...` path (above). The shell goes the other way: before `mcp__workspace__bash` sends a command to the VM, the Desktop replaces host plugin paths in its text with their VM paths. `Zd` builds the table from each plugin's staging path (`$TMPDIR/claude-hostloop-plugins/<hash>/plugin_<id>`) and install path, plus the skills plugin path, each mapped to `/sessions/<slug>/mnt/...` (`.remote-plugins/plugin_<id>`, `.claude/skills`); it adds the `/private/var/...` spelling and escaped or quoted forms of paths with spaces. `Yd` replaces a match only at a path boundary. Not in the table: the session's config-dir staging path, so `${CLAUDE_PLUGIN_DATA}` passes through unchanged, and the host outputs path (asar 2.19675.0; the table is also in asars 1.46388.4 to 2.16120.0, earlier ones not checked).
+
+Live, in two local sessions on 2026-10-02 (Desktop 2.19675.0, agent 2.1.286): the skill text gave `${CLAUDE_PLUGIN_ROOT}` as the staging path, the model put that path in a single-quoted `printf`, and the output came back as `/sessions/<slug>/mnt/.remote-plugins/plugin_<id>`. The transcript keeps the command as the model sent it. **The trap for a skill author:** a plugin root printed by the shell is the VM path, and passing it to Read or Glob gets the VM-path deny above. In the first run, Glob and Read on the printed path were both refused. Give the file tools the host path from the skill text (its "Base directory for this skill:" line or `${CLAUDE_PLUGIN_ROOT}`), and the shell either form.
+
+The Desktop's conversation view also shows `/sessions/...` outputs paths as Mac paths in its request and result rows (observed in the UI, 2026-10-02), so read the transcript, not the screen, to see what a tool was given.
 
 ## Hooks fire inside sub-agents — first-party proof
 

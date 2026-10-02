@@ -53,7 +53,10 @@ for are also closed:
   ```
 
   A skill's `` !`cmd` `` blocks never execute in a local Cowork session (each is replaced by
-  `[shell command execution disabled by policy]`), so they can't be used as a probe there. Cloud
+  `[shell command execution disabled by policy]`), so they can't be used as a probe there. Seen
+  live on Desktop 2.19675.0 with agent 2.1.286 (2026-10-02): a plugin skill's `` !`date -u +%FT%TZ` ``,
+  allowed in its `allowed-tools`, reached the model as `Check time: [shell command execution disabled
+  by policy]` in the skill text the session recorded. Cloud
   Cowork does not set `CLAUDE_CODE_IS_COWORK`, and there they run; for an uploaded skill in the
   CLI they are left unexecuted for a different reason (L217).
 - **Hook env-exports and host file writes do not cross into the VM** (the v2.12.1

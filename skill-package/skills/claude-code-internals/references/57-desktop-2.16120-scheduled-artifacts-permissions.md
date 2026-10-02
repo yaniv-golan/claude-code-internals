@@ -27,7 +27,7 @@ The session setup predicate that chooses between the two artifact families admit
 
 The restriction moved earlier, to session start: a scheduled session has its `frameArtifactsEnabled` cleared unless key `scheduledRunFrameArtifacts` of the cowork runtime config (`1978029737`) is true. Its default in the code is **true**, and the key is absent from the served value on 2026-10-01, so the default applies. The two families stay mutually exclusive.
 
-On disk: both scheduled runs since the install, of two different tasks, list `Artifact` and no `create_artifact`, `update_artifact` or `list_artifacts`. Scheduled runs on 2.9939.4 on the same machine had the family and no `Artifact`.
+On disk: both scheduled runs since the install, of two different tasks, list `Artifact` and no `create_artifact`, `update_artifact` or `list_artifacts`. Scheduled runs on 2.9939.4 on the same machine had the family and no `Artifact`. An interactive local session on 2.19675.0 (2026-10-02) also listed `Artifact`, and the model published a file it had written to the host outputs folder by passing that host path; the user saw a publish card first (from the UI).
 
 ## A publish grant per scheduled task
 
@@ -72,7 +72,11 @@ An organization tool policy can require approval for a tool on each call (L184).
 
 ## `allow_cowork_file_delete` refuses before the prompt
 
-These requests are refused with an explanation and no prompt: no file path; a path that is not a VM path inside a connected folder; a path with `.` or `..` segments; a path in the outputs folder, where deleting needs no permission; a folder the administrator set read-only; no session. In 2.9939.4 the user saw the approval prompt first and the refusal came afterwards.
+These requests are refused with an explanation and no prompt: no file path; a path that is not a VM path inside a connected folder; a path with `.` or `..` segments; a path in the outputs folder, where deleting needs no permission (see below); a folder the administrator set read-only; no session. In 2.9939.4 the user saw the approval prompt first and the refusal came afterwards.
+
+## The outputs folder allows deletes from the start
+
+In 2.9939.4 the host-loop mount builder gave `outputs` its mode through the approval list, like a connected folder: `rw` until `allow_cowork_file_delete` was approved for it. In 2.16120.0 `outputs` gets `rwd` directly, or `rw` in a bridge (`agent`) session, and only connected folders go through the list. So a shell `rm` in `outputs` works with no prompt (seen on 2.19675.0, 2026-10-02, where the config record had no `fileDeleteApprovedMounts` key at all), and a connected folder still needs the approval (L139).
 
 ## `PYTHONDONTWRITEBYTECODE=1`
 

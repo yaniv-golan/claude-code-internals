@@ -2667,9 +2667,13 @@
     },
     "116": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-10-01",
-      "input_sha256": "ed0f5d1003e136bbc89aa0897f4835294867b1a4ecb40cb1f7b60525e9915be3",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "ada539231e6b28f69320c5686c85f17cce51c2d12f8c771f6c473676dd5d8908",
+      "prior_terms_sha256": "1cd4542ed5cc347728115f42e6c0a75eb3b96bbd536933eb04716afc140cc8ed",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
+      "replaced": [],
       "terms": [
         "skill detect if running in cowork",
         "how can a script tell it's inside cowork?",
@@ -2685,7 +2689,9 @@
         "sessions folder path means cowork",
         "which surface launched claude code",
         "how do I branch skill behavior per runtime?",
-        "workspace bash vs regular bash tool"
+        "workspace bash vs regular bash tool",
+        "allowed tools doesn't enable skill inline commands",
+        "plugin skill command blocked even when allowed"
       ]
     },
     "117": {
@@ -2789,9 +2795,13 @@
     },
     "121": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "8dfa20afb0cd67fdd00179c1ad5639bf7ddcd95939f728324db521c18cd9feb0",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "59230a1b87be69f48b27bad851d2b5f3e05991604f1b534d9baf1333c443d321",
+      "prior_terms_sha256": "5814915932ffc6248a5e17e49104e2f82f98066b98cda661461ad0f51ae5c876",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
+      "replaced": [],
       "terms": [
         "which tools does a subagent get",
         "subagent has more tools than I listed",
@@ -2807,17 +2817,20 @@
         "how deep can subagents nest?",
         "limit on parallel subagents",
         "background subagent missing tools",
-        "why can't my subagent ask the user questions?"
+        "why can't my subagent ask the user questions?",
+        "hook matcher misses subagent dispatch",
+        "subagent launch tool has two names",
+        "subagent runs in empty working directory"
       ]
     },
     "122": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "14c7254f83c7ea27eb1a7d30072580ec1aae1e11aeaee25f693b449b66550924",
-      "prior_terms_sha256": "5abec045815f9e00516a26c9848edb3cfe1d1afbb450deba20297123b6ba7e17",
+      "input_sha256": "d5ed7090efffb246b3ec7981559a95659bbcbcf43fa2290da5c3152f4dc945e8",
+      "prior_terms_sha256": "d13eb2d1d5983c2ed25e62a5b9b5bf6e82bd90895bd1caa9d46be3c37efd79d6",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "65b3a9e82c7c10a022bc703406e71a69cd7d7bc3",
+      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
       "replaced": [],
       "terms": [
         "subagent write file denied sessions path",
@@ -2836,7 +2849,8 @@
         "bash starts at session root not outputs",
         "subagent sandbox isolation separate environment",
         "shorter session folder path newer versions",
-        "why is my session folder name so short?"
+        "why is my session folder name so short?",
+        "plugin path printed by shell refused by read"
       ]
     },
     "123": {
@@ -3227,9 +3241,13 @@
     },
     "139": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-30",
-      "input_sha256": "553e6d144c74ac6a5488aff4919ff51308915439240503607a6511005fe19395",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "7b5e544ef6548f4506e6bec84acde977a06362b31c3e39192c3a8acbfbe1e53d",
+      "prior_terms_sha256": "b8c1add6879c8f8c05e69e4c4c46ebd47be1993c6a8a496a0eceaa320af80b41",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
+      "replaced": [],
       "terms": [
         "cowork cannot delete files",
         "rm says operation not permitted",
@@ -3245,7 +3263,10 @@
         "which mounts are read-only in cowork",
         "memory folder read-only in host mode",
         "plugin install mount permissions",
-        "why does agent ask permission to delete in auto mode?"
+        "why does agent ask permission to delete in auto mode?",
+        "outputs folder allows delete by default",
+        "why can the agent delete outputs without asking?",
+        "rm works in outputs but not connected folder"
       ]
     },
     "140": {
@@ -3893,9 +3914,13 @@
     },
     "168": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "c61ef9e8997e96fb8fb7fbd397db4efe79f573c9f3a5bf86c3dd771b579b43e1",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "94dd08a03139f9841af019e1f70ea5d6729c02feb2c095652144028124e3f68b",
+      "prior_terms_sha256": "10009de8c4f6fab2118388fafa9eb5b4efa13fe373932c6e86c6b6b601a51bd1",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
+      "replaced": [],
       "terms": [
         "does Cowork have a built-in browser",
         "in-app browser already signed in to my accounts",
@@ -3911,7 +3936,10 @@
         "is it safe that Cowork browser keeps cookies?",
         "same browser tool names for two different browsers",
         "turn off Cowork browser tools",
-        "Cowork browser session security risk"
+        "Cowork browser session security risk",
+        "opening local files is not available",
+        "preview of local file fails in Cowork",
+        "what does Claude do when file preview fails?"
       ]
     },
     "169": {
@@ -4850,10 +4878,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "bf5abbd470c9daf57c41be9200e09d9443d7b1ce7e65c2629b95d825a9aab91e",
+      "input_sha256": "c95d093ef9f82028f637001132a95aa4d89db6a3117476279a1444caf34e58a3",
       "prior_terms_sha256": "29a2c970770ea5454eafebedf7882315e1dd25378d1ee4804ba8d03caa2120d7",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
+      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
       "replaced": [],
       "terms": [
         "scheduled task stopped running locally",
@@ -4872,17 +4900,18 @@
         "editing prompt resets migration count",
         "how to tell if a scheduled task ran locally?",
         "does using Chrome keep a task local?",
-        "scheduled task using in-app browser moved to cloud"
+        "scheduled task using in-app browser moved to cloud",
+        "where are scheduled task files stored?"
       ]
     },
     "209": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "f0444395c5899935fe15724a5f952c333b41598817dbe8cdf5dde254b7181721",
+      "input_sha256": "bfd01622c2b8e1d96eba7e9b6f525cbb0e3aa206a59852dde2668b0f2b2eb7b1",
       "prior_terms_sha256": "1f30e5da2f2f2d41adf2e7f7979932e68f0aac5508f1d2a1f0fe3710b4dad99d",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
+      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
       "replaced": [],
       "terms": [
         "plugin hook not firing in cowork",
@@ -4899,23 +4928,34 @@
         "why doesn't my startup hook run in cloud cowork?",
         "which hook events fire in local vs cloud cowork",
         "pre tool hook not matching shell tool name",
-        "silent hook leaves no record"
+        "silent hook leaves no record",
+        "session start hook fires every turn locally",
+        "do local cowork hooks run on mac or vm?",
+        "pre tool hook for subagent calls"
       ]
     },
     "210": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "03524ba44da7759a1257c2926cf303a11f50b0ffc4856a4569f3954e74315c58",
+      "input_sha256": "fae6b47aa404ef0b620d8c20c973928cb8fa15bdc2f690c0ea95622aaaffcf29",
       "prior_terms_sha256": "359884202a4966870e07e651d669cb0f20f1308e2517e5289b064dc85afb986e",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
-      "replaced": [],
+      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
+      "replaced": [
+        "opted out of cloud but still remote"
+      ],
+      "dropped": [
+        {
+          "term": "opted out of cloud but still remote",
+          "why": "duplicate",
+          "duplicate_of": "only on this computer setting ignored"
+        }
+      ],
       "terms": [
         "cowork task runs in cloud instead of locally",
         "only on this computer setting ignored",
         "force cowork task to run on my machine",
-        "opted out of cloud but still remote",
         "how to tell if task ran locally or in cloud",
         "cowork local vs cloud session routing",
         "local setting not saving after cancel",
@@ -4929,7 +4969,8 @@
         "are local cowork tasks being removed?",
         "scheduled tasks moving to the cloud",
         "where is the only on this computer setting?",
-        "task header popup has no cloud setting"
+        "task header popup has no cloud setting",
+        "chat cowork selector decides local or cloud"
       ]
     },
     "211": {
@@ -5044,10 +5085,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "081e498403d093f1325159609b8fa49bc8e8db1ee979cd62c4720da8ce7d3bbd",
+      "input_sha256": "6ebfc91f0d85b198c05854738a1fecbc4dcec4fe2aec701c22a22025971d39f3",
       "prior_terms_sha256": "72abd934a16a797d69c0f27cc0eae821e2183e876f7648806158767db09d9268",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "0f8636cc3f362d0d9960c7b2d0b49367b7b27b7c",
+      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
       "replaced": [],
       "terms": [
         "cloud task can't see files on my Mac",
@@ -5104,10 +5145,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "aeafef706dd764e785d96d8ef7e4b8372de149067469d42a7f34e5d23cf53214",
+      "input_sha256": "304c611e9730213d599ec27051ef1b1d1d1ef23da20f1f910210390965e46b24",
       "prior_terms_sha256": "38b12b0d40b464a11b9752da9a9ce5c34d356289c75d43e2abed9a9e559b918e",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "2cc81e94e6bbe3389a60e0d2e249d78877931e71",
+      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
       "replaced": [],
       "terms": [
         "get my own skill into Cowork",
@@ -5160,11 +5201,11 @@
     "219": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-01",
-      "input_sha256": "765e109ac7feb0573b519498f338a1e79f807d8a7a1077f42be002583ede30f8",
-      "prior_terms_sha256": "6ae4a6ec0874e6eff9794a433019a80c036776315acdd72cd072391ead924f3e",
+      "date": "2026-10-02",
+      "input_sha256": "ccba5031c7f3d3bf1b367bb0b889588c8c9e0839255f675509f19bfbd49303b6",
+      "prior_terms_sha256": "c627f9f08cd61a96c3e775c50651f3366776f19320854771336a1f596e7986a1",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "73efe2660a7deb0ec98bd07ac6223d29097ca687",
+      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
       "replaced": [],
       "terms": [
         "scheduled task artifact tool changed",
@@ -5182,17 +5223,19 @@
         "unshareable parent folder scheduled task migration",
         "HTML output from scheduled task",
         "should my scheduled task prompt name the artifact tool?",
-        "what still blocks scheduled task moving to cloud"
+        "what still blocks scheduled task moving to cloud",
+        "publish file from host outputs folder",
+        "does interactive session show publish card first?"
       ]
     },
     "220": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "6483b08446f99cc59acfb685c821f9939fb0e125786a35bb14dfacc1e40c6054",
+      "input_sha256": "1babbd9ab566008df7ee22b8fca9a4c5aa090329c49c0c98acd2650aea8e8d5b",
       "prior_terms_sha256": "5016fc62743152d792df019dd6c30a39c463f93ac2cf634948ef83c23393a8e4",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
+      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
       "replaced": [],
       "terms": [
         "approved file edit ran with different input",
@@ -5209,7 +5252,10 @@
         "why no __pycache__ after running python agent",
         "python bytecode files missing in agent",
         "hook rewriting file path not applied after approval",
-        "admin managed ask shows prompt instead of blocking"
+        "admin managed ask shows prompt instead of blocking",
+        "delete in outputs folder without prompt",
+        "why does rm work in outputs but not connected folder",
+        "outputs folder delete permission"
       ]
     },
     "221": {

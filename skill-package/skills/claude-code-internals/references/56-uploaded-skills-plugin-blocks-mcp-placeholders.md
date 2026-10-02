@@ -50,7 +50,7 @@ function eSr(){return Boolean(a.CLAUDE_CODE_REMOTE)||Boolean(a.CLAUDE_CODE_IS_CO
 |---|---|---|
 | Claude Code CLI | expanded (below) | **not run, left as raw text** (a synced skill is untrusted there) |
 | cloud session (`CLAUDE_CODE_REMOTE` set, `CLAUDE_CODE_IS_COWORK` absent) | expanded (below) | expanded (below) |
-| local session (`CLAUDE_CODE_IS_COWORK` set) | replaced by the marker | replaced by the marker |
+| local session (`CLAUDE_CODE_IS_COWORK` set) | replaced by the marker (seen live: Desktop 2.19675.0, agent 2.1.286, 2026-10-02, with the command allowed) | replaced by the marker |
 
 The cloud rows assume the runner sets no managed `disableSkillShellExecution`; that was not checked live. The same trust check decides `${CLAUDE_PROJECT_DIR}` and `${CLAUDE_SESSION_ID}` in an uploaded skill: substituted in the cloud, left as written in the CLI. In the agent's code (CLI 2.1.286), `${CLAUDE_SKILL_DIR}` is substituted with the skill's own folder for every kind of skill that gets a "Base directory for this skill:" line. The line and the substitution hang on the same condition in each loader, and a plugin skill also always gets `${CLAUDE_PLUGIN_DATA}` substituted. A cloud session does not always match this (see below). An uploaded skill is registered under a qualified name (`anthropic-skills:<name>` in the CLI) with the bare name as an alias.
 
@@ -114,6 +114,7 @@ The Desktop and web interfaces do not expand `Read` or agent rows, so those were
 - **Typed as a slash command, with the session up:** the turn never gets a reply and shows no error (eight runs, web and Desktop, both composers; seven were watched for five minutes or more). On the merged composer the turn looks dead: no "Loading skill", no Stop button, and in the one recorded run the typing dots went within a second. On the older Cowork composer it shows "Working on it…" with a running timer and a Stop button, and never resolves. A plain request in a control conversation was answered within 30 seconds.
 - **Invoked by the model:** the skill fails to load with `` Shell command failed for pattern "!`uuidgen`": [stderr] /bin/bash: line 3: uuidgen: command not found ``, and the model went on by reading `SKILL.md` from disk, where the tokens are unfilled (one run).
 - **Before the session exists:** the command is never run, so nothing fails.
+- **In a local session:** the command is never run either; the text gets the disabled-by-policy marker (table above), so the turn goes on normally.
 
 ## A conversation that changed runtime
 

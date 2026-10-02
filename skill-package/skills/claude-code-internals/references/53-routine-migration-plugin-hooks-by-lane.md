@@ -49,6 +49,10 @@ So a local scheduled task that has run at least twice, with at least half a day 
 
 A task whose next run is less than 15 minutes away waits for a later pass. Runs are counted against the task's current prompt, so editing the prompt restarts the count. Tasks already marked `migratedFromRemote` or `migratedToRemoteAt`, and watcher tasks, are skipped. A task tied to the device (local MCP servers, Chrome, computer use, folders) can still move, as a routine **bound** to this computer (`boundEnabled`). First present in the backed-up builds from Desktop 1.44121.1 (0 in every backup through 1.40609.1).
 
+## Where a scheduled task is stored
+
+A task's definition is a `SKILL.md` file, front matter `name` and `description` and the instructions as its body, at `~/Documents/claude/Scheduled/<task id>/SKILL.md` in the 2026-10-02 run (as the registry records it). The registry is `local-agent-mode-sessions/<acc>/<org>/scheduled-tasks.json` (top-level keys `scheduledTasks`, `recordedSkips`, `sundayAliasBoundaryStamped`, `dayFieldsOrBoundaryStamped`). Each entry has `id`, `displayName`, `enabled`, `filePath`, `createdAt`, `disableJitter`, `lastRunAt` and `observedToolUse`, which holds the run counts the sweep reads: `promptHash` and `promptSalt` (why editing the prompt restarts the count), `observedToolsVersion`, `runsObserved`, `firstRunAt`, `lastRunAt`, and per-kind counters `localMcpRuns`, `chromeRuns`, `computerUseRuns`, `requestFolderAccessRuns`, `builtInBrowserRuns` (Desktop 2.19675.0, a Team organization).
+
 ## What decides local or cloud for a new task
 
 The Desktop main process decides only whether each lane is **allowed** (`placementRules`, per surface: device, SSH host, cloud). For Cowork only two rules can deny the device lane: an org requirement for self-hosted, and `cowork-local-tasks-off` for first-party accounts — the latch from gate `3634338308` (off by default at capture, and never logged as switched on here). With neither active, Cowork is "hybrid" and local is allowed. (Other rules — unreadable managed settings, `disableDesktopLocalSessions` — apply only to Claude Code surfaces; `no-self-hosted-endpoint` denies the cloud lane for third-party accounts.) The lane for each new task is picked by the claude.ai interface (L210).
@@ -96,6 +100,8 @@ The same probe plugin, in a local scheduled task (Desktop 2.9939.2, agent 2.1.28
 The run made no Read call, so the `Read` matcher was not exercised. Agent 2.1.280 registers plugin hooks for all 33 events with no event filter, and nothing in the Desktop's session setup turns plugin hooks off (its hook-related settings only pass managed policy through). Older local transcripts agree: 111 recorded SessionStart successes and 54 context additions from plugin hooks, and PreToolUse denies from an installed plugin's Read and Bash guards honoured on agents 2.1.78 and 2.1.92. UserPromptExpansion fires only when a slash command or an MCP prompt is expanded.
 
 A `claude` session started outside Cowork (an SDK harness, a CLI run) can load the same plugin and write to the same log; tell the runs apart by session time against the Desktop's `LocalAgentModeSessions.start` lines.
+
+An interactive local session on Desktop 2.19675.0 (agent 2.1.286, 2026-10-02) agrees, with the probe's PreToolUse matcher `Agent|Task|Bash|mcp__workspace__bash|Read`. Every hook ran on the Mac with `cwd` `/private/var/empty` in both its input and its shell (L190); it could write to `/tmp` and to `$HOME` on the Mac, and nothing reached the VM. PreToolUse fired for `mcp__workspace__bash`, Read, the sub-agent dispatch (`tool_name` `Agent`) and the sub-agent's own Read. Each turn starts a new agent process (a second `Starting local session` and fresh spawn options in `main.log`), so SessionStart fires every turn: `startup` on the first, `resume` on the second, each with its own Stop.
 
 ## Matchers and the local session's shell
 
@@ -185,6 +191,20 @@ So the code predicts local for all three plain tasks, and all three ran in the c
 On Desktop 2.16120.0 (from 2026-09-30) the same machine has four plain local sessions on disk (no scheduled task, parent session or bridge), and a run on 2026-10-01 with the setting on came back `/sessions/<slug>` with `CLAUDE_CODE_ENTRYPOINT` unset (relayed from a sibling session). The user reports that the setting is honoured only some of the time. The Desktop app itself still contains no lane choice for a new task, in its main process or its interface bundle: "Only on this computer" occurs in neither 2.9939.4 nor 2.16120.0, and its only veto, an organization's local-tasks-off setting, is the same in both and allows local here.
 
 A cloud task can still use the Mac: its "Computer" tools reach the Mac through the device bridge, but the shell there works only after a folder is connected to the task (`[remote-bash] … mounts=<folder>:rw` in the Desktop log). That is still a cloud session.
+
+## The composer decides (Desktop 2.19675.0, 2026-10-02)
+
+In a Personal organization with "Only on this computer" on, New opened one of two composers, and that decided the lane (composer shapes observed in the UI; lanes from each run's output and, for local runs, the config record on disk):
+
+| Composer | First message | Result |
+|---|---|---|
+| explicit Chat/Cowork selector, Cowork selected | the fingerprint | **local**, `/sessions/<slug>`, URL `/cowork/local_…`, `hostLoopMode: true` (2 of 2) |
+| merged, no selector | a file task, then the fingerprint | **cloud**, `/home/claude`, `EP=remote_cowork`, URL `/chat/…` |
+| merged, no selector | the fingerprint | **cloud**; "Getting set up" seen in the UI |
+
+So in these runs the composer, not the toggle and not the first message, decided. Which composer New shows was not controlled: the selector appeared after switching organizations (once from a `/cowork/local_…` page), the merged composer from the sidebar's New. Each local run showed a card above the composer (wording from the UI accessibility dump): heading "Tasks on this computer are being deprecated", body "This task still works, but tasks on this computer are no longer maintained. From October 6, you won't be able to start new ones. For new work on this computer, use Claude Code.", with Learn more and Dismiss.
+
+A scheduled task set up by hand (Scheduled → New task → Set up manually) in a Team organization ran locally with Run now (`/sessions/<slug>`, `EP=` empty, config record `hostLoopMode: true` with its `scheduledTaskId`). The form (UI, 2026-10-02) offers Name, Description, Instructions, Project or folder, Model ("Default model"), Frequency ("Manual" by default), Permissions ("Automatically approve" by default) and, under Advanced, "Only on this computer", on by default, with the note "Only runs while your computer is awake. Use this if cloud scheduled tasks aren't suitable for your use case."
 
 ## For an author or tester
 

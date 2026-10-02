@@ -1294,7 +1294,7 @@ via the Cowork app UI, run in a real desktop session) settled them:
 | Probe | Result | Conclusion |
 | --- | --- | --- |
 | `${CLAUDE_PLUGIN_ROOT}` substituted in **skill content** (STEP 1) | `…/T/claude-hostloop-plugins/<hash>` — **the host path** | The token resolves to the **same host staging path in skill content as in hook commands**. It is **NOT context-dependent** — it is host-side *everywhere*. |
-| `ls`/exec that token path from `mcp__workspace__bash` | **fails** — path absent in the VM | `${CLAUDE_PLUGIN_ROOT}` is **useless for in-VM invocation**: it names a host path the sandbox cannot see. |
+| `ls`/exec that token path from `mcp__workspace__bash` | **fails** — path absent in the VM | `${CLAUDE_PLUGIN_ROOT}` is **useless for in-VM invocation**: it names a host path the sandbox cannot see. (Current builds rewrite it in the command text, see Ch35/L122.) |
 | `find … -name <script>` in the VM (ground truth) | `/sessions/<id>/mnt/.remote-plugins/plugin_<id>/scripts/<script>` | Plugin files **are** mounted in-VM, but at a **remapped** path keyed by `plugin_<id>` under `.remote-plugins/` (the `rpm`/org-remote half of root #3; the marketplace half mounts under `.local-plugins/cache/<mp>/<plugin>/<ver>`, per the argv below). |
 | hook `export PROBE_ENV_FROM_HOOK=…` read in-VM | **empty** | A hook's environment exports do **not** cross into the agent shell. |
 | host `/tmp/...` file written by the hook, `cat` in-VM | **missing** | Host filesystem writes by a hook are **not** visible in the VM. |

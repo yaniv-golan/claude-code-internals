@@ -11631,7 +11631,7 @@
       "lesson_number": "116",
       "file": "27-skill-runtime-detection.md",
       "startLine": 19,
-      "endLine": 249,
+      "endLine": 252,
       "keywords": [
         "runtime-detection",
         "detect-cowork",
@@ -11698,7 +11698,9 @@
         "sessions folder path means cowork",
         "which surface launched claude code",
         "how do i branch skill behavior per runtime",
-        "workspace bash vs regular bash tool"
+        "workspace bash vs regular bash tool",
+        "allowed tools doesn't enable skill inline commands",
+        "plugin skill command blocked even when allowed"
       ],
       "summary": "How a skill reliably detects whether it runs in the Claude Code CLI, Claude Cowork, or elsewhere. The trap: host-loop Cowork splits a skill across a host-side agent process (CLAUDE_CODE_IS_COWORK=1, CLAUDE_CODE_ENTRYPOINT=local-agent) and a sealed-env VM shell (mcp__workspace__bash) where no CLAUDE_CODE_* marker survives -- a bare env check yields a false negative exactly when it matters. Inline !`cmd` skill-shell execution is force-disabled in Cowork (q5n) and hook exports don't cross the host/VM bridge, so neither can probe. Recipe: script-side ordered checks (IS_COWORK -> /sessions/<id> path signature -> CLAUDECODE=1 from bmt -> other), refined by the CLAUDE_CODE_ENTRYPOINT value sets (c2u/u2u/d2u, normalizer cvs); content-side, branch on the tool surface (Bash vs mcp__workspace__bash). Artifact-drift caveat: the old MGn host->VM env allowlist from asar v1.6259.1 is gone from 1.18286.0 (only the unrelated SSH-MCP jBo filter remains) -- the sealed-env fact now rests on the v2.12.2 empirical probe.",
       "identifier_keys": [
@@ -11724,13 +11726,15 @@
         "sessions folder path means cowork",
         "which surface launched claude code",
         "how do i branch skill behavior per runtime",
-        "workspace bash vs regular bash tool"
+        "workspace bash vs regular bash tool",
+        "allowed tools doesn't enable skill inline commands",
+        "plugin skill command blocked even when allowed"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-10-01",
-        "terms_sha256": "1cd4542ed5cc347728115f42e6c0a75eb3b96bbd536933eb04716afc140cc8ed"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-02",
+        "terms_sha256": "9dbed96d68c19ae75c07b26b319537f8de007fa4e22e78d8eafeb4c9f3669faf"
       }
     },
     {
@@ -12307,7 +12311,7 @@
       "lesson_number": "121",
       "file": "32-cowork-subagent-execution-model.md",
       "startLine": 28,
-      "endLine": 141,
+      "endLine": 143,
       "keywords": [
         "subagent-tools",
         "sub-agent-tool-composition",
@@ -12356,7 +12360,10 @@
         "how deep can subagents nest",
         "limit on parallel subagents",
         "background subagent missing tools",
-        "why can't my subagent ask the user questions"
+        "why can't my subagent ask the user questions",
+        "hook matcher misses subagent dispatch",
+        "subagent launch tool has two names",
+        "subagent runs in empty working directory"
       ],
       "identifier_keys": [
         "is-concurrency-safe",
@@ -12387,13 +12394,16 @@
         "how deep can subagents nest",
         "limit on parallel subagents",
         "background subagent missing tools",
-        "why can't my subagent ask the user questions"
+        "why can't my subagent ask the user questions",
+        "hook matcher misses subagent dispatch",
+        "subagent launch tool has two names",
+        "subagent runs in empty working directory"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "5814915932ffc6248a5e17e49104e2f82f98066b98cda661461ad0f51ae5c876"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-02",
+        "terms_sha256": "a678f3ba017a50268b4f8aecb5ebb0125e7e09d055557f5928f9546ce60a9b33"
       }
     },
     {
@@ -12401,8 +12411,8 @@
       "title": "Sub-Agent File-Tool Namespace: the Outputs cwd, Write/Delete, and the Path-Containment Hook",
       "lesson_number": "122",
       "file": "32-cowork-subagent-execution-model.md",
-      "startLine": 145,
-      "endLine": 222,
+      "startLine": 147,
+      "endLine": 232,
       "keywords": [
         "subagent-cwd",
         "outputs-path",
@@ -12460,7 +12470,8 @@
         "bash starts at session root not outputs",
         "subagent sandbox isolation separate environment",
         "shorter session folder path newer versions",
-        "why is my session folder name so short"
+        "why is my session folder name so short",
+        "plugin path printed by shell refused by read"
       ],
       "identifier_keys": [
         "registered-hooks",
@@ -12505,13 +12516,14 @@
         "bash starts at session root not outputs",
         "subagent sandbox isolation separate environment",
         "shorter session folder path newer versions",
-        "why is my session folder name so short"
+        "why is my session folder name so short",
+        "plugin path printed by shell refused by read"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "d13eb2d1d5983c2ed25e62a5b9b5bf6e82bd90895bd1caa9d46be3c37efd79d6"
+        "terms_sha256": "8c35a49aefb7e820fb9c5586d837f700ba6bee409afe96a86637a8823b9f5366"
       }
     },
     {
@@ -12519,8 +12531,8 @@
       "title": "The Sub-Agent Prompt Append: subagent_env_hl / subagent_env_vm",
       "lesson_number": "123",
       "file": "32-cowork-subagent-execution-model.md",
-      "startLine": 226,
-      "endLine": 258,
+      "startLine": 236,
+      "endLine": 268,
       "keywords": [
         "subagent_env_hl",
         "subagent_env_vm",
@@ -12591,8 +12603,8 @@
       "title": "Sub-Agent Env/Model, Lifecycle Re-Verification, VM-Loop Deltas, Stream Observability & Methodology",
       "lesson_number": "124",
       "file": "32-cowork-subagent-execution-model.md",
-      "startLine": 262,
-      "endLine": 433,
+      "startLine": 272,
+      "endLine": 443,
       "keywords": [
         "subagent-model",
         "CLAUDE_CODE_SUBAGENT_MODEL",
@@ -14204,7 +14216,7 @@
       "lesson_number": "139",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
       "startLine": 110,
-      "endLine": 257,
+      "endLine": 259,
       "keywords": [
         "cowork-delete-semantics",
         "unlink-rmdir-denied",
@@ -14291,7 +14303,10 @@
         "which mounts are read-only in cowork",
         "memory folder read-only in host mode",
         "plugin install mount permissions",
-        "why does agent ask permission to delete in auto mode"
+        "why does agent ask permission to delete in auto mode",
+        "outputs folder allows delete by default",
+        "why can the agent delete outputs without asking",
+        "rm works in outputs but not connected folder"
       ],
       "identifier_keys": [
         "O_TRUNC",
@@ -14327,13 +14342,16 @@
         "which mounts are read-only in cowork",
         "memory folder read-only in host mode",
         "plugin install mount permissions",
-        "why does agent ask permission to delete in auto mode"
+        "why does agent ask permission to delete in auto mode",
+        "outputs folder allows delete by default",
+        "why can the agent delete outputs without asking",
+        "rm works in outputs but not connected folder"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "b8c1add6879c8f8c05e69e4c4c46ebd47be1993c6a8a496a0eceaa320af80b41"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-02",
+        "terms_sha256": "6e3854c938e85e2a17fd59b7677e0366a07e0f4f10032c61646f47a77fd8f044"
       }
     },
     {
@@ -14341,8 +14359,8 @@
       "title": "VM Multiplexing Confirmed, Isolation Holds, and the Real Mount Inventory",
       "lesson_number": "140",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 261,
-      "endLine": 362,
+      "startLine": 263,
+      "endLine": 364,
       "keywords": [
         "vm-multiplexing-confirmed",
         "shared-vm-guest",
@@ -14442,8 +14460,8 @@
       "title": "Snapshot Discipline: the fcache Is a Moving Target with Two Absence Axes",
       "lesson_number": "141",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 366,
-      "endLine": 441,
+      "startLine": 368,
+      "endLine": 443,
       "keywords": [
         "fcache-snapshot-identity",
         "fcache-content-hash",
@@ -14533,8 +14551,8 @@
       "title": "coworkSyspromptMap: a Server-Driven Prompt REPLACE Channel",
       "lesson_number": "142",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 445,
-      "endLine": 480,
+      "startLine": 447,
+      "endLine": 482,
       "keywords": [
         "coworkSyspromptMap",
         "system-prompt-patch-channel",
@@ -16634,7 +16652,7 @@
       "lesson_number": "168",
       "file": "43-cowork-in-app-browser-preview.md",
       "startLine": 14,
-      "endLine": 78,
+      "endLine": 80,
       "keywords": [
         "in-app-browser",
         "mcp__Claude_Browser__",
@@ -16670,6 +16688,9 @@
         "tabs_select",
         "tabs_close",
         "no-tab-target",
+        "index.html",
+        "file_open_unavailable",
+        "mcp__cowork__screenshot_file_preview",
         "does cowork have a built-in browser",
         "in-app browser already signed in to my accounts",
         "browser logins persist between cowork sessions",
@@ -16684,7 +16705,10 @@
         "is it safe that cowork browser keeps cookies",
         "same browser tool names for two different browsers",
         "turn off cowork browser tools",
-        "cowork browser session security risk"
+        "cowork browser session security risk",
+        "opening local files is not available",
+        "preview of local file fails in cowork",
+        "what does claude do when file preview fails"
       ],
       "identifier_keys": [
         "read_page",
@@ -16696,7 +16720,10 @@
         "resize_window",
         "tabs_select",
         "tabs_close",
-        "no-tab-target"
+        "no-tab-target",
+        "index.html",
+        "file_open_unavailable",
+        "mcp__cowork__screenshot_file_preview"
       ],
       "vocab_keys": [
         "does cowork have a built-in browser",
@@ -16713,13 +16740,16 @@
         "is it safe that cowork browser keeps cookies",
         "same browser tool names for two different browsers",
         "turn off cowork browser tools",
-        "cowork browser session security risk"
+        "cowork browser session security risk",
+        "opening local files is not available",
+        "preview of local file fails in cowork",
+        "what does claude do when file preview fails"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "10009de8c4f6fab2118388fafa9eb5b4efa13fe373932c6e86c6b6b601a51bd1"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-02",
+        "terms_sha256": "a1d180924cf49b65c5ee82b8e846c3a19b9f18381354f2bdfd7f824ebaf80453"
       }
     },
     {
@@ -16727,8 +16757,8 @@
       "title": "preview_start Has Two Incompatible Contracts, Chosen by Session Kind",
       "lesson_number": "169",
       "file": "43-cowork-in-app-browser-preview.md",
-      "startLine": 82,
-      "endLine": 135,
+      "startLine": 84,
+      "endLine": 137,
       "keywords": [
         "preview_start",
         "preview-family",
@@ -20038,7 +20068,7 @@
       "lesson_number": "208",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
       "startLine": 17,
-      "endLine": 62,
+      "endLine": 66,
       "keywords": [
         "RemoteMigrationSweep",
         "remote migration",
@@ -20052,6 +20082,7 @@
         "LocalAgentModeSessions.start",
         "device picker",
         "why do my Cowork tasks run in the cloud",
+        "file-path",
         "remote-tools-device",
         "keep-awake",
         "complete-remote-migration",
@@ -20061,6 +20092,24 @@
         "bound-files-enabled",
         "migrated-from-remote",
         "migrated-to-remote-at",
+        "scheduled-tasks.json",
+        "recorded-skips",
+        "sunday-alias-boundary-stamped",
+        "day-fields-or-boundary-stamped",
+        "created-at",
+        "disable-jitter",
+        "last-run-at",
+        "observed-tool-use",
+        "prompt-hash",
+        "prompt-salt",
+        "observed-tools-version",
+        "runs-observed",
+        "first-run-at",
+        "local-mcp-runs",
+        "chrome-runs",
+        "computer-use-runs",
+        "request-folder-access-runs",
+        "built-in-browser-runs",
         "disable-desktop-local-sessions",
         "no-self-hosted-endpoint",
         "scheduled task stopped running locally",
@@ -20079,9 +20128,11 @@
         "editing prompt resets migration count",
         "how to tell if a scheduled task ran locally",
         "does using chrome keep a task local",
-        "scheduled task using in-app browser moved to cloud"
+        "scheduled task using in-app browser moved to cloud",
+        "where are scheduled task files stored"
       ],
       "identifier_keys": [
+        "file-path",
         "remote-tools-device",
         "keep-awake",
         "complete-remote-migration",
@@ -20091,6 +20142,24 @@
         "bound-files-enabled",
         "migrated-from-remote",
         "migrated-to-remote-at",
+        "scheduled-tasks.json",
+        "recorded-skips",
+        "sunday-alias-boundary-stamped",
+        "day-fields-or-boundary-stamped",
+        "created-at",
+        "disable-jitter",
+        "last-run-at",
+        "observed-tool-use",
+        "prompt-hash",
+        "prompt-salt",
+        "observed-tools-version",
+        "runs-observed",
+        "first-run-at",
+        "local-mcp-runs",
+        "chrome-runs",
+        "computer-use-runs",
+        "request-folder-access-runs",
+        "built-in-browser-runs",
         "disable-desktop-local-sessions",
         "no-self-hosted-endpoint"
       ],
@@ -20111,13 +20180,14 @@
         "editing prompt resets migration count",
         "how to tell if a scheduled task ran locally",
         "does using chrome keep a task local",
-        "scheduled task using in-app browser moved to cloud"
+        "scheduled task using in-app browser moved to cloud",
+        "where are scheduled task files stored"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "29a2c970770ea5454eafebedf7882315e1dd25378d1ee4804ba8d03caa2120d7"
+        "terms_sha256": "b6c4f126c800193a4e495c97b89ade11069e2b6b8946e7b4b842477385cb7f33"
       }
     },
     {
@@ -20125,8 +20195,8 @@
       "title": "Plugin Hooks in Cowork, Event by Event and Lane by Lane",
       "lesson_number": "209",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
-      "startLine": 66,
-      "endLine": 120,
+      "startLine": 70,
+      "endLine": 126,
       "keywords": [
         "cowork plugin hook events",
         "cowork cloud hooks",
@@ -20155,7 +20225,10 @@
         "why doesn't my startup hook run in cloud cowork",
         "which hook events fire in local vs cloud cowork",
         "pre tool hook not matching shell tool name",
-        "silent hook leaves no record"
+        "silent hook leaves no record",
+        "session start hook fires every turn locally",
+        "do local cowork hooks run on mac or vm",
+        "pre tool hook for subagent calls"
       ],
       "vocab_keys": [
         "plugin hook not firing in cowork",
@@ -20172,13 +20245,16 @@
         "why doesn't my startup hook run in cloud cowork",
         "which hook events fire in local vs cloud cowork",
         "pre tool hook not matching shell tool name",
-        "silent hook leaves no record"
+        "silent hook leaves no record",
+        "session start hook fires every turn locally",
+        "do local cowork hooks run on mac or vm",
+        "pre tool hook for subagent calls"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "1f30e5da2f2f2d41adf2e7f7979932e68f0aac5508f1d2a1f0fe3710b4dad99d"
+        "terms_sha256": "b78c9c0791402f2452f4025b5502d8a3cb28cd98e9a6ddbd53e3bbe690932953"
       }
     },
     {
@@ -20186,8 +20262,8 @@
       "title": "Where a New Cowork Task Runs, and the Switch That Did Not Keep It Local",
       "lesson_number": "210",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
-      "startLine": 124,
-      "endLine": 193,
+      "startLine": 130,
+      "endLine": 213,
       "keywords": [
         "Only on this computer",
         "dramatic_shrimp_enabled",
@@ -20205,6 +20281,7 @@
         "local setting ignored",
         "dramatic_shrimp",
         "run in the cloud despite setting",
+        "scheduled-task-id",
         "dramatic_shrimp_disabled_at",
         "can-opt-out",
         "cowork_remote_opt_out_returning_only_main",
@@ -20219,7 +20296,6 @@
         "259200000",
         "cowork task runs in cloud instead of locally",
         "force cowork task to run on my machine",
-        "opted out of cloud but still remote",
         "how to tell if task ran locally or in cloud",
         "cowork local vs cloud session routing",
         "local setting not saving after cancel",
@@ -20233,9 +20309,11 @@
         "are local cowork tasks being removed",
         "scheduled tasks moving to the cloud",
         "where is the only on this computer setting",
-        "task header popup has no cloud setting"
+        "task header popup has no cloud setting",
+        "chat cowork selector decides local or cloud"
       ],
       "identifier_keys": [
+        "scheduled-task-id",
         "dramatic_shrimp_disabled_at",
         "can-opt-out",
         "cowork_remote_opt_out_returning_only_main",
@@ -20252,7 +20330,6 @@
       "vocab_keys": [
         "cowork task runs in cloud instead of locally",
         "force cowork task to run on my machine",
-        "opted out of cloud but still remote",
         "how to tell if task ran locally or in cloud",
         "cowork local vs cloud session routing",
         "local setting not saving after cancel",
@@ -20266,13 +20343,14 @@
         "are local cowork tasks being removed",
         "scheduled tasks moving to the cloud",
         "where is the only on this computer setting",
-        "task header popup has no cloud setting"
+        "task header popup has no cloud setting",
+        "chat cowork selector decides local or cloud"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "359884202a4966870e07e651d669cb0f20f1308e2517e5289b064dc85afb986e"
+        "terms_sha256": "cc18dfde8e8f37d396e7bc33fb30b5765dff6a06c7e28ca421f1b36fa436ef08"
       }
     },
     {
@@ -20649,6 +20727,7 @@
         "homeDirectories",
         "expectedMtimeMs guard",
         "Write to /Users path in cloud",
+        "mcp__cowork__request_cowork_directory",
         "app-version",
         "list_devices",
         "project_memory_read",
@@ -20696,6 +20775,7 @@
         "chrome extension not connected but side panel works"
       ],
       "identifier_keys": [
+        "mcp__cowork__request_cowork_directory",
         "app-version",
         "list_devices",
         "project_memory_read",
@@ -20870,7 +20950,7 @@
       "lesson_number": "217",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 16,
-      "endLine": 132,
+      "endLine": 133,
       "keywords": [
         "upload skill",
         "uploaded skill",
@@ -20969,8 +21049,8 @@
       "title": "Plugin Blocks and MCP Placeholders, Lane by Lane",
       "lesson_number": "218",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
-      "startLine": 136,
-      "endLine": 196,
+      "startLine": 137,
+      "endLine": 197,
       "keywords": [
         "UserPromptSubmit block",
         "decision block",
@@ -21071,7 +21151,9 @@
         "unshareable parent folder scheduled task migration",
         "html output from scheduled task",
         "should my scheduled task prompt name the artifact tool",
-        "what still blocks scheduled task moving to cloud"
+        "what still blocks scheduled task moving to cloud",
+        "publish file from host outputs folder",
+        "does interactive session show publish card first"
       ],
       "identifier_keys": [
         "held-block-reasons",
@@ -21100,13 +21182,15 @@
         "unshareable parent folder scheduled task migration",
         "html output from scheduled task",
         "should my scheduled task prompt name the artifact tool",
-        "what still blocks scheduled task moving to cloud"
+        "what still blocks scheduled task moving to cloud",
+        "publish file from host outputs folder",
+        "does interactive session show publish card first"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-01",
-        "terms_sha256": "c627f9f08cd61a96c3e775c50651f3366776f19320854771336a1f596e7986a1"
+        "date": "2026-10-02",
+        "terms_sha256": "084d9bf9b711fa1da17af1ffa1a6b18056bf5016959596da53f05f485ec2f266"
       }
     },
     {
@@ -21115,7 +21199,7 @@
       "lesson_number": "220",
       "file": "57-desktop-2.16120-scheduled-artifacts-permissions.md",
       "startLine": 56,
-      "endLine": 85,
+      "endLine": 89,
       "keywords": [
         "cowork-permissions",
         "pre-fork",
@@ -21134,7 +21218,10 @@
         "why no __pycache__ after running python agent",
         "python bytecode files missing in agent",
         "hook rewriting file path not applied after approval",
-        "admin managed ask shows prompt instead of blocking"
+        "admin managed ask shows prompt instead of blocking",
+        "delete in outputs folder without prompt",
+        "why does rm work in outputs but not connected folder",
+        "outputs folder delete permission"
       ],
       "identifier_keys": [
         "cowork-permissions",
@@ -21156,13 +21243,16 @@
         "why no __pycache__ after running python agent",
         "python bytecode files missing in agent",
         "hook rewriting file path not applied after approval",
-        "admin managed ask shows prompt instead of blocking"
+        "admin managed ask shows prompt instead of blocking",
+        "delete in outputs folder without prompt",
+        "why does rm work in outputs but not connected folder",
+        "outputs folder delete permission"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "5016fc62743152d792df019dd6c30a39c463f93ac2cf634948ef83c23393a8e4"
+        "terms_sha256": "80467bdb50fab1904179d86106879d9ee58f25246b5eaff3099739a4c1c2f9c0"
       }
     },
     {
@@ -21170,8 +21260,8 @@
       "title": "Screenshot Tools for Artifacts and the File Preview",
       "lesson_number": "221",
       "file": "57-desktop-2.16120-scheduled-artifacts-permissions.md",
-      "startLine": 89,
-      "endLine": 116,
+      "startLine": 93,
+      "endLine": 120,
       "keywords": [
         "cowork-native-file-preview",
         "debug-log-enabled",
@@ -39202,7 +39292,8 @@
       33
     ],
     "file-path": [
-      33
+      33,
+      208
     ],
     "default-config": [
       33
@@ -41941,7 +42032,8 @@
       107
     ],
     "mcp__cowork__request_cowork_directory": [
-      107
+      107,
+      215
     ],
     "mcp__cowork__launch_code_session": [
       107
@@ -42063,7 +42155,8 @@
       108
     ],
     "scheduled-task-id": [
-      108
+      108,
+      210
     ],
     "record-skip-and-emit": [
       108
@@ -44029,6 +44122,15 @@
     "no-tab-target": [
       168
     ],
+    "index.html": [
+      168
+    ],
+    "file_open_unavailable": [
+      168
+    ],
+    "mcp__cowork__screenshot_file_preview": [
+      168
+    ],
     "tab-id": [
       169
     ],
@@ -44750,6 +44852,60 @@
       208
     ],
     "migrated-to-remote-at": [
+      208
+    ],
+    "scheduled-tasks.json": [
+      208
+    ],
+    "recorded-skips": [
+      208
+    ],
+    "sunday-alias-boundary-stamped": [
+      208
+    ],
+    "day-fields-or-boundary-stamped": [
+      208
+    ],
+    "created-at": [
+      208
+    ],
+    "disable-jitter": [
+      208
+    ],
+    "last-run-at": [
+      208
+    ],
+    "observed-tool-use": [
+      208
+    ],
+    "prompt-hash": [
+      208
+    ],
+    "prompt-salt": [
+      208
+    ],
+    "observed-tools-version": [
+      208
+    ],
+    "runs-observed": [
+      208
+    ],
+    "first-run-at": [
+      208
+    ],
+    "local-mcp-runs": [
+      208
+    ],
+    "chrome-runs": [
+      208
+    ],
+    "computer-use-runs": [
+      208
+    ],
+    "request-folder-access-runs": [
+      208
+    ],
+    "built-in-browser-runs": [
       208
     ],
     "disable-desktop-local-sessions": [
@@ -50312,6 +50468,12 @@
     "workspace bash vs regular bash tool": [
       116
     ],
+    "allowed tools doesn't enable skill inline commands": [
+      116
+    ],
+    "plugin skill command blocked even when allowed": [
+      116
+    ],
     "which cowork folders are actually shared with my mac": [
       117
     ],
@@ -50544,6 +50706,15 @@
     "why can't my subagent ask the user questions": [
       121
     ],
+    "hook matcher misses subagent dispatch": [
+      121
+    ],
+    "subagent launch tool has two names": [
+      121
+    ],
+    "subagent runs in empty working directory": [
+      121
+    ],
     "subagent write file denied sessions path": [
       122
     ],
@@ -50590,6 +50761,9 @@
       122
     ],
     "why is my session folder name so short": [
+      122
+    ],
+    "plugin path printed by shell refused by read": [
       122
     ],
     "cowork subagent extra system prompt": [
@@ -51372,6 +51546,15 @@
       139
     ],
     "why does agent ask permission to delete in auto mode": [
+      139
+    ],
+    "outputs folder allows delete by default": [
+      139
+    ],
+    "why can the agent delete outputs without asking": [
+      139
+    ],
+    "rm works in outputs but not connected folder": [
       139
     ],
     "multiple cowork sessions share same vm": [
@@ -52671,6 +52854,15 @@
       168
     ],
     "cowork browser session security risk": [
+      168
+    ],
+    "opening local files is not available": [
+      168
+    ],
+    "preview of local file fails in cowork": [
+      168
+    ],
+    "what does claude do when file preview fails": [
       168
     ],
     "preview tool won't start my dev server in cowork": [
@@ -54488,6 +54680,9 @@
     "scheduled task using in-app browser moved to cloud": [
       208
     ],
+    "where are scheduled task files stored": [
+      208
+    ],
     "plugin hook not firing in cowork": [
       209
     ],
@@ -54533,13 +54728,19 @@
     "silent hook leaves no record": [
       209
     ],
+    "session start hook fires every turn locally": [
+      209
+    ],
+    "do local cowork hooks run on mac or vm": [
+      209
+    ],
+    "pre tool hook for subagent calls": [
+      209
+    ],
     "cowork task runs in cloud instead of locally": [
       210
     ],
     "force cowork task to run on my machine": [
-      210
-    ],
-    "opted out of cloud but still remote": [
       210
     ],
     "how to tell if task ran locally or in cloud": [
@@ -54582,6 +54783,9 @@
       210
     ],
     "task header popup has no cloud setting": [
+      210
+    ],
+    "chat cowork selector decides local or cloud": [
       210
     ],
     "artifact calling local mcp server": [
@@ -55025,6 +55229,12 @@
     "what still blocks scheduled task moving to cloud": [
       219
     ],
+    "publish file from host outputs folder": [
+      219
+    ],
+    "does interactive session show publish card first": [
+      219
+    ],
     "approved file edit ran with different input": [
       220
     ],
@@ -55068,6 +55278,15 @@
       220
     ],
     "admin managed ask shows prompt instead of blocking": [
+      220
+    ],
+    "delete in outputs folder without prompt": [
+      220
+    ],
+    "why does rm work in outputs but not connected folder": [
+      220
+    ],
+    "outputs folder delete permission": [
       220
     ],
     "claude check how my html report looks": [

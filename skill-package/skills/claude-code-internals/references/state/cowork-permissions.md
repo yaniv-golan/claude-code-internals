@@ -319,8 +319,10 @@ reachability rule).
   sealed in the VM. `mcp__workspace__web_fetch` genuinely routes host-side
   to `POST /api/organizations/<org>/cowork/web_fetch`.
 - `${CLAUDE_PLUGIN_ROOT}` resolves to one value host-side
-  (`claude-hostloop-plugins/<hash>`) — accepted by host file tools, but
-  useless to in-VM bash, which must use the VM-mounted plugin path instead.
+  (`claude-hostloop-plugins/<hash>`) — accepted by host file tools; in a
+  `mcp__workspace__bash` command the Desktop rewrites it to the plugin's VM
+  mount before the VM runs it (asar 2.19675.0, live 2026-10-02; L122), so a
+  root the shell prints is the VM path, which file tools refuse.
 
 ## Known past errors (do not re-introduce)
 

@@ -367,17 +367,20 @@ At session start, the host loop symlinks each enabled plugin into a temp
 `${CLAUDE_PLUGIN_ROOT}` resolves to that staging path (same host-side
 value in both skill content and hooks — **one token, two namespaces**):
 - **accepted** when handed to host-side `Read`/`Edit`/`Glob`/`Grep` (file
-  tools want host paths — keep the token literal there), but
-- **useless to in-VM bash** (`mcp__workspace__bash`), which cannot see the
-  host path — bash-executed plugin scripts must instead use the
-  VM-mounted plugin path, `/sessions/<id>/mnt/.local-plugins/cache/<mp>/
-  <plugin>/<version>` (marketplace) or
-  `/sessions/<id>/mnt/.remote-plugins/plugin_<id>/…` (org-remote),
-  discovered at runtime rather than via the token.
+  tools want host paths — keep the token literal there), and
+- **rewritten for in-VM bash** (`mcp__workspace__bash`): before a command
+  reaches the VM, the Desktop replaces each plugin's staging and install
+  path in its text with the plugin's VM mount,
+  `/sessions/<slug>/mnt/.remote-plugins/plugin_<id>` (org-remote) or
+  `/sessions/<slug>/mnt/.local-plugins/<install path>` (marketplace), so
+  `bash ${CLAUDE_PLUGIN_ROOT}/x.sh` works from skill text (asar 2.19675.0,
+  live 2026-10-02; L122). Not rewritten: the config-dir staging path behind
+  `${CLAUDE_PLUGIN_DATA}` and the host outputs path. The trap runs the
+  other way now: a root the shell *prints* is the VM path, which the file
+  tools refuse. Hook commands run on the Mac and need no rewrite.
 
-A blanket "always resolve `${CLAUDE_PLUGIN_ROOT}` to the VM path" rule is
-therefore wrong for host-side reference `Read`s and right only for
-in-VM-bash-executed scripts — the skill has to pick per consumer.
+So the skill has to pick per consumer: the host path for file tools, either
+form for the shell.
 
 This host-side resolution holds **only under host-loop (production)**. The
 Desktop picks the plugin dir in one branch,
@@ -903,16 +906,28 @@ That is the **host-loop runtime** view. The VM-loop builder additionally emits `
 `userSelectedProjectUuids`; a folder produces `/mnt/<name>` and populates `userSelectedFolders` +
 `resolvedFolderKinds`. A project-only session shows an **empty `userSelectedFolders`**.
 
-**Delete policy — every mount, not just `outputs`:** `unlink` and `rmdir` are denied (EPERM);
+**`outputs` allows deletes from the start, from Desktop 2.16120.0.** Its mode no longer comes from the
+approval list: it is `rwd` unless the session is a bridge (`agent`) session, while each connected
+folder stays `rw` until approved (asar 2.16120.0 and 2.19675.0; in 2.9939.4 `outputs` still went
+through the approval list). Live on 2.19675.0 (2026-10-02): `main.log` showed `outputs:rwd` on the
+first shell call with no approval on record, and `rm` in `outputs` worked. In the same session a
+connected folder was `rw`; `rm` there failed with "Operation not permitted"; the model called
+`mcp__cowork__allow_cowork_file_delete` (`file_path` of the file); `main.log` logged the permission
+request and, after the user allowed it, "Received permission response … once"; the config record
+went from no `fileDeleteApprovedMounts` key to `["<folder>"]`; the next shell call showed
+`<folder>:rwd` and the same `rm` worked.
+
+**Delete policy for the other resolver mounts (measured before 2.16120.0, when it covered `outputs` too):** `unlink` and `rmdir` are denied (EPERM);
 `truncate`/`O_TRUNC`, rename-within and rename-onto-existing are **permitted**; cross-device rename
 gives EXDEV. Approval via `mcp__cowork__allow_cowork_file_delete` is **strictly per-mount**, takes
 effect live in already-open shells, and involves **no remount**. Persisted as
 `fileDeleteApprovedMounts`; under host-loop the handler early-returns without
 calling `mountPath`. The VM-loop `mountPath(…,"rwd")` path is **untested**.
 
-**Mount MODE construction (L139 addendum).** Only **two** mounts get their mode from the resolver
+**Mount MODE construction (L139 addendum).** Up to 2.9939.4, **two** mounts got their mode from the resolver
 `(name, approvedList, isBridgeSession) => isBridgeSession ? "rw" : approvedList?.includes(name) ? "rwd" : "rw"`
-— `outputs` and each connected folder. Everything else is a hardcoded literal that no approval state
+— `outputs` and each connected folder; from 2.16120.0 only connected folders do, and `outputs` is
+`isBridgeSession ? "rw" : "rwd"`. Everything else is a hardcoded literal that no approval state
 reaches: `uploads`, `.claude/skills`, plugin mounts and **`.projects/<uuid>`** are `ro` in both
 builders; host-loop adds `.claude/projects` `ro` and auto-memory `ro`; VM-loop instead mounts
 `.claude` whole as `rwd`, auto-memory as `rwd`, and adds `.artifacts/<id>` / `.scheduled/<id>` (`ro`)

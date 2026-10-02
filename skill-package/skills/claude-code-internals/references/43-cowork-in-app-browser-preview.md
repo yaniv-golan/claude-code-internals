@@ -73,6 +73,8 @@ With `st`, Claude defaults to the user's real Chrome and treats the in-app brows
 
 Two stated limits worth carrying: the in-app browser **cannot open `file://` URLs or a `localhost` server Claude started itself** — *"those run where Claude's shell runs, not where the browser is"* — and the prompt directs Claude to publish generated HTML as an Artifact instead. It also prefers `get_page_text`/`read_page` over screenshots, reserving `computer {action:"screenshot"}` for when layout is the point.
 
+In a local session on Desktop 2.19675.0 (2026-10-02), `preview_start` with `url` `file:///sessions/<slug>/mnt/outputs/index.html` returned "opening local files is not available in this session." (error kind `file_open_unavailable` in the code). The model then used `mcp__cowork__present_files` and `mcp__cowork__screenshot_file_preview` (L221) instead.
+
 ## Method note — a truncated window nearly produced a false absence claim
 
 Mid-investigation a fixed-size sample of the tool array returned its first ten entries, and the Cowork branch appeared to serve **no `tabs_*` tools** — which, against a prompt that instructs the model to call `tabs_context` and `tabs_create`, looked exactly like Ch44/L164's dangling-reference defect. It was wrong: `W5` has 14 entries and the sample cut at 10. The tell was a description-override map carrying a `tabs_context` key that the "absent" list could not explain. **Extract whole arrays by bracket-matching before asserting what is not in one** — a fixed character window is a sampling instrument, not an inventory, and this is the same family as Ch43/L162's partial extraction and Ch44/L166's encoding trap.
