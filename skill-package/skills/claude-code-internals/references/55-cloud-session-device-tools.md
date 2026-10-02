@@ -138,6 +138,8 @@ On 2026-10-02, in merged-composer conversations on the web and on Desktop 2.1967
 
 The browser list can be empty while the extension looks fine, seen in the Claude Code CLI, not a cloud session. In a CLI session (2.1.286) on this machine, `list_connected_browsers` returned an empty list and the Chrome tools said "Browser extension is not connected", although the extension's side panel worked and showed the same account and organization. Logging out and back in from the extension's options page fixed it, without restarting the session. A working side panel does not show that the extension is registered with the bridge.
 
+**From a local task (Desktop 2.19675.0, 2026-10-02).** Asked to open a page in Chrome, the model loaded the deferred `mcp__claude-in-chrome__*` tools through ToolSearch and called `mcp__claude-in-chrome__navigate`, not the in-app browser or `Control_Chrome`. The extension was not reachable at the time: `navigate` returned "The hidden tabs_context_mcp lookup did not respond within 8s…" and `tabs_context_mcp` "Claude in Chrome is not connected", with install and sign-in instructions. Which tool the model picks was measured; a working local Chrome call was not.
+
 ## For a skill author
 
 - In a cloud session, link only to files the session wrote or sent in this conversation, and prefer handing the file over. A `computer://` link to anything else, including the user's own files on their computer, shows as plain text. Locally any real file can be linked, and a link written with the VM path still works.
@@ -189,7 +191,7 @@ Other flags in this area include `claude_ai_hub_web_delivery` and `cai_hub_previ
 
 ## Not the same as the Desktop's Chat mode
 
-The Desktop app has its own "Chat mode" session (`sessionType "chat"`, L166). It is a local agent session with the permission mode fixed to default, no folders and no scheduled tasks, whose shell starts in the outputs folder. It is unrelated to the hub's work modes.
+The Desktop app's code has its own "Chat mode" session (`sessionType "chat"`, L166): a local agent session with the permission mode fixed to default, no folders and no scheduled tasks, whose shell starts in the outputs folder. It is unrelated to the hub's work modes. On Desktop 2.19675.0 (2026-10-02) no way to start one was found in the interface: in a Personal organization, choosing Chat in the selector composer turned it into the merged composer and the task ran in the cloud; in a Team organization, Chat gave the ordinary claude.ai chat sandbox (`pwd` `/`, hostname `vm`, no Cowork variables), neither a local agent nor a cloud session (both observed in the UI).
 
 ## Why it matters
 

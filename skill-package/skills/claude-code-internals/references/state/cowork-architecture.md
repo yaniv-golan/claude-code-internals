@@ -371,12 +371,14 @@ value in both skill content and hooks — **one token, two namespaces**):
 - **rewritten for in-VM bash** (`mcp__workspace__bash`): before a command
   reaches the VM, the Desktop replaces each plugin's staging and install
   path in its text with the plugin's VM mount: for an org-remote plugin
-  `/sessions/<slug>/mnt/.remote-plugins/plugin_<id>` (seen live 2026-10-02,
-  Desktop 2.19675.0), for a marketplace plugin its `.local-plugins/…` mount
-  (from the code only). So `${CLAUDE_PLUGIN_ROOT}` in a shell command from
+  `/sessions/<slug>/mnt/.remote-plugins/plugin_<id>`, for a marketplace
+  plugin `/sessions/<slug>/mnt/.local-plugins/cache/<marketplace>/<plugin>/<version>`
+  (both seen live 2026-10-02, Desktop 2.19675.0; an organization skill goes
+  to `.claude/skills/<skill>`). So `${CLAUDE_PLUGIN_ROOT}` in a shell command from
   skill text reaches the VM as the mount path (the rewrite was measured on a
-  `printf`; running a script through it was not tried). The table is in
-  asars from 1.40609.0 on, not in 1.37937.3 (L122). Not rewritten: the config-dir staging path behind
+  `printf` and an `ls`; running a script through it was not tried). The
+  table is in asars from 1.40609.0 on, not in 1.37937.3, and local
+  transcripts show the first rewrite on 2026-09-06 (L122). Not rewritten: the config-dir staging path behind
   `${CLAUDE_PLUGIN_DATA}` and the host outputs path. The trap runs the
   other way now: a root the shell *prints* is the VM path, which the file
   tools refuse. Hook commands run on the Mac and need no rewrite.
@@ -723,6 +725,9 @@ sessions on disk with no scheduled task, parent or bridge, and a relayed run on 
 only some of the time. The Desktop app (main process and interface bundle, 2.9939.4 and
 2.16120.0) has no lane choice of its own: its only veto is the organization local-tasks-off
 setting (gate `3634338308`, off here), unchanged. Check `pwd`/`CLAUDE_CODE_ENTRYPOINT` per run.
+On Desktop 2.19675.0 (2026-10-02) the composer New opened decided: the Chat/Cowork selector
+(Cowork) gave a local session 2 of 2, the merged composer the cloud 2 of 2, with the account setting
+on throughout (composer shapes from the UI; L210).
 
 ## Desktop 2.9939.2 additions (L212–L214)
 
@@ -801,7 +806,11 @@ at `$HOME/mnt/<folder>`, `/bin/sh` → dash); deleting needs
 `/Users/…` path succeeds silently **inside the container**. The cloud container's
 `/bin/sh` is dash too.
 
-## What Anthropic's help center says (relayed, read 2026-10-02)
+## What Anthropic's help center says (relayed, read 2026-10-02 and 2026-10-03)
+
+"Claude Cowork architecture overview" (support article 14479288, read 2026-10-03): "Cowork sessions
+run in the cloud by default"; "Local execution remains available for existing desktop deployments: the
+agent loop and code execution run on the member's device", with code execution in an isolated VM.
 
 "Get started with Claude Cowork" (support article 13345190, modified 2026-09-30) describes the
 cloud model this page measures: "Cowork runs your tasks in the cloud (in beta). Claude's work runs
@@ -813,7 +822,10 @@ Claude in Chrome. Web fetch runs server-side". Permission modes are Manual, Auto
 have the new Claude experience, the permission setting in the message box offers Auto and Manual
 (default)." Article 15520349 adds, for Pro and Max: from 2026-10-06 new tasks run in the cloud and
 "Only on your computer" is removed, and "Tasks that use files on your computer need the desktop app
-open" (L210). Both open with the per-plan note that matches the merged interface seen in a Personal
+open" (L210). Its title is "Use Claude Cowork on web, desktop, and mobile"; on 2026-10-03 it also says that
+each task already started on the computer "shows a note at the top with a button to download its
+transcript". The note seen on 2026-10-02 ("Tasks on this computer are being deprecated", L210) had
+Learn more and Dismiss. Articles 13345190 and 15520349 both open with the per-plan note that matches the merged interface seen in a Personal
 organization and the Chat/Cowork choice still seen in a Team organization on 2026-10-02 (L216, L217).
 
 ## One conversation, two runtimes (L216)
@@ -839,7 +851,10 @@ then unlinked; env fallback on failure); the agent reads `/dev/fd/3` and deletes
 variable. Present since ≤ 1.18286.2. Desktop updates come from a per-device endpoint
 on `api.anthropic.com`, which can serve builds the public `RELEASES.json` never lists
 (2.2553.13 on 2026-09-22); the running build is visible only as `appVersion` in
-`main.log`.
+`main.log`. Desktop 2.19675.0 runs the host agent from
+`~/Library/Application Support/Claude/claude-code/<version>/<12-hex build id>/claude.app`
+(through `Contents/Helpers/disclaimer`), and agent 2.1.286's `init` lists three built-in plugins,
+`cc-plugin-sec-default`, `cc-plugin-agents-md` and `cc-plugin-telemetry` (`@builtin`), seen 2026-10-02.
 
 ## Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
 

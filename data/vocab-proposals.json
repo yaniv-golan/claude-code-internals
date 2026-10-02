@@ -2797,10 +2797,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "59230a1b87be69f48b27bad851d2b5f3e05991604f1b534d9baf1333c443d321",
-      "prior_terms_sha256": "5814915932ffc6248a5e17e49104e2f82f98066b98cda661461ad0f51ae5c876",
+      "input_sha256": "b183d6be588527684ef1a31311e6e33dfcba2f5bdccb2462f12d42a3c11a4518",
+      "prior_terms_sha256": "a678f3ba017a50268b4f8aecb5ebb0125e7e09d055557f5928f9546ce60a9b33",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
+      "previous_text": "27df0c5c6c0b23e942638fc50700768ab7470093",
       "replaced": [],
       "terms": [
         "which tools does a subagent get",
@@ -2827,17 +2827,31 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "f2c89c9dd1dbe443307ec1ac63da503828cb7502fc5b16e1774e423f7ec169a4",
+      "input_sha256": "a1175ca79fe417bd6a4cf3016df0cdc56d334c65fe949eddb14d74d7fc07f8f6",
       "prior_terms_sha256": "8c35a49aefb7e820fb9c5586d837f700ba6bee409afe96a86637a8823b9f5366",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "9cc0ea67b8c58acfaec3fe07324c192441e3c330",
-      "replaced": [],
+      "previous_text": "27df0c5c6c0b23e942638fc50700768ab7470093",
+      "replaced": [
+        "why can't subagent write to /sessions path",
+        "why is my session folder name so short?"
+      ],
+      "dropped": [
+        {
+          "term": "why can't subagent write to /sessions path",
+          "why": "duplicate",
+          "duplicate_of": "subagent write file denied sessions path"
+        },
+        {
+          "term": "why is my session folder name so short?",
+          "why": "duplicate",
+          "duplicate_of": "shorter session folder path newer versions"
+        }
+      ],
       "terms": [
         "subagent write file denied sessions path",
         "where do subagent files get saved",
         "relative path lands in outputs folder",
         "VM path denied host filesystem error",
-        "why can't subagent write to /sessions path",
         "do hooks run inside subagents?",
         "subagent working directory same as parent",
         "can a subagent set its own working directory?",
@@ -2849,8 +2863,9 @@
         "bash starts at session root not outputs",
         "subagent sandbox isolation separate environment",
         "shorter session folder path newer versions",
-        "why is my session folder name so short?",
-        "plugin path printed by shell refused by read"
+        "plugin path printed by shell refused by read",
+        "plugin path in bash says no such file",
+        "when did bash start translating plugin paths?"
       ]
     },
     "123": {
@@ -3216,10 +3231,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "fe0f3ff63401bba946f5a83b0b4943a653e45b518f3cc69c81e261626908c8db",
+      "input_sha256": "2fd20e4ef396ac715fcdd391be76a5e79f642fead9d590eeae11fba890f8455c",
       "prior_terms_sha256": "72e78312296c2aa127e7ca72b97cacb3e1a810eb5671267453e32f3e87dcf56a",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "0f8636cc3f362d0d9960c7b2d0b49367b7b27b7c",
+      "previous_text": "9cc0ea67b8c58acfaec3fe07324c192441e3c330",
       "replaced": [],
       "terms": [
         "cowork local vs cloud execution",
@@ -3236,7 +3251,10 @@
         "remote cowork needs desktop app open for folder access",
         "overcounting cloud sessions by id",
         "reading desktop app browser cache for session data",
-        "why can't I find the setting that picks remote or local"
+        "why can't I find the setting that picks remote or local",
+        "when do local cowork tasks end for pro and max",
+        "does the merged composer start a cloud session",
+        "local cowork still available for existing desktop deployments"
       ]
     },
     "139": {
@@ -4908,41 +4926,65 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "bfd01622c2b8e1d96eba7e9b6f525cbb0e3aa206a59852dde2668b0f2b2eb7b1",
-      "prior_terms_sha256": "1f30e5da2f2f2d41adf2e7f7979932e68f0aac5508f1d2a1f0fe3710b4dad99d",
+      "input_sha256": "bb867e9d0d153d83801519a258c429c9a1d71ab89bce83aaa86a32125a5cbcb0",
+      "prior_terms_sha256": "b78c9c0791402f2452f4025b5502d8a3cb28cd98e9a6ddbd53e3bbe690932953",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
-      "replaced": [],
+      "previous_text": "27df0c5c6c0b23e942638fc50700768ab7470093",
+      "replaced": [
+        "shell hook never triggers in cowork",
+        "why doesn't my startup hook run in cloud cowork?"
+      ],
+      "dropped": [
+        {
+          "term": "shell hook never triggers in cowork",
+          "why": "duplicate",
+          "duplicate_of": "hook matcher misses cowork shell commands"
+        },
+        {
+          "term": "why doesn't my startup hook run in cloud cowork?",
+          "why": "duplicate",
+          "duplicate_of": "session start hook not running in cloud"
+        }
+      ],
       "terms": [
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
         "startup hook skipped on new cloud task",
         "hook matcher misses cowork shell commands",
-        "shell hook never triggers in cowork",
         "how to check if a hook actually ran",
         "hook ran but nothing in transcript",
         "missing hook script blocks every tool call",
         "hook works on mac but blocks on linux",
         "plugin hook exit code 2 missing file",
         "do plugin hooks work in cowork?",
-        "why doesn't my startup hook run in cloud cowork?",
         "which hook events fire in local vs cloud cowork",
         "pre tool hook not matching shell tool name",
         "silent hook leaves no record",
         "session start hook fires every turn locally",
         "do local cowork hooks run on mac or vm?",
-        "pre tool hook for subagent calls"
+        "pre tool hook for subagent calls",
+        "hook transcript path not in projects folder",
+        "write hook misses relative path writes"
       ]
     },
     "210": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "7358f5031854d3a5338f460d5d8d37b3ef4964942dba268b5f04eb67378deabc",
+      "input_sha256": "dd0b9cc4eb421f2d789c3926cce086bc70a1e0070d0df472808536c53631261f",
       "prior_terms_sha256": "cc18dfde8e8f37d396e7bc33fb30b5765dff6a06c7e28ca421f1b36fa436ef08",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "9cc0ea67b8c58acfaec3fe07324c192441e3c330",
-      "replaced": [],
+      "previous_text": "27df0c5c6c0b23e942638fc50700768ab7470093",
+      "replaced": [
+        "local mode works only sometimes"
+      ],
+      "dropped": [
+        {
+          "term": "local mode works only sometimes",
+          "why": "duplicate",
+          "duplicate_of": "only on this computer setting ignored"
+        }
+      ],
       "terms": [
         "cowork task runs in cloud instead of locally",
         "only on this computer setting ignored",
@@ -4955,13 +4997,13 @@
         "who decides where a cowork task runs?",
         "auto mode task still goes to cloud",
         "check working directory to see where task ran",
-        "local mode works only sometimes",
         "cloud task using my mac through bridge",
         "are local cowork tasks being removed?",
         "scheduled tasks moving to the cloud",
         "where is the only on this computer setting?",
         "task header popup has no cloud setting",
-        "chat cowork selector decides local or cloud"
+        "chat cowork selector decides local or cloud",
+        "does automatically approve carry into the session?"
       ]
     },
     "211": {
@@ -5076,11 +5118,20 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "6ebfc91f0d85b198c05854738a1fecbc4dcec4fe2aec701c22a22025971d39f3",
+      "input_sha256": "b80d737fe6df2dfec58ac9dac0d8b141dacc8cba6c6a21b0c1364f271682c36e",
       "prior_terms_sha256": "72abd934a16a797d69c0f27cc0eae821e2183e876f7648806158767db09d9268",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
-      "replaced": [],
+      "previous_text": "9cc0ea67b8c58acfaec3fe07324c192441e3c330",
+      "replaced": [
+        "overwrite protection for user edited files"
+      ],
+      "dropped": [
+        {
+          "term": "overwrite protection for user edited files",
+          "why": "duplicate",
+          "duplicate_of": "commit refused because file changed since staged"
+        }
+      ],
       "terms": [
         "cloud task can't see files on my Mac",
         "why does write succeed but file is missing?",
@@ -5090,7 +5141,6 @@
         "run shell commands on my Mac from cloud",
         "delete files operation not permitted in connected folder",
         "commit refused because file changed since staged",
-        "overwrite protection for user edited files",
         "cloud session sees my home folder names",
         "why is my file link not clickable in cloud?",
         "upload file size limits from computer to cloud",
@@ -5099,21 +5149,36 @@
         "clicked allow but folder access still refused",
         "which folders are protected from cloud access",
         "use my Chrome browser from cloud chat",
-        "Chrome extension not connected but side panel works"
+        "Chrome extension not connected but side panel works",
+        "Chrome not connected in local task"
       ]
     },
     "216": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "a76bc00eaf62389151765adc34729723cf5bfd555083b520f5fea3dcfae9e940",
+      "input_sha256": "48f0421285f89a3f50b76d9d216f3c5e71e592fee2d41d7b79ab7bbb2d8a6160",
       "prior_terms_sha256": "567f5c8fc3d19b9e2bc3f5ac2f823170642d9ce5b934c77fde6cf5063304dbf2",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
-      "replaced": [],
+      "previous_text": "9cc0ea67b8c58acfaec3fe07324c192441e3c330",
+      "replaced": [
+        "why did my chat switch to a workspace",
+        "why do my skill's available tools change?"
+      ],
+      "dropped": [
+        {
+          "term": "why did my chat switch to a workspace",
+          "why": "duplicate",
+          "duplicate_of": "chat turned into Cowork mid-conversation"
+        },
+        {
+          "term": "why do my skill's available tools change?",
+          "why": "duplicate",
+          "duplicate_of": "skill tools change between turns"
+        }
+      ],
       "terms": [
         "chat turned into Cowork mid-conversation",
-        "why did my chat switch to a workspace",
         "chat upgraded to cloud workspace",
         "conversation suddenly got shell and sub-agents",
         "Cowork session opens as a chat",
@@ -5123,13 +5188,14 @@
         "skill tools change between turns",
         "which runtime will my skill run in",
         "chat versus Cowork mode switching",
-        "why do my skill's available tools change?",
         "local folder device selection starts workspace",
         "does opening chat mean no Cowork?",
         "can a workspace go back to chat?",
         "getting set up for this session delay",
         "no Chat or Cowork option in composer",
-        "green dot on computer icon connected"
+        "green dot on computer icon connected",
+        "how to start Desktop local Chat mode",
+        "picking Chat still runs in the cloud"
       ]
     },
     "217": {
@@ -5166,10 +5232,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "b71f97e80af3a42f6f27d5362291841643d25df5b94a2cba79e13b5380ac0909",
+      "input_sha256": "14bcc0a1d3cf78bfa6eadb34f379334cea2fa48663c4e602af74c35ace15d234",
       "prior_terms_sha256": "e8a515ce4a35864729cb5cafc0778bc7f33f7ca455af550ebb4893cd67dbb9d0",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "54495bc71716e3bdf3dacb179573fdcb45e02a42",
+      "previous_text": "9cc0ea67b8c58acfaec3fe07324c192441e3c330",
       "replaced": [],
       "terms": [
         "plugin hook blocks prompt with no message in cloud",
@@ -5186,7 +5252,10 @@
         "which variables get filled in for plugin servers",
         "why does my plugin MCP server fail to authenticate?",
         "fallback default always used even when variable set",
-        "how to give a plugin server a credential?"
+        "how to give a plugin server a credential?",
+        "edit and resend a blocked prompt",
+        "plugin data folder not filled in cloud",
+        "warning when installing plugin with local servers"
       ]
     },
     "219": {

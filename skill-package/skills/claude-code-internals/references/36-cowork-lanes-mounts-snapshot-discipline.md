@@ -76,22 +76,13 @@ Desktop main has **no lane branch**: `LocalAgentModeSessions.start` unconditiona
 
 **Skill-authoring consequence:** a skill that writes to `outputs/` and states the path delivers correctly on local and **silently loses its deliverables on remote**. Anthropic's own **Cowork-staged** `skill-creator` handles this capability-conditionally: *"Check whether you have access to a tool that presents files to the user — `present_files`, or `SendUserFile` in Cowork remote. If you have neither, skip this step."* **Name the artifact, because two ship and they disagree:** the Cowork-staged skill pack (`local-agent-mode-sessions/skills-plugin/**/skills/skill-creator/SKILL.md`, staged 2026-07-25) carries the two-tool lane-aware wording quoted here; the marketplace plugin (`~/.claude/plugins/marketplaces/claude-plugins-official/**/skill-creator/SKILL.md`) names only `present_files` and has no lane clause. An adversarial review reading the marketplace copy concluded this quotation was fabricated — it is verbatim, from the other artifact. **"Anthropic's deployed skill-creator" is ambiguous and must never be used unqualified.** Never name `device_commit_files` in a skill — it is Desktop plumbing behind consent-gated folders.
 
-## ⚠️ "Remote is the default" is not established
+## Which lane is the default
 
-A tempting reading is that *"since 2026-07-07 remote is the default for new sessions on rolled-out
-accounts."* Its only provenance is Anthropic's public Help Center (relayed via the
-`claude-cowork-headless-emulator` project's lane forensics), not any artifact on this machine — and
-**the same source calls remote execution "in beta and rolling out gradually across plans"**. It is a
-second-hand claim with no first-party evidence tier.
+Anthropic's "Claude Cowork architecture overview" (support article 14479288, read 2026-10-03) says: "Cowork sessions run in the cloud by default: the agent loop and code execution run on Anthropic's servers, and sessions and files are saved to the member's Claude account." And: "Local execution remains available for existing desktop deployments: the agent loop and code execution run on the member's device". Article 15520349 dates the end of new local tasks for Pro and Max plans to 2026-10-06 (L210).
 
-This machine's own data does not support it: the newest **local** session is current (2026-08-05)
-while the newest **remote** record is 2026-07-23 — three weeks stale. On this account the local lane
-is what runs.
+What this machine shows on 2026-10-02 (Desktop 2.19675.0) is narrower: which composer New opens decided the lane, the merged composer going to the cloud and the Chat/Cowork selector to a local session (L210). So "cloud by default" is Anthropic's statement and fits the merged composer; it does not mean every new task on a given account runs in the cloud today.
 
-**What is first-party and does hold:** both lanes exist and are distinguishable by `environment_kind`;
-lane selection is decided renderer-side by an account-level rollout that cannot be read locally; so
-**which lane any given reader is on is unknowable from here.** For anyone writing guidance that is the
-load-bearing fact — not which lane is more common.
+**What is first-party and does hold:** both lanes exist and are distinguishable by `environment_kind`; lane selection is decided renderer-side by an account-level rollout that cannot be read locally; so **which lane any given reader is on is unknowable from here.** For anyone writing guidance that is the load-bearing fact — not which lane is more common.
 
 ## Lane usage is per-account and observable
 

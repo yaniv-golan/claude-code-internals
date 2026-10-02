@@ -12412,7 +12412,7 @@
       "lesson_number": "122",
       "file": "32-cowork-subagent-execution-model.md",
       "startLine": 147,
-      "endLine": 232,
+      "endLine": 234,
       "keywords": [
         "subagent-cwd",
         "outputs-path",
@@ -12470,8 +12470,9 @@
         "bash starts at session root not outputs",
         "subagent sandbox isolation separate environment",
         "shorter session folder path newer versions",
-        "why is my session folder name so short",
-        "plugin path printed by shell refused by read"
+        "plugin path printed by shell refused by read",
+        "plugin path in bash says no such file",
+        "when did bash start translating plugin paths"
       ],
       "identifier_keys": [
         "registered-hooks",
@@ -12516,14 +12517,15 @@
         "bash starts at session root not outputs",
         "subagent sandbox isolation separate environment",
         "shorter session folder path newer versions",
-        "why is my session folder name so short",
-        "plugin path printed by shell refused by read"
+        "plugin path printed by shell refused by read",
+        "plugin path in bash says no such file",
+        "when did bash start translating plugin paths"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "8c35a49aefb7e820fb9c5586d837f700ba6bee409afe96a86637a8823b9f5366"
+        "terms_sha256": "5089a1a6112a52fa97fdc0db43d517cfa8cbf26a6fd6d7d5a80c135d95639d1a"
       }
     },
     {
@@ -12531,8 +12533,8 @@
       "title": "The Sub-Agent Prompt Append: subagent_env_hl / subagent_env_vm",
       "lesson_number": "123",
       "file": "32-cowork-subagent-execution-model.md",
-      "startLine": 236,
-      "endLine": 268,
+      "startLine": 238,
+      "endLine": 270,
       "keywords": [
         "subagent_env_hl",
         "subagent_env_vm",
@@ -12603,8 +12605,8 @@
       "title": "Sub-Agent Env/Model, Lifecycle Re-Verification, VM-Loop Deltas, Stream Observability & Methodology",
       "lesson_number": "124",
       "file": "32-cowork-subagent-execution-model.md",
-      "startLine": 272,
-      "endLine": 443,
+      "startLine": 274,
+      "endLine": 445,
       "keywords": [
         "subagent-model",
         "CLAUDE_CODE_SUBAGENT_MODEL",
@@ -12976,7 +12978,6 @@
         "list_outcome",
         "pair_outcome",
         "code_prompt_outcome",
-        "15520349",
         "can claude fill in my saved passwords",
         "claude autofill credit card at checkout",
         "claude filling login forms in my browser",
@@ -13026,8 +13027,7 @@
         "fill_outcome",
         "list_outcome",
         "pair_outcome",
-        "code_prompt_outcome",
-        "15520349"
+        "code_prompt_outcome"
       ],
       "vocab_keys": [
         "can claude fill in my saved passwords",
@@ -14104,7 +14104,7 @@
       "lesson_number": "138",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
       "startLine": 19,
-      "endLine": 105,
+      "endLine": 96,
       "keywords": [
         "cowork-remote-lane",
         "cowork-local-lane",
@@ -14155,6 +14155,7 @@
         "mcp__remote-devices__device_commit_files",
         "uploads-tmp",
         "doc-export-out",
+        "14479288",
         "cowork local vs cloud execution",
         "does cowork run on my machine or anthropic servers",
         "how to tell if a cowork session is remote",
@@ -14169,7 +14170,10 @@
         "remote cowork needs desktop app open for folder access",
         "overcounting cloud sessions by id",
         "reading desktop app browser cache for session data",
-        "why can't i find the setting that picks remote or local"
+        "why can't i find the setting that picks remote or local",
+        "when do local cowork tasks end for pro and max",
+        "does the merged composer start a cloud session",
+        "local cowork still available for existing desktop deployments"
       ],
       "identifier_keys": [
         "skill-creator",
@@ -14184,7 +14188,8 @@
         "permission_mode_seq",
         "mcp__remote-devices__device_commit_files",
         "uploads-tmp",
-        "doc-export-out"
+        "doc-export-out",
+        "14479288"
       ],
       "vocab_keys": [
         "cowork local vs cloud execution",
@@ -14201,13 +14206,16 @@
         "remote cowork needs desktop app open for folder access",
         "overcounting cloud sessions by id",
         "reading desktop app browser cache for session data",
-        "why can't i find the setting that picks remote or local"
+        "why can't i find the setting that picks remote or local",
+        "when do local cowork tasks end for pro and max",
+        "does the merged composer start a cloud session",
+        "local cowork still available for existing desktop deployments"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "72e78312296c2aa127e7ca72b97cacb3e1a810eb5671267453e32f3e87dcf56a"
+        "terms_sha256": "385614c5aa89f9fa87647ec8cb674051c6ae04f969f62121ef500535ad5da5eb"
       }
     },
     {
@@ -14215,8 +14223,8 @@
       "title": "Delete Semantics: Per-Mount FUSE Policy, unlink and rmdir Only",
       "lesson_number": "139",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 110,
-      "endLine": 259,
+      "startLine": 101,
+      "endLine": 250,
       "keywords": [
         "cowork-delete-semantics",
         "unlink-rmdir-denied",
@@ -14359,8 +14367,8 @@
       "title": "VM Multiplexing Confirmed, Isolation Holds, and the Real Mount Inventory",
       "lesson_number": "140",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 263,
-      "endLine": 364,
+      "startLine": 254,
+      "endLine": 355,
       "keywords": [
         "vm-multiplexing-confirmed",
         "shared-vm-guest",
@@ -14460,8 +14468,8 @@
       "title": "Snapshot Discipline: the fcache Is a Moving Target with Two Absence Axes",
       "lesson_number": "141",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 368,
-      "endLine": 443,
+      "startLine": 359,
+      "endLine": 434,
       "keywords": [
         "fcache-snapshot-identity",
         "fcache-content-hash",
@@ -14551,8 +14559,8 @@
       "title": "coworkSyspromptMap: a Server-Driven Prompt REPLACE Channel",
       "lesson_number": "142",
       "file": "36-cowork-lanes-mounts-snapshot-discipline.md",
-      "startLine": 447,
-      "endLine": 482,
+      "startLine": 438,
+      "endLine": 473,
       "keywords": [
         "coworkSyspromptMap",
         "system-prompt-patch-channel",
@@ -19284,7 +19292,6 @@
         "settingSources-user",
         "does Cowork load .claude/skills from my folder",
         "skills in connected folder not loading",
-        "15520349",
         "5e9zc-d-zm",
         "cowork-session-directories-staged",
         "fr_mtkk8tfg",
@@ -19308,7 +19315,6 @@
         "granted folder unreachable when desktop app closed"
       ],
       "identifier_keys": [
-        "15520349",
         "5e9zc-d-zm",
         "cowork-session-directories-staged",
         "fr_mtkk8tfg",
@@ -20196,7 +20202,7 @@
       "lesson_number": "209",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
       "startLine": 70,
-      "endLine": 126,
+      "endLine": 128,
       "keywords": [
         "cowork plugin hook events",
         "cowork cloud hooks",
@@ -20215,46 +20221,46 @@
         "session start hook not running in cloud",
         "startup hook skipped on new cloud task",
         "hook matcher misses cowork shell commands",
-        "shell hook never triggers in cowork",
         "how to check if a hook actually ran",
         "hook ran but nothing in transcript",
         "missing hook script blocks every tool call",
         "hook works on mac but blocks on linux",
         "plugin hook exit code 2 missing file",
         "do plugin hooks work in cowork",
-        "why doesn't my startup hook run in cloud cowork",
         "which hook events fire in local vs cloud cowork",
         "pre tool hook not matching shell tool name",
         "silent hook leaves no record",
         "session start hook fires every turn locally",
         "do local cowork hooks run on mac or vm",
-        "pre tool hook for subagent calls"
+        "pre tool hook for subagent calls",
+        "hook transcript path not in projects folder",
+        "write hook misses relative path writes"
       ],
       "vocab_keys": [
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
         "startup hook skipped on new cloud task",
         "hook matcher misses cowork shell commands",
-        "shell hook never triggers in cowork",
         "how to check if a hook actually ran",
         "hook ran but nothing in transcript",
         "missing hook script blocks every tool call",
         "hook works on mac but blocks on linux",
         "plugin hook exit code 2 missing file",
         "do plugin hooks work in cowork",
-        "why doesn't my startup hook run in cloud cowork",
         "which hook events fire in local vs cloud cowork",
         "pre tool hook not matching shell tool name",
         "silent hook leaves no record",
         "session start hook fires every turn locally",
         "do local cowork hooks run on mac or vm",
-        "pre tool hook for subagent calls"
+        "pre tool hook for subagent calls",
+        "hook transcript path not in projects folder",
+        "write hook misses relative path writes"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "b78c9c0791402f2452f4025b5502d8a3cb28cd98e9a6ddbd53e3bbe690932953"
+        "terms_sha256": "648022ad68feff4f321c60d44deeb82bf417b933dfdde9df8c0e4f4e2cf92e5b"
       }
     },
     {
@@ -20262,8 +20268,8 @@
       "title": "Where a New Cowork Task Runs, and the Switch That Did Not Keep It Local",
       "lesson_number": "210",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
-      "startLine": 130,
-      "endLine": 213,
+      "startLine": 132,
+      "endLine": 215,
       "keywords": [
         "Only on this computer",
         "dramatic_shrimp_enabled",
@@ -20304,13 +20310,13 @@
         "who decides where a cowork task runs",
         "auto mode task still goes to cloud",
         "check working directory to see where task ran",
-        "local mode works only sometimes",
         "cloud task using my mac through bridge",
         "are local cowork tasks being removed",
         "scheduled tasks moving to the cloud",
         "where is the only on this computer setting",
         "task header popup has no cloud setting",
-        "chat cowork selector decides local or cloud"
+        "chat cowork selector decides local or cloud",
+        "does automatically approve carry into the session"
       ],
       "identifier_keys": [
         "scheduled-task-id",
@@ -20338,19 +20344,19 @@
         "who decides where a cowork task runs",
         "auto mode task still goes to cloud",
         "check working directory to see where task ran",
-        "local mode works only sometimes",
         "cloud task using my mac through bridge",
         "are local cowork tasks being removed",
         "scheduled tasks moving to the cloud",
         "where is the only on this computer setting",
         "task header popup has no cloud setting",
-        "chat cowork selector decides local or cloud"
+        "chat cowork selector decides local or cloud",
+        "does automatically approve carry into the session"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "cc18dfde8e8f37d396e7bc33fb30b5765dff6a06c7e28ca421f1b36fa436ef08"
+        "terms_sha256": "cbea9606f8a43fcb23a05acd37fd6fc1f9e308df0baed0a2775579c9573cdc18"
       }
     },
     {
@@ -20709,7 +20715,7 @@
       "lesson_number": "215",
       "file": "55-cloud-session-device-tools.md",
       "startLine": 16,
-      "endLine": 148,
+      "endLine": 150,
       "keywords": [
         "device tools",
         "mcp__remote-devices",
@@ -20750,6 +20756,9 @@
         "device-path",
         "native-write.txt",
         "list_connected_browsers",
+        "mcp__claude-in-chrome__navigate",
+        "Control_Chrome",
+        "tabs_context_mcp",
         "never-commit-to-disk",
         "PRETTY_NAME",
         "2745857735",
@@ -20763,7 +20772,6 @@
         "run shell commands on my mac from cloud",
         "delete files operation not permitted in connected folder",
         "commit refused because file changed since staged",
-        "overwrite protection for user edited files",
         "cloud session sees my home folder names",
         "why is my file link not clickable in cloud",
         "upload file size limits from computer to cloud",
@@ -20772,7 +20780,8 @@
         "clicked allow but folder access still refused",
         "which folders are protected from cloud access",
         "use my chrome browser from cloud chat",
-        "chrome extension not connected but side panel works"
+        "chrome extension not connected but side panel works",
+        "chrome not connected in local task"
       ],
       "identifier_keys": [
         "mcp__cowork__request_cowork_directory",
@@ -20798,6 +20807,9 @@
         "device-path",
         "native-write.txt",
         "list_connected_browsers",
+        "mcp__claude-in-chrome__navigate",
+        "Control_Chrome",
+        "tabs_context_mcp",
         "never-commit-to-disk",
         "PRETTY_NAME",
         "2745857735",
@@ -20813,7 +20825,6 @@
         "run shell commands on my mac from cloud",
         "delete files operation not permitted in connected folder",
         "commit refused because file changed since staged",
-        "overwrite protection for user edited files",
         "cloud session sees my home folder names",
         "why is my file link not clickable in cloud",
         "upload file size limits from computer to cloud",
@@ -20822,13 +20833,14 @@
         "clicked allow but folder access still refused",
         "which folders are protected from cloud access",
         "use my chrome browser from cloud chat",
-        "chrome extension not connected but side panel works"
+        "chrome extension not connected but side panel works",
+        "chrome not connected in local task"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "72abd934a16a797d69c0f27cc0eae821e2183e876f7648806158767db09d9268"
+        "terms_sha256": "d7260346e1260d736d16193547ebd94fb0d67ecfb8ade8d10a184298c061037c"
       }
     },
     {
@@ -20836,8 +20848,8 @@
       "title": "One Conversation, Two Runtimes: How claude.ai Moves a Chat Into a Cowork Workspace",
       "lesson_number": "216",
       "file": "55-cloud-session-device-tools.md",
-      "startLine": 152,
-      "endLine": 198,
+      "startLine": 154,
+      "endLine": 200,
       "keywords": [
         "chat and Cowork merged",
         "hub backend",
@@ -20875,7 +20887,6 @@
         "claude_ai_hub_web_delivery",
         "cai_hub_preview_optout",
         "chat turned into cowork mid-conversation",
-        "why did my chat switch to a workspace",
         "chat upgraded to cloud workspace",
         "conversation suddenly got shell and sub-agents",
         "cowork session opens as a chat",
@@ -20885,13 +20896,14 @@
         "skill tools change between turns",
         "which runtime will my skill run in",
         "chat versus cowork mode switching",
-        "why do my skill's available tools change",
         "local folder device selection starts workspace",
         "does opening chat mean no cowork",
         "can a workspace go back to chat",
         "getting set up for this session delay",
         "no chat or cowork option in composer",
-        "green dot on computer icon connected"
+        "green dot on computer icon connected",
+        "how to start desktop local chat mode",
+        "picking chat still runs in the cloud"
       ],
       "identifier_keys": [
         "chat_backend",
@@ -20919,7 +20931,6 @@
       ],
       "vocab_keys": [
         "chat turned into cowork mid-conversation",
-        "why did my chat switch to a workspace",
         "chat upgraded to cloud workspace",
         "conversation suddenly got shell and sub-agents",
         "cowork session opens as a chat",
@@ -20929,19 +20940,20 @@
         "skill tools change between turns",
         "which runtime will my skill run in",
         "chat versus cowork mode switching",
-        "why do my skill's available tools change",
         "local folder device selection starts workspace",
         "does opening chat mean no cowork",
         "can a workspace go back to chat",
         "getting set up for this session delay",
         "no chat or cowork option in composer",
-        "green dot on computer icon connected"
+        "green dot on computer icon connected",
+        "how to start desktop local chat mode",
+        "picking chat still runs in the cloud"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "567f5c8fc3d19b9e2bc3f5ac2f823170642d9ce5b934c77fde6cf5063304dbf2"
+        "terms_sha256": "1a80537851c7c81916d0e5092fa53650f66f872fe835a3b6cc048ca41efdec52"
       }
     },
     {
@@ -21050,7 +21062,7 @@
       "lesson_number": "218",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 137,
-      "endLine": 197,
+      "endLine": 201,
       "keywords": [
         "UserPromptSubmit block",
         "decision block",
@@ -21069,6 +21081,8 @@
         "left as written",
         "TESTMO_API_TOKEN style custom env var",
         "set env var not passed to plugin MCP server",
+        "CLAUDE_PLUGIN_DATA",
+        "CLAUDE_PROJECT_DIR",
         "plugin-mcp-host-config",
         "local-mcp-servers",
         "CCI_PROBE_TOKEN",
@@ -21087,9 +21101,14 @@
         "which variables get filled in for plugin servers",
         "why does my plugin mcp server fail to authenticate",
         "fallback default always used even when variable set",
-        "how to give a plugin server a credential"
+        "how to give a plugin server a credential",
+        "edit and resend a blocked prompt",
+        "plugin data folder not filled in cloud",
+        "warning when installing plugin with local servers"
       ],
       "identifier_keys": [
+        "CLAUDE_PLUGIN_DATA",
+        "CLAUDE_PROJECT_DIR",
         "plugin-mcp-host-config",
         "local-mcp-servers",
         "CCI_PROBE_TOKEN",
@@ -21110,13 +21129,16 @@
         "which variables get filled in for plugin servers",
         "why does my plugin mcp server fail to authenticate",
         "fallback default always used even when variable set",
-        "how to give a plugin server a credential"
+        "how to give a plugin server a credential",
+        "edit and resend a blocked prompt",
+        "plugin data folder not filled in cloud",
+        "warning when installing plugin with local servers"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "e8a515ce4a35864729cb5cafc0778bc7f33f7ca455af550ebb4893cd67dbb9d0"
+        "terms_sha256": "c7c40c767591ee9a664d1bba754de5666156e413ae598da4940f6b2bc8f063e6"
       }
     },
     {
@@ -39209,7 +39231,8 @@
       31
     ],
     "CLAUDE_PLUGIN_DATA": [
-      217
+      217,
+      218
     ],
     "9086500": [
       31
@@ -42881,7 +42904,8 @@
       124
     ],
     "CLAUDE_PROJECT_DIR": [
-      217
+      217,
+      218
     ],
     "get-prompt-for-command": [
       122
@@ -43182,10 +43206,6 @@
     ],
     "code_prompt_outcome": [
       127
-    ],
-    "15520349": [
-      127,
-      197
     ],
     "on-auto-mode-override-always-allow": [
       128
@@ -43558,6 +43578,9 @@
       138
     ],
     "doc-export-out": [
+      138
+    ],
+    "14479288": [
       138
     ],
     "O_TRUNC": [
@@ -45086,6 +45109,15 @@
       215
     ],
     "list_connected_browsers": [
+      215
+    ],
+    "mcp__claude-in-chrome__navigate": [
+      215
+    ],
+    "Control_Chrome": [
+      215
+    ],
+    "tabs_context_mcp": [
       215
     ],
     "never-commit-to-disk": [
@@ -50760,10 +50792,13 @@
     "shorter session folder path newer versions": [
       122
     ],
-    "why is my session folder name so short": [
+    "plugin path printed by shell refused by read": [
       122
     ],
-    "plugin path printed by shell refused by read": [
+    "plugin path in bash says no such file": [
+      122
+    ],
+    "when did bash start translating plugin paths": [
       122
     ],
     "cowork subagent extra system prompt": [
@@ -51501,6 +51536,15 @@
       138
     ],
     "why can't i find the setting that picks remote or local": [
+      138
+    ],
+    "when do local cowork tasks end for pro and max": [
+      138
+    ],
+    "does the merged composer start a cloud session": [
+      138
+    ],
+    "local cowork still available for existing desktop deployments": [
       138
     ],
     "cowork cannot delete files": [
@@ -54695,9 +54739,6 @@
     "hook matcher misses cowork shell commands": [
       209
     ],
-    "shell hook never triggers in cowork": [
-      209
-    ],
     "how to check if a hook actually ran": [
       209
     ],
@@ -54716,9 +54757,6 @@
     "do plugin hooks work in cowork": [
       209
     ],
-    "why doesn't my startup hook run in cloud cowork": [
-      209
-    ],
     "which hook events fire in local vs cloud cowork": [
       209
     ],
@@ -54735,6 +54773,12 @@
       209
     ],
     "pre tool hook for subagent calls": [
+      209
+    ],
+    "hook transcript path not in projects folder": [
+      209
+    ],
+    "write hook misses relative path writes": [
       209
     ],
     "cowork task runs in cloud instead of locally": [
@@ -54767,9 +54811,6 @@
     "check working directory to see where task ran": [
       210
     ],
-    "local mode works only sometimes": [
-      210
-    ],
     "cloud task using my mac through bridge": [
       210
     ],
@@ -54786,6 +54827,9 @@
       210
     ],
     "chat cowork selector decides local or cloud": [
+      210
+    ],
+    "does automatically approve carry into the session": [
       210
     ],
     "artifact calling local mcp server": [
@@ -54998,9 +55042,6 @@
     "commit refused because file changed since staged": [
       215
     ],
-    "overwrite protection for user edited files": [
-      215
-    ],
     "cloud session sees my home folder names": [
       215
     ],
@@ -55028,10 +55069,10 @@
     "chrome extension not connected but side panel works": [
       215
     ],
-    "chat turned into cowork mid-conversation": [
-      216
+    "chrome not connected in local task": [
+      215
     ],
-    "why did my chat switch to a workspace": [
+    "chat turned into cowork mid-conversation": [
       216
     ],
     "chat upgraded to cloud workspace": [
@@ -55061,9 +55102,6 @@
     "chat versus cowork mode switching": [
       216
     ],
-    "why do my skill's available tools change": [
-      216
-    ],
     "local folder device selection starts workspace": [
       216
     ],
@@ -55080,6 +55118,12 @@
       216
     ],
     "green dot on computer icon connected": [
+      216
+    ],
+    "how to start desktop local chat mode": [
+      216
+    ],
+    "picking chat still runs in the cloud": [
       216
     ],
     "get my own skill into cowork": [
@@ -55179,6 +55223,15 @@
       218
     ],
     "how to give a plugin server a credential": [
+      218
+    ],
+    "edit and resend a blocked prompt": [
+      218
+    ],
+    "plugin data folder not filled in cloud": [
+      218
+    ],
+    "warning when installing plugin with local servers": [
       218
     ],
     "scheduled task artifact tool changed": [

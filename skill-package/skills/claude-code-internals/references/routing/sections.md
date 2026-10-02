@@ -1367,22 +1367,22 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 122 · 32-cowork-subagent-execution-model.md:155 · cwd inheritance and the Task schema
 122 · 32-cowork-subagent-execution-model.md:159 · The path-containment hook, re-anchored at 1.20186.1
 122 · 32-cowork-subagent-execution-model.md:182 · Shell commands are rewritten for plugin paths; file-tool paths are not (Desktop 2.19675.0)
-122 · 32-cowork-subagent-execution-model.md:190 · Hooks fire inside sub-agents — first-party proof
-122 · 32-cowork-subagent-execution-model.md:194 · The crux: `cwd` IS the outputs directory
-122 · 32-cowork-subagent-execution-model.md:208 · Write/delete policy under `outputs/` and `uploads/`
-122 · 32-cowork-subagent-execution-model.md:224 · `${CLAUDE_PLUGIN_ROOT}` in sub-agents
-123 · 32-cowork-subagent-execution-model.md:240 · The two verbatim branches
-123 · 32-cowork-subagent-execution-model.md:257 · Selection, delivery, and consumption
-123 · 32-cowork-subagent-execution-model.md:264 · The gate that does *not* gate this, and the one env-var gap that does
-124 · 32-cowork-subagent-execution-model.md:276 · Sub-agent env & model resolution
-124 · 32-cowork-subagent-execution-model.md:297 · ToolSearch enablement
-124 · 32-cowork-subagent-execution-model.md:305 · Lifecycle re-verification and two product changes
-124 · 32-cowork-subagent-execution-model.md:317 · Host-loop vs VM-loop: the decision function and its deltas
-124 · 32-cowork-subagent-execution-model.md:344 · Stream observability
-124 · 32-cowork-subagent-execution-model.md:359 · ADDENDUM (2026-08-13) — the full `sessionType` enum, and a new sticky-cached gate that excludes two of its members
-124 · 32-cowork-subagent-execution-model.md:393 · Methodology
-124 · 32-cowork-subagent-execution-model.md:401 · Identifier table
-124 · 32-cowork-subagent-execution-model.md:433 · What this means for skill and agent authors
+122 · 32-cowork-subagent-execution-model.md:192 · Hooks fire inside sub-agents — first-party proof
+122 · 32-cowork-subagent-execution-model.md:196 · The crux: `cwd` IS the outputs directory
+122 · 32-cowork-subagent-execution-model.md:210 · Write/delete policy under `outputs/` and `uploads/`
+122 · 32-cowork-subagent-execution-model.md:226 · `${CLAUDE_PLUGIN_ROOT}` in sub-agents
+123 · 32-cowork-subagent-execution-model.md:242 · The two verbatim branches
+123 · 32-cowork-subagent-execution-model.md:259 · Selection, delivery, and consumption
+123 · 32-cowork-subagent-execution-model.md:266 · The gate that does *not* gate this, and the one env-var gap that does
+124 · 32-cowork-subagent-execution-model.md:278 · Sub-agent env & model resolution
+124 · 32-cowork-subagent-execution-model.md:299 · ToolSearch enablement
+124 · 32-cowork-subagent-execution-model.md:307 · Lifecycle re-verification and two product changes
+124 · 32-cowork-subagent-execution-model.md:319 · Host-loop vs VM-loop: the decision function and its deltas
+124 · 32-cowork-subagent-execution-model.md:346 · Stream observability
+124 · 32-cowork-subagent-execution-model.md:361 · ADDENDUM (2026-08-13) — the full `sessionType` enum, and a new sticky-cached gate that excludes two of its members
+124 · 32-cowork-subagent-execution-model.md:395 · Methodology
+124 · 32-cowork-subagent-execution-model.md:403 · Identifier table
+124 · 32-cowork-subagent-execution-model.md:435 · What this means for skill and agent authors
 125 · 33-desktop-device-partner-permission-tuning.md:20 · The tool schemas
 125 · 33-desktop-device-partner-permission-tuning.md:30 · The gating chain — why Cowork structurally never sees these
 125 · 33-desktop-device-partner-permission-tuning.md:47 · Per-platform enablement gates, and the sandbox
@@ -1441,37 +1441,37 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 138 · 36-cowork-lanes-mounts-snapshot-discipline.md:38 · A live remote-lane record
 138 · 36-cowork-lanes-mounts-snapshot-discipline.md:60 · Lane selection is renderer-side — no fcache gate can answer it
 138 · 36-cowork-lanes-mounts-snapshot-discipline.md:66 · What differs across the lanes
-138 · 36-cowork-lanes-mounts-snapshot-discipline.md:79 · ⚠️ "Remote is the default" is not established
-138 · 36-cowork-lanes-mounts-snapshot-discipline.md:96 · Lane usage is per-account and observable
-138 · 36-cowork-lanes-mounts-snapshot-discipline.md:100 · METHODOLOGY — the Chromium cache is a readable artifact class
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:116 · The measured matrix
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:133 · Approval is per-mount, live, and involves no remount
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:143 · The host-loop / VM-loop split
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:155 · Mechanism: established vs inference
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:165 · Agent-facing behaviour
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:171 · ADDENDUM — mount-mode CONSTRUCTION, and what `isBridgeSession` actually selects
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:188 · ⚠️ `isBridgeSession` is NOT L138's `environment_kind:"bridge"`
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:200 · Only two mounts are resolver-driven — and the two builders differ
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:216 · A THIRD construction site — `[VMCLIRunner]`, and it is NOT a session mount
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:245 · Host-loop mount restore is per bash call, not spawn-time
-139 · 36-cowork-lanes-mounts-snapshot-discipline.md:251 · METHODOLOGY — an older asar is a Rosetta stone for a newer one
-140 · 36-cowork-lanes-mounts-snapshot-discipline.md:267 · Confirmed
-140 · 36-cowork-lanes-mounts-snapshot-discipline.md:271 · Isolation holds — the per-session uid carries it
-140 · 36-cowork-lanes-mounts-snapshot-discipline.md:284 · What 522 means for a skill that searches the session tree
-140 · 36-cowork-lanes-mounts-snapshot-discipline.md:296 · The full per-session mount inventory (29)
-140 · 36-cowork-lanes-mounts-snapshot-discipline.md:312 · `.local-plugins` has no fixed depth (2026-08-29)
-140 · 36-cowork-lanes-mounts-snapshot-discipline.md:326 · Live confirmation from inside a running session (2026-08-29)
-140 · 36-cowork-lanes-mounts-snapshot-discipline.md:342 · ⚠️ METHODOLOGY — agent-reported paths are not evidence
-140 · 36-cowork-lanes-mounts-snapshot-discipline.md:350 · ADDENDUM — this inventory is the RUNTIME view; the modes come from the builder
-141 · 36-cowork-lanes-mounts-snapshot-discipline.md:372 · Axis 1 — gate-level: membership churns, count-neutrally
-141 · 36-cowork-lanes-mounts-snapshot-discipline.md:386 · Snapshot identity must be a CONTENT hash
-141 · 36-cowork-lanes-mounts-snapshot-discipline.md:397 · Axis 2 — key-level: a served gate can omit keys that default TRUE
-141 · 36-cowork-lanes-mounts-snapshot-discipline.md:417 · The four-state vocabulary
-141 · 36-cowork-lanes-mounts-snapshot-discipline.md:426 · Extraction: gate ids are always STRING literals
-141 · 36-cowork-lanes-mounts-snapshot-discipline.md:439 · What this changed in the state layer
-142 · 36-cowork-lanes-mounts-snapshot-discipline.md:457 · Two modes, a key grammar, and a startup invariant
-142 · 36-cowork-lanes-mounts-snapshot-discipline.md:474 · Server-supplied entries are validated at RESOLUTION, not load
-142 · 36-cowork-lanes-mounts-snapshot-discipline.md:478 · Why `replace` matters more than `append`
+138 · 36-cowork-lanes-mounts-snapshot-discipline.md:79 · Which lane is the default
+138 · 36-cowork-lanes-mounts-snapshot-discipline.md:87 · Lane usage is per-account and observable
+138 · 36-cowork-lanes-mounts-snapshot-discipline.md:91 · METHODOLOGY — the Chromium cache is a readable artifact class
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:107 · The measured matrix
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:124 · Approval is per-mount, live, and involves no remount
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:134 · The host-loop / VM-loop split
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:146 · Mechanism: established vs inference
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:156 · Agent-facing behaviour
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:162 · ADDENDUM — mount-mode CONSTRUCTION, and what `isBridgeSession` actually selects
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:179 · ⚠️ `isBridgeSession` is NOT L138's `environment_kind:"bridge"`
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:191 · Only two mounts are resolver-driven — and the two builders differ
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:207 · A THIRD construction site — `[VMCLIRunner]`, and it is NOT a session mount
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:236 · Host-loop mount restore is per bash call, not spawn-time
+139 · 36-cowork-lanes-mounts-snapshot-discipline.md:242 · METHODOLOGY — an older asar is a Rosetta stone for a newer one
+140 · 36-cowork-lanes-mounts-snapshot-discipline.md:258 · Confirmed
+140 · 36-cowork-lanes-mounts-snapshot-discipline.md:262 · Isolation holds — the per-session uid carries it
+140 · 36-cowork-lanes-mounts-snapshot-discipline.md:275 · What 522 means for a skill that searches the session tree
+140 · 36-cowork-lanes-mounts-snapshot-discipline.md:287 · The full per-session mount inventory (29)
+140 · 36-cowork-lanes-mounts-snapshot-discipline.md:303 · `.local-plugins` has no fixed depth (2026-08-29)
+140 · 36-cowork-lanes-mounts-snapshot-discipline.md:317 · Live confirmation from inside a running session (2026-08-29)
+140 · 36-cowork-lanes-mounts-snapshot-discipline.md:333 · ⚠️ METHODOLOGY — agent-reported paths are not evidence
+140 · 36-cowork-lanes-mounts-snapshot-discipline.md:341 · ADDENDUM — this inventory is the RUNTIME view; the modes come from the builder
+141 · 36-cowork-lanes-mounts-snapshot-discipline.md:363 · Axis 1 — gate-level: membership churns, count-neutrally
+141 · 36-cowork-lanes-mounts-snapshot-discipline.md:377 · Snapshot identity must be a CONTENT hash
+141 · 36-cowork-lanes-mounts-snapshot-discipline.md:388 · Axis 2 — key-level: a served gate can omit keys that default TRUE
+141 · 36-cowork-lanes-mounts-snapshot-discipline.md:408 · The four-state vocabulary
+141 · 36-cowork-lanes-mounts-snapshot-discipline.md:417 · Extraction: gate ids are always STRING literals
+141 · 36-cowork-lanes-mounts-snapshot-discipline.md:430 · What this changed in the state layer
+142 · 36-cowork-lanes-mounts-snapshot-discipline.md:448 · Two modes, a key grammar, and a startup invariant
+142 · 36-cowork-lanes-mounts-snapshot-discipline.md:465 · Server-supplied entries are validated at RESOLUTION, not load
+142 · 36-cowork-lanes-mounts-snapshot-discipline.md:469 · Why `replace` matters more than `append`
 143 · 37-cowork-probe-corrections.md:26 · The measurement
 143 · 37-cowork-probe-corrections.md:44 · Two wrong answers `audit.jsonl` produces
 143 · 37-cowork-probe-corrections.md:59 · Why the binary settles it and the record could not
@@ -1723,15 +1723,15 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 208 · 53-routine-migration-plugin-hooks-by-lane.md:64 · Why it matters
 209 · 53-routine-migration-plugin-hooks-by-lane.md:74 · Cloud lane (live)
 209 · 53-routine-migration-plugin-hooks-by-lane.md:88 · Local lane (live)
-209 · 53-routine-migration-plugin-hooks-by-lane.md:106 · Matchers and the local session's shell
-209 · 53-routine-migration-plugin-hooks-by-lane.md:116 · Two traps
-209 · 53-routine-migration-plugin-hooks-by-lane.md:121 · For a plugin author
-210 · 53-routine-migration-plugin-hooks-by-lane.md:136 · Three controls with one name
-210 · 53-routine-migration-plugin-hooks-by-lane.md:148 · The account setting
-210 · 53-routine-migration-plugin-hooks-by-lane.md:162 · The routing function
-210 · 53-routine-migration-plugin-hooks-by-lane.md:178 · What happened
-210 · 53-routine-migration-plugin-hooks-by-lane.md:195 · The composer decides (Desktop 2.19675.0, 2026-10-02)
-210 · 53-routine-migration-plugin-hooks-by-lane.md:209 · For an author or tester
+209 · 53-routine-migration-plugin-hooks-by-lane.md:108 · Matchers and the local session's shell
+209 · 53-routine-migration-plugin-hooks-by-lane.md:118 · Two traps
+209 · 53-routine-migration-plugin-hooks-by-lane.md:123 · For a plugin author
+210 · 53-routine-migration-plugin-hooks-by-lane.md:138 · Three controls with one name
+210 · 53-routine-migration-plugin-hooks-by-lane.md:150 · The account setting
+210 · 53-routine-migration-plugin-hooks-by-lane.md:164 · The routing function
+210 · 53-routine-migration-plugin-hooks-by-lane.md:180 · What happened
+210 · 53-routine-migration-plugin-hooks-by-lane.md:197 · The composer decides (Desktop 2.19675.0, 2026-10-02)
+210 · 53-routine-migration-plugin-hooks-by-lane.md:211 · For an author or tester
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:22 · The three layers
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:32 · Layer 1: publishing refuses `host:`
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:48 · Layer 2: the viewer enforces the manifest
@@ -1758,12 +1758,12 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 215 · 55-cloud-session-device-tools.md:113 · The shells
 215 · 55-cloud-session-device-tools.md:117 · `computer://` links: which ones work
 215 · 55-cloud-session-device-tools.md:135 · Chrome from a cloud conversation
-215 · 55-cloud-session-device-tools.md:141 · For a skill author
-216 · 55-cloud-session-device-tools.md:158 · What the composer decides
-216 · 55-cloud-session-device-tools.md:170 · The hub can turn a chat into a workspace
-216 · 55-cloud-session-device-tools.md:182 · A cloud session can become, or be shown as, a chat
-216 · 55-cloud-session-device-tools.md:190 · Not the same as the Desktop's Chat mode
-216 · 55-cloud-session-device-tools.md:194 · Why it matters
+215 · 55-cloud-session-device-tools.md:143 · For a skill author
+216 · 55-cloud-session-device-tools.md:160 · What the composer decides
+216 · 55-cloud-session-device-tools.md:172 · The hub can turn a chat into a workspace
+216 · 55-cloud-session-device-tools.md:184 · A cloud session can become, or be shown as, a chat
+216 · 55-cloud-session-device-tools.md:192 · Not the same as the Desktop's Chat mode
+216 · 55-cloud-session-device-tools.md:196 · Why it matters
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:20 · The probe
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:36 · What the agent does with a skill's text, by how it was installed
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:69 · Creating and changing a skill by asking in chat
@@ -1774,7 +1774,7 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:151 · Prompt blocks
 218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:163 · Tool denies
 218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:167 · MCP server placeholders
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:192 · For an author
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:196 · For an author
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:19 · Native Artifact in scheduled runs
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:32 · A publish grant per scheduled task
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:38 · Attached files no longer pin a task to this computer
@@ -1800,28 +1800,28 @@ state:cowork-architecture · state/cowork-architecture.md:86 · Filesystem & mou
 state:cowork-architecture · state/cowork-architecture.md:184 · Sub-agent execution (host-loop)
 state:cowork-architecture · state/cowork-architecture.md:272 · Session storage
 state:cowork-architecture · state/cowork-architecture.md:346 · Plugin roots
-state:cowork-architecture · state/cowork-architecture.md:414 · Runtime detection from a skill (lesson 116)
-state:cowork-architecture · state/cowork-architecture.md:468 · Re-verification at Desktop 1.18286.0 (2026-07-04)
-state:cowork-architecture · state/cowork-architecture.md:479 · Re-verification at Desktop 1.19367.0 (2026-07-08): cloud tasks are not new
-state:cowork-architecture · state/cowork-architecture.md:495 · Device automation surfaces (Desktop 1.22209.0, lessons 125-126)
-state:cowork-architecture · state/cowork-architecture.md:530 · LEAD (unconfirmed): 1.24012.1 may move session state off the host (L132)
-state:cowork-architecture · state/cowork-architecture.md:555 · Execution lanes (L138)
-state:cowork-architecture · state/cowork-architecture.md:604 · Lane facts re-derived at Desktop 1.46388.4 / agent 2.1.260 (L180)
-state:cowork-architecture · state/cowork-architecture.md:630 · A cloud session's outputs contract is switched per session (L198; formerly "Cloud Cowork's outputs contract")
-state:cowork-architecture · state/cowork-architecture.md:638 · A THIRD surface Desktop calls "cloud" — the claude.ai code-execution container (relayed, 2026-09-22)
-state:cowork-architecture · state/cowork-architecture.md:671 · Four surfaces, one probe (L198, 2026-09-23, first-party)
-state:cowork-architecture · state/cowork-architecture.md:688 · Scheduled tasks migrate themselves to the cloud (L208)
-state:cowork-architecture · state/cowork-architecture.md:701 · Where a new task runs (L210)
-state:cowork-architecture · state/cowork-architecture.md:727 · Desktop 2.9939.2 additions (L212–L214)
-state:cowork-architecture · state/cowork-architecture.md:751 · Desktop 2.16120.0 additions (L219–L221)
-state:cowork-architecture · state/cowork-architecture.md:777 · `computer://` links by lane (L215)
-state:cowork-architecture · state/cowork-architecture.md:786 · A cloud session and the user's computer (L215)
-state:cowork-architecture · state/cowork-architecture.md:804 · What Anthropic's help center says (relayed, read 2026-10-02)
-state:cowork-architecture · state/cowork-architecture.md:819 · One conversation, two runtimes (L216)
-state:cowork-architecture · state/cowork-architecture.md:834 · Credential delivery and build identity (L207)
-state:cowork-architecture · state/cowork-architecture.md:844 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
-state:cowork-architecture · state/cowork-architecture.md:881 · Mount model and delete policy (L139, L140)
-state:cowork-architecture · state/cowork-architecture.md:999 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
+state:cowork-architecture · state/cowork-architecture.md:416 · Runtime detection from a skill (lesson 116)
+state:cowork-architecture · state/cowork-architecture.md:470 · Re-verification at Desktop 1.18286.0 (2026-07-04)
+state:cowork-architecture · state/cowork-architecture.md:481 · Re-verification at Desktop 1.19367.0 (2026-07-08): cloud tasks are not new
+state:cowork-architecture · state/cowork-architecture.md:497 · Device automation surfaces (Desktop 1.22209.0, lessons 125-126)
+state:cowork-architecture · state/cowork-architecture.md:532 · LEAD (unconfirmed): 1.24012.1 may move session state off the host (L132)
+state:cowork-architecture · state/cowork-architecture.md:557 · Execution lanes (L138)
+state:cowork-architecture · state/cowork-architecture.md:606 · Lane facts re-derived at Desktop 1.46388.4 / agent 2.1.260 (L180)
+state:cowork-architecture · state/cowork-architecture.md:632 · A cloud session's outputs contract is switched per session (L198; formerly "Cloud Cowork's outputs contract")
+state:cowork-architecture · state/cowork-architecture.md:640 · A THIRD surface Desktop calls "cloud" — the claude.ai code-execution container (relayed, 2026-09-22)
+state:cowork-architecture · state/cowork-architecture.md:673 · Four surfaces, one probe (L198, 2026-09-23, first-party)
+state:cowork-architecture · state/cowork-architecture.md:690 · Scheduled tasks migrate themselves to the cloud (L208)
+state:cowork-architecture · state/cowork-architecture.md:703 · Where a new task runs (L210)
+state:cowork-architecture · state/cowork-architecture.md:732 · Desktop 2.9939.2 additions (L212–L214)
+state:cowork-architecture · state/cowork-architecture.md:756 · Desktop 2.16120.0 additions (L219–L221)
+state:cowork-architecture · state/cowork-architecture.md:782 · `computer://` links by lane (L215)
+state:cowork-architecture · state/cowork-architecture.md:791 · A cloud session and the user's computer (L215)
+state:cowork-architecture · state/cowork-architecture.md:809 · What Anthropic's help center says (relayed, read 2026-10-02 and 2026-10-03)
+state:cowork-architecture · state/cowork-architecture.md:831 · One conversation, two runtimes (L216)
+state:cowork-architecture · state/cowork-architecture.md:846 · Credential delivery and build identity (L207)
+state:cowork-architecture · state/cowork-architecture.md:859 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
+state:cowork-architecture · state/cowork-architecture.md:896 · Mount model and delete policy (L139, L140)
+state:cowork-architecture · state/cowork-architecture.md:1014 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
 state:cowork-control-protocol · state/cowork-control-protocol.md:23 · Spawn contract
 state:cowork-control-protocol · state/cowork-control-protocol.md:87 · Handshake
 state:cowork-control-protocol · state/cowork-control-protocol.md:128 · Subtype inventory pointer
