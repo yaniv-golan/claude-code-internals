@@ -4,7 +4,7 @@ title: Cowork runtime architecture (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
 sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198, 207, 208, 210, 211, 212, 213, 214, 215, 216]
-updated: 2026-10-01
+updated: 2026-10-02
 read_more: ["https://ccinternals.dev/cowork/?ref=skill"]
 ---
 
@@ -323,8 +323,8 @@ Plugin hooks **do** fire in Cowork; the earlier belief that
    — the **only** one a real Desktop Cowork session reads.
 
 A plugin not installed into root #3 is simply never loaded into a Cowork
-session — no hooks fire, with no error. Fix: install via the Cowork app UI
-(or org-remote/RPM); the standalone CLI `--cowork` path does not reach the
+session — no hooks fire, with no error. Fix: install or upload it in the Desktop app
+(Customize → Plugins; or org-remote/RPM); the standalone CLI `--cowork` path does not reach the
 Desktop's namespace.
 
 At session start, the host loop symlinks each enabled plugin into a temp
@@ -383,9 +383,11 @@ survive; v2.12.2 probe). A skill's shell commands run in the third, so a bare
 (`disableSkillShellExecution` short-circuit on `CLAUDE_CODE_IS_COWORK`; elsewhere each command
 goes through the shell tool's permission check (CLI 2.1.286 `Cle`): allowed → run and substituted; needs
 approval in auto mode → rewritten to `[run this first, exactly as written, and use its output: …]` for the
-model to run or not; otherwise the skill fails to load. In cloud
-Cowork a skill invoked before the container is set up (lazily, e.g. on the first shell call) keeps it raw with no marker (relayed,
-untraced); after setup, an allowed read inside `/home/claude` ran and a write or a read outside it was handed
+model to run or not; otherwise the skill fails to load. In the cloud
+a skill invoked before the conversation's session exists (it is set up lazily by the first turn needing a shell or file
+tool) is expanded outside the agent (most likely the chat backend): `!cmd` raw and never run, plugin tokens literal, base `/mnt/skills/plugins/<p>:<s>`
+(2026-10-02, Desktop 2.19675.0 + web, agent 2.1.287); after setup Claude Code's loader expands it, and a failing `!cmd`
+leaves a typed slash command with no reply or error (L217). After setup, an allowed read inside `/home/claude` ran and a write or a read outside it was handed
 off (relayed 2026-10-01, agent 2.1.286); an uploaded skill's is left raw in the CLI — L217), and hook env-exports don't cross
 the host/VM bridge — neither can serve as a probe.
 
@@ -605,7 +607,7 @@ and `/mnt/attach` are **0 in all three**; positive control `/mnt/user-data` 5/5/
 `CLAUDE_CODE_ENTRYPOINT` 91/93/16. So the flat skills mount is not a Claude Code concept — consistent
 with a different runtime rather than a Cowork variant.
 
-**`/mnt/skills` is NOT a discriminator either:** cloud Cowork also lists `skills` under `/mnt` (L198's table, and a relayed session on 2026-09-28). Use `CLAUDE_CODE_ENTRYPOINT` and whether a `claude` binary exists (cloud Cowork: `/opt/node22/bin/claude`).
+**`/mnt/skills` is NOT a discriminator either:** a cloud session also lists `skills` under `/mnt` (L198's table, and a relayed session on 2026-09-28). Use `CLAUDE_CODE_ENTRYPOINT` and whether a `claude` binary exists (cloud session: `/opt/node22/bin/claude`).
 
 **`/mnt/user-data` is NOT a discriminator.** The CLI hardcodes it: `UKr="/mnt/user-data/uploads"` is
 the stage-file root (overridable by `CLAUDE_STAGE_FILE_ROOT`) and `/mnt/user-data/working` is the
@@ -654,8 +656,12 @@ The claude.ai interface picks the lane per new task. Its router returns the firs
 `local_ungated`, `local_override_forced`, **`local_opted_out`** (account setting
 `dramatic_shrimp_enabled` false; unset means cloud), folder/Space-forced,
 Auto/Bypass-forced, Chrome/options/computer-use/plugin-stdio, else `remote`. The account
-setting is what Settings → General → Tasks "Only on this computer" (row `cowork-backend`)
-and the task-header Cloud popover both write; switching to local saves only after the
+setting is what "Only on this computer" (row `cowork-backend`; 2026-10-02, Desktop 2.19675.0:
+Settings → General → Tasks on the merged interface, Settings → Cowork on the older one) and
+the task-header Cloud popover both write (announced, not yet observed: from 2026-10-06 new Cowork
+tasks run in the cloud and the option, "Only on your computer" in Settings > General per Anthropic's
+support article read 2026-10-02, is removed; tasks already started locally stay local; scheduled
+tasks move to the cloud; L210); switching to local saves only after the
 feedback dialog's main button. A scheduled task's own "Only on this computer" switch is a
 separate, per-task setting. Measured 2026-09-25 on Desktop 2.9939.2: with the account
 setting saved and the app restarted, new tasks still ran in the cloud (`/home/claude`,
@@ -735,7 +741,8 @@ Mac only through `mcp__remote-devices__*` tools the running Desktop serves (defe
 loaded via ToolSearch). `get_device_info` shows platform, Desktop build, every top-level
 home-folder name (Desktop/Documents/Downloads flagged `requiresGrantBeforeListing`) and
 local MCP server states before any grant. `device_request_folder_access` → "Allow once",
-session-scoped. `device_stage_files` copies files into `/mnt/user-data/uploads/<folder>/…`
+session-scoped; a protected location (`~/.claude` and `~/.claude/skills` tried) still gets the prompt and is refused
+only after Allow once (2026-10-02, Desktop 2.19675.0; L215). `device_stage_files` copies files into `/mnt/user-data/uploads/<folder>/…`
 (byte-identical, via the Files API); `device_commit_files` writes a file from the outputs
 folder (or a `SendUserFile` id) to an absolute path inside a granted folder, with an mtime
 guard (`force` overrides), no per-write prompt. `device_bash` runs in the **Mac's Cowork VM**
@@ -747,11 +754,13 @@ at `$HOME/mnt/<folder>`, `/bin/sh` → dash); deleting needs
 
 ## One conversation, two runtimes (L216)
 
-Code-level (claude.ai client + its embedded `bard_api.proto`/`conversation.proto`, not
-observed live): the composer sends to `session` / `hub` / `rest` by mount point and
+Code-level (claude.ai client + its embedded `bard_api.proto`/`conversation.proto`); seen live
+on 2026-10-02 (Desktop 2.19675.0 + web, merged composer): a new conversation is `/chat/<uuid>`,
+the first shell/file turn shows "Getting set up for this session  Ns ›" (~5 s), then the header
+reads "Claude Desktop (macOS), Connected"; the URL stays `/chat/`. The composer sends to `session` / `hub` / `rest` by mount point and
 conversation record, not by message. A hub conversation has a work mode
 (`CHAT` / `WORKSPACE_PROXY` / `TOOL_FAULT_PROXY` / `FULL_PROXY`) and can be upgraded into
-a cloud Cowork workspace (`WorkspaceUpgrade`, lane `COWORK_REMOTE`; triggers incl.
+a cloud session, a Cowork workspace (`WorkspaceUpgrade`, lane `COWORK_REMOTE`; triggers incl.
 `INTERCEPTED_TOOL`, `ATTACHMENT`, `MEDIA_LIMIT`, `DEVICE_ELECTION`), by the client
 (`workModeOverride:"workspace_proxy"` on folder+device pick), the model
 (`hub_workspace_setup` tool) or presumably the server. A Cowork session can be continued

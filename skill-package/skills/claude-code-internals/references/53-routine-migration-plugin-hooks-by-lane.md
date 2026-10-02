@@ -69,7 +69,7 @@ When a scheduled task moves, it changes lane: its working directory, what a rela
 
 ## Cloud lane (live)
 
-A probe plugin installed through Cowork → Customize → Plugins declared SessionStart, UserPromptSubmit, PreToolUse (matchers `Bash`, `mcp__workspace__bash`, `Read`, `*`), PostToolUse (`*`) and Stop; each hook appended one line to a log and never blocked. A new task ran on the cloud lane (Desktop 2.9939.2); the log, read back from the container:
+A probe plugin installed through Customize → Plugins declared SessionStart, UserPromptSubmit, PreToolUse (matchers `Bash`, `mcp__workspace__bash`, `Read`, `*`), PostToolUse (`*`) and Stop; each hook appended one line to a log and never blocked. A new task ran on the cloud lane (Desktop 2.9939.2); the log, read back from the container:
 
 | event | fired | detail |
 |---|---|---|
@@ -105,12 +105,12 @@ A matcher made only of letters, digits, `_` and `|` is an exact, case-sensitive 
 function Ope(e,n){let t=n&&Object.hasOwn(n,e)?n[e]:void 0;return t!==void 0&&t!==e?[e,t]:[e]}
 ```
 
-Local host-loop Cowork passes the alias `Bash` → `mcp__workspace__bash` (a first-class spawn option since about Desktop 1.20186.1, Ch35/L121), so a `Bash` matcher also matches the Cowork shell, and the hook receives `tool_name` `mcp__workspace__bash` — seen live above. A session without that alias — older Desktop builds, or anything that starts the agent without it — gives a `Bash` matcher nothing to match; a reported `Bash` hook that never ran (May 2026) predates the alias. In cloud Cowork the shell is `Bash` itself. The file tools keep their names (`Read`, `Write`, `Edit`) on both lanes.
+Local host-loop Cowork passes the alias `Bash` → `mcp__workspace__bash` (a first-class spawn option since about Desktop 1.20186.1, Ch35/L121), so a `Bash` matcher also matches the Cowork shell, and the hook receives `tool_name` `mcp__workspace__bash` — seen live above. A session without that alias — older Desktop builds, or anything that starts the agent without it — gives a `Bash` matcher nothing to match; a reported `Bash` hook that never ran (May 2026) predates the alias. In a cloud session the shell is `Bash` itself. The file tools keep their names (`Read`, `Write`, `Edit`) on both lanes.
 
 ## Two traps
 
 - **A silent hook leaves no trace.** The agent writes no transcript record for a hook that exits 0 with empty output. A missing PreToolUse or Stop record in a session therefore proves nothing; only hooks that print, add context, or block show up. (On a local lane the stream reports only SessionStart hook activity anyway — L203.)
-- **A missing hook script can block, depending on the shell and the event.** `dash`, the usual `/bin/sh` on Debian and Ubuntu, exits **2** when it cannot open a script, which is the hook "block" code. macOS `sh` and `bash` exit 127, which is not (all three measured). The agent recognises this case only for a plugin's UserPromptSubmit hook and for any Stop, SubagentStop, TaskCompleted or TeammateIdle hook: exit 2 with empty output and a "no such file" or "can't open" error becomes a visible non-blocking error ("Hook script appears to be missing … Treating as non-blocking", with a hint to reinstall the plugin). For every other event — PreToolUse included — the exit 2 counts as a real block, so under `dash` a missing script refuses every call it matches. A hook that only warns when tested on a Mac can block on Linux. `/bin/sh` is `dash` both in the cloud Cowork container and in the Mac's Cowork VM (measured 2026-09-27, L215); local host-loop hooks run on macOS.
+- **A missing hook script can block, depending on the shell and the event.** `dash`, the usual `/bin/sh` on Debian and Ubuntu, exits **2** when it cannot open a script, which is the hook "block" code. macOS `sh` and `bash` exit 127, which is not (all three measured). The agent recognises this case only for a plugin's UserPromptSubmit hook and for any Stop, SubagentStop, TaskCompleted or TeammateIdle hook: exit 2 with empty output and a "no such file" or "can't open" error becomes a visible non-blocking error ("Hook script appears to be missing … Treating as non-blocking", with a hint to reinstall the plugin). For every other event — PreToolUse included — the exit 2 counts as a real block, so under `dash` a missing script refuses every call it matches. A hook that only warns when tested on a Mac can block on Linux. `/bin/sh` is `dash` both in a cloud session's container and in the Mac's Cowork VM (measured 2026-09-27, L215); local host-loop hooks run on macOS.
 
 ## For a plugin author
 
@@ -125,13 +125,15 @@ Local host-loop Cowork passes the alias `Bash` → `mcp__workspace__bash` (a fir
 
 **The claude.ai interface, not the Desktop, picks the lane for a new Cowork task. Its code says an account that has opted out of cloud always gets a local session. On the capturing machine with Desktop 2.9939.2 the opt-out was saved, the app restarted, and new tasks still ran in the cloud — with and without Auto mode. With Desktop 2.16120.0 plain new tasks have run locally again on the same machine, but not every time. Check where each task ran.**
 
+**Announced: local Cowork tasks end on 2026-10-06 (not yet observed).** Anthropic's support article "Use Claude Cowork on web, desktop, and mobile" (read 2026-10-02) says "Claude Cowork is now just Claude. Ask for what you need, and Claude decides whether that's a quick answer or a task", "rolling out gradually to Pro and Max plans, with more plans to follow", and "On October 6, 2026, new Cowork tasks run in the cloud and the **Only on your computer** option in **Settings > General** will be removed." It adds: "Tasks you already started on your computer stay there, and you can keep working on them until they're done" and "Your scheduled tasks move to the cloud too, including ones that use files on your computer." On 2026-10-02 the setting read "Only on this computer", under Settings → General → Tasks on the merged interface and under Settings → Cowork on the older one. Press reports also give Team and Free plans a later date and Enterprise admins at least 30 days' notice; the article does not say so, and that was not checked. What this lesson says about the local lane still describes existing local tasks and builds before the change.
+
 ## Three controls with one name
 
 "Only on this computer" labels three different things:
 
 | Where | What it stores |
 |---|---|
-| Settings → General → Tasks (row id `cowork-backend`, deep link `?highlight=cowork_backend`); description "Stops when the app closes or this computer sleeps" | the account setting below |
+| "Only on this computer", described "Stops when the app closes or this computer sleeps" (row id `cowork-backend` in the code). Where it sits depends on the interface generation (Desktop 2.19675.0, 2026-10-02): on the merged interface (no Chat/Cowork choice; a Personal organization) under Settings → General → Tasks, next to "Trusted folders" and "Preferred browser"; on the older interface (a Team organization) under Settings → Cowork, next to "Cowork files", "Trusted Cowork folders", "Preferred browser", "Open links in built-in browser" and "Allowed sites" | the account setting below |
 | the Cloud/"Beta" popover in the task header | the same account setting |
 | a scheduled task's form ("Advanced" badge) | that task's own location, `local` or `remote` |
 

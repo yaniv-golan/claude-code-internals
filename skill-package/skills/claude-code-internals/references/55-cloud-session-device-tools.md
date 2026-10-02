@@ -1,4 +1,4 @@
-Updated: 2026-10-01 | Source: **`app.asar` 2.9939.2** (the live install), **a live probe in a cloud Cowork task on 2026-09-27** (Desktop 2.9939.2 connected, `CLAUDE_CODE_ENTRYPOINT=remote_cowork`), this machine's Desktop log and the probe folder on disk, and the claude.ai interface code the Desktop fetched on 2026-09-24/25 (three builds, including the protobuf descriptors embedded in it); plus the device tools' schemas and one commit run relayed from a peer session's cloud Cowork probes on 2026-10-01 (Desktop 2.16120.0). **Does NOT move the CLI or Desktop baselines.**
+Updated: 2026-10-02 | Source: **first-hand probe runs on 2026-10-02** (Desktop 2.19675.0 and claude.ai web, cloud agent 2.1.287) for the folder card, the protected-path refusal, Chrome and the lazy session start; **`app.asar` 2.9939.2** (the live install), **a live probe in a cloud Cowork task on 2026-09-27** (Desktop 2.9939.2 connected, `CLAUDE_CODE_ENTRYPOINT=remote_cowork`), this machine's Desktop log and the probe folder on disk, and the claude.ai interface code the Desktop fetched on 2026-09-24/25 (three builds, including the protobuf descriptors embedded in it); plus the device tools' schemas and one commit run relayed from a peer session's cloud Cowork probes on 2026-10-01 (Desktop 2.16120.0). **Does NOT move the CLI or Desktop baselines.**
 
 Prompted by a review request from the skill-creator-plus project, whose maintainer had watched a cloud session started from the web list folders on their Mac.
 
@@ -15,11 +15,11 @@ Prompted by a review request from the skill-creator-plus project, whose maintain
 
 # LESSON 215 — THE DEVICE TOOLS
 
-**A cloud Cowork session reaches the user's computer only through a family of `mcp__remote-devices__…` tools that the running Desktop app serves. The session's own file tools and shell act on the cloud container. A path on the Mac passed to the ordinary Write tool "succeeds" and creates the file in the container, not on the Mac. Files come in by staging a copy, go back by committing a file from the outputs folder, and shell commands run in the Mac's own Cowork Linux VM with the granted folder mounted.**
+**A cloud session reaches the user's computer only through a family of `mcp__remote-devices__…` tools that the running Desktop app serves. The session's own file tools and shell act on the cloud container. A path on the Mac passed to the ordinary Write tool "succeeds" and creates the file in the container, not on the Mac. Files come in by staging a copy, go back by committing a file from the outputs folder, and shell commands run in the Mac's own Cowork Linux VM with the granted folder mounted.**
 
 ## When it applies
 
-A Cowork task running in the cloud, while the Desktop app on the user's computer is open and signed in to the same account. The task header shows the computer as a connected device (the laptop icon with a green dot), and the session's side panel lists "Used in this session: <computer> …/<folder>" once a folder is in use. The tools are deferred: the session loads them through ToolSearch ("Setting up the requested device tool access") before the first call.
+A Cowork task running in the cloud, while the Desktop app on the user's computer is open and signed in to the same account. The conversation header shows the computer as a connected device (the laptop icon with a green dot; on 2026-10-02 it read "Claude Desktop (macOS), Connected" in a merged-composer `/chat/` conversation too), and the session's side panel lists "Used in this session: <computer> …/<folder>" once a folder is in use. The tools are deferred: the session loads them through ToolSearch ("Setting up the requested device tool access") before the first call. The user sees that step only as a "Loaded tools" row that does not expand, so which tools were loaded is not visible in the interface (Desktop 2.19675.0, 2026-10-02).
 
 The family, as the Desktop registers it (asar 2.9939.2): `list_devices`, `get_device_info`, `device_list_dir`, `device_stage_files`, `device_commit_files`, `device_bash`, `device_request_folder_access`, `device_request_delete_permission`, the artifact tools `create_artifact` / `update_artifact` / `list_artifacts` / `list_legacy_live_artifacts`, `project_memory_read` / `project_memory_write`, the `computer_*` screen-control tools (L126) and the built-in browser's `Claude_Browser__*` tools. All carry the `mcp__remote-devices__` prefix.
 
@@ -36,7 +36,7 @@ So a cloud session learns the names of the user's home folders and local servers
 
 ## Getting a folder
 
-`device_request_folder_access` takes paths and a reason. The user sees "Claude wants to use a folder on your computer", with the path, the reason, a note that files the task uses will leave the device because it runs in the cloud, and **Decline** / **Allow once**. The grant covers that session only. Home directories, system roots and protected locations cannot be requested. On approval the tool returns `{"granted":["/Users/<user>/<folder>"]}` and the folder appears in `connectedFolders`.
+`device_request_folder_access` takes paths and a reason. The user sees a card in the conversation (Desktop 2.19675.0, 2026-10-02): "Claude wants to use a folder on your computer", then under "From the tool:" the path and "Claude will be able to read and change files in this folder for this session. Because this task runs in the cloud, files Claude uses leave your device.", a **Folder** row and a **Why** row with the reason, and the buttons **Decline** (Esc) and **Allow once** (⌘↵). The grant covers that session only. Home directories, system roots and protected locations are never granted. For a protected location the prompt is still shown and the refusal comes after Allow once (below; seen for `~/.claude` and `~/.claude/skills`); home directories and system roots were not tried. On approval the tool returns `{"granted":["/Users/<user>/<folder>"]}` and the folder appears in `connectedFolders`.
 
 That prompt is drawn by the client the user is chatting in, not by the Desktop app: its wording is not in the asar. Where the user approves depends on the tool's mode, which the Desktop picks from three gates (asar 2.16120.0, values from the 2026-10-01 cache):
 
@@ -49,7 +49,7 @@ That prompt is drawn by the client the user is chatting in, not by the Desktop a
 
 On 2026-10-01 all three gates were on, so the mode was classifier. `2745857735` was forced on; the other two were served with their default values (source `defaultValue` in the cache, not absent from it).
 
-The computer checks the paths only after the request arrives, and it checks for protected locations before anything else, ahead of its own native dialog. In card or classifier mode the user can therefore click **Allow once** for a protected folder and still get a refusal: "paths[0] is a protected system or credential location and can't be connected. Nothing was granted." The message names the parameter, not the path. That wording is used only when the path was written with `~`; the same folder written as an absolute path gets the general "A requested folder can't be granted to this session" text.
+The computer checks the paths only after the request arrives, and it checks for protected locations before anything else, ahead of its own native dialog. The prompt in the user's client is not filtered: in card or classifier mode it is shown for a protected folder, and the refusal comes only after the user clicks **Allow once**: "paths[0] is a protected system or credential location and can't be connected. Nothing was granted." The message names the parameter, not the path. That wording is used only when the path was written with `~`; the same folder written as an absolute path gets the general "A requested folder can't be granted to this session" text.
 
 The protected locations, all relative to the home folder (asar 2.16120.0):
 
@@ -58,7 +58,7 @@ The protected locations, all relative to the home folder (asar 2.16120.0):
 - folders that start programs at login: `Library/LaunchAgents`, `Library/LaunchDaemons`;
 - shell startup files (`.zshrc`, `.bashrc`, `.profile` and their siblings), `.netrc`, and `.config/powershell`.
 
-A folder inside one of these counts as protected too. Both `~/.claude` and `~/.claude/skills` were refused in a cloud session on 2026-10-01 (relayed, one try each).
+A folder inside one of these counts as protected too. On 2026-10-02 (Desktop 2.19675.0, Personal organization, a merged-composer conversation), a request for `~/.claude/skills` and one for `~/.claude` each showed the card with **Allow once**, and after Allow once each failed with the protected-location refusal. In one of them the model then told the user the refusal had come before any prompt reached them; the screenshot of the card shows otherwise.
 
 From the tool's schema (2026-10-01): one call takes 1 to 8 canonical absolute paths (symlinks and `.`/`..` are refused) and a `reason` of at most 500 characters. The user approves or declines the set as a whole, and after a decline the schema tells the model not to repeat the request.
 
@@ -132,6 +132,12 @@ So in the cloud, only a file this conversation's own tools produced gets a worki
 
 The client code (the claude.ai interface, builds of 2026-09-24/25) carries a path-based rule for cloud sessions — handed-over files, the outputs mount, `/mnt/user-data/working/` and host paths are openable — that does not match these results; the rendering follows the conversation's own list of produced files instead, which leaves out writes it marks as working-document writes. That the list is the mechanism is inferred from the code; the behaviour is measured. What happens after a cloud conversation is archived was not tested: the archive action was not offered in the app on this account, and the code says only handed-over files stay openable.
 
+## Chrome from a cloud conversation
+
+On 2026-10-02, in merged-composer conversations on the web and on Desktop 2.19675.0, asking which browsers were connected listed this computer's Chrome (extension 1.0.98). The tool rows do not expand, so the list is in the model's text, but it matched a direct `list_connected_browsers` call from a separate Claude Code session on the same machine. A turn that only used Chrome set up no session: no "Getting set up" notice and no session fetch (L217).
+
+The browser list can be empty while the extension looks fine, seen in the Claude Code CLI, not a cloud session. In a CLI session (2.1.286) on this machine, `list_connected_browsers` returned an empty list and the Chrome tools said "Browser extension is not connected", although the extension's side panel worked and showed the same account and organization. Logging out and back in from the extension's options page fixed it, without restarting the session. A working side panel does not show that the extension is registered with the bridge.
+
 ## For a skill author
 
 - In a cloud session, link only to files the session wrote or sent in this conversation, and prefer handing the file over. A `computer://` link to anything else, including the user's own files on their computer, shows as plain text. Locally any real file can be linked, and a link written with the VM path still works.
@@ -139,15 +145,15 @@ The client code (the claude.ai interface, builds of 2026-09-24/25) carries a pat
 - Do not trust a successful Write to a `/Users/…` path in a cloud session. Check where the session is: `pwd` is `/home/claude` there.
 - A shell command meant for the user's files must go through `device_bash` and `$HOME/mnt/<folder>`, and it runs on Linux, not macOS.
 - Deleting in a connected folder needs its own approval. Plan for it being declined.
-- A cloud session cannot be granted `~/.claude` or anything inside it, and `get_device_info` does not list it. A skill that needs the user's local skills or settings has to ask the user to bring the files in another way.
+- A cloud session cannot be granted `~/.claude` or anything inside it, and `get_device_info` does not list it. The user is still shown the folder prompt and can click Allow once; the refusal comes after. A skill that needs the user's local skills or settings has to ask the user to bring the files in another way.
 
 ---
 
 # LESSON 216 — ONE CONVERSATION, TWO RUNTIMES
 
-**In the current claude.ai client, "chat" and "Cowork" are not two separate products that a conversation belongs to for good. A conversation carries a work mode, and a chat can be upgraded into a cloud Cowork workspace partway through, by the client, the server or the model. A Cowork session can also be continued as, or shown as, a chat. So the runtime a skill finds itself in is not fixed by what the user opened.**
+**In the current claude.ai client, "chat" and "Cowork" are not two separate products that a conversation belongs to for good. A conversation carries a work mode, and a chat can be upgraded into a cloud session (a Cowork workspace) partway through, by the client, the server or the model. A Cowork session can also be continued as, or shown as, a chat. So the runtime a skill finds itself in is not fixed by what the user opened.**
 
-This lesson is read from the client code and the API schema it embeds. None of it was observed in a live session, and the server's decision logic is not visible.
+The mechanism is read from the client code and the API schema it embeds; the server's decision logic is not visible. The upgrade itself is seen live (2026-10-02, claude.ai web and Desktop 2.19675.0, an organization on the merged composer, which has no Chat/Cowork choice): a new conversation gets a `claude.ai/chat/<uuid>` URL and no cloud session. The first turn that needs a shell or file tool shows a status line "Getting set up for this session  Ns ›" with an elapsed counter for about 5 to 7 seconds, a cloud session (`cse_…`) is created, and the header's computer icon gets a green dot and reads "Claude Desktop (macOS), Connected". The URL stays `/chat/`. Which actor triggers it, and whether it is the workspace upgrade below, was not traced. L217 covers what it means for skills.
 
 ## What the composer decides
 
@@ -159,14 +165,14 @@ V=E?So?"session":za?"hub":"rest":rt&&a?"session":O===null?"rest":"hub"
 // rt: the page is a Cowork route;  a: an onSessionCreate handler;  O: the hub client is available
 ```
 
-A conversation that already has a Cowork session goes to that session. An ordinary conversation goes to the **hub** backend (the "bard" API, reported as `chat_backend "c3"`) when the hub client is available, else to the older REST backend. A new message on a Cowork page starts a session. The model, the tools and the message text are not inputs.
+A conversation that already has a Cowork session goes to that session. An ordinary conversation goes to the **hub** backend (the "bard" API, reported as `chat_backend "c3"`) when the hub client is available, else to the older REST backend. A new message on a Cowork page (`/cowork/…`, reached from the Chat/Cowork choice where an organization still has it) starts a session. The model, the tools and the message text are not inputs.
 
 ## The hub can turn a chat into a workspace
 
 The hub API's schema is embedded in the client as protobuf descriptors (`anthropic/bard/api/v1alpha/bard_api.proto` and `conversation.proto`, base64 string literals, so plain text search misses them):
 
 - **A conversation has a work mode**: `WORK_MODE_CHAT`, `WORK_MODE_WORKSPACE_PROXY`, `WORK_MODE_TOOL_FAULT_PROXY` or `WORK_MODE_FULL_PROXY`.
-- **A `WorkspaceUpgrade`** moves it into a workspace on the lane `WORKSPACE_UPGRADE_LANE_COWORK_REMOTE`, a cloud Cowork session. It can use a pre-provisioned session (`pre_rented_session_id`) and can continue an existing Cowork session (`continue_cowork_session_id`).
+- **A `WorkspaceUpgrade`** moves it into a workspace on the lane `WORKSPACE_UPGRADE_LANE_COWORK_REMOTE`, a cloud session. It can use a pre-provisioned session (`pre_rented_session_id`) and can continue an existing Cowork session (`continue_cowork_session_id`).
 - **Upgrade triggers**: `OPEN_WORKSPACE`, `INTERCEPTED_TOOL`, `FULL_PROXY_SEND`, `DEVICE_ELECTION`, `COWORK_CONTINUATION`, `ATTACHMENT`, `MEDIA_LIMIT`, `ARTIFACT_START` and `CCS_FIRST_SEND`.
 - **The client requests it on a send**, with `workModeOverride: "workspace_proxy"`, when the user has picked a local folder and a target device (device election).
 - **The model can start it mid-turn** through a tool named `hub_workspace_setup`. The client renders it as a workspace being set up, then tells the model the workspace is ready and to carry on with the task.
@@ -187,6 +193,6 @@ The Desktop app has its own "Chat mode" session (`sessionType "chat"`, L166). It
 
 ## Why it matters
 
-- The runtime a skill runs in can change between turns of one conversation. A chat with no sub-agent tool and no shell can become a cloud Cowork session with both, and possibly with a user's computer attached (L215).
+- The runtime a skill runs in can change between turns of one conversation. A chat with no sub-agent tool and no shell can become a cloud session with both, and possibly with a user's computer attached (L215).
 - A skill that routes by capability should check the tools it has at each step, not once at the start.
 - "The user opened Cowork" and "the user opened a chat" say less than they used to about where the skill will run.

@@ -693,9 +693,13 @@
     },
     "31": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "7af44c03bd392d73d74bb250845192cfa1185abfb8e385462f3d52802dcff365",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "033e968f1ef35ad0405ea51de4945ae07c5535b6e87b53ac52742c13a6173e03",
+      "prior_terms_sha256": "d00811d2c02a3a117a44a88e895d22c4435c5f5fb33d679fe0071cac0e497268",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
+      "replaced": [],
       "terms": [
         "plugin update says already up to date but new version exists",
         "how does claude plugin update detect a new version",
@@ -711,7 +715,8 @@
         "reserved marketplace name rejected",
         "add a private git marketplace for plugins",
         "plugin asks for API key when enabled",
-        "can plugins ship language servers or MCP servers"
+        "can plugins ship language servers or MCP servers",
+        "new plugin changes need a task run on this computer"
       ]
     },
     "32": {
@@ -2027,9 +2032,13 @@
     },
     "89": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-30",
-      "input_sha256": "118e355ca6ac0b467897c48de83a3a8492297712aa1fb6eb6ab6c279eb665b38",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "6b350fe779e99362823882ee1613dfa70f11a14d9ba455696f4b1d48ce3c2d8b",
+      "prior_terms_sha256": "9b7fa47f320b6f82bdab0356f7a7011394966ccaa10098879a044a9328a1cd54",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
+      "replaced": [],
       "terms": [
         "run claude session in background and free terminal",
         "background command says unknown command",
@@ -2045,7 +2054,8 @@
         "subagent in Cowork can't run shell commands",
         "why is Bash missing in Cowork?",
         "Cowork shell runs in Linux VM paths break",
-        "plugin hooks not firing in Cowork session"
+        "plugin hooks not firing in Cowork session",
+        "upload plugin in Cowork desktop app"
       ]
     },
     "90": {
@@ -4119,9 +4129,13 @@
     },
     "180": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-30",
-      "input_sha256": "710da726f8b600c1a60f0a80704eeb0d275f204b586fa150245e54ceaab2780d",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "084c946c7f2f88d16cf3cb720736c6c364288db17ef33f37a8acf343097009be",
+      "prior_terms_sha256": "ea440fa68f0ca6be883e48dbdd488301e10bd88801ae65cbf23a7661dc844291",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
+      "replaced": [],
       "terms": [
         "cowork remote vs local session",
         "where does the remote cowork prompt come from",
@@ -4137,7 +4151,10 @@
         "is this desktop update a no-op release",
         "comparing counts across different folders in bundle",
         "remote-only features inert in local session",
-        "how to tell if a session ran in the cloud"
+        "how to tell if a session ran in the cloud",
+        "where is the run locally setting",
+        "cowork ignores only on this computer",
+        "local cowork option being removed"
       ]
     },
     "181": {
@@ -4535,9 +4552,13 @@
     },
     "198": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "ea9df1d340502a4f2ed1343c451f8a0491943a3b0726dd94dc5b260235aa5b0f",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "30a9264a539a0e144d0d121b647549ffb017157e2bcc5f377a80446cd8f877b2",
+      "prior_terms_sha256": "1f40acd4ba1bd9ccd3d62e238cac813ef403040c5415e4e7e89212bf1f3c3c62",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
+      "replaced": [],
       "terms": [
         "relative path works differently in cloud vs local Cowork",
         "file written with relative path never shown to user",
@@ -4553,7 +4574,10 @@
         "Claude Code on the web pushed branch without asking",
         "skill portable across Cowork, web and chat",
         "can one Cowork session see other sessions' folders?",
-        "which working directory does each Claude environment use?"
+        "which working directory does each Claude environment use?",
+        "claude.ai chat running in cloud container",
+        "merged composer with no Chat or Cowork choice",
+        "why does my chat get a cloud session?"
       ]
     },
     "199": {
@@ -4794,9 +4818,13 @@
     },
     "209": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "cecf16357a481d9dae8b0d35bdde8575c5742bf647c61affa1fa7d80a2d99782",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "3497a8b6bbb214af08fc7d3f511d42fb4354ae2ae5711be61348799825e3a8f2",
+      "prior_terms_sha256": "1f30e5da2f2f2d41adf2e7f7979932e68f0aac5508f1d2a1f0fe3710b4dad99d",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
+      "replaced": [],
       "terms": [
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
@@ -4817,9 +4845,13 @@
     },
     "210": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-10-01",
-      "input_sha256": "b4d666d1600712dfef2c32e5fd2098f5eba8841ccf1b17da5147adf236663401",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "2b655f116c3890942cd15f9d44c302403af301d577bcfc33d4e12021ac6a0a62",
+      "prior_terms_sha256": "d3041b440241dccabc8b30981be6c31d0f37c23745589557b62f7ea9f1c72c2b",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
+      "replaced": [],
       "terms": [
         "cowork task runs in cloud instead of locally",
         "only on this computer setting ignored",
@@ -4835,7 +4867,10 @@
         "auto mode task still goes to cloud",
         "check working directory to see where task ran",
         "local mode works only sometimes",
-        "cloud task using my mac through bridge"
+        "cloud task using my mac through bridge",
+        "are local cowork tasks being removed?",
+        "scheduled tasks moving to the cloud",
+        "where is the only on this computer setting?"
       ]
     },
     "211": {
@@ -4940,15 +4975,29 @@
     "215": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-01",
-      "input_sha256": "8cbe09e7aeb53011120c43d2cc9f74295704f6baeaa28c0f6fbd9cc1dcd64807",
-      "prior_terms_sha256": "a95b4f9a4406257d0612476749d6e04f6da7f9b2728a594429d73c5382ac1b71",
+      "date": "2026-10-02",
+      "input_sha256": "2ecfb533178bfc884961db755242ee5494f084077e151419454b2baad16d7055",
+      "prior_terms_sha256": "fbd19bdd9d9d5187ebe4a6dd3ee5bbee4be2e521ac2fe940a534947a030d5a5e",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "73efe2660a7deb0ec98bd07ac6223d29097ca687",
-      "replaced": [],
+      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
+      "replaced": [
+        "file written but not on my computer",
+        "links to files show as plain text"
+      ],
+      "dropped": [
+        {
+          "term": "file written but not on my computer",
+          "why": "duplicate",
+          "duplicate_of": "why does write succeed but file is missing?"
+        },
+        {
+          "term": "links to files show as plain text",
+          "why": "duplicate",
+          "duplicate_of": "why is my file link not clickable in cloud?"
+        }
+      ],
       "terms": [
         "cloud task can't see files on my Mac",
-        "file written but not on my computer",
         "why does write succeed but file is missing?",
         "save output file to my laptop from cloud session",
         "read local file from cloud task",
@@ -4958,20 +5007,25 @@
         "commit refused because file changed since staged",
         "overwrite protection for user edited files",
         "cloud session sees my home folder names",
-        "links to files show as plain text",
         "why is my file link not clickable in cloud?",
         "upload file size limits from computer to cloud",
         "remote commands run in Linux not macOS",
         "cloud session can't access my Claude settings folder",
         "clicked allow but folder access still refused",
-        "which folders are protected from cloud access"
+        "which folders are protected from cloud access",
+        "use my Chrome browser from cloud chat",
+        "Chrome extension not connected but side panel works"
       ]
     },
     "216": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "15777c9e7f710c39b7d9d1d9a9d4219db8eeb9309a03a07a64c9b341fa78ff3d",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "62b2a558878dc896e7d597673fea23c823037d77d56191f02dbb42761b9a6ab1",
+      "prior_terms_sha256": "1137c7dcc357ad94ed47e55ddb48e5d826c60f75b68e4ad9a486b782f0b2b740",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
+      "replaced": [],
       "terms": [
         "chat turned into Cowork mid-conversation",
         "why did my chat switch to a workspace",
@@ -4987,17 +5041,20 @@
         "why do my skill's available tools change?",
         "local folder device selection starts workspace",
         "does opening chat mean no Cowork?",
-        "can a workspace go back to chat?"
+        "can a workspace go back to chat?",
+        "getting set up for this session delay",
+        "no Chat or Cowork option in composer",
+        "green dot on computer icon connected"
       ]
     },
     "217": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-01",
-      "input_sha256": "a58fa4fe87cfc0b3b068bbf7914eaf0c18f999f8b2df30e1b18a3e226774148c",
+      "date": "2026-10-02",
+      "input_sha256": "7224d5b13dbc1757c22dde2794f74a0633e34e48035ee2c738bae822c4ae428f",
       "prior_terms_sha256": "38b12b0d40b464a11b9752da9a9ce5c34d356289c75d43e2abed9a9e559b918e",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "f2bbb19c8f2611ac3d253a2e7c870fbb934547ac",
+      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
       "replaced": [],
       "terms": [
         "get my own skill into Cowork",
@@ -5022,9 +5079,13 @@
     },
     "218": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "63ba9d61bd825d8a5f64e43afe1b8444699e52122505605387167c5a8e706ec2",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "41acc7dd1b508b795a88a2559ae072567bbd426fb8f1d480e34fad2df9348ee5",
+      "prior_terms_sha256": "e8a515ce4a35864729cb5cafc0778bc7f33f7ca455af550ebb4893cd67dbb9d0",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
+      "replaced": [],
       "terms": [
         "plugin hook blocks prompt with no message in cloud",
         "prompt silently disappears in cloud session",

@@ -12,7 +12,7 @@
     },
     "agent_elf_parity_check": "2.1.280",
     "container_cc_version_observed": {
-      "newest": "2.1.286",
+      "newest": "2.1.287",
       "range": [
         "2.1.204",
         "2.1.207",
@@ -20,9 +20,10 @@
         "2.1.211",
         "2.1.212",
         "2.1.216",
-        "2.1.286"
+        "2.1.286",
+        "2.1.287"
       ],
-      "note": "Cloud-container agent versions seen in session API traffic (2.1.204–2.1.216) and, for 2.1.286, as `claude --version` inside a cloud Cowork container (relayed, a peer session's run on 2026-10-01, Desktop 2.16120.0); not an artifact we hold. Remote-lane claims are governed by this axis, NOT by cli/desktop_asar. CLAUDE_CODE_VERSION in the cloud env is NOT this axis: it is runner-set and never read by the agent (L174, corrected 2026-09-22). validate-state.js fails any registry/author-facts/state-page sentence asserting a cloud/remote agent build below the range minimum.",
+      "note": "Cloud-container agent versions seen in session API traffic (2.1.204–2.1.216) and, for 2.1.286, as `claude --version` inside a cloud Cowork container (relayed, a peer session's run on 2026-10-01, Desktop 2.16120.0), and 2.1.287 the same way in this project's cloud probe runs on 2026-10-02 (Desktop 2.19675.0 and claude.ai web; the probe skill's step ran `claude --version` in the container shell); not an artifact we hold. Remote-lane claims are governed by this axis, NOT by cli/desktop_asar. CLAUDE_CODE_VERSION in the cloud env is NOT this axis: it is runner-set and never read by the agent (L174, corrected 2026-09-22). validate-state.js fails any registry/author-facts/state-page sentence asserting a cloud/remote agent build below the range minimum.",
       "floor": {
         "version": "2.1.248",
         "observed_at": "2026-09-21",

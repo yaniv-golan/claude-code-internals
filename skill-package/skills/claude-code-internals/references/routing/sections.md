@@ -1723,11 +1723,11 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 209 · 53-routine-migration-plugin-hooks-by-lane.md:100 · Matchers and the Cowork shell
 209 · 53-routine-migration-plugin-hooks-by-lane.md:110 · Two traps
 209 · 53-routine-migration-plugin-hooks-by-lane.md:115 · For a plugin author
-210 · 53-routine-migration-plugin-hooks-by-lane.md:128 · Three controls with one name
-210 · 53-routine-migration-plugin-hooks-by-lane.md:140 · The account setting
-210 · 53-routine-migration-plugin-hooks-by-lane.md:154 · The routing function
-210 · 53-routine-migration-plugin-hooks-by-lane.md:170 · What happened
-210 · 53-routine-migration-plugin-hooks-by-lane.md:187 · For an author or tester
+210 · 53-routine-migration-plugin-hooks-by-lane.md:130 · Three controls with one name
+210 · 53-routine-migration-plugin-hooks-by-lane.md:142 · The account setting
+210 · 53-routine-migration-plugin-hooks-by-lane.md:156 · The routing function
+210 · 53-routine-migration-plugin-hooks-by-lane.md:172 · What happened
+210 · 53-routine-migration-plugin-hooks-by-lane.md:189 · For an author or tester
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:22 · The three layers
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:32 · Layer 1: publishing refuses `host:`
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:48 · Layer 2: the viewer enforces the manifest
@@ -1753,22 +1753,24 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 215 · 55-cloud-session-device-tools.md:97 · Commands: `device_bash` runs in the Mac's Cowork VM
 215 · 55-cloud-session-device-tools.md:113 · The shells
 215 · 55-cloud-session-device-tools.md:117 · `computer://` links: which ones work
-215 · 55-cloud-session-device-tools.md:135 · For a skill author
-216 · 55-cloud-session-device-tools.md:152 · What the composer decides
-216 · 55-cloud-session-device-tools.md:164 · The hub can turn a chat into a workspace
-216 · 55-cloud-session-device-tools.md:176 · A Cowork session can become, or be shown as, a chat
-216 · 55-cloud-session-device-tools.md:184 · Not the same as the Desktop's Chat mode
-216 · 55-cloud-session-device-tools.md:188 · Why it matters
+215 · 55-cloud-session-device-tools.md:135 · Chrome from a cloud conversation
+215 · 55-cloud-session-device-tools.md:141 · For a skill author
+216 · 55-cloud-session-device-tools.md:158 · What the composer decides
+216 · 55-cloud-session-device-tools.md:170 · The hub can turn a chat into a workspace
+216 · 55-cloud-session-device-tools.md:182 · A Cowork session can become, or be shown as, a chat
+216 · 55-cloud-session-device-tools.md:190 · Not the same as the Desktop's Chat mode
+216 · 55-cloud-session-device-tools.md:194 · Why it matters
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:20 · The probe
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:36 · What the agent does with a skill's text, by how it was installed
-217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:71 · Creating and changing a skill by asking in chat
-217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:92 · A conversation that changed runtime
-217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:96 · For an author
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:113 · The probe
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:123 · Prompt blocks
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:135 · Tool denies
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:139 · MCP server placeholders
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:164 · For an author
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:69 · Creating and changing a skill by asking in chat
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:83 · In the cloud, which loader expands a skill depends on whether the session exists yet
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:107 · A conversation that changed runtime
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:111 · For an author
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:129 · The probe
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:139 · Prompt blocks
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:151 · Tool denies
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:155 · MCP server placeholders
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:180 · For an author
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:19 · Native Artifact in scheduled runs
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:32 · A publish grant per scheduled task
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:38 · Attached files no longer pin a task to this computer
@@ -1794,26 +1796,26 @@ state:cowork-architecture · state/cowork-architecture.md:178 · Sub-agent execu
 state:cowork-architecture · state/cowork-architecture.md:266 · Session storage
 state:cowork-architecture · state/cowork-architecture.md:311 · Plugin roots
 state:cowork-architecture · state/cowork-architecture.md:374 · Runtime detection from a skill (lesson 116)
-state:cowork-architecture · state/cowork-architecture.md:426 · Re-verification at Desktop 1.18286.0 (2026-07-04)
-state:cowork-architecture · state/cowork-architecture.md:437 · Re-verification at Desktop 1.19367.0 (2026-07-08): cloud tasks are not new
-state:cowork-architecture · state/cowork-architecture.md:453 · Device automation surfaces (Desktop 1.22209.0, lessons 125-126)
-state:cowork-architecture · state/cowork-architecture.md:488 · LEAD (unconfirmed): 1.24012.1 may move session state off the host (L132)
-state:cowork-architecture · state/cowork-architecture.md:506 · Execution lanes (L138)
-state:cowork-architecture · state/cowork-architecture.md:554 · Lane facts re-derived at Desktop 1.46388.4 / agent 2.1.260 (L180)
-state:cowork-architecture · state/cowork-architecture.md:580 · Cloud Cowork's outputs contract is switched per session (L198)
-state:cowork-architecture · state/cowork-architecture.md:588 · A THIRD surface Desktop calls "cloud" — the claude.ai code-execution container (relayed, 2026-09-22)
-state:cowork-architecture · state/cowork-architecture.md:621 · Four surfaces, one probe (L198, 2026-09-23, first-party)
-state:cowork-architecture · state/cowork-architecture.md:638 · Scheduled tasks migrate themselves to the cloud (L208)
-state:cowork-architecture · state/cowork-architecture.md:651 · Where a new task runs (L210)
-state:cowork-architecture · state/cowork-architecture.md:672 · Desktop 2.9939.2 additions (L212–L214)
-state:cowork-architecture · state/cowork-architecture.md:696 · Desktop 2.16120.0 additions (L219–L221)
-state:cowork-architecture · state/cowork-architecture.md:722 · `computer://` links by lane (L215)
-state:cowork-architecture · state/cowork-architecture.md:731 · A cloud session and the user's computer (L215)
-state:cowork-architecture · state/cowork-architecture.md:748 · One conversation, two runtimes (L216)
-state:cowork-architecture · state/cowork-architecture.md:761 · Credential delivery and build identity (L207)
-state:cowork-architecture · state/cowork-architecture.md:771 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
-state:cowork-architecture · state/cowork-architecture.md:808 · Mount model and delete policy (L139, L140)
-state:cowork-architecture · state/cowork-architecture.md:914 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
+state:cowork-architecture · state/cowork-architecture.md:428 · Re-verification at Desktop 1.18286.0 (2026-07-04)
+state:cowork-architecture · state/cowork-architecture.md:439 · Re-verification at Desktop 1.19367.0 (2026-07-08): cloud tasks are not new
+state:cowork-architecture · state/cowork-architecture.md:455 · Device automation surfaces (Desktop 1.22209.0, lessons 125-126)
+state:cowork-architecture · state/cowork-architecture.md:490 · LEAD (unconfirmed): 1.24012.1 may move session state off the host (L132)
+state:cowork-architecture · state/cowork-architecture.md:508 · Execution lanes (L138)
+state:cowork-architecture · state/cowork-architecture.md:556 · Lane facts re-derived at Desktop 1.46388.4 / agent 2.1.260 (L180)
+state:cowork-architecture · state/cowork-architecture.md:582 · Cloud Cowork's outputs contract is switched per session (L198)
+state:cowork-architecture · state/cowork-architecture.md:590 · A THIRD surface Desktop calls "cloud" — the claude.ai code-execution container (relayed, 2026-09-22)
+state:cowork-architecture · state/cowork-architecture.md:623 · Four surfaces, one probe (L198, 2026-09-23, first-party)
+state:cowork-architecture · state/cowork-architecture.md:640 · Scheduled tasks migrate themselves to the cloud (L208)
+state:cowork-architecture · state/cowork-architecture.md:653 · Where a new task runs (L210)
+state:cowork-architecture · state/cowork-architecture.md:678 · Desktop 2.9939.2 additions (L212–L214)
+state:cowork-architecture · state/cowork-architecture.md:702 · Desktop 2.16120.0 additions (L219–L221)
+state:cowork-architecture · state/cowork-architecture.md:728 · `computer://` links by lane (L215)
+state:cowork-architecture · state/cowork-architecture.md:737 · A cloud session and the user's computer (L215)
+state:cowork-architecture · state/cowork-architecture.md:755 · One conversation, two runtimes (L216)
+state:cowork-architecture · state/cowork-architecture.md:770 · Credential delivery and build identity (L207)
+state:cowork-architecture · state/cowork-architecture.md:780 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
+state:cowork-architecture · state/cowork-architecture.md:817 · Mount model and delete policy (L139, L140)
+state:cowork-architecture · state/cowork-architecture.md:923 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
 state:cowork-control-protocol · state/cowork-control-protocol.md:17 · Spawn contract
 state:cowork-control-protocol · state/cowork-control-protocol.md:81 · Handshake
 state:cowork-control-protocol · state/cowork-control-protocol.md:122 · Subtype inventory pointer

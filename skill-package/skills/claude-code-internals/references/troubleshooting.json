@@ -2317,7 +2317,7 @@
     210,
     208
    ],
-   "hint": "The claude.ai interface picks the lane; its code returns local_opted_out when the account setting dramatic_shrimp_enabled is false, but a saved opt-out still gave cloud sessions on 2026-09-25 (also in Auto mode). Switching to local saves only after the feedback dialog's main button. Proven local route: a scheduled task with its own 'Only on this computer' switch on, run with Run now. Check with pwd: /sessions/<slug> local, /home/claude cloud."
+   "hint": "The claude.ai interface picks the lane; its code returns local_opted_out when the account setting dramatic_shrimp_enabled is false, but a saved opt-out still gave cloud sessions on 2026-09-25 (also in Auto mode). The setting is under Settings → General → Tasks on the merged interface and Settings → Cowork on the older one (2026-10-02). Switching to local saves only after the feedback dialog's main button. Proven local route: a scheduled task with its own 'Only on this computer' switch on, run with Run now. Check with pwd: /sessions/<slug> local, /home/claude cloud."
   },
   {
    "pattern": [
@@ -2469,7 +2469,7 @@
     217,
     206
    ],
-   "hint": "Ask Claude in Cowork to create or change the skill; confirm the Save skill / Update skill card. An update keeps the skill's scripts and other files. A skill created in chat is instructions-only. Skills belong to an organization: a skill uploaded in another org is not found."
+   "hint": "Ask Claude in a Cowork task to create or change the skill; confirm the Save skill / Update skill card (seen 2026-09-29, Desktop 2.9939.4; on organizations with the merged composer, whether these cards appear in a chat was not checked). An update keeps the skill's scripts and other files. A skill created in chat is instructions-only. Skills belong to an organization: a skill uploaded in another org is not found."
   },
   {
    "pattern": [

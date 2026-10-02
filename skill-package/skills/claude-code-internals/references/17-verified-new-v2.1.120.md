@@ -1217,7 +1217,7 @@ question. Skip ahead to [Implications](#implications) for the actionable guidanc
 > lines in `cowork_vm_node.log` — but `--setting-sources=user` is **not** the cause: it does not
 > exclude plugin scope from hook discovery. The determinant is a three-root plugin namespace — a
 > real desktop Cowork session reads only `local-agent-mode-sessions/<acc>/<org>/cowork_plugins`
-> (install via the Cowork app UI), which the standalone-CLI `--cowork` install never reaches. An
+> (install or upload the plugin in the Desktop app (Customize → Plugins)), which the standalone-CLI `--cowork` install never reaches. An
 > empty hook log means the plugins are not in that namespace. Full mechanism below.
 
 #### Trap: `--setting-sources=user` does NOT exclude plugin hooks
@@ -1279,7 +1279,7 @@ host-loop symlink path, and the hook executes **host-side via the host loop** (n
 plugins simply weren't installed into the desktop's account/org Cowork namespace (root #3), so they
 weren't symlinked into the host-loop staging, so nothing fired. Nothing about `--setting-sources` or
 hook-scope was ever involved. The determinant is **which plugin root the plugin lives in**, and the
-fix is **install via the Cowork app UI** (or org-remote/RPM), not the standalone CLI.
+fix is **install or upload it in the Desktop app (Customize → Plugins)** (or org-remote/RPM), not the standalone CLI.
 
 #### What the hook-firing test did NOT prove — and the in-VM `${CLAUDE_PLUGIN_ROOT}` resolution (tested 2026-06-01)
 
@@ -1492,7 +1492,7 @@ If reproduced, the likely cause is the plugin not being in the desktop Cowork na
 
 Declaring hooks in `~/.claude/settings.json` (user scope) is a reliable fallback — those fire in
 both Cowork and CCD. (This works regardless of the root cause; it is *not* evidence that plugin hooks
-are excluded.) For shipping plugin hooks in Cowork, install the plugin through the Cowork app UI so it
+are excluded.) For shipping plugin hooks in Cowork, install or upload the plugin in the Desktop app (Customize → Plugins) so it
 lands in the desktop's `local-agent-mode-sessions/<acc>/<org>/cowork_plugins` namespace; its
 `hooks/hooks.json` then fires like any other plugin's. The standalone `claude plugin install --cowork`
 writes `~/.claude/cowork_plugins/`, which a desktop Cowork session does not read.
@@ -1502,7 +1502,7 @@ writes `~/.claude/cowork_plugins/`, which a desktop Cowork session does not read
 The `userconfig-probe` plugin declares its `SessionStart` hook in `hooks/hooks.json`. It is plugin
 scope, but `--setting-sources=user` does not exclude it: whether it fires in Cowork depends on whether
 the plugin is in the desktop Cowork namespace (and, possibly, on headless-mode behavior) — not on
-settings-source scope. To validate end-to-end, install it through the Cowork app UI and run the
+settings-source scope. To validate end-to-end, install it in the Desktop app (Customize → Plugins) and run the
 real-Cowork log test above; the user-scope `settings.json` fallback also works.
 
 ### The async sub-agent filter trace (v2.1.120 bundle; symbols resolved in v2.1.119 and v2.1.138)
@@ -1985,7 +1985,7 @@ empirical probe was correct; the symbol trace looked at the wrong file.
    writes — `ph5()`/`A41()`); and the **desktop's** account/org root
    `local-agent-mode-sessions/<acc>/<org>/cowork_plugins/cache` (+`rpm/`), which is the ONLY one a
    real Cowork session reads. A plugin not in root #3 is never loaded → no hooks — which fully
-   explains a "zero hook lines" log. **Fix:** install via the Cowork app UI (or
+   explains a "zero hook lines" log. **Fix:** install or upload it in the Desktop app (Customize → Plugins) (or
    org-remote/RPM); the standalone CLI `--cowork` does NOT reach the desktop's namespace. `#16288`
    (fire-and-forget `loadPluginHooks` race) remains a real separate bug; `#27398`'s `--setting-sources`
    attribution is wrong. See the

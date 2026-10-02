@@ -183,7 +183,7 @@ A second pass, gate `4018447017` (on), stages the folder's `.claude/CLAUDE.md` a
 
 **The same seven-step probe, run on the four places a Claude agent can be handed a skill, gives four different answers to "where does a relative path go". Only local Cowork refuses it. The fingerprint in step 0 tells the surfaces apart without guessing.**
 
-Run on 2026-09-23 from one account: local Cowork (Desktop 2.7032.0), Cowork running in the cloud, Claude Code on the web, and a claude.ai chat with code execution. Local Cowork was checked against the machine's own transcript and Desktop log; the other three leave nothing on the machine, so their evidence is the pasted tool output.
+Run on 2026-09-23 from one account: local Cowork (Desktop 2.7032.0), Cowork running in the cloud, Claude Code on the web, and a claude.ai chat with code execution. Local Cowork was checked against the machine's own transcript and Desktop log; the other three leave nothing on the machine, so their evidence is the pasted tool output. The claude.ai chat column may not be reachable on every organization: on 2026-10-02 an organization on the merged composer (no Chat/Cowork choice) gave each conversation a cloud session at its first shell or file turn (L216, L217), so a chat there ran in the cloud container; the chat column was not re-measured.
 
 ## The fingerprint
 

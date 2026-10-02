@@ -73,7 +73,7 @@ function vz(e){let n=kUe();switch(n.status){
 
 ## The lane selector is not in the artifact — and that is already explained
 
-The Cowork setting "Only on this computer" chooses the lane. Searching the **entire extracted tree**, case-insensitively, including `.vite/renderer` and `node_modules`:
+The setting "Only on this computer" is the account's input to the lane choice (on 2026-10-02 under Settings → General → Tasks on the merged interface and Settings → Cowork on the older one; L210: not reliably honoured). Anthropic has announced that from 2026-10-06 new Cowork tasks run in the cloud and the option is removed (support article, read 2026-10-02; not yet observed; L210). Searching the **entire extracted tree**, case-insensitively, including `.vite/renderer` and `node_modules`:
 
 - `Only on this computer` — **0**; `only on this computer` — **0**
 - `onlyOnThisComputer`, `runLocally`, `forceLocal`, `localExecution`, `executeLocally`, `computeLocation`, `runOnDevice` — all **0**

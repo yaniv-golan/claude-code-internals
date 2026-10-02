@@ -4,7 +4,7 @@ title: Cowork permission stack (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
 sources: [89, 107, 108, 109, 115, 121, 122, 124, 128, 148, 150, 184, 190, 213]
-updated: 2026-09-29
+updated: 2026-10-02
 read_more: ["https://ccinternals.dev/cowork/deleting-files/?ref=skill"]
 ---
 
@@ -329,8 +329,8 @@ reachability rule).
   real determinant is the **three-root plugin namespace** — a desktop
   Cowork session reads only
   `local-agent-mode-sessions/<acc>/<org>/cowork_plugins/cache` (+`rpm/`),
-  which the standalone-CLI `--cowork` install does not reach. Install via
-  the Cowork app UI (or org-remote/RPM) to land in the namespace a real
+  which the standalone-CLI `--cowork` install does not reach. Install or upload
+  it in the Desktop app, Customize → Plugins (or org-remote/RPM), to land in the namespace a real
   session reads.
 - **"Cowork ignores `--mcp-config` outright"** — overbroad. The drop only
   fires under `I5()` (safe mode) or `xB8()` (hermetic-remote: both

@@ -4,7 +4,7 @@ title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
 sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207, 209, 211, 217, 218]
-updated: 2026-10-01
+updated: 2026-10-02
 read_more: ["https://ccinternals.dev/cowork/plugins-and-plugin-root/?ref=skill"]
 ---
 
@@ -264,7 +264,7 @@ not for this token. "Does substitution happen in commands?" answers yes and misl
 to an absolute mount path and the reference line untouched. Read from the event stream rather than the
 model's answer, which rules out the model expanding it from a path it had already seen.
 
-**The operative rule, stated once:** `${CLAUDE_SKILL_DIR}` is a **SKILL.md-body-text feature**. The moment a path must reach a shell it has to be an absolute path the model already resolved and passes explicitly — and where the shell is a different mount (Cowork host-loop), a path the model located from the shell's side with a search.
+**The operative rule, stated once:** `${CLAUDE_SKILL_DIR}` is a **SKILL.md-body-text feature**. The moment a path must reach a shell it has to be an absolute path the model already resolved and passes explicitly — and where the shell is a different mount (Cowork host-loop), a path the model located from the shell's side with a search. In the cloud the tokens are filled only when Claude Code's loader expands the skill, that is once the conversation's session exists; a skill invoked before then is expanded outside the agent (most likely the chat backend) with every token left as written and its `!cmd` never run (L217, 2026-10-02).
 
 **Plugin `bin/` on PATH: real, but not a channel to rely on (L173).** Claude Code puts every enabled non-builtin plugin's `<plugin>/bin` on the Bash tool's PATH, in the namespace of the shell that will use it, and on a GitHub or local CLI install a committed launcher works. But **claude.ai organization distribution rejects any plugin with a top-level `bin/`** (marketplace sync and direct upload; logged reason "Plugin contains a top-level bin/ directory … claude.ai-hosted plugins may not ship bin/ executables because they are added to PATH on the CLI"), `claude plugin validate --strict` does not warn, and the admin sees only "Marketplace sync failed". In local Cowork no authored `bin/` has been seen on the shell's PATH. So for any plugin that might go through an organization, ship no `bin/` and run scripts by path. Where a launcher is used anyway (CLI-only plugins), it self-locates in one line:
 

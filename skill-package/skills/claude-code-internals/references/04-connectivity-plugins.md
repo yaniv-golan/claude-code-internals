@@ -473,7 +473,7 @@ Desktop's dispatcher invokes `refreshPluginMcps()` from a **specific subset** of
 - `uninstallPlugin` (both the RPM remote-API path and the non-git fallback)
 - `installLocalOrgPlugin` (local org-plugin install)
 
-**Notably absent: the main `installPlugin` IPC handler and `updatePlugin`.** Neither calls `refreshPluginMcps()` after the operation completes — not on the RPM/remote-API path, not on the classic CLI fallback. So clicking Settings → Install or Settings → Update does NOT fire the org-plugin MCP refresh; only enable/disable, delete, uninstall, and the local-upload variants do.
+**Notably absent: the main `installPlugin` IPC handler and `updatePlugin`.** Neither calls `refreshPluginMcps()` after the operation completes — not on the RPM/remote-API path, not on the classic CLI fallback. So installing or updating a plugin from the app's plugin settings (Customize → Plugins in Desktop 2.19675.0) does NOT fire the org-plugin MCP refresh; only enable/disable, delete, uninstall, and the local-upload variants do.
 
 When it does fire, `doRefreshPluginMcps` filters its work to `source === "org-plugin"`:
 
@@ -485,11 +485,11 @@ async doRefreshPluginMcps() {
 }
 ```
 
-This means Settings-UI plugin operations refresh **only org-plugin MCP connections** in the live Cowork task — they do NOT trigger a re-scan of skills, commands, agents, or hooks in the running CLI subprocess. The host's `cowork_plugins/` directory is rwd-mounted into the VM, so file-level changes ARE visible on disk to the CLI; but the running CLI doesn't necessarily re-read those files mid-task.
+This means plugin operations in the app's UI refresh **only org-plugin MCP connections** in the live Cowork task — they do NOT trigger a re-scan of skills, commands, agents, or hooks in the running CLI subprocess. The host's `cowork_plugins/` directory is rwd-mounted into the VM, so file-level changes ARE visible on disk to the CLI; but the running CLI doesn't necessarily re-read those files mid-task.
 
 `bridge.reloadPlugins()` is a defined bridge method (`{ subtype: "reload_plugins" }`), but the inspected Desktop bundle has no call sites for it from any install/update/uninstall/enable/upload flow. Treat it as present-but-unwired.
 
-For reliable freshness of skill/command/agent/hook content in an active Cowork task, the boundary is **a new task** ("+ New task" in the Cowork UI), which spawns a fresh `local_<UUID>/` session that scans current disk state from scratch.
+For reliable freshness of skill/command/agent/hook content in an active Cowork task, the boundary is **a new task that runs locally** (a new conversation from "New", or Cowork where the Chat/Cowork choice still exists, with "Only on this computer" on; check that `pwd` is `/sessions/<slug>`), which spawns a fresh `local_<UUID>/` session that scans current disk state from scratch.
 
 #### CLI's `plugin update` flow has a `skipIfRecent` short-circuit and silent cached-data fallback
 
@@ -690,7 +690,7 @@ This cache is invisible to every other staleness check covered earlier in this l
 - Not in any `marketplace.json` (no marketplace catalog lists them).
 - Not in `rpm/manifest.json` (RPM doesn't track them).
 - Not affected by `refreshPluginMcps` (that's MCP-only).
-- Not refreshed by starting a new Cowork task (the new task uses whatever the local skill files say).
+- Not refreshed by starting a new Cowork task or conversation (the new task uses whatever the local skill files say).
 
 If a Cowork session is using stale `pdf` / `xlsx` / etc. content, the cause is here. Tools that diagnose Cowork plugin staleness should include this cache in their checks.
 
