@@ -1367,22 +1367,22 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 122 · 32-cowork-subagent-execution-model.md:155 · cwd inheritance and the Task schema
 122 · 32-cowork-subagent-execution-model.md:159 · The path-containment hook, re-anchored at 1.20186.1
 122 · 32-cowork-subagent-execution-model.md:182 · Shell commands are rewritten for plugin paths; file-tool paths are not (Desktop 2.19675.0)
-122 · 32-cowork-subagent-execution-model.md:192 · Hooks fire inside sub-agents — first-party proof
-122 · 32-cowork-subagent-execution-model.md:196 · The crux: `cwd` IS the outputs directory
-122 · 32-cowork-subagent-execution-model.md:210 · Write/delete policy under `outputs/` and `uploads/`
-122 · 32-cowork-subagent-execution-model.md:226 · `${CLAUDE_PLUGIN_ROOT}` in sub-agents
-123 · 32-cowork-subagent-execution-model.md:242 · The two verbatim branches
-123 · 32-cowork-subagent-execution-model.md:259 · Selection, delivery, and consumption
-123 · 32-cowork-subagent-execution-model.md:266 · The gate that does *not* gate this, and the one env-var gap that does
-124 · 32-cowork-subagent-execution-model.md:278 · Sub-agent env & model resolution
-124 · 32-cowork-subagent-execution-model.md:299 · ToolSearch enablement
-124 · 32-cowork-subagent-execution-model.md:307 · Lifecycle re-verification and two product changes
-124 · 32-cowork-subagent-execution-model.md:319 · Host-loop vs VM-loop: the decision function and its deltas
-124 · 32-cowork-subagent-execution-model.md:346 · Stream observability
-124 · 32-cowork-subagent-execution-model.md:361 · ADDENDUM (2026-08-13) — the full `sessionType` enum, and a new sticky-cached gate that excludes two of its members
-124 · 32-cowork-subagent-execution-model.md:395 · Methodology
-124 · 32-cowork-subagent-execution-model.md:403 · Identifier table
-124 · 32-cowork-subagent-execution-model.md:435 · What this means for skill and agent authors
+122 · 32-cowork-subagent-execution-model.md:194 · Hooks fire inside sub-agents — first-party proof
+122 · 32-cowork-subagent-execution-model.md:198 · The crux: `cwd` IS the outputs directory
+122 · 32-cowork-subagent-execution-model.md:212 · Write/delete policy under `outputs/` and `uploads/`
+122 · 32-cowork-subagent-execution-model.md:228 · `${CLAUDE_PLUGIN_ROOT}` in sub-agents
+123 · 32-cowork-subagent-execution-model.md:244 · The two verbatim branches
+123 · 32-cowork-subagent-execution-model.md:261 · Selection, delivery, and consumption
+123 · 32-cowork-subagent-execution-model.md:268 · The gate that does *not* gate this, and the one env-var gap that does
+124 · 32-cowork-subagent-execution-model.md:280 · Sub-agent env & model resolution
+124 · 32-cowork-subagent-execution-model.md:301 · ToolSearch enablement
+124 · 32-cowork-subagent-execution-model.md:309 · Lifecycle re-verification and two product changes
+124 · 32-cowork-subagent-execution-model.md:321 · Host-loop vs VM-loop: the decision function and its deltas
+124 · 32-cowork-subagent-execution-model.md:348 · Stream observability
+124 · 32-cowork-subagent-execution-model.md:363 · ADDENDUM (2026-08-13) — the full `sessionType` enum, and a new sticky-cached gate that excludes two of its members
+124 · 32-cowork-subagent-execution-model.md:397 · Methodology
+124 · 32-cowork-subagent-execution-model.md:405 · Identifier table
+124 · 32-cowork-subagent-execution-model.md:437 · What this means for skill and agent authors
 125 · 33-desktop-device-partner-permission-tuning.md:20 · The tool schemas
 125 · 33-desktop-device-partner-permission-tuning.md:30 · The gating chain — why Cowork structurally never sees these
 125 · 33-desktop-device-partner-permission-tuning.md:47 · Per-platform enablement gates, and the sandbox
@@ -1812,16 +1812,16 @@ state:cowork-architecture · state/cowork-architecture.md:640 · A THIRD surface
 state:cowork-architecture · state/cowork-architecture.md:673 · Four surfaces, one probe (L198, 2026-09-23, first-party)
 state:cowork-architecture · state/cowork-architecture.md:690 · Scheduled tasks migrate themselves to the cloud (L208)
 state:cowork-architecture · state/cowork-architecture.md:703 · Where a new task runs (L210)
-state:cowork-architecture · state/cowork-architecture.md:732 · Desktop 2.9939.2 additions (L212–L214)
-state:cowork-architecture · state/cowork-architecture.md:756 · Desktop 2.16120.0 additions (L219–L221)
-state:cowork-architecture · state/cowork-architecture.md:782 · `computer://` links by lane (L215)
-state:cowork-architecture · state/cowork-architecture.md:791 · A cloud session and the user's computer (L215)
-state:cowork-architecture · state/cowork-architecture.md:809 · What Anthropic's help center says (relayed, read 2026-10-02 and 2026-10-03)
-state:cowork-architecture · state/cowork-architecture.md:831 · One conversation, two runtimes (L216)
-state:cowork-architecture · state/cowork-architecture.md:846 · Credential delivery and build identity (L207)
-state:cowork-architecture · state/cowork-architecture.md:859 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
-state:cowork-architecture · state/cowork-architecture.md:896 · Mount model and delete policy (L139, L140)
-state:cowork-architecture · state/cowork-architecture.md:1014 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
+state:cowork-architecture · state/cowork-architecture.md:734 · Desktop 2.9939.2 additions (L212–L214)
+state:cowork-architecture · state/cowork-architecture.md:758 · Desktop 2.16120.0 additions (L219–L221)
+state:cowork-architecture · state/cowork-architecture.md:784 · `computer://` links by lane (L215)
+state:cowork-architecture · state/cowork-architecture.md:793 · A cloud session and the user's computer (L215)
+state:cowork-architecture · state/cowork-architecture.md:811 · What Anthropic's help center says (relayed, read 2026-10-02 and 2026-10-03)
+state:cowork-architecture · state/cowork-architecture.md:833 · One conversation, two runtimes (L216)
+state:cowork-architecture · state/cowork-architecture.md:848 · Credential delivery and build identity (L207)
+state:cowork-architecture · state/cowork-architecture.md:861 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
+state:cowork-architecture · state/cowork-architecture.md:898 · Mount model and delete policy (L139, L140)
+state:cowork-architecture · state/cowork-architecture.md:1016 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
 state:cowork-control-protocol · state/cowork-control-protocol.md:23 · Spawn contract
 state:cowork-control-protocol · state/cowork-control-protocol.md:87 · Handshake
 state:cowork-control-protocol · state/cowork-control-protocol.md:128 · Subtype inventory pointer

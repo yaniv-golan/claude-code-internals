@@ -308,8 +308,8 @@ directory on this machine 2026-09-15 21:05, right after the update to
   8 hex digits (regex `^local_([0-9a-f]{8})-…$`) when it creates a session,
   unless that name is taken; a session whose full-name directory already
   exists keeps it. So older sessions stay in `local_<sessionId>/` beside the
-  new 8-hex ones. Gate `2375401243` (code default on) selects the short form
-  (asar 2.19675.0). Only the config record keeps the `local_` prefix.
+  new 8-hex ones. Gate `2375401243` (code default on; absent from the served cache on
+  2026-10-03, so the default applies) selects the short form (asar 2.19675.0). Only the config record keeps the `local_` prefix.
 - **Project directory.** All 178 short-name directories on this machine use
   `projects/session/`. The Desktop sets `CLAUDE_CODE_PROJECT_DIR_NAME` to
   `session` (asar 2.19675.0). Sessions from before 2.110.0 have a slug of
@@ -722,9 +722,11 @@ did run locally. The bundled interface and three builds fetched from
 On Desktop 2.16120.0 (from 2026-09-30) plain new tasks have run locally again: four local
 sessions on disk with no scheduled task, parent or bridge, and a relayed run on 2026-10-01
 (`/sessions/<slug>`, entrypoint unset) with the setting on; the user reports it is honoured
-only some of the time. The Desktop app (main process and interface bundle, 2.9939.4 and
-2.16120.0) has no lane choice of its own: its only veto is the organization local-tasks-off
-setting (gate `3634338308`, off here), unchanged. Check `pwd`/`CLAUDE_CODE_ENTRYPOINT` per run.
+only some of the time. The Desktop's main process (`app.asar`, 2.9939.4 and 2.16120.0) has
+no lane choice of its own: its only veto is the organization local-tasks-off setting (gate
+`3634338308`, off here), unchanged. The interface, switch and router included, ships separately in
+`Contents/Resources/ion-dist/` (2.19675.0), not in `app.asar`: search both before calling a string
+absent from the app. Check `pwd`/`CLAUDE_CODE_ENTRYPOINT` per run.
 On Desktop 2.19675.0 (2026-10-02) the composer New opened decided: the Chat/Cowork selector
 (Cowork) gave a local session 2 of 2, the merged composer the cloud 2 of 2, with the account setting
 on throughout (composer shapes from the UI; L210).

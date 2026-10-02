@@ -102,7 +102,7 @@ Desktop's `Cache_Data` entries are plaintext after a 24-byte simple-cache header
 
 **Every Cowork FUSE mount denies exactly `unlink` and `rmdir` by default — nothing else. Approval is strictly per-mount, takes effect live in already-open shells, and involves NO remount. The policy is not specific to `outputs`.**
 
-> **From Desktop 2.16120.0, `outputs` is the exception: it is mounted `rwd`, deletes allowed, unless the session is a bridge (`agent`) session.** Connected folders keep the default described below (asar 2.16120.0 and 2.19675.0; live on 2.19675.0, 2026-10-02: `outputs:rwd` from the first shell call with no approval on record, and `rm` there worked, while a connected folder refused `rm` until `allow_cowork_file_delete` was approved). The matrix below was measured on an earlier build, when `outputs` followed the same rule.
+> **From Desktop 2.16120.0, `outputs` is the exception: it is mounted `rwd`, deletes allowed, unless the session is a bridge (`agent`) session.** Connected folders keep the default described below (asar 2.16120.0 and 2.19675.0; live on 2.19675.0, 2026-10-02: `outputs:rwd` from the first shell call with no approval on record, and `rm` there worked, while a connected folder refused `rm` until `allow_cowork_file_delete` was approved; a second session the same day did `mv`, an overwrite by `mv` and `rm` in outputs with no card and no `fileDeleteApprovedMounts` key). A bridge session is one whose `sessionType` is `agent`, set only by the Desktop's sessions bridge. The matrix below was measured on an earlier build, when `outputs` followed the same rule.
 
 ## The measured matrix
 

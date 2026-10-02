@@ -2797,10 +2797,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "b183d6be588527684ef1a31311e6e33dfcba2f5bdccb2462f12d42a3c11a4518",
+      "input_sha256": "7a819dad12ce92210df3f99a6b474b64d316c9ecc6e5b2565583dc4cd428e06b",
       "prior_terms_sha256": "a678f3ba017a50268b4f8aecb5ebb0125e7e09d055557f5928f9546ce60a9b33",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "27df0c5c6c0b23e942638fc50700768ab7470093",
+      "previous_text": "80cd9d13d62d1dbbeb054ee0cecc15f05dbcf971",
       "replaced": [],
       "terms": [
         "which tools does a subagent get",
@@ -2827,26 +2827,11 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "a1175ca79fe417bd6a4cf3016df0cdc56d334c65fe949eddb14d74d7fc07f8f6",
-      "prior_terms_sha256": "8c35a49aefb7e820fb9c5586d837f700ba6bee409afe96a86637a8823b9f5366",
+      "input_sha256": "0887ada4a658f1ce7762381b0abdad02c7cf10a733eadac827382a91fec42811",
+      "prior_terms_sha256": "5089a1a6112a52fa97fdc0db43d517cfa8cbf26a6fd6d7d5a80c135d95639d1a",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "27df0c5c6c0b23e942638fc50700768ab7470093",
-      "replaced": [
-        "why can't subagent write to /sessions path",
-        "why is my session folder name so short?"
-      ],
-      "dropped": [
-        {
-          "term": "why can't subagent write to /sessions path",
-          "why": "duplicate",
-          "duplicate_of": "subagent write file denied sessions path"
-        },
-        {
-          "term": "why is my session folder name so short?",
-          "why": "duplicate",
-          "duplicate_of": "shorter session folder path newer versions"
-        }
-      ],
+      "previous_text": "80cd9d13d62d1dbbeb054ee0cecc15f05dbcf971",
+      "replaced": [],
       "terms": [
         "subagent write file denied sessions path",
         "where do subagent files get saved",
@@ -2893,9 +2878,13 @@
     },
     "124": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-30",
-      "input_sha256": "f6698c9676a940762defe72127184818a23a62f6868193ade2203f97a3d2cc54",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-02",
+      "input_sha256": "1f439cc825b023661eb405db8d120ed28eea6c3ace8491d8c25e52ee72043909",
+      "prior_terms_sha256": "7b3ee61f8bc23d6ce4ea74a567d3a8c0890528472eabbbffa533437e5892df69",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "80cd9d13d62d1dbbeb054ee0cecc15f05dbcf971",
+      "replaced": [],
       "terms": [
         "which model does a subagent use",
         "subagent ignoring my model setting",
@@ -2911,7 +2900,9 @@
         "how to see subagent type in stream output",
         "which model did my subagent actually run on",
         "why no permission denied event for path block",
-        "feature flag cache grep shows nothing"
+        "feature flag cache grep shows nothing",
+        "feature flag missing from cache uses default",
+        "new feature cache file format version"
       ]
     },
     "125": {
@@ -3261,10 +3252,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "7b5e544ef6548f4506e6bec84acde977a06362b31c3e39192c3a8acbfbe1e53d",
-      "prior_terms_sha256": "b8c1add6879c8f8c05e69e4c4c46ebd47be1993c6a8a496a0eceaa320af80b41",
+      "input_sha256": "0243ca152ede1b45e8868169b976d0987dcc3e87cb3d224c37cfdd2eb72aedd4",
+      "prior_terms_sha256": "6e3854c938e85e2a17fd59b7677e0366a07e0f4f10032c61646f47a77fd8f044",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
+      "previous_text": "80cd9d13d62d1dbbeb054ee0cecc15f05dbcf971",
       "replaced": [],
       "terms": [
         "cowork cannot delete files",
@@ -4926,24 +4917,18 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "bb867e9d0d153d83801519a258c429c9a1d71ab89bce83aaa86a32125a5cbcb0",
-      "prior_terms_sha256": "b78c9c0791402f2452f4025b5502d8a3cb28cd98e9a6ddbd53e3bbe690932953",
+      "input_sha256": "3703101e9bf95c3d773567590b4bc3a90cfd8b5400d254b8b8c51345c94501ff",
+      "prior_terms_sha256": "648022ad68feff4f321c60d44deeb82bf417b933dfdde9df8c0e4f4e2cf92e5b",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "27df0c5c6c0b23e942638fc50700768ab7470093",
+      "previous_text": "80cd9d13d62d1dbbeb054ee0cecc15f05dbcf971",
       "replaced": [
-        "shell hook never triggers in cowork",
-        "why doesn't my startup hook run in cloud cowork?"
+        "session start hook fires every turn locally"
       ],
       "dropped": [
         {
-          "term": "shell hook never triggers in cowork",
-          "why": "duplicate",
-          "duplicate_of": "hook matcher misses cowork shell commands"
-        },
-        {
-          "term": "why doesn't my startup hook run in cloud cowork?",
-          "why": "duplicate",
-          "duplicate_of": "session start hook not running in cloud"
+          "term": "session start hook fires every turn locally",
+          "why": "inaccurate",
+          "replacement": "session start hook fired again on second turn"
         }
       ],
       "terms": [
@@ -4960,31 +4945,22 @@
         "which hook events fire in local vs cloud cowork",
         "pre tool hook not matching shell tool name",
         "silent hook leaves no record",
-        "session start hook fires every turn locally",
         "do local cowork hooks run on mac or vm?",
         "pre tool hook for subagent calls",
         "hook transcript path not in projects folder",
-        "write hook misses relative path writes"
+        "write hook misses relative path writes",
+        "session start hook fired again on second turn"
       ]
     },
     "210": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "dd0b9cc4eb421f2d789c3926cce086bc70a1e0070d0df472808536c53631261f",
-      "prior_terms_sha256": "cc18dfde8e8f37d396e7bc33fb30b5765dff6a06c7e28ca421f1b36fa436ef08",
+      "input_sha256": "06fa018c239dba46bafbc579340f042a0ebed6cd67717dee5459e2a52061c6fe",
+      "prior_terms_sha256": "cbea9606f8a43fcb23a05acd37fd6fc1f9e308df0baed0a2775579c9573cdc18",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "27df0c5c6c0b23e942638fc50700768ab7470093",
-      "replaced": [
-        "local mode works only sometimes"
-      ],
-      "dropped": [
-        {
-          "term": "local mode works only sometimes",
-          "why": "duplicate",
-          "duplicate_of": "only on this computer setting ignored"
-        }
-      ],
+      "previous_text": "80cd9d13d62d1dbbeb054ee0cecc15f05dbcf971",
+      "replaced": [],
       "terms": [
         "cowork task runs in cloud instead of locally",
         "only on this computer setting ignored",
@@ -5232,11 +5208,20 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-02",
-      "input_sha256": "14bcc0a1d3cf78bfa6eadb34f379334cea2fa48663c4e602af74c35ace15d234",
-      "prior_terms_sha256": "e8a515ce4a35864729cb5cafc0778bc7f33f7ca455af550ebb4893cd67dbb9d0",
+      "input_sha256": "16ccd27f0cd37df97f215399e29bc764aaf4851847bf8ffc80ba6db33a720028",
+      "prior_terms_sha256": "c7c40c767591ee9a664d1bba754de5666156e413ae598da4940f6b2bc8f063e6",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "9cc0ea67b8c58acfaec3fe07324c192441e3c330",
-      "replaced": [],
+      "previous_text": "80cd9d13d62d1dbbeb054ee0cecc15f05dbcf971",
+      "replaced": [
+        "how to give a plugin server a credential?"
+      ],
+      "dropped": [
+        {
+          "term": "how to give a plugin server a credential?",
+          "why": "duplicate",
+          "duplicate_of": "pass API key to plugin MCP server"
+        }
+      ],
       "terms": [
         "plugin hook blocks prompt with no message in cloud",
         "prompt silently disappears in cloud session",
@@ -5252,10 +5237,16 @@
         "which variables get filled in for plugin servers",
         "why does my plugin MCP server fail to authenticate?",
         "fallback default always used even when variable set",
-        "how to give a plugin server a credential?",
         "edit and resend a blocked prompt",
         "plugin data folder not filled in cloud",
-        "warning when installing plugin with local servers"
+        "warning when installing plugin with local servers",
+        "why plugin MCP servers behave differently local vs cloud"
+      ],
+      "withheld": [
+        {
+          "term": "why plugin MCP servers behave differently local vs cloud",
+          "qid": "pl-0224"
+        }
       ]
     },
     "219": {

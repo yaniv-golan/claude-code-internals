@@ -12337,6 +12337,7 @@
         "is-concurrency-safe",
         "strict-mcp-config",
         "MCP_DELETE_SCHEDULED_TASK",
+        "power-shell",
         "MCP_WORKSPACE_WEB_FETCH",
         "accept-edits",
         "skill-tools",
@@ -12369,6 +12370,7 @@
         "is-concurrency-safe",
         "strict-mcp-config",
         "MCP_DELETE_SCHEDULED_TASK",
+        "power-shell",
         "MCP_WORKSPACE_WEB_FETCH",
         "accept-edits",
         "skill-tools",
@@ -12412,7 +12414,7 @@
       "lesson_number": "122",
       "file": "32-cowork-subagent-execution-model.md",
       "startLine": 147,
-      "endLine": 234,
+      "endLine": 236,
       "keywords": [
         "subagent-cwd",
         "outputs-path",
@@ -12533,8 +12535,8 @@
       "title": "The Sub-Agent Prompt Append: subagent_env_hl / subagent_env_vm",
       "lesson_number": "123",
       "file": "32-cowork-subagent-execution-model.md",
-      "startLine": 238,
-      "endLine": 270,
+      "startLine": 240,
+      "endLine": 272,
       "keywords": [
         "subagent_env_hl",
         "subagent_env_vm",
@@ -12605,8 +12607,8 @@
       "title": "Sub-Agent Env/Model, Lifecycle Re-Verification, VM-Loop Deltas, Stream Observability & Methodology",
       "lesson_number": "124",
       "file": "32-cowork-subagent-execution-model.md",
-      "startLine": 274,
-      "endLine": 445,
+      "startLine": 276,
+      "endLine": 447,
       "keywords": [
         "subagent-model",
         "CLAUDE_CODE_SUBAGENT_MODEL",
@@ -12686,7 +12688,9 @@
         "how to see subagent type in stream output",
         "which model did my subagent actually run on",
         "why no permission denied event for path block",
-        "feature flag cache grep shows nothing"
+        "feature flag cache grep shows nothing",
+        "feature flag missing from cache uses default",
+        "new feature cache file format version"
       ],
       "identifier_keys": [
         "global-this",
@@ -12746,13 +12750,15 @@
         "how to see subagent type in stream output",
         "which model did my subagent actually run on",
         "why no permission denied event for path block",
-        "feature flag cache grep shows nothing"
+        "feature flag cache grep shows nothing",
+        "feature flag missing from cache uses default",
+        "new feature cache file format version"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "7b3ee61f8bc23d6ce4ea74a567d3a8c0890528472eabbbffa533437e5892df69"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-02",
+        "terms_sha256": "2c2d0b74ea03915ce4b5fc5fc2553b57c220419179bbc300e22528ab5aa7be89"
       }
     },
     {
@@ -20217,6 +20223,7 @@
         "missing hook script blocks",
         "dash exit 2 hook",
         "Hook script appears to be missing",
+        "idle-grace-ms",
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
         "startup hook skipped on new cloud task",
@@ -20230,11 +20237,14 @@
         "which hook events fire in local vs cloud cowork",
         "pre tool hook not matching shell tool name",
         "silent hook leaves no record",
-        "session start hook fires every turn locally",
         "do local cowork hooks run on mac or vm",
         "pre tool hook for subagent calls",
         "hook transcript path not in projects folder",
-        "write hook misses relative path writes"
+        "write hook misses relative path writes",
+        "session start hook fired again on second turn"
+      ],
+      "identifier_keys": [
+        "idle-grace-ms"
       ],
       "vocab_keys": [
         "plugin hook not firing in cowork",
@@ -20250,17 +20260,17 @@
         "which hook events fire in local vs cloud cowork",
         "pre tool hook not matching shell tool name",
         "silent hook leaves no record",
-        "session start hook fires every turn locally",
         "do local cowork hooks run on mac or vm",
         "pre tool hook for subagent calls",
         "hook transcript path not in projects folder",
-        "write hook misses relative path writes"
+        "write hook misses relative path writes",
+        "session start hook fired again on second turn"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "648022ad68feff4f321c60d44deeb82bf417b933dfdde9df8c0e4f4e2cf92e5b"
+        "terms_sha256": "d1f8a4231e5478550ef4e32c363f4d913e005a002d5a99c4c2df89b159079e80"
       }
     },
     {
@@ -20299,6 +20309,10 @@
         "local_auto_permission_forced",
         "local_bypass_permission_forced",
         "disabled_by_org_policy",
+        "ion-dist",
+        "local_plugin_stdio_default",
+        "cowork_settings",
+        "local_vm_enabled",
         "259200000",
         "cowork task runs in cloud instead of locally",
         "force cowork task to run on my machine",
@@ -20331,6 +20345,10 @@
         "local_auto_permission_forced",
         "local_bypass_permission_forced",
         "disabled_by_org_policy",
+        "ion-dist",
+        "local_plugin_stdio_default",
+        "cowork_settings",
+        "local_vm_enabled",
         "259200000"
       ],
       "vocab_keys": [
@@ -21101,7 +21119,6 @@
         "which variables get filled in for plugin servers",
         "why does my plugin mcp server fail to authenticate",
         "fallback default always used even when variable set",
-        "how to give a plugin server a credential",
         "edit and resend a blocked prompt",
         "plugin data folder not filled in cloud",
         "warning when installing plugin with local servers"
@@ -21129,7 +21146,6 @@
         "which variables get filled in for plugin servers",
         "why does my plugin mcp server fail to authenticate",
         "fallback default always used even when variable set",
-        "how to give a plugin server a credential",
         "edit and resend a blocked prompt",
         "plugin data folder not filled in cloud",
         "warning when installing plugin with local servers"
@@ -21138,7 +21154,7 @@
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-02",
-        "terms_sha256": "c7c40c767591ee9a664d1bba754de5666156e413ae598da4940f6b2bc8f063e6"
+        "terms_sha256": "e4be08556a58cb2d98c93fc74a6725c4d3869dede5cf6a14c485df79621aab73"
       }
     },
     {
@@ -42100,7 +42116,8 @@
       190
     ],
     "power-shell": [
-      107
+      107,
+      121
     ],
     "always-allow-rules": [
       107
@@ -44937,6 +44954,9 @@
     "no-self-hosted-endpoint": [
       208
     ],
+    "idle-grace-ms": [
+      209
+    ],
     "dramatic_shrimp_disabled_at": [
       210
     ],
@@ -44968,6 +44988,18 @@
       210
     ],
     "disabled_by_org_policy": [
+      210
+    ],
+    "ion-dist": [
+      210
+    ],
+    "local_plugin_stdio_default": [
+      210
+    ],
+    "cowork_settings": [
+      210
+    ],
+    "local_vm_enabled": [
       210
     ],
     "259200000": [
@@ -50891,6 +50923,12 @@
     "feature flag cache grep shows nothing": [
       124
     ],
+    "feature flag missing from cache uses default": [
+      124
+    ],
+    "new feature cache file format version": [
+      124
+    ],
     "ios simulator tools missing in cowork": [
       125
     ],
@@ -54766,9 +54804,6 @@
     "silent hook leaves no record": [
       209
     ],
-    "session start hook fires every turn locally": [
-      209
-    ],
     "do local cowork hooks run on mac or vm": [
       209
     ],
@@ -54779,6 +54814,9 @@
       209
     ],
     "write hook misses relative path writes": [
+      209
+    ],
+    "session start hook fired again on second turn": [
       209
     ],
     "cowork task runs in cloud instead of locally": [
@@ -55220,9 +55258,6 @@
       218
     ],
     "fallback default always used even when variable set": [
-      218
-    ],
-    "how to give a plugin server a credential": [
       218
     ],
     "edit and resend a blocked prompt": [
