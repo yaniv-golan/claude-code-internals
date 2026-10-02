@@ -1,5 +1,117 @@
 # Changelog
 
+## v2.61.0 — 2026-10-02 (this fork) — Desktop 2.16120.0, which loader expands a cloud skill, and search that stays put when lessons change
+
+Three new lessons in a new chapter; counts are now 221/60. New Desktop facts are read from 2.16120.0 (its app.asar
+against 2.9939.4, the live feature-flag cache decoded on 2026-10-01, and the six local sessions started since the
+install), and live probe runs on 2026-10-01/02 used Desktop 2.19675.0, claude.ai on the web and cloud agent 2.1.287;
+the state layer's Desktop baseline stays 2.9939.4.
+
+**Desktop 2.16120.0 (Chapter 60, L219–L221)**
+
+- **Scheduled runs get the native `Artifact` tool (L219).** The session-setup predicate now admits scheduled runs, so a
+  scheduled task publishes with `Artifact` rather than the older `mcp__cowork__create_artifact` family; both scheduled
+  runs since the install show it. An always-allow on a scheduled publish prompt is stored per task. L212 now says the
+  older family is what scheduled tasks got through 2.9939.x.
+- **Host-loop file permissions (L220).** An approved file-tool call runs on exactly the input that was judged; an
+  organization's per-call approval policy on file tools now reaches the prompt instead of refusing (side chats still
+  refuse); `allow_cowork_file_delete` rejects invalid requests before prompting; every spawn sets
+  `PYTHONDONTWRITEBYTECODE=1` (also noted in L116).
+- **Screenshot tools (L221).** `screenshot_file_preview` and `screenshot_artifact` let the model look at an HTML or
+  SVG file it presented, or at an artifact; when they are served, and the availability check that the visualize
+  server and its elicitation instruction now share.
+- **Sharing local artifacts is live (L212).** The Desktop's share, unshare and auto-publish calls (gate `3229517805`,
+  `sharingEnabled`) are served on as of 2026-10-01. They act on the same local Artifacts store the
+  `mcp__cowork__` artifact tools write, so a user can share an artifact those tools made, and with auto-publish on a
+  later `update_artifact` call republishes it without asking. No model tool shares. L212 had said sharing was not
+  served. The sidebar's Artifacts entry opens a gallery (All, Pinned, Yours, Shared with you), not a folder view.
+- **Migration sweep holds (L208, L219).** Of the served hold reasons, only Space applies on 2026-10-01; Chrome, the
+  in-app browser and attached folders or files no longer hold a task. Tasks the cloud can't take (sub-hourly or
+  custom schedules, a working directory, and so on) still stay local. Attached folders and files move only as a bound
+  routine. L208 and L210 now date their earlier statements to the builds they describe.
+
+**Skills in the cloud (L217)**
+
+- **Which loader expands a skill is set by whether the conversation's cloud session exists yet.** The session starts
+  lazily, with the first turn that needs a shell or file tool ("Getting set up for this session", about 5–7 s);
+  tools that reach the user's computer through the device bridge, such as Chrome, do not start one. A skill invoked
+  before then (for example as a new conversation's first message) is expanded outside the agent, most likely by the
+  claude.ai chat backend: a "Loaded skill" row, a base directory `/mnt/skills/plugins/<plugin>:<skill>` that does not
+  exist, `${CLAUDE_PLUGIN_ROOT}`, `${CLAUDE_SKILL_DIR}`, `${CLAUDE_PLUGIN_DATA}` and `$ARGUMENTS` left as written, and
+  `` !`cmd` `` never run. After it exists, Claude Code's own loader expands it and fills everything in. On an
+  interface that still offers the Chat/Cowork choice, a Cowork conversation has its session from the first turn. This
+  replaces the earlier "two paths, trigger unknown" text.
+- **Only the skill's own text differs.** In the same turn as the outside expansion the plugin's sub-agent ran with
+  its `${CLAUDE_PLUGIN_ROOT}` filled, reads of the synced plugin files worked, the plugin's hooks fired, and
+  `AskUserQuestion` rendered. So only `SKILL.md` needs a path fallback and an argument fallback.
+- **A `` !`cmd` `` the skill allows that then fails.** Once the session exists, a typed slash command whose allowed
+  command fails in the container gets no reply and no error: on the merged interface the turn looks dead, on the older
+  one it shows "Working on it…" with a Stop button that never resolves (eight runs; reported upstream as
+  [anthropics/claude-code#99008](https://github.com/anthropics/claude-code/issues/99008)). A model invocation fails
+  to load with "Shell command failed for pattern …". The cloud container has no `uuidgen`. A failing command the
+  skill does not list was not tested; the permission check hands it to the model or fails the load before it runs
+  (CLI 2.1.286 and 2.1.287, read here).
+- An uploaded plugin version reached a new cloud session in under 2 minutes. L217 also records that a skill's
+  `allowed-tools` are honoured unless managed-rules-only is set, and that a skill's inline `!cmd` is checked as
+  default mode in an auto-mode session.
+- **The skill finds its own scripts in the cloud too.** SKILL.md's fallback now also searches
+  `/root/.claude/plugins/synced/…` (relayed run, Desktop 2.16120.0).
+
+**Device bridge and Chrome (L215, L216)**
+
+- **Protected folders are refused after the card.** The folder card ("Claude wants to use a folder on your computer",
+  now quoted verbatim) is shown even for a protected location such as `~/.claude`; the refusal ("paths[0] is a
+  protected system or credential location … Nothing was granted.") comes only after the user clicks Allow once. The
+  device's home-directory listing leaves out plain files and every protected location (Claude's own config,
+  credential and login-item folders, shell startup files). A table gives the three approval modes and their values.
+- **Chrome from a cloud conversation.** Asking for connected browsers listed the computer's Chrome on Desktop and on
+  the web; a Chrome-only turn sets up no session. An empty browser list while the extension's side panel works is
+  fixed by logging out and back in from the extension's options page (seen in the CLI).
+- **The chat-to-session step is now seen live (L216):** the URL stays `/chat/…`, the setup notice appears, and the
+  header then reads "Claude Desktop (macOS), Connected". ToolSearch shows the user only "Loaded tools" rows.
+
+**Interface paths and the announced change**
+
+- **"Only on this computer"** sits under Settings → General → Tasks on the merged interface and under Settings →
+  Cowork on the older one (both seen 2026-10-02). Plugin installs and uploads point at Customize → Plugins; skill
+  uploads at Customize → Skills → Add skill → Upload skill.
+- **Announced for Pro and Max plans, not yet observed:** Anthropic's support article says that on 2026-10-06 new
+  Cowork tasks run in the cloud and the "Only on your computer" option is removed, tasks already started on the
+  computer stay there, scheduled tasks move to the cloud, and "Tasks that use files on your computer need the
+  desktop app open". The lessons on the local lane still describe existing local tasks, other plans and earlier
+  builds.
+- **Terms.** The current-state pages and the recent lessons now say "cloud session" and "local session" for where a
+  Cowork task runs, and keep "Cowork" for the product, identifiers and UI labels. L215's title now reads "…How a Cloud
+  Session Reads, Writes and Runs Commands on the Mac"; the old wording still finds it.
+- Cloud agent 2.1.287 is recorded on the container version axis (`claude --version` in the container), after 2.1.286
+  (relayed). Folder-skill staging (L197) is still `"stubs"` on 2026-10-01.
+
+**Search**
+
+- **Gate ids are reachable by number.** For 41 gate ids, searching the bare id (such as `2742800629`) didn't put its
+  lesson even in the top 10: the key-collision rule treated each as matching the shorter digit runs inside it.
+  Generated number keys now match only the whole number, which is all search ever counted for them; all 41 now find
+  their lesson first. Identifiers without a search key of their own fall from 66 to 25, and a test keeps the collision
+  rule and the ranking in agreement.
+- **Lesson edits no longer reshuffle search vocabulary.** Model-written search phrases used to be redrawn from scratch
+  whenever a lesson changed, replacing 12–15 of 15 even when none had become false; keyword matching is exact, so a
+  reworded phrase quietly stopped matching. Updates now start from the old phrases and the text before and after the
+  edit, and code enforces the rules: a phrase that is still true is never dropped, a phrase goes only if inaccurate or
+  a near-duplicate, and a topic the edit added gets new phrases (up to 18 per lesson). On the edit that prompted
+  this, the old method lost the right lesson for a question (rank 1 → 5); the update method kept rank 1 in every run.
+  New phrases that together would make their lesson the top answer to another lesson's question are withheld.
+- **Retrieval gate.** Single-question rules no longer fail the build for holdout questions; those changes are reported,
+  and holdout still counts in the gated per-group averages. Every run prints a drift report. baseline-v5 accepts one
+  holdout question that fell from 1 to 5 when lesson 212's phrases were redrawn; baseline-v6 accepts one question that
+  fell out of the top 20 because two new, true phrases for L215 made it a wrong-answer entrant (not reworded to pass).
+
+**Maintainer tools**
+
+- `prepare-lessons.js --generate` now **updates** a stale lesson's vocabulary by default (old terms plus the text
+  before and after the edit, rules enforced in code, each change recorded with its reason); `--fresh` and
+  `--regen <ids>` redraw. New `--fill-gaps <ids>` covers an old topic a lesson has no phrase for. Each model call's
+  cost is logged.
+
 ## v2.60.2 — 2026-10-01 (this fork) — simpler search, a ranking fix, and how a skill's `!cmd` really runs
 
 No new lessons; counts stay 218/59.
