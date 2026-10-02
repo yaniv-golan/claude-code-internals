@@ -529,7 +529,8 @@ Desktop's capability probe, **gate `4116586025`**). Desktop main has no lane bra
 gate can hold the decision**. `1143815894` (host-loop vs VM-loop) is a *within-local-lane* axis.
 
 Remote lane specifics: cwd `/home/claude`; delivery via `SendUserFile` →
-`internal__remote-devices__device_commit_files` (**delivery is an act, not a location**); host-side
+`mcp__remote-devices__device_commit_files` (**delivery is an act, not a location**; `internal__remote-devices__…` is
+only the Desktop's telemetry name for the same tools, asar 2.19675.0); host-side
 **stdio** MCP servers — both `claude_desktop_config.json` and Cowork **plugin** servers — DO reach the
 session, run on the Mac by the Desktop and bridged in as `<server>__<tool>` tools while the Desktop is
 open (see "Local MCP bridge" below; corrects L138's "cannot cross the boundary", 2026-09-22); the

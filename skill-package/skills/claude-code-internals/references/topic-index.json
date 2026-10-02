@@ -14118,7 +14118,7 @@
         "include_archived",
         "bound_device_uuid",
         "permission_mode_seq",
-        "internal__remote-devices__device_commit_files",
+        "mcp__remote-devices__device_commit_files",
         "uploads-tmp",
         "doc-export-out",
         "cowork local vs cloud execution",
@@ -14148,7 +14148,7 @@
         "include_archived",
         "bound_device_uuid",
         "permission_mode_seq",
-        "internal__remote-devices__device_commit_files",
+        "mcp__remote-devices__device_commit_files",
         "uploads-tmp",
         "doc-export-out"
       ],
@@ -14171,8 +14171,8 @@
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-02",
         "terms_sha256": "72e78312296c2aa127e7ca72b97cacb3e1a810eb5671267453e32f3e87dcf56a"
       }
     },
@@ -20627,6 +20627,7 @@
         "list_devices",
         "project_memory_read",
         "project_memory_write",
+        "internal__remote-devices",
         "electron-version",
         "node-version",
         "device-name",
@@ -20673,6 +20674,7 @@
         "list_devices",
         "project_memory_read",
         "project_memory_write",
+        "internal__remote-devices",
         "electron-version",
         "node-version",
         "device-name",
@@ -43429,7 +43431,7 @@
     "permission_mode_seq": [
       138
     ],
-    "internal__remote-devices__device_commit_files": [
+    "mcp__remote-devices__device_commit_files": [
       138
     ],
     "uploads-tmp": [
@@ -44846,6 +44848,9 @@
       215
     ],
     "project_memory_write": [
+      215
+    ],
+    "internal__remote-devices": [
       215
     ],
     "electron-version": [

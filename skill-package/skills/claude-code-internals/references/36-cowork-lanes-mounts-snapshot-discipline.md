@@ -69,7 +69,7 @@ Desktop main has **no lane branch**: `LocalAgentModeSessions.start` unconditiona
 |---|---|---|
 | cwd | `/sessions/<slug>` | `/home/claude` |
 <!-- the local-lane cwd here is the shell's, and it predates the 1.32885.1 prompt fix — see Ch44/L163 -->
-| delivery | `mcp__cowork__present_files`; **the `outputs/` directory itself is the channel** | `SendUserFile` → `internal__remote-devices__device_commit_files` — **delivery is an act, not a location** |
+| delivery | `mcp__cowork__present_files`; **the `outputs/` directory itself is the channel** | `SendUserFile` → `mcp__remote-devices__device_commit_files` — **delivery is an act, not a location** |
 | local MCP servers | available (host-run) | **available via the Desktop's local-MCP bridge** — `claude_desktop_config.json` and Cowork-plugin **stdio** servers run on the Mac, announced as `<server>__<tool>`, Desktop must stay open (mechanism: Ch48/L174) |
 | filesystem at session end | **hidden, not destroyed** — `archiveSession` deletes only `["uploads","uploads-tmp","doc-export-out"]` and does not fire at ordinary session end | **discarded** |
 | host file access | direct (host-loop) | `device_request_folder_access` + `remoteSessionFolderGrants`, **only while the Desktop app is open** |
