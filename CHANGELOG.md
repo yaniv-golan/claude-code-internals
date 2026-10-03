@@ -1,5 +1,43 @@
 # Changelog
 
+## v2.63.0 — 2026-10-03 (this fork) — Organization plugin administration, a Mac folder on a cloud task, and a built-in agent that competes with plugin agents
+
+Counts unchanged (221 lessons, 60 chapters). New facts come from probe runs on 2026-10-03 with Desktop 2.19675.0 (a local
+session in a Team organization, read from its transcript, config record and `main.log`; a cloud conversation in a
+Personal organization, read from the interface and the files it saved to the Mac), from Anthropic's plugin admin
+documentation, and from agent 2.1.286's code. Each fact keeps its label and run count in the lessons.
+
+**Organization plugins (L217)**
+
+- The administrator's side: where plugins are added (upload, create, sync from GitHub or GitLab, add a marketplace), the
+  default-access settings (Not available, Available to install, Installed by default, Required; Enterprise group
+  access), and member publishing (Open, Requires review, Off). From Anthropic's documentation, with the destination
+  picker read in the Desktop's interface code. A fresh library upload starts as "Not available".
+- A user's switched-off copy of a same-name plugin was not synced to a cloud session, now seen in two runs. A private
+  upload with the same name as an organization-marketplace plugin again showed no rename prompt.
+- One cloud first message that named a skill, with a workbook attached and a Mac folder connected, reached the skill
+  with its plugin root filled, unlike the earlier first-turn runs; the folder grant may have started the session
+  first (one run, cause not established).
+
+**A Mac folder on a cloud task (L215, state page)**
+
+- Connecting a folder from the composer takes two consents: the Desktop's "Allow Claude to change files in <folder>",
+  then a prompt that the folder's files leave the Mac. Saving delivered files into it wrote them to the Mac through one
+  "Saved files to your computer" row (one run, checked on disk). Cloud deliveries render as "Shared <file>" without a
+  tool name.
+
+**Smaller notes**
+
+- Renaming and moving files in a local session's outputs folder also needs no approval, like deleting (L139, L220; one
+  run).
+- The `vmCwd=` field in `main.log`'s shell lines is not the shell's working directory, which is the session root (L166).
+- From a cloud conversation's file preview, and its full-screen view, a base64 download works after the trust prompt
+  (L105, one run).
+- The CLI's built-in catch-all agent type `claude` can draw a plugin's dispatches away from the plugin's own agent: in
+  one SDK run the model sent three dispatches to it before switching back (L121). A PreToolUse check on
+  `subagent_type` would catch it (not tested).
+- `troubleshooting.json` and `cross-references.json` gain entries for these topics.
+
 ## v2.62.1 — 2026-10-03 (this fork) — A withdrawn organization plugin keeps running until the Desktop's next full sync
 
 Counts unchanged (221 lessons, 60 chapters). Measured on Desktop 2.19675.0 in a Team organization with local sessions on
