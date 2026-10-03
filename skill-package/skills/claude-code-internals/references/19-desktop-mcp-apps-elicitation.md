@@ -155,3 +155,12 @@ Cowork/claude.ai's artifact rendering, not something unique to MCP Apps. The pra
 anything you render for a user inside Cowork/claude.ai that needs to hand data back to the agent must
 do so via the conversation (chat-paste) or elicitation (for private data) — never a client-side
 download or an assumed local server.
+
+## Downloads from a rendered artifact (claude.ai web and Desktop 2.19675.0, 2026-10-03)
+
+An HTML artifact with `<a download>` links to `data:` URIs, tested on the web and in the Desktop app with the same results (from the UI and the downloaded files):
+
+- **In the artifact panel** every download link was refused with "File downloads aren’t available for this artifact." and nothing was saved.
+- **The same HTML delivered as a file and opened in claude.ai** could download. The client first asks "Artifacts are created by other users and aren’t verified by Anthropic. Only download files you trust." (Cancel / Download file); the Desktop then shows the macOS save sheet. The saved files matched the expected SHA-256.
+- **A percent-encoded `data:text/plain;charset=utf-8,…` link failed** there with `InvalidCharacterError: Failed to execute 'atob' on 'Window'`, while `;base64,` links worked. So the client decodes every `data:` URI as base64 (inferred; its code is not on disk). An artifact that offers downloads should use base64 `data:` URIs, and should not expect them to work in the artifact panel.
+

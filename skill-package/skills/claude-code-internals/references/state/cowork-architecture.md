@@ -687,6 +687,14 @@ The same probe on each surface an agent can receive a skill on:
 Discriminators: `CLAUDE_CODE_ENTRYPOINT` (`remote_cowork` vs `remote` vs unset) and whether a
 `claude` binary exists. `/mnt/user-data` is on all three cloud surfaces.
 
+Later runs (Desktop 2.19675.0, 2026-10-02/03): in a cloud session `claude` is
+`/opt/node22/bin/claude`, 2.1.288, and `env -u CLAUDECODE claude -p …` answered (from the UI); in a
+local session's VM shell it is `/usr/local/bin/claude` (transcript); in the classic chat sandbox
+`command -v claude` failed with exit 127 (UI). Outbound `curl` from a cloud session reached pypi,
+api.github.com, example.org, httpbin and wikipedia (HTTP 200), all but pypi through a CONNECT proxy;
+from the classic chat sandbox the same hosts answered directly, with api.github.com returning 403
+(UI, one run each; causes not captured).
+
 ## Scheduled tasks migrate themselves to the cloud (L208)
 
 Desktop's `[RemoteMigrationSweep]` (from 1.44121.1; config gate `2974609625`, force-on)

@@ -109,6 +109,26 @@ Claude Code's loader is the plugin loader described above (CLI 2.1.286, read her
 
 The Desktop and web interfaces do not expand `Read` or agent rows, so those were checked through values the model could not have guessed.
 
+**Every first-turn route takes the outside path (Desktop 2.19675.0, Personal organization, merged composer, 2026-10-03; one run each, from the tool rows the interface rendered, since cloud transcripts are not on the Mac).** Each of these, as a conversation's first message, showed "Loading skill", then "Loaded skill <skill> (<plugin>)", with the tokens and `$ARGUMENTS` left as written, and "Getting set up" only afterwards:
+
+- the skill typed as a slash command;
+- a plain-language request that names what the skill does ("Please run the path report diagnostic…"), with no Skill tool row, so the skill was attached before the session existed rather than called by the model (inferred from the missing row);
+- a skill with `user-invocable: false`, which is not in the slash menu, asked for in plain language;
+- a file attached with "review my deck", which loaded the probe's own `deck-probe` skill although another enabled plugin also has a deck-review skill (why that one was picked is unknown); the attachment did not start the session first.
+
+A turn with no tool use does not start the session either: a skill typed after a plain chat turn still took the outside path, and the next skill typed after that turn's tool use took Claude Code's path. The skill text expanded outside the agent is still recorded in the session transcript: the container's transcript held a line with "Base directory for this skill: /mnt/skills/plugins/path-report:path-report" and the literal `$ARGUMENTS`. A plugin sub-agent read files through its own body's `${CLAUDE_PLUGIN_ROOT}` and through an absolute synced path given in its prompt on both paths. The cloud composer's slash menu has no `/compact`.
+
+## Two plugins with the same name
+
+What happens when a user installs a private copy of a plugin the organization already provides (Desktop 2.19675.0, Team organization, 2026-10-03; from the UI unless marked):
+
+- **Uploading.** When the organization library already has a plugin of that name, the upload form proposes a new name (`<name>-2`) and says "Give yours a different name to keep both, or use the org’s version above", with a button to keep the original name. Uploading a private copy of a plugin the organization has from somewhere else (most likely a marketplace, not confirmed) showed no such prompt.
+- **Both are delivered.** In a local session both copies were staged and listed in the config record's `pluginInstallPaths` (read on disk).
+- **The slash menu shows two identical entries**, with nothing to tell them apart. In a cloud session the first entry loaded the private copy, and only that copy was found on disk in the container (one run). In a local session both entries loaded the marketplace copy (0.11.1, not the private 0.14.1 build; read from the skill's "Base directory" line in two sessions). So the menu position does not pick a copy, and the private copy could not be reached by slash command locally.
+- **A typed name can be refused before anything runs.** With the two copies installed, the bare `/<skill>` and the qualified `/<plugin>:<skill>` gave "Unknown skill: …". The interface raises that message itself (`outcome:"unknown_skill"` in the claude.ai bundle in `ion-dist`), so no session starts. With a single plugin whose name differs from its skill's (`cci-probe4`, skill `probe4`), the bare `/probe4` was also "Unknown skill", while the menu entry sent `/cci-probe4:probe4` and worked; with a plugin named like its skill the bare form works. Whether a bare name needs that match or only needs to be unambiguous is not known.
+- **Removing the organization's copy does not remove a member's installation.** After the plugin was deleted from the organization library, the member's own enabled installation of it was still listed and had to be removed separately (one run).
+
+
 **A `` !`cmd` `` the skill allows that then fails in the container.** Every probe declared its command in the skill's `allowed-tools`, so the permission check let it run and it then failed: one probe used `uuidgen`, which the cloud container does not have, another a command that does not exist. A failing command the skill does not list was not tested; under the rule above it is handed to the model or fails the load at the permission check, before it runs. For an allowed command, what the user sees depends on how the skill was invoked:
 
 - **Typed as a slash command, with the session up:** the turn never gets a reply and shows no error (eight runs, web and Desktop, both composers; seven were watched for five minutes or more). On the merged composer the turn looks dead: no "Loading skill", no Stop button, and in the one recorded run the typing dots went within a second. On the older Cowork composer it shows "Working on it…" with a running timer and a Stop button, and never resolves. A plain request in a control conversation was answered within 30 seconds.

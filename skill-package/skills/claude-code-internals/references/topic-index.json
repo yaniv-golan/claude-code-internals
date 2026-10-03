@@ -10174,7 +10174,7 @@
       "lesson_number": "105",
       "file": "19-desktop-mcp-apps-elicitation.md",
       "startLine": 26,
-      "endLine": 157,
+      "endLine": 165,
       "keywords": [
         "artifact-webview",
         "no-callback-artifact",
@@ -10241,6 +10241,7 @@
         "client-capabilities",
         "create-elicitation-completion-notifier",
         "elicit-result",
+        "utf-8",
         "2204227020",
         "can my mcp app ui send data back to the server",
         "mcp app form submits into the chat",
@@ -10256,7 +10257,10 @@
         "save button in rendered html does nothing in cowork",
         "how does an html artifact send results back to the agent",
         "mcp app fullscreen and file download from iframe",
-        "server asks user a question and gets answer privately"
+        "server asks user a question and gets answer privately",
+        "file downloads aren't available for this artifact",
+        "download link in html artifact not working",
+        "percent-encoded data link download fails"
       ],
       "identifier_keys": [
         "2025-11-21",
@@ -10275,6 +10279,7 @@
         "client-capabilities",
         "create-elicitation-completion-notifier",
         "elicit-result",
+        "utf-8",
         "2204227020"
       ],
       "vocab_keys": [
@@ -10292,13 +10297,16 @@
         "save button in rendered html does nothing in cowork",
         "how does an html artifact send results back to the agent",
         "mcp app fullscreen and file download from iframe",
-        "server asks user a question and gets answer privately"
+        "server asks user a question and gets answer privately",
+        "file downloads aren't available for this artifact",
+        "download link in html artifact not working",
+        "percent-encoded data link download fails"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "3d2200f5e34871d9e3425603586b47d56d4d01a6d9388cfaf0922ae5beab4e2a"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-03",
+        "terms_sha256": "8fa22ebdaf3c6676f6615602847f452d42dcca977a0c1f97974c0cd34f2f5231"
       }
     },
     {
@@ -12526,7 +12534,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-02",
+        "date": "2026-10-03",
         "terms_sha256": "5089a1a6112a52fa97fdc0db43d517cfa8cbf26a6fd6d7d5a80c135d95639d1a"
       }
     },
@@ -15980,7 +15988,10 @@
         "why does cowork deny instead of prompting me",
         "sdk permission callback differs from desktop app",
         "auto memory feature dormant in cowork",
-        "read and edit allowed outside workspace for memory"
+        "read and edit allowed outside workspace for memory",
+        "which cowork sessions get a memory folder",
+        "memory folder in spaces or bridge sessions",
+        "feature flag gates auto memory for local tasks"
       ],
       "vocab_keys": [
         "cowork memory folder permission allowed",
@@ -15997,13 +16008,16 @@
         "why does cowork deny instead of prompting me",
         "sdk permission callback differs from desktop app",
         "auto memory feature dormant in cowork",
-        "read and edit allowed outside workspace for memory"
+        "read and edit allowed outside workspace for memory",
+        "which cowork sessions get a memory folder",
+        "memory folder in spaces or bridge sessions",
+        "feature flag gates auto memory for local tasks"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "36fda9b7d7b070c6af1d59c2ee496254a3bf05ec44a808f82369d653b086f992"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-03",
+        "terms_sha256": "f06c5fdad05a853d2fc7ed2f0a3a4272e7c79f7466054639216072001e4c10f3"
       }
     },
     {
@@ -20980,7 +20994,7 @@
       "lesson_number": "217",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 16,
-      "endLine": 133,
+      "endLine": 153,
       "keywords": [
         "upload skill",
         "uploaded skill",
@@ -21006,12 +21020,17 @@
         "skill not found other org",
         "CLAUDE_PLUGIN_DATA",
         "CLAUDE_PROJECT_DIR",
+        "plugin-install-paths",
+        "ion-dist",
         "cci-upload-probe",
         "per-source",
         "tengu_iterative_falcon",
         "upload_source",
         "cowork_save_skill",
         "propose_skills",
+        "deck-probe",
+        "unknown_skill",
+        "cci-probe4",
         "handed-off",
         "/cci-chat-skill",
         "tengu_glowing_orbit",
@@ -21037,12 +21056,17 @@
       "identifier_keys": [
         "CLAUDE_PLUGIN_DATA",
         "CLAUDE_PROJECT_DIR",
+        "plugin-install-paths",
+        "ion-dist",
         "cci-upload-probe",
         "per-source",
         "tengu_iterative_falcon",
         "upload_source",
         "cowork_save_skill",
         "propose_skills",
+        "deck-probe",
+        "unknown_skill",
+        "cci-probe4",
         "handed-off",
         "/cci-chat-skill",
         "tengu_glowing_orbit"
@@ -21070,7 +21094,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-02",
+        "date": "2026-10-03",
         "terms_sha256": "38b12b0d40b464a11b9752da9a9ce5c34d356289c75d43e2abed9a9e559b918e"
       }
     },
@@ -21079,8 +21103,8 @@
       "title": "Plugin Blocks and MCP Placeholders, Lane by Lane",
       "lesson_number": "218",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
-      "startLine": 137,
-      "endLine": 201,
+      "startLine": 157,
+      "endLine": 221,
       "keywords": [
         "UserPromptSubmit block",
         "decision block",
@@ -41969,6 +41993,9 @@
     "elicit-result": [
       105
     ],
+    "utf-8": [
+      105
+    ],
     "2204227020": [
       105
     ],
@@ -43665,7 +43692,8 @@
       173
     ],
     "plugin-install-paths": [
-      140
+      140,
+      217
     ],
     "fcache_capture": [
       141
@@ -44991,7 +45019,8 @@
       210
     ],
     "ion-dist": [
-      210
+      210,
+      217
     ],
     "local_plugin_stdio_default": [
       210
@@ -45249,6 +45278,15 @@
       217
     ],
     "propose_skills": [
+      217
+    ],
+    "deck-probe": [
+      217
+    ],
+    "unknown_skill": [
+      217
+    ],
+    "cci-probe4": [
       217
     ],
     "handed-off": [
@@ -50030,6 +50068,15 @@
     "server asks user a question and gets answer privately": [
       105
     ],
+    "file downloads aren't available for this artifact": [
+      105
+    ],
+    "download link in html artifact not working": [
+      105
+    ],
+    "percent-encoded data link download fails": [
+      105
+    ],
     "plugin api key field not showing in cowork": [
       106
     ],
@@ -52534,6 +52581,15 @@
       159
     ],
     "read and edit allowed outside workspace for memory": [
+      159
+    ],
+    "which cowork sessions get a memory folder": [
+      159
+    ],
+    "memory folder in spaces or bridge sessions": [
+      159
+    ],
+    "feature flag gates auto memory for local tasks": [
       159
     ],
     "new feature flags in latest desktop build": [
@@ -55424,6 +55480,6 @@
     ]
   },
   "keyword_boundary": {
-    "unreachable_max": 25
+    "unreachable_max": 28
   }
 }

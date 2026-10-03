@@ -125,7 +125,7 @@ const { extractIdentifiers, normalize } = require('./identifiers.js');
 
 const PROPOSALS_FILE = 'data/vocab-proposals.json'; // relative to the repository root
 /** sha256 of data/vocab-proposals.json. Changed only together with a --generate run (see the header). */
-const PROPOSALS_SHA256 = '6ea92704d19c9980b431027ca64123872292c12fcd4cfd62b85eea2f86fe52e9';
+const PROPOSALS_SHA256 = '75364c1bb50410c1ffe00c657eba4a29df23823f3e1eab475f02403611ec3c7a';
 const DEFAULT_MODEL = 'claude-opus-5-5'; // evals/retrieval/gen-questions.js used claude-sonnet-5
 const PROMPT_VERSION = 'vocab-v1';
 const UPDATE_PROMPT_VERSION = 'vocab-v4-update'; // buildUpdatePrompt(): keep/drop/add over prior terms, previous + current text

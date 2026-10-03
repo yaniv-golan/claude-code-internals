@@ -1234,6 +1234,7 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 105 · 19-desktop-mcp-apps-elicitation.md:85 · Part B — elicitation as a host control-request (the private channel)
 105 · 19-desktop-mcp-apps-elicitation.md:110 · Why it matters (the practical rule)
 105 · 19-desktop-mcp-apps-elicitation.md:140 · Addendum (v2.28.1) — the no-callback boundary generalizes beyond MCP Apps
+105 · 19-desktop-mcp-apps-elicitation.md:159 · Downloads from a rendered artifact (claude.ai web and Desktop 2.19675.0, 2026-10-03)
 106 · 20-desktop-cli-plugin-credential-broker.md:46 · Part A — the `clis` manifest surface
 106 · 20-desktop-cli-plugin-credential-broker.md:95 · Part B — the invocation-time resolver and bridge
 106 · 20-desktop-cli-plugin-credential-broker.md:117 · Part C — the dark-launch gate `2307090146` (`cli_plugin`)
@@ -1768,13 +1769,14 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:36 · What the agent does with a skill's text, by how it was installed
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:69 · Creating and changing a skill by asking in chat
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:83 · In the cloud, which loader expands a skill depends on whether the session exists yet
-217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:119 · A conversation that changed runtime
-217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:123 · For an author
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:141 · The probe
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:151 · Prompt blocks
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:163 · Tool denies
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:167 · MCP server placeholders
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:196 · For an author
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:121 · Two plugins with the same name
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:139 · A conversation that changed runtime
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:143 · For an author
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:161 · The probe
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:171 · Prompt blocks
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:183 · Tool denies
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:187 · MCP server placeholders
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:216 · For an author
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:19 · Native Artifact in scheduled runs
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:32 · A publish grant per scheduled task
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:38 · Attached files no longer pin a task to this computer
@@ -1810,18 +1812,18 @@ state:cowork-architecture · state/cowork-architecture.md:606 · Lane facts re-d
 state:cowork-architecture · state/cowork-architecture.md:632 · A cloud session's outputs contract is switched per session (L198; formerly "Cloud Cowork's outputs contract")
 state:cowork-architecture · state/cowork-architecture.md:640 · A THIRD surface Desktop calls "cloud" — the claude.ai code-execution container (relayed, 2026-09-22)
 state:cowork-architecture · state/cowork-architecture.md:673 · Four surfaces, one probe (L198, 2026-09-23, first-party)
-state:cowork-architecture · state/cowork-architecture.md:690 · Scheduled tasks migrate themselves to the cloud (L208)
-state:cowork-architecture · state/cowork-architecture.md:703 · Where a new task runs (L210)
-state:cowork-architecture · state/cowork-architecture.md:734 · Desktop 2.9939.2 additions (L212–L214)
-state:cowork-architecture · state/cowork-architecture.md:758 · Desktop 2.16120.0 additions (L219–L221)
-state:cowork-architecture · state/cowork-architecture.md:784 · `computer://` links by lane (L215)
-state:cowork-architecture · state/cowork-architecture.md:793 · A cloud session and the user's computer (L215)
-state:cowork-architecture · state/cowork-architecture.md:811 · What Anthropic's help center says (relayed, read 2026-10-02 and 2026-10-03)
-state:cowork-architecture · state/cowork-architecture.md:833 · One conversation, two runtimes (L216)
-state:cowork-architecture · state/cowork-architecture.md:848 · Credential delivery and build identity (L207)
-state:cowork-architecture · state/cowork-architecture.md:861 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
-state:cowork-architecture · state/cowork-architecture.md:898 · Mount model and delete policy (L139, L140)
-state:cowork-architecture · state/cowork-architecture.md:1016 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
+state:cowork-architecture · state/cowork-architecture.md:698 · Scheduled tasks migrate themselves to the cloud (L208)
+state:cowork-architecture · state/cowork-architecture.md:711 · Where a new task runs (L210)
+state:cowork-architecture · state/cowork-architecture.md:742 · Desktop 2.9939.2 additions (L212–L214)
+state:cowork-architecture · state/cowork-architecture.md:766 · Desktop 2.16120.0 additions (L219–L221)
+state:cowork-architecture · state/cowork-architecture.md:792 · `computer://` links by lane (L215)
+state:cowork-architecture · state/cowork-architecture.md:801 · A cloud session and the user's computer (L215)
+state:cowork-architecture · state/cowork-architecture.md:819 · What Anthropic's help center says (relayed, read 2026-10-02 and 2026-10-03)
+state:cowork-architecture · state/cowork-architecture.md:841 · One conversation, two runtimes (L216)
+state:cowork-architecture · state/cowork-architecture.md:856 · Credential delivery and build identity (L207)
+state:cowork-architecture · state/cowork-architecture.md:869 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
+state:cowork-architecture · state/cowork-architecture.md:906 · Mount model and delete policy (L139, L140)
+state:cowork-architecture · state/cowork-architecture.md:1024 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
 state:cowork-control-protocol · state/cowork-control-protocol.md:23 · Spawn contract
 state:cowork-control-protocol · state/cowork-control-protocol.md:87 · Handshake
 state:cowork-control-protocol · state/cowork-control-protocol.md:128 · Subtype inventory pointer

@@ -59,7 +59,7 @@ Then per path key (`Z = ["file_path","path"]`): resolve, require containment ins
 
 So **the agent says *ask* and the Desktop turns it into *deny***, and the reason string is the handoff token between the two layers. That is why `Xe` can intercept it at all: it matches on the token the agent emitted, before the Desktop's own converter runs. Anyone reasoning about Cowork permissions from one artifact alone will get this wrong in whichever direction they looked.
 
-**`autoMemoryHostDir` is present in BOTH asars** (5 occurrences each). The configuration predates this release; only the chain link is new. And because production leaves it unset, the link is **dormant today** — which also means an SDK integrator reimplementing this chain with the old two links diverges from production only once auto-memory activates.
+**`autoMemoryHostDir` is present in BOTH asars** (5 occurrences each). The configuration predates this release; only the chain link is new. On Desktop 2.19675.0 an ordinary local task gets a memory directory only when gate `123929380` is on, and it is served off (its default) on 2026-10-03; a task in a Space or a bridge (`agent`) session can get one. All 274 local sessions in the current `main.log` files show `autoMemoryHostDir: null`. And because production leaves it unset, the link is **dormant today** — which also means an SDK integrator reimplementing this chain with the old two links diverges from production only once auto-memory activates.
 
 ---
 
