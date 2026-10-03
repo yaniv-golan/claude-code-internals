@@ -1,5 +1,89 @@
 # Changelog
 
+## v2.62.0 — 2026-10-03 (this fork) — Local sessions on Desktop 2.19675.0: storage, the shell's path rewrite, deletes, hooks, and same-name plugins
+
+Counts unchanged (221 lessons, 60 chapters). New facts come from live local sessions on 2026-10-02/03 (Desktop 2.19675.0,
+agent 2.1.286, Team and Personal organizations), read from their transcripts, audit logs, config records and `main.log`;
+from asars 2.19675.0, 2.16120.0 and 2.9939.4 and the installed app's interface bundle; and from cloud probe runs, which
+are read from the rows the interface rendered because cloud transcripts are not on the Mac. The state layer's baselines
+are unchanged.
+
+**Where a local session is stored (state page, L132, Ch26, L122, L179)**
+
+- Sessions created on Desktop 2.110.0 or later (2026-09-15 on the capturing machine) keep their data in
+  `<org>/<first 8 hex of the session id>/` instead of `local_<id>/`, with the transcript in `.claude/projects/session/`
+  instead of a folder named after the working directory. The config record keeps its `local_<id>.json` name. Older
+  sessions keep their full-name folders, so both forms sit side by side. `CLAUDE_CONFIG_DIR` is a staging link to
+  `<8 hex>/.claude`, and host-loop log lines are in `main*.log`. `cowork_host_loop_debug.log` was last written on
+  2026-06-04.
+- L132 recorded that a 1.24012.1 session left no host-side transcript. It now also records that on 2.19675.0 the
+  host-side path works at the new location; a search that walks only `local_<id>/` folders misses every session since
+  2.110.0.
+
+**The shell rewrites plugin paths (L122, L121, state pages)**
+
+- Before `mcp__workspace__bash` runs a command, the Desktop replaces each plugin's staging and install path in the
+  command text with its VM mount (org-remote and marketplace plugins, and skill roots); nothing else is rewritten and
+  results are not mapped back. A rewritten script runs, by `bash` or directly. The state pages said
+  `${CLAUDE_PLUGIN_ROOT}` was useless to the VM shell; that held when it was probed (v2.12.1). The rewrite first appears
+  in asar 1.40609.0, and local transcripts show the first rewrite on 2026-09-06.
+- The trap now runs the other way: a root the shell prints is the VM path, which Read and Glob refuse. With a real
+  plugin the model reused such a root even though the skill text gave the host path.
+- A plugin agent that names `mcp__workspace__bash` gets the VM shell; one that names only `Bash` gets none.
+
+**Deleting files (L139, L220, state page)**
+
+- From Desktop 2.16120.0 the outputs folder is mounted with deletes allowed from the start, except in a bridge session;
+  before, it went through the same approval list as a connected folder. Connected folders still refuse `rm` until
+  `allow_cowork_file_delete` is approved.
+
+**Hooks (L209)**
+
+- In an interactive local session hooks run on the Mac in `/private/var/empty`, and a hook's `transcript_path` goes
+  through the staging link. A second turn started a new agent process in two sessions (cause not found).
+- A plugin hook that holds a sub-agent dispatch shows a "Failed" row, and the model resent the exact prompt the hook
+  quoted.
+- A PreToolUse hook on `Agent` can replace the sub-agent's prompt with `updatedInput`. The parent's `tool_use` keeps the
+  model's prompt, while the result record's `toolUseResult.prompt` holds the one that ran.
+
+**Device tools (L36, L215, state page)**
+
+- L36 and the state page named the cloud delivery tool `internal__remote-devices__device_commit_files`. The model sees
+  `mcp__remote-devices__device_commit_files`; the `internal__` form is only the Desktop's telemetry name.
+
+**Where tasks run, and plugin servers (L210, L36, L218)**
+
+- On 2026-10-02 the composer decided where a new task ran: the Chat/Cowork selector went local, the merged composer
+  went to the cloud. L210 said "Only on this computer" was in neither part of the Desktop app; that search covered only
+  `app.asar`, and the switch and the lane router ship in `Contents/Resources/ion-dist/`. L36's "remote is the default is
+  not established" is replaced by Anthropic's own statement ("cloud by default", support article 14479288).
+- On 2.19675.0 a local plugin MCP server gets `${CLAUDE_PLUGIN_ROOT}`, `${CLAUDE_PLUGIN_DATA}` and `${user_config.…}`
+  filled. The blocked-prompt notice now says "You can edit your message and send it again."
+
+**Skills in the cloud and same-name plugins (L217)**
+
+- Every first-turn route to a skill in a merged-composer conversation is expanded outside the agent: a slash command, a
+  plain-language request, a `user-invocable: false` skill, an attached file with a prompt.
+- Two plugins with the same name: two identical, unlabeled menu entries; in a local session both loaded the other copy
+  while the private copy was delivered but not used (n=2); switching the other copy off makes it reachable
+  ([#99174](https://github.com/anthropics/claude-code/issues/99174)). "Unknown skill" for a typed command is the general
+  picker rule ([#94309](https://github.com/anthropics/claude-code/issues/94309)), not a duplicate-plugin effect.
+
+**Artifact downloads (L105)**
+
+- Downloads are refused inside the artifact panel. From a file opened in a conversation they work after a trust
+  prompt, for any `;base64` `data:` link; percent-encoded `data:` links fail with an `atob` error in claude.ai's own
+  download handling ([#99186](https://github.com/anthropics/claude-code/issues/99186)).
+
+**Smaller notes**
+
+- The feature-flag cache's version byte is now `02`; the L124 decode still works (L124).
+- An ordinary local task gets an auto-memory folder only behind gate `123929380`, which is off (L159).
+- The state page records where `claude` is on each surface, outbound reachability from cloud and classic chat, the
+  staged agent path and the built-in `cc-plugin-*` plugins.
+- `troubleshooting.json` and `cross-references.json` gain entries for these topics. Three new identifiers no search
+  key can reach (`probe4`, `/probe4`, `base64`) raised that count from 25 to 28, accepted explicitly.
+
 ## v2.61.0 — 2026-10-02 (this fork) — Desktop 2.16120.0, which loader expands a cloud skill, and search that stays put when lessons change
 
 Three new lessons in a new chapter; counts are now 221/60. New Desktop facts are read from 2.16120.0 (its app.asar
