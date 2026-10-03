@@ -2834,10 +2834,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-03",
-      "input_sha256": "0ae07e52dc76091045ad7fe8802c8bb7cc3de1071d71e90d61febe7dd05e62a6",
+      "input_sha256": "b7d5fa1058c445fdc7e0962c87bbb235b185e60eeefee12715b63a9c815694f7",
       "prior_terms_sha256": "5089a1a6112a52fa97fdc0db43d517cfa8cbf26a6fd6d7d5a80c135d95639d1a",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "a0f00c1633b89fe65e8e4a3e428bbeb50b1a66d4",
+      "previous_text": "3db28aaee3df945bdd99eab5386b3f279cb87496",
       "replaced": [],
       "terms": [
         "subagent write file denied sessions path",
@@ -4930,25 +4930,36 @@
     "209": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-02",
-      "input_sha256": "3703101e9bf95c3d773567590b4bc3a90cfd8b5400d254b8b8c51345c94501ff",
-      "prior_terms_sha256": "648022ad68feff4f321c60d44deeb82bf417b933dfdde9df8c0e4f4e2cf92e5b",
+      "date": "2026-10-03",
+      "input_sha256": "3e033f44b7f2212dc63ed9d01794c879627700665c97b428d1f34f5936b10383",
+      "prior_terms_sha256": "d1f8a4231e5478550ef4e32c363f4d913e005a002d5a99c4c2df89b159079e80",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "80cd9d13d62d1dbbeb054ee0cecc15f05dbcf971",
+      "previous_text": "3db28aaee3df945bdd99eab5386b3f279cb87496",
       "replaced": [
-        "session start hook fires every turn locally"
+        "startup hook skipped on new cloud task",
+        "pre tool hook not matching shell tool name",
+        "silent hook leaves no record"
       ],
       "dropped": [
         {
-          "term": "session start hook fires every turn locally",
-          "why": "inaccurate",
-          "replacement": "session start hook fired again on second turn"
+          "term": "startup hook skipped on new cloud task",
+          "why": "duplicate",
+          "duplicate_of": "session start hook not running in cloud"
+        },
+        {
+          "term": "silent hook leaves no record",
+          "why": "duplicate",
+          "duplicate_of": "hook ran but nothing in transcript"
+        },
+        {
+          "term": "pre tool hook not matching shell tool name",
+          "why": "duplicate",
+          "duplicate_of": "hook matcher misses cowork shell commands"
         }
       ],
       "terms": [
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
-        "startup hook skipped on new cloud task",
         "hook matcher misses cowork shell commands",
         "how to check if a hook actually ran",
         "hook ran but nothing in transcript",
@@ -4957,13 +4968,14 @@
         "plugin hook exit code 2 missing file",
         "do plugin hooks work in cowork?",
         "which hook events fire in local vs cloud cowork",
-        "pre tool hook not matching shell tool name",
-        "silent hook leaves no record",
         "do local cowork hooks run on mac or vm?",
         "pre tool hook for subagent calls",
         "hook transcript path not in projects folder",
         "write hook misses relative path writes",
-        "session start hook fired again on second turn"
+        "session start hook fired again on second turn",
+        "subagent shows failed with no steps yet",
+        "hook blocked subagent dispatch",
+        "does the model see why a hook denied it?"
       ]
     },
     "210": {
@@ -5192,10 +5204,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-03",
-      "input_sha256": "b361b2c8e62f92d726d1b472a489c4135983e4c8e813836ae93621855484433a",
+      "input_sha256": "8948ed135365ba121ccf3b92e880a938de6f2820655055c91efc1a66c8d3f4a4",
       "prior_terms_sha256": "38b12b0d40b464a11b9752da9a9ce5c34d356289c75d43e2abed9a9e559b918e",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "a0f00c1633b89fe65e8e4a3e428bbeb50b1a66d4",
+      "previous_text": "not found",
       "replaced": [],
       "terms": [
         "get my own skill into Cowork",

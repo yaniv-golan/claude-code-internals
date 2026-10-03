@@ -20240,7 +20240,6 @@
         "idle-grace-ms",
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
-        "startup hook skipped on new cloud task",
         "hook matcher misses cowork shell commands",
         "how to check if a hook actually ran",
         "hook ran but nothing in transcript",
@@ -20249,13 +20248,14 @@
         "plugin hook exit code 2 missing file",
         "do plugin hooks work in cowork",
         "which hook events fire in local vs cloud cowork",
-        "pre tool hook not matching shell tool name",
-        "silent hook leaves no record",
         "do local cowork hooks run on mac or vm",
         "pre tool hook for subagent calls",
         "hook transcript path not in projects folder",
         "write hook misses relative path writes",
-        "session start hook fired again on second turn"
+        "session start hook fired again on second turn",
+        "subagent shows failed with no steps yet",
+        "hook blocked subagent dispatch",
+        "does the model see why a hook denied it"
       ],
       "identifier_keys": [
         "idle-grace-ms"
@@ -20263,7 +20263,6 @@
       "vocab_keys": [
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
-        "startup hook skipped on new cloud task",
         "hook matcher misses cowork shell commands",
         "how to check if a hook actually ran",
         "hook ran but nothing in transcript",
@@ -20272,19 +20271,20 @@
         "plugin hook exit code 2 missing file",
         "do plugin hooks work in cowork",
         "which hook events fire in local vs cloud cowork",
-        "pre tool hook not matching shell tool name",
-        "silent hook leaves no record",
         "do local cowork hooks run on mac or vm",
         "pre tool hook for subagent calls",
         "hook transcript path not in projects folder",
         "write hook misses relative path writes",
-        "session start hook fired again on second turn"
+        "session start hook fired again on second turn",
+        "subagent shows failed with no steps yet",
+        "hook blocked subagent dispatch",
+        "does the model see why a hook denied it"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-02",
-        "terms_sha256": "d1f8a4231e5478550ef4e32c363f4d913e005a002d5a99c4c2df89b159079e80"
+        "date": "2026-10-03",
+        "terms_sha256": "4358e29441134f716754f24fbee1f097ef2916a254c9dee17f344294f2184932"
       }
     },
     {
@@ -20994,7 +20994,7 @@
       "lesson_number": "217",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 16,
-      "endLine": 153,
+      "endLine": 154,
       "keywords": [
         "upload skill",
         "uploaded skill",
@@ -21031,6 +21031,7 @@
         "deck-probe",
         "unknown_skill",
         "cci-probe4",
+        "path-report",
         "handed-off",
         "/cci-chat-skill",
         "tengu_glowing_orbit",
@@ -21067,6 +21068,7 @@
         "deck-probe",
         "unknown_skill",
         "cci-probe4",
+        "path-report",
         "handed-off",
         "/cci-chat-skill",
         "tengu_glowing_orbit"
@@ -21103,8 +21105,8 @@
       "title": "Plugin Blocks and MCP Placeholders, Lane by Lane",
       "lesson_number": "218",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
-      "startLine": 157,
-      "endLine": 221,
+      "startLine": 158,
+      "endLine": 222,
       "keywords": [
         "UserPromptSubmit block",
         "decision block",
@@ -45289,6 +45291,9 @@
     "cci-probe4": [
       217
     ],
+    "path-report": [
+      217
+    ],
     "handed-off": [
       217
     ],
@@ -54827,9 +54832,6 @@
     "session start hook not running in cloud": [
       209
     ],
-    "startup hook skipped on new cloud task": [
-      209
-    ],
     "hook matcher misses cowork shell commands": [
       209
     ],
@@ -54854,12 +54856,6 @@
     "which hook events fire in local vs cloud cowork": [
       209
     ],
-    "pre tool hook not matching shell tool name": [
-      209
-    ],
-    "silent hook leaves no record": [
-      209
-    ],
     "do local cowork hooks run on mac or vm": [
       209
     ],
@@ -54873,6 +54869,15 @@
       209
     ],
     "session start hook fired again on second turn": [
+      209
+    ],
+    "subagent shows failed with no steps yet": [
+      209
+    ],
+    "hook blocked subagent dispatch": [
+      209
+    ],
+    "does the model see why a hook denied it": [
       209
     ],
     "cowork task runs in cloud instead of locally": [

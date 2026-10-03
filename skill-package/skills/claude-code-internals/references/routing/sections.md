@@ -1769,14 +1769,14 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:36 · What the agent does with a skill's text, by how it was installed
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:69 · Creating and changing a skill by asking in chat
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:83 · In the cloud, which loader expands a skill depends on whether the session exists yet
-217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:121 · Two plugins with the same name
-217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:139 · A conversation that changed runtime
-217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:143 · For an author
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:161 · The probe
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:171 · Prompt blocks
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:183 · Tool denies
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:187 · MCP server placeholders
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:216 · For an author
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:128 · Two plugins with the same name
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:140 · A conversation that changed runtime
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:144 · For an author
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:162 · The probe
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:172 · Prompt blocks
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:184 · Tool denies
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:188 · MCP server placeholders
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:217 · For an author
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:19 · Native Artifact in scheduled runs
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:32 · A publish grant per scheduled task
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:38 · Attached files no longer pin a task to this computer
