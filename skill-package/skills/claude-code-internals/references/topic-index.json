@@ -203,7 +203,6 @@
         "PROMPT_TOO_LONG_ERROR_MESSAGE",
         "handle-stop-hooks",
         "stopHooks.ts",
-        "hook_success",
         "hook_non_blocking_error",
         "hook_error_during_execution",
         "tokenBudget.ts",
@@ -258,7 +257,6 @@
         "PROMPT_TOO_LONG_ERROR_MESSAGE",
         "handle-stop-hooks",
         "stopHooks.ts",
-        "hook_success",
         "hook_non_blocking_error",
         "hook_error_during_execution",
         "tokenBudget.ts",
@@ -20237,7 +20235,12 @@
         "missing hook script blocks",
         "dash exit 2 hook",
         "Hook script appears to be missing",
+        "hook_success",
+        "session_context",
         "idle-grace-ms",
+        "hook-name",
+        "meta.json",
+        "system-reminder-tag",
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
         "hook matcher misses cowork shell commands",
@@ -20246,7 +20249,6 @@
         "missing hook script blocks every tool call",
         "hook works on mac but blocks on linux",
         "plugin hook exit code 2 missing file",
-        "do plugin hooks work in cowork",
         "which hook events fire in local vs cloud cowork",
         "do local cowork hooks run on mac or vm",
         "pre tool hook for subagent calls",
@@ -20255,10 +20257,16 @@
         "session start hook fired again on second turn",
         "subagent shows failed with no steps yet",
         "hook blocked subagent dispatch",
-        "does the model see why a hook denied it"
+        "does the model see why a hook denied it",
+        "hook silently rewrote subagent prompt"
       ],
       "identifier_keys": [
-        "idle-grace-ms"
+        "hook_success",
+        "session_context",
+        "idle-grace-ms",
+        "hook-name",
+        "meta.json",
+        "system-reminder-tag"
       ],
       "vocab_keys": [
         "plugin hook not firing in cowork",
@@ -20269,7 +20277,6 @@
         "missing hook script blocks every tool call",
         "hook works on mac but blocks on linux",
         "plugin hook exit code 2 missing file",
-        "do plugin hooks work in cowork",
         "which hook events fire in local vs cloud cowork",
         "do local cowork hooks run on mac or vm",
         "pre tool hook for subagent calls",
@@ -20278,13 +20285,14 @@
         "session start hook fired again on second turn",
         "subagent shows failed with no steps yet",
         "hook blocked subagent dispatch",
-        "does the model see why a hook denied it"
+        "does the model see why a hook denied it",
+        "hook silently rewrote subagent prompt"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-03",
-        "terms_sha256": "4358e29441134f716754f24fbee1f097ef2916a254c9dee17f344294f2184932"
+        "terms_sha256": "a0a53ac6467bbe72e0d595666d3d0afd268db2a2c7e39d6e4018cbd436172a4f"
       }
     },
     {
@@ -37249,7 +37257,7 @@
       2
     ],
     "hook_success": [
-      2
+      209
     ],
     "hook_non_blocking_error": [
       2
@@ -42764,7 +42772,8 @@
       119
     ],
     "session_context": [
-      119
+      119,
+      209
     ],
     "git_repository": [
       119
@@ -44985,6 +44994,15 @@
       208
     ],
     "idle-grace-ms": [
+      209
+    ],
+    "hook-name": [
+      209
+    ],
+    "meta.json": [
+      209
+    ],
+    "system-reminder-tag": [
       209
     ],
     "dramatic_shrimp_disabled_at": [
@@ -54850,9 +54868,6 @@
     "plugin hook exit code 2 missing file": [
       209
     ],
-    "do plugin hooks work in cowork": [
-      209
-    ],
     "which hook events fire in local vs cloud cowork": [
       209
     ],
@@ -54878,6 +54893,9 @@
       209
     ],
     "does the model see why a hook denied it": [
+      209
+    ],
+    "hook silently rewrote subagent prompt": [
       209
     ],
     "cowork task runs in cloud instead of locally": [
