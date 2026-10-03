@@ -2409,10 +2409,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-03",
-      "input_sha256": "b5fa8cc9ea02fd8b7e6f0d330e306dc262c828bd9364167dcab96bc9033daf43",
-      "prior_terms_sha256": "3d2200f5e34871d9e3425603586b47d56d4d01a6d9388cfaf0922ae5beab4e2a",
+      "input_sha256": "7665ae60ecd0f7919790b0416df413a8a204249acd628fb9680773c02b055dfd",
+      "prior_terms_sha256": "8fa22ebdaf3c6676f6615602847f452d42dcca977a0c1f97974c0cd34f2f5231",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "a0f00c1633b89fe65e8e4a3e428bbeb50b1a66d4",
+      "previous_text": "7c1895c3120d7a359ee142a10dc038130faa6f29",
       "replaced": [],
       "terms": [
         "can my MCP app UI send data back to the server",
