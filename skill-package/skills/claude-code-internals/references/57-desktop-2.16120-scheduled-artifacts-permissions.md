@@ -76,7 +76,7 @@ These requests are refused with an explanation and no prompt: no file path; a pa
 
 ## The outputs folder allows deletes from the start
 
-In 2.9939.4 the host-loop mount builder gave `outputs` its mode through the approval list, like a connected folder: `rw` until `allow_cowork_file_delete` was approved for it. In 2.16120.0 `outputs` gets `rwd` directly, or `rw` in a bridge (`agent`) session, and only connected folders go through the list. So a shell `rm` in `outputs` works with no prompt (seen on 2.19675.0, 2026-10-02, where the config record had no `fileDeleteApprovedMounts` key at all), and a connected folder still needs the approval (L139).
+In 2.9939.4 the host-loop mount builder gave `outputs` its mode through the approval list, like a connected folder: `rw` until `allow_cowork_file_delete` was approved for it. In 2.16120.0 `outputs` gets `rwd` directly, or `rw` in a bridge (`agent`) session, and only connected folders go through the list. So a shell `rm` in `outputs` works with no prompt (seen on 2.19675.0, 2026-10-02, where the config record had no `fileDeleteApprovedMounts` key at all), and so do renaming a file and moving it into a subfolder (one run, 2026-10-03); a connected folder still needs the approval (L139).
 
 ## `PYTHONDONTWRITEBYTECODE=1`
 

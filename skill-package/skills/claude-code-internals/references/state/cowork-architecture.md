@@ -329,7 +329,9 @@ The chat log is a standard Claude Code JSONL transcript, keyed by the host
 CLI's `cliSessionId` (distinct from the Cowork `<sessionId>`; linked via
 the config record's `cliSessionId` field).
 
-**Logs.** Host-loop lines go to the rotating `~/Library/Logs/Claude/main*.log`
+**Logs.** The `vmCwd=` in the `[workspaceMcpServer] bash` line is not the shell's working
+directory: the shell starts in `/sessions/<slug>` (L163; one run, 2026-10-03).
+Host-loop lines go to the rotating `~/Library/Logs/Claude/main*.log`
 (`[HostLoop]`, `[canUseTool:HostLoop]`, `[workspaceMcpServer] bash: … vmCwd=…,
 mounts=<name>:<mode>,…`, and `Starting local session local_<uuid> in
 /home/<slug>`). `cowork_host_loop_debug.log` (with the `latest` link pointing
@@ -814,7 +816,10 @@ guard (`force` overrides), no per-write prompt. `device_bash` runs in the **Mac'
 at `$HOME/mnt/<folder>`, `/bin/sh` → dash); deleting needs
 `device_request_delete_permission` (mount `rw` → `rwd`). The session's own Write to a
 `/Users/…` path succeeds silently **inside the container**. The cloud container's
-`/bin/sh` is dash too.
+`/bin/sh` is dash too. A folder connected from the composer before sending takes two consents, the
+Desktop's "Allow Claude to change files in <folder>" and then a native prompt that the files leave
+the Mac (UI, one run, 2026-10-03, Desktop 2.19675.0); saving delivered files into it rendered as one
+"Saved files to your computer" row with Written/Rejected lists, and the files landed on the Mac.
 
 ## What Anthropic's help center says (relayed, read 2026-10-02 and 2026-10-03)
 
@@ -942,7 +947,8 @@ connected folder was `rw`; `rm` there failed with "Operation not permitted"; the
 `mcp__cowork__allow_cowork_file_delete` (`file_path` of the file); `main.log` logged the permission
 request and, after the user allowed it, "Received permission response … once"; the config record
 went from no `fileDeleteApprovedMounts` key to `["<folder>"]`; the next shell call showed
-`<folder>:rwd` and the same `rm` worked.
+`<folder>:rwd` and the same `rm` worked. A 2026-10-03 run also renamed a file and moved it into a
+new subfolder in outputs, with no card (one run).
 
 **Delete policy for the other resolver mounts (measured before 2.16120.0, when it covered `outputs` too):** `unlink` and `rmdir` are denied (EPERM);
 `truncate`/`O_TRUNC`, rename-within and rename-onto-existing are **permitted**; cross-device rename

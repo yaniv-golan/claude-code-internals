@@ -1363,27 +1363,27 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 121 · 32-cowork-subagent-execution-model.md:96 · The type-less fallback trap
 121 · 32-cowork-subagent-execution-model.md:109 · Plugin agents: a narrower channel than non-plugin agents
 121 · 32-cowork-subagent-execution-model.md:119 · Cowork host-loop application
-121 · 32-cowork-subagent-execution-model.md:140 · Corrections to earlier lessons
-122 · 32-cowork-subagent-execution-model.md:151 · In-process execution, zero per-sub-agent env
-122 · 32-cowork-subagent-execution-model.md:155 · cwd inheritance and the Task schema
-122 · 32-cowork-subagent-execution-model.md:159 · The path-containment hook, re-anchored at 1.20186.1
-122 · 32-cowork-subagent-execution-model.md:182 · Shell commands are rewritten for plugin paths; file-tool paths are not (Desktop 2.19675.0)
-122 · 32-cowork-subagent-execution-model.md:194 · Hooks fire inside sub-agents — first-party proof
-122 · 32-cowork-subagent-execution-model.md:198 · The crux: `cwd` IS the outputs directory
-122 · 32-cowork-subagent-execution-model.md:212 · Write/delete policy under `outputs/` and `uploads/`
-122 · 32-cowork-subagent-execution-model.md:228 · `${CLAUDE_PLUGIN_ROOT}` in sub-agents
-123 · 32-cowork-subagent-execution-model.md:244 · The two verbatim branches
-123 · 32-cowork-subagent-execution-model.md:261 · Selection, delivery, and consumption
-123 · 32-cowork-subagent-execution-model.md:268 · The gate that does *not* gate this, and the one env-var gap that does
-124 · 32-cowork-subagent-execution-model.md:280 · Sub-agent env & model resolution
-124 · 32-cowork-subagent-execution-model.md:301 · ToolSearch enablement
-124 · 32-cowork-subagent-execution-model.md:309 · Lifecycle re-verification and two product changes
-124 · 32-cowork-subagent-execution-model.md:321 · Host-loop vs VM-loop: the decision function and its deltas
-124 · 32-cowork-subagent-execution-model.md:348 · Stream observability
-124 · 32-cowork-subagent-execution-model.md:363 · ADDENDUM (2026-08-13) — the full `sessionType` enum, and a new sticky-cached gate that excludes two of its members
-124 · 32-cowork-subagent-execution-model.md:397 · Methodology
-124 · 32-cowork-subagent-execution-model.md:405 · Identifier table
-124 · 32-cowork-subagent-execution-model.md:437 · What this means for skill and agent authors
+121 · 32-cowork-subagent-execution-model.md:142 · Corrections to earlier lessons
+122 · 32-cowork-subagent-execution-model.md:153 · In-process execution, zero per-sub-agent env
+122 · 32-cowork-subagent-execution-model.md:157 · cwd inheritance and the Task schema
+122 · 32-cowork-subagent-execution-model.md:161 · The path-containment hook, re-anchored at 1.20186.1
+122 · 32-cowork-subagent-execution-model.md:184 · Shell commands are rewritten for plugin paths; file-tool paths are not (Desktop 2.19675.0)
+122 · 32-cowork-subagent-execution-model.md:196 · Hooks fire inside sub-agents — first-party proof
+122 · 32-cowork-subagent-execution-model.md:200 · The crux: `cwd` IS the outputs directory
+122 · 32-cowork-subagent-execution-model.md:214 · Write/delete policy under `outputs/` and `uploads/`
+122 · 32-cowork-subagent-execution-model.md:230 · `${CLAUDE_PLUGIN_ROOT}` in sub-agents
+123 · 32-cowork-subagent-execution-model.md:246 · The two verbatim branches
+123 · 32-cowork-subagent-execution-model.md:263 · Selection, delivery, and consumption
+123 · 32-cowork-subagent-execution-model.md:270 · The gate that does *not* gate this, and the one env-var gap that does
+124 · 32-cowork-subagent-execution-model.md:282 · Sub-agent env & model resolution
+124 · 32-cowork-subagent-execution-model.md:303 · ToolSearch enablement
+124 · 32-cowork-subagent-execution-model.md:311 · Lifecycle re-verification and two product changes
+124 · 32-cowork-subagent-execution-model.md:323 · Host-loop vs VM-loop: the decision function and its deltas
+124 · 32-cowork-subagent-execution-model.md:350 · Stream observability
+124 · 32-cowork-subagent-execution-model.md:365 · ADDENDUM (2026-08-13) — the full `sessionType` enum, and a new sticky-cached gate that excludes two of its members
+124 · 32-cowork-subagent-execution-model.md:399 · Methodology
+124 · 32-cowork-subagent-execution-model.md:407 · Identifier table
+124 · 32-cowork-subagent-execution-model.md:439 · What this means for skill and agent authors
 125 · 33-desktop-device-partner-permission-tuning.md:20 · The tool schemas
 125 · 33-desktop-device-partner-permission-tuning.md:30 · The gating chain — why Cowork structurally never sees these
 125 · 33-desktop-device-partner-permission-tuning.md:47 · Per-platform enablement gates, and the sandbox
@@ -1753,31 +1753,31 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 215 · 55-cloud-session-device-tools.md:37 · Getting a folder
 215 · 55-cloud-session-device-tools.md:65 · Paths
 215 · 55-cloud-session-device-tools.md:75 · Reading: stage a copy
-215 · 55-cloud-session-device-tools.md:79 · Writing: commit from the outputs folder
-215 · 55-cloud-session-device-tools.md:93 · The ordinary Write tool does not reach the Mac
-215 · 55-cloud-session-device-tools.md:97 · Commands: `device_bash` runs in the Mac's Cowork VM
-215 · 55-cloud-session-device-tools.md:113 · The shells
-215 · 55-cloud-session-device-tools.md:117 · `computer://` links: which ones work
-215 · 55-cloud-session-device-tools.md:135 · Chrome from a cloud conversation
-215 · 55-cloud-session-device-tools.md:143 · For a skill author
-216 · 55-cloud-session-device-tools.md:160 · What the composer decides
-216 · 55-cloud-session-device-tools.md:172 · The hub can turn a chat into a workspace
-216 · 55-cloud-session-device-tools.md:184 · A cloud session can become, or be shown as, a chat
-216 · 55-cloud-session-device-tools.md:192 · Not the same as the Desktop's Chat mode
-216 · 55-cloud-session-device-tools.md:196 · Why it matters
+215 · 55-cloud-session-device-tools.md:81 · Writing: commit from the outputs folder
+215 · 55-cloud-session-device-tools.md:97 · The ordinary Write tool does not reach the Mac
+215 · 55-cloud-session-device-tools.md:101 · Commands: `device_bash` runs in the Mac's Cowork VM
+215 · 55-cloud-session-device-tools.md:117 · The shells
+215 · 55-cloud-session-device-tools.md:121 · `computer://` links: which ones work
+215 · 55-cloud-session-device-tools.md:139 · Chrome from a cloud conversation
+215 · 55-cloud-session-device-tools.md:147 · For a skill author
+216 · 55-cloud-session-device-tools.md:164 · What the composer decides
+216 · 55-cloud-session-device-tools.md:176 · The hub can turn a chat into a workspace
+216 · 55-cloud-session-device-tools.md:188 · A cloud session can become, or be shown as, a chat
+216 · 55-cloud-session-device-tools.md:196 · Not the same as the Desktop's Chat mode
+216 · 55-cloud-session-device-tools.md:200 · Why it matters
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:20 · The probe
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:36 · What the agent does with a skill's text, by how it was installed
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:69 · Creating and changing a skill by asking in chat
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:83 · In the cloud, which loader expands a skill depends on whether the session exists yet
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:128 · Two plugins with the same name
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:140 · Organization plugins on a Desktop, and removing one
-217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:152 · A conversation that changed runtime
-217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:156 · For an author
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:174 · The probe
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:184 · Prompt blocks
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:196 · Tool denies
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:200 · MCP server placeholders
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:229 · For an author
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:153 · A conversation that changed runtime
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:157 · For an author
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:175 · The probe
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:185 · Prompt blocks
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:197 · Tool denies
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:201 · MCP server placeholders
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:230 · For an author
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:19 · Native Artifact in scheduled runs
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:32 · A publish grant per scheduled task
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:38 · Attached files no longer pin a task to this computer
@@ -1802,29 +1802,29 @@ state:cowork-architecture · state/cowork-architecture.md:22 · Host-loop vs VM-
 state:cowork-architecture · state/cowork-architecture.md:86 · Filesystem & mounts
 state:cowork-architecture · state/cowork-architecture.md:184 · Sub-agent execution (host-loop)
 state:cowork-architecture · state/cowork-architecture.md:272 · Session storage
-state:cowork-architecture · state/cowork-architecture.md:346 · Plugin roots
-state:cowork-architecture · state/cowork-architecture.md:416 · Runtime detection from a skill (lesson 116)
-state:cowork-architecture · state/cowork-architecture.md:470 · Re-verification at Desktop 1.18286.0 (2026-07-04)
-state:cowork-architecture · state/cowork-architecture.md:481 · Re-verification at Desktop 1.19367.0 (2026-07-08): cloud tasks are not new
-state:cowork-architecture · state/cowork-architecture.md:497 · Device automation surfaces (Desktop 1.22209.0, lessons 125-126)
-state:cowork-architecture · state/cowork-architecture.md:532 · LEAD (unconfirmed): 1.24012.1 may move session state off the host (L132)
-state:cowork-architecture · state/cowork-architecture.md:557 · Execution lanes (L138)
-state:cowork-architecture · state/cowork-architecture.md:606 · Lane facts re-derived at Desktop 1.46388.4 / agent 2.1.260 (L180)
-state:cowork-architecture · state/cowork-architecture.md:632 · A cloud session's outputs contract is switched per session (L198; formerly "Cloud Cowork's outputs contract")
-state:cowork-architecture · state/cowork-architecture.md:640 · A THIRD surface Desktop calls "cloud" — the claude.ai code-execution container (relayed, 2026-09-22)
-state:cowork-architecture · state/cowork-architecture.md:673 · Four surfaces, one probe (L198, 2026-09-23, first-party)
-state:cowork-architecture · state/cowork-architecture.md:698 · Scheduled tasks migrate themselves to the cloud (L208)
-state:cowork-architecture · state/cowork-architecture.md:711 · Where a new task runs (L210)
-state:cowork-architecture · state/cowork-architecture.md:742 · Desktop 2.9939.2 additions (L212–L214)
-state:cowork-architecture · state/cowork-architecture.md:766 · Desktop 2.16120.0 additions (L219–L221)
-state:cowork-architecture · state/cowork-architecture.md:792 · `computer://` links by lane (L215)
-state:cowork-architecture · state/cowork-architecture.md:801 · A cloud session and the user's computer (L215)
-state:cowork-architecture · state/cowork-architecture.md:819 · What Anthropic's help center says (relayed, read 2026-10-02 and 2026-10-03)
-state:cowork-architecture · state/cowork-architecture.md:841 · One conversation, two runtimes (L216)
-state:cowork-architecture · state/cowork-architecture.md:856 · Credential delivery and build identity (L207)
-state:cowork-architecture · state/cowork-architecture.md:869 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
-state:cowork-architecture · state/cowork-architecture.md:906 · Mount model and delete policy (L139, L140)
-state:cowork-architecture · state/cowork-architecture.md:1024 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
+state:cowork-architecture · state/cowork-architecture.md:348 · Plugin roots
+state:cowork-architecture · state/cowork-architecture.md:418 · Runtime detection from a skill (lesson 116)
+state:cowork-architecture · state/cowork-architecture.md:472 · Re-verification at Desktop 1.18286.0 (2026-07-04)
+state:cowork-architecture · state/cowork-architecture.md:483 · Re-verification at Desktop 1.19367.0 (2026-07-08): cloud tasks are not new
+state:cowork-architecture · state/cowork-architecture.md:499 · Device automation surfaces (Desktop 1.22209.0, lessons 125-126)
+state:cowork-architecture · state/cowork-architecture.md:534 · LEAD (unconfirmed): 1.24012.1 may move session state off the host (L132)
+state:cowork-architecture · state/cowork-architecture.md:559 · Execution lanes (L138)
+state:cowork-architecture · state/cowork-architecture.md:608 · Lane facts re-derived at Desktop 1.46388.4 / agent 2.1.260 (L180)
+state:cowork-architecture · state/cowork-architecture.md:634 · A cloud session's outputs contract is switched per session (L198; formerly "Cloud Cowork's outputs contract")
+state:cowork-architecture · state/cowork-architecture.md:642 · A THIRD surface Desktop calls "cloud" — the claude.ai code-execution container (relayed, 2026-09-22)
+state:cowork-architecture · state/cowork-architecture.md:675 · Four surfaces, one probe (L198, 2026-09-23, first-party)
+state:cowork-architecture · state/cowork-architecture.md:700 · Scheduled tasks migrate themselves to the cloud (L208)
+state:cowork-architecture · state/cowork-architecture.md:713 · Where a new task runs (L210)
+state:cowork-architecture · state/cowork-architecture.md:744 · Desktop 2.9939.2 additions (L212–L214)
+state:cowork-architecture · state/cowork-architecture.md:768 · Desktop 2.16120.0 additions (L219–L221)
+state:cowork-architecture · state/cowork-architecture.md:794 · `computer://` links by lane (L215)
+state:cowork-architecture · state/cowork-architecture.md:803 · A cloud session and the user's computer (L215)
+state:cowork-architecture · state/cowork-architecture.md:824 · What Anthropic's help center says (relayed, read 2026-10-02 and 2026-10-03)
+state:cowork-architecture · state/cowork-architecture.md:846 · One conversation, two runtimes (L216)
+state:cowork-architecture · state/cowork-architecture.md:861 · Credential delivery and build identity (L207)
+state:cowork-architecture · state/cowork-architecture.md:874 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
+state:cowork-architecture · state/cowork-architecture.md:911 · Mount model and delete policy (L139, L140)
+state:cowork-architecture · state/cowork-architecture.md:1030 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
 state:cowork-control-protocol · state/cowork-control-protocol.md:23 · Spawn contract
 state:cowork-control-protocol · state/cowork-control-protocol.md:87 · Handshake
 state:cowork-control-protocol · state/cowork-control-protocol.md:128 · Subtype inventory pointer
@@ -1870,25 +1870,26 @@ state:plugins-skills-hooks · state/plugins-skills-hooks.md:167 · Plugin hooks 
 state:plugins-skills-hooks · state/plugins-skills-hooks.md:183 · Uploaded skills (L217)
 state:plugins-skills-hooks · state/plugins-skills-hooks.md:201 · Creating and changing skills in chat (L217)
 state:plugins-skills-hooks · state/plugins-skills-hooks.md:212 · Plugin prompt blocks and MCP placeholders by lane (L218)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:225 · Plugin agent frontmatter restrictions
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:254 · How a skill reaches its own bundled scripts (the practical question)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:300 · `${CLAUDE_PLUGIN_ROOT}` resolves to wherever the agent loaded the plugin from
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:385 · The hook-event array: 31 at CLI 2.1.231, 33 at agent 2.1.260 (L155, L188)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:413 · PreToolUse is a second, independent enforcement point
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:436 · Frontmatter shadow validator (skills/agents/output-styles)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:455 · Elicitation is the sanctioned skill-argument channel (L147)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:493 · `save_skill` / `canSaveSkill` (L206)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:511 · Forked skills are relayed, not passed through (L204)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:520 · Two input channels (L205)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:528 · Server attribution reaches the agent by a computed env key (L181)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:553 · Hooks as function modules — `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS` (L183)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:572 · `activeSkill` scope & attribution (internal, not in the stream)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:593 · CLI-plugin credential broker
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:604 · Skill/plugin discovery tools — what the Cowork model actually sees (L129/L131)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:628 · Complete rendered surface — 13 tools / 5 servers (as of asar 1.24012.1, agent 2.1.217)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:654 · `when_to_use` does not reach the Cowork listing
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:674 · `paths:` silently suppresses a skill
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:693 · Input schemas (verbatim, 1.24012.1)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:713 · `suggest_skills` has three states (literal branches in `oi`)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:730 · Output envelopes
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:749 · Bundled skills & MCP-contributed skills (L131)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:225 · A built-in catch-all agent (L121)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:232 · Plugin agent frontmatter restrictions
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:261 · How a skill reaches its own bundled scripts (the practical question)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:307 · `${CLAUDE_PLUGIN_ROOT}` resolves to wherever the agent loaded the plugin from
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:392 · The hook-event array: 31 at CLI 2.1.231, 33 at agent 2.1.260 (L155, L188)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:420 · PreToolUse is a second, independent enforcement point
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:443 · Frontmatter shadow validator (skills/agents/output-styles)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:462 · Elicitation is the sanctioned skill-argument channel (L147)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:500 · `save_skill` / `canSaveSkill` (L206)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:518 · Forked skills are relayed, not passed through (L204)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:527 · Two input channels (L205)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:535 · Server attribution reaches the agent by a computed env key (L181)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:560 · Hooks as function modules — `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS` (L183)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:579 · `activeSkill` scope & attribution (internal, not in the stream)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:600 · CLI-plugin credential broker
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:611 · Skill/plugin discovery tools — what the Cowork model actually sees (L129/L131)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:635 · Complete rendered surface — 13 tools / 5 servers (as of asar 1.24012.1, agent 2.1.217)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:661 · `when_to_use` does not reach the Cowork listing
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:681 · `paths:` silently suppresses a skill
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:700 · Input schemas (verbatim, 1.24012.1)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:720 · `suggest_skills` has three states (literal branches in `oi`)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:737 · Output envelopes
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:756 · Bundled skills & MCP-contributed skills (L131)

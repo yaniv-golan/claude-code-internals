@@ -10250,7 +10250,6 @@
         "mcp app iframe cannot call server tools",
         "why does my widget's submit show up as a user message",
         "interactive html ui inside claude desktop chat",
-        "mcp server prompt user for credentials securely",
         "oauth login flow from mcp server in cowork",
         "artifact submit button data never reaches claude",
         "save button in rendered html does nothing in cowork",
@@ -10259,7 +10258,8 @@
         "server asks user a question and gets answer privately",
         "file downloads aren't available for this artifact",
         "download link in html artifact not working",
-        "percent-encoded data link download fails"
+        "percent-encoded data link download fails",
+        "download from html file preview in cloud conversation"
       ],
       "identifier_keys": [
         "2025-11-21",
@@ -10291,7 +10291,6 @@
         "mcp app iframe cannot call server tools",
         "why does my widget's submit show up as a user message",
         "interactive html ui inside claude desktop chat",
-        "mcp server prompt user for credentials securely",
         "oauth login flow from mcp server in cowork",
         "artifact submit button data never reaches claude",
         "save button in rendered html does nothing in cowork",
@@ -10300,13 +10299,14 @@
         "server asks user a question and gets answer privately",
         "file downloads aren't available for this artifact",
         "download link in html artifact not working",
-        "percent-encoded data link download fails"
+        "percent-encoded data link download fails",
+        "download from html file preview in cloud conversation"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-03",
-        "terms_sha256": "8fa22ebdaf3c6676f6615602847f452d42dcca977a0c1f97974c0cd34f2f5231"
+        "terms_sha256": "8ffedbfd63f5f492ba0c0a1139c5a6ab53cbcbdb28bba65a736c511c619167ee"
       }
     },
     {
@@ -12317,7 +12317,7 @@
       "lesson_number": "121",
       "file": "32-cowork-subagent-execution-model.md",
       "startLine": 28,
-      "endLine": 143,
+      "endLine": 145,
       "keywords": [
         "subagent-tools",
         "sub-agent-tool-composition",
@@ -12410,7 +12410,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-02",
+        "date": "2026-10-03",
         "terms_sha256": "a678f3ba017a50268b4f8aecb5ebb0125e7e09d055557f5928f9546ce60a9b33"
       }
     },
@@ -12419,8 +12419,8 @@
       "title": "Sub-Agent File-Tool Namespace: the Outputs cwd, Write/Delete, and the Path-Containment Hook",
       "lesson_number": "122",
       "file": "32-cowork-subagent-execution-model.md",
-      "startLine": 147,
-      "endLine": 236,
+      "startLine": 149,
+      "endLine": 238,
       "keywords": [
         "subagent-cwd",
         "outputs-path",
@@ -12541,8 +12541,8 @@
       "title": "The Sub-Agent Prompt Append: subagent_env_hl / subagent_env_vm",
       "lesson_number": "123",
       "file": "32-cowork-subagent-execution-model.md",
-      "startLine": 240,
-      "endLine": 272,
+      "startLine": 242,
+      "endLine": 274,
       "keywords": [
         "subagent_env_hl",
         "subagent_env_vm",
@@ -12613,8 +12613,8 @@
       "title": "Sub-Agent Env/Model, Lifecycle Re-Verification, VM-Loop Deltas, Stream Observability & Methodology",
       "lesson_number": "124",
       "file": "32-cowork-subagent-execution-model.md",
-      "startLine": 276,
-      "endLine": 447,
+      "startLine": 278,
+      "endLine": 449,
       "keywords": [
         "subagent-model",
         "CLAUDE_CODE_SUBAGENT_MODEL",
@@ -14370,7 +14370,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-02",
+        "date": "2026-10-03",
         "terms_sha256": "6e3854c938e85e2a17fd59b7677e0366a07e0f4f10032c61646f47a77fd8f044"
       }
     },
@@ -16513,7 +16513,10 @@
         "desktop app updated during investigation mismatched files",
         "search that cannot return the counterexample",
         "why did two independent checks agree on wrong answer",
-        "how to verify a claim that something is absent"
+        "how to verify a claim that something is absent",
+        "desktop log shows wrong shell working directory",
+        "bash pwd is session root not outputs",
+        "can i trust cwd in main log"
       ],
       "identifier_keys": [
         "cowork-harness",
@@ -16538,13 +16541,16 @@
         "desktop app updated during investigation mismatched files",
         "search that cannot return the counterexample",
         "why did two independent checks agree on wrong answer",
-        "how to verify a claim that something is absent"
+        "how to verify a claim that something is absent",
+        "desktop log shows wrong shell working directory",
+        "bash pwd is session root not outputs",
+        "can i trust cwd in main log"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "86b2a14b1fe5d8155f8b5b41940ff54a93d19f7ad21030d500c5660920ac32b9"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-03",
+        "terms_sha256": "2ed5258c5f99e41e854b3a9d496407feec73ab6ebf94cfa0e70d46f38faa580a"
       }
     },
     {
@@ -20751,7 +20757,7 @@
       "lesson_number": "215",
       "file": "55-cloud-session-device-tools.md",
       "startLine": 16,
-      "endLine": 150,
+      "endLine": 154,
       "keywords": [
         "device tools",
         "mcp__remote-devices",
@@ -20875,7 +20881,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-02",
+        "date": "2026-10-03",
         "terms_sha256": "d7260346e1260d736d16193547ebd94fb0d67ecfb8ade8d10a184298c061037c"
       }
     },
@@ -20884,8 +20890,8 @@
       "title": "One Conversation, Two Runtimes: How claude.ai Moves a Chat Into a Cowork Workspace",
       "lesson_number": "216",
       "file": "55-cloud-session-device-tools.md",
-      "startLine": 154,
-      "endLine": 200,
+      "startLine": 158,
+      "endLine": 204,
       "keywords": [
         "chat and Cowork merged",
         "hub backend",
@@ -20998,7 +21004,7 @@
       "lesson_number": "217",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 16,
-      "endLine": 166,
+      "endLine": 167,
       "keywords": [
         "upload skill",
         "uploaded skill",
@@ -21024,6 +21030,7 @@
         "skill not found other org",
         "manifest.json",
         "CLAUDE_PLUGIN_DATA",
+        "ion-dist",
         "main.log",
         "CLAUDE_PROJECT_DIR",
         "plugin-install-paths",
@@ -21042,6 +21049,8 @@
         "auto_install",
         "remote-plugin-manager",
         "handed-off",
+        "13837433",
+        "13119606",
         "/cci-chat-skill",
         "tengu_glowing_orbit",
         "get my own skill into cowork",
@@ -21066,6 +21075,7 @@
       "identifier_keys": [
         "manifest.json",
         "CLAUDE_PLUGIN_DATA",
+        "ion-dist",
         "main.log",
         "CLAUDE_PROJECT_DIR",
         "plugin-install-paths",
@@ -21084,6 +21094,8 @@
         "auto_install",
         "remote-plugin-manager",
         "handed-off",
+        "13837433",
+        "13119606",
         "/cci-chat-skill",
         "tengu_glowing_orbit"
       ],
@@ -21119,8 +21131,8 @@
       "title": "Plugin Blocks and MCP Placeholders, Lane by Lane",
       "lesson_number": "218",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
-      "startLine": 170,
-      "endLine": 234,
+      "startLine": 171,
+      "endLine": 235,
       "keywords": [
         "UserPromptSubmit block",
         "decision block",
@@ -21292,14 +21304,14 @@
         "delete request rejected before approval prompt",
         "cannot delete file in read-only folder",
         "delete path with dot dot segments refused",
-        "pycache folders no longer created",
         "why no __pycache__ after running python agent",
         "python bytecode files missing in agent",
         "hook rewriting file path not applied after approval",
         "admin managed ask shows prompt instead of blocking",
         "delete in outputs folder without prompt",
         "why does rm work in outputs but not connected folder",
-        "outputs folder delete permission"
+        "outputs folder delete permission",
+        "rename or move file in outputs without prompt"
       ],
       "identifier_keys": [
         "cowork-permissions",
@@ -21317,20 +21329,20 @@
         "delete request rejected before approval prompt",
         "cannot delete file in read-only folder",
         "delete path with dot dot segments refused",
-        "pycache folders no longer created",
         "why no __pycache__ after running python agent",
         "python bytecode files missing in agent",
         "hook rewriting file path not applied after approval",
         "admin managed ask shows prompt instead of blocking",
         "delete in outputs folder without prompt",
         "why does rm work in outputs but not connected folder",
-        "outputs folder delete permission"
+        "outputs folder delete permission",
+        "rename or move file in outputs without prompt"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-02",
-        "terms_sha256": "80467bdb50fab1904179d86106879d9ee58f25246b5eaff3099739a4c1c2f9c0"
+        "date": "2026-10-03",
+        "terms_sha256": "3e8341e31c7ce12460a93335cd659dfa7867af1ec29d31569d948384e2278f79"
       }
     },
     {
@@ -42015,6 +42027,9 @@
     "utf-8": [
       105
     ],
+    "ion-dist": [
+      217
+    ],
     "frame-rt": [
       105
     ],
@@ -45332,6 +45347,12 @@
       217
     ],
     "handed-off": [
+      217
+    ],
+    "13837433": [
+      217
+    ],
+    "13119606": [
       217
     ],
     "/cci-chat-skill": [
@@ -50089,9 +50110,6 @@
     "interactive html ui inside claude desktop chat": [
       105
     ],
-    "mcp server prompt user for credentials securely": [
-      105
-    ],
     "oauth login flow from mcp server in cowork": [
       105
     ],
@@ -50117,6 +50135,9 @@
       105
     ],
     "percent-encoded data link download fails": [
+      105
+    ],
+    "download from html file preview in cloud conversation": [
       105
     ],
     "plugin api key field not showing in cowork": [
@@ -52946,6 +52967,15 @@
     "how to verify a claim that something is absent": [
       166
     ],
+    "desktop log shows wrong shell working directory": [
+      166
+    ],
+    "bash pwd is session root not outputs": [
+      166
+    ],
+    "can i trust cwd in main log": [
+      166
+    ],
     "skill instructions cut off after compaction": [
       167
     ],
@@ -55451,9 +55481,6 @@
     "delete path with dot dot segments refused": [
       220
     ],
-    "pycache folders no longer created": [
-      220
-    ],
     "why no __pycache__ after running python agent": [
       220
     ],
@@ -55473,6 +55500,9 @@
       220
     ],
     "outputs folder delete permission": [
+      220
+    ],
+    "rename or move file in outputs without prompt": [
       220
     ],
     "claude check how my html report looks": [

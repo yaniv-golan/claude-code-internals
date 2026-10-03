@@ -222,6 +222,13 @@ both lanes, but **only safelisted names are filled in** (`HOME`, `LOGNAME`, `PAT
 `${user_config.*}` works locally (default applied) but in the cloud the Desktop bridge leaves
 the server `not_started` / `user_config_unsupported` (visible in `get_device_info`).
 
+## A built-in catch-all agent (L121)
+
+Agent 2.1.286 ships a built-in agent type `claude` ("Catch-all for any task that doesn't fit a more
+specific agent", tools `*`). In one SDK run of a plugin the model sent three of the plugin's dispatches
+to it instead of the plugin's own agent before switching back. Name the plugin's namespaced type, and
+guard with a PreToolUse check on `subagent_type` if it matters (not tested).
+
 ## Plugin agent frontmatter restrictions
 
 A **plugin-shipped** agent definition (as opposed to a `.claude/agents/`

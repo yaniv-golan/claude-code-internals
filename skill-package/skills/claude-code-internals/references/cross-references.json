@@ -2440,6 +2440,11 @@
     "id": 125,
     "relevance": 0.5,
     "reason": "contrasts the GY per-dispatch sub-agent tool-composition layer with the higher server-assembly isEnabled gating that excludes the mobile-simulator tools from Cowork entirely"
+   },
+   {
+    "id": 217,
+    "relevance": 0.6,
+    "reason": "plugin agents compete with the built-in catch-all agent type"
    }
   ],
   "122": [
@@ -4175,6 +4180,11 @@
     "id": 216,
     "relevance": 0.6,
     "reason": "how a chat gains a workspace and a device"
+   },
+   {
+    "id": 217,
+    "relevance": 0.6,
+    "reason": "a folder connected from the composer and the first-turn skill path"
    }
   ],
   "216": [

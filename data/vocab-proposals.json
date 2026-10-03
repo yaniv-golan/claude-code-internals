@@ -2409,11 +2409,20 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-03",
-      "input_sha256": "a94be5b2c8e4aecae937a9b57d8fa93d6bf2497d9c3609d0dcc9288f571f25d7",
+      "input_sha256": "238670dfa844fa8d23ffcf01bf8a2b12a89aefd0c2b2b3ae0b18899d71d363e6",
       "prior_terms_sha256": "8fa22ebdaf3c6676f6615602847f452d42dcca977a0c1f97974c0cd34f2f5231",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "not found",
-      "replaced": [],
+      "previous_text": "a258522f17067f62344e662a9c3b44d7a0342fd0",
+      "replaced": [
+        "MCP server prompt user for credentials securely"
+      ],
+      "dropped": [
+        {
+          "term": "MCP server prompt user for credentials securely",
+          "why": "duplicate",
+          "duplicate_of": "how to collect an API key from user in MCP server"
+        }
+      ],
       "terms": [
         "can my MCP app UI send data back to the server",
         "MCP app form submits into the chat",
@@ -2423,7 +2432,6 @@
         "MCP app iframe cannot call server tools",
         "why does my widget's submit show up as a user message",
         "interactive HTML UI inside Claude Desktop chat",
-        "MCP server prompt user for credentials securely",
         "OAuth login flow from MCP server in Cowork",
         "artifact submit button data never reaches Claude",
         "save button in rendered HTML does nothing in Cowork",
@@ -2432,7 +2440,8 @@
         "server asks user a question and gets answer privately",
         "file downloads aren't available for this artifact",
         "download link in HTML artifact not working",
-        "percent-encoded data link download fails"
+        "percent-encoded data link download fails",
+        "download from HTML file preview in cloud conversation"
       ]
     },
     "106": {
@@ -2803,11 +2812,11 @@
     "121": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-02",
-      "input_sha256": "7a819dad12ce92210df3f99a6b474b64d316c9ecc6e5b2565583dc4cd428e06b",
+      "date": "2026-10-03",
+      "input_sha256": "d6410a53ea3298d08849e8357d0c3407d7f9c274d7ba5e5d5da820ea7562627a",
       "prior_terms_sha256": "a678f3ba017a50268b4f8aecb5ebb0125e7e09d055557f5928f9546ce60a9b33",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "80cd9d13d62d1dbbeb054ee0cecc15f05dbcf971",
+      "previous_text": "a258522f17067f62344e662a9c3b44d7a0342fd0",
       "replaced": [],
       "terms": [
         "which tools does a subagent get",
@@ -3258,11 +3267,11 @@
     "139": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-02",
-      "input_sha256": "0243ca152ede1b45e8868169b976d0987dcc3e87cb3d224c37cfdd2eb72aedd4",
+      "date": "2026-10-03",
+      "input_sha256": "71dc86f0370909e0c484f676e31a49b643c9094edd9687df6b5057256377353b",
       "prior_terms_sha256": "6e3854c938e85e2a17fd59b7677e0366a07e0f4f10032c61646f47a77fd8f044",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "80cd9d13d62d1dbbeb054ee0cecc15f05dbcf971",
+      "previous_text": "a258522f17067f62344e662a9c3b44d7a0342fd0",
       "replaced": [],
       "terms": [
         "cowork cannot delete files",
@@ -3891,9 +3900,13 @@
     },
     "166": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-30",
-      "input_sha256": "b21ebec3afe8b4876b1781112c783c09d0ec2a9ca2a2690f38c5b01ed9fd46c6",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-03",
+      "input_sha256": "dfd03a4cfc4d3cf79d928fba1b114c05ce41a3f093e3ae0236505a85c88ffa46",
+      "prior_terms_sha256": "86b2a14b1fe5d8155f8b5b41940ff54a93d19f7ad21030d500c5660920ac32b9",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "a258522f17067f62344e662a9c3b44d7a0342fd0",
+      "replaced": [],
       "terms": [
         "cowork bash working directory differs from file tools",
         "does chat mode share scratch space with bash",
@@ -3909,7 +3922,10 @@
         "desktop app updated during investigation mismatched files",
         "search that cannot return the counterexample",
         "why did two independent checks agree on wrong answer",
-        "how to verify a claim that something is absent"
+        "how to verify a claim that something is absent",
+        "desktop log shows wrong shell working directory",
+        "bash pwd is session root not outputs",
+        "can I trust cwd in main log?"
       ]
     },
     "167": {
@@ -5098,21 +5114,12 @@
     "215": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-02",
-      "input_sha256": "b80d737fe6df2dfec58ac9dac0d8b141dacc8cba6c6a21b0c1364f271682c36e",
-      "prior_terms_sha256": "72abd934a16a797d69c0f27cc0eae821e2183e876f7648806158767db09d9268",
+      "date": "2026-10-03",
+      "input_sha256": "cac668650677000295e2a1385be674dabcbfa4baa970adeb84fc3e8d561e6671",
+      "prior_terms_sha256": "d7260346e1260d736d16193547ebd94fb0d67ecfb8ade8d10a184298c061037c",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "9cc0ea67b8c58acfaec3fe07324c192441e3c330",
-      "replaced": [
-        "overwrite protection for user edited files"
-      ],
-      "dropped": [
-        {
-          "term": "overwrite protection for user edited files",
-          "why": "duplicate",
-          "duplicate_of": "commit refused because file changed since staged"
-        }
-      ],
+      "previous_text": "a258522f17067f62344e662a9c3b44d7a0342fd0",
+      "replaced": [],
       "terms": [
         "cloud task can't see files on my Mac",
         "why does write succeed but file is missing?",
@@ -5183,10 +5190,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-03",
-      "input_sha256": "e087e416a791ff021d60af1d3a4c39cd47b363d7877c4648d3e59ec9e3392315",
+      "input_sha256": "4a6d6350787ef6253cce064f510bc1ed17217bf2bba59c73b2d84f89ff07fa58",
       "prior_terms_sha256": "38b12b0d40b464a11b9752da9a9ce5c34d356289c75d43e2abed9a9e559b918e",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "5a673da5ef4017d3f92d9599e50ccf833c823e21",
+      "previous_text": "a258522f17067f62344e662a9c3b44d7a0342fd0",
       "replaced": [],
       "terms": [
         "get my own skill into Cowork",
@@ -5287,11 +5294,11 @@
     "220": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-02",
-      "input_sha256": "6d613dc6b01128b3f4161f3e9b89539d9204325d6fd198aa82cab686f1b0043e",
-      "prior_terms_sha256": "80467bdb50fab1904179d86106879d9ee58f25246b5eaff3099739a4c1c2f9c0",
+      "date": "2026-10-03",
+      "input_sha256": "198119ce05e2612f800b15414ec90dcc88cb97369bc33293b09bcec1b04c08cc",
+      "prior_terms_sha256": "3e8341e31c7ce12460a93335cd659dfa7867af1ec29d31569d948384e2278f79",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "9cc0ea67b8c58acfaec3fe07324c192441e3c330",
+      "previous_text": "d898e1da7840fd50e58785ddbf5d9cf3ff0542fe",
       "replaced": [],
       "terms": [
         "approved file edit ran with different input",
@@ -5304,14 +5311,14 @@
         "delete request rejected before approval prompt",
         "cannot delete file in read-only folder",
         "delete path with dot dot segments refused",
-        "pycache folders no longer created",
         "why no __pycache__ after running python agent",
         "python bytecode files missing in agent",
         "hook rewriting file path not applied after approval",
         "admin managed ask shows prompt instead of blocking",
         "delete in outputs folder without prompt",
         "why does rm work in outputs but not connected folder",
-        "outputs folder delete permission"
+        "outputs folder delete permission",
+        "rename or move file in outputs without prompt"
       ]
     },
     "221": {

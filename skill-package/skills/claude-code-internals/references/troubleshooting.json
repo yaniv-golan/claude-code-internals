@@ -2603,6 +2603,41 @@
     217
    ],
    "hint": "The Desktop's 20-minute plugin sync skips cleanup; only a full sync (app start, or hourly) removes a withdrawn organization plugin. Look for 'Removed ... no longer available' in main.log, or restart the app."
+  },
+  {
+   "pattern": [
+    "folder on a cloud task asks twice",
+    "two prompts to connect a folder",
+    "files leave the Mac prompt"
+   ],
+   "lessons": [
+    215
+   ],
+   "hint": "Connecting a Mac folder to a cloud conversation from the composer takes two consents: the Desktop's 'Allow Claude to change files' dialog, then a prompt that the files leave the Mac."
+  },
+  {
+   "pattern": [
+    "dispatch went to agent claude",
+    "subagent_type claude",
+    "wrong subagent type picked",
+    "plugin agent not used"
+   ],
+   "lessons": [
+    121
+   ],
+   "hint": "The CLI has a built-in catch-all agent type 'claude'; the model can pick it over a plugin's own agent. Name the plugin's namespaced type, and check subagent_type in a PreToolUse hook if it matters."
+  },
+  {
+   "pattern": [
+    "mv in outputs",
+    "rename file in outputs cowork",
+    "move file outputs permission"
+   ],
+   "lessons": [
+    139,
+    220
+   ],
+   "hint": "From Desktop 2.16120.0 the outputs mount allows delete, rename and move from the start; connected folders still need allow_cowork_file_delete for deletes."
   }
  ]
 }

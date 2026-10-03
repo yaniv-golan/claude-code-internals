@@ -247,7 +247,7 @@ Corroborating product bug: Chat mode's own prompt asserts *"Write's result shows
 | Chat mode | `Zo()` | outputs dir, via an explicit `cd ${vmCwd} 2>/dev/null \|\| { … exit 96; }` | **yes** |
 | remote/cloud lane | — | `/home/claude` | yes (Ch40) |
 
-The `cd` is prepended **only** on the `chat` branch. That the chat path needs an explicit `cd` while `cwd: c.vmCwd` is *also* passed to the guest spawn is the tell that the spawn argument is not load-bearing — and therefore that the pre-1.32885.1 Cowork prompt was wrong rather than describing a since-changed runtime.
+The `cd` is prepended **only** on the `chat` branch. That the chat path needs an explicit `cd` while `cwd: c.vmCwd` is *also* passed to the guest spawn is the tell that the spawn argument is not load-bearing — and therefore that the pre-1.32885.1 Cowork prompt was wrong rather than describing a since-changed runtime. The Desktop's log says the same thing from the other side: `main.log` records `[workspaceMcpServer] bash: … vmCwd=…/mnt/outputs` for every shell call, yet in a local session on 2026-10-03 (Desktop 2.19675.0) the shell's `$PWD` was the session root, and `$PWD/mnt/outputs` resolved (one run; the 2026-10-02 runs printed `pwd` as the session root too). The log field is not the shell's working directory.
 
 ## Lane facts, re-derived extraction-free
 
