@@ -11025,7 +11025,6 @@
         "echo_unified_login",
         "dismiss_feedback",
         "silent_auto_update",
-        "main.log",
         "queue-operation",
         "last-prompt",
         "git-branch",
@@ -11108,7 +11107,6 @@
         "echo_unified_login",
         "dismiss_feedback",
         "silent_auto_update",
-        "main.log",
         "queue-operation",
         "last-prompt",
         "git-branch",
@@ -20435,7 +20433,6 @@
         "mcp capability artifact",
         "Artifact runtime contract 0.2.60",
         "gate flip ruleId null",
-        "main.log",
         "ccinternals-probe",
         "frame.claudeusercontent.com",
         "list-tools",
@@ -20459,7 +20456,6 @@
         "publishing artifact refused local server declaration"
       ],
       "identifier_keys": [
-        "main.log",
         "ccinternals-probe",
         "frame.claudeusercontent.com",
         "list-tools",
@@ -21002,7 +20998,7 @@
       "lesson_number": "217",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 16,
-      "endLine": 154,
+      "endLine": 166,
       "keywords": [
         "upload skill",
         "uploaded skill",
@@ -21026,7 +21022,9 @@
         "Update skill card",
         "skills per organization",
         "skill not found other org",
+        "manifest.json",
         "CLAUDE_PLUGIN_DATA",
+        "main.log",
         "CLAUDE_PROJECT_DIR",
         "plugin-install-paths",
         "cci-upload-probe",
@@ -21039,6 +21037,10 @@
         "unknown_skill",
         "cci-probe4",
         "path-report",
+        "marketplace-id",
+        "installed-by",
+        "auto_install",
+        "remote-plugin-manager",
         "handed-off",
         "/cci-chat-skill",
         "tengu_glowing_orbit",
@@ -21062,7 +21064,9 @@
         "auto mode won't approve skill inline command"
       ],
       "identifier_keys": [
+        "manifest.json",
         "CLAUDE_PLUGIN_DATA",
+        "main.log",
         "CLAUDE_PROJECT_DIR",
         "plugin-install-paths",
         "cci-upload-probe",
@@ -21075,6 +21079,10 @@
         "unknown_skill",
         "cci-probe4",
         "path-report",
+        "marketplace-id",
+        "installed-by",
+        "auto_install",
+        "remote-plugin-manager",
         "handed-off",
         "/cci-chat-skill",
         "tengu_glowing_orbit"
@@ -21111,8 +21119,8 @@
       "title": "Plugin Blocks and MCP Placeholders, Lane by Lane",
       "lesson_number": "218",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
-      "startLine": 158,
-      "endLine": 222,
+      "startLine": 170,
+      "endLine": 234,
       "keywords": [
         "UserPromptSubmit block",
         "decision block",
@@ -39272,6 +39280,9 @@
     "local-manifest": [
       31
     ],
+    "manifest.json": [
+      217
+    ],
     "BLOCKED_OFFICIAL_NAME_PATTERN": [
       31
     ],
@@ -42482,8 +42493,7 @@
       109
     ],
     "main.log": [
-      109,
-      211
+      217
     ],
     "cowork-architecture.md": [
       117
@@ -45307,6 +45317,18 @@
       217
     ],
     "path-report": [
+      217
+    ],
+    "marketplace-id": [
+      217
+    ],
+    "installed-by": [
+      217
+    ],
+    "auto_install": [
+      217
+    ],
+    "remote-plugin-manager": [
       217
     ],
     "handed-off": [

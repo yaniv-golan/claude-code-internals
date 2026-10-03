@@ -190,6 +190,14 @@ session (Desktop store `local-agent-mode-sessions/skills-plugin/<org>/<account>/
 staged via `claude-hostloop-plugins/<hash>`, read-only at `/sessions/<slug>/mnt/.claude/skills/`),
 **whole**, scripts runnable (`dash` in both the local and the cloud session). Measured 2026-09-27.
 
+Organization plugins (L217, Desktop 2.19675.0, 2026-10-03): each organization-delivered plugin has
+an entry in `<org>/rpm/manifest.json` (`marketplaceId`, `marketplaceName`, `installedBy` auto|user,
+`installationPreference` auto_install|available); the Organization library is its own marketplace
+(`marketplaceName` "Organization library"). The Desktop's 20-minute plugin sync is a quick one that
+skips cleanup; only a full sync (at app start, or when the last one is an hour old) removes a plugin
+the organization withdrew, so a deleted plugin kept running on a running Desktop for up to that long
+(two runs; anthropics/claude-code#99248). Check `main.log` for "Removed … no longer available".
+
 ## Creating and changing skills in chat (L217)
 
 `save_skill` (L206) posts one `SKILL.md` to the same `/skills/upload-skill` endpoint as Customize

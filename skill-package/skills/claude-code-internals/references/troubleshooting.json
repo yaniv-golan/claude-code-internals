@@ -2591,6 +2591,18 @@
     220
    ],
    "hint": "From Desktop 2.16120.0 outputs allows deletes from the start; connected folders still need allow_cowork_file_delete."
+  },
+  {
+   "pattern": [
+    "deleted org plugin still running",
+    "removed plugin still loads",
+    "organization plugin not removed",
+    "Not available plugin still works"
+   ],
+   "lessons": [
+    217
+   ],
+   "hint": "The Desktop's 20-minute plugin sync skips cleanup; only a full sync (app start, or hourly) removes a withdrawn organization plugin. Look for 'Removed ... no longer available' in main.log, or restart the app."
   }
  ]
 }

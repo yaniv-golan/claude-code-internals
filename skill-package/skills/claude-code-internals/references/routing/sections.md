@@ -1770,13 +1770,14 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:69 · Creating and changing a skill by asking in chat
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:83 · In the cloud, which loader expands a skill depends on whether the session exists yet
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:128 · Two plugins with the same name
-217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:140 · A conversation that changed runtime
-217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:144 · For an author
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:162 · The probe
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:172 · Prompt blocks
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:184 · Tool denies
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:188 · MCP server placeholders
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:217 · For an author
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:140 · Organization plugins on a Desktop, and removing one
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:152 · A conversation that changed runtime
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:156 · For an author
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:174 · The probe
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:184 · Prompt blocks
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:196 · Tool denies
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:200 · MCP server placeholders
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:229 · For an author
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:19 · Native Artifact in scheduled runs
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:32 · A publish grant per scheduled task
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:38 · Attached files no longer pin a task to this computer
@@ -1867,27 +1868,27 @@ state:plugins-skills-hooks · state/plugins-skills-hooks.md:142 · Skill-list bu
 state:plugins-skills-hooks · state/plugins-skills-hooks.md:153 · Hooks for cloud sessions, and hook visibility (L202, L203)
 state:plugins-skills-hooks · state/plugins-skills-hooks.md:167 · Plugin hooks by lane and event (L209)
 state:plugins-skills-hooks · state/plugins-skills-hooks.md:183 · Uploaded skills (L217)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:193 · Creating and changing skills in chat (L217)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:204 · Plugin prompt blocks and MCP placeholders by lane (L218)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:217 · Plugin agent frontmatter restrictions
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:246 · How a skill reaches its own bundled scripts (the practical question)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:292 · `${CLAUDE_PLUGIN_ROOT}` resolves to wherever the agent loaded the plugin from
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:377 · The hook-event array: 31 at CLI 2.1.231, 33 at agent 2.1.260 (L155, L188)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:405 · PreToolUse is a second, independent enforcement point
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:428 · Frontmatter shadow validator (skills/agents/output-styles)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:447 · Elicitation is the sanctioned skill-argument channel (L147)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:485 · `save_skill` / `canSaveSkill` (L206)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:503 · Forked skills are relayed, not passed through (L204)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:512 · Two input channels (L205)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:520 · Server attribution reaches the agent by a computed env key (L181)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:545 · Hooks as function modules — `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS` (L183)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:564 · `activeSkill` scope & attribution (internal, not in the stream)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:585 · CLI-plugin credential broker
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:596 · Skill/plugin discovery tools — what the Cowork model actually sees (L129/L131)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:620 · Complete rendered surface — 13 tools / 5 servers (as of asar 1.24012.1, agent 2.1.217)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:646 · `when_to_use` does not reach the Cowork listing
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:666 · `paths:` silently suppresses a skill
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:685 · Input schemas (verbatim, 1.24012.1)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:705 · `suggest_skills` has three states (literal branches in `oi`)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:722 · Output envelopes
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:741 · Bundled skills & MCP-contributed skills (L131)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:201 · Creating and changing skills in chat (L217)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:212 · Plugin prompt blocks and MCP placeholders by lane (L218)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:225 · Plugin agent frontmatter restrictions
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:254 · How a skill reaches its own bundled scripts (the practical question)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:300 · `${CLAUDE_PLUGIN_ROOT}` resolves to wherever the agent loaded the plugin from
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:385 · The hook-event array: 31 at CLI 2.1.231, 33 at agent 2.1.260 (L155, L188)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:413 · PreToolUse is a second, independent enforcement point
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:436 · Frontmatter shadow validator (skills/agents/output-styles)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:455 · Elicitation is the sanctioned skill-argument channel (L147)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:493 · `save_skill` / `canSaveSkill` (L206)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:511 · Forked skills are relayed, not passed through (L204)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:520 · Two input channels (L205)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:528 · Server attribution reaches the agent by a computed env key (L181)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:553 · Hooks as function modules — `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS` (L183)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:572 · `activeSkill` scope & attribution (internal, not in the stream)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:593 · CLI-plugin credential broker
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:604 · Skill/plugin discovery tools — what the Cowork model actually sees (L129/L131)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:628 · Complete rendered surface — 13 tools / 5 servers (as of asar 1.24012.1, agent 2.1.217)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:654 · `when_to_use` does not reach the Cowork listing
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:674 · `paths:` silently suppresses a skill
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:693 · Input schemas (verbatim, 1.24012.1)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:713 · `suggest_skills` has three states (literal branches in `oi`)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:730 · Output envelopes
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:749 · Bundled skills & MCP-contributed skills (L131)
