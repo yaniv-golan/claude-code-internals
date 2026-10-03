@@ -10240,6 +10240,7 @@
         "create-elicitation-completion-notifier",
         "elicit-result",
         "utf-8",
+        "frame-rt",
         "2204227020",
         "can my mcp app ui send data back to the server",
         "mcp app form submits into the chat",
@@ -10278,6 +10279,7 @@
         "create-elicitation-completion-notifier",
         "elicit-result",
         "utf-8",
+        "frame-rt",
         "2204227020"
       ],
       "vocab_keys": [
@@ -20331,7 +20333,6 @@
         "local_auto_permission_forced",
         "local_bypass_permission_forced",
         "disabled_by_org_policy",
-        "ion-dist",
         "local_plugin_stdio_default",
         "cowork_settings",
         "local_vm_enabled",
@@ -20367,7 +20368,6 @@
         "local_auto_permission_forced",
         "local_bypass_permission_forced",
         "disabled_by_org_policy",
-        "ion-dist",
         "local_plugin_stdio_default",
         "cowork_settings",
         "local_vm_enabled",
@@ -21029,7 +21029,6 @@
         "CLAUDE_PLUGIN_DATA",
         "CLAUDE_PROJECT_DIR",
         "plugin-install-paths",
-        "ion-dist",
         "cci-upload-probe",
         "per-source",
         "tengu_iterative_falcon",
@@ -21066,7 +21065,6 @@
         "CLAUDE_PLUGIN_DATA",
         "CLAUDE_PROJECT_DIR",
         "plugin-install-paths",
-        "ion-dist",
         "cci-upload-probe",
         "per-source",
         "tengu_iterative_falcon",
@@ -42006,6 +42004,9 @@
     "utf-8": [
       105
     ],
+    "frame-rt": [
+      105
+    ],
     "2204227020": [
       105
     ],
@@ -45037,10 +45038,6 @@
     ],
     "disabled_by_org_policy": [
       210
-    ],
-    "ion-dist": [
-      210,
-      217
     ],
     "local_plugin_stdio_default": [
       210

@@ -127,7 +127,7 @@ A turn with no tool use does not start the session either: a skill typed after a
 
 ## Two plugins with the same name
 
-What happens when a user installs a private copy of a plugin their organization already has (Desktop 2.19675.0, 2026-10-03; every run in a Team organization; from the UI unless marked):
+What happens when a user installs a private copy of a plugin their organization already has (Desktop 2.19675.0, 2026-10-03; every run in a Team organization; from the UI unless marked; reported as [anthropics/claude-code#99174](https://github.com/anthropics/claude-code/issues/99174)):
 
 - **Uploading.** When the organization library already has a plugin of that name, the upload form proposes a new name (`<name>-2`) and says "Give yours a different name to keep both, or use the org’s version above", with a button to keep the original name. Uploading a private copy of a plugin the organization has from elsewhere (most likely a marketplace) showed no such prompt (one run each).
 - **The slash menu shows two identical entries**, with nothing to tell them apart.

@@ -2516,6 +2516,81 @@
     221
    ],
    "hint": "screenshot_file_preview returns an image of a presented .html/.htm/.svg file as the preview panel renders it. The panel loads nothing by URL: keep scripts, styles and data inline."
+  },
+  {
+   "pattern": [
+    "cowork session folder missing",
+    "cannot find cowork transcript",
+    "local_ folder not found",
+    "cowork session files moved"
+   ],
+   "lessons": [
+    132,
+    122,
+    179
+   ],
+   "hint": "Sessions created on Desktop 2.110.0 or later are stored under <org>/<first 8 hex of the session id>/ with the transcript in .claude/projects/session/; older sessions keep local_<id>/. Search both."
+  },
+  {
+   "pattern": [
+    "plugin root path refused by Read",
+    "is a VM path",
+    "shell printed /sessions path",
+    "Read fails on plugin path"
+   ],
+   "lessons": [
+    122,
+    209
+   ],
+   "hint": "In a local Cowork session the shell rewrites plugin paths to /sessions/<slug>/mnt/..., which the file tools refuse. Give Read/Glob the host path written in the skill text."
+  },
+  {
+   "pattern": [
+    "two plugins same name",
+    "duplicate plugin in slash menu",
+    "private plugin not loading",
+    "Unknown skill"
+   ],
+   "lessons": [
+    217
+   ],
+   "hint": "Two same-name plugins show as identical menu entries and may both load the other copy; switch the other copy off under Customize. A typed command must be picked from the / picker or it can be refused as Unknown skill."
+  },
+  {
+   "pattern": [
+    "artifact download not working",
+    "data: link download fails",
+    "atob InvalidCharacterError",
+    "File downloads aren't available"
+   ],
+   "lessons": [
+    105
+   ],
+   "hint": "Downloads are refused inside the artifact panel. From a delivered file they work after a trust prompt, but only for base64 data: URIs."
+  },
+  {
+   "pattern": [
+    "subagent got a different prompt",
+    "hook changed subagent prompt",
+    "updatedInput prompt rewrite"
+   ],
+   "lessons": [
+    209,
+    121
+   ],
+   "hint": "A PreToolUse hook on Agent can replace the prompt with updatedInput; the parent tool_use keeps the original. Read the sub-agent's own transcript or the hook_success record."
+  },
+  {
+   "pattern": [
+    "cannot delete file in outputs",
+    "rm in outputs cowork",
+    "delete needs approval cowork"
+   ],
+   "lessons": [
+    139,
+    220
+   ],
+   "hint": "From Desktop 2.16120.0 outputs allows deletes from the start; connected folders still need allow_cowork_file_delete."
   }
  ]
 }

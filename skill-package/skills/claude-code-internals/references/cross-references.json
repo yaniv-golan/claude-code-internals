@@ -2467,6 +2467,11 @@
     "id": 220,
     "relevance": 0.85,
     "reason": "approvals pinned to the judged input"
+   },
+   {
+    "id": 209,
+    "relevance": 0.8,
+    "reason": "plugin hooks run on the Mac in /private/var/empty while the shell rewrites plugin paths to the VM"
    }
   ],
   "123": [
@@ -2804,6 +2809,11 @@
     "id": 129,
     "relevance": 0.75,
     "reason": "the disk-recovery path that L132 warns may go dark on newer builds"
+   },
+   {
+    "id": 122,
+    "relevance": 0.6,
+    "reason": "the session data directory and staging links the agent reaches"
    }
   ],
   "133": [
@@ -2918,6 +2928,11 @@
     "id": 109,
     "relevance": 0.7,
     "reason": "fileDeleteApprovedMounts gates mounted paths"
+   },
+   {
+    "id": 220,
+    "relevance": 0.85,
+    "reason": "outputs became deletable from the start in 2.16120.0; connected folders keep the approval"
    }
   ],
   "140": [
@@ -3993,6 +4008,11 @@
     "id": 174,
     "relevance": 0.5,
     "reason": "cloud lane SessionStart on resume"
+   },
+   {
+    "id": 122,
+    "relevance": 0.8,
+    "reason": "the bash plugin-path rewrite and the VM-path deny that hooks and file tools meet"
    }
   ],
   "210": [
@@ -4189,6 +4209,11 @@
     "id": 216,
     "relevance": 0.5,
     "reason": "the conversation that changed runtime"
+   },
+   {
+    "id": 105,
+    "relevance": 0.6,
+    "reason": "artifact and file downloads from a conversation"
    }
   ],
   "218": [
@@ -4245,6 +4270,11 @@
     "id": 116,
     "relevance": 0.6,
     "reason": "the sealed VM shell environment"
+   },
+   {
+    "id": 139,
+    "relevance": 0.85,
+    "reason": "the per-mount delete policy the outputs change departs from"
    }
   ],
   "221": [
