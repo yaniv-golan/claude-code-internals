@@ -1,5 +1,30 @@
 # Changelog
 
+## v2.62.1 — 2026-10-03 (this fork) — A withdrawn organization plugin keeps running until the Desktop's next full sync
+
+Counts unchanged (221 lessons, 60 chapters). Measured on Desktop 2.19675.0 in a Team organization with local sessions on
+2026-10-03, from the Desktop's `main.log` and `rpm/manifest.json`, with code read from asar 2.19675.0 and agent 2.1.286.
+
+**Organization plugins on a Desktop (L217, state page)**
+
+- The Desktop's plugin sync runs every 20 minutes, but that sync is a quick one that skips cleanup. A full sync runs at
+  app start and when the last one is an hour old, and only a full sync removes a plugin the organization no longer
+  offers ("Removed … no longer available" in `main.log`). Both intervals come from a served setting.
+- So an organization plugin an administrator deletes keeps loading and running on a member's running Desktop until the
+  next full sync, up to about an hour, or a restart: in two runs it was removed by the hourly full sync 39 minutes after
+  the delete, and by the full sync at app start. The delete dialog says installed users "lose it right away"
+  ([#99248](https://github.com/anthropics/claude-code/issues/99248)). A plugin set to "Not available" also kept
+  running for at least 14 minutes (one run). A rewritten `rpm/manifest.json` is not a sign of cleanup.
+- The Organization library is a marketplace of its own. `rpm/manifest.json` records each organization plugin's
+  marketplace and whether it was installed automatically or by the user, which matches the administrator's
+  default-access settings. The same-name upload prompt fires against library plugins, not marketplace ones (one run
+  each way); L217's "most likely a marketplace" is now confirmed.
+
+**Hook prompt rewrites (L209)**
+
+- Read in agent 2.1.286: a hook's `updatedInput` that fails the tool's input schema turns the hook's answer into a deny,
+  and on an allow the permission rules are checked again against the new input.
+
 ## v2.62.0 — 2026-10-03 (this fork) — Local sessions on Desktop 2.19675.0: storage, the shell's path rewrite, deletes, hooks, and same-name plugins
 
 Counts unchanged (221 lessons, 60 chapters). New facts come from live local sessions on 2026-10-02/03 (Desktop 2.19675.0,
