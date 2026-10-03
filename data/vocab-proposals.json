@@ -4931,20 +4931,11 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-03",
-      "input_sha256": "1b8b7e1dc69d26b9e36f0e5f3f235b4bd5426632b7444699ed54fc2a6f0876ab",
-      "prior_terms_sha256": "4358e29441134f716754f24fbee1f097ef2916a254c9dee17f344294f2184932",
+      "input_sha256": "395f4f22073ddbfd6d5ea8cd7c212dd7b2f9efdcaa3d6f71d08f8157c59424fa",
+      "prior_terms_sha256": "a0a53ac6467bbe72e0d595666d3d0afd268db2a2c7e39d6e4018cbd436172a4f",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "5c02d6fddf5b20555f29170b7d5d6bbf25ee9c9b",
-      "replaced": [
-        "do plugin hooks work in cowork?"
-      ],
-      "dropped": [
-        {
-          "term": "do plugin hooks work in cowork?",
-          "why": "duplicate",
-          "duplicate_of": "plugin hook not firing in cowork"
-        }
-      ],
+      "previous_text": "8dffd329c4fc886818fbb0591c6e5d4db7617fca",
+      "replaced": [],
       "terms": [
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
