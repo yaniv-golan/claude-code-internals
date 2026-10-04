@@ -638,6 +638,8 @@ Two independent client features: `ccr_outputs_filestore_mount` (is `/mnt/user-da
 the instructions). Seen live: both on (2026-09-23); mount on + delivery off, and mount off (2026-09-28,
 relayed) — in both of those the instructions name the working directory (`/home/claude`) and `SendUserFile`.
 The mount's presence says nothing about delivery. The session prompt itself is server-side.
+Delivery follows the file tool, not the folder (2026-10-04, n=1): a shell write into the mount never
+appeared, a file-tool write in the same session did.
 
 ## A THIRD surface Desktop calls "cloud" — the claude.ai code-execution container (relayed, 2026-09-22)
 
