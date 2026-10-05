@@ -102,7 +102,8 @@ user-visible (measured under 2.2553.13 with the same agent 2.1.280 build).
 `mcp__workspace__bash` is a different case: it
 starts at the **session root `/sessions/<id>`**, and that directory (plus
 `/tmp`) exists only inside the Linux environment — invisible to the user *and*
-to the file tools. So a bare filename in bash never reaches outputs. Bash needs the absolute
+to the file tools. `/tmp` is not per-session, though: it is one sticky directory shared by every
+local session in the guest, and it outlives the session that wrote to it (L117). So a bare filename in bash never reaches outputs. Bash needs the absolute
 `/sessions/<id>/mnt/outputs/...` form; the file tools **reject** that form
 outright (path-gate, `cowork-permissions.md` layer 4). There is no path form
 correct for both.
@@ -166,11 +167,9 @@ treated as an error) and spawns work as that user via named
 `oneshot-<uuid>` jobs, e.g. a `deck-review` skill script invocation
 resolving `SCRIPTS=.../claude-hostloop-plugins/<hash>/skills/deck-review/
 scripts` — real corroboration of the host-loop plugin-staging mechanism
-below. The idempotent user-exists check is *suggestive* of session-to-VM
-multiplexing (one booted guest hosting more than one session's worth of
-per-user provisioning) — an inference from indirect evidence, not a
-directly confirmed fact; no artifact yet states "one guest serves N
-sessions" outright. The `vm_bundles/warm/<sha>/` directories once cited
+below. One booted guest hosts several sessions: two local sessions report the
+same kernel `boot_id` under different `coworkd` users (measured 2026-10-05,
+agent 2.1.286, L117). The `vm_bundles/warm/<sha>/` directories once cited
 as corroboration are a **download cache** for VM images fetched ahead of
 an update, one per image sha (Ch52/L193), and say nothing about
 multiplexing. **The Desktop pins its VM image by sha** in an embedded
@@ -1035,7 +1034,8 @@ capturing machine: **0 of 469** persisted session records (375 no type, 86 `sche
 **Multiplexing:** multiple sessions share one VM guest and one mount namespace (a session sees other
 slugs' mounts in `/proc/mounts`), but **isolation holds** — cross-session reads return EACCES; session
 dirs are `drwxr-x---` `nobody:nogroup` and each session runs as its own `coworkd` uid. `/sessions/` is
-a persistent shared volume (522 dirs enumerable from any session).
+a persistent shared volume (522 dirs enumerable from any session). `/tmp` is shared too: one sticky
+directory, a file another session wrote 16 h earlier still visible and not writable (L117).
 
 ## How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
 

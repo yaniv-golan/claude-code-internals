@@ -18,8 +18,8 @@ A prior investigation (probe reasoning about Cowork's host/VM filesystem split) 
 shell's home directory and the file-tool-visible `outputs/` mount are architecturally different
 kinds of things — not merely "not currently shared" but structurally incapable of being shared —
 while `outputs/` (and a handful of sibling paths) are genuinely bridged. Ch26/L109 and the
-`cowork-architecture.md` state page already asserted the *behavior* (home/tmp vanish at session
-end; only `outputs/`, `uploads/`, and `.claude/skills` are known to be real systemd mounts, the
+`cowork-architecture.md` state page already asserted the *behavior* (home and `/tmp` are not
+host-visible; only `outputs/`, `uploads/`, and `.claude/skills` are known to be real systemd mounts, the
 last one confirmed by a single verbatim unit-name grep). This chapter pins down the *complete*
 mechanism with a full inventory, using a class of artifact the prior chapters didn't reach for:
 the raw guest disk image, searchable directly because it's an unencrypted file on the host disk.
@@ -83,8 +83,10 @@ sessions-fervent‑determined‑gauss-mnt-outputs.mount: Deactivated successfull
 
 **The negative result is the important one: there is no `.mount` unit for the guest's home
 directory or for `/tmp`.** This is the structural "why" behind a fact the skill already stated
-behaviorally (home/tmp aren't shared, vanish at session end): they were never bind-mounted in the
-first place. `outputs/`, `uploads/`, `.claude` (+ its `skills`/`projects` subpaths), and each
+behaviorally (home and `/tmp` are not visible to the host or the file tools): they were never
+bind-mounted in the first place. **Not host-shared does not mean per-session.** `/tmp` is one directory
+for every local session in the guest, and it outlives the session that wrote to it (measured,
+see "`/tmp` is shared across sessions" below). `outputs/`, `uploads/`, `.claude` (+ its `skills`/`projects` subpaths), and each
 user-connected folder are first-class, individually lifecycled bind mounts; home and `/tmp` are
 just ordinary paths inside the guest's own private, non-shared root filesystem. "Shared vs.
 VM-local" in Cowork is not a permissions distinction layered on top of one filesystem — it is two
@@ -162,15 +164,42 @@ Two new facts:
    pre-booted VM instances that sessions get assigned into on demand. **This multiplexing
    interpretation is an inference from indirect evidence (an idempotent-user-check log line + the
    existence/naming of a `warm/` directory), not a direct confirmation** — no artifact was found
-   that explicitly states "one guest serves N sessions." Treat it as a plausible working model,
-   not a settled fact, until a chapter finds a stronger signal (e.g. two active sessions' log
-   lines interleaved with the same guest boot/PID-1 identity).
+   that explicitly states "one guest serves N sessions." **Settled by measurement:** two sessions
+   report the same kernel `boot_id` under different session users (see "`/tmp` is shared across
+   sessions" below).
 
    > **The `warm/` evidence does not hold (Ch52/L193).** `vm_bundles/warm/<sha>/` is the Desktop's
    > download cache for a VM image fetched ahead of an update (`maybeWarmDownloadForUpdate`,
    > `[warm] Starting warm download for VM SHA: …`), one directory per image sha. It says nothing
    > about how sessions map to guests. The idempotent user check above is now the only evidence for
    > multiplexing.
+
+### `/tmp` is shared across sessions, and one guest runs several sessions (measured, 2026-10-05)
+
+The multiplexing question above has a direct answer now. Two finished local Cowork sessions in the
+same Team org each got one read-only follow-up at 22:14Z on 2026-10-05 (Desktop 2.19675.0, agent
+2.1.286): `cat /proc/sys/kernel/random/boot_id; id -un; ls -ln /tmp/compose.out; ls -ld /tmp`.
+
+| Session | `id -un` | `boot_id` | `/tmp/compose.out` |
+|---|---|---|---|
+| local_92645a93 | `bold-amazing-albattani` | `49de33aa-…-03758df2b80e` | uid 65534, 2109 bytes, mtime 06:06Z |
+| local_db36d223 | `admiring-friendly-fermi` | `49de33aa-…-03758df2b80e` | uid 65534, 2109 bytes, mtime 06:06Z |
+
+- **One guest, several sessions.** Same kernel `boot_id`, different Unix user per session: the
+  `coworkd` per-session users are on one booted guest. MEASURED, n=2 sessions at one moment.
+- **`/tmp` is one shared directory.** `drwxrwxrwt` (sticky, world-writable), owned by `nobody`. Both
+  sessions see the same file. It was written about 16 hours earlier by a third session
+  (`funny-eloquent-edison`, 06:06:46Z), so `/tmp` outlives the session that wrote to it.
+- **Another session's file is visible but not yours.** Earlier the same day, session 92645a93 ran
+  `> /tmp/compose.out` and got `Permission denied`, because the sticky bit protects another user's
+  file. In `ls -ln` the owner shows as uid 65534 from both sessions (INFERRED: the writer's uid is
+  not mapped in the reader's view).
+- **Not tested:** whether `/tmp` survives a VM restart. Either way, it does not end with the session.
+
+**Skill-author trap:** never use a fixed `/tmp` name in a Cowork skill. A second session that runs
+the same skill, the same day, fails with `Permission denied` on the first session's file, or, if
+the file is readable, reads the other session's data. Use `mktemp`, or the session's own
+`/sessions/<id>/mnt/outputs` (host-visible) or home directory (private to the session user).
 
 The `oneshot-<uuid>` spawn line is also a fresh, concrete example of the host-loop plugin-staging
 mechanism from `cowork-architecture.md` ("Plugin roots"): the `SCRIPTS` path
