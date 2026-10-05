@@ -3166,9 +3166,13 @@
     },
     "134": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "e9c75d77de59189e217a0b89f76b56e416dc1e09d3d6e46441991cdd5894dd02",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-05",
+      "input_sha256": "751de5e5a595ce7c28811fa363e10acb68ae0c8c66a3da847f7cdea16aa4f253",
+      "prior_terms_sha256": "ee09032c28097a8fdf33ddad846c1f3dea960b6b528b03b99915374a4df50117",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "422214ea02f50df7acefe3075b4dfaf09bfc73c3",
+      "replaced": [],
       "terms": [
         "concurrent subagent limit reached error",
         "can subagents spawn their own subagents?",
@@ -3184,7 +3188,10 @@
         "limit on spawning helper agents",
         "subagent cap in Cowork",
         "nested agents stopped working after update",
-        "budget limit stops background agents"
+        "budget limit stops background agents",
+        "how many searches per web search call",
+        "web search stopped without an error",
+        "does clearing the session reset web search count?"
       ]
     },
     "135": {

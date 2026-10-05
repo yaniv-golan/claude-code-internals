@@ -49,10 +49,18 @@ Four distinct limits, all first-party-verified with concrete defaults and CHANGE
 |---|---|---|---|---|
 | Concurrent running sub-agents | `KEu()` = `Z.CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS ?? DUg` | **20** | `if(taskRegistry.getConcurrentSubagents() < KEu()) return;` else throws *"Concurrent subagent limit reached. You can run 20 subagents at once. Do not retry."* (telemetry `subagent_concurrency_cap`); **bypass gate `tengu_amber_kestrel`** | 2.1.217 |
 | Total sub-agent spawns per session | `YEu()` = `?? HUg` | **200** | `if(taskRegistry.getTotalAgentSpawns() >= YEu()) throw` (telemetry `subagent_count_cap`) | 2.1.212 |
-| WebSearch calls per session | `JEu()` = `?? OUg` | **200** | session-wide WebSearch limit | 2.1.212 |
+| WebSearch calls per session | `JEu()` = `?? OUg` (2.1.289: `r6o()`, `U=200`) | **200** | checked before each search; over the cap the tool **returns a normal result** saying no search ran (details below) | 2.1.212 |
 | Sub-agent spawn depth | `Uue()` = env `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`, else gate `tengu_hazel_trellis`, fallback **`DEu=1`** | **1 (nesting OFF)** | changelog 2.1.217: *"subagents no longer spawn nested subagents by default; set `MAX_SUBAGENT_SPAWN_DEPTH` to allow deeper nesting"* | 2.1.217 |
 
 **Reconciliation with Ch35/L121 (important, not a contradiction):** Ch35 documented a hard depth cap of 5 (`NMr`/`BLr`) and "no fan-out cap." The refresh adds (a) a **default spawn depth of 1** — nesting is now OFF by default, `DEu=1` — while Ch35's 5 remains the *ceiling* you can raise to; and (b) genuine **fan-out caps** (concurrent 20, per-session 200) that did not exist when L121 was written. So L121's "no fan-out cap" was true for its binary and is now false; the depth-5 finding stands as the ceiling.
+
+**WebSearch has two limits, one per call and one per session** (CODE-READ, CLI 2.1.289; the cap message is also in 2.1.286):
+
+- **Per call.** One WebSearch call is a side request to the model with the server tool `web_search_20250305` and `max_uses: 8`, so one call can run up to 8 searches. `allowed_domains` / `blocked_domains` pass through, and you cannot set both in one call (`validateInput` rejects it). Running out inside a call is the server tool's `max_uses_exceeded` error. A session behind the CCR proxy (`ro(session)`) uses the `web-search-ccr-proxy` path instead: one search, no `max_uses`.
+- **Per session.** `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION`, default **200**, counts **WebSearch calls**, not searches. The check runs before the search: `getWebSearchCalls() >= cap`. The counter goes up before the search is sent, so a call that then fails still counts, and so does a CCR-proxy call. The counter lives in the session's `taskRegistry`, the same registry the spawn caps above count on.
+- **What the model sees at the cap.** Not an error: a normal result with `searchCount: 0` and this text: *"Web search was not performed: this session has used its web search budget (n of 200 WebSearch calls). Continue with the information already gathered instead of issuing more searches. If more searches are genuinely needed, ask the user to raise CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION."* Telemetry `web_search_session_cap`. A hook or script that watches for `is_error` on WebSearch never sees the cap.
+- **Reset.** Only on the session-clear path (`resetWebSearchCalls()` next to the `session_clear` event, i.e. `/clear`). Compaction and resume do not reset it.
+- **Not traced:** which contexts get a registry whose `getWebSearchCalls()` always returns 0, so the cap never trips there.
 
 **`CLAUDE_CODE_DISABLE_EXPLORE_INHERIT_CAP` is NOT one of these** — it governs whether an Explore sub-agent inherits the parent model (`return "inherit"`) vs is capped to a cheaper model; a model-inheritance knob, not a fan-out cap.
 

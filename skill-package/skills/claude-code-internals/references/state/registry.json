@@ -3428,8 +3428,8 @@
       "status": "live",
       "first_seen": "2.1.212",
       "removed_in": null,
-      "as_of": "2.1.231",
-      "summary": "Session-wide WebSearch call cap; default 200 (OUg) via JEu().",
+      "as_of": "2.1.289",
+      "summary": "Session-wide cap on WebSearch calls (not searches; each call may run up to 8 via max_uses), default 200; checked before the search, counted in the task registry, reset only by /clear; at the cap the tool returns a non-error result saying no search ran.",
       "provenance": [
         {
           "lesson": 134

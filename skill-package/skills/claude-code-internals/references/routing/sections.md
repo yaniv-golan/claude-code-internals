@@ -1435,8 +1435,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 132 · 34-skill-discovery-vcs-events-containment.md:443 · Why it matters (the payload of this lesson)
 132 · 34-skill-discovery-vcs-events-containment.md:449 · Identifier table
 132 · 34-skill-discovery-vcs-events-containment.md:470 · What this means for skill and agent authors
-137 · 35-verified-new-v2.1.217.md:123 · The bigger picture — what Anthropic is doing across v2.1.198 → v2.1.217
-137 · 35-verified-new-v2.1.217.md:139 · What this means for skill and agent authors
+137 · 35-verified-new-v2.1.217.md:131 · The bigger picture — what Anthropic is doing across v2.1.198 → v2.1.217
+137 · 35-verified-new-v2.1.217.md:147 · What this means for skill and agent authors
 138 · 36-cowork-lanes-mounts-snapshot-discipline.md:23 · The oracle
 138 · 36-cowork-lanes-mounts-snapshot-discipline.md:32 · ⚠️ `cse_` is NOT a lane oracle
 138 · 36-cowork-lanes-mounts-snapshot-discipline.md:38 · A live remote-lane record

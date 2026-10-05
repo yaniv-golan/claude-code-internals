@@ -13740,7 +13740,7 @@
       "lesson_number": "134",
       "file": "35-verified-new-v2.1.217.md",
       "startLine": 42,
-      "endLine": 61,
+      "endLine": 69,
       "keywords": [
         "subagent-fan-out-cap",
         "CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS",
@@ -13764,6 +13764,14 @@
         "Do-not-retry-cap-error",
         "get-concurrent-subagents",
         "get-total-agent-spawns",
+        "max_uses",
+        "blocked_domains",
+        "max_uses_exceeded",
+        "web-search-ccr-proxy",
+        "web_search_session_cap",
+        "reset-web-search-calls",
+        "session_clear",
+        "get-web-search-calls",
         "CLAUDE_CODE_DISABLE_EXPLORE_INHERIT_CAP",
         "concurrent subagent limit reached error",
         "can subagents spawn their own subagents",
@@ -13779,11 +13787,22 @@
         "limit on spawning helper agents",
         "subagent cap in cowork",
         "nested agents stopped working after update",
-        "budget limit stops background agents"
+        "budget limit stops background agents",
+        "how many searches per web search call",
+        "web search stopped without an error",
+        "does clearing the session reset web search count"
       ],
       "identifier_keys": [
         "get-concurrent-subagents",
         "get-total-agent-spawns",
+        "max_uses",
+        "blocked_domains",
+        "max_uses_exceeded",
+        "web-search-ccr-proxy",
+        "web_search_session_cap",
+        "reset-web-search-calls",
+        "session_clear",
+        "get-web-search-calls",
         "CLAUDE_CODE_DISABLE_EXPLORE_INHERIT_CAP"
       ],
       "vocab_keys": [
@@ -13801,13 +13820,16 @@
         "limit on spawning helper agents",
         "subagent cap in cowork",
         "nested agents stopped working after update",
-        "budget limit stops background agents"
+        "budget limit stops background agents",
+        "how many searches per web search call",
+        "web search stopped without an error",
+        "does clearing the session reset web search count"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "ee09032c28097a8fdf33ddad846c1f3dea960b6b528b03b99915374a4df50117"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-05",
+        "terms_sha256": "651a359fad7959f3429e8b9217c047c434eecc246a2baf0539456ee5c65d0084"
       }
     },
     {
@@ -13815,8 +13837,8 @@
       "title": "Command Surface: /subtask, the /fork Redesign, /import, and the Dark /artifacts",
       "lesson_number": "135",
       "file": "35-verified-new-v2.1.217.md",
-      "startLine": 65,
-      "endLine": 84,
+      "startLine": 73,
+      "endLine": 92,
       "keywords": [
         "slash-command-refresh",
         "subtask-command",
@@ -13886,8 +13908,8 @@
       "title": "Feature Surfaces: Artifacts, Auto-Mode Wizard, Agent-Proxy VCS, Workflow Guardrails, per_message_effort",
       "lesson_number": "136",
       "file": "35-verified-new-v2.1.217.md",
-      "startLine": 88,
-      "endLine": 98,
+      "startLine": 96,
+      "endLine": 106,
       "keywords": [
         "tengu_artifact",
         "artifacts-cli-buildout",
@@ -14002,8 +14024,8 @@
       "title": "Retired Surface, Codename Triage & Confirmed Negatives",
       "lesson_number": "137",
       "file": "35-verified-new-v2.1.217.md",
-      "startLine": 102,
-      "endLine": 147,
+      "startLine": 110,
+      "endLine": 155,
       "keywords": [
         "removed-env-vars-2.1.217",
         "CLAUDE_CODE_VERIFY_PROMPT-removed",
@@ -43541,6 +43563,30 @@
       134,
       170
     ],
+    "max_uses": [
+      134
+    ],
+    "blocked_domains": [
+      134
+    ],
+    "max_uses_exceeded": [
+      134
+    ],
+    "web-search-ccr-proxy": [
+      134
+    ],
+    "web_search_session_cap": [
+      134
+    ],
+    "reset-web-search-calls": [
+      134
+    ],
+    "session_clear": [
+      134
+    ],
+    "get-web-search-calls": [
+      134
+    ],
     "CLAUDE_CODE_DISABLE_EXPLORE_INHERIT_CAP": [
       134
     ],
@@ -51631,6 +51677,15 @@
       134
     ],
     "budget limit stops background agents": [
+      134
+    ],
+    "how many searches per web search call": [
+      134
+    ],
+    "web search stopped without an error": [
+      134
+    ],
+    "does clearing the session reset web search count": [
       134
     ],
     "new slash commands in latest version": [
