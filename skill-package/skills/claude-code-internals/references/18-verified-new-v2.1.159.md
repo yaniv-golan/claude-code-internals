@@ -299,7 +299,10 @@ re-synced at each launch, and are removed when you disable them on claude.ai". T
 `--settings` it hides them for that workspace only. Not read from project settings.
 - Measured (two `claude -p` sessions, neither variable set anywhere): `init.plugins` listed the logged-in org's plugins as
   `<name>@synced` with paths under `~/.claude/plugins/synced/<org>_<account>/`, absent from `installed_plugins.json`, and their
-  skills were invocable. **Only the org the CLI is logged into** is loaded; another org's synced dir on the same Mac is ignored.
+  skills were invocable. **One org's synced dir per session**; another org's dir on the same Mac is ignored. Which org is
+  not settled by `~/.claude.json`: with `oauthAccount.organizationUuid` naming the Team org throughout, sessions on 2026-10-04
+  loaded the Team org's dir, and a session on 2026-10-05 synced and loaded the Personal org's dir instead, after that account's
+  claude.ai web had been switched between the two orgs (MEASURED n=3 sessions; the cause is unconfirmed).
 - **A withdrawn plugin survives one more session.** The launch-time re-sync runs after plugins load: the first session after a
   removal still loaded the plugin while rewriting `manifest.json` without it; the next session no longer had it.
 - `CLAUDE_CODE_SYNC_SKILLS` / `CLAUDE_CODE_SYNC_PLUGINS` are still in the binary but are no longer the switch.

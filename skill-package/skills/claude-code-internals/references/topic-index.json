@@ -9552,7 +9552,7 @@
       "lesson_number": "98",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 284,
-      "endLine": 334,
+      "endLine": 337,
       "keywords": [
         "skills-sync",
         "plugins-sync",
@@ -9565,6 +9565,7 @@
         "org-managed",
         "reload-skills",
         "org_denied",
+        "oauth-account",
         "include_wiggle_skills",
         "enabled_only",
         "tengu_plugins_sync_mcp_skipped",
@@ -9598,6 +9599,7 @@
       ],
       "identifier_keys": [
         "org_denied",
+        "oauth-account",
         "include_wiggle_skills",
         "enabled_only",
         "tengu_plugins_sync_mcp_skipped",
@@ -9643,8 +9645,8 @@
       "title": "v2.1.159 Host-Delegated Credential Refresh + OIDC env-quad",
       "lesson_number": "99",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 338,
-      "endLine": 377,
+      "startLine": 341,
+      "endLine": 380,
       "keywords": [
         "host-auth",
         "host-auth-refresh",
@@ -9722,8 +9724,8 @@
       "title": "v2.1.159 Background Runtime: Binary Takeover + Fleet to Agent-View Rename",
       "lesson_number": "100",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 381,
-      "endLine": 422,
+      "startLine": 384,
+      "endLine": 425,
       "keywords": [
         "binary-takeover",
         "tengu_bg_binary_takeover",
@@ -9809,8 +9811,8 @@
       "title": "v2.1.159 /loop Keepalive (KAIROS Self-Pacing Safety Net) + /dream Routine",
       "lesson_number": "101",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 426,
-      "endLine": 452,
+      "startLine": 429,
+      "endLine": 455,
       "keywords": [
         "loop-keepalive",
         "CLAUDE_CODE_LOOP_KEEPALIVE",
@@ -9881,8 +9883,8 @@
       "title": "v2.1.159 Plan-Interview Removal + Team-Memory Multistore + Command Churn + Spend Nudges",
       "lesson_number": "102",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 456,
-      "endLine": 485,
+      "startLine": 459,
+      "endLine": 488,
       "keywords": [
         "plan-interview-removed",
         "CLAUDE_MEMORY_STORES",
@@ -9967,8 +9969,8 @@
       "title": "v2.1.159 PEWTER_OWL Gate over the SendUserMessage (Brief) Tool",
       "lesson_number": "103",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 489,
-      "endLine": 515,
+      "startLine": 492,
+      "endLine": 518,
       "keywords": [
         "pewter-owl",
         "CLAUDE_CODE_PEWTER_OWL",
@@ -10030,8 +10032,8 @@
       "title": "v2.1.159 New Codename GB-Flag Triage (~30 flags)",
       "lesson_number": "104",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 519,
-      "endLine": 546,
+      "startLine": 522,
+      "endLine": 549,
       "keywords": [
         "codename-flags",
         "gb-flags",
@@ -41690,6 +41692,9 @@
       97
     ],
     "org_denied": [
+      98
+    ],
+    "oauth-account": [
       98
     ],
     "include_wiggle_skills": [
