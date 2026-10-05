@@ -1,5 +1,61 @@
 # Changelog
 
+## v2.64.0 — 2026-10-05 (this fork) — Dispatch hooks by CLI version, the Desktop's form for a skill's first question, and what a cloud session can reach
+
+Counts unchanged (221 lessons, 60 chapters). New facts come from probe runs on 2026-10-04 and 2026-10-05: local and cloud
+sessions in a Team and a Personal organization, read from transcripts, `main.log` and the shell rows the interface
+renders, with Desktop 2.19675.0 and agent 2.1.286. Other sources are headless runs of 31 CLI builds from 2.0.10 to 2.1.289,
+and the interface code the Desktop ships. Each fact keeps its label and run count in the lessons.
+
+**Hooks on a dispatch (L209)**
+
+- A PreToolUse hook that returns `allow` with `updatedInput.prompt` on `Agent`/`Task` changes what the sub-agent runs on, in
+  every build tested from 2.0.10 to 2.1.289. `toolUseResult.prompt` holds the prompt that ran, while the parent's `tool_use`
+  keeps the model's. The hook's `additionalContext` reaches the model from 2.1.9. The transcript records it from 2.1.100,
+  so on 2.1.9–2.1.96 delivery leaves no row. The tool is `Task` up to 2.1.50 and `Agent` from 2.1.70.
+- A deny on a dispatch never reaches the user. The sub-agent card receives only Done, Failed or Stopped and a step count,
+  so a held dispatch shows as "Failed" with no reason. Only the model sees why.
+
+**A skill's first question goes to a form on the Desktop (L205, L147)**
+
+- When a plugin skill starts, or a `/skill` is typed or picked, the Desktop's own hook tells the model to collect missing
+  details with the visualize elicitation form, not AskUserQuestion. This applies on the main thread only, and an
+  `argument-hint` changes only the wording. A skill's "ask with AskUserQuestion" loses to it for the first question.
+  Later questions use AskUserQuestion.
+- The two gates behind it, 286376943 and 3444158716, are read together from Desktop 2.16120.0. The lesson, the state
+  page and the registry described them as independent.
+
+**What a cloud session can reach (L198, L215)**
+
+- Delivery follows the file tool, not the folder. A file the shell writes into `/mnt/user-data/outputs` is never shown.
+- claude.ai web cuts a long shell result at about 4000 characters, with no way to expand it.
+- A cloud session holds the user's attachment in two places: under `~/.claude/uploads/<id>/` with a hashed name, and
+  under `/mnt/user-data/uploads/` with its own name.
+- Git differs by surface. Cloud Cowork carries tokens that don't authenticate. Claude Code on the web pushes, and its
+  Stop hook pushes the session branch unasked. The GitHub connector is per organization, works behind a permission
+  card, and the model added commit trailers unasked.
+- Which shell runs what: hooks on the Mac run under macOS `sh` (bash 3.2) for a local session. Skill scripts run in
+  bash 5.1 in the local VM and 5.2 in the cloud, and `/bin/sh` is dash in both.
+
+**Organizations and the CLI (L217, L210, L98)**
+
+- A GitHub-synced organization marketplace follows the default branch only, ignores tags, and refreshes through a
+  webhook within seconds. "Available to install" reaches no member until they install it. The Desktop syncs only the
+  active organization.
+- The unified composer rolls out per organization: on one account, the Personal organization's new tasks already ran in
+  the cloud from both web and Desktop, while the Team organization still ran local sessions (2026-10-04).
+- Organization plugin sync in the CLI is switched on server-side in 2.1.289 (setting, flag and policy keys). Synced
+  plugins load as `<name>@synced`, and a removed plugin survives one more session. Which organization's set loads is
+  not settled by the login record.
+
+**Smaller notes**
+
+- In a headless SDK run, AskUserQuestion is denied with a visible error (2.1.141) or is not offered at all (2.1.289).
+  It is not silently dismissed (L107).
+- How to read a bundled skill's text from the CLI binary: the guides are zstd frames in the Bun file system (L171).
+- `troubleshooting.json` and `cross-references.json` gain entries for these topics. Vocabulary updated for 98, 107, 147,
+  171, 198, 205, 209, 210, 215 and 217.
+
 ## v2.63.0 — 2026-10-03 (this fork) — Organization plugin administration, a Mac folder on a cloud task, and a built-in agent that competes with plugin agents
 
 Counts unchanged (221 lessons, 60 chapters). New facts come from probe runs on 2026-10-03 with Desktop 2.19675.0 (a local
