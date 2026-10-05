@@ -66,8 +66,13 @@ Ch22/L105 (`subtype:"elicitation"`/`can_use_tool`/`hook_callback`/`mcp_message`/
 
 - **`--verbose` is required** with `--output-format=stream-json --print` (else: *"requires --verbose"*).
 - **`--permission-prompt-tool stdio`** is what routes `can_use_tool` / AskUserQuestion to the driver.
-  **Without it, AskUserQuestion is silently auto-dismissed** and scripted answers never fire — a
-  high-surprise failure mode for anyone building a headless driver.
+  **Without it, no answer ever reaches the model**, and scripted answers never fire — a high-surprise
+  failure mode for anyone building a headless driver. What the model sees depends on the build (Agent SDK
+  `query()` with no `canUseTool`, measured 2026-10-04, one run per cell): with SDK 0.2.141 / CLI 2.1.141 the
+  tool is offered, and a call returns an `is_error` tool result reading "Answer questions?" and is listed in
+  the result's `permission_denials`, in `default` and in `bypassPermissions` alike; with SDK 0.3.289 / CLI
+  2.1.289 the tool is **not in `init.tools` at all** (also with `CLAUDE_CODE_ENABLE_ASK_USER_QUESTION_TOOL=true`).
+  Either way the run ends `success`, so a `success` result does not mean every question was answered.
 - Effort/thinking ride CLI flags, **not** `CLAUDE_EFFORT`. The desktop passes
   `--max-thinking-tokens 31999` (or `--thinking disabled`; thinking is a strict boolean, Ch34/L120) and
   `--effort <level>` **only when the session carries an effort value** — the spawn reads session state

@@ -40,8 +40,10 @@ external driver) — not the Desktop app's internal IPC.
   --permission-prompt-tool stdio`
   - `--verbose` is required with `--output-format=stream-json --print`.
   - **`--permission-prompt-tool stdio`** routes `can_use_tool` /
-    AskUserQuestion to the driver. Without it, AskUserQuestion is silently
-    auto-dismissed and scripted answers never fire.
+    AskUserQuestion to the driver. Without it, no answer reaches the model:
+    CLI 2.1.141 denies the call ("Answer questions?", `permission_denials`),
+    CLI 2.1.289 does not offer the tool headless; the run ends `success` either
+    way (as of 2.1.289, L107).
   - **`--max-thinking-tokens 31999`** (or `--thinking disabled`) and
     **`--effort <level>`** are **driver-passed** by the Desktop, not agent
     defaults. `--effort` is sent only when the session carries an effort

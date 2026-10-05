@@ -204,8 +204,11 @@ lessons (see frontmatter).
 
 `--allow-dangerously-skip-permissions` is a **capability grant**; mode
 stays `default` (auth is layered on top, not replaced). Without
-`--permission-prompt-tool stdio` at spawn, `AskUserQuestion` is silently
-auto-dismissed and scripted answers never fire.
+`--permission-prompt-tool stdio` at spawn, no answer reaches the model and
+scripted answers never fire: a headless `query()` without `canUseTool` gets
+an `is_error` "Answer questions?" denial on CLI 2.1.141 and no
+`AskUserQuestion` tool at all on CLI 2.1.289; the run still ends `success`
+(as of 2.1.289, L107).
 
 ## Auto-mode tuning at Desktop 1.22209.0 (lesson 128, no live gate-state capture)
 

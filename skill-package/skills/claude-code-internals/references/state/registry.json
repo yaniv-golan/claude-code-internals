@@ -4126,8 +4126,8 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.231",
-      "summary": "Pure-env truthy gate (default OFF) enabling org-managed plugins reconcile from Console, plus MCP reconcile.",
+      "as_of": "2.1.289",
+      "summary": "v2.1.159's pure-env gate for org plugin sync (default OFF). In 2.1.289 still in the binary but no longer the switch: sync is enabled server-side (GB flag tengu_claudeai_plugins_sync_enabled + policy allow_account_plugins_sync), opt-out only via setting syncClaudeAiPlugins:false.",
       "provenance": [
         {
           "lesson": 98
@@ -4171,8 +4171,8 @@
       "status": "live",
       "first_seen": "2.1.159",
       "removed_in": null,
-      "as_of": "2.1.231",
-      "summary": "Pure-env truthy gate (default OFF) enabling org-managed skills reconcile from Console, with a 10-minute re-sync.",
+      "as_of": "2.1.289",
+      "summary": "v2.1.159's pure-env gate for org skills sync (default OFF, 10-minute re-sync). In 2.1.289 still in the binary but no longer the switch: sync is enabled server-side, opt-out only via setting syncClaudeAiSkills:false.",
       "provenance": [
         {
           "lesson": 98

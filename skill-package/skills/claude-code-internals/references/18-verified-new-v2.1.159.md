@@ -288,7 +288,23 @@ an env var.
 distribution, not git/marketplace. Separately, a dark-launched built-in `claude-code-docs` skill
 answers questions about Claude Code itself.
 
-**Mechanism.**
+**Current state (CLI 2.1.289, CODE-READ + MEASURED 2026-10-04).** Sync is **on by server-side enablement**, not by an
+env var. Each kind has a descriptor; for plugins: `{settingKey:"syncClaudeAiPlugins", policyKey:"allow_account_plugins_sync",
+flagName:"tengu_claudeai_plugins_sync_enabled"}` (skills: `syncClaudeAiSkills`). It is off when user or managed settings set
+the key to `false`, or the policy reads `org_denied`/`latched`. **Only `false` is honored**: the setting's own description says
+"the feature is enabled server-side for your account, so setting true does not turn it on early". While on, synced plugins
+"load in every session like plugins you installed yourself (a plugin you installed with the same name takes precedence), are
+re-synced at each launch, and are removed when you disable them on claude.ai". Turning it off in user/managed settings hides
+`~/.claude/plugins/synced` and moves it to `~/.claude/plugins/.trash` at the next launch; in `.claude/settings.local.json` or
+`--settings` it hides them for that workspace only. Not read from project settings.
+- Measured (two `claude -p` sessions, neither variable set anywhere): `init.plugins` listed the logged-in org's plugins as
+  `<name>@synced` with paths under `~/.claude/plugins/synced/<org>_<account>/`, absent from `installed_plugins.json`, and their
+  skills were invocable. **Only the org the CLI is logged into** is loaded; another org's synced dir on the same Mac is ignored.
+- **A withdrawn plugin survives one more session.** The launch-time re-sync runs after plugins load: the first session after a
+  removal still loaded the plugin while rewriting `manifest.json` without it; the next session no longer had it.
+- `CLAUDE_CODE_SYNC_SKILLS` / `CLAUDE_CODE_SYNC_PLUGINS` are still in the binary but are no longer the switch.
+
+**Mechanism (as found in v2.1.159).**
 - Two pure-env truthy gates (`bH`), both default OFF, not Statsig: `CLAUDE_CODE_SYNC_SKILLS` (10-min
   re-sync) and `CLAUDE_CODE_SYNC_PLUGINS` (+ MCP reconcile).
 - Source of truth: `GET /api/oauth/organizations/:orgUUID/skills/list-skills?include_wiggle_skills=true`
@@ -308,7 +324,9 @@ answers questions about Claude Code itself.
 
 | Identifier | Kind | Default | Effect |
 |---|---|---|---|
-| `CLAUDE_CODE_SYNC_SKILLS`/`_PLUGINS` | env | OFF | org-managed reconcile from Console |
+| `syncClaudeAiPlugins` / `syncClaudeAiSkills` | setting | server-enabled; only `false` honored | opt out of claude.ai sync (2.1.289) |
+| `tengu_claudeai_plugins_sync_enabled` / policy `allow_account_plugins_sync` | GB flag / org policy | server-side | the real switch (2.1.289) |
+| `CLAUDE_CODE_SYNC_SKILLS`/`_PLUGINS` | env | OFF | the v2.1.159 switch; no longer the gate in 2.1.289 |
 | `CLAUDE_CODE_SYNC_PLUGINS_MCP_TIMEOUT_MS` | env | **10000** | MCP reconcile bound |
 | `CLAUDE_CODE_SYNC_PLUGINS_INSTALL_TIMEOUT_MS` / `_SKILLS_WAIT_TIMEOUT_MS` | env | 30000 / 5000 | install / startup-wait bounds |
 | `CLAUDE_CODE_SKILL_NAME`/`_DESCRIPTION` | **module export** | constants | CLI-as-skill identity (NOT env vars) |

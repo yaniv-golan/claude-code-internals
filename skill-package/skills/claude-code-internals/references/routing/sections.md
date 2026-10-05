@@ -1242,13 +1242,13 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 106 · 20-desktop-cli-plugin-credential-broker.md:177 · Methodology note (the transferable lesson)
 107 · 21-cowork-control-protocol.md:35 · Part A — Cowork mode is env, not a flag
 107 · 21-cowork-control-protocol.md:59 · Part B — The spawn flags that matter
-107 · 21-cowork-control-protocol.md:89 · Part C — The stream-json control protocol (the stable seam)
-107 · 21-cowork-control-protocol.md:125 · Part C2 — control-protocol request subtypes (newly surfaced in verification)
-107 · 21-cowork-control-protocol.md:148 · Part D — MCP delivery: the non-obvious one
-107 · 21-cowork-control-protocol.md:175 · Part E — Permission model and tool registry (layered, not blanket-allow)
-107 · 21-cowork-control-protocol.md:236 · ADDENDUM (2026-08-13) — the `Skill` matcher's `additionalContext` is the elicitation injection
-107 · 21-cowork-control-protocol.md:373 · Part F — Auth & runtime gotchas (for a faithful driver)
-107 · 21-cowork-control-protocol.md:403 · Methodology
+107 · 21-cowork-control-protocol.md:94 · Part C — The stream-json control protocol (the stable seam)
+107 · 21-cowork-control-protocol.md:130 · Part C2 — control-protocol request subtypes (newly surfaced in verification)
+107 · 21-cowork-control-protocol.md:153 · Part D — MCP delivery: the non-obvious one
+107 · 21-cowork-control-protocol.md:180 · Part E — Permission model and tool registry (layered, not blanket-allow)
+107 · 21-cowork-control-protocol.md:241 · ADDENDUM (2026-08-13) — the `Skill` matcher's `additionalContext` is the elicitation injection
+107 · 21-cowork-control-protocol.md:378 · Part F — Auth & runtime gotchas (for a faithful driver)
+107 · 21-cowork-control-protocol.md:408 · Methodology
 108 · 22-cowork-env-gates-protocol.md:39 · Part A — environment variables (binary-verified, current as of 2.1.170 / asar 1.12603.1)
 108 · 22-cowork-env-gates-protocol.md:50 · Model / effort / thinking control
 108 · 22-cowork-env-gates-protocol.md:62 · Cowork / background-session runtime
@@ -1826,23 +1826,23 @@ state:cowork-architecture · state/cowork-architecture.md:876 · Local MCP bridg
 state:cowork-architecture · state/cowork-architecture.md:913 · Mount model and delete policy (L139, L140)
 state:cowork-architecture · state/cowork-architecture.md:1032 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
 state:cowork-control-protocol · state/cowork-control-protocol.md:23 · Spawn contract
-state:cowork-control-protocol · state/cowork-control-protocol.md:87 · Handshake
-state:cowork-control-protocol · state/cowork-control-protocol.md:128 · Subtype inventory pointer
-state:cowork-control-protocol · state/cowork-control-protocol.md:177 · AskUserQuestion answer shape
-state:cowork-control-protocol · state/cowork-control-protocol.md:186 · Per-`tool_use` stream envelope (fixed field set)
-state:cowork-control-protocol · state/cowork-control-protocol.md:205 · Sub-agent dispatch wire contract (lessons 121–124)
-state:cowork-control-protocol · state/cowork-control-protocol.md:276 · New agent→host system frames (agent 2.1.275+, L196)
-state:cowork-control-protocol · state/cowork-control-protocol.md:289 · Hook lifecycle frames are gated (L203)
-state:cowork-control-protocol · state/cowork-control-protocol.md:299 · Skill invocations and hook feedback in transcripts (L207)
-state:cowork-control-protocol · state/cowork-control-protocol.md:308 · Compaction subtypes
-state:cowork-control-protocol · state/cowork-control-protocol.md:320 · Cloud tasks: teleport-to-cloud and the bridge-session worker (Ch33/L119)
-state:cowork-control-protocol · state/cowork-control-protocol.md:397 · VCS SDK events + SDK-MCP skill servers (L129/L130)
+state:cowork-control-protocol · state/cowork-control-protocol.md:89 · Handshake
+state:cowork-control-protocol · state/cowork-control-protocol.md:130 · Subtype inventory pointer
+state:cowork-control-protocol · state/cowork-control-protocol.md:179 · AskUserQuestion answer shape
+state:cowork-control-protocol · state/cowork-control-protocol.md:188 · Per-`tool_use` stream envelope (fixed field set)
+state:cowork-control-protocol · state/cowork-control-protocol.md:207 · Sub-agent dispatch wire contract (lessons 121–124)
+state:cowork-control-protocol · state/cowork-control-protocol.md:278 · New agent→host system frames (agent 2.1.275+, L196)
+state:cowork-control-protocol · state/cowork-control-protocol.md:291 · Hook lifecycle frames are gated (L203)
+state:cowork-control-protocol · state/cowork-control-protocol.md:301 · Skill invocations and hook feedback in transcripts (L207)
+state:cowork-control-protocol · state/cowork-control-protocol.md:310 · Compaction subtypes
+state:cowork-control-protocol · state/cowork-control-protocol.md:322 · Cloud tasks: teleport-to-cloud and the bridge-session worker (Ch33/L119)
+state:cowork-control-protocol · state/cowork-control-protocol.md:399 · VCS SDK events + SDK-MCP skill servers (L129/L130)
 state:cowork-permissions · state/cowork-permissions.md:22 · The layers (all simultaneously active, host-loop production)
-state:cowork-permissions · state/cowork-permissions.md:210 · Auto-mode tuning at Desktop 1.22209.0 (lesson 128, no live gate-state capture)
-state:cowork-permissions · state/cowork-permissions.md:243 · Browser/Computer-Use permission gates + Cowork's own auto-mode rule additions (Desktop 1.28929.0)
-state:cowork-permissions · state/cowork-permissions.md:295 · Host-dialog approval attestation and `/settings-review` staging — shipped, compiled off (agent 2.1.281–2.1.284)
-state:cowork-permissions · state/cowork-permissions.md:314 · Not part of the stack (adjacent, don't conflate)
-state:cowork-permissions · state/cowork-permissions.md:327 · Known past errors (do not re-introduce)
+state:cowork-permissions · state/cowork-permissions.md:213 · Auto-mode tuning at Desktop 1.22209.0 (lesson 128, no live gate-state capture)
+state:cowork-permissions · state/cowork-permissions.md:246 · Browser/Computer-Use permission gates + Cowork's own auto-mode rule additions (Desktop 1.28929.0)
+state:cowork-permissions · state/cowork-permissions.md:298 · Host-dialog approval attestation and `/settings-review` staging — shipped, compiled off (agent 2.1.281–2.1.284)
+state:cowork-permissions · state/cowork-permissions.md:317 · Not part of the stack (adjacent, don't conflate)
+state:cowork-permissions · state/cowork-permissions.md:330 · Known past errors (do not re-introduce)
 state:credential-channels · state/credential-channels.md:16 · The four Desktop credential channels
 state:credential-channels · state/credential-channels.md:103 · Auth at spawn
 state:credential-channels · state/credential-channels.md:123 · What NOT to use

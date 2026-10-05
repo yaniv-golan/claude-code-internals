@@ -2578,7 +2578,6 @@
         "settable-vs-union-modes",
         "fork-worker-agent-mode",
         "allow-managed-permission-rules-only",
-        "bypass-permissions",
         "side-query",
         "why does claude keep asking for permission",
         "stop claude asking before every command",
@@ -2598,7 +2597,6 @@
       ],
       "identifier_keys": [
         "allow-managed-permission-rules-only",
-        "bypass-permissions",
         "side-query"
       ],
       "vocab_keys": [
@@ -5507,7 +5505,6 @@
         "multiSelect",
         "render-tool-result-message",
         "to-auto-classifier-input",
-        "bypass-permissions",
         "render-tool-use-rejected-message",
         "claude asks me multiple choice questions",
         "clickable options instead of typing an answer",
@@ -5528,7 +5525,6 @@
       "identifier_keys": [
         "render-tool-result-message",
         "to-auto-classifier-input",
-        "bypass-permissions",
         "render-tool-use-rejected-message"
       ],
       "vocab_keys": [
@@ -9556,7 +9552,7 @@
       "lesson_number": "98",
       "file": "18-verified-new-v2.1.159.md",
       "startLine": 284,
-      "endLine": 316,
+      "endLine": 334,
       "keywords": [
         "skills-sync",
         "plugins-sync",
@@ -9568,6 +9564,7 @@
         "mcp-reconcile",
         "org-managed",
         "reload-skills",
+        "org_denied",
         "include_wiggle_skills",
         "enabled_only",
         "tengu_plugins_sync_mcp_skipped",
@@ -9577,6 +9574,10 @@
         "register-claude-code-skill",
         "run-skill-generator",
         "tengu_plugin_skills_dir_loaded",
+        "sync-claude-ai-plugins",
+        "sync-claude-ai-skills",
+        "tengu_claudeai_plugins_sync_enabled",
+        "allow_account_plugins_sync",
         "SKILLS_WAIT_TIMEOUT_MS",
         "tengu_skill_tool_fork_recursion_blocked",
         "push skills to whole company",
@@ -9596,6 +9597,7 @@
         "centrally managed plugins for a team"
       ],
       "identifier_keys": [
+        "org_denied",
         "include_wiggle_skills",
         "enabled_only",
         "tengu_plugins_sync_mcp_skipped",
@@ -9605,6 +9607,10 @@
         "register-claude-code-skill",
         "run-skill-generator",
         "tengu_plugin_skills_dir_loaded",
+        "sync-claude-ai-plugins",
+        "sync-claude-ai-skills",
+        "tengu_claudeai_plugins_sync_enabled",
+        "allow_account_plugins_sync",
         "SKILLS_WAIT_TIMEOUT_MS",
         "tengu_skill_tool_fork_recursion_blocked"
       ],
@@ -9637,8 +9643,8 @@
       "title": "v2.1.159 Host-Delegated Credential Refresh + OIDC env-quad",
       "lesson_number": "99",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 320,
-      "endLine": 359,
+      "startLine": 338,
+      "endLine": 377,
       "keywords": [
         "host-auth",
         "host-auth-refresh",
@@ -9716,8 +9722,8 @@
       "title": "v2.1.159 Background Runtime: Binary Takeover + Fleet to Agent-View Rename",
       "lesson_number": "100",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 363,
-      "endLine": 404,
+      "startLine": 381,
+      "endLine": 422,
       "keywords": [
         "binary-takeover",
         "tengu_bg_binary_takeover",
@@ -9803,8 +9809,8 @@
       "title": "v2.1.159 /loop Keepalive (KAIROS Self-Pacing Safety Net) + /dream Routine",
       "lesson_number": "101",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 408,
-      "endLine": 434,
+      "startLine": 426,
+      "endLine": 452,
       "keywords": [
         "loop-keepalive",
         "CLAUDE_CODE_LOOP_KEEPALIVE",
@@ -9875,8 +9881,8 @@
       "title": "v2.1.159 Plan-Interview Removal + Team-Memory Multistore + Command Churn + Spend Nudges",
       "lesson_number": "102",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 438,
-      "endLine": 467,
+      "startLine": 456,
+      "endLine": 485,
       "keywords": [
         "plan-interview-removed",
         "CLAUDE_MEMORY_STORES",
@@ -9961,8 +9967,8 @@
       "title": "v2.1.159 PEWTER_OWL Gate over the SendUserMessage (Brief) Tool",
       "lesson_number": "103",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 471,
-      "endLine": 497,
+      "startLine": 489,
+      "endLine": 515,
       "keywords": [
         "pewter-owl",
         "CLAUDE_CODE_PEWTER_OWL",
@@ -10024,8 +10030,8 @@
       "title": "v2.1.159 New Codename GB-Flag Triage (~30 flags)",
       "lesson_number": "104",
       "file": "18-verified-new-v2.1.159.md",
-      "startLine": 501,
-      "endLine": 528,
+      "startLine": 519,
+      "endLine": 546,
       "keywords": [
         "codename-flags",
         "gb-flags",
@@ -10447,7 +10453,7 @@
       "lesson_number": "107",
       "file": "21-cowork-control-protocol.md",
       "startLine": 22,
-      "endLine": 437,
+      "endLine": 442,
       "keywords": [
         "cowork-spawn-contract",
         "stream-json",
@@ -38817,10 +38823,6 @@
     "allow-managed-permission-rules-only": [
       25
     ],
-    "bypass-permissions": [
-      25,
-      59
-    ],
     "side-query": [
       25
     ],
@@ -41687,6 +41689,9 @@
     "gateway_setup": [
       97
     ],
+    "org_denied": [
+      98
+    ],
     "include_wiggle_skills": [
       98
     ],
@@ -41713,6 +41718,18 @@
       98
     ],
     "tengu_plugin_skills_dir_loaded": [
+      98
+    ],
+    "sync-claude-ai-plugins": [
+      98
+    ],
+    "sync-claude-ai-skills": [
+      98
+    ],
+    "tengu_claudeai_plugins_sync_enabled": [
+      98
+    ],
+    "allow_account_plugins_sync": [
       98
     ],
     "SKILLS_WAIT_TIMEOUT_MS": [
