@@ -9595,7 +9595,10 @@
         "ask claude code about its own features",
         "is there a docs skill for claude code",
         "turn off built-in help skill",
-        "centrally managed plugins for a team"
+        "centrally managed plugins for a team",
+        "opt out of claude.ai plugin sync",
+        "removed plugin still loads next session",
+        "synced plugins from wrong organization"
       ],
       "identifier_keys": [
         "org_denied",
@@ -9631,13 +9634,16 @@
         "ask claude code about its own features",
         "is there a docs skill for claude code",
         "turn off built-in help skill",
-        "centrally managed plugins for a team"
+        "centrally managed plugins for a team",
+        "opt out of claude.ai plugin sync",
+        "removed plugin still loads next session",
+        "synced plugins from wrong organization"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "1716d2e4a4ec799fbde20365e21d9472de80e87f94451921cbc756ffac32b97a"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-05",
+        "terms_sha256": "1e5fa0b971bf8c90bb7c4e87ed858f7ecba598378ba552fc9200ed85382dabdf"
       }
     },
     {
@@ -10238,7 +10244,6 @@
         "host-capabilities",
         "available-display-modes",
         "show-widget.html",
-        "read_me",
         "connect-domains",
         "resource-domains",
         "clipboard-write",
@@ -10277,7 +10282,6 @@
         "host-capabilities",
         "available-display-modes",
         "show-widget.html",
-        "read_me",
         "connect-domains",
         "resource-domains",
         "clipboard-write",
@@ -10556,7 +10560,6 @@
         "MCP_WORKSPACE_WEB_FETCH",
         "build headless driver for cowork agent",
         "how to drive cowork agent from my own program",
-        "ask user question auto dismissed in headless mode",
         "scripted answers to agent questions never fire",
         "zod error expected object received undefined",
         "control response payload wrong nesting",
@@ -10568,7 +10571,10 @@
         "why do some cowork tools always ask for approval",
         "background agents disabled error in cowork",
         "not logged in with fresh config directory",
-        "plugin root path fails in bash but works for read"
+        "plugin root path fails in bash but works for read",
+        "ask user question denied or missing in headless mode",
+        "run succeeds but questions never answered",
+        "question tool returns permission denial error"
       ],
       "identifier_keys": [
         "always-deny-rules",
@@ -10614,7 +10620,6 @@
       "vocab_keys": [
         "build headless driver for cowork agent",
         "how to drive cowork agent from my own program",
-        "ask user question auto dismissed in headless mode",
         "scripted answers to agent questions never fire",
         "zod error expected object received undefined",
         "control response payload wrong nesting",
@@ -10626,13 +10631,16 @@
         "why do some cowork tools always ask for approval",
         "background agents disabled error in cowork",
         "not logged in with fresh config directory",
-        "plugin root path fails in bash but works for read"
+        "plugin root path fails in bash but works for read",
+        "ask user question denied or missing in headless mode",
+        "run succeeds but questions never answered",
+        "question tool returns permission denial error"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-10-01",
-        "terms_sha256": "dce5f6a2dfc764305a655b4285c651ef2bcf1c938d40587ec59a31f2b326a3a8"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-05",
+        "terms_sha256": "d0a104fae901aed55f4c27769a26ed58630aca13532867d7e0249561ab6e8838"
       }
     },
     {
@@ -12349,7 +12357,6 @@
         "HOST_LOOP_EXCLUDED_BUILTIN_TOOLS",
         "disallowedTools-doc-bug",
         "is-concurrency-safe",
-        "strict-mcp-config",
         "MCP_DELETE_SCHEDULED_TASK",
         "power-shell",
         "MCP_WORKSPACE_WEB_FETCH",
@@ -12382,7 +12389,6 @@
       ],
       "identifier_keys": [
         "is-concurrency-safe",
-        "strict-mcp-config",
         "MCP_DELETE_SCHEDULED_TASK",
         "power-shell",
         "MCP_WORKSPACE_WEB_FETCH",
@@ -14927,7 +14933,7 @@
       "lesson_number": "147",
       "file": "38-cowork-elicitation-flag-classes.md",
       "startLine": 20,
-      "endLine": 109,
+      "endLine": 110,
       "keywords": [
         "elicitation-skill-arguments",
         "imagineElicitationEnabled",
@@ -14945,7 +14951,6 @@
         "subagent-exclusion-agent_id",
         "skill-invocation-message",
         "infer-from-SKILL.md",
-        "read_me",
         "active-skill-this-turn",
         "lam_message_cycle_start",
         "teach-mode-active",
@@ -14965,10 +14970,12 @@
         "skill input form with pills, dates and file upload",
         "why does claude skip asking and infer skill inputs",
         "active skill cleared at start of each turn",
-        "testing a skill that asks for inputs via form"
+        "testing a skill that asks for inputs via form",
+        "skill form needs org inline visualizations enabled",
+        "why didn't my skill get the form instruction",
+        "which skills get the elicitation hint"
       ],
       "identifier_keys": [
-        "read_me",
         "active-skill-this-turn",
         "lam_message_cycle_start",
         "teach-mode-active",
@@ -14990,13 +14997,16 @@
         "skill input form with pills, dates and file upload",
         "why does claude skip asking and infer skill inputs",
         "active skill cleared at start of each turn",
-        "testing a skill that asks for inputs via form"
+        "testing a skill that asks for inputs via form",
+        "skill form needs org inline visualizations enabled",
+        "why didn't my skill get the form instruction",
+        "which skills get the elicitation hint"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "245369c078d3ccc95dfcb970b7c8a4e257c54d43bc777499f3b1636b758eca9d"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-05",
+        "terms_sha256": "0f47b2e96ae54216fe3108187e13f915269132be9e359d16faa7eee4ec8d27bd"
       }
     },
     {
@@ -15004,8 +15014,8 @@
       "title": "The built-* Stickiness Pattern",
       "lesson_number": "148",
       "file": "38-cowork-elicitation-flag-classes.md",
-      "startLine": 113,
-      "endLine": 148,
+      "startLine": 114,
+      "endLine": 149,
       "keywords": [
         "built-tools-stickiness",
         "frameArtifactsTurnEnabled",
@@ -15067,8 +15077,8 @@
       "title": "Three Gating Classes, and VM-Loop-Only as a Feature Class",
       "lesson_number": "149",
       "file": "38-cowork-elicitation-flag-classes.md",
-      "startLine": 152,
-      "endLine": 197,
+      "startLine": 153,
+      "endLine": 198,
       "keywords": [
         "session-config-boolean",
         "frameArtifactsEnabled",
@@ -15136,8 +15146,8 @@
       "title": "Cowork's Additions to the Agent's Auto-Mode Rules",
       "lesson_number": "150",
       "file": "38-cowork-elicitation-flag-classes.md",
-      "startLine": 201,
-      "endLine": 260,
+      "startLine": 202,
+      "endLine": 261,
       "keywords": [
         "autoMode-rubric",
         "gate-3424551112",
@@ -15212,8 +15222,8 @@
       "title": "Desktop Shipped an Env Key Its Own Agent Could Not Read",
       "lesson_number": "151",
       "file": "38-cowork-elicitation-flag-classes.md",
-      "startLine": 264,
-      "endLine": 325,
+      "startLine": 265,
+      "endLine": 326,
       "keywords": [
         "CLAUDE_CODE_COWORK_FRAME_ARTIFACTS",
         "producer-before-consumer",
@@ -15275,8 +15285,8 @@
       "title": "Four Traps That Fired in One Pass",
       "lesson_number": "152",
       "file": "38-cowork-elicitation-flag-classes.md",
-      "startLine": 329,
-      "endLine": 353,
+      "startLine": 330,
+      "endLine": 354,
       "keywords": [
         "two-numbers-trap",
         "served-value-vs-code-default",
@@ -16945,7 +16955,7 @@
       "lesson_number": "171",
       "file": "44-cli-surface-2.1.233-to-2.1.250.md",
       "startLine": 114,
-      "endLine": 156,
+      "endLine": 160,
       "keywords": [
         "bundled-skill-suppression",
         "local-agent-entrypoint-early-return",
@@ -16959,6 +16969,7 @@
         "claude-coworker-terminal",
         "menu-description",
         "override_disabled",
+        "extract-bundle.sh",
         "cowork missing built-in skills",
         "why does cowork only have three skills",
         "bundled skills not showing in cowork",
@@ -16973,14 +16984,18 @@
         "skills registered but not visible",
         "turn off artifacts removes all cowork skills",
         "coworker terminal gets full skill set",
-        "which built-in skills load in cowork"
+        "which built-in skills load in cowork",
+        "how to read bundled skill guide text",
+        "why can't grep find skill text in binary",
+        "skill files compressed inside the binary"
       ],
       "identifier_keys": [
         "disable-artifact",
         "cowork-harness",
         "claude-coworker-terminal",
         "menu-description",
-        "override_disabled"
+        "override_disabled",
+        "extract-bundle.sh"
       ],
       "vocab_keys": [
         "cowork missing built-in skills",
@@ -16997,13 +17012,16 @@
         "skills registered but not visible",
         "turn off artifacts removes all cowork skills",
         "coworker terminal gets full skill set",
-        "which built-in skills load in cowork"
+        "which built-in skills load in cowork",
+        "how to read bundled skill guide text",
+        "why can't grep find skill text in binary",
+        "skill files compressed inside the binary"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "00a6b00f65d2c94739ea07099446858602c5a949ee69e10196d0d110129eec4c"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-05",
+        "terms_sha256": "2650fffe488da08a6811e6192738f44276e28319e7da5f84a351aef7d0161a5f"
       }
     },
     {
@@ -17011,8 +17029,8 @@
       "title": "Artifacts Became a Subsystem: 23 Env Vars and a 21-Flag Gate Family",
       "lesson_number": "172",
       "file": "44-cli-surface-2.1.233-to-2.1.250.md",
-      "startLine": 160,
-      "endLine": 208,
+      "startLine": 164,
+      "endLine": 212,
       "keywords": [
         "artifact-subsystem",
         "tengu-cobalt-plinth-family",
@@ -19384,7 +19402,7 @@
       "lesson_number": "198",
       "file": "50-artifact-host-tools-inbox-folder-skills.md",
       "startLine": 182,
-      "endLine": 237,
+      "endLine": 260,
       "keywords": [
         "four-surfaces",
         "surface-fingerprint",
@@ -19405,11 +19423,20 @@
         "ccr_outputs_path_delivery",
         "SendUserFile vs outputs",
         "/mnt/user-data/outputs empty",
+        "stop-hook-git-check.sh",
         "probe2.md",
         "str_replace",
         "x.txt",
         "memory_str_replace",
         "memory_append",
+        "GH_TOKEN",
+        "GITHUB_TOKEN",
+        "GIT_ASKPASS",
+        "GIT_CONFIG",
+        "api.githubcopilot.com",
+        "create_or_update_file",
+        "Co-Authored-By",
+        "Claude-Session",
         "relative path works differently in cloud vs local cowork",
         "file written with relative path never shown to user",
         "permission denied writing file in cowork",
@@ -19420,21 +19447,30 @@
         "search without a path searches wrong folder",
         "grep exposes session tokens in cloud sandbox",
         "why wasn't my file delivered to the user",
-        "outputs folder exists but file not delivered",
         "claude code on the web pushed branch without asking",
         "skill portable across cowork, web and chat",
         "can one cowork session see other sessions' folders",
         "which working directory does each claude environment use",
         "claude.ai chat running in cloud container",
         "merged composer with no chat or cowork choice",
-        "why does my chat get a cloud session"
+        "git push fails from cloud cowork",
+        "where are uploaded files in a cloud session"
       ],
       "identifier_keys": [
+        "stop-hook-git-check.sh",
         "probe2.md",
         "str_replace",
         "x.txt",
         "memory_str_replace",
-        "memory_append"
+        "memory_append",
+        "GH_TOKEN",
+        "GITHUB_TOKEN",
+        "GIT_ASKPASS",
+        "GIT_CONFIG",
+        "api.githubcopilot.com",
+        "create_or_update_file",
+        "Co-Authored-By",
+        "Claude-Session"
       ],
       "vocab_keys": [
         "relative path works differently in cloud vs local cowork",
@@ -19447,20 +19483,20 @@
         "search without a path searches wrong folder",
         "grep exposes session tokens in cloud sandbox",
         "why wasn't my file delivered to the user",
-        "outputs folder exists but file not delivered",
         "claude code on the web pushed branch without asking",
         "skill portable across cowork, web and chat",
         "can one cowork session see other sessions' folders",
         "which working directory does each claude environment use",
         "claude.ai chat running in cloud container",
         "merged composer with no chat or cowork choice",
-        "why does my chat get a cloud session"
+        "git push fails from cloud cowork",
+        "where are uploaded files in a cloud session"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-02",
-        "terms_sha256": "70be7076caab08ee5aafe83723d925fc983334e8018fcfaa36af362000b5e311"
+        "date": "2026-10-05",
+        "terms_sha256": "a601c9dd6e345c40032a9195ef5c5600031a58ff1bac00b1cb49ce924483e2bd"
       }
     },
     {
@@ -19879,7 +19915,7 @@
       "lesson_number": "205",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
       "startLine": 61,
-      "endLine": 98,
+      "endLine": 106,
       "keywords": [
         "visualize-server",
         "mcp__visualize__show_widget",
@@ -19898,6 +19934,8 @@
         "data_viz",
         "widget_code",
         "loading_messages",
+        "hook-name",
+        "2742800629",
         "skill shows a form instead of asking questions",
         "why does cowork sometimes pop up an input form",
         "form versus multiple choice question in cowork",
@@ -19912,12 +19950,16 @@
         "skill author collect user input reliably",
         "instruction to prefer form not enforced",
         "form tools missing but instruction present",
-        "how often does cowork use the input form"
+        "how often does cowork use the input form",
+        "skill says ask questions but form appears",
+        "form hint not injected for my skill"
       ],
       "identifier_keys": [
         "data_viz",
         "widget_code",
-        "loading_messages"
+        "loading_messages",
+        "hook-name",
+        "2742800629"
       ],
       "vocab_keys": [
         "skill shows a form instead of asking questions",
@@ -19934,13 +19976,15 @@
         "skill author collect user input reliably",
         "instruction to prefer form not enforced",
         "form tools missing but instruction present",
-        "how often does cowork use the input form"
+        "how often does cowork use the input form",
+        "skill says ask questions but form appears",
+        "form hint not injected for my skill"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "67522032f7b07f346159961e9e4e4355d7871dcf71678df460307e7a0a1312b9"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-05",
+        "terms_sha256": "ec959dc8ee64a357938fc14a254e14551b297ec2a8361c33ac884158ba8080c2"
       }
     },
     {
@@ -19948,8 +19992,8 @@
       "title": "What Grants save_skill, and a Second Server-Side Switch Channel",
       "lesson_number": "206",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
-      "startLine": 102,
-      "endLine": 127,
+      "startLine": 110,
+      "endLine": 135,
       "keywords": [
         "save_skill",
         "canSaveSkill",
@@ -20036,8 +20080,8 @@
       "title": "Five Smaller Mechanics: Slash Skills, the OAuth Descriptor, Hook Feedback, a Plugin-Server Allowlist, an Unlisted Build",
       "lesson_number": "207",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
-      "startLine": 131,
-      "endLine": 156,
+      "startLine": 139,
+      "endLine": 164,
       "keywords": [
         "slash skill invocation",
         "command-name",
@@ -20236,7 +20280,7 @@
       "lesson_number": "209",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
       "startLine": 70,
-      "endLine": 128,
+      "endLine": 154,
       "keywords": [
         "cowork plugin hook events",
         "cowork cloud hooks",
@@ -20252,19 +20296,20 @@
         "dash exit 2 hook",
         "Hook script appears to be missing",
         "hook_success",
+        "async_launched",
         "session_context",
-        "idle-grace-ms",
         "hook-name",
+        "idle-grace-ms",
         "meta.json",
         "system-reminder-tag",
+        "DISABLE_AUTOUPDATER",
+        "status_text",
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
         "hook matcher misses cowork shell commands",
         "how to check if a hook actually ran",
-        "hook ran but nothing in transcript",
         "missing hook script blocks every tool call",
         "hook works on mac but blocks on linux",
-        "plugin hook exit code 2 missing file",
         "which hook events fire in local vs cloud cowork",
         "do local cowork hooks run on mac or vm",
         "pre tool hook for subagent calls",
@@ -20274,25 +20319,28 @@
         "subagent shows failed with no steps yet",
         "hook blocked subagent dispatch",
         "does the model see why a hook denied it",
-        "hook silently rewrote subagent prompt"
+        "hook silently rewrote subagent prompt",
+        "why can't users see hook deny reason",
+        "hook prompt rewrite on older cli versions"
       ],
       "identifier_keys": [
         "hook_success",
+        "async_launched",
         "session_context",
-        "idle-grace-ms",
         "hook-name",
+        "idle-grace-ms",
         "meta.json",
-        "system-reminder-tag"
+        "system-reminder-tag",
+        "DISABLE_AUTOUPDATER",
+        "status_text"
       ],
       "vocab_keys": [
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
         "hook matcher misses cowork shell commands",
         "how to check if a hook actually ran",
-        "hook ran but nothing in transcript",
         "missing hook script blocks every tool call",
         "hook works on mac but blocks on linux",
-        "plugin hook exit code 2 missing file",
         "which hook events fire in local vs cloud cowork",
         "do local cowork hooks run on mac or vm",
         "pre tool hook for subagent calls",
@@ -20302,13 +20350,15 @@
         "subagent shows failed with no steps yet",
         "hook blocked subagent dispatch",
         "does the model see why a hook denied it",
-        "hook silently rewrote subagent prompt"
+        "hook silently rewrote subagent prompt",
+        "why can't users see hook deny reason",
+        "hook prompt rewrite on older cli versions"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-03",
-        "terms_sha256": "a0a53ac6467bbe72e0d595666d3d0afd268db2a2c7e39d6e4018cbd436172a4f"
+        "date": "2026-10-05",
+        "terms_sha256": "dc1c615006b78f8d3706d2c8d4970f28f8e4a4350beeabc20120126adbbf8922"
       }
     },
     {
@@ -20316,8 +20366,8 @@
       "title": "Where a New Cowork Task Runs, and the Switch That Did Not Keep It Local",
       "lesson_number": "210",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
-      "startLine": 132,
-      "endLine": 215,
+      "startLine": 158,
+      "endLine": 243,
       "keywords": [
         "Only on this computer",
         "dramatic_shrimp_enabled",
@@ -20358,16 +20408,16 @@
         "local setting not saving after cancel",
         "cloud opt-out reverts after three days",
         "scheduled task to get a local session",
-        "who decides where a cowork task runs",
         "auto mode task still goes to cloud",
-        "check working directory to see where task ran",
         "cloud task using my mac through bridge",
         "are local cowork tasks being removed",
         "scheduled tasks moving to the cloud",
         "where is the only on this computer setting",
         "task header popup has no cloud setting",
         "chat cowork selector decides local or cloud",
-        "does automatically approve carry into the session"
+        "does automatically approve carry into the session",
+        "cloud only rollout per organization",
+        "personal org runs in cloud but team org local"
       ],
       "identifier_keys": [
         "scheduled-task-id",
@@ -20395,22 +20445,22 @@
         "local setting not saving after cancel",
         "cloud opt-out reverts after three days",
         "scheduled task to get a local session",
-        "who decides where a cowork task runs",
         "auto mode task still goes to cloud",
-        "check working directory to see where task ran",
         "cloud task using my mac through bridge",
         "are local cowork tasks being removed",
         "scheduled tasks moving to the cloud",
         "where is the only on this computer setting",
         "task header popup has no cloud setting",
         "chat cowork selector decides local or cloud",
-        "does automatically approve carry into the session"
+        "does automatically approve carry into the session",
+        "cloud only rollout per organization",
+        "personal org runs in cloud but team org local"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-02",
-        "terms_sha256": "cbea9606f8a43fcb23a05acd37fd6fc1f9e308df0baed0a2775579c9573cdc18"
+        "date": "2026-10-05",
+        "terms_sha256": "be49bd207e246bff65c53330114cd407d873a726cfe2d7dd72e892e5a3b7ee04"
       }
     },
     {
@@ -20767,7 +20817,7 @@
       "lesson_number": "215",
       "file": "55-cloud-session-device-tools.md",
       "startLine": 16,
-      "endLine": 154,
+      "endLine": 166,
       "keywords": [
         "device tools",
         "mcp__remote-devices",
@@ -20891,7 +20941,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-03",
+        "date": "2026-10-05",
         "terms_sha256": "d7260346e1260d736d16193547ebd94fb0d67ecfb8ade8d10a184298c061037c"
       }
     },
@@ -20900,8 +20950,8 @@
       "title": "One Conversation, Two Runtimes: How claude.ai Moves a Chat Into a Cowork Workspace",
       "lesson_number": "216",
       "file": "55-cloud-session-device-tools.md",
-      "startLine": 158,
-      "endLine": 204,
+      "startLine": 170,
+      "endLine": 216,
       "keywords": [
         "chat and Cowork merged",
         "hub backend",
@@ -21014,7 +21064,7 @@
       "lesson_number": "217",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 16,
-      "endLine": 167,
+      "endLine": 176,
       "keywords": [
         "upload skill",
         "uploaded skill",
@@ -21132,7 +21182,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-03",
+        "date": "2026-10-05",
         "terms_sha256": "38b12b0d40b464a11b9752da9a9ce5c34d356289c75d43e2abed9a9e559b918e"
       }
     },
@@ -21141,8 +21191,8 @@
       "title": "Plugin Blocks and MCP Placeholders, Lane by Lane",
       "lesson_number": "218",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
-      "startLine": 171,
-      "endLine": 235,
+      "startLine": 180,
+      "endLine": 244,
       "keywords": [
         "UserPromptSubmit block",
         "decision block",
@@ -21364,12 +21414,12 @@
       "endLine": 120,
       "keywords": [
         "cowork-native-file-preview",
+        "2742800629",
         "debug-log-enabled",
         "auto-publish-enabled",
         "screenshot_file_preview",
         "screenshot_artifact",
         "can-verify-artifacts",
-        "2742800629",
         "claude check how my html report looks",
         "screenshot of generated html file",
         "verify svg output visually",
@@ -21388,12 +21438,12 @@
       ],
       "identifier_keys": [
         "cowork-native-file-preview",
+        "2742800629",
         "debug-log-enabled",
         "auto-publish-enabled",
         "screenshot_file_preview",
         "screenshot_artifact",
-        "can-verify-artifacts",
-        "2742800629"
+        "can-verify-artifacts"
       ],
       "vocab_keys": [
         "claude check how my html report looks",
@@ -38008,7 +38058,8 @@
       12
     ],
     "async_launched": [
-      12
+      12,
+      209
     ],
     "output-file": [
       12
@@ -42020,10 +42071,6 @@
     "show-widget.html": [
       105
     ],
-    "read_me": [
-      105,
-      147
-    ],
     "connect-domains": [
       105
     ],
@@ -42143,8 +42190,7 @@
       109
     ],
     "strict-mcp-config": [
-      107,
-      121
+      107
     ],
     "mcp_response": [
       107
@@ -44290,6 +44336,9 @@
     "override_disabled": [
       171
     ],
+    "extract-bundle.sh": [
+      171
+    ],
     "ARTIFACTS_API_TOKEN": [
       172
     ],
@@ -44514,7 +44563,8 @@
       174
     ],
     "stop-hook-git-check.sh": [
-      174
+      174,
+      198
     ],
     "user-prompt-submit-reply-reminder.py": [
       174
@@ -44837,6 +44887,30 @@
     "memory_append": [
       198
     ],
+    "GH_TOKEN": [
+      198
+    ],
+    "GITHUB_TOKEN": [
+      198
+    ],
+    "GIT_ASKPASS": [
+      198
+    ],
+    "GIT_CONFIG": [
+      198
+    ],
+    "api.githubcopilot.com": [
+      198
+    ],
+    "create_or_update_file": [
+      198
+    ],
+    "Co-Authored-By": [
+      198
+    ],
+    "Claude-Session": [
+      198
+    ],
     "d-rgam-bl-q": [
       199
     ],
@@ -44905,6 +44979,14 @@
     ],
     "loading_messages": [
       205
+    ],
+    "hook-name": [
+      205,
+      209
+    ],
+    "2742800629": [
+      205,
+      221
     ],
     "org-skill-creation-allowed": [
       206
@@ -45049,13 +45131,16 @@
     "idle-grace-ms": [
       209
     ],
-    "hook-name": [
-      209
-    ],
     "meta.json": [
       209
     ],
     "system-reminder-tag": [
+      209
+    ],
+    "DISABLE_AUTOUPDATER": [
+      209
+    ],
+    "status_text": [
       209
     ],
     "dramatic_shrimp_disabled_at": [
@@ -45434,9 +45519,6 @@
       221
     ],
     "can-verify-artifacts": [
-      221
-    ],
-    "2742800629": [
       221
     ],
     "why is claude startup slow": [
@@ -49843,6 +49925,15 @@
     "centrally managed plugins for a team": [
       98
     ],
+    "opt out of claude.ai plugin sync": [
+      98
+    ],
+    "removed plugin still loads next session": [
+      98
+    ],
+    "synced plugins from wrong organization": [
+      98
+    ],
     "embedded claude keeps asking me to log in again": [
       99
     ],
@@ -50218,9 +50309,6 @@
     "how to drive cowork agent from my own program": [
       107
     ],
-    "ask user question auto dismissed in headless mode": [
-      107
-    ],
     "scripted answers to agent questions never fire": [
       107
     ],
@@ -50255,6 +50343,15 @@
       107
     ],
     "plugin root path fails in bash but works for read": [
+      107
+    ],
+    "ask user question denied or missing in headless mode": [
+      107
+    ],
+    "run succeeds but questions never answered": [
+      107
+    ],
+    "question tool returns permission denial error": [
       107
     ],
     "hidden settings for cowork desktop agent": [
@@ -52136,6 +52233,15 @@
     "testing a skill that asks for inputs via form": [
       147
     ],
+    "skill form needs org inline visualizations enabled": [
+      147
+    ],
+    "why didn't my skill get the form instruction": [
+      147
+    ],
+    "which skills get the elicitation hint": [
+      147
+    ],
     "feature flag not updating mid-session": [
       148
     ],
@@ -53226,6 +53332,15 @@
       171
     ],
     "which built-in skills load in cowork": [
+      171
+    ],
+    "how to read bundled skill guide text": [
+      171
+    ],
+    "why can't grep find skill text in binary": [
+      171
+    ],
+    "skill files compressed inside the binary": [
       171
     ],
     "artifacts feature settings list": [
@@ -54440,9 +54555,6 @@
     "why wasn't my file delivered to the user": [
       198
     ],
-    "outputs folder exists but file not delivered": [
-      198
-    ],
     "claude code on the web pushed branch without asking": [
       198
     ],
@@ -54461,7 +54573,10 @@
     "merged composer with no chat or cowork choice": [
       198
     ],
-    "why does my chat get a cloud session": [
+    "git push fails from cloud cowork": [
+      198
+    ],
+    "where are uploaded files in a cloud session": [
       198
     ],
     "plugin mcp server shows no tools in cowork": [
@@ -54779,6 +54894,12 @@
     "how often does cowork use the input form": [
       205
     ],
+    "skill says ask questions but form appears": [
+      205
+    ],
+    "form hint not injected for my skill": [
+      205
+    ],
     "why can cowork suddenly save skills": [
       206
     ],
@@ -54932,16 +55053,10 @@
     "how to check if a hook actually ran": [
       209
     ],
-    "hook ran but nothing in transcript": [
-      209
-    ],
     "missing hook script blocks every tool call": [
       209
     ],
     "hook works on mac but blocks on linux": [
-      209
-    ],
-    "plugin hook exit code 2 missing file": [
       209
     ],
     "which hook events fire in local vs cloud cowork": [
@@ -54974,6 +55089,12 @@
     "hook silently rewrote subagent prompt": [
       209
     ],
+    "why can't users see hook deny reason": [
+      209
+    ],
+    "hook prompt rewrite on older cli versions": [
+      209
+    ],
     "cowork task runs in cloud instead of locally": [
       210
     ],
@@ -54995,13 +55116,7 @@
     "scheduled task to get a local session": [
       210
     ],
-    "who decides where a cowork task runs": [
-      210
-    ],
     "auto mode task still goes to cloud": [
-      210
-    ],
-    "check working directory to see where task ran": [
       210
     ],
     "cloud task using my mac through bridge": [
@@ -55023,6 +55138,12 @@
       210
     ],
     "does automatically approve carry into the session": [
+      210
+    ],
+    "cloud only rollout per organization": [
+      210
+    ],
+    "personal org runs in cloud but team org local": [
       210
     ],
     "artifact calling local mcp server": [

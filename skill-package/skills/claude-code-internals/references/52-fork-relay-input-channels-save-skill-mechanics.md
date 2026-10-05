@@ -71,14 +71,22 @@ The form comes from a Desktop-internal SDK-MCP server named **`visualize`** (asa
 
 The form is the `elicitation` module of a general visualisation server, not a dedicated form tool.
 
-## Two gates, independent
+## Two gates
 
 | gate | controls | 2026-09-23 capture |
 |---|---|---|
 | `3444158716` | whether the `visualize` server exists in the session | force-on |
 | `286376943` | whether the "collect input with the form" instruction is injected — on a Skill tool call (not inside sub-agents) and on a typed `/skill` command | force-on |
 
-Neither gate consults the other, so a session could receive the instruction without the tools; one such session on this machine asked nothing. The instruction is advice: nothing blocks or rewrites AskUserQuestion.
+Through Desktop 2.9939.4 neither gate consults the other, so a session could receive the instruction without the tools; one such session on this machine asked nothing. The instruction is advice: nothing blocks or rewrites AskUserQuestion.
+
+**From Desktop 2.16120.0 the instruction needs both gates.** The flag became `ZW("286376943") && <inline visualizations allowed for the org>` (CODE-READ in 2.16120.0 and 2.19675.0; 2.9939.4 reads the first gate alone; the builds between were not checked). Inline visualizations are allowed when `3444158716` is on, the Cowork HIPAA block is not active, and, only if gate `2742800629` is on, the org has not latched the feature off. Both gates were force-on and `2742800629` off in the 2026-10-05 fcache. So a session that gets the instruction now also has the form.
+
+## On Desktop 2.19675.0, the first question goes to the form
+
+In four local runs of a plugin skill whose `SKILL.md` said to ask with AskUserQuestion (Desktop 2.19675.0, agent 2.1.286, Opus 5.5, 2026-10-05), the model asked its **first** question with the form every time and later questions with AskUserQuestion (MEASURED, read from the transcripts). The order follows the injected text, which keeps AskUserQuestion "for single ad-hoc clarifications mid-task" (L147). The Skill call is followed by a `hook_additional_context` attachment (`hookName` `PreToolUse:Skill`, same `toolUseID`) with the instruction, then `mcp__visualize__read_me` `{modules:["elicitation"]}` and `show_widget` with a form. The Desktop's `main.log` has a matching line per injection, `[elicitation] hint injected (no|with argument-hint) via=PreToolUse|UserPromptSubmit`. On a lookup miss it logs `[elicitation] skill not found`. The lookup table is filled from the skills the session's plugin loader lists, plus hints saved on the session (CODE-READ, 2.9939.4 and 2.19675.0 alike). A skill missing from it gets nothing. Whether uploaded account skills are in it was not checked.
+
+The host's instruction arrives after the skill body, at the moment the model decides how to ask, and names AskUserQuestion as the wrong tool, so it wins over a skill's general instruction. The visualize tool descriptions and the `read_me` module text do not mention AskUserQuestion, and the system prompt's own AskUserQuestion section pushes the other way. An `argument-hint` changes only the first sentence ("It expects: …"). The form instruction stays.
 
 ## Measured
 
@@ -95,7 +103,7 @@ No week-to-week trend; the split looks like model choice, not a switch. Some `sh
 
 ## For a skill author
 
-Handle both: write your skill so that an answer arriving as a normal user message (from the form) and one arriving through AskUserQuestion both work. Declare `argument-hint` in your frontmatter; the injected instruction passes it through (L147).
+Handle both: write your skill so that an answer arriving as a normal user message (from the form) and one arriving through AskUserQuestion both work. Declare `argument-hint` in your frontmatter; the injected instruction passes it through (L147). On the Desktop, expect a plugin skill's first context collection to come through the form, whatever `SKILL.md` says. A skill run inside a sub-agent gets no instruction.
 
 ---
 

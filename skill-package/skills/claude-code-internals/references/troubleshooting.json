@@ -2638,6 +2638,106 @@
     220
    ],
    "hint": "From Desktop 2.16120.0 the outputs mount allows delete, rename and move from the start; connected folders still need allow_cowork_file_delete for deletes."
+  },
+  {
+   "pattern": [
+    "subagent failed no steps",
+    "hook denied agent dispatch",
+    "failed no steps yet",
+    "why did the subagent fail"
+   ],
+   "lessons": [
+    209
+   ],
+   "hint": "A PreToolUse deny on an Agent/Task dispatch shows the user only 'Failed' (and 'No steps yet'); the interface never shows the tool result. The reason reaches only the model."
+  },
+  {
+   "pattern": [
+    "hook rewrote subagent prompt",
+    "updatedInput agent prompt",
+    "subagent got a different prompt"
+   ],
+   "lessons": [
+    209
+   ],
+   "hint": "A PreToolUse allow with updatedInput.prompt replaces the sub-agent's prompt on every CLI build tested (2.0.10-2.1.289). Read toolUseResult.prompt, not the parent's tool_use input."
+  },
+  {
+   "pattern": [
+    "form instead of AskUserQuestion",
+    "show_widget form first question",
+    "skill ignores AskUserQuestion"
+   ],
+   "lessons": [
+    205,
+    147
+   ],
+   "hint": "The Desktop's own PreToolUse:Skill hook tells the model to collect a plugin skill's missing context with the visualize form, not AskUserQuestion (gates 286376943 and 3444158716)."
+  },
+  {
+   "pattern": [
+    "git push fails in cloud cowork",
+    "gh token invalid cloud",
+    "push from a cloud session"
+   ],
+   "lessons": [
+    198
+   ],
+   "hint": "Cloud Cowork's git tokens did not authenticate; pushing worked in Claude Code on the web and through the GitHub connector where the organization has it."
+  },
+  {
+   "pattern": [
+    "output truncated claude.ai",
+    "shell output cut off on web"
+   ],
+   "lessons": [
+    198
+   ],
+   "hint": "claude.ai web shows about 4,000 characters of a shell Response with no way to expand it; print the line you need first or in its own call."
+  },
+  {
+   "pattern": [
+    "uploaded file path in cloud session",
+    "mnt user-data uploads",
+    "root claude uploads hashed name"
+   ],
+   "lessons": [
+    198
+   ],
+   "hint": "A cloud attachment exists both at /root/.claude/uploads/<uuid>/<hex>-<name> and at /mnt/user-data/uploads/<name>; look in both."
+  },
+  {
+   "pattern": [
+    "github synced org plugin not updating",
+    "tag not synced org plugin",
+    "available to install plugin missing"
+   ],
+   "lessons": [
+    217
+   ],
+   "hint": "A GitHub-synced organization plugin follows the default branch only (tags ignored); 'Available to install' reaches a member only after they install it; the Desktop syncs only the active organization."
+  },
+  {
+   "pattern": [
+    "which bash version cowork",
+    "sh is dash cowork",
+    "hook runs bash 3.2"
+   ],
+   "lessons": [
+    215,
+    209
+   ],
+   "hint": "Skill scripts have bash 5.1 (local VM) or 5.2 (cloud), but sh is dash on both; local hooks run on the Mac under macOS sh (bash 3.2)."
+  },
+  {
+   "pattern": [
+    "bundled skill text not in binary",
+    "zstd bunfs skill"
+   ],
+   "lessons": [
+    171
+   ],
+   "hint": "Bundled skill guides ship zstd-compressed in Bun's bunfs (/$bunfs/root/<name>-<hash>.md.zst); scan for 28 B5 2F FD and decompress each frame."
   }
  ]
 }

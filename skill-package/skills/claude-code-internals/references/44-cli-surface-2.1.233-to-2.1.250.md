@@ -153,6 +153,10 @@ The three survivors resolve, from their own `menuDescription`, to the artifact t
 
 **It is current behaviour, not a 2.1.247 quirk** — still present in 2.1.248 and 2.1.250, renamed to `gN()`/`Re()`/`Le()`/`Ie()`. Anyone reasoning from "the CLI ships ~35 bundled skills" is wrong about Cowork specifically, and the env var that *looks* like the control (`CLAUDE_CODE_DISABLE_BUNDLED_SKILLS`, Ch27/L111) is not consulted on this path at all — though it is **not inert**: it still disables bundled skills later, at invocation, via `Sy()` and the `override_disabled` branch. It cannot bring back what registration skipped.
 
+## Reading a bundled skill's text (CLI 2.1.289)
+
+A bundled skill's guide files are not plain text in the binary. They ship as zstd-compressed files in Bun's embedded file system, at `/$bunfs/root/<name>-<hash>.md.zst` (for example `SKILL-<hash>.md.zst`), and are decompressed when loaded. Script files (`.mjs`) are stored plain. So a grep of the binary, or of the bundle `extract-bundle.sh` writes, finds the code that loads a guide but never the guide's words. To read them, scan the binary for the zstd frame magic `28 B5 2F FD` and decompress from each offset with `zstd -dc`. In 2.1.289 that finds 169 frames, of which 168 decode (CODE-READ, 2026-10-05). Positive-control a phrase you know is in a guide before reporting any guide text as absent.
+
 *(Surfaced by the `cowork-harness` project's 1.40609.0 fidelity pass; re-derived first-party here and extended forward to 2.1.250.)*
 
 ---

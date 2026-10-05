@@ -5867,8 +5867,8 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.280",
-      "summary": "Force-ON in the 2026-08-13 and 2026-09-23 fcache captures. When on, Desktop injects a standing instruction into every skill invocation directing the model to collect missing arguments via the elicitation form instead of AskUserQuestion, delivered as additionalContext on TWO hook events: the Skill tool's PreToolUse hook (excludes sub-agents via !e.agent_id) and UserPromptSubmit (for slash-command invocations), both converging on one resolver (function Lo(e,t)). The injected message itself is byte-stable across all 15 local asars back to 1.18286.2 -- a standing gap in prior coverage, not a new 1.28929.0 feature; the only substantive edit was an argument-hint fallback ternary added at 1.25927.0. Sets a turn-scoped Desktop-side activeSkillThisTurn scope (cleared at message-cycle-start/finishTurnCleanup/CU-lock-release) -- the opposite lifetime of Ch32/L118's sticky, no-pop agent-side activeSkill. Upgrades Ch24/L107's additionalContext black-box description; extends Ch22/L105. INDEPENDENT of the visualize-server gate 3444158716; the model, not the host, picks between the form and AskUserQuestion (measured 31/27/13 in 71 asking sessions; Ch55/L205).",
+      "as_of": "2.1.286",
+      "summary": "Force-ON in the 2026-08-13 and 2026-09-23 fcache captures. When on, Desktop injects a standing instruction into every skill invocation directing the model to collect missing arguments via the elicitation form instead of AskUserQuestion, delivered as additionalContext on TWO hook events: the Skill tool's PreToolUse hook (excludes sub-agents via !e.agent_id) and UserPromptSubmit (for slash-command invocations), both converging on one resolver (function Lo(e,t)). The injected message itself is byte-stable across all 15 local asars back to 1.18286.2 -- a standing gap in prior coverage, not a new 1.28929.0 feature; the only substantive edit was an argument-hint fallback ternary added at 1.25927.0. Sets a turn-scoped Desktop-side activeSkillThisTurn scope (cleared at message-cycle-start/finishTurnCleanup/CU-lock-release) -- the opposite lifetime of Ch32/L118's sticky, no-pop agent-side activeSkill. Upgrades Ch24/L107's additionalContext black-box description; extends Ch22/L105. Independent of the visualize-server gate 3444158716 through Desktop 2.9939.4 (the model picked between the form and AskUserQuestion: 31/27/13 in 71 asking sessions); from 2.16120.0 (2.9939.4-2.16120.0 not bisected) the flag is 286376943 AND inline visualizations allowed for the org (gate 3444158716, no HIPAA block, org latch under 2742800629), and only skills the session's plugin loader lists are in the lookup table (a miss logs skill not found). On 2.19675.0 (agent 2.1.286, 4 local runs, 2026-10-05) the model asked its first question with the form every time, later ones with AskUserQuestion; both gates force-on in the 2026-10-05 fcache (Ch55/L205).",
       "provenance": [
         {
           "lesson": 147
@@ -8255,8 +8255,8 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.280",
-      "summary": "isEnabled for the Desktop-internal SDK-MCP server 'visualize' (getImagineServerDef): tools mcp__visualize__read_me (modules incl. elicitation) and mcp__visualize__show_widget (MCP App ui://imagine/show-widget.html). Independent of the elicitation-instruction gate 286376943. Visualize tools present in every local session from agent 2.1.119 on the capturing machine; force-ON at the 2026-09-23 capture.",
+      "as_of": "2.1.286",
+      "summary": "isEnabled for the Desktop-internal SDK-MCP server 'visualize' (getImagineServerDef): tools mcp__visualize__read_me (modules incl. elicitation) and mcp__visualize__show_widget (MCP App ui://imagine/show-widget.html). Through Desktop 2.9939.4 independent of the elicitation-instruction gate 286376943; from 2.16120.0 that instruction is injected only when this gate is on too (inline_visualizations, with a HIPAA block and an optional org latch, gate 2742800629). Visualize tools present in every local session from agent 2.1.119 on the capturing machine; force-ON at the 2026-09-23 capture.",
       "provenance": [
         {
           "lesson": 205

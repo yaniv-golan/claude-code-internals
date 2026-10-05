@@ -147,8 +147,17 @@ How an organization's plugins reach a Desktop, and what happens when an administ
 - **A deleted plugin keeps running until the next full sync.** The delete dialog says "People who have it installed lose it right away", and Anthropic's documentation says members stop having it. On a running Desktop the member's installed copy kept loading and running in new local tasks until the next full sync: in one run the hourly full pass removed it 39 minutes after the delete, in the other the full sync at app start removed it (two runs; tasks started 6, 7 and 27 minutes after the delete still ran the plugin). So a withdrawal can take up to about an hour, or a restart, to reach a Desktop. Reported as [anthropics/claude-code#99248](https://github.com/anthropics/claude-code/issues/99248).
 - **"Not available" too.** A plugin switched to "Not available" still loaded and ran 6 and 14 minutes later (one run). Whether a full sync removes it was not tested, because it was deleted before its next full sync.
 - **A rewritten manifest is not a cleanup.** `rpm/manifest.json` is rewritten on the 20-minute syncs and still listed the withdrawn plugin each time. To see whether a Desktop has dropped a plugin, look for the "Removed … no longer available" line in `main.log`.
+- **"Available to install" reaches nobody until they install.** A plugin set to it was absent from the member's Desktop `rpm` and from the CLI's synced folder until the member installed it (MEASURED, one run, 2026-10-05).
+- **The Desktop syncs only the active organization.** With the Desktop switched to another organization, the first organization's `rpm` stopped updating (MEASURED, one run, 2026-10-05).
 
-Not tested: the cloud lane, and a member who had not installed the plugin.
+**A plugin synced from GitHub (MEASURED, one run each, Team organization, 2026-10-05).**
+
+- The "Sync from GitHub" form has a "Sync automatically" switch, on by default ("Keep plugins up to date when repository changes on GitHub"), which sets up a webhook on the repository. Default access offers the same four choices. There is no branch, tag, ref or interval field. The plugin's page shows "Last synced" with the commit and offers a re-sync (UI).
+- A push to the default branch updated the server's entry 3.6 seconds later, and the member's Desktop had the new files at its next sync, five minutes after that.
+- Only the default branch counts: a tag on another branch, with the default branch unchanged, was ignored through the next sync. To ship a release from a tag, merge it into the default branch.
+- The CLI's synced manifest gives such a plugin a `version` that is a server revision (`0001`), not the `version` in its `plugin.json`, which is only in the files. Read the version from `plugin.json`.
+
+Not tested: the cloud lane, and how long a deleted or "Not available" plugin lingers there.
 
 ## A conversation that changed runtime
 

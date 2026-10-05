@@ -236,3 +236,26 @@ Two single values separate the three cloud surfaces: `CLAUDE_CODE_ENTRYPOINT` (`
 - **Cloud Cowork's `claude` binary is at `/opt/node22/bin/claude`** (relayed by the skill-creator-plus project, 2026-09-28).
 - **`CLAUDE_CODE_VERSION=2.1.42` appears on Claude Code on the web too**, not only in cloud Cowork: it is runner metadata on both, never the agent's build (L174).
 
+## Git access by surface (2026-10-05, one run each)
+
+| surface | what happened |
+|---|---|
+| Cowork in the cloud (Team organization) | `GH_TOKEN`, `GITHUB_TOKEN`, `GIT_ASKPASS` and `GIT_CONFIG_*` are set, but `gh` called the token invalid, and `git` over https could not authenticate to a private personal repository (terminal prompts disabled). No push. |
+| Claude Code on the web, repository selected | A plain commit and `git push -u origin HEAD:<branch>` worked. A command that ran `git credential fill` was blocked by the auto-mode classifier as data exfiltration. At the end of the turn the environment's Stop hook (`stop-hook-git-check.sh`) made the model push its own `claude/<name>` branch, unasked, as in the probe above. |
+| The GitHub connector (`api.githubcopilot.com/mcp`) | Not offered in the Team organization's cloud task. In the Personal organization's, `create_or_update_file` ran after a permission card and wrote a commit as the user, and the model added `Co-Authored-By` and `Claude-Session` trailers to the message without being asked. Connectors are set per organization. |
+
+So a skill that needs to push from a cloud session works only through the connector, where the organization has it, or in Claude Code on the web. The environment's git tokens in cloud Cowork are not a way in. Expect unasked side effects on both working routes: an extra branch on the web, and trailers through the connector.
+
+## Uploaded files in a cloud session (2026-10-05)
+
+A file attached in a cloud conversation exists in two places in the same container (MEASURED, one session checked for both):
+
+- `/root/.claude/uploads/<uuid>/<8 hex>-<name>`, under a hashed name.
+- `/mnt/user-data/uploads/<name>`, under its plain name, read-only and owned by root (`r--r--r--`).
+
+Which one the model meets first varied with how the conversation began. In a run where a shell command came first and the skill's placeholders were filled, the attachment was reported at the first path. In a run that began with a typed slash command, whose placeholders arrived as written (L217), it was listed at the second. A skill script that looks for uploads found the first path, while the second held the same file under its plain name. Look in both, and match on the end of the name rather than the whole name.
+
+## Long shell output on claude.ai web (2026-10-05, UI)
+
+claude.ai web cuts a shell tool's displayed Response at about 4,000 characters, with "Output truncated" and no way to expand it. Whether the model's copy is cut too was not checked. When you read evidence from a cloud run through the interface, put the line you need first in the command's output, or print it in a call of its own.
+

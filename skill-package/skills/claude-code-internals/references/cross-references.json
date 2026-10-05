@@ -3930,6 +3930,11 @@
     "id": 105,
     "relevance": 0.5,
     "reason": "MCP Apps; show_widget is one"
+   },
+   {
+    "id": 209,
+    "relevance": 0.6,
+    "reason": "the Desktop delivers the form instruction through a PreToolUse:Skill hook"
    }
   ],
   "206": [
@@ -4018,6 +4023,11 @@
     "id": 122,
     "relevance": 0.8,
     "reason": "the bash plugin-path rewrite and the VM-path deny that hooks and file tools meet"
+   },
+   {
+    "id": 205,
+    "relevance": 0.5,
+    "reason": "a Desktop hook of its own on Skill steers the first question"
    }
   ],
   "210": [

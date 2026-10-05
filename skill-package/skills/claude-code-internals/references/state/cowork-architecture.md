@@ -4,7 +4,7 @@ title: Cowork runtime architecture (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
 sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198, 207, 208, 210, 211, 212, 213, 214, 215, 216]
-updated: 2026-10-02
+updated: 2026-10-05
 read_more: ["https://ccinternals.dev/cowork/?ref=skill"]
 ---
 
@@ -742,6 +742,12 @@ absent from the app. Check `pwd`/`CLAUDE_CODE_ENTRYPOINT` per run.
 On Desktop 2.19675.0 (2026-10-02) the composer New opened decided: the Chat/Cowork selector
 (Cowork) gave a local session 2 of 2, the merged composer the cloud 2 of 2, with the account setting
 on throughout (composer shapes from the UI; L210).
+On 2026-10-04 the rollout differed per organization on one account: the Personal (Max)
+organization had the unified composer on claude.ai web and in the Desktop, and a new task from
+either ran in the cloud (`/home/claude`, `remote_cowork`, a `/chat/<uuid>` URL, no session record
+on the Mac), while the Team organization still had the Chat/Cowork composer and ran Desktop tasks
+locally (one run each, two days before the announced 2026-10-06 date; a re-check after 2026-10-07
+is pending; L210).
 
 ## Desktop 2.9939.2 additions (L212–L214)
 
@@ -818,7 +824,9 @@ guard (`force` overrides), no per-write prompt. `device_bash` runs in the **Mac'
 at `$HOME/mnt/<folder>`, `/bin/sh` → dash); deleting needs
 `device_request_delete_permission` (mount `rw` → `rwd`). The session's own Write to a
 `/Users/…` path succeeds silently **inside the container**. The cloud container's
-`/bin/sh` is dash too. A folder connected from the composer before sending takes two consents, the
+`/bin/sh` is dash too. Skill scripts have bash on both lanes (5.1.16 in the local VM, 5.2.21 in
+the cloud) with `sh` = dash on both; a local hook runs on the Mac under macOS `sh` (bash 3.2), and
+`${CLAUDE_SKILL_DIR}` there is the Mac's staging path (MEASURED 2026-10-04, L215). A folder connected from the composer before sending takes two consents, the
 Desktop's "Allow Claude to change files in <folder>" and then a native prompt that the files leave
 the Mac (UI, one run, 2026-10-03, Desktop 2.19675.0); saving delivered files into it rendered as one
 "Saved files to your computer" row with Written/Rejected lists, and the files landed on the Mac.

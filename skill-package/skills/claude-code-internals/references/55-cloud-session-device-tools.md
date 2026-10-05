@@ -118,6 +118,18 @@ Each cloud session gets its own VM user, `rcw-<id>`. The granted folder is mount
 
 `/bin/sh` is `dash` both in the cloud container and in the Mac's Cowork VM (both measured here). That settles L209's open point: a hook script that is missing exits 2 in both places, while local host-loop hooks run on macOS, whose `sh` exits 127.
 
+Which shell runs what (MEASURED, one session per lane, Team organization, 2026-10-04):
+
+| | a hook (SessionStart) | a skill script (the model's shell) |
+|---|---|---|
+| local session | on the Mac: macOS `/bin/sh` (bash 3.2.57 in sh mode), `pwd` `/private/var/empty`, `HOME` the user's home | in the VM: Ubuntu, `/bin/sh` → `dash`, `/usr/bin/bash` 5.1.16, `pwd` and `HOME` `/sessions/<slug>` |
+| cloud session | in the container: `sh` → `dash`, `HOME` `/root`, `pwd` `/home/claude` | the same container: `dash`, bash 5.2.21 |
+
+- **bash is there for skill scripts on both lanes, but `sh` is `dash` on both.** Run a bash script as `bash x.sh` or through its `#!/bin/bash` line, never as `sh x.sh`.
+- **A local hook runs under macOS's bash 3.2.** The `bash` on the Mac's `PATH` was the user's own Homebrew 5.x, which other Macs may not have. Keep hook scripts to POSIX `sh`, or to what bash 3.2 accepts.
+- **In a local session `${CLAUDE_SKILL_DIR}` is the Mac's staging path** (`…/claude-hostloop-plugins/<hash>/…`), which does not exist in the VM. In this run the skill's fallback, a search under `/sessions/<slug>/mnt/`, found the skill's folder at `.remote-plugins/…`. The shell rewrites plugin paths in a command's text (L122); a script that gets the path any other way is not covered by that (INFERRED), so keep a fallback.
+- A local hook's `additionalContext` reached the model.
+
 ## `computer://` links: which ones work
 
 Measured on 2026-09-29 (Desktop 2.9939.4, agent 2.1.284) with the same links written by the model in a cloud conversation and in a local session. The model's own text contained every link in both cases (confirmed from the model's echo in the cloud and from the transcript locally), so what differs is how the app renders them.

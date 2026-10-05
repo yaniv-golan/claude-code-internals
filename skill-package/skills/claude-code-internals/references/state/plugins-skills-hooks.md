@@ -4,7 +4,7 @@ title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
 sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207, 209, 211, 217, 218]
-updated: 2026-10-02
+updated: 2026-10-05
 read_more: ["https://ccinternals.dev/cowork/plugins-and-plugin-root/?ref=skill"]
 ---
 
@@ -180,6 +180,15 @@ record**; a missing hook script exits 2 (the block code) under `dash` but 127 un
 plugin UserPromptSubmit and any Stop, SubagentStop, TaskCompleted, TeammateIdle hook;
 for other events (PreToolUse included) it blocks.
 
+A PreToolUse `allow` with `updatedInput.prompt` on `Agent`/`Task` runs the sub-agent on the hook's
+prompt on every CLI build tested, 2.0.10 to 2.1.289 (headless, 70 runs): `toolUseResult.prompt` holds the
+hook's prompt while the parent's `tool_use.input` keeps the model's, and the model never re-dispatches. The
+same hook's `additionalContext` reaches the model only from 2.1.9, and `hook_success` +
+`hook_additional_context` transcript rows appear only from 2.1.100 (2.1.9–2.1.96 deliver it without
+recording it). The tool is `Task` up to 2.1.50 and `Agent` from 2.1.70, so match `Agent|Task`. A deny on a
+dispatch shows the user only "Failed" (Desktop and claude.ai web): the interface's sub-agent card never
+receives the tool result, so the reason reaches only the model (as of 2.1.289, Desktop 2.19675.0, L209).
+
 ## Uploaded skills (L217)
 
 A skill uploaded via Customize → Skills → Add skill → Upload skill (zip with one top-level
@@ -197,6 +206,11 @@ an entry in `<org>/rpm/manifest.json` (`marketplaceId`, `marketplaceName`, `inst
 skips cleanup; only a full sync (at app start, or when the last one is an hour old) removes a plugin
 the organization withdrew, so a deleted plugin kept running on a running Desktop for up to that long
 (two runs; anthropics/claude-code#99248). Check `main.log` for "Removed … no longer available".
+A plugin set to "Available to install" reaches no member's Desktop or CLI until that member installs it.
+The Desktop syncs only the active organization's `rpm`. A GitHub-synced organization plugin follows the
+repository's default branch only (tags are ignored; the form has no branch or ref field); "Sync
+automatically" pushes a change in about 4 seconds through a webhook, and the CLI manifest's `version`
+for it is a server revision (`0001`), not `plugin.json`'s (MEASURED, one run each, 2026-10-05, L217).
 
 ## Creating and changing skills in chat (L217)
 
@@ -461,7 +475,8 @@ files — each has its own dedicated, non-shadow parser.
 
 ## Elicitation is the sanctioned skill-argument channel (L147)
 
-Desktop injects a standing instruction into **every skill invocation**
+Desktop injects a standing instruction into **every skill invocation** (every skill in
+the table the session's plugin loader fills; a miss logs `skill not found`; from 2.16120.0 both gates; L205)
 directing the model to collect missing arguments through the elicitation
 form (`credential-channels.md`'s channel 1), not `AskUserQuestion`. This
 is gated by `286376943` (`imagineElicitationEnabled`), **force-ON** in the
@@ -528,9 +543,15 @@ link 24/27 and dropped `?ref=` in 23. Inline skills have no relay step.
 
 The "collect input with a form" instruction (gate `286376943`) and the
 `visualize` server that provides the form (`mcp__visualize__read_me` /
-`show_widget`, gate `3444158716`) are independent; AskUserQuestion stays
-available and the model chooses — 31 form / 27 AskUserQuestion / 13 both in
-71 sessions that asked anything. The instruction is invisible in `audit.jsonl`.
+`show_widget`, gate `3444158716`) were independent through Desktop 2.9939.4;
+AskUserQuestion stays available and the model chose — 31 form / 27 AskUserQuestion / 13 both in
+71 sessions that asked anything. From 2.16120.0 the instruction needs both gates
+(`3444158716` via the org's inline-visualizations check; 2.9939.4 reads only the first). It
+reaches only skills in the table the session's plugin loader fills. On 2.19675.0 (agent 2.1.286, four local runs, 2026-10-05) the model asked a plugin
+skill's first question with the form every time, against a `SKILL.md` that said AskUserQuestion,
+and later questions with AskUserQuestion. The instruction is invisible in `audit.jsonl`; the
+transcript has it as a `hook_additional_context` attachment and `main.log` as
+`[elicitation] hint injected …` (as of Desktop 2.19675.0, L205).
 
 ## Server attribution reaches the agent by a computed env key (L181)
 

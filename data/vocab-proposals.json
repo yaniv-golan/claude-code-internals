@@ -2246,9 +2246,13 @@
     },
     "98": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "0e3bd4264c6ef83ce49367e8ea9d750cff45e08d075aeff844bfb56ba557b4ee",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-05",
+      "input_sha256": "4b697e6077990c88dad75b1a91dc54320b4811ac134c564bcf0123c0fb56aaec",
+      "prior_terms_sha256": "1716d2e4a4ec799fbde20365e21d9472de80e87f94451921cbc756ffac32b97a",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "c7eef5d874983e057f600fa9b8481110bc955a1c",
+      "replaced": [],
       "terms": [
         "push skills to whole company",
         "sync plugins from organization admin",
@@ -2264,7 +2268,10 @@
         "ask Claude Code about its own features",
         "is there a docs skill for Claude Code?",
         "turn off built-in help skill",
-        "centrally managed plugins for a team"
+        "centrally managed plugins for a team",
+        "opt out of claude.ai plugin sync",
+        "removed plugin still loads next session",
+        "synced plugins from wrong organization"
       ]
     },
     "99": {
@@ -2469,13 +2476,25 @@
     },
     "107": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-10-01",
-      "input_sha256": "1e43319dbda1ac39a3170dfc175b7bbb554a8a6d34c3bb4e99e71e833091b6b5",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-05",
+      "input_sha256": "f1a4668451dc65b0748262ba08fa0dcf62632ec9bf54f4ed417bf98f038f27ac",
+      "prior_terms_sha256": "dce5f6a2dfc764305a655b4285c651ef2bcf1c938d40587ec59a31f2b326a3a8",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "c7eef5d874983e057f600fa9b8481110bc955a1c",
+      "replaced": [
+        "ask user question auto dismissed in headless mode"
+      ],
+      "dropped": [
+        {
+          "term": "ask user question auto dismissed in headless mode",
+          "why": "inaccurate",
+          "replacement": "ask user question denied or missing in headless mode"
+        }
+      ],
       "terms": [
         "build headless driver for cowork agent",
         "how to drive cowork agent from my own program",
-        "ask user question auto dismissed in headless mode",
         "scripted answers to agent questions never fire",
         "zod error expected object received undefined",
         "control response payload wrong nesting",
@@ -2487,7 +2506,10 @@
         "why do some cowork tools always ask for approval?",
         "background agents disabled error in cowork",
         "not logged in with fresh config directory",
-        "plugin root path fails in bash but works for read"
+        "plugin root path fails in bash but works for read",
+        "ask user question denied or missing in headless mode",
+        "run succeeds but questions never answered",
+        "question tool returns permission denial error"
       ]
     },
     "108": {
@@ -3457,9 +3479,13 @@
     },
     "147": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "db2e979bf833b82ee864413895a2654cbd3b323de0dff09696c85308a57df25c",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-05",
+      "input_sha256": "acad5e3314be2c105bc6b037ce95bf229dcacce0d133b073fb0d6636512b33d7",
+      "prior_terms_sha256": "245369c078d3ccc95dfcb970b7c8a4e257c54d43bc777499f3b1636b758eca9d",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "621b9a185d8612261c3105a36aa0fea8b83eb8eb",
+      "replaced": [],
       "terms": [
         "skill asks for missing info with a form instead of questions",
         "why does my skill show a form card instead of asking",
@@ -3475,7 +3501,10 @@
         "skill input form with pills, dates and file upload",
         "why does Claude skip asking and infer skill inputs",
         "active skill cleared at start of each turn",
-        "testing a skill that asks for inputs via form"
+        "testing a skill that asks for inputs via form",
+        "skill form needs org inline visualizations enabled",
+        "why didn't my skill get the form instruction",
+        "which skills get the elicitation hint"
       ]
     },
     "148": {
@@ -4029,9 +4058,13 @@
     },
     "171": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "67bbbe62e9a65a0c20d15143f6d23006d5c532c509d46752b0f30b173b5bc0fe",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-05",
+      "input_sha256": "ad86fa98f3a05f7b651eb631792af757608dd4869c5ecbeb0a968b010331ca25",
+      "prior_terms_sha256": "00a6b00f65d2c94739ea07099446858602c5a949ee69e10196d0d110129eec4c",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "621b9a185d8612261c3105a36aa0fea8b83eb8eb",
+      "replaced": [],
       "terms": [
         "cowork missing built-in skills",
         "why does cowork only have three skills",
@@ -4047,7 +4080,10 @@
         "skills registered but not visible",
         "turn off artifacts removes all cowork skills",
         "coworker terminal gets full skill set",
-        "which built-in skills load in cowork"
+        "which built-in skills load in cowork",
+        "how to read bundled skill guide text",
+        "why can't grep find skill text in binary",
+        "skill files compressed inside the binary"
       ]
     },
     "172": {
@@ -4679,12 +4715,27 @@
     "198": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-02",
-      "input_sha256": "30a9264a539a0e144d0d121b647549ffb017157e2bcc5f377a80446cd8f877b2",
-      "prior_terms_sha256": "1f40acd4ba1bd9ccd3d62e238cac813ef403040c5415e4e7e89212bf1f3c3c62",
+      "date": "2026-10-05",
+      "input_sha256": "68d6cc5138965606ba6952ae4fd0c6767e5cf353e481fa5bf2c2ac2d7e470ef3",
+      "prior_terms_sha256": "70be7076caab08ee5aafe83723d925fc983334e8018fcfaa36af362000b5e311",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
-      "replaced": [],
+      "previous_text": "afc22d5267ccbe787b142e94ec605d968e0a7e8a",
+      "replaced": [
+        "outputs folder exists but file not delivered",
+        "why does my chat get a cloud session?"
+      ],
+      "dropped": [
+        {
+          "term": "why does my chat get a cloud session?",
+          "why": "duplicate",
+          "duplicate_of": "claude.ai chat running in cloud container"
+        },
+        {
+          "term": "outputs folder exists but file not delivered",
+          "why": "duplicate",
+          "duplicate_of": "why wasn't my file delivered to the user?"
+        }
+      ],
       "terms": [
         "relative path works differently in cloud vs local Cowork",
         "file written with relative path never shown to user",
@@ -4696,14 +4747,14 @@
         "search without a path searches wrong folder",
         "grep exposes session tokens in cloud sandbox",
         "why wasn't my file delivered to the user?",
-        "outputs folder exists but file not delivered",
         "Claude Code on the web pushed branch without asking",
         "skill portable across Cowork, web and chat",
         "can one Cowork session see other sessions' folders?",
         "which working directory does each Claude environment use?",
         "claude.ai chat running in cloud container",
         "merged composer with no Chat or Cowork choice",
-        "why does my chat get a cloud session?"
+        "git push fails from cloud Cowork",
+        "where are uploaded files in a cloud session?"
       ]
     },
     "199": {
@@ -4846,9 +4897,13 @@
     },
     "205": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "e8dd5cfccc61ab2dd284d1d4b5aae1a47cc385ef44d1f76b5e8a91fd4d12edb3",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-05",
+      "input_sha256": "71881a59690f22e5d3b376d28e9e7a16ce6610057351c8fd86ac6a7a2f2ead7d",
+      "prior_terms_sha256": "67522032f7b07f346159961e9e4e4355d7871dcf71678df460307e7a0a1312b9",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "621b9a185d8612261c3105a36aa0fea8b83eb8eb",
+      "replaced": [],
       "terms": [
         "skill shows a form instead of asking questions",
         "why does Cowork sometimes pop up an input form",
@@ -4864,7 +4919,16 @@
         "skill author collect user input reliably",
         "instruction to prefer form not enforced",
         "form tools missing but instruction present",
-        "how often does Cowork use the input form"
+        "how often does Cowork use the input form",
+        "skill says ask questions but form appears",
+        "first question uses form, later ones don't",
+        "form hint not injected for my skill"
+      ],
+      "withheld": [
+        {
+          "term": "first question uses form, later ones don't",
+          "qid": "pl-0168"
+        }
       ]
     },
     "206": {
@@ -4946,21 +5010,34 @@
     "209": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-03",
-      "input_sha256": "8e393a256e4f3147ecae99e028d67c8e00a7b8df911fcac35e26f52a32b87e22",
+      "date": "2026-10-05",
+      "input_sha256": "419ad4bd6c894cdcd8bcc98b7510d32818e33ebb40ba39b709c4100082a24bf9",
       "prior_terms_sha256": "a0a53ac6467bbe72e0d595666d3d0afd268db2a2c7e39d6e4018cbd436172a4f",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "5a673da5ef4017d3f92d9599e50ccf833c823e21",
-      "replaced": [],
+      "previous_text": "621b9a185d8612261c3105a36aa0fea8b83eb8eb",
+      "replaced": [
+        "hook ran but nothing in transcript",
+        "plugin hook exit code 2 missing file"
+      ],
+      "dropped": [
+        {
+          "term": "plugin hook exit code 2 missing file",
+          "why": "duplicate",
+          "duplicate_of": "missing hook script blocks every tool call"
+        },
+        {
+          "term": "hook ran but nothing in transcript",
+          "why": "duplicate",
+          "duplicate_of": "how to check if a hook actually ran"
+        }
+      ],
       "terms": [
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
         "hook matcher misses cowork shell commands",
         "how to check if a hook actually ran",
-        "hook ran but nothing in transcript",
         "missing hook script blocks every tool call",
         "hook works on mac but blocks on linux",
-        "plugin hook exit code 2 missing file",
         "which hook events fire in local vs cloud cowork",
         "do local cowork hooks run on mac or vm?",
         "pre tool hook for subagent calls",
@@ -4970,18 +5047,35 @@
         "subagent shows failed with no steps yet",
         "hook blocked subagent dispatch",
         "does the model see why a hook denied it?",
-        "hook silently rewrote subagent prompt"
+        "hook silently rewrote subagent prompt",
+        "why can't users see hook deny reason?",
+        "hook prompt rewrite on older cli versions"
       ]
     },
     "210": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-02",
-      "input_sha256": "06fa018c239dba46bafbc579340f042a0ebed6cd67717dee5459e2a52061c6fe",
+      "date": "2026-10-05",
+      "input_sha256": "95221687059890e62d0a65d9aaef7436b87ceca4368a25e34905d953653a299a",
       "prior_terms_sha256": "cbea9606f8a43fcb23a05acd37fd6fc1f9e308df0baed0a2775579c9573cdc18",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "80cd9d13d62d1dbbeb054ee0cecc15f05dbcf971",
-      "replaced": [],
+      "previous_text": "621b9a185d8612261c3105a36aa0fea8b83eb8eb",
+      "replaced": [
+        "who decides where a cowork task runs?",
+        "check working directory to see where task ran"
+      ],
+      "dropped": [
+        {
+          "term": "check working directory to see where task ran",
+          "why": "duplicate",
+          "duplicate_of": "how to tell if task ran locally or in cloud"
+        },
+        {
+          "term": "who decides where a cowork task runs?",
+          "why": "duplicate",
+          "duplicate_of": "cowork local vs cloud session routing"
+        }
+      ],
       "terms": [
         "cowork task runs in cloud instead of locally",
         "only on this computer setting ignored",
@@ -4991,16 +5085,16 @@
         "local setting not saving after cancel",
         "cloud opt-out reverts after three days",
         "scheduled task to get a local session",
-        "who decides where a cowork task runs?",
         "auto mode task still goes to cloud",
-        "check working directory to see where task ran",
         "cloud task using my mac through bridge",
         "are local cowork tasks being removed?",
         "scheduled tasks moving to the cloud",
         "where is the only on this computer setting?",
         "task header popup has no cloud setting",
         "chat cowork selector decides local or cloud",
-        "does automatically approve carry into the session?"
+        "does automatically approve carry into the session?",
+        "cloud only rollout per organization",
+        "personal org runs in cloud but team org local"
       ]
     },
     "211": {
@@ -5114,11 +5208,11 @@
     "215": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-03",
-      "input_sha256": "cac668650677000295e2a1385be674dabcbfa4baa970adeb84fc3e8d561e6671",
+      "date": "2026-10-05",
+      "input_sha256": "9e18697458db954ea31574afb6ed067391897ced1d9a90cee01164060e05c8a2",
       "prior_terms_sha256": "d7260346e1260d736d16193547ebd94fb0d67ecfb8ade8d10a184298c061037c",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "a258522f17067f62344e662a9c3b44d7a0342fd0",
+      "previous_text": "621b9a185d8612261c3105a36aa0fea8b83eb8eb",
       "replaced": [],
       "terms": [
         "cloud task can't see files on my Mac",
@@ -5189,11 +5283,11 @@
     "217": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-03",
-      "input_sha256": "4a6d6350787ef6253cce064f510bc1ed17217bf2bba59c73b2d84f89ff07fa58",
+      "date": "2026-10-05",
+      "input_sha256": "b21130d9be499bbc6e7e767ebad8e17dfaf2626a6e7b230536310c2693504bdd",
       "prior_terms_sha256": "38b12b0d40b464a11b9752da9a9ce5c34d356289c75d43e2abed9a9e559b918e",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "a258522f17067f62344e662a9c3b44d7a0342fd0",
+      "previous_text": "621b9a185d8612261c3105a36aa0fea8b83eb8eb",
       "replaced": [],
       "terms": [
         "get my own skill into Cowork",
