@@ -11765,7 +11765,7 @@
       "lesson_number": "117",
       "file": "28-vm-rootfs-forensics.md",
       "startLine": 13,
-      "endLine": 276,
+      "endLine": 280,
       "keywords": [
         "vm-rootfs-forensics",
         "rootfs.img",
@@ -11871,7 +11871,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-05",
+        "date": "2026-10-06",
         "terms_sha256": "0909f523ea918056a1e69f03df56c0625b6aa3ea368fb018bb23fce6570f7e3c"
       }
     },

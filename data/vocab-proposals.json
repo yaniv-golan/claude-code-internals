@@ -2735,18 +2735,12 @@
     "117": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-05",
-      "input_sha256": "fd2ddcbdfefc358a244e0571180acaae914eaa2932845f4ad95209579786c002",
-      "prior_terms_sha256": "7f0ef83e91f5e8af31ff3a5b0207ea1ac38d850d003ce438538cb737966d762f",
+      "date": "2026-10-06",
+      "input_sha256": "ca1664294e08ba77082c9f3b6f5551479ded3722ce2179a1e93f8c4f0a43f298",
+      "prior_terms_sha256": "0909f523ea918056a1e69f03df56c0625b6aa3ea368fb018bb23fce6570f7e3c",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "c005eb860fa525f4fb1bf8721bb2a58046beb2e0",
+      "previous_text": "fce0605448c4bb26a34f93c156631b3655cfb24d",
       "replaced": [],
-      "kept_by_rule": [
-        {
-          "term": "why does my home folder vanish after a Cowork session",
-          "reason": "replacement withheld (\"why can't my Mac see the Cowork home folder\", pl-0010)"
-        }
-      ],
       "terms": [
         "which Cowork folders are actually shared with my Mac",
         "is the sandbox temp folder shared with the host",
@@ -2766,12 +2760,6 @@
         "is the temp folder shared between Cowork sessions",
         "do temp files outlive a Cowork session",
         "permission denied on temp file in Cowork skill"
-      ],
-      "withheld": [
-        {
-          "term": "why can't my Mac see the Cowork home folder",
-          "qid": "pl-0010"
-        }
       ]
     },
     "118": {

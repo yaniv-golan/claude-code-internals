@@ -194,6 +194,10 @@ same Team org each got one read-only follow-up at 22:14Z on 2026-10-05 (Desktop 
   `> /tmp/compose.out` and got `Permission denied`, because the sticky bit protects another user's
   file. In `ls -ln` the owner shows as uid 65534 from both sessions (INFERRED: the writer's uid is
   not mapped in the reader's view).
+- **It happens in real skill runs.** On 2026-10-06 a third session (local_5da50099, a market-sizing
+  skill run) redirected a script's output to the same `/tmp/compose.out`, got `Permission denied`, and
+  the script's report file was never written. The model recovered by writing into its own `mktemp`
+  directory. Two sessions picked the same fixed name on their own, so the clash is not rare.
 - **Not tested:** whether `/tmp` survives a VM restart. Either way, it does not end with the session.
 
 **Skill-author trap:** never use a fixed `/tmp` name in a Cowork skill. A second session that runs

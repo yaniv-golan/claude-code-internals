@@ -1318,8 +1318,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 117 · 28-vm-rootfs-forensics.md:124 · Part C — session slugs, confirmed with real examples
 117 · 28-vm-rootfs-forensics.md:140 · Part D — `coworkd` and per-session Unix users
 117 · 28-vm-rootfs-forensics.md:177 · `/tmp` is shared across sessions, and one guest runs several sessions (measured, 2026-10-05)
-117 · 28-vm-rootfs-forensics.md:210 · Addendum (2026-08-13): a second disk image, and three more `mnt/` dirs without a `.mount` unit
-117 · 28-vm-rootfs-forensics.md:259 · Methodology note (the transferable lesson)
+117 · 28-vm-rootfs-forensics.md:214 · Addendum (2026-08-13): a second disk image, and three more `mnt/` dirs without a `.mount` unit
+117 · 28-vm-rootfs-forensics.md:263 · Methodology note (the transferable lesson)
 118 · 29-skill-scope-stream-contract.md:15 · The question this closes out
 118 · 29-skill-scope-stream-contract.md:33 · Part A — the internal skill-scope tracker (`activeSkill` / `spawnedBySkill` / `attribution`)
 118 · 29-skill-scope-stream-contract.md:69 · The `attribution` bundle rides the API request, not the stream
