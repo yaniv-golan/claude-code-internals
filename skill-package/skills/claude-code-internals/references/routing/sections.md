@@ -1148,88 +1148,88 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 89 · 17-verified-new-v2.1.120.md:1091 · Why a narrow-`tools:` sub-agent doesn't get the same behavior
 89 · 17-verified-new-v2.1.120.md:1113 · What the founder-skills v0.3.0 incident actually was
 89 · 17-verified-new-v2.1.120.md:1146 · `mcp__workspace__bash` operational contract
-89 · 17-verified-new-v2.1.120.md:1193 · What the CLI's async sub-agent filter actually does (for completeness)
-89 · 17-verified-new-v2.1.120.md:1212 · Plugin hooks in Cowork sessions
-89 · 17-verified-new-v2.1.120.md:1223 · Trap: `--setting-sources=user` does NOT exclude plugin hooks
-89 · 17-verified-new-v2.1.120.md:1245 · New verified finding: there are THREE plugin roots (the namespace split is subtler than ph5())
-89 · 17-verified-new-v2.1.120.md:1264 · RESOLVED: plugin hooks DO fire in Cowork (host-loop execution)
-89 · 17-verified-new-v2.1.120.md:1284 · What the hook-firing test did NOT prove — and the in-VM `${CLAUDE_PLUGIN_ROOT}` resolution (tested 2026-06-01)
-89 · 17-verified-new-v2.1.120.md:1324 · `${CLAUDE_PLUGIN_ROOT}` is host-side *only under host-loop* (static verification, 2026-07-07)
-89 · 17-verified-new-v2.1.120.md:1360 · host-loop vs VM-loop: where the agent loop actually runs (gate `1143815894`)
-89 · 17-verified-new-v2.1.120.md:1407 · Split execution: host-side MCP servers vs the sealed in-VM shell (verified 2026-06-03)
-89 · 17-verified-new-v2.1.120.md:1428 · Verified: the desktop launch argv
-89 · 17-verified-new-v2.1.120.md:1462 · Upstream tracking
-89 · 17-verified-new-v2.1.120.md:1483 · Reported impact (from issue thread)
-89 · 17-verified-new-v2.1.120.md:1491 · Workaround
-89 · 17-verified-new-v2.1.120.md:1500 · Implication for the `userconfig-probe` plugin
-89 · 17-verified-new-v2.1.120.md:1508 · The async sub-agent filter trace (v2.1.120 bundle; symbols resolved in v2.1.119 and v2.1.138)
-89 · 17-verified-new-v2.1.120.md:1517 · The mechanism
-89 · 17-verified-new-v2.1.120.md:1551 · `Jl_` allowlist contents
-89 · 17-verified-new-v2.1.120.md:1594 · `r3H` / `F_8` drop set
-89 · 17-verified-new-v2.1.120.md:1611 · Tool-name parse and canonicalization
-89 · 17-verified-new-v2.1.120.md:1650 · Why `general-purpose` works in Cowork-async but plugin fork-skills don't
-89 · 17-verified-new-v2.1.120.md:1677 · Empirical confirmation
-89 · 17-verified-new-v2.1.120.md:1693 · Implications
-89 · 17-verified-new-v2.1.120.md:1749 · Cross-references
-89 · 17-verified-new-v2.1.120.md:1760 · MCP path: the same filter, the other direction
-89 · 17-verified-new-v2.1.120.md:1777 · How parent MCP state reaches the fork
-89 · 17-verified-new-v2.1.120.md:1811 · `requiredMcpServers` enforces presence at dispatch with a 30-second poll
-89 · 17-verified-new-v2.1.120.md:1842 · Negative finding: there is no skill-callable runtime MCP registration
-89 · 17-verified-new-v2.1.120.md:1867 · Agent `tools:` matches MCP names exactly — no `mcp__server__*` expansion
-89 · 17-verified-new-v2.1.120.md:1885 · Status of the symbol resolutions
-89 · 17-verified-new-v2.1.120.md:1926 · Risks Worth Flagging
-89 · 17-verified-new-v2.1.120.md:1996 · Source-of-Truth Cross-Check (v2.11.2 audit)
-89 · 17-verified-new-v2.1.120.md:2027 · Cross-References — The Cowork Runtime Stack
-89 · 17-verified-new-v2.1.120.md:2042 · Summary for v2.1.119
-90 · 17-verified-new-v2.1.120.md:2060 · What this release is
-90 · 17-verified-new-v2.1.120.md:2094 · Daemon On-Demand Cold-Start Model
-90 · 17-verified-new-v2.1.120.md:2096 · The kill switch
-90 · 17-verified-new-v2.1.120.md:2113 · Cold-start mode env var
-90 · 17-verified-new-v2.1.120.md:2139 · Daemon hot-upgrade on binary change
-90 · 17-verified-new-v2.1.120.md:2161 · Auto-relaunch rate limits
-90 · 17-verified-new-v2.1.120.md:2189 · `CLAUDE_CODE_LEAN_PROMPT` — Per-Section Prompt-Shaping Toggle
-90 · 17-verified-new-v2.1.120.md:2191 · Pattern: granular, not wholesale
-90 · 17-verified-new-v2.1.120.md:2207 · Two leanable sections in v2.1.120
-90 · 17-verified-new-v2.1.120.md:2214 · Bash/ripgrep variant (`Fz` and `ci6(H)`)
-90 · 17-verified-new-v2.1.120.md:2231 · Memory-types variant (`cK8()` and `zXH(H, _)`)
-90 · 17-verified-new-v2.1.120.md:2254 · Why two patterns coexist
-90 · 17-verified-new-v2.1.120.md:2270 · `CLAUDE_EFFORT` — A Frontmatter Field, a Template Token, and an OUTBOUND Env Var
-90 · 17-verified-new-v2.1.120.md:2308 · Two surfaces
-90 · 17-verified-new-v2.1.120.md:2316 · Substitution mechanism
-90 · 17-verified-new-v2.1.120.md:2328 · Value space
-90 · 17-verified-new-v2.1.120.md:2357 · Critical implication for skill authors
-90 · 17-verified-new-v2.1.120.md:2383 · `CLAUDE_COWORK_MEMORY_GUIDELINES` — The Cowork Memory-Bypass Escape Hatch
-90 · 17-verified-new-v2.1.120.md:2385 · Two-tier memory injection
-90 · 17-verified-new-v2.1.120.md:2395 · Replace path (`Bf_(H)`)
-90 · 17-verified-new-v2.1.120.md:2415 · Why both forms exist
-90 · 17-verified-new-v2.1.120.md:2422 · Implication for users running auto-memory pipelines
-90 · 17-verified-new-v2.1.120.md:2431 · `tengu_memory_write_survey_event` — Approve/Reject Dialog for Memory Writes
-90 · 17-verified-new-v2.1.120.md:2435 · How the summary is generated
-90 · 17-verified-new-v2.1.120.md:2465 · The prompts (constants `$03` and `A03`)
-90 · 17-verified-new-v2.1.120.md:2474 · Dialog state machine
-90 · 17-verified-new-v2.1.120.md:2497 · Telemetry constant
-90 · 17-verified-new-v2.1.120.md:2501 · Implication for users running auto-memory pipelines
-90 · 17-verified-new-v2.1.120.md:2512 · `CLAUDE_CODE_VERIFY_PROMPT` — Debugging-Workflow Discipline (NOT Safety)
-90 · 17-verified-new-v2.1.120.md:2518 · Gate function (`VA3`)
-90 · 17-verified-new-v2.1.120.md:2535 · Injected text (`yA3`)
-90 · 17-verified-new-v2.1.120.md:2547 · Mechanism
-90 · 17-verified-new-v2.1.120.md:2558 · Bonus: prompt-section literals discovered in same region
-90 · 17-verified-new-v2.1.120.md:2584 · `tengu_plan_mode_violated` — Observability Tripwire (NOT Enforcement)
-90 · 17-verified-new-v2.1.120.md:2588 · Logic
-90 · 17-verified-new-v2.1.120.md:2617 · What this tripwire catches
-90 · 17-verified-new-v2.1.120.md:2626 · Why this matters
-90 · 17-verified-new-v2.1.120.md:2638 · `tengu_bg_retired` — Idle Worker Reaper (NOT Feature Sunset)
-90 · 17-verified-new-v2.1.120.md:2643 · Six "do not retire" guards
-90 · 17-verified-new-v2.1.120.md:2679 · `/schedule` Description Simplified (Not a New Registration)
-90 · 17-verified-new-v2.1.120.md:2706 · New Environment Variables (4)
-90 · 17-verified-new-v2.1.120.md:2717 · New GrowthBook Feature Flags (in v2.1.120)
-90 · 17-verified-new-v2.1.120.md:2730 · Removed GrowthBook Feature Flags (11)
-90 · 17-verified-new-v2.1.120.md:2742 · New Telemetry Events (5)
-90 · 17-verified-new-v2.1.120.md:2755 · Removed Env Vars (1)
-90 · 17-verified-new-v2.1.120.md:2763 · What Did NOT Change in v2.1.120
-90 · 17-verified-new-v2.1.120.md:2774 · Cross-References
-90 · 17-verified-new-v2.1.120.md:2786 · Risks Worth Flagging
-90 · 17-verified-new-v2.1.120.md:2809 · Summary for v2.1.120
+89 · 17-verified-new-v2.1.120.md:1194 · What the CLI's async sub-agent filter actually does (for completeness)
+89 · 17-verified-new-v2.1.120.md:1213 · Plugin hooks in Cowork sessions
+89 · 17-verified-new-v2.1.120.md:1224 · Trap: `--setting-sources=user` does NOT exclude plugin hooks
+89 · 17-verified-new-v2.1.120.md:1246 · New verified finding: there are THREE plugin roots (the namespace split is subtler than ph5())
+89 · 17-verified-new-v2.1.120.md:1265 · RESOLVED: plugin hooks DO fire in Cowork (host-loop execution)
+89 · 17-verified-new-v2.1.120.md:1285 · What the hook-firing test did NOT prove — and the in-VM `${CLAUDE_PLUGIN_ROOT}` resolution (tested 2026-06-01)
+89 · 17-verified-new-v2.1.120.md:1325 · `${CLAUDE_PLUGIN_ROOT}` is host-side *only under host-loop* (static verification, 2026-07-07)
+89 · 17-verified-new-v2.1.120.md:1361 · host-loop vs VM-loop: where the agent loop actually runs (gate `1143815894`)
+89 · 17-verified-new-v2.1.120.md:1408 · Split execution: host-side MCP servers vs the sealed in-VM shell (verified 2026-06-03)
+89 · 17-verified-new-v2.1.120.md:1429 · Verified: the desktop launch argv
+89 · 17-verified-new-v2.1.120.md:1463 · Upstream tracking
+89 · 17-verified-new-v2.1.120.md:1484 · Reported impact (from issue thread)
+89 · 17-verified-new-v2.1.120.md:1492 · Workaround
+89 · 17-verified-new-v2.1.120.md:1501 · Implication for the `userconfig-probe` plugin
+89 · 17-verified-new-v2.1.120.md:1509 · The async sub-agent filter trace (v2.1.120 bundle; symbols resolved in v2.1.119 and v2.1.138)
+89 · 17-verified-new-v2.1.120.md:1518 · The mechanism
+89 · 17-verified-new-v2.1.120.md:1552 · `Jl_` allowlist contents
+89 · 17-verified-new-v2.1.120.md:1595 · `r3H` / `F_8` drop set
+89 · 17-verified-new-v2.1.120.md:1612 · Tool-name parse and canonicalization
+89 · 17-verified-new-v2.1.120.md:1651 · Why `general-purpose` works in Cowork-async but plugin fork-skills don't
+89 · 17-verified-new-v2.1.120.md:1678 · Empirical confirmation
+89 · 17-verified-new-v2.1.120.md:1694 · Implications
+89 · 17-verified-new-v2.1.120.md:1750 · Cross-references
+89 · 17-verified-new-v2.1.120.md:1761 · MCP path: the same filter, the other direction
+89 · 17-verified-new-v2.1.120.md:1778 · How parent MCP state reaches the fork
+89 · 17-verified-new-v2.1.120.md:1812 · `requiredMcpServers` enforces presence at dispatch with a 30-second poll
+89 · 17-verified-new-v2.1.120.md:1843 · Negative finding: there is no skill-callable runtime MCP registration
+89 · 17-verified-new-v2.1.120.md:1868 · Agent `tools:` matches MCP names exactly — no `mcp__server__*` expansion
+89 · 17-verified-new-v2.1.120.md:1886 · Status of the symbol resolutions
+89 · 17-verified-new-v2.1.120.md:1927 · Risks Worth Flagging
+89 · 17-verified-new-v2.1.120.md:1997 · Source-of-Truth Cross-Check (v2.11.2 audit)
+89 · 17-verified-new-v2.1.120.md:2028 · Cross-References — The Cowork Runtime Stack
+89 · 17-verified-new-v2.1.120.md:2043 · Summary for v2.1.119
+90 · 17-verified-new-v2.1.120.md:2061 · What this release is
+90 · 17-verified-new-v2.1.120.md:2095 · Daemon On-Demand Cold-Start Model
+90 · 17-verified-new-v2.1.120.md:2097 · The kill switch
+90 · 17-verified-new-v2.1.120.md:2114 · Cold-start mode env var
+90 · 17-verified-new-v2.1.120.md:2140 · Daemon hot-upgrade on binary change
+90 · 17-verified-new-v2.1.120.md:2162 · Auto-relaunch rate limits
+90 · 17-verified-new-v2.1.120.md:2190 · `CLAUDE_CODE_LEAN_PROMPT` — Per-Section Prompt-Shaping Toggle
+90 · 17-verified-new-v2.1.120.md:2192 · Pattern: granular, not wholesale
+90 · 17-verified-new-v2.1.120.md:2208 · Two leanable sections in v2.1.120
+90 · 17-verified-new-v2.1.120.md:2215 · Bash/ripgrep variant (`Fz` and `ci6(H)`)
+90 · 17-verified-new-v2.1.120.md:2232 · Memory-types variant (`cK8()` and `zXH(H, _)`)
+90 · 17-verified-new-v2.1.120.md:2255 · Why two patterns coexist
+90 · 17-verified-new-v2.1.120.md:2271 · `CLAUDE_EFFORT` — A Frontmatter Field, a Template Token, and an OUTBOUND Env Var
+90 · 17-verified-new-v2.1.120.md:2309 · Two surfaces
+90 · 17-verified-new-v2.1.120.md:2317 · Substitution mechanism
+90 · 17-verified-new-v2.1.120.md:2329 · Value space
+90 · 17-verified-new-v2.1.120.md:2358 · Critical implication for skill authors
+90 · 17-verified-new-v2.1.120.md:2384 · `CLAUDE_COWORK_MEMORY_GUIDELINES` — The Cowork Memory-Bypass Escape Hatch
+90 · 17-verified-new-v2.1.120.md:2386 · Two-tier memory injection
+90 · 17-verified-new-v2.1.120.md:2396 · Replace path (`Bf_(H)`)
+90 · 17-verified-new-v2.1.120.md:2416 · Why both forms exist
+90 · 17-verified-new-v2.1.120.md:2423 · Implication for users running auto-memory pipelines
+90 · 17-verified-new-v2.1.120.md:2432 · `tengu_memory_write_survey_event` — Approve/Reject Dialog for Memory Writes
+90 · 17-verified-new-v2.1.120.md:2436 · How the summary is generated
+90 · 17-verified-new-v2.1.120.md:2466 · The prompts (constants `$03` and `A03`)
+90 · 17-verified-new-v2.1.120.md:2475 · Dialog state machine
+90 · 17-verified-new-v2.1.120.md:2498 · Telemetry constant
+90 · 17-verified-new-v2.1.120.md:2502 · Implication for users running auto-memory pipelines
+90 · 17-verified-new-v2.1.120.md:2513 · `CLAUDE_CODE_VERIFY_PROMPT` — Debugging-Workflow Discipline (NOT Safety)
+90 · 17-verified-new-v2.1.120.md:2519 · Gate function (`VA3`)
+90 · 17-verified-new-v2.1.120.md:2536 · Injected text (`yA3`)
+90 · 17-verified-new-v2.1.120.md:2548 · Mechanism
+90 · 17-verified-new-v2.1.120.md:2559 · Bonus: prompt-section literals discovered in same region
+90 · 17-verified-new-v2.1.120.md:2585 · `tengu_plan_mode_violated` — Observability Tripwire (NOT Enforcement)
+90 · 17-verified-new-v2.1.120.md:2589 · Logic
+90 · 17-verified-new-v2.1.120.md:2618 · What this tripwire catches
+90 · 17-verified-new-v2.1.120.md:2627 · Why this matters
+90 · 17-verified-new-v2.1.120.md:2639 · `tengu_bg_retired` — Idle Worker Reaper (NOT Feature Sunset)
+90 · 17-verified-new-v2.1.120.md:2644 · Six "do not retire" guards
+90 · 17-verified-new-v2.1.120.md:2680 · `/schedule` Description Simplified (Not a New Registration)
+90 · 17-verified-new-v2.1.120.md:2707 · New Environment Variables (4)
+90 · 17-verified-new-v2.1.120.md:2718 · New GrowthBook Feature Flags (in v2.1.120)
+90 · 17-verified-new-v2.1.120.md:2731 · Removed GrowthBook Feature Flags (11)
+90 · 17-verified-new-v2.1.120.md:2743 · New Telemetry Events (5)
+90 · 17-verified-new-v2.1.120.md:2756 · Removed Env Vars (1)
+90 · 17-verified-new-v2.1.120.md:2764 · What Did NOT Change in v2.1.120
+90 · 17-verified-new-v2.1.120.md:2775 · Cross-References
+90 · 17-verified-new-v2.1.120.md:2787 · Risks Worth Flagging
+90 · 17-verified-new-v2.1.120.md:2810 · Summary for v2.1.120
 105 · 19-desktop-mcp-apps-elicitation.md:37 · Part A — the MCP Apps bridge dialect (UI ⇄ host)
 105 · 19-desktop-mcp-apps-elicitation.md:85 · Part B — elicitation as a host control-request (the private channel)
 105 · 19-desktop-mcp-apps-elicitation.md:110 · Why it matters (the practical rule)

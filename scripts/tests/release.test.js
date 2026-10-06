@@ -779,23 +779,28 @@ test('sandbox runs', { concurrency: 6 }, async (t) => {
     const s = sandbox();
     const skill = path.join(s.work, SKILL_REL);
     // The release validates the pinned proposals file, so the sandbox keeps the committed one and this
-    // asserts on the delta: whatever the committed tree already has stale (warn-only), plus 89.
+    // asserts on the delta: whatever the committed tree already has stale (warn-only), plus the edited lesson.
     const P = require(path.join(skill, 'scripts', 'prepare-lessons.js'));
     const V = require(path.join(skill, 'scripts', 'lib', 'vocab.js'));
     const staleNow = () => { const ld = P.load(skill); return V.staleProposals(ld.topic.lessons, ld.lessonText, V.loadProposals(skill).byId).stale; };
     const baseline = staleNow();
-    assert.ok(!baseline.includes(89), 'lesson 89 starts current');
-    const l = JSON.parse(fs.readFileSync(path.join(skill, 'references', 'topic-index.json'), 'utf8')).lessons.find((x) => x.id === 89);
+    // The lesson to edit: current in the committed tree, with a " the " line to change. Lesson 89
+    // is preferred; a real edit can leave it stale (warn-only), so fall back to the first that fits.
+    const theLine = (l) => fs.readFileSync(path.join(skill, 'references', l.file), 'utf8').split('\n')
+      .findIndex((x, n) => n >= l.startLine && n < l.endLine && x.includes(' the '));
+    const all = JSON.parse(fs.readFileSync(path.join(skill, 'references', 'topic-index.json'), 'utf8')).lessons;
+    const fits = (x) => !baseline.includes(x.id) && theLine(x) >= 0;
+    const l = all.find((x) => x.id === 89 && fits(x)) || all.find(fits);
+    assert.ok(l, 'some lesson is current and has a " the " line');
     const file = path.join(skill, 'references', l.file);
     const lines = fs.readFileSync(file, 'utf8').split('\n');
-    const i = lines.findIndex((x, n) => n >= l.startLine && n < l.endLine && x.includes(' the '));
-    assert.ok(i >= 0);
+    const i = theLine(l);
     lines[i] = lines[i].replace(' the ', ' the quite ');
     fs.writeFileSync(file, lines.join('\n'));
-    s.git(['commit', '-q', '-am', 'a prose edit to lesson 89']);
+    s.git(['commit', '-q', '-am', `a prose edit to lesson ${l.id}`]);
     const expected = JSON.parse(fs.readFileSync(path.join(skill, 'references', 'topic-index.json'), 'utf8')).lessons
-      .map((x) => x.id).filter((id) => id === 89 || baseline.includes(id));
-    assert.deepStrictEqual(staleNow(), expected, 'the edit made 89 stale, and nothing else');
+      .map((x) => x.id).filter((id) => id === l.id || baseline.includes(id));
+    assert.deepStrictEqual(staleNow(), expected, `the edit made ${l.id} stale, and nothing else`);
     const r = await s.release(releaseArgs(s, ['--dry-run']));
     assert.strictEqual(r.code, 0, r.out);
     assert.match(r.out, new RegExp(`STALE VOCABULARY: ${expected.length} lesson\\(s\\) changed since their vocabulary proposal was generated:\\nrelease: {3}${expected.join(', ')}\\n`));

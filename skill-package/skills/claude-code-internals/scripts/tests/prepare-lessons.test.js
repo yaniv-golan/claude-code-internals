@@ -1026,20 +1026,38 @@ function editLessonLine(dir, lessonId, from, to) {
   all[i] = all[i].replace(from, to);
   fs.writeFileSync(file, all.join('\n'));
 }
+/**
+ * The lesson the vocabulary-update tests below edit. It must be current in the committed tree (one
+ * test asserts that the edit makes it, and only it, stale), leave room under MAX_TERMS_CAP for the
+ * terms the tests add, and have a " the " line for editLessonLine. These tests used lesson 89 by
+ * number, which broke whenever a real edit to lesson 89 grew its proposal to the cap; 89 is still
+ * preferred while it qualifies.
+ */
+const VL = (() => {
+  const loaded = P.load(SKILL_DIR);
+  const byId = loadProposals(SKILL_DIR).byId;
+  const stale = new Set(V.staleProposals(loaded.topic.lessons, loaded.lessonText, byId).stale);
+  const hasThe = (l) => fs.readFileSync(path.join(SKILL_DIR, 'references', l.file), 'utf8').split('\n')
+    .some((x, n) => n >= l.startLine && n < l.endLine && x.includes(' the '));
+  const ok = (l) => byId.has(l.id) && !stale.has(l.id) && byId.get(l.id).terms.length <= V.MAX_TERMS_CAP - 3 && hasThe(l);
+  const pick = loaded.topic.lessons.find((l) => l.id === 89 && ok(l)) || loaded.topic.lessons.find(ok);
+  assert.ok(pick, 'some lesson qualifies as the vocabulary-update fixture');
+  return pick.id;
+})();
 const stubTerms = (terms) => async () => JSON.stringify({ type: 'result', is_error: false, result: JSON.stringify({ terms }) });
 
 test('a lesson edited after its vocabulary was generated: --check warns by id (no failure), --generate regenerates only it', async () => {
   const dir = fixture();
   // The CLI checks only the pinned proposals file, so the fixture keeps the committed one here and
-  // this part asserts on the delta: whatever the committed tree already has stale, plus 89.
+  // this part asserts on the delta: whatever the committed tree already has stale, plus the fixture lesson VL.
   const baseline = staleIn(dir);
-  assert.ok(!baseline.includes(89), 'lesson 89 starts current');
-  const l89 = topicOf(dir).lessons.find((x) => x.id === 89);
+  assert.ok(!baseline.includes(VL), `lesson ${VL} starts current`);
+  const l89 = topicOf(dir).lessons.find((x) => x.id === VL);
   const word = P.load(dir).lessonText(l89).split('\n').slice(2).join(' ').match(/\b(the|a|is|and)\b/)[0];
-  editLessonLine(dir, 89, ` ${word} `, ` ${word} quite `);
+  editLessonLine(dir, VL, ` ${word} `, ` ${word} quite `);
   assert.strictEqual(run(BUILD, ['--root', dir]).code, 0);
-  const expected = topicOf(dir).lessons.map((l) => l.id).filter((id) => id === 89 || baseline.includes(id));
-  assert.deepStrictEqual(staleIn(dir), expected, 'the edit made 89 stale, and nothing else');
+  const expected = topicOf(dir).lessons.map((l) => l.id).filter((id) => id === VL || baseline.includes(id));
+  assert.deepStrictEqual(staleIn(dir), expected, `the edit made ${VL} stale, and nothing else`);
   const staleLine = `${expected.length} lesson\\(s\\) changed since their vocabulary proposal was generated \\(${expected.join(', ')}\\).*--generate`;
   // P.STALE_VOCAB_BLOCKS (false: the design) decides warn vs fail; both branches are pinned here.
   const blocks = P.STALE_VOCAB_BLOCKS;
@@ -1049,15 +1067,15 @@ test('a lesson edited after its vocabulary was generated: --check warns by id (n
     assert.strictEqual(r.code, blocks ? 1 : 0, `${path.basename(script)} --check ${blocks ? 'must fail' : 'must not fail'} on a prose edit:\n${r.out}`);
     assert.match(sp.stderr, new RegExp(blocks ? staleLine : `WARNING: .*${staleLine}`));
   }
-  // From here on the fixture starts fresh: only 89 is stale (the file is re-pinned in-process).
-  const pin = freshen(dir, [89]);
-  assert.deepStrictEqual(staleIn(dir), [89]);
+  // From here on the fixture starts fresh: only VL is stale (the file is re-pinned in-process).
+  const pin = freshen(dir, [VL]);
+  assert.deepStrictEqual(staleIn(dir), [VL]);
   const res = P.checkLessons({ raw: fs.readFileSync(topicPath(dir), 'utf8'), lessonText: P.load(dir).lessonText, hand: HAND, proposals: loadProposals(dir), proposalsPin: pin });
   assert.strictEqual(res.errors.filter((e) => /changed since their vocabulary proposal/.test(e)).length, blocks ? 1 : 0);
   assert.strictEqual(res.warnings.length, blocks ? 0 : 1);
   if (!blocks) assert.deepStrictEqual(res.errors, []);
   // --generate (no --regen) UPDATES the stale lesson, and only it: its previous terms plus the edited text
-  const priorTerms = loadProposals(dir).byId.get(89).terms;
+  const priorTerms = loadProposals(dir).byId.get(VL).terms;
   const prompts = [];
   const callModel = async (prompt) => { prompts.push(prompt); return stubTerms(['a regenerated phrase for testing'])(); };
   const lines = [];
@@ -1067,18 +1085,18 @@ test('a lesson edited after its vocabulary was generated: --check warns by id (n
   assert.ok(prompts[0].includes(` ${word} quite `), 'the prompt carries the edited text');
   for (const t of priorTerms) assert.ok(prompts[0].includes(`\n- ${t}\n`), `the update prompt lists the previous term "${t}"`);
   assert.match(prompts[0], /KEEP every term that is still true/);
-  assert.ok(lines.some((l) => /1 proposal\(s\) are stale .* updated from their previous terms: 89/.test(l)), lines.join('\n'));
+  assert.ok(lines.some((l) => new RegExp(`1 proposal\\(s\\) are stale .* updated from their previous terms: ${VL}`).test(l)), lines.join('\n'));
   const after = loadProposals(dir);
-  const l89now = P.load(dir).topic.lessons.find((x) => x.id === 89);
+  const l89now = P.load(dir).topic.lessons.find((x) => x.id === VL);
   // input_sha256 identifies the lesson text (the fresh prompt's hash), not the update prompt sent,
   // so the updated proposal is current at once.
-  assert.strictEqual(after.byId.get(89).input_sha256, V.inputSha256(l89now, P.load(dir).lessonText(l89now)));
-  assert.notStrictEqual(after.byId.get(89).input_sha256, require('crypto').createHash('sha256').update(prompts[0]).digest('hex'));
-  assert.strictEqual(after.byId.get(89).prompt_version, V.UPDATE_PROMPT_VERSION);
-  assert.strictEqual(after.byId.get(89).prior_terms_sha256, V.termsSha256(priorTerms));
+  assert.strictEqual(after.byId.get(VL).input_sha256, V.inputSha256(l89now, P.load(dir).lessonText(l89now)));
+  assert.notStrictEqual(after.byId.get(VL).input_sha256, require('crypto').createHash('sha256').update(prompts[0]).digest('hex'));
+  assert.strictEqual(after.byId.get(VL).prompt_version, V.UPDATE_PROMPT_VERSION);
+  assert.strictEqual(after.byId.get(VL).prior_terms_sha256, V.termsSha256(priorTerms));
   // The stub's bare {"terms"} reply mentions no previous term: every one is kept by rule (a
   // reply that leaves a term out never drops it), and its one phrase is added, under the cap.
-  const p89 = after.byId.get(89);
+  const p89 = after.byId.get(VL);
   assert.deepStrictEqual(p89.terms, [...priorTerms, 'a regenerated phrase for testing']);
   assert.deepStrictEqual(p89.replaced, []);
   assert.deepStrictEqual(p89.kept_by_rule.map((k) => k.term), priorTerms);
@@ -1095,31 +1113,31 @@ test('a proposal without input_sha256 has unknown inputs: warned, kept by --gene
   const dir = fixture();
   freshen(dir); // no committed-stale lesson: --generate has nothing else to regenerate
   const props = loadProposals(dir);
-  delete props.byId.get(89).input_sha256;
+  delete props.byId.get(VL).input_sha256;
   fs.writeFileSync(proposalsPath(dir), V.renderProposals(props.byId));
   const pinned = loadProposals(dir).sha256;
   const res = P.checkLessons({ raw: fs.readFileSync(topicPath(dir), 'utf8'), lessonText: P.load(dir).lessonText, hand: HAND, proposals: loadProposals(dir), proposalsPin: pinned });
   assert.deepStrictEqual(res.errors, []);
-  assert.match(res.warnings.join('\n'), /1 lesson\(s\) have a vocabulary proposal whose generation inputs are unknown \(no input_sha256: 89\).*--regen/);
+  assert.match(res.warnings.join('\n'), new RegExp(`1 lesson\\(s\\) have a vocabulary proposal whose generation inputs are unknown \\(no input_sha256: ${VL}\\).*--regen`));
   let calls = 0;
   const callModel = async () => { calls++; return stubTerms(['a regenerated phrase for testing'])(); };
   await P.runGenerate(dir, { proposalsPin: pinned }, { callModel }, () => {});
   assert.strictEqual(calls, 0, 'unknown inputs are not regenerated by default');
-  await P.runGenerate(dir, { proposalsPin: pinned, regen: [89] }, { callModel }, () => {});
+  await P.runGenerate(dir, { proposalsPin: pinned, regen: [VL] }, { callModel }, () => {});
   assert.strictEqual(calls, 1);
-  assert.match(loadProposals(dir).byId.get(89).input_sha256, /^[0-9a-f]{64}$/);
+  assert.match(loadProposals(dir).byId.get(VL).input_sha256, /^[0-9a-f]{64}$/);
 });
 
 test('a lesson edited while the model runs aborts the write: nothing written', async () => {
   const dir = fixture();
   const props = loadProposals(dir);
-  props.byId.delete(89);
+  props.byId.delete(VL);
   fs.writeFileSync(proposalsPath(dir), V.renderProposals(props.byId));
   const before = fs.readFileSync(proposalsPath(dir), 'utf8');
-  const l89 = topicOf(dir).lessons.find((x) => x.id === 89);
+  const l89 = topicOf(dir).lessons.find((x) => x.id === VL);
   const word = P.load(dir).lessonText(l89).split('\n').slice(2).join(' ').match(/\b(the|a|is|and)\b/)[0];
-  const callModel = async () => { editLessonLine(dir, 89, ` ${word} `, ` ${word} quite `); return stubTerms(['a phrase for testing'])(); };
-  await assert.rejects(P.runGenerate(dir, { proposalsPin: loadProposals(dir).sha256 }, { callModel }, () => {}), /lesson\(s\) 89 changed while the model ran.*nothing written/);
+  const callModel = async () => { editLessonLine(dir, VL, ` ${word} `, ` ${word} quite `); return stubTerms(['a phrase for testing'])(); };
+  await assert.rejects(P.runGenerate(dir, { proposalsPin: loadProposals(dir).sha256 }, { callModel }, () => {}), new RegExp(`lesson\\(s\\) ${VL} changed while the model ran.*nothing written`));
   assert.strictEqual(fs.readFileSync(proposalsPath(dir), 'utf8'), before);
 });
 
@@ -1197,17 +1215,17 @@ test('--generate command line: default model, flags parsed, never part of --chec
 // --- update mode, --fresh, and the collision check ----------------------------------------
 
 test('--fresh and --regen redraw a stale lesson with the fresh prompt', async () => {
-  for (const opts of [{ fresh: true }, { regen: [89] }]) {
+  for (const opts of [{ fresh: true }, { regen: [VL] }]) {
     const dir = fixture();
-    editLessonLine(dir, 89, ' the ', ' the quite ');
+    editLessonLine(dir, VL, ' the ', ' the quite ');
     assert.strictEqual(run(BUILD, ['--root', dir]).code, 0);
-    const pin = freshen(dir, [89]);
+    const pin = freshen(dir, [VL]);
     const prompts = [];
     const callModel = async (prompt) => { prompts.push(prompt); return stubTerms(['a redrawn phrase for testing'])(); };
     await P.runGenerate(dir, { proposalsPin: pin, ...opts }, { callModel, questions: null }, () => {});
     assert.strictEqual(prompts.length, 1, JSON.stringify(opts));
     assert.doesNotMatch(prompts[0], /KEEP every term/, JSON.stringify(opts));
-    const p = loadProposals(dir).byId.get(89);
+    const p = loadProposals(dir).byId.get(VL);
     assert.strictEqual(p.prompt_version, V.PROMPT_VERSION);
     assert.strictEqual(p.prior_terms_sha256, undefined);
     assert.strictEqual(p.input_sha256, require('crypto').createHash('sha256').update(prompts[0]).digest('hex'));
@@ -1270,16 +1288,16 @@ const stubUpdate = (reply) => async () => JSON.stringify({ type: 'result', is_er
 
 test('--generate withholds a colliding new term; a withheld replacement gives back the term it replaced', async () => {
   const dir = fixture();
-  editLessonLine(dir, 89, ' the ', ' the quite ');
+  editLessonLine(dir, VL, ' the ', ' the quite ');
   assert.strictEqual(run(BUILD, ['--root', dir]).code, 0);
-  const pin = freshen(dir, [89]);
-  const prior = loadProposals(dir).byId.get(89).terms;
+  const pin = freshen(dir, [VL]);
+  const prior = loadProposals(dir).byId.get(VL).terms;
   const odd = 'zebra quokka marmalade';
   const questions = [{ qid: 'pl-9001', text: `why does ${odd} happen`, lesson_id: 12, relevant: { 12: 2 } }];
   const lines = [];
   const reply = { keep: prior.slice(0, -1), drop: [{ term: prior[prior.length - 1], why: 'inaccurate', replacement: odd }], add: [] };
   await P.runGenerate(dir, { proposalsPin: pin }, { callModel: stubUpdate(reply), questions }, (l) => lines.push(l));
-  const p = loadProposals(dir).byId.get(89);
+  const p = loadProposals(dir).byId.get(VL);
   assert.strictEqual(p.collision_check, 'injected questions');
   assert.deepStrictEqual(p.withheld, [{ term: odd, qid: 'pl-9001' }]);
   assert.deepStrictEqual(p.terms, prior, 'the replaced term is back, the withheld replacement gone');
@@ -1287,16 +1305,16 @@ test('--generate withholds a colliding new term; a withheld replacement gives ba
   assert.strictEqual(p.dropped, undefined);
   assert.deepStrictEqual(p.kept_by_rule, [{ term: prior[prior.length - 1], reason: `replacement withheld ("${odd}", pl-9001)` }]);
   assert.ok(!(odd in topicOf(dir).keyword_map), 'a withheld term is never a key');
-  assert.ok(lines.some((l) => /lesson 89: withheld 1 new term/.test(l)), lines.join('\n'));
-  assert.ok(lines.some((l) => /lesson 89: model call \$0\.0123/.test(l)), 'the per-call cost is logged');
+  assert.ok(lines.some((l) => new RegExp(`lesson ${VL}: withheld 1 new term`).test(l)), lines.join('\n'));
+  assert.ok(lines.some((l) => new RegExp(`lesson ${VL}: model call \\$0\\.0123`).test(l)), 'the per-call cost is logged');
   assert.ok(lines.some((l) => /model calls cost \$0\.0123 in total/.test(l)), lines.join('\n'));
   // A withheld ADDED term just stays out.
   const dir2 = fixture();
-  editLessonLine(dir2, 89, ' the ', ' the quite ');
+  editLessonLine(dir2, VL, ' the ', ' the quite ');
   assert.strictEqual(run(BUILD, ['--root', dir2]).code, 0);
-  const pin2 = freshen(dir2, [89]);
+  const pin2 = freshen(dir2, [VL]);
   await P.runGenerate(dir2, { proposalsPin: pin2 }, { callModel: stubUpdate({ keep: prior, drop: [], add: [odd] }), questions }, () => {});
-  const p2 = loadProposals(dir2).byId.get(89);
+  const p2 = loadProposals(dir2).byId.get(VL);
   assert.deepStrictEqual(p2.withheld, [{ term: odd, qid: 'pl-9001' }]);
   assert.deepStrictEqual(p2.terms, [...prior, odd], 'an added term stays in terms as the model wrote it; derivation drops it');
   assert.strictEqual(p2.kept_by_rule, undefined);
@@ -1364,15 +1382,15 @@ test('keepTitleTerm puts back a title-topic term only when the update dropped th
 
 test('--generate passes the previous text to an update and records its commit', async () => {
   const dir = fixture();
-  editLessonLine(dir, 89, ' the ', ' the quite ');
+  editLessonLine(dir, VL, ' the ', ' the quite ');
   assert.strictEqual(run(BUILD, ['--root', dir]).code, 0);
-  const pin = freshen(dir, [89]);
-  const prior = loadProposals(dir).byId.get(89).terms;
+  const pin = freshen(dir, [VL]);
+  const prior = loadProposals(dir).byId.get(VL).terms;
   const prompts = [];
   const callModel = async (p) => { prompts.push(p); return stubTerms(prior)(); };
   await P.runGenerate(dir, { proposalsPin: pin }, { callModel, questions: [], previous: () => ({ text: 'THE TEXT BEFORE', commit: 'f'.repeat(40) }) }, () => {});
   assert.match(prompts[0], /LESSON TEXT BEFORE THE EDIT:\nTHE TEXT BEFORE\n/);
-  const p = loadProposals(dir).byId.get(89);
+  const p = loadProposals(dir).byId.get(VL);
   assert.strictEqual(p.previous_text, 'f'.repeat(40));
   assert.deepStrictEqual(p.replaced, []);
 });
@@ -1393,22 +1411,22 @@ test('findPreviousText finds the committed lesson text a proposal was written fr
 test('--fill-gaps reviews a current lesson under the same rules: adds for an old gap, drops nothing true', async () => {
   const dir = fixture();
   const pin = freshen(dir);
-  assert.ok(!staleIn(dir).includes(89), 'lesson 89 is current: --fill-gaps does not need it stale');
-  const prior = loadProposals(dir).byId.get(89).terms;
+  assert.ok(!staleIn(dir).includes(VL), `lesson ${VL} is current: --fill-gaps does not need it stale`);
+  const prior = loadProposals(dir).byId.get(VL).terms;
   const prompts = [];
   // The reply tries to swap a true term out for the gap; the rule keeps it and adds the gap term.
   const reply = { keep: prior.slice(0, -1), drop: [{ term: prior[prior.length - 1], why: 'make room', replacement: null }], add: ['a gap phrase for testing'] };
   const callModel = async (p) => { prompts.push(p); return stubUpdate(reply)(); };
-  await P.runGenerate(dir, { proposalsPin: pin, fillGaps: [89] }, { callModel, questions: [], previous: () => { throw new Error('no history lookup for --fill-gaps'); } }, () => {});
+  await P.runGenerate(dir, { proposalsPin: pin, fillGaps: [VL] }, { callModel, questions: [], previous: () => { throw new Error('no history lookup for --fill-gaps'); } }, () => {});
   assert.strictEqual(prompts.length, 1);
   assert.match(prompts[0], /covers a topic that none of the terms reaches/);
   assert.doesNotMatch(prompts[0], /LESSON TEXT BEFORE THE EDIT|The lesson was edited/);
-  const p = loadProposals(dir).byId.get(89);
+  const p = loadProposals(dir).byId.get(VL);
   assert.strictEqual(p.prompt_version, V.FILL_GAPS_PROMPT_VERSION);
   assert.strictEqual(p.previous_text, undefined);
   assert.deepStrictEqual(p.replaced, []);
   assert.deepStrictEqual(p.terms, [...prior, 'a gap phrase for testing']);
   assert.deepStrictEqual(P.parseArgs(['--fill-gaps', '221']).fillGaps, [221]);
   assert.strictEqual(P.parseArgs(['--fill-gaps', '221']).generate, true);
-  await assert.rejects(P.runGenerate(dir, { proposalsPin: loadProposals(dir).sha256, fillGaps: [89], regen: [89] }, { callModel }, () => {}), /both --regen .* and --fill-gaps/);
+  await assert.rejects(P.runGenerate(dir, { proposalsPin: loadProposals(dir).sha256, fillGaps: [VL], regen: [VL] }, { callModel }, () => {}), /both --regen .* and --fill-gaps/);
 });

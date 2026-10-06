@@ -8246,7 +8246,7 @@
       "lesson_number": "89",
       "file": "17-verified-new-v2.1.120.md",
       "startLine": 83,
-      "endLine": 2054,
+      "endLine": 2055,
       "keywords": [
         "v2.1.119",
         "cowork",
@@ -8766,8 +8766,8 @@
       "title": "v2.1.120 Daemon On-Demand Model, CLAUDE_CODE_LEAN_PROMPT, Memory-Write Approval UX, Plan-Mode Tripwire, CLAUDE_COWORK_MEMORY_GUIDELINES",
       "lesson_number": "90",
       "file": "17-verified-new-v2.1.120.md",
-      "startLine": 2058,
-      "endLine": 2822,
+      "startLine": 2059,
+      "endLine": 2823,
       "keywords": [
         "v2.1.120",
         "v2.1.120-bundle",

@@ -1167,8 +1167,9 @@ a v2.1.121-bundled Cowork session:
 - **Persistence boundary: only `/sessions/<id>/mnt/outputs/` survives session end.**
   Maps to the host's `~/Library/Application Support/.../outputs/` directory and is
   what the user can see via the Cowork desktop UI. Files written elsewhere in the
-  sandbox (`/tmp/`, `~`, scratch dirs) vanish at session end and are invisible to
-  the user during the session.
+  sandbox (`/tmp/`, `~`, scratch dirs) are invisible to the user. `/tmp` is not
+  per-session: it is shared by every local session in the guest and outlives the
+  session (L117).
 - **Sandbox tooling.** Python 3, Node.js, standard CLI tools (git, curl, jq, etc.),
   and allowlisted network egress are preinstalled. The exact allowlist depends on
   the Cowork user's network-egress setting in `Settings → Capabilities → Allow
