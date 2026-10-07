@@ -8612,7 +8612,9 @@
         "why is bash missing in cowork",
         "cowork shell runs in linux vm paths break",
         "plugin hooks not firing in cowork session",
-        "upload plugin in cowork desktop app"
+        "upload plugin in cowork desktop app",
+        "temp files shared across cowork sessions",
+        "why do temp files survive after cowork session ends"
       ],
       "identifier_keys": [
         "setting-sources",
@@ -8752,13 +8754,15 @@
         "why is bash missing in cowork",
         "cowork shell runs in linux vm paths break",
         "plugin hooks not firing in cowork session",
-        "upload plugin in cowork desktop app"
+        "upload plugin in cowork desktop app",
+        "temp files shared across cowork sessions",
+        "why do temp files survive after cowork session ends"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-02",
-        "terms_sha256": "d1b4f73c699093f9fe804471084c8f76acdb6cc2744e7393ba20061b32655832"
+        "date": "2026-10-07",
+        "terms_sha256": "9650cec67abb93476ce96936270e4beb3cb6e65d878f86ed12488b92f05497b7"
       }
     },
     {
@@ -49592,6 +49596,12 @@
       89
     ],
     "upload plugin in cowork desktop app": [
+      89
+    ],
+    "temp files shared across cowork sessions": [
+      89
+    ],
+    "why do temp files survive after cowork session ends": [
       89
     ],
     "background daemon won't install as a service": [

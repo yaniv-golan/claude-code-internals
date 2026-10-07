@@ -2035,11 +2035,11 @@
     "89": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-02",
-      "input_sha256": "6b350fe779e99362823882ee1613dfa70f11a14d9ba455696f4b1d48ce3c2d8b",
-      "prior_terms_sha256": "9b7fa47f320b6f82bdab0356f7a7011394966ccaa10098879a044a9328a1cd54",
+      "date": "2026-10-07",
+      "input_sha256": "03d0156f4c52f15186d14d97bbf7163965c566078cdeecd361ec9e9d74398913",
+      "prior_terms_sha256": "d1b4f73c699093f9fe804471084c8f76acdb6cc2744e7393ba20061b32655832",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "dec55db7358dbcd663a4cbab7014e5e2ba055d61",
+      "previous_text": "b1ae407f30f7ccf8baf8d8eca651c6c504a38880",
       "replaced": [],
       "terms": [
         "run claude session in background and free terminal",
@@ -2057,7 +2057,9 @@
         "why is Bash missing in Cowork?",
         "Cowork shell runs in Linux VM paths break",
         "plugin hooks not firing in Cowork session",
-        "upload plugin in Cowork desktop app"
+        "upload plugin in Cowork desktop app",
+        "temp files shared across Cowork sessions",
+        "why do temp files survive after Cowork session ends?"
       ]
     },
     "90": {
