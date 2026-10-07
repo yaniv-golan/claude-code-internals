@@ -11486,7 +11486,6 @@
         "registry.json",
         "disable-cron",
         "present_files",
-        "default-subagent-model",
         "preview-format",
         "04-connectivity-plugins.md",
         "31-desktop-reasoning-config-effort-thinking.md",
@@ -11514,7 +11513,6 @@
         "registry.json",
         "disable-cron",
         "present_files",
-        "default-subagent-model",
         "preview-format",
         "04-connectivity-plugins.md",
         "31-desktop-reasoning-config-effort-thinking.md"
@@ -12674,7 +12672,6 @@
         "global-this",
         "is-developer-approved-dev-url-override-enabled",
         "CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS",
-        "default-subagent-model",
         "MCP_DISPATCH_LIST_PROJECTS",
         "dispatch-agent-name-enabled",
         "MCP_DISPATCH_SET_AGENT_NAME",
@@ -12734,7 +12731,6 @@
         "global-this",
         "is-developer-approved-dev-url-override-enabled",
         "CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS",
-        "default-subagent-model",
         "MCP_DISPATCH_LIST_PROJECTS",
         "dispatch-agent-name-enabled",
         "MCP_DISPATCH_SET_AGENT_NAME",
@@ -21519,8 +21515,9 @@
       "lesson_number": "222",
       "file": "58-desktop-2.26454-spawn-env-scheduled-auto.md",
       "startLine": 13,
-      "endLine": 80,
+      "endLine": 85,
       "keywords": [
+        "thinking-always-on-models",
         "new-task-permission-mode",
         "cowork-available-permission-modes",
         "lam_escalated_tool_ask",
@@ -21541,8 +21538,6 @@
         "3165386771",
         "480673358",
         "2685067074",
-        "shell environment variables ignored in cowork",
-        "exported variable no longer affects cowork session",
         "why doesn't my minimal mode setting work in cowork",
         "mcp tool name prefix setting stopped working",
         "scheduled task runs in auto permission mode",
@@ -21554,9 +21549,16 @@
         "cloud memory relay turned off",
         "computer use permission check disabled",
         "sonnet 5.5 available in cowork model picker",
-        "remote folder trust remembered after restart"
+        "remote folder trust remembered after restart",
+        "cowork always forces minimal mode off",
+        "exported variable no longer affects cowork session",
+        "extended thinking on even when switched off",
+        "why does my session think with thinking disabled",
+        "admin list of always-thinking models",
+        "full thinking budget forced for some models"
       ],
       "identifier_keys": [
+        "thinking-always-on-models",
         "new-task-permission-mode",
         "cowork-available-permission-modes",
         "lam_escalated_tool_ask",
@@ -21579,8 +21581,6 @@
         "2685067074"
       ],
       "vocab_keys": [
-        "shell environment variables ignored in cowork",
-        "exported variable no longer affects cowork session",
         "why doesn't my minimal mode setting work in cowork",
         "mcp tool name prefix setting stopped working",
         "scheduled task runs in auto permission mode",
@@ -21592,13 +21592,19 @@
         "cloud memory relay turned off",
         "computer use permission check disabled",
         "sonnet 5.5 available in cowork model picker",
-        "remote folder trust remembered after restart"
+        "remote folder trust remembered after restart",
+        "cowork always forces minimal mode off",
+        "exported variable no longer affects cowork session",
+        "extended thinking on even when switched off",
+        "why does my session think with thinking disabled",
+        "admin list of always-thinking models",
+        "full thinking budget forced for some models"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
+        "prompt_version": "vocab-v4-update",
         "date": "2026-10-07",
-        "terms_sha256": "677fba82edb42b8a40b3616a5acaa2b0f1cf2d838acc8e1e92f55377bf56cceb"
+        "terms_sha256": "14cda97185e148f019c33fe1cb5f950c1a0eb17c3c66a003c7042612fcfcff08"
       }
     }
   ],
@@ -42816,10 +42822,6 @@
     "present_files": [
       114
     ],
-    "default-subagent-model": [
-      114,
-      124
-    ],
     "preview-format": [
       114
     ],
@@ -45688,6 +45690,9 @@
     ],
     "can-verify-artifacts": [
       221
+    ],
+    "thinking-always-on-models": [
+      222
     ],
     "new-task-permission-mode": [
       222
@@ -55956,12 +55961,6 @@
     "visualizations unavailable in hipaa session": [
       221
     ],
-    "shell environment variables ignored in cowork": [
-      222
-    ],
-    "exported variable no longer affects cowork session": [
-      222
-    ],
     "why doesn't my minimal mode setting work in cowork": [
       222
     ],
@@ -55996,6 +55995,24 @@
       222
     ],
     "remote folder trust remembered after restart": [
+      222
+    ],
+    "cowork always forces minimal mode off": [
+      222
+    ],
+    "exported variable no longer affects cowork session": [
+      222
+    ],
+    "extended thinking on even when switched off": [
+      222
+    ],
+    "why does my session think with thinking disabled": [
+      222
+    ],
+    "admin list of always-thinking models": [
+      222
+    ],
+    "full thinking budget forced for some models": [
       222
     ]
   },

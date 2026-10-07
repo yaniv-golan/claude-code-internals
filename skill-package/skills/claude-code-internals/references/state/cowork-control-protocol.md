@@ -37,11 +37,10 @@ external driver) — not the Desktop app's internal IPC.
   `cowork-architecture.md`).
 - **Two shell settings are pinned off (Desktop 2.26454.0, L222).** The main
   spawn env sets `CLAUDE_CODE_SIMPLE:"0"` and
-  `CLAUDE_AGENT_SDK_MCP_NO_PREFIX:"0"`, and both names are on the list of
-  variables removed from the inherited environment (with `PATH`,
-  `CLAUDE_CODE_OAUTH_TOKEN` and the API-key/auth-header variables). A shell
-  `=1` for either no longer reaches Cowork; a driver copying the spawn env
-  should pin both to `"0"`.
+  `CLAUDE_AGENT_SDK_MCP_NO_PREFIX:"0"` in the base env every Cowork session
+  gets. Both names are also dropped from the user-configured env vars a
+  Code-tab (CCD) session forwards; the Cowork spawn forwards none. A driver
+  copying the spawn env should pin both to `"0"`.
 - **Argv, roughly:**
   `-p --verbose --input-format stream-json --output-format stream-json
   --permission-prompt-tool stdio`
@@ -68,7 +67,10 @@ external driver) — not the Desktop app's internal IPC.
     zgi(extendedThinkingEnabled, extendedThinkingOverride, killSwitch)`
     resolves to **exactly `31999` or `0`, never an arbitrary budget**
     (`killSwitch` = a local settings object's `maxThinkingTokens === 0`
-    field, used only as an exact-zero flag). Effort: `effort =
+    field, used only as an exact-zero flag). From Desktop 2.26454.0 a
+    session whose model is on the same object's `thinkingAlwaysOnModels`
+    list also gets `31999` with extended thinking off (unset by default;
+    L222). Effort: `effort =
     qgi(effortOverride, perModelSetting, flatSettingOrMedium)` — a
     **local settings-file object** (`effort`/`effortByModel` fields),
     with a hardcoded `"medium"` string as the final fallback if unset —

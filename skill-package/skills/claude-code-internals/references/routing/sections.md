@@ -1800,14 +1800,15 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:104 · When they are served
 221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:113 · Imagine availability
 221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:117 · For an author
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:17 · Two shell settings no longer reach Cowork
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:27 · Scheduled tasks created from a session start in Auto mode
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:39 · Escalated asks in unattended turns
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:43 · Control protocol
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:47 · Gates the server switched off on 2026-10-07
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:62 · Gates new in this window
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:71 · Local or cloud placement is unchanged
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:75 · For an author
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:17 · Two agent settings pinned off
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:27 · A model list that forces extended thinking on
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:31 · Scheduled tasks created from a session start in Auto mode
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:43 · Escalated asks in unattended turns
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:47 · Control protocol
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:51 · Gates the server switched off on 2026-10-07
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:66 · Gates new in this window
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:75 · Local or cloud placement is unchanged
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:79 · For an author
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)
@@ -1842,17 +1843,17 @@ state:cowork-architecture · state/cowork-architecture.md:888 · Local MCP bridg
 state:cowork-architecture · state/cowork-architecture.md:925 · Mount model and delete policy (L139, L140)
 state:cowork-architecture · state/cowork-architecture.md:1045 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
 state:cowork-control-protocol · state/cowork-control-protocol.md:23 · Spawn contract
-state:cowork-control-protocol · state/cowork-control-protocol.md:96 · Handshake
-state:cowork-control-protocol · state/cowork-control-protocol.md:137 · Subtype inventory pointer
-state:cowork-control-protocol · state/cowork-control-protocol.md:192 · AskUserQuestion answer shape
-state:cowork-control-protocol · state/cowork-control-protocol.md:201 · Per-`tool_use` stream envelope (fixed field set)
-state:cowork-control-protocol · state/cowork-control-protocol.md:220 · Sub-agent dispatch wire contract (lessons 121–124)
-state:cowork-control-protocol · state/cowork-control-protocol.md:291 · New agent→host system frames (agent 2.1.275+, L196)
-state:cowork-control-protocol · state/cowork-control-protocol.md:304 · Hook lifecycle frames are gated (L203)
-state:cowork-control-protocol · state/cowork-control-protocol.md:314 · Skill invocations and hook feedback in transcripts (L207)
-state:cowork-control-protocol · state/cowork-control-protocol.md:323 · Compaction subtypes
-state:cowork-control-protocol · state/cowork-control-protocol.md:335 · Cloud tasks: teleport-to-cloud and the bridge-session worker (Ch33/L119)
-state:cowork-control-protocol · state/cowork-control-protocol.md:412 · VCS SDK events + SDK-MCP skill servers (L129/L130)
+state:cowork-control-protocol · state/cowork-control-protocol.md:98 · Handshake
+state:cowork-control-protocol · state/cowork-control-protocol.md:139 · Subtype inventory pointer
+state:cowork-control-protocol · state/cowork-control-protocol.md:194 · AskUserQuestion answer shape
+state:cowork-control-protocol · state/cowork-control-protocol.md:203 · Per-`tool_use` stream envelope (fixed field set)
+state:cowork-control-protocol · state/cowork-control-protocol.md:222 · Sub-agent dispatch wire contract (lessons 121–124)
+state:cowork-control-protocol · state/cowork-control-protocol.md:293 · New agent→host system frames (agent 2.1.275+, L196)
+state:cowork-control-protocol · state/cowork-control-protocol.md:306 · Hook lifecycle frames are gated (L203)
+state:cowork-control-protocol · state/cowork-control-protocol.md:316 · Skill invocations and hook feedback in transcripts (L207)
+state:cowork-control-protocol · state/cowork-control-protocol.md:325 · Compaction subtypes
+state:cowork-control-protocol · state/cowork-control-protocol.md:337 · Cloud tasks: teleport-to-cloud and the bridge-session worker (Ch33/L119)
+state:cowork-control-protocol · state/cowork-control-protocol.md:414 · VCS SDK events + SDK-MCP skill servers (L129/L130)
 state:cowork-permissions · state/cowork-permissions.md:22 · The layers (all simultaneously active, host-loop production)
 state:cowork-permissions · state/cowork-permissions.md:213 · Auto-mode tuning at Desktop 1.22209.0 (lesson 128, no live gate-state capture)
 state:cowork-permissions · state/cowork-permissions.md:246 · Browser/Computer-Use permission gates + Cowork's own auto-mode rule additions (Desktop 1.28929.0)

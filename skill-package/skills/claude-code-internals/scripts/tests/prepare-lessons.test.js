@@ -1318,6 +1318,19 @@ test('--generate withholds a colliding new term; a withheld replacement gives ba
   assert.deepStrictEqual(p2.withheld, [{ term: odd, qid: 'pl-9001' }]);
   assert.deepStrictEqual(p2.terms, [...prior, odd], 'an added term stays in terms as the model wrote it; derivation drops it');
   assert.strictEqual(p2.kept_by_rule, undefined);
+
+  // The next update does not treat the withheld term as a previous term: it is not offered to the
+  // model, and when the model proposes it again it is checked again and stays withheld.
+  editLessonLine(dir2, VL, ' the quite ', ' the rather ');
+  assert.strictEqual(run(BUILD, ['--root', dir2]).code, 0);
+  const pin3 = freshen(dir2, [VL]);
+  let offered = null;
+  const capture = async (args) => { offered = JSON.stringify(args); return stubUpdate({ keep: [...prior, odd], drop: [], add: [] })(); };
+  await P.runGenerate(dir2, { proposalsPin: pin3 }, { callModel: capture, questions }, () => {});
+  const p3 = loadProposals(dir2).byId.get(VL);
+  assert.ok(offered && !offered.includes(odd), 'the withheld term is not listed as a previous term');
+  assert.deepStrictEqual(p3.withheld, [{ term: odd, qid: 'pl-9001' }], 're-proposed, it is withheld again');
+  assert.ok(!(odd in topicOf(dir2).keyword_map), 'and never becomes a key');
 });
 
 test('resolveUpdate: true terms survive any reply; only inaccurate or named-duplicate drops stand', () => {

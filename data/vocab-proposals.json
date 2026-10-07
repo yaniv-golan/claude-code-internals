@@ -5453,13 +5453,29 @@
     },
     "222": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
+      "prompt_version": "vocab-v4-update",
       "date": "2026-10-07",
-      "input_sha256": "2756ab33d36cac575259f2ece4bfe07048fcf2018b9e3d227a8ea2bb861df696",
+      "input_sha256": "df5bfbf3d4f28749764142682918bd4553f879de999b35877deb719c28c99713",
+      "prior_terms_sha256": "dc95b19fe1231debbf8e4405268ffd9097073cb1ba86c70657d8dc55fd15ec90",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "f2eac4037332b13fed40c2d168cae888e2e58b94",
+      "replaced": [
+        "shell environment variables ignored in Cowork"
+      ],
+      "dropped": [
+        {
+          "term": "shell environment variables ignored in Cowork",
+          "why": "inaccurate",
+          "replacement": "Cowork always forces minimal mode off"
+        }
+      ],
+      "kept_by_rule": [
+        {
+          "term": "exported variable no longer affects Cowork session",
+          "reason": "replacement withheld (\"Code tab drops some user environment variables\", pl-0128)"
+        }
+      ],
       "terms": [
-        "shell environment variables ignored in Cowork",
-        "exported variable no longer affects Cowork session",
         "why doesn't my minimal mode setting work in Cowork?",
         "MCP tool name prefix setting stopped working",
         "scheduled task runs in auto permission mode",
@@ -5472,12 +5488,17 @@
         "computer use permission check disabled",
         "Sonnet 5.5 available in Cowork model picker",
         "remote folder trust remembered after restart",
-        "why do new tasks run in the cloud instead of locally?"
+        "Cowork always forces minimal mode off",
+        "exported variable no longer affects Cowork session",
+        "extended thinking on even when switched off",
+        "why does my session think with thinking disabled?",
+        "admin list of always-thinking models",
+        "full thinking budget forced for some models"
       ],
       "withheld": [
         {
-          "term": "why do new tasks run in the cloud instead of locally?",
-          "qid": "pl-0414"
+          "term": "Code tab drops some user environment variables",
+          "qid": "pl-0128"
         }
       ]
     }

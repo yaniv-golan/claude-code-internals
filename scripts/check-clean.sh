@@ -51,13 +51,13 @@ fi
 # CURRENT_BASELINE; retrieval-gate.test.js checks this file names exactly those).
 # A missing one fails: it must not silently turn the retrieval gate off.
 step "Retrieval baseline"
-for f in evals/retrieval/baseline-v7.json evals/retrieval/questions-v2.json; do
+for f in evals/retrieval/baseline-v8.json evals/retrieval/questions-v2.json; do
   if [[ ! -f "$f" ]]; then
     echo "missing $f (not tracked?): the retrieval gate cannot run" >&2
     exit 1
   fi
 done
-node evals/retrieval/run.js --baseline evals/retrieval/baseline-v7.json --questions evals/retrieval/questions-v2.json | tail -2
+node evals/retrieval/run.js --baseline evals/retrieval/baseline-v8.json --questions evals/retrieval/questions-v2.json | tail -2
 test "${PIPESTATUS[0]}" -eq 0
 step "Site generator tests"
 node --test site/generator/tests/*.test.js

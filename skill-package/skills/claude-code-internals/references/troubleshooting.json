@@ -2743,12 +2743,12 @@
    "pattern": [
     "CLAUDE_CODE_SIMPLE ignored in Cowork",
     "MCP tool prefix setting ignored in Cowork",
-    "shell env var not reaching Cowork session"
+    "Code tab env var CLAUDE_CODE_SIMPLE dropped"
    ],
    "lessons": [
     222
    ],
-   "hint": "From Desktop 2.26454.0 the Cowork spawn pins CLAUDE_CODE_SIMPLE and CLAUDE_AGENT_SDK_MCP_NO_PREFIX to \"0\" and strips both from the inherited environment, so a shell value never reaches the session."
+   "hint": "From Desktop 2.26454.0 every Cowork session gets CLAUDE_CODE_SIMPLE and CLAUDE_AGENT_SDK_MCP_NO_PREFIX as \"0\", and both are dropped from the user-configured env vars a Code-tab session forwards."
   },
   {
    "pattern": [

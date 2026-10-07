@@ -39,7 +39,7 @@ const REGISTRY_PATH = path.join(REFS_DIR, 'state', 'registry.json');
 // guard (tests/repo-context.js) all follow these; retrieval-gate.test.js asserts
 // validate.yml and check-clean.sh name exactly these files.
 const CURRENT_QUESTIONS = 'questions-v2.json';
-const CURRENT_BASELINE = 'baseline-v7.json';
+const CURRENT_BASELINE = 'baseline-v8.json';
 
 // ---------------------------------------------------------------------------
 // Index loading

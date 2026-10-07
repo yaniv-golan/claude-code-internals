@@ -919,9 +919,16 @@ async function runGenerate(skillDir, opts = {}, deps = {}, log = console.log) {
   }
   // A stale lesson is UPDATED from its previous terms; a lesson without terms, a --regen id and,
   // under --fresh, every stale lesson get a fresh draw (vocab.js, UPDATE, NOT REDRAW).
+  // A term withheld at generation was never a key, so it is not a previous term: left in, the update
+  // would keep it verbatim, skip its collision check and drop the withheld record, making it a key.
+  // Left out, the model may propose it again, and then it is checked as a new term.
+  const withoutWithheld = (p) => {
+    const w = new Set((p.withheld || []).map((x) => normalize(cleanTerm(x.term))));
+    return p.terms.filter((t) => !w.has(normalize(cleanTerm(t))));
+  };
   const prior = new Map(todo
     .filter((l) => proposals.byId.has(l.id) && (fill.has(l.id) || (changedSet.has(l.id) && !regen.has(l.id) && !opts.fresh)))
-    .map((l) => [l.id, proposals.byId.get(l.id).terms]));
+    .map((l) => [l.id, withoutWithheld(proposals.byId.get(l.id))]));
   // The text each updated lesson's terms were written from, so the prompt can tell a topic the
   // edit added from one that was always there (lib/vocab-history.js; deps.previous in tests).
   const previous = new Map();

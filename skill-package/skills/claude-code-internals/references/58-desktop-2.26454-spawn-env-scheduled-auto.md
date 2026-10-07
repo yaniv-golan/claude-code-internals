@@ -12,9 +12,9 @@ Updated: 2026-10-07 | Source: **Claude Desktop `app.asar` 2.26454.0 diffed again
 
 # LESSON 222 — WHAT DESKTOP 2.26454.0 CHANGED FOR COWORK
 
-**Desktop 2.26454.0 stops two shell settings from reaching a Cowork session. Since 2.19675.0, a scheduled task created from a Cowork session starts in Auto permission mode where the organization allows it. On 2026-10-07 the server switched off the cloud memory relay and the Computer Use permission gate, though the code that reads both is unchanged. The rules that decide whether a new task runs locally or in the cloud did not change.**
+**Desktop 2.26454.0 pins two agent settings off in every Cowork session. Since 2.19675.0, a scheduled task created from a Cowork session starts in Auto permission mode where the organization allows it. On 2026-10-07 the server switched off the cloud memory relay and the Computer Use permission gate, though the code that reads both is unchanged. The rules that decide whether a new task runs locally or in the cloud did not change.**
 
-## Two shell settings no longer reach Cowork
+## Two agent settings pinned off
 
 The main Cowork spawn environment gains two pinned values:
 
@@ -22,7 +22,11 @@ The main Cowork spawn environment gains two pinned values:
 CLAUDE_CODE_SIMPLE:"0", CLAUDE_AGENT_SDK_MCP_NO_PREFIX:"0"
 ```
 
-Both names are also added to the list of variables Desktop removes from the inherited environment before it applies its own values. That is the same list that already removes `PATH`, `CLAUDE_CODE_OAUTH_TOKEN` and the API-key and auth-header variables. Before 2.26454.0, a user who exported either variable in a shell that launched Desktop passed it through. `CLAUDE_CODE_SIMPLE=1` replaces the system prompt and tool set with a minimal one (L86). `CLAUDE_AGENT_SDK_MCP_NO_PREFIX=1` drops the `mcp__<server>__` prefix from MCP tool names, which would stop every `mcp__workspace__*` binding and the `mcp__.*` permission matcher from matching. The agent (2.1.289) still reads `CLAUDE_CODE_SIMPLE`; only Desktop's handling changed. The code shows what changed. That Desktop did this to fix leaked settings is an inference.
+Desktop sets these two in the base environment it builds for every Cowork session, so whatever value the variables might otherwise carry, the session gets `"0"`. The same two names are also on the list Desktop removes from the user-configured environment variables that a Claude Code desktop (Code tab) session forwards, alongside the process-wrapper variable. The Cowork spawn forwards no user-configured variables, so that list does not apply to it. `CLAUDE_CODE_SIMPLE=1` replaces the system prompt and tool set with a minimal one (L86). `CLAUDE_AGENT_SDK_MCP_NO_PREFIX=1` drops the `mcp__<server>__` prefix from SDK-type MCP tool names, which include `mcp__workspace__*`. The agent (2.1.289) still reads `CLAUDE_CODE_SIMPLE`; only Desktop's handling changed. The code shows the pins. Why Desktop added them is not stated in the code.
+
+## A model list that forces extended thinking on
+
+The Desktop config object that holds `defaultSubagentModel`, `effortByModel` and `maxThinkingTokens` gains `thinkingAlwaysOnModels`, a list of model ids (new in 2.26454.0). The spawn-time thinking budget becomes 31999 when extended thinking is on *or* the session's model is on that list, so a listed model gets the full budget even with extended thinking switched off. The same check applies to a mid-session model change. The list is unset by default, so nothing changes unless an administrator's configuration sets it. L120's "thinking is either 31999 or 0" still holds; this is a second way to reach 31999.
 
 ## Scheduled tasks created from a session start in Auto mode
 
@@ -74,7 +78,8 @@ The placement rules, the `cowork-local-tasks-off` rule text and gate `3634338308
 
 ## For an author
 
-- A shell `CLAUDE_CODE_SIMPLE` or `CLAUDE_AGENT_SDK_MCP_NO_PREFIX` no longer changes a Cowork session's tools. If a harness copies the spawn environment, pin both to `"0"` the same way.
+- A Cowork session always gets `CLAUDE_CODE_SIMPLE` and `CLAUDE_AGENT_SDK_MCP_NO_PREFIX` as `"0"`. If a harness copies the spawn environment, pin both the same way; if it forwards user-configured variables the way the Code tab does, drop both.
 - A scheduled task made from a Cowork session may run in Auto mode, so tool asks you expect to see may be decided by the auto-mode classifier.
 - Don't name an MCP server `memory` in `claude_desktop_config.json` anyway. While the relay is off, your server is used, but the gate can come back on and replace it without notice.
 - Sonnet 5.5 is selectable in Cowork as of 2026-10-07.
+- If a session thinks with extended thinking switched off, check the managed configuration for `thinkingAlwaysOnModels`.

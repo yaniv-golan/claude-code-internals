@@ -1161,7 +1161,7 @@
       "first_seen": "2.1.170",
       "removed_in": null,
       "as_of": "2.1.289",
-      "summary": "Suppresses the tool-name prefix for MCP tools on sdk-type connections. From Desktop 2.26454.0 the Cowork spawn pins it to \"0\" and strips it (with CLAUDE_CODE_SIMPLE) from the inherited environment, so a user's shell value no longer reaches Cowork (Ch61/L222).",
+      "summary": "Suppresses the tool-name prefix for MCP tools on sdk-type connections. From Desktop 2.26454.0 the base env of every Cowork session pins it (and CLAUDE_CODE_SIMPLE) to \"0\", and both are dropped from the user-configured env vars a Code-tab (CCD) session forwards; the Cowork spawn forwards none (Ch61/L222).",
       "provenance": [
         {
           "lesson": 108
