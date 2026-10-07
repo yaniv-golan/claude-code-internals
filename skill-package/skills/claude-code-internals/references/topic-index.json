@@ -21535,6 +21535,7 @@
         "ui_prompt_edit",
         "flag_off",
         "claude-sonnet-5-5",
+        "claude-haiku-5-5",
         "echo_task_suggestions",
         "browse-and-add-trusted-folder",
         "host-git-confined-install",
@@ -21550,7 +21551,6 @@
         "mcp tool name prefix setting stopped working",
         "scheduled task runs in auto permission mode",
         "why did my scheduled task skip permission prompts",
-        "scheduled task not asking for approval",
         "unattended tool request denied automatically",
         "my own memory mcp server works again",
         "can i name an mcp server memory",
@@ -21563,7 +21563,8 @@
         "extended thinking on even when switched off",
         "why does my session think with thinking disabled",
         "admin list of always-thinking models",
-        "full thinking budget forced for some models"
+        "full thinking budget forced for some models",
+        "haiku model now selectable in cowork"
       ],
       "identifier_keys": [
         "thinking-always-on-models",
@@ -21576,6 +21577,7 @@
         "ui_prompt_edit",
         "flag_off",
         "claude-sonnet-5-5",
+        "claude-haiku-5-5",
         "echo_task_suggestions",
         "browse-and-add-trusted-folder",
         "host-git-confined-install",
@@ -21593,7 +21595,6 @@
         "mcp tool name prefix setting stopped working",
         "scheduled task runs in auto permission mode",
         "why did my scheduled task skip permission prompts",
-        "scheduled task not asking for approval",
         "unattended tool request denied automatically",
         "my own memory mcp server works again",
         "can i name an mcp server memory",
@@ -21606,13 +21607,14 @@
         "extended thinking on even when switched off",
         "why does my session think with thinking disabled",
         "admin list of always-thinking models",
-        "full thinking budget forced for some models"
+        "full thinking budget forced for some models",
+        "haiku model now selectable in cowork"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-07",
-        "terms_sha256": "14cda97185e148f019c33fe1cb5f950c1a0eb17c3c66a003c7042612fcfcff08"
+        "terms_sha256": "71a5efc19fd6258723fb831a3c749810aba11c2566b4b1927186aae06d5ac284"
       }
     }
   ],
@@ -45735,6 +45737,9 @@
     "claude-sonnet-5-5": [
       222
     ],
+    "claude-haiku-5-5": [
+      222
+    ],
     "echo_task_suggestions": [
       222
     ],
@@ -55993,9 +55998,6 @@
     "why did my scheduled task skip permission prompts": [
       222
     ],
-    "scheduled task not asking for approval": [
-      222
-    ],
     "unattended tool request denied automatically": [
       222
     ],
@@ -56033,6 +56035,9 @@
       222
     ],
     "full thinking budget forced for some models": [
+      222
+    ],
+    "haiku model now selectable in cowork": [
       222
     ]
   },

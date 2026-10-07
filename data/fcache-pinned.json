@@ -1,8 +1,8 @@
 {
   "format": 1,
   "capture": {
-    "content16": "b929b391e9696b0b",
-    "embedded_timestamp": 1791394365654,
+    "content16": "b8a98998b6de83b2",
+    "embedded_timestamp": 1791402053176,
     "feature_count": 400,
     "observed_at": "2026-10-07",
     "mode": "1p"
@@ -380,7 +380,9 @@
           "claude-opus-5-5[1m]",
           "claude-opus-5-5",
           "claude-sonnet-5-5[1m]",
-          "claude-sonnet-5-5"
+          "claude-sonnet-5-5",
+          "claude-haiku-5-5[1m]",
+          "claude-haiku-5-5"
         ]
       }
     },

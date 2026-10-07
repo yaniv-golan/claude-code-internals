@@ -5,12 +5,12 @@
     "desktop_asar": "2.7032.0",
     "in_vm_elf": "2.1.280",
     "fcache_capture": {
-      "content16": "b929b391e9696b0b",
-      "embedded_timestamp": 1791394365654,
+      "content16": "b8a98998b6de83b2",
+      "embedded_timestamp": 1791402053176,
       "feature_count": 400,
       "observed_at": "2026-10-07",
       "mode": "1p",
-      "pinned16": "abb81214c95d9cea"
+      "pinned16": "abc12d8a8da5ac83"
     },
     "agent_elf_parity_check": "2.1.280",
     "container_cc_version_observed": {
@@ -5115,7 +5115,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5137,7 +5137,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5166,7 +5166,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5191,7 +5191,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5213,7 +5213,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5246,7 +5246,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5271,7 +5271,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5294,7 +5294,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5316,7 +5316,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5342,7 +5342,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5367,7 +5367,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5389,7 +5389,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5411,7 +5411,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5433,7 +5433,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5447,7 +5447,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       },
       "summary": "MCP version-negotiation KILL SWITCH with INVERTED sense. Consumer: `...(u && !un()) ? {versionNegotiation:{mode:'auto',probe:{timeoutMs:500}}} : {}` where un()=t.ld('1942337209'). Because the predicate is !un(), the gate being OFF (its live state) means automatic version negotiation IS ACTIVE; flipping it ON removes it. t.ld is isEnabled, proven in-chunk against 278625510/getSkillSources.",
       "provenance": [
@@ -5477,7 +5477,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5513,7 +5513,7 @@
         "present": true,
         "source": "experiment",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5539,7 +5539,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5561,7 +5561,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5583,7 +5583,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5605,7 +5605,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5627,7 +5627,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5657,7 +5657,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5679,7 +5679,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5701,7 +5701,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5727,7 +5727,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5753,7 +5753,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5781,7 +5781,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5807,7 +5807,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5837,7 +5837,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5859,7 +5859,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5881,7 +5881,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5906,7 +5906,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5943,7 +5943,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5969,7 +5969,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -5980,7 +5980,7 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.289",
-      "summary": "Whitelists claude-fable-5 (+ the [1m] variant) as selectable in Desktop/Cowork; ON (force). By the 2026-07-02 capture this makes Fable 5 the live production Cowork model. At the 2026-09-23 capture (Desktop 2.7032.0) the enabled list is claude-fable-5[1m], claude-fable-5, claude-fable-5-1[1m], claude-fable-5-1, claude-opus-5-5[1m], claude-opus-5-5 -- Fable 5.1 and Opus 5.5 are now allow-listed for Cowork (Ch52/L193). At the 2026-10-07 capture the list also has claude-sonnet-5-5[1m] and claude-sonnet-5-5: Sonnet 5.5 is allow-listed for Cowork (Ch61/L222).",
+      "summary": "Whitelists claude-fable-5 (+ the [1m] variant) as selectable in Desktop/Cowork; ON (force). By the 2026-07-02 capture this makes Fable 5 the live production Cowork model. At the 2026-09-23 capture (Desktop 2.7032.0) the enabled list is claude-fable-5[1m], claude-fable-5, claude-fable-5-1[1m], claude-fable-5-1, claude-opus-5-5[1m], claude-opus-5-5 -- Fable 5.1 and Opus 5.5 are now allow-listed for Cowork (Ch52/L193). At the 2026-10-07 capture the list also has claude-sonnet-5-5[1m] and claude-sonnet-5-5: Sonnet 5.5 is allow-listed for Cowork (Ch61/L222). A later 2026-10-07 capture (b8a98998b6de83b2) adds claude-haiku-5-5[1m] and claude-haiku-5-5: Haiku 5.5 is allow-listed for Cowork.",
       "provenance": [
         {
           "lesson": 108
@@ -6000,7 +6000,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6026,7 +6026,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6052,7 +6052,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6078,7 +6078,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6100,7 +6100,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6122,7 +6122,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6148,7 +6148,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6162,7 +6162,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       },
       "summary": "Declared-but-unconsumed: appears exactly once, in the client-side gate defaults table as {defaultValue:false}, with NO read site anywhere in the asar and NO fcache entry. Not dark-launched (no code behind it yet) -- the switch was declared before its consumer shipped.",
       "provenance": [
@@ -6193,7 +6193,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6215,7 +6215,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       },
       "served_keys": [
         "displayName",
@@ -6242,7 +6242,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6265,7 +6265,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6287,7 +6287,7 @@
         "present": true,
         "source": "force",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6309,7 +6309,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6331,7 +6331,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6353,7 +6353,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6379,7 +6379,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6405,7 +6405,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6431,7 +6431,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6453,7 +6453,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6475,7 +6475,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -6489,7 +6489,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       },
       "summary": "Declared-but-unconsumed, same as 3671534883. Written as an UNQUOTED numeric object key, so a quoted-string-only gate regex misses it entirely.",
       "provenance": [
@@ -8014,7 +8014,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8093,7 +8093,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8121,7 +8121,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8143,7 +8143,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8165,7 +8165,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8187,7 +8187,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8209,7 +8209,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8306,7 +8306,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8328,7 +8328,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8350,7 +8350,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8394,7 +8394,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8416,7 +8416,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8438,7 +8438,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8460,7 +8460,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8482,7 +8482,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8504,7 +8504,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8526,7 +8526,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8548,7 +8548,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8570,7 +8570,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8592,7 +8592,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8614,7 +8614,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8636,7 +8636,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8725,7 +8725,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8747,7 +8747,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {
@@ -8769,7 +8769,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b929b391e9696b0b"
+        "at": "b8a98998b6de83b2"
       }
     },
     {

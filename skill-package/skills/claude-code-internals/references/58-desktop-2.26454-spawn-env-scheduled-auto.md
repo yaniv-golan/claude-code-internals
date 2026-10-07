@@ -60,7 +60,7 @@ No code was removed for either change. With the relay off, the `memory` SDK-MCP 
 Served values that moved between the 2026-09-27 and 2026-10-07 caches:
 
 - The migration sweep (`2974609625`, L208) now runs every 30 minutes instead of every 60, with a 15-minute cooldown after a failure instead of 30.
-- Cowork's model allow-list (`3045399524`) adds `claude-sonnet-5-5` and its `[1m]` variant.
+- Cowork's model allow-list (`3045399524`) adds `claude-sonnet-5-5` and its `[1m]` variant. A later capture the same day also adds `claude-haiku-5-5` and its `[1m]` variant.
 - In experiment bundle `364911507`, `delegation` and `echo_task_suggestions` are forced to control.
 
 ## Gates new in this window
@@ -81,5 +81,5 @@ The placement rules, the `cowork-local-tasks-off` rule text and gate `3634338308
 - A Cowork session always gets `CLAUDE_CODE_SIMPLE` and `CLAUDE_AGENT_SDK_MCP_NO_PREFIX` as `"0"`. If a harness copies the spawn environment, pin both the same way; if it forwards user-configured variables the way the Code tab does, drop both.
 - A scheduled task made from a Cowork session may run in Auto mode, so tool asks you expect to see may be decided by the auto-mode classifier.
 - Don't name an MCP server `memory` in `claude_desktop_config.json` anyway. While the relay is off, your server is used, but the gate can come back on and replace it without notice.
-- Sonnet 5.5 is selectable in Cowork as of 2026-10-07.
+- Sonnet 5.5 and Haiku 5.5 are selectable in Cowork as of 2026-10-07.
 - If a session thinks with extended thinking switched off, check the managed configuration for `thinkingAlwaysOnModels`.

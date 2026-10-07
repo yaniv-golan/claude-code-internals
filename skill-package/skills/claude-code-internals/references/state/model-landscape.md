@@ -55,7 +55,7 @@ Cowork model allow-list.)
 general use" — `claude-fable-5` and the internal
 `claude-fable-5-mythos-5`. Fable 5 is the **live Cowork model** — fcache
 gate `3045399524` (`registry.json` id `gate.3045399524`) whitelists
-`claude-fable-5[1m]` and `claude-fable-5` with `alwaysLoad: true`. At the 2026-09-23 capture (Desktop 2.7032.0) the same gate also allow-lists `claude-fable-5-1[1m]`, `claude-fable-5-1`, `claude-opus-5-5[1m]` and `claude-opus-5-5` (Ch52/L193), and at the 2026-10-07 capture also `claude-sonnet-5-5[1m]` and `claude-sonnet-5-5` (Ch61/L222). In the
+`claude-fable-5[1m]` and `claude-fable-5` with `alwaysLoad: true`. At the 2026-09-23 capture (Desktop 2.7032.0) the same gate also allow-lists `claude-fable-5-1[1m]`, `claude-fable-5-1`, `claude-opus-5-5[1m]` and `claude-opus-5-5` (Ch52/L193), and at the 2026-10-07 capture also `claude-sonnet-5-5[1m]` and `claude-sonnet-5-5` (Ch61/L222), then from a later capture that day `claude-haiku-5-5[1m]` and `claude-haiku-5-5`. In the
 standalone CLI, Fable 5 is one selectable model among the
 Claude 5 family, not the default. v2.1.173 fixed normalization of the
 `[1m]`-suffixed Fable names.

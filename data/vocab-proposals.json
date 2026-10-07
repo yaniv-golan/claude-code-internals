@@ -5456,24 +5456,18 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-07",
-      "input_sha256": "df5bfbf3d4f28749764142682918bd4553f879de999b35877deb719c28c99713",
-      "prior_terms_sha256": "dc95b19fe1231debbf8e4405268ffd9097073cb1ba86c70657d8dc55fd15ec90",
+      "input_sha256": "b827dcca6422318600b397ac6950ed8803c701b10c5b386990bfb2189eec73b3",
+      "prior_terms_sha256": "14cda97185e148f019c33fe1cb5f950c1a0eb17c3c66a003c7042612fcfcff08",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "f2eac4037332b13fed40c2d168cae888e2e58b94",
+      "previous_text": "d0014a3576f119cf8479a13cba067b5d55b9509f",
       "replaced": [
-        "shell environment variables ignored in Cowork"
+        "scheduled task not asking for approval"
       ],
       "dropped": [
         {
-          "term": "shell environment variables ignored in Cowork",
-          "why": "inaccurate",
-          "replacement": "Cowork always forces minimal mode off"
-        }
-      ],
-      "kept_by_rule": [
-        {
-          "term": "exported variable no longer affects Cowork session",
-          "reason": "replacement withheld (\"Code tab drops some user environment variables\", pl-0128)"
+          "term": "scheduled task not asking for approval",
+          "why": "duplicate",
+          "duplicate_of": "why did my scheduled task skip permission prompts?"
         }
       ],
       "terms": [
@@ -5481,7 +5475,6 @@
         "MCP tool name prefix setting stopped working",
         "scheduled task runs in auto permission mode",
         "why did my scheduled task skip permission prompts?",
-        "scheduled task not asking for approval",
         "unattended tool request denied automatically",
         "my own memory MCP server works again",
         "can I name an MCP server memory?",
@@ -5494,13 +5487,8 @@
         "extended thinking on even when switched off",
         "why does my session think with thinking disabled?",
         "admin list of always-thinking models",
-        "full thinking budget forced for some models"
-      ],
-      "withheld": [
-        {
-          "term": "Code tab drops some user environment variables",
-          "qid": "pl-0128"
-        }
+        "full thinking budget forced for some models",
+        "Haiku model now selectable in Cowork"
       ]
     }
   }
