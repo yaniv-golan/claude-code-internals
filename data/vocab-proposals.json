@@ -5069,27 +5069,12 @@
     "210": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-05",
-      "input_sha256": "95221687059890e62d0a65d9aaef7436b87ceca4368a25e34905d953653a299a",
-      "prior_terms_sha256": "cbea9606f8a43fcb23a05acd37fd6fc1f9e308df0baed0a2775579c9573cdc18",
+      "date": "2026-10-07",
+      "input_sha256": "5bec1a46a1b6e4ffe879c42cc00967203f165885d2238028fcd21f7ab3019dc3",
+      "prior_terms_sha256": "be49bd207e246bff65c53330114cd407d873a726cfe2d7dd72e892e5a3b7ee04",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "621b9a185d8612261c3105a36aa0fea8b83eb8eb",
-      "replaced": [
-        "who decides where a cowork task runs?",
-        "check working directory to see where task ran"
-      ],
-      "dropped": [
-        {
-          "term": "check working directory to see where task ran",
-          "why": "duplicate",
-          "duplicate_of": "how to tell if task ran locally or in cloud"
-        },
-        {
-          "term": "who decides where a cowork task runs?",
-          "why": "duplicate",
-          "duplicate_of": "cowork local vs cloud session routing"
-        }
-      ],
+      "previous_text": "7d740ad63199f4ff0f68d097420290c8384d97bd",
+      "replaced": [],
       "terms": [
         "cowork task runs in cloud instead of locally",
         "only on this computer setting ignored",

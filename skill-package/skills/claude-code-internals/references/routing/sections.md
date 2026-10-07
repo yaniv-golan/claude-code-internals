@@ -1739,7 +1739,7 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 210 · 53-routine-migration-plugin-hooks-by-lane.md:190 · The routing function
 210 · 53-routine-migration-plugin-hooks-by-lane.md:206 · What happened
 210 · 53-routine-migration-plugin-hooks-by-lane.md:223 · The composer decides (Desktop 2.19675.0, 2026-10-02)
-210 · 53-routine-migration-plugin-hooks-by-lane.md:239 · For an author or tester
+210 · 53-routine-migration-plugin-hooks-by-lane.md:241 · For an author or tester
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:22 · The three layers
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:32 · Layer 1: publishing refuses `host:`
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:48 · Layer 2: the viewer enforces the manifest
@@ -1822,16 +1822,16 @@ state:cowork-architecture · state/cowork-architecture.md:643 · A THIRD surface
 state:cowork-architecture · state/cowork-architecture.md:676 · Four surfaces, one probe (L198, 2026-09-23, first-party)
 state:cowork-architecture · state/cowork-architecture.md:701 · Scheduled tasks migrate themselves to the cloud (L208)
 state:cowork-architecture · state/cowork-architecture.md:714 · Where a new task runs (L210)
-state:cowork-architecture · state/cowork-architecture.md:751 · Desktop 2.9939.2 additions (L212–L214)
-state:cowork-architecture · state/cowork-architecture.md:775 · Desktop 2.16120.0 additions (L219–L221)
-state:cowork-architecture · state/cowork-architecture.md:801 · `computer://` links by lane (L215)
-state:cowork-architecture · state/cowork-architecture.md:810 · A cloud session and the user's computer (L215)
-state:cowork-architecture · state/cowork-architecture.md:833 · What Anthropic's help center says (relayed, read 2026-10-02 and 2026-10-03)
-state:cowork-architecture · state/cowork-architecture.md:855 · One conversation, two runtimes (L216)
-state:cowork-architecture · state/cowork-architecture.md:870 · Credential delivery and build identity (L207)
-state:cowork-architecture · state/cowork-architecture.md:883 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
-state:cowork-architecture · state/cowork-architecture.md:920 · Mount model and delete policy (L139, L140)
-state:cowork-architecture · state/cowork-architecture.md:1040 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
+state:cowork-architecture · state/cowork-architecture.md:756 · Desktop 2.9939.2 additions (L212–L214)
+state:cowork-architecture · state/cowork-architecture.md:780 · Desktop 2.16120.0 additions (L219–L221)
+state:cowork-architecture · state/cowork-architecture.md:806 · `computer://` links by lane (L215)
+state:cowork-architecture · state/cowork-architecture.md:815 · A cloud session and the user's computer (L215)
+state:cowork-architecture · state/cowork-architecture.md:838 · What Anthropic's help center says (relayed, read 2026-10-02 and 2026-10-03)
+state:cowork-architecture · state/cowork-architecture.md:860 · One conversation, two runtimes (L216)
+state:cowork-architecture · state/cowork-architecture.md:875 · Credential delivery and build identity (L207)
+state:cowork-architecture · state/cowork-architecture.md:888 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
+state:cowork-architecture · state/cowork-architecture.md:925 · Mount model and delete policy (L139, L140)
+state:cowork-architecture · state/cowork-architecture.md:1045 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
 state:cowork-control-protocol · state/cowork-control-protocol.md:23 · Spawn contract
 state:cowork-control-protocol · state/cowork-control-protocol.md:89 · Handshake
 state:cowork-control-protocol · state/cowork-control-protocol.md:130 · Subtype inventory pointer

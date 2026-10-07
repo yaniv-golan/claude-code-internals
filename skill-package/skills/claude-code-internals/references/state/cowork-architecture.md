@@ -720,7 +720,7 @@ Auto/Bypass-forced, Chrome/options/computer-use/plugin-stdio, else `remote`. The
 setting is what "Only on this computer" (row `cowork-backend`; 2026-10-02, Desktop 2.19675.0:
 Settings → General → Tasks on the merged interface, Settings → Cowork on the older one) and,
 per the code, the task-header Cloud popover (not seen on 2026-10-02: the older header's popup showed
-only "Connected" and "Manage computers") both write (announced for Pro and Max plans, not yet observed: from 2026-10-06
+only "Connected" and "Manage computers") both write (announced for Pro and Max plans, and observed on a Personal Max organization on 2026-10-07: from 2026-10-06
 new tasks run in the cloud and the option, "Only on your computer" in Settings > General per
 Anthropic's support article read 2026-10-02, is removed; tasks already started locally stay local;
 scheduled tasks move to the cloud; other plans to follow; L210); switching to local saves only after the
@@ -745,8 +745,13 @@ On 2026-10-04 the rollout differed per organization on one account: the Personal
 organization had the unified composer on claude.ai web and in the Desktop, and a new task from
 either ran in the cloud (`/home/claude`, `remote_cowork`, a `/chat/<uuid>` URL, no session record
 on the Mac), while the Team organization still had the Chat/Cowork composer and ran Desktop tasks
-locally (one run each, two days before the announced 2026-10-06 date; a re-check after 2026-10-07
-is pending; L210).
+locally (one run each, two days before the announced 2026-10-06 date; L210).
+Re-checked 2026-10-07 on Desktop 2.26454.0 (one run each; L210): the Personal (Max) organization has
+no "Only on this computer" setting any more, says "New tasks run in the cloud now", and ran a new task
+in the cloud (`/home/claude`, `cse_` URL), after a local session there on 2026-10-06 on 2.19675.1. The
+Team organization keeps the Chat/Cowork composer and Settings → Cowork "Only on this computer", and
+ran a new task locally with it on. A scheduled task on Personal now offers "Require this computer",
+off by default.
 
 ## Desktop 2.9939.2 additions (L212–L214)
 

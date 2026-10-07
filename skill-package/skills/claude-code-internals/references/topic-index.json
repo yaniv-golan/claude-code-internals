@@ -20403,7 +20403,7 @@
       "lesson_number": "210",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
       "startLine": 158,
-      "endLine": 243,
+      "endLine": 245,
       "keywords": [
         "Only on this computer",
         "dramatic_shrimp_enabled",
@@ -20495,7 +20495,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-05",
+        "date": "2026-10-07",
         "terms_sha256": "be49bd207e246bff65c53330114cd407d873a726cfe2d7dd72e892e5a3b7ee04"
       }
     },
