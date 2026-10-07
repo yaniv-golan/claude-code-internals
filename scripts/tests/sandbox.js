@@ -131,6 +131,7 @@ function makeSandbox(base, { full = false, ghName = 'gh' } = {}) {
     RELEASE_GH: path.join(bin, ghName),
     RELEASE_CLAUDE: path.join(bin, 'claude'),
     RELEASE_TMPDIR: tmp,
+    CCI_FCACHE_PATH: path.join(tmp, 'no-fcache'), // never this Mac's live Desktop cache
     RELEASE_POLL_INTERVAL_MS: '5',
     RELEASE_POLL_TIMEOUT_MS: '3000',
     RELEASE_RUN_APPEAR_TIMEOUT_MS: '300',

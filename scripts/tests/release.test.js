@@ -673,6 +673,29 @@ test('sandbox runs', { concurrency: 6 }, async (t) => {
     assert.doesNotMatch(r.out, /OVERRIDE-RAN/);
   });
 
+  add('a pinned Desktop gate that moved since the last restamp: refused in step 1 (real remote only)', async () => {
+    const s = sandbox();
+    const recRel = path.join('data', 'fcache-pinned.json');
+    const rec = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', recRel), 'utf8'));
+    assert.ok(fs.existsSync(path.join(s.work, recRel)), 'the sandbox carries the committed record (data/ is copied)');
+    // A capture rebuilt from the record, with one pinned gate flipped.
+    const features = {};
+    for (const g of rec.gates) if (g.present) features[g.id] = { value: g.value, on: g.on, source: g.source };
+    const flip = rec.gates.find((g) => g.present && typeof g.value === 'boolean');
+    features[flip.id] = { value: !flip.value, on: !flip.on, source: flip.source };
+    const fcache = path.join(s.base, 'fcache');
+    fs.writeFileSync(fcache, Buffer.concat([Buffer.from([0x43, 0x4c, 0x46, 2, 0, 0, 0, 0]),
+      require('zlib').gzipSync(JSON.stringify({ timestamp: 1, mode: rec.capture.mode, features }))]));
+    s.git(['remote', 'set-url', 'origin', 'https://example.invalid/claude-code-internals.git']);
+    const r = await s.release(releaseArgs(s, ['--dry-run']), {
+      CCI_FCACHE_PATH: fcache,
+      GIT_CONFIG_NOSYSTEM: '', GIT_AUTHOR_NAME: 'Someone', GIT_AUTHOR_EMAIL: 'someone@test.local',
+    });
+    assert.strictEqual(r.code, 1, r.out);
+    assert.match(r.out, new RegExp(`MOVED gate\\.${flip.id}`));
+    assert.match(r.out, /STOPPED: a pinned Desktop gate moved since the last restamp/);
+  });
+
   add('the sandbox git identity against a non-local remote: refused (offline dry run)', async () => {
     const s = sandbox();
     s.git(['remote', 'set-url', 'origin', 'https://example.invalid/claude-code-internals.git']);

@@ -8,7 +8,9 @@
       "content16": "d7f213aee960c12d",
       "embedded_timestamp": 1791363742444,
       "feature_count": 398,
-      "observed_at": "2026-10-07"
+      "observed_at": "2026-10-07",
+      "mode": "1p",
+      "pinned16": "effdf08d768f1d71"
     },
     "agent_elf_parity_check": "2.1.280",
     "container_cc_version_observed": {

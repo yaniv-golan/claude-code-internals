@@ -606,10 +606,34 @@ function preconditions(ctx, { version, offline }) {
   if (!ctx.local && (/example\.invalid/.test(ident) || process.env.GIT_CONFIG_NOSYSTEM)) {
     throw new Stop(`the git identity/config looks like a sandbox's (${ident}${process.env.GIT_CONFIG_NOSYSTEM ? ', GIT_CONFIG_NOSYSTEM set' : ''}) but the remote ${ctx.remoteUrl} is real; use a fresh shell`);
   }
+  fcacheCheck(ctx);
   const tag = `v${version}`;
   if (revParse(ctx.root, `refs/tags/${tag}`)) throw new Stop(`tag ${tag} already exists locally`);
   if (!offline && lsRemote(ctx, `refs/tags/${tag}`)) throw new Stop(`tag ${tag} already exists on ${ctx.remote}`);
   return { head, upstream, ahead };
+}
+
+/**
+ * A pinned Desktop gate whose live value moved since the last restamp means a published
+ * claim may be stale (the 2026-10-07 sweep interval). On the machine that has the Desktop's
+ * fcache, refuse to release until scripts/fcache-restamp.js has accepted the move. Real
+ * remotes only: a sandbox release must not depend on this Mac's live cache.
+ * CCI_FCACHE_PATH overrides the cache location (the sandbox points it at a missing file).
+ */
+function fcacheCheck(ctx) {
+  if (ctx.local) return;
+  const restamp = require('./fcache-restamp.js');
+  const fcache = process.env.CCI_FCACHE_PATH || path.join(os.homedir(), 'Library', 'Application Support', 'Claude', 'fcache');
+  if (!fs.existsSync(fcache) || !fs.existsSync(path.join(ctx.root, restamp.RECORD_REL))) {
+    log('  fcache check skipped (no Desktop fcache or no committed record here)');
+    return;
+  }
+  let code;
+  try { code = restamp.run(['--root', ctx.root, '--fcache', fcache, '--check'], (l) => log(`  ${l}`)); } catch (e) {
+    if (e instanceof restamp.Fail) throw new Stop(`fcache check failed: ${e.message}`);
+    throw e;
+  }
+  if (code !== 0) throw new Stop('a pinned Desktop gate moved since the last restamp; run node scripts/fcache-restamp.js, update the affected claims, accept, and commit first');
 }
 
 function createCandidate(ctx, head) {

@@ -37,6 +37,13 @@ Status semantics vary by kind (deliberate, don't "fix"):
   is a contract, not a shipped UI). `dark-launched` = present but
   functionally dead behind an off gate (e.g. `LocalPlugins`).
 
+Desktop fcache gates: each `observed` block is written only by the repository's
+`scripts/fcache-restamp.js`, which compares every pinned gate's served state, including
+the keys inside a value gate, with the committed record `data/fcache-pinned.json` and
+refuses to restamp over a change until it is accepted with a note. The record, the
+registry and `author-facts.json` must name the same capture (a test checks it). Never
+edit `observed` or `as_of.fcache_capture` by hand.
+
 Rules:
 1. When a new chapter lands, update the affected records/pages **in the same
    release** and bump their `as_of*` stamps (see CLAUDE.md update workflow).

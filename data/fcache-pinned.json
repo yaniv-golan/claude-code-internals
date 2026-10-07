@@ -1,0 +1,895 @@
+{
+  "format": 1,
+  "capture": {
+    "content16": "d7f213aee960c12d",
+    "embedded_timestamp": 1791363742444,
+    "feature_count": 398,
+    "observed_at": "2026-10-07",
+    "mode": "1p"
+  },
+  "gates": [
+    {
+      "id": "1129419822",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "1131777852",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "1143815894",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "1169442571",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "123929380",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "124685897",
+      "present": true,
+      "source": "defaultValue",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "1311049725",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "144158705",
+      "present": true,
+      "source": "defaultValue",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "1447478638",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "1453979703",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "1549258603",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "1595132361",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "1598976391",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "1603637451",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "1648655587",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": {
+        "global": 3,
+        "perTask": 1
+      }
+    },
+    {
+      "id": "1696890383",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "1753075645",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "1835121223",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "1847129881",
+      "present": true,
+      "source": "defaultValue",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "1893165035",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": {
+        "categories": [
+          "api_prompt_too_long",
+          "process_already_running",
+          "api_model_not_found",
+          "api_request_too_large"
+        ],
+        "enabled": true
+      }
+    },
+    {
+      "id": "1936081873",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "1942337209",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "1942781881",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "1947305033",
+      "present": true,
+      "source": "defaultValue",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "1978029737",
+      "present": true,
+      "source": "experiment",
+      "on": true,
+      "value": {
+        "coworkNativeFilePreview": true,
+        "coworkWebFetchDedup": true,
+        "coworkWebFetchDedupMaxEntries": 100,
+        "coworkWebFetchDedupTtlMs": 3600000,
+        "coworkWebFetchPrompt": true,
+        "coworkWebFetchViaApi": true,
+        "pluginsFullSyncStalenessMs": 3600000,
+        "pluginsSyncIntervalMs": 1200000,
+        "remoteBashVmStartHandling": true,
+        "sessionsBridgeActivePollIntervalMs": 15000,
+        "sessionsBridgeInactivePollIntervalMs": 120000,
+        "sessionsBridgePollBlockMs": 30,
+        "sessionsBridgePollIntervalMs": 60000,
+        "skillsSyncIntervalMs": 1200000,
+        "workspaceBashWaitLonger": true
+      },
+      "per_account": true
+    },
+    {
+      "id": "2039376689",
+      "present": true,
+      "source": "defaultValue",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "2051942385",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "2114777685",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "2140326016",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "2216414644",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "2307090146",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "2340532315",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "2392971184",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "245679952",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "2486083521",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "2529235968",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "2614807392",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "2678393595",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "278625510",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "2860753854",
+      "present": true,
+      "source": "defaultValue",
+      "on": true,
+      "value": {
+        "$sha256": "64c373d90cdbc342",
+        "$len": 934
+      }
+    },
+    {
+      "id": "286376943",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "2864556627",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "2877254163",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": "stubs"
+    },
+    {
+      "id": "2940196192",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "2974609625",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": {
+        "boundEnabled": true,
+        "boundFilesEnabled": true,
+        "enabled": true,
+        "failureCooldownMinutes": 15,
+        "heldBlockReasons": [
+          "space"
+        ],
+        "maxMigratesPerPass": 10,
+        "minObservedDays": 0.5,
+        "minRunsObserved": 2,
+        "nextFireBufferMinutes": 15,
+        "passIntervalMinutes": 30,
+        "skipIfPendingCatchUp": false
+      }
+    },
+    {
+      "id": "2976814254",
+      "present": true,
+      "source": "defaultValue",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "3045399524",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": {
+        "alwaysLoad": true,
+        "enabled": [
+          "claude-fable-5[1m]",
+          "claude-fable-5",
+          "claude-fable-5-1[1m]",
+          "claude-fable-5-1",
+          "claude-opus-5-5[1m]",
+          "claude-opus-5-5",
+          "claude-sonnet-5-5[1m]",
+          "claude-sonnet-5-5"
+        ]
+      }
+    },
+    {
+      "id": "3067718716",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "3123045134",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "3214976288",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "3229517805",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": {
+        "autoPublishEnabled": true,
+        "debugLogEnabled": true,
+        "sharingEnabled": true,
+        "verifyToolsEnabled": true
+      }
+    },
+    {
+      "id": "3246569822",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "3285376524",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "3424551112",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "3436441689",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "3444158716",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "3469616823",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "3626967935",
+      "present": true,
+      "source": "defaultValue",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "3634338308",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "364911507",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": {
+        "chat_threads": {
+          "enabled": true,
+          "force": null,
+          "insiderForce": "treatment",
+          "salt": "chat_threads_v1",
+          "split": 0
+        },
+        "delegation": {
+          "enabled": true,
+          "force": "control",
+          "insiderForce": "treatment",
+          "salt": "delegation_v1",
+          "split": 0.1
+        },
+        "dictation": {
+          "enabled": true,
+          "force": null,
+          "insiderForce": "treatment",
+          "salt": "dictation_v1",
+          "split": 1
+        },
+        "dismiss_feedback": {
+          "enabled": true,
+          "force": "control",
+          "insiderForce": null,
+          "salt": "dismiss_feedback_v1",
+          "split": 0
+        },
+        "dismiss_feedback_v2": {
+          "enabled": true,
+          "force": "control",
+          "insiderForce": null,
+          "salt": "dismiss_feedback_v2",
+          "split": 0
+        },
+        "drafting": {
+          "enabled": true,
+          "force": null,
+          "insiderForce": null,
+          "salt": "drafting_v1",
+          "split": 0
+        },
+        "echo_antique_cli": {
+          "enabled": true,
+          "force": "treatment",
+          "insiderForce": null,
+          "salt": "antique_cli_v1",
+          "split": 0
+        },
+        "echo_connections": {
+          "enabled": true,
+          "force": "treatment",
+          "insiderForce": null,
+          "salt": "echo_connections",
+          "split": 0
+        },
+        "echo_ditto_direct": {
+          "enabled": true,
+          "force": null,
+          "insiderForce": "treatment",
+          "salt": "echo_ditto_direct",
+          "split": 0
+        },
+        "echo_intent_engine": {
+          "enabled": true,
+          "force": "control",
+          "insiderForce": null,
+          "salt": "intent_engine_v1",
+          "split": 0
+        },
+        "echo_kill_switch": {
+          "enabled": false,
+          "force": "control",
+          "salt": "kill_v1",
+          "split": 0
+        },
+        "echo_ocr_helper_transport": {
+          "enabled": true,
+          "force": "treatment",
+          "insiderForce": "treatment",
+          "salt": "ocr_helper_transport_v1",
+          "split": 0
+        },
+        "echo_plugins": {
+          "enabled": true,
+          "force": null,
+          "insiderForce": "treatment",
+          "salt": "echo_plugins_v1",
+          "split": 0
+        },
+        "echo_task_context_bootstrap": {
+          "enabled": true,
+          "force": "treatment",
+          "insiderForce": null,
+          "salt": "task_context_v1",
+          "split": 0
+        },
+        "echo_task_suggestions": {
+          "enabled": true,
+          "force": "control",
+          "insiderForce": null,
+          "salt": "task_suggestions_v1",
+          "split": 0.1
+        },
+        "echo_tomo": {
+          "enabled": true,
+          "force": "treatment",
+          "insiderForce": "treatment",
+          "salt": "tomo_v1",
+          "split": 0
+        },
+        "echo_tomo_desktop_metrics": {
+          "enabled": true,
+          "force": null,
+          "insiderForce": null,
+          "salt": "desktop_metrics_v1",
+          "split": 0
+        },
+        "echo_tomo_desktop_state": {
+          "enabled": true,
+          "force": "treatment",
+          "insiderForce": "treatment",
+          "salt": "echo_tomo_desktop_state",
+          "split": 0
+        },
+        "echo_tomo_rename": {
+          "enabled": true,
+          "force": "treatment",
+          "insiderForce": "treatment",
+          "salt": "tomo_rename_v1",
+          "split": 0
+        },
+        "echo_tomo_toast": {
+          "enabled": false,
+          "force": null,
+          "insiderForce": null,
+          "salt": "tomo_toast_v1",
+          "split": 0
+        },
+        "echo_unified_login": {
+          "enabled": true,
+          "force": "treatment",
+          "insiderForce": "treatment",
+          "salt": "ws5_v1",
+          "split": 1
+        },
+        "extraction_v2": {
+          "enabled": true,
+          "force": null,
+          "insiderForce": "treatment",
+          "salt": "extraction_v2_v1",
+          "split": 1
+        },
+        "gps_associate": {
+          "enabled": true,
+          "force": "treatment",
+          "insiderForce": null,
+          "salt": "gps_associate_v1",
+          "split": 0
+        },
+        "idle_loop_gating": {
+          "enabled": true,
+          "force": "treatment",
+          "insiderForce": "treatment",
+          "salt": "idle_loop_gating_v1",
+          "split": 0.5
+        },
+        "ie_morning": {
+          "enabled": true,
+          "force": null,
+          "insiderForce": "treatment",
+          "salt": "ie_morning_v1",
+          "split": 0
+        },
+        "intent_research": {
+          "enabled": true,
+          "force": "control",
+          "insiderForce": null,
+          "salt": "intent_research_v1",
+          "split": 0
+        },
+        "low_profile": {
+          "enabled": true,
+          "force": null,
+          "insiderForce": "treatment",
+          "salt": "low_profile_v1",
+          "split": 0
+        },
+        "morning_review": {
+          "enabled": true,
+          "force": "control",
+          "insiderForce": null,
+          "salt": "morning_review_v1",
+          "split": 0
+        },
+        "morning_review_v2": {
+          "enabled": true,
+          "force": null,
+          "insiderForce": "treatment",
+          "salt": "morning_review_v2_v1",
+          "split": 0
+        },
+        "notch_shell": {
+          "enabled": true,
+          "force": null,
+          "insiderForce": "treatment",
+          "salt": "notch-shell-2026-06",
+          "split": 0
+        },
+        "notif_pacing": {
+          "enabled": true,
+          "force": "control",
+          "insiderForce": "treatment",
+          "params": {
+            "spacingMinutes": 75
+          },
+          "salt": "notif_pacing_v1",
+          "split": 0
+        },
+        "notifications_v3": {
+          "enabled": true,
+          "force": "treatment",
+          "salt": "notifications_v3_v1",
+          "split": 0.3
+        },
+        "screen_graduation": {
+          "enabled": true,
+          "force": "control",
+          "salt": "screen_v1",
+          "split": 0
+        },
+        "silent_auto_update": {
+          "enabled": true,
+          "force": "treatment",
+          "insiderForce": "treatment",
+          "salt": "silent_auto_update_v1",
+          "split": 0
+        },
+        "tasks_tab": {
+          "enabled": true,
+          "insiderForce": "treatment",
+          "salt": "tasks_v1",
+          "split": 1
+        },
+        "update_install_gate": {
+          "enabled": true,
+          "force": "treatment",
+          "insiderForce": null,
+          "salt": "update_install_gate_v1",
+          "split": 0
+        }
+      }
+    },
+    {
+      "id": "3656976882",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "3671534883",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "3705360580",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "3758515526",
+      "present": true,
+      "source": "defaultValue",
+      "on": true,
+      "value": {
+        "displayName": "Anthropic & Partners",
+        "repo": "anthropics/knowledge-work-plugins",
+        "repoCCD": "anthropics/claude-plugins-official"
+      }
+    },
+    {
+      "id": "3796647113",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "3976799455",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "4018447017",
+      "present": true,
+      "source": "defaultValue",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "4074604942",
+      "present": true,
+      "source": "force",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "4116586025",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "4153934152",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "4175783504",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "4185841952",
+      "present": true,
+      "source": "defaultValue",
+      "on": true,
+      "value": {
+        "classify_prompt": {
+          "$sha256": "57cab144f960b25e",
+          "$len": 1089
+        },
+        "max_tokens_per_item": 80,
+        "model": "claude-haiku-4-5-20251001",
+        "summarize_prompt": {
+          "$sha256": "08ff6436e980ec70",
+          "$len": 92
+        }
+      }
+    },
+    {
+      "id": "4202409342",
+      "present": true,
+      "source": "defaultValue",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "4217215889",
+      "present": true,
+      "source": "defaultValue",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "4288313598",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "434204418",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "583857784",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "66187241",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
+      "id": "714014285",
+      "present": true,
+      "source": "force",
+      "on": true,
+      "value": true
+    },
+    {
+      "id": "822840158",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "942840715",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "946844604",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    }
+  ]
+}
