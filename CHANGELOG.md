@@ -1,5 +1,58 @@
 # Changelog
 
+## v2.65.0 — 2026-10-07 (this fork) — Desktop 2.26454.0, gates switched off server-side, and shared /tmp in the Cowork guest
+
+222 lessons across 61 chapters (one new lesson, one new chapter). Sources: the Desktop asar 2.26454.0 diffed against
+2.16120.0 and 2.19675.0 with agent 2.1.289, the GrowthBook cache decoded on 2026-10-07, live local and cloud runs on
+2026-10-05 to 2026-10-07, and code reads of CLI 2.1.289. The Desktop code baseline in the state layer stays 2.7032.0.
+
+**Desktop 2.26454.0 (new Ch61/L222)**
+
+- Every Cowork session gets `CLAUDE_CODE_SIMPLE` and `CLAUDE_AGENT_SDK_MCP_NO_PREFIX` as `"0"`. The same two names are
+  dropped from the user-configured variables a Code-tab session forwards.
+- A new managed-config list, `thinkingAlwaysOnModels`, gives a listed model the full 31999 thinking budget even with
+  extended thinking off. It is unset by default.
+- From 2.19675.0, a scheduled task created from a Cowork session starts in Auto mode when the organization allows it,
+  the account is first-party and kill switch 4175783504 is off (unserved). Read from the code, not tested live.
+- Tool asks in unattended turns go through an escalation step, logged as shown to the user or denied. New control
+  request `get_task_output`.
+- Sonnet 5.5 joins the Cowork model allow-list. The rules that decide whether a task runs locally or in the cloud are
+  unchanged, consistent with L210.
+
+**Switched off on the server, 2026-10-07**
+
+- The cloud memory relay (946844604) and the Computer Use permission gate (2486083521) are served off; the code that
+  reads them is unchanged. While the relay is off, a server named `memory` in `claude_desktop_config.json` is used again.
+- The CLI-plugin credential broker (`cli_plugin`, 2307090146) is still off.
+- The sweep that moves scheduled tasks to the cloud now runs every 30 minutes instead of hourly.
+
+**Corrections**
+
+- `suggest_skills` has had one gate since Desktop 1.46388.3. The proactive gate and its session field were removed, and
+  the tool is always the proactive variant with a `trigger` property (L129, state page, registry).
+- Four gates the registry called dark-launched are not read by any Desktop code (1598976391, 2039376689 and 2976814254
+  were removed in the builds named; 364911507 has no reference in any held build). `CLAUDE_CODE_DISABLE_DIR_SYNC` is
+  gone from the agent by 2.1.286.
+
+**Cowork guest and sessions (L117, L210)**
+
+- `/tmp` in the local Cowork guest is one directory shared by every session and outlives them. Two sessions report the
+  same boot id, and a real skill run failed writing a fixed `/tmp` name another session owned. Never use a fixed
+  `/tmp` name in a Cowork skill.
+- After 2026-10-06, a Personal Max organization runs new tasks in the cloud and its "Only on this computer" setting is
+  gone; a Team organization still runs them locally.
+
+**Smaller notes**
+
+- WebSearch limits: each call is one side request with up to 8 uses, and a per-session cap (default 200) returns a
+  normal "no search ran" result, not an error (L134).
+
+**Maintainer tools**
+
+- Vocabulary updates no longer carry a term that was withheld for a collision into the next update as a kept term.
+- Retrieval gate moves to baseline-v8. Two drops are accepted and recorded: pl-0200 (lesson 89's new terms) and
+  pl-0128 (rank 20 to 21, through term weights).
+
 ## v2.64.0 — 2026-10-05 (this fork) — Dispatch hooks by CLI version, the Desktop's form for a skill's first question, and what a cloud session can reach
 
 Counts unchanged (221 lessons, 60 chapters). New facts come from probe runs on 2026-10-04 and 2026-10-05: local and cloud
