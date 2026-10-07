@@ -796,7 +796,7 @@ off by default.
   `coworkNativeFilePreview`, not bridge/dispatch child) and `screenshot_artifact`
   (artifact family); `canVerifyArtifacts` = `3229517805.verifyToolsEnabled` alone.
   Imagine availability = `3444158716`, not HIPAA, not org-blocked (`2742800629`) (L221).
-- **Sharing local artifacts.** `3229517805.sharingEnabled` (true 2026-10-01) gates
+- **Sharing local artifacts.** `3229517805.sharingEnabled` (true 2026-10-01 and 2026-10-07) gates
   the Desktop's share/unshare/auto-publish calls on the local Artifacts store, the
   store the `mcp__cowork__` tools write: a user can share a legacy-made artifact
   (`share_from_content`; refused under HIPAA or over 1M characters), and with

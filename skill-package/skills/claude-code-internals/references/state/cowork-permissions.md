@@ -256,7 +256,8 @@ both **force-ON** in the 2026-08-13 fcache:
   A remote-session path hardcodes it to `true`. **Not** a harm classifier —
   see below for the feature it was previously conflated with.
 - **`2486083521` (`cuCanUseToolEnabled`) is the Computer Use equivalent** —
-  same shape, additionally excluded for `sessionType` `radar`/`chat`.
+  same shape, additionally excluded for `sessionType` `radar`/`chat`. Off
+  (`defaultValue`) at the 2026-10-07 capture after force-ON through 2026-09-29.
 
 Both follow a **cache-once-per-build shape** shared with `frameArtifactsTurnEnabled`
 and Ch37/L129's `builtSystemPrompt` stickiness: the gate is read live only on

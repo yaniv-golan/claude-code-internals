@@ -57,7 +57,7 @@ lessons (see frontmatter).
    `network[]` merged into the session's egress allowlist. **The whole
    pipeline — UI field, storage, and invocation-time injection — is
    dark-launched behind GrowthBook gate `2307090146` (`cli_plugin`), off
-   by default.** Two independent gate checks:
+   by default** (still off at the 2026-10-07 capture, Desktop 2.26454.0). Two independent gate checks:
    - Renderer (`pJe`→`GXr`): with the gate off, `clis` never reaches the
      web UI — a correctly-authored manifest shows no credential field,
      with no error.
