@@ -1,9 +1,9 @@
 {
   "format": 1,
   "capture": {
-    "content16": "d7f213aee960c12d",
-    "embedded_timestamp": 1791363742444,
-    "feature_count": 398,
+    "content16": "b929b391e9696b0b",
+    "embedded_timestamp": 1791394365654,
+    "feature_count": 400,
     "observed_at": "2026-10-07",
     "mode": "1p"
   },
@@ -354,7 +354,8 @@
         "minRunsObserved": 2,
         "nextFireBufferMinutes": 15,
         "passIntervalMinutes": 30,
-        "skipIfPendingCatchUp": false
+        "skipIfPendingCatchUp": false,
+        "subHourlyCronTelemetryEnabled": true
       }
     },
     {
