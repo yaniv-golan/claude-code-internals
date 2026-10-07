@@ -1,5 +1,37 @@
 # Changelog
 
+## v2.66.0 — 2026-10-08 (this fork) — How often the Desktop form wins, hooks that miss it, and restamps that compare gate values
+
+222 lessons across 61 chapters (no new lessons). Sources: local Cowork transcripts on Desktop 2.19675.0 (agent 2.1.286,
+2026-10-02 to 2026-10-06), headless Agent SDK runs on CLI 2.1.141 and 2.1.289 (2026-10-07), and the GrowthBook cache
+decoded on 2026-10-07.
+
+**Asking the user (L205, state page, author page)**
+
+- The Desktop's "use the form" instruction usually wins, not always. In every founder-skills session on Opus 5.5 under
+  Desktop 2.19675.0 that asked anything, the first question went through the form in 13 of 14 and through
+  AskUserQuestion in one. Both such sessions on Opus 4.8 also used the form first.
+- A skill step that scripts one exact AskUserQuestion question, with fixed wording and options, stayed on
+  AskUserQuestion in 3 of 3 sessions of one probe skill (Opus 4.8). That fits the instruction's own exception for
+  one-off clarifications.
+- A hook that checks whether something was asked must read `show_widget` inputs too: a real gate that looked only for
+  AskUserQuestion held two dispatches (one session). The form's answer arrives as a plain user message, so a hook that
+  looks for the last user prompt takes it for a new prompt (read from that hook's code).
+
+**Headless AskUserQuestion (L107)**
+
+- Under `bypassPermissions`, an `allowedTools` list did not change the tools offered on CLI 2.1.141 and changed them
+  slightly on 2.1.289 (Glob and Grep added, ListAgents removed). One run per condition; other modes not tested.
+
+**State layer**
+
+- Restamped to the latest 2026-10-07 cache. Haiku 5.5 (`claude-haiku-5-5` and its `[1m]` variant) joins the Cowork
+  model allow-list (L222, model-landscape), and the cloud-migration sweep's config gained a
+  `subHourlyCronTelemetryEnabled` setting.
+- Restamps now compare the values inside every tracked gate with the last accepted capture and refuse a change
+  until it is reviewed, so a changed interval inside a gate can no longer slip through. The release tool runs that
+  check before it tags.
+
 ## v2.65.0 — 2026-10-07 (this fork) — Desktop 2.26454.0, gates switched off server-side, and shared /tmp in the Cowork guest
 
 222 lessons across 61 chapters (one new lesson, one new chapter). Sources: the Desktop asar 2.26454.0 diffed against
