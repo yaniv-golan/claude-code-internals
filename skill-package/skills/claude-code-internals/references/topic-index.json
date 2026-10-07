@@ -10463,7 +10463,7 @@
       "lesson_number": "107",
       "file": "21-cowork-control-protocol.md",
       "startLine": 22,
-      "endLine": 442,
+      "endLine": 445,
       "keywords": [
         "cowork-spawn-contract",
         "stream-json",
@@ -10526,6 +10526,7 @@
         "always-deny-rules",
         "mcp-config",
         "add-rules",
+        "bypass-permissions",
         "ANTHROPIC_API_KEY",
         "ANTHROPIC_ENVIRONMENT_KEY",
         "output-format",
@@ -10578,12 +10579,14 @@
         "plugin root path fails in bash but works for read",
         "ask user question denied or missing in headless mode",
         "run succeeds but questions never answered",
-        "question tool returns permission denial error"
+        "question tool returns permission denial error",
+        "does allowed tools list change offered tools in bypass mode"
       ],
       "identifier_keys": [
         "always-deny-rules",
         "mcp-config",
         "add-rules",
+        "bypass-permissions",
         "ANTHROPIC_API_KEY",
         "ANTHROPIC_ENVIRONMENT_KEY",
         "output-format",
@@ -10638,13 +10641,14 @@
         "plugin root path fails in bash but works for read",
         "ask user question denied or missing in headless mode",
         "run succeeds but questions never answered",
-        "question tool returns permission denial error"
+        "question tool returns permission denial error",
+        "does allowed tools list change offered tools in bypass mode"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-05",
-        "terms_sha256": "d0a104fae901aed55f4c27769a26ed58630aca13532867d7e0249561ab6e8838"
+        "date": "2026-10-07",
+        "terms_sha256": "32e8f05641c38103f34d9533143f2c0394244714a10dc4ce6246863db3855daa"
       }
     },
     {
@@ -19955,7 +19959,7 @@
       "lesson_number": "205",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
       "startLine": 61,
-      "endLine": 106,
+      "endLine": 108,
       "keywords": [
         "visualize-server",
         "mcp__visualize__show_widget",
@@ -19971,6 +19975,7 @@
         "visualize form",
         "skill input form",
         "AskUserQuestion or form",
+        "read_me",
         "data_viz",
         "widget_code",
         "loading_messages",
@@ -19982,7 +19987,6 @@
         "model picks between form and question prompt",
         "skill input form answers arrive as chat message",
         "cowork skill asks user for input inconsistently",
-        "why did my skill use a widget to ask me",
         "on-screen form for collecting skill arguments",
         "does claude always use the form to ask",
         "handle answers from both form and question tool",
@@ -19991,10 +19995,13 @@
         "instruction to prefer form not enforced",
         "form tools missing but instruction present",
         "how often does cowork use the input form",
-        "skill says ask questions but form appears",
-        "form hint not injected for my skill"
+        "form hint not injected for my skill",
+        "hook missed question asked through form",
+        "make skill ask an exact scripted question",
+        "does the form appear with other claude models"
       ],
       "identifier_keys": [
+        "read_me",
         "data_viz",
         "widget_code",
         "loading_messages",
@@ -20008,7 +20015,6 @@
         "model picks between form and question prompt",
         "skill input form answers arrive as chat message",
         "cowork skill asks user for input inconsistently",
-        "why did my skill use a widget to ask me",
         "on-screen form for collecting skill arguments",
         "does claude always use the form to ask",
         "handle answers from both form and question tool",
@@ -20017,14 +20023,16 @@
         "instruction to prefer form not enforced",
         "form tools missing but instruction present",
         "how often does cowork use the input form",
-        "skill says ask questions but form appears",
-        "form hint not injected for my skill"
+        "form hint not injected for my skill",
+        "hook missed question asked through form",
+        "make skill ask an exact scripted question",
+        "does the form appear with other claude models"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-05",
-        "terms_sha256": "ec959dc8ee64a357938fc14a254e14551b297ec2a8361c33ac884158ba8080c2"
+        "date": "2026-10-07",
+        "terms_sha256": "f15d2a5ba13cb28205006892b3ba1c3797061e02cde157525d622c6c83dbf87e"
       }
     },
     {
@@ -20032,8 +20040,8 @@
       "title": "What Grants save_skill, and a Second Server-Side Switch Channel",
       "lesson_number": "206",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
-      "startLine": 110,
-      "endLine": 135,
+      "startLine": 112,
+      "endLine": 137,
       "keywords": [
         "save_skill",
         "canSaveSkill",
@@ -20120,8 +20128,8 @@
       "title": "Five Smaller Mechanics: Slash Skills, the OAuth Descriptor, Hook Feedback, a Plugin-Server Allowlist, an Unlisted Build",
       "lesson_number": "207",
       "file": "52-fork-relay-input-channels-save-skill-mechanics.md",
-      "startLine": 139,
-      "endLine": 164,
+      "startLine": 141,
+      "endLine": 166,
       "keywords": [
         "slash skill invocation",
         "command-name",
@@ -39014,6 +39022,9 @@
     "allow-managed-permission-rules-only": [
       25
     ],
+    "bypass-permissions": [
+      107
+    ],
     "side-query": [
       25
     ],
@@ -42208,6 +42219,9 @@
     ],
     "show-widget.html": [
       105
+    ],
+    "read_me": [
+      205
     ],
     "connect-domains": [
       105
@@ -50593,6 +50607,9 @@
     "question tool returns permission denial error": [
       107
     ],
+    "does allowed tools list change offered tools in bypass mode": [
+      107
+    ],
     "hidden settings for cowork desktop agent": [
       108
     ],
@@ -55130,9 +55147,6 @@
     "cowork skill asks user for input inconsistently": [
       205
     ],
-    "why did my skill use a widget to ask me": [
-      205
-    ],
     "on-screen form for collecting skill arguments": [
       205
     ],
@@ -55157,10 +55171,16 @@
     "how often does cowork use the input form": [
       205
     ],
-    "skill says ask questions but form appears": [
+    "form hint not injected for my skill": [
       205
     ],
-    "form hint not injected for my skill": [
+    "hook missed question asked through form": [
+      205
+    ],
+    "make skill ask an exact scripted question": [
+      205
+    ],
+    "does the form appear with other claude models": [
       205
     ],
     "why can cowork suddenly save skills": [

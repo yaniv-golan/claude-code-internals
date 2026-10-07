@@ -136,7 +136,7 @@
       "blurb": "Cowork steers skills toward the elicitation form, not AskUserQuestion.",
       "summary": "When your skill is invoked, the host injects an instruction telling the model to collect anything it still needs through an inline elicitation form rather than through AskUserQuestion, and the answers come back as bullet points in the next message instead of as a tool result. Declaring an argument-hint is what makes that path work well. This is a steer, not a wall: AskUserQuestion still exists and still functions.",
       "open_questions": [
-        "The instruction is injected text, not an enforcement boundary. Whether a model follows it in any given run has not been observed here — only that Cowork sends it, and that the flag delivering it read on at the last capture."
+        "The instruction is injected text, not an enforcement boundary, and the model usually but not always follows it. On Desktop 2.19675.0, in every founder-skills session on Opus 5.5 that asked anything, the first question went through the form in 13 of 14, and in both such sessions on Opus 4.8. Other skills, models and builds were not counted."
       ]
     },
     {

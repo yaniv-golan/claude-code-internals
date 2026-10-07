@@ -1242,13 +1242,13 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 106 · 20-desktop-cli-plugin-credential-broker.md:177 · Methodology note (the transferable lesson)
 107 · 21-cowork-control-protocol.md:35 · Part A — Cowork mode is env, not a flag
 107 · 21-cowork-control-protocol.md:59 · Part B — The spawn flags that matter
-107 · 21-cowork-control-protocol.md:94 · Part C — The stream-json control protocol (the stable seam)
-107 · 21-cowork-control-protocol.md:130 · Part C2 — control-protocol request subtypes (newly surfaced in verification)
-107 · 21-cowork-control-protocol.md:153 · Part D — MCP delivery: the non-obvious one
-107 · 21-cowork-control-protocol.md:180 · Part E — Permission model and tool registry (layered, not blanket-allow)
-107 · 21-cowork-control-protocol.md:241 · ADDENDUM (2026-08-13) — the `Skill` matcher's `additionalContext` is the elicitation injection
-107 · 21-cowork-control-protocol.md:378 · Part F — Auth & runtime gotchas (for a faithful driver)
-107 · 21-cowork-control-protocol.md:408 · Methodology
+107 · 21-cowork-control-protocol.md:97 · Part C — The stream-json control protocol (the stable seam)
+107 · 21-cowork-control-protocol.md:133 · Part C2 — control-protocol request subtypes (newly surfaced in verification)
+107 · 21-cowork-control-protocol.md:156 · Part D — MCP delivery: the non-obvious one
+107 · 21-cowork-control-protocol.md:183 · Part E — Permission model and tool registry (layered, not blanket-allow)
+107 · 21-cowork-control-protocol.md:244 · ADDENDUM (2026-08-13) — the `Skill` matcher's `additionalContext` is the elicitation injection
+107 · 21-cowork-control-protocol.md:381 · Part F — Auth & runtime gotchas (for a faithful driver)
+107 · 21-cowork-control-protocol.md:411 · Methodology
 108 · 22-cowork-env-gates-protocol.md:39 · Part A — environment variables (binary-verified, current as of 2.1.170 / asar 1.12603.1)
 108 · 22-cowork-env-gates-protocol.md:50 · Model / effort / thinking control
 108 · 22-cowork-env-gates-protocol.md:62 · Cowork / background-session runtime
@@ -1713,17 +1713,17 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 204 · 52-fork-relay-input-channels-save-skill-mechanics.md:51 · For a skill author
 205 · 52-fork-relay-input-channels-save-skill-mechanics.md:65 · The form is a visualisation tool
 205 · 52-fork-relay-input-channels-save-skill-mechanics.md:74 · Two gates
-205 · 52-fork-relay-input-channels-save-skill-mechanics.md:85 · On Desktop 2.19675.0, the first question goes to the form
+205 · 52-fork-relay-input-channels-save-skill-mechanics.md:85 · On Desktop 2.19675.0, the first question usually goes to the form
 205 · 52-fork-relay-input-channels-save-skill-mechanics.md:91 · Measured
 205 · 52-fork-relay-input-channels-save-skill-mechanics.md:104 · For a skill author
-206 · 52-fork-relay-input-channels-save-skill-mechanics.md:114 · The computation (asar 2.7032.0, chunk `Cpo4PQ3e`)
-206 · 52-fork-relay-input-channels-save-skill-mechanics.md:125 · The access list
-206 · 52-fork-relay-input-channels-save-skill-mechanics.md:133 · When it appeared on this machine
-207 · 52-fork-relay-input-channels-save-skill-mechanics.md:141 · A `/skill` command leaves no Skill tool call
-207 · 52-fork-relay-input-channels-save-skill-mechanics.md:145 · Cowork passes the OAuth token through a file descriptor
-207 · 52-fork-relay-input-channels-save-skill-mechanics.md:149 · One feedback path for four hook events
-207 · 52-fork-relay-input-channels-save-skill-mechanics.md:158 · An admin allow-list stops plugin MCP servers from running locally
-207 · 52-fork-relay-input-channels-save-skill-mechanics.md:162 · Desktop can receive a build the public feed never lists
+206 · 52-fork-relay-input-channels-save-skill-mechanics.md:116 · The computation (asar 2.7032.0, chunk `Cpo4PQ3e`)
+206 · 52-fork-relay-input-channels-save-skill-mechanics.md:127 · The access list
+206 · 52-fork-relay-input-channels-save-skill-mechanics.md:135 · When it appeared on this machine
+207 · 52-fork-relay-input-channels-save-skill-mechanics.md:143 · A `/skill` command leaves no Skill tool call
+207 · 52-fork-relay-input-channels-save-skill-mechanics.md:147 · Cowork passes the OAuth token through a file descriptor
+207 · 52-fork-relay-input-channels-save-skill-mechanics.md:151 · One feedback path for four hook events
+207 · 52-fork-relay-input-channels-save-skill-mechanics.md:160 · An admin allow-list stops plugin MCP servers from running locally
+207 · 52-fork-relay-input-channels-save-skill-mechanics.md:164 · Desktop can receive a build the public feed never lists
 208 · 53-routine-migration-plugin-hooks-by-lane.md:21 · Observed
 208 · 53-routine-migration-plugin-hooks-by-lane.md:35 · The sweep
 208 · 53-routine-migration-plugin-hooks-by-lane.md:52 · Where a scheduled task is stored
@@ -1899,15 +1899,15 @@ state:plugins-skills-hooks · state/plugins-skills-hooks.md:476 · Elicitation i
 state:plugins-skills-hooks · state/plugins-skills-hooks.md:515 · `save_skill` / `canSaveSkill` (L206)
 state:plugins-skills-hooks · state/plugins-skills-hooks.md:533 · Forked skills are relayed, not passed through (L204)
 state:plugins-skills-hooks · state/plugins-skills-hooks.md:542 · Two input channels (L205)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:556 · Server attribution reaches the agent by a computed env key (L181)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:581 · Hooks as function modules — `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS` (L183)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:600 · `activeSkill` scope & attribution (internal, not in the stream)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:621 · CLI-plugin credential broker
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:632 · Skill/plugin discovery tools — what the Cowork model actually sees (L129/L131)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:656 · Complete rendered surface — 13 tools / 5 servers (as of asar 1.24012.1, agent 2.1.217)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:683 · `when_to_use` does not reach the Cowork listing
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:703 · `paths:` silently suppresses a skill
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:722 · Input schemas (verbatim, 1.24012.1)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:742 · `suggest_skills` has two states (from Desktop 1.46388.3)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:760 · Output envelopes
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:779 · Bundled skills & MCP-contributed skills (L131)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:557 · Server attribution reaches the agent by a computed env key (L181)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:582 · Hooks as function modules — `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS` (L183)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:601 · `activeSkill` scope & attribution (internal, not in the stream)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:622 · CLI-plugin credential broker
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:633 · Skill/plugin discovery tools — what the Cowork model actually sees (L129/L131)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:657 · Complete rendered surface — 13 tools / 5 servers (as of asar 1.24012.1, agent 2.1.217)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:684 · `when_to_use` does not reach the Cowork listing
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:704 · `paths:` silently suppresses a skill
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:723 · Input schemas (verbatim, 1.24012.1)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:743 · `suggest_skills` has two states (from Desktop 1.46388.3)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:761 · Output envelopes
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:780 · Bundled skills & MCP-contributed skills (L131)

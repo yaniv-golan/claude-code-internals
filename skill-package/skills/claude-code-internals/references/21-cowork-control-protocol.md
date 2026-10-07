@@ -73,6 +73,9 @@ Ch22/L105 (`subtype:"elicitation"`/`can_use_tool`/`hook_callback`/`mcp_message`/
   the result's `permission_denials`, in `default` and in `bypassPermissions` alike; with SDK 0.3.289 / CLI
   2.1.289 the tool is **not in `init.tools` at all** (also with `CLAUDE_CODE_ENABLE_ASK_USER_QUESTION_TOOL=true`).
   Either way the run ends `success`, so a `success` result does not mean every question was answered.
+  Under `bypassPermissions` (measured 2026-10-07, one run per cell), an `allowedTools` list did not change
+  `init.tools` on CLI 2.1.141 (27 tools either way; AskUserQuestion, CronCreate and EnterPlanMode offered
+  though not listed); on 2.1.289 it did (+Glob, +Grep, −ListAgents). Other permission modes were not tested.
 - Effort/thinking ride CLI flags, **not** `CLAUDE_EFFORT`. The desktop passes
   `--max-thinking-tokens 31999` (or `--thinking disabled`; thinking is a strict boolean, Ch34/L120) and
   `--effort <level>` **only when the session carries an effort value** — the spawn reads session state

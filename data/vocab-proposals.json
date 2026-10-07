@@ -2479,21 +2479,12 @@
     "107": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-05",
-      "input_sha256": "f1a4668451dc65b0748262ba08fa0dcf62632ec9bf54f4ed417bf98f038f27ac",
-      "prior_terms_sha256": "dce5f6a2dfc764305a655b4285c651ef2bcf1c938d40587ec59a31f2b326a3a8",
+      "date": "2026-10-07",
+      "input_sha256": "6a35749ed5f9d329cd81acfe7b369c9250a7169aba785450f7124503a439d23f",
+      "prior_terms_sha256": "d0a104fae901aed55f4c27769a26ed58630aca13532867d7e0249561ab6e8838",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "c7eef5d874983e057f600fa9b8481110bc955a1c",
-      "replaced": [
-        "ask user question auto dismissed in headless mode"
-      ],
-      "dropped": [
-        {
-          "term": "ask user question auto dismissed in headless mode",
-          "why": "inaccurate",
-          "replacement": "ask user question denied or missing in headless mode"
-        }
-      ],
+      "previous_text": "6aa6944fde75dd9b8d84ae605fe95e01d9bd3df8",
+      "replaced": [],
       "terms": [
         "build headless driver for cowork agent",
         "how to drive cowork agent from my own program",
@@ -2511,7 +2502,8 @@
         "plugin root path fails in bash but works for read",
         "ask user question denied or missing in headless mode",
         "run succeeds but questions never answered",
-        "question tool returns permission denial error"
+        "question tool returns permission denial error",
+        "does allowed tools list change offered tools in bypass mode?"
       ]
     },
     "108": {
@@ -4920,12 +4912,27 @@
     "205": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-05",
-      "input_sha256": "71881a59690f22e5d3b376d28e9e7a16ce6610057351c8fd86ac6a7a2f2ead7d",
-      "prior_terms_sha256": "67522032f7b07f346159961e9e4e4355d7871dcf71678df460307e7a0a1312b9",
+      "date": "2026-10-07",
+      "input_sha256": "ab9c960543712fc88a217864ffcc7e2b393e83455c893623632e7b222ca0d026",
+      "prior_terms_sha256": "94e0ff69750733c145526f7b2227ae94a5dfc3742addef040756cf7cc872b443",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "621b9a185d8612261c3105a36aa0fea8b83eb8eb",
-      "replaced": [],
+      "previous_text": "83deb4e76b8ef285c0fd5d91466aff50210005ed",
+      "replaced": [
+        "why did my skill use a widget to ask me",
+        "skill says ask questions but form appears"
+      ],
+      "dropped": [
+        {
+          "term": "skill says ask questions but form appears",
+          "why": "duplicate",
+          "duplicate_of": "skill shows a form instead of asking questions"
+        },
+        {
+          "term": "why did my skill use a widget to ask me",
+          "why": "duplicate",
+          "duplicate_of": "skill shows a form instead of asking questions"
+        }
+      ],
       "terms": [
         "skill shows a form instead of asking questions",
         "why does Cowork sometimes pop up an input form",
@@ -4933,7 +4940,6 @@
         "model picks between form and question prompt",
         "skill input form answers arrive as chat message",
         "Cowork skill asks user for input inconsistently",
-        "why did my skill use a widget to ask me",
         "on-screen form for collecting skill arguments",
         "does Claude always use the form to ask",
         "handle answers from both form and question tool",
@@ -4942,15 +4948,10 @@
         "instruction to prefer form not enforced",
         "form tools missing but instruction present",
         "how often does Cowork use the input form",
-        "skill says ask questions but form appears",
-        "first question uses form, later ones don't",
-        "form hint not injected for my skill"
-      ],
-      "withheld": [
-        {
-          "term": "first question uses form, later ones don't",
-          "qid": "pl-0168"
-        }
+        "form hint not injected for my skill",
+        "hook missed question asked through form",
+        "make skill ask an exact scripted question",
+        "does the form appear with other Claude models"
       ]
     },
     "206": {

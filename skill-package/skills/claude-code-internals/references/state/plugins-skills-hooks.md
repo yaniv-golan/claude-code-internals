@@ -547,9 +547,10 @@ The "collect input with a form" instruction (gate `286376943`) and the
 AskUserQuestion stays available and the model chose — 31 form / 27 AskUserQuestion / 13 both in
 71 sessions that asked anything. From 2.16120.0 the instruction needs both gates
 (`3444158716` via the org's inline-visualizations check; 2.9939.4 reads only the first). It
-reaches only skills in the table the session's plugin loader fills. On 2.19675.0 (agent 2.1.286, four local runs, 2026-10-05) the model asked a plugin
-skill's first question with the form every time, against a `SKILL.md` that said AskUserQuestion,
-and later questions with AskUserQuestion. The instruction is invisible in `audit.jsonl`; the
+reaches only skills in the table the session's plugin loader fills. On 2.19675.0 (every founder-skills session on Opus 5.5, agent 2.1.286, 15 sessions, 2026-10-05/06)
+the model asked a plugin skill's first question with the form in 13 of the 14 that asked anything, against a `SKILL.md` that
+said AskUserQuestion, and with AskUserQuestion in one. A hook that checks whether something was
+asked must read `show_widget` inputs too (MEASURED, one session). The instruction is invisible in `audit.jsonl`; the
 transcript has it as a `hook_additional_context` attachment and `main.log` as
 `[elicitation] hint injected …` (as of Desktop 2.19675.0, L205).
 
