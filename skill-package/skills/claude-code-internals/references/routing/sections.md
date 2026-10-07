@@ -1415,27 +1415,28 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 129 · 34-skill-discovery-vcs-events-containment.md:115 · Gating & live state
 129 · 34-skill-discovery-vcs-events-containment.md:119 · ADDENDUM (2026-07-24) — verbatim `isEnabled` predicates, the three-state builder, and exact stickiness
 129 · 34-skill-discovery-vcs-events-containment.md:157 · ADDENDUM 2026-08-05 — the gate is now ON, and it has a THIRD effect
-130 · 34-skill-discovery-vcs-events-containment.md:212 · Emit floor is 2.1.216, not 2.1.217
-130 · 34-skill-discovery-vcs-events-containment.md:216 · Agent-side emit is ungated
-130 · 34-skill-discovery-vcs-events-containment.md:220 · Emission is git-operation-driven, NOT per-run
-130 · 34-skill-discovery-vcs-events-containment.md:229 · Full `type:"system"` subtype set (2.1.217)
-130 · 34-skill-discovery-vcs-events-containment.md:233 · Consumer wiring (Desktop, first-party)
-130 · 34-skill-discovery-vcs-events-containment.md:246 · Why this exists — the Managed Agents fleet (mechanism → intent)
-131 · 34-skill-discovery-vcs-events-containment.md:310 · The `allowedTools` spawn list — CONFIRMED, and PRE-EXISTING (not 1.24012.1 drift)
-131 · 34-skill-discovery-vcs-events-containment.md:326 · ADDENDUM (2026-07-24) — the 9-vs-13 delta is deliberate, and it is the mutating scheduled-task tools
-131 · 34-skill-discovery-vcs-events-containment.md:341 · `getMcpSkillSources()` — dead code (`0→1`, NEW)
-131 · 34-skill-discovery-vcs-events-containment.md:345 · Bundled skill `morning` — REMOVED
-131 · 34-skill-discovery-vcs-events-containment.md:349 · `coworkTokens` — usage accounting (`0→2`, NEW)
-131 · 34-skill-discovery-vcs-events-containment.md:353 · `harnessCwd` — NEW (`0→5`) and a naming trap
-131 · 34-skill-discovery-vcs-events-containment.md:357 · OAuth-refresh gates (both `0→1`, NEW)
-131 · 34-skill-discovery-vcs-events-containment.md:364 · Gate state from the live fcache — absence belongs to a snapshot
-132 · 34-skill-discovery-vcs-events-containment.md:419 · What was observed (first-party)
-132 · 34-skill-discovery-vcs-events-containment.md:431 · Why the obvious explanation is wrong
-132 · 34-skill-discovery-vcs-events-containment.md:435 · What is NOT confirmed
-132 · 34-skill-discovery-vcs-events-containment.md:439 · Status on Desktop 2.19675.0 (2026-10-02)
-132 · 34-skill-discovery-vcs-events-containment.md:443 · Why it matters (the payload of this lesson)
-132 · 34-skill-discovery-vcs-events-containment.md:449 · Identifier table
-132 · 34-skill-discovery-vcs-events-containment.md:470 · What this means for skill and agent authors
+129 · 34-skill-discovery-vcs-events-containment.md:206 · ADDENDUM 2026-10-07 — two states from Desktop 1.46388.3
+130 · 34-skill-discovery-vcs-events-containment.md:220 · Emit floor is 2.1.216, not 2.1.217
+130 · 34-skill-discovery-vcs-events-containment.md:224 · Agent-side emit is ungated
+130 · 34-skill-discovery-vcs-events-containment.md:228 · Emission is git-operation-driven, NOT per-run
+130 · 34-skill-discovery-vcs-events-containment.md:237 · Full `type:"system"` subtype set (2.1.217)
+130 · 34-skill-discovery-vcs-events-containment.md:241 · Consumer wiring (Desktop, first-party)
+130 · 34-skill-discovery-vcs-events-containment.md:254 · Why this exists — the Managed Agents fleet (mechanism → intent)
+131 · 34-skill-discovery-vcs-events-containment.md:318 · The `allowedTools` spawn list — CONFIRMED, and PRE-EXISTING (not 1.24012.1 drift)
+131 · 34-skill-discovery-vcs-events-containment.md:334 · ADDENDUM (2026-07-24) — the 9-vs-13 delta is deliberate, and it is the mutating scheduled-task tools
+131 · 34-skill-discovery-vcs-events-containment.md:349 · `getMcpSkillSources()` — dead code (`0→1`, NEW)
+131 · 34-skill-discovery-vcs-events-containment.md:353 · Bundled skill `morning` — REMOVED
+131 · 34-skill-discovery-vcs-events-containment.md:357 · `coworkTokens` — usage accounting (`0→2`, NEW)
+131 · 34-skill-discovery-vcs-events-containment.md:361 · `harnessCwd` — NEW (`0→5`) and a naming trap
+131 · 34-skill-discovery-vcs-events-containment.md:365 · OAuth-refresh gates (both `0→1`, NEW)
+131 · 34-skill-discovery-vcs-events-containment.md:372 · Gate state from the live fcache — absence belongs to a snapshot
+132 · 34-skill-discovery-vcs-events-containment.md:427 · What was observed (first-party)
+132 · 34-skill-discovery-vcs-events-containment.md:439 · Why the obvious explanation is wrong
+132 · 34-skill-discovery-vcs-events-containment.md:443 · What is NOT confirmed
+132 · 34-skill-discovery-vcs-events-containment.md:447 · Status on Desktop 2.19675.0 (2026-10-02)
+132 · 34-skill-discovery-vcs-events-containment.md:451 · Why it matters (the payload of this lesson)
+132 · 34-skill-discovery-vcs-events-containment.md:457 · Identifier table
+132 · 34-skill-discovery-vcs-events-containment.md:478 · What this means for skill and agent authors
 137 · 35-verified-new-v2.1.217.md:131 · The bigger picture — what Anthropic is doing across v2.1.198 → v2.1.217
 137 · 35-verified-new-v2.1.217.md:147 · What this means for skill and agent authors
 138 · 36-cowork-lanes-mounts-snapshot-discipline.md:23 · The oracle
@@ -1799,6 +1800,14 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:104 · When they are served
 221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:113 · Imagine availability
 221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:117 · For an author
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:17 · Two shell settings no longer reach Cowork
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:27 · Scheduled tasks created from a session start in Auto mode
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:39 · Escalated asks in unattended turns
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:43 · Control protocol
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:47 · Gates the server switched off on 2026-10-07
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:62 · Gates new in this window
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:71 · Local or cloud placement is unchanged
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:75 · For an author
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)
@@ -1833,23 +1842,24 @@ state:cowork-architecture · state/cowork-architecture.md:888 · Local MCP bridg
 state:cowork-architecture · state/cowork-architecture.md:925 · Mount model and delete policy (L139, L140)
 state:cowork-architecture · state/cowork-architecture.md:1045 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
 state:cowork-control-protocol · state/cowork-control-protocol.md:23 · Spawn contract
-state:cowork-control-protocol · state/cowork-control-protocol.md:89 · Handshake
-state:cowork-control-protocol · state/cowork-control-protocol.md:130 · Subtype inventory pointer
-state:cowork-control-protocol · state/cowork-control-protocol.md:179 · AskUserQuestion answer shape
-state:cowork-control-protocol · state/cowork-control-protocol.md:188 · Per-`tool_use` stream envelope (fixed field set)
-state:cowork-control-protocol · state/cowork-control-protocol.md:207 · Sub-agent dispatch wire contract (lessons 121–124)
-state:cowork-control-protocol · state/cowork-control-protocol.md:278 · New agent→host system frames (agent 2.1.275+, L196)
-state:cowork-control-protocol · state/cowork-control-protocol.md:291 · Hook lifecycle frames are gated (L203)
-state:cowork-control-protocol · state/cowork-control-protocol.md:301 · Skill invocations and hook feedback in transcripts (L207)
-state:cowork-control-protocol · state/cowork-control-protocol.md:310 · Compaction subtypes
-state:cowork-control-protocol · state/cowork-control-protocol.md:322 · Cloud tasks: teleport-to-cloud and the bridge-session worker (Ch33/L119)
-state:cowork-control-protocol · state/cowork-control-protocol.md:399 · VCS SDK events + SDK-MCP skill servers (L129/L130)
+state:cowork-control-protocol · state/cowork-control-protocol.md:96 · Handshake
+state:cowork-control-protocol · state/cowork-control-protocol.md:137 · Subtype inventory pointer
+state:cowork-control-protocol · state/cowork-control-protocol.md:192 · AskUserQuestion answer shape
+state:cowork-control-protocol · state/cowork-control-protocol.md:201 · Per-`tool_use` stream envelope (fixed field set)
+state:cowork-control-protocol · state/cowork-control-protocol.md:220 · Sub-agent dispatch wire contract (lessons 121–124)
+state:cowork-control-protocol · state/cowork-control-protocol.md:291 · New agent→host system frames (agent 2.1.275+, L196)
+state:cowork-control-protocol · state/cowork-control-protocol.md:304 · Hook lifecycle frames are gated (L203)
+state:cowork-control-protocol · state/cowork-control-protocol.md:314 · Skill invocations and hook feedback in transcripts (L207)
+state:cowork-control-protocol · state/cowork-control-protocol.md:323 · Compaction subtypes
+state:cowork-control-protocol · state/cowork-control-protocol.md:335 · Cloud tasks: teleport-to-cloud and the bridge-session worker (Ch33/L119)
+state:cowork-control-protocol · state/cowork-control-protocol.md:412 · VCS SDK events + SDK-MCP skill servers (L129/L130)
 state:cowork-permissions · state/cowork-permissions.md:22 · The layers (all simultaneously active, host-loop production)
 state:cowork-permissions · state/cowork-permissions.md:213 · Auto-mode tuning at Desktop 1.22209.0 (lesson 128, no live gate-state capture)
 state:cowork-permissions · state/cowork-permissions.md:246 · Browser/Computer-Use permission gates + Cowork's own auto-mode rule additions (Desktop 1.28929.0)
 state:cowork-permissions · state/cowork-permissions.md:299 · Host-dialog approval attestation and `/settings-review` staging — shipped, compiled off (agent 2.1.281–2.1.284)
-state:cowork-permissions · state/cowork-permissions.md:318 · Not part of the stack (adjacent, don't conflate)
-state:cowork-permissions · state/cowork-permissions.md:331 · Known past errors (do not re-introduce)
+state:cowork-permissions · state/cowork-permissions.md:318 · Scheduled tasks start in Auto; unattended asks escalate (Desktop 2.19675.0 / 2.26454.0, L222)
+state:cowork-permissions · state/cowork-permissions.md:333 · Not part of the stack (adjacent, don't conflate)
+state:cowork-permissions · state/cowork-permissions.md:346 · Known past errors (do not re-introduce)
 state:credential-channels · state/credential-channels.md:16 · The four Desktop credential channels
 state:credential-channels · state/credential-channels.md:103 · Auth at spawn
 state:credential-channels · state/credential-channels.md:123 · What NOT to use
@@ -1894,9 +1904,9 @@ state:plugins-skills-hooks · state/plugins-skills-hooks.md:600 · `activeSkill`
 state:plugins-skills-hooks · state/plugins-skills-hooks.md:621 · CLI-plugin credential broker
 state:plugins-skills-hooks · state/plugins-skills-hooks.md:632 · Skill/plugin discovery tools — what the Cowork model actually sees (L129/L131)
 state:plugins-skills-hooks · state/plugins-skills-hooks.md:656 · Complete rendered surface — 13 tools / 5 servers (as of asar 1.24012.1, agent 2.1.217)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:682 · `when_to_use` does not reach the Cowork listing
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:702 · `paths:` silently suppresses a skill
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:721 · Input schemas (verbatim, 1.24012.1)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:741 · `suggest_skills` has three states (literal branches in `oi`)
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:758 · Output envelopes
-state:plugins-skills-hooks · state/plugins-skills-hooks.md:777 · Bundled skills & MCP-contributed skills (L131)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:683 · `when_to_use` does not reach the Cowork listing
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:703 · `paths:` silently suppresses a skill
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:722 · Input schemas (verbatim, 1.24012.1)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:742 · `suggest_skills` has two states (from Desktop 1.46388.3)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:760 · Output envelopes
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:779 · Bundled skills & MCP-contributed skills (L131)

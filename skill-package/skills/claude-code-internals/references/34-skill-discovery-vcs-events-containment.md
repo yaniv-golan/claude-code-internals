@@ -203,6 +203,14 @@ Word comment authoring, which doc_* does not cover."*
 per-gate record is `state/registry.json`'s `observed: {present, source, on, at}`; see the amended
 gate-state section below for why a date is not a snapshot identifier.
 
+### ADDENDUM 2026-10-07 — two states from Desktop 1.46388.3
+
+Bisected over the held asars: `1598976391` and the `proactiveSkillSuggestEnabled` session field are in
+1.24012.1 through 1.44121.1 and gone from 1.46388.3 through 2.26454.0. The one remaining `suggest_skills`
+definition carries the proactive description (642 → 1353 characters) and the `trigger` property
+unconditionally, so `suggest_skills` is now either absent (`245679952` off) or proactive. The server
+still sends `1598976391`; no Desktop code reads it. Current shape: `state/plugins-skills-hooks.md`.
+
 ---
 
 # LESSON 130 — VCS SDK EVENTS

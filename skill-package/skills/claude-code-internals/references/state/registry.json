@@ -1160,11 +1160,14 @@
       "status": "live",
       "first_seen": "2.1.170",
       "removed_in": null,
-      "as_of": "2.1.231",
-      "summary": "Suppresses the tool-name prefix for MCP tools on sdk-type connections.",
+      "as_of": "2.1.289",
+      "summary": "Suppresses the tool-name prefix for MCP tools on sdk-type connections. From Desktop 2.26454.0 the Cowork spawn pins it to \"0\" and strips it (with CLAUDE_CODE_SIMPLE) from the inherited environment, so a user's shell value no longer reaches Cowork (Ch61/L222).",
       "provenance": [
         {
           "lesson": 108
+        },
+        {
+          "lesson": 222
         }
       ]
     },
@@ -2535,16 +2538,19 @@
       "id": "env.CLAUDE_CODE_DISABLE_DIR_SYNC",
       "kind": "env-var",
       "name": "CLAUDE_CODE_DISABLE_DIR_SYNC",
-      "status": "dark-launched",
+      "status": "removed",
       "first_seen": "2.1.231",
-      "summary": "Kill switch for the remote-session worker directory sync (startWorkerDirSync), which is otherwise entrypoint-gated. State lives at .ccr-dir-sync/worker-<remoteSessionId>.json; a prior worker is detected via CLAUDE_CODE_WORKER_EPOCH>1.",
+      "summary": "Kill switch for the remote-session worker directory sync (startWorkerDirSync), which is otherwise entrypoint-gated. State lives at .ccr-dir-sync/worker-<remoteSessionId>.json; a prior worker is detected via CLAUDE_CODE_WORKER_EPOCH>1. REMOVED from the agent by 2.1.286 (4 occurrences in VM ELF 2.1.284, 0 in 2.1.286/2.1.288/2.1.289 and in host agent 2.1.289; 2.1.285 not held); startWorkerDirSync itself remains, so the sync now has no env kill switch.",
       "provenance": [
         {
           "lesson": 157
+        },
+        {
+          "lesson": 222
         }
       ],
-      "removed_in": null,
-      "as_of": "2.1.231"
+      "removed_in": "<=2.1.286",
+      "as_of": "2.1.289"
     },
     {
       "id": "env.CLAUDE_CODE_DISABLE_FILE_CHECKPOINTING",
@@ -5315,14 +5321,18 @@
       "id": "gate.1598976391",
       "kind": "gate",
       "name": "1598976391 (proactiveSkillSuggestEnabled)",
-      "status": "dark-launched",
+      "status": "removed",
       "first_seen": "1.24012.1",
-      "removed_in": null,
-      "as_of": "2.1.231",
-      "summary": "proactiveSkillSuggestEnabled — only evaluated when 245679952 passed (conjunction: pt && isFeatureEnabled). ON => ti() swaps suggest_skills's description to `ei` and injects trigger:Lr into properties (required stays []). Live off/defaultValue (fcache 2026-07-24), so proactive mode is inert. Stickiness is keyed to the built-system-prompt cache via ft(): a mid-session MODEL SWITCH re-reads both gates, and the sticky-branch fallback is `?? false`, not the gate value.",
+      "removed_in": "<=1.46388.3",
+      "as_of": "2.1.289",
+      "summary": "Was proactiveSkillSuggestEnabled: read only when 245679952 passed, and when on it swapped suggest_skills's description to the proactive one and added the trigger property. REMOVED from Desktop code by 1.46388.3 (present in held asars 1.24012.1-1.44121.1, 0 in 1.46388.3 through 2.26454.0) together with the proactiveSkillSuggestEnabled session field; from 1.46388.3 suggest_skills always carries the proactive description and the trigger property whenever 245679952 lets it render (see gate.245679952). Still served (force-ON at the 2026-10-07 capture) -- served, unread.",
       "provenance": [
         {
           "lesson": 129
+        },
+        {
+          "lesson": 222,
+          "note": "removal bisected across held asars"
         }
       ],
       "namespace": "desktop_fcache",
@@ -5508,14 +5518,18 @@
       "id": "gate.2039376689",
       "kind": "gate",
       "name": "2039376689 (pressureEvictionEnabled)",
-      "status": "dark-launched",
+      "status": "removed",
       "first_seen": "1.25927.0",
-      "removed_in": null,
-      "as_of": "2.1.231",
-      "summary": "pressureEviction on the NEW CliGovernor class: memory-pressure-driven session eviction via pauseSession(id,\"governor_evict\"). Siblings: 2724639973 (evictionEnabled), 1032963206 (throttleEnabled).",
+      "removed_in": "<=1.46388.3",
+      "as_of": "2.1.289",
+      "summary": "Was pressureEviction on the CliGovernor class: memory-pressure-driven session eviction via pauseSession(id,\"governor_evict\"); siblings 2724639973 (evictionEnabled), 1032963206 (throttleEnabled). REMOVED from Desktop code by 1.46388.3 (present in held asars 1.25927.0-1.44121.1, 0 in 1.46388.3 through 2.26454.0). Still served (defaultValue, on) -- served, unread.",
       "provenance": [
         {
           "lesson": 141
+        },
+        {
+          "lesson": 222,
+          "note": "removal bisected across held asars"
         }
       ],
       "namespace": "desktop_fcache",
@@ -5695,11 +5709,15 @@
       "status": "live",
       "first_seen": "1.22209.0",
       "removed_in": null,
-      "as_of": "2.1.231",
-      "summary": "suggestSkillsEnabled — gates whether the Desktop SDK-MCP 'skills' server exposes suggest_skills. OFF => Zo() strips the tool AND rewrites list_skills's description; list_skills still renders. Live on/force (ruleId fr_movyeduu, fcache 2026-07-24).",
+      "as_of": "2.1.289",
+      "summary": "suggestSkillsEnabled -- gates whether the Desktop SDK-MCP 'skills' server exposes suggest_skills. OFF => Zo() strips the tool AND rewrites list_skills's description; list_skills still renders. From Desktop 1.46388.3 it is the ONLY suggest_skills gate: the proactive gate 1598976391 and its session field are gone, and the one remaining suggest_skills definition carries the proactive description (call it when a skill could make the user's task repeatable, without being asked) and the trigger property (user_asked|proactive) unconditionally. So two states remain: absent, or proactive. Live on/force (ruleId fr_movyeduu).",
       "provenance": [
         {
           "lesson": 129
+        },
+        {
+          "lesson": 222,
+          "note": "two states from 1.46388.3"
         }
       ],
       "namespace": "desktop_fcache",
@@ -5717,11 +5735,15 @@
       "status": "live",
       "first_seen": "1.28929.0",
       "removed_in": null,
-      "as_of": "2.1.231",
+      "as_of": "2.1.289",
       "summary": "Computer Use permission-mode gate; force-ON in the 2026-08-13 through 2026-09-29 captures; OFF (defaultValue, no rule) at the 2026-10-07 capture. Follows the same built-* stickiness caching shape as frameArtifactsTurnEnabled/cicCanUseToolEnabled and Ch37/L129's builtSystemPrompt case (Ch41/L148): evaluated once per built-tools generation, cached on the session as cuCanUseToolEnabled, read back thereafter with a fail-closed `?? false` default; the live-read branch additionally excludes sessionType 'radar' and 'chat'. Confirms the built-* caching pattern as a general mechanism, not a suggest_skills-specific quirk.",
       "provenance": [
         {
           "lesson": 148
+        },
+        {
+          "lesson": 222,
+          "note": "served off at 2026-10-07; consumer code unchanged in 2.26454.0"
         }
       ],
       "namespace": "desktop_fcache",
@@ -5926,14 +5948,18 @@
       "id": "gate.2976814254",
       "kind": "gate",
       "name": "2976814254",
-      "status": "dark-launched",
+      "status": "removed",
       "first_seen": null,
-      "removed_in": null,
-      "as_of": "2.1.231",
-      "summary": "Gates a browser-preview-related feature; guard requires this gate AND sessionType===\"ccd\" AND not-SSH. Found riding in the same hardcodedMainGrowthBookFeatures force-on table as cli_plugin (2307090146), scoped to the 3p/CCD deployment class only.",
+      "removed_in": "<=1.24012.0",
+      "as_of": "2.1.289",
+      "summary": "Was a browser-preview gate: guard required this gate AND sessionType===\"ccd\" AND not-SSH, and it rode in the hardcodedMainGrowthBookFeatures force-on table with cli_plugin (2307090146), scoped to the 3p/CCD deployment class. REMOVED from Desktop code by 1.24012.0 (present in held asars 1.18286.2-1.22209.3, 0 from 1.24012.0 through 2.26454.0). Still served (defaultValue, on) -- served, unread.",
       "provenance": [
         {
           "lesson": 114
+        },
+        {
+          "lesson": 222,
+          "note": "removal bisected across held asars"
         }
       ],
       "namespace": "desktop_fcache",
@@ -5951,8 +5977,8 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.280",
-      "summary": "Whitelists claude-fable-5 (+ the [1m] variant) as selectable in Desktop/Cowork; ON (force). By the 2026-07-02 capture this makes Fable 5 the live production Cowork model. At the 2026-09-23 capture (Desktop 2.7032.0) the enabled list is claude-fable-5[1m], claude-fable-5, claude-fable-5-1[1m], claude-fable-5-1, claude-opus-5-5[1m], claude-opus-5-5 -- Fable 5.1 and Opus 5.5 are now allow-listed for Cowork (Ch52/L193).",
+      "as_of": "2.1.289",
+      "summary": "Whitelists claude-fable-5 (+ the [1m] variant) as selectable in Desktop/Cowork; ON (force). By the 2026-07-02 capture this makes Fable 5 the live production Cowork model. At the 2026-09-23 capture (Desktop 2.7032.0) the enabled list is claude-fable-5[1m], claude-fable-5, claude-fable-5-1[1m], claude-fable-5-1, claude-opus-5-5[1m], claude-opus-5-5 -- Fable 5.1 and Opus 5.5 are now allow-listed for Cowork (Ch52/L193). At the 2026-10-07 capture the list also has claude-sonnet-5-5[1m] and claude-sonnet-5-5: Sonnet 5.5 is allow-listed for Cowork (Ch61/L222).",
       "provenance": [
         {
           "lesson": 108
@@ -5962,6 +5988,9 @@
         },
         {
           "lesson": 193
+        },
+        {
+          "lesson": 222
         }
       ],
       "namespace": "desktop_fcache",
@@ -6101,11 +6130,15 @@
       "status": "dark-launched",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.231",
-      "summary": "{tasks_tab:{enabled:true, split:1, salt:\"tasks_v1\", insiderForce:\"treatment\"}} -- force-treatment for insiders only, dark-launched to the general population. The same experiment bundle force-treats echo_unified_login.",
+      "as_of": "2.1.289",
+      "summary": "Experiment map, not a boolean gate: {tasks_tab:{enabled:true, split:1, salt:\"tasks_v1\", insiderForce:\"treatment\"}, ...} -- force-treatment for insiders only; the same bundle force-treats echo_unified_login. No Desktop code reference in any held asar (1.18286.2-2.26454.0) nor in the installed ion-dist, so its consumer, if any, is claude.ai web code the Desktop renders; read it as served config, not as a Desktop switch. Served-value change between the 2026-09-27 and 2026-10-07 captures: delegation and echo_task_suggestions now force \"control\" (echo_task_suggestions also lost insiderForce).",
       "provenance": [
         {
           "lesson": 109
+        },
+        {
+          "lesson": 222,
+          "note": "no code reference in any held asar; served values 2026-10-07"
         }
       ],
       "namespace": "desktop_fcache",
@@ -7963,11 +7996,15 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.280",
+      "as_of": "2.1.289",
       "summary": "Enables the Desktop's in-process SDK-MCP server named 'memory' (relay to /v2/ccr-sessions/-/memory/mcp; tools memory_read/list/write/str_replace/append/delete), consumed from Desktop 2.2553.1 by ia() = gate && canSyncCoworkMemoryRemotely() (first-party) && !wz() (not HIPAA-restricted). When on, a server configured under the name 'memory' in the Desktop's server map is replaced (Desktop-log warning only) and 'memory' is added to deniedMcpServers; plugin-declared servers are unaffected (agent keys them plugin:<p>:<s> and the deniedMcpServers matcher compares the exact key); the deny entry blocks only a non-SDK server under the plain key 'memory' (.mcp.json, --mcp-config). read/list always pre-approved; all six with a live memory project binding; writes refused at call time unless the binding is verified and admits writes. Force-ON (rule fr_mtud3u3p) at the 2026-09-23 through 2026-09-29 captures, OFF (defaultValue, no rule) at the 2026-10-07 capture, so the relay is not installed and a Desktop-configured server named memory is left alone while it stays off; 30 of 31 recent Cowork runs on the capturing machine (nearly all one scheduled task) were offered memory_list/_read, none called one.",
       "provenance": [
         {
           "lesson": 194
+        },
+        {
+          "lesson": 222,
+          "note": "served off at 2026-10-07; consumer code unchanged in 2.26454.0"
         }
       ],
       "namespace": "desktop_fcache",
@@ -8336,14 +8373,18 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.280",
-      "summary": "Config for Desktop's [RemoteMigrationSweep] (from 1.44121.1): hourly pass that converts a local scheduled task into a cloud routine once it has run >=2 times over >=0.5 days (minRunsObserved/minObservedDays), among other conditions. Two checks keep a task local: (1) heldBlockReasons holds a listed reason in every mode (the code also accepts chrome/built_in_browser, counted from observed runs); served ['space'] on 2026-10-01, so only a Space-attached task is held; (2) reasons the cloud side cannot take: sub-hourly/custom cron, working directory/worktree/branch, dispatch hook, no prompt; Chrome blocks only a device-free move; attached folders need boundEnabled and attached files boundEnabled && boundFilesEnabled (from Desktop 2.16120.0, L219; both served true on 2026-10-01), and such tasks move only as bound routines; reverted tasks are skipped; disables the local copy and stamps migratedToRemote={triggerId, via:'sweep'}. Force-on; observed migrating a local hourly task on the capturing machine on 2026-09-24 (Ch56/L208).",
+      "as_of": "2.1.289",
+      "summary": "Config for Desktop's [RemoteMigrationSweep] (from 1.44121.1): periodic pass (passIntervalMinutes: 60 at the 2026-09-27 capture, 30 at 2026-10-07; failureCooldownMinutes 30 -> 15) that converts a local scheduled task into a cloud routine once it has run >=2 times over >=0.5 days (minRunsObserved/minObservedDays), among other conditions. Two checks keep a task local: (1) heldBlockReasons holds a listed reason in every mode (the code also accepts chrome/built_in_browser, counted from observed runs); served ['space'] on 2026-10-01, so only a Space-attached task is held; (2) reasons the cloud side cannot take: sub-hourly/custom cron, working directory/worktree/branch, dispatch hook, no prompt; Chrome blocks only a device-free move; attached folders need boundEnabled and attached files boundEnabled && boundFilesEnabled (from Desktop 2.16120.0, L219; both served true on 2026-10-01), and such tasks move only as bound routines; reverted tasks are skipped; disables the local copy and stamps migratedToRemote={triggerId, via:'sweep'}. Force-on; observed migrating a local hourly task on the capturing machine on 2026-09-24 (Ch56/L208).",
       "provenance": [
         {
           "lesson": 208
         },
         {
           "lesson": 219
+        },
+        {
+          "lesson": 222,
+          "note": "served interval 60 -> 30 minutes between 2026-09-27 and 2026-10-07"
         }
       ],
       "namespace": "desktop_fcache",
@@ -8660,6 +8701,117 @@
       "provenance": [
         {
           "lesson": 221
+        }
+      ]
+    },
+    {
+      "id": "gate.4175783504",
+      "kind": "gate",
+      "name": "4175783504 (scheduled-task Auto default kill switch)",
+      "status": "live",
+      "first_seen": "2.19675.0",
+      "removed_in": null,
+      "as_of": "2.1.289",
+      "summary": "Kill switch for newTaskPermissionMode (from Desktop 2.19675.0): a scheduled task created from a Cowork session gets permission mode Auto when the session is not a dispatch child, the deployment is not 3p, the account is first-party, the org's coworkAvailablePermissionModes includes auto, and this gate is off. Not served at the 2026-10-07 capture, so it reads off and Auto applies where the other conditions hold. Code-read; not probed live.",
+      "provenance": [
+        {
+          "lesson": 222
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "d7f213aee960c12d"
+      }
+    },
+    {
+      "id": "gate.3285376524",
+      "kind": "gate",
+      "name": "3285376524 (unattended ask escalation kill switch)",
+      "status": "dark-launched",
+      "first_seen": "2.26454.0",
+      "removed_in": null,
+      "as_of": "2.1.289",
+      "summary": "New in Desktop 2.26454.0: passed as killSwitchOn to the canUseTool escalation step that decides how a tool ask is handled when the session's own turn (or its parent's, for a dispatch child) is unattended; outcomes are logged as lam_escalated_tool_ask ('card' or 'unattended_deny'). Not served at the 2026-10-07 capture. How the escalation step uses it was not traced.",
+      "provenance": [
+        {
+          "lesson": 222
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "d7f213aee960c12d"
+      }
+    },
+    {
+      "id": "gate.3626967935",
+      "kind": "gate",
+      "name": "3626967935 (remoteFolderConsentFromSettings)",
+      "status": "live",
+      "first_seen": "2.26454.0",
+      "removed_in": null,
+      "as_of": "2.1.289",
+      "summary": "New in Desktop 2.26454.0: when on, a remote folder the user trusts is recorded in settings (remoteFolderConsentFromSettings) so it stays trusted; when off, browseAndAddTrustedFolder returns Disabled and a trust is not remembered. Served on (defaultValue) at the 2026-10-07 capture.",
+      "provenance": [
+        {
+          "lesson": 222
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": true,
+        "at": "d7f213aee960c12d"
+      }
+    },
+    {
+      "id": "proto.get_task_output",
+      "kind": "control-subtype",
+      "name": "get_task_output",
+      "status": "live",
+      "first_seen": "2.26454.0",
+      "removed_in": null,
+      "as_of": "2.1.289",
+      "summary": "Control request Desktop sends as {subtype:\"get_task_output\", task_id} from its SDK client's getTaskOutput (new in Desktop 2.26454.0); the response carries the background task's output.",
+      "provenance": [
+        {
+          "lesson": 222
+        }
+      ]
+    },
+    {
+      "id": "proto.ui_client_fault",
+      "kind": "control-subtype",
+      "name": "ui_client_fault",
+      "status": "live",
+      "first_seen": "2.26454.0",
+      "removed_in": null,
+      "as_of": "2.1.289",
+      "summary": "Report from the Claude Code desktop (CCD) UI plugin layer, new in Desktop 2.26454.0; CCD-side, not a Cowork agent message.",
+      "provenance": [
+        {
+          "lesson": 222
+        }
+      ]
+    },
+    {
+      "id": "proto.ui_prompt_edit",
+      "kind": "control-subtype",
+      "name": "ui_prompt_edit",
+      "status": "live",
+      "first_seen": "2.19675.0",
+      "removed_in": null,
+      "as_of": "2.1.289",
+      "summary": "Report from the Claude Code desktop (CCD) UI about a prompt edit, present from Desktop 2.19675.0; CCD-side.",
+      "provenance": [
+        {
+          "lesson": 222
         }
       ]
     }

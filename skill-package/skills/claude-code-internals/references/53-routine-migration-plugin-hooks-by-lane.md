@@ -34,7 +34,7 @@ The migration ran under Desktop 2.7032.0, a day before the machine updated to 2.
 
 ## The sweep
 
-`[RemoteMigrationSweep]` (asar 2.9939.2, chunk `Cb2x-E4A`; identical in 2.7032.0) runs a pass every hour under the served config (the code's own default is every six hours, first pass ten minutes after launch), calls `completeRemoteMigration`, disables the local copy and stamps the task `migratedToRemote={triggerId, via:"sweep"}`. Its configuration is gate **`2974609625`**, force-on at the capture:
+`[RemoteMigrationSweep]` (asar 2.9939.2, chunk `Cb2x-E4A`; identical in 2.7032.0) runs a pass every hour under the served config at the time (every 30 minutes from the 2026-10-07 capture, with a 15-minute failure cooldown instead of 30; L222) (the code's own default is every six hours, first pass ten minutes after launch), calls `completeRemoteMigration`, disables the local copy and stamps the task `migratedToRemote={triggerId, via:"sweep"}`. Its configuration is gate **`2974609625`**, force-on at the capture:
 
 ```
 {enabled:true, boundEnabled:true, heldBlockReasons:["space"], passIntervalMinutes:60,

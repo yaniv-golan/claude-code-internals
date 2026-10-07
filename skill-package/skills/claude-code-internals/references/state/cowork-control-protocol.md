@@ -3,8 +3,8 @@ domain: cowork-control-protocol
 title: Cowork spawn + stream-json control protocol (current)
 as_of_cli: 2.1.231
 as_of_desktop: 1.30096.1
-sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124, 129, 130, 152, 193, 196, 203, 207]
-updated: 2026-10-01
+sources: [105, 107, 108, 109, 118, 119, 120, 121, 123, 124, 129, 130, 152, 193, 196, 203, 207, 222]
+updated: 2026-10-07
 ---
 
 # Cowork spawn + stream-json control protocol (current)
@@ -35,6 +35,13 @@ external driver) — not the Desktop app's internal IPC.
   settings + plugin reads. That namespace belongs to the *standalone*
   `--cowork` path, not the Desktop's account/org root (see
   `cowork-architecture.md`).
+- **Two shell settings are pinned off (Desktop 2.26454.0, L222).** The main
+  spawn env sets `CLAUDE_CODE_SIMPLE:"0"` and
+  `CLAUDE_AGENT_SDK_MCP_NO_PREFIX:"0"`, and both names are on the list of
+  variables removed from the inherited environment (with `PATH`,
+  `CLAUDE_CODE_OAUTH_TOKEN` and the API-key/auth-header variables). A shell
+  `=1` for either no longer reaches Cowork; a driver copying the spawn env
+  should pin both to `"0"`.
 - **Argv, roughly:**
   `-p --verbose --input-format stream-json --output-format stream-json
   --permission-prompt-tool stdio`
@@ -167,6 +174,12 @@ the full, current set. The load-bearing ones worth knowing by name:
   the Desktop host (`CoworkScheduledTasks`/`CCDScheduledTasks` IPC); the
   agent only receives and surfaces the fire event, rendered as a dim
   status line in the transcript.
+
+- **`get_task_output`** (host→agent, Desktop 2.26454.0, L222) —
+  `{subtype:"get_task_output", task_id}`, sent by the Desktop's SDK client
+  to read a background task's output. Two CCD-UI reports arrived alongside
+  it (`ui_client_fault`, and `ui_prompt_edit` from 2.19675.0); neither is a
+  Cowork agent message.
 
 Two dispatcher classification sets are worth knowing verbatim:
 - **Blocking** (block message processing while in-flight): `Bv1 = {

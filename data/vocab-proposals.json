@@ -3053,9 +3053,13 @@
     },
     "129": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-30",
-      "input_sha256": "486bb5a09d7692d0f616252417b6c91aab57ab66cee3772351e791b1cd618841",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-07",
+      "input_sha256": "515a1c2b24b2044f794cc8ed51f4b2396522578a20372fa265623a82ac17111e",
+      "prior_terms_sha256": "1687c2c9038f6d6e6022dc047264630f9c74faa1834751265f469692d67e1884",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "9ccba005ffd3cb419fdad1f802869ae1cdd4bb69",
+      "replaced": [],
       "terms": [
         "which skill tools does cowork actually see",
         "cowork skill discovery tools list",
@@ -3071,7 +3075,9 @@
         "skill suggestion setting changes after model switch",
         "onboarding role picker tool in cowork",
         "org turned off skill creation message",
-        "hidden skill still callable by name"
+        "hidden skill still callable by name",
+        "skill suggestions now always proactive",
+        "proactive suggestion flag removed from desktop"
       ]
     },
     "130": {
@@ -4996,11 +5002,11 @@
     "208": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-02",
-      "input_sha256": "c95d093ef9f82028f637001132a95aa4d89db6a3117476279a1444caf34e58a3",
-      "prior_terms_sha256": "29a2c970770ea5454eafebedf7882315e1dd25378d1ee4804ba8d03caa2120d7",
+      "date": "2026-10-07",
+      "input_sha256": "6f2e4a417844c88782f91924cfbbc3711697a7effc2d536d00a46473ade083b0",
+      "prior_terms_sha256": "b6c4f126c800193a4e495c97b89ade11069e2b6b8946e7b4b842477385cb7f33",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "c0c2dd5f4e1d5ab13cb5ddf8dbb502100a83d03d",
+      "previous_text": "9ccba005ffd3cb419fdad1f802869ae1cdd4bb69",
       "replaced": [],
       "terms": [
         "scheduled task stopped running locally",
@@ -5443,6 +5449,36 @@
         "inline visualizations blocked by organization",
         "is text in a screenshot treated as instructions?",
         "visualizations unavailable in hipaa session"
+      ]
+    },
+    "222": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-10-07",
+      "input_sha256": "2756ab33d36cac575259f2ece4bfe07048fcf2018b9e3d227a8ea2bb861df696",
+      "collision_check": "questions-v2.json dev",
+      "terms": [
+        "shell environment variables ignored in Cowork",
+        "exported variable no longer affects Cowork session",
+        "why doesn't my minimal mode setting work in Cowork?",
+        "MCP tool name prefix setting stopped working",
+        "scheduled task runs in auto permission mode",
+        "why did my scheduled task skip permission prompts?",
+        "scheduled task not asking for approval",
+        "unattended tool request denied automatically",
+        "my own memory MCP server works again",
+        "can I name an MCP server memory?",
+        "cloud memory relay turned off",
+        "computer use permission check disabled",
+        "Sonnet 5.5 available in Cowork model picker",
+        "remote folder trust remembered after restart",
+        "why do new tasks run in the cloud instead of locally?"
+      ],
+      "withheld": [
+        {
+          "term": "why do new tasks run in the cloud instead of locally?",
+          "qid": "pl-0414"
+        }
       ]
     }
   }

@@ -2738,6 +2738,40 @@
     171
    ],
    "hint": "Bundled skill guides ship zstd-compressed in Bun's bunfs (/$bunfs/root/<name>-<hash>.md.zst); scan for 28 B5 2F FD and decompress each frame."
+  },
+  {
+   "pattern": [
+    "CLAUDE_CODE_SIMPLE ignored in Cowork",
+    "MCP tool prefix setting ignored in Cowork",
+    "shell env var not reaching Cowork session"
+   ],
+   "lessons": [
+    222
+   ],
+   "hint": "From Desktop 2.26454.0 the Cowork spawn pins CLAUDE_CODE_SIMPLE and CLAUDE_AGENT_SDK_MCP_NO_PREFIX to \"0\" and strips both from the inherited environment, so a shell value never reaches the session."
+  },
+  {
+   "pattern": [
+    "scheduled task runs in auto mode",
+    "scheduled task did not ask for permission",
+    "newTaskPermissionMode"
+   ],
+   "lessons": [
+    222,
+    128
+   ],
+   "hint": "From Desktop 2.19675.0 a scheduled task created from a Cowork session starts in Auto mode when the org allows auto, the account is first-party and kill switch 4175783504 is off (unserved on 2026-10-07)."
+  },
+  {
+   "pattern": [
+    "memory MCP server works again in Cowork",
+    "cloud memory tools missing in Cowork"
+   ],
+   "lessons": [
+    222,
+    194
+   ],
+   "hint": "The cloud memory relay gate 946844604 is served off from 2026-10-07: the memory SDK-MCP server is not installed, and a Desktop-configured server named memory runs. It can come back on without a client update."
   }
  ]
 }

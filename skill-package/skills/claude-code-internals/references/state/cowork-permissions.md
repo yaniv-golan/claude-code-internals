@@ -3,8 +3,8 @@ domain: cowork-permissions
 title: Cowork permission stack (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [89, 107, 108, 109, 115, 121, 122, 124, 128, 148, 150, 184, 190, 213]
-updated: 2026-10-02
+sources: [89, 107, 108, 109, 115, 121, 122, 124, 128, 148, 150, 184, 190, 213, 222]
+updated: 2026-10-07
 read_more: ["https://ccinternals.dev/cowork/deleting-files/?ref=skill"]
 ---
 
@@ -314,6 +314,21 @@ ship, not a new feature, and not "new in 2.1.284". `/settings-review` itself sit
 command-category map beside internal commands (`mock-limits`, `thrash`, `simulate-usage`); its
 registration was not traced, so it is deliberately **not** in the `cmd.*` inventory (the three-gate
 reachability rule).
+
+## Scheduled tasks start in Auto; unattended asks escalate (Desktop 2.19675.0 / 2.26454.0, L222)
+
+- **A scheduled task created from a Cowork session gets permission mode
+  Auto** (from 2.19675.0) when the session is not a dispatch child, the
+  deployment is not 3p, the account is first-party, the org's
+  `coworkAvailablePermissionModes` includes `auto`, and kill switch
+  `4175783504` is off. That gate is unserved at the 2026-10-07 capture, so
+  it reads off. Code-read, not probed live.
+- **Unattended asks** (2.26454.0): `canUseTool` passes each ask through an
+  escalation step that knows whether the session's own turn, or a dispatch
+  child's parent turn, is unattended; outcomes are logged as
+  `lam_escalated_tool_ask` = `card` | `unattended_deny`. Kill switch
+  `3285376524` feeds it; unserved at 2026-10-07; its exact role not traced.
+- The forced-ask PreToolUse matcher is unchanged at nine tools in 2.26454.0.
 
 ## Not part of the stack (adjacent, don't conflate)
 

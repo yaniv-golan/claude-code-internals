@@ -1,6 +1,6 @@
 {
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 221,
+  "total_lessons": 222,
   "lessons": [
     {
       "id": 1,
@@ -13222,7 +13222,7 @@
       "lesson_number": "129",
       "file": "34-skill-discovery-vcs-events-containment.md",
       "startLine": 20,
-      "endLine": 204,
+      "endLine": 212,
       "keywords": [
         "skill-discovery-tools",
         "plugin-discovery-tools",
@@ -13328,7 +13328,9 @@
         "skill suggestion setting changes after model switch",
         "onboarding role picker tool in cowork",
         "org turned off skill creation message",
-        "hidden skill still callable by name"
+        "hidden skill still callable by name",
+        "skill suggestions now always proactive",
+        "proactive suggestion flag removed from desktop"
       ],
       "identifier_keys": [
         "input-schema",
@@ -13365,13 +13367,15 @@
         "skill suggestion setting changes after model switch",
         "onboarding role picker tool in cowork",
         "org turned off skill creation message",
-        "hidden skill still callable by name"
+        "hidden skill still callable by name",
+        "skill suggestions now always proactive",
+        "proactive suggestion flag removed from desktop"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "1687c2c9038f6d6e6022dc047264630f9c74faa1834751265f469692d67e1884"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-07",
+        "terms_sha256": "926586ed7d7c5d4d9e2dd0238e8f92e5cdf11fbf531d0552396307b9bfdba907"
       }
     },
     {
@@ -13379,8 +13383,8 @@
       "title": "VCS SDK Events: Emit Floor 2.1.216, Git-Operation-Driven, Ungated Agent-Side",
       "lesson_number": "130",
       "file": "34-skill-discovery-vcs-events-containment.md",
-      "startLine": 208,
-      "endLine": 302,
+      "startLine": 216,
+      "endLine": 310,
       "keywords": [
         "vcs-sdk-events",
         "code_change_published",
@@ -13471,8 +13475,8 @@
       "title": "Desktop 1.22209.0 -> 1.24012.1 asar Delta",
       "lesson_number": "131",
       "file": "34-skill-discovery-vcs-events-containment.md",
-      "startLine": 306,
-      "endLine": 411,
+      "startLine": 314,
+      "endLine": 419,
       "keywords": [
         "asar-diff",
         "1.24012.1",
@@ -13591,8 +13595,8 @@
       "title": "LEAD: 1.24012.1 May Move Cowork Session State Off the Host",
       "lesson_number": "132",
       "file": "34-skill-discovery-vcs-events-containment.md",
-      "startLine": 415,
-      "endLine": 478,
+      "startLine": 423,
+      "endLine": 486,
       "keywords": [
         "session-containment",
         "vm-loop-shift",
@@ -20310,7 +20314,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-02",
+        "date": "2026-10-07",
         "terms_sha256": "b6c4f126c800193a4e495c97b89ade11069e2b6b8946e7b4b842477385cb7f33"
       }
     },
@@ -21507,6 +21511,94 @@
         "prompt_version": "vocab-v3-fill-gaps",
         "date": "2026-10-01",
         "terms_sha256": "3a3b8ffceedfc62713f3692bf8b191ef22bb145d79f3a05fc59151eb2f315573"
+      }
+    },
+    {
+      "id": 222,
+      "title": "What Desktop 2.26454.0 Changed for Cowork",
+      "lesson_number": "222",
+      "file": "58-desktop-2.26454-spawn-env-scheduled-auto.md",
+      "startLine": 13,
+      "endLine": 80,
+      "keywords": [
+        "new-task-permission-mode",
+        "cowork-available-permission-modes",
+        "lam_escalated_tool_ask",
+        "unattended_deny",
+        "get_task_output",
+        "ui_client_fault",
+        "ui_prompt_edit",
+        "flag_off",
+        "claude-sonnet-5-5",
+        "echo_task_suggestions",
+        "browse-and-add-trusted-folder",
+        "host-git-confined-install",
+        "CLAUDE_CODE_HOST_WORKTREE_FENCE",
+        "4175783504",
+        "3285376524",
+        "3626967935",
+        "975160870",
+        "3165386771",
+        "480673358",
+        "2685067074",
+        "shell environment variables ignored in cowork",
+        "exported variable no longer affects cowork session",
+        "why doesn't my minimal mode setting work in cowork",
+        "mcp tool name prefix setting stopped working",
+        "scheduled task runs in auto permission mode",
+        "why did my scheduled task skip permission prompts",
+        "scheduled task not asking for approval",
+        "unattended tool request denied automatically",
+        "my own memory mcp server works again",
+        "can i name an mcp server memory",
+        "cloud memory relay turned off",
+        "computer use permission check disabled",
+        "sonnet 5.5 available in cowork model picker",
+        "remote folder trust remembered after restart"
+      ],
+      "identifier_keys": [
+        "new-task-permission-mode",
+        "cowork-available-permission-modes",
+        "lam_escalated_tool_ask",
+        "unattended_deny",
+        "get_task_output",
+        "ui_client_fault",
+        "ui_prompt_edit",
+        "flag_off",
+        "claude-sonnet-5-5",
+        "echo_task_suggestions",
+        "browse-and-add-trusted-folder",
+        "host-git-confined-install",
+        "CLAUDE_CODE_HOST_WORKTREE_FENCE",
+        "4175783504",
+        "3285376524",
+        "3626967935",
+        "975160870",
+        "3165386771",
+        "480673358",
+        "2685067074"
+      ],
+      "vocab_keys": [
+        "shell environment variables ignored in cowork",
+        "exported variable no longer affects cowork session",
+        "why doesn't my minimal mode setting work in cowork",
+        "mcp tool name prefix setting stopped working",
+        "scheduled task runs in auto permission mode",
+        "why did my scheduled task skip permission prompts",
+        "scheduled task not asking for approval",
+        "unattended tool request denied automatically",
+        "my own memory mcp server works again",
+        "can i name an mcp server memory",
+        "cloud memory relay turned off",
+        "computer use permission check disabled",
+        "sonnet 5.5 available in cowork model picker",
+        "remote folder trust remembered after restart"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-07",
+        "terms_sha256": "677fba82edb42b8a40b3616a5acaa2b0f1cf2d838acc8e1e92f55377bf56cceb"
       }
     }
   ],
@@ -45597,6 +45689,66 @@
     "can-verify-artifacts": [
       221
     ],
+    "new-task-permission-mode": [
+      222
+    ],
+    "cowork-available-permission-modes": [
+      222
+    ],
+    "lam_escalated_tool_ask": [
+      222
+    ],
+    "unattended_deny": [
+      222
+    ],
+    "get_task_output": [
+      222
+    ],
+    "ui_client_fault": [
+      222
+    ],
+    "ui_prompt_edit": [
+      222
+    ],
+    "flag_off": [
+      222
+    ],
+    "claude-sonnet-5-5": [
+      222
+    ],
+    "echo_task_suggestions": [
+      222
+    ],
+    "browse-and-add-trusted-folder": [
+      222
+    ],
+    "host-git-confined-install": [
+      222
+    ],
+    "CLAUDE_CODE_HOST_WORKTREE_FENCE": [
+      222
+    ],
+    "4175783504": [
+      222
+    ],
+    "3285376524": [
+      222
+    ],
+    "3626967935": [
+      222
+    ],
+    "975160870": [
+      222
+    ],
+    "3165386771": [
+      222
+    ],
+    "480673358": [
+      222
+    ],
+    "2685067074": [
+      222
+    ],
     "why is claude startup slow": [
       1
     ],
@@ -51488,6 +51640,12 @@
     "hidden skill still callable by name": [
       129
     ],
+    "skill suggestions now always proactive": [
+      129
+    ],
+    "proactive suggestion flag removed from desktop": [
+      129
+    ],
     "events when the agent commits or pushes": [
       130
     ],
@@ -55797,6 +55955,48 @@
     ],
     "visualizations unavailable in hipaa session": [
       221
+    ],
+    "shell environment variables ignored in cowork": [
+      222
+    ],
+    "exported variable no longer affects cowork session": [
+      222
+    ],
+    "why doesn't my minimal mode setting work in cowork": [
+      222
+    ],
+    "mcp tool name prefix setting stopped working": [
+      222
+    ],
+    "scheduled task runs in auto permission mode": [
+      222
+    ],
+    "why did my scheduled task skip permission prompts": [
+      222
+    ],
+    "scheduled task not asking for approval": [
+      222
+    ],
+    "unattended tool request denied automatically": [
+      222
+    ],
+    "my own memory mcp server works again": [
+      222
+    ],
+    "can i name an mcp server memory": [
+      222
+    ],
+    "cloud memory relay turned off": [
+      222
+    ],
+    "computer use permission check disabled": [
+      222
+    ],
+    "sonnet 5.5 available in cowork model picker": [
+      222
+    ],
+    "remote folder trust remembered after restart": [
+      222
     ]
   },
   "keyword_boundary": {

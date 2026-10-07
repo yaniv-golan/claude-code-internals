@@ -3,8 +3,8 @@ domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207, 209, 211, 217, 218]
-updated: 2026-10-05
+sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207, 209, 211, 217, 218, 222]
+updated: 2026-10-07
 read_more: ["https://ccinternals.dev/cowork/plugins-and-plugin-root/?ref=skill"]
 ---
 
@@ -643,8 +643,8 @@ Two distinct components share the "skill discovery" concept:
   `mcp__plugins__*`), delivered over the control protocol
   (`sdkMcpServers`/`mcp_message`). These **are** what the model sees — present
   in every real session's `init.tools`. Gated by `suggestSkillsEnabled`
-  (`245679952`, on/force); the NEW `proactiveSkillSuggestEnabled` (`1598976391`,
-  off/default) adds an inert proactive-`trigger` mode. `suggest_skills` is
+  (`245679952`, on/force) alone from Desktop 1.46388.3; when present,
+  `suggest_skills` is always the proactive variant (see below). `suggest_skills` is
   advisory/zero-side-effect.
 
 **Rule: read the `system/init` `tools` array to know a Cowork model's tool
@@ -668,7 +668,8 @@ Verified against all 427 `audit.jsonl` files (1678 `init` records, agent
 
 Server objects are `{serverName, tools, handleToolCall, isEnabled,
 getDynamicTools?}` in array `si`, filtered by `oi(model, suggestSkillsEnabled,
-sessionType, proactiveSkillSuggestEnabled)`, managed by
+sessionType, proactiveSkillSuggestEnabled)` (the last argument gone from
+1.46388.3), managed by
 `InternalMcpServerManager`. **9 of the 13 are in `allowedTools`** — the 3
 mutating `scheduled-tasks` tools and `show_onboarding_role_picker` are
 deliberately left to a permission prompt (see Chapter 37 L131 addendum).
@@ -738,22 +739,23 @@ All `type:"object"`. Required fields in **bold**; everything else optional.
 enum:["user_asked","proactive"], …}`, normalized by `Ur()` (non-matching →
 `undefined`).
 
-### `suggest_skills` has three states (literal branches in `oi`)
+### `suggest_skills` has two states (from Desktop 1.46388.3)
 
-`if(serverName===kt){ if(!suggestSkillsEnabled) return Zo(); if(proactive) return ti(); }` → else base `we`.
-
-| State | Gates | Shape |
+| State | Gate | Shape |
 |---|---|---|
 | **absent** | `245679952` off | `Zo()` filters `suggest_skills` out **and** rewrites `list_skills`'s description (strips `" — fall back to suggest_skills"`) |
-| **base** (live default) | `245679952` on, `1598976391` off | `we` — no `trigger` property |
-| **proactive** | both on | `ti()` swaps description → `ei` and injects `trigger: Lr`; `required` stays `[]` |
+| **present** (live) | `245679952` on | the proactive definition: its description tells the model to offer skills when one could make the user's task repeatable, without being asked; `trigger` (`user_asked`/`proactive`) is in the schema; `required` stays `[]` |
 
-Gate evaluation is a **conjunction**: `1598976391` is only read when the first
-gate passed. Stickiness is keyed to the built-system-prompt cache via
+Through 1.44121.1 there was a third, base state: the proactive description
+and `trigger` needed a second gate, `1598976391`
+(`proactiveSkillSuggestEnabled`). That gate and its session field were
+removed from the code by 1.46388.3 (the server still sends the gate; nothing
+reads it). Stickiness is keyed to the built-system-prompt cache via
 `ft(r,e) = r?.builtSystemPrompt!==undefined && (e===undefined ||
 r.builtSystemPromptModel===e)` — so **a mid-session model switch invalidates it
-and re-reads the gates**, and the sticky-branch fallback is `?? false`, *not*
-the gate value.
+and re-reads the gate**, and the sticky-branch fallback is `?? false`, *not*
+the gate value. A HIPAA-restricted account gets an empty `resolved_skills`
+from `suggest_skills` (in the code since at least 2.7032.0).
 
 ### Output envelopes
 

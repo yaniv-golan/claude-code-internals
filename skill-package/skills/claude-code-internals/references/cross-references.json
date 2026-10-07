@@ -2763,6 +2763,11 @@
     "id": 212,
     "relevance": 0.6,
     "reason": "a disallowed MCP tool stays in init.tools, so listed is not callable"
+   },
+   {
+    "id": 222,
+    "relevance": 0.7,
+    "reason": "from 1.46388.3 suggest_skills has one gate and is always proactive"
    }
   ],
   "130": [
@@ -3763,6 +3768,11 @@
     "id": 105,
     "relevance": 0.4,
     "reason": "artifact no-callback boundary; CLAUDE_ARTIFACT_HOST_GRANT grants host tools to frame artifacts"
+   },
+   {
+    "id": 222,
+    "relevance": 0.7,
+    "reason": "the relay is served off from 2026-10-07"
    }
   ],
   "195": [
@@ -3991,6 +4001,11 @@
     "id": 219,
     "relevance": 0.85,
     "reason": "attached files move with the task from 2.16120.0"
+   },
+   {
+    "id": 222,
+    "relevance": 0.7,
+    "reason": "the sweep's served interval is 30 minutes from 2026-10-07"
    }
   ],
   "209": [
@@ -4312,6 +4327,43 @@
     "id": 147,
     "relevance": 0.7,
     "reason": "the imagine elicitation gate"
+   }
+  ],
+  "222": [
+   {
+    "id": 108,
+    "relevance": 0.8,
+    "reason": "the Cowork spawn env catalog this lesson adds two pinned values to"
+   },
+   {
+    "id": 208,
+    "relevance": 0.75,
+    "reason": "the migration sweep whose served interval moved to 30 minutes"
+   },
+   {
+    "id": 194,
+    "relevance": 0.75,
+    "reason": "the cloud memory relay, served off from 2026-10-07"
+   },
+   {
+    "id": 148,
+    "relevance": 0.6,
+    "reason": "cuCanUseToolEnabled, served off from 2026-10-07"
+   },
+   {
+    "id": 129,
+    "relevance": 0.65,
+    "reason": "suggest_skills, which lost its second gate in 1.46388.3"
+   },
+   {
+    "id": 128,
+    "relevance": 0.6,
+    "reason": "auto-mode tuning; scheduled tasks now start in Auto"
+   },
+   {
+    "id": 210,
+    "relevance": 0.7,
+    "reason": "local-vs-cloud placement, unchanged in this build"
    }
   ]
  }
