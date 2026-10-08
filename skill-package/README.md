@@ -1,6 +1,6 @@
 # Claude Code Internals
 
-A skill that lets Claude answer questions about how **Claude Code**, the **Claude Desktop** app and **Claude Cowork** actually work, from 222 lessons read out of the shipping binaries rather than guessed from the docs.
+A skill that lets Claude answer questions about how **Claude Code**, the **Claude Desktop** app and **Claude Cowork** actually work, from 223 lessons read out of the shipping binaries rather than guessed from the docs.
 
 This folder is the plugin package. Installation, provenance and the project's history are on the [repository's main page](https://github.com/yaniv-golan/claude-code-internals). For plain-language guidance on writing skills that work in Cowork, see **[ccinternals.dev/cowork](https://ccinternals.dev/cowork/)**.
 
@@ -73,7 +73,7 @@ chmod +x scripts/*.sh scripts/*.js
 
 Start a new Claude Code session (skills register at startup) and try the example question above.
 
-The zip holds everything: SKILL.md, all 222 lessons, the indexes, the current-state layer and the scripts. The search index is built in memory on first use. No npm install, no server, no API keys.
+The zip holds everything: SKILL.md, all 223 lessons, the indexes, the current-state layer and the scripts. The search index is built in memory on first use. No npm install, no server, no API keys.
 
 ### From this repo
 

@@ -1,4 +1,4 @@
-Updated: 2026-10-07 | Source: **Claude Desktop `app.asar` 2.26454.0 diffed against 2.16120.0 and 2.19675.0** (all three builds read; staged agent 2.1.289), the **live GrowthBook cache decoded on 2026-10-07** (398 features), and the 2026-09-27 cache snapshot for served-value comparisons. The UI bundle (`ion-dist`) exists only for the installed build, so nothing here is claimed as a UI-bundle change.
+Updated: 2026-10-08 (L223: the plugin-zip validator, read in 2.26454.0 and 2.26454.2, plus a failed plugin sync observed on 2026-10-08; 2.26454.2 diffed against 2.26454.0) | Earlier source: **Claude Desktop `app.asar` 2.26454.0 diffed against 2.16120.0 and 2.19675.0** (all three builds read; staged agent 2.1.289), the **live GrowthBook cache decoded on 2026-10-07** (398 features), and the 2026-09-27 cache snapshot for served-value comparisons. The UI bundle (`ion-dist`) exists only for the installed build, so nothing here is claimed as a UI-bundle change.
 
 # Chapter 61: Desktop 2.26454.0 — Spawn Environment, Scheduled Tasks in Auto Mode, and Gates Switched Off
 
@@ -7,6 +7,7 @@ Updated: 2026-10-07 | Source: **Claude Desktop `app.asar` 2.26454.0 diffed again
 ## TABLE OF CONTENTS
 
 222. [Lesson 222 — What Desktop 2.26454.0 Changed for Cowork](#lesson-222--what-desktop-2264540-changed-for-cowork)
+223. [Lesson 223 — What Desktop Checks in a Plugin Zip, and How It Fails Without Telling You](#lesson-223--what-desktop-checks-in-a-plugin-zip-and-how-it-fails-without-telling-you)
 
 ---
 
@@ -83,3 +84,56 @@ The placement rules, the `cowork-local-tasks-off` rule text and gate `3634338308
 - Don't name an MCP server `memory` in `claude_desktop_config.json` anyway. While the relay is off, your server is used, but the gate can come back on and replace it without notice.
 - Sonnet 5.5 and Haiku 5.5 are selectable in Cowork as of 2026-10-07.
 - If a session thinks with extended thinking switched off, check the managed configuration for `thinkingAlwaysOnModels`.
+
+---
+
+# LESSON 223 — WHAT DESKTOP CHECKS IN A PLUGIN ZIP, AND HOW IT FAILS WITHOUT TELLING YOU
+
+**Desktop checks every zip it unpacks against a size-and-shape policy. For a plugin, one file that compresses better than 50:1 fails the whole plugin. The error goes to `main.log` only. The plugin page still says the plugin is installed and on, and its skills never appear.**
+
+## Observed
+
+On 2026-10-08 (Desktop 2.26454.0, a Team org) a plugin uploaded under My Uploads showed as enabled, but its skills were missing from the `/` menu. `~/Library/Logs/Claude/main.log` had:
+
+```
+[RemotePluginManager] Failed to download founder-skills: Suspicious compression ratio for "tests/fixtures/two_figures_head_capture.json": 68:1 (max: 50:1) { errorCode: 'zip_extraction', name: 'ZipExtractionError', isUserFacing: false, … }
+[RemotePluginManager] Sync complete: 0 downloaded, 0 removed, 0 orphans cleaned
+```
+
+The offending file was a test fixture of repetitive JSON. The same commit zipped without its `tests/` folder (largest ratio 7:1) synced at once, and its files on disk matched the source byte for byte (MEASURED, one plugin).
+
+## The limits (CODE-READ, Desktop 2.26454.0 and 2.26454.2, identical)
+
+One validator checks each zip entry before extraction. Its constants:
+
+| limit | value |
+|---|---|
+| entries | 100,000 |
+| total uncompressed size | 200 MiB for plugins (extensions: the `dxtMaxTotalSizeMB` setting, default 2,048 MB) |
+| one file's uncompressed size | 512 MiB (checked for extensions only) |
+| compression ratio | 50:1 |
+| entry path / file name length | 1,024 / 255 characters |
+
+Which checks run depends on the kind of zip:
+
+| check | plugin | org plugin download | uploaded skill | extension (DXT/MCPB) |
+|---|---|---|---|---|
+| entry count, total size | yes | yes | yes | yes |
+| ratio of **each file** over 50:1 | yes | yes | **no** | no |
+| ratio of the **whole archive** over 50:1 | no | no | no | yes |
+| path and name length | yes | yes | yes | no |
+| a `.zip` inside the zip | refused | allowed | refused | allowed |
+| `..` or absolute paths (before extraction) | no | no | no | yes |
+
+A plugin downloaded from the organization uses the "org plugin download" column unless gate `3778108436` is on, which switches it to the stricter plugin column (and so bans nested zips); see Ch57/L213 for that gate's state. Extraction then writes into a staging folder (mode 0700), refuses any entry that would land outside it ("Path traversal detected in zip entry"), creates each file with an exclusive write so two names that collide on disk fail, and removes the staging folder if any one file fails, so a plugin arrives whole or not at all.
+
+## For a skill author
+
+- Keep test fixtures, recorded captures and other large repetitive files out of the plugin folder you ship. Text that repeats compresses far past 50:1.
+- Before you release, check the largest per-file ratio of the zip you will publish, for example with `python3 -c "import zipfile,sys;print(max(i.file_size/max(i.compress_size,1) for i in zipfile.ZipFile(sys.argv[1]).infolist()))" plugin.zip`. Keep it well under 50; the server may repack your files.
+- If a plugin shows as enabled but its skills or commands are missing, search `main.log` for `Failed to download <plugin name>`. Nothing in the app reports it.
+- An uploaded skill (not a plugin) is not checked per file, so the same fixture would pass there.
+
+## Desktop 2.26454.2
+
+A patch build. The Desktop's own code is unchanged from 2.26454.0: the same gate ids, spawn environment, IPC interfaces, control-protocol subtypes and zip checks (MEASURED, content-matched across all 314 build files). What changed is the bundled agent, now **2.1.293**, fetched from a release-candidate channel (`claude-code-releases/rc/<commit>`, SDK `0.3.293-rc…`). The new agent knows variables and session fields that this Desktop does not yet set, among them `CLAUDE_CODE_DESKTOP_SKILL_SWITCHES`, `CLAUDE_CODE_HOST_SKILL_CATALOG` and `CLAUDE_CODE_REMOTE_TOOLS_HOST_ALLOWS_UNATTENDED`, so expect a later Desktop to pass per-skill switches, a host skill catalog and an unattended grant to the agent (INFERRED).

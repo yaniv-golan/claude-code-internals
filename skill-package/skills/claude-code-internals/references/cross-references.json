@@ -4364,6 +4364,28 @@
     "id": 210,
     "relevance": 0.7,
     "reason": "local-vs-cloud placement, unchanged in this build"
+   },
+   {
+    "id": 223,
+    "relevance": 0.75,
+    "reason": "L223 covers the plugin-zip validator and the 2.26454.2 patch of the same build line"
+   }
+  ],
+  "223": [
+   {
+    "id": 222,
+    "relevance": 0.75,
+    "reason": "same Desktop 2.26454 builds; L223 also records the 2.26454.2 patch (bundled agent 2.1.293 RC)"
+   },
+   {
+    "id": 213,
+    "relevance": 0.6,
+    "reason": "gate 3778108436 picks the stricter plugin zip policy for org plugin downloads; L213 records its state"
+   },
+   {
+    "id": 209,
+    "relevance": 0.4,
+    "reason": "plugin delivery to Cowork lanes; a rejected zip means none of the plugin's hooks or skills arrive"
    }
   ]
  }

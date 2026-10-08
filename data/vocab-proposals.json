@@ -4912,38 +4912,36 @@
     "205": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-07",
-      "input_sha256": "ab9c960543712fc88a217864ffcc7e2b393e83455c893623632e7b222ca0d026",
-      "prior_terms_sha256": "94e0ff69750733c145526f7b2227ae94a5dfc3742addef040756cf7cc872b443",
+      "date": "2026-10-08",
+      "input_sha256": "91888e275fa83a5e4988e278928c721a8d431c3102914bde43211e02ead74c9e",
+      "prior_terms_sha256": "f15d2a5ba13cb28205006892b3ba1c3797061e02cde157525d622c6c83dbf87e",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "83deb4e76b8ef285c0fd5d91466aff50210005ed",
+      "previous_text": "cfe2e98322152da0da78b3116037cea3d083083f",
       "replaced": [
-        "why did my skill use a widget to ask me",
-        "skill says ask questions but form appears"
+        "model picks between form and question prompt",
+        "interactive form in Cowork chat"
       ],
       "dropped": [
         {
-          "term": "skill says ask questions but form appears",
+          "term": "model picks between form and question prompt",
           "why": "duplicate",
-          "duplicate_of": "skill shows a form instead of asking questions"
+          "duplicate_of": "form versus multiple choice question in Cowork"
         },
         {
-          "term": "why did my skill use a widget to ask me",
+          "term": "interactive form in Cowork chat",
           "why": "duplicate",
-          "duplicate_of": "skill shows a form instead of asking questions"
+          "duplicate_of": "why does Cowork sometimes pop up an input form"
         }
       ],
       "terms": [
         "skill shows a form instead of asking questions",
         "why does Cowork sometimes pop up an input form",
         "form versus multiple choice question in Cowork",
-        "model picks between form and question prompt",
         "skill input form answers arrive as chat message",
         "Cowork skill asks user for input inconsistently",
         "on-screen form for collecting skill arguments",
         "does Claude always use the form to ask",
         "handle answers from both form and question tool",
-        "interactive form in Cowork chat",
         "skill author collect user input reliably",
         "instruction to prefer form not enforced",
         "form tools missing but instruction present",
@@ -4951,7 +4949,9 @@
         "form hint not injected for my skill",
         "hook missed question asked through form",
         "make skill ask an exact scripted question",
-        "does the form appear with other Claude models"
+        "does the form appear with other Claude models",
+        "typing in chat while question card is open",
+        "skill started from slash menu skips form"
       ]
     },
     "206": {
@@ -5489,6 +5489,30 @@
         "admin list of always-thinking models",
         "full thinking budget forced for some models",
         "Haiku model now selectable in Cowork"
+      ]
+    },
+    "223": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-10-08",
+      "input_sha256": "0ffe8f2970ef3d6dcb78c08966d08b3b28e4528095e29f10f3b23a947fb63c2a",
+      "collision_check": "questions-v2.json dev",
+      "terms": [
+        "plugin enabled but skills missing",
+        "plugin installed but commands don't show up",
+        "why don't my plugin skills appear in desktop?",
+        "plugin silently fails to download",
+        "suspicious compression ratio error",
+        "zip extraction error in desktop logs",
+        "plugin zip rejected no error shown",
+        "test fixtures breaking plugin install",
+        "maximum compression ratio for plugin files",
+        "plugin zip size limits",
+        "nested zip inside plugin rejected",
+        "how do I check why my plugin didn't sync?",
+        "repetitive JSON file breaks plugin",
+        "uploaded skill works but plugin version fails",
+        "where are plugin download errors logged?"
       ]
     }
   }

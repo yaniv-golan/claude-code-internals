@@ -1714,16 +1714,16 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 205 · 52-fork-relay-input-channels-save-skill-mechanics.md:65 · The form is a visualisation tool
 205 · 52-fork-relay-input-channels-save-skill-mechanics.md:74 · Two gates
 205 · 52-fork-relay-input-channels-save-skill-mechanics.md:85 · On Desktop 2.19675.0, the first question usually goes to the form
-205 · 52-fork-relay-input-channels-save-skill-mechanics.md:91 · Measured
-205 · 52-fork-relay-input-channels-save-skill-mechanics.md:104 · For a skill author
-206 · 52-fork-relay-input-channels-save-skill-mechanics.md:116 · The computation (asar 2.7032.0, chunk `Cpo4PQ3e`)
-206 · 52-fork-relay-input-channels-save-skill-mechanics.md:127 · The access list
-206 · 52-fork-relay-input-channels-save-skill-mechanics.md:135 · When it appeared on this machine
-207 · 52-fork-relay-input-channels-save-skill-mechanics.md:143 · A `/skill` command leaves no Skill tool call
-207 · 52-fork-relay-input-channels-save-skill-mechanics.md:147 · Cowork passes the OAuth token through a file descriptor
-207 · 52-fork-relay-input-channels-save-skill-mechanics.md:151 · One feedback path for four hook events
-207 · 52-fork-relay-input-channels-save-skill-mechanics.md:160 · An admin allow-list stops plugin MCP servers from running locally
-207 · 52-fork-relay-input-channels-save-skill-mechanics.md:164 · Desktop can receive a build the public feed never lists
+205 · 52-fork-relay-input-channels-save-skill-mechanics.md:93 · Measured
+205 · 52-fork-relay-input-channels-save-skill-mechanics.md:106 · For a skill author
+206 · 52-fork-relay-input-channels-save-skill-mechanics.md:120 · The computation (asar 2.7032.0, chunk `Cpo4PQ3e`)
+206 · 52-fork-relay-input-channels-save-skill-mechanics.md:131 · The access list
+206 · 52-fork-relay-input-channels-save-skill-mechanics.md:139 · When it appeared on this machine
+207 · 52-fork-relay-input-channels-save-skill-mechanics.md:147 · A `/skill` command leaves no Skill tool call
+207 · 52-fork-relay-input-channels-save-skill-mechanics.md:151 · Cowork passes the OAuth token through a file descriptor
+207 · 52-fork-relay-input-channels-save-skill-mechanics.md:155 · One feedback path for four hook events
+207 · 52-fork-relay-input-channels-save-skill-mechanics.md:164 · An admin allow-list stops plugin MCP servers from running locally
+207 · 52-fork-relay-input-channels-save-skill-mechanics.md:168 · Desktop can receive a build the public feed never lists
 208 · 53-routine-migration-plugin-hooks-by-lane.md:21 · Observed
 208 · 53-routine-migration-plugin-hooks-by-lane.md:35 · The sweep
 208 · 53-routine-migration-plugin-hooks-by-lane.md:52 · Where a scheduled task is stored
@@ -1800,15 +1800,19 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:104 · When they are served
 221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:113 · Imagine availability
 221 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:117 · For an author
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:17 · Two agent settings pinned off
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:27 · A model list that forces extended thinking on
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:31 · Scheduled tasks created from a session start in Auto mode
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:43 · Escalated asks in unattended turns
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:47 · Control protocol
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:51 · Gates the server switched off on 2026-10-07
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:66 · Gates new in this window
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:75 · Local or cloud placement is unchanged
-222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:79 · For an author
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:18 · Two agent settings pinned off
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:28 · A model list that forces extended thinking on
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:32 · Scheduled tasks created from a session start in Auto mode
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:44 · Escalated asks in unattended turns
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:48 · Control protocol
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:52 · Gates the server switched off on 2026-10-07
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:67 · Gates new in this window
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:76 · Local or cloud placement is unchanged
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:80 · For an author
+223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:94 · Observed
+223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:105 · The limits (CODE-READ, Desktop 2.26454.0 and 2.26454.2, identical)
+223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:130 · For a skill author
+223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:137 · Desktop 2.26454.2
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

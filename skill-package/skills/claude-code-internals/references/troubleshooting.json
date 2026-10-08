@@ -2772,6 +2772,19 @@
     194
    ],
    "hint": "The cloud memory relay gate 946844604 is served off from 2026-10-07: the memory SDK-MCP server is not installed, and a Desktop-configured server named memory runs. It can come back on without a client update."
+  },
+  {
+   "pattern": [
+    "plugin enabled but skills missing",
+    "plugin uploaded but not in slash menu",
+    "Suspicious compression ratio",
+    "plugin zip rejected silently",
+    "Failed to download plugin"
+   ],
+   "lessons": [
+    223
+   ],
+   "hint": "Desktop rejects a plugin zip when any one file compresses better than 50:1, logs it only in main.log (\"Failed to download <name>: Suspicious compression ratio…\"), and still shows the plugin as enabled. Keep test fixtures out of the plugin folder."
   }
  ]
 }
