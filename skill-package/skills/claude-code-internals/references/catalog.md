@@ -68,3 +68,4 @@ convention and are spread across those legacy files, whose rows read `1–8`.
 | `56-uploaded-skills-plugin-blocks-mcp-placeholders.md` | 59 | 217–218 | An Uploaded Skill Reaches Every Surface Whole (id 217); Plugin Blocks and MCP Placeholders, Lane by Lane (id 218) |
 | `57-desktop-2.16120-scheduled-artifacts-permissions.md` | 60 | 219–221 | Scheduled Runs Get the Native Artifact Tool and Carry Their Files to the Cloud (id 219); Host-Loop File Permissions: Approvals Pinned, Org Asks Reach the User (id 220); Screenshot Tools for Artifacts and the File Preview (id 221) |
 | `58-desktop-2.26454-spawn-env-scheduled-auto.md` | 61 | 222–223 | What Desktop 2.26454.0 Changed for Cowork (id 222); What Desktop Checks in a Plugin Zip, and How It Fails Without Telling You (id 223) |
+| `59-desktop-mcpb-launch-completions.md` | 62 | 224–225 | How Desktop Launches an MCPB Extension's Server (id 224); Desktop Never Asks an MCP Server for Prompt Completions (id 225) |

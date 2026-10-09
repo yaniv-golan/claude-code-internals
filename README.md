@@ -10,7 +10,7 @@ A skill that lets Claude answer questions about how **Claude Code**, the **Claud
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-plugin-F97316)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/plugins)
 [![Improved with Skill Creator Plus](https://img.shields.io/badge/Improved_with-Skill_Creator_Plus-4ecdc4?style=flat-square)](https://github.com/yaniv-golan/skill-creator-plus)
 
-Claude knows how to *use* Claude Code, but not how it works inside: why a hook didn't fire, where a file your skill wrote actually went, why the agent can't delete a file in Cowork. Those answers usually aren't in the docs. This skill gives Claude 223 lessons on those internals, each checked against the released binaries and stamped with the version it was measured on. It works in Claude Code (the CLI), the Claude Desktop app (the Code tab and Cowork), and claude.ai.
+Claude knows how to *use* Claude Code, but not how it works inside: why a hook didn't fire, where a file your skill wrote actually went, why the agent can't delete a file in Cowork. Those answers usually aren't in the docs. This skill gives Claude 225 lessons on those internals, each checked against the released binaries and stamped with the version it was measured on. It works in Claude Code (the CLI), the Claude Desktop app (the Code tab and Cowork), and claude.ai.
 
 ## An example
 
@@ -201,7 +201,7 @@ claude-code-internals/
 
 ## Attribution
 
-This repository began as a fork of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals) (v2.0.0) and has since grown into its own project: 223 lessons across 61 chapters, where upstream shipped about 50. The foundational work is **stuinfla's**: the 50 original lessons (Chapters 1–8, reverse-engineered from Claude Code v2.1.88), the unified search engine, the topic index and cross-reference/troubleshooting data, the PreToolUse `.claude/` hook and version-check script, and the original README and diagrams.
+This repository began as a fork of [stuinfla/claude-code-internals](https://github.com/stuinfla/claude-code-internals) (v2.0.0) and has since grown into its own project: 225 lessons across 62 chapters, where upstream shipped about 50. The foundational work is **stuinfla's**: the 50 original lessons (Chapters 1–8, reverse-engineered from Claude Code v2.1.88), the unified search engine, the topic index and cross-reference/troubleshooting data, the PreToolUse `.claude/` hook and version-check script, and the original README and diagrams.
 
 **What this fork adds** (v2.2.0–v2.66.0, by Yaniv Golan, improved using [Skill Creator Plus](https://github.com/yaniv-golan/skill-creator-plus)): Chapters 9–60 — every binary-verified CLI release delta, the full Claude Desktop + Cowork corpus, the mutable `references/state/` truth layer, the shell-safe script CLIs (`fetch-lesson.js`, `xref.js`, `troubleshoot.js`, `extract-bundle.sh`, `diff-versions.sh`), and the plugin/marketplace/release/Pages infrastructure. See [CHANGELOG.md](CHANGELOG.md) for the item-by-item breakdown.
 

@@ -5514,6 +5514,54 @@
         "uploaded skill works but plugin version fails",
         "where are plugin download errors logged?"
       ]
+    },
+    "224": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-10-09",
+      "input_sha256": "0b8247dd3e4479d11f0c2ed801c8f4a26956a1227c2321567a1f9ca0f9fe21ab",
+      "collision_check": "questions-v2.json dev",
+      "terms": [
+        "desktop extension server missing environment variables",
+        "extension env vars ignored on mac",
+        "platform override env replaces base env",
+        "optional setting shows literal placeholder text",
+        "why does my server get the unfilled placeholder string?",
+        "api key with dollar signs gets changed",
+        "secret value altered when passed to extension",
+        "extension server can't find node or python on PATH",
+        "which PATH does a desktop extension server get?",
+        "extension server not starting missing required config",
+        "boolean settings arrive as true false strings",
+        "windows extension missing TMP variable",
+        "sensitive extension setting stored encrypted or plaintext",
+        "why does the override command not change the runtime?",
+        "bundled extension uses built-in node or system node"
+      ]
+    },
+    "225": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-10-09",
+      "input_sha256": "4f2d9f673bd3d598c033f7475ae051e2ba4cd2af2feee85b6174219581f19ad4",
+      "collision_check": "questions-v2.json dev",
+      "terms": [
+        "prompt argument autocomplete not working",
+        "no suggestions in prompt form",
+        "connector prompt fields show no dropdown",
+        "desktop ignores my server's argument completions",
+        "why doesn't desktop suggest values for prompt inputs?",
+        "autocomplete for prompt arguments in desktop app",
+        "server completion handler never called",
+        "does Claude Desktop support prompt completions?",
+        "plain text boxes in connector prompt form",
+        "how do users know valid prompt argument values?",
+        "completion files showing up as extra prompts",
+        "weird extra prompts in connector menu",
+        "resource template argument suggestions",
+        "typing in prompt field gives no hints",
+        "is implementing argument completion worth it for desktop?"
+      ]
     }
   }
 }

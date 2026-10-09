@@ -2785,6 +2785,52 @@
     223
    ],
    "hint": "Desktop rejects a plugin zip when any one file compresses better than 50:1, logs it only in main.log (\"Failed to download <name>: Suspicious compression ratio…\"), and still shows the plugin as enabled. Keep test fixtures out of the plugin folder."
+  },
+  {
+   "pattern": [
+    "platform_overrides env dropped",
+    "MCPB override env missing variables",
+    "extension server missing API key",
+    "mcp_config env not merged"
+   ],
+   "lessons": [
+    224
+   ],
+   "hint": "A platform override's env replaces the base env whole (command and args likewise). Repeat every variable in the override, or keep env out of it."
+  },
+  {
+   "pattern": [
+    "server receives literal ${user_config",
+    "user_config placeholder not substituted",
+    "extension setting arrives empty or literal"
+   ],
+   "lessons": [
+    224
+   ],
+   "hint": "An optional setting with no saved value and no default stays as the literal ${user_config.<key>}; a whole-argument placeholder with an empty value does too. Give it a default or treat that text as unset."
+  },
+  {
+   "pattern": [
+    "MCPB server environment variables missing",
+    "extension cannot find command PATH",
+    "TMP not set on Windows MCP server",
+    "secret with dollar sign changed"
+   ],
+   "lessons": [
+    224
+   ],
+   "hint": "Extension servers get only an allowlist of Desktop's env (macOS: HOME LOGNAME PATH SHELL TERM USER) plus the manifest env; PATH is the login-shell PATH plus common tool dirs. $$ and $& in a setting value are rewritten by String.replace."
+  },
+  {
+   "pattern": [
+    "MCP prompt completion not working in Claude Desktop",
+    "no suggestions in prompt arguments",
+    "completion/complete never called"
+   ],
+   "lessons": [
+    225
+   ],
+   "hint": "Claude Desktop never sends completion/complete for prompt arguments; its prompt form is plain inputs. The bundled agent sends it only for resource templates. Describe valid values in the argument's description."
   }
  ]
 }

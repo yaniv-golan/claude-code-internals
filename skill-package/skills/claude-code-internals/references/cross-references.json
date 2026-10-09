@@ -2051,6 +2051,11 @@
     "id": 107,
     "relevance": 0.78,
     "reason": "the driver side of the same control protocol whose dispatcher (elicitation etc.) L105 documents"
+   },
+   {
+    "id": 225,
+    "relevance": 0.5,
+    "reason": "L225: Desktop never sends completion/complete for prompt arguments"
    }
   ],
   "106": [
@@ -3868,6 +3873,11 @@
     "id": 129,
     "relevance": 0.5,
     "reason": "Desktop SDK-MCP servers"
+   },
+   {
+    "id": 224,
+    "relevance": 0.6,
+    "reason": "L224: how LocalMcpServerManager launches extension servers (env allowlist, PATH, overrides)"
    }
   ],
   "200": [
@@ -4271,6 +4281,11 @@
     "id": 215,
     "relevance": 0.6,
     "reason": "get_device_info reports plugin server states"
+   },
+   {
+    "id": 224,
+    "relevance": 0.6,
+    "reason": "L224: extension servers get a different environment and placeholder rules from plugin servers"
    }
   ],
   "219": [
@@ -4386,6 +4401,50 @@
     "id": 209,
     "relevance": 0.4,
     "reason": "plugin delivery to Cowork lanes; a rejected zip means none of the plugin's hooks or skills arrive"
+   }
+  ],
+  "224": [
+   {
+    "id": 225,
+    "relevance": 0.8,
+    "reason": "same Desktop extension servers: L225 covers the completion requests Desktop never sends them"
+   },
+   {
+    "id": 199,
+    "relevance": 0.7,
+    "reason": "LocalMcpServerManager and localMcpBridge, which start extension servers for Cowork through the same launcher"
+   },
+   {
+    "id": 218,
+    "relevance": 0.65,
+    "reason": "plugin MCP servers in a local session are started by the agent with a different environment and placeholder rules"
+   },
+   {
+    "id": 223,
+    "relevance": 0.45,
+    "reason": "other Desktop install-time checks on plugin and bundle archives"
+   },
+   {
+    "id": 106,
+    "relevance": 0.4,
+    "reason": "another Desktop channel for delivering a credential to a tool: CLI-plugin env secrets"
+   }
+  ],
+  "225": [
+   {
+    "id": 224,
+    "relevance": 0.8,
+    "reason": "how the same extension servers are launched and configured"
+   },
+   {
+    "id": 105,
+    "relevance": 0.55,
+    "reason": "other MCP client features Desktop does and doesn't implement (MCP Apps bridge, elicitation)"
+   },
+   {
+    "id": 199,
+    "relevance": 0.4,
+    "reason": "what Desktop asks local MCP servers for in Cowork"
    }
   ]
  }

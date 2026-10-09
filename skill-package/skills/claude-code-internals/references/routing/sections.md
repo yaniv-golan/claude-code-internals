@@ -1813,6 +1813,16 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:105 · The limits (CODE-READ, Desktop 2.26454.0 and 2.26454.2, identical)
 223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:130 · For a skill author
 223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:137 · Desktop 2.26454.2
+224 · 59-desktop-mcpb-launch-completions.md:18 · Resolving `mcp_config` (CODE-READ)
+224 · 59-desktop-mcpb-launch-completions.md:43 · The environment the server gets (CODE-READ; PATH MEASURED)
+224 · 59-desktop-mcpb-launch-completions.md:62 · Sensitive settings (CODE-READ)
+224 · 59-desktop-mcpb-launch-completions.md:66 · Plugin-shipped MCPB sources (CODE-READ)
+224 · 59-desktop-mcpb-launch-completions.md:70 · Observed with a real bundle (MEASURED, n=1, 2026-10-09)
+224 · 59-desktop-mcpb-launch-completions.md:74 · For a bundle author
+225 · 59-desktop-mcpb-launch-completions.md:90 · Observed (MEASURED, n=1 server)
+225 · 59-desktop-mcpb-launch-completions.md:94 · In the code (CODE-READ, Desktop 2.31226.0)
+225 · 59-desktop-mcpb-launch-completions.md:100 · The agent (CODE-READ, Desktop-bundled 2.1.293)
+225 · 59-desktop-mcpb-launch-completions.md:104 · For a server author
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)
