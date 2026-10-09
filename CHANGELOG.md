@@ -1,5 +1,43 @@
 # Changelog
 
+## v2.67.0 — 2026-10-09 (this fork) — Plugin-zip checks that fail silently, and how Desktop launches MCPB extensions
+
+225 lessons across 62 chapters (3 new: L223–L225, new Chapter 62). Sources: Claude Desktop `app.asar` 2.26454.0 and
+2.26454.2 (diffed), the installed 2.31226.0 (read, not diffed), the Desktop-bundled agent 2.1.293, the GrowthBook cache
+decoded on 2026-10-09, and live runs on 2026-10-08 and 2026-10-09.
+
+**Plugin zips (L223)**
+
+- Desktop checks every plugin zip before extracting it: any entry compressed more than 50:1, more than 100,000
+  entries, a file over 512 MB, a path over 1,024 characters or a file name over 255 characters fails it. Each kind
+  of plugin has its own policy.
+- For an org plugin, a rejected zip is logged only in `main.log`; the plugin page still shows the plugin as enabled
+  while none of its skills arrive. Seen on 2026-10-08 with a plugin whose test fixtures compressed beyond 50:1.
+- Desktop 2.26454.2 changes no Desktop code; it bundles agent 2.1.293 from the release-candidate channel.
+
+**MCPB extensions (L224, new)**
+
+- A platform override's `env` replaces the base `env` whole (command and args likewise), and placeholders are filled
+  in after the override is picked.
+- An optional setting that is unset and has no default reaches the server as the literal `${user_config.<key>}`;
+  `$$` and `$&` in a setting value are rewritten on the way.
+- A server gets only an allowlist of Desktop's environment plus the manifest's `env`, with the login-shell PATH and
+  common tool directories. Chat and Cowork start extension servers through the same code.
+
+**Prompt completions (L225, new)**
+
+- Claude Desktop never sends `completion/complete` for prompt arguments, so its prompt form shows no suggestions. The
+  bundled agent sends it only for resource-template arguments.
+
+**Asking the user (L205)**
+
+- Two more runs on 2026-10-08 (agent 2.1.293). A chat message typed while an AskUserQuestion card is open becomes
+  that card's answer: `answers` is empty and the text arrives in `response`.
+
+**Retrieval**
+
+- The CI gate moves to `baseline-v9.json`, recording one accepted drop (pl-0296, rank 10 to 11) from adding L223.
+
 ## v2.66.0 — 2026-10-08 (this fork) — How often the Desktop form wins, hooks that miss it, and restamps that compare gate values
 
 222 lessons across 61 chapters (no new lessons). Sources: local Cowork transcripts on Desktop 2.19675.0 (agent 2.1.286,
