@@ -2140,6 +2140,11 @@
     "id": 124,
     "relevance": 0.85,
     "reason": "L124's Pm()/jKe()/FM() is the direct successor of L107's f_() host-loop/VM-loop decision function, re-verified force-on at 1.20186.1/2.1.205"
+   },
+   {
+    "id": 227,
+    "relevance": 0.6,
+    "reason": "L227: which calls show a card in 2.31226.1"
    }
   ],
   "108": [
@@ -4070,6 +4075,11 @@
     "id": 138,
     "relevance": 0.6,
     "reason": "the local and remote lanes"
+   },
+   {
+    "id": 226,
+    "relevance": 0.6,
+    "reason": "L226: the switch is a server-side setting that can flip; the display can disagree with routing"
    }
   ],
   "211": [
@@ -4401,6 +4411,11 @@
     "id": 209,
     "relevance": 0.4,
     "reason": "plugin delivery to Cowork lanes; a rejected zip means none of the plugin's hooks or skills arrive"
+   },
+   {
+    "id": 230,
+    "relevance": 0.5,
+    "reason": "L230: marketplace sync bypasses the zip checks"
    }
   ],
   "224": [
@@ -4428,6 +4443,11 @@
     "id": 106,
     "relevance": 0.4,
     "reason": "another Desktop channel for delivering a credential to a tool: CLI-plugin env secrets"
+   },
+   {
+    "id": 229,
+    "relevance": 0.7,
+    "reason": "L229: updates, elicitation and error display for the same extensions"
    }
   ],
   "225": [
@@ -4445,6 +4465,91 @@
     "id": 199,
     "relevance": 0.4,
     "reason": "what Desktop asks local MCP servers for in Cowork"
+   }
+  ],
+  "226": [
+   {
+    "id": 227,
+    "relevance": 0.6,
+    "reason": "what a task can do without a card depends on where it runs"
+   },
+   {
+    "id": 210,
+    "relevance": 0.6,
+    "reason": "L210: the Personal cloud switchover this lesson refines"
+   },
+   {
+    "id": 124,
+    "relevance": 0.4,
+    "reason": "host-loop vs VM-loop routing gates"
+   }
+  ],
+  "227": [
+   {
+    "id": 107,
+    "relevance": 0.7,
+    "reason": "the spawn allowedTools and forced-ask PreToolUse matcher this lesson updates"
+   },
+   {
+    "id": 228,
+    "relevance": 0.5,
+    "reason": "same local session: paths the model sees"
+   },
+   {
+    "id": 226,
+    "relevance": 0.5,
+    "reason": "routing decides which card rules apply"
+   }
+  ],
+  "228": [
+   {
+    "id": 227,
+    "relevance": 0.5,
+    "reason": "same local session layers"
+   },
+   {
+    "id": 107,
+    "relevance": 0.4,
+    "reason": "the control protocol messages that carry the paths"
+   },
+   {
+    "id": 124,
+    "relevance": 0.4,
+    "reason": "VM mount layout"
+   }
+  ],
+  "229": [
+   {
+    "id": 224,
+    "relevance": 0.8,
+    "reason": "how the same extension servers are launched"
+   },
+   {
+    "id": 225,
+    "relevance": 0.6,
+    "reason": "other MCP client features Desktop omits"
+   },
+   {
+    "id": 105,
+    "relevance": 0.5,
+    "reason": "elicitation on the Desktop side"
+   }
+  ],
+  "230": [
+   {
+    "id": 223,
+    "relevance": 0.6,
+    "reason": "the zip checks on uploaded plugins"
+   },
+   {
+    "id": 209,
+    "relevance": 0.5,
+    "reason": "plugin delivery to Cowork lanes"
+   },
+   {
+    "id": 227,
+    "relevance": 0.3,
+    "reason": "the shared /tmp finding for skill authors"
    }
   ]
  }

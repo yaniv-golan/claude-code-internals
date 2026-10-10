@@ -1823,6 +1823,29 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 225 · 59-desktop-mcpb-launch-completions.md:94 · In the code (CODE-READ, Desktop 2.31226.0)
 225 · 59-desktop-mcpb-launch-completions.md:100 · The agent (CODE-READ, Desktop-bundled 2.1.293)
 225 · 59-desktop-mcpb-launch-completions.md:104 · For a server author
+226 · 60-desktop-routing-cards-paths-extensions.md:21 · Where the setting lives (CODE-READ, ion-dist 2.31226.0/.1)
+226 · 60-desktop-routing-cards-paths-extensions.md:28 · Per-task routing (CODE-READ, `shared-26` `sj`)
+226 · 60-desktop-routing-cards-paths-extensions.md:47 · What it did in practice (MEASURED, Desktop 2.31226.0/.1)
+226 · 60-desktop-routing-cards-paths-extensions.md:58 · The composer's Auto/Manual choice (CODE-READ, `shared-8` `Wj`/`Uj`/`Kj`)
+226 · 60-desktop-routing-cards-paths-extensions.md:62 · For an author or tester
+227 · 60-desktop-routing-cards-paths-extensions.md:74 · The layers (CODE-READ, asar 2.31226.1)
+227 · 60-desktop-routing-cards-paths-extensions.md:83 · Deletes (CODE-READ)
+227 · 60-desktop-routing-cards-paths-extensions.md:87 · The folder prompt (CODE-READ)
+227 · 60-desktop-routing-cards-paths-extensions.md:91 · Observed (MEASURED, Desktop 2.31226.1)
+227 · 60-desktop-routing-cards-paths-extensions.md:97 · For an author
+228 · 60-desktop-routing-cards-paths-extensions.md:109 · Where the rewrite happens (CODE-READ, asar 2.31226.1)
+228 · 60-desktop-routing-cards-paths-extensions.md:121 · The other direction (CODE-READ)
+228 · 60-desktop-routing-cards-paths-extensions.md:126 · Observed (MEASURED, Desktop 2.31226.1, Team, local)
+228 · 60-desktop-routing-cards-paths-extensions.md:131 · For an author or tester
+229 · 60-desktop-routing-cards-paths-extensions.md:143 · Updates (CODE-READ, asar 2.31226.0 `index.chunk-BC1wbmHw.js`; 2.31226.1 `index.chunk-Bk8mxCPb.js`)
+229 · 60-desktop-routing-cards-paths-extensions.md:149 · No elicitation (CODE-READ, asar 2.31226.1 `index.chunk-BEWlG8Pv.js`)
+229 · 60-desktop-routing-cards-paths-extensions.md:153 · Observed (MEASURED, Desktop 2.31226.0/.1, one real extension)
+229 · 60-desktop-routing-cards-paths-extensions.md:164 · For an extension author
+230 · 60-desktop-routing-cards-paths-extensions.md:178 · Frontmatter is rewritten (MEASURED, n=2 copies, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:186 · Marketplace sync installs everything (MEASURED, n=1)
+230 · 60-desktop-routing-cards-paths-extensions.md:190 · Switching off deletes the copy (MEASURED, n=1, Team)
+230 · 60-desktop-routing-cards-paths-extensions.md:196 · A related default (MEASURED)
+230 · 60-desktop-routing-cards-paths-extensions.md:200 · For a plugin author
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

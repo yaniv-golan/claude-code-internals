@@ -2831,6 +2831,61 @@
     225
    ],
    "hint": "Claude Desktop never sends completion/complete for prompt arguments; its prompt form is plain inputs. The bundled agent sends it only for resource templates. Describe valid values in the argument's description."
+  },
+  {
+   "pattern": [
+    "Only on this computer setting missing",
+    "task ran in the cloud although Only on this computer is on",
+    "Cowork task runs locally when I expected cloud"
+   ],
+   "lessons": [
+    226
+   ],
+   "hint": "The switch is a server-side account setting; its row shows only while the account is local, and display and routing can disagree. Check pwd/HOME/CLAUDE_CODE_ENTRYPOINT in the task."
+  },
+  {
+   "pattern": [
+    "no permission card in Manual mode",
+    "bash runs without asking in Cowork",
+    "delete card in Cowork"
+   ],
+   "lessons": [
+    227
+   ],
+   "hint": "Local Cowork pre-allows mcp__workspace__bash and Edit/Read inside connected folders; only the always-ask set (file delete, new folder, save_skill, launch_code_session, scheduled-task writes) and non-allowed tools show a card."
+  },
+  {
+   "pattern": [
+    "audit.jsonl shows host paths",
+    "path in Cowork log differs from what the model typed",
+    "/sessions path rewritten"
+   ],
+   "lessons": [
+    228
+   ],
+   "hint": "Desktop rewrites /sessions/<vm>/mnt/... to host paths in audit.jsonl and the UI only; the model sees VM paths."
+  },
+  {
+   "pattern": [
+    "mcpb extension not updating",
+    "local extension elicitation never shown",
+    "The connector returned an error or an invalid response"
+   ],
+   "lessons": [
+    229
+   ],
+   "hint": "Sideloaded .mcpb never auto-updates; local extension clients advertise no elicitation; JSON-RPC errors show as a generic message (return isError tool results instead)."
+  },
+  {
+   "pattern": [
+    "installed plugin files differ from source",
+    "plugin disappeared after switching off",
+    "marketplace plugin shows Add instead of switch"
+   ],
+   "lessons": [
+    230
+   ],
+   "hint": "Desktop re-serializes skill/agent frontmatter on install; switching off an org-marketplace plugin removes its local copy at the next sync (Add re-installs)."
   }
  ]
 }

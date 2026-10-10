@@ -1,6 +1,6 @@
 {
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 225,
+  "total_lessons": 230,
   "lessons": [
     {
       "id": 1,
@@ -21820,6 +21820,334 @@
         "date": "2026-10-09",
         "terms_sha256": "94d67e42bc81082e4de663dc9ed9778984201fa7748de30a4a113349372af769"
       }
+    },
+    {
+      "id": 226,
+      "title": "\"Only on This Computer\": Where the Local/Cloud Choice Lives, and That It Can Change Under You",
+      "lesson_number": "226",
+      "file": "60-desktop-routing-cards-paths-extensions.md",
+      "startLine": 17,
+      "endLine": 66,
+      "keywords": [
+        "dramatic_shrimp_disabled_at",
+        "can-opt-out",
+        "cowork_remote_opt_out_returning_only_main",
+        "local_override_forced",
+        "local_folder_forced",
+        "local_space_forced",
+        "local_auto_permission_forced",
+        "local_bypass_permission_forced",
+        "local_plugin_stdio_default",
+        "shared-26",
+        "disabled_at",
+        "shared-18",
+        "opt-out-retired",
+        "gb__2534692942",
+        "can-run-local",
+        "ccr_mcp_permission_mode_override",
+        "ccr_auto_permission_mode",
+        "local_chrome_skip_forced",
+        "local_options_forced",
+        "local_computer_use_forced",
+        "shared-8",
+        "cowork-unsupervised-sticky",
+        "manual-opt-out",
+        "how to tell if task ran locally or in cloud",
+        "cowork task ran in cloud instead of locally",
+        "local vs cloud cowork setting",
+        "opt out of cloud cowork",
+        "local only setting disappeared from settings",
+        "setting turned back on by itself",
+        "why did my task run in the cloud",
+        "phone task runs in cloud not on my computer",
+        "auto mode forces local session",
+        "what decides where a cowork task runs",
+        "cloud opt-out expires after a few days",
+        "skill can't find plugin scripts from phone",
+        "verify which environment a task ran in"
+      ],
+      "identifier_keys": [
+        "dramatic_shrimp_disabled_at",
+        "can-opt-out",
+        "cowork_remote_opt_out_returning_only_main",
+        "local_override_forced",
+        "local_folder_forced",
+        "local_space_forced",
+        "local_auto_permission_forced",
+        "local_bypass_permission_forced",
+        "local_plugin_stdio_default",
+        "shared-26",
+        "disabled_at",
+        "shared-18",
+        "opt-out-retired",
+        "gb__2534692942",
+        "can-run-local",
+        "ccr_mcp_permission_mode_override",
+        "ccr_auto_permission_mode",
+        "local_chrome_skip_forced",
+        "local_options_forced",
+        "local_computer_use_forced",
+        "shared-8",
+        "cowork-unsupervised-sticky",
+        "manual-opt-out"
+      ],
+      "vocab_keys": [
+        "how to tell if task ran locally or in cloud",
+        "cowork task ran in cloud instead of locally",
+        "local vs cloud cowork setting",
+        "opt out of cloud cowork",
+        "local only setting disappeared from settings",
+        "setting turned back on by itself",
+        "why did my task run in the cloud",
+        "phone task runs in cloud not on my computer",
+        "auto mode forces local session",
+        "what decides where a cowork task runs",
+        "cloud opt-out expires after a few days",
+        "skill can't find plugin scripts from phone",
+        "verify which environment a task ran in"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-10",
+        "terms_sha256": "16dd31e9737220f758f68c42f414e4aff8d83b3161143e0b5dcaa27e9f6a25b0"
+      }
+    },
+    {
+      "id": 227,
+      "title": "Which Tool Calls Show an Approval Card in a Local Cowork Session",
+      "lesson_number": "227",
+      "file": "60-desktop-routing-cards-paths-extensions.md",
+      "startLine": 70,
+      "endLine": 101,
+      "keywords": [
+        "present_files",
+        "propose_skills",
+        "index.chunk-QEr06WaZ.js",
+        "index.chunk-Cyt2WTko.js",
+        "handle-tool-permission",
+        "Bwge5-J7",
+        "cowork-trust-dialog",
+        "cowork manual mode not asking permission",
+        "why no approval prompt for shell commands",
+        "cowork runs commands without asking",
+        "file edits skip approval in cowork",
+        "which actions require approval in cowork",
+        "delete files permission prompt cowork",
+        "rm fails in connected folder",
+        "why does deleting files fail first then ask",
+        "allow claude to change files dialog",
+        "folder access prompt vs tool approval",
+        "scheduled task approval always asked",
+        "manual mode label but edits auto accepted",
+        "does manual mode stop file writes",
+        "shared temp folder between cowork sessions",
+        "cannot overwrite temp file from another session"
+      ],
+      "identifier_keys": [
+        "present_files",
+        "propose_skills",
+        "index.chunk-QEr06WaZ.js",
+        "index.chunk-Cyt2WTko.js",
+        "handle-tool-permission",
+        "Bwge5-J7",
+        "cowork-trust-dialog"
+      ],
+      "vocab_keys": [
+        "cowork manual mode not asking permission",
+        "why no approval prompt for shell commands",
+        "cowork runs commands without asking",
+        "file edits skip approval in cowork",
+        "which actions require approval in cowork",
+        "delete files permission prompt cowork",
+        "rm fails in connected folder",
+        "why does deleting files fail first then ask",
+        "allow claude to change files dialog",
+        "folder access prompt vs tool approval",
+        "scheduled task approval always asked",
+        "manual mode label but edits auto accepted",
+        "does manual mode stop file writes",
+        "shared temp folder between cowork sessions",
+        "cannot overwrite temp file from another session"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-10",
+        "terms_sha256": "eb1ccf18f53bf6ad8ab66469154d693b1d33b925a045281ea532d871e9f720c3"
+      }
+    },
+    {
+      "id": 228,
+      "title": "The Model Sees VM Paths; audit.jsonl and the UI Show Host Paths",
+      "lesson_number": "228",
+      "file": "60-desktop-routing-cards-paths-extensions.md",
+      "startLine": 105,
+      "endLine": 135,
+      "keywords": [
+        "index.chunk-QEr06WaZ.js",
+        "Bwge5-J7",
+        "build-vm-path-context",
+        "message-buffer",
+        "audit-log",
+        "session-storage-dir",
+        "mount-name-map",
+        "paths in log differ from what model typed",
+        "why does the log show a different path",
+        "sandbox path vs mac path",
+        "virtual machine path rewritten to host path",
+        "file path translation in chat display",
+        "audit log shows wrong file path",
+        "what path did the model actually see",
+        "host folder path not working in bash",
+        "connected folder path fails in sandbox command",
+        "which paths to use in skill instructions",
+        "ui still shows sessions path",
+        "why are some paths not translated",
+        "path with dot dot not converted",
+        "bash cannot reach host folder error",
+        "verify real path the agent used"
+      ],
+      "identifier_keys": [
+        "index.chunk-QEr06WaZ.js",
+        "Bwge5-J7",
+        "build-vm-path-context",
+        "message-buffer",
+        "audit-log",
+        "session-storage-dir",
+        "mount-name-map"
+      ],
+      "vocab_keys": [
+        "paths in log differ from what model typed",
+        "why does the log show a different path",
+        "sandbox path vs mac path",
+        "virtual machine path rewritten to host path",
+        "file path translation in chat display",
+        "audit log shows wrong file path",
+        "what path did the model actually see",
+        "host folder path not working in bash",
+        "connected folder path fails in sandbox command",
+        "which paths to use in skill instructions",
+        "ui still shows sessions path",
+        "why are some paths not translated",
+        "path with dot dot not converted",
+        "bash cannot reach host folder error",
+        "verify real path the agent used"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-10",
+        "terms_sha256": "60fdac33d6eb3edb2fc479fba809b946cc12503e8324f0a50818b29d3fed9c02"
+      }
+    },
+    {
+      "id": 229,
+      "title": "Local Extensions (.mcpb) in Desktop: Updates, Confirmations, Errors, Settings",
+      "lesson_number": "229",
+      "file": "60-desktop-routing-cards-paths-extensions.md",
+      "startLine": 139,
+      "endLine": 170,
+      "keywords": [
+        "index.chunk-BC1wbmHw.js",
+        "index.chunk-Bk8mxCPb.js",
+        "is-dxt-auto-updates-enabled",
+        "local.dxt",
+        "index.chunk-BEWlG8Pv.js",
+        "sideloaded desktop extension not updating",
+        "how to update a manually installed extension",
+        "local extension auto update",
+        "extension can't show confirmation dialog",
+        "mcp server ask user to confirm in desktop",
+        "connector returned an error or invalid response",
+        "server error message not shown to model",
+        "how should my extension report errors",
+        "extension setting toggle not saving",
+        "read-only setting keeps reverting",
+        "unable to connect to extension server after re-enable",
+        "tool result shows blank in desktop",
+        "desktop picks web connector instead of local extension",
+        "why doesn't my local extension get updates",
+        "building a desktop extension best practices"
+      ],
+      "identifier_keys": [
+        "index.chunk-BC1wbmHw.js",
+        "index.chunk-Bk8mxCPb.js",
+        "is-dxt-auto-updates-enabled",
+        "local.dxt",
+        "index.chunk-BEWlG8Pv.js"
+      ],
+      "vocab_keys": [
+        "sideloaded desktop extension not updating",
+        "how to update a manually installed extension",
+        "local extension auto update",
+        "extension can't show confirmation dialog",
+        "mcp server ask user to confirm in desktop",
+        "connector returned an error or invalid response",
+        "server error message not shown to model",
+        "how should my extension report errors",
+        "extension setting toggle not saving",
+        "read-only setting keeps reverting",
+        "unable to connect to extension server after re-enable",
+        "tool result shows blank in desktop",
+        "desktop picks web connector instead of local extension",
+        "why doesn't my local extension get updates",
+        "building a desktop extension best practices"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-10",
+        "terms_sha256": "eb2b358e4dcd2a4e4aedfb0f6faf9575d54e05e5a53decd726ad7f8b649711fc"
+      }
+    },
+    {
+      "id": 230,
+      "title": "Plugin Installs: Desktop Rewrites Frontmatter, and Switching Off an Org-Marketplace Plugin Deletes Its Copy",
+      "lesson_number": "230",
+      "file": "60-desktop-routing-cards-paths-extensions.md",
+      "startLine": 174,
+      "endLine": 205,
+      "keywords": [
+        "installed plugin files differ from source",
+        "why does my installed skill file look different",
+        "plugin description reformatted after install",
+        "multi-line description became one line",
+        "hash check fails on installed plugin",
+        "verify plugin installed correctly",
+        "plugin tests folder got installed",
+        "marketplace plugin much bigger than zip",
+        "turning off org plugin deletes it",
+        "disabled team plugin disappeared",
+        "lost my edits to installed plugin",
+        "plugin shows add instead of toggle",
+        "does disabling a plugin uninstall it",
+        "orphans cleaned in sync log",
+        "delete scheduled task also deletes files"
+      ],
+      "vocab_keys": [
+        "installed plugin files differ from source",
+        "why does my installed skill file look different",
+        "plugin description reformatted after install",
+        "multi-line description became one line",
+        "hash check fails on installed plugin",
+        "verify plugin installed correctly",
+        "plugin tests folder got installed",
+        "marketplace plugin much bigger than zip",
+        "turning off org plugin deletes it",
+        "disabled team plugin disappeared",
+        "lost my edits to installed plugin",
+        "plugin shows add instead of toggle",
+        "does disabling a plugin uninstall it",
+        "orphans cleaned in sync log",
+        "delete scheduled task also deletes files"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-10",
+        "terms_sha256": "84e8eec95d4c3a52d4499ca9c9ffeb22a8edeee00a1e64d01ed06a992414aaab"
+      }
     }
   ],
   "keyword_map": {
@@ -43037,7 +43365,8 @@
       114
     ],
     "present_files": [
-      114
+      114,
+      227
     ],
     "preview-format": [
       114
@@ -45532,40 +45861,49 @@
       209
     ],
     "dramatic_shrimp_disabled_at": [
-      210
+      210,
+      226
     ],
     "can-opt-out": [
-      210
+      210,
+      226
     ],
     "cowork_remote_opt_out_returning_only_main": [
-      210
+      210,
+      226
     ],
     "local_ungated": [
       210
     ],
     "local_override_forced": [
-      210
+      210,
+      226
     ],
     "dramatic_shrimp_force_local": [
       210
     ],
     "local_folder_forced": [
-      210
+      210,
+      226
     ],
     "local_space_forced": [
-      210
+      210,
+      226
     ],
     "local_auto_permission_forced": [
-      210
+      210,
+      226
     ],
     "local_bypass_permission_forced": [
-      210
+      210,
+      226
     ],
     "disabled_by_org_policy": [
       210
     ],
     "local_plugin_stdio_default": [
-      210
+      210,
+      226
     ],
     "cowork_settings": [
       210
@@ -45820,7 +46158,8 @@
       217
     ],
     "propose_skills": [
-      217
+      217,
+      227
     ],
     "deck-probe": [
       217
@@ -46055,6 +46394,95 @@
     ],
     "change-status": [
       225
+    ],
+    "shared-26": [
+      226
+    ],
+    "disabled_at": [
+      226
+    ],
+    "shared-18": [
+      226
+    ],
+    "opt-out-retired": [
+      226
+    ],
+    "gb__2534692942": [
+      226
+    ],
+    "can-run-local": [
+      226
+    ],
+    "ccr_mcp_permission_mode_override": [
+      226
+    ],
+    "ccr_auto_permission_mode": [
+      226
+    ],
+    "local_chrome_skip_forced": [
+      226
+    ],
+    "local_options_forced": [
+      226
+    ],
+    "local_computer_use_forced": [
+      226
+    ],
+    "shared-8": [
+      226
+    ],
+    "cowork-unsupervised-sticky": [
+      226
+    ],
+    "manual-opt-out": [
+      226
+    ],
+    "index.chunk-QEr06WaZ.js": [
+      227,
+      228
+    ],
+    "index.chunk-Cyt2WTko.js": [
+      227
+    ],
+    "handle-tool-permission": [
+      227
+    ],
+    "Bwge5-J7": [
+      227,
+      228
+    ],
+    "cowork-trust-dialog": [
+      227
+    ],
+    "build-vm-path-context": [
+      228
+    ],
+    "message-buffer": [
+      228
+    ],
+    "audit-log": [
+      228
+    ],
+    "session-storage-dir": [
+      228
+    ],
+    "mount-name-map": [
+      228
+    ],
+    "index.chunk-BC1wbmHw.js": [
+      229
+    ],
+    "index.chunk-Bk8mxCPb.js": [
+      229
+    ],
+    "is-dxt-auto-updates-enabled": [
+      229
+    ],
+    "local.dxt": [
+      229
+    ],
+    "index.chunk-BEWlG8Pv.js": [
+      229
     ],
     "why is claude startup slow": [
       1
@@ -55673,7 +56101,8 @@
       210
     ],
     "how to tell if task ran locally or in cloud": [
-      210
+      210,
+      226
     ],
     "cowork local vs cloud session routing": [
       210
@@ -56457,9 +56886,225 @@
     ],
     "is implementing argument completion worth it for desktop": [
       225
+    ],
+    "cowork task ran in cloud instead of locally": [
+      226
+    ],
+    "local vs cloud cowork setting": [
+      226
+    ],
+    "opt out of cloud cowork": [
+      226
+    ],
+    "local only setting disappeared from settings": [
+      226
+    ],
+    "setting turned back on by itself": [
+      226
+    ],
+    "why did my task run in the cloud": [
+      226
+    ],
+    "phone task runs in cloud not on my computer": [
+      226
+    ],
+    "auto mode forces local session": [
+      226
+    ],
+    "what decides where a cowork task runs": [
+      226
+    ],
+    "cloud opt-out expires after a few days": [
+      226
+    ],
+    "skill can't find plugin scripts from phone": [
+      226
+    ],
+    "verify which environment a task ran in": [
+      226
+    ],
+    "cowork manual mode not asking permission": [
+      227
+    ],
+    "why no approval prompt for shell commands": [
+      227
+    ],
+    "cowork runs commands without asking": [
+      227
+    ],
+    "file edits skip approval in cowork": [
+      227
+    ],
+    "which actions require approval in cowork": [
+      227
+    ],
+    "delete files permission prompt cowork": [
+      227
+    ],
+    "rm fails in connected folder": [
+      227
+    ],
+    "why does deleting files fail first then ask": [
+      227
+    ],
+    "allow claude to change files dialog": [
+      227
+    ],
+    "folder access prompt vs tool approval": [
+      227
+    ],
+    "scheduled task approval always asked": [
+      227
+    ],
+    "manual mode label but edits auto accepted": [
+      227
+    ],
+    "does manual mode stop file writes": [
+      227
+    ],
+    "shared temp folder between cowork sessions": [
+      227
+    ],
+    "cannot overwrite temp file from another session": [
+      227
+    ],
+    "paths in log differ from what model typed": [
+      228
+    ],
+    "why does the log show a different path": [
+      228
+    ],
+    "sandbox path vs mac path": [
+      228
+    ],
+    "virtual machine path rewritten to host path": [
+      228
+    ],
+    "file path translation in chat display": [
+      228
+    ],
+    "audit log shows wrong file path": [
+      228
+    ],
+    "what path did the model actually see": [
+      228
+    ],
+    "host folder path not working in bash": [
+      228
+    ],
+    "connected folder path fails in sandbox command": [
+      228
+    ],
+    "which paths to use in skill instructions": [
+      228
+    ],
+    "ui still shows sessions path": [
+      228
+    ],
+    "why are some paths not translated": [
+      228
+    ],
+    "path with dot dot not converted": [
+      228
+    ],
+    "bash cannot reach host folder error": [
+      228
+    ],
+    "verify real path the agent used": [
+      228
+    ],
+    "sideloaded desktop extension not updating": [
+      229
+    ],
+    "how to update a manually installed extension": [
+      229
+    ],
+    "local extension auto update": [
+      229
+    ],
+    "extension can't show confirmation dialog": [
+      229
+    ],
+    "mcp server ask user to confirm in desktop": [
+      229
+    ],
+    "connector returned an error or invalid response": [
+      229
+    ],
+    "server error message not shown to model": [
+      229
+    ],
+    "how should my extension report errors": [
+      229
+    ],
+    "extension setting toggle not saving": [
+      229
+    ],
+    "read-only setting keeps reverting": [
+      229
+    ],
+    "unable to connect to extension server after re-enable": [
+      229
+    ],
+    "tool result shows blank in desktop": [
+      229
+    ],
+    "desktop picks web connector instead of local extension": [
+      229
+    ],
+    "why doesn't my local extension get updates": [
+      229
+    ],
+    "building a desktop extension best practices": [
+      229
+    ],
+    "installed plugin files differ from source": [
+      230
+    ],
+    "why does my installed skill file look different": [
+      230
+    ],
+    "plugin description reformatted after install": [
+      230
+    ],
+    "multi-line description became one line": [
+      230
+    ],
+    "hash check fails on installed plugin": [
+      230
+    ],
+    "verify plugin installed correctly": [
+      230
+    ],
+    "plugin tests folder got installed": [
+      230
+    ],
+    "marketplace plugin much bigger than zip": [
+      230
+    ],
+    "turning off org plugin deletes it": [
+      230
+    ],
+    "disabled team plugin disappeared": [
+      230
+    ],
+    "lost my edits to installed plugin": [
+      230
+    ],
+    "plugin shows add instead of toggle": [
+      230
+    ],
+    "does disabling a plugin uninstall it": [
+      230
+    ],
+    "orphans cleaned in sync log": [
+      230
+    ],
+    "delete scheduled task also deletes files": [
+      230
     ]
   },
   "keyword_boundary": {
-    "unreachable_max": 28
+    "unreachable_max": 29
   }
 }
