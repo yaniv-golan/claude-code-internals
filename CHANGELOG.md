@@ -1,5 +1,31 @@
 # Changelog
 
+## v2.68.1 — 2026-10-11 (this fork) — CLI plugins that can't run, installing a CLI in the Cowork VM, delete grants and hook modes
+
+232 lessons across 64 chapters (no new lessons; five extended). Sources: live local and cloud Cowork runs on
+Desktop 2.31226.1 on 2026-10-11, and its `app.asar`.
+
+- L106: what a user sees when a `clis`-declared CLI runs while the `cli_plugin` gate is off: `cli-wrapper: plugin
+  oauth disabled`, exit 2, with no hook block and no card. The CLI's own code never runs. The fix is to drop
+  `clis` and install the CLI in the VM.
+- L173: the 54-byte `bin/` stub comes from Desktop's `cliStubWriter`. New section on installing a CLI in the local
+  VM shell:
+  - `pip install --user` puts it in `~/.local/bin`, which is off PATH;
+  - `/usr/local/bin` isn't writable and `sudo` is blocked;
+  - `uv tool install` shares pip's bin folder;
+  - nothing carries over to the next task.
+- L215: a file the session itself created still needs the delete grant, and a declined grant leaves only a
+  PreToolUse record. A hook sees one event per `device_bash` call, with the last command's exit code. Auto review
+  let ordinary commands through.
+- L227: under Auto, hooks get `permission_mode: "auto"`; under Manual, `"acceptEdits"` (n=2). Each local task has
+  its own `HOME`.
+- L230: a marketplace named in `cowork_settings.json` is never refreshed, so Update stays disabled. After the same
+  repository is added through Add marketplace, the UI hides the old copy, but it stays enabled until it is switched
+  off in the settings file.
+- Desktop server settings (fcache recaptured on 2026-10-11): the Computer Use permission gate `2486083521` and the
+  cloud memory relay `946844604` are off again. Local-artifact sharing (`3229517805`) is on again. These three have
+  flipped at almost every capture since 2026-10-07.
+
 ## v2.68.0 — 2026-10-11 (this fork) — Cowork routing, approval cards and paths; what Desktop 2.31226 changed
 
 232 lessons across 64 chapters (7 new: L226–L232, new Chapters 63 and 64). Sources: Claude Desktop `app.asar` 2.31226.0
