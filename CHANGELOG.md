@@ -1,5 +1,46 @@
 # Changelog
 
+## v2.68.0 — 2026-10-11 (this fork) — Cowork routing, approval cards and paths; what Desktop 2.31226 changed
+
+232 lessons across 64 chapters (7 new: L226–L232, new Chapters 63 and 64). Sources: Claude Desktop `app.asar` 2.31226.0
+and 2.31226.1 diffed against 2.26454.2, its UI bundle (`ion-dist`, read), the Desktop-bundled agent 2.1.295, the
+GrowthBook cache decoded on 2026-10-10, and live local and cloud Cowork runs between 2026-10-09 and 2026-10-11.
+
+**Routing, cards, paths, extensions and plugin installs (Chapter 63, new)**
+
+- L226: "Only on this computer" is a server-side account setting, and each task is routed by its own function with
+  many reasons to force local, including Auto or Bypass while the matching server flag is off. The switch's display
+  and the actual routing can disagree: check where a task ran before trusting a test.
+- L227: which tool calls show an approval card in a local Cowork session (the spawn's pre-approved tools plus a fixed
+  always-ask set); the folder prompt is a separate dialog.
+- L228: the model sees VM paths; `audit.jsonl` and the UI show them rewritten to host paths.
+- L229: local `.mcpb` extensions never auto-update, get no elicitation, and show a JSON-RPC error only as a generic
+  message.
+- L230: Desktop rewrites a plugin's skill frontmatter on install, and switching off an org-marketplace plugin deletes
+  its local copy.
+
+**Desktop 2.31226 (Chapter 64, new)**
+
+- L231: a `request_cowork_directory` call for a folder already attached to the session is allowed without a card.
+  A scheduled task created through Dispatch is checked against its own server switch instead of the organization's
+  "no new local scheduled tasks" flag, so while that switch is off Dispatch can still create one. The routine
+  migration keeps a folder-bound task local when the organization's Cowork remote control is off, and Desktop's
+  `hooks.json` scan skips malformed entries instead of dropping the file.
+- L232: the bundled agent is 2.1.295 from the regular release path. Code-tab sessions get
+  `CLAUDE_CODE_AUTOUPDATER_DISABLED_BY_HOST=1` (Cowork sessions do not); third-party installs get
+  `CLAUDE_CODE_DESKTOP_SKILL_SWITCHES=1`. The third-party history import grows to six kinds, and an imported skill the
+  server did not scan is deleted again.
+- GrowthBook cache, 2026-10-10: the Computer Use permission gate and the cloud memory relay are on again; local
+  artifact sharing is served off.
+
+**Updated lessons**
+
+- L209: on the local lane a plugin's hooks run on the Mac in `/private/var/empty` with the Mac's PATH, so they cannot
+  find the connected folder from their working directory; how to skip a check on that lane only.
+- L215: a failing `device_bash` call reaches hooks as PostToolUseFailure with its exit code. Under Auto, the cloud
+  container's own commands are reviewed; a command that deleted a log-related file was refused.
+- L223: one line for Desktop 2.31226.x.
+
 ## v2.67.0 — 2026-10-09 (this fork) — Plugin-zip checks that fail silently, and how Desktop launches MCPB extensions
 
 225 lessons across 62 chapters (3 new: L223–L225, new Chapter 62). Sources: Claude Desktop `app.asar` 2.26454.0 and
