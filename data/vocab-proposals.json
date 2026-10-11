@@ -2455,9 +2455,13 @@
     },
     "106": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "a512676e0684bc6f936a3ba00212f2da891db8d4a7c89ecbb4917b7535215174",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-11",
+      "input_sha256": "f45bbd3792e0e94cc5954ad99752911f268885b034db7069ad9bef0d14f3d509",
+      "prior_terms_sha256": "893223b3f637615e44292e1911ed06df1e4d676455fc2e47f5bb203ae18c3784",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "1a6b008844a2d7562befd4e32c007a8529ee523d",
+      "replaced": [],
       "terms": [
         "plugin API key field not showing in Cowork",
         "where do I enter a secret for my plugin's CLI tool",
@@ -2473,7 +2477,10 @@
         "plugin manifest valid but credential option doesn't appear",
         "does the plugin secrets feature work in custom gateway deployments",
         "allow network domains for a plugin's CLI tool",
-        "workaround for giving Cowork CLI a key each session"
+        "workaround for giving Cowork CLI a key each session",
+        "plugin CLI fails with oauth disabled error",
+        "why is my plugin's command-line tool only a stub",
+        "install plugin CLI inside the VM from a skill"
       ]
     },
     "107": {
@@ -4125,9 +4132,13 @@
     },
     "173": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-10-01",
-      "input_sha256": "a3ebd4d8140ca02d8e83497bb217a6c0d1b4991593b5b9138b4def2c98ce1c2e",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-11",
+      "input_sha256": "744d7328f48363e14d490c16517c4e47658c7dbedac2170b07324d70081894a7",
+      "prior_terms_sha256": "f9fa993e9780dd7962b2a4744cae78036eccc43bd52cc2eab6ad6aa9b72e7b8e",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "1a6b008844a2d7562befd4e32c007a8529ee523d",
+      "replaced": [],
       "terms": [
         "plugin executables added to shell path",
         "can my plugin ship its own command line launcher",
@@ -4143,7 +4154,10 @@
         "plugin path dropped because of special characters",
         "does new plugin command work without restart",
         "read-only plugin folder in cowork vm",
-        "who creates the launcher file in cowork plugins"
+        "who creates the launcher file in cowork plugins",
+        "install a cli tool in cowork vm",
+        "pip installed command not on path",
+        "sudo refused in cowork vm shell"
       ]
     },
     "174": {
@@ -5202,10 +5216,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-11",
-      "input_sha256": "1184f491d9c61983f86d566bd87fb8779973f52164483250adebf5bb70f29951",
+      "input_sha256": "beeb9021bd1698c3786a479d8c4c934c50fe55e4087eea345801098d1eb3e42e",
       "prior_terms_sha256": "d7260346e1260d736d16193547ebd94fb0d67ecfb8ade8d10a184298c061037c",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "f64fdc0876befaf1aeb5bf0add4d49277fd3f60d",
+      "previous_text": "1a6b008844a2d7562befd4e32c007a8529ee523d",
       "replaced": [],
       "terms": [
         "cloud task can't see files on my Mac",
@@ -5588,24 +5602,30 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-11",
-      "input_sha256": "33bd07e089e0e7f5a4949613a3368d13c5bf62c1fb098326a2401b8d55a089b1",
-      "prior_terms_sha256": "021548dfa7a5f730744b370cb179c809974e6b56689e497ba57b63d4ef06c3f0",
+      "input_sha256": "65e7fb860d99aba67e8b545fbfa0f8159eea4ebce88db4f4f4bfd47a30a82bd6",
+      "prior_terms_sha256": "df4e267d071967d366b7725deea97391b1e939cc90ab3da8662be9dbc3392c0b",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "f64fdc0876befaf1aeb5bf0add4d49277fd3f60d",
+      "previous_text": "1a6b008844a2d7562befd4e32c007a8529ee523d",
       "replaced": [
-        "cowork runs commands without asking",
-        "folder request skips approval card"
+        "why does deleting files fail first then ask?",
+        "why no prompt when requesting connected folder?",
+        "does auto mode skip delete approval?"
       ],
       "dropped": [
         {
-          "term": "cowork runs commands without asking",
+          "term": "why does deleting files fail first then ask?",
           "why": "duplicate",
-          "duplicate_of": "why no approval prompt for shell commands"
+          "duplicate_of": "rm fails in connected folder"
         },
         {
-          "term": "folder request skips approval card",
+          "term": "why no prompt when requesting connected folder?",
           "why": "duplicate",
           "duplicate_of": "already attached folder request auto approved"
+        },
+        {
+          "term": "does auto mode skip delete approval?",
+          "why": "duplicate",
+          "duplicate_of": "auto mode still asks before deleting"
         }
       ],
       "terms": [
@@ -5615,7 +5635,6 @@
         "which actions require approval in cowork",
         "delete files permission prompt cowork",
         "rm fails in connected folder",
-        "why does deleting files fail first then ask?",
         "allow claude to change files dialog",
         "folder access prompt vs tool approval",
         "scheduled task approval always asked",
@@ -5624,9 +5643,10 @@
         "shared temp folder between cowork sessions",
         "cannot overwrite temp file from another session",
         "already attached folder request auto approved",
-        "why no prompt when requesting connected folder?",
         "auto mode still asks before deleting",
-        "does auto mode skip delete approval?"
+        "can a hook tell auto from manual mode?",
+        "pip install gone in next cowork task",
+        "home folder reset between cowork tasks"
       ]
     },
     "228": {
@@ -5679,10 +5699,13 @@
     },
     "230": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-10-10",
-      "input_sha256": "a4f898a85c9d44f8807dbd3187459ea6e4f49089d105cbd5e4059cb33f25f49c",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-11",
+      "input_sha256": "086adf8c355679d55dd3960c1deee95bd6971552424e78a496fd8ed64d97d4f5",
+      "prior_terms_sha256": "84e8eec95d4c3a52d4499ca9c9ffeb22a8edeee00a1e64d01ed06a992414aaab",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "1a6b008844a2d7562befd4e32c007a8529ee523d",
+      "replaced": [],
       "terms": [
         "installed plugin files differ from source",
         "why does my installed skill file look different",
@@ -5698,7 +5721,10 @@
         "plugin shows Add instead of toggle",
         "does disabling a plugin uninstall it?",
         "orphans cleaned in sync log",
-        "delete scheduled task also deletes files"
+        "delete scheduled task also deletes files",
+        "marketplace from settings never updates",
+        "plugin update button greyed out",
+        "old plugin copy still enabled after re-adding"
       ]
     },
     "231": {

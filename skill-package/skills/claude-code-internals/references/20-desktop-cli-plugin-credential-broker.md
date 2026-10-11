@@ -140,6 +140,8 @@ injects (same reason); (c) hand-writing the encrypted file is infeasible (it nee
 `safeStorage` key, and `qXA` swallows a bad-decrypt into `[]`) and moot anyway. The write IPC
 `setPluginEnvVars` returns `"Plugin OAuth is not enabled for this account."` when gated.
 
+**What a user sees while gated (MEASURED, Desktop 2.31226.1, gate still `defaultValue` false, local task, n=1).** Running a `clis`-declared CLI by name in the session's shell fails with `cli-wrapper: plugin oauth disabled`, exit 2. No hook blocks it and no card appears. The CLI's own code never runs, so its own errors (a missing key, say) never show. The name resolves to the 54-byte stub Desktop writes into the plugin's `bin/` (L173); the real CLI isn't installed, so declaring `clis` while the gate is off leaves the CLI unusable. The fix is to drop `clis` from `plugin.json` and have the skill install the CLI in the VM itself (L173).
+
 **Force-on exists but not for the standard client.** `hardcodedMainGrowthBookFeatures()` (table `yKi`,
 each `{value:!0, on:!0, source:"force"}`) force-enables `2307090146` — but only on the class `cT`
 (`type:"3p"`, the custom-gateway / CCD deployment). The standard claude.ai desktop client fetches the

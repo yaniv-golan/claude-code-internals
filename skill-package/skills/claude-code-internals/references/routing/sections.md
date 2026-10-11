@@ -1238,8 +1238,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 106 · 20-desktop-cli-plugin-credential-broker.md:46 · Part A — the `clis` manifest surface
 106 · 20-desktop-cli-plugin-credential-broker.md:95 · Part B — the invocation-time resolver and bridge
 106 · 20-desktop-cli-plugin-credential-broker.md:117 · Part C — the dark-launch gate `2307090146` (`cli_plugin`)
-106 · 20-desktop-cli-plugin-credential-broker.md:163 · The three Desktop credential channels (L105 + L106 unified)
-106 · 20-desktop-cli-plugin-credential-broker.md:177 · Methodology note (the transferable lesson)
+106 · 20-desktop-cli-plugin-credential-broker.md:165 · The three Desktop credential channels (L105 + L106 unified)
+106 · 20-desktop-cli-plugin-credential-broker.md:179 · Methodology note (the transferable lesson)
 107 · 21-cowork-control-protocol.md:35 · Part A — Cowork mode is env, not a flag
 107 · 21-cowork-control-protocol.md:59 · Part B — The spawn flags that matter
 107 · 21-cowork-control-protocol.md:97 · Part C — The stream-json control protocol (the stable seam)
@@ -1567,12 +1567,13 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 173 · 45-plugin-bin-path-and-cloud-lane.md:112 · Resolution is live, not merely emitted
 173 · 45-plugin-bin-path-and-cloud-lane.md:118 · The asymmetry that makes this matter
 173 · 45-plugin-bin-path-and-cloud-lane.md:131 · Three caveats, all of them silent failures
-173 · 45-plugin-bin-path-and-cloud-lane.md:139 · Not established
-174 · 45-plugin-bin-path-and-cloud-lane.md:149 · The three that exist nowhere in the CLI
-174 · 45-plugin-bin-path-and-cloud-lane.md:163 · `CLAUDE_CODE_VERSION` is not the agent's version
-174 · 45-plugin-bin-path-and-cloud-lane.md:197 · What the same dump confirms first-party
-174 · 45-plugin-bin-path-and-cloud-lane.md:206 · What the 2026-09-21 canary adds (relayed measurements; semantics verified first-party)
-174 · 45-plugin-bin-path-and-cloud-lane.md:219 · Honest scope
+173 · 45-plugin-bin-path-and-cloud-lane.md:139 · Installing a CLI in the local VM shell instead
+173 · 45-plugin-bin-path-and-cloud-lane.md:151 · Not established
+174 · 45-plugin-bin-path-and-cloud-lane.md:161 · The three that exist nowhere in the CLI
+174 · 45-plugin-bin-path-and-cloud-lane.md:175 · `CLAUDE_CODE_VERSION` is not the agent's version
+174 · 45-plugin-bin-path-and-cloud-lane.md:209 · What the same dump confirms first-party
+174 · 45-plugin-bin-path-and-cloud-lane.md:218 · What the 2026-09-21 canary adds (relayed measurements; semantics verified first-party)
+174 · 45-plugin-bin-path-and-cloud-lane.md:231 · Honest scope
 175 · 46-narration-turn-updates-silent-turn.md:21 · The mechanism
 175 · 46-narration-turn-updates-silent-turn.md:55 · The selector is not a gate you can read
 175 · 46-narration-turn-updates-silent-turn.md:71 · `CLAUDE_CODE_TURN_UPDATES` — closing a lead
@@ -1764,15 +1765,15 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 215 · 55-cloud-session-device-tools.md:81 · Writing: commit from the outputs folder
 215 · 55-cloud-session-device-tools.md:97 · The ordinary Write tool does not reach the Mac
 215 · 55-cloud-session-device-tools.md:101 · Commands: `device_bash` runs in the Mac's Cowork VM
-215 · 55-cloud-session-device-tools.md:121 · The shells
-215 · 55-cloud-session-device-tools.md:137 · `computer://` links: which ones work
-215 · 55-cloud-session-device-tools.md:155 · Chrome from a cloud conversation
-215 · 55-cloud-session-device-tools.md:163 · For a skill author
-216 · 55-cloud-session-device-tools.md:180 · What the composer decides
-216 · 55-cloud-session-device-tools.md:192 · The hub can turn a chat into a workspace
-216 · 55-cloud-session-device-tools.md:204 · A cloud session can become, or be shown as, a chat
-216 · 55-cloud-session-device-tools.md:212 · Not the same as the Desktop's Chat mode
-216 · 55-cloud-session-device-tools.md:216 · Why it matters
+215 · 55-cloud-session-device-tools.md:125 · The shells
+215 · 55-cloud-session-device-tools.md:141 · `computer://` links: which ones work
+215 · 55-cloud-session-device-tools.md:159 · Chrome from a cloud conversation
+215 · 55-cloud-session-device-tools.md:167 · For a skill author
+216 · 55-cloud-session-device-tools.md:184 · What the composer decides
+216 · 55-cloud-session-device-tools.md:196 · The hub can turn a chat into a workspace
+216 · 55-cloud-session-device-tools.md:208 · A cloud session can become, or be shown as, a chat
+216 · 55-cloud-session-device-tools.md:216 · Not the same as the Desktop's Chat mode
+216 · 55-cloud-session-device-tools.md:220 · Why it matters
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:20 · The probe
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:36 · What the agent does with a skill's text, by how it was installed
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:69 · Creating and changing a skill by asking in chat
@@ -1832,20 +1833,21 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 227 · 60-desktop-routing-cards-paths-extensions.md:85 · Deletes (CODE-READ)
 227 · 60-desktop-routing-cards-paths-extensions.md:89 · The folder prompt (CODE-READ)
 227 · 60-desktop-routing-cards-paths-extensions.md:93 · Observed (MEASURED, Desktop 2.31226.1)
-227 · 60-desktop-routing-cards-paths-extensions.md:100 · For an author
-228 · 60-desktop-routing-cards-paths-extensions.md:112 · Where the rewrite happens (CODE-READ, asar 2.31226.1)
-228 · 60-desktop-routing-cards-paths-extensions.md:124 · The other direction (CODE-READ)
-228 · 60-desktop-routing-cards-paths-extensions.md:129 · Observed (MEASURED, Desktop 2.31226.1, Team, local)
-228 · 60-desktop-routing-cards-paths-extensions.md:134 · For an author or tester
-229 · 60-desktop-routing-cards-paths-extensions.md:146 · Updates (CODE-READ, asar 2.31226.0 `index.chunk-BC1wbmHw.js`; 2.31226.1 `index.chunk-Bk8mxCPb.js`)
-229 · 60-desktop-routing-cards-paths-extensions.md:152 · No elicitation (CODE-READ, asar 2.31226.1 `index.chunk-BEWlG8Pv.js`)
-229 · 60-desktop-routing-cards-paths-extensions.md:156 · Observed (MEASURED, Desktop 2.31226.0/.1, one real extension)
-229 · 60-desktop-routing-cards-paths-extensions.md:167 · For an extension author
-230 · 60-desktop-routing-cards-paths-extensions.md:181 · Frontmatter is rewritten (MEASURED, n=2 copies, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:189 · Marketplace sync installs everything (MEASURED, n=1)
-230 · 60-desktop-routing-cards-paths-extensions.md:193 · Switching off deletes the copy (MEASURED, n=1, Team)
-230 · 60-desktop-routing-cards-paths-extensions.md:199 · A related default (MEASURED)
-230 · 60-desktop-routing-cards-paths-extensions.md:203 · For a plugin author
+227 · 60-desktop-routing-cards-paths-extensions.md:101 · For an author
+228 · 60-desktop-routing-cards-paths-extensions.md:113 · Where the rewrite happens (CODE-READ, asar 2.31226.1)
+228 · 60-desktop-routing-cards-paths-extensions.md:125 · The other direction (CODE-READ)
+228 · 60-desktop-routing-cards-paths-extensions.md:130 · Observed (MEASURED, Desktop 2.31226.1, Team, local)
+228 · 60-desktop-routing-cards-paths-extensions.md:135 · For an author or tester
+229 · 60-desktop-routing-cards-paths-extensions.md:147 · Updates (CODE-READ, asar 2.31226.0 `index.chunk-BC1wbmHw.js`; 2.31226.1 `index.chunk-Bk8mxCPb.js`)
+229 · 60-desktop-routing-cards-paths-extensions.md:153 · No elicitation (CODE-READ, asar 2.31226.1 `index.chunk-BEWlG8Pv.js`)
+229 · 60-desktop-routing-cards-paths-extensions.md:157 · Observed (MEASURED, Desktop 2.31226.0/.1, one real extension)
+229 · 60-desktop-routing-cards-paths-extensions.md:168 · For an extension author
+230 · 60-desktop-routing-cards-paths-extensions.md:182 · Frontmatter is rewritten (MEASURED, n=2 copies, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:190 · Marketplace sync installs everything (MEASURED, n=1)
+230 · 60-desktop-routing-cards-paths-extensions.md:194 · Switching off deletes the copy (MEASURED, n=1, Team)
+230 · 60-desktop-routing-cards-paths-extensions.md:200 · A marketplace listed in the settings file never refreshes (MEASURED, n=1, Team, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:210 · A related default (MEASURED)
+230 · 60-desktop-routing-cards-paths-extensions.md:214 · For a plugin author
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:18 · An already-attached folder skips the card (CODE-READ, `index.chunk-QEr06WaZ.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:38 · Dispatch has its own create switch (CODE-READ, `index.chunk-Cyt2WTko.js`; refusal text in `index.chunk-hKMR2oV6.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:52 · The migration sweep keeps a bound task local when remote control is off (CODE-READ, `index.chunk-QEr06WaZ.js`)

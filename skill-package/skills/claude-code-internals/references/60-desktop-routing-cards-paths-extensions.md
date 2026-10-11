@@ -94,8 +94,9 @@ Connected-folder mounts are `rw`, not `rwd`, until the mount is approved (`Bwge5
 
 - Team, local, Manual: 0 cards for `mcp__workspace__bash` (2 of 2 tasks), for `Write` (2 tasks) and for `present_files`. Only the folder dialog appeared.
 - Personal, cloud task with the device bridge, composer showing Manual: every hook payload carried `permission_mode: "acceptEdits"` (20 of 20). The composer label is not the mode the agent runs in.
-- Personal, cloud, composer showing Auto (2026-10-11, n=1): creating a file in the connected folder showed no card, and deleting it needed the same "permanently delete files" card as under Manual (L215). No other card appeared.
+- Personal, cloud, composer showing Auto (2026-10-11, n=2): creating a file in the connected folder showed no card, and deleting it needed the same "permanently delete files" card as under Manual (L215). No other card appeared. Under Auto every hook payload carried `permission_mode: "auto"` (9 of 9), where the Manual runs carry `"acceptEdits"`. So a hook can tell Auto from Manual; it cannot tell Manual from Accept edits.
 - Two local sessions in the same VM ran as different users (uid 1799 and 1800, each named after its session slug) but shared one `/tmp`. A file one session wrote was readable, not writable, by the other, and from the other session it stats as `nobody`/65534. MEASURED n=1.
+- Each local task gets a new user and a new `HOME` (`/sessions/<slug>`). Something installed under `HOME` in one task (for example `pip install --user` into `~/.local/bin`) is gone in the next task (MEASURED, Desktop 2.31226.1, n=1). Installing tools in that shell: L173.
 
 ## For an author
 
@@ -196,6 +197,16 @@ The marketplace copy had 571 files against 279 in the zip, because `tests/` was 
 - Customize then showed **Add** instead of a switch. Add re-downloaded it.
 - So "off" for an org-marketplace plugin means uninstalled, not disabled; any local edits to the installed copy are gone.
 
+## A marketplace listed in the settings file never refreshes (MEASURED, n=1, Team, Desktop 2.31226.1)
+
+An organization's `cowork_settings.json` can name a marketplace under `extraKnownMarketplaces` (here a GitHub repository). Desktop installed from it once and never fetched it again:
+
+- The cloned copy was months old while the repository had newer versions. The installed plugin was still the old version, and its **Update** was disabled because Desktop knew of nothing newer.
+- **Manage marketplaces** didn't list that marketplace, so nothing in the UI refreshed it.
+- Adding the same repository through **Add marketplace** cloned it fresh and installed the current version alongside.
+- Customize then showed only the new copy, because the plugin names were the same. The old copy stayed **enabled**: the log kept counting it ("Found 3 enabled local plugins").
+- Setting the old entry under `enabledPlugins` to `false` in `cowork_settings.json` took it out: the next task logged "Found 2 enabled local plugins (3 installed)". Its cached copy stayed on disk, unlike an organization-marketplace plugin that is switched off.
+
 ## A related default (MEASURED)
 
 The scheduled-task delete dialog has "Also delete files on disk" **on** by default.
@@ -206,3 +217,4 @@ The scheduled-task delete dialog has "Also delete files on disk" **on** by defau
 - Don't rely on a particular YAML style (folded blocks, comments, key order) in frontmatter surviving install.
 - Keep `tests/` and large fixtures out of the plugin folder, or expect them installed on every machine through the marketplace.
 - Never edit an installed org-marketplace copy in place; it is deleted when the plugin is switched off.
+- If users first installed your plugin from a marketplace named in the settings file, they won't get updates. Tell them to add the marketplace through Add marketplace and switch the old entry off in `cowork_settings.json`. Turning it off in the UI isn't possible, because the UI shows only the new copy.

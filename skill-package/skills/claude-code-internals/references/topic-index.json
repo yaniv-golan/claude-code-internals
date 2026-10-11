@@ -10325,7 +10325,7 @@
       "lesson_number": "106",
       "file": "20-desktop-cli-plugin-credential-broker.md",
       "startLine": 30,
-      "endLine": 209,
+      "endLine": 211,
       "keywords": [
         "clis",
         "clis.env",
@@ -10403,7 +10403,10 @@
         "plugin manifest valid but credential option doesn't appear",
         "does the plugin secrets feature work in custom gateway deployments",
         "allow network domains for a plugin's cli tool",
-        "workaround for giving cowork cli a key each session"
+        "workaround for giving cowork cli a key each session",
+        "plugin cli fails with oauth disabled error",
+        "why is my plugin's command-line tool only a stub",
+        "install plugin cli inside the vm from a skill"
       ],
       "identifier_keys": [
         "unless_flag",
@@ -10442,13 +10445,16 @@
         "plugin manifest valid but credential option doesn't appear",
         "does the plugin secrets feature work in custom gateway deployments",
         "allow network domains for a plugin's cli tool",
-        "workaround for giving cowork cli a key each session"
+        "workaround for giving cowork cli a key each session",
+        "plugin cli fails with oauth disabled error",
+        "why is my plugin's command-line tool only a stub",
+        "install plugin cli inside the vm from a skill"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "893223b3f637615e44292e1911ed06df1e4d676455fc2e47f5bb203ae18c3784"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-11",
+        "terms_sha256": "d73259ae3863808b4f25ff780de536e059492ed6a3f230701f5b7dd1c6df459b"
       }
     },
     {
@@ -17201,7 +17207,7 @@
       "lesson_number": "173",
       "file": "45-plugin-bin-path-and-cloud-lane.md",
       "startLine": 14,
-      "endLine": 141,
+      "endLine": 153,
       "keywords": [
         "plugin-bin-on-path",
         "bin-launcher",
@@ -17226,10 +17232,11 @@
         "invoke-bundled-executable",
         "skill trigger",
         "bundled scripts",
+        "cli-wrapper",
         "creative-problem-solving",
         "claude.ai-web.log",
         "MARKETPLACE_ERROR",
-        "cli-wrapper",
+        "cli-stub-writer",
         "xev-cli",
         "XEV_VERSION",
         "chrome-devtools",
@@ -17248,13 +17255,17 @@
         "plugin path dropped because of special characters",
         "does new plugin command work without restart",
         "read-only plugin folder in cowork vm",
-        "who creates the launcher file in cowork plugins"
+        "who creates the launcher file in cowork plugins",
+        "install a cli tool in cowork vm",
+        "pip installed command not on path",
+        "sudo refused in cowork vm shell"
       ],
       "identifier_keys": [
+        "cli-wrapper",
         "creative-problem-solving",
         "claude.ai-web.log",
         "MARKETPLACE_ERROR",
-        "cli-wrapper",
+        "cli-stub-writer",
         "xev-cli",
         "XEV_VERSION",
         "chrome-devtools",
@@ -17275,13 +17286,16 @@
         "plugin path dropped because of special characters",
         "does new plugin command work without restart",
         "read-only plugin folder in cowork vm",
-        "who creates the launcher file in cowork plugins"
+        "who creates the launcher file in cowork plugins",
+        "install a cli tool in cowork vm",
+        "pip installed command not on path",
+        "sudo refused in cowork vm shell"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-10-01",
-        "terms_sha256": "f9fa993e9780dd7962b2a4744cae78036eccc43bd52cc2eab6ad6aa9b72e7b8e"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-11",
+        "terms_sha256": "28628c4fc87339e3708272546da3aaaef8d008f36602d15ddc419efdefb979e0"
       }
     },
     {
@@ -17289,8 +17303,8 @@
       "title": "The Cloud Lane's Environment Is Not a Subset of the CLI's",
       "lesson_number": "174",
       "file": "45-plugin-bin-path-and-cloud-lane.md",
-      "startLine": 145,
-      "endLine": 221,
+      "startLine": 157,
+      "endLine": 233,
       "keywords": [
         "cloud-lane-env-census",
         "remote-cowork-entrypoint",
@@ -20847,7 +20861,7 @@
       "lesson_number": "215",
       "file": "55-cloud-session-device-tools.md",
       "startLine": 16,
-      "endLine": 170,
+      "endLine": 174,
       "keywords": [
         "device tools",
         "mcp__remote-devices",
@@ -20982,8 +20996,8 @@
       "title": "One Conversation, Two Runtimes: How claude.ai Moves a Chat Into a Cowork Workspace",
       "lesson_number": "216",
       "file": "55-cloud-session-device-tools.md",
-      "startLine": 174,
-      "endLine": 220,
+      "startLine": 178,
+      "endLine": 224,
       "keywords": [
         "chat and Cowork merged",
         "hub backend",
@@ -21913,9 +21927,10 @@
       "lesson_number": "227",
       "file": "60-desktop-routing-cards-paths-extensions.md",
       "startLine": 72,
-      "endLine": 104,
+      "endLine": 105,
       "keywords": [
         "present_files",
+        "accept-edits",
         "propose_skills",
         "handle-tool-permission",
         "Bwge5-J7",
@@ -21926,7 +21941,6 @@
         "which actions require approval in cowork",
         "delete files permission prompt cowork",
         "rm fails in connected folder",
-        "why does deleting files fail first then ask",
         "allow claude to change files dialog",
         "folder access prompt vs tool approval",
         "scheduled task approval always asked",
@@ -21935,12 +21949,14 @@
         "shared temp folder between cowork sessions",
         "cannot overwrite temp file from another session",
         "already attached folder request auto approved",
-        "why no prompt when requesting connected folder",
         "auto mode still asks before deleting",
-        "does auto mode skip delete approval"
+        "can a hook tell auto from manual mode",
+        "pip install gone in next cowork task",
+        "home folder reset between cowork tasks"
       ],
       "identifier_keys": [
         "present_files",
+        "accept-edits",
         "propose_skills",
         "handle-tool-permission",
         "Bwge5-J7",
@@ -21953,7 +21969,6 @@
         "which actions require approval in cowork",
         "delete files permission prompt cowork",
         "rm fails in connected folder",
-        "why does deleting files fail first then ask",
         "allow claude to change files dialog",
         "folder access prompt vs tool approval",
         "scheduled task approval always asked",
@@ -21962,15 +21977,16 @@
         "shared temp folder between cowork sessions",
         "cannot overwrite temp file from another session",
         "already attached folder request auto approved",
-        "why no prompt when requesting connected folder",
         "auto mode still asks before deleting",
-        "does auto mode skip delete approval"
+        "can a hook tell auto from manual mode",
+        "pip install gone in next cowork task",
+        "home folder reset between cowork tasks"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-11",
-        "terms_sha256": "df4e267d071967d366b7725deea97391b1e939cc90ab3da8662be9dbc3392c0b"
+        "terms_sha256": "0aeb97c45c3d6a3e2c50fc8d2b642ec4f8585081c45940833a3a04c841102f62"
       }
     },
     {
@@ -21978,8 +21994,8 @@
       "title": "The Model Sees VM Paths; audit.jsonl and the UI Show Host Paths",
       "lesson_number": "228",
       "file": "60-desktop-routing-cards-paths-extensions.md",
-      "startLine": 108,
-      "endLine": 138,
+      "startLine": 109,
+      "endLine": 139,
       "keywords": [
         "Bwge5-J7",
         "build-vm-path-context",
@@ -22040,8 +22056,8 @@
       "title": "Local Extensions (.mcpb) in Desktop: Updates, Confirmations, Errors, Settings",
       "lesson_number": "229",
       "file": "60-desktop-routing-cards-paths-extensions.md",
-      "startLine": 142,
-      "endLine": 173,
+      "startLine": 143,
+      "endLine": 174,
       "keywords": [
         "index.chunk-BC1wbmHw.js",
         "index.chunk-Bk8mxCPb.js",
@@ -22100,9 +22116,11 @@
       "title": "Plugin Installs: Desktop Rewrites Frontmatter, and Switching Off an Org-Marketplace Plugin Deletes Its Copy",
       "lesson_number": "230",
       "file": "60-desktop-routing-cards-paths-extensions.md",
-      "startLine": 177,
-      "endLine": 208,
+      "startLine": 178,
+      "endLine": 220,
       "keywords": [
+        "enabled-plugins",
+        "extra-known-marketplaces",
         "installed plugin files differ from source",
         "why does my installed skill file look different",
         "plugin description reformatted after install",
@@ -22117,7 +22135,14 @@
         "plugin shows add instead of toggle",
         "does disabling a plugin uninstall it",
         "orphans cleaned in sync log",
-        "delete scheduled task also deletes files"
+        "delete scheduled task also deletes files",
+        "marketplace from settings never updates",
+        "plugin update button greyed out",
+        "old plugin copy still enabled after re-adding"
+      ],
+      "identifier_keys": [
+        "enabled-plugins",
+        "extra-known-marketplaces"
       ],
       "vocab_keys": [
         "installed plugin files differ from source",
@@ -22134,13 +22159,16 @@
         "plugin shows add instead of toggle",
         "does disabling a plugin uninstall it",
         "orphans cleaned in sync log",
-        "delete scheduled task also deletes files"
+        "delete scheduled task also deletes files",
+        "marketplace from settings never updates",
+        "plugin update button greyed out",
+        "old plugin copy still enabled after re-adding"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-10-10",
-        "terms_sha256": "84e8eec95d4c3a52d4499ca9c9ffeb22a8edeee00a1e64d01ed06a992414aaab"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-11",
+        "terms_sha256": "7c80773b2ba1d3be360ec349f969de309f00f2e116103fb8fb15f6fa9986b4a0"
       }
     },
     {
@@ -22153,10 +22181,10 @@
       "keywords": [
         "hooks.json",
         "remote_control_disabled",
+        "index.chunk-Cyt2WTko.js",
         "bound-files-enabled",
         "permission_auto_approved",
         "index.chunk-QEr06WaZ.js",
-        "index.chunk-Cyt2WTko.js",
         "attached_folder",
         "via-host-cli-launcher",
         "attached_folder_allow",
@@ -22196,10 +22224,10 @@
       "identifier_keys": [
         "hooks.json",
         "remote_control_disabled",
+        "index.chunk-Cyt2WTko.js",
         "bound-files-enabled",
         "permission_auto_approved",
         "index.chunk-QEr06WaZ.js",
-        "index.chunk-Cyt2WTko.js",
         "attached_folder",
         "via-host-cli-launcher",
         "attached_folder_allow",
@@ -40031,7 +40059,8 @@
       31
     ],
     "enabled-plugins": [
-      31
+      31,
+      230
     ],
     "plugin-manifest-schema": [
       31
@@ -43057,6 +43086,9 @@
     "oauth_disabled": [
       106
     ],
+    "cli-wrapper": [
+      173
+    ],
     "init-growth-book": [
       106
     ],
@@ -43892,7 +43924,8 @@
       120
     ],
     "accept-edits": [
-      121
+      121,
+      227
     ],
     "skill-tools": [
       121
@@ -45388,8 +45421,11 @@
     "MARKETPLACE_ERROR": [
       173
     ],
-    "cli-wrapper": [
+    "cli-stub-writer": [
       173
+    ],
+    "index.chunk-Cyt2WTko.js": [
+      231
     ],
     "xev-cli": [
       173
@@ -46650,9 +46686,6 @@
     "index.chunk-QEr06WaZ.js": [
       231
     ],
-    "index.chunk-Cyt2WTko.js": [
-      231
-    ],
     "attached_folder": [
       231
     ],
@@ -46695,6 +46728,9 @@
     ],
     "index.chunk-BEWlG8Pv.js": [
       229
+    ],
+    "extra-known-marketplaces": [
+      230
     ],
     "via-host-cli-launcher": [
       231
@@ -51625,6 +51661,15 @@
     "workaround for giving cowork cli a key each session": [
       106
     ],
+    "plugin cli fails with oauth disabled error": [
+      106
+    ],
+    "why is my plugin's command-line tool only a stub": [
+      106
+    ],
+    "install plugin cli inside the vm from a skill": [
+      106
+    ],
     "build headless driver for cowork agent": [
       107
     ],
@@ -54782,6 +54827,15 @@
     "who creates the launcher file in cowork plugins": [
       173
     ],
+    "install a cli tool in cowork vm": [
+      173
+    ],
+    "pip installed command not on path": [
+      173
+    ],
+    "sudo refused in cowork vm shell": [
+      173
+    ],
     "cloud session environment variables differ from cli": [
       174
     ],
@@ -57315,9 +57369,6 @@
     "rm fails in connected folder": [
       227
     ],
-    "why does deleting files fail first then ask": [
-      227
-    ],
     "allow claude to change files dialog": [
       227
     ],
@@ -57342,13 +57393,16 @@
     "already attached folder request auto approved": [
       227
     ],
-    "why no prompt when requesting connected folder": [
-      227
-    ],
     "auto mode still asks before deleting": [
       227
     ],
-    "does auto mode skip delete approval": [
+    "can a hook tell auto from manual mode": [
+      227
+    ],
+    "pip install gone in next cowork task": [
+      227
+    ],
+    "home folder reset between cowork tasks": [
       227
     ],
     "paths in log differ from what model typed": [
@@ -57484,6 +57538,15 @@
       230
     ],
     "delete scheduled task also deletes files": [
+      230
+    ],
+    "marketplace from settings never updates": [
+      230
+    ],
+    "plugin update button greyed out": [
+      230
+    ],
+    "old plugin copy still enabled after re-adding": [
       230
     ],
     "no permission prompt for attached folder": [
