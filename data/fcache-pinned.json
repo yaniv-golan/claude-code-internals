@@ -1,8 +1,8 @@
 {
   "format": 1,
   "capture": {
-    "content16": "4e52893441dd5b01",
-    "embedded_timestamp": 1791674491016,
+    "content16": "8e5d3f452c61c293",
+    "embedded_timestamp": 1791726131435,
     "feature_count": 416,
     "observed_at": "2026-10-11",
     "mode": "1p"
@@ -276,9 +276,9 @@
     {
       "id": "2486083521",
       "present": true,
-      "source": "force",
-      "on": true,
-      "value": true
+      "source": "defaultValue",
+      "on": false,
+      "value": false
     },
     {
       "id": "2529235968",
@@ -421,10 +421,12 @@
     {
       "id": "3229517805",
       "present": true,
-      "source": "defaultValue",
+      "source": "force",
       "on": true,
       "value": {
+        "autoPublishEnabled": true,
         "debugLogEnabled": true,
+        "sharingEnabled": true,
         "verifyToolsEnabled": true
       }
     },
@@ -931,9 +933,9 @@
     {
       "id": "946844604",
       "present": true,
-      "source": "force",
-      "on": true,
-      "value": true
+      "source": "defaultValue",
+      "on": false,
+      "value": false
     }
   ]
 }

@@ -53,7 +53,7 @@ server named **`memory`** that relays to the user's cloud memory
 (`/v2/ccr-sessions/-/memory/mcp`; tools `memory_read`, `memory_list`,
 `memory_write`, `memory_str_replace`, `memory_append`, `memory_delete`).
 It is on when gate `946844604` is on (force-ON at the 2026-09-23 through
-2026-09-29 captures, **off** at the 2026-10-07 capture, force-ON again at the 2026-10-10 captures), the account is first-party and not HIPAA-restricted. When it is
+2026-09-29 captures, **off** at the 2026-10-07 capture, force-ON again at the 2026-10-10 captures, **off** again at the 2026-10-11 16:42 capture; read the live fcache), the account is first-party and not HIPAA-restricted. When it is
 on, a server configured under the same name (e.g. `mcpServers.memory` in
 `claude_desktop_config.json`) is **replaced** (only a Desktop-log warning)
 and `memory` is added to `deniedMcpServers`. A **plugin**-declared server

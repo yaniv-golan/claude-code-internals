@@ -267,7 +267,8 @@ both **force-ON** in the 2026-08-13 fcache:
 - **`2486083521` (`cuCanUseToolEnabled`) is the Computer Use equivalent** —
   same shape, additionally excluded for `sessionType` `radar`/`chat`. Off
   (`defaultValue`) at the 2026-10-07 capture after force-ON through 2026-09-29;
-  force-ON again (rule `fr_mnjab82e`) at the 2026-10-10 captures.
+  force-ON again (rule `fr_mnjab82e`) at the 2026-10-10 captures, off
+  (`defaultValue`) again at the 2026-10-11 16:42 capture.
 
 Both follow a **cache-once-per-build shape** shared with `frameArtifactsTurnEnabled`
 and Ch37/L129's `builtSystemPrompt` stickiness: the gate is read live only on

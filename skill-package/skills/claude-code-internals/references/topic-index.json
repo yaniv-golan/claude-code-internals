@@ -22177,12 +22177,13 @@
       "lesson_number": "231",
       "file": "61-desktop-2.31226-permissions-dispatch-env-import.md",
       "startLine": 14,
-      "endLine": 76,
+      "endLine": 77,
       "keywords": [
         "hooks.json",
         "remote_control_disabled",
         "index.chunk-Cyt2WTko.js",
         "bound-files-enabled",
+        "auto-publish-enabled",
         "permission_auto_approved",
         "index.chunk-QEr06WaZ.js",
         "attached_folder",
@@ -22219,13 +22220,17 @@
         "plugin hooks partially loaded",
         "malformed plugin hooks file skipped entries",
         "only some plugin hooks show in desktop app",
-        "find auto-approved folder requests in audit log"
+        "find auto-approved folder requests in audit log",
+        "server flags flipping between captures",
+        "computer use permission gate keeps toggling",
+        "why does artifact sharing turn on and off"
       ],
       "identifier_keys": [
         "hooks.json",
         "remote_control_disabled",
         "index.chunk-Cyt2WTko.js",
         "bound-files-enabled",
+        "auto-publish-enabled",
         "permission_auto_approved",
         "index.chunk-QEr06WaZ.js",
         "attached_folder",
@@ -22264,13 +22269,16 @@
         "plugin hooks partially loaded",
         "malformed plugin hooks file skipped entries",
         "only some plugin hooks show in desktop app",
-        "find auto-approved folder requests in audit log"
+        "find auto-approved folder requests in audit log",
+        "server flags flipping between captures",
+        "computer use permission gate keeps toggling",
+        "why does artifact sharing turn on and off"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
+        "prompt_version": "vocab-v4-update",
         "date": "2026-10-11",
-        "terms_sha256": "dd6b2916d3e8b510cce7ef7d9f2eabc7af66ff7b06bf6a74770c970188ac715d"
+        "terms_sha256": "c26bba46b7e13ab0a993dbd4dc4cfa55f987b31819caa013d593abc55fce19dd"
       }
     },
     {
@@ -22278,8 +22286,8 @@
       "title": "What Desktop 2.31226 Changed in the Bundled Agent, Its Environment and Third-Party Imports",
       "lesson_number": "232",
       "file": "61-desktop-2.31226-permissions-dispatch-env-import.md",
-      "startLine": 80,
-      "endLine": 135,
+      "startLine": 81,
+      "endLine": 136,
       "keywords": [
         "FORCE_AUTOUPDATE_PLUGINS",
         "DISABLE_AUTOUPDATER",
@@ -46198,6 +46206,9 @@
     "artifact_share": [
       212
     ],
+    "auto-publish-enabled": [
+      231
+    ],
     "sessionId-suffix": [
       213
     ],
@@ -57592,6 +57603,15 @@
       231
     ],
     "find auto-approved folder requests in audit log": [
+      231
+    ],
+    "server flags flipping between captures": [
+      231
+    ],
+    "computer use permission gate keeps toggling": [
+      231
+    ],
+    "why does artifact sharing turn on and off": [
       231
     ],
     "plugins not auto-updating in desktop app": [

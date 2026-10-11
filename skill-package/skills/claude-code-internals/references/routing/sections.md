@@ -1853,13 +1853,13 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:52 · The migration sweep keeps a bound task local when remote control is off (CODE-READ, `index.chunk-QEr06WaZ.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:61 · Desktop's `hooks.json` scan skips malformed entries (CODE-READ, `index.chunk-Cyt2WTko.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:65 · Served state on 2026-10-10 (MEASURED, live fcache)
-231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:71 · Who this affects and what to do
-232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:84 · The bundled agent (MEASURED)
-232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:93 · `CLAUDE_CODE_AUTOUPDATER_DISABLED_BY_HOST` (CODE-READ, `index.chunk-Cyt2WTko.js`)
-232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:104 · `CLAUDE_CODE_DESKTOP_SKILL_SWITCHES` (CODE-READ, `index.chunk-Cyt2WTko.js`)
-232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:108 · The third-party history import (CODE-READ, `index.chunk-Bylz1u4k.js`, `index.chunk-CSeX1oWS.js`)
-232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:125 · A dark relay for plugin UI events (CODE-READ, `index.chunk-Aip7qImQ.js`)
-232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:129 · Who this affects and what to do
+231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:72 · Who this affects and what to do
+232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:85 · The bundled agent (MEASURED)
+232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:94 · `CLAUDE_CODE_AUTOUPDATER_DISABLED_BY_HOST` (CODE-READ, `index.chunk-Cyt2WTko.js`)
+232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:105 · `CLAUDE_CODE_DESKTOP_SKILL_SWITCHES` (CODE-READ, `index.chunk-Cyt2WTko.js`)
+232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:109 · The third-party history import (CODE-READ, `index.chunk-Bylz1u4k.js`, `index.chunk-CSeX1oWS.js`)
+232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:126 · A dark relay for plugin UI events (CODE-READ, `index.chunk-Aip7qImQ.js`)
+232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:130 · Who this affects and what to do
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)
@@ -1909,10 +1909,10 @@ state:cowork-control-protocol · state/cowork-control-protocol.md:414 · VCS SDK
 state:cowork-permissions · state/cowork-permissions.md:22 · The layers (all simultaneously active, host-loop production)
 state:cowork-permissions · state/cowork-permissions.md:222 · Auto-mode tuning at Desktop 1.22209.0 (lesson 128, no live gate-state capture)
 state:cowork-permissions · state/cowork-permissions.md:255 · Browser/Computer-Use permission gates + Cowork's own auto-mode rule additions (Desktop 1.28929.0)
-state:cowork-permissions · state/cowork-permissions.md:309 · Host-dialog approval attestation and `/settings-review` staging — shipped, compiled off (agent 2.1.281–2.1.284)
-state:cowork-permissions · state/cowork-permissions.md:328 · Scheduled tasks start in Auto; unattended asks escalate (Desktop 2.19675.0 / 2.26454.0, L222)
-state:cowork-permissions · state/cowork-permissions.md:344 · Not part of the stack (adjacent, don't conflate)
-state:cowork-permissions · state/cowork-permissions.md:357 · Known past errors (do not re-introduce)
+state:cowork-permissions · state/cowork-permissions.md:310 · Host-dialog approval attestation and `/settings-review` staging — shipped, compiled off (agent 2.1.281–2.1.284)
+state:cowork-permissions · state/cowork-permissions.md:329 · Scheduled tasks start in Auto; unattended asks escalate (Desktop 2.19675.0 / 2.26454.0, L222)
+state:cowork-permissions · state/cowork-permissions.md:345 · Not part of the stack (adjacent, don't conflate)
+state:cowork-permissions · state/cowork-permissions.md:358 · Known past errors (do not re-introduce)
 state:credential-channels · state/credential-channels.md:16 · The four Desktop credential channels
 state:credential-channels · state/credential-channels.md:103 · Auth at spawn
 state:credential-channels · state/credential-channels.md:123 · What NOT to use

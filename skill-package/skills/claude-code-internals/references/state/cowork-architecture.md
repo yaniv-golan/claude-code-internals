@@ -803,7 +803,7 @@ off by default.
   Imagine availability = `3444158716`, not HIPAA, not org-blocked (`2742800629`) (L221).
 - **Sharing local artifacts.** `3229517805.sharingEnabled` (true 2026-10-01 and 2026-10-07; **not served** at the
   2026-10-10 captures, where the gate falls back to `defaultValue` with only `debugLogEnabled` and
-  `verifyToolsEnabled`, so sharing reads its default, false) gates
+  `verifyToolsEnabled`, so sharing reads its default, false; force-on again with all four true at the 2026-10-11 16:42 capture) gates
   the Desktop's share/unshare/auto-publish calls on the local Artifacts store, the
   store the `mcp__cowork__` tools write: a user can share a legacy-made artifact
   (`share_from_content`; refused under HIPAA or over 1M characters), and with

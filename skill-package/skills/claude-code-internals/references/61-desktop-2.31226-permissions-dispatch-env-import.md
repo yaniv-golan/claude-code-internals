@@ -66,6 +66,7 @@ Desktop's own scan of an installed plugin (`paa`, log tag `[HookParsing]` `caa`)
 
 - `2486083521` (`cuCanUseToolEnabled`, the Computer Use permission gate) and `946844604` (the cloud memory relay) are force-ON again; both were off at the 2026-10-07 capture (L222).
 - `3229517805` is back to `defaultValue` and serves only `debugLogEnabled` and `verifyToolsEnabled`, so local-artifact sharing (`sharingEnabled`, `autoPublishEnabled`) reads its default, off.
+- At a later capture the same day (2026-10-11 16:42) all three were back to their 2026-10-07 values: `2486083521` and `946844604` off (`defaultValue`), `3229517805` force-on with `sharingEnabled` and `autoPublishEnabled` true. These three have flipped at almost every capture since 2026-10-07; read the live fcache before relying on any of them.
 - `1908184743` off; `912981541` and `4261020843` absent (their code defaults apply: the attached-folder branch and the tolerant scan are on).
 
 ## Who this affects and what to do
