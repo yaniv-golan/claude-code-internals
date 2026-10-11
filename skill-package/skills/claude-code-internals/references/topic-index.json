@@ -17207,7 +17207,7 @@
       "lesson_number": "173",
       "file": "45-plugin-bin-path-and-cloud-lane.md",
       "startLine": 14,
-      "endLine": 153,
+      "endLine": 155,
       "keywords": [
         "plugin-bin-on-path",
         "bin-launcher",
@@ -17240,6 +17240,7 @@
         "xev-cli",
         "XEV_VERSION",
         "chrome-devtools",
+        "recon.py",
         "REMOTE_SYNC_FAILED",
         "plugin executables added to shell path",
         "can my plugin ship its own command line launcher",
@@ -17269,6 +17270,7 @@
         "xev-cli",
         "XEV_VERSION",
         "chrome-devtools",
+        "recon.py",
         "REMOTE_SYNC_FAILED"
       ],
       "vocab_keys": [
@@ -17303,8 +17305,8 @@
       "title": "The Cloud Lane's Environment Is Not a Subset of the CLI's",
       "lesson_number": "174",
       "file": "45-plugin-bin-path-and-cloud-lane.md",
-      "startLine": 157,
-      "endLine": 233,
+      "startLine": 159,
+      "endLine": 235,
       "keywords": [
         "cloud-lane-env-census",
         "remote-cowork-entrypoint",
@@ -22117,7 +22119,7 @@
       "lesson_number": "230",
       "file": "60-desktop-routing-cards-paths-extensions.md",
       "startLine": 178,
-      "endLine": 220,
+      "endLine": 222,
       "keywords": [
         "enabled-plugins",
         "extra-known-marketplaces",
@@ -45444,6 +45446,9 @@
     "chrome-devtools": [
       173
     ],
+    "recon.py": [
+      173
+    ],
     "REMOTE_SYNC_FAILED": [
       173
     ],
@@ -57661,6 +57666,6 @@
     ]
   },
   "keyword_boundary": {
-    "unreachable_max": 29
+    "unreachable_max": 30
   }
 }

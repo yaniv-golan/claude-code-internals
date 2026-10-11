@@ -1566,14 +1566,14 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 173 · 45-plugin-bin-path-and-cloud-lane.md:97 · A `bin/` elsewhere in a repo is not this pattern
 173 · 45-plugin-bin-path-and-cloud-lane.md:112 · Resolution is live, not merely emitted
 173 · 45-plugin-bin-path-and-cloud-lane.md:118 · The asymmetry that makes this matter
-173 · 45-plugin-bin-path-and-cloud-lane.md:131 · Three caveats, all of them silent failures
-173 · 45-plugin-bin-path-and-cloud-lane.md:139 · Installing a CLI in the local VM shell instead
-173 · 45-plugin-bin-path-and-cloud-lane.md:151 · Not established
-174 · 45-plugin-bin-path-and-cloud-lane.md:161 · The three that exist nowhere in the CLI
-174 · 45-plugin-bin-path-and-cloud-lane.md:175 · `CLAUDE_CODE_VERSION` is not the agent's version
-174 · 45-plugin-bin-path-and-cloud-lane.md:209 · What the same dump confirms first-party
-174 · 45-plugin-bin-path-and-cloud-lane.md:218 · What the 2026-09-21 canary adds (relayed measurements; semantics verified first-party)
-174 · 45-plugin-bin-path-and-cloud-lane.md:231 · Honest scope
+173 · 45-plugin-bin-path-and-cloud-lane.md:133 · Three caveats, all of them silent failures
+173 · 45-plugin-bin-path-and-cloud-lane.md:141 · Installing a CLI in the local VM shell instead
+173 · 45-plugin-bin-path-and-cloud-lane.md:153 · Not established
+174 · 45-plugin-bin-path-and-cloud-lane.md:163 · The three that exist nowhere in the CLI
+174 · 45-plugin-bin-path-and-cloud-lane.md:177 · `CLAUDE_CODE_VERSION` is not the agent's version
+174 · 45-plugin-bin-path-and-cloud-lane.md:211 · What the same dump confirms first-party
+174 · 45-plugin-bin-path-and-cloud-lane.md:220 · What the 2026-09-21 canary adds (relayed measurements; semantics verified first-party)
+174 · 45-plugin-bin-path-and-cloud-lane.md:233 · Honest scope
 175 · 46-narration-turn-updates-silent-turn.md:21 · The mechanism
 175 · 46-narration-turn-updates-silent-turn.md:55 · The selector is not a gate you can read
 175 · 46-narration-turn-updates-silent-turn.md:71 · `CLAUDE_CODE_TURN_UPDATES` — closing a lead
@@ -1846,8 +1846,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 230 · 60-desktop-routing-cards-paths-extensions.md:190 · Marketplace sync installs everything (MEASURED, n=1)
 230 · 60-desktop-routing-cards-paths-extensions.md:194 · Switching off deletes the copy (MEASURED, n=1, Team)
 230 · 60-desktop-routing-cards-paths-extensions.md:200 · A marketplace listed in the settings file never refreshes (MEASURED, n=1, Team, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:210 · A related default (MEASURED)
-230 · 60-desktop-routing-cards-paths-extensions.md:214 · For a plugin author
+230 · 60-desktop-routing-cards-paths-extensions.md:211 · A related default (MEASURED)
+230 · 60-desktop-routing-cards-paths-extensions.md:215 · For a plugin author
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:18 · An already-attached folder skips the card (CODE-READ, `index.chunk-QEr06WaZ.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:38 · Dispatch has its own create switch (CODE-READ, `index.chunk-Cyt2WTko.js`; refusal text in `index.chunk-hKMR2oV6.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:52 · The migration sweep keeps a bound task local when remote control is off (CODE-READ, `index.chunk-QEr06WaZ.js`)

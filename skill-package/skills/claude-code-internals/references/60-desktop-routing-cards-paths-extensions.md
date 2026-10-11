@@ -206,6 +206,7 @@ An organization's `cowork_settings.json` can name a marketplace under `extraKnow
 - Adding the same repository through **Add marketplace** cloned it fresh and installed the current version alongside.
 - Customize then showed only the new copy, because the plugin names were the same. The old copy stayed **enabled**: the log kept counting it ("Found 3 enabled local plugins").
 - Setting the old entry under `enabledPlugins` to `false` in `cowork_settings.json` took it out: the next task logged "Found 2 enabled local plugins (3 installed)". Its cached copy stayed on disk, unlike an organization-marketplace plugin that is switched off.
+- That log line doesn't count plugins the organization pushes. In three later Team tasks an org plugin was loaded and its hooks ran, yet each spawn logged "Found 1 enabled local plugins (3 installed)": the 1 was the one Customize-installed plugin left on.
 
 ## A related default (MEASURED)
 
@@ -218,3 +219,4 @@ The scheduled-task delete dialog has "Also delete files on disk" **on** by defau
 - Keep `tests/` and large fixtures out of the plugin folder, or expect them installed on every machine through the marketplace.
 - Never edit an installed org-marketplace copy in place; it is deleted when the plugin is switched off.
 - If users first installed your plugin from a marketplace named in the settings file, they won't get updates. Tell them to add the marketplace through Add marketplace and switch the old entry off in `cowork_settings.json`. Turning it off in the UI isn't possible, because the UI shows only the new copy.
+- Don't read "Found N enabled local plugins" as the full set a task loads; org-pushed plugins aren't in it.

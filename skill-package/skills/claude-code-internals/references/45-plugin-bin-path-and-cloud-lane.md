@@ -128,6 +128,8 @@ Every other documented channel — Ch17/L89, the `env.CLAUDE_PLUGIN_ROOT` regist
 
 In practice that case has not been seen in local Cowork. The only populated `bin/` in that lane was the runtime's own `clis` shim, and the skill-creator-plus project measured a host-loop workspace shell whose PATH was eight stock entries with no plugin `bin/` at all. So a skill needing its own root shell-side still has to **discover** it there, with a search from the shell's side.
 
+A model does that search unprompted. MEASURED, Desktop 2.31226.1, Team, local task, n=1: asked for a task that an org plugin's skill does with its own Python script, the model ran `find / -name recon.py` and then called the script at `/sessions/<slug>/mnt/.remote-plugins/<id>/scripts/recon.py`, with `python3`. `${CLAUDE_PLUGIN_ROOT}` never appeared in a command, and the script ran.
+
 ## Three caveats, all of them silent failures
 
 1. **Before agent 2.1.284, PATH advertises directories that do not exist**, because `Z$n()` performs **no existence check** — it maps `<path>/bin` for every enabled non-builtin plugin unconditionally. 35 entries locally, **zero** on disk. From 2.1.284 the `stat` check above drops missing directories, but a `stat` failure other than `ENOENT`/`ENOTDIR` still keeps the entry. That number is a function of the enabled-plugin count and can take no other value, so it is evidence about neither provisioning nor stripping — a count read off an unconditional function is a fact about the function. **A PATH entry is not evidence the directory exists** — and the natural first check (`echo $PATH`, see your plugin listed) reads healthy on exactly this failure.
