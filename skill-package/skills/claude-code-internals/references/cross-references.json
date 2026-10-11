@@ -4021,6 +4021,11 @@
     "id": 222,
     "relevance": 0.7,
     "reason": "the sweep's served interval is 30 minutes from 2026-10-07"
+   },
+   {
+    "id": 231,
+    "relevance": 0.6,
+    "reason": "L231: the sweep keeps a bound task local when the org's Cowork remote control is off"
    }
   ],
   "209": [
@@ -4394,6 +4399,11 @@
     "id": 223,
     "relevance": 0.75,
     "reason": "L223 covers the plugin-zip validator and the 2.26454.2 patch of the same build line"
+   },
+   {
+    "id": 231,
+    "relevance": 0.6,
+    "reason": "L231: the 2026-10-10 served state of the gates switched off on 2026-10-07"
    }
   ],
   "223": [
@@ -4416,6 +4426,11 @@
     "id": 230,
     "relevance": 0.5,
     "reason": "L230: marketplace sync bypasses the zip checks"
+   },
+   {
+    "id": 232,
+    "relevance": 0.6,
+    "reason": "L232: 2.31226.1 bundles agent 2.1.295 and sets CLAUDE_CODE_DESKTOP_SKILL_SWITCHES on 3p installs"
    }
   ],
   "224": [
@@ -4499,6 +4514,11 @@
     "id": 226,
     "relevance": 0.5,
     "reason": "routing decides which card rules apply"
+   },
+   {
+    "id": 231,
+    "relevance": 0.8,
+    "reason": "L231: request_cowork_directory for an already-attached folder skips the card from 2.31226.0"
    }
   ],
   "228": [
@@ -4550,6 +4570,50 @@
     "id": 227,
     "relevance": 0.3,
     "reason": "the shared /tmp finding for skill authors"
+   }
+  ],
+  "231": [
+   {
+    "id": 227,
+    "relevance": 0.8,
+    "reason": "the always-ask card set this lesson adds an exception to"
+   },
+   {
+    "id": 208,
+    "relevance": 0.6,
+    "reason": "the routine-migration sweep whose config gains two keys"
+   },
+   {
+    "id": 222,
+    "relevance": 0.5,
+    "reason": "the previous Desktop release's Cowork changes and gate state"
+   },
+   {
+    "id": 232,
+    "relevance": 0.5,
+    "reason": "the same release: agent, environment and imports"
+   }
+  ],
+  "232": [
+   {
+    "id": 223,
+    "relevance": 0.6,
+    "reason": "the 2.26454.2 note on agent variables Desktop did not yet set"
+   },
+   {
+    "id": 207,
+    "relevance": 0.5,
+    "reason": "where the host agent is staged and how its build is identified"
+   },
+   {
+    "id": 224,
+    "relevance": 0.4,
+    "reason": "another part of the environment Desktop builds for what it launches"
+   },
+   {
+    "id": 231,
+    "relevance": 0.5,
+    "reason": "the same release: permissions and scheduled-task creation"
    }
   ]
  }

@@ -1,6 +1,6 @@
 {
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 230,
+  "total_lessons": 232,
   "lessons": [
     {
       "id": 1,
@@ -3090,7 +3090,6 @@
         "node_modules",
         "claude-plugins-official",
         "github.com",
-        "hooks.json",
         "extension-to-language",
         "CLAUDE_CODE_PLUGIN_SEED_DIR",
         "CLAUDE_CODE_PLUGIN_USE_ZIP_CACHE",
@@ -3184,7 +3183,6 @@
         "node_modules",
         "claude-plugins-official",
         "github.com",
-        "hooks.json",
         "extension-to-language",
         "CLAUDE_CODE_PLUGIN_SEED_DIR",
         "CLAUDE_CODE_PLUGIN_USE_ZIP_CACHE",
@@ -8479,7 +8477,6 @@
         "settings.json",
         "input-validation-error",
         "run-agent",
-        "hooks.json",
         "install-path",
         "cowork_plugins",
         "policy-settings",
@@ -8619,7 +8616,6 @@
         "settings.json",
         "input-validation-error",
         "run-agent",
-        "hooks.json",
         "install-path",
         "cowork_plugins",
         "policy-settings",
@@ -12106,7 +12102,6 @@
         "x-organization-uuid",
         "sessions-api",
         "lam_bridge_session_bound",
-        "claude.app",
         "async-iterator",
         "safe-ack-work",
         "worker_epoch",
@@ -12159,7 +12154,6 @@
         "x-organization-uuid",
         "sessions-api",
         "lam_bridge_session_bound",
-        "claude.app",
         "async-iterator",
         "safe-ack-work",
         "worker_epoch",
@@ -16172,7 +16166,6 @@
         "HERON_TALLOW-removed",
         "cross-artifact-corroboration",
         "L151-closed",
-        "claude.app",
         "CLAUDE_CODE_HERON_TALLOW",
         "CLAUDE_CODE_WORKFLOW_PREFIX_STAGGER_MS",
         "when did cowork start reading the frame artifacts setting",
@@ -16191,7 +16184,6 @@
         "does the desktop-bundled agent read the frame setting"
       ],
       "identifier_keys": [
-        "claude.app",
         "CLAUDE_CODE_HERON_TALLOW",
         "CLAUDE_CODE_WORKFLOW_PREFIX_STAGGER_MS"
       ],
@@ -20346,7 +20338,6 @@
         "idle-grace-ms",
         "meta.json",
         "system-reminder-tag",
-        "DISABLE_AUTOUPDATER",
         "status_text",
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
@@ -20375,7 +20366,6 @@
         "idle-grace-ms",
         "meta.json",
         "system-reminder-tag",
-        "DISABLE_AUTOUPDATER",
         "status_text"
       ],
       "vocab_keys": [
@@ -20628,13 +20618,11 @@
         "3229517805 verifyToolsEnabled",
         "update_summary",
         "ccd_session",
-        "debug-log-enabled",
         "share_from_content",
         "synthetic_stub",
         "client_session_ref",
         "source_kind",
         "artifact_share",
-        "auto-publish-enabled",
         "scheduled task cannot use new artifact tool",
         "why does my scheduled task use old artifact tools",
         "legacy artifact tools in cowork",
@@ -20656,13 +20644,11 @@
       ],
       "identifier_keys": [
         "ccd_session",
-        "debug-log-enabled",
         "share_from_content",
         "synthetic_stub",
         "client_session_ref",
         "source_kind",
-        "artifact_share",
-        "auto-publish-enabled"
+        "artifact_share"
       ],
       "vocab_keys": [
         "scheduled task cannot use new artifact tool",
@@ -21324,7 +21310,6 @@
         "scheduled-task-grants",
         "account-org",
         "artifact-publish-grants.json",
-        "permission_auto_approved",
         "user-selected-files",
         "local_folders",
         "unshareable_parent",
@@ -21353,7 +21338,6 @@
         "scheduled-task-grants",
         "account-org",
         "artifact-publish-grants.json",
-        "permission_auto_approved",
         "user-selected-files",
         "local_folders",
         "unshareable_parent"
@@ -21457,8 +21441,6 @@
       "keywords": [
         "cowork-native-file-preview",
         "2742800629",
-        "debug-log-enabled",
-        "auto-publish-enabled",
         "screenshot_file_preview",
         "screenshot_artifact",
         "can-verify-artifacts",
@@ -21481,8 +21463,6 @@
       "identifier_keys": [
         "cowork-native-file-preview",
         "2742800629",
-        "debug-log-enabled",
-        "auto-publish-enabled",
         "screenshot_file_preview",
         "screenshot_artifact",
         "can-verify-artifacts"
@@ -21626,7 +21606,6 @@
         "zip-file",
         "plugin.zip",
         "0.3.293-rc",
-        "CLAUDE_CODE_DESKTOP_SKILL_SWITCHES",
         "CLAUDE_CODE_HOST_SKILL_CATALOG",
         "CLAUDE_CODE_REMOTE_TOOLS_HOST_ALLOWS_UNATTENDED",
         "plugin enabled but skills missing",
@@ -21643,7 +21622,10 @@
         "how do i check why my plugin didn't sync",
         "repetitive json file breaks plugin",
         "uploaded skill works but plugin version fails",
-        "where are plugin download errors logged"
+        "where are plugin download errors logged",
+        "per-skill switches on third-party installs",
+        "bundled agent moved off release candidate channel",
+        "which desktop version enables skill switches"
       ],
       "identifier_keys": [
         "main.log",
@@ -21653,7 +21635,6 @@
         "zip-file",
         "plugin.zip",
         "0.3.293-rc",
-        "CLAUDE_CODE_DESKTOP_SKILL_SWITCHES",
         "CLAUDE_CODE_HOST_SKILL_CATALOG",
         "CLAUDE_CODE_REMOTE_TOOLS_HOST_ALLOWS_UNATTENDED"
       ],
@@ -21672,13 +21653,16 @@
         "how do i check why my plugin didn't sync",
         "repetitive json file breaks plugin",
         "uploaded skill works but plugin version fails",
-        "where are plugin download errors logged"
+        "where are plugin download errors logged",
+        "per-skill switches on third-party installs",
+        "bundled agent moved off release candidate channel",
+        "which desktop version enables skill switches"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-10-08",
-        "terms_sha256": "d524a09a17ecdfe1e2466b9355f9ac187d24b8e0dd0c5f201ca6d635348a23fa"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-11",
+        "terms_sha256": "c62a7206876d5bc14d0f8058a1fc0ff3a96fe2d18137362e10c7bba2cbbf3e14"
       }
     },
     {
@@ -21923,8 +21907,6 @@
       "keywords": [
         "present_files",
         "propose_skills",
-        "index.chunk-QEr06WaZ.js",
-        "index.chunk-Cyt2WTko.js",
         "handle-tool-permission",
         "Bwge5-J7",
         "cowork-trust-dialog",
@@ -21942,13 +21924,14 @@
         "manual mode label but edits auto accepted",
         "does manual mode stop file writes",
         "shared temp folder between cowork sessions",
-        "cannot overwrite temp file from another session"
+        "cannot overwrite temp file from another session",
+        "already attached folder request auto approved",
+        "why no prompt when requesting connected folder",
+        "folder request skips approval card"
       ],
       "identifier_keys": [
         "present_files",
         "propose_skills",
-        "index.chunk-QEr06WaZ.js",
-        "index.chunk-Cyt2WTko.js",
         "handle-tool-permission",
         "Bwge5-J7",
         "cowork-trust-dialog"
@@ -21968,13 +21951,16 @@
         "manual mode label but edits auto accepted",
         "does manual mode stop file writes",
         "shared temp folder between cowork sessions",
-        "cannot overwrite temp file from another session"
+        "cannot overwrite temp file from another session",
+        "already attached folder request auto approved",
+        "why no prompt when requesting connected folder",
+        "folder request skips approval card"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-10-10",
-        "terms_sha256": "eb1ccf18f53bf6ad8ab66469154d693b1d33b925a045281ea532d871e9f720c3"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-11",
+        "terms_sha256": "021548dfa7a5f730744b370cb179c809974e6b56689e497ba57b63d4ef06c3f0"
       }
     },
     {
@@ -21985,7 +21971,6 @@
       "startLine": 105,
       "endLine": 135,
       "keywords": [
-        "index.chunk-QEr06WaZ.js",
         "Bwge5-J7",
         "build-vm-path-context",
         "message-buffer",
@@ -22009,7 +21994,6 @@
         "verify real path the agent used"
       ],
       "identifier_keys": [
-        "index.chunk-QEr06WaZ.js",
         "Bwge5-J7",
         "build-vm-path-context",
         "message-buffer",
@@ -22147,6 +22131,226 @@
         "prompt_version": "vocab-v1",
         "date": "2026-10-10",
         "terms_sha256": "84e8eec95d4c3a52d4499ca9c9ffeb22a8edeee00a1e64d01ed06a992414aaab"
+      }
+    },
+    {
+      "id": 231,
+      "title": "What Desktop 2.31226 Changed in Cowork Permissions and Scheduled-Task Creation",
+      "lesson_number": "231",
+      "file": "61-desktop-2.31226-permissions-dispatch-env-import.md",
+      "startLine": 14,
+      "endLine": 76,
+      "keywords": [
+        "hooks.json",
+        "remote_control_disabled",
+        "bound-files-enabled",
+        "permission_auto_approved",
+        "index.chunk-QEr06WaZ.js",
+        "index.chunk-Cyt2WTko.js",
+        "attached_folder",
+        "via-host-cli-launcher",
+        "attached_folder_allow",
+        "index.chunk-hKMR2oV6.js",
+        "made-by-dispatch",
+        "new-local-tasks-off",
+        "cowork-new-local-scheduled-tasks-off",
+        "is-enterprise",
+        "cowork-remote-scheduled-tasks-enabled",
+        "cowork-trusted-devices-required",
+        "cowork-remote-control-off-keeps-local",
+        "cowork_remote_control",
+        "remote_control_unknown",
+        "protected-data-sign-hold",
+        "pass-interval-minutes",
+        "max-migrates-per-pass",
+        "hook-parsing",
+        "1908184743",
+        "912981541",
+        "4261020843",
+        "no permission prompt for attached folder",
+        "folder access card not showing",
+        "why no approval card for folder already shared",
+        "auto-approved folder access in manual mode",
+        "dispatch created scheduled task despite admin block",
+        "org disabled local scheduled tasks but dispatch still creates them",
+        "can dispatch bypass scheduled task restriction",
+        "dispatch can no longer create scheduled tasks error",
+        "scheduled tasks not migrating to cloud",
+        "why did my scheduled task stay local",
+        "remote control off keeps tasks on computer",
+        "plugin hooks partially loaded",
+        "malformed plugin hooks file skipped entries",
+        "only some plugin hooks show in desktop app",
+        "find auto-approved folder requests in audit log"
+      ],
+      "identifier_keys": [
+        "hooks.json",
+        "remote_control_disabled",
+        "bound-files-enabled",
+        "permission_auto_approved",
+        "index.chunk-QEr06WaZ.js",
+        "index.chunk-Cyt2WTko.js",
+        "attached_folder",
+        "via-host-cli-launcher",
+        "attached_folder_allow",
+        "index.chunk-hKMR2oV6.js",
+        "made-by-dispatch",
+        "new-local-tasks-off",
+        "cowork-new-local-scheduled-tasks-off",
+        "is-enterprise",
+        "cowork-remote-scheduled-tasks-enabled",
+        "cowork-trusted-devices-required",
+        "cowork-remote-control-off-keeps-local",
+        "cowork_remote_control",
+        "remote_control_unknown",
+        "protected-data-sign-hold",
+        "pass-interval-minutes",
+        "max-migrates-per-pass",
+        "hook-parsing",
+        "1908184743",
+        "912981541",
+        "4261020843"
+      ],
+      "vocab_keys": [
+        "no permission prompt for attached folder",
+        "folder access card not showing",
+        "why no approval card for folder already shared",
+        "auto-approved folder access in manual mode",
+        "dispatch created scheduled task despite admin block",
+        "org disabled local scheduled tasks but dispatch still creates them",
+        "can dispatch bypass scheduled task restriction",
+        "dispatch can no longer create scheduled tasks error",
+        "scheduled tasks not migrating to cloud",
+        "why did my scheduled task stay local",
+        "remote control off keeps tasks on computer",
+        "plugin hooks partially loaded",
+        "malformed plugin hooks file skipped entries",
+        "only some plugin hooks show in desktop app",
+        "find auto-approved folder requests in audit log"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-11",
+        "terms_sha256": "dd6b2916d3e8b510cce7ef7d9f2eabc7af66ff7b06bf6a74770c970188ac715d"
+      }
+    },
+    {
+      "id": 232,
+      "title": "What Desktop 2.31226 Changed in the Bundled Agent, Its Environment and Third-Party Imports",
+      "lesson_number": "232",
+      "file": "61-desktop-2.31226-permissions-dispatch-env-import.md",
+      "startLine": 80,
+      "endLine": 135,
+      "keywords": [
+        "FORCE_AUTOUPDATE_PLUGINS",
+        "DISABLE_AUTOUPDATER",
+        "0.3.293-rc",
+        "CLAUDE_CODE_DESKTOP_SKILL_SWITCHES",
+        "CLAUDE_CODE_HOST_SKILL_CATALOG",
+        "CLAUDE_CODE_REMOTE_TOOLS_HOST_ALLOWS_UNATTENDED",
+        "CLAUDE_CODE_AUTOUPDATER_DISABLED_BY_HOST",
+        "DISABLE_UPDATES",
+        "index.chunk-BCHP6ll9.js",
+        "index.chunk-B1oFmUyS.js",
+        "find-skip-reason-under-host-pin",
+        "uses-local-skill-storage",
+        "skill-switches",
+        "set-desktop-skill-switches",
+        "index.chunk-Bylz1u4k.js",
+        "index.chunk-CSeX1oWS.js",
+        "claude-ai-import",
+        "desktop_third_party_import",
+        "disable-third-party-history-import",
+        "disable-third-party-projects-import",
+        "scheduled-tasks-import",
+        "skills-import",
+        "mcp-server-import",
+        "scan_requested",
+        "delete-skill",
+        "index.chunk-Aip7qImQ.js",
+        "cowork-ui-surface",
+        "ui_log",
+        "ui_invalidate",
+        "may-serve",
+        "4274920779",
+        "2766090483",
+        "659073223",
+        "3922223025",
+        "plugins not auto-updating in desktop app",
+        "desktop disables updater but plugins still update",
+        "why do my plugins update in code tab but not cowork",
+        "which agent version ships with desktop",
+        "where is the bundled agent stored on mac",
+        "what does the verified file in agent folder mean",
+        "import third-party history into claude.ai account",
+        "migrate custom inference install to organization",
+        "imported skills disappeared after migration",
+        "why was my imported skill deleted",
+        "move projects and scheduled tasks to claude.ai",
+        "memory not imported from third-party install",
+        "turn off importing mcp servers or skills",
+        "skill toggles on custom inference installs",
+        "plugin ui notices in cowork sessions"
+      ],
+      "identifier_keys": [
+        "FORCE_AUTOUPDATE_PLUGINS",
+        "DISABLE_AUTOUPDATER",
+        "0.3.293-rc",
+        "CLAUDE_CODE_DESKTOP_SKILL_SWITCHES",
+        "CLAUDE_CODE_HOST_SKILL_CATALOG",
+        "CLAUDE_CODE_REMOTE_TOOLS_HOST_ALLOWS_UNATTENDED",
+        "CLAUDE_CODE_AUTOUPDATER_DISABLED_BY_HOST",
+        "DISABLE_UPDATES",
+        "index.chunk-BCHP6ll9.js",
+        "index.chunk-B1oFmUyS.js",
+        "find-skip-reason-under-host-pin",
+        "uses-local-skill-storage",
+        "skill-switches",
+        "set-desktop-skill-switches",
+        "index.chunk-Bylz1u4k.js",
+        "index.chunk-CSeX1oWS.js",
+        "claude-ai-import",
+        "desktop_third_party_import",
+        "disable-third-party-history-import",
+        "disable-third-party-projects-import",
+        "scheduled-tasks-import",
+        "skills-import",
+        "mcp-server-import",
+        "scan_requested",
+        "delete-skill",
+        "index.chunk-Aip7qImQ.js",
+        "cowork-ui-surface",
+        "ui_log",
+        "ui_invalidate",
+        "may-serve",
+        "4274920779",
+        "2766090483",
+        "659073223",
+        "3922223025"
+      ],
+      "vocab_keys": [
+        "plugins not auto-updating in desktop app",
+        "desktop disables updater but plugins still update",
+        "why do my plugins update in code tab but not cowork",
+        "which agent version ships with desktop",
+        "where is the bundled agent stored on mac",
+        "what does the verified file in agent folder mean",
+        "import third-party history into claude.ai account",
+        "migrate custom inference install to organization",
+        "imported skills disappeared after migration",
+        "why was my imported skill deleted",
+        "move projects and scheduled tasks to claude.ai",
+        "memory not imported from third-party install",
+        "turn off importing mcp servers or skills",
+        "skill toggles on custom inference installs",
+        "plugin ui notices in cowork sessions"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-11",
+        "terms_sha256": "f167009ee7b99d3ec782049dfcb794f555a8fd5e01e860b370afcf43ea26eda5"
       }
     }
   ],
@@ -39842,8 +40046,7 @@
       31
     ],
     "hooks.json": [
-      31,
-      89
+      231
     ],
     "extension-to-language": [
       31
@@ -43578,10 +43781,6 @@
     "lam_bridge_session_bound": [
       119
     ],
-    "claude.app": [
-      119,
-      161
-    ],
     "async-iterator": [
       119
     ],
@@ -43628,7 +43827,8 @@
       119
     ],
     "remote_control_disabled": [
-      119
+      119,
+      231
     ],
     "BASE_API_URL": [
       119
@@ -45514,7 +45714,8 @@
       194
     ],
     "FORCE_AUTOUPDATE_PLUGINS": [
-      194
+      194,
+      232
     ],
     "out_dir": [
       194
@@ -45777,7 +45978,8 @@
       208
     ],
     "bound-files-enabled": [
-      208
+      208,
+      231
     ],
     "migrated-from-remote": [
       208
@@ -45855,7 +46057,7 @@
       209
     ],
     "DISABLE_AUTOUPDATER": [
-      209
+      232
     ],
     "status_text": [
       209
@@ -45935,10 +46137,6 @@
     "2025-11-25": [
       211
     ],
-    "debug-log-enabled": [
-      212,
-      221
-    ],
     "share_from_content": [
       212
     ],
@@ -45953,10 +46151,6 @@
     ],
     "artifact_share": [
       212
-    ],
-    "auto-publish-enabled": [
-      212,
-      221
     ],
     "sessionId-suffix": [
       213
@@ -46219,7 +46413,7 @@
       219
     ],
     "permission_auto_approved": [
-      219
+      231
     ],
     "user-selected-files": [
       219
@@ -46330,16 +46524,19 @@
       223
     ],
     "0.3.293-rc": [
-      223
+      223,
+      232
     ],
     "CLAUDE_CODE_DESKTOP_SKILL_SWITCHES": [
-      223
+      232
     ],
     "CLAUDE_CODE_HOST_SKILL_CATALOG": [
-      223
+      223,
+      232
     ],
     "CLAUDE_CODE_REMOTE_TOOLS_HOST_ALLOWS_UNATTENDED": [
-      223
+      223,
+      232
     ],
     "platform_overrides": [
       224
@@ -46438,11 +46635,13 @@
       226
     ],
     "index.chunk-QEr06WaZ.js": [
-      227,
-      228
+      231
     ],
     "index.chunk-Cyt2WTko.js": [
-      227
+      231
+    ],
+    "attached_folder": [
+      231
     ],
     "handle-tool-permission": [
       227
@@ -46483,6 +46682,147 @@
     ],
     "index.chunk-BEWlG8Pv.js": [
       229
+    ],
+    "via-host-cli-launcher": [
+      231
+    ],
+    "attached_folder_allow": [
+      231
+    ],
+    "index.chunk-hKMR2oV6.js": [
+      231
+    ],
+    "made-by-dispatch": [
+      231
+    ],
+    "new-local-tasks-off": [
+      231
+    ],
+    "cowork-new-local-scheduled-tasks-off": [
+      231
+    ],
+    "is-enterprise": [
+      231
+    ],
+    "cowork-remote-scheduled-tasks-enabled": [
+      231
+    ],
+    "cowork-trusted-devices-required": [
+      231
+    ],
+    "cowork-remote-control-off-keeps-local": [
+      231
+    ],
+    "cowork_remote_control": [
+      231
+    ],
+    "remote_control_unknown": [
+      231
+    ],
+    "protected-data-sign-hold": [
+      231
+    ],
+    "pass-interval-minutes": [
+      231
+    ],
+    "max-migrates-per-pass": [
+      231
+    ],
+    "hook-parsing": [
+      231
+    ],
+    "1908184743": [
+      231
+    ],
+    "912981541": [
+      231
+    ],
+    "4261020843": [
+      231
+    ],
+    "CLAUDE_CODE_AUTOUPDATER_DISABLED_BY_HOST": [
+      232
+    ],
+    "DISABLE_UPDATES": [
+      232
+    ],
+    "index.chunk-BCHP6ll9.js": [
+      232
+    ],
+    "index.chunk-B1oFmUyS.js": [
+      232
+    ],
+    "find-skip-reason-under-host-pin": [
+      232
+    ],
+    "uses-local-skill-storage": [
+      232
+    ],
+    "skill-switches": [
+      232
+    ],
+    "set-desktop-skill-switches": [
+      232
+    ],
+    "index.chunk-Bylz1u4k.js": [
+      232
+    ],
+    "index.chunk-CSeX1oWS.js": [
+      232
+    ],
+    "claude-ai-import": [
+      232
+    ],
+    "desktop_third_party_import": [
+      232
+    ],
+    "disable-third-party-history-import": [
+      232
+    ],
+    "disable-third-party-projects-import": [
+      232
+    ],
+    "scheduled-tasks-import": [
+      232
+    ],
+    "skills-import": [
+      232
+    ],
+    "mcp-server-import": [
+      232
+    ],
+    "scan_requested": [
+      232
+    ],
+    "delete-skill": [
+      232
+    ],
+    "index.chunk-Aip7qImQ.js": [
+      232
+    ],
+    "cowork-ui-surface": [
+      232
+    ],
+    "ui_log": [
+      232
+    ],
+    "ui_invalidate": [
+      232
+    ],
+    "may-serve": [
+      232
+    ],
+    "4274920779": [
+      232
+    ],
+    "2766090483": [
+      232
+    ],
+    "659073223": [
+      232
+    ],
+    "3922223025": [
+      232
     ],
     "why is claude startup slow": [
       1
@@ -56797,6 +57137,15 @@
     "where are plugin download errors logged": [
       223
     ],
+    "per-skill switches on third-party installs": [
+      223
+    ],
+    "bundled agent moved off release candidate channel": [
+      223
+    ],
+    "which desktop version enables skill switches": [
+      223
+    ],
     "desktop extension server missing environment variables": [
       224
     ],
@@ -56968,6 +57317,15 @@
     "cannot overwrite temp file from another session": [
       227
     ],
+    "already attached folder request auto approved": [
+      227
+    ],
+    "why no prompt when requesting connected folder": [
+      227
+    ],
+    "folder request skips approval card": [
+      227
+    ],
     "paths in log differ from what model typed": [
       228
     ],
@@ -57102,6 +57460,96 @@
     ],
     "delete scheduled task also deletes files": [
       230
+    ],
+    "no permission prompt for attached folder": [
+      231
+    ],
+    "folder access card not showing": [
+      231
+    ],
+    "why no approval card for folder already shared": [
+      231
+    ],
+    "auto-approved folder access in manual mode": [
+      231
+    ],
+    "dispatch created scheduled task despite admin block": [
+      231
+    ],
+    "org disabled local scheduled tasks but dispatch still creates them": [
+      231
+    ],
+    "can dispatch bypass scheduled task restriction": [
+      231
+    ],
+    "dispatch can no longer create scheduled tasks error": [
+      231
+    ],
+    "scheduled tasks not migrating to cloud": [
+      231
+    ],
+    "why did my scheduled task stay local": [
+      231
+    ],
+    "remote control off keeps tasks on computer": [
+      231
+    ],
+    "plugin hooks partially loaded": [
+      231
+    ],
+    "malformed plugin hooks file skipped entries": [
+      231
+    ],
+    "only some plugin hooks show in desktop app": [
+      231
+    ],
+    "find auto-approved folder requests in audit log": [
+      231
+    ],
+    "plugins not auto-updating in desktop app": [
+      232
+    ],
+    "desktop disables updater but plugins still update": [
+      232
+    ],
+    "why do my plugins update in code tab but not cowork": [
+      232
+    ],
+    "which agent version ships with desktop": [
+      232
+    ],
+    "where is the bundled agent stored on mac": [
+      232
+    ],
+    "what does the verified file in agent folder mean": [
+      232
+    ],
+    "import third-party history into claude.ai account": [
+      232
+    ],
+    "migrate custom inference install to organization": [
+      232
+    ],
+    "imported skills disappeared after migration": [
+      232
+    ],
+    "why was my imported skill deleted": [
+      232
+    ],
+    "move projects and scheduled tasks to claude.ai": [
+      232
+    ],
+    "memory not imported from third-party install": [
+      232
+    ],
+    "turn off importing mcp servers or skills": [
+      232
+    ],
+    "skill toggles on custom inference installs": [
+      232
+    ],
+    "plugin ui notices in cowork sessions": [
+      232
     ]
   },
   "keyword_boundary": {

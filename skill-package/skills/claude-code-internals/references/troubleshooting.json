@@ -2852,7 +2852,7 @@
    "lessons": [
     227
    ],
-   "hint": "Local Cowork pre-allows mcp__workspace__bash and Edit/Read inside connected folders; only the always-ask set (file delete, new folder, save_skill, launch_code_session, scheduled-task writes) and non-allowed tools show a card."
+   "hint": "Local Cowork pre-allows mcp__workspace__bash and Edit/Read inside connected folders; only the always-ask set (file delete, new folder, save_skill, launch_code_session, scheduled-task writes) and non-allowed tools show a card. From 2.31226.0 a folder request for a folder already attached shows no card either (L231)."
   },
   {
    "pattern": [
@@ -2886,6 +2886,32 @@
     230
    ],
    "hint": "Desktop re-serializes skill/agent frontmatter on install; switching off an org-marketplace plugin removes its local copy at the next sync (Add re-installs)."
+  },
+  {
+   "pattern": [
+    "request_cowork_directory allowed without asking",
+    "no folder card for an attached folder",
+    "permission_auto_approved attached_folder in audit.jsonl",
+    "Dispatch can no longer create scheduled tasks",
+    "Dispatch created a scheduled task although local scheduled tasks are off"
+   ],
+   "lessons": [
+    231
+   ],
+   "hint": "From Desktop 2.31226.0 a folder request for a folder already attached is allowed without a card (source attached_folder, kill switch 912981541). Dispatch-made scheduled tasks are checked only against gate 1908184743 (served off), not the org's coworkNewLocalScheduledTasksOff flag."
+  },
+  {
+   "pattern": [
+    "CLAUDE_CODE_AUTOUPDATER_DISABLED_BY_HOST in the environment",
+    "CLAUDE_CODE_DESKTOP_SKILL_SWITCHES set",
+    "which agent version does Desktop run",
+    "third-party import skills removed",
+    "memory not imported from third-party install"
+   ],
+   "lessons": [
+    232
+   ],
+   "hint": "Desktop 2.31226.1 runs agent 2.1.295 from claude-code/<version>/<12 hex of the bundle checksum>/. The AUTOUPDATER marker is set for Code-tab sessions and the remote-control helper, not Cowork local sessions, and lets the agent keep auto-updating plugins; skill switches only on 3p installs. Third-party import: memory needs gate 2766090483 (off) plus a managed allow; unscanned skills are deleted again."
   }
  ]
 }

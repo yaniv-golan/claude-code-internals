@@ -3,8 +3,8 @@ domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207, 209, 211, 217, 218, 222]
-updated: 2026-10-07
+sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207, 209, 211, 217, 218, 222, 231, 232]
+updated: 2026-10-11
 read_more: ["https://ccinternals.dev/cowork/plugins-and-plugin-root/?ref=skill"]
 ---
 
@@ -53,7 +53,7 @@ server named **`memory`** that relays to the user's cloud memory
 (`/v2/ccr-sessions/-/memory/mcp`; tools `memory_read`, `memory_list`,
 `memory_write`, `memory_str_replace`, `memory_append`, `memory_delete`).
 It is on when gate `946844604` is on (force-ON at the 2026-09-23 through
-2026-09-29 captures, **off** at the 2026-10-07 capture), the account is first-party and not HIPAA-restricted. When it is
+2026-09-29 captures, **off** at the 2026-10-07 capture, force-ON again at the 2026-10-10 captures), the account is first-party and not HIPAA-restricted. When it is
 on, a server configured under the same name (e.g. `mcpServers.memory` in
 `claude_desktop_config.json`) is **replaced** (only a Desktop-log warning)
 and `memory` is added to `deniedMcpServers`. A **plugin**-declared server
@@ -789,3 +789,18 @@ as the original capture), and the boot MCP handshake advertises only
 `io.modelcontextprotocol/ui`. Tripwire: `getMcpSkillSources` occurrence count
 rising above 1. Full trace: `references/34-skill-discovery-vcs-events-
 containment.md` (Chapter 37, L129/L131).
+
+## Desktop 2.31226 changes (L231–L232)
+
+- **`hooks.json` scan.** Desktop's own scan of an installed plugin parses each event and matcher
+  entry separately and skips the malformed ones with a `main.log` warning, instead of dropping the
+  whole file (gate `4261020843`, default on, absent from the 2026-10-10 fcache). The agent's hook
+  loader is separate and unchanged by this (L231).
+- **Skill switches.** Desktop sets `CLAUDE_CODE_DESKTOP_SKILL_SWITCHES=1` in the managed spawn block
+  for third-party installs only (`usesLocalSkillStorage()`); the agent stores it as
+  `desktopSkillSwitches`, effect not traced. `CLAUDE_CODE_HOST_SKILL_CATALOG` is still not set (L232).
+- **Third-party import of skills and MCP servers.** The third-party history import now also brings
+  projects, scheduled tasks, memory, skills and MCP servers, each with a kill key in value gate
+  `1978029737`. Skills are uploaded to the organization; one returned without `scan_requested` is
+  deleted again via `POST /api/organizations/<org>/skills/delete-skill`. Memory needs gate
+  `2766090483` (absent, so off) and a managed or override allow (L232).

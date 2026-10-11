@@ -5,12 +5,12 @@
     "desktop_asar": "2.7032.0",
     "in_vm_elf": "2.1.280",
     "fcache_capture": {
-      "content16": "b8a98998b6de83b2",
-      "embedded_timestamp": 1791402053176,
-      "feature_count": 400,
-      "observed_at": "2026-10-07",
+      "content16": "4e52893441dd5b01",
+      "embedded_timestamp": 1791674491016,
+      "feature_count": 416,
+      "observed_at": "2026-10-11",
       "mode": "1p",
-      "pinned16": "abc12d8a8da5ac83"
+      "pinned16": "3f2ad3aad1389597"
     },
     "agent_elf_parity_check": "2.1.280",
     "container_cc_version_observed": {
@@ -5115,7 +5115,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5137,7 +5137,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5166,7 +5166,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5191,7 +5191,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5213,7 +5213,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5246,7 +5246,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5271,7 +5271,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5294,7 +5294,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5316,7 +5316,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5342,7 +5342,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5367,7 +5367,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5389,7 +5389,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5411,7 +5411,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5433,7 +5433,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5447,7 +5447,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       },
       "summary": "MCP version-negotiation KILL SWITCH with INVERTED sense. Consumer: `...(u && !un()) ? {versionNegotiation:{mode:'auto',probe:{timeoutMs:500}}} : {}` where un()=t.ld('1942337209'). Because the predicate is !un(), the gate being OFF (its live state) means automatic version negotiation IS ACTIVE; flipping it ON removes it. t.ld is isEnabled, proven in-chunk against 278625510/getSkillSources.",
       "provenance": [
@@ -5477,7 +5477,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5513,7 +5513,7 @@
         "present": true,
         "source": "experiment",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5539,7 +5539,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5561,7 +5561,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5583,7 +5583,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5605,7 +5605,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5627,7 +5627,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5657,7 +5657,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5679,7 +5679,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5701,7 +5701,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5727,7 +5727,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5738,7 +5738,7 @@
       "first_seen": "1.28929.0",
       "removed_in": null,
       "as_of": "2.1.289",
-      "summary": "Computer Use permission-mode gate; force-ON in the 2026-08-13 through 2026-09-29 captures; OFF (defaultValue, no rule) at the 2026-10-07 capture. Follows the same built-* stickiness caching shape as frameArtifactsTurnEnabled/cicCanUseToolEnabled and Ch37/L129's builtSystemPrompt case (Ch41/L148): evaluated once per built-tools generation, cached on the session as cuCanUseToolEnabled, read back thereafter with a fail-closed `?? false` default; the live-read branch additionally excludes sessionType 'radar' and 'chat'. Confirms the built-* caching pattern as a general mechanism, not a suggest_skills-specific quirk.",
+      "summary": "Computer Use permission-mode gate; force-ON in the 2026-08-13 through 2026-09-29 captures; OFF (defaultValue, no rule) at the 2026-10-07 capture; force-ON again (rule fr_mnjab82e) at the 2026-10-10 captures. Follows the same built-* stickiness caching shape as frameArtifactsTurnEnabled/cicCanUseToolEnabled and Ch37/L129's builtSystemPrompt case (Ch41/L148): evaluated once per built-tools generation, cached on the session as cuCanUseToolEnabled, read back thereafter with a fail-closed `?? false` default; the live-read branch additionally excludes sessionType 'radar' and 'chat'. Confirms the built-* caching pattern as a general mechanism, not a suggest_skills-specific quirk.",
       "provenance": [
         {
           "lesson": 148
@@ -5751,9 +5751,9 @@
       "namespace": "desktop_fcache",
       "observed": {
         "present": true,
-        "source": "defaultValue",
-        "on": false,
-        "at": "b8a98998b6de83b2"
+        "source": "force",
+        "on": true,
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5781,7 +5781,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5807,7 +5807,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5837,7 +5837,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5859,7 +5859,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5881,7 +5881,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5906,7 +5906,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5943,7 +5943,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -5969,7 +5969,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6000,7 +6000,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6026,7 +6026,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6052,7 +6052,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6078,7 +6078,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6100,7 +6100,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6122,7 +6122,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6148,7 +6148,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6162,7 +6162,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       },
       "summary": "Declared-but-unconsumed: appears exactly once, in the client-side gate defaults table as {defaultValue:false}, with NO read site anywhere in the asar and NO fcache entry. Not dark-launched (no code behind it yet) -- the switch was declared before its consumer shipped.",
       "provenance": [
@@ -6193,7 +6193,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6215,7 +6215,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       },
       "served_keys": [
         "displayName",
@@ -6242,7 +6242,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6265,7 +6265,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6287,7 +6287,7 @@
         "present": true,
         "source": "force",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6309,7 +6309,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6331,7 +6331,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6353,7 +6353,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6379,7 +6379,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6405,7 +6405,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6431,7 +6431,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6453,7 +6453,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6475,7 +6475,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -6489,7 +6489,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       },
       "summary": "Declared-but-unconsumed, same as 3671534883. Written as an UNQUOTED numeric object key, so a quoted-string-only gate regex misses it entirely.",
       "provenance": [
@@ -7999,7 +7999,7 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.289",
-      "summary": "Enables the Desktop's in-process SDK-MCP server named 'memory' (relay to /v2/ccr-sessions/-/memory/mcp; tools memory_read/list/write/str_replace/append/delete), consumed from Desktop 2.2553.1 by ia() = gate && canSyncCoworkMemoryRemotely() (first-party) && !wz() (not HIPAA-restricted). When on, a server configured under the name 'memory' in the Desktop's server map is replaced (Desktop-log warning only) and 'memory' is added to deniedMcpServers; plugin-declared servers are unaffected (agent keys them plugin:<p>:<s> and the deniedMcpServers matcher compares the exact key); the deny entry blocks only a non-SDK server under the plain key 'memory' (.mcp.json, --mcp-config). read/list always pre-approved; all six with a live memory project binding; writes refused at call time unless the binding is verified and admits writes. Force-ON (rule fr_mtud3u3p) at the 2026-09-23 through 2026-09-29 captures, OFF (defaultValue, no rule) at the 2026-10-07 capture, so the relay is not installed and a Desktop-configured server named memory is left alone while it stays off; 30 of 31 recent Cowork runs on the capturing machine (nearly all one scheduled task) were offered memory_list/_read, none called one.",
+      "summary": "Enables the Desktop's in-process SDK-MCP server named 'memory' (relay to /v2/ccr-sessions/-/memory/mcp; tools memory_read/list/write/str_replace/append/delete), consumed from Desktop 2.2553.1 by ia() = gate && canSyncCoworkMemoryRemotely() (first-party) && !wz() (not HIPAA-restricted). When on, a server configured under the name 'memory' in the Desktop's server map is replaced (Desktop-log warning only) and 'memory' is added to deniedMcpServers; plugin-declared servers are unaffected (agent keys them plugin:<p>:<s> and the deniedMcpServers matcher compares the exact key); the deny entry blocks only a non-SDK server under the plain key 'memory' (.mcp.json, --mcp-config). read/list always pre-approved; all six with a live memory project binding; writes refused at call time unless the binding is verified and admits writes. Force-ON (rule fr_mtud3u3p) at the 2026-09-23 through 2026-09-29 captures, OFF (defaultValue, no rule) at the 2026-10-07 capture, force-ON again (fr_mtud3u3p) at the 2026-10-10 captures, so the relay is installed again and replaces a Desktop-configured server named memory; while it is off the relay is not installed and that server is left alone; 30 of 31 recent Cowork runs on the capturing machine (nearly all one scheduled task) were offered memory_list/_read, none called one.",
       "provenance": [
         {
           "lesson": 194
@@ -8012,9 +8012,9 @@
       "namespace": "desktop_fcache",
       "observed": {
         "present": true,
-        "source": "defaultValue",
-        "on": false,
-        "at": "b8a98998b6de83b2"
+        "source": "force",
+        "on": true,
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8093,7 +8093,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8104,7 +8104,7 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.280",
-      "summary": "Value gate for Cowork Artifacts: sharingEnabled (default false; gates every Desktop sharing call of the local Artifacts store: share via share_from_content, unshare, auto-publish, getArtifactRepublishContent), autoPublishEnabled (only with sharingEnabled), mcpCallsPerMinute (default 30), debugLogEnabled, verifyToolsEnabled. verifyToolsEnabled && debugLogEnabled also enable mcp__cowork__verify_artifact (L212). From Desktop 2.16120.0 verifyToolsEnabled alone is canVerifyArtifacts (no longer also coworkArtifacts 2940196192), which serves mcp__cowork__screenshot_file_preview; On 2026-10-01 it is served force-on with autoPublishEnabled, debugLogEnabled, sharingEnabled and verifyToolsEnabled all true, so a user can share local artifacts, legacy-made ones included, and an update_artifact call republishes a shared one with auto-publish on (L212).",
+      "summary": "Value gate for Cowork Artifacts: sharingEnabled (default false; gates every Desktop sharing call of the local Artifacts store: share via share_from_content, unshare, auto-publish, getArtifactRepublishContent), autoPublishEnabled (only with sharingEnabled), mcpCallsPerMinute (default 30), debugLogEnabled, verifyToolsEnabled. verifyToolsEnabled && debugLogEnabled also enable mcp__cowork__verify_artifact (L212). From Desktop 2.16120.0 verifyToolsEnabled alone is canVerifyArtifacts (no longer also coworkArtifacts 2940196192), which serves mcp__cowork__screenshot_file_preview; On 2026-10-01 it is served force-on with autoPublishEnabled, debugLogEnabled, sharingEnabled and verifyToolsEnabled all true, so a user can share local artifacts, legacy-made ones included, and an update_artifact call republishes a shared one with auto-publish on (L212). At the 2026-10-10 captures it is served from defaultValue with only debugLogEnabled and verifyToolsEnabled true: sharingEnabled and autoPublishEnabled are not served, so local-artifact sharing reads its default, off; verify_artifact and screenshot_file_preview are unaffected.",
       "provenance": [
         {
           "lesson": 195
@@ -8119,9 +8119,9 @@
       "namespace": "desktop_fcache",
       "observed": {
         "present": true,
-        "source": "force",
+        "source": "defaultValue",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8143,7 +8143,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8165,7 +8165,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8187,7 +8187,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8209,7 +8209,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8306,7 +8306,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8328,7 +8328,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8350,7 +8350,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8375,8 +8375,8 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.289",
-      "summary": "Config for Desktop's [RemoteMigrationSweep] (from 1.44121.1): periodic pass (passIntervalMinutes: 60 at the 2026-09-27 capture, 30 at 2026-10-07; failureCooldownMinutes 30 -> 15) that converts a local scheduled task into a cloud routine once it has run >=2 times over >=0.5 days (minRunsObserved/minObservedDays), among other conditions. Two checks keep a task local: (1) heldBlockReasons holds a listed reason in every mode (the code also accepts chrome/built_in_browser, counted from observed runs); served ['space'] on 2026-10-01, so only a Space-attached task is held; (2) reasons the cloud side cannot take: sub-hourly/custom cron, working directory/worktree/branch, dispatch hook, no prompt; Chrome blocks only a device-free move; attached folders need boundEnabled and attached files boundEnabled && boundFilesEnabled (from Desktop 2.16120.0, L219; both served true on 2026-10-01), and such tasks move only as bound routines; reverted tasks are skipped; disables the local copy and stamps migratedToRemote={triggerId, via:'sweep'}. Force-on; observed migrating a local hourly task on the capturing machine on 2026-09-24 (Ch56/L208).",
+      "as_of": "2.1.295",
+      "summary": "Config for Desktop's [RemoteMigrationSweep] (from 1.44121.1): periodic pass (passIntervalMinutes: 60 at the 2026-09-27 capture, 30 at 2026-10-07; failureCooldownMinutes 30 -> 15) that converts a local scheduled task into a cloud routine once it has run >=2 times over >=0.5 days (minRunsObserved/minObservedDays), among other conditions. Two checks keep a task local: (1) heldBlockReasons holds a listed reason in every mode (the code also accepts chrome/built_in_browser, counted from observed runs); served ['space'] on 2026-10-01, so only a Space-attached task is held; (2) reasons the cloud side cannot take: sub-hourly/custom cron, working directory/worktree/branch, dispatch hook, no prompt; Chrome blocks only a device-free move; attached folders need boundEnabled and attached files boundEnabled && boundFilesEnabled (from Desktop 2.16120.0, L219; both served true on 2026-10-01), and such tasks move only as bound routines; reverted tasks are skipped; disables the local copy and stamps migratedToRemote={triggerId, via:'sweep'}. Force-on; observed migrating a local hourly task on the capturing machine on 2026-09-24 (Ch56/L208). From Desktop 2.31226.0 the config reads two more code keys, both default true and not in the 2026-10-10 served value: coworkRemoteControlOffKeepsLocal (a bound task whose org has the cowork_remote_control account setting set and not available, or read for another org, is skipped with requiresComputer and stays local) and protectedDataSignHold (holds the signed migration while the OS keystore's protected data is unavailable; inferred from the names) (L231).",
       "provenance": [
         {
           "lesson": 208
@@ -8387,6 +8387,10 @@
         {
           "lesson": 222,
           "note": "served interval 60 -> 30 minutes between 2026-09-27 and 2026-10-07"
+        },
+        {
+          "lesson": 231,
+          "note": "two new code keys"
         }
       ],
       "namespace": "desktop_fcache",
@@ -8394,7 +8398,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8416,7 +8420,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8438,7 +8442,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8460,7 +8464,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8482,7 +8486,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8504,7 +8508,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8526,7 +8530,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8548,7 +8552,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8570,7 +8574,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8592,7 +8596,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8614,7 +8618,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8636,7 +8640,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8673,6 +8677,40 @@
         {
           "lesson": 116,
           "note": "the MCP env-forward list occurrence"
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_AUTOUPDATER_DISABLED_BY_HOST",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_AUTOUPDATER_DISABLED_BY_HOST",
+      "status": "live",
+      "first_seen": "2.31226.0",
+      "removed_in": null,
+      "as_of": "2.1.295",
+      "summary": "Set to '1' by Desktop from 2.31226.0 in OUr (exported wv), the environment builder for Code-tab sessions and the remote-control tool host: HHr deletes any inherited copy, then sets it unless gate 4274920779 is off, the install is 3p, Desktop auto-update is disabled, the environment already sets DISABLE_AUTOUPDATER / DISABLE_UPDATES / CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC, or the login shell has no HOME. Not in the Cowork local-agent spawn, which is built from HJ directly; DISABLE_AUTOUPDATER=1 is set in both. Agent 2.1.295 reads it in Ooe, which decides whether plugin auto-update is skipped: without the marker a disabled auto-updater (as DISABLE_AUTOUPDATER=1 causes) skips plugin auto-update; with it, only another disable reason or one found under the host's pin does (FORCE_AUTOUPDATE_PLUGINS overrides). The agent deletes it from the environment of processes it starts.",
+      "provenance": [
+        {
+          "lesson": 232
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DESKTOP_SKILL_SWITCHES",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DESKTOP_SKILL_SWITCHES",
+      "status": "live",
+      "first_seen": "2.31226.0",
+      "removed_in": null,
+      "as_of": "2.1.295",
+      "summary": "Known to the agent from 2.1.293 (stored as desktopSkillSwitches via setDesktopSkillSwitches; effect not traced). Desktop sets it to '1' from 2.31226.0 in the managed spawn block (MFr -> WBt, skillSwitches: usesLocalSkillStorage()), which is true for third-party installs only, so Cowork and Code-tab sessions on 3p installs get it and first-party ones do not. CLAUDE_CODE_HOST_SKILL_CATALOG and CLAUDE_CODE_REMOTE_TOOLS_HOST_ALLOWS_UNATTENDED are still not set by Desktop.",
+      "provenance": [
+        {
+          "lesson": 223,
+          "note": "listed among agent 2.1.293 variables Desktop 2.26454.2 did not set"
+        },
+        {
+          "lesson": 232
         }
       ]
     },
@@ -8725,7 +8763,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8747,7 +8785,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
       }
     },
     {
@@ -8769,7 +8807,165 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "b8a98998b6de83b2"
+        "at": "4e52893441dd5b01"
+      }
+    },
+    {
+      "id": "gate.912981541",
+      "kind": "gate",
+      "name": "912981541 (request_cowork_directory attached-folder allow kill switch)",
+      "status": "live",
+      "first_seen": "2.31226.0",
+      "removed_in": null,
+      "as_of": "2.1.295",
+      "summary": "Kill switch, new in Desktop 2.31226.0. While it reads off, Desktop's canUseTool allows mcp__cowork__request_cowork_directory without a card (any permission mode, after the forced-ask hook's ask) when the requested folder is already attached to the session, unless the tool is on an admin-policy ask list, the request carries another ask reason, the session came through the host CLI launcher, or it is a scheduled-task run whose task did not select that folder. Audited permission_auto_approved with source:'attached_folder'; telemetry lam_builtin_tool_auto_mode outcome attached_folder_allow. A second site skips re-adding an already-resolved folder in host-loop. Absent from the 2026-10-10 fcache, so the allow is active. Code-read, not probed live.",
+      "provenance": [
+        {
+          "lesson": 231
+        },
+        {
+          "lesson": 227,
+          "note": "the one exception to the always-ask set"
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "4e52893441dd5b01"
+      }
+    },
+    {
+      "id": "gate.1908184743",
+      "kind": "gate",
+      "name": "1908184743 (Dispatch local scheduled-task create off)",
+      "status": "live",
+      "first_seen": "2.31226.0",
+      "removed_in": null,
+      "as_of": "2.1.295",
+      "summary": "New in Desktop 2.31226.0: dispatchLocalTasksOff = zy('1908184743')==='on' && not 3p && !iy(). createAndSave checks a Dispatch-made task (madeByDispatch) ONLY against this gate and any other create only against the org's server-delivered coworkNewLocalScheduledTasksOff flag; before 2.31226.0 both used the org flag. Served off (defaultValue) on 2026-10-10, so while it stays off Dispatch can create a local scheduled task in an org that has turned new local scheduled tasks off. Refusal text when on: 'Dispatch can no longer create scheduled tasks, so nothing was created.' Code-read, not probed live.",
+      "provenance": [
+        {
+          "lesson": 231
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "4e52893441dd5b01"
+      }
+    },
+    {
+      "id": "gate.4274920779",
+      "kind": "gate",
+      "name": "4274920779 (AUTOUPDATER_DISABLED_BY_HOST marker)",
+      "status": "live",
+      "first_seen": "2.31226.0",
+      "removed_in": null,
+      "as_of": "2.1.295",
+      "summary": "New in Desktop 2.31226.0, read Ry('4274920779',!0) (default on). When on, OUr (exported wv: the environment for Code-tab sessions and the remote-control tool host) sets CLAUDE_CODE_AUTOUPDATER_DISABLED_BY_HOST=1, unless the install is 3p, Desktop's auto-update is disabled, the environment already sets DISABLE_AUTOUPDATER / DISABLE_UPDATES / CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC, or the login shell has no HOME. The Cowork local-agent spawn (built from HJ) does not go through OUr. Absent from the 2026-10-10 fcache, so the default (on) applies. Effect in agent 2.1.295: the marker keeps plugin auto-update running although DISABLE_AUTOUPDATER=1 is set.",
+      "provenance": [
+        {
+          "lesson": 232
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "4e52893441dd5b01"
+      }
+    },
+    {
+      "id": "gate.2766090483",
+      "kind": "gate",
+      "name": "2766090483 (third-party memory import)",
+      "status": "dark-launched",
+      "first_seen": "2.31226.0",
+      "removed_in": null,
+      "as_of": "2.1.295",
+      "summary": "New in Desktop 2.31226.0: the third-party history import runs its memory step only when this gate is on AND the import was allowed by managed configuration or the override (not by the organization setting). Absent from the 2026-10-10 fcache, so memory is never imported.",
+      "provenance": [
+        {
+          "lesson": 232
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "4e52893441dd5b01"
+      }
+    },
+    {
+      "id": "gate.3922223025",
+      "kind": "gate",
+      "name": "3922223025 (coworkUiSurface)",
+      "status": "dark-launched",
+      "first_seen": "2.31226.0",
+      "removed_in": null,
+      "as_of": "2.1.295",
+      "summary": "New in Desktop 2.31226.0: [coworkUiSurface] relays ui_log ({kind:'log',plugin,text}) and ui_invalidate system messages from a host-loop, non-launcher, non-chat Cowork session whose initialize result says it serves a UI surface to the renderer (EngineSurface_$_uiSessionChanged), buffering up to 32 early messages. mayServe requires this gate; absent from the 2026-10-10 fcache, so nothing is relayed. Purpose (plugin UI panes/notices in Cowork) INFERRED.",
+      "provenance": [
+        {
+          "lesson": 232
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "4e52893441dd5b01"
+      }
+    },
+    {
+      "id": "gate.4261020843",
+      "kind": "gate",
+      "name": "4261020843 (tolerant plugin hooks.json scan)",
+      "status": "live",
+      "first_seen": "2.31226.0",
+      "removed_in": null,
+      "as_of": "2.1.295",
+      "summary": "New in Desktop 2.31226.0, read Ry(laa,!0) (default on). Desktop's own scan of an installed plugin's hooks.json parses each event and matcher entry separately and skips malformed ones with a main.log warning, instead of dropping the whole file on any schema failure. Desktop's scan only; the agent's hook loader is separate. Absent from the 2026-10-10 fcache, so the default (on) applies.",
+      "provenance": [
+        {
+          "lesson": 231
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "4e52893441dd5b01"
+      }
+    },
+    {
+      "id": "gate.659073223",
+      "kind": "gate",
+      "name": "659073223 (claimed third-party import switch-off)",
+      "status": "live",
+      "first_seen": "2.31226.0",
+      "removed_in": null,
+      "as_of": "2.1.295",
+      "summary": "New in Desktop 2.31226.0: when on, the claimed third-party import path stops with 'switched off remotely'. Also in the custom-3p forced-value table. Absent from the 2026-10-10 fcache, so that path is not switched off.",
+      "provenance": [
+        {
+          "lesson": 232
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "4e52893441dd5b01"
       }
     },
     {

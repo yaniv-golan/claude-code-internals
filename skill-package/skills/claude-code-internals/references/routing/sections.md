@@ -1846,6 +1846,18 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 230 · 60-desktop-routing-cards-paths-extensions.md:190 · Switching off deletes the copy (MEASURED, n=1, Team)
 230 · 60-desktop-routing-cards-paths-extensions.md:196 · A related default (MEASURED)
 230 · 60-desktop-routing-cards-paths-extensions.md:200 · For a plugin author
+231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:18 · An already-attached folder skips the card (CODE-READ, `index.chunk-QEr06WaZ.js`)
+231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:38 · Dispatch has its own create switch (CODE-READ, `index.chunk-Cyt2WTko.js`; refusal text in `index.chunk-hKMR2oV6.js`)
+231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:52 · The migration sweep keeps a bound task local when remote control is off (CODE-READ, `index.chunk-QEr06WaZ.js`)
+231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:61 · Desktop's `hooks.json` scan skips malformed entries (CODE-READ, `index.chunk-Cyt2WTko.js`)
+231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:65 · Served state on 2026-10-10 (MEASURED, live fcache)
+231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:71 · Who this affects and what to do
+232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:84 · The bundled agent (MEASURED)
+232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:93 · `CLAUDE_CODE_AUTOUPDATER_DISABLED_BY_HOST` (CODE-READ, `index.chunk-Cyt2WTko.js`)
+232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:104 · `CLAUDE_CODE_DESKTOP_SKILL_SWITCHES` (CODE-READ, `index.chunk-Cyt2WTko.js`)
+232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:108 · The third-party history import (CODE-READ, `index.chunk-Bylz1u4k.js`, `index.chunk-CSeX1oWS.js`)
+232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:125 · A dark relay for plugin UI events (CODE-READ, `index.chunk-Aip7qImQ.js`)
+232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:129 · Who this affects and what to do
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)
@@ -1868,17 +1880,18 @@ state:cowork-architecture · state/cowork-architecture.md:633 · A cloud session
 state:cowork-architecture · state/cowork-architecture.md:643 · A THIRD surface Desktop calls "cloud" — the claude.ai code-execution container (relayed, 2026-09-22)
 state:cowork-architecture · state/cowork-architecture.md:676 · Four surfaces, one probe (L198, 2026-09-23, first-party)
 state:cowork-architecture · state/cowork-architecture.md:701 · Scheduled tasks migrate themselves to the cloud (L208)
-state:cowork-architecture · state/cowork-architecture.md:714 · Where a new task runs (L210)
-state:cowork-architecture · state/cowork-architecture.md:756 · Desktop 2.9939.2 additions (L212–L214)
-state:cowork-architecture · state/cowork-architecture.md:780 · Desktop 2.16120.0 additions (L219–L221)
-state:cowork-architecture · state/cowork-architecture.md:806 · `computer://` links by lane (L215)
-state:cowork-architecture · state/cowork-architecture.md:815 · A cloud session and the user's computer (L215)
-state:cowork-architecture · state/cowork-architecture.md:838 · What Anthropic's help center says (relayed, read 2026-10-02 and 2026-10-03)
-state:cowork-architecture · state/cowork-architecture.md:860 · One conversation, two runtimes (L216)
-state:cowork-architecture · state/cowork-architecture.md:875 · Credential delivery and build identity (L207)
-state:cowork-architecture · state/cowork-architecture.md:888 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
-state:cowork-architecture · state/cowork-architecture.md:925 · Mount model and delete policy (L139, L140)
-state:cowork-architecture · state/cowork-architecture.md:1045 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
+state:cowork-architecture · state/cowork-architecture.md:719 · Where a new task runs (L210)
+state:cowork-architecture · state/cowork-architecture.md:761 · Desktop 2.9939.2 additions (L212–L214)
+state:cowork-architecture · state/cowork-architecture.md:785 · Desktop 2.16120.0 additions (L219–L221)
+state:cowork-architecture · state/cowork-architecture.md:813 · Desktop 2.31226 additions (L231–L232)
+state:cowork-architecture · state/cowork-architecture.md:827 · `computer://` links by lane (L215)
+state:cowork-architecture · state/cowork-architecture.md:836 · A cloud session and the user's computer (L215)
+state:cowork-architecture · state/cowork-architecture.md:859 · What Anthropic's help center says (relayed, read 2026-10-02 and 2026-10-03)
+state:cowork-architecture · state/cowork-architecture.md:881 · One conversation, two runtimes (L216)
+state:cowork-architecture · state/cowork-architecture.md:896 · Credential delivery and build identity (L207)
+state:cowork-architecture · state/cowork-architecture.md:913 · Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
+state:cowork-architecture · state/cowork-architecture.md:950 · Mount model and delete policy (L139, L140)
+state:cowork-architecture · state/cowork-architecture.md:1070 · How narration reaches the user (L175–L178, agent 2.1.247 / asar 1.40609.0)
 state:cowork-control-protocol · state/cowork-control-protocol.md:23 · Spawn contract
 state:cowork-control-protocol · state/cowork-control-protocol.md:98 · Handshake
 state:cowork-control-protocol · state/cowork-control-protocol.md:139 · Subtype inventory pointer
@@ -1892,12 +1905,12 @@ state:cowork-control-protocol · state/cowork-control-protocol.md:325 · Compact
 state:cowork-control-protocol · state/cowork-control-protocol.md:337 · Cloud tasks: teleport-to-cloud and the bridge-session worker (Ch33/L119)
 state:cowork-control-protocol · state/cowork-control-protocol.md:414 · VCS SDK events + SDK-MCP skill servers (L129/L130)
 state:cowork-permissions · state/cowork-permissions.md:22 · The layers (all simultaneously active, host-loop production)
-state:cowork-permissions · state/cowork-permissions.md:213 · Auto-mode tuning at Desktop 1.22209.0 (lesson 128, no live gate-state capture)
-state:cowork-permissions · state/cowork-permissions.md:246 · Browser/Computer-Use permission gates + Cowork's own auto-mode rule additions (Desktop 1.28929.0)
-state:cowork-permissions · state/cowork-permissions.md:299 · Host-dialog approval attestation and `/settings-review` staging — shipped, compiled off (agent 2.1.281–2.1.284)
-state:cowork-permissions · state/cowork-permissions.md:318 · Scheduled tasks start in Auto; unattended asks escalate (Desktop 2.19675.0 / 2.26454.0, L222)
-state:cowork-permissions · state/cowork-permissions.md:333 · Not part of the stack (adjacent, don't conflate)
-state:cowork-permissions · state/cowork-permissions.md:346 · Known past errors (do not re-introduce)
+state:cowork-permissions · state/cowork-permissions.md:222 · Auto-mode tuning at Desktop 1.22209.0 (lesson 128, no live gate-state capture)
+state:cowork-permissions · state/cowork-permissions.md:255 · Browser/Computer-Use permission gates + Cowork's own auto-mode rule additions (Desktop 1.28929.0)
+state:cowork-permissions · state/cowork-permissions.md:309 · Host-dialog approval attestation and `/settings-review` staging — shipped, compiled off (agent 2.1.281–2.1.284)
+state:cowork-permissions · state/cowork-permissions.md:328 · Scheduled tasks start in Auto; unattended asks escalate (Desktop 2.19675.0 / 2.26454.0, L222)
+state:cowork-permissions · state/cowork-permissions.md:344 · Not part of the stack (adjacent, don't conflate)
+state:cowork-permissions · state/cowork-permissions.md:357 · Known past errors (do not re-introduce)
 state:credential-channels · state/credential-channels.md:16 · The four Desktop credential channels
 state:credential-channels · state/credential-channels.md:103 · Auth at spawn
 state:credential-channels · state/credential-channels.md:123 · What NOT to use
@@ -1948,3 +1961,4 @@ state:plugins-skills-hooks · state/plugins-skills-hooks.md:723 · Input schemas
 state:plugins-skills-hooks · state/plugins-skills-hooks.md:743 · `suggest_skills` has two states (from Desktop 1.46388.3)
 state:plugins-skills-hooks · state/plugins-skills-hooks.md:761 · Output envelopes
 state:plugins-skills-hooks · state/plugins-skills-hooks.md:780 · Bundled skills & MCP-contributed skills (L131)
+state:plugins-skills-hooks · state/plugins-skills-hooks.md:793 · Desktop 2.31226 changes (L231–L232)

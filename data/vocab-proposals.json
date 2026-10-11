@@ -5493,10 +5493,13 @@
     },
     "223": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-10-08",
-      "input_sha256": "0ffe8f2970ef3d6dcb78c08966d08b3b28e4528095e29f10f3b23a947fb63c2a",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-11",
+      "input_sha256": "0fcd5bdfc71fe399d75aabe2f06ab5aecb7ac70a04a498501779630cd6e5f533",
+      "prior_terms_sha256": "d524a09a17ecdfe1e2466b9355f9ac187d24b8e0dd0c5f201ca6d635348a23fa",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "ce10b1599cf044afb04442d6b0b146a28a7e33a0",
+      "replaced": [],
       "terms": [
         "plugin enabled but skills missing",
         "plugin installed but commands don't show up",
@@ -5512,7 +5515,10 @@
         "how do I check why my plugin didn't sync?",
         "repetitive JSON file breaks plugin",
         "uploaded skill works but plugin version fails",
-        "where are plugin download errors logged?"
+        "where are plugin download errors logged?",
+        "per-skill switches on third-party installs",
+        "bundled agent moved off release candidate channel",
+        "which desktop version enables skill switches?"
       ]
     },
     "224": {
@@ -5595,10 +5601,13 @@
     },
     "227": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-10-10",
-      "input_sha256": "d5d10484b0ad3add92634d5b24d5ce3f8c8ee97df1548af8f951a09fb4c9f116",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-11",
+      "input_sha256": "36c0f4192c381ac728761450b1f42420520a559cd275d2f3304bcd6b76750a84",
+      "prior_terms_sha256": "eb1ccf18f53bf6ad8ab66469154d693b1d33b925a045281ea532d871e9f720c3",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "ce10b1599cf044afb04442d6b0b146a28a7e33a0",
+      "replaced": [],
       "terms": [
         "cowork manual mode not asking permission",
         "why no approval prompt for shell commands",
@@ -5614,7 +5623,10 @@
         "manual mode label but edits auto accepted",
         "does manual mode stop file writes?",
         "shared temp folder between cowork sessions",
-        "cannot overwrite temp file from another session"
+        "cannot overwrite temp file from another session",
+        "already attached folder request auto approved",
+        "why no prompt when requesting connected folder?",
+        "folder request skips approval card"
       ]
     },
     "228": {
@@ -5687,6 +5699,54 @@
         "does disabling a plugin uninstall it?",
         "orphans cleaned in sync log",
         "delete scheduled task also deletes files"
+      ]
+    },
+    "231": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-10-11",
+      "input_sha256": "d0389e4e798ddcd69b38608d93cd230d7f6317b80a1b3ec5cc0ff035f53dc41f",
+      "collision_check": "questions-v2.json dev",
+      "terms": [
+        "no permission prompt for attached folder",
+        "folder access card not showing",
+        "why no approval card for folder already shared?",
+        "auto-approved folder access in manual mode",
+        "Dispatch created scheduled task despite admin block",
+        "org disabled local scheduled tasks but Dispatch still creates them",
+        "can Dispatch bypass scheduled task restriction?",
+        "Dispatch can no longer create scheduled tasks error",
+        "scheduled tasks not migrating to cloud",
+        "why did my scheduled task stay local?",
+        "remote control off keeps tasks on computer",
+        "plugin hooks partially loaded",
+        "malformed plugin hooks file skipped entries",
+        "only some plugin hooks show in desktop app",
+        "find auto-approved folder requests in audit log"
+      ]
+    },
+    "232": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-10-11",
+      "input_sha256": "4bcbb87802162857e53e8cee91da85291d3bf2d12ddf19becac8b94a44bf3fe2",
+      "collision_check": "questions-v2.json dev",
+      "terms": [
+        "plugins not auto-updating in desktop app",
+        "desktop disables updater but plugins still update",
+        "why do my plugins update in code tab but not cowork",
+        "which agent version ships with desktop",
+        "where is the bundled agent stored on mac",
+        "what does the verified file in agent folder mean",
+        "import third-party history into claude.ai account",
+        "migrate custom inference install to organization",
+        "imported skills disappeared after migration",
+        "why was my imported skill deleted?",
+        "move projects and scheduled tasks to claude.ai",
+        "memory not imported from third-party install",
+        "turn off importing mcp servers or skills",
+        "skill toggles on custom inference installs",
+        "plugin ui notices in cowork sessions"
       ]
     }
   }

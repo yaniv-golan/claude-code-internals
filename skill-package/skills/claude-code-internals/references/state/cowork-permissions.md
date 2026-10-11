@@ -3,8 +3,8 @@ domain: cowork-permissions
 title: Cowork permission stack (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [89, 107, 108, 109, 115, 121, 122, 124, 128, 148, 150, 184, 190, 213, 222]
-updated: 2026-10-07
+sources: [89, 107, 108, 109, 115, 121, 122, 124, 128, 148, 150, 184, 190, 213, 222, 227, 231]
+updated: 2026-10-11
 read_more: ["https://ccinternals.dev/cowork/deleting-files/?ref=skill"]
 ---
 
@@ -82,6 +82,15 @@ lessons (see frontmatter).
      cannot see it. **Net: in auto mode 7 of the 9 skip the forced ask;
      only `allow_cowork_file_delete` and `launch_code_session` always
      prompt. Outside auto mode the set below is unchanged.**
+     **Attached-folder exception (Desktop 2.31226.0+, code-read):** after the
+     hook's ask, Desktop's `canUseTool` allows `request_cowork_directory`
+     without a card, in any mode, when the requested folder is already
+     attached to the session and none of these holds: the tool is on an
+     admin-policy ask list, the request carries another ask reason, the
+     session came through the host CLI launcher, or it is a scheduled-task
+     run whose task did not select that folder. Audited as
+     `permission_auto_approved` with `source:"attached_folder"`. Kill switch
+     `912981541`, absent from the 2026-10-10 fcache, so active (L231).
      **LIVE-CONFIRMED 2026-09-05** in one auto-mode session: `save_skill` and
      `request_cowork_directory` ran with no approval dialog while
      `allow_cowork_file_delete` produced the Allow/Deny card — the third is
@@ -257,7 +266,8 @@ both **force-ON** in the 2026-08-13 fcache:
   see below for the feature it was previously conflated with.
 - **`2486083521` (`cuCanUseToolEnabled`) is the Computer Use equivalent** —
   same shape, additionally excluded for `sessionType` `radar`/`chat`. Off
-  (`defaultValue`) at the 2026-10-07 capture after force-ON through 2026-09-29.
+  (`defaultValue`) at the 2026-10-07 capture after force-ON through 2026-09-29;
+  force-ON again (rule `fr_mnjab82e`) at the 2026-10-10 captures.
 
 Both follow a **cache-once-per-build shape** shared with `frameArtifactsTurnEnabled`
 and Ch37/L129's `builtSystemPrompt` stickiness: the gate is read live only on
@@ -328,7 +338,8 @@ reachability rule).
   child's parent turn, is unattended; outcomes are logged as
   `lam_escalated_tool_ask` = `card` | `unattended_deny`. Kill switch
   `3285376524` feeds it; unserved at 2026-10-07; its exact role not traced.
-- The forced-ask PreToolUse matcher is unchanged at nine tools in 2.26454.0.
+- The forced-ask PreToolUse matcher is unchanged at nine tools in 2.26454.0 and
+  2.31226.0/.1; 2.31226.0 adds the attached-folder allow above (L231).
 
 ## Not part of the stack (adjacent, don't conflate)
 

@@ -3,8 +3,8 @@ domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198, 207, 208, 210, 211, 212, 213, 214, 215, 216]
-updated: 2026-10-05
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198, 207, 208, 210, 211, 212, 213, 214, 215, 216, 231, 232]
+updated: 2026-10-11
 read_more: ["https://ccinternals.dev/cowork/?ref=skill"]
 ---
 
@@ -704,7 +704,12 @@ Desktop's `[RemoteMigrationSweep]` (from 1.44121.1; config gate `2974609625`, fo
 converts a local scheduled task into a cloud routine after ≥2 runs over ≥0.5 days
 (among other conditions), disables the local copy and stamps `migratedToRemote`;
 tasks attached to a Space, sub-hourly, custom-cron or with attachments are held back;
-device-tied tasks move as bound routines; a reverted task is never moved again. Observed on the capturing machine 2026-09-24 ("Remote migration completed;
+device-tied tasks move as bound routines; a reverted task is never moved again. From Desktop 2.31226.0
+two code keys default true and are not served (2026-10-10): `coworkRemoteControlOffKeepsLocal` keeps a
+bound task local when the org's `cowork_remote_control` setting is set and not available
+(`remote_control_disabled`, or `remote_control_unknown` for another org's reading), and
+`protectedDataSignHold` holds the signed migration while the keystore's protected data is
+unavailable (L231). Observed on the capturing machine 2026-09-24 ("Remote migration completed;
 local copy disabled"). Desktop decides only whether lanes are **allowed**
 (`placementRules`: device / SSH host / cloud; for Cowork only self-hosted-only and the
 `cowork-local-tasks-off` latch from gate `3634338308`, off by default, can deny local); the web UI picks the lane per task. The task-header
@@ -796,12 +801,28 @@ off by default.
   `coworkNativeFilePreview`, not bridge/dispatch child) and `screenshot_artifact`
   (artifact family); `canVerifyArtifacts` = `3229517805.verifyToolsEnabled` alone.
   Imagine availability = `3444158716`, not HIPAA, not org-blocked (`2742800629`) (L221).
-- **Sharing local artifacts.** `3229517805.sharingEnabled` (true 2026-10-01 and 2026-10-07) gates
+- **Sharing local artifacts.** `3229517805.sharingEnabled` (true 2026-10-01 and 2026-10-07; **not served** at the
+  2026-10-10 captures, where the gate falls back to `defaultValue` with only `debugLogEnabled` and
+  `verifyToolsEnabled`, so sharing reads its default, false) gates
   the Desktop's share/unshare/auto-publish calls on the local Artifacts store, the
   store the `mcp__cowork__` tools write: a user can share a legacy-made artifact
   (`share_from_content`; refused under HIPAA or over 1M characters), and with
   auto-publish on (`autoPublishEnabled`) an `update_artifact` call republishes it.
   No model tool shares (L212).
+
+## Desktop 2.31226 additions (L231–L232)
+
+- **Spawn-env markers (2.31226.0).** `CLAUDE_CODE_AUTOUPDATER_DISABLED_BY_HOST=1` is added by
+  `OUr` (Code-tab sessions and the remote-control tool host) unless gate `4274920779` is off, the
+  install is 3p, Desktop auto-update is off, or the environment already disables updates; the Cowork
+  local-agent spawn (built from `HJ`) does not get it. `DISABLE_AUTOUPDATER=1` stays in every spawn.
+  Agent 2.1.295 (`Ooe`) uses the marker to keep plugin auto-update running despite that disable.
+  `CLAUDE_CODE_DESKTOP_SKILL_SWITCHES=1` is set for 3p installs only.
+- **Dispatch-made scheduled tasks** (`madeByDispatch`) are checked only against gate `1908184743`
+  (off 2026-10-10, so creates are allowed); any other create against the org's server-delivered
+  `coworkNewLocalScheduledTasksOff` flag (L231).
+- **Dark plugin-UI relay.** `[coworkUiSurface]` would relay `ui_log`/`ui_invalidate` system messages
+  from a host-loop Cowork session to the renderer; gate `3922223025` is absent, so it is off (L232).
 
 ## `computer://` links by lane (L215)
 
@@ -884,6 +905,10 @@ on `api.anthropic.com`, which can serve builds the public `RELEASES.json` never 
 `~/Library/Application Support/Claude/claude-code/<version>/<12-hex build id>/claude.app`
 (through `Contents/Helpers/disclaimer`), and agent 2.1.286's `init` lists three built-in plugins,
 `cc-plugin-sec-default`, `cc-plugin-agents-md` and `cc-plugin-telemetry` (`@builtin`), seen 2026-10-02.
+Instance (Desktop 2.31226.1, 2026-10-11): `claude-code/2.1.295/9d6405864fdc/claude.app`, where the
+12 hex are the start of the manifest's darwin-arm64 `bundle.checksum`, held in full in the folder's
+`.verified`; 2.31226.1 fetches 2.1.295 from `claude-code-releases` (2.31226.0: 2.1.293 from
+`claude-code-releases/rc/<commit>`) (L232).
 
 ## Local MCP bridge into the remote lane (asar 2.2553.1; present since 1.20186.0)
 

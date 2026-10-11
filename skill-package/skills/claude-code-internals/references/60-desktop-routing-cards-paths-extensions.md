@@ -69,14 +69,14 @@ Sticky per org in the browser's local storage, key `cowork-unsupervised-sticky` 
 
 # LESSON 227 — WHICH TOOL CALLS SHOW AN APPROVAL CARD IN A LOCAL COWORK SESSION
 
-**In Manual mode a local (host-loop) Cowork session shows a card only for tools that are not pre-approved in the spawn's `allowedTools`, plus a fixed always-ask set. Shell commands, edits inside connected folders and `present_files` are pre-approved, so they show no card. The "Allow Claude to change files in …" prompt is a separate folder dialog, not a tool card.**
+**In Manual mode a local (host-loop) Cowork session shows a card only for tools that are not pre-approved in the spawn's `allowedTools`, plus a fixed always-ask set (one exception: a folder request for a folder already attached, L231). Shell commands, edits inside connected folders and `present_files` are pre-approved, so they show no card. The "Allow Claude to change files in …" prompt is a separate folder dialog, not a tool card.**
 
 ## The layers (CODE-READ, asar 2.31226.1)
 
 | layer | where | effect |
 |---|---|---|
 | Spawn `allowedTools` | `index.chunk-QEr06WaZ.js` `Jp`/`Kp` | Removes Bash, PowerShell, NotebookEdit, REPL, JavaScript, WebFetch, Read, Write, Edit, Glob, Grep. Adds `mcp__workspace__bash`, `Edit(<folder>/**)` + `Read(<folder>/**)` for outputs and each read-write connected folder, `Read(<folder>/**)` only for uploads and read-only folders, plus `present_files`, `propose_skills` and the artifact tools. **No card.** |
-| Always-ask set `iXt` | `index.chunk-Cyt2WTko.js` | `mcp__cowork__allow_cowork_file_delete`, `request_cowork_directory`, `launch_code_session`, `save_skill`, and the 5 mutating `mcp__scheduled-tasks__*` tools. Always a card in Manual, reason "This tool requires explicit approval regardless of permission mode." A deferral to the Auto-mode classifier exists only under `permissionMode:"auto"` (gates `1447478638`, `4202409342`). |
+| Always-ask set `iXt` | `index.chunk-Cyt2WTko.js` | `mcp__cowork__allow_cowork_file_delete`, `request_cowork_directory`, `launch_code_session`, `save_skill`, and the 5 mutating `mcp__scheduled-tasks__*` tools. Always a card in Manual, reason "This tool requires explicit approval regardless of permission mode.", with one exception from 2.31226.0: `request_cowork_directory` naming a folder already attached to the session is allowed by `canUseTool` without a card (`permission_auto_approved`, `source:"attached_folder"`; L231). A deferral to the Auto-mode classifier exists only under `permissionMode:"auto"` (gates `1447478638`, `4202409342`). |
 | `mcp__.*` hook | `ntr` | Never asks. Only blocks tools disabled in connector settings. |
 | Everything else | Desktop `canUseTool` → `handleToolPermission` | A card, apart from a few auto-allows. |
 
