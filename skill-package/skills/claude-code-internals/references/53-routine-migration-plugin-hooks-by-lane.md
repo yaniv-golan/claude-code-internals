@@ -148,6 +148,7 @@ A host-loop local session passes the alias `Bash` → `mcp__workspace__bash` (a 
 
 - Expect your hooks to fire in both lanes — but do not rely on SessionStart in a new cloud session.
 - Write shell matchers as `Bash|mcp__workspace__bash` so they match whether or not the session carries the alias.
+- On the local lane your hook runs on the Mac, as the user, in `/private/var/empty` (its input's `cwd` too), with the Mac's `PATH` and `CLAUDE_PLUGIN_ROOT` at the host staging path; `/sessions` does not exist there (re-measured on Desktop 2.31226.1, 2026-10-11). A hook cannot find the connected folder by walking up from its working directory, and a `/sessions/...` path the model uses means nothing to it. A host CLI the hook calls is the user's own install, with the user's environment, not the VM's. To skip a check only on this lane, test `CLAUDE_CODE_IS_COWORK=1` with `CLAUDE_CODE_ENTRYPOINT=local-agent`; cloud sessions carry `remote_cowork`.
 - When checking whether a hook ran, give it a side effect you can see — a log line, a file — rather than looking for it in the session record.
 - Ship every script a hook command names inside the plugin, and test the installed plugin, not the source folder.
 - To see what a sub-agent was told, read `toolUseResult.prompt` or the sub-agent's own transcript, not the parent's `tool_use`. A hook may have replaced it on any build.

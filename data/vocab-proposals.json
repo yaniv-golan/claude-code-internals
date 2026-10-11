@@ -5033,27 +5033,12 @@
     "209": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-05",
-      "input_sha256": "419ad4bd6c894cdcd8bcc98b7510d32818e33ebb40ba39b709c4100082a24bf9",
-      "prior_terms_sha256": "a0a53ac6467bbe72e0d595666d3d0afd268db2a2c7e39d6e4018cbd436172a4f",
+      "date": "2026-10-11",
+      "input_sha256": "d03869db71d8643d7c9425768b5e4cb9dbc951dda4880f140cac609442d70750",
+      "prior_terms_sha256": "dc1c615006b78f8d3706d2c8d4970f28f8e4a4350beeabc20120126adbbf8922",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "621b9a185d8612261c3105a36aa0fea8b83eb8eb",
-      "replaced": [
-        "hook ran but nothing in transcript",
-        "plugin hook exit code 2 missing file"
-      ],
-      "dropped": [
-        {
-          "term": "plugin hook exit code 2 missing file",
-          "why": "duplicate",
-          "duplicate_of": "missing hook script blocks every tool call"
-        },
-        {
-          "term": "hook ran but nothing in transcript",
-          "why": "duplicate",
-          "duplicate_of": "how to check if a hook actually ran"
-        }
-      ],
+      "previous_text": "f64fdc0876befaf1aeb5bf0add4d49277fd3f60d",
+      "replaced": [],
       "terms": [
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
@@ -5216,11 +5201,11 @@
     "215": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-05",
-      "input_sha256": "9e18697458db954ea31574afb6ed067391897ced1d9a90cee01164060e05c8a2",
+      "date": "2026-10-11",
+      "input_sha256": "1184f491d9c61983f86d566bd87fb8779973f52164483250adebf5bb70f29951",
       "prior_terms_sha256": "d7260346e1260d736d16193547ebd94fb0d67ecfb8ade8d10a184298c061037c",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "621b9a185d8612261c3105a36aa0fea8b83eb8eb",
+      "previous_text": "f64fdc0876befaf1aeb5bf0add4d49277fd3f60d",
       "replaced": [],
       "terms": [
         "cloud task can't see files on my Mac",
@@ -5571,10 +5556,13 @@
     },
     "226": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-10-10",
-      "input_sha256": "1ab9bea6210324f0afbd4a1ac8aa2cd1d56a6427f5794d7228d63b21cd014cf4",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-11",
+      "input_sha256": "91bec1b8eebec812b7c02e9e3da6b8e76509df17f5e44f748c4596a4bd092748",
+      "prior_terms_sha256": "c7b13044e66818ff387c437ae810e16bf3a41f8f6deec787a3cef7e54e036900",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "f64fdc0876befaf1aeb5bf0add4d49277fd3f60d",
+      "replaced": [],
       "terms": [
         "cowork task ran in cloud instead of locally",
         "only on this computer setting ignored",
@@ -5587,31 +5575,42 @@
         "phone task runs in cloud not on my computer",
         "auto mode forces local session",
         "what decides where a cowork task runs?",
-        "keep cowork tasks on my machine",
         "cloud opt-out expires after a few days",
         "skill can't find plugin scripts from phone",
-        "verify which environment a task ran in"
-      ],
-      "withheld": [
-        {
-          "term": "keep cowork tasks on my machine",
-          "qid": "pl-0414"
-        }
+        "verify which environment a task ran in",
+        "local only cowork being deprecated",
+        "deprecation banner on cowork task",
+        "connected folder task ran in cloud",
+        "why is bypass mode missing in cowork?"
       ]
     },
     "227": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-11",
-      "input_sha256": "36c0f4192c381ac728761450b1f42420520a559cd275d2f3304bcd6b76750a84",
-      "prior_terms_sha256": "eb1ccf18f53bf6ad8ab66469154d693b1d33b925a045281ea532d871e9f720c3",
+      "input_sha256": "33bd07e089e0e7f5a4949613a3368d13c5bf62c1fb098326a2401b8d55a089b1",
+      "prior_terms_sha256": "021548dfa7a5f730744b370cb179c809974e6b56689e497ba57b63d4ef06c3f0",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "ce10b1599cf044afb04442d6b0b146a28a7e33a0",
-      "replaced": [],
+      "previous_text": "f64fdc0876befaf1aeb5bf0add4d49277fd3f60d",
+      "replaced": [
+        "cowork runs commands without asking",
+        "folder request skips approval card"
+      ],
+      "dropped": [
+        {
+          "term": "cowork runs commands without asking",
+          "why": "duplicate",
+          "duplicate_of": "why no approval prompt for shell commands"
+        },
+        {
+          "term": "folder request skips approval card",
+          "why": "duplicate",
+          "duplicate_of": "already attached folder request auto approved"
+        }
+      ],
       "terms": [
         "cowork manual mode not asking permission",
         "why no approval prompt for shell commands",
-        "cowork runs commands without asking",
         "file edits skip approval in cowork",
         "which actions require approval in cowork",
         "delete files permission prompt cowork",
@@ -5626,7 +5625,8 @@
         "cannot overwrite temp file from another session",
         "already attached folder request auto approved",
         "why no prompt when requesting connected folder?",
-        "folder request skips approval card"
+        "auto mode still asks before deleting",
+        "does auto mode skip delete approval?"
       ]
     },
     "228": {

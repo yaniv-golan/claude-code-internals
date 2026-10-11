@@ -1735,12 +1735,12 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 209 · 53-routine-migration-plugin-hooks-by-lane.md:132 · Matchers and the local session's shell
 209 · 53-routine-migration-plugin-hooks-by-lane.md:142 · Two traps
 209 · 53-routine-migration-plugin-hooks-by-lane.md:147 · For a plugin author
-210 · 53-routine-migration-plugin-hooks-by-lane.md:164 · Three controls with one name
-210 · 53-routine-migration-plugin-hooks-by-lane.md:176 · The account setting
-210 · 53-routine-migration-plugin-hooks-by-lane.md:190 · The routing function
-210 · 53-routine-migration-plugin-hooks-by-lane.md:206 · What happened
-210 · 53-routine-migration-plugin-hooks-by-lane.md:223 · The composer decides (Desktop 2.19675.0, 2026-10-02)
-210 · 53-routine-migration-plugin-hooks-by-lane.md:241 · For an author or tester
+210 · 53-routine-migration-plugin-hooks-by-lane.md:165 · Three controls with one name
+210 · 53-routine-migration-plugin-hooks-by-lane.md:177 · The account setting
+210 · 53-routine-migration-plugin-hooks-by-lane.md:191 · The routing function
+210 · 53-routine-migration-plugin-hooks-by-lane.md:207 · What happened
+210 · 53-routine-migration-plugin-hooks-by-lane.md:224 · The composer decides (Desktop 2.19675.0, 2026-10-02)
+210 · 53-routine-migration-plugin-hooks-by-lane.md:242 · For an author or tester
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:22 · The three layers
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:32 · Layer 1: publishing refuses `host:`
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:48 · Layer 2: the viewer enforces the manifest
@@ -1764,15 +1764,15 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 215 · 55-cloud-session-device-tools.md:81 · Writing: commit from the outputs folder
 215 · 55-cloud-session-device-tools.md:97 · The ordinary Write tool does not reach the Mac
 215 · 55-cloud-session-device-tools.md:101 · Commands: `device_bash` runs in the Mac's Cowork VM
-215 · 55-cloud-session-device-tools.md:117 · The shells
-215 · 55-cloud-session-device-tools.md:133 · `computer://` links: which ones work
-215 · 55-cloud-session-device-tools.md:151 · Chrome from a cloud conversation
-215 · 55-cloud-session-device-tools.md:159 · For a skill author
-216 · 55-cloud-session-device-tools.md:176 · What the composer decides
-216 · 55-cloud-session-device-tools.md:188 · The hub can turn a chat into a workspace
-216 · 55-cloud-session-device-tools.md:200 · A cloud session can become, or be shown as, a chat
-216 · 55-cloud-session-device-tools.md:208 · Not the same as the Desktop's Chat mode
-216 · 55-cloud-session-device-tools.md:212 · Why it matters
+215 · 55-cloud-session-device-tools.md:121 · The shells
+215 · 55-cloud-session-device-tools.md:137 · `computer://` links: which ones work
+215 · 55-cloud-session-device-tools.md:155 · Chrome from a cloud conversation
+215 · 55-cloud-session-device-tools.md:163 · For a skill author
+216 · 55-cloud-session-device-tools.md:180 · What the composer decides
+216 · 55-cloud-session-device-tools.md:192 · The hub can turn a chat into a workspace
+216 · 55-cloud-session-device-tools.md:204 · A cloud session can become, or be shown as, a chat
+216 · 55-cloud-session-device-tools.md:212 · Not the same as the Desktop's Chat mode
+216 · 55-cloud-session-device-tools.md:216 · Why it matters
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:20 · The probe
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:36 · What the agent does with a skill's text, by how it was installed
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:69 · Creating and changing a skill by asking in chat
@@ -1826,26 +1826,26 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 226 · 60-desktop-routing-cards-paths-extensions.md:21 · Where the setting lives (CODE-READ, ion-dist 2.31226.0/.1)
 226 · 60-desktop-routing-cards-paths-extensions.md:28 · Per-task routing (CODE-READ, `shared-26` `sj`)
 226 · 60-desktop-routing-cards-paths-extensions.md:47 · What it did in practice (MEASURED, Desktop 2.31226.0/.1)
-226 · 60-desktop-routing-cards-paths-extensions.md:58 · The composer's Auto/Manual choice (CODE-READ, `shared-8` `Wj`/`Uj`/`Kj`)
-226 · 60-desktop-routing-cards-paths-extensions.md:62 · For an author or tester
-227 · 60-desktop-routing-cards-paths-extensions.md:74 · The layers (CODE-READ, asar 2.31226.1)
-227 · 60-desktop-routing-cards-paths-extensions.md:83 · Deletes (CODE-READ)
-227 · 60-desktop-routing-cards-paths-extensions.md:87 · The folder prompt (CODE-READ)
-227 · 60-desktop-routing-cards-paths-extensions.md:91 · Observed (MEASURED, Desktop 2.31226.1)
-227 · 60-desktop-routing-cards-paths-extensions.md:97 · For an author
-228 · 60-desktop-routing-cards-paths-extensions.md:109 · Where the rewrite happens (CODE-READ, asar 2.31226.1)
-228 · 60-desktop-routing-cards-paths-extensions.md:121 · The other direction (CODE-READ)
-228 · 60-desktop-routing-cards-paths-extensions.md:126 · Observed (MEASURED, Desktop 2.31226.1, Team, local)
-228 · 60-desktop-routing-cards-paths-extensions.md:131 · For an author or tester
-229 · 60-desktop-routing-cards-paths-extensions.md:143 · Updates (CODE-READ, asar 2.31226.0 `index.chunk-BC1wbmHw.js`; 2.31226.1 `index.chunk-Bk8mxCPb.js`)
-229 · 60-desktop-routing-cards-paths-extensions.md:149 · No elicitation (CODE-READ, asar 2.31226.1 `index.chunk-BEWlG8Pv.js`)
-229 · 60-desktop-routing-cards-paths-extensions.md:153 · Observed (MEASURED, Desktop 2.31226.0/.1, one real extension)
-229 · 60-desktop-routing-cards-paths-extensions.md:164 · For an extension author
-230 · 60-desktop-routing-cards-paths-extensions.md:178 · Frontmatter is rewritten (MEASURED, n=2 copies, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:186 · Marketplace sync installs everything (MEASURED, n=1)
-230 · 60-desktop-routing-cards-paths-extensions.md:190 · Switching off deletes the copy (MEASURED, n=1, Team)
-230 · 60-desktop-routing-cards-paths-extensions.md:196 · A related default (MEASURED)
-230 · 60-desktop-routing-cards-paths-extensions.md:200 · For a plugin author
+226 · 60-desktop-routing-cards-paths-extensions.md:60 · The composer's Auto/Manual choice (CODE-READ, `shared-8` `Wj`/`Uj`/`Kj`)
+226 · 60-desktop-routing-cards-paths-extensions.md:64 · For an author or tester
+227 · 60-desktop-routing-cards-paths-extensions.md:76 · The layers (CODE-READ, asar 2.31226.1)
+227 · 60-desktop-routing-cards-paths-extensions.md:85 · Deletes (CODE-READ)
+227 · 60-desktop-routing-cards-paths-extensions.md:89 · The folder prompt (CODE-READ)
+227 · 60-desktop-routing-cards-paths-extensions.md:93 · Observed (MEASURED, Desktop 2.31226.1)
+227 · 60-desktop-routing-cards-paths-extensions.md:100 · For an author
+228 · 60-desktop-routing-cards-paths-extensions.md:112 · Where the rewrite happens (CODE-READ, asar 2.31226.1)
+228 · 60-desktop-routing-cards-paths-extensions.md:124 · The other direction (CODE-READ)
+228 · 60-desktop-routing-cards-paths-extensions.md:129 · Observed (MEASURED, Desktop 2.31226.1, Team, local)
+228 · 60-desktop-routing-cards-paths-extensions.md:134 · For an author or tester
+229 · 60-desktop-routing-cards-paths-extensions.md:146 · Updates (CODE-READ, asar 2.31226.0 `index.chunk-BC1wbmHw.js`; 2.31226.1 `index.chunk-Bk8mxCPb.js`)
+229 · 60-desktop-routing-cards-paths-extensions.md:152 · No elicitation (CODE-READ, asar 2.31226.1 `index.chunk-BEWlG8Pv.js`)
+229 · 60-desktop-routing-cards-paths-extensions.md:156 · Observed (MEASURED, Desktop 2.31226.0/.1, one real extension)
+229 · 60-desktop-routing-cards-paths-extensions.md:167 · For an extension author
+230 · 60-desktop-routing-cards-paths-extensions.md:181 · Frontmatter is rewritten (MEASURED, n=2 copies, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:189 · Marketplace sync installs everything (MEASURED, n=1)
+230 · 60-desktop-routing-cards-paths-extensions.md:193 · Switching off deletes the copy (MEASURED, n=1, Team)
+230 · 60-desktop-routing-cards-paths-extensions.md:199 · A related default (MEASURED)
+230 · 60-desktop-routing-cards-paths-extensions.md:203 · For a plugin author
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:18 · An already-attached folder skips the card (CODE-READ, `index.chunk-QEr06WaZ.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:38 · Dispatch has its own create switch (CODE-READ, `index.chunk-Cyt2WTko.js`; refusal text in `index.chunk-hKMR2oV6.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:52 · The migration sweep keeps a bound task local when remote control is off (CODE-READ, `index.chunk-QEr06WaZ.js`)

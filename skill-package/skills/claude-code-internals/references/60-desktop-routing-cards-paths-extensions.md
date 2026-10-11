@@ -50,7 +50,9 @@ A separate error, `cowork_local_tasks_off`, exists for a task start that can't r
 |---|---|---|
 | Personal | Switch ON; turned OFF → tasks ran in the cloud and the row disappeared (2026-10-09) | 1 |
 | Personal | 2026-10-11: row back and showing ON, no user action; a no-folder task still ran in the **cloud** (`pwd` /home/claude, `HOME=/root`, `CLAUDE_CODE_ENTRYPOINT=remote_cowork`, `CLAUDE_CODE_REMOTE=true`) | 1 |
-| Personal | Auto mode did **not** force local (cloud); Bypass not offered in the composer | 1 |
+| Personal | 2026-10-10 22:15Z: a task with only a connected folder ran **locally** (`/sessions/<slug>`), and the task showed a banner saying local-only Cowork tasks are being deprecated | 1 |
+| Personal | 2026-10-11 04:15–04:35Z, switch still showing ON: four tasks with a connected folder all ran in the **cloud** (Manual and Auto) | 4 |
+| Personal | Auto mode did **not** force local (cloud); Bypass not offered in the composer (only Manual and Auto) | 2 |
 | Team | Switch ON; Desktop-started tasks ran locally | many sessions |
 | Team | A task started from the phone app in Cowork mode ran in the **cloud** despite the switch | 1 |
 | Team | A phone task sent as plain chat (not Cowork) got the skill without its plugin scripts; the skill reported its shared scripts unreachable | 1 |
@@ -92,6 +94,7 @@ Connected-folder mounts are `rw`, not `rwd`, until the mount is approved (`Bwge5
 
 - Team, local, Manual: 0 cards for `mcp__workspace__bash` (2 of 2 tasks), for `Write` (2 tasks) and for `present_files`. Only the folder dialog appeared.
 - Personal, cloud task with the device bridge, composer showing Manual: every hook payload carried `permission_mode: "acceptEdits"` (20 of 20). The composer label is not the mode the agent runs in.
+- Personal, cloud, composer showing Auto (2026-10-11, n=1): creating a file in the connected folder showed no card, and deleting it needed the same "permanently delete files" card as under Manual (L215). No other card appeared.
 - Two local sessions in the same VM ran as different users (uid 1799 and 1800, each named after its session slug) but shared one `/tmp`. A file one session wrote was readable, not writable, by the other, and from the other session it stats as `nobody`/65534. MEASURED n=1.
 
 ## For an author

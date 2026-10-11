@@ -114,6 +114,10 @@ Each cloud session gets its own VM user, `rcw-<id>`. The granted folder is mount
 
 **Deleting needs a second grant.** `rm` in the mounted folder failed with "Operation not permitted", and the tool appended a note naming `device_request_delete_permission`. That tool shows "Allow Claude to permanently delete files in this folder on your computer?" with **Allow for this session**. After approval the mount became `rwd` (`mounts=<folder>:rwd` in the log) and `rm` worked. The code grants it without a prompt in a task set to skip all approvals. This is the same per-mount delete model as a local session (L109).
 
+**A failing command is a tool failure.** A `device_bash` command that exits non-zero (here `ls` of a missing name, exit 2) reaches hooks as **PostToolUseFailure**, not PostToolUse, carrying the exit code and `is_interrupt:false`; the UI shows the call as failed with its exit code (MEASURED, Desktop 2.31226.1, n=1). `device_bash`'s input has only `command`; the container's own Bash also has `description`.
+
+**Under Auto, the container's own commands are reviewed.** With the composer on Auto, a Bash command in the cloud container waited over a minute at "Checking this step before running it", then was refused: *Permission for this action was denied by the Claude Code auto mode classifier. Reason: [Logging/Audit Tampering].* The command deleted a log-related file; the reason names a category in brackets. In the same task the UI showed an automatic "Switched to Opus 4.8" notice that nobody chose (MEASURED, Desktop 2.31226.1, n=1). Don't build a step that deletes logs, audit files or their keys into a command that must run under Auto.
+
 ## The shells
 
 `/bin/sh` is `dash` both in the cloud container and in the Mac's Cowork VM (both measured here). That settles L209's open point: a hook script that is missing exits 2 in both places, while local host-loop hooks run on macOS, whose `sh` exits 127.

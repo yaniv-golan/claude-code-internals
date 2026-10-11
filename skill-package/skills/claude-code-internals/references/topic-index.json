@@ -20316,7 +20316,7 @@
       "lesson_number": "209",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
       "startLine": 70,
-      "endLine": 154,
+      "endLine": 155,
       "keywords": [
         "cowork plugin hook events",
         "cowork cloud hooks",
@@ -20391,7 +20391,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-05",
+        "date": "2026-10-11",
         "terms_sha256": "dc1c615006b78f8d3706d2c8d4970f28f8e4a4350beeabc20120126adbbf8922"
       }
     },
@@ -20400,8 +20400,8 @@
       "title": "Where a New Cowork Task Runs, and the Switch That Did Not Keep It Local",
       "lesson_number": "210",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
-      "startLine": 158,
-      "endLine": 245,
+      "startLine": 159,
+      "endLine": 246,
       "keywords": [
         "Only on this computer",
         "dramatic_shrimp_enabled",
@@ -20847,7 +20847,7 @@
       "lesson_number": "215",
       "file": "55-cloud-session-device-tools.md",
       "startLine": 16,
-      "endLine": 166,
+      "endLine": 170,
       "keywords": [
         "device tools",
         "mcp__remote-devices",
@@ -20887,6 +20887,7 @@
         "staged-path",
         "device-path",
         "native-write.txt",
+        "is_interrupt",
         "list_connected_browsers",
         "mcp__claude-in-chrome__navigate",
         "Control_Chrome",
@@ -20938,6 +20939,7 @@
         "staged-path",
         "device-path",
         "native-write.txt",
+        "is_interrupt",
         "list_connected_browsers",
         "mcp__claude-in-chrome__navigate",
         "Control_Chrome",
@@ -20971,7 +20973,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-05",
+        "date": "2026-10-11",
         "terms_sha256": "d7260346e1260d736d16193547ebd94fb0d67ecfb8ade8d10a184298c061037c"
       }
     },
@@ -20980,8 +20982,8 @@
       "title": "One Conversation, Two Runtimes: How claude.ai Moves a Chat Into a Cowork Workspace",
       "lesson_number": "216",
       "file": "55-cloud-session-device-tools.md",
-      "startLine": 170,
-      "endLine": 216,
+      "startLine": 174,
+      "endLine": 220,
       "keywords": [
         "chat and Cowork merged",
         "hub backend",
@@ -21811,7 +21813,7 @@
       "lesson_number": "226",
       "file": "60-desktop-routing-cards-paths-extensions.md",
       "startLine": 17,
-      "endLine": 66,
+      "endLine": 68,
       "keywords": [
         "dramatic_shrimp_disabled_at",
         "can-opt-out",
@@ -21848,7 +21850,11 @@
         "what decides where a cowork task runs",
         "cloud opt-out expires after a few days",
         "skill can't find plugin scripts from phone",
-        "verify which environment a task ran in"
+        "verify which environment a task ran in",
+        "local only cowork being deprecated",
+        "deprecation banner on cowork task",
+        "connected folder task ran in cloud",
+        "why is bypass mode missing in cowork"
       ],
       "identifier_keys": [
         "dramatic_shrimp_disabled_at",
@@ -21888,13 +21894,17 @@
         "what decides where a cowork task runs",
         "cloud opt-out expires after a few days",
         "skill can't find plugin scripts from phone",
-        "verify which environment a task ran in"
+        "verify which environment a task ran in",
+        "local only cowork being deprecated",
+        "deprecation banner on cowork task",
+        "connected folder task ran in cloud",
+        "why is bypass mode missing in cowork"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-10-10",
-        "terms_sha256": "16dd31e9737220f758f68c42f414e4aff8d83b3161143e0b5dcaa27e9f6a25b0"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-11",
+        "terms_sha256": "050d87cbcbcbd1447fb17f9f9c8f199edc7c1238a52f33f9e724bd76360a4552"
       }
     },
     {
@@ -21902,8 +21912,8 @@
       "title": "Which Tool Calls Show an Approval Card in a Local Cowork Session",
       "lesson_number": "227",
       "file": "60-desktop-routing-cards-paths-extensions.md",
-      "startLine": 70,
-      "endLine": 101,
+      "startLine": 72,
+      "endLine": 104,
       "keywords": [
         "present_files",
         "propose_skills",
@@ -21912,7 +21922,6 @@
         "cowork-trust-dialog",
         "cowork manual mode not asking permission",
         "why no approval prompt for shell commands",
-        "cowork runs commands without asking",
         "file edits skip approval in cowork",
         "which actions require approval in cowork",
         "delete files permission prompt cowork",
@@ -21927,7 +21936,8 @@
         "cannot overwrite temp file from another session",
         "already attached folder request auto approved",
         "why no prompt when requesting connected folder",
-        "folder request skips approval card"
+        "auto mode still asks before deleting",
+        "does auto mode skip delete approval"
       ],
       "identifier_keys": [
         "present_files",
@@ -21939,7 +21949,6 @@
       "vocab_keys": [
         "cowork manual mode not asking permission",
         "why no approval prompt for shell commands",
-        "cowork runs commands without asking",
         "file edits skip approval in cowork",
         "which actions require approval in cowork",
         "delete files permission prompt cowork",
@@ -21954,13 +21963,14 @@
         "cannot overwrite temp file from another session",
         "already attached folder request auto approved",
         "why no prompt when requesting connected folder",
-        "folder request skips approval card"
+        "auto mode still asks before deleting",
+        "does auto mode skip delete approval"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-11",
-        "terms_sha256": "021548dfa7a5f730744b370cb179c809974e6b56689e497ba57b63d4ef06c3f0"
+        "terms_sha256": "df4e267d071967d366b7725deea97391b1e939cc90ab3da8662be9dbc3392c0b"
       }
     },
     {
@@ -21968,8 +21978,8 @@
       "title": "The Model Sees VM Paths; audit.jsonl and the UI Show Host Paths",
       "lesson_number": "228",
       "file": "60-desktop-routing-cards-paths-extensions.md",
-      "startLine": 105,
-      "endLine": 135,
+      "startLine": 108,
+      "endLine": 138,
       "keywords": [
         "Bwge5-J7",
         "build-vm-path-context",
@@ -22030,8 +22040,8 @@
       "title": "Local Extensions (.mcpb) in Desktop: Updates, Confirmations, Errors, Settings",
       "lesson_number": "229",
       "file": "60-desktop-routing-cards-paths-extensions.md",
-      "startLine": 139,
-      "endLine": 170,
+      "startLine": 142,
+      "endLine": 173,
       "keywords": [
         "index.chunk-BC1wbmHw.js",
         "index.chunk-Bk8mxCPb.js",
@@ -22090,8 +22100,8 @@
       "title": "Plugin Installs: Desktop Rewrites Frontmatter, and Switching Off an Org-Marketplace Plugin Deletes Its Copy",
       "lesson_number": "230",
       "file": "60-desktop-routing-cards-paths-extensions.md",
-      "startLine": 174,
-      "endLine": 205,
+      "startLine": 177,
+      "endLine": 208,
       "keywords": [
         "installed plugin files differ from source",
         "why does my installed skill file look different",
@@ -46243,6 +46253,9 @@
     "native-write.txt": [
       215
     ],
+    "is_interrupt": [
+      215
+    ],
     "list_connected_browsers": [
       215
     ],
@@ -57272,13 +57285,22 @@
     "verify which environment a task ran in": [
       226
     ],
+    "local only cowork being deprecated": [
+      226
+    ],
+    "deprecation banner on cowork task": [
+      226
+    ],
+    "connected folder task ran in cloud": [
+      226
+    ],
+    "why is bypass mode missing in cowork": [
+      226
+    ],
     "cowork manual mode not asking permission": [
       227
     ],
     "why no approval prompt for shell commands": [
-      227
-    ],
-    "cowork runs commands without asking": [
       227
     ],
     "file edits skip approval in cowork": [
@@ -57323,7 +57345,10 @@
     "why no prompt when requesting connected folder": [
       227
     ],
-    "folder request skips approval card": [
+    "auto mode still asks before deleting": [
+      227
+    ],
+    "does auto mode skip delete approval": [
       227
     ],
     "paths in log differ from what model typed": [
