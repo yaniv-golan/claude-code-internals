@@ -25,6 +25,11 @@
  * is server-delivered prose (classifier prompts, memory guidelines) and is stored as
  * {"$sha256", "$len"} only; the verbatim capture stays in the off-repo archive.
  *
+ * ORGANIZATION. The served values depend on the organization Desktop has selected (L234): between
+ * a Team organization and a Personal account the same 8 gates differ on every switch, three of
+ * them pinned. The record was captured under Team. When two or more of those pinned gates move
+ * in one run, the run says so: check Desktop's organization before treating it as a rollout.
+ *
  * CONTENT16 must equal Python's sha256(json.dumps(features, sort_keys=True,
  * separators=(",", ":")))[:16], the id every earlier capture was stamped with. A rebuilt JS
  * object cannot produce it: integer-like keys (the gate ids) always enumerate first, in
@@ -39,6 +44,15 @@ const zlib = require('zlib');
 const crypto = require('crypto');
 
 const PROSE_MAX = 80;
+/** Gates measured to follow the selected organization (L234); not all are pinned. */
+const ORG_LINKED = ['1291166712', '2229805612', '2486083521', '2947058150', '3229517805', '40173473', '445885797', '946844604'];
+
+/** A note when two or more org-linked pinned gates moved together, else null. */
+function orgNote(moves) {
+  const ids = moves.filter((m) => !m.removed && m.kind === 'moved' && ORG_LINKED.includes(m.id)).map((m) => m.id);
+  if (ids.length < 2) return null;
+  return `NOTE: ${ids.join(', ')} follow the organization Desktop has selected (L234), and the record was captured under Team. Check Desktop's organization before accepting these as a server-side change.`;
+}
 const RECORD_REL = 'data/fcache-pinned.json';
 const REFS_REL = 'skill-package/skills/claude-code-internals/references';
 const DEFAULT_FCACHE = path.join(os.homedir(), 'Library', 'Application Support', 'Claude', 'fcache');
@@ -293,6 +307,8 @@ function run(argv, log = console.log) {
     const hits = proseHits(refsDir, m.id, changedKeys(m.lines));
     if (hits.length) log(`    re-read: ${hits.slice(0, 20).join(' ')}${hits.length > 20 ? ` (+${hits.length - 20} more)` : ''}`);
   }
+  const note = orgNote(moves);
+  if (note) log(note);
   for (const id of unpinned) log(`UNPINNED gate.${id}: in the record but no longer a desktop_fcache gate in the registry; dropped on write`);
 
   const blocking = moves.filter((m) => !m.removed).length + (modeMoved ? 1 : 0);
@@ -337,7 +353,7 @@ function run(argv, log = console.log) {
   return 0;
 }
 
-module.exports = { canon, content16, pyString, unsafeNumbers, decode, scrub, observe, pinned16, diffValues, compare, run, Fail, RECORD_REL, REFS_REL, PROSE_MAX };
+module.exports = { ORG_LINKED, orgNote, canon, content16, pyString, unsafeNumbers, decode, scrub, observe, pinned16, diffValues, compare, run, Fail, RECORD_REL, REFS_REL, PROSE_MAX };
 
 if (require.main === module) {
   try { process.exitCode = run(process.argv.slice(2)); } catch (e) {

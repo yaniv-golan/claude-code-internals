@@ -1765,15 +1765,15 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 215 · 55-cloud-session-device-tools.md:81 · Writing: commit from the outputs folder
 215 · 55-cloud-session-device-tools.md:97 · The ordinary Write tool does not reach the Mac
 215 · 55-cloud-session-device-tools.md:101 · Commands: `device_bash` runs in the Mac's Cowork VM
-215 · 55-cloud-session-device-tools.md:125 · The shells
-215 · 55-cloud-session-device-tools.md:141 · `computer://` links: which ones work
-215 · 55-cloud-session-device-tools.md:159 · Chrome from a cloud conversation
-215 · 55-cloud-session-device-tools.md:167 · For a skill author
-216 · 55-cloud-session-device-tools.md:184 · What the composer decides
-216 · 55-cloud-session-device-tools.md:196 · The hub can turn a chat into a workspace
-216 · 55-cloud-session-device-tools.md:208 · A cloud session can become, or be shown as, a chat
-216 · 55-cloud-session-device-tools.md:216 · Not the same as the Desktop's Chat mode
-216 · 55-cloud-session-device-tools.md:220 · Why it matters
+215 · 55-cloud-session-device-tools.md:143 · The shells
+215 · 55-cloud-session-device-tools.md:159 · `computer://` links: which ones work
+215 · 55-cloud-session-device-tools.md:177 · Chrome from a cloud conversation
+215 · 55-cloud-session-device-tools.md:185 · For a skill author
+216 · 55-cloud-session-device-tools.md:203 · What the composer decides
+216 · 55-cloud-session-device-tools.md:215 · The hub can turn a chat into a workspace
+216 · 55-cloud-session-device-tools.md:227 · A cloud session can become, or be shown as, a chat
+216 · 55-cloud-session-device-tools.md:235 · Not the same as the Desktop's Chat mode
+216 · 55-cloud-session-device-tools.md:239 · Why it matters
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:20 · The probe
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:36 · What the agent does with a skill's text, by how it was installed
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:69 · Creating and changing a skill by asking in chat
@@ -1846,8 +1846,9 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 230 · 60-desktop-routing-cards-paths-extensions.md:190 · Marketplace sync installs everything (MEASURED, n=1)
 230 · 60-desktop-routing-cards-paths-extensions.md:194 · Switching off deletes the copy (MEASURED, n=1, Team)
 230 · 60-desktop-routing-cards-paths-extensions.md:200 · A marketplace listed in the settings file never refreshes (MEASURED, n=1, Team, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:211 · A related default (MEASURED)
-230 · 60-desktop-routing-cards-paths-extensions.md:215 · For a plugin author
+230 · 60-desktop-routing-cards-paths-extensions.md:211 · Uploading a plugin the organization already provides (MEASURED, n=1 per organization, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:218 · A related default (MEASURED)
+230 · 60-desktop-routing-cards-paths-extensions.md:222 · For a plugin author
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:18 · An already-attached folder skips the card (CODE-READ, `index.chunk-QEr06WaZ.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:38 · Dispatch has its own create switch (CODE-READ, `index.chunk-Cyt2WTko.js`; refusal text in `index.chunk-hKMR2oV6.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:52 · The migration sweep keeps a bound task local when remote control is off (CODE-READ, `index.chunk-QEr06WaZ.js`)
@@ -1860,6 +1861,14 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:109 · The third-party history import (CODE-READ, `index.chunk-Bylz1u4k.js`, `index.chunk-CSeX1oWS.js`)
 232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:126 · A dark relay for plugin UI events (CODE-READ, `index.chunk-Aip7qImQ.js`)
 232 · 61-desktop-2.31226-permissions-dispatch-env-import.md:130 · Who this affects and what to do
+233 · 62-desktop-mcp-negotiation-fcache-org.md:18 · The client's rules (CODE-READ, `index.chunk-Cyt2WTko.js`)
+233 · 62-desktop-mcp-negotiation-fcache-org.md:36 · Who probes (CODE-READ)
+233 · 62-desktop-mcp-negotiation-fcache-org.md:53 · What it looks like (MEASURED, one Mac, logs from 2026-08-25 to 2026-10-12)
+233 · 62-desktop-mcp-negotiation-fcache-org.md:59 · Not verified
+233 · 62-desktop-mcp-negotiation-fcache-org.md:64 · For a server author
+234 · 62-desktop-mcp-negotiation-fcache-org.md:77 · What was measured (MEASURED, Desktop 2.31226.1, 417 features each)
+234 · 62-desktop-mcp-negotiation-fcache-org.md:105 · Consequences
+234 · 62-desktop-mcp-negotiation-fcache-org.md:111 · For anyone reading the fcache
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)
@@ -1909,10 +1918,10 @@ state:cowork-control-protocol · state/cowork-control-protocol.md:414 · VCS SDK
 state:cowork-permissions · state/cowork-permissions.md:22 · The layers (all simultaneously active, host-loop production)
 state:cowork-permissions · state/cowork-permissions.md:222 · Auto-mode tuning at Desktop 1.22209.0 (lesson 128, no live gate-state capture)
 state:cowork-permissions · state/cowork-permissions.md:255 · Browser/Computer-Use permission gates + Cowork's own auto-mode rule additions (Desktop 1.28929.0)
-state:cowork-permissions · state/cowork-permissions.md:310 · Host-dialog approval attestation and `/settings-review` staging — shipped, compiled off (agent 2.1.281–2.1.284)
-state:cowork-permissions · state/cowork-permissions.md:329 · Scheduled tasks start in Auto; unattended asks escalate (Desktop 2.19675.0 / 2.26454.0, L222)
-state:cowork-permissions · state/cowork-permissions.md:345 · Not part of the stack (adjacent, don't conflate)
-state:cowork-permissions · state/cowork-permissions.md:358 · Known past errors (do not re-introduce)
+state:cowork-permissions · state/cowork-permissions.md:311 · Host-dialog approval attestation and `/settings-review` staging — shipped, compiled off (agent 2.1.281–2.1.284)
+state:cowork-permissions · state/cowork-permissions.md:330 · Scheduled tasks start in Auto; unattended asks escalate (Desktop 2.19675.0 / 2.26454.0, L222)
+state:cowork-permissions · state/cowork-permissions.md:346 · Not part of the stack (adjacent, don't conflate)
+state:cowork-permissions · state/cowork-permissions.md:359 · Known past errors (do not re-introduce)
 state:credential-channels · state/credential-channels.md:16 · The four Desktop credential channels
 state:credential-channels · state/credential-channels.md:103 · Auth at spawn
 state:credential-channels · state/credential-channels.md:123 · What NOT to use

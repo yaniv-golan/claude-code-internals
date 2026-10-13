@@ -3,8 +3,8 @@ domain: plugins-skills-hooks
 title: Plugins, skills & hooks (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207, 209, 211, 217, 218, 222, 231, 232]
-updated: 2026-10-11
+sources: [5, 88, 89, 106, 109, 118, 123, 124, 129, 131, 147, 155, 181, 183, 187, 188, 194, 197, 199, 200, 201, 202, 203, 204, 205, 206, 207, 209, 211, 217, 218, 222, 231, 232, 234]
+updated: 2026-10-13
 read_more: ["https://ccinternals.dev/cowork/plugins-and-plugin-root/?ref=skill"]
 ---
 
@@ -53,7 +53,7 @@ server named **`memory`** that relays to the user's cloud memory
 (`/v2/ccr-sessions/-/memory/mcp`; tools `memory_read`, `memory_list`,
 `memory_write`, `memory_str_replace`, `memory_append`, `memory_delete`).
 It is on when gate `946844604` is on (force-ON at the 2026-09-23 through
-2026-09-29 captures, **off** at the 2026-10-07 capture, force-ON again at the 2026-10-10 captures, **off** again at the 2026-10-11 16:42 capture; read the live fcache), the account is first-party and not HIPAA-restricted. When it is
+2026-09-29 captures, **off** at the 2026-10-07 capture, force-ON again at the 2026-10-10 captures, **off** again at the 2026-10-11 16:42 capture; it follows the selected organization, off under Team and force-ON under Personal (L234); read the live fcache), the account is first-party and not HIPAA-restricted. When it is
 on, a server configured under the same name (e.g. `mcpServers.memory` in
 `claude_desktop_config.json`) is **replaced** (only a Desktop-log warning)
 and `memory` is added to `deniedMcpServers`. A **plugin**-declared server

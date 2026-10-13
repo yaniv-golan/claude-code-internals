@@ -3,8 +3,8 @@ domain: cowork-permissions
 title: Cowork permission stack (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [89, 107, 108, 109, 115, 121, 122, 124, 128, 148, 150, 184, 190, 213, 222, 227, 231]
-updated: 2026-10-11
+sources: [89, 107, 108, 109, 115, 121, 122, 124, 128, 148, 150, 184, 190, 213, 222, 227, 231, 234]
+updated: 2026-10-13
 read_more: ["https://ccinternals.dev/cowork/deleting-files/?ref=skill"]
 ---
 
@@ -268,7 +268,8 @@ both **force-ON** in the 2026-08-13 fcache:
   same shape, additionally excluded for `sessionType` `radar`/`chat`. Off
   (`defaultValue`) at the 2026-10-07 capture after force-ON through 2026-09-29;
   force-ON again (rule `fr_mnjab82e`) at the 2026-10-10 captures, off
-  (`defaultValue`) again at the 2026-10-11 16:42 capture.
+  (`defaultValue`) again at the 2026-10-11 16:42 capture. It follows the
+  selected organization (L234): off under Team, force-ON under Personal.
 
 Both follow a **cache-once-per-build shape** shared with `frameArtifactsTurnEnabled`
 and Ch37/L129's `builtSystemPrompt` stickiness: the gate is read live only on

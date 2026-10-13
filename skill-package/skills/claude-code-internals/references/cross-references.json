@@ -3883,6 +3883,11 @@
     "id": 224,
     "relevance": 0.6,
     "reason": "L224: how LocalMcpServerManager launches extension servers (env allowlist, PATH, overrides)"
+   },
+   {
+    "id": 233,
+    "relevance": 0.6,
+    "reason": "L233: the same pool probes built-in-Node extensions in place"
    }
   ],
   "200": [
@@ -4463,6 +4468,11 @@
     "id": 229,
     "relevance": 0.7,
     "reason": "L229: updates, elicitation and error display for the same extensions"
+   },
+   {
+    "id": 233,
+    "relevance": 0.7,
+    "reason": "L233: which of these launches Desktop probes for MCP 2026-07-28"
    }
   ],
   "225": [
@@ -4592,6 +4602,11 @@
     "id": 232,
     "relevance": 0.5,
     "reason": "the same release: agent, environment and imports"
+   },
+   {
+    "id": 234,
+    "relevance": 0.8,
+    "reason": "L234: the three gates follow the selected organization"
    }
   ],
   "232": [
@@ -4614,6 +4629,45 @@
     "id": 231,
     "relevance": 0.5,
     "reason": "the same release: permissions and scheduled-task creation"
+   }
+  ],
+  "233": [
+   {
+    "id": 224,
+    "relevance": 0.8,
+    "reason": "L224: how Desktop picks exec vs built-in Node for an extension, which decides whether it is probed"
+   },
+   {
+    "id": 199,
+    "relevance": 0.65,
+    "reason": "L199: LocalMcpServerManager and localMcpBridge, the pool that probes in place"
+   },
+   {
+    "id": 229,
+    "relevance": 0.5,
+    "reason": "L229: where local extension errors show up in Desktop"
+   }
+  ],
+  "234": [
+   {
+    "id": 231,
+    "relevance": 0.8,
+    "reason": "L231: the served values recorded at captures that turned out to be under different organizations"
+   },
+   {
+    "id": 222,
+    "relevance": 0.6,
+    "reason": "L222: the 2026-10-07 capture where the three pinned gates first read off"
+   },
+   {
+    "id": 148,
+    "relevance": 0.5,
+    "reason": "L148: cuCanUseToolEnabled (2486083521), one of the org-linked gates"
+   },
+   {
+    "id": 194,
+    "relevance": 0.5,
+    "reason": "L194: the cloud memory relay (946844604), one of the org-linked gates"
    }
   ]
  }

@@ -5215,17 +5215,16 @@
     "215": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-11",
-      "input_sha256": "beeb9021bd1698c3786a479d8c4c934c50fe55e4087eea345801098d1eb3e42e",
-      "prior_terms_sha256": "d7260346e1260d736d16193547ebd94fb0d67ecfb8ade8d10a184298c061037c",
+      "date": "2026-10-13",
+      "input_sha256": "ae6d54b79c7bfa3eca5307e20fa9a14fc27cb0bee4414959311ad214ddf340f0",
+      "prior_terms_sha256": "4c698ea62321de569cdb45bf12c6cf07577998a558ac86d4301c8e52cf892c69",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "1a6b008844a2d7562befd4e32c007a8529ee523d",
+      "previous_text": "not found",
       "replaced": [],
       "terms": [
         "cloud task can't see files on my Mac",
         "why does write succeed but file is missing?",
         "save output file to my laptop from cloud session",
-        "read local file from cloud task",
         "grant cloud session access to a folder",
         "run shell commands on my Mac from cloud",
         "delete files operation not permitted in connected folder",
@@ -5239,7 +5238,8 @@
         "which folders are protected from cloud access",
         "use my Chrome browser from cloud chat",
         "Chrome extension not connected but side panel works",
-        "Chrome not connected in local task"
+        "Chrome not connected in local task",
+        "git second commit fails lock file exists in cloud folder"
       ]
     },
     "216": {
@@ -5700,12 +5700,21 @@
     "230": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-11",
-      "input_sha256": "12592d381c477f8e51df299a25dbbaaa2a6e9ff6d7444e75a9a677758935970b",
+      "date": "2026-10-13",
+      "input_sha256": "3eb01fb34ad81106922027b4e63353b7875bb8c980db3de46d5799275cf5b141",
       "prior_terms_sha256": "7c80773b2ba1d3be360ec349f969de309f00f2e116103fb8fb15f6fa9986b4a0",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "fbe112fdbe501de60c766c5ff8ac81247b7d8b88",
-      "replaced": [],
+      "previous_text": "62379fcd0714a0f995773b0071f8ddfe1179b9f6",
+      "replaced": [
+        "does disabling a plugin uninstall it?"
+      ],
+      "dropped": [
+        {
+          "term": "does disabling a plugin uninstall it?",
+          "why": "duplicate",
+          "duplicate_of": "turning off org plugin deletes it"
+        }
+      ],
       "terms": [
         "installed plugin files differ from source",
         "why does my installed skill file look different",
@@ -5719,30 +5728,38 @@
         "disabled team plugin disappeared",
         "lost my edits to installed plugin",
         "plugin shows Add instead of toggle",
-        "does disabling a plugin uninstall it?",
         "orphans cleaned in sync log",
         "delete scheduled task also deletes files",
         "marketplace from settings never updates",
         "plugin update button greyed out",
-        "old plugin copy still enabled after re-adding"
+        "old plugin copy still enabled after re-adding",
+        "uploading new plugin version adds second copy"
       ]
     },
     "231": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-11",
-      "input_sha256": "0ab92ac99f1b9d988b61cf3f71f1633a1ef25f3b3ddb6fd5f7c5da08c560f587",
-      "prior_terms_sha256": "dd6b2916d3e8b510cce7ef7d9f2eabc7af66ff7b06bf6a74770c970188ac715d",
+      "date": "2026-10-13",
+      "input_sha256": "a1fcfcbf0ad0ebffeec24e9a4f6524099989924d12ae199060a125c2952c5f16",
+      "prior_terms_sha256": "c26bba46b7e13ab0a993dbd4dc4cfa55f987b31819caa013d593abc55fce19dd",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "12ebaedf6ea472b4b4865c06c278eb9f8c4797fb",
-      "replaced": [],
+      "previous_text": "62379fcd0714a0f995773b0071f8ddfe1179b9f6",
+      "replaced": [
+        "org disabled local scheduled tasks but Dispatch still creates them"
+      ],
+      "dropped": [
+        {
+          "term": "org disabled local scheduled tasks but Dispatch still creates them",
+          "why": "duplicate",
+          "duplicate_of": "Dispatch created scheduled task despite admin block"
+        }
+      ],
       "terms": [
         "no permission prompt for attached folder",
         "folder access card not showing",
         "why no approval card for folder already shared?",
         "auto-approved folder access in manual mode",
         "Dispatch created scheduled task despite admin block",
-        "org disabled local scheduled tasks but Dispatch still creates them",
         "can Dispatch bypass scheduled task restriction?",
         "Dispatch can no longer create scheduled tasks error",
         "scheduled tasks not migrating to cloud",
@@ -5754,7 +5771,8 @@
         "find auto-approved folder requests in audit log",
         "server flags flipping between captures",
         "computer use permission gate keeps toggling",
-        "why does artifact sharing turn on and off?"
+        "why does artifact sharing turn on and off?",
+        "server flags differ between Team and Personal organization"
       ]
     },
     "232": {
@@ -5779,6 +5797,54 @@
         "turn off importing mcp servers or skills",
         "skill toggles on custom inference installs",
         "plugin ui notices in cowork sessions"
+      ]
+    },
+    "233": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-10-13",
+      "input_sha256": "56c190ddb677b96ca0b3f0e0c3fa8d39dcf82b5e8b035e47200aade48fbed7f6",
+      "collision_check": "questions-v2.json dev",
+      "terms": [
+        "MCP server works in chat but not Cowork",
+        "local MCP server missing in Cowork sessions",
+        "Couldn't start for Cowork and Code sessions error",
+        "connection closed during discover probe",
+        "MCP server crashes on unknown method",
+        "new MCP protocol version negotiation Desktop",
+        "does Desktop send initialize or discover",
+        "which local servers get version probed",
+        "Node bundle MCP server fails in Cowork",
+        "MCP handshake fallback to legacy",
+        "why does my MCP server exit on startup probe?",
+        "should my server error or close on unknown methods?",
+        "how fast must server answer version probe?",
+        "Desktop spawns extra copy of MCP server",
+        "where are Cowork MCP startup failures logged?"
+      ]
+    },
+    "234": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-10-13",
+      "input_sha256": "ea2542b729d30b82ca4b7e958b9ca23ea17b838814589d629f6ba75822c86ebf",
+      "collision_check": "questions-v2.json dev",
+      "terms": [
+        "feature works in personal account not team",
+        "feature flags change when switching organization",
+        "computer use missing in team org",
+        "desktop flags differ between organizations",
+        "why did feature disappear after switching org",
+        "gate keeps flipping between captures",
+        "personal vs team account different features",
+        "cached flags rewritten on org switch",
+        "comparing flag snapshots gives inconsistent results",
+        "is this a rollout or an org switch?",
+        "memory relay enabled only on personal account",
+        "artifact sharing settings differ by organization",
+        "why does computer use work on personal but not team?",
+        "flag cache drift false alarm",
+        "same mac different features per organization"
       ]
     }
   }

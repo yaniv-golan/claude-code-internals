@@ -197,3 +197,12 @@ test('a mode change blocks, and a missing fcache is a usage error', () => {
   assert.match(r.out, /MODE CHANGED: 1p -> 3p/);
   assert.throws(() => R.run(['--root', dir, '--fcache', path.join(dir, 'nope')], () => {}), /no fcache/);
 });
+
+test('org-linked gates moving together get a note; one alone or a new gate does not', () => {
+  const m = (id, kind = 'moved', removed = false) => ({ id, kind, removed, entry: {}, lines: [] });
+  assert.match(R.orgNote([m('2486083521'), m('946844604')]), /^NOTE: 2486083521, 946844604 follow the organization/);
+  assert.strictEqual(R.orgNote([m('2486083521')]), null);
+  assert.strictEqual(R.orgNote([m('2486083521'), m('946844604', 'new')]), null);
+  assert.strictEqual(R.orgNote([m('2486083521'), m('946844604', 'served-unread', true)]), null);
+  assert.strictEqual(R.orgNote([m('2486083521'), m('2974609625')]), null);
+});

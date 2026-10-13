@@ -208,6 +208,13 @@ An organization's `cowork_settings.json` can name a marketplace under `extraKnow
 - Setting the old entry under `enabledPlugins` to `false` in `cowork_settings.json` took it out: the next task logged "Found 2 enabled local plugins (3 installed)". Its cached copy stayed on disk, unlike an organization-marketplace plugin that is switched off.
 - That log line doesn't count plugins the organization pushes. In three later Team tasks an org plugin was loaded and its hooks ran, yet each spawn logged "Found 1 enabled local plugins (3 installed)": the 1 was the one Customize-installed plugin left on.
 
+## Uploading a plugin the organization already provides (MEASURED, n=1 per organization, Desktop 2.31226.1)
+
+- In a Team organization that provides founder-skills 0.18.4 from a marketplace, uploading founder-skills 0.19.0 as a zip (Customize → Plugins → Upload plugin) showed **no** clash, replace or keep-both dialog. It installed a second, private copy ("@My Uploads"), switched on, in its own `rpm/plugin_<id>` folder. The marketplace copy stayed installed and switched on.
+- So a task could load both copies, and both copies' hooks. To test an upload alone, switch the other copy off for the test. Here that removed it from the task's `plugins` list: only the upload loaded.
+- The marketplace copy was switched off for about 16 minutes. Two plugin syncs ran in that time, each logging "0 orphans cleaned", and its `rpm` folder stayed; switching it back on kept the same folder. This differs from the switch-off case above, which removed the folder at the next sync. Whether this marketplace is an organization marketplace in that case's sense was not checked.
+- An upload in one organization doesn't appear in another. The same zip had to be uploaded again under Personal, and there too it installed beside the copies already listed, with no dialog.
+
 ## A related default (MEASURED)
 
 The scheduled-task delete dialog has "Also delete files on disk" **on** by default.
@@ -220,3 +227,4 @@ The scheduled-task delete dialog has "Also delete files on disk" **on** by defau
 - Never edit an installed org-marketplace copy in place; it is deleted when the plugin is switched off.
 - If users first installed your plugin from a marketplace named in the settings file, they won't get updates. Tell them to add the marketplace through Add marketplace and switch the old entry off in `cowork_settings.json`. Turning it off in the UI isn't possible, because the UI shows only the new copy.
 - Don't read "Found N enabled local plugins" as the full set a task loads; org-pushed plugins aren't in it.
+- Uploading a new version of a plugin the organization already provides adds a second copy rather than replacing it. Before testing an upload, switch the other copy off, and check the task's `plugins` list for which one loaded. Upload separately in each organization you test in.

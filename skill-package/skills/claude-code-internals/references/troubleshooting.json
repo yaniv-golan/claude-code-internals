@@ -2912,6 +2912,42 @@
     232
    ],
    "hint": "Desktop 2.31226.1 runs agent 2.1.295 from claude-code/<version>/<12 hex of the bundle checksum>/. The AUTOUPDATER marker is set for Code-tab sessions and the remote-control helper, not Cowork local sessions, and lets the agent keep auto-updating plugins; skill switches only on 3p installs. Third-party import: memory needs gate 2766090483 (off) plus a managed allow; unscanned skills are deleted again."
+  },
+  {
+   "pattern": [
+    "MCP server works in chat but not in Cowork",
+    "Couldn't start for Cowork and Code sessions",
+    "connection closed during the server/discover probe",
+    "probed in place disposable sibling probe"
+   ],
+   "lessons": [
+    233
+   ],
+   "hint": "A Node extension on Desktop's built-in Node is probed with server/discover over its real connection in Cowork and Code. If it closes the connection on that unknown method it fails there (chat probes a throwaway copy and falls back). Answer unknown methods with a JSON-RPC error; read mcp-server-<name>.log."
+  },
+  {
+   "pattern": [
+    "does Claude Desktop send server/discover",
+    "MCP 2026-07-28 support in Desktop",
+    "initialize not received from Desktop",
+    "stateless MCP Desktop"
+   ],
+   "lessons": [
+    233
+   ],
+   "hint": "Only built-in-Node extensions (and custom-3P remote HTTP servers) are probed; config entries and Python/uv/binary bundles always get initialize 2025-11-25. Gate 1942337209 on would turn all probing off."
+  },
+  {
+   "pattern": [
+    "fcache gate flips between captures",
+    "GrowthBook value differs after switching organization",
+    "feature works in Personal not in Team",
+    "fcache-restamp reports pinned gates moved"
+   ],
+   "lessons": [
+    234
+   ],
+   "hint": "Desktop rewrites the fcache when the organization changes, and 8 gates differ between Team and Personal. Compare captures only under the same organization; the pinned record is Team's."
   }
  ]
 }

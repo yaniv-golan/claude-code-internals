@@ -116,6 +116,24 @@ Each cloud session gets its own VM user, `rcw-<id>`. The granted folder is mount
 
 A file the session itself created in that folder also needs the grant: `rm` of it fails the same way (MEASURED, Desktop 2.31226.1, Manual and Auto, n=1 each). The card's buttons are **Decline** and **Allow for this session**. After Decline the call shows "Didn't run" and hooks get only a PreToolUse record for `device_request_delete_permission`, with no PostToolUse or PostToolUseFailure. The model stopped there without retrying.
 
+**What the folder allows before the delete grant** (MEASURED, Desktop 2.31226.1, Personal, Manual, one `device_bash` call per step, n=1). The mount refuses removing a name but not replacing one: L139's per-mount policy (only `unlink` and `rmdir` denied), seen here from a cloud session's device shell.
+
+| command | result |
+|---|---|
+| `sed -i` on an existing file | worked |
+| `mv` of one file over another existing file | worked; the target was replaced |
+| `rm -f` of a name that doesn't exist | exit 0, no message (the missing name is reported before the permission check, and `-f` hides it) |
+| `rmdir` of an empty directory just made | exit 1, "Operation not permitted"; the directory stayed |
+| `rm` of an existing file | exit 1, "Operation not permitted", then the delete card |
+
+So `rm -f` succeeding proves nothing about whether deletes are allowed. Git breaks after one commit:
+
+- The first `git commit` landed, but printed "unable to unlink … Operation not permitted" for its temporary objects, `.git/HEAD.lock` and `.git/objects/maintenance.lock`. All of them stayed on disk (6 `tmp_obj_*` files and both locks).
+- The second commit failed with exit 128: "Unable to create '…/.git/HEAD.lock': File exists".
+- The repository stays stuck until the locks are removed: after the delete grant, or on the Mac.
+
+Hooks saw the failing steps (`rmdir`, the second commit, `rm`) as PostToolUseFailure and the others as PostToolUse.
+
 **A failing command is a tool failure.** A `device_bash` command that exits non-zero (here `ls` of a missing name, exit 2) reaches hooks as **PostToolUseFailure**, not PostToolUse, carrying the exit code and `is_interrupt:false`; the UI shows the call as failed with its exit code (MEASURED, Desktop 2.31226.1, n=2). `device_bash`'s input has only `command`; the container's own Bash also has `description`.
 
 The exit code is the whole command's, which means the last command's. The model chained create, `cat`, `rm` and `ls` into one `device_bash` call. The `rm` failed, but the call ended with a successful `ls`, so hooks saw PostToolUse. A hook can't count failed commands; it sees one event per call.
@@ -171,6 +189,7 @@ The browser list can be empty while the extension looks fine, seen in the Claude
 - Do not trust a successful Write to a `/Users/…` path in a cloud session. Check where the session is: `pwd` is `/home/claude` there.
 - A shell command meant for the user's files must go through `device_bash` and `$HOME/mnt/<folder>`, and it runs on Linux, not macOS.
 - Deleting in a connected folder needs its own approval. Plan for it being declined.
+- Don't run git in a connected folder from a cloud session before the delete grant: the first commit leaves locks the second can't get past. Edit with `sed -i` or write-then-`mv`, which work without the grant, and don't take `rm -f` exiting 0 as proof that a delete happened.
 - A cloud session cannot be granted `~/.claude` or anything inside it, and `get_device_info` does not list it. The user is still shown the folder prompt and can click Allow once; the refusal comes after. A skill that needs the user's local skills or settings has to ask the user to bring the files in another way.
 
 ---

@@ -3,8 +3,8 @@ domain: cowork-architecture
 title: Cowork runtime architecture (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
-sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198, 207, 208, 210, 211, 212, 213, 214, 215, 216, 231, 232]
-updated: 2026-10-11
+sources: [89, 90, 107, 108, 109, 114, 116, 117, 119, 120, 121, 122, 124, 125, 126, 132, 134, 138, 139, 140, 149, 151, 175, 176, 177, 178, 180, 182, 190, 193, 194, 198, 207, 208, 210, 211, 212, 213, 214, 215, 216, 231, 232, 234]
+updated: 2026-10-13
 read_more: ["https://ccinternals.dev/cowork/?ref=skill"]
 ---
 
@@ -803,7 +803,7 @@ off by default.
   Imagine availability = `3444158716`, not HIPAA, not org-blocked (`2742800629`) (L221).
 - **Sharing local artifacts.** `3229517805.sharingEnabled` (true 2026-10-01 and 2026-10-07; **not served** at the
   2026-10-10 captures, where the gate falls back to `defaultValue` with only `debugLogEnabled` and
-  `verifyToolsEnabled`, so sharing reads its default, false; force-on again with all four true at the 2026-10-11 16:42 capture) gates
+  `verifyToolsEnabled`, so sharing reads its default, false; force-on again with all four true at the 2026-10-11 16:42 capture; the two states are Team's (force-on, all four) and Personal's (default, two keys), L234) gates
   the Desktop's share/unshare/auto-publish calls on the local Artifacts store, the
   store the `mcp__cowork__` tools write: a user can share a legacy-made artifact
   (`share_from_content`; refused under HIPAA or over 1M characters), and with
