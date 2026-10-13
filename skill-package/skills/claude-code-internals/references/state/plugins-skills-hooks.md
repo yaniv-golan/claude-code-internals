@@ -803,4 +803,4 @@ containment.md` (Chapter 37, L129/L131).
   projects, scheduled tasks, memory, skills and MCP servers, each with a kill key in value gate
   `1978029737`. Skills are uploaded to the organization; one returned without `scan_requested` is
   deleted again via `POST /api/organizations/<org>/skills/delete-skill`. Memory needs gate
-  `2766090483` (absent, so off) and a managed or override allow (L232).
+  `2766090483` (served off, `defaultValue`, from 2026-10-13; absent before) and a managed or override allow (L232).

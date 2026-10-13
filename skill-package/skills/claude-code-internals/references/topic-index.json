@@ -22398,8 +22398,8 @@
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-10-11",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-13",
         "terms_sha256": "f167009ee7b99d3ec782049dfcb794f555a8fd5e01e860b370afcf43ea26eda5"
       }
     },

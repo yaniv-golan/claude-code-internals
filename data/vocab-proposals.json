@@ -5777,10 +5777,13 @@
     },
     "232": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-10-11",
-      "input_sha256": "4bcbb87802162857e53e8cee91da85291d3bf2d12ddf19becac8b94a44bf3fe2",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-13",
+      "input_sha256": "f43f614aee370f01aa33ec8aea495b8807e13c3a35e3e77ebd6fb32847f5c8f0",
+      "prior_terms_sha256": "f167009ee7b99d3ec782049dfcb794f555a8fd5e01e860b370afcf43ea26eda5",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "5c80c10aa809106b64298d599b2b3d17a885c4e5",
+      "replaced": [],
       "terms": [
         "plugins not auto-updating in desktop app",
         "desktop disables updater but plugins still update",

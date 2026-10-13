@@ -118,7 +118,7 @@ T=["sessions","projects","scheduledTasks","memory","skills","mcpServers"]
 |---|---|
 | any | not `disableThirdPartyHistoryImport` |
 | projects / scheduledTasks / skills / mcpServers | not the matching kill key in value gate `1978029737`: `disableThirdPartyProjectsImport`, `…ScheduledTasksImport`, `…SkillsImport`, `…McpServerImport` |
-| memory | gate `2766090483` on **and** the import allowed by managed configuration or the override, not by the organization setting (`oe`, `C`). The gate is absent from the fcache, so memory is never imported today |
+| memory | gate `2766090483` on **and** the import allowed by managed configuration or the override, not by the organization setting (`oe`, `C`). The gate was absent from the fcache through 2026-10-11 and is served off (`defaultValue`) from 2026-10-13 (Team), so memory is never imported today |
 | skills | uploaded to the organization. If the server's reply lacks `scan_requested`, Desktop logs "uploaded without a content scan" and deletes the skill with `POST /api/organizations/<org>/skills/delete-skill` (`Y`); a skill deleted this way is not counted as imported and ends the skills step for that pass. A failed delete logs "unscanned upload not removed" |
 
 Gate `659073223`, when on, stops the claimed-import path with "switched off remotely"; it is absent, so that path is not switched off. New IPC methods `HistoryImport_$_listSourceExtras` and `HistoryImport_$_importSourceExtras` drive the new steps. Reachability depends on organization and managed settings and was not probed.
