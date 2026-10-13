@@ -1,5 +1,40 @@
 # Changelog
 
+## v2.69.0 — 2026-10-13 (this fork) — MCP 2026-07-28 negotiation, and a flag cache that follows the organization
+
+234 lessons across 65 chapters (2 new: L233–L234, new Chapter 65; four extended). Sources: Claude Desktop `app.asar`
+2.31226.1 and Desktop's own logs, four GrowthBook caches decoded around organization switches on 2026-10-12 and
+2026-10-13, and live local and cloud Cowork runs on Desktop 2.31226.1.
+
+**MCP version negotiation and the organization-dependent flag cache (Chapter 65, new)**
+
+- L233: which local MCP servers Desktop probes with `server/discover` for MCP 2026-07-28. It depends on how Desktop
+  launches the server:
+  - plain config entries and Python, uv and binary bundles are never probed and always get `initialize`;
+  - Node bundles on Desktop's built-in Node are probed: chat probes a throwaway copy, while Cowork, Code and the
+    bridge to cloud sessions probe the real process;
+  - a server that closes the connection during that probe fails in Cowork and Code but still works in chat.
+
+  Gate `1942337209` would turn all probing off; it is served off. The bridge's limits are unchanged (180 s per call,
+  10 s to connect).
+- L234: Desktop rewrites its flag cache when the user switches organization. Between Team and Personal the same 8
+  gates differ every time, three of them pinned by this skill. The "flipping since 2026-10-07" recorded for
+  `2486083521`, `946844604` and `3229517805` was organization switches. `scripts/fcache-restamp.js` now prints a note
+  when those gates move together.
+
+**Extended**
+
+- L173: given a plugin script to run, the model found it with `find` and ran it by its VM path; `${CLAUDE_PLUGIN_ROOT}`
+  never appeared.
+- L215: what a cloud session's device shell can do in a Mac folder before the delete grant: `sed -i` and `mv` over a
+  file work, `rm -f` of a missing name exits 0, `rmdir` is refused, and git gets stuck after one commit.
+- L230: Desktop's "Found N enabled local plugins" log line doesn't count organization-pushed plugins. Uploading a
+  plugin the organization already provides adds a second copy instead of replacing it, and an upload is per
+  organization.
+- L231, L232: the three org-linked gates explained; the third-party memory import gate `2766090483` is now served
+  (off).
+- Desktop server settings: fcache recaptured on 2026-10-13 with Desktop on Team.
+
 ## v2.68.1 — 2026-10-11 (this fork) — CLI plugins that can't run, installing a CLI in the Cowork VM, delete grants and hook modes
 
 232 lessons across 64 chapters (no new lessons; five extended). Sources: live local and cloud Cowork runs on
