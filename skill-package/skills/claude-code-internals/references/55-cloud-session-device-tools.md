@@ -174,6 +174,14 @@ So in the cloud, only a file this conversation's own tools produced gets a worki
 
 The client code (the claude.ai interface, builds of 2026-09-24/25) carries a path-based rule for cloud sessions — handed-over files, the outputs mount, `/mnt/user-data/working/` and host paths are openable — that does not match these results; the rendering follows the conversation's own list of produced files instead, which leaves out writes it marks as working-document writes. That the list is the mechanism is inferred from the code; the behaviour is measured. What happens after a cloud conversation is archived was not tested: the archive action was not offered in the app on this account, and the code says only handed-over files stay openable.
 
+**How a delivered HTML file renders in the claude.ai web preview** (MEASURED, claude.ai in Chrome 155 on macOS, Personal Max account, 2026-10-14, n=1). This is the web preview, not Desktop's.
+- **Delivery:** asked to send an uploaded HTML page back unchanged, the session delivered it as a file card ("Code · HTML", with Download), not a link. The preview opened by itself in a side panel.
+- **The frame:** the page runs in an iframe on its own origin, `sandbox="allow-scripts allow-same-origin"`, `allow="fullscreen; clipboard-write"`, 720 px wide.
+- **What works:** inline JavaScript, click handlers, `<details>`, CSS-only `:checked` filters, inline SVG, CSS grid, `:has()`, `localStorage`, in-page `#anchor` links (the tab URL stays the same) and `position: sticky` headers.
+- **Colour scheme:** the page saw `prefers-color-scheme: light`, with macOS and claude.ai both light. Dark mode was not tried.
+- **Print:** `window.print()` was not clicked. The sandbox has no `allow-modals`, so print is probably a silent no-op there (INFERRED).
+- **For a report-page author:** design for a 720 px viewport. Don't depend on dialogs (`alert`, `confirm`, `print`).
+
 ## Chrome from a cloud conversation
 
 On 2026-10-02, in merged-composer conversations on the web and on Desktop 2.19675.0, asking which browsers were connected listed this computer's Chrome (extension 1.0.98). The tool rows do not expand, so the list is in the model's text, but it matched a direct `list_connected_browsers` call from a separate Claude Code session on the same machine. A turn that only used Chrome set up no session: no "Getting set up" notice and no session fetch (L217).

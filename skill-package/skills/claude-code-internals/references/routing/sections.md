@@ -1315,11 +1315,11 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 117 · 28-vm-rootfs-forensics.md:27 · Part A — a third artifact class: the raw guest disk image
 117 · 28-vm-rootfs-forensics.md:55 · Part B — the mount inventory
 117 · 28-vm-rootfs-forensics.md:103 · Addendum (v2.23.0): `.host-home` is a reserved mount *name* that was never a mount unit at all
-117 · 28-vm-rootfs-forensics.md:124 · Part C — session slugs, confirmed with real examples
-117 · 28-vm-rootfs-forensics.md:140 · Part D — `coworkd` and per-session Unix users
-117 · 28-vm-rootfs-forensics.md:177 · `/tmp` is shared across sessions, and one guest runs several sessions (measured, 2026-10-05)
-117 · 28-vm-rootfs-forensics.md:214 · Addendum (2026-08-13): a second disk image, and three more `mnt/` dirs without a `.mount` unit
-117 · 28-vm-rootfs-forensics.md:263 · Methodology note (the transferable lesson)
+117 · 28-vm-rootfs-forensics.md:126 · Part C — session slugs, confirmed with real examples
+117 · 28-vm-rootfs-forensics.md:142 · Part D — `coworkd` and per-session Unix users
+117 · 28-vm-rootfs-forensics.md:179 · `/tmp` is shared across sessions, and one guest runs several sessions (measured, 2026-10-05)
+117 · 28-vm-rootfs-forensics.md:216 · Addendum (2026-08-13): a second disk image, and three more `mnt/` dirs without a `.mount` unit
+117 · 28-vm-rootfs-forensics.md:265 · Methodology note (the transferable lesson)
 118 · 29-skill-scope-stream-contract.md:15 · The question this closes out
 118 · 29-skill-scope-stream-contract.md:33 · Part A — the internal skill-scope tracker (`activeSkill` / `spawnedBySkill` / `attribution`)
 118 · 29-skill-scope-stream-contract.md:69 · The `attribution` bundle rides the API request, not the stream
@@ -1767,13 +1767,13 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 215 · 55-cloud-session-device-tools.md:101 · Commands: `device_bash` runs in the Mac's Cowork VM
 215 · 55-cloud-session-device-tools.md:143 · The shells
 215 · 55-cloud-session-device-tools.md:159 · `computer://` links: which ones work
-215 · 55-cloud-session-device-tools.md:177 · Chrome from a cloud conversation
-215 · 55-cloud-session-device-tools.md:185 · For a skill author
-216 · 55-cloud-session-device-tools.md:203 · What the composer decides
-216 · 55-cloud-session-device-tools.md:215 · The hub can turn a chat into a workspace
-216 · 55-cloud-session-device-tools.md:227 · A cloud session can become, or be shown as, a chat
-216 · 55-cloud-session-device-tools.md:235 · Not the same as the Desktop's Chat mode
-216 · 55-cloud-session-device-tools.md:239 · Why it matters
+215 · 55-cloud-session-device-tools.md:185 · Chrome from a cloud conversation
+215 · 55-cloud-session-device-tools.md:193 · For a skill author
+216 · 55-cloud-session-device-tools.md:211 · What the composer decides
+216 · 55-cloud-session-device-tools.md:223 · The hub can turn a chat into a workspace
+216 · 55-cloud-session-device-tools.md:235 · A cloud session can become, or be shown as, a chat
+216 · 55-cloud-session-device-tools.md:243 · Not the same as the Desktop's Chat mode
+216 · 55-cloud-session-device-tools.md:247 · Why it matters
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:20 · The probe
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:36 · What the agent does with a skill's text, by how it was installed
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:69 · Creating and changing a skill by asking in chat
@@ -1847,8 +1847,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 230 · 60-desktop-routing-cards-paths-extensions.md:194 · Switching off deletes the copy (MEASURED, n=1, Team)
 230 · 60-desktop-routing-cards-paths-extensions.md:200 · A marketplace listed in the settings file never refreshes (MEASURED, n=1, Team, Desktop 2.31226.1)
 230 · 60-desktop-routing-cards-paths-extensions.md:211 · Uploading a plugin the organization already provides (MEASURED, n=1 per organization, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:218 · A related default (MEASURED)
-230 · 60-desktop-routing-cards-paths-extensions.md:222 · For a plugin author
+230 · 60-desktop-routing-cards-paths-extensions.md:228 · A related default (MEASURED)
+230 · 60-desktop-routing-cards-paths-extensions.md:232 · For a plugin author
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:18 · An already-attached folder skips the card (CODE-READ, `index.chunk-QEr06WaZ.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:38 · Dispatch has its own create switch (CODE-READ, `index.chunk-Cyt2WTko.js`; refusal text in `index.chunk-hKMR2oV6.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:52 · The migration sweep keeps a bound task local when remote control is off (CODE-READ, `index.chunk-QEr06WaZ.js`)
@@ -1866,9 +1866,24 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 233 · 62-desktop-mcp-negotiation-fcache-org.md:53 · What it looks like (MEASURED, one Mac, logs from 2026-08-25 to 2026-10-12)
 233 · 62-desktop-mcp-negotiation-fcache-org.md:59 · Not verified
 233 · 62-desktop-mcp-negotiation-fcache-org.md:64 · For a server author
-234 · 62-desktop-mcp-negotiation-fcache-org.md:77 · What was measured (MEASURED, Desktop 2.31226.1, 417 features each)
-234 · 62-desktop-mcp-negotiation-fcache-org.md:105 · Consequences
-234 · 62-desktop-mcp-negotiation-fcache-org.md:111 · For anyone reading the fcache
+234 · 62-desktop-mcp-negotiation-fcache-org.md:79 · What was measured (MEASURED, Desktop 2.31226.1, 417 features each)
+234 · 62-desktop-mcp-negotiation-fcache-org.md:107 · Consequences
+234 · 62-desktop-mcp-negotiation-fcache-org.md:113 · For anyone reading the fcache
+235 · 63-desktop-2.37337-sessions-admin-file-check.md:18 · A scheduled task keeps a local session's mode (CODE-READ, `index.chunk-BolytlRP.js`, `index.chunk-BgYYQXqQ.js`)
+235 · 63-desktop-2.37337-sessions-admin-file-check.md:32 · `move_to_cloud` gets stricter (CODE-READ, `index.chunk-BolytlRP.js`, `index.chunk-BcT8Ail-.js`)
+235 · 63-desktop-2.37337-sessions-admin-file-check.md:42 · Edits in someone else's worktree are rejected (CODE-READ, `index.chunk-BolytlRP.js`)
+235 · 63-desktop-2.37337-sessions-admin-file-check.md:52 · Cards, notes and credits (CODE-READ)
+235 · 63-desktop-2.37337-sessions-admin-file-check.md:61 · Computer use (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-Bim5jUQb.js`)
+235 · 63-desktop-2.37337-sessions-admin-file-check.md:71 · Observed on 2.37337.1 (MEASURED, Team, 2026-10-14)
+235 · 63-desktop-2.37337-sessions-admin-file-check.md:75 · Served state on 2026-10-14 (MEASURED, Team)
+235 · 63-desktop-2.37337-sessions-admin-file-check.md:80 · Who this affects and what to do
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:93 · The organization's file check (CODE-READ, `index.chunk-qbMm8eZ4.js` (new), `index.chunk-KpOoeR5G.js`, `index.chunk-m8lVroc8.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:116 · Microsoft 365 sensitivity labels (CODE-READ, `index.chunk-BWk6pVUt.js`, `resources/office365-mcp/office365-mcp-stdio.mjs`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:123 · Device profile vs a user's configuration-server pointer (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-CGQsUM80.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:131 · EDR integration (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-DkReRM12.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:142 · Other admin-facing changes (CODE-READ)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:160 · Gates new in this build, by effect (CODE-READ; served state MEASURED on Team, 2026-10-14)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:187 · Who this affects and what to do
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

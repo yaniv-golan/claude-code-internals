@@ -2,7 +2,7 @@
   "format": 1,
   "capture": {
     "content16": "4cc97df3da602616",
-    "embedded_timestamp": 1791967560187,
+    "embedded_timestamp": 1791969083104,
     "feature_count": 428,
     "observed_at": "2026-10-14",
     "mode": "1p"
@@ -213,6 +213,13 @@
       "per_account": true
     },
     {
+      "id": "1985233154",
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
+    },
+    {
       "id": "2039376689",
       "present": true,
       "source": "defaultValue",
@@ -414,6 +421,12 @@
       "value": true
     },
     {
+      "id": "3184956269",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
       "id": "3214976288",
       "present": false,
       "source": null,
@@ -445,6 +458,12 @@
       "on": null
     },
     {
+      "id": "3400412699",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
       "id": "3424551112",
       "present": true,
       "source": "force",
@@ -466,7 +485,25 @@
       "value": true
     },
     {
+      "id": "346871663",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
       "id": "3469616823",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "3475553907",
+      "present": false,
+      "source": null,
+      "on": null
+    },
+    {
+      "id": "3488857202",
       "present": false,
       "source": null,
       "on": null
@@ -892,6 +929,12 @@
       "source": "force",
       "on": true,
       "value": true
+    },
+    {
+      "id": "61799151",
+      "present": false,
+      "source": null,
+      "on": null
     },
     {
       "id": "659073223",

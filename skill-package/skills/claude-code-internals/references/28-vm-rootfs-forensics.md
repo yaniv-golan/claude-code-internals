@@ -121,6 +121,8 @@ third category — a **virtual namespace that resolves to host paths without any
 at all**. A future forensic pass should not expect to find a `mnt-.host-home.mount` unit even with
 the gate flipped on; the absence is structural, not merely a dark-gate artifact of this snapshot.
 
+From Desktop 2.37337, decoding strips repeated `.host-home` prefixes rather than one; gate `61799151` (unserved on 2026-10-14) would restore the single-prefix match (L236).
+
 ## Part C — session slugs, confirmed with real examples
 
 `/sessions/<slug>/` has been documented since L89/L107 as the VM-loop path pattern, but no chapter

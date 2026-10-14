@@ -68,6 +68,8 @@ The bridge's limits in this build are unchanged: 180 s per tool call (`a=18e4`),
 - A server that supports 2026-07-28 has to answer `server/discover` within 2 s on stdio, or it is treated as legacy.
 - If your server works in chat but is missing in Cowork, read `mcp-server-<name>.log` for *Couldn't start for Cowork and Code sessions*.
 
+Desktop 2.37337 adds a dark path (gate `3184956269`) that routes MCP-Apps widget calls to plugin MCP servers the agent itself spawned in host-loop; see L236.
+
 ---
 
 # LESSON 234 — DESKTOP'S FLAG CACHE FOLLOWS THE SELECTED ORGANIZATION

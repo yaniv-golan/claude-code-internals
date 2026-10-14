@@ -214,6 +214,16 @@ An organization's `cowork_settings.json` can name a marketplace under `extraKnow
 - So a task could load both copies, and both copies' hooks. To test an upload alone, switch the other copy off for the test. Here that removed it from the task's `plugins` list: only the upload loaded.
 - The marketplace copy was switched off for about 16 minutes. Two plugin syncs ran in that time, each logging "0 orphans cleaned", and its `rpm` folder stayed; switching it back on kept the same folder. This differs from the switch-off case above, which removed the folder at the next sync. Whether this marketplace is an organization marketplace in that case's sense was not checked.
 - An upload in one organization doesn't appear in another. The same zip had to be uploaded again under Personal, and there too it installed beside the copies already listed, with no dialog.
+- **When a private upload of the same name already exists, a dialog appears** (MEASURED, Personal, Desktop 2.37337.1, n=1). Uploading founder-skills 0.19.1 over the private 0.19.0 showed **"Replace existing plugin?"**, with Cancel and Replace and no keep-both option; renaming the plugin in `plugin.json` keeps both.
+  - Replace overwrote the private copy, and the replacement arrived **off**, as the replaced copy had been.
+  - Switching it on then showed a trust dialog: the plugin "includes components that run code", and enabling it grants access to everything on the computer.
+- **What triggers the dialog is OPEN.** The two measurements differ in two ways at once: the build (2.31226.1 vs 2.37337.1) and the existing copy (marketplace vs private upload).
+  - The dialog lives in the UI bundle (`ion-dist`, no old copy to compare). Two code paths raise it (CODE-READ):
+    - Desktop's own upload call, `uploadPlugin(…, replaceExisting)`, on a conflict;
+    - the account's plugin save, on `plugin_upload_already_exists`.
+  - On Desktop's own path (`installPluginFromZipWithPaths`, unchanged since 2.31226.1), a replaced marketplace copy keeps its on/off state, but a replaced earlier upload is switched on.
+  - On the account path the server decides, and the UI says the plugin "was replaced and is now off". That matches what was seen.
+- **The trust dialog** appears when a plugin has local MCP servers, hooks, monitors, CLIs or privileged reach (CODE-READ, `ion-dist`). A plugin with only skills, commands and agents gets none.
 
 ## A related default (MEASURED)
 

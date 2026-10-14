@@ -2342,6 +2342,11 @@
     "id": 126,
     "relevance": 0.45,
     "reason": "remote_devices device-registry enrollment is a different, non-mount-based bridge mechanism from the VM rootfs mount inventory"
+   },
+   {
+    "id": 236,
+    "relevance": 0.5,
+    "reason": "L236: repeated .host-home prefixes from 2.37337"
    }
   ],
   "118": [
@@ -4580,6 +4585,11 @@
     "id": 227,
     "relevance": 0.3,
     "reason": "the shared /tmp finding for skill authors"
+   },
+   {
+    "id": 236,
+    "relevance": 0.4,
+    "reason": "L236: admin policy in 2.37337"
    }
   ],
   "231": [
@@ -4607,6 +4617,11 @@
     "id": 234,
     "relevance": 0.8,
     "reason": "L234: the three gates follow the selected organization"
+   },
+   {
+    "id": 235,
+    "relevance": 0.8,
+    "reason": "L235: what the next build (2.37337) changed"
    }
   ],
   "232": [
@@ -4646,6 +4661,11 @@
     "id": 229,
     "relevance": 0.5,
     "reason": "L229: where local extension errors show up in Desktop"
+   },
+   {
+    "id": 236,
+    "relevance": 0.5,
+    "reason": "L236: dark MCP-Apps routing gate 3184956269"
    }
   ],
   "234": [
@@ -4668,6 +4688,55 @@
     "id": 194,
     "relevance": 0.5,
     "reason": "L194: the cloud memory relay (946844604), one of the org-linked gates"
+   }
+  ],
+  "235": [
+   {
+    "id": 231,
+    "relevance": 0.8,
+    "reason": "L231: the previous build's permission and scheduled-task changes"
+   },
+   {
+    "id": 227,
+    "relevance": 0.6,
+    "reason": "L227: which calls show an approval card; the scheduled-task mode carry depends on those cards"
+   },
+   {
+    "id": 215,
+    "relevance": 0.5,
+    "reason": "L215: cloud sessions and the folder card"
+   },
+   {
+    "id": 236,
+    "relevance": 0.6,
+    "reason": "L236: the admin half of the same build"
+   }
+  ],
+  "236": [
+   {
+    "id": 235,
+    "relevance": 0.6,
+    "reason": "L235: the session half of the same build"
+   },
+   {
+    "id": 139,
+    "relevance": 0.6,
+    "reason": "L139: per-mount delete policy; under the file check connected folders are not mounted at all"
+   },
+   {
+    "id": 224,
+    "relevance": 0.5,
+    "reason": "L224: MCPB launch environment; the bundled M365 server gets MCP_SENSITIVITY_LABELS"
+   },
+   {
+    "id": 117,
+    "relevance": 0.5,
+    "reason": "L117: .host-home translation (gate 61799151)"
+   },
+   {
+    "id": 233,
+    "relevance": 0.5,
+    "reason": "L233: local MCP servers in Cowork; gate 3184956269 routes MCP Apps to agent-spawned plugin servers"
    }
   ]
  }

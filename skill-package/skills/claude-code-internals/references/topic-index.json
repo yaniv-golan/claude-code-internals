@@ -1,6 +1,6 @@
 {
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 234,
+  "total_lessons": 236,
   "lessons": [
     {
       "id": 1,
@@ -11771,7 +11771,7 @@
       "lesson_number": "117",
       "file": "28-vm-rootfs-forensics.md",
       "startLine": 13,
-      "endLine": 280,
+      "endLine": 282,
       "keywords": [
         "vm-rootfs-forensics",
         "rootfs.img",
@@ -11823,7 +11823,6 @@
         "mnt-artifact",
         "which cowork folders are actually shared with my mac",
         "is the sandbox temp folder shared with the host",
-        "inspect the cowork virtual machine disk image",
         "search the vm disk image without booting it",
         "what do cowork session names look like",
         "session ids are three random words, not a uuid",
@@ -11838,7 +11837,8 @@
         "why does my home folder vanish after a cowork session",
         "is the temp folder shared between cowork sessions",
         "do temp files outlive a cowork session",
-        "permission denied on temp file in cowork skill"
+        "permission denied on temp file in cowork skill",
+        "repeated host home prefixes in session paths"
       ],
       "summary": "Direct forensic inspection of a third Cowork artifact class beyond app.asar and the in-VM ELF: the raw, unencrypted golden VM guest disk image (vm_bundles/claudevm.bundle/rootfs.img), which retains leftover systemd-journald log entries from real historical sessions. Extends the single verified .claude/skills mount-unit example (L109) to a full inventory (outputs, uploads, .claude, .claude/skills, .claude/projects, and one per user-connected folder), each independently mounted/unmounted per session as sessions-<slug>-mnt-<name>.mount -- and finds NO mount unit for home or /tmp, the structural reason those paths are never host-shared (they're plain guest-local paths, not bind mounts, an architecturally different kind of storage from outputs/). Confirms real session-slug values follow a Docker-style adjective-adjective-noun format. Surfaces a previously undocumented in-guest daemon, coworkd, which provisions a dedicated Unix user (uid/gid) per session slug and spawns work as that user via oneshot-<uuid> jobs -- concretely corroborating the host-loop plugin-staging mechanism (claude-hostloop-plugins/<hash>) with a real deck-review skill invocation. Notes a plausible but unconfirmed session-to-VM multiplexing inference from the idempotent user-exists check plus an observed empty vm_bundles/warm/ directory. Methodology: raw disk/container images are a searchable third artifact class when a feature isn't in either 'obvious' binary; rg is ~15-20x faster than grep -a or naive scripting-language regex over multi-GB images.",
       "identifier_keys": [
@@ -11857,7 +11857,6 @@
       "vocab_keys": [
         "which cowork folders are actually shared with my mac",
         "is the sandbox temp folder shared with the host",
-        "inspect the cowork virtual machine disk image",
         "search the vm disk image without booting it",
         "what do cowork session names look like",
         "session ids are three random words, not a uuid",
@@ -11872,13 +11871,14 @@
         "why does my home folder vanish after a cowork session",
         "is the temp folder shared between cowork sessions",
         "do temp files outlive a cowork session",
-        "permission denied on temp file in cowork skill"
+        "permission denied on temp file in cowork skill",
+        "repeated host home prefixes in session paths"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-06",
-        "terms_sha256": "0909f523ea918056a1e69f03df56c0625b6aa3ea368fb018bb23fce6570f7e3c"
+        "date": "2026-10-14",
+        "terms_sha256": "8d7274bad73d45daf6dca357364dbd53eb6068a44e266df7422da1a787000686"
       }
     },
     {
@@ -20861,7 +20861,7 @@
       "lesson_number": "215",
       "file": "55-cloud-session-device-tools.md",
       "startLine": 16,
-      "endLine": 193,
+      "endLine": 201,
       "keywords": [
         "device tools",
         "mcp__remote-devices",
@@ -20905,6 +20905,11 @@
         "maintenance.lock",
         "tmp_obj",
         "is_interrupt",
+        "allow-scripts",
+        "allow-same-origin",
+        "local-storage",
+        "prefers-color-scheme",
+        "allow-modals",
         "list_connected_browsers",
         "mcp__claude-in-chrome__navigate",
         "Control_Chrome",
@@ -20960,6 +20965,11 @@
         "maintenance.lock",
         "tmp_obj",
         "is_interrupt",
+        "allow-scripts",
+        "allow-same-origin",
+        "local-storage",
+        "prefers-color-scheme",
+        "allow-modals",
         "list_connected_browsers",
         "mcp__claude-in-chrome__navigate",
         "Control_Chrome",
@@ -20993,7 +21003,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-13",
+        "date": "2026-10-14",
         "terms_sha256": "4c698ea62321de569cdb45bf12c6cf07577998a558ac86d4301c8e52cf892c69"
       }
     },
@@ -21002,8 +21012,8 @@
       "title": "One Conversation, Two Runtimes: How claude.ai Moves a Chat Into a Cowork Workspace",
       "lesson_number": "216",
       "file": "55-cloud-session-device-tools.md",
-      "startLine": 197,
-      "endLine": 243,
+      "startLine": 205,
+      "endLine": 251,
       "keywords": [
         "chat and Cowork merged",
         "hub backend",
@@ -22121,12 +22131,13 @@
       "lesson_number": "230",
       "file": "60-desktop-routing-cards-paths-extensions.md",
       "startLine": 178,
-      "endLine": 230,
+      "endLine": 240,
       "keywords": [
         "enabled-plugins",
         "extra-known-marketplaces",
+        "plugin_upload_already_exists",
+        "install-plugin-from-zip-with-paths",
         "installed plugin files differ from source",
-        "why does my installed skill file look different",
         "plugin description reformatted after install",
         "multi-line description became one line",
         "hash check fails on installed plugin",
@@ -22134,7 +22145,6 @@
         "plugin tests folder got installed",
         "marketplace plugin much bigger than zip",
         "turning off org plugin deletes it",
-        "disabled team plugin disappeared",
         "lost my edits to installed plugin",
         "plugin shows add instead of toggle",
         "orphans cleaned in sync log",
@@ -22142,15 +22152,18 @@
         "marketplace from settings never updates",
         "plugin update button greyed out",
         "old plugin copy still enabled after re-adding",
-        "uploading new plugin version adds second copy"
+        "uploading new plugin version adds second copy",
+        "replace existing plugin prompt on upload",
+        "plugin warns it runs code when enabled"
       ],
       "identifier_keys": [
         "enabled-plugins",
-        "extra-known-marketplaces"
+        "extra-known-marketplaces",
+        "plugin_upload_already_exists",
+        "install-plugin-from-zip-with-paths"
       ],
       "vocab_keys": [
         "installed plugin files differ from source",
-        "why does my installed skill file look different",
         "plugin description reformatted after install",
         "multi-line description became one line",
         "hash check fails on installed plugin",
@@ -22158,7 +22171,6 @@
         "plugin tests folder got installed",
         "marketplace plugin much bigger than zip",
         "turning off org plugin deletes it",
-        "disabled team plugin disappeared",
         "lost my edits to installed plugin",
         "plugin shows add instead of toggle",
         "orphans cleaned in sync log",
@@ -22166,13 +22178,15 @@
         "marketplace from settings never updates",
         "plugin update button greyed out",
         "old plugin copy still enabled after re-adding",
-        "uploading new plugin version adds second copy"
+        "uploading new plugin version adds second copy",
+        "replace existing plugin prompt on upload",
+        "plugin warns it runs code when enabled"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-13",
-        "terms_sha256": "ce7b8961501c4e57f9fbb5d6498fd11c34e06f24a58f3547dc50e7654218b85a"
+        "date": "2026-10-14",
+        "terms_sha256": "8f2775af9071784ecd44b689682f0ebc672c44e7cf456e0f04d3058c7f7fb420"
       }
     },
     {
@@ -22409,7 +22423,7 @@
       "lesson_number": "233",
       "file": "62-desktop-mcp-negotiation-fcache-org.md",
       "startLine": 14,
-      "endLine": 69,
+      "endLine": 71,
       "keywords": [
         "client-capabilities",
         "get-plugin-mcp-instance",
@@ -22445,7 +22459,8 @@
         "should my server error or close on unknown methods",
         "how fast must server answer version probe",
         "desktop spawns extra copy of mcp server",
-        "where are cowork mcp startup failures logged"
+        "where are cowork mcp startup failures logged",
+        "mcp app widget calls to agent-spawned plugin servers"
       ],
       "identifier_keys": [
         "client-capabilities",
@@ -22484,13 +22499,14 @@
         "should my server error or close on unknown methods",
         "how fast must server answer version probe",
         "desktop spawns extra copy of mcp server",
-        "where are cowork mcp startup failures logged"
+        "where are cowork mcp startup failures logged",
+        "mcp app widget calls to agent-spawned plugin servers"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-10-13",
-        "terms_sha256": "acd64ca625b9b04db7c34e0cb6a553936bc4d07a642661e315ca254a37be46ff"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-14",
+        "terms_sha256": "6c5635d175c370bfa20fa75c99169c7514c8623fa232e6697f815311a5dded60"
       }
     },
     {
@@ -22498,8 +22514,8 @@
       "title": "Desktop's Flag Cache Follows the Selected Organization",
       "lesson_number": "234",
       "file": "62-desktop-mcp-negotiation-fcache-org.md",
-      "startLine": 73,
-      "endLine": 115,
+      "startLine": 75,
+      "endLine": 117,
       "keywords": [
         "app-scoped-enabled",
         "fcache-pinned.json",
@@ -22559,6 +22575,314 @@
         "prompt_version": "vocab-v1",
         "date": "2026-10-13",
         "terms_sha256": "640208dea417da32cbee734844311c2f3ce1af0dc12a47a098bf1f1ca0feeb1f"
+      }
+    },
+    {
+      "id": 235,
+      "title": "What Desktop 2.37337 Changed in Sessions, Permissions and Computer Use",
+      "lesson_number": "235",
+      "file": "63-desktop-2.37337-sessions-admin-file-check.md",
+      "startLine": 14,
+      "endLine": 85,
+      "keywords": [
+        "mcp__ccd_session__move_to_cloud",
+        "unattended_deny",
+        "index.chunk-BolytlRP.js",
+        "index.chunk-BgYYQXqQ.js",
+        "carried-task-mode",
+        "task-mode-here",
+        "desktop_ccd_permission_auto_denied",
+        "create_scheduled_task_owed_card",
+        "index.chunk-BcT8Ail-.js",
+        "skip_push",
+        "move-to-cloud-refusal",
+        "unverified_worktree",
+        "worktree_unavailable",
+        "start_session",
+        "foreign_worktree",
+        "lazy-worktrees-tree-ownership",
+        "owned-tree-paths",
+        "CLAUDE_E2E_WORKTREE_WRITE_GUARD",
+        "GUARD_OFF",
+        "handle-request-folder-access-gated",
+        "side-sessions-event",
+        "hand_off_to_session",
+        "set_session_connector_enabled",
+        "index.chunk-Bim5jUQb.js",
+        "set-own-window-click-through",
+        "own-windows",
+        "app_click",
+        "app_type",
+        "app_key",
+        "still_up",
+        "left_to_the_user",
+        "already_up",
+        "unknown_up",
+        "closed_late",
+        "346871663",
+        "2393677837",
+        "2222745432",
+        "2371478310",
+        "3400412699",
+        "scheduled task runs without asking permission",
+        "scheduled task inherits auto mode",
+        "why does my scheduled task skip approvals",
+        "move session to cloud refused worktree",
+        "can't move session to cloud",
+        "why won't my session move to the cloud",
+        "edits rejected in another worktree",
+        "worktree not created by this conversation",
+        "computer use won't click claude window",
+        "quick entry bar blocks mouse click",
+        "pop-up menu closed during background click",
+        "typed text missing after menu opened",
+        "folder access prompt wording changed",
+        "connectors stay off in later sessions",
+        "why are my connectors still turned off"
+      ],
+      "identifier_keys": [
+        "mcp__ccd_session__move_to_cloud",
+        "unattended_deny",
+        "index.chunk-BolytlRP.js",
+        "index.chunk-BgYYQXqQ.js",
+        "carried-task-mode",
+        "task-mode-here",
+        "desktop_ccd_permission_auto_denied",
+        "create_scheduled_task_owed_card",
+        "index.chunk-BcT8Ail-.js",
+        "skip_push",
+        "move-to-cloud-refusal",
+        "unverified_worktree",
+        "worktree_unavailable",
+        "start_session",
+        "foreign_worktree",
+        "lazy-worktrees-tree-ownership",
+        "owned-tree-paths",
+        "CLAUDE_E2E_WORKTREE_WRITE_GUARD",
+        "GUARD_OFF",
+        "handle-request-folder-access-gated",
+        "side-sessions-event",
+        "hand_off_to_session",
+        "set_session_connector_enabled",
+        "index.chunk-Bim5jUQb.js",
+        "set-own-window-click-through",
+        "own-windows",
+        "app_click",
+        "app_type",
+        "app_key",
+        "still_up",
+        "left_to_the_user",
+        "already_up",
+        "unknown_up",
+        "closed_late",
+        "346871663",
+        "2393677837",
+        "2222745432",
+        "2371478310",
+        "3400412699"
+      ],
+      "vocab_keys": [
+        "scheduled task runs without asking permission",
+        "scheduled task inherits auto mode",
+        "why does my scheduled task skip approvals",
+        "move session to cloud refused worktree",
+        "can't move session to cloud",
+        "why won't my session move to the cloud",
+        "edits rejected in another worktree",
+        "worktree not created by this conversation",
+        "computer use won't click claude window",
+        "quick entry bar blocks mouse click",
+        "pop-up menu closed during background click",
+        "typed text missing after menu opened",
+        "folder access prompt wording changed",
+        "connectors stay off in later sessions",
+        "why are my connectors still turned off"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-14",
+        "terms_sha256": "bcf04950880479ce3d2e0d9e5ecd971de814e6da4b085d43acce1b4bc653bb84"
+      }
+    },
+    {
+      "id": 236,
+      "title": "What Desktop 2.37337 Changed for Admins: the File Check, Sensitivity Labels, Device Profiles, EDR and SSH",
+      "lesson_number": "236",
+      "file": "63-desktop-2.37337-sessions-admin-file-check.md",
+      "startLine": 89,
+      "endLine": 194,
+      "keywords": [
+        "61799151",
+        "meta.json",
+        "3184956269",
+        "index.chunk-BWk6pVUt.js",
+        "mcp__cowork__import_files",
+        "index.chunk-qbMm8eZ4.js",
+        "index.chunk-KpOoeR5G.js",
+        "index.chunk-m8lVroc8.js",
+        "cowork-file-read-check",
+        "file-read-check",
+        "public-undocumented",
+        "remote-disabled",
+        "unreadable-file-read-check",
+        "tool_call",
+        "user_approval",
+        "deny_reason",
+        "cache-ttl-sec",
+        "file-check",
+        "file-cap",
+        "total-cap",
+        "copy-failed",
+        "office365-mcp",
+        "office365-mcp-stdio.mjs",
+        "managed-mcp-servers",
+        "tenant-id",
+        "MCP_SENSITIVITY_LABELS",
+        "index.chunk-CGQsUM80.js",
+        "hybrid-pointer",
+        "disable-deployment-mode-chooser",
+        "force-login-org-uuid",
+        "index.chunk-DkReRM12.js",
+        "cowork-edr-integration",
+        "cowork-edr-integration-vendor",
+        "edr-integration",
+        "proxy_invalid",
+        "temp_dir_unusable",
+        "worktree_unverified",
+        "org_config_refused",
+        "cli_version_too_old",
+        "startup_failure_reason",
+        "CLAUDE_CODE_STARTUP_FAILURE_RESULTS",
+        "proxy_jump_unsupported",
+        "host_key_source_unsupported",
+        "claude-ssh-askpass.exe",
+        "claude-ssh-broker.exe",
+        "claude-ssh-proxy.exe",
+        "CLAUDE_SSH_NO_LOGIN_PATH_WARM",
+        "skill_hooks",
+        "CLAUDE_CODE_MCP_APPS_HOST",
+        "import_files",
+        "1968338882",
+        "580613960",
+        "3488857202",
+        "3946462706",
+        "1731450842",
+        "1846651524",
+        "1985233154",
+        "3475553907",
+        "144153584",
+        "3868149774",
+        "1338660703",
+        "2897767209",
+        "312571861",
+        "3805388752",
+        "4113347374",
+        "require approval program before claude reads files",
+        "connected folders missing from shell",
+        "why can't bash see my connected folder",
+        "organization file scanning before read",
+        "block files by purview sensitivity label",
+        "microsoft 365 connector refuses labeled sharepoint files",
+        "user configuration server overrides device profile",
+        "edr sensor install on windows cowork",
+        "is the edr sensor actually running",
+        "admin disable shell commands in cowork",
+        "your administrator has turned off shell commands",
+        "automatic restarts are paused for this session",
+        "plugin not sent to ssh host",
+        "ssh sign-in helper blocked by antivirus",
+        "why did claude say my organization blocked this file"
+      ],
+      "identifier_keys": [
+        "61799151",
+        "meta.json",
+        "3184956269",
+        "index.chunk-BWk6pVUt.js",
+        "mcp__cowork__import_files",
+        "index.chunk-qbMm8eZ4.js",
+        "index.chunk-KpOoeR5G.js",
+        "index.chunk-m8lVroc8.js",
+        "cowork-file-read-check",
+        "file-read-check",
+        "public-undocumented",
+        "remote-disabled",
+        "unreadable-file-read-check",
+        "tool_call",
+        "user_approval",
+        "deny_reason",
+        "cache-ttl-sec",
+        "file-check",
+        "file-cap",
+        "total-cap",
+        "copy-failed",
+        "office365-mcp",
+        "office365-mcp-stdio.mjs",
+        "managed-mcp-servers",
+        "tenant-id",
+        "MCP_SENSITIVITY_LABELS",
+        "index.chunk-CGQsUM80.js",
+        "hybrid-pointer",
+        "disable-deployment-mode-chooser",
+        "force-login-org-uuid",
+        "index.chunk-DkReRM12.js",
+        "cowork-edr-integration",
+        "cowork-edr-integration-vendor",
+        "edr-integration",
+        "proxy_invalid",
+        "temp_dir_unusable",
+        "worktree_unverified",
+        "org_config_refused",
+        "cli_version_too_old",
+        "startup_failure_reason",
+        "CLAUDE_CODE_STARTUP_FAILURE_RESULTS",
+        "proxy_jump_unsupported",
+        "host_key_source_unsupported",
+        "claude-ssh-askpass.exe",
+        "claude-ssh-broker.exe",
+        "claude-ssh-proxy.exe",
+        "CLAUDE_SSH_NO_LOGIN_PATH_WARM",
+        "skill_hooks",
+        "CLAUDE_CODE_MCP_APPS_HOST",
+        "import_files",
+        "1968338882",
+        "580613960",
+        "3488857202",
+        "3946462706",
+        "1731450842",
+        "1846651524",
+        "1985233154",
+        "3475553907",
+        "144153584",
+        "3868149774",
+        "1338660703",
+        "2897767209",
+        "312571861",
+        "3805388752",
+        "4113347374"
+      ],
+      "vocab_keys": [
+        "require approval program before claude reads files",
+        "connected folders missing from shell",
+        "why can't bash see my connected folder",
+        "organization file scanning before read",
+        "block files by purview sensitivity label",
+        "microsoft 365 connector refuses labeled sharepoint files",
+        "user configuration server overrides device profile",
+        "edr sensor install on windows cowork",
+        "is the edr sensor actually running",
+        "admin disable shell commands in cowork",
+        "your administrator has turned off shell commands",
+        "automatic restarts are paused for this session",
+        "plugin not sent to ssh host",
+        "ssh sign-in helper blocked by antivirus",
+        "why did claude say my organization blocked this file"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-14",
+        "terms_sha256": "19ec471dfd8714c18d4077ae115dfb9902b48b8a49e889fb7e8ad3e83b2fa31a"
       }
     }
   ],
@@ -43892,6 +44216,9 @@
     "mnt-artifact": [
       117
     ],
+    "61799151": [
+      236
+    ],
     "server-fallback-hop": [
       118
     ],
@@ -46272,7 +46599,8 @@
       209
     ],
     "meta.json": [
-      209
+      209,
+      236
     ],
     "system-reminder-tag": [
       209
@@ -46380,7 +46708,8 @@
       213
     ],
     "mcp__ccd_session__move_to_cloud": [
-      213
+      213,
+      235
     ],
     "cowork-session-seed": [
       213
@@ -46477,6 +46806,21 @@
       215
     ],
     "is_interrupt": [
+      215
+    ],
+    "allow-scripts": [
+      215
+    ],
+    "allow-same-origin": [
+      215
+    ],
+    "local-storage": [
+      215
+    ],
+    "prefers-color-scheme": [
+      215
+    ],
+    "allow-modals": [
       215
     ],
     "list_connected_browsers": [
@@ -46691,7 +47035,8 @@
       222
     ],
     "unattended_deny": [
-      222
+      222,
+      235
     ],
     "get_task_output": [
       222
@@ -46920,6 +47265,12 @@
     "extra-known-marketplaces": [
       230
     ],
+    "plugin_upload_already_exists": [
+      230
+    ],
+    "install-plugin-from-zip-with-paths": [
+      230
+    ],
     "via-host-cli-launcher": [
       231
     ],
@@ -47106,6 +47457,9 @@
     "shared-pool": [
       233
     ],
+    "3184956269": [
+      236
+    ],
     "app-scoped-enabled": [
       234
     ],
@@ -47132,6 +47486,303 @@
     ],
     "582101327": [
       234
+    ],
+    "index.chunk-BolytlRP.js": [
+      235
+    ],
+    "index.chunk-BgYYQXqQ.js": [
+      235
+    ],
+    "carried-task-mode": [
+      235
+    ],
+    "task-mode-here": [
+      235
+    ],
+    "desktop_ccd_permission_auto_denied": [
+      235
+    ],
+    "create_scheduled_task_owed_card": [
+      235
+    ],
+    "index.chunk-BcT8Ail-.js": [
+      235
+    ],
+    "skip_push": [
+      235
+    ],
+    "move-to-cloud-refusal": [
+      235
+    ],
+    "unverified_worktree": [
+      235
+    ],
+    "worktree_unavailable": [
+      235
+    ],
+    "start_session": [
+      235
+    ],
+    "foreign_worktree": [
+      235
+    ],
+    "lazy-worktrees-tree-ownership": [
+      235
+    ],
+    "owned-tree-paths": [
+      235
+    ],
+    "CLAUDE_E2E_WORKTREE_WRITE_GUARD": [
+      235
+    ],
+    "GUARD_OFF": [
+      235
+    ],
+    "handle-request-folder-access-gated": [
+      235
+    ],
+    "side-sessions-event": [
+      235
+    ],
+    "hand_off_to_session": [
+      235
+    ],
+    "set_session_connector_enabled": [
+      235
+    ],
+    "index.chunk-BWk6pVUt.js": [
+      236
+    ],
+    "index.chunk-Bim5jUQb.js": [
+      235
+    ],
+    "set-own-window-click-through": [
+      235
+    ],
+    "own-windows": [
+      235
+    ],
+    "app_click": [
+      235
+    ],
+    "app_type": [
+      235
+    ],
+    "app_key": [
+      235
+    ],
+    "still_up": [
+      235
+    ],
+    "left_to_the_user": [
+      235
+    ],
+    "already_up": [
+      235
+    ],
+    "unknown_up": [
+      235
+    ],
+    "closed_late": [
+      235
+    ],
+    "346871663": [
+      235
+    ],
+    "2393677837": [
+      235
+    ],
+    "2222745432": [
+      235
+    ],
+    "2371478310": [
+      235
+    ],
+    "3400412699": [
+      235
+    ],
+    "mcp__cowork__import_files": [
+      236
+    ],
+    "index.chunk-qbMm8eZ4.js": [
+      236
+    ],
+    "index.chunk-KpOoeR5G.js": [
+      236
+    ],
+    "index.chunk-m8lVroc8.js": [
+      236
+    ],
+    "cowork-file-read-check": [
+      236
+    ],
+    "file-read-check": [
+      236
+    ],
+    "public-undocumented": [
+      236
+    ],
+    "remote-disabled": [
+      236
+    ],
+    "unreadable-file-read-check": [
+      236
+    ],
+    "tool_call": [
+      236
+    ],
+    "user_approval": [
+      236
+    ],
+    "deny_reason": [
+      236
+    ],
+    "cache-ttl-sec": [
+      236
+    ],
+    "file-check": [
+      236
+    ],
+    "file-cap": [
+      236
+    ],
+    "total-cap": [
+      236
+    ],
+    "copy-failed": [
+      236
+    ],
+    "office365-mcp": [
+      236
+    ],
+    "office365-mcp-stdio.mjs": [
+      236
+    ],
+    "managed-mcp-servers": [
+      236
+    ],
+    "tenant-id": [
+      236
+    ],
+    "MCP_SENSITIVITY_LABELS": [
+      236
+    ],
+    "index.chunk-CGQsUM80.js": [
+      236
+    ],
+    "hybrid-pointer": [
+      236
+    ],
+    "disable-deployment-mode-chooser": [
+      236
+    ],
+    "force-login-org-uuid": [
+      236
+    ],
+    "index.chunk-DkReRM12.js": [
+      236
+    ],
+    "cowork-edr-integration": [
+      236
+    ],
+    "cowork-edr-integration-vendor": [
+      236
+    ],
+    "edr-integration": [
+      236
+    ],
+    "proxy_invalid": [
+      236
+    ],
+    "temp_dir_unusable": [
+      236
+    ],
+    "worktree_unverified": [
+      236
+    ],
+    "org_config_refused": [
+      236
+    ],
+    "cli_version_too_old": [
+      236
+    ],
+    "startup_failure_reason": [
+      236
+    ],
+    "CLAUDE_CODE_STARTUP_FAILURE_RESULTS": [
+      236
+    ],
+    "proxy_jump_unsupported": [
+      236
+    ],
+    "host_key_source_unsupported": [
+      236
+    ],
+    "claude-ssh-askpass.exe": [
+      236
+    ],
+    "claude-ssh-broker.exe": [
+      236
+    ],
+    "claude-ssh-proxy.exe": [
+      236
+    ],
+    "CLAUDE_SSH_NO_LOGIN_PATH_WARM": [
+      236
+    ],
+    "skill_hooks": [
+      236
+    ],
+    "CLAUDE_CODE_MCP_APPS_HOST": [
+      236
+    ],
+    "import_files": [
+      236
+    ],
+    "1968338882": [
+      236
+    ],
+    "580613960": [
+      236
+    ],
+    "3488857202": [
+      236
+    ],
+    "3946462706": [
+      236
+    ],
+    "1731450842": [
+      236
+    ],
+    "1846651524": [
+      236
+    ],
+    "1985233154": [
+      236
+    ],
+    "3475553907": [
+      236
+    ],
+    "144153584": [
+      236
+    ],
+    "3868149774": [
+      236
+    ],
+    "1338660703": [
+      236
+    ],
+    "2897767209": [
+      236
+    ],
+    "312571861": [
+      236
+    ],
+    "3805388752": [
+      236
+    ],
+    "4113347374": [
+      236
     ],
     "why is claude startup slow": [
       1
@@ -52408,9 +53059,6 @@
     "is the sandbox temp folder shared with the host": [
       117
     ],
-    "inspect the cowork virtual machine disk image": [
-      117
-    ],
     "search the vm disk image without booting it": [
       117
     ],
@@ -52454,6 +53102,9 @@
       117
     ],
     "permission denied on temp file in cowork skill": [
+      117
+    ],
+    "repeated host home prefixes in session paths": [
       117
     ],
     "which skill ran this tool call": [
@@ -57758,9 +58409,6 @@
     "installed plugin files differ from source": [
       230
     ],
-    "why does my installed skill file look different": [
-      230
-    ],
     "plugin description reformatted after install": [
       230
     ],
@@ -57780,9 +58428,6 @@
       230
     ],
     "turning off org plugin deletes it": [
-      230
-    ],
-    "disabled team plugin disappeared": [
       230
     ],
     "lost my edits to installed plugin": [
@@ -57807,6 +58452,12 @@
       230
     ],
     "uploading new plugin version adds second copy": [
+      230
+    ],
+    "replace existing plugin prompt on upload": [
+      230
+    ],
+    "plugin warns it runs code when enabled": [
       230
     ],
     "no permission prompt for attached folder": [
@@ -57953,6 +58604,9 @@
     "where are cowork mcp startup failures logged": [
       233
     ],
+    "mcp app widget calls to agent-spawned plugin servers": [
+      233
+    ],
     "feature works in personal account not team": [
       234
     ],
@@ -57997,6 +58651,96 @@
     ],
     "same mac different features per organization": [
       234
+    ],
+    "scheduled task runs without asking permission": [
+      235
+    ],
+    "scheduled task inherits auto mode": [
+      235
+    ],
+    "why does my scheduled task skip approvals": [
+      235
+    ],
+    "move session to cloud refused worktree": [
+      235
+    ],
+    "can't move session to cloud": [
+      235
+    ],
+    "why won't my session move to the cloud": [
+      235
+    ],
+    "edits rejected in another worktree": [
+      235
+    ],
+    "worktree not created by this conversation": [
+      235
+    ],
+    "computer use won't click claude window": [
+      235
+    ],
+    "quick entry bar blocks mouse click": [
+      235
+    ],
+    "pop-up menu closed during background click": [
+      235
+    ],
+    "typed text missing after menu opened": [
+      235
+    ],
+    "folder access prompt wording changed": [
+      235
+    ],
+    "connectors stay off in later sessions": [
+      235
+    ],
+    "why are my connectors still turned off": [
+      235
+    ],
+    "require approval program before claude reads files": [
+      236
+    ],
+    "connected folders missing from shell": [
+      236
+    ],
+    "why can't bash see my connected folder": [
+      236
+    ],
+    "organization file scanning before read": [
+      236
+    ],
+    "block files by purview sensitivity label": [
+      236
+    ],
+    "microsoft 365 connector refuses labeled sharepoint files": [
+      236
+    ],
+    "user configuration server overrides device profile": [
+      236
+    ],
+    "edr sensor install on windows cowork": [
+      236
+    ],
+    "is the edr sensor actually running": [
+      236
+    ],
+    "admin disable shell commands in cowork": [
+      236
+    ],
+    "your administrator has turned off shell commands": [
+      236
+    ],
+    "automatic restarts are paused for this session": [
+      236
+    ],
+    "plugin not sent to ssh host": [
+      236
+    ],
+    "ssh sign-in helper blocked by antivirus": [
+      236
+    ],
+    "why did claude say my organization blocked this file": [
+      236
     ]
   },
   "keyword_boundary": {

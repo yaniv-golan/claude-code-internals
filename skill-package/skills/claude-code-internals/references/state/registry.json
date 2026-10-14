@@ -6,11 +6,11 @@
     "in_vm_elf": "2.1.280",
     "fcache_capture": {
       "content16": "4cc97df3da602616",
-      "embedded_timestamp": 1791967560187,
+      "embedded_timestamp": 1791969083104,
       "feature_count": 428,
       "observed_at": "2026-10-14",
       "mode": "1p",
-      "pinned16": "22365cdaf66417e8"
+      "pinned16": "52758c29f27a4c67"
     },
     "agent_elf_parity_check": "2.1.280",
     "container_cc_version_observed": {
@@ -9024,6 +9024,166 @@
           "lesson": 222
         }
       ]
+    },
+    {
+      "id": "gate.3184956269",
+      "kind": "gate",
+      "name": "3184956269 (MCP Apps routing for agent-spawned plugin servers)",
+      "status": "dark-launched",
+      "first_seen": "2.37337.1",
+      "removed_in": null,
+      "as_of": "2.1.295",
+      "summary": "New in Desktop 2.37337.1 (host-loop Cowork, index.chunk-m8lVroc8.js): when on, MCP-Apps widget tools/call and resources/read are routed to plugin MCP servers the agent itself spawned (callSdkSessionTool/readSdkSessionResource, sdkSpawnedMcpRouting), their _meta is forwarded, and CLAUDE_CODE_MCP_APPS_HOST=1 is set at spawn. Read with oZ (unserved reads off).",
+      "provenance": [
+        {
+          "lesson": 236
+        },
+        {
+          "lesson": 233
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "4cc97df3da602616"
+      }
+    },
+    {
+      "id": "gate.3488857202",
+      "kind": "gate",
+      "name": "3488857202 (Code-tab startup-failure results)",
+      "status": "dark-launched",
+      "first_seen": "2.37337.1",
+      "removed_in": null,
+      "as_of": "2.1.295",
+      "summary": "New in Desktop 2.37337.1 (index.chunk-BolytlRP.js ca()): when on, Desktop sets CLAUDE_CODE_STARTUP_FAILURE_RESULTS=1 at Code-tab CLI spawn so the CLI reports startup_failure_reason, which selects one of 24 restart-parking category texts (12 new). When off, parked sessions show the generic text. Read with oZ (unserved reads off).",
+      "provenance": [
+        {
+          "lesson": 236
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "4cc97df3da602616"
+      }
+    },
+    {
+      "id": "gate.3400412699",
+      "kind": "gate",
+      "name": "3400412699 (close background pop-up menus (computer use))",
+      "status": "dark-launched",
+      "first_seen": "2.37337.1",
+      "removed_in": null,
+      "as_of": "2.1.295",
+      "summary": "New in Desktop 2.37337.1 (index.chunk-BWk6pVUt.js Zar()): app-scoped computer-use actions close native pop-up menus that background actions opened and append the verdict to the next tool result. Read as Ry(id)!==\"off\": on unless served off, and on if unreadable.",
+      "provenance": [
+        {
+          "lesson": 235
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "4cc97df3da602616"
+      }
+    },
+    {
+      "id": "gate.346871663",
+      "kind": "gate",
+      "name": "346871663 (refuse hard-linked scheduled-task file)",
+      "status": "dark-launched",
+      "first_seen": "2.37337.1",
+      "removed_in": null,
+      "as_of": "2.1.295",
+      "summary": "New in Desktop 2.37337.1 (isFeatureEnabled): when on, a scheduled-task file that is hard-linked is refused (the 2.31226 behaviour); when off, it is written through.",
+      "provenance": [
+        {
+          "lesson": 235
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "4cc97df3da602616"
+      }
+    },
+    {
+      "id": "gate.61799151",
+      "kind": "gate",
+      "name": "61799151 (.host-home single-prefix match)",
+      "status": "dark-launched",
+      "first_seen": "2.37337.1",
+      "removed_in": null,
+      "as_of": "2.1.295",
+      "summary": "New in Desktop 2.37337.1 (index.chunk-KpOoeR5G.js): .host-home path translation strips repeated prefixes; when on, the old single-prefix regex is restored. Read with oZ.",
+      "provenance": [
+        {
+          "lesson": 236
+        },
+        {
+          "lesson": 117
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "4cc97df3da602616"
+      }
+    },
+    {
+      "id": "gate.3475553907",
+      "kind": "gate",
+      "name": "3475553907 (organization default for unattended remote-control serving)",
+      "status": "dark-launched",
+      "first_seen": "2.37337.1",
+      "removed_in": null,
+      "as_of": "2.1.295",
+      "summary": "New in Desktop 2.37337.1 (index.chunk-9HWJKfP5.js): when on (hZ===\"on\", GrowthBook data under 90 minutes old), unattended remote-control serving counts as accepted by organization default when no consent record exists (~/.claude/state/unattended-serving-consent.json).",
+      "provenance": [
+        {
+          "lesson": 235
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "4cc97df3da602616"
+      }
+    },
+    {
+      "id": "gate.1985233154",
+      "kind": "gate",
+      "name": "1985233154 (list and tail standalone CLI sessions)",
+      "status": "dark-launched",
+      "first_seen": "2.37337.1",
+      "removed_in": null,
+      "as_of": "2.1.295",
+      "summary": "New in Desktop 2.37337.1 (index.chunk-sEArkElU.js): gates Desktop listing and tailing standalone CLI sessions, which 2.31226.1 had hard-wired off; enableCliRemoteControl stays off.",
+      "provenance": [
+        {
+          "lesson": 236
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": false,
+        "at": "4cc97df3da602616"
+      }
     }
   ]
 }

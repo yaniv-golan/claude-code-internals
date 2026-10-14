@@ -2948,6 +2948,72 @@
     234
    ],
    "hint": "Desktop rewrites the fcache when the organization changes, and 8 gates differ between Team and Personal. Compare captures only under the same organization; the pinned record is Team's."
+  },
+  {
+   "pattern": [
+    "connected folder not visible in Cowork shell",
+    "files in connected folder blocked by organization",
+    "import_files tool",
+    "organization file check denied Read"
+   ],
+   "lessons": [
+    236
+   ],
+   "hint": "With the third-party file check (coworkFileReadCheck) configured, connected folders are not mounted into the VM and file tools ask the organization program per file. Use mcp__cowork__import_files or attach the files."
+  },
+  {
+   "pattern": [
+    "can't move to the cloud worktree",
+    "move_to_cloud refused",
+    "worktree this app hasn't verified"
+   ],
+   "lessons": [
+    235
+   ],
+   "hint": "From 2.37337, move_to_cloud refuses from an unverified worktree and while another message is queued. Leave the worktree or wait, then retry."
+  },
+  {
+   "pattern": [
+    "edits rejected in worktree",
+    "foreign_worktree",
+    "not one this conversation made"
+   ],
+   "lessons": [
+    235
+   ],
+   "hint": "Edits in a git worktree the conversation did not create are rejected. Use ExitWorktree (action: \"keep\") then EnterWorktree with no path to get your own."
+  },
+  {
+   "pattern": [
+    "scheduled task runs in Auto mode",
+    "scheduled task kept bypass mode",
+    "permissionModeCarried"
+   ],
+   "lessons": [
+    235
+   ],
+   "hint": "From 2.37337 a task created from a local Code-tab session keeps that session's Auto or Bypass mode; app-level actions are still refused in runs nobody opened."
+  },
+  {
+   "pattern": [
+    "Replace existing plugin dialog",
+    "uploaded plugin arrived disabled",
+    "plugin includes components that run code"
+   ],
+   "lessons": [
+    230
+   ],
+   "hint": "An upload over a same-name private upload asks to Replace; the replacement can arrive off, and switching on a plugin with hooks, MCP servers or CLIs shows a trust dialog."
+  },
+  {
+   "pattern": [
+    "connectors stay off in new sessions",
+    "connectors disabled after a test"
+   ],
+   "lessons": [
+    235
+   ],
+   "hint": "Connector switches in the message box (+ → Connectors) persist beyond one conversation. Switch them back on there."
   }
  ]
 }

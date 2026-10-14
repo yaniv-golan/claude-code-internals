@@ -2736,16 +2736,24 @@
     "117": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-06",
-      "input_sha256": "ca1664294e08ba77082c9f3b6f5551479ded3722ce2179a1e93f8c4f0a43f298",
+      "date": "2026-10-14",
+      "input_sha256": "702aacff3f5528be17381fcba576ac4dc6c79eb3dbe5c3ad08f18bc6946e562b",
       "prior_terms_sha256": "0909f523ea918056a1e69f03df56c0625b6aa3ea368fb018bb23fce6570f7e3c",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "fce0605448c4bb26a34f93c156631b3655cfb24d",
-      "replaced": [],
+      "previous_text": "56c4b54ec9e5a389ae055a2a82fe18cb77bb6478",
+      "replaced": [
+        "inspect the Cowork virtual machine disk image"
+      ],
+      "dropped": [
+        {
+          "term": "inspect the Cowork virtual machine disk image",
+          "why": "duplicate",
+          "duplicate_of": "search the VM disk image without booting it"
+        }
+      ],
       "terms": [
         "which Cowork folders are actually shared with my Mac",
         "is the sandbox temp folder shared with the host",
-        "inspect the Cowork virtual machine disk image",
         "search the VM disk image without booting it",
         "what do Cowork session names look like",
         "session IDs are three random words, not a UUID",
@@ -2760,7 +2768,8 @@
         "why does my home folder vanish after a Cowork session",
         "is the temp folder shared between Cowork sessions",
         "do temp files outlive a Cowork session",
-        "permission denied on temp file in Cowork skill"
+        "permission denied on temp file in Cowork skill",
+        "repeated host home prefixes in session paths"
       ]
     },
     "118": {
@@ -5215,11 +5224,11 @@
     "215": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-13",
-      "input_sha256": "ae6d54b79c7bfa3eca5307e20fa9a14fc27cb0bee4414959311ad214ddf340f0",
+      "date": "2026-10-14",
+      "input_sha256": "65d7c2e5e44b0de25ae6e8c1ff32ba2be48682675d626b69426101bfd502bb4d",
       "prior_terms_sha256": "4c698ea62321de569cdb45bf12c6cf07577998a558ac86d4301c8e52cf892c69",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "not found",
+      "previous_text": "56c4b54ec9e5a389ae055a2a82fe18cb77bb6478",
       "replaced": [],
       "terms": [
         "cloud task can't see files on my Mac",
@@ -5700,24 +5709,29 @@
     "230": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-13",
-      "input_sha256": "3eb01fb34ad81106922027b4e63353b7875bb8c980db3de46d5799275cf5b141",
-      "prior_terms_sha256": "7c80773b2ba1d3be360ec349f969de309f00f2e116103fb8fb15f6fa9986b4a0",
+      "date": "2026-10-14",
+      "input_sha256": "ae6931983db364209f1c512864e47d0f8740bcd1d4d43e5e12e33e452e7698ea",
+      "prior_terms_sha256": "ce7b8961501c4e57f9fbb5d6498fd11c34e06f24a58f3547dc50e7654218b85a",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "62379fcd0714a0f995773b0071f8ddfe1179b9f6",
+      "previous_text": "56c4b54ec9e5a389ae055a2a82fe18cb77bb6478",
       "replaced": [
-        "does disabling a plugin uninstall it?"
+        "why does my installed skill file look different",
+        "disabled team plugin disappeared"
       ],
       "dropped": [
         {
-          "term": "does disabling a plugin uninstall it?",
+          "term": "why does my installed skill file look different",
+          "why": "duplicate",
+          "duplicate_of": "installed plugin files differ from source"
+        },
+        {
+          "term": "disabled team plugin disappeared",
           "why": "duplicate",
           "duplicate_of": "turning off org plugin deletes it"
         }
       ],
       "terms": [
         "installed plugin files differ from source",
-        "why does my installed skill file look different",
         "plugin description reformatted after install",
         "multi-line description became one line",
         "hash check fails on installed plugin",
@@ -5725,7 +5739,6 @@
         "plugin tests folder got installed",
         "marketplace plugin much bigger than zip",
         "turning off org plugin deletes it",
-        "disabled team plugin disappeared",
         "lost my edits to installed plugin",
         "plugin shows Add instead of toggle",
         "orphans cleaned in sync log",
@@ -5733,7 +5746,9 @@
         "marketplace from settings never updates",
         "plugin update button greyed out",
         "old plugin copy still enabled after re-adding",
-        "uploading new plugin version adds second copy"
+        "uploading new plugin version adds second copy",
+        "replace existing plugin prompt on upload",
+        "plugin warns it runs code when enabled"
       ]
     },
     "231": {
@@ -5804,10 +5819,13 @@
     },
     "233": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-10-13",
-      "input_sha256": "56c190ddb677b96ca0b3f0e0c3fa8d39dcf82b5e8b035e47200aade48fbed7f6",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-14",
+      "input_sha256": "14620e225cad4c47e637bb0db5686619aa2b7a327abd8d6445f9f5cae37fb3ea",
+      "prior_terms_sha256": "acd64ca625b9b04db7c34e0cb6a553936bc4d07a642661e315ca254a37be46ff",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "56c4b54ec9e5a389ae055a2a82fe18cb77bb6478",
+      "replaced": [],
       "terms": [
         "MCP server works in chat but not Cowork",
         "local MCP server missing in Cowork sessions",
@@ -5823,7 +5841,8 @@
         "should my server error or close on unknown methods?",
         "how fast must server answer version probe?",
         "Desktop spawns extra copy of MCP server",
-        "where are Cowork MCP startup failures logged?"
+        "where are Cowork MCP startup failures logged?",
+        "MCP app widget calls to agent-spawned plugin servers"
       ]
     },
     "234": {
@@ -5848,6 +5867,54 @@
         "why does computer use work on personal but not team?",
         "flag cache drift false alarm",
         "same mac different features per organization"
+      ]
+    },
+    "235": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-10-14",
+      "input_sha256": "43ed4045068907dfe41a27be09f1dc40d163c22619cbefb96d2a03d430cf222d",
+      "collision_check": "questions-v2.json dev",
+      "terms": [
+        "scheduled task runs without asking permission",
+        "scheduled task inherits auto mode",
+        "why does my scheduled task skip approvals?",
+        "move session to cloud refused worktree",
+        "can't move session to cloud",
+        "why won't my session move to the cloud?",
+        "edits rejected in another worktree",
+        "worktree not created by this conversation",
+        "computer use won't click Claude window",
+        "quick entry bar blocks mouse click",
+        "pop-up menu closed during background click",
+        "typed text missing after menu opened",
+        "folder access prompt wording changed",
+        "connectors stay off in later sessions",
+        "why are my connectors still turned off?"
+      ]
+    },
+    "236": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-10-14",
+      "input_sha256": "82178ee773bfb9b1b360fc82e40f3880533172b84e8ec131f302e92432ae8021",
+      "collision_check": "questions-v2.json dev",
+      "terms": [
+        "require approval program before Claude reads files",
+        "connected folders missing from shell",
+        "why can't bash see my connected folder",
+        "organization file scanning before read",
+        "block files by Purview sensitivity label",
+        "Microsoft 365 connector refuses labeled SharePoint files",
+        "user configuration server overrides device profile",
+        "EDR sensor install on Windows Cowork",
+        "is the EDR sensor actually running?",
+        "admin disable shell commands in Cowork",
+        "your administrator has turned off shell commands",
+        "automatic restarts are paused for this session",
+        "plugin not sent to SSH host",
+        "SSH sign-in helper blocked by antivirus",
+        "why did Claude say my organization blocked this file?"
       ]
     }
   }
