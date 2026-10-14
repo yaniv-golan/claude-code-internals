@@ -22583,7 +22583,7 @@
       "lesson_number": "235",
       "file": "63-desktop-2.37337-sessions-admin-file-check.md",
       "startLine": 14,
-      "endLine": 93,
+      "endLine": 98,
       "keywords": [
         "mcp__ccd_session__move_to_cloud",
         "unattended_deny",
@@ -22619,6 +22619,8 @@
         "already_up",
         "unknown_up",
         "closed_late",
+        "folder-worktree-fences-of",
+        "external-worktree-containers",
         "346871663",
         "2393677837",
         "2222745432",
@@ -22678,6 +22680,8 @@
         "already_up",
         "unknown_up",
         "closed_late",
+        "folder-worktree-fences-of",
+        "external-worktree-containers",
         "346871663",
         "2393677837",
         "2222745432",
@@ -22716,8 +22720,8 @@
       "title": "What Desktop 2.37337 Changed for Admins: the File Check, Sensitivity Labels, Device Profiles, EDR and SSH",
       "lesson_number": "236",
       "file": "63-desktop-2.37337-sessions-admin-file-check.md",
-      "startLine": 97,
-      "endLine": 219,
+      "startLine": 102,
+      "endLine": 245,
       "keywords": [
         "61799151",
         "meta.json",
@@ -22730,8 +22734,6 @@
         "cowork-file-read-check",
         "file-read-check",
         "remote-disabled",
-        "available-in-version",
-        "2.31226.0",
         "public-undocumented",
         "unreadable-file-read-check",
         "tool_call",
@@ -22773,13 +22775,33 @@
         "import_files",
         "disabled-builtin-tools",
         "ssh.exe",
+        "flat-key",
+        "index.pre.js",
         "developer-mode-enabled",
-        "trust-bootstrap-local-exec",
+        "legacy-flat-key",
+        "is-dxt-enabled",
+        "is-dxt-signature-required",
+        "is-dxt-directory-enabled",
         "enduser-attribution",
+        "trust-bootstrap-local-exec",
         "inference-gateway-headers",
-        "is-dxt",
-        "cowork-egress-allowed-hosts",
+        "empty-list-is-authored",
+        "chat-shell-allowed-domains",
+        "chat-advanced-file-analysis-network-enabled",
         "tool-policy",
+        "org-plugin-settings",
+        "builtin-tool-policy",
+        "inference-custom-headers",
+        "bootstrap-headers",
+        "otlp-headers",
+        "otlp-resource-attributes",
+        "tool-policy-rules",
+        "tool-policy-endpoint",
+        "2.31226.0",
+        "otlp-attr-max-chars",
+        "skill-bundles",
+        "cowork-egress-allowed-hosts",
+        "is-dxt",
         "1968338882",
         "580613960",
         "3488857202",
@@ -22797,8 +22819,6 @@
         "4113347374",
         "require approval program before claude reads files",
         "connected folders missing from shell",
-        "why can't bash see my connected folder",
-        "organization file scanning before read",
         "block files by purview sensitivity label",
         "microsoft 365 connector refuses labeled sharepoint files",
         "user configuration server overrides device profile",
@@ -22812,7 +22832,9 @@
         "why did claude say my organization blocked this file",
         "file check setting hidden from admin settings",
         "are these admin changes in the release notes",
-        "egress allowed hosts no longer added automatically"
+        "egress allowed hosts no longer added automatically",
+        "how to tell if a policy setting is released",
+        "can't install extension from folder developer mode"
       ],
       "identifier_keys": [
         "61799151",
@@ -22826,8 +22848,6 @@
         "cowork-file-read-check",
         "file-read-check",
         "remote-disabled",
-        "available-in-version",
-        "2.31226.0",
         "public-undocumented",
         "unreadable-file-read-check",
         "tool_call",
@@ -22869,13 +22889,33 @@
         "import_files",
         "disabled-builtin-tools",
         "ssh.exe",
+        "flat-key",
+        "index.pre.js",
         "developer-mode-enabled",
-        "trust-bootstrap-local-exec",
+        "legacy-flat-key",
+        "is-dxt-enabled",
+        "is-dxt-signature-required",
+        "is-dxt-directory-enabled",
         "enduser-attribution",
+        "trust-bootstrap-local-exec",
         "inference-gateway-headers",
-        "is-dxt",
-        "cowork-egress-allowed-hosts",
+        "empty-list-is-authored",
+        "chat-shell-allowed-domains",
+        "chat-advanced-file-analysis-network-enabled",
         "tool-policy",
+        "org-plugin-settings",
+        "builtin-tool-policy",
+        "inference-custom-headers",
+        "bootstrap-headers",
+        "otlp-headers",
+        "otlp-resource-attributes",
+        "tool-policy-rules",
+        "tool-policy-endpoint",
+        "2.31226.0",
+        "otlp-attr-max-chars",
+        "skill-bundles",
+        "cowork-egress-allowed-hosts",
+        "is-dxt",
         "1968338882",
         "580613960",
         "3488857202",
@@ -22895,8 +22935,6 @@
       "vocab_keys": [
         "require approval program before claude reads files",
         "connected folders missing from shell",
-        "why can't bash see my connected folder",
-        "organization file scanning before read",
         "block files by purview sensitivity label",
         "microsoft 365 connector refuses labeled sharepoint files",
         "user configuration server overrides device profile",
@@ -22910,13 +22948,15 @@
         "why did claude say my organization blocked this file",
         "file check setting hidden from admin settings",
         "are these admin changes in the release notes",
-        "egress allowed hosts no longer added automatically"
+        "egress allowed hosts no longer added automatically",
+        "how to tell if a policy setting is released",
+        "can't install extension from folder developer mode"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-14",
-        "terms_sha256": "cfede9649e567d9077c6c59bdc6e9760d9a043948da9d547cc388e0dc7fc2b80"
+        "terms_sha256": "46a59f750cf34aa6bb2bf729bb29e5b8725510a5418a0c57aa67a1e69dc7b003"
       }
     }
   ],
@@ -47620,6 +47660,12 @@
     "closed_late": [
       235
     ],
+    "folder-worktree-fences-of": [
+      235
+    ],
+    "external-worktree-containers": [
+      235
+    ],
     "346871663": [
       235
     ],
@@ -47654,12 +47700,6 @@
       236
     ],
     "remote-disabled": [
-      236
-    ],
-    "available-in-version": [
-      236
-    ],
-    "2.31226.0": [
       236
     ],
     "public-undocumented": [
@@ -47785,25 +47825,85 @@
     "ssh.exe": [
       236
     ],
+    "flat-key": [
+      236
+    ],
+    "index.pre.js": [
+      236
+    ],
     "developer-mode-enabled": [
       236
     ],
-    "trust-bootstrap-local-exec": [
+    "legacy-flat-key": [
+      236
+    ],
+    "is-dxt-enabled": [
+      236
+    ],
+    "is-dxt-signature-required": [
+      236
+    ],
+    "is-dxt-directory-enabled": [
       236
     ],
     "enduser-attribution": [
       236
     ],
+    "trust-bootstrap-local-exec": [
+      236
+    ],
     "inference-gateway-headers": [
       236
     ],
-    "is-dxt": [
+    "empty-list-is-authored": [
+      236
+    ],
+    "chat-shell-allowed-domains": [
+      236
+    ],
+    "chat-advanced-file-analysis-network-enabled": [
+      236
+    ],
+    "tool-policy": [
+      236
+    ],
+    "org-plugin-settings": [
+      236
+    ],
+    "builtin-tool-policy": [
+      236
+    ],
+    "inference-custom-headers": [
+      236
+    ],
+    "bootstrap-headers": [
+      236
+    ],
+    "otlp-headers": [
+      236
+    ],
+    "otlp-resource-attributes": [
+      236
+    ],
+    "tool-policy-rules": [
+      236
+    ],
+    "tool-policy-endpoint": [
+      236
+    ],
+    "2.31226.0": [
+      236
+    ],
+    "otlp-attr-max-chars": [
+      236
+    ],
+    "skill-bundles": [
       236
     ],
     "cowork-egress-allowed-hosts": [
       236
     ],
-    "tool-policy": [
+    "is-dxt": [
       236
     ],
     "1968338882": [
@@ -58779,12 +58879,6 @@
     "connected folders missing from shell": [
       236
     ],
-    "why can't bash see my connected folder": [
-      236
-    ],
-    "organization file scanning before read": [
-      236
-    ],
     "block files by purview sensitivity label": [
       236
     ],
@@ -58825,6 +58919,12 @@
       236
     ],
     "egress allowed hosts no longer added automatically": [
+      236
+    ],
+    "how to tell if a policy setting is released": [
+      236
+    ],
+    "can't install extension from folder developer mode": [
       236
     ]
   },

@@ -83,7 +83,12 @@ Anthropic's notes for v2.37337.1 (`claude.com/docs/cowork/changelog`) announce o
 
 - **Announced:** the background menu guard ("a dropdown menu that a click or key opens in a background app is now closed again at once").
 - **Not in the notes (dark):** the scheduled-task mode carry, the `move_to_cloud` refusals, the `foreign_worktree` guard, the folder-card rewording, the side-session notes, the credits line, own-window click-through and zoomed-page refusals.
-- **Nearby:** the notes for 2.31226.0 and 2.37337.1 call edits that land in the main checkout or another session's worktree a fixed bug. They don't name the guard, and whether that fix is this guard was not checked.
+- **Nearby, a different mechanism:** the 2.31226.0 notes fix "file edits in a worktree session sometimes landing in the main checkout or in another session's worktree". That is an earlier fence, not this guard; the guard's strings are absent from 2.26454.2, 2.31226.0 and 2.31226.1. In 2.31226.0 (CODE-READ, not traced to a refusal):
+  - sessions with added folders and forked sessions are told each folder's worktree path, with "Do not edit the other session's worktree paths";
+  - a subagent in the user's shared checkout is told not to edit there;
+  - the edit hook gets `folderWorktreeFencesOf` and `externalWorktreeContainers`.
+
+  `foreign_worktree` in 2.37337.1 adds worktrees the conversation didn't make (the pool's, an outside tool's) on top of that fence. The 2.37337.1 note extends the earlier fix to SSH sessions on Linux hosts.
 
 ## Who this affects and what to do
 
@@ -103,8 +108,9 @@ Anthropic's notes for v2.37337.1 (`claude.com/docs/cowork/changelog`) announce o
 - **Setting:** policy `coworkFileReadCheck` (`workspace.fileReadCheck`), `{command, timeoutSec 1–60 (default 10), cacheTtlSec 0–86400 (default 600)}`.
   - Scopes `["3p"]`, `remotePolicy:"remote-disabled"`, so it is device policy only.
   - **Not released yet:**
-    - The setting's `availableInVersion` is `"@next"` rather than a version number. Settings that already ship carry a number; a neighbouring one says `2.31226.0`.
-    - It is `public-undocumented`, and hidden from the settings page (`show: () => false`).
+    - It is `public-undocumented` (newly so in 2.37337.1) and hidden from the settings page (`show: () => false`). It is the only `@next` key with both marks.
+    - Neither the release notes nor the configuration changelog mention it.
+    - It has stayed `"@next"` for two builds. On its own, `"@next"` means only "added in this build": see the stamp section below.
   - **But enforced if present.** The only code that reads `@next` is one helper for the OIDC editor; the policy reader ignores the marker. So a machine policy that sets the key is enforced by 2.37337.1. This is CODE-READ; no deployment with the check was run.
   - The schema existed in 2.31226.1; the runtime is new.
 - **The command** must be a standalone program given by full local path, from machine-scoped policy. Scripts (`.cmd`, `.bat`, `.ps1`), shells and interpreters are rejected by pattern.
@@ -200,17 +206,37 @@ The 8 ids removed since 2.31226.1 were retired kill switches. What they guarded 
 
 - **Not in the notes (dark):** everything above. That covers the file check and `import_files`, sensitivity labels, the hybrid pointer, EDR, the shell-off message, restart-parking categories, the SSH banner and helper names, the `experimental` refusal, and every gate in the table.
 - **Nearby:** the notes say a `WebFetch` or bare `Bash` entry in `disabledBuiltinTools` now also applies to Cowork and Chat conversations already open. They also say SSH on Windows runs only an `ssh.exe` found on PATH, never a `.bat`, `.cmd` or `.ps1` wrapper.
-- **Announced, not covered by this lesson:** the v2.37337.1 notes and the configuration changelog list admin changes this asar diff did not report:
-  - `developerModeEnabled` is new (confirmed in the asar: 0 → 7 occurrences);
-  - the former names `trustBootstrapLocalExec`, `enduserAttribution`, `inferenceGatewayHeaders` and `isDxt*` are now unrecognized keys. `trustBootstrapLocalExec` is gone from the asar (2 → 0). A macOS profile holding only `isDxt*` names stops counting as managed;
-  - `coworkEgressAllowedHosts` no longer gets the inference, gateway and OTLP hosts or `api.anthropic.com` added automatically;
-  - a malformed `managedMcpServers` `toolPolicy` now blocks instead of dropping the entry;
-  - the Setup window's `.reg` export writes machine policy.
+- **Announced:** the configuration changes in the next section.
 
-  Read the notes for these; apart from the two keys above, they are not verified here.
+## Configuration changes the notes announce (CODE-READ, policy schema of both builds)
+
+A string diff of the two builds did not surface these; a diff of the managed-policy schema (the `flatKey` entries in `index.pre.js`) did.
+
+- **`developerModeEnabled`** (new; scopes `3p` and `1p`, hot-applied). Set to `false`:
+  - installing an extension from a folder is refused: "Your organization has turned off Developer Mode, so extensions can't be installed from a folder.";
+  - the bundle also has a routine that closes open DevTools under a Developer Mode log line. What triggers it was not traced.
+- **Former key names are dropped.** 2.31226.1 had six `legacyFlatKey` aliases, each with a stated effect: `isDxtEnabled`, `isDxtSignatureRequired`, `isDxtDirectoryEnabled`, `enduserAttribution`, `trustBootstrapLocalExec`, `inferenceGatewayHeaders`. 2.37337.1 has none.
+  - The `isDxtEnabled` strings still in the bundle belong to Desktop's internal developer-features object, not to managed configuration.
+  - Per the notes, a macOS profile or Windows user policy holding only former names stops counting as managed configuration.
+- **Egress no longer adds the provider's hosts.** The VM allowlist was `[...provider.vmAllowedDomains(), ...coworkEgressAllowedHosts]`; it is now the configured list alone.
+  - An empty list now counts as authored (`emptyListIsAuthored`), which backs the Setup window's "Allow none".
+  - New beside it: `chatShellAllowedDomains()`, which gives Chat's file-analysis shell the same list. It applies only when the new key `chatAdvancedFileAnalysisNetworkEnabled` is on. That key is `@next` and absent from the notes.
+- **A malformed `managedMcpServers` `toolPolicy`** is kept with every tool treated as "blocked", with the error "…is not a map of tool names to permissions".
+- **Deprecation flags** are cleared on `managedMcpServers`, `orgPluginSettings`, `builtinToolPolicy`, `inferenceCustomHeaders`, `bootstrapHeaders` and `otlpHeaders`/`otlpResourceAttributes`. The old spellings now fail as plain invalid values.
+- **Also in the schema diff:** the `toolPolicyRules` key (added `@next` in 2.31226.0) is gone, unannounced. `toolPolicyEndpoint` was stamped `2.31226.0`, also unannounced.
+
+## Reading a policy key's release state (MEASURED, 39 Desktop builds, 1.18286.2 → 2.37337.1)
+
+- **`availableInVersion:"@next"` means "added in this build".** The build that introduces a key marks it `@next`, and a later build stamps it. All 51 stamps seen name a version no later than the last `@next` build, usually the introducing one. Example: `otlpAttrMaxChars` was `@next` in 2.31226.1 and `2.31226.0` in 2.37337.1, and the configuration changelog lists it under v2.31226.0. `developerModeEnabled` is `@next` in the very build whose notes announce it.
+- **A key that stays `@next` across several builds is held back.** Examples are the Entra and Office keys and `skillBundles` (since 1.44121.1), and `coworkFileReadCheck` (since 2.31226.0). None is in the notes.
+- **`public-undocumented` predicts silence in the notes.** 22 of the 25 keys flagged that way in 2.37337.1 are never named in the notes or the configuration changelog. 149 of the other 163 are.
+- So test "released" against the notes and the undocumented flag, never against the stamp alone.
 
 ## Who this affects and what to do
 
+- **Third-party admins updating to 2.37337.**
+  - List your inference provider's, gateway's and OTLP collector's hosts, and `api.anthropic.com`, in `coworkEgressAllowedHosts` if agents' shell commands, web fetches or http hooks call them. They are no longer added for you.
+  - Rename any former key names (`isDxt*`, `enduserAttribution`, `trustBootstrapLocalExec`, `inferenceGatewayHeaders`). Their settings no longer apply, and a profile holding only former names can make the device unmanaged.
 - **Third-party admins considering a file check.** It is unreleased and undocumented, so treat it as a preview, not a supported control.
   - If you test it: ship a signed, standalone program at a fixed path and set it by machine policy. Make it answer `{"action":"allow"}` with exit 0 quickly; anything else blocks.
   - Users' shell commands will no longer see connected folders. Tell them files come in through `import_files` or attachments.

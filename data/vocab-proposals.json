@@ -5872,26 +5872,11 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-14",
-      "input_sha256": "6575bc408a30737e45b2176a6102171b96ca5b12a6aa276773c70d5f2db9dfa2",
-      "prior_terms_sha256": "00abc48a22e51926eb0f6a2424cdb6174ea4f69c59823a7af6620297a0e084a4",
+      "input_sha256": "d98ebb1bc4c28681a11f2e938f833131573aacf3c10f05b83d487b7a126388c3",
+      "prior_terms_sha256": "5b725da1a77aae2062b3375f2a038797b7bba1fbe906e884bbc1dca54addf464",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "b5b3d64b8091ffccf3b33dd0ef795d8bc174fb59",
-      "replaced": [
-        "why won't my session move to the cloud?",
-        "why are my connectors still turned off?"
-      ],
-      "dropped": [
-        {
-          "term": "why won't my session move to the cloud?",
-          "why": "duplicate",
-          "duplicate_of": "can't move session to cloud"
-        },
-        {
-          "term": "why are my connectors still turned off?",
-          "why": "duplicate",
-          "duplicate_of": "connectors stay off in later sessions"
-        }
-      ],
+      "previous_text": "be15a9b1b04518e949975a656b7a34af23f1aff4",
+      "replaced": [],
       "terms": [
         "scheduled task runs without asking permission",
         "scheduled task inherits auto mode",
@@ -5917,16 +5902,29 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-14",
-      "input_sha256": "9c604c1145f83b9c6625ceebb1650bbfd2311d4f9969f7292c6313df57b6d302",
-      "prior_terms_sha256": "9045dccd860345710e86e70caa3d35d229777608ec6d14fc84865df0ad9f8686",
+      "input_sha256": "153e3b952defd5cd46d3e2a035131346274540e8219ef327d2bfaf6bf74bd4c8",
+      "prior_terms_sha256": "cfede9649e567d9077c6c59bdc6e9760d9a043948da9d547cc388e0dc7fc2b80",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "b5b3d64b8091ffccf3b33dd0ef795d8bc174fb59",
-      "replaced": [],
+      "previous_text": "be15a9b1b04518e949975a656b7a34af23f1aff4",
+      "replaced": [
+        "why can't bash see my connected folder",
+        "organization file scanning before read"
+      ],
+      "dropped": [
+        {
+          "term": "why can't bash see my connected folder",
+          "why": "duplicate",
+          "duplicate_of": "connected folders missing from shell"
+        },
+        {
+          "term": "organization file scanning before read",
+          "why": "duplicate",
+          "duplicate_of": "require approval program before Claude reads files"
+        }
+      ],
       "terms": [
         "require approval program before Claude reads files",
         "connected folders missing from shell",
-        "why can't bash see my connected folder",
-        "organization file scanning before read",
         "block files by Purview sensitivity label",
         "Microsoft 365 connector refuses labeled SharePoint files",
         "user configuration server overrides device profile",
@@ -5940,7 +5938,9 @@
         "why did Claude say my organization blocked this file?",
         "file check setting hidden from admin settings",
         "are these admin changes in the release notes?",
-        "egress allowed hosts no longer added automatically"
+        "egress allowed hosts no longer added automatically",
+        "how to tell if a policy setting is released",
+        "can't install extension from folder developer mode"
       ]
     }
   }
