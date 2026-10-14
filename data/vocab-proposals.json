@@ -5870,19 +5870,34 @@
     },
     "235": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v4-fill-gaps",
+      "prompt_version": "vocab-v4-update",
       "date": "2026-10-14",
-      "input_sha256": "43ed4045068907dfe41a27be09f1dc40d163c22619cbefb96d2a03d430cf222d",
-      "prior_terms_sha256": "bcf04950880479ce3d2e0d9e5ecd971de814e6da4b085d43acce1b4bc653bb84",
+      "input_sha256": "6575bc408a30737e45b2176a6102171b96ca5b12a6aa276773c70d5f2db9dfa2",
+      "prior_terms_sha256": "00abc48a22e51926eb0f6a2424cdb6174ea4f69c59823a7af6620297a0e084a4",
       "collision_check": "questions-v2.json dev",
-      "replaced": [],
+      "previous_text": "b5b3d64b8091ffccf3b33dd0ef795d8bc174fb59",
+      "replaced": [
+        "why won't my session move to the cloud?",
+        "why are my connectors still turned off?"
+      ],
+      "dropped": [
+        {
+          "term": "why won't my session move to the cloud?",
+          "why": "duplicate",
+          "duplicate_of": "can't move session to cloud"
+        },
+        {
+          "term": "why are my connectors still turned off?",
+          "why": "duplicate",
+          "duplicate_of": "connectors stay off in later sessions"
+        }
+      ],
       "terms": [
         "scheduled task runs without asking permission",
         "scheduled task inherits auto mode",
         "why does my scheduled task skip approvals?",
         "move session to cloud refused worktree",
         "can't move session to cloud",
-        "why won't my session move to the cloud?",
         "edits rejected in another worktree",
         "worktree not created by this conversation",
         "computer use won't click Claude window",
@@ -5891,20 +5906,21 @@
         "typed text missing after menu opened",
         "folder access prompt wording changed",
         "connectors stay off in later sessions",
-        "why are my connectors still turned off?",
         "browser click refused on zoomed page",
         "cloud move refused another message waiting",
-        "side session report finished or waiting"
+        "side session report finished or waiting",
+        "which changes are in the release notes",
+        "undocumented changes missing from changelog"
       ]
     },
     "236": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-14",
-      "input_sha256": "1b2f06e9d89e467dcbb606f17c12bf84acef1bc1f2901cb61d6c0af3689f5da5",
-      "prior_terms_sha256": "19ec471dfd8714c18d4077ae115dfb9902b48b8a49e889fb7e8ad3e83b2fa31a",
+      "input_sha256": "9c604c1145f83b9c6625ceebb1650bbfd2311d4f9969f7292c6313df57b6d302",
+      "prior_terms_sha256": "9045dccd860345710e86e70caa3d35d229777608ec6d14fc84865df0ad9f8686",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "2b3ad8a6c439f2751bb8578cbcc4339091981c47",
+      "previous_text": "b5b3d64b8091ffccf3b33dd0ef795d8bc174fb59",
       "replaced": [],
       "terms": [
         "require approval program before Claude reads files",
@@ -5922,19 +5938,9 @@
         "plugin not sent to SSH host",
         "SSH sign-in helper blocked by antivirus",
         "why did Claude say my organization blocked this file?",
-        "is the file check feature released yet?",
         "file check setting hidden from admin settings",
-        "unreleased setting still enforced by machine policy"
-      ],
-      "withheld": [
-        {
-          "term": "unreleased setting still enforced by machine policy",
-          "qid": "pl-0128"
-        },
-        {
-          "term": "is the file check feature released yet?",
-          "qid": "pl-0296"
-        }
+        "are these admin changes in the release notes?",
+        "egress allowed hosts no longer added automatically"
       ]
     }
   }

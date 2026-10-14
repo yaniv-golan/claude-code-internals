@@ -1,4 +1,4 @@
-Updated: 2026-10-14 (L235–L236) | Source: **Claude Desktop `app.asar` 2.37337.1 diffed against 2.31226.1** (both builds read in full; the new build has 368 build files against 353), Desktop's UI bundle (`ion-dist`, current build only, so no old/new claim for code that lives only there), the **live GrowthBook cache decoded on 2026-10-14 with Desktop on Team** (428 features), and live runs on 2.37337.1 on 2026-10-14. Both builds embed the same bundled agent, 2.1.295. Minified names are given with their chunk file, because the same short name is reused across chunks; chunk names are from 2.37337.1.
+Updated: 2026-10-14 (L235–L236) | Source: **Claude Desktop `app.asar` 2.37337.1 diffed against 2.31226.1** (both builds read in full; the new build has 368 build files against 353), Desktop's UI bundle (`ion-dist`, current build only, so no old/new claim for code that lives only there), the **live GrowthBook cache decoded on 2026-10-14 with Desktop on Team** (428 features), live runs on 2.37337.1 on 2026-10-14, and Anthropic's release notes and configuration changelog for v2.37337.1 (read 2026-10-14). Both builds embed the same bundled agent, 2.1.295. Minified names are given with their chunk file, because the same short name is reused across chunks; chunk names are from 2.37337.1.
 
 # Chapter 66: Desktop 2.37337 — Scheduled-Task Modes, Cloud Moves, Worktree Ownership, the Organization's File Check and Admin Policy
 
@@ -76,6 +76,14 @@ The tool itself is unchanged: `mcp__ccd_session__move_to_cloud`, card-only, inpu
 
 - On: `2371478310` (side-session notes), `2393677837` (worktree guard).
 - Unserved, so the code default applies: `3400412699` (menu guard, on by default), `346871663` (hard-link refusal, off by default).
+
+## In the official release notes (checked 2026-10-14)
+
+Anthropic's notes for v2.37337.1 (`claude.com/docs/cowork/changelog`) announce one item of this lesson. Notes are revised after publication, so this holds as of the date above.
+
+- **Announced:** the background menu guard ("a dropdown menu that a click or key opens in a background app is now closed again at once").
+- **Not in the notes (dark):** the scheduled-task mode carry, the `move_to_cloud` refusals, the `foreign_worktree` guard, the folder-card rewording, the side-session notes, the credits line, own-window click-through and zoomed-page refusals.
+- **Nearby:** the notes for 2.31226.0 and 2.37337.1 call edits that land in the main checkout or another session's worktree a fixed bug. They don't name the guard, and whether that fix is this guard was not checked.
 
 ## Who this affects and what to do
 
@@ -187,6 +195,19 @@ The 8 ids removed since 2.31226.1 were retired kill switches. What they guarded 
 - SSH-MCP stderr;
 - remote-plugin enabled state;
 - the skipped-block card.
+
+## In the official release notes (checked 2026-10-14)
+
+- **Not in the notes (dark):** everything above. That covers the file check and `import_files`, sensitivity labels, the hybrid pointer, EDR, the shell-off message, restart-parking categories, the SSH banner and helper names, the `experimental` refusal, and every gate in the table.
+- **Nearby:** the notes say a `WebFetch` or bare `Bash` entry in `disabledBuiltinTools` now also applies to Cowork and Chat conversations already open. They also say SSH on Windows runs only an `ssh.exe` found on PATH, never a `.bat`, `.cmd` or `.ps1` wrapper.
+- **Announced, not covered by this lesson:** the v2.37337.1 notes and the configuration changelog list admin changes this asar diff did not report:
+  - `developerModeEnabled` is new (confirmed in the asar: 0 → 7 occurrences);
+  - the former names `trustBootstrapLocalExec`, `enduserAttribution`, `inferenceGatewayHeaders` and `isDxt*` are now unrecognized keys. `trustBootstrapLocalExec` is gone from the asar (2 → 0). A macOS profile holding only `isDxt*` names stops counting as managed;
+  - `coworkEgressAllowedHosts` no longer gets the inference, gateway and OTLP hosts or `api.anthropic.com` added automatically;
+  - a malformed `managedMcpServers` `toolPolicy` now blocks instead of dropping the entry;
+  - the Setup window's `.reg` export writes machine policy.
+
+  Read the notes for these; apart from the two keys above, they are not verified here.
 
 ## Who this affects and what to do
 

@@ -22583,7 +22583,7 @@
       "lesson_number": "235",
       "file": "63-desktop-2.37337-sessions-admin-file-check.md",
       "startLine": 14,
-      "endLine": 85,
+      "endLine": 93,
       "keywords": [
         "mcp__ccd_session__move_to_cloud",
         "unattended_deny",
@@ -22629,7 +22629,6 @@
         "why does my scheduled task skip approvals",
         "move session to cloud refused worktree",
         "can't move session to cloud",
-        "why won't my session move to the cloud",
         "edits rejected in another worktree",
         "worktree not created by this conversation",
         "computer use won't click claude window",
@@ -22638,10 +22637,11 @@
         "typed text missing after menu opened",
         "folder access prompt wording changed",
         "connectors stay off in later sessions",
-        "why are my connectors still turned off",
         "browser click refused on zoomed page",
         "cloud move refused another message waiting",
-        "side session report finished or waiting"
+        "side session report finished or waiting",
+        "which changes are in the release notes",
+        "undocumented changes missing from changelog"
       ],
       "identifier_keys": [
         "mcp__ccd_session__move_to_cloud",
@@ -22690,7 +22690,6 @@
         "why does my scheduled task skip approvals",
         "move session to cloud refused worktree",
         "can't move session to cloud",
-        "why won't my session move to the cloud",
         "edits rejected in another worktree",
         "worktree not created by this conversation",
         "computer use won't click claude window",
@@ -22699,16 +22698,17 @@
         "typed text missing after menu opened",
         "folder access prompt wording changed",
         "connectors stay off in later sessions",
-        "why are my connectors still turned off",
         "browser click refused on zoomed page",
         "cloud move refused another message waiting",
-        "side session report finished or waiting"
+        "side session report finished or waiting",
+        "which changes are in the release notes",
+        "undocumented changes missing from changelog"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v4-fill-gaps",
+        "prompt_version": "vocab-v4-update",
         "date": "2026-10-14",
-        "terms_sha256": "00abc48a22e51926eb0f6a2424cdb6174ea4f69c59823a7af6620297a0e084a4"
+        "terms_sha256": "5b725da1a77aae2062b3375f2a038797b7bba1fbe906e884bbc1dca54addf464"
       }
     },
     {
@@ -22716,8 +22716,8 @@
       "title": "What Desktop 2.37337 Changed for Admins: the File Check, Sensitivity Labels, Device Profiles, EDR and SSH",
       "lesson_number": "236",
       "file": "63-desktop-2.37337-sessions-admin-file-check.md",
-      "startLine": 89,
-      "endLine": 198,
+      "startLine": 97,
+      "endLine": 219,
       "keywords": [
         "61799151",
         "meta.json",
@@ -22771,6 +22771,15 @@
         "skill_hooks",
         "CLAUDE_CODE_MCP_APPS_HOST",
         "import_files",
+        "disabled-builtin-tools",
+        "ssh.exe",
+        "developer-mode-enabled",
+        "trust-bootstrap-local-exec",
+        "enduser-attribution",
+        "inference-gateway-headers",
+        "is-dxt",
+        "cowork-egress-allowed-hosts",
+        "tool-policy",
         "1968338882",
         "580613960",
         "3488857202",
@@ -22801,7 +22810,9 @@
         "plugin not sent to ssh host",
         "ssh sign-in helper blocked by antivirus",
         "why did claude say my organization blocked this file",
-        "file check setting hidden from admin settings"
+        "file check setting hidden from admin settings",
+        "are these admin changes in the release notes",
+        "egress allowed hosts no longer added automatically"
       ],
       "identifier_keys": [
         "61799151",
@@ -22856,6 +22867,15 @@
         "skill_hooks",
         "CLAUDE_CODE_MCP_APPS_HOST",
         "import_files",
+        "disabled-builtin-tools",
+        "ssh.exe",
+        "developer-mode-enabled",
+        "trust-bootstrap-local-exec",
+        "enduser-attribution",
+        "inference-gateway-headers",
+        "is-dxt",
+        "cowork-egress-allowed-hosts",
+        "tool-policy",
         "1968338882",
         "580613960",
         "3488857202",
@@ -22888,13 +22908,15 @@
         "plugin not sent to ssh host",
         "ssh sign-in helper blocked by antivirus",
         "why did claude say my organization blocked this file",
-        "file check setting hidden from admin settings"
+        "file check setting hidden from admin settings",
+        "are these admin changes in the release notes",
+        "egress allowed hosts no longer added automatically"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-14",
-        "terms_sha256": "e6921d6359c441fbfa4f5e546fd90a7df0c348afd3720e9c91527c35d7b22447"
+        "terms_sha256": "cfede9649e567d9077c6c59bdc6e9760d9a043948da9d547cc388e0dc7fc2b80"
       }
     }
   ],
@@ -47757,6 +47779,33 @@
     "import_files": [
       236
     ],
+    "disabled-builtin-tools": [
+      236
+    ],
+    "ssh.exe": [
+      236
+    ],
+    "developer-mode-enabled": [
+      236
+    ],
+    "trust-bootstrap-local-exec": [
+      236
+    ],
+    "enduser-attribution": [
+      236
+    ],
+    "inference-gateway-headers": [
+      236
+    ],
+    "is-dxt": [
+      236
+    ],
+    "cowork-egress-allowed-hosts": [
+      236
+    ],
+    "tool-policy": [
+      236
+    ],
     "1968338882": [
       236
     ],
@@ -58685,9 +58734,6 @@
     "can't move session to cloud": [
       235
     ],
-    "why won't my session move to the cloud": [
-      235
-    ],
     "edits rejected in another worktree": [
       235
     ],
@@ -58712,9 +58758,6 @@
     "connectors stay off in later sessions": [
       235
     ],
-    "why are my connectors still turned off": [
-      235
-    ],
     "browser click refused on zoomed page": [
       235
     ],
@@ -58722,6 +58765,12 @@
       235
     ],
     "side session report finished or waiting": [
+      235
+    ],
+    "which changes are in the release notes": [
+      235
+    ],
+    "undocumented changes missing from changelog": [
       235
     ],
     "require approval program before claude reads files": [
@@ -58770,6 +58819,12 @@
       236
     ],
     "file check setting hidden from admin settings": [
+      236
+    ],
+    "are these admin changes in the release notes": [
+      236
+    ],
+    "egress allowed hosts no longer added automatically": [
       236
     ]
   },
