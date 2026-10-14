@@ -1,5 +1,37 @@
 # Changelog
 
+## v2.70.0 — 2026-10-14 (this fork) — What Desktop 2.37337 changed: sessions, computer use and admin policy
+
+236 lessons across 66 chapters (2 new: L235–L236, new Chapter 66; four extended). Sources: Claude Desktop `app.asar`
+2.37337.1 diffed against 2.31226.1 (the bundled agent is unchanged at 2.1.295), its UI bundle (`ion-dist`), the
+GrowthBook cache decoded under Team on 2026-10-14, and live runs on 2.37337.1.
+
+**Desktop 2.37337 (Chapter 66, new)**
+
+- L235: sessions, permissions and computer use.
+  - A scheduled task created from a local Code-tab session keeps that session's Auto or Bypass mode.
+  - `move_to_cloud` refuses from an unverified worktree, or while another message is waiting.
+  - Edits in a git worktree the conversation didn't make are rejected.
+  - The folder card and side-session notes are reworded.
+  - Computer use won't click through Claude's own windows and closes pop-up menus that background actions open.
+  - Measured: connector switches in the message box persist across sessions.
+- L236: admin policy.
+  - An organization file check for third-party deployments. It is unreleased and hidden, but enforced if a machine
+    policy sets it. While it is configured, connected folders aren't mounted into the VM and `mcp__cowork__import_files`
+    copies checked files in.
+  - Microsoft 365 sensitivity labels.
+  - A user's configuration-server pointer vs the device profile.
+  - EDR on Windows; shell off in custom third-party deployments; new restart-parking categories; SSH; a gate table.
+
+**Extended**
+
+- L230: uploading over a same-name private upload shows "Replace existing plugin?". The replacement can arrive off.
+  Switching on a plugin that runs code shows a trust dialog. What triggers the Replace dialog is left open.
+- L215: how a delivered HTML file renders in the claude.ai web preview: a sandboxed 720 px frame where scripts run but
+  dialogs don't.
+- L117, L233: cross-references to two new gates.
+- Desktop server settings: fcache recaptured on 2026-10-14 under Team; seven new gates pinned.
+
 ## v2.69.0 — 2026-10-13 (this fork) — MCP 2026-07-28 negotiation, and a flag cache that follows the organization
 
 234 lessons across 65 chapters (2 new: L233–L234, new Chapter 65; four extended). Sources: Claude Desktop `app.asar`
