@@ -1878,12 +1878,12 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 235 · 63-desktop-2.37337-sessions-admin-file-check.md:75 · Served state on 2026-10-14 (MEASURED, Team)
 235 · 63-desktop-2.37337-sessions-admin-file-check.md:80 · Who this affects and what to do
 236 · 63-desktop-2.37337-sessions-admin-file-check.md:93 · The organization's file check (CODE-READ, `index.chunk-qbMm8eZ4.js` (new), `index.chunk-KpOoeR5G.js`, `index.chunk-m8lVroc8.js`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:116 · Microsoft 365 sensitivity labels (CODE-READ, `index.chunk-BWk6pVUt.js`, `resources/office365-mcp/office365-mcp-stdio.mjs`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:123 · Device profile vs a user's configuration-server pointer (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-CGQsUM80.js`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:131 · EDR integration (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-DkReRM12.js`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:142 · Other admin-facing changes (CODE-READ)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:160 · Gates new in this build, by effect (CODE-READ; served state MEASURED on Team, 2026-10-14)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:187 · Who this affects and what to do
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:120 · Microsoft 365 sensitivity labels (CODE-READ, `index.chunk-BWk6pVUt.js`, `resources/office365-mcp/office365-mcp-stdio.mjs`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:127 · Device profile vs a user's configuration-server pointer (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-CGQsUM80.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:135 · EDR integration (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-DkReRM12.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:146 · Other admin-facing changes (CODE-READ)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:164 · Gates new in this build, by effect (CODE-READ; served state MEASURED on Team, 2026-10-14)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:191 · Who this affects and what to do
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

@@ -5223,12 +5223,11 @@
     },
     "215": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v4-update",
+      "prompt_version": "vocab-v4-fill-gaps",
       "date": "2026-10-14",
       "input_sha256": "65d7c2e5e44b0de25ae6e8c1ff32ba2be48682675d626b69426101bfd502bb4d",
       "prior_terms_sha256": "4c698ea62321de569cdb45bf12c6cf07577998a558ac86d4301c8e52cf892c69",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "56c4b54ec9e5a389ae055a2a82fe18cb77bb6478",
       "replaced": [],
       "terms": [
         "cloud task can't see files on my Mac",
@@ -5871,10 +5870,12 @@
     },
     "235": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
+      "prompt_version": "vocab-v4-fill-gaps",
       "date": "2026-10-14",
       "input_sha256": "43ed4045068907dfe41a27be09f1dc40d163c22619cbefb96d2a03d430cf222d",
+      "prior_terms_sha256": "bcf04950880479ce3d2e0d9e5ecd971de814e6da4b085d43acce1b4bc653bb84",
       "collision_check": "questions-v2.json dev",
+      "replaced": [],
       "terms": [
         "scheduled task runs without asking permission",
         "scheduled task inherits auto mode",
@@ -5890,15 +5891,21 @@
         "typed text missing after menu opened",
         "folder access prompt wording changed",
         "connectors stay off in later sessions",
-        "why are my connectors still turned off?"
+        "why are my connectors still turned off?",
+        "browser click refused on zoomed page",
+        "cloud move refused another message waiting",
+        "side session report finished or waiting"
       ]
     },
     "236": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
+      "prompt_version": "vocab-v4-update",
       "date": "2026-10-14",
-      "input_sha256": "82178ee773bfb9b1b360fc82e40f3880533172b84e8ec131f302e92432ae8021",
+      "input_sha256": "1b2f06e9d89e467dcbb606f17c12bf84acef1bc1f2901cb61d6c0af3689f5da5",
+      "prior_terms_sha256": "19ec471dfd8714c18d4077ae115dfb9902b48b8a49e889fb7e8ad3e83b2fa31a",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "2b3ad8a6c439f2751bb8578cbcc4339091981c47",
+      "replaced": [],
       "terms": [
         "require approval program before Claude reads files",
         "connected folders missing from shell",
@@ -5914,7 +5921,20 @@
         "automatic restarts are paused for this session",
         "plugin not sent to SSH host",
         "SSH sign-in helper blocked by antivirus",
-        "why did Claude say my organization blocked this file?"
+        "why did Claude say my organization blocked this file?",
+        "is the file check feature released yet?",
+        "file check setting hidden from admin settings",
+        "unreleased setting still enforced by machine policy"
+      ],
+      "withheld": [
+        {
+          "term": "unreleased setting still enforced by machine policy",
+          "qid": "pl-0128"
+        },
+        {
+          "term": "is the file check feature released yet?",
+          "qid": "pl-0296"
+        }
       ]
     }
   }

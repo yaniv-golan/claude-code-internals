@@ -88,12 +88,16 @@ The tool itself is unchanged: `mcp__ccd_session__move_to_cloud`, card-only, inpu
 
 # LESSON 236 — WHAT DESKTOP 2.37337 CHANGED FOR ADMINS: THE FILE CHECK, SENSITIVITY LABELS, DEVICE PROFILES, EDR AND SSH
 
-**Third-party deployments can now make Cowork ask an organization program before Claude reads any file in a connected folder. While that check is configured, connected folders are not mounted into the VM at all, and a new `mcp__cowork__import_files` tool copies checked files in. The bundled Microsoft 365 connector can refuse files by Purview sensitivity label. A user's configuration-server pointer can override the device profile unless the profile forbids it. EDR integration gains a Windows path and a log-export section. Admins can turn off the shell in custom third-party deployments. Code-tab restart parking knows twice as many failure causes, which stay dark until a gate is served.**
+**Desktop now carries the runtime for an organization file check: a program a third-party deployment names, which Cowork asks before Claude reads any file in a connected folder. The setting is marked for a future release and hidden from the admin settings page, but nothing stops a machine policy that sets it. While that check is configured, connected folders are not mounted into the VM at all, and a new `mcp__cowork__import_files` tool copies checked files in. The bundled Microsoft 365 connector can refuse files by Purview sensitivity label. A user's configuration-server pointer can override the device profile unless the profile forbids it. EDR integration gains a Windows path and a log-export section. Admins can turn off the shell in custom third-party deployments. Code-tab restart parking knows twice as many failure causes, which stay dark until a gate is served.**
 
 ## The organization's file check (CODE-READ, `index.chunk-qbMm8eZ4.js` (new), `index.chunk-KpOoeR5G.js`, `index.chunk-m8lVroc8.js`)
 
 - **Setting:** policy `coworkFileReadCheck` (`workspace.fileReadCheck`), `{command, timeoutSec 1–60 (default 10), cacheTtlSec 0–86400 (default 600)}`.
-  - Scopes `["3p"]`, `availableInVersion:"@next"`, `public-undocumented`, `remotePolicy:"remote-disabled"`, so it is device policy only.
+  - Scopes `["3p"]`, `remotePolicy:"remote-disabled"`, so it is device policy only.
+  - **Not released yet:**
+    - The setting's `availableInVersion` is `"@next"` rather than a version number. Settings that already ship carry a number; a neighbouring one says `2.31226.0`.
+    - It is `public-undocumented`, and hidden from the settings page (`show: () => false`).
+  - **But enforced if present.** The only code that reads `@next` is one helper for the OIDC editor; the policy reader ignores the marker. So a machine policy that sets the key is enforced by 2.37337.1. This is CODE-READ; no deployment with the check was run.
   - The schema existed in 2.31226.1; the runtime is new.
 - **The command** must be a standalone program given by full local path, from machine-scoped policy. Scripts (`.cmd`, `.bat`, `.ps1`), shells and interpreters are rejected by pattern.
 - **Fails closed.** An unreadable value becomes `/dev/null/unreadable-file-read-check`, and a session won't start if the program can't run.
@@ -186,8 +190,8 @@ The 8 ids removed since 2.31226.1 were retired kill switches. What they guarded 
 
 ## Who this affects and what to do
 
-- **Third-party admins adding a file check.**
-  - Ship a signed, standalone program at a fixed path and set it by machine policy. Make it answer `{"action":"allow"}` with exit 0 quickly; anything else blocks.
+- **Third-party admins considering a file check.** It is unreleased and undocumented, so treat it as a preview, not a supported control.
+  - If you test it: ship a signed, standalone program at a fixed path and set it by machine policy. Make it answer `{"action":"allow"}` with exit 0 quickly; anything else blocks.
   - Users' shell commands will no longer see connected folders. Tell them files come in through `import_files` or attachments.
 - **Skill authors.** Under a file check, don't rely on shell access to connected folders, `@`-mentions or Glob-then-bash patterns. Read with the file tools, or import first.
 - **M365 admins.** Use only the `block` effect, and set `tenantId`.

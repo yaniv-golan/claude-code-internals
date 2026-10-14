@@ -21002,7 +21002,7 @@
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v4-update",
+        "prompt_version": "vocab-v4-fill-gaps",
         "date": "2026-10-14",
         "terms_sha256": "4c698ea62321de569cdb45bf12c6cf07577998a558ac86d4301c8e52cf892c69"
       }
@@ -22638,7 +22638,10 @@
         "typed text missing after menu opened",
         "folder access prompt wording changed",
         "connectors stay off in later sessions",
-        "why are my connectors still turned off"
+        "why are my connectors still turned off",
+        "browser click refused on zoomed page",
+        "cloud move refused another message waiting",
+        "side session report finished or waiting"
       ],
       "identifier_keys": [
         "mcp__ccd_session__move_to_cloud",
@@ -22696,13 +22699,16 @@
         "typed text missing after menu opened",
         "folder access prompt wording changed",
         "connectors stay off in later sessions",
-        "why are my connectors still turned off"
+        "why are my connectors still turned off",
+        "browser click refused on zoomed page",
+        "cloud move refused another message waiting",
+        "side session report finished or waiting"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
+        "prompt_version": "vocab-v4-fill-gaps",
         "date": "2026-10-14",
-        "terms_sha256": "bcf04950880479ce3d2e0d9e5ecd971de814e6da4b085d43acce1b4bc653bb84"
+        "terms_sha256": "00abc48a22e51926eb0f6a2424cdb6174ea4f69c59823a7af6620297a0e084a4"
       }
     },
     {
@@ -22711,7 +22717,7 @@
       "lesson_number": "236",
       "file": "63-desktop-2.37337-sessions-admin-file-check.md",
       "startLine": 89,
-      "endLine": 194,
+      "endLine": 198,
       "keywords": [
         "61799151",
         "meta.json",
@@ -22723,8 +22729,10 @@
         "index.chunk-m8lVroc8.js",
         "cowork-file-read-check",
         "file-read-check",
-        "public-undocumented",
         "remote-disabled",
+        "available-in-version",
+        "2.31226.0",
+        "public-undocumented",
         "unreadable-file-read-check",
         "tool_call",
         "user_approval",
@@ -22792,7 +22800,8 @@
         "automatic restarts are paused for this session",
         "plugin not sent to ssh host",
         "ssh sign-in helper blocked by antivirus",
-        "why did claude say my organization blocked this file"
+        "why did claude say my organization blocked this file",
+        "file check setting hidden from admin settings"
       ],
       "identifier_keys": [
         "61799151",
@@ -22805,8 +22814,10 @@
         "index.chunk-m8lVroc8.js",
         "cowork-file-read-check",
         "file-read-check",
-        "public-undocumented",
         "remote-disabled",
+        "available-in-version",
+        "2.31226.0",
+        "public-undocumented",
         "unreadable-file-read-check",
         "tool_call",
         "user_approval",
@@ -22876,13 +22887,14 @@
         "automatic restarts are paused for this session",
         "plugin not sent to ssh host",
         "ssh sign-in helper blocked by antivirus",
-        "why did claude say my organization blocked this file"
+        "why did claude say my organization blocked this file",
+        "file check setting hidden from admin settings"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
+        "prompt_version": "vocab-v4-update",
         "date": "2026-10-14",
-        "terms_sha256": "19ec471dfd8714c18d4077ae115dfb9902b48b8a49e889fb7e8ad3e83b2fa31a"
+        "terms_sha256": "e6921d6359c441fbfa4f5e546fd90a7df0c348afd3720e9c91527c35d7b22447"
       }
     }
   ],
@@ -47619,10 +47631,16 @@
     "file-read-check": [
       236
     ],
-    "public-undocumented": [
+    "remote-disabled": [
       236
     ],
-    "remote-disabled": [
+    "available-in-version": [
+      236
+    ],
+    "2.31226.0": [
+      236
+    ],
+    "public-undocumented": [
       236
     ],
     "unreadable-file-read-check": [
@@ -58697,6 +58715,15 @@
     "why are my connectors still turned off": [
       235
     ],
+    "browser click refused on zoomed page": [
+      235
+    ],
+    "cloud move refused another message waiting": [
+      235
+    ],
+    "side session report finished or waiting": [
+      235
+    ],
     "require approval program before claude reads files": [
       236
     ],
@@ -58740,6 +58767,9 @@
       236
     ],
     "why did claude say my organization blocked this file": [
+      236
+    ],
+    "file check setting hidden from admin settings": [
       236
     ]
   },
