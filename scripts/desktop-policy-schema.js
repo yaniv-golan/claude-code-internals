@@ -13,9 +13,12 @@
  * entry in .vite/build/index.pre.js with a flatKey, so diffing those entries is exhaustive for
  * config keys where a string diff is not.
  *
- * READING THE MARKS (L236). availableInVersion "@next" means "added in this build"; a later
- * build stamps the introducing version. A key that stays "@next" for several builds is held
- * back. public-undocumented predicts that the release notes never name the key. Test "released"
+ * READING THE MARKS (L236). `readers` names the clients that apply a key (desktop, m365 = the
+ * Microsoft 365 add-in, code = the Claude Code CLI; missing = desktop); Desktop ignores the rest.
+ * availableInVersion "@next" means no released Desktop reads the key yet: a new Desktop key is
+ * "@next" in its first build and stamped by the next, and an m365- or code-only key stays "@next"
+ * for good. A Desktop-read key still "@next" after the next build is the unusual case.
+ * public-undocumented predicts that the release notes never name the key. Test "released"
  * against the notes (scripts/desktop-changelog-scan.js --find <key>), not the stamp alone.
  *
  * Exit codes: 0 done, 2 usage or read error.
@@ -67,6 +70,7 @@ function extract(src) {
     const rec = {
       avail,
       scopes: (seg.match(/scopes:\[([^\]]*)\]/) || [])[1] || null,
+      readers: (seg.match(/readers:\[([^\]]*)\]/) || [])[1] || '"desktop"',
       undocumented: seg.includes('public-undocumented'),
       hidden: /show:\(\)=>!1/.test(seg),
       deprecated: /deprecat/i.test(seg),
@@ -78,7 +82,8 @@ function extract(src) {
 }
 
 function marks(r) {
-  return [r.avail === '@next' ? '@next' : r.avail, r.undocumented && 'undocumented', r.hidden && 'hidden', r.deprecated && 'deprecated']
+  const readers = r.readers && r.readers !== '"desktop"' ? `readers ${r.readers.replace(/"/g, '')}` : null;
+  return [r.avail === '@next' ? '@next' : r.avail, readers, r.undocumented && 'undocumented', r.hidden && 'hidden', r.deprecated && 'deprecated']
     .filter(Boolean).join(', ');
 }
 
@@ -113,7 +118,10 @@ function main(argv) {
   lines.forEach((l) => console.log(l));
   const held = Object.entries(s[1].keys).filter(([, r]) => r.avail === '@next').map(([k]) => k).sort();
   console.log(`\n${Object.keys(s[0].keys).length} -> ${Object.keys(s[1].keys).length} keys, ${lines.length} change(s).`);
-  console.log(`@next in the new build (added in it, or held back if also @next before): ${held.join(', ') || 'none'}`);
+  const notDesktop = held.filter((k) => !s[1].keys[k].readers.includes('desktop'));
+  const desk = held.filter((k) => !notDesktop.includes(k));
+  console.log(`@next and read by Desktop (new in this build unless also @next before): ${desk.join(', ') || 'none'}`);
+  console.log(`@next and read only by another client (Desktop ignores them): ${notDesktop.join(', ') || 'none'}`);
   console.log('Check each against the notes: node scripts/desktop-changelog-scan.js --find <key>');
   return 0;
 }

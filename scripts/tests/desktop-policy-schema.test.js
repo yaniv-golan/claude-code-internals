@@ -34,6 +34,12 @@ function asar(dir, name, body) {
   return f;
 }
 
+test('readers: a non-Desktop key is labelled, a Desktop key is not', () => {
+  const k = P.extract('a:U(x,{flatKey:"skillBundles",readers:["m365"],support:{enabled:{scopes:["3p"],availableInVersion:"@next"}}}),b:U(x,{flatKey:"keepAwakeEnabled",support:{enabled:{scopes:["3p"],availableInVersion:"2.7032.0"}}})').keys;
+  assert.strictEqual(P.marks(k.skillBundles), '@next, readers m365');
+  assert.strictEqual(P.marks(k.keepAwakeEnabled), '2.7032.0');
+});
+
 test('extract: stamp, undocumented, hidden and legacy names', () => {
   const n = P.extract(NEW);
   assert.strictEqual(n.keys.coworkFileReadCheck.avail, '@next');
