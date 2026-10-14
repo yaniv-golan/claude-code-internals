@@ -41,13 +41,13 @@ The tool itself is unchanged: `mcp__ccd_session__move_to_cloud`, card-only, inpu
 
 ## Edits in someone else's worktree are rejected (CODE-READ, `index.chunk-BolytlRP.js`)
 
-- **New block target `foreign_worktree`:** a worktree "not one this conversation made" is one that another session, the app's worktree pool or an outside tool may own, and may recycle. The guard tracks ownership (`lazyWorktreesTreeOwnership`, `ownedTreePaths`).
+- **New block target `foreign_worktree`:** a worktree "not one this conversation made" is one that another session, the app's worktree pool or an outside tool may own, and may recycle. It lives in the checker for lazily created worktrees (`Qc`, `index.chunk-BolytlRP.js`), which the edit hook (`worktree-write-guard`, on Edit, Write, MultiEdit and NotebookEdit) runs for sessions with a `worktreeLazy` record. The hook now passes it the conversation's own trees (`lazyWorktrees.ownedTreePaths`); `lazyWorktreesTreeOwnership` drives the matching reminders.
 - **Entering such a worktree** adds a reminder that edits there will be rejected. In paraphrase, the remedy is:
   - re-enter the conversation's own worktree with EnterWorktree `path`;
   - or call ExitWorktree with `action: "keep"`, then EnterWorktree with no `path`;
   - a subagent is told to report back, or to be re-spawned with `isolation: "worktree"`.
 - **The appended prompt** for checkout sessions says the same. After a restart, the model is reminded to re-enter its worktree only if the path is one it owns.
-- **The guard is on for Team** (2393677837 served on; 2222745432 unserved). The test variable flipped polarity, from `CLAUDE_E2E_WORKTREE_WRITE_GUARD` to `…_GUARD_OFF`, and is read only in dev/E2E builds.
+- **Gates.** The lazy-worktree branch that holds `foreign_worktree` has no gate. The other branch (the fence, under the release notes below) runs only while `2393677837` is on, which it is for Team (served on). In dev and E2E builds `CLAUDE_E2E_WORKTREE_WRITE_GUARD_OFF`, `2222745432` or `2393677837` off can disable the guard; the test variable flipped polarity from `CLAUDE_E2E_WORKTREE_WRITE_GUARD`.
 
 ## Cards, notes and credits (CODE-READ)
 
@@ -74,7 +74,7 @@ The tool itself is unchanged: `mcp__ccd_session__move_to_cloud`, card-only, inpu
 
 ## Served state on 2026-10-14 (MEASURED, Team)
 
-- On: `2371478310` (side-session notes), `2393677837` (worktree guard).
+- On: `2371478310` (side-session notes), `2393677837` (the non-lazy branch of the worktree guard).
 - Unserved, so the code default applies: `3400412699` (menu guard, on by default), `346871663` (hard-link refusal, off by default).
 
 ## In the official release notes (checked 2026-10-14)
@@ -83,12 +83,13 @@ Anthropic's notes for v2.37337.1 (`claude.com/docs/cowork/changelog`) announce o
 
 - **Announced:** the background menu guard ("a dropdown menu that a click or key opens in a background app is now closed again at once").
 - **Not in the notes (dark):** the scheduled-task mode carry, the `move_to_cloud` refusals, the `foreign_worktree` guard, the folder-card rewording, the side-session notes, the credits line, own-window click-through and zoomed-page refusals.
-- **Nearby, a different mechanism:** the 2.31226.0 notes fix "file edits in a worktree session sometimes landing in the main checkout or in another session's worktree". That is an earlier fence, not this guard; the guard's strings are absent from 2.26454.2, 2.31226.0 and 2.31226.1. In 2.31226.0 (CODE-READ, not traced to a refusal):
-  - sessions with added folders and forked sessions are told each folder's worktree path, with "Do not edit the other session's worktree paths";
-  - a subagent in the user's shared checkout is told not to edit there;
-  - the edit hook gets `folderWorktreeFencesOf` and `externalWorktreeContainers`.
+- **Nearby, a different mechanism:** the 2.31226.0 notes fix "file edits in a worktree session sometimes landing in the main checkout or in another session's worktree". That is the other branch of the same hook, not `foreign_worktree`; the two are alternatives (if/else on `worktreeLazy`), not stacked checks. What 2.31226.0 added (CODE-READ, `index.chunk-D5UeOeQn.js`, unchanged through 2.37337.1 apart from renamed symbols):
+  - **Worktrees for a session's added folders.** The feature arrived whole: `folderWorktrees` occurs 0 times in 2.26454.2 and 71 in 2.31226.0.
+  - **Per-folder fences.** `folderWorktreeFencesOf` returns one fence per live folder worktree, and a fork that shares its parent's checkout gets the parent's fences. The hook checks the session's own worktree, then each fence. A write into a base checkout or another worktree is blocked, naming the folder: "This session works on `<folder>` in an isolated git worktree at `<path>`, but `<file>` …". It blocks and never redirects, and Bash is not covered.
+  - **A reminder for forks.** A fork that copies the transcript of a session with folder worktrees is told those worktrees belong to the session it was forked from, that it uses the folders in place, and "Do not edit the other session's worktree paths."
+  - **Where it applies.** Local and WSL sessions always get the hook. An SSH session whose host doesn't apply the local workspace policy gets it only if it had its own worktree when its hooks were built.
 
-  `foreign_worktree` in 2.37337.1 adds worktrees the conversation didn't make (the pool's, an outside tool's) on top of that fence. The 2.37337.1 note extends the earlier fix to SSH sessions on Linux hosts.
+  The shared-checkout warning to subagents, `externalWorktreeContainers` and gate `2393677837` already existed in 2.26454.2. Nothing SSH-Linux-specific changed in the hook in 2.37337.1, so where that build fixes the SSH-on-Linux case the notes describe was not found.
 
 ## Who this affects and what to do
 
@@ -110,7 +111,7 @@ Anthropic's notes for v2.37337.1 (`claude.com/docs/cowork/changelog`) announce o
   - **Not released yet:**
     - It is `public-undocumented` (newly so in 2.37337.1) and hidden from the settings page (`show: () => false`). It is the only `@next` key with both marks.
     - Neither the release notes nor the configuration changelog mention it.
-    - It has stayed `"@next"` for two builds. On its own, `"@next"` means only "added in this build": see the stamp section below.
+    - It has stayed `"@next"` past the build after it appeared, which a Desktop-read key rarely does. On its own, `"@next"` is not evidence: see the stamp section below.
   - **But enforced if present.** The only code that reads `@next` is one helper for the OIDC editor; the policy reader ignores the marker. So a machine policy that sets the key is enforced by 2.37337.1. This is CODE-READ; no deployment with the check was run.
   - The schema existed in 2.31226.1; the runtime is new.
 - **The command** must be a standalone program given by full local path, from machine-scoped policy. Scripts (`.cmd`, `.bat`, `.ps1`), shells and interpreters are rejected by pattern.
@@ -220,17 +221,25 @@ A string diff of the two builds did not surface these; a diff of the managed-pol
   - Per the notes, a macOS profile or Windows user policy holding only former names stops counting as managed configuration.
 - **Egress no longer adds the provider's hosts.** The VM allowlist was `[...provider.vmAllowedDomains(), ...coworkEgressAllowedHosts]`; it is now the configured list alone.
   - An empty list now counts as authored (`emptyListIsAuthored`), which backs the Setup window's "Allow none".
-  - New beside it: `chatShellAllowedDomains()`, which gives Chat's file-analysis shell the same list. It applies only when the new key `chatAdvancedFileAnalysisNetworkEnabled` is on. That key is `@next` and absent from the notes.
+- **Chat's file-analysis shell can get network (new, not in the notes).** On third-party deployments, Chat's advanced file analysis runs its shell as `mcp__workspace__bash` in the same local VM as Cowork.
+  - In 2.31226.1 a Chat session's shell always had an empty allowlist (`disableBashNetwork`, `index.chunk-QEr06WaZ.js`).
+  - In 2.37337.1 it gets `chatShellAllowedDomains()` (`index.chunk-m8lVroc8.js`). That is the `coworkEgressAllowedHosts` list when the new key `chatAdvancedFileAnalysisNetworkEnabled` (`chatSurface.advancedFileAnalysisNetwork`, 3p only, "Network access for file analysis") is on, Chat and file analysis are enabled, and Bash isn't disabled. Otherwise, and on first-party, the list is empty.
+  - The admin text says an empty list keeps the sandbox offline, `*` turns the network sandbox off, commands run without asking (`Bash: ask` in `builtinToolPolicy` restores prompting), and chats in the unified Chat and Cowork view already follow the Cowork list. No GrowthBook gate; the HIPAA `*` filter (L214) wraps this spawn too.
 - **A malformed `managedMcpServers` `toolPolicy`** is kept with every tool treated as "blocked", with the error "…is not a map of tool names to permissions".
 - **Deprecation flags** are cleared on `managedMcpServers`, `orgPluginSettings`, `builtinToolPolicy`, `inferenceCustomHeaders`, `bootstrapHeaders` and `otlpHeaders`/`otlpResourceAttributes`. The old spellings now fail as plain invalid values.
 - **Also in the schema diff:** the `toolPolicyRules` key (added `@next` in 2.31226.0) is gone, unannounced. `toolPolicyEndpoint` was stamped `2.31226.0`, also unannounced.
 
-## Reading a policy key's release state (MEASURED, 39 Desktop builds, 1.18286.2 → 2.37337.1)
+## Reading a policy key's release state (MEASURED, 39 Desktop builds, 1.18286.2 → 2.37337.1; CODE-READ, `index.pre.js`)
 
-- **`availableInVersion:"@next"` means "added in this build".** The build that introduces a key marks it `@next`, and a later build stamps it. All 51 stamps seen name a version no later than the last `@next` build, usually the introducing one. Example: `otlpAttrMaxChars` was `@next` in 2.31226.1 and `2.31226.0` in 2.37337.1, and the configuration changelog lists it under v2.31226.0. `developerModeEnabled` is `@next` in the very build whose notes announce it.
-- **A key that stays `@next` across several builds is held back.** Examples are the Entra and Office keys and `skillBundles` (since 1.44121.1), and `coworkFileReadCheck` (since 2.31226.0). None is in the notes.
+- **Each key names its readers.** `readers` lists the clients that apply it: `desktop`, `m365` (the Claude add-in for Microsoft 365) and `code` (the Claude Code CLI signed in to the organization by itself). A missing field means `["desktop"]`.
+  - Desktop applies only keys that list `desktop`. A device policy that sets any other key is ignored with a log line: "…this key is read by another Claude client… Claude Desktop never reads it."
+  - In 2.37337.1, 8 keys are `["m365"]`: the Entra sign-in keys, the Office host, feature and access-policy keys, `skillBundles` and `inferenceBedrockWebIdentityRoleArn`. One key, `claudeCodeSettings`, is `["code"]`. The admin web UI edits them on its Office and Code pages.
+- **`availableInVersion:"@next"` means no released Desktop reads the key yet.** Once Desktop starts reading a key, the next build stamps the version that started. All 51 stamps seen name a version no later than the key's last `@next` build.
+  - Example: `otlpAttrMaxChars` was `["m365"]` and `@next` from 1.44121.1. It became Desktop-read in 2.31226.0, was still `@next` in 2.31226.0 and 2.31226.1, and is stamped `2.31226.0` in 2.37337.1. The configuration changelog lists it under v2.31226.0.
+  - So a key read only by another client stays `@next` for good, and a new Desktop key, such as `developerModeEnabled`, is `@next` in the very build whose notes announce it.
+- **A Desktop-read key still `@next` after the next build is the unusual case.** `coworkFileReadCheck` (`["desktop","code"]`) has been since 2.31226.0, and Desktop enforces it regardless (above).
 - **`public-undocumented` predicts silence in the notes.** 22 of the 25 keys flagged that way in 2.37337.1 are never named in the notes or the configuration changelog. 149 of the other 163 are.
-- So test "released" against the notes and the undocumented flag, never against the stamp alone.
+- So read "released" off the notes, the `readers` field and the undocumented flag, never off the stamp alone.
 
 ## Who this affects and what to do
 

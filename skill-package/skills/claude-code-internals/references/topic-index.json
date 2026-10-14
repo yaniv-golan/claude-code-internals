@@ -22583,7 +22583,7 @@
       "lesson_number": "235",
       "file": "63-desktop-2.37337-sessions-admin-file-check.md",
       "startLine": 14,
-      "endLine": 98,
+      "endLine": 99,
       "keywords": [
         "mcp__ccd_session__move_to_cloud",
         "unattended_deny",
@@ -22600,10 +22600,13 @@
         "worktree_unavailable",
         "start_session",
         "foreign_worktree",
-        "lazy-worktrees-tree-ownership",
+        "worktree-write-guard",
+        "worktree-lazy",
+        "lazy-worktrees",
         "owned-tree-paths",
+        "lazy-worktrees-tree-ownership",
+        "CLAUDE_E2E_WORKTREE_WRITE_GUARD_OFF",
         "CLAUDE_E2E_WORKTREE_WRITE_GUARD",
-        "GUARD_OFF",
         "handle-request-folder-access-gated",
         "side-sessions-event",
         "hand_off_to_session",
@@ -22619,6 +22622,8 @@
         "already_up",
         "unknown_up",
         "closed_late",
+        "index.chunk-D5UeOeQn.js",
+        "folder-worktrees",
         "folder-worktree-fences-of",
         "external-worktree-containers",
         "346871663",
@@ -22626,7 +22631,6 @@
         "2222745432",
         "2371478310",
         "3400412699",
-        "scheduled task runs without asking permission",
         "scheduled task inherits auto mode",
         "why does my scheduled task skip approvals",
         "move session to cloud refused worktree",
@@ -22643,7 +22647,8 @@
         "cloud move refused another message waiting",
         "side session report finished or waiting",
         "which changes are in the release notes",
-        "undocumented changes missing from changelog"
+        "undocumented changes missing from changelog",
+        "worktree edit block doesn't cover shell commands"
       ],
       "identifier_keys": [
         "mcp__ccd_session__move_to_cloud",
@@ -22661,10 +22666,13 @@
         "worktree_unavailable",
         "start_session",
         "foreign_worktree",
-        "lazy-worktrees-tree-ownership",
+        "worktree-write-guard",
+        "worktree-lazy",
+        "lazy-worktrees",
         "owned-tree-paths",
+        "lazy-worktrees-tree-ownership",
+        "CLAUDE_E2E_WORKTREE_WRITE_GUARD_OFF",
         "CLAUDE_E2E_WORKTREE_WRITE_GUARD",
-        "GUARD_OFF",
         "handle-request-folder-access-gated",
         "side-sessions-event",
         "hand_off_to_session",
@@ -22680,6 +22688,8 @@
         "already_up",
         "unknown_up",
         "closed_late",
+        "index.chunk-D5UeOeQn.js",
+        "folder-worktrees",
         "folder-worktree-fences-of",
         "external-worktree-containers",
         "346871663",
@@ -22689,7 +22699,6 @@
         "3400412699"
       ],
       "vocab_keys": [
-        "scheduled task runs without asking permission",
         "scheduled task inherits auto mode",
         "why does my scheduled task skip approvals",
         "move session to cloud refused worktree",
@@ -22706,13 +22715,14 @@
         "cloud move refused another message waiting",
         "side session report finished or waiting",
         "which changes are in the release notes",
-        "undocumented changes missing from changelog"
+        "undocumented changes missing from changelog",
+        "worktree edit block doesn't cover shell commands"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-14",
-        "terms_sha256": "5b725da1a77aae2062b3375f2a038797b7bba1fbe906e884bbc1dca54addf464"
+        "terms_sha256": "1ae8ec1bb2fdcf7a512e051d0b76bac8076845469f60cd78ef225c4446217bde"
       }
     },
     {
@@ -22720,8 +22730,8 @@
       "title": "What Desktop 2.37337 Changed for Admins: the File Check, Sensitivity Labels, Device Profiles, EDR and SSH",
       "lesson_number": "236",
       "file": "63-desktop-2.37337-sessions-admin-file-check.md",
-      "startLine": 102,
-      "endLine": 245,
+      "startLine": 103,
+      "endLine": 254,
       "keywords": [
         "61799151",
         "meta.json",
@@ -22786,11 +22796,15 @@
         "trust-bootstrap-local-exec",
         "inference-gateway-headers",
         "empty-list-is-authored",
+        "disable-bash-network",
         "chat-shell-allowed-domains",
+        "cowork-egress-allowed-hosts",
         "chat-advanced-file-analysis-network-enabled",
+        "chat-surface",
+        "advanced-file-analysis-network",
+        "builtin-tool-policy",
         "tool-policy",
         "org-plugin-settings",
-        "builtin-tool-policy",
         "inference-custom-headers",
         "bootstrap-headers",
         "otlp-headers",
@@ -22798,9 +22812,10 @@
         "tool-policy-rules",
         "tool-policy-endpoint",
         "2.31226.0",
-        "otlp-attr-max-chars",
         "skill-bundles",
-        "cowork-egress-allowed-hosts",
+        "inference-bedrock-web-identity-role-arn",
+        "claude-code-settings",
+        "otlp-attr-max-chars",
         "is-dxt",
         "1968338882",
         "580613960",
@@ -22825,7 +22840,6 @@
         "edr sensor install on windows cowork",
         "is the edr sensor actually running",
         "admin disable shell commands in cowork",
-        "your administrator has turned off shell commands",
         "automatic restarts are paused for this session",
         "plugin not sent to ssh host",
         "ssh sign-in helper blocked by antivirus",
@@ -22834,7 +22848,8 @@
         "are these admin changes in the release notes",
         "egress allowed hosts no longer added automatically",
         "how to tell if a policy setting is released",
-        "can't install extension from folder developer mode"
+        "can't install extension from folder developer mode",
+        "network access for chat file analysis"
       ],
       "identifier_keys": [
         "61799151",
@@ -22900,11 +22915,15 @@
         "trust-bootstrap-local-exec",
         "inference-gateway-headers",
         "empty-list-is-authored",
+        "disable-bash-network",
         "chat-shell-allowed-domains",
+        "cowork-egress-allowed-hosts",
         "chat-advanced-file-analysis-network-enabled",
+        "chat-surface",
+        "advanced-file-analysis-network",
+        "builtin-tool-policy",
         "tool-policy",
         "org-plugin-settings",
-        "builtin-tool-policy",
         "inference-custom-headers",
         "bootstrap-headers",
         "otlp-headers",
@@ -22912,9 +22931,10 @@
         "tool-policy-rules",
         "tool-policy-endpoint",
         "2.31226.0",
-        "otlp-attr-max-chars",
         "skill-bundles",
-        "cowork-egress-allowed-hosts",
+        "inference-bedrock-web-identity-role-arn",
+        "claude-code-settings",
+        "otlp-attr-max-chars",
         "is-dxt",
         "1968338882",
         "580613960",
@@ -22941,7 +22961,6 @@
         "edr sensor install on windows cowork",
         "is the edr sensor actually running",
         "admin disable shell commands in cowork",
-        "your administrator has turned off shell commands",
         "automatic restarts are paused for this session",
         "plugin not sent to ssh host",
         "ssh sign-in helper blocked by antivirus",
@@ -22950,13 +22969,14 @@
         "are these admin changes in the release notes",
         "egress allowed hosts no longer added automatically",
         "how to tell if a policy setting is released",
-        "can't install extension from folder developer mode"
+        "can't install extension from folder developer mode",
+        "network access for chat file analysis"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-14",
-        "terms_sha256": "46a59f750cf34aa6bb2bf729bb29e5b8725510a5418a0c57aa67a1e69dc7b003"
+        "terms_sha256": "deab1615f9a481dd6a044640ea0c33a340bf4e83ab7cc50597db1c16280880a5"
       }
     }
   ],
@@ -47600,16 +47620,25 @@
     "foreign_worktree": [
       235
     ],
-    "lazy-worktrees-tree-ownership": [
+    "worktree-write-guard": [
+      235
+    ],
+    "worktree-lazy": [
+      235
+    ],
+    "lazy-worktrees": [
       235
     ],
     "owned-tree-paths": [
       235
     ],
-    "CLAUDE_E2E_WORKTREE_WRITE_GUARD": [
+    "lazy-worktrees-tree-ownership": [
       235
     ],
-    "GUARD_OFF": [
+    "CLAUDE_E2E_WORKTREE_WRITE_GUARD_OFF": [
+      235
+    ],
+    "CLAUDE_E2E_WORKTREE_WRITE_GUARD": [
       235
     ],
     "handle-request-folder-access-gated": [
@@ -47658,6 +47687,12 @@
       235
     ],
     "closed_late": [
+      235
+    ],
+    "index.chunk-D5UeOeQn.js": [
+      235
+    ],
+    "folder-worktrees": [
       235
     ],
     "folder-worktree-fences-of": [
@@ -47858,19 +47893,31 @@
     "empty-list-is-authored": [
       236
     ],
+    "disable-bash-network": [
+      236
+    ],
     "chat-shell-allowed-domains": [
       236
     ],
+    "cowork-egress-allowed-hosts": [
+      236
+    ],
     "chat-advanced-file-analysis-network-enabled": [
+      236
+    ],
+    "chat-surface": [
+      236
+    ],
+    "advanced-file-analysis-network": [
+      236
+    ],
+    "builtin-tool-policy": [
       236
     ],
     "tool-policy": [
       236
     ],
     "org-plugin-settings": [
-      236
-    ],
-    "builtin-tool-policy": [
       236
     ],
     "inference-custom-headers": [
@@ -47894,13 +47941,16 @@
     "2.31226.0": [
       236
     ],
-    "otlp-attr-max-chars": [
-      236
-    ],
     "skill-bundles": [
       236
     ],
-    "cowork-egress-allowed-hosts": [
+    "inference-bedrock-web-identity-role-arn": [
+      236
+    ],
+    "claude-code-settings": [
+      236
+    ],
+    "otlp-attr-max-chars": [
       236
     ],
     "is-dxt": [
@@ -58819,9 +58869,6 @@
     "same mac different features per organization": [
       234
     ],
-    "scheduled task runs without asking permission": [
-      235
-    ],
     "scheduled task inherits auto mode": [
       235
     ],
@@ -58873,6 +58920,9 @@
     "undocumented changes missing from changelog": [
       235
     ],
+    "worktree edit block doesn't cover shell commands": [
+      235
+    ],
     "require approval program before claude reads files": [
       236
     ],
@@ -58895,9 +58945,6 @@
       236
     ],
     "admin disable shell commands in cowork": [
-      236
-    ],
-    "your administrator has turned off shell commands": [
       236
     ],
     "automatic restarts are paused for this session": [
@@ -58926,9 +58973,12 @@
     ],
     "can't install extension from folder developer mode": [
       236
+    ],
+    "network access for chat file analysis": [
+      236
     ]
   },
   "keyword_boundary": {
-    "unreachable_max": 30
+    "unreachable_max": 31
   }
 }

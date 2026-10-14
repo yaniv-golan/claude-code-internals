@@ -5872,13 +5872,12 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-14",
-      "input_sha256": "d98ebb1bc4c28681a11f2e938f833131573aacf3c10f05b83d487b7a126388c3",
-      "prior_terms_sha256": "5b725da1a77aae2062b3375f2a038797b7bba1fbe906e884bbc1dca54addf464",
+      "input_sha256": "d23c44967e47f1516f2ea7896470f1f6d1410216eb07d2be84d1c270d68dc684",
+      "prior_terms_sha256": "1ae8ec1bb2fdcf7a512e051d0b76bac8076845469f60cd78ef225c4446217bde",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "be15a9b1b04518e949975a656b7a34af23f1aff4",
+      "previous_text": "not found",
       "replaced": [],
       "terms": [
-        "scheduled task runs without asking permission",
         "scheduled task inherits auto mode",
         "why does my scheduled task skip approvals?",
         "move session to cloud refused worktree",
@@ -5895,31 +5894,26 @@
         "cloud move refused another message waiting",
         "side session report finished or waiting",
         "which changes are in the release notes",
-        "undocumented changes missing from changelog"
+        "undocumented changes missing from changelog",
+        "worktree edit block doesn't cover shell commands"
       ]
     },
     "236": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-14",
-      "input_sha256": "153e3b952defd5cd46d3e2a035131346274540e8219ef327d2bfaf6bf74bd4c8",
-      "prior_terms_sha256": "cfede9649e567d9077c6c59bdc6e9760d9a043948da9d547cc388e0dc7fc2b80",
+      "input_sha256": "9813ca6efb431f3d3c18a48844def4cc7ded1fa606383decf5a4a41c6d6d6156",
+      "prior_terms_sha256": "46a59f750cf34aa6bb2bf729bb29e5b8725510a5418a0c57aa67a1e69dc7b003",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "be15a9b1b04518e949975a656b7a34af23f1aff4",
+      "previous_text": "a7d32b05920ac9c3fa4453f058873c080451d3e4",
       "replaced": [
-        "why can't bash see my connected folder",
-        "organization file scanning before read"
+        "your administrator has turned off shell commands"
       ],
       "dropped": [
         {
-          "term": "why can't bash see my connected folder",
+          "term": "your administrator has turned off shell commands",
           "why": "duplicate",
-          "duplicate_of": "connected folders missing from shell"
-        },
-        {
-          "term": "organization file scanning before read",
-          "why": "duplicate",
-          "duplicate_of": "require approval program before Claude reads files"
+          "duplicate_of": "admin disable shell commands in Cowork"
         }
       ],
       "terms": [
@@ -5931,7 +5925,6 @@
         "EDR sensor install on Windows Cowork",
         "is the EDR sensor actually running?",
         "admin disable shell commands in Cowork",
-        "your administrator has turned off shell commands",
         "automatic restarts are paused for this session",
         "plugin not sent to SSH host",
         "SSH sign-in helper blocked by antivirus",
@@ -5940,7 +5933,8 @@
         "are these admin changes in the release notes?",
         "egress allowed hosts no longer added automatically",
         "how to tell if a policy setting is released",
-        "can't install extension from folder developer mode"
+        "can't install extension from folder developer mode",
+        "network access for Chat file analysis"
       ]
     }
   }

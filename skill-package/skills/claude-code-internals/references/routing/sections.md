@@ -1877,17 +1877,17 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 235 · 63-desktop-2.37337-sessions-admin-file-check.md:71 · Observed on 2.37337.1 (MEASURED, Team, 2026-10-14)
 235 · 63-desktop-2.37337-sessions-admin-file-check.md:75 · Served state on 2026-10-14 (MEASURED, Team)
 235 · 63-desktop-2.37337-sessions-admin-file-check.md:80 · In the official release notes (checked 2026-10-14)
-235 · 63-desktop-2.37337-sessions-admin-file-check.md:93 · Who this affects and what to do
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:106 · The organization's file check (CODE-READ, `index.chunk-qbMm8eZ4.js` (new), `index.chunk-KpOoeR5G.js`, `index.chunk-m8lVroc8.js`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:134 · Microsoft 365 sensitivity labels (CODE-READ, `index.chunk-BWk6pVUt.js`, `resources/office365-mcp/office365-mcp-stdio.mjs`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:141 · Device profile vs a user's configuration-server pointer (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-CGQsUM80.js`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:149 · EDR integration (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-DkReRM12.js`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:160 · Other admin-facing changes (CODE-READ)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:178 · Gates new in this build, by effect (CODE-READ; served state MEASURED on Team, 2026-10-14)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:205 · In the official release notes (checked 2026-10-14)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:211 · Configuration changes the notes announce (CODE-READ, policy schema of both builds)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:228 · Reading a policy key's release state (MEASURED, 39 Desktop builds, 1.18286.2 → 2.37337.1)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:235 · Who this affects and what to do
+235 · 63-desktop-2.37337-sessions-admin-file-check.md:94 · Who this affects and what to do
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:107 · The organization's file check (CODE-READ, `index.chunk-qbMm8eZ4.js` (new), `index.chunk-KpOoeR5G.js`, `index.chunk-m8lVroc8.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:135 · Microsoft 365 sensitivity labels (CODE-READ, `index.chunk-BWk6pVUt.js`, `resources/office365-mcp/office365-mcp-stdio.mjs`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:142 · Device profile vs a user's configuration-server pointer (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-CGQsUM80.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:150 · EDR integration (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-DkReRM12.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:161 · Other admin-facing changes (CODE-READ)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:179 · Gates new in this build, by effect (CODE-READ; served state MEASURED on Team, 2026-10-14)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:206 · In the official release notes (checked 2026-10-14)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:212 · Configuration changes the notes announce (CODE-READ, policy schema of both builds)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:232 · Reading a policy key's release state (MEASURED, 39 Desktop builds, 1.18286.2 → 2.37337.1; CODE-READ, `index.pre.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:244 · Who this affects and what to do
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)
