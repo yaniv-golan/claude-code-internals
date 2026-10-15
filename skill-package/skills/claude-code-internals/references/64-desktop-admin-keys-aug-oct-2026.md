@@ -18,7 +18,7 @@ Updated: 2026-10-15 (L237) | Source: Anthropic's Claude Desktop release notes an
 
 Every key below is an entry in Desktop's managed-policy schema (Ch66/L236 explains the entry's fields). Two fields decide who it affects:
 
-- `scopes`: `3p` is a third-party deployment. `1p` is a claude.ai organization whose Macs or PCs carry a managed profile. A key with only `3p` does nothing on a claude.ai organization.
+- `scopes`: the deployments the schema declares the key for. `3p` is a third-party deployment. `1p` is a claude.ai organization whose Macs or PCs carry a managed profile. A key declared only for `3p` is not meant to apply to a claude.ai organization. That rests on the schema field; the runtime check was read for one key only (`disableBypassPermissionsMode` applies only when the deployment is third-party).
 - `readers`: the clients that apply the key. `desktop,code` means Desktop also hands the key to the Claude Code agent it runs, so it shapes the agent's own settings.
 
 The "since" column is the build in the key's `availableInVersion` stamp (2.37337.1 schema).
@@ -92,7 +92,7 @@ In the code the hold wins over every period (CODE-READ). For forensics this matt
 | `disableAutoUpdates` | older (1.2581.0) | 3p, 1p | From 2.26454.0 also decides whether Cowork's workspace image downloads in the background (unless `true`) instead of at the first task |
 | `isClaudeCodeForDesktopEnabled` | older (1.2581.0) | 3p, 1p | From 1.44121.1, `false` also blocks Code sessions requested directly, Preview's dev-server scan and offering the computer for Remote Control ("Code sessions are turned off by your organization") |
 | `builtinBrowserEnabled`, `builtinBrowserDefaultDomainPolicy`, `builtinBrowserAllowedDomains`, `builtinBrowserBlockedDomains` | 2.2553.0 | 3p | Allow the built-in browser for Cowork and Code, and set its site policy |
-| `claudeAiImport` (`allowedOrganizationUuids`, `automatic3pImport`) | key 1.10628.0; these fields 2.26454.0 and 2.31226.0 | 3p | Limit history import to listed claude.ai organizations (sign-in only; file import off), and import automatically: Cowork artifacts, projects, memory, global instructions, scheduled tasks, uploads, skills and plugins, applied without asking except a project's own instructions (the code side of the import is Ch64/L231) |
+| `claudeAiImport` (`allowedOrganizationUuids`, `automatic3pImport`) | key 1.10628.0; `allowedOrganizationUuids` first in 2.26454.0 (absent from 2.19675.1); `automatic3pImport` already in 2.19675.1, its wider import per the notes from 2.31226.0 | 3p | Limit history import to listed claude.ai organizations (sign-in only; file import off), and import automatically: Cowork artifacts, projects, memory, global instructions, scheduled tasks, uploads, skills and plugins, applied without asking except a project's own instructions (the code side of the import is Ch64/L231) |
 | `keepAwakeEnabled` | 2.7032.0 | 3p | Keep the computer awake for scheduled work |
 | `defaultModelEffort`, `alwaysStartWithDefaultModel` | 2.110.0 | 3p | An organization default for effort, and starting every session on the default model |
 

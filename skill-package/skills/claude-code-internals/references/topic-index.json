@@ -23005,11 +23005,11 @@
       "keywords": [
         "mcp-scheduled-task-approval-lifetime-days",
         "mcp-tool-timeout-sec",
+        "disable-bypass-permissions-mode",
         "available-in-version",
         "organization-instructions",
         "user-plugin-marketplaces-enabled",
         "user-plugin-uploads-enabled",
-        "disable-bypass-permissions-mode",
         "block-reads-outside-working-directories",
         "allowed-workspace-folders",
         "cli-too-old",
@@ -23052,11 +23052,11 @@
       "identifier_keys": [
         "mcp-scheduled-task-approval-lifetime-days",
         "mcp-tool-timeout-sec",
+        "disable-bypass-permissions-mode",
         "available-in-version",
         "organization-instructions",
         "user-plugin-marketplaces-enabled",
         "user-plugin-uploads-enabled",
-        "disable-bypass-permissions-mode",
         "block-reads-outside-working-directories",
         "allowed-workspace-folders",
         "cli-too-old",
@@ -23100,9 +23100,9 @@
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
+        "prompt_version": "vocab-v4-update",
         "date": "2026-10-15",
-        "terms_sha256": "2fef61be4e280b1cf67f856e3dfd85f6afcda9d266f0ca87602defe1c08340db"
+        "terms_sha256": "44d468017083a8a605a2052d7cebbd8934aef95df5e0ba5741363ba9d759faff"
       }
     }
   ],
@@ -48142,6 +48142,9 @@
     "4113347374": [
       236
     ],
+    "disable-bypass-permissions-mode": [
+      237
+    ],
     "available-in-version": [
       237
     ],
@@ -48152,9 +48155,6 @@
       237
     ],
     "user-plugin-uploads-enabled": [
-      237
-    ],
-    "disable-bypass-permissions-mode": [
       237
     ],
     "block-reads-outside-working-directories": [

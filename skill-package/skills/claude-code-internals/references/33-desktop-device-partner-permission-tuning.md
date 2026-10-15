@@ -141,7 +141,7 @@ tracesEnabled: Ie(On().optional(), { flatKey:"otlpTracesEnabled",
 
 1.22209.0 added event `lam_folder_grant_refused_protected` and a guard that refused a folder grant outright when it would expose managed paths or a shell-config dotfile (`.zshrc .zshenv .zprofile .zlogin .bashrc .bash_profile .bash_login .profile .netrc`).
 
-**From Desktop 1.46388.3 a containing folder is carved, not refused** (CODE-READ, asar 1.46388.3 and 2.37337.1, module tag `[protectedSubpaths]`, absent from 1.44121.1; announced in the release notes as Cowork attaching the home folder, `Library`, `Documents`/`AppData` and whole drives):
+**From Desktop 1.46388.3 a containing folder is carved, not refused.** The `[protectedSubpaths]` module first appears in 1.46388.3 and is absent from 1.44121.1. The behavior below was read in 2.37337.1 (CODE-READ). The release notes announce it for 1.46388.3 as Cowork attaching the home folder, `Library`, `Documents`/`AppData` and whole drives.
 - **A folder that contains protected locations is attached**, and those locations are cut out of it. A file inside one gets: "… is inside a protected location (system, credential or Claude-internal data) within a connected folder. It can't be listed, read or written from a Cowork session. Nothing else in the connected folder is affected."
 - **A folder at or inside a protected location is still refused**: the grant "admits nothing", and the refusal event fires.
 - **The protected list (macOS)**:
@@ -150,7 +150,7 @@ tracesEnabled: Ie(On().optional(), { flatKey:"otlpTracesEnabled",
   - Claude's own `~/.claude`;
   - the shell dotfiles above.
 
-  Windows adds `AppData` and PowerShell profile locations.
+  This list is from the macOS build. Its Windows branches are empty stubs there, so the Windows list (`AppData` and PowerShell profile locations, per the notes and the pre-1.46388.3 list) wasn't read.
 
 So "the folder is refused" now means the folder itself is protected. For a folder that merely contains protected locations, expect a working grant with holes, not an error.
 

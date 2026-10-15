@@ -3040,20 +3040,11 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-15",
-      "input_sha256": "e8eebd5dd2f47395f1f560e7a1f075e109958ebf56463c679cc7ed95a98a1aff",
-      "prior_terms_sha256": "92cf5220c3d846494f04cc72fff988ab7222b2a40d7fdd61e77e49837d09cd9d",
+      "input_sha256": "c457869db4487b0998ebb56666ce4767195841ce7ec3aa669671a43fed2f9fdd",
+      "prior_terms_sha256": "9d7972a122beed5c1182abc44c6160ecf0e6e018eddc40d8436d191cfccc26d7",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "2f8df0bf4a4cf96e915807242e3dfddfcbc538f5",
-      "replaced": [
-        "folder access refused because of shell dotfiles"
-      ],
-      "dropped": [
-        {
-          "term": "folder access refused because of shell dotfiles",
-          "why": "inaccurate",
-          "replacement": "dotfiles excluded from connected folder"
-        }
-      ],
+      "previous_text": "5b637f93ea59a77fb14a53c80ae2c9f1f8ae2549",
+      "replaced": [],
       "terms": [
         "auto mode still asks before destructive connector actions",
         "why does auto mode keep prompting me",
@@ -5497,26 +5488,11 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-15",
-      "input_sha256": "f735b95b03b04526da62e7e07dd66cf83a1ecbfc03306d45ddd81df6c2fcf384",
-      "prior_terms_sha256": "71a5efc19fd6258723fb831a3c749810aba11c2566b4b1927186aae06d5ac284",
+      "input_sha256": "52c6ed2a033a43794d5372a362beb43ff185e00a72762e4b71b0a3e64f085e20",
+      "prior_terms_sha256": "ff51d689941890e3dbea7c7ee310018c24bb4a8b719abfae671d4600f977e812",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "2f8df0bf4a4cf96e915807242e3dfddfcbc538f5",
-      "replaced": [
-        "Cowork always forces minimal mode off",
-        "extended thinking on even when switched off"
-      ],
-      "dropped": [
-        {
-          "term": "Cowork always forces minimal mode off",
-          "why": "duplicate",
-          "duplicate_of": "why doesn't my minimal mode setting work in Cowork?"
-        },
-        {
-          "term": "extended thinking on even when switched off",
-          "why": "duplicate",
-          "duplicate_of": "why does my session think with thinking disabled?"
-        }
-      ],
+      "previous_text": "5b637f93ea59a77fb14a53c80ae2c9f1f8ae2549",
+      "replaced": [],
       "terms": [
         "why doesn't my minimal mode setting work in Cowork?",
         "MCP tool name prefix setting stopped working",
@@ -5987,13 +5963,15 @@
     },
     "237": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
+      "prompt_version": "vocab-v4-update",
       "date": "2026-10-15",
-      "input_sha256": "b5d3e9459b38a0541a59e4c36d84cb51d0af017525d163fa5771014b277d8073",
+      "input_sha256": "5e964406b0bde3eef6ea87aefcbf8012969226fc8c9f9b999481bc0c8684fdc9",
+      "prior_terms_sha256": "44d468017083a8a605a2052d7cebbd8934aef95df5e0ba5741363ba9d759faff",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "5b637f93ea59a77fb14a53c80ae2c9f1f8ae2549",
+      "replaced": [],
       "terms": [
         "admin policy settings for desktop app",
-        "why does Claude ignore my skill on company laptops",
         "hidden admin instructions added to system prompt",
         "can't add my own plugin marketplace",
         "plugin uploads blocked by organization",
@@ -6007,12 +5985,6 @@
         "app forces restart after config change",
         "which admin settings apply to Bedrock or Vertex deployments",
         "Code sessions are turned off by your organization"
-      ],
-      "withheld": [
-        {
-          "term": "why does Claude ignore my skill on company laptops",
-          "qid": "pl-0188"
-        }
       ]
     }
   }
