@@ -5056,19 +5056,27 @@
     "209": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-11",
-      "input_sha256": "d03869db71d8643d7c9425768b5e4cb9dbc951dda4880f140cac609442d70750",
+      "date": "2026-10-15",
+      "input_sha256": "1e3b23be446b82c40e99a62f1a49156a4a8d608e08f76bac078666c25a0fb684",
       "prior_terms_sha256": "dc1c615006b78f8d3706d2c8d4970f28f8e4a4350beeabc20120126adbbf8922",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "f64fdc0876befaf1aeb5bf0add4d49277fd3f60d",
-      "replaced": [],
+      "previous_text": "0c1b1621dfe0add4eb89fdcb732b4759669072bd",
+      "replaced": [
+        "hook works on mac but blocks on linux"
+      ],
+      "dropped": [
+        {
+          "term": "hook works on mac but blocks on linux",
+          "why": "duplicate",
+          "duplicate_of": "missing hook script blocks every tool call"
+        }
+      ],
       "terms": [
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
         "hook matcher misses cowork shell commands",
         "how to check if a hook actually ran",
         "missing hook script blocks every tool call",
-        "hook works on mac but blocks on linux",
         "which hook events fire in local vs cloud cowork",
         "do local cowork hooks run on mac or vm?",
         "pre tool hook for subagent calls",
@@ -5080,7 +5088,8 @@
         "does the model see why a hook denied it?",
         "hook silently rewrote subagent prompt",
         "why can't users see hook deny reason?",
-        "hook prompt rewrite on older cli versions"
+        "hook prompt rewrite on older cli versions",
+        "failed hook record shows status text not command"
       ]
     },
     "210": {

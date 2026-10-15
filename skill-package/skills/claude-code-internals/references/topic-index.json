@@ -20358,7 +20358,6 @@
         "hook matcher misses cowork shell commands",
         "how to check if a hook actually ran",
         "missing hook script blocks every tool call",
-        "hook works on mac but blocks on linux",
         "which hook events fire in local vs cloud cowork",
         "do local cowork hooks run on mac or vm",
         "pre tool hook for subagent calls",
@@ -20370,7 +20369,8 @@
         "does the model see why a hook denied it",
         "hook silently rewrote subagent prompt",
         "why can't users see hook deny reason",
-        "hook prompt rewrite on older cli versions"
+        "hook prompt rewrite on older cli versions",
+        "failed hook record shows status text not command"
       ],
       "identifier_keys": [
         "hook_success",
@@ -20390,7 +20390,6 @@
         "hook matcher misses cowork shell commands",
         "how to check if a hook actually ran",
         "missing hook script blocks every tool call",
-        "hook works on mac but blocks on linux",
         "which hook events fire in local vs cloud cowork",
         "do local cowork hooks run on mac or vm",
         "pre tool hook for subagent calls",
@@ -20402,13 +20401,14 @@
         "does the model see why a hook denied it",
         "hook silently rewrote subagent prompt",
         "why can't users see hook deny reason",
-        "hook prompt rewrite on older cli versions"
+        "hook prompt rewrite on older cli versions",
+        "failed hook record shows status text not command"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-11",
-        "terms_sha256": "dc1c615006b78f8d3706d2c8d4970f28f8e4a4350beeabc20120126adbbf8922"
+        "date": "2026-10-15",
+        "terms_sha256": "82d9e6b52c6d928ce50273927c3606a7d7a6c702762954ea48b106de9e23f59e"
       }
     },
     {
@@ -57592,9 +57592,6 @@
     "missing hook script blocks every tool call": [
       209
     ],
-    "hook works on mac but blocks on linux": [
-      209
-    ],
     "which hook events fire in local vs cloud cowork": [
       209
     ],
@@ -57629,6 +57626,9 @@
       209
     ],
     "hook prompt rewrite on older cli versions": [
+      209
+    ],
+    "failed hook record shows status text not command": [
       209
     ],
     "cowork task runs in cloud instead of locally": [
