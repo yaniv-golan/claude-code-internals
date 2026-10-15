@@ -85,6 +85,15 @@ The placement rules, the `cowork-local-tasks-off` rule text and gate `3634338308
 - Sonnet 5.5 and Haiku 5.5 are selectable in Cowork as of 2026-10-07.
 - If a session thinks with extended thinking switched off, check the managed configuration for `thinkingAlwaysOnModels`.
 
+## In the official release notes (checked 2026-10-15)
+
+Later builds changed scheduled runs further (none measured here):
+- **Retries:** a run that couldn't reach the model at all re-runs after 5, 15 and 30 minutes (Desktop 1.46388.1), for example after the computer wakes behind a VPN.
+- **Sleep:** tasks missed while the Mac slept start once it is fully awake, not during a brief background wake (1.49585.0).
+- **Approval:** a run now shows the approval prompt and waits for a tool that the organization's approval policy marks "ask" (2.31226.0). Before, it skipped the tool. A newer run of the same task retires an earlier run's unanswered prompt. This is the user-facing side of the escalation path above.
+- **No workspace:** on a third-party deployment where Claude's workspace fails to start, a due task runs without it after about ten minutes, and commands that need the workspace fail in that run (2.37337.1).
+- **Approval lifetime:** an administrator can limit how long a scheduled task reuses a lasting MCP-tool approval (`mcpScheduledTaskApprovalLifetimeDays`, Ch67/L237).
+
 ---
 
 # LESSON 223 — WHAT DESKTOP CHECKS IN A PLUGIN ZIP, AND HOW IT FAILS WITHOUT TELLING YOU

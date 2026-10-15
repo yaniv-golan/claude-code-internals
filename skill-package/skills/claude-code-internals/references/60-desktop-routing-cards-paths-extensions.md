@@ -67,6 +67,8 @@ Sticky per org in the browser's local storage, key `cowork-unsupervised-sticky` 
 - Don't infer the lane from the switch, the org, the permission mode or the device that started the task.
 - A skill that needs plugin scripts must say so and fail clearly when they are missing (the phone-chat case).
 
+**In the official release notes (checked 2026-10-15):** from Desktop 2.37337.1, a Cowork task on a computer whose administrator turned off the local VM starts in the cloud. Before, it tried to start locally. The routing table above has no reason for this case; where it sits in `sj` wasn't traced.
+
 ---
 
 # LESSON 227 — WHICH TOOL CALLS SHOW AN APPROVAL CARD IN A LOCAL COWORK SESSION

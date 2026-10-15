@@ -3014,6 +3014,38 @@
     235
    ],
    "hint": "Connector switches in the message box (+ → Connectors) persist beyond one conversation. Switch them back on there."
+  },
+  {
+   "pattern": [
+    "skill behaves differently on company machines",
+    "model follows instructions I never wrote",
+    "organization instructions in system prompt"
+   ],
+   "lessons": [
+    237
+   ],
+   "hint": "On a third-party deployment an administrator can append organizationInstructions (up to 3,000 characters) to the system prompt in Chat, Cowork and Code."
+  },
+  {
+   "pattern": [
+    "bypass permissions mode missing",
+    "plugin from my marketplace does not load",
+    "cannot read files outside the folder"
+   ],
+   "lessons": [
+    237
+   ],
+   "hint": "Check the organization's managed configuration: disableBypassPermissionsMode, userPluginMarketplacesEnabled and blockReadsOutsideWorkingDirectories (L237)."
+  },
+  {
+   "pattern": [
+    "home folder attached but some files unreadable",
+    "protected location within a connected folder"
+   ],
+   "lessons": [
+    128
+   ],
+   "hint": "From Desktop 1.46388.3 a folder that contains protected locations (credential folders, Keychains, ~/.claude, shell dotfiles) is attached with those locations carved out."
   }
  ]
 }

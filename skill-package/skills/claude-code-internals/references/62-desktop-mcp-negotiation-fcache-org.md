@@ -48,7 +48,7 @@ Every opt-in is behind gate **`1942337209`** (`zx()`): when it is on, no call si
 
 The runtime choice itself (`bIt`) is L224's: a Node bundle runs on built-in Node when `isUsingBuiltInNodeForMcp` isn't false and `compatibility.runtimes.node` is absent or satisfied by Desktop's Node.
 
-The bridge's limits in this build are unchanged: 180 s per tool call (`a=18e4`), 10 s for `ensureAllConfiguredConnected` before it announces whatever connected (`o=1e4`), and a third constant of 120 s (`s=12e4`) whose use wasn't traced here.
+The bridge's limits in this build are unchanged: 180 s per tool call (`a=18e4`), 10 s for `ensureAllConfiguredConnected` before it announces whatever connected (`o=1e4`), and a third constant of 120 s (`s=12e4`) whose use wasn't traced here. These are Desktop's bridge constants. The agent's own MCP tool timeout is a different setting, which a third-party administrator can set with `mcpToolTimeoutSec` (Ch67/L237).
 
 ## What it looks like (MEASURED, one Mac, logs from 2026-08-25 to 2026-10-12)
 

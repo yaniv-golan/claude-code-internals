@@ -4738,6 +4738,33 @@
     "relevance": 0.5,
     "reason": "L233: local MCP servers in Cowork; gate 3184956269 routes MCP Apps to agent-spawned plugin servers"
    }
+  ],
+  "237": [
+   {
+    "id": 236,
+    "relevance": 0.8,
+    "reason": "L236: how to read a policy key's schema entry (readers, @next) and the 2.37337 admin changes"
+   },
+   {
+    "id": 231,
+    "relevance": 0.5,
+    "reason": "L231: the code side of the third-party history import that claudeAiImport.automatic3pImport runs"
+   },
+   {
+    "id": 233,
+    "relevance": 0.4,
+    "reason": "L233: Desktop's own MCP bridge timeouts, separate from mcpToolTimeoutSec"
+   },
+   {
+    "id": 222,
+    "relevance": 0.5,
+    "reason": "L222: scheduled-task approvals, which mcpScheduledTaskApprovalLifetimeDays limits"
+   },
+   {
+    "id": 128,
+    "relevance": 0.4,
+    "reason": "L128: protected locations inside a granted folder"
+   }
   ]
  }
 }

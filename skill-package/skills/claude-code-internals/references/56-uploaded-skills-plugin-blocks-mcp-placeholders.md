@@ -175,6 +175,13 @@ In the cloud run, the session reported that the first invocation, earlier in the
 - A `` !`cmd` `` the skill allows in `allowed-tools` that then fails in the cloud container leaves a typed slash command with no reply and no error, and makes a model invocation fail to load (an unlisted failing command was not tested). Use only tools every lane has: the cloud container has no `uuidgen`.
 - A value the model "reports" for a `` !`cmd` `` with no tool call in the transcript is the model filling in a handed-off command, not output. To test whether a block ran, have the command leave something the model cannot guess (a random value written to a file, or a stable unguessable value such as `/proc/sys/kernel/random/boot_id`) and check it independently afterwards.
 
+## In the official release notes (checked 2026-10-15)
+
+Three fixes change what a skill author could have seen while testing (none measured here):
+- **Built-in and account skills loaded without the Skill tool until Desktop 2.7032.0**, so references to a skill's own folder didn't resolve. They load through it again, as plugin skills do.
+- **Until 2.26454.0, saving a skill whose description was over 1,024 characters removed every skill kept on the computer** (third-party deployments). Such a description is now refused with the reason. Keep descriptions under 1,024 characters anyway.
+- **Until 2.31226.0, a skill switched off in Customize was still offered to Claude, and still ran when asked for by name** (third-party deployments). A skill deleted there was still offered in a Code session already running. A test of "skill off" on an older build proves nothing.
+
 ---
 
 # LESSON 218 — PLUGIN BLOCKS AND MCP PLACEHOLDERS, LANE BY LANE

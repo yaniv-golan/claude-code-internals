@@ -1,6 +1,6 @@
 {
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 236,
+  "total_lessons": 237,
   "lessons": [
     {
       "id": 1,
@@ -13100,7 +13100,7 @@
       "lesson_number": "128",
       "file": "33-desktop-device-partner-permission-tuning.md",
       "startLine": 110,
-      "endLine": 182,
+      "endLine": 195,
       "keywords": [
         "tool_approval_default_always_allow",
         "coworkAutoModeAlwaysAllowOverride",
@@ -13137,6 +13137,8 @@
         "resource-attributes",
         "bash_profile",
         "bash_login",
+        "protected-subpaths",
+        "app-data",
         "qQnbF6Q.js",
         "D3da7joD.js",
         "DPf0hBOc.js",
@@ -13151,12 +13153,15 @@
         "export opentelemetry traces from cowork",
         "is trace export on by default",
         "enable tracing for cowork sessions",
-        "folder access refused because of shell dotfiles",
         "why was my folder grant blocked",
         "extension install fails unsigned archive",
         "extension signature required error",
         "cowork session auto resume after sleep",
-        "stop button for running cowork session"
+        "stop button for running cowork session",
+        "dotfiles excluded from connected folder",
+        "attach home folder to cowork",
+        "can't read file inside connected folder",
+        "ssh and credential folders blocked in cowork"
       ],
       "identifier_keys": [
         "respond-to-tool-permission",
@@ -13180,6 +13185,8 @@
         "resource-attributes",
         "bash_profile",
         "bash_login",
+        "protected-subpaths",
+        "app-data",
         "qQnbF6Q.js",
         "D3da7joD.js",
         "DPf0hBOc.js",
@@ -13196,18 +13203,21 @@
         "export opentelemetry traces from cowork",
         "is trace export on by default",
         "enable tracing for cowork sessions",
-        "folder access refused because of shell dotfiles",
         "why was my folder grant blocked",
         "extension install fails unsigned archive",
         "extension signature required error",
         "cowork session auto resume after sleep",
-        "stop button for running cowork session"
+        "stop button for running cowork session",
+        "dotfiles excluded from connected folder",
+        "attach home folder to cowork",
+        "can't read file inside connected folder",
+        "ssh and credential folders blocked in cowork"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "92cf5220c3d846494f04cc72fff988ab7222b2a40d7fdd61e77e49837d09cd9d"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-15",
+        "terms_sha256": "9d7972a122beed5c1182abc44c6160ecf0e6e018eddc40d8436d191cfccc26d7"
       }
     },
     {
@@ -20328,7 +20338,7 @@
       "lesson_number": "209",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
       "startLine": 70,
-      "endLine": 156,
+      "endLine": 163,
       "keywords": [
         "cowork plugin hook events",
         "cowork cloud hooks",
@@ -20365,12 +20375,12 @@
         "write hook misses relative path writes",
         "session start hook fired again on second turn",
         "subagent shows failed with no steps yet",
-        "hook blocked subagent dispatch",
         "does the model see why a hook denied it",
         "hook silently rewrote subagent prompt",
         "why can't users see hook deny reason",
         "hook prompt rewrite on older cli versions",
-        "failed hook record shows status text not command"
+        "failed hook record shows status text not command",
+        "do organization plugin hooks run in chat"
       ],
       "identifier_keys": [
         "hook_success",
@@ -20397,18 +20407,18 @@
         "write hook misses relative path writes",
         "session start hook fired again on second turn",
         "subagent shows failed with no steps yet",
-        "hook blocked subagent dispatch",
         "does the model see why a hook denied it",
         "hook silently rewrote subagent prompt",
         "why can't users see hook deny reason",
         "hook prompt rewrite on older cli versions",
-        "failed hook record shows status text not command"
+        "failed hook record shows status text not command",
+        "do organization plugin hooks run in chat"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-15",
-        "terms_sha256": "82d9e6b52c6d928ce50273927c3606a7d7a6c702762954ea48b106de9e23f59e"
+        "terms_sha256": "71077b2997f3a7b51901f5c0f8e5790e29f4e0031ddeaa1883b04bfb2e6de846"
       }
     },
     {
@@ -20416,8 +20426,8 @@
       "title": "Where a New Cowork Task Runs, and the Switch That Did Not Keep It Local",
       "lesson_number": "210",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
-      "startLine": 160,
-      "endLine": 247,
+      "startLine": 167,
+      "endLine": 254,
       "keywords": [
         "Only on this computer",
         "dramatic_shrimp_enabled",
@@ -21126,7 +21136,7 @@
       "lesson_number": "217",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
       "startLine": 16,
-      "endLine": 176,
+      "endLine": 183,
       "keywords": [
         "upload skill",
         "uploaded skill",
@@ -21180,7 +21190,6 @@
         "why does my skill zip upload get rejected",
         "uploaded skill shows up in terminal too",
         "inline shell command in skill not running",
-        "skill command shows as raw text",
         "shell command execution disabled by policy message",
         "skill fails to load permission check failed",
         "edit a saved skill by asking in chat",
@@ -21191,7 +21200,8 @@
         "can't write files next to skill in local cowork",
         "skill folder placeholder not filled in cloud",
         "skill allowed tools ignored by managed policy",
-        "auto mode won't approve skill inline command"
+        "auto mode won't approve skill inline command",
+        "long skill description deleted all my skills"
       ],
       "identifier_keys": [
         "manifest.json",
@@ -21226,7 +21236,6 @@
         "why does my skill zip upload get rejected",
         "uploaded skill shows up in terminal too",
         "inline shell command in skill not running",
-        "skill command shows as raw text",
         "shell command execution disabled by policy message",
         "skill fails to load permission check failed",
         "edit a saved skill by asking in chat",
@@ -21237,13 +21246,14 @@
         "can't write files next to skill in local cowork",
         "skill folder placeholder not filled in cloud",
         "skill allowed tools ignored by managed policy",
-        "auto mode won't approve skill inline command"
+        "auto mode won't approve skill inline command",
+        "long skill description deleted all my skills"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-05",
-        "terms_sha256": "38b12b0d40b464a11b9752da9a9ce5c34d356289c75d43e2abed9a9e559b918e"
+        "date": "2026-10-15",
+        "terms_sha256": "4542e9ff22b6bacb0596746fd1a057944332432b29d49a36ab5af94e66431cdd"
       }
     },
     {
@@ -21251,8 +21261,8 @@
       "title": "Plugin Blocks and MCP Placeholders, Lane by Lane",
       "lesson_number": "218",
       "file": "56-uploaded-skills-plugin-blocks-mcp-placeholders.md",
-      "startLine": 180,
-      "endLine": 244,
+      "startLine": 187,
+      "endLine": 251,
       "keywords": [
         "UserPromptSubmit block",
         "decision block",
@@ -21529,7 +21539,7 @@
       "lesson_number": "222",
       "file": "58-desktop-2.26454-spawn-env-scheduled-auto.md",
       "startLine": 14,
-      "endLine": 86,
+      "endLine": 95,
       "keywords": [
         "thinking-always-on-models",
         "new-task-permission-mode",
@@ -21546,6 +21556,7 @@
         "browse-and-add-trusted-folder",
         "host-git-confined-install",
         "CLAUDE_CODE_HOST_WORKTREE_FENCE",
+        "mcp-scheduled-task-approval-lifetime-days",
         "4175783504",
         "3285376524",
         "3626967935",
@@ -21564,13 +21575,13 @@
         "computer use permission check disabled",
         "sonnet 5.5 available in cowork model picker",
         "remote folder trust remembered after restart",
-        "cowork always forces minimal mode off",
         "exported variable no longer affects cowork session",
-        "extended thinking on even when switched off",
         "why does my session think with thinking disabled",
         "admin list of always-thinking models",
         "full thinking budget forced for some models",
-        "haiku model now selectable in cowork"
+        "haiku model now selectable in cowork",
+        "scheduled task retries when model unreachable",
+        "scheduled task waits for my approval"
       ],
       "identifier_keys": [
         "thinking-always-on-models",
@@ -21588,6 +21599,7 @@
         "browse-and-add-trusted-folder",
         "host-git-confined-install",
         "CLAUDE_CODE_HOST_WORKTREE_FENCE",
+        "mcp-scheduled-task-approval-lifetime-days",
         "4175783504",
         "3285376524",
         "3626967935",
@@ -21608,19 +21620,19 @@
         "computer use permission check disabled",
         "sonnet 5.5 available in cowork model picker",
         "remote folder trust remembered after restart",
-        "cowork always forces minimal mode off",
         "exported variable no longer affects cowork session",
-        "extended thinking on even when switched off",
         "why does my session think with thinking disabled",
         "admin list of always-thinking models",
         "full thinking budget forced for some models",
-        "haiku model now selectable in cowork"
+        "haiku model now selectable in cowork",
+        "scheduled task retries when model unreachable",
+        "scheduled task waits for my approval"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-07",
-        "terms_sha256": "71a5efc19fd6258723fb831a3c749810aba11c2566b4b1927186aae06d5ac284"
+        "date": "2026-10-15",
+        "terms_sha256": "ff51d689941890e3dbea7c7ee310018c24bb4a8b719abfae671d4600f977e812"
       }
     },
     {
@@ -21628,8 +21640,8 @@
       "title": "What Desktop Checks in a Plugin Zip, and How It Fails Without Telling You",
       "lesson_number": "223",
       "file": "58-desktop-2.26454-spawn-env-scheduled-auto.md",
-      "startLine": 90,
-      "endLine": 139,
+      "startLine": 99,
+      "endLine": 148,
       "keywords": [
         "main.log",
         "dxt-max-total-size-mb",
@@ -21841,7 +21853,7 @@
       "lesson_number": "226",
       "file": "60-desktop-routing-cards-paths-extensions.md",
       "startLine": 17,
-      "endLine": 68,
+      "endLine": 70,
       "keywords": [
         "dramatic_shrimp_disabled_at",
         "can-opt-out",
@@ -21872,17 +21884,17 @@
         "opt out of cloud cowork",
         "local only setting disappeared from settings",
         "setting turned back on by itself",
-        "why did my task run in the cloud",
         "phone task runs in cloud not on my computer",
         "auto mode forces local session",
         "what decides where a cowork task runs",
         "cloud opt-out expires after a few days",
         "skill can't find plugin scripts from phone",
-        "verify which environment a task ran in",
         "local only cowork being deprecated",
         "deprecation banner on cowork task",
         "connected folder task ran in cloud",
-        "why is bypass mode missing in cowork"
+        "why is bypass mode missing in cowork",
+        "admin turned off local vm cowork",
+        "task starts in cloud when admin disables local"
       ],
       "identifier_keys": [
         "dramatic_shrimp_disabled_at",
@@ -21916,23 +21928,23 @@
         "opt out of cloud cowork",
         "local only setting disappeared from settings",
         "setting turned back on by itself",
-        "why did my task run in the cloud",
         "phone task runs in cloud not on my computer",
         "auto mode forces local session",
         "what decides where a cowork task runs",
         "cloud opt-out expires after a few days",
         "skill can't find plugin scripts from phone",
-        "verify which environment a task ran in",
         "local only cowork being deprecated",
         "deprecation banner on cowork task",
         "connected folder task ran in cloud",
-        "why is bypass mode missing in cowork"
+        "why is bypass mode missing in cowork",
+        "admin turned off local vm cowork",
+        "task starts in cloud when admin disables local"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-11",
-        "terms_sha256": "050d87cbcbcbd1447fb17f9f9c8f199edc7c1238a52f33f9e724bd76360a4552"
+        "date": "2026-10-15",
+        "terms_sha256": "d4a183b84afce9dc193a81ab677de3687f9f7ecf9c15face596f8ebf71bc48d5"
       }
     },
     {
@@ -21940,8 +21952,8 @@
       "title": "Which Tool Calls Show an Approval Card in a Local Cowork Session",
       "lesson_number": "227",
       "file": "60-desktop-routing-cards-paths-extensions.md",
-      "startLine": 72,
-      "endLine": 105,
+      "startLine": 74,
+      "endLine": 107,
       "keywords": [
         "present_files",
         "accept-edits",
@@ -22008,8 +22020,8 @@
       "title": "The Model Sees VM Paths; audit.jsonl and the UI Show Host Paths",
       "lesson_number": "228",
       "file": "60-desktop-routing-cards-paths-extensions.md",
-      "startLine": 109,
-      "endLine": 139,
+      "startLine": 111,
+      "endLine": 141,
       "keywords": [
         "Bwge5-J7",
         "build-vm-path-context",
@@ -22070,8 +22082,8 @@
       "title": "Local Extensions (.mcpb) in Desktop: Updates, Confirmations, Errors, Settings",
       "lesson_number": "229",
       "file": "60-desktop-routing-cards-paths-extensions.md",
-      "startLine": 143,
-      "endLine": 174,
+      "startLine": 145,
+      "endLine": 176,
       "keywords": [
         "index.chunk-BC1wbmHw.js",
         "index.chunk-Bk8mxCPb.js",
@@ -22130,8 +22142,8 @@
       "title": "Plugin Installs: Desktop Rewrites Frontmatter, and Switching Off an Org-Marketplace Plugin Deletes Its Copy",
       "lesson_number": "230",
       "file": "60-desktop-routing-cards-paths-extensions.md",
-      "startLine": 178,
-      "endLine": 240,
+      "startLine": 180,
+      "endLine": 242,
       "keywords": [
         "enabled-plugins",
         "extra-known-marketplaces",
@@ -22460,7 +22472,9 @@
         "how fast must server answer version probe",
         "desktop spawns extra copy of mcp server",
         "where are cowork mcp startup failures logged",
-        "mcp app widget calls to agent-spawned plugin servers"
+        "mcp app widget calls to agent-spawned plugin servers",
+        "bridge timeout versus agent mcp tool timeout",
+        "can an admin change mcp tool timeout"
       ],
       "identifier_keys": [
         "client-capabilities",
@@ -22500,13 +22514,15 @@
         "how fast must server answer version probe",
         "desktop spawns extra copy of mcp server",
         "where are cowork mcp startup failures logged",
-        "mcp app widget calls to agent-spawned plugin servers"
+        "mcp app widget calls to agent-spawned plugin servers",
+        "bridge timeout versus agent mcp tool timeout",
+        "can an admin change mcp tool timeout"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-14",
-        "terms_sha256": "6c5635d175c370bfa20fa75c99169c7514c8623fa232e6697f815311a5dded60"
+        "date": "2026-10-15",
+        "terms_sha256": "793c3fa6b4ddbc96d8328d772a7c26487a3fb20168b4052a778b6c531e02422e"
       }
     },
     {
@@ -22975,8 +22991,118 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-14",
+        "date": "2026-10-15",
         "terms_sha256": "deab1615f9a481dd6a044640ea0c33a340bf4e83ab7cc50597db1c16280880a5"
+      }
+    },
+    {
+      "id": 237,
+      "title": "The Managed-Configuration Keys Desktop Added from August to October 2026",
+      "lesson_number": "237",
+      "file": "64-desktop-admin-keys-aug-oct-2026.md",
+      "startLine": 13,
+      "endLine": 114,
+      "keywords": [
+        "mcp-scheduled-task-approval-lifetime-days",
+        "mcp-tool-timeout-sec",
+        "available-in-version",
+        "organization-instructions",
+        "user-plugin-marketplaces-enabled",
+        "user-plugin-uploads-enabled",
+        "disable-bypass-permissions-mode",
+        "block-reads-outside-working-directories",
+        "allowed-workspace-folders",
+        "cli-too-old",
+        "egress-proxy-url",
+        "egress-proxy-pac-url",
+        "skip-web-fetch-preflight",
+        "cowork-vm-ipv6-enabled",
+        "chat-session-retention-days",
+        "cowork-session-retention-days",
+        "code-session-retention-days",
+        "session-retention-hold",
+        "relaunch-enforcement-hours",
+        "config-recheck-interval-minutes",
+        "disable-auto-updates",
+        "is-claude-code-for-desktop-enabled",
+        "builtin-browser-enabled",
+        "builtin-browser-default-domain-policy",
+        "builtin-browser-allowed-domains",
+        "builtin-browser-blocked-domains",
+        "allowed-organization-uuids",
+        "automatic3p-import",
+        "keep-awake-enabled",
+        "default-model-effort",
+        "always-start-with-default-model",
+        "admin policy settings for desktop app",
+        "hidden admin instructions added to system prompt",
+        "can't add my own plugin marketplace",
+        "plugin uploads blocked by organization",
+        "bypass permissions option missing",
+        "can't read files outside project folder",
+        "route traffic through corporate proxy pac file",
+        "mcp tool call timeout too short",
+        "how long do scheduled tasks remember always allow",
+        "sessions deleted automatically after days",
+        "legal hold on chat history retention",
+        "app forces restart after config change",
+        "which admin settings apply to bedrock or vertex deployments",
+        "code sessions are turned off by your organization"
+      ],
+      "identifier_keys": [
+        "mcp-scheduled-task-approval-lifetime-days",
+        "mcp-tool-timeout-sec",
+        "available-in-version",
+        "organization-instructions",
+        "user-plugin-marketplaces-enabled",
+        "user-plugin-uploads-enabled",
+        "disable-bypass-permissions-mode",
+        "block-reads-outside-working-directories",
+        "allowed-workspace-folders",
+        "cli-too-old",
+        "egress-proxy-url",
+        "egress-proxy-pac-url",
+        "skip-web-fetch-preflight",
+        "cowork-vm-ipv6-enabled",
+        "chat-session-retention-days",
+        "cowork-session-retention-days",
+        "code-session-retention-days",
+        "session-retention-hold",
+        "relaunch-enforcement-hours",
+        "config-recheck-interval-minutes",
+        "disable-auto-updates",
+        "is-claude-code-for-desktop-enabled",
+        "builtin-browser-enabled",
+        "builtin-browser-default-domain-policy",
+        "builtin-browser-allowed-domains",
+        "builtin-browser-blocked-domains",
+        "allowed-organization-uuids",
+        "automatic3p-import",
+        "keep-awake-enabled",
+        "default-model-effort",
+        "always-start-with-default-model"
+      ],
+      "vocab_keys": [
+        "admin policy settings for desktop app",
+        "hidden admin instructions added to system prompt",
+        "can't add my own plugin marketplace",
+        "plugin uploads blocked by organization",
+        "bypass permissions option missing",
+        "can't read files outside project folder",
+        "route traffic through corporate proxy pac file",
+        "mcp tool call timeout too short",
+        "how long do scheduled tasks remember always allow",
+        "sessions deleted automatically after days",
+        "legal hold on chat history retention",
+        "app forces restart after config change",
+        "which admin settings apply to bedrock or vertex deployments",
+        "code sessions are turned off by your organization"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-15",
+        "terms_sha256": "2fef61be4e280b1cf67f856e3dfd85f6afcda9d266f0ca87602defe1c08340db"
       }
     }
   ],
@@ -44933,6 +45059,12 @@
     "bash_login": [
       128
     ],
+    "protected-subpaths": [
+      128
+    ],
+    "app-data": [
+      128
+    ],
     "qQnbF6Q.js": [
       128
     ],
@@ -47164,6 +47296,10 @@
     "CLAUDE_CODE_HOST_WORKTREE_FENCE": [
       222
     ],
+    "mcp-scheduled-task-approval-lifetime-days": [
+      222,
+      237
+    ],
     "4175783504": [
       222
     ],
@@ -47549,6 +47685,9 @@
     ],
     "ensure-all-configured-connected": [
       233
+    ],
+    "mcp-tool-timeout-sec": [
+      237
     ],
     "shared-pool": [
       233
@@ -48002,6 +48141,93 @@
     ],
     "4113347374": [
       236
+    ],
+    "available-in-version": [
+      237
+    ],
+    "organization-instructions": [
+      237
+    ],
+    "user-plugin-marketplaces-enabled": [
+      237
+    ],
+    "user-plugin-uploads-enabled": [
+      237
+    ],
+    "disable-bypass-permissions-mode": [
+      237
+    ],
+    "block-reads-outside-working-directories": [
+      237
+    ],
+    "allowed-workspace-folders": [
+      237
+    ],
+    "cli-too-old": [
+      237
+    ],
+    "egress-proxy-url": [
+      237
+    ],
+    "egress-proxy-pac-url": [
+      237
+    ],
+    "skip-web-fetch-preflight": [
+      237
+    ],
+    "cowork-vm-ipv6-enabled": [
+      237
+    ],
+    "chat-session-retention-days": [
+      237
+    ],
+    "cowork-session-retention-days": [
+      237
+    ],
+    "code-session-retention-days": [
+      237
+    ],
+    "session-retention-hold": [
+      237
+    ],
+    "relaunch-enforcement-hours": [
+      237
+    ],
+    "config-recheck-interval-minutes": [
+      237
+    ],
+    "disable-auto-updates": [
+      237
+    ],
+    "is-claude-code-for-desktop-enabled": [
+      237
+    ],
+    "builtin-browser-enabled": [
+      237
+    ],
+    "builtin-browser-default-domain-policy": [
+      237
+    ],
+    "builtin-browser-allowed-domains": [
+      237
+    ],
+    "builtin-browser-blocked-domains": [
+      237
+    ],
+    "allowed-organization-uuids": [
+      237
+    ],
+    "automatic3p-import": [
+      237
+    ],
+    "keep-awake-enabled": [
+      237
+    ],
+    "default-model-effort": [
+      237
+    ],
+    "always-start-with-default-model": [
+      237
     ],
     "why is claude startup slow": [
       1
@@ -53843,9 +54069,6 @@
     "enable tracing for cowork sessions": [
       128
     ],
-    "folder access refused because of shell dotfiles": [
-      128
-    ],
     "why was my folder grant blocked": [
       128
     ],
@@ -53859,6 +54082,18 @@
       128
     ],
     "stop button for running cowork session": [
+      128
+    ],
+    "dotfiles excluded from connected folder": [
+      128
+    ],
+    "attach home folder to cowork": [
+      128
+    ],
+    "can't read file inside connected folder": [
+      128
+    ],
+    "ssh and credential folders blocked in cowork": [
       128
     ],
     "which skill tools does cowork actually see": [
@@ -57613,9 +57848,6 @@
     "subagent shows failed with no steps yet": [
       209
     ],
-    "hook blocked subagent dispatch": [
-      209
-    ],
     "does the model see why a hook denied it": [
       209
     ],
@@ -57629,6 +57861,9 @@
       209
     ],
     "failed hook record shows status text not command": [
+      209
+    ],
+    "do organization plugin hooks run in chat": [
       209
     ],
     "cowork task runs in cloud instead of locally": [
@@ -57995,9 +58230,6 @@
     "inline shell command in skill not running": [
       217
     ],
-    "skill command shows as raw text": [
-      217
-    ],
     "shell command execution disabled by policy message": [
       217
     ],
@@ -58029,6 +58261,9 @@
       217
     ],
     "auto mode won't approve skill inline command": [
+      217
+    ],
+    "long skill description deleted all my skills": [
       217
     ],
     "plugin hook blocks prompt with no message in cloud": [
@@ -58268,13 +58503,7 @@
     "remote folder trust remembered after restart": [
       222
     ],
-    "cowork always forces minimal mode off": [
-      222
-    ],
     "exported variable no longer affects cowork session": [
-      222
-    ],
-    "extended thinking on even when switched off": [
       222
     ],
     "why does my session think with thinking disabled": [
@@ -58287,6 +58516,12 @@
       222
     ],
     "haiku model now selectable in cowork": [
+      222
+    ],
+    "scheduled task retries when model unreachable": [
+      222
+    ],
+    "scheduled task waits for my approval": [
       222
     ],
     "plugin enabled but skills missing": [
@@ -58448,9 +58683,6 @@
     "setting turned back on by itself": [
       226
     ],
-    "why did my task run in the cloud": [
-      226
-    ],
     "phone task runs in cloud not on my computer": [
       226
     ],
@@ -58466,9 +58698,6 @@
     "skill can't find plugin scripts from phone": [
       226
     ],
-    "verify which environment a task ran in": [
-      226
-    ],
     "local only cowork being deprecated": [
       226
     ],
@@ -58479,6 +58708,12 @@
       226
     ],
     "why is bypass mode missing in cowork": [
+      226
+    ],
+    "admin turned off local vm cowork": [
+      226
+    ],
+    "task starts in cloud when admin disables local": [
       226
     ],
     "cowork manual mode not asking permission": [
@@ -58826,6 +59061,12 @@
     "mcp app widget calls to agent-spawned plugin servers": [
       233
     ],
+    "bridge timeout versus agent mcp tool timeout": [
+      233
+    ],
+    "can an admin change mcp tool timeout": [
+      233
+    ],
     "feature works in personal account not team": [
       234
     ],
@@ -58978,6 +59219,48 @@
     ],
     "network access for chat file analysis": [
       236
+    ],
+    "admin policy settings for desktop app": [
+      237
+    ],
+    "hidden admin instructions added to system prompt": [
+      237
+    ],
+    "can't add my own plugin marketplace": [
+      237
+    ],
+    "plugin uploads blocked by organization": [
+      237
+    ],
+    "bypass permissions option missing": [
+      237
+    ],
+    "can't read files outside project folder": [
+      237
+    ],
+    "route traffic through corporate proxy pac file": [
+      237
+    ],
+    "mcp tool call timeout too short": [
+      237
+    ],
+    "how long do scheduled tasks remember always allow": [
+      237
+    ],
+    "sessions deleted automatically after days": [
+      237
+    ],
+    "legal hold on chat history retention": [
+      237
+    ],
+    "app forces restart after config change": [
+      237
+    ],
+    "which admin settings apply to bedrock or vertex deployments": [
+      237
+    ],
+    "code sessions are turned off by your organization": [
+      237
     ]
   },
   "keyword_boundary": {

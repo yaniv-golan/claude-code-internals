@@ -139,7 +139,20 @@ tracesEnabled: Ie(On().optional(), { flatKey:"otlpTracesEnabled",
 
 ## Protected-folder grant hardening
 
-New event `lam_folder_grant_refused_protected` + guard `Ae`: folder grants are now refused outright when they would expose managed paths or a shell-config dotfile set — `.zshrc .zshenv .zprofile .zlogin .bashrc .bash_profile .bash_login .profile .netrc` (the dotfile list itself pre-existed 1.21459.0; the refusal path and telemetry are new). Closes a real hole: previously a user could grant an agent access to a folder that happened to contain shell/credential dotfiles without an explicit block.
+1.22209.0 added event `lam_folder_grant_refused_protected` and a guard that refused a folder grant outright when it would expose managed paths or a shell-config dotfile (`.zshrc .zshenv .zprofile .zlogin .bashrc .bash_profile .bash_login .profile .netrc`).
+
+**From Desktop 1.46388.3 a containing folder is carved, not refused** (CODE-READ, asar 1.46388.3 and 2.37337.1, module tag `[protectedSubpaths]`, absent from 1.44121.1; announced in the release notes as Cowork attaching the home folder, `Library`, `Documents`/`AppData` and whole drives):
+- **A folder that contains protected locations is attached**, and those locations are cut out of it. A file inside one gets: "… is inside a protected location (system, credential or Claude-internal data) within a connected folder. It can't be listed, read or written from a Cowork session. Nothing else in the connected folder is affected."
+- **A folder at or inside a protected location is still refused**: the grant "admits nothing", and the refusal event fires.
+- **The protected list (macOS)**:
+  - credential folders `~/.ssh`, `.aws`, `.gnupg`, `.kube`, `.docker`, `.config/gcloud`, `.config/gh`, `Library/Keychains`, `Library/Application Support`, `Library/Cookies`;
+  - persistence folders `Library/LaunchAgents`, `Library/LaunchDaemons`;
+  - Claude's own `~/.claude`;
+  - the shell dotfiles above.
+
+  Windows adds `AppData` and PowerShell profile locations.
+
+So "the folder is refused" now means the folder itself is protected. For a folder that merely contains protected locations, expect a working grant with holes, not an error.
 
 ## Extension/plugin signing hardened
 
@@ -168,7 +181,7 @@ The old interactive MCPB manifest-authoring flow is removed; a new mandatory DXT
 | `1447478638` (`scheduledTaskToolsApprovableByAutoMode`) | gate | asar | Scheduled-task tools auto-approvable under auto mode |
 | `1076115445` (`tryBeginSleepAutoResume`) | gate | asar | Session sleep/auto-resume |
 | `otlpTracesEnabled` | managed flatKey, no default (`undefined`) | asar `DD6nxfJK.js` | Default-OFF OpenTelemetry tracing for Cowork tasks; drives `CLAUDE_CODE_ENHANCED_TELEMETRY_BETA`/`OTEL_TRACES_EXPORTER` spawn env |
-| `lam_folder_grant_refused_protected` / guard `Ae` | telemetry + fn | asar | New refusal for protected/dotfile folder grants |
+| `lam_folder_grant_refused_protected` / guard `Ae` | telemetry + fn | asar | Refusal for a grant at or inside a protected location; from 1.46388.3 a containing folder is carved (`[protectedSubpaths]`) |
 | `DXT_SIGNATURE_REQUIRED` | const | asar | Mandatory RSASSA-PKCS1-v1_5-SHA512 extension signing, replaces old unsigned MCPB flow |
 
 ## What this means for skill and agent authors

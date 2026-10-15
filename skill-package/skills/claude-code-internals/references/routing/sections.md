@@ -1400,10 +1400,10 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 128 · 33-desktop-device-partner-permission-tuning.md:124 · Session sleep/auto-resume — gate `1076115445` (`tryBeginSleepAutoResume`)
 128 · 33-desktop-device-partner-permission-tuning.md:128 · OTLP tracing — new managed setting `otlpTracesEnabled`, default OFF
 128 · 33-desktop-device-partner-permission-tuning.md:140 · Protected-folder grant hardening
-128 · 33-desktop-device-partner-permission-tuning.md:144 · Extension/plugin signing hardened
-128 · 33-desktop-device-partner-permission-tuning.md:148 · Two new managed flatKeys, total
-128 · 33-desktop-device-partner-permission-tuning.md:154 · Identifier table
-128 · 33-desktop-device-partner-permission-tuning.md:174 · What this means for skill and agent authors
+128 · 33-desktop-device-partner-permission-tuning.md:157 · Extension/plugin signing hardened
+128 · 33-desktop-device-partner-permission-tuning.md:161 · Two new managed flatKeys, total
+128 · 33-desktop-device-partner-permission-tuning.md:167 · Identifier table
+128 · 33-desktop-device-partner-permission-tuning.md:187 · What this means for skill and agent authors
 129 · 34-skill-discovery-vcs-events-containment.md:24 · Two components, one concept
 129 · 34-skill-discovery-vcs-events-containment.md:33 · The `vLt`/`Vne` predicate was reshaped mid-series
 129 · 34-skill-discovery-vcs-events-containment.md:51 · `tengu_saddle_lantern` is the master switch, not just a deferral gate
@@ -1736,12 +1736,13 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 209 · 53-routine-migration-plugin-hooks-by-lane.md:132 · Matchers and the local session's shell
 209 · 53-routine-migration-plugin-hooks-by-lane.md:142 · Three traps
 209 · 53-routine-migration-plugin-hooks-by-lane.md:148 · For a plugin author
-210 · 53-routine-migration-plugin-hooks-by-lane.md:166 · Three controls with one name
-210 · 53-routine-migration-plugin-hooks-by-lane.md:178 · The account setting
-210 · 53-routine-migration-plugin-hooks-by-lane.md:192 · The routing function
-210 · 53-routine-migration-plugin-hooks-by-lane.md:208 · What happened
-210 · 53-routine-migration-plugin-hooks-by-lane.md:225 · The composer decides (Desktop 2.19675.0, 2026-10-02)
-210 · 53-routine-migration-plugin-hooks-by-lane.md:243 · For an author or tester
+209 · 53-routine-migration-plugin-hooks-by-lane.md:158 · In the official release notes (checked 2026-10-15)
+210 · 53-routine-migration-plugin-hooks-by-lane.md:173 · Three controls with one name
+210 · 53-routine-migration-plugin-hooks-by-lane.md:185 · The account setting
+210 · 53-routine-migration-plugin-hooks-by-lane.md:199 · The routing function
+210 · 53-routine-migration-plugin-hooks-by-lane.md:215 · What happened
+210 · 53-routine-migration-plugin-hooks-by-lane.md:232 · The composer decides (Desktop 2.19675.0, 2026-10-02)
+210 · 53-routine-migration-plugin-hooks-by-lane.md:250 · For an author or tester
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:22 · The three layers
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:32 · Layer 1: publishing refuses `host:`
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:48 · Layer 2: the viewer enforces the manifest
@@ -1782,11 +1783,12 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:140 · Organization plugins on a Desktop, and removing one
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:162 · A conversation that changed runtime
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:166 · For an author
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:184 · The probe
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:194 · Prompt blocks
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:206 · Tool denies
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:210 · MCP server placeholders
-218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:239 · For an author
+217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:178 · In the official release notes (checked 2026-10-15)
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:191 · The probe
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:201 · Prompt blocks
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:213 · Tool denies
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:217 · MCP server placeholders
+218 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:246 · For an author
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:19 · Native Artifact in scheduled runs
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:32 · A publish grant per scheduled task
 219 · 57-desktop-2.16120-scheduled-artifacts-permissions.md:38 · Attached files no longer pin a task to this computer
@@ -1810,10 +1812,11 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:67 · Gates new in this window
 222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:76 · Local or cloud placement is unchanged
 222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:80 · For an author
-223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:94 · Observed
-223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:105 · The limits (CODE-READ, Desktop 2.26454.0 and 2.26454.2, identical)
-223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:130 · For a skill author
-223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:137 · Desktop 2.26454.2
+222 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:88 · In the official release notes (checked 2026-10-15)
+223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:103 · Observed
+223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:114 · The limits (CODE-READ, Desktop 2.26454.0 and 2.26454.2, identical)
+223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:139 · For a skill author
+223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:146 · Desktop 2.26454.2
 224 · 59-desktop-mcpb-launch-completions.md:18 · Resolving `mcp_config` (CODE-READ)
 224 · 59-desktop-mcpb-launch-completions.md:43 · The environment the server gets (CODE-READ; PATH MEASURED)
 224 · 59-desktop-mcpb-launch-completions.md:62 · Sensitive settings (CODE-READ)
@@ -1829,26 +1832,26 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 226 · 60-desktop-routing-cards-paths-extensions.md:47 · What it did in practice (MEASURED, Desktop 2.31226.0/.1)
 226 · 60-desktop-routing-cards-paths-extensions.md:60 · The composer's Auto/Manual choice (CODE-READ, `shared-8` `Wj`/`Uj`/`Kj`)
 226 · 60-desktop-routing-cards-paths-extensions.md:64 · For an author or tester
-227 · 60-desktop-routing-cards-paths-extensions.md:76 · The layers (CODE-READ, asar 2.31226.1)
-227 · 60-desktop-routing-cards-paths-extensions.md:85 · Deletes (CODE-READ)
-227 · 60-desktop-routing-cards-paths-extensions.md:89 · The folder prompt (CODE-READ)
-227 · 60-desktop-routing-cards-paths-extensions.md:93 · Observed (MEASURED, Desktop 2.31226.1)
-227 · 60-desktop-routing-cards-paths-extensions.md:101 · For an author
-228 · 60-desktop-routing-cards-paths-extensions.md:113 · Where the rewrite happens (CODE-READ, asar 2.31226.1)
-228 · 60-desktop-routing-cards-paths-extensions.md:125 · The other direction (CODE-READ)
-228 · 60-desktop-routing-cards-paths-extensions.md:130 · Observed (MEASURED, Desktop 2.31226.1, Team, local)
-228 · 60-desktop-routing-cards-paths-extensions.md:135 · For an author or tester
-229 · 60-desktop-routing-cards-paths-extensions.md:147 · Updates (CODE-READ, asar 2.31226.0 `index.chunk-BC1wbmHw.js`; 2.31226.1 `index.chunk-Bk8mxCPb.js`)
-229 · 60-desktop-routing-cards-paths-extensions.md:153 · No elicitation (CODE-READ, asar 2.31226.1 `index.chunk-BEWlG8Pv.js`)
-229 · 60-desktop-routing-cards-paths-extensions.md:157 · Observed (MEASURED, Desktop 2.31226.0/.1, one real extension)
-229 · 60-desktop-routing-cards-paths-extensions.md:168 · For an extension author
-230 · 60-desktop-routing-cards-paths-extensions.md:182 · Frontmatter is rewritten (MEASURED, n=2 copies, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:190 · Marketplace sync installs everything (MEASURED, n=1)
-230 · 60-desktop-routing-cards-paths-extensions.md:194 · Switching off deletes the copy (MEASURED, n=1, Team)
-230 · 60-desktop-routing-cards-paths-extensions.md:200 · A marketplace listed in the settings file never refreshes (MEASURED, n=1, Team, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:211 · Uploading a plugin the organization already provides (MEASURED, n=1 per organization, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:228 · A related default (MEASURED)
-230 · 60-desktop-routing-cards-paths-extensions.md:232 · For a plugin author
+227 · 60-desktop-routing-cards-paths-extensions.md:78 · The layers (CODE-READ, asar 2.31226.1)
+227 · 60-desktop-routing-cards-paths-extensions.md:87 · Deletes (CODE-READ)
+227 · 60-desktop-routing-cards-paths-extensions.md:91 · The folder prompt (CODE-READ)
+227 · 60-desktop-routing-cards-paths-extensions.md:95 · Observed (MEASURED, Desktop 2.31226.1)
+227 · 60-desktop-routing-cards-paths-extensions.md:103 · For an author
+228 · 60-desktop-routing-cards-paths-extensions.md:115 · Where the rewrite happens (CODE-READ, asar 2.31226.1)
+228 · 60-desktop-routing-cards-paths-extensions.md:127 · The other direction (CODE-READ)
+228 · 60-desktop-routing-cards-paths-extensions.md:132 · Observed (MEASURED, Desktop 2.31226.1, Team, local)
+228 · 60-desktop-routing-cards-paths-extensions.md:137 · For an author or tester
+229 · 60-desktop-routing-cards-paths-extensions.md:149 · Updates (CODE-READ, asar 2.31226.0 `index.chunk-BC1wbmHw.js`; 2.31226.1 `index.chunk-Bk8mxCPb.js`)
+229 · 60-desktop-routing-cards-paths-extensions.md:155 · No elicitation (CODE-READ, asar 2.31226.1 `index.chunk-BEWlG8Pv.js`)
+229 · 60-desktop-routing-cards-paths-extensions.md:159 · Observed (MEASURED, Desktop 2.31226.0/.1, one real extension)
+229 · 60-desktop-routing-cards-paths-extensions.md:170 · For an extension author
+230 · 60-desktop-routing-cards-paths-extensions.md:184 · Frontmatter is rewritten (MEASURED, n=2 copies, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:192 · Marketplace sync installs everything (MEASURED, n=1)
+230 · 60-desktop-routing-cards-paths-extensions.md:196 · Switching off deletes the copy (MEASURED, n=1, Team)
+230 · 60-desktop-routing-cards-paths-extensions.md:202 · A marketplace listed in the settings file never refreshes (MEASURED, n=1, Team, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:213 · Uploading a plugin the organization already provides (MEASURED, n=1 per organization, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:230 · A related default (MEASURED)
+230 · 60-desktop-routing-cards-paths-extensions.md:234 · For a plugin author
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:18 · An already-attached folder skips the card (CODE-READ, `index.chunk-QEr06WaZ.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:38 · Dispatch has its own create switch (CODE-READ, `index.chunk-Cyt2WTko.js`; refusal text in `index.chunk-hKMR2oV6.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:52 · The migration sweep keeps a bound task local when remote control is off (CODE-READ, `index.chunk-QEr06WaZ.js`)
@@ -1888,6 +1891,17 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 236 · 63-desktop-2.37337-sessions-admin-file-check.md:212 · Configuration changes the notes announce (CODE-READ, policy schema of both builds)
 236 · 63-desktop-2.37337-sessions-admin-file-check.md:232 · Reading a policy key's release state (MEASURED, 39 Desktop builds, 1.18286.2 → 2.37337.1; CODE-READ, `index.pre.js`)
 236 · 63-desktop-2.37337-sessions-admin-file-check.md:244 · Who this affects and what to do
+237 · 64-desktop-admin-keys-aug-oct-2026.md:17 · Reading a key's reach
+237 · 64-desktop-admin-keys-aug-oct-2026.md:26 · What Claude is told
+237 · 64-desktop-admin-keys-aug-oct-2026.md:39 · Which plugins load
+237 · 64-desktop-admin-keys-aug-oct-2026.md:48 · Permission modes and file reach
+237 · 64-desktop-admin-keys-aug-oct-2026.md:60 · Network
+237 · 64-desktop-admin-keys-aug-oct-2026.md:68 · MCP tools and scheduled tasks
+237 · 64-desktop-admin-keys-aug-oct-2026.md:77 · Sessions kept on the device
+237 · 64-desktop-admin-keys-aug-oct-2026.md:86 · Updates, restarts and the rest
+237 · 64-desktop-admin-keys-aug-oct-2026.md:99 · For a skill or plugin author
+237 · 64-desktop-admin-keys-aug-oct-2026.md:106 · For an admin
+237 · 64-desktop-admin-keys-aug-oct-2026.md:112 · Not established
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)
@@ -1936,11 +1950,11 @@ state:cowork-control-protocol · state/cowork-control-protocol.md:337 · Cloud t
 state:cowork-control-protocol · state/cowork-control-protocol.md:414 · VCS SDK events + SDK-MCP skill servers (L129/L130)
 state:cowork-permissions · state/cowork-permissions.md:22 · The layers (all simultaneously active, host-loop production)
 state:cowork-permissions · state/cowork-permissions.md:222 · Auto-mode tuning at Desktop 1.22209.0 (lesson 128, no live gate-state capture)
-state:cowork-permissions · state/cowork-permissions.md:255 · Browser/Computer-Use permission gates + Cowork's own auto-mode rule additions (Desktop 1.28929.0)
-state:cowork-permissions · state/cowork-permissions.md:311 · Host-dialog approval attestation and `/settings-review` staging — shipped, compiled off (agent 2.1.281–2.1.284)
-state:cowork-permissions · state/cowork-permissions.md:330 · Scheduled tasks start in Auto; unattended asks escalate (Desktop 2.19675.0 / 2.26454.0, L222)
-state:cowork-permissions · state/cowork-permissions.md:346 · Not part of the stack (adjacent, don't conflate)
-state:cowork-permissions · state/cowork-permissions.md:359 · Known past errors (do not re-introduce)
+state:cowork-permissions · state/cowork-permissions.md:256 · Browser/Computer-Use permission gates + Cowork's own auto-mode rule additions (Desktop 1.28929.0)
+state:cowork-permissions · state/cowork-permissions.md:312 · Host-dialog approval attestation and `/settings-review` staging — shipped, compiled off (agent 2.1.281–2.1.284)
+state:cowork-permissions · state/cowork-permissions.md:331 · Scheduled tasks start in Auto; unattended asks escalate (Desktop 2.19675.0 / 2.26454.0, L222)
+state:cowork-permissions · state/cowork-permissions.md:347 · Not part of the stack (adjacent, don't conflate)
+state:cowork-permissions · state/cowork-permissions.md:360 · Known past errors (do not re-introduce)
 state:credential-channels · state/credential-channels.md:16 · The four Desktop credential channels
 state:credential-channels · state/credential-channels.md:103 · Auth at spawn
 state:credential-channels · state/credential-channels.md:123 · What NOT to use

@@ -155,6 +155,13 @@ A host-loop local session passes the alias `Bash` → `mcp__workspace__bash` (a 
 - To see what a sub-agent was told, read `toolUseResult.prompt` or the sub-agent's own transcript, not the parent's `tool_use`. A hook may have replaced it on any build.
 - If your hook denies a dispatch, the user sees only "Failed". Word the reason so the model can pass it on.
 
+## In the official release notes (checked 2026-10-15)
+
+- **Hooks from organization plugins also run in Chat** (Desktop 1.52386.0, third-party deployments), as they already did in Cowork and Code. A hook written for Cowork can now fire in a chat, with no Cowork session around it.
+- **A message an organization hook blocks now shows the reason** (1.52386.0). Before, the session looked stuck running.
+
+Neither was measured here.
+
 ---
 
 # LESSON 210 — WHERE A NEW COWORK TASK RUNS

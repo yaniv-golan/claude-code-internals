@@ -4,7 +4,7 @@ title: Cowork permission stack (current)
 as_of_cli: 2.1.231
 as_of_desktop: 2.7032.0
 sources: [89, 107, 108, 109, 115, 121, 122, 124, 128, 148, 150, 184, 190, 213, 222, 227, 231, 234]
-updated: 2026-10-13
+updated: 2026-10-15
 read_more: ["https://ccinternals.dev/cowork/deleting-files/?ref=skill"]
 ---
 
@@ -245,12 +245,13 @@ on/off state:
   (`lam_stop_button_received`/`_completed`,
   `LocalAgentModeSessions.stop`).
 
-Also new: folder-grant hardening refuses managed paths and a shell dotfile
-set (`.zshrc .zshenv .zprofile .zlogin .bashrc .bash_profile .bash_login
-.profile .netrc`) outright, with new telemetry
-`lam_folder_grant_refused_protected` — previously a user could grant a
-folder containing these without an explicit block. Full detail: Chapter
-36 / lesson 128.
+Also new at 1.22209.0: folder-grant hardening with telemetry
+`lam_folder_grant_refused_protected`. **From Desktop 1.46388.3 a folder that
+contains protected locations is attached with those locations carved out**
+(`[protectedSubpaths]`: credential folders, `Library/Keychains`,
+LaunchAgents/LaunchDaemons, `~/.claude`, the shell startup dotfiles); only a
+folder at or inside a protected location is refused. So the home folder,
+`Library` and whole drives can be attached. Full detail: Chapter 36 / lesson 128.
 
 ## Browser/Computer-Use permission gates + Cowork's own auto-mode rule additions (Desktop 1.28929.0)
 

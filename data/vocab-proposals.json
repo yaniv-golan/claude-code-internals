@@ -3038,9 +3038,22 @@
     },
     "128": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "0d807fc933e8eb1adf3c532b1b04cc30f869bd9984ffe2830c8bce26f7eec57d",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-15",
+      "input_sha256": "e8eebd5dd2f47395f1f560e7a1f075e109958ebf56463c679cc7ed95a98a1aff",
+      "prior_terms_sha256": "92cf5220c3d846494f04cc72fff988ab7222b2a40d7fdd61e77e49837d09cd9d",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "2f8df0bf4a4cf96e915807242e3dfddfcbc538f5",
+      "replaced": [
+        "folder access refused because of shell dotfiles"
+      ],
+      "dropped": [
+        {
+          "term": "folder access refused because of shell dotfiles",
+          "why": "inaccurate",
+          "replacement": "dotfiles excluded from connected folder"
+        }
+      ],
       "terms": [
         "auto mode still asks before destructive connector actions",
         "why does auto mode keep prompting me",
@@ -3051,12 +3064,15 @@
         "export OpenTelemetry traces from Cowork",
         "is trace export on by default?",
         "enable tracing for Cowork sessions",
-        "folder access refused because of shell dotfiles",
         "why was my folder grant blocked?",
         "extension install fails unsigned archive",
         "extension signature required error",
         "Cowork session auto resume after sleep",
-        "stop button for running Cowork session"
+        "stop button for running Cowork session",
+        "dotfiles excluded from connected folder",
+        "attach home folder to Cowork",
+        "can't read file inside connected folder",
+        "ssh and credential folders blocked in Cowork"
       ]
     },
     "129": {
@@ -5057,18 +5073,18 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-15",
-      "input_sha256": "1e3b23be446b82c40e99a62f1a49156a4a8d608e08f76bac078666c25a0fb684",
-      "prior_terms_sha256": "dc1c615006b78f8d3706d2c8d4970f28f8e4a4350beeabc20120126adbbf8922",
+      "input_sha256": "658931a74277e4e45e0e02589f2d3c014864d1b78a8bf96fb94d5980d494f5dc",
+      "prior_terms_sha256": "82d9e6b52c6d928ce50273927c3606a7d7a6c702762954ea48b106de9e23f59e",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "0c1b1621dfe0add4eb89fdcb732b4759669072bd",
+      "previous_text": "2f8df0bf4a4cf96e915807242e3dfddfcbc538f5",
       "replaced": [
-        "hook works on mac but blocks on linux"
+        "hook blocked subagent dispatch"
       ],
       "dropped": [
         {
-          "term": "hook works on mac but blocks on linux",
+          "term": "hook blocked subagent dispatch",
           "why": "duplicate",
-          "duplicate_of": "missing hook script blocks every tool call"
+          "duplicate_of": "subagent shows failed with no steps yet"
         }
       ],
       "terms": [
@@ -5084,12 +5100,12 @@
         "write hook misses relative path writes",
         "session start hook fired again on second turn",
         "subagent shows failed with no steps yet",
-        "hook blocked subagent dispatch",
         "does the model see why a hook denied it?",
         "hook silently rewrote subagent prompt",
         "why can't users see hook deny reason?",
         "hook prompt rewrite on older cli versions",
-        "failed hook record shows status text not command"
+        "failed hook record shows status text not command",
+        "do organization plugin hooks run in chat?"
       ]
     },
     "210": {
@@ -5307,12 +5323,21 @@
     "217": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-05",
-      "input_sha256": "b21130d9be499bbc6e7e767ebad8e17dfaf2626a6e7b230536310c2693504bdd",
+      "date": "2026-10-15",
+      "input_sha256": "a7e0a3c6fe3440d92ca69552c0b0a567918dd83077cbc69d76bae52b703daca9",
       "prior_terms_sha256": "38b12b0d40b464a11b9752da9a9ce5c34d356289c75d43e2abed9a9e559b918e",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "621b9a185d8612261c3105a36aa0fea8b83eb8eb",
-      "replaced": [],
+      "previous_text": "2f8df0bf4a4cf96e915807242e3dfddfcbc538f5",
+      "replaced": [
+        "skill command shows as raw text"
+      ],
+      "dropped": [
+        {
+          "term": "skill command shows as raw text",
+          "why": "duplicate",
+          "duplicate_of": "inline shell command in skill not running"
+        }
+      ],
       "terms": [
         "get my own skill into Cowork",
         "upload a skill zip to my account",
@@ -5320,7 +5345,6 @@
         "why does my skill zip upload get rejected",
         "uploaded skill shows up in terminal too",
         "inline shell command in skill not running",
-        "skill command shows as raw text",
         "shell command execution disabled by policy message",
         "skill fails to load permission check failed",
         "edit a saved skill by asking in chat",
@@ -5331,7 +5355,8 @@
         "can't write files next to skill in local Cowork",
         "skill folder placeholder not filled in cloud",
         "skill allowed tools ignored by managed policy",
-        "auto mode won't approve skill inline command"
+        "auto mode won't approve skill inline command",
+        "long skill description deleted all my skills"
       ]
     },
     "218": {
@@ -5471,19 +5496,25 @@
     "222": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-07",
-      "input_sha256": "b827dcca6422318600b397ac6950ed8803c701b10c5b386990bfb2189eec73b3",
-      "prior_terms_sha256": "14cda97185e148f019c33fe1cb5f950c1a0eb17c3c66a003c7042612fcfcff08",
+      "date": "2026-10-15",
+      "input_sha256": "f735b95b03b04526da62e7e07dd66cf83a1ecbfc03306d45ddd81df6c2fcf384",
+      "prior_terms_sha256": "71a5efc19fd6258723fb831a3c749810aba11c2566b4b1927186aae06d5ac284",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "d0014a3576f119cf8479a13cba067b5d55b9509f",
+      "previous_text": "2f8df0bf4a4cf96e915807242e3dfddfcbc538f5",
       "replaced": [
-        "scheduled task not asking for approval"
+        "Cowork always forces minimal mode off",
+        "extended thinking on even when switched off"
       ],
       "dropped": [
         {
-          "term": "scheduled task not asking for approval",
+          "term": "Cowork always forces minimal mode off",
           "why": "duplicate",
-          "duplicate_of": "why did my scheduled task skip permission prompts?"
+          "duplicate_of": "why doesn't my minimal mode setting work in Cowork?"
+        },
+        {
+          "term": "extended thinking on even when switched off",
+          "why": "duplicate",
+          "duplicate_of": "why does my session think with thinking disabled?"
         }
       ],
       "terms": [
@@ -5498,13 +5529,13 @@
         "computer use permission check disabled",
         "Sonnet 5.5 available in Cowork model picker",
         "remote folder trust remembered after restart",
-        "Cowork always forces minimal mode off",
         "exported variable no longer affects Cowork session",
-        "extended thinking on even when switched off",
         "why does my session think with thinking disabled?",
         "admin list of always-thinking models",
         "full thinking budget forced for some models",
-        "Haiku model now selectable in Cowork"
+        "Haiku model now selectable in Cowork",
+        "scheduled task retries when model unreachable",
+        "scheduled task waits for my approval"
       ]
     },
     "223": {
@@ -5588,12 +5619,27 @@
     "226": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-11",
-      "input_sha256": "91bec1b8eebec812b7c02e9e3da6b8e76509df17f5e44f748c4596a4bd092748",
-      "prior_terms_sha256": "c7b13044e66818ff387c437ae810e16bf3a41f8f6deec787a3cef7e54e036900",
+      "date": "2026-10-15",
+      "input_sha256": "f8ad0c334df8b87476b4233db927d1f33d5598484bad0bc8e3f03ed9b3f8c8ff",
+      "prior_terms_sha256": "050d87cbcbcbd1447fb17f9f9c8f199edc7c1238a52f33f9e724bd76360a4552",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "f64fdc0876befaf1aeb5bf0add4d49277fd3f60d",
-      "replaced": [],
+      "previous_text": "2f8df0bf4a4cf96e915807242e3dfddfcbc538f5",
+      "replaced": [
+        "why did my task run in the cloud?",
+        "verify which environment a task ran in"
+      ],
+      "dropped": [
+        {
+          "term": "why did my task run in the cloud?",
+          "why": "duplicate",
+          "duplicate_of": "cowork task ran in cloud instead of locally"
+        },
+        {
+          "term": "verify which environment a task ran in",
+          "why": "duplicate",
+          "duplicate_of": "how to tell if task ran locally or in cloud"
+        }
+      ],
       "terms": [
         "cowork task ran in cloud instead of locally",
         "only on this computer setting ignored",
@@ -5602,17 +5648,17 @@
         "opt out of cloud cowork",
         "local only setting disappeared from settings",
         "setting turned back on by itself",
-        "why did my task run in the cloud?",
         "phone task runs in cloud not on my computer",
         "auto mode forces local session",
         "what decides where a cowork task runs?",
         "cloud opt-out expires after a few days",
         "skill can't find plugin scripts from phone",
-        "verify which environment a task ran in",
         "local only cowork being deprecated",
         "deprecation banner on cowork task",
         "connected folder task ran in cloud",
-        "why is bypass mode missing in cowork?"
+        "why is bypass mode missing in cowork?",
+        "admin turned off local VM cowork",
+        "task starts in cloud when admin disables local"
       ]
     },
     "227": {
@@ -5828,11 +5874,11 @@
     "233": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-14",
-      "input_sha256": "14620e225cad4c47e637bb0db5686619aa2b7a327abd8d6445f9f5cae37fb3ea",
-      "prior_terms_sha256": "acd64ca625b9b04db7c34e0cb6a553936bc4d07a642661e315ca254a37be46ff",
+      "date": "2026-10-15",
+      "input_sha256": "cf134b6e471efed0e4ea23ed80acaf1bc7ccdef0945352b28848d14fe4cd4231",
+      "prior_terms_sha256": "6c5635d175c370bfa20fa75c99169c7514c8623fa232e6697f815311a5dded60",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "56c4b54ec9e5a389ae055a2a82fe18cb77bb6478",
+      "previous_text": "2f8df0bf4a4cf96e915807242e3dfddfcbc538f5",
       "replaced": [],
       "terms": [
         "MCP server works in chat but not Cowork",
@@ -5850,7 +5896,9 @@
         "how fast must server answer version probe?",
         "Desktop spawns extra copy of MCP server",
         "where are Cowork MCP startup failures logged?",
-        "MCP app widget calls to agent-spawned plugin servers"
+        "MCP app widget calls to agent-spawned plugin servers",
+        "bridge timeout versus agent MCP tool timeout",
+        "can an admin change MCP tool timeout?"
       ]
     },
     "234": {
@@ -5910,21 +5958,12 @@
     "236": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-14",
-      "input_sha256": "9813ca6efb431f3d3c18a48844def4cc7ded1fa606383decf5a4a41c6d6d6156",
-      "prior_terms_sha256": "46a59f750cf34aa6bb2bf729bb29e5b8725510a5418a0c57aa67a1e69dc7b003",
+      "date": "2026-10-15",
+      "input_sha256": "5cbc6dfa9975963e2d975486c1f0428f4738103ab0021bd568ff7e015182224e",
+      "prior_terms_sha256": "deab1615f9a481dd6a044640ea0c33a340bf4e83ab7cc50597db1c16280880a5",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "a7d32b05920ac9c3fa4453f058873c080451d3e4",
-      "replaced": [
-        "your administrator has turned off shell commands"
-      ],
-      "dropped": [
-        {
-          "term": "your administrator has turned off shell commands",
-          "why": "duplicate",
-          "duplicate_of": "admin disable shell commands in Cowork"
-        }
-      ],
+      "previous_text": "2f8df0bf4a4cf96e915807242e3dfddfcbc538f5",
+      "replaced": [],
       "terms": [
         "require approval program before Claude reads files",
         "connected folders missing from shell",
@@ -5944,6 +5983,36 @@
         "how to tell if a policy setting is released",
         "can't install extension from folder developer mode",
         "network access for Chat file analysis"
+      ]
+    },
+    "237": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-10-15",
+      "input_sha256": "b5d3e9459b38a0541a59e4c36d84cb51d0af017525d163fa5771014b277d8073",
+      "collision_check": "questions-v2.json dev",
+      "terms": [
+        "admin policy settings for desktop app",
+        "why does Claude ignore my skill on company laptops",
+        "hidden admin instructions added to system prompt",
+        "can't add my own plugin marketplace",
+        "plugin uploads blocked by organization",
+        "bypass permissions option missing",
+        "can't read files outside project folder",
+        "route traffic through corporate proxy PAC file",
+        "MCP tool call timeout too short",
+        "how long do scheduled tasks remember always allow",
+        "sessions deleted automatically after days",
+        "legal hold on chat history retention",
+        "app forces restart after config change",
+        "which admin settings apply to Bedrock or Vertex deployments",
+        "Code sessions are turned off by your organization"
+      ],
+      "withheld": [
+        {
+          "term": "why does Claude ignore my skill on company laptops",
+          "qid": "pl-0188"
+        }
       ]
     }
   }
