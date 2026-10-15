@@ -1,10 +1,10 @@
 {
   "format": 1,
   "capture": {
-    "content16": "4cc97df3da602616",
-    "embedded_timestamp": 1791969083104,
-    "feature_count": 428,
-    "observed_at": "2026-10-14",
+    "content16": "94c31720c9aa90c7",
+    "embedded_timestamp": 1792042131993,
+    "feature_count": 427,
+    "observed_at": "2026-10-15",
     "mode": "1p"
   },
   "gates": [
