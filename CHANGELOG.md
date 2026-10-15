@@ -1,5 +1,51 @@
 # Changelog
 
+## v2.71.0 — 2026-10-15 (this fork) — Desktop release notes as a source, the policy schema, and what "@next" means
+
+236 lessons across 66 chapters (no new lessons; L209, L235 and L236 extended). Sources: Anthropic's Claude Desktop
+release notes and configuration changelog (claude.com/docs/cowork), the managed-policy schema in `app.asar` across 39
+Desktop builds, 2.31226.0 and 2.37337.1 read again for the worktree guard, and CLI 2.1.300 plus the backed-up
+Desktop-managed agents for the hook record.
+
+**New tools**
+
+- `scripts/desktop-changelog-scan.js` scans the Desktop release notes and the configuration changelog. It reports new,
+  reworded and removed entries since the last accepted scan and whether a lesson names each item. A name match is not
+  agreement, so those items are listed for a check. The committed snapshot `data/desktop-changelog.json` holds hashes
+  only.
+- `scripts/desktop-policy-schema.js` diffs the managed-policy keys between two Desktop builds. It reports added and
+  removed keys, legacy names, availability stamps and which clients read each key. A string diff of the asar missed
+  config keys that this catches.
+
+**Extended**
+
+- L235: an "In the official release notes" section. Of the worktree changes, the notes announce one; the rest is
+  unannounced. The edit guard has two branches:
+  - a fence from 2.31226.0, part of a new feature giving a session's added folders their own worktrees, gated by
+    `2393677837`;
+  - the new `foreign_worktree` check, which has no gate.
+
+  A session runs one branch or the other, not both. The SSH-on-Linux fix the notes describe was not found in the
+  guard.
+- L236: the configuration changes the notes announce, each checked in the asar:
+  - `developerModeEnabled`;
+  - six legacy key names dropped;
+  - the egress list no longer adds the provider's VM hosts;
+  - a malformed `toolPolicy` now blocks;
+  - deprecation flags cleared and `toolPolicyRules` removed.
+
+  Also new in L236:
+  - `chatAdvancedFileAnalysisNetworkEnabled`, unannounced: on third-party deployments, Chat's file-analysis shell had
+    no network before 2.37337.1.
+  - How to read a policy key's release state. Each key names the clients that read it (Desktop, the Microsoft 365
+    add-in or the Claude Code CLI). `availableInVersion: "@next"` means no released Desktop reads the key yet. A new
+    Desktop key is stamped by the next build (51 of 51 across 39 builds), and keys read only by another client stay
+    `@next` for good.
+- L209: a hook's transcript records (success, error, cancelled) put the hook's `statusMessage` in their `command`
+  field when one is set. Read in CLI 2.1.300, present in the backed-up agents from 2.1.255, and seen once in a local
+  Cowork session. Match `hookName` or the status text to find which hook failed.
+- Desktop server settings: fcache recaptured on 2026-10-15 under Team; no pinned gate moved.
+
 ## v2.70.0 — 2026-10-14 (this fork) — What Desktop 2.37337 changed: sessions, computer use and admin policy
 
 236 lessons across 66 chapters (2 new: L235–L236, new Chapter 66; four extended). Sources: Claude Desktop `app.asar`
