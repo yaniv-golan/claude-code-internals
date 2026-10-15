@@ -1,5 +1,45 @@
 # Changelog
 
+## v2.72.0 — 2026-10-15 (this fork) — Desktop admin controls from August to October, and folder grants that carve
+
+237 lessons across 67 chapters (1 new: L237, new Chapter 67; seven extended). Sources: Anthropic's Claude Desktop release
+notes and configuration changelog for v1.32352.0 (2026-08-17) through v2.37337.1 (2026-10-13); the managed-policy schema
+in Desktop `app.asar` 2.37337.1; and code reads of 1.44121.1, 1.46388.3 and 2.37337.1.
+
+**Desktop admin controls (Chapter 67, new)**
+
+- L237: the managed-configuration keys Desktop added from August to October 2026, grouped by what they control. These
+  are what Claude is told, which plugins load, permission modes and file reach, network, MCP and scheduled tasks,
+  retention, and updates. Each key gets its first build, the deployments it is declared for and the clients that read
+  it, all from the schema. Most are for third-party deployments only.
+  - Read in the code: `organizationInstructions` is appended to the agent's system prompt with a preamble saying it
+    overrides the user's preferences. `disableBypassPermissionsMode` and `blockReadsOutsideWorkingDirectories` become
+    managed settings for the agent; the second needs agent 2.1.257 or newer. `mcpToolTimeoutSec` becomes
+    `MCP_TOOL_TIMEOUT`. The two plugin keys allow everything unless set to `false`. The retention legal hold overrides
+    every period.
+  - The rest is from the release notes and is marked so.
+
+**Corrected**
+
+- L128: from Desktop 1.46388.3 a folder that contains protected locations is attached, with those locations cut out.
+  The protected locations are credential folders, Keychains, launch agents, `~/.claude` and shell startup files. Only a
+  folder at or inside a protected location is refused. The lesson had said such grants were refused outright.
+
+**Extended from the release notes**
+
+- L209: hooks from organization plugins also run in Chat, and a message a hook blocks now shows the reason.
+- L217: three skill fixes:
+  - built-in and account skills loading without the Skill tool;
+  - a description over 1,024 characters removing every local skill;
+  - a skill switched off in Customize still running.
+- L222: scheduled runs:
+  - retry after 5, 15 and 30 minutes;
+  - start once the Mac is fully awake;
+  - wait for approval when policy says "ask";
+  - run without a workspace that fails to start.
+- L226: a task goes to the cloud when an admin has turned off the local VM.
+- L236: what the old `ask-session` value becomes in each field. L233: a pointer to the agent's MCP timeout setting.
+
 ## v2.71.0 — 2026-10-15 (this fork) — Desktop release notes as a source, the policy schema, and what "@next" means
 
 236 lessons across 66 chapters (no new lessons; L209, L235 and L236 extended). Sources: Anthropic's Claude Desktop
