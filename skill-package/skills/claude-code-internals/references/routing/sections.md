@@ -1734,14 +1734,14 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 209 · 53-routine-migration-plugin-hooks-by-lane.md:88 · Local lane (live)
 209 · 53-routine-migration-plugin-hooks-by-lane.md:108 · A PreToolUse hook on a dispatch, by CLI version
 209 · 53-routine-migration-plugin-hooks-by-lane.md:132 · Matchers and the local session's shell
-209 · 53-routine-migration-plugin-hooks-by-lane.md:142 · Two traps
-209 · 53-routine-migration-plugin-hooks-by-lane.md:147 · For a plugin author
-210 · 53-routine-migration-plugin-hooks-by-lane.md:165 · Three controls with one name
-210 · 53-routine-migration-plugin-hooks-by-lane.md:177 · The account setting
-210 · 53-routine-migration-plugin-hooks-by-lane.md:191 · The routing function
-210 · 53-routine-migration-plugin-hooks-by-lane.md:207 · What happened
-210 · 53-routine-migration-plugin-hooks-by-lane.md:224 · The composer decides (Desktop 2.19675.0, 2026-10-02)
-210 · 53-routine-migration-plugin-hooks-by-lane.md:242 · For an author or tester
+209 · 53-routine-migration-plugin-hooks-by-lane.md:142 · Three traps
+209 · 53-routine-migration-plugin-hooks-by-lane.md:148 · For a plugin author
+210 · 53-routine-migration-plugin-hooks-by-lane.md:166 · Three controls with one name
+210 · 53-routine-migration-plugin-hooks-by-lane.md:178 · The account setting
+210 · 53-routine-migration-plugin-hooks-by-lane.md:192 · The routing function
+210 · 53-routine-migration-plugin-hooks-by-lane.md:208 · What happened
+210 · 53-routine-migration-plugin-hooks-by-lane.md:225 · The composer decides (Desktop 2.19675.0, 2026-10-02)
+210 · 53-routine-migration-plugin-hooks-by-lane.md:243 · For an author or tester
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:22 · The three layers
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:32 · Layer 1: publishing refuses `host:`
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:48 · Layer 2: the viewer enforces the manifest

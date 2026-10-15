@@ -203,7 +203,6 @@
         "PROMPT_TOO_LONG_ERROR_MESSAGE",
         "handle-stop-hooks",
         "stopHooks.ts",
-        "hook_non_blocking_error",
         "hook_error_during_execution",
         "tokenBudget.ts",
         "submit-message",
@@ -257,7 +256,6 @@
         "PROMPT_TOO_LONG_ERROR_MESSAGE",
         "handle-stop-hooks",
         "stopHooks.ts",
-        "hook_non_blocking_error",
         "hook_error_during_execution",
         "tokenBudget.ts",
         "submit-message",
@@ -19983,7 +19981,6 @@
         "data_viz",
         "widget_code",
         "loading_messages",
-        "hook-name",
         "2742800629",
         "skill shows a form instead of asking questions",
         "why does cowork sometimes pop up an input form",
@@ -20009,7 +20006,6 @@
         "data_viz",
         "widget_code",
         "loading_messages",
-        "hook-name",
         "2742800629"
       ],
       "vocab_keys": [
@@ -20332,7 +20328,7 @@
       "lesson_number": "209",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
       "startLine": 70,
-      "endLine": 155,
+      "endLine": 156,
       "keywords": [
         "cowork plugin hook events",
         "cowork cloud hooks",
@@ -20348,6 +20344,7 @@
         "dash exit 2 hook",
         "Hook script appears to be missing",
         "hook_success",
+        "hook_non_blocking_error",
         "async_launched",
         "session_context",
         "hook-name",
@@ -20355,6 +20352,7 @@
         "meta.json",
         "system-reminder-tag",
         "status_text",
+        "hook_cancelled",
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
         "hook matcher misses cowork shell commands",
@@ -20376,13 +20374,15 @@
       ],
       "identifier_keys": [
         "hook_success",
+        "hook_non_blocking_error",
         "async_launched",
         "session_context",
         "hook-name",
         "idle-grace-ms",
         "meta.json",
         "system-reminder-tag",
-        "status_text"
+        "status_text",
+        "hook_cancelled"
       ],
       "vocab_keys": [
         "plugin hook not firing in cowork",
@@ -20416,8 +20416,8 @@
       "title": "Where a New Cowork Task Runs, and the Switch That Did Not Keep It Local",
       "lesson_number": "210",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
-      "startLine": 159,
-      "endLine": 246,
+      "startLine": 160,
+      "endLine": 247,
       "keywords": [
         "Only on this computer",
         "dramatic_shrimp_enabled",
@@ -38848,7 +38848,7 @@
       209
     ],
     "hook_non_blocking_error": [
-      2
+      209
     ],
     "hook_error_during_execution": [
       2
@@ -46541,7 +46541,6 @@
       205
     ],
     "hook-name": [
-      205,
       209
     ],
     "2742800629": [
@@ -46703,6 +46702,9 @@
       232
     ],
     "status_text": [
+      209
+    ],
+    "hook_cancelled": [
       209
     ],
     "dramatic_shrimp_disabled_at": [
