@@ -206,3 +206,11 @@ test('org-linked gates moving together get a note; one alone or a new gate does 
   assert.strictEqual(R.orgNote([m('2486083521'), m('946844604', 'served-unread', true)]), null);
   assert.strictEqual(R.orgNote([m('2486083521'), m('2974609625')]), null);
 });
+
+test('re-read names: meta lines and plain words are not grepped; identifiers and array members are', () => {
+  assert.deepStrictEqual(R.changedKeys(['present: false -> true', 'source: null -> defaultValue', 'on: null -> false', '(value): null -> false']), [],
+    'a gate that only started being served greps for its id alone');
+  assert.deepStrictEqual(R.changedKeys(['enabled: true -> false', 'passIntervalMinutes: 60 -> 30', 'a.max_items: 3 -> 4']), ['passIntervalMinutes', 'max_items']);
+  assert.deepStrictEqual(R.changedKeys(['hosts: members added "api.example-1.com", "x"', 'hosts: members removed "staggered"']), ['api.example-1.com'],
+    'an added member that looks like an identifier is grepped; a plain word is not');
+});

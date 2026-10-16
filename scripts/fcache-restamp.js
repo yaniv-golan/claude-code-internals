@@ -197,8 +197,30 @@ function diffValues(a, b, at = '') {
   return [`${name}: ${show(a)} -> ${show(b)}`];
 }
 
-/** Last path segment of each diff line: the key names worth grepping prose for. */
-const changedKeys = (lines) => [...new Set(lines.map((l) => l.split(':')[0].split('.').pop()).filter((k) => k && k !== '(value)'))];
+/** Diff lines about the gate itself, not its value; their key names match prose everywhere. */
+const META_LINE = /^(present|source|on|per_account): |^new pinned gate: /;
+
+/**
+ * A name is worth grepping prose for only when it looks like an identifier: camelCase, or holding
+ * an underscore, hyphen or digit, and at least 6 characters. A plain word ("enabled", "on") hits
+ * every lesson and buries the sentences that quote the gate.
+ */
+const distinctive = (k) => k.length >= 6 && (/[a-z][A-Z]/.test(k) || /[_\-0-9]/.test(k));
+
+/**
+ * The names worth grepping prose for: the last path segment of each value diff line, and the
+ * members an array gained or lost. Meta lines (present, source, on) contribute nothing.
+ */
+function changedKeys(lines) {
+  const out = [];
+  for (const l of lines) {
+    if (META_LINE.test(l)) continue;
+    out.push(l.split(':')[0].split('.').pop());
+    const m = l.match(/: members (?:added|removed) (.*)$/);
+    if (m) out.push(...m[1].split(', ').map((x) => x.replace(/^"|"$/g, '')));
+  }
+  return [...new Set(out.filter((k) => k && k !== '(value)' && distinctive(k)))];
+}
 
 /** Compare the record with a fresh observation of the registry's pinned gates. */
 function compare(record, registry, features) {
@@ -353,7 +375,7 @@ function run(argv, log = console.log) {
   return 0;
 }
 
-module.exports = { ORG_LINKED, orgNote, canon, content16, pyString, unsafeNumbers, decode, scrub, observe, pinned16, diffValues, compare, run, Fail, RECORD_REL, REFS_REL, PROSE_MAX };
+module.exports = { ORG_LINKED, orgNote, canon, content16, pyString, unsafeNumbers, decode, scrub, observe, pinned16, diffValues, changedKeys, compare, run, Fail, RECORD_REL, REFS_REL, PROSE_MAX };
 
 if (require.main === module) {
   try { process.exitCode = run(process.argv.slice(2)); } catch (e) {
