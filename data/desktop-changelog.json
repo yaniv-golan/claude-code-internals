@@ -4,9 +4,43 @@
     "changelog": "https://claude.com/docs/cowork/changelog.md",
     "config": "https://claude.com/docs/third-party/claude-desktop/configuration-changelog.md"
   },
-  "scanned": "2026-10-14",
+  "scanned": "2026-10-16",
   "pages": {
     "changelog": {
+      "v2.42304.0": {
+        "date": "2026-10-15",
+        "bundled": "2.1.299",
+        "items": [
+          "2f54e162440318bf",
+          "c5ed0d558be3c247",
+          "b0833e0ec415da38",
+          "3349bab61e37dc77",
+          "e95f1f472a561f15",
+          "937bb8b0f32db1ac",
+          "191194dace779738",
+          "df7055b348ed2892",
+          "dfc0eda508655487",
+          "e2e009509d6f8771",
+          "dd7373cc7a450485",
+          "839fe7e5d9b71253",
+          "431b9a5f8386714d",
+          "75f3086832ec78e3",
+          "8b5c11275fcef3d1",
+          "ebeb50b8bb2f271f",
+          "2d2dcb2d0225ef21",
+          "37c10659bb914ae2",
+          "96fa7be969a6f44a",
+          "1c2ad18664b1c2f4",
+          "83f2bb5cb8284494",
+          "467cd26fd79e5d1e",
+          "b3bb49c7b70a7db2",
+          "c1543ddc59af2305",
+          "f5fa4d0bc1569ea0",
+          "67a4390f0e4b7487",
+          "92b52d7bbeef65a8",
+          "00ecb01ffe1d453b"
+        ]
+      },
       "v2.37337.1": {
         "date": "2026-10-13",
         "bundled": "2.1.295",
@@ -1497,6 +1531,15 @@
       }
     },
     "config": {
+      "v2.42304.0": {
+        "date": "2026-10-15",
+        "bundled": null,
+        "items": [
+          "811672b947fa2fcf",
+          "664f89f700a647ad",
+          "6caf28a13198cb02"
+        ]
+      },
       "v2.37337.1": {
         "date": "2026-10-13",
         "bundled": null,

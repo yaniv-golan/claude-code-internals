@@ -5517,12 +5517,21 @@
     "223": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-11",
-      "input_sha256": "0fcd5bdfc71fe399d75aabe2f06ab5aecb7ac70a04a498501779630cd6e5f533",
-      "prior_terms_sha256": "d524a09a17ecdfe1e2466b9355f9ac187d24b8e0dd0c5f201ca6d635348a23fa",
+      "date": "2026-10-16",
+      "input_sha256": "6c62997c8883b7d31e5baf9086e6fbb4925b9bd312fd0e6e63a1c02c2c63ed1b",
+      "prior_terms_sha256": "c62a7206876d5bc14d0f8058a1fc0ff3a96fe2d18137362e10c7bba2cbbf3e14",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "ce10b1599cf044afb04442d6b0b146a28a7e33a0",
-      "replaced": [],
+      "previous_text": "ddb0be6574755d06df1466c74dfe4603e9838009",
+      "replaced": [
+        "plugin zip rejected no error shown"
+      ],
+      "dropped": [
+        {
+          "term": "plugin zip rejected no error shown",
+          "why": "duplicate",
+          "duplicate_of": "plugin silently fails to download"
+        }
+      ],
       "terms": [
         "plugin enabled but skills missing",
         "plugin installed but commands don't show up",
@@ -5530,7 +5539,6 @@
         "plugin silently fails to download",
         "suspicious compression ratio error",
         "zip extraction error in desktop logs",
-        "plugin zip rejected no error shown",
         "test fixtures breaking plugin install",
         "maximum compression ratio for plugin files",
         "plugin zip size limits",
@@ -5541,7 +5549,8 @@
         "where are plugin download errors logged?",
         "per-skill switches on third-party installs",
         "bundled agent moved off release candidate channel",
-        "which desktop version enables skill switches?"
+        "which desktop version enables skill switches?",
+        "fix for plugin never installing after enabling"
       ]
     },
     "224": {
@@ -5714,10 +5723,13 @@
     },
     "229": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-10-10",
-      "input_sha256": "e1d30b20ee4e3e60dd200d71ee6ab06ffe5876860b218ffae8484e0ddd17250e",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-16",
+      "input_sha256": "8c90590c7861cc9b11a9feec5cd5dae7fc7cba9fbfad5320ad72304383be0bb8",
+      "prior_terms_sha256": "eb2b358e4dcd2a4e4aedfb0f6faf9575d54e05e5a53decd726ad7f8b649711fc",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "ddb0be6574755d06df1466c74dfe4603e9838009",
+      "replaced": [],
       "terms": [
         "sideloaded desktop extension not updating",
         "how to update a manually installed extension",
@@ -5733,7 +5745,10 @@
         "tool result shows blank in desktop",
         "desktop picks web connector instead of local extension",
         "why doesn't my local extension get updates?",
-        "building a desktop extension best practices"
+        "building a desktop extension best practices",
+        "does always allow persist after quitting?",
+        "always allow disabled by organization admin",
+        "read-only tools skip approval in auto mode"
       ]
     },
     "230": {
@@ -5904,19 +5919,32 @@
     "235": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-14",
-      "input_sha256": "d23c44967e47f1516f2ea7896470f1f6d1410216eb07d2be84d1c270d68dc684",
+      "date": "2026-10-16",
+      "input_sha256": "2652171ca260c1d44abc96a760d2b5c17316be107ce8d5c32659ce77d9ee3f82",
       "prior_terms_sha256": "1ae8ec1bb2fdcf7a512e051d0b76bac8076845469f60cd78ef225c4446217bde",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "not found",
-      "replaced": [],
+      "previous_text": "ddb0be6574755d06df1466c74dfe4603e9838009",
+      "replaced": [
+        "can't move session to cloud",
+        "worktree not created by this conversation"
+      ],
+      "dropped": [
+        {
+          "term": "can't move session to cloud",
+          "why": "duplicate",
+          "duplicate_of": "move session to cloud refused worktree"
+        },
+        {
+          "term": "worktree not created by this conversation",
+          "why": "duplicate",
+          "duplicate_of": "edits rejected in another worktree"
+        }
+      ],
       "terms": [
         "scheduled task inherits auto mode",
         "why does my scheduled task skip approvals?",
         "move session to cloud refused worktree",
-        "can't move session to cloud",
         "edits rejected in another worktree",
-        "worktree not created by this conversation",
         "computer use won't click Claude window",
         "quick entry bar blocks mouse click",
         "pop-up menu closed during background click",
@@ -5928,17 +5956,25 @@
         "side session report finished or waiting",
         "which changes are in the release notes",
         "undocumented changes missing from changelog",
-        "worktree edit block doesn't cover shell commands"
+        "worktree edit block doesn't cover shell commands",
+        "git hooks and LFS skipped on cloud push",
+        "archived session deleted untracked worktree files"
+      ],
+      "withheld": [
+        {
+          "term": "git hooks and LFS skipped on cloud push",
+          "qid": "ranking-cases.json: hooks not firing (L32 within 3)"
+        }
       ]
     },
     "236": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-15",
-      "input_sha256": "5cbc6dfa9975963e2d975486c1f0428f4738103ab0021bd568ff7e015182224e",
+      "date": "2026-10-16",
+      "input_sha256": "215bd9117a71e082cdb73c87d477124c2ad07203ed953a070faa24913ef65759",
       "prior_terms_sha256": "deab1615f9a481dd6a044640ea0c33a340bf4e83ab7cc50597db1c16280880a5",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "2f8df0bf4a4cf96e915807242e3dfddfcbc538f5",
+      "previous_text": "ddb0be6574755d06df1466c74dfe4603e9838009",
       "replaced": [],
       "terms": [
         "require approval program before Claude reads files",
@@ -5964,11 +6000,11 @@
     "237": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-15",
-      "input_sha256": "5e964406b0bde3eef6ea87aefcbf8012969226fc8c9f9b999481bc0c8684fdc9",
+      "date": "2026-10-16",
+      "input_sha256": "6244f13c69f2d5d7669014ac3c0d3685df298e5310095cb74fc941f814f08652",
       "prior_terms_sha256": "44d468017083a8a605a2052d7cebbd8934aef95df5e0ba5741363ba9d759faff",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "5b637f93ea59a77fb14a53c80ae2c9f1f8ae2549",
+      "previous_text": "ddb0be6574755d06df1466c74dfe4603e9838009",
       "replaced": [],
       "terms": [
         "admin policy settings for desktop app",
@@ -5984,7 +6020,11 @@
         "legal hold on chat history retention",
         "app forces restart after config change",
         "which admin settings apply to Bedrock or Vertex deployments",
-        "Code sessions are turned off by your organization"
+        "Code sessions are turned off by your organization",
+        "chat file analysis shell has no internet",
+        "only allow for this session on MCP tools",
+        "imported MCP servers start without asking",
+        "HIPAA organizations excluded from automatic import"
       ]
     }
   }

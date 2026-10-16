@@ -1,10 +1,10 @@
 {
   "format": 1,
   "capture": {
-    "content16": "94c31720c9aa90c7",
-    "embedded_timestamp": 1792042131993,
-    "feature_count": 427,
-    "observed_at": "2026-10-15",
+    "content16": "574e7bdaed951bfc",
+    "embedded_timestamp": 1792125013728,
+    "feature_count": 436,
+    "observed_at": "2026-10-16",
     "mode": "1p"
   },
   "gates": [
@@ -498,9 +498,10 @@
     },
     {
       "id": "3475553907",
-      "present": false,
-      "source": null,
-      "on": null
+      "present": true,
+      "source": "defaultValue",
+      "on": false,
+      "value": false
     },
     {
       "id": "3488857202",

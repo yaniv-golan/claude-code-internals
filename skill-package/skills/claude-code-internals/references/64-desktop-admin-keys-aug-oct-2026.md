@@ -1,4 +1,4 @@
-Updated: 2026-10-15 (L237) | Source: Anthropic's Claude Desktop release notes and configuration changelog for v1.32352.0 (2026-08-17) through v2.37337.1 (2026-10-13), read 2026-10-14; the managed-policy schema in Desktop `app.asar` 2.37337.1 (`.vite/build/index.pre.js`), with each key's introducing build from the schema's own stamp; and a code read of how Desktop 2.37337.1 applies six of the keys. Behavior marked "per the notes" was not checked in the code.
+Updated: 2026-10-16 (L237: the v2.42304.0 notes, 2026-10-15) | Source: Anthropic's Claude Desktop release notes and configuration changelog for v1.32352.0 (2026-08-17) through v2.42304.0 (2026-10-15), read 2026-10-14 and 2026-10-16; the managed-policy schema in Desktop `app.asar` 2.37337.1 (`.vite/build/index.pre.js`), with each key's introducing build from the schema's own stamp; and a code read of how Desktop 2.37337.1 applies six of the keys. Behavior marked "per the notes" was not checked in the code.
 
 # Chapter 67: Desktop Admin Controls Added August–October 2026
 
@@ -64,12 +64,14 @@ How the first two reach the agent (CODE-READ, 2.37337.1):
 | `egressProxyUrl`, `egressProxyPacUrl` | 1.44121.1 | 3p, 1p | Route egress through a fixed proxy or a PAC file instead of the OS proxy. The PAC file wins when both are set. Cowork's workspace follows it on macOS and Windows. Read only from device management or a local file, never from a bootstrap URL (per the notes) |
 | `skipWebFetchPreflight` | 1.37937.0 | 3p | Code sessions stop contacting api.anthropic.com to check a domain before a fetch (per the notes) |
 | `coworkVmIpv6Enabled` | 1.52386.0 | 3p | Gives the Cowork VM IPv6; `coworkEgressAllowedHosts` still decides which hosts are reachable (per the notes) |
+| `coworkEgressAllowedHosts` | older | 3p | From 2.42304.0 also the network of Chat's file-analysis shell, whose commands run without asking; with no list, or an empty one, that shell stays offline (per the notes; code in Ch66/L236) |
 
 ## MCP tools and scheduled tasks
 
 | key | since | scopes | effect |
 |---|---|---|---|
 | `mcpToolTimeoutSec` | 1.37937.0 | 3p | An MCP tool-call timeout, an integer from 60 to 3600 seconds |
+| `mcpPersistentAlwaysAllowEnabled` | older (1.24012.9) | 3p | `false`: MCP tool cards offer "Allow for this session" instead of a lasting "Always allow". From 2.42304.0 it also covers Code sessions on the device, in WSL and over SSH (per the notes). How the lasting approval works: Ch63/L229 |
 | `mcpScheduledTaskApprovalLifetimeDays` | 2.7032.0 | 3p | How long a scheduled task may reuse a lasting "always allow" for an MCP tool, 0 to 3650 days. The lasting option is offered even when persistent approvals are otherwise off; `0` removes it (per the notes) |
 
 `mcpToolTimeoutSec` reaches the agent as the environment variable `MCP_TOOL_TIMEOUT`, in milliseconds (CODE-READ). When the key is unset Desktop sets nothing and the agent's own default applies (180 s per the notes). This is the agent's timeout. The 180 s per call in Ch65/L233 is a separate constant in Desktop's cloud MCP bridge, and whether this key reaches it was not traced.
@@ -92,7 +94,7 @@ In the code the hold wins over every period (CODE-READ). For forensics this matt
 | `disableAutoUpdates` | older (1.2581.0) | 3p, 1p | From 2.26454.0 also decides whether Cowork's workspace image downloads in the background (unless `true`) instead of at the first task |
 | `isClaudeCodeForDesktopEnabled` | older (1.2581.0) | 3p, 1p | From 1.44121.1, `false` also blocks Code sessions requested directly, Preview's dev-server scan and offering the computer for Remote Control ("Code sessions are turned off by your organization") |
 | `builtinBrowserEnabled`, `builtinBrowserDefaultDomainPolicy`, `builtinBrowserAllowedDomains`, `builtinBrowserBlockedDomains` | 2.2553.0 | 3p | Allow the built-in browser for Cowork and Code, and set its site policy |
-| `claudeAiImport` (`allowedOrganizationUuids`, `automatic3pImport`) | key 1.10628.0; `allowedOrganizationUuids` first in 2.26454.0 (absent from 2.19675.1); `automatic3pImport` already in 2.19675.1, its wider import per the notes from 2.31226.0 | 3p | Limit history import to listed claude.ai organizations (sign-in only; file import off), and import automatically: Cowork artifacts, projects, memory, global instructions, scheduled tasks, uploads, skills and plugins, applied without asking except a project's own instructions (the code side of the import is Ch64/L231) |
+| `claudeAiImport` (`allowedOrganizationUuids`, `automatic3pImport`) | key 1.10628.0; `allowedOrganizationUuids` first in 2.26454.0 (absent from 2.19675.1); `automatic3pImport` already in 2.19675.1, its wider import per the notes from 2.31226.0 | 3p | Limit history import to listed claude.ai organizations (sign-in only; file import off), and import automatically: Cowork artifacts, projects, memory, global instructions, scheduled tasks, uploads, skills and plugins, applied without asking except a project's own instructions (the code side of the import is Ch64/L231). From 2.42304.0 the automatic import also adds and starts local MCP servers, installs allowed extensions and uploaded plugins, and uploads skills that grant tools or declare hooks, all without asking; reinstalls optional plugins from any matching `allowedPluginMarketplaces` source; and keeps a local server's tool approvals while the server is unchanged. HIPAA-restricted organizations get none of this |
 | `keepAwakeEnabled` | 2.7032.0 | 3p | Keep the computer awake for scheduled work |
 | `defaultModelEffort`, `alwaysStartWithDefaultModel` | 2.110.0 | 3p | An organization default for effort, and starting every session on the default model |
 

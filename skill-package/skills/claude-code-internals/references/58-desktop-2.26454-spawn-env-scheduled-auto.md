@@ -1,4 +1,4 @@
-Updated: 2026-10-08 (L223: the plugin-zip validator, read in 2.26454.0 and 2.26454.2, plus a failed plugin sync observed on 2026-10-08; 2.26454.2 diffed against 2.26454.0) | Earlier source: **Claude Desktop `app.asar` 2.26454.0 diffed against 2.16120.0 and 2.19675.0** (all three builds read; staged agent 2.1.289), the **live GrowthBook cache decoded on 2026-10-07** (398 features), and the 2026-09-27 cache snapshot for served-value comparisons. The UI bundle (`ion-dist`) exists only for the installed build, so nothing here is claimed as a UI-bundle change.
+Updated: 2026-10-16 (L223: synced plugins checked on the whole archive from 2.42304.0) | Earlier: 2026-10-08 (L223: the plugin-zip validator, read in 2.26454.0 and 2.26454.2, plus a failed plugin sync observed on 2026-10-08; 2.26454.2 diffed against 2.26454.0) | Earlier source: **Claude Desktop `app.asar` 2.26454.0 diffed against 2.16120.0 and 2.19675.0** (all three builds read; staged agent 2.1.289), the **live GrowthBook cache decoded on 2026-10-07** (398 features), and the 2026-09-27 cache snapshot for served-value comparisons. The UI bundle (`ion-dist`) exists only for the installed build, so nothing here is claimed as a UI-bundle change.
 
 # Chapter 61: Desktop 2.26454.0 — Spawn Environment, Scheduled Tasks in Auto Mode, and Gates Switched Off
 
@@ -98,7 +98,7 @@ Later builds changed scheduled runs further (none measured here):
 
 # LESSON 223 — WHAT DESKTOP CHECKS IN A PLUGIN ZIP, AND HOW IT FAILS WITHOUT TELLING YOU
 
-**Desktop checks every zip it unpacks against a size-and-shape policy. For a plugin, one file that compresses better than 50:1 fails the whole plugin. The error goes to `main.log` only. The plugin page still says the plugin is installed and on, and its skills never appear.**
+**Desktop checks every zip it unpacks against a size-and-shape policy. Up to 2.37337.1, one file in a synced plugin that compresses better than 50:1 failed the whole plugin; from 2.42304.0 a synced plugin is checked on the ratio of the whole archive instead. The error goes to `main.log` only. The plugin page still says the plugin is installed and on, and its skills never appear.**
 
 ## Observed
 
@@ -128,17 +128,17 @@ Which checks run depends on the kind of zip:
 | check | plugin | org plugin download | uploaded skill | extension (DXT/MCPB) |
 |---|---|---|---|---|
 | entry count, total size | yes | yes | yes | yes |
-| ratio of **each file** over 50:1 | yes | yes | **no** | no |
-| ratio of the **whole archive** over 50:1 | no | no | no | yes |
+| ratio of **each file** over 50:1 | yes | yes; **no** from 2.42304.0 | **no** | no |
+| ratio of the **whole archive** over 50:1 | no | no; **yes** from 2.42304.0 | no | yes |
 | path and name length | yes | yes | yes | no |
 | a `.zip` inside the zip | refused | allowed | refused | allowed |
 | `..` or absolute paths (before extraction) | no | no | no | yes |
 
-A plugin downloaded from the organization uses the "org plugin download" column unless gate `3778108436` is on, which switches it to the stricter plugin column (and so bans nested zips); see Ch57/L213 for that gate's state. Extraction then writes into a staging folder (mode 0700), refuses any entry that would land outside it ("Path traversal detected in zip entry"), creates each file with an exclusive write so two names that collide on disk fail, and removes the staging folder if any one file fails, so a plugin arrives whole or not at all.
+The 2.42304.0 change is the `remotePlugin` preset gaining `perEntryRatioCap:false, aggregateRatioCap:true` (CODE-READ, 2.37337.1 vs 2.42304.0); the notes describe it as "Fixed some plugins never installing after being enabled on claude.ai because one of their files is very repetitive, such as a long empty table." A plugin downloaded from the organization, including one uploaded under My Uploads, uses the "org plugin download" column unless gate `3778108436` is on (unserved on 2026-10-16), which switches it to the stricter plugin column (and so bans nested zips); see Ch57/L213 for that gate's state. Extraction then writes into a staging folder (mode 0700), refuses any entry that would land outside it ("Path traversal detected in zip entry"), creates each file with an exclusive write so two names that collide on disk fail, and removes the staging folder if any one file fails, so a plugin arrives whole or not at all.
 
 ## For a skill author
 
-- Keep test fixtures, recorded captures and other large repetitive files out of the plugin folder you ship. Text that repeats compresses far past 50:1.
+- Keep test fixtures, recorded captures and other large repetitive files out of the plugin folder you ship. Text that repeats compresses far past 50:1. From Desktop 2.42304.0 one such file no longer blocks a synced plugin, but users on older builds, and a zip whose files repeat throughout, still fail.
 - Before you release, check the largest per-file ratio of the zip you will publish, for example with `python3 -c "import zipfile,sys;print(max(i.file_size/max(i.compress_size,1) for i in zipfile.ZipFile(sys.argv[1]).infolist()))" plugin.zip`. Keep it well under 50; the server may repack your files.
 - If a plugin shows as enabled but its skills or commands are missing, search `main.log` for `Failed to download <plugin name>`. Nothing in the app reports it.
 - An uploaded skill (not a plugin) is not checked per file, so the same fixture would pass there.

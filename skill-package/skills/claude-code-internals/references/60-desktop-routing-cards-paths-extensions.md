@@ -1,4 +1,4 @@
-Updated: 2026-10-11 (L226–L230) | Source: the installed **Claude Desktop `app.asar` 2.31226.1** and its UI bundle (`ion-dist`, 2.31226.0 and 2.31226.1), read but **not diffed** against an earlier build, so nothing here is claimed as new; plus live runs on Desktop 2.31226.0/2.31226.1 between 2026-10-09 and 2026-10-11 in a Personal org and a Team org (local and cloud Cowork tasks, a phone-started task, a real MCPB extension, an uploaded and an org-marketplace copy of one plugin). Minified names are given with their chunk file, because the same short name is reused across chunks.
+Updated: 2026-10-16 (L229: the approval gate and "Always allow", read in app.asar 2.37337.1 and 2.42304.0 and the 2.42304.0 ion-dist) | Earlier: 2026-10-11 (L226–L230) | Source: the installed **Claude Desktop `app.asar` 2.31226.1** and its UI bundle (`ion-dist`, 2.31226.0 and 2.31226.1), read but **not diffed** against an earlier build, so nothing here is claimed as new; plus live runs on Desktop 2.31226.0/2.31226.1 between 2026-10-09 and 2026-10-11 in a Personal org and a Team org (local and cloud Cowork tasks, a phone-started task, a real MCPB extension, an uploaded and an org-marketplace copy of one plugin). Minified names are given with their chunk file, because the same short name is reused across chunks.
 
 # Chapter 63: Desktop Cowork — Task Routing, Approval Cards, Paths, Local Extensions and Plugin Installs
 
@@ -144,7 +144,7 @@ Connected-folder mounts are `rw`, not `rwd`, until the mount is approved (`Bwge5
 
 # LESSON 229 — LOCAL EXTENSIONS (.MCPB) IN DESKTOP: UPDATES, CONFIRMATIONS, ERRORS, SETTINGS
 
-**A sideloaded `.mcpb` never auto-updates. Desktop's client for local extensions doesn't advertise elicitation, so a server can't ask the user to confirm through a dialog. A JSON-RPC error from a local server reaches the user and the model only as a generic message. For how the server is launched and what environment it gets, see L224 (Chapter 62).**
+**A sideloaded `.mcpb` never auto-updates. Desktop's client for local extensions doesn't advertise elicitation, so a server can't ask the user to confirm through a dialog. The user approves a call on Desktop's card, and "Always allow" there lasts across sessions. A JSON-RPC error from a local server reaches the user and the model only as a generic message. For how the server is launched and what environment it gets, see L224 (Chapter 62).**
 
 ## Updates (CODE-READ, asar 2.31226.0 `index.chunk-BC1wbmHw.js`; 2.31226.1 `index.chunk-Bk8mxCPb.js`)
 
@@ -155,6 +155,25 @@ Connected-folder mounts are `rw`, not `rwd`, until the mount is approved (`Bwge5
 ## No elicitation (CODE-READ, asar 2.31226.1 `index.chunk-BEWlG8Pv.js`)
 
 `LocalMcpServerManager`'s MCP client capabilities are `{roots?, extensions:{"io.modelcontextprotocol/ui", …}}`, with no `elicitation`. Only remote and custom-3p connector clients advertise `{elicitation:{url:{}}}`, and only URL mode. A local server's confirm-by-dialog path can never fire, so it needs a fallback, for example refusing with "requires confirm=true" and letting the model ask in chat.
+
+## When Desktop asks before an extension's tool runs (CODE-READ, asar 2.37337.1 and 2.42304.0)
+
+In Cowork and Code sessions an extension's tool calls pass Desktop's MCP tool-call gate (`mC`, 2.37337.1 `index.chunk-DPv6qSYD.js`). It checks in this order:
+
+1. A tool in `disallowedTools` is refused.
+2. A tool in the spawn's `allowedTools` runs. Desktop's own tools are listed there; an extension's tools are not.
+3. A grant already given runs it. That means "Allow for this task" (a session rule) or a lasting "Always allow".
+4. Bypass mode runs it. In Cowork this is the only mode that waives the card, and a fixed set of tools asks even then.
+5. In Cowork's Auto mode a tool annotated `readOnlyHint: true` runs without a card (logged `auto_read_only`). Code sessions don't take this branch.
+6. Anything else shows the approval card.
+
+**"Always allow" is lasting.** The card is drawn by Desktop's interface code (ion-dist). Choosing "Always allow" saves an approval on the account for that tool (`toggleMcpToolAlwaysApproved`). The key is the tool's switch key plus a hash of the tool's definition, so the card comes back when an update changes the tool. The interface says so: "This tool has changed since you chose to always allow it, so it needs your approval again." It also says "“Always allow” choices now persist after you quit the app."
+- An admin of a third-party deployment can set `mcpPersistentAlwaysAllowEnabled` to `false`. The card then offers "Allow for this session" instead. From 2.42304.0 this also covers Code sessions on the device, in WSL and over SSH (per the notes).
+- An organization can switch "Always allow" off for Cowork while Chat keeps it: "‘Always allow’ is disabled for Cowork by your organization admin. It is still available in Chat mode." It is read as `coworkMcpWriteToolsAlwaysAllowEnabled`; that it applies only to write tools was not confirmed.
+
+**Annotations.** `readOnlyHint` matters only in step 5. `destructiveHint` doesn't make Desktop ask about an extension's tool: Auto mode's re-prompt for destructive tools (L128) checks `isDestructiveConnectorTool`, which returns false for any local server. The admin per-tool policy (`managedMcpServers` `toolPolicy`) doesn't govern a local server either; `getManagedToolPolicy` returns early for one.
+
+Not established: the card for a `.mcpb` on 2.42304.0 was not watched, and the plain Chat tab was not read.
 
 ## Observed (MEASURED, Desktop 2.31226.0/.1, one real extension)
 
@@ -171,6 +190,7 @@ Connected-folder mounts are `rw`, not `rwd`, until the mount is approved (`Bwge5
 
 - Report expected failures as a tool result with `isError:true` and a clear message, not as a JSON-RPC error.
 - Don't depend on elicitation for confirmations in Desktop; make the confirm a tool argument and explain it in the refusal text.
+- Don't count on a confirm argument as the user's consent: the model fills it in. The user's checkpoint is Desktop's card, and one "Always allow" removes it for that tool until the tool's definition changes.
 - Ship a new `.mcpb` for each fix and tell users to reinstall; there is no update path for sideloaded files.
 - After changing a setting, check that it was saved (reopen the panel, or have the server log the value it got) before testing.
 - If your server overlaps a claude.ai connector, give your tools distinct names and descriptions so the model can choose.

@@ -1843,15 +1843,16 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 228 · 60-desktop-routing-cards-paths-extensions.md:137 · For an author or tester
 229 · 60-desktop-routing-cards-paths-extensions.md:149 · Updates (CODE-READ, asar 2.31226.0 `index.chunk-BC1wbmHw.js`; 2.31226.1 `index.chunk-Bk8mxCPb.js`)
 229 · 60-desktop-routing-cards-paths-extensions.md:155 · No elicitation (CODE-READ, asar 2.31226.1 `index.chunk-BEWlG8Pv.js`)
-229 · 60-desktop-routing-cards-paths-extensions.md:159 · Observed (MEASURED, Desktop 2.31226.0/.1, one real extension)
-229 · 60-desktop-routing-cards-paths-extensions.md:170 · For an extension author
-230 · 60-desktop-routing-cards-paths-extensions.md:184 · Frontmatter is rewritten (MEASURED, n=2 copies, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:192 · Marketplace sync installs everything (MEASURED, n=1)
-230 · 60-desktop-routing-cards-paths-extensions.md:196 · Switching off deletes the copy (MEASURED, n=1, Team)
-230 · 60-desktop-routing-cards-paths-extensions.md:202 · A marketplace listed in the settings file never refreshes (MEASURED, n=1, Team, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:213 · Uploading a plugin the organization already provides (MEASURED, n=1 per organization, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:230 · A related default (MEASURED)
-230 · 60-desktop-routing-cards-paths-extensions.md:234 · For a plugin author
+229 · 60-desktop-routing-cards-paths-extensions.md:159 · When Desktop asks before an extension's tool runs (CODE-READ, asar 2.37337.1 and 2.42304.0)
+229 · 60-desktop-routing-cards-paths-extensions.md:178 · Observed (MEASURED, Desktop 2.31226.0/.1, one real extension)
+229 · 60-desktop-routing-cards-paths-extensions.md:189 · For an extension author
+230 · 60-desktop-routing-cards-paths-extensions.md:204 · Frontmatter is rewritten (MEASURED, n=2 copies, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:212 · Marketplace sync installs everything (MEASURED, n=1)
+230 · 60-desktop-routing-cards-paths-extensions.md:216 · Switching off deletes the copy (MEASURED, n=1, Team)
+230 · 60-desktop-routing-cards-paths-extensions.md:222 · A marketplace listed in the settings file never refreshes (MEASURED, n=1, Team, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:233 · Uploading a plugin the organization already provides (MEASURED, n=1 per organization, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:250 · A related default (MEASURED)
+230 · 60-desktop-routing-cards-paths-extensions.md:254 · For a plugin author
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:18 · An already-attached folder skips the card (CODE-READ, `index.chunk-QEr06WaZ.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:38 · Dispatch has its own create switch (CODE-READ, `index.chunk-Cyt2WTko.js`; refusal text in `index.chunk-hKMR2oV6.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:52 · The migration sweep keeps a bound task local when remote control is off (CODE-READ, `index.chunk-QEr06WaZ.js`)
@@ -1880,28 +1881,28 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 235 · 63-desktop-2.37337-sessions-admin-file-check.md:71 · Observed on 2.37337.1 (MEASURED, Team, 2026-10-14)
 235 · 63-desktop-2.37337-sessions-admin-file-check.md:75 · Served state on 2026-10-14 (MEASURED, Team)
 235 · 63-desktop-2.37337-sessions-admin-file-check.md:80 · In the official release notes (checked 2026-10-14)
-235 · 63-desktop-2.37337-sessions-admin-file-check.md:94 · Who this affects and what to do
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:107 · The organization's file check (CODE-READ, `index.chunk-qbMm8eZ4.js` (new), `index.chunk-KpOoeR5G.js`, `index.chunk-m8lVroc8.js`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:135 · Microsoft 365 sensitivity labels (CODE-READ, `index.chunk-BWk6pVUt.js`, `resources/office365-mcp/office365-mcp-stdio.mjs`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:142 · Device profile vs a user's configuration-server pointer (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-CGQsUM80.js`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:150 · EDR integration (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-DkReRM12.js`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:161 · Other admin-facing changes (CODE-READ)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:179 · Gates new in this build, by effect (CODE-READ; served state MEASURED on Team, 2026-10-14)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:206 · In the official release notes (checked 2026-10-14)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:212 · Configuration changes the notes announce (CODE-READ, policy schema of both builds)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:232 · Reading a policy key's release state (MEASURED, 39 Desktop builds, 1.18286.2 → 2.37337.1; CODE-READ, `index.pre.js`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:244 · Who this affects and what to do
+235 · 63-desktop-2.37337-sessions-admin-file-check.md:96 · Who this affects and what to do
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:109 · The organization's file check (CODE-READ, `index.chunk-qbMm8eZ4.js` (new), `index.chunk-KpOoeR5G.js`, `index.chunk-m8lVroc8.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:137 · Microsoft 365 sensitivity labels (CODE-READ, `index.chunk-BWk6pVUt.js`, `resources/office365-mcp/office365-mcp-stdio.mjs`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:144 · Device profile vs a user's configuration-server pointer (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-CGQsUM80.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:152 · EDR integration (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-DkReRM12.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:163 · Other admin-facing changes (CODE-READ)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:181 · Gates new in this build, by effect (CODE-READ; served state MEASURED on Team, 2026-10-14)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:208 · In the official release notes (checked 2026-10-14)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:214 · Configuration changes the notes announce (CODE-READ, policy schema of both builds)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:235 · Reading a policy key's release state (MEASURED, 40 Desktop builds, 1.18286.2 → 2.42304.0; CODE-READ, `index.pre.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:248 · Who this affects and what to do
 237 · 64-desktop-admin-keys-aug-oct-2026.md:17 · Reading a key's reach
 237 · 64-desktop-admin-keys-aug-oct-2026.md:26 · What Claude is told
 237 · 64-desktop-admin-keys-aug-oct-2026.md:39 · Which plugins load
 237 · 64-desktop-admin-keys-aug-oct-2026.md:48 · Permission modes and file reach
 237 · 64-desktop-admin-keys-aug-oct-2026.md:60 · Network
-237 · 64-desktop-admin-keys-aug-oct-2026.md:68 · MCP tools and scheduled tasks
-237 · 64-desktop-admin-keys-aug-oct-2026.md:77 · Sessions kept on the device
-237 · 64-desktop-admin-keys-aug-oct-2026.md:86 · Updates, restarts and the rest
-237 · 64-desktop-admin-keys-aug-oct-2026.md:99 · For a skill or plugin author
-237 · 64-desktop-admin-keys-aug-oct-2026.md:106 · For an admin
-237 · 64-desktop-admin-keys-aug-oct-2026.md:112 · Not established
+237 · 64-desktop-admin-keys-aug-oct-2026.md:69 · MCP tools and scheduled tasks
+237 · 64-desktop-admin-keys-aug-oct-2026.md:79 · Sessions kept on the device
+237 · 64-desktop-admin-keys-aug-oct-2026.md:88 · Updates, restarts and the rest
+237 · 64-desktop-admin-keys-aug-oct-2026.md:101 · For a skill or plugin author
+237 · 64-desktop-admin-keys-aug-oct-2026.md:108 · For an admin
+237 · 64-desktop-admin-keys-aug-oct-2026.md:114 · Not established
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

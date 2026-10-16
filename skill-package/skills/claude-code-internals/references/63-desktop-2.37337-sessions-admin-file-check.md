@@ -1,4 +1,4 @@
-Updated: 2026-10-14 (L235–L236) | Source: **Claude Desktop `app.asar` 2.37337.1 diffed against 2.31226.1** (both builds read in full; the new build has 368 build files against 353), Desktop's UI bundle (`ion-dist`, current build only, so no old/new claim for code that lives only there), the **live GrowthBook cache decoded on 2026-10-14 with Desktop on Team** (428 features), live runs on 2.37337.1 on 2026-10-14, and Anthropic's release notes and configuration changelog for v2.37337.1 (read 2026-10-14). Both builds embed the same bundled agent, 2.1.295. Minified names are given with their chunk file, because the same short name is reused across chunks; chunk names are from 2.37337.1.
+Updated: 2026-10-16 (L235–L236: the v2.42304.0 notes; the Chat file-analysis network key removed in 2.42304.0) | Earlier: 2026-10-14 (L235–L236) | Source: **Claude Desktop `app.asar` 2.37337.1 diffed against 2.31226.1** (both builds read in full; the new build has 368 build files against 353), Desktop's UI bundle (`ion-dist`, current build only, so no old/new claim for code that lives only there), the **live GrowthBook cache decoded on 2026-10-14 with Desktop on Team** (428 features), live runs on 2.37337.1 on 2026-10-14, and Anthropic's release notes and configuration changelog for v2.37337.1 (read 2026-10-14). Both builds embed the same bundled agent, 2.1.295. Minified names are given with their chunk file, because the same short name is reused across chunks; chunk names are from 2.37337.1.
 
 # Chapter 66: Desktop 2.37337 — Scheduled-Task Modes, Cloud Moves, Worktree Ownership, the Organization's File Check and Admin Policy
 
@@ -91,6 +91,8 @@ Anthropic's notes for v2.37337.1 (`claude.com/docs/cowork/changelog`) announce o
 
   The shared-checkout warning to subagents, `externalWorktreeContainers` and gate `2393677837` already existed in 2.26454.2. Nothing SSH-Linux-specific changed in the hook in 2.37337.1, so where that build fixes the SSH-on-Linux case the notes describe was not found.
 
+- **Later, in the v2.42304.0 notes (checked 2026-10-16, not read in the code):** the Git operations the app runs for you (the commit and stash around a branch switch, the in-folder branch switch, and the push behind "Continue in cloud") no longer run the repository's Git hooks, so push Git LFS objects from a terminal before continuing in the cloud. Archiving a session after Claude moved it to the cloud no longer deletes untracked files in its worktrees, and deleting a session on an SSH host whose helper hadn't updated no longer deletes a branch holding unpushed commits.
+
 ## Who this affects and what to do
 
 - **Scheduled-task users.** A task made from an Auto or Bypass Code-tab session now runs unattended in that mode. Check the mode before saving, and expect app-level steps to be refused in such runs.
@@ -164,7 +166,7 @@ Anthropic's notes for v2.37337.1 (`claude.com/docs/cowork/changelog`) announce o
 - **VM-loop sessions under a host-loop deployment are refused.** "This session can't continue: it was created to run inside the VM sandbox, which this deployment no longer uses. Start a new session." See L124 on host-loop stickiness.
 - **Code-tab restart parking (mechanism pre-existing).** Desktop stops respawning a failing Code-tab CLI after 5 fast failures in a row or 15 in all ("automatic restarts are paused for this session"); a message resumes it.
   - New: 12 more failure categories with their own texts, among them `proxy_invalid`, `temp_dir_unusable`, `worktree_unverified`, `org_config_refused` and `cli_version_too_old`.
-  - The categories come from the CLI's `startup_failure_reason`, requested with `CLAUDE_CODE_STARTUP_FAILURE_RESULTS=1`. Desktop sets that only when gate `3488857202` is on, and it is unserved. Until then users see the generic text.
+  - The categories come from the CLI's `startup_failure_reason`, requested with `CLAUDE_CODE_STARTUP_FAILURE_RESULTS=1`. In 2.37337.1 Desktop set it only when gate `3488857202` was on, and it was unserved, so users saw the generic text. 2.42304.0 drops that gate and sets the variable for Code-tab spawns by default; gate `2000661115` is now a kill switch (`return !gate`), unserved on 2026-10-16.
 - **SSH:**
   - OpenSSH is the live transport (`3946462706` served on).
   - A banner explains the two cases the built-in library can't handle (`proxy_jump_unsupported`, `host_key_source_unsupported`).
@@ -181,11 +183,11 @@ Anthropic's notes for v2.37337.1 (`claude.com/docs/cowork/changelog`) announce o
 | Gate | What it does | Served on Team |
 |---|---|---|
 | `3184956269` | MCP Apps routing for agent-spawned plugin servers | unserved (off) |
-| `3488857202` | startup-failure results for Code-tab restarts | unserved (off) |
+| `3488857202` | startup-failure results for Code-tab restarts | unserved (off); gone in 2.42304.0, replaced by kill switch `2000661115` |
 | `3400412699` | close background pop-up menus | unserved (on by default) |
 | `346871663` | refuse a hard-linked scheduled-task file | unserved (off) |
 | `61799151` | old single-prefix `.host-home` match | unserved (off) |
-| `3475553907` | organization default for unattended remote-control serving | unserved (off) |
+| `3475553907` | organization default for unattended remote-control serving | unserved (off). 2.42304.0 no longer reads it (served off from 2026-10-16 all the same); the unattended-serving consent now uses gate `1311831313` |
 | `1985233154` | list and tail standalone CLI sessions | off |
 | `144153584` | browser-data import also needs an organization capability | on |
 | `3868149774` | Preview user agent without `Electron/` | on |
@@ -223,21 +225,23 @@ A string diff of the two builds did not surface these; a diff of the managed-pol
   - An empty list now counts as authored (`emptyListIsAuthored`), which backs the Setup window's "Allow none".
 - **Chat's file-analysis shell can get network (new, not in the notes).** On third-party deployments, Chat's advanced file analysis runs its shell as `mcp__workspace__bash` in the same local VM as Cowork.
   - In 2.31226.1 a Chat session's shell always had an empty allowlist (`disableBashNetwork`, `index.chunk-QEr06WaZ.js`).
-  - In 2.37337.1 it gets `chatShellAllowedDomains()` (`index.chunk-m8lVroc8.js`). That is the `coworkEgressAllowedHosts` list when the new key `chatAdvancedFileAnalysisNetworkEnabled` (`chatSurface.advancedFileAnalysisNetwork`, 3p only, "Network access for file analysis") is on, Chat and file analysis are enabled, and Bash isn't disabled. Otherwise, and on first-party, the list is empty.
+  - In 2.37337.1 it gets `chatShellAllowedDomains()` (`index.chunk-m8lVroc8.js`). That is the `coworkEgressAllowedHosts` list when the key `chatAdvancedFileAnalysisNetworkEnabled` (`chatSurface.advancedFileAnalysisNetwork`, 3p only, `@next`) is on, Chat and file analysis are enabled, and Bash isn't disabled. Otherwise, and on first-party, the list is empty.
+  - From 2.42304.0 that key is gone from the schema and the shell follows `coworkEgressAllowedHosts` whenever Chat and file analysis are on and Bash isn't disabled (`jNe`, `index.chunk-muI2IV6k.js`; an unrestricted policy gives `*`). On first-party the list stays empty. The 2.42304.0 notes announce exactly this, under `chatAdvancedFileAnalysisEnabled` and `coworkEgressAllowedHosts`: "With no list, or an empty one, they have no network access." The `@next` key never shipped.
   - The admin text says an empty list keeps the sandbox offline, `*` turns the network sandbox off, commands run without asking (`Bash: ask` in `builtinToolPolicy` restores prompting), and chats in the unified Chat and Cowork view already follow the Cowork list. No GrowthBook gate; the HIPAA `*` filter (L214) wraps this spawn too.
 - **A malformed `managedMcpServers` `toolPolicy`** is kept with every tool treated as "blocked", with the error "…is not a map of tool names to permissions".
 - **Deprecation flags** are cleared on `managedMcpServers`, `orgPluginSettings`, `builtinToolPolicy`, `inferenceCustomHeaders`, `bootstrapHeaders` and `otlpHeaders`/`otlpResourceAttributes`. The old spellings now fail as plain invalid values. For `ask-session` the configuration changelog (Desktop 1.40609.0) spells out what an unrecognized value becomes in each field: `ask` for a built-in tool, `blocked` for a plugin-delivered tool, and an invalid entry for a managed server. Use `ask`.
 - **Also in the schema diff:** the `toolPolicyRules` key (added `@next` in 2.31226.0) is gone, unannounced. `toolPolicyEndpoint` was stamped `2.31226.0`, also unannounced.
 
-## Reading a policy key's release state (MEASURED, 39 Desktop builds, 1.18286.2 → 2.37337.1; CODE-READ, `index.pre.js`)
+## Reading a policy key's release state (MEASURED, 40 Desktop builds, 1.18286.2 → 2.42304.0; CODE-READ, `index.pre.js`)
 
 - **Each key names its readers.** `readers` lists the clients that apply it: `desktop`, `m365` (the Claude add-in for Microsoft 365) and `code` (the Claude Code CLI signed in to the organization by itself). A missing field means `["desktop"]`.
   - Desktop applies only keys that list `desktop`. A device policy that sets any other key is ignored with a log line: "…this key is read by another Claude client… Claude Desktop never reads it."
   - In 2.37337.1, 8 keys are `["m365"]`: the Entra sign-in keys, the Office host, feature and access-policy keys, `skillBundles` and `inferenceBedrockWebIdentityRoleArn`. One key, `claudeCodeSettings`, is `["code"]`. The admin web UI edits them on its Office and Code pages.
-- **`availableInVersion:"@next"` means no released Desktop reads the key yet.** Once Desktop starts reading a key, the next build stamps the version that started. All 51 stamps seen name a version no later than the key's last `@next` build.
+- **`availableInVersion:"@next"` means no released Desktop reads the key yet.** Once Desktop starts reading a key, the next build stamps the version that started. All 53 stamps seen name a version no later than the key's last `@next` build.
   - Example: `otlpAttrMaxChars` was `["m365"]` and `@next` from 1.44121.1. It became Desktop-read in 2.31226.0, was still `@next` in 2.31226.0 and 2.31226.1, and is stamped `2.31226.0` in 2.37337.1. The configuration changelog lists it under v2.31226.0.
   - So a key read only by another client stays `@next` for good, and a new Desktop key, such as `developerModeEnabled`, is `@next` in the very build whose notes announce it.
-- **A Desktop-read key still `@next` after the next build is the unusual case.** `coworkFileReadCheck` (`["desktop","code"]`) has been since 2.31226.0, and Desktop enforces it regardless (above).
+- **A Desktop-read key still `@next` after the next build is the unusual case.** `coworkFileReadCheck` (`["desktop","code"]`) was `@next` from 2.31226.0 through 2.37337.1, and Desktop enforced it regardless (above). 2.42304.0 stamps it `2.37337.1`, and `developerModeEnabled` too.
+- **An `@next` key can also be dropped before it ships.** `chatAdvancedFileAnalysisNetworkEnabled` was `@next` in 2.37337.1 and is absent from 2.42304.0; its behavior shipped under existing keys instead (above).
 - **`public-undocumented` predicts silence in the notes.** 22 of the 25 keys flagged that way in 2.37337.1 are never named in the notes or the configuration changelog. 149 of the other 163 are.
 - So read "released" off the notes, the `readers` field and the undocumented flag, never off the stamp alone.
 
