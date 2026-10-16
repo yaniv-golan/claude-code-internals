@@ -1,5 +1,34 @@
 # Changelog
 
+## v2.75.0 — 2026-10-17 (this fork) — How auto mode decides, and how sessions message each other
+
+240 lessons across 70 chapters (2 new: L239 and L240, new Chapters 69 and 70; L25 updated). Sources: code reads of
+Claude Code CLI 2.1.301 and 2.1.302, the `claude auto-mode` commands on 2.1.302, and Anthropic's CLI changelog
+through 2.1.302.
+
+**How auto mode decides (Chapter 69, new)**
+
+- L239: what happens to a tool call in auto mode, and which model decides.
+  - Most accounts are judged server-side by default, through a safeguard attached to the main request, so the judging
+    model isn't visible.
+  - The local classifier uses a server-configured model if org policy allows, else Sonnet 5, else the session's model.
+  - About ten shortcuts decide before the classifier. Interpreter and shell allow rules are ignored while auto mode is
+    on, and `autoMode` rules come only from user, `--settings` and managed settings.
+  - The classifier judges in two stages. Every failure blocks; a too-long transcript is compacted. After 3 blocks in
+    a row or 20 in a session the user is asked, or a headless run stops.
+  - `claude auto-mode defaults`, `config`, `critique` and `reset`.
+  - A changelog section separates what Anthropic announced from what it didn't.
+- L25: its auto-mode passage, from v2.1.88, now matches.
+
+**How sessions message each other (Chapter 70, new)**
+
+- L240: the session registry in `~/.claude/sessions`, how `ListAgents` finds local, Remote Control and cloud
+  sessions, and the per-session socket with its one-line JSON messages.
+  - Authentication is required only on Windows, so on macOS and Linux any program running as the user can message a
+    session. The lesson says how to limit it.
+  - The `crossSessionInbound` hold rule trusts the sender's stated mode. Also covered: delivery notices, flood and
+    loop limits, and why cloud sessions can't reply.
+
 ## v2.74.0 — 2026-10-16 (this fork) — Unified Claude, computer use's Save-panel guard, and web search in agent 2.1.299
 
 238 lessons across 68 chapters (no new lessons; L134, L230, L235 and L237 extended). Sources: Desktop `app.asar`
