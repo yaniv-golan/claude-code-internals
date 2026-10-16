@@ -1,5 +1,34 @@
 # Changelog
 
+## v2.74.0 — 2026-10-16 (this fork) — Unified Claude, computer use's Save-panel guard, and web search in agent 2.1.299
+
+238 lessons across 68 chapters (no new lessons; L134, L230, L235 and L237 extended). Sources: Desktop `app.asar`
+2.42304.0 and 2.37337.1 and their UI bundles, the backed-up asars back to 1.26832.0, the in-VM agents 2.1.295 and 2.1.299,
+and Anthropic's Desktop release notes.
+
+**Extended**
+
+- L237: Unified Claude, the merged Chat and Cowork home.
+  - On third-party deployments, `desktopHome` has four values that decide which of Chat, file analysis and Cowork
+    appear. When set, it overrides the three older surface keys.
+  - A chat in the unified view runs as a Cowork session of type `chat`: no connected folders, Default mode, and a
+    shell whose network depends on file analysis.
+  - claude.ai organizations get the unified view through their own organization settings instead.
+- L235: computer use's Save-panel guard on macOS.
+  - It refuses saving under hidden names, into hidden home folders, the SSH folder, launch agents, shell and terminal
+    config, git config and hooks, and file types that run when opened.
+  - 2.42304.0 added Homebrew and shell-completion folders, Xcode's `xcdebugger` and the title-bar rename popover.
+  - It first appeared in 1.28929.0 and is separate from L128's connected-folder list.
+  - Also in L235: two unconfirmed candidates for the 2.37337.1 SSH-on-Linux worktree fix.
+- L230: the "Replace existing plugin?" dialog opens when the server answers a private upload with
+  `plugin_upload_already_exists`; Replace sends it again with overwrite on.
+- L134: in agent 2.1.299 the instruction for web search's second model asks it to search once and summarise.
+
+**Tools**
+
+- `scripts/fcache-restamp.js`: a gate move's re-read list now searches for the gate id and identifier-like names only,
+  instead of words such as "on" that match every lesson.
+
 ## v2.73.0 — 2026-10-16 (this fork) — Desktop 2.42304.0: lasting tool approvals, and what changed without notice
 
 238 lessons across 68 chapters (1 new: L238, new Chapter 68; five extended). Sources: Desktop `app.asar` 2.42304.0
