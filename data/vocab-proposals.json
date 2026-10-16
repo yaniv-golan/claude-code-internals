@@ -6068,6 +6068,33 @@
         "see my effective auto mode rules",
         "review or reset my auto mode rules"
       ]
+    },
+    "240": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-16",
+      "input_sha256": "7cb5017888776bf39a6d26c32fbc696631d9572970fd78ee0feb6ecfed4aa2e3",
+      "prior_terms_sha256": "88e654daf105755866bd6708fb0cd223aa9412b55ae456c4c5b162b3f831d8ec",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "not found",
+      "replaced": [],
+      "terms": [
+        "send message between two claude sessions",
+        "how do claude sessions talk to each other",
+        "list other running claude sessions",
+        "message from another session held for approval",
+        "why was my cross-session message not delivered",
+        "block other sessions from messaging mine",
+        "can any local program inject messages into my session",
+        "prompt injection through session messaging",
+        "message another session on a different machine",
+        "cloud session cannot reply to messages",
+        "get notified when another session goes idle",
+        "session messaging rate limit or dropped messages",
+        "stale session entries after process exit",
+        "duplicate session names renamed automatically",
+        "turn off messaging between sessions"
+      ]
     }
   }
 }

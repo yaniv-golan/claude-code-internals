@@ -1,6 +1,6 @@
 {
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 239,
+  "total_lessons": 240,
   "lessons": [
     {
       "id": 1,
@@ -23369,6 +23369,106 @@
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-16",
         "terms_sha256": "de9163d9859dcbabc646a430b11b03187e7661c956ef40143c682cffd4b607dc"
+      }
+    },
+    {
+      "id": 240,
+      "title": "How Claude Code Sessions Find and Message Each Other",
+      "lesson_number": "240",
+      "file": "67-cross-session-messaging-2.1.302.md",
+      "startLine": 13,
+      "endLine": 125,
+      "keywords": [
+        "proc-start",
+        "messaging-socket-path",
+        "bridge-session-id",
+        "peer-features",
+        "pid-domain",
+        "name-source",
+        "peer-token",
+        "child-token",
+        "XDG_RUNTIME_DIR",
+        "cc-socks",
+        "msg_id",
+        "cross-session-message",
+        "from-session",
+        "hop-chain",
+        "from-name",
+        "from-mode",
+        "peer_message_status",
+        "notify_when_idle",
+        "peer_idle_notice",
+        "tengu_harbor_kite_limits",
+        "notify_idle",
+        "reply_across_default_dirs",
+        "artifact_yield",
+        "messaging-beyond-own-agents-disabled",
+        "dialog-expiry",
+        "send message between two claude sessions",
+        "how do claude sessions talk to each other",
+        "list other running claude sessions",
+        "message from another session held for approval",
+        "why was my cross-session message not delivered",
+        "block other sessions from messaging mine",
+        "can any local program inject messages into my session",
+        "prompt injection through session messaging",
+        "message another session on a different machine",
+        "cloud session cannot reply to messages",
+        "get notified when another session goes idle",
+        "session messaging rate limit or dropped messages",
+        "stale session entries after process exit",
+        "duplicate session names renamed automatically",
+        "turn off messaging between sessions"
+      ],
+      "identifier_keys": [
+        "proc-start",
+        "messaging-socket-path",
+        "bridge-session-id",
+        "peer-features",
+        "pid-domain",
+        "name-source",
+        "peer-token",
+        "child-token",
+        "XDG_RUNTIME_DIR",
+        "cc-socks",
+        "msg_id",
+        "cross-session-message",
+        "from-session",
+        "hop-chain",
+        "from-name",
+        "from-mode",
+        "peer_message_status",
+        "notify_when_idle",
+        "peer_idle_notice",
+        "tengu_harbor_kite_limits",
+        "notify_idle",
+        "reply_across_default_dirs",
+        "artifact_yield",
+        "messaging-beyond-own-agents-disabled",
+        "dialog-expiry"
+      ],
+      "vocab_keys": [
+        "send message between two claude sessions",
+        "how do claude sessions talk to each other",
+        "list other running claude sessions",
+        "message from another session held for approval",
+        "why was my cross-session message not delivered",
+        "block other sessions from messaging mine",
+        "can any local program inject messages into my session",
+        "prompt injection through session messaging",
+        "message another session on a different machine",
+        "cloud session cannot reply to messages",
+        "get notified when another session goes idle",
+        "session messaging rate limit or dropped messages",
+        "stale session entries after process exit",
+        "duplicate session names renamed automatically",
+        "turn off messaging between sessions"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-16",
+        "terms_sha256": "88e654daf105755866bd6708fb0cd223aa9412b55ae456c4c5b162b3f831d8ec"
       }
     }
   ],
@@ -48690,6 +48790,81 @@
     "tengu_merry_popcorn": [
       239
     ],
+    "proc-start": [
+      240
+    ],
+    "messaging-socket-path": [
+      240
+    ],
+    "bridge-session-id": [
+      240
+    ],
+    "peer-features": [
+      240
+    ],
+    "pid-domain": [
+      240
+    ],
+    "name-source": [
+      240
+    ],
+    "peer-token": [
+      240
+    ],
+    "child-token": [
+      240
+    ],
+    "XDG_RUNTIME_DIR": [
+      240
+    ],
+    "cc-socks": [
+      240
+    ],
+    "msg_id": [
+      240
+    ],
+    "cross-session-message": [
+      240
+    ],
+    "from-session": [
+      240
+    ],
+    "hop-chain": [
+      240
+    ],
+    "from-name": [
+      240
+    ],
+    "from-mode": [
+      240
+    ],
+    "peer_message_status": [
+      240
+    ],
+    "notify_when_idle": [
+      240
+    ],
+    "peer_idle_notice": [
+      240
+    ],
+    "tengu_harbor_kite_limits": [
+      240
+    ],
+    "notify_idle": [
+      240
+    ],
+    "reply_across_default_dirs": [
+      240
+    ],
+    "artifact_yield": [
+      240
+    ],
+    "messaging-beyond-own-agents-disabled": [
+      240
+    ],
+    "dialog-expiry": [
+      240
+    ],
     "why is claude startup slow": [
       1
     ],
@@ -59848,6 +60023,51 @@
     ],
     "review or reset my auto mode rules": [
       239
+    ],
+    "send message between two claude sessions": [
+      240
+    ],
+    "how do claude sessions talk to each other": [
+      240
+    ],
+    "list other running claude sessions": [
+      240
+    ],
+    "message from another session held for approval": [
+      240
+    ],
+    "why was my cross-session message not delivered": [
+      240
+    ],
+    "block other sessions from messaging mine": [
+      240
+    ],
+    "can any local program inject messages into my session": [
+      240
+    ],
+    "prompt injection through session messaging": [
+      240
+    ],
+    "message another session on a different machine": [
+      240
+    ],
+    "cloud session cannot reply to messages": [
+      240
+    ],
+    "get notified when another session goes idle": [
+      240
+    ],
+    "session messaging rate limit or dropped messages": [
+      240
+    ],
+    "stale session entries after process exit": [
+      240
+    ],
+    "duplicate session names renamed automatically": [
+      240
+    ],
+    "turn off messaging between sessions": [
+      240
     ]
   },
   "keyword_boundary": {

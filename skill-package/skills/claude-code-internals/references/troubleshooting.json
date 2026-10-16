@@ -3122,6 +3122,39 @@
     239
    ],
    "hint": "Classifier failures fail closed: the call is denied with retry guidance."
+  },
+  {
+   "pattern": [
+    "message to another session not delivered",
+    "cross-session message held",
+    "Cross-session delivery notice"
+   ],
+   "lessons": [
+    240
+   ],
+   "hint": "The receiver held it under crossSessionInbound: a mode mismatch, or a bypass-mode receiver with no stated mode. It waits for that user's approval, or expires where nobody can approve."
+  },
+  {
+   "pattern": [
+    "Cross-session messaging is not available in this session",
+    "SendMessage peers missing",
+    "ListAgents shows no sessions"
+   ],
+   "lessons": [
+    240
+   ],
+   "hint": "Messaging is off (CLAUDE_CODE_HARBOR_KITE, tengu_harbor_kite, a host restriction), the socket folder failed its checks, or the peer's socket doesn't answer."
+  },
+  {
+   "pattern": [
+    "who can send messages to my claude session",
+    "cc-socks socket security",
+    "crossSessionInbound refuse"
+   ],
+   "lessons": [
+    240
+   ],
+   "hint": "On macOS and Linux any program running as you can post to a session's socket; set crossSessionInbound to hold or refuse to limit it."
   }
  ]
 }

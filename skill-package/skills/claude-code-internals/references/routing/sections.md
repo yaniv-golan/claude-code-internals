@@ -1923,6 +1923,16 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 239 · 66-auto-mode-classifier-2.1.301.md:91 · For a skill or plugin author
 239 · 66-auto-mode-classifier-2.1.301.md:98 · In the official changelog (checked 2026-10-17, through 2.1.302)
 239 · 66-auto-mode-classifier-2.1.301.md:120 · Not established
+240 · 67-cross-session-messaging-2.1.302.md:17 · The registry (CODE-READ)
+240 · 67-cross-session-messaging-2.1.302.md:38 · Finding peers (CODE-READ)
+240 · 67-cross-session-messaging-2.1.302.md:48 · The socket and the wire (CODE-READ)
+240 · 67-cross-session-messaging-2.1.302.md:56 · Delivery (CODE-READ unless marked)
+240 · 67-cross-session-messaging-2.1.302.md:77 · Remote Control and cloud (CODE-READ)
+240 · 67-cross-session-messaging-2.1.302.md:81 · Peer features
+240 · 67-cross-session-messaging-2.1.302.md:87 · The switch
+240 · 67-cross-session-messaging-2.1.302.md:91 · For you, and for a skill author
+240 · 67-cross-session-messaging-2.1.302.md:98 · In the official changelog (checked 2026-10-17, through 2.1.302)
+240 · 67-cross-session-messaging-2.1.302.md:120 · Not established
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

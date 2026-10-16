@@ -4824,6 +4824,33 @@
     "relevance": 0.4,
     "reason": "L184: the Cowork forced ask that defers to auto mode"
    }
+  ],
+  "240": [
+   {
+    "id": 157,
+    "relevance": 0.7,
+    "reason": "L157: the HARBOR_KITE switch and the messaging socket and token variables"
+   },
+   {
+    "id": 196,
+    "relevance": 0.5,
+    "reason": "L196: FetchInboxMessage and peer_message_hold"
+   },
+   {
+    "id": 14,
+    "relevance": 0.5,
+    "reason": "L14: SendMessage address forms in agent teams"
+   },
+   {
+    "id": 115,
+    "relevance": 0.4,
+    "reason": "L115: resuming subagents with SendMessage"
+   },
+   {
+    "id": 239,
+    "relevance": 0.4,
+    "reason": "L239: auto mode, which checks messages to other sessions before sending"
+   }
   ]
  }
 }
