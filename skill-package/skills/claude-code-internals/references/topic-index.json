@@ -1,6 +1,6 @@
 {
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 237,
+  "total_lessons": 238,
   "lessons": [
     {
       "id": 1,
@@ -3080,7 +3080,6 @@
         "refresh-marketplace",
         "update-plugin-op",
         "on-plugins-auto-updated",
-        "enabled-plugins",
         "plugin-manifest-schema",
         "plugin-hook-matcher",
         "host-pattern",
@@ -3110,7 +3109,6 @@
         "path-hash",
         "rev-parse",
         "installed_plugins.json",
-        "install-path",
         "provided-version",
         "0.5.0-beta",
         "update-plugin",
@@ -3173,7 +3171,6 @@
         "refresh-marketplace",
         "update-plugin-op",
         "on-plugins-auto-updated",
-        "enabled-plugins",
         "plugin-manifest-schema",
         "plugin-hook-matcher",
         "host-pattern",
@@ -3203,7 +3200,6 @@
         "path-hash",
         "rev-parse",
         "installed_plugins.json",
-        "install-path",
         "provided-version",
         "0.5.0-beta",
         "update-plugin",
@@ -8475,7 +8471,6 @@
         "settings.json",
         "input-validation-error",
         "run-agent",
-        "install-path",
         "cowork_plugins",
         "policy-settings",
         "same-dir",
@@ -8614,7 +8609,6 @@
         "settings.json",
         "input-validation-error",
         "run-agent",
-        "install-path",
         "cowork_plugins",
         "policy-settings",
         "same-dir",
@@ -22165,7 +22159,6 @@
       "startLine": 205,
       "endLine": 267,
       "keywords": [
-        "enabled-plugins",
         "extra-known-marketplaces",
         "plugin_upload_already_exists",
         "install-plugin-from-zip-with-paths",
@@ -22189,7 +22182,6 @@
         "plugin warns it runs code when enabled"
       ],
       "identifier_keys": [
-        "enabled-plugins",
         "extra-known-marketplaces",
         "plugin_upload_already_exists",
         "install-plugin-from-zip-with-paths"
@@ -22634,7 +22626,6 @@
         "move-to-cloud-refusal",
         "unverified_worktree",
         "worktree_unavailable",
-        "start_session",
         "foreign_worktree",
         "worktree-write-guard",
         "worktree-lazy",
@@ -22699,7 +22690,6 @@
         "move-to-cloud-refusal",
         "unverified_worktree",
         "worktree_unavailable",
-        "start_session",
         "foreign_worktree",
         "worktree-write-guard",
         "worktree-lazy",
@@ -23139,6 +23129,102 @@
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-16",
         "terms_sha256": "4aa76e36e0ded43b4e5b9bb56ba3f906e12405345f47047b9c13637b0efbda96"
+      }
+    },
+    {
+      "id": 238,
+      "title": "What Desktop 2.42304.0 Changed Without Announcing It",
+      "lesson_number": "238",
+      "file": "65-desktop-2.42304-unannounced-changes.md",
+      "startLine": 13,
+      "endLine": 70,
+      "keywords": [
+        "disable-desktop-local-sessions",
+        "message-buffer",
+        "start_session",
+        "proxy_invalid",
+        "cli_version_too_old",
+        "CLAUDE_CODE_STARTUP_FAILURE_RESULTS",
+        "1311831313",
+        "mcp__ccd_session__start_session",
+        "ccd_ssh_short_command_options_killswitch",
+        "accept-new",
+        "hipaa_gated",
+        "save_to_disk",
+        "release-channel",
+        "ssh-configs",
+        "ssh-remote-sessions",
+        "1849776485",
+        "469868978",
+        "557784691",
+        "4255248502",
+        "4012727013",
+        "3324120397",
+        "2645895612",
+        "135563052",
+        "undocumented desktop app changes",
+        "desktop update changes not in release notes",
+        "start session tool not available in code tab",
+        "why does claude need tool search to start a session",
+        "detailed startup failure error messages",
+        "ssh no longer auto-accepts new host keys",
+        "unknown host key error after desktop update",
+        "ssh host uses its own plugin version",
+        "why is the remote host's plugin running instead of mine",
+        "windows store plugin path wrong folder",
+        "plugin root path on microsoft store install",
+        "sub-agent messages tagged in saved session",
+        "how to tell subagent messages in desktop session history",
+        "hipaa organization google drive export blocked",
+        "admin provisioned ssh connections policy"
+      ],
+      "identifier_keys": [
+        "disable-desktop-local-sessions",
+        "message-buffer",
+        "start_session",
+        "proxy_invalid",
+        "cli_version_too_old",
+        "CLAUDE_CODE_STARTUP_FAILURE_RESULTS",
+        "1311831313",
+        "mcp__ccd_session__start_session",
+        "ccd_ssh_short_command_options_killswitch",
+        "accept-new",
+        "hipaa_gated",
+        "save_to_disk",
+        "release-channel",
+        "ssh-configs",
+        "ssh-remote-sessions",
+        "1849776485",
+        "469868978",
+        "557784691",
+        "4255248502",
+        "4012727013",
+        "3324120397",
+        "2645895612",
+        "135563052"
+      ],
+      "vocab_keys": [
+        "undocumented desktop app changes",
+        "desktop update changes not in release notes",
+        "start session tool not available in code tab",
+        "why does claude need tool search to start a session",
+        "detailed startup failure error messages",
+        "ssh no longer auto-accepts new host keys",
+        "unknown host key error after desktop update",
+        "ssh host uses its own plugin version",
+        "why is the remote host's plugin running instead of mine",
+        "windows store plugin path wrong folder",
+        "plugin root path on microsoft store install",
+        "sub-agent messages tagged in saved session",
+        "how to tell subagent messages in desktop session history",
+        "hipaa organization google drive export blocked",
+        "admin provisioned ssh connections policy"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-16",
+        "terms_sha256": "c5e23b9014028dbd0c19dd7826a8d16a4baea8466c0ed73ea52850b45048f64f"
       }
     }
   ],
@@ -40808,10 +40894,6 @@
     "on-plugins-auto-updated": [
       31
     ],
-    "enabled-plugins": [
-      31,
-      230
-    ],
     "plugin-manifest-schema": [
       31
     ],
@@ -40902,10 +40984,6 @@
     ],
     "installed_plugins.json": [
       31
-    ],
-    "install-path": [
-      31,
-      89
     ],
     "provided-version": [
       31
@@ -46851,7 +46929,8 @@
       208
     ],
     "disable-desktop-local-sessions": [
-      208
+      208,
+      238
     ],
     "no-self-hosted-endpoint": [
       208
@@ -47504,7 +47583,8 @@
       228
     ],
     "message-buffer": [
-      228
+      228,
+      238
     ],
     "audit-log": [
       228
@@ -47816,7 +47896,7 @@
       235
     ],
     "start_session": [
-      235
+      238
     ],
     "foreign_worktree": [
       235
@@ -48005,7 +48085,8 @@
       236
     ],
     "proxy_invalid": [
-      236
+      236,
+      238
     ],
     "temp_dir_unusable": [
       236
@@ -48017,13 +48098,15 @@
       236
     ],
     "cli_version_too_old": [
-      236
+      236,
+      238
     ],
     "startup_failure_reason": [
       236
     ],
     "CLAUDE_CODE_STARTUP_FAILURE_RESULTS": [
-      236
+      236,
+      238
     ],
     "proxy_jump_unsupported": [
       236
@@ -48188,7 +48271,8 @@
       236
     ],
     "1311831313": [
-      236
+      236,
+      238
     ],
     "144153584": [
       236
@@ -48300,6 +48384,54 @@
     ],
     "always-start-with-default-model": [
       237
+    ],
+    "mcp__ccd_session__start_session": [
+      238
+    ],
+    "ccd_ssh_short_command_options_killswitch": [
+      238
+    ],
+    "accept-new": [
+      238
+    ],
+    "hipaa_gated": [
+      238
+    ],
+    "save_to_disk": [
+      238
+    ],
+    "release-channel": [
+      238
+    ],
+    "ssh-configs": [
+      238
+    ],
+    "ssh-remote-sessions": [
+      238
+    ],
+    "1849776485": [
+      238
+    ],
+    "469868978": [
+      238
+    ],
+    "557784691": [
+      238
+    ],
+    "4255248502": [
+      238
+    ],
+    "4012727013": [
+      238
+    ],
+    "3324120397": [
+      238
+    ],
+    "2645895612": [
+      238
+    ],
+    "135563052": [
+      238
     ],
     "why is claude startup slow": [
       1
@@ -59351,6 +59483,51 @@
     ],
     "hipaa organizations excluded from automatic import": [
       237
+    ],
+    "undocumented desktop app changes": [
+      238
+    ],
+    "desktop update changes not in release notes": [
+      238
+    ],
+    "start session tool not available in code tab": [
+      238
+    ],
+    "why does claude need tool search to start a session": [
+      238
+    ],
+    "detailed startup failure error messages": [
+      238
+    ],
+    "ssh no longer auto-accepts new host keys": [
+      238
+    ],
+    "unknown host key error after desktop update": [
+      238
+    ],
+    "ssh host uses its own plugin version": [
+      238
+    ],
+    "why is the remote host's plugin running instead of mine": [
+      238
+    ],
+    "windows store plugin path wrong folder": [
+      238
+    ],
+    "plugin root path on microsoft store install": [
+      238
+    ],
+    "sub-agent messages tagged in saved session": [
+      238
+    ],
+    "how to tell subagent messages in desktop session history": [
+      238
+    ],
+    "hipaa organization google drive export blocked": [
+      238
+    ],
+    "admin provisioned ssh connections policy": [
+      238
     ]
   },
   "keyword_boundary": {

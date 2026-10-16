@@ -3046,6 +3046,39 @@
     128
    ],
    "hint": "From Desktop 1.46388.3 a folder that contains protected locations (credential folders, Keychains, ~/.claude, shell dotfiles) is attached with those locations carved out."
+  },
+  {
+   "pattern": [
+    "start_session tool missing in code tab",
+    "claude can't find start_session",
+    "ccd_session start_session not loaded"
+   ],
+   "lessons": [
+    238
+   ],
+   "hint": "From Desktop 2.42304.0 the Code tab's start_session tool is no longer always loaded; the model finds it through tool search first (gate 1849776485, default on)."
+  },
+  {
+   "pattern": [
+    "ssh host runs a different plugin version",
+    "desktop plugin ignored on ssh host",
+    "plugin left to the host's own install"
+   ],
+   "lessons": [
+    238
+   ],
+   "hint": "From Desktop 2.42304.0, plugins the SSH host already has installed are left to the host's copy (kill switch 4255248502)."
+  },
+  {
+   "pattern": [
+    "plugin root path wrong on windows store install",
+    "msix plugin path",
+    "CLAUDE_PLUGIN_ROOT points to LocalCache"
+   ],
+   "lessons": [
+    238
+   ],
+   "hint": "From Desktop 2.42304.0, MSIX installs translate plugin paths from the virtualized Roaming folder to the physical LocalCache copy (kill switch 4012727013)."
   }
  ]
 }

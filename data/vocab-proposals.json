@@ -6035,6 +6035,30 @@
         "imported MCP servers start without asking",
         "HIPAA organizations excluded from automatic import"
       ]
+    },
+    "238": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-10-16",
+      "input_sha256": "b7ddb54d73819a2423433c34c52fc7c13971bb55ea7ac051f5bfce7724f9c17c",
+      "collision_check": "questions-v2.json dev",
+      "terms": [
+        "undocumented desktop app changes",
+        "desktop update changes not in release notes",
+        "start session tool not available in code tab",
+        "why does Claude need tool search to start a session?",
+        "detailed startup failure error messages",
+        "SSH no longer auto-accepts new host keys",
+        "unknown host key error after desktop update",
+        "SSH host uses its own plugin version",
+        "why is the remote host's plugin running instead of mine?",
+        "Windows Store plugin path wrong folder",
+        "plugin root path on Microsoft Store install",
+        "sub-agent messages tagged in saved session",
+        "how to tell subagent messages in desktop session history?",
+        "HIPAA organization Google Drive export blocked",
+        "admin provisioned SSH connections policy"
+      ]
     }
   }
 }

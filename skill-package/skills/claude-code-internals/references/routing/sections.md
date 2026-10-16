@@ -1905,6 +1905,14 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 237 · 64-desktop-admin-keys-aug-oct-2026.md:101 · For a skill or plugin author
 237 · 64-desktop-admin-keys-aug-oct-2026.md:108 · For an admin
 237 · 64-desktop-admin-keys-aug-oct-2026.md:114 · Not established
+238 · 65-desktop-2.42304-unannounced-changes.md:19 · Code tab
+238 · 65-desktop-2.42304-unannounced-changes.md:29 · SSH sessions
+238 · 65-desktop-2.42304-unannounced-changes.md:34 · Plugins
+238 · 65-desktop-2.42304-unannounced-changes.md:39 · Cowork
+238 · 65-desktop-2.42304-unannounced-changes.md:45 · Admin keys prepared but not yet read
+238 · 65-desktop-2.42304-unannounced-changes.md:55 · In the official release notes (checked 2026-10-16)
+238 · 65-desktop-2.42304-unannounced-changes.md:60 · For a skill or plugin author
+238 · 65-desktop-2.42304-unannounced-changes.md:67 · Not established
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

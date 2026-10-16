@@ -4765,6 +4765,33 @@
     "relevance": 0.4,
     "reason": "L128: protected locations inside a granted folder"
    }
+  ],
+  "238": [
+   {
+    "id": 229,
+    "relevance": 0.6,
+    "reason": "L229: the announced approval changes of the same build"
+   },
+   {
+    "id": 236,
+    "relevance": 0.6,
+    "reason": "L236: how to read @next policy keys, and the startup-failure categories"
+   },
+   {
+    "id": 223,
+    "relevance": 0.4,
+    "reason": "L223: the synced-plugin zip check changed in the same build"
+   },
+   {
+    "id": 118,
+    "relevance": 0.4,
+    "reason": "L118: the agent stream envelope, which the Desktop-side sub-agent tag leaves unchanged"
+   },
+   {
+    "id": 124,
+    "relevance": 0.4,
+    "reason": "L124: reading gate state from the fcache before relying on a kill switch"
+   }
   ]
  }
 }
