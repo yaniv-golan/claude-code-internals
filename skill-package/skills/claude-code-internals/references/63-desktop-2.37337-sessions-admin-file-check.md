@@ -210,6 +210,9 @@ The 8 ids removed since 2.31226.1 were retired kill switches. What they guarded 
 - **Not in the notes (dark):** everything above. That covers the file check and `import_files`, sensitivity labels, the hybrid pointer, EDR, the shell-off message, restart-parking categories, the SSH banner and helper names, the `experimental` refusal, and every gate in the table.
 - **Nearby:** the notes say a `WebFetch` or bare `Bash` entry in `disabledBuiltinTools` now also applies to Cowork and Chat conversations already open. They also say SSH on Windows runs only an `ssh.exe` found on PATH, never a `.bat`, `.cmd` or `.ps1` wrapper.
 - **Announced:** the configuration changes in the next section.
+- **Rechecked 2026-10-16 against the v2.42304.0 notes:**
+  - Announced: Chat's file-analysis shell reaching `coworkEgressAllowedHosts`, with commands that run without asking.
+  - Not in the notes: that this replaced the `@next` key `chatAdvancedFileAnalysisNetworkEnabled`, which was dropped unannounced; that Code-tab startup-failure categories are on by default (`2000661115`); and that gate `3475553907` is no longer read.
 
 ## Configuration changes the notes announce (CODE-READ, policy schema of both builds)
 

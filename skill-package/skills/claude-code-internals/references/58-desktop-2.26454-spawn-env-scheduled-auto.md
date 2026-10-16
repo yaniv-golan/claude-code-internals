@@ -143,6 +143,11 @@ The 2.42304.0 change is the `remotePlugin` preset gaining `perEntryRatioCap:fals
 - If a plugin shows as enabled but its skills or commands are missing, search `main.log` for `Failed to download <plugin name>`. Nothing in the app reports it.
 - An uploaded skill (not a plugin) is not checked per file, so the same fixture would pass there.
 
+## In the official release notes (checked 2026-10-16)
+
+- **Announced:** the 2.42304.0 change, as a fix: "Fixed some plugins never installing after being enabled on claude.ai because one of their files is very repetitive, such as a long empty table."
+- **Not in the notes:** the validator itself and its limits (the 50:1 ratio, the size and path caps, the per-kind table); that the check moved from each file to the whole archive rather than going away; that the failure is reported only in `main.log` while the plugin shows as on; and gate `3778108436`. No note mentions a compression ratio.
+
 ## Desktop 2.26454.2
 
 A patch build. The Desktop's own code is unchanged from 2.26454.0: the same gate ids, spawn environment, IPC interfaces, control-protocol subtypes and zip checks (MEASURED, content-matched across all 314 build files). What changed is the bundled agent, now **2.1.293**, fetched from a release-candidate channel (`claude-code-releases/rc/<commit>`, SDK `0.3.293-rc…`). The new agent knows variables and session fields that this Desktop does not yet set, among them `CLAUDE_CODE_DESKTOP_SKILL_SWITCHES`, `CLAUDE_CODE_HOST_SKILL_CATALOG` and `CLAUDE_CODE_REMOTE_TOOLS_HOST_ALLOWS_UNATTENDED`, so expect a later Desktop to pass per-skill switches, a host skill catalog and an unattended grant to the agent (INFERRED). In Desktop 2.31226.1 the bundled agent is 2.1.295 from the regular release path (`claude-code-releases`, no `rc/`), and from 2.31226.0 Desktop sets `CLAUDE_CODE_DESKTOP_SKILL_SWITCHES=1`, on third-party installs only; the other two are still not set (L232).

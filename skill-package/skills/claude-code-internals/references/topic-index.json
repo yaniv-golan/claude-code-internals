@@ -21162,7 +21162,6 @@
         "skill not found other org",
         "manifest.json",
         "CLAUDE_PLUGIN_DATA",
-        "main.log",
         "CLAUDE_PROJECT_DIR",
         "plugin-install-paths",
         "cci-upload-probe",
@@ -21206,7 +21205,6 @@
       "identifier_keys": [
         "manifest.json",
         "CLAUDE_PLUGIN_DATA",
-        "main.log",
         "CLAUDE_PROJECT_DIR",
         "plugin-install-paths",
         "cci-upload-probe",
@@ -21641,7 +21639,7 @@
       "lesson_number": "223",
       "file": "58-desktop-2.26454-spawn-env-scheduled-auto.md",
       "startLine": 99,
-      "endLine": 148,
+      "endLine": 153,
       "keywords": [
         "main.log",
         "dxt-max-total-size-mb",
@@ -21654,7 +21652,6 @@
         "CLAUDE_CODE_REMOTE_TOOLS_HOST_ALLOWS_UNATTENDED",
         "plugin enabled but skills missing",
         "plugin installed but commands don't show up",
-        "why don't my plugin skills appear in desktop",
         "plugin silently fails to download",
         "suspicious compression ratio error",
         "zip extraction error in desktop logs",
@@ -21669,7 +21666,8 @@
         "per-skill switches on third-party installs",
         "bundled agent moved off release candidate channel",
         "which desktop version enables skill switches",
-        "fix for plugin never installing after enabling"
+        "fix for plugin never installing after enabling",
+        "do release notes mention the compression limit"
       ],
       "identifier_keys": [
         "main.log",
@@ -21685,7 +21683,6 @@
       "vocab_keys": [
         "plugin enabled but skills missing",
         "plugin installed but commands don't show up",
-        "why don't my plugin skills appear in desktop",
         "plugin silently fails to download",
         "suspicious compression ratio error",
         "zip extraction error in desktop logs",
@@ -21700,13 +21697,14 @@
         "per-skill switches on third-party installs",
         "bundled agent moved off release candidate channel",
         "which desktop version enables skill switches",
-        "fix for plugin never installing after enabling"
+        "fix for plugin never installing after enabling",
+        "do release notes mention the compression limit"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-16",
-        "terms_sha256": "71d9d137ce9435f28a788f1c5d3d534258642dd822e0dd9e1162559e47fecd06"
+        "terms_sha256": "8e23b4382c2e05d3e32aef42e3c22ecfad064d47895a3167a5dac78f10bb5e7a"
       }
     },
     {
@@ -22083,7 +22081,7 @@
       "lesson_number": "229",
       "file": "60-desktop-routing-cards-paths-extensions.md",
       "startLine": 145,
-      "endLine": 196,
+      "endLine": 201,
       "keywords": [
         "is-destructive-connector-tool",
         "index.chunk-BC1wbmHw.js",
@@ -22111,11 +22109,11 @@
         "unable to connect to extension server after re-enable",
         "tool result shows blank in desktop",
         "desktop picks web connector instead of local extension",
-        "why doesn't my local extension get updates",
         "building a desktop extension best practices",
         "does always allow persist after quitting",
         "always allow disabled by organization admin",
-        "read-only tools skip approval in auto mode"
+        "read-only tools skip approval in auto mode",
+        "is persistent always allow in the release notes"
       ],
       "identifier_keys": [
         "is-destructive-connector-tool",
@@ -22146,17 +22144,17 @@
         "unable to connect to extension server after re-enable",
         "tool result shows blank in desktop",
         "desktop picks web connector instead of local extension",
-        "why doesn't my local extension get updates",
         "building a desktop extension best practices",
         "does always allow persist after quitting",
         "always allow disabled by organization admin",
-        "read-only tools skip approval in auto mode"
+        "read-only tools skip approval in auto mode",
+        "is persistent always allow in the release notes"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-16",
-        "terms_sha256": "fb945f5e865257baa77cc28d7b042177b42cf63d034b520b202ed1f67b7a68d2"
+        "terms_sha256": "85f5604cca2579a8edee66e5904e7d5f31d4dcf5dd497ddd55ee7384d244ad2f"
       }
     },
     {
@@ -22164,8 +22162,8 @@
       "title": "Plugin Installs: Desktop Rewrites Frontmatter, and Switching Off an Org-Marketplace Plugin Deletes Its Copy",
       "lesson_number": "230",
       "file": "60-desktop-routing-cards-paths-extensions.md",
-      "startLine": 200,
-      "endLine": 262,
+      "startLine": 205,
+      "endLine": 267,
       "keywords": [
         "enabled-plugins",
         "extra-known-marketplaces",
@@ -22767,12 +22765,11 @@
       "lesson_number": "236",
       "file": "63-desktop-2.37337-sessions-admin-file-check.md",
       "startLine": 105,
-      "endLine": 258,
+      "endLine": 261,
       "keywords": [
         "61799151",
         "meta.json",
         "managed-mcp-servers",
-        "tool-policy",
         "3184956269",
         "index.chunk-BWk6pVUt.js",
         "mcp__cowork__import_files",
@@ -22822,6 +22819,8 @@
         "import_files",
         "disabled-builtin-tools",
         "ssh.exe",
+        "cowork-egress-allowed-hosts",
+        "chat-advanced-file-analysis-network-enabled",
         "flat-key",
         "index.pre.js",
         "developer-mode-enabled",
@@ -22835,8 +22834,6 @@
         "empty-list-is-authored",
         "disable-bash-network",
         "chat-shell-allowed-domains",
-        "cowork-egress-allowed-hosts",
-        "chat-advanced-file-analysis-network-enabled",
         "chat-surface",
         "advanced-file-analysis-network",
         "index.chunk-muI2IV6k.js",
@@ -22896,7 +22893,6 @@
         "61799151",
         "meta.json",
         "managed-mcp-servers",
-        "tool-policy",
         "3184956269",
         "index.chunk-BWk6pVUt.js",
         "mcp__cowork__import_files",
@@ -22946,6 +22942,8 @@
         "import_files",
         "disabled-builtin-tools",
         "ssh.exe",
+        "cowork-egress-allowed-hosts",
+        "chat-advanced-file-analysis-network-enabled",
         "flat-key",
         "index.pre.js",
         "developer-mode-enabled",
@@ -22959,8 +22957,6 @@
         "empty-list-is-authored",
         "disable-bash-network",
         "chat-shell-allowed-domains",
-        "cowork-egress-allowed-hosts",
-        "chat-advanced-file-analysis-network-enabled",
         "chat-surface",
         "advanced-file-analysis-network",
         "index.chunk-muI2IV6k.js",
@@ -23034,7 +23030,6 @@
       "endLine": 116,
       "keywords": [
         "mcp-scheduled-task-approval-lifetime-days",
-        "mcp-persistent-always-allow-enabled",
         "mcp-tool-timeout-sec",
         "disable-bypass-permissions-mode",
         "available-in-version",
@@ -23087,7 +23082,6 @@
       ],
       "identifier_keys": [
         "mcp-scheduled-task-approval-lifetime-days",
-        "mcp-persistent-always-allow-enabled",
         "mcp-tool-timeout-sec",
         "disable-bypass-permissions-mode",
         "available-in-version",
@@ -44262,7 +44256,6 @@
       109
     ],
     "main.log": [
-      217,
       223
     ],
     "cowork-architecture.md": [
@@ -47547,8 +47540,7 @@
       229
     ],
     "mcp-persistent-always-allow-enabled": [
-      229,
-      237
+      229
     ],
     "destructive-hint": [
       229
@@ -47557,8 +47549,7 @@
       236
     ],
     "tool-policy": [
-      229,
-      236
+      229
     ],
     "get-managed-tool-policy": [
       229
@@ -48067,6 +48058,12 @@
     "ssh.exe": [
       236
     ],
+    "cowork-egress-allowed-hosts": [
+      236
+    ],
+    "chat-advanced-file-analysis-network-enabled": [
+      236
+    ],
     "flat-key": [
       236
     ],
@@ -48104,12 +48101,6 @@
       236
     ],
     "chat-shell-allowed-domains": [
-      236
-    ],
-    "cowork-egress-allowed-hosts": [
-      236
-    ],
-    "chat-advanced-file-analysis-network-enabled": [
       236
     ],
     "chat-surface": [
@@ -58611,9 +58602,6 @@
     "plugin installed but commands don't show up": [
       223
     ],
-    "why don't my plugin skills appear in desktop": [
-      223
-    ],
     "plugin silently fails to download": [
       223
     ],
@@ -58657,6 +58645,9 @@
       223
     ],
     "fix for plugin never installing after enabling": [
+      223
+    ],
+    "do release notes mention the compression limit": [
       223
     ],
     "desktop extension server missing environment variables": [
@@ -58935,9 +58926,6 @@
     "desktop picks web connector instead of local extension": [
       229
     ],
-    "why doesn't my local extension get updates": [
-      229
-    ],
     "building a desktop extension best practices": [
       229
     ],
@@ -58948,6 +58936,9 @@
       229
     ],
     "read-only tools skip approval in auto mode": [
+      229
+    ],
+    "is persistent always allow in the release notes": [
       229
     ],
     "installed plugin files differ from source": [

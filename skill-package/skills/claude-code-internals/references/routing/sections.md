@@ -1816,7 +1816,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:103 · Observed
 223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:114 · The limits (CODE-READ, Desktop 2.26454.0 and 2.26454.2, identical)
 223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:139 · For a skill author
-223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:146 · Desktop 2.26454.2
+223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:146 · In the official release notes (checked 2026-10-16)
+223 · 58-desktop-2.26454-spawn-env-scheduled-auto.md:151 · Desktop 2.26454.2
 224 · 59-desktop-mcpb-launch-completions.md:18 · Resolving `mcp_config` (CODE-READ)
 224 · 59-desktop-mcpb-launch-completions.md:43 · The environment the server gets (CODE-READ; PATH MEASURED)
 224 · 59-desktop-mcpb-launch-completions.md:62 · Sensitive settings (CODE-READ)
@@ -1845,14 +1846,15 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 229 · 60-desktop-routing-cards-paths-extensions.md:155 · No elicitation (CODE-READ, asar 2.31226.1 `index.chunk-BEWlG8Pv.js`)
 229 · 60-desktop-routing-cards-paths-extensions.md:159 · When Desktop asks before an extension's tool runs (CODE-READ, asar 2.37337.1 and 2.42304.0)
 229 · 60-desktop-routing-cards-paths-extensions.md:178 · Observed (MEASURED, Desktop 2.31226.0/.1, one real extension)
-229 · 60-desktop-routing-cards-paths-extensions.md:189 · For an extension author
-230 · 60-desktop-routing-cards-paths-extensions.md:204 · Frontmatter is rewritten (MEASURED, n=2 copies, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:212 · Marketplace sync installs everything (MEASURED, n=1)
-230 · 60-desktop-routing-cards-paths-extensions.md:216 · Switching off deletes the copy (MEASURED, n=1, Team)
-230 · 60-desktop-routing-cards-paths-extensions.md:222 · A marketplace listed in the settings file never refreshes (MEASURED, n=1, Team, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:233 · Uploading a plugin the organization already provides (MEASURED, n=1 per organization, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:250 · A related default (MEASURED)
-230 · 60-desktop-routing-cards-paths-extensions.md:254 · For a plugin author
+229 · 60-desktop-routing-cards-paths-extensions.md:189 · In the official release notes (checked 2026-10-16)
+229 · 60-desktop-routing-cards-paths-extensions.md:194 · For an extension author
+230 · 60-desktop-routing-cards-paths-extensions.md:209 · Frontmatter is rewritten (MEASURED, n=2 copies, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:217 · Marketplace sync installs everything (MEASURED, n=1)
+230 · 60-desktop-routing-cards-paths-extensions.md:221 · Switching off deletes the copy (MEASURED, n=1, Team)
+230 · 60-desktop-routing-cards-paths-extensions.md:227 · A marketplace listed in the settings file never refreshes (MEASURED, n=1, Team, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:238 · Uploading a plugin the organization already provides (MEASURED, n=1 per organization, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:255 · A related default (MEASURED)
+230 · 60-desktop-routing-cards-paths-extensions.md:259 · For a plugin author
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:18 · An already-attached folder skips the card (CODE-READ, `index.chunk-QEr06WaZ.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:38 · Dispatch has its own create switch (CODE-READ, `index.chunk-Cyt2WTko.js`; refusal text in `index.chunk-hKMR2oV6.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:52 · The migration sweep keeps a bound task local when remote control is off (CODE-READ, `index.chunk-QEr06WaZ.js`)
@@ -1889,9 +1891,9 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 236 · 63-desktop-2.37337-sessions-admin-file-check.md:163 · Other admin-facing changes (CODE-READ)
 236 · 63-desktop-2.37337-sessions-admin-file-check.md:181 · Gates new in this build, by effect (CODE-READ; served state MEASURED on Team, 2026-10-14)
 236 · 63-desktop-2.37337-sessions-admin-file-check.md:208 · In the official release notes (checked 2026-10-14)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:214 · Configuration changes the notes announce (CODE-READ, policy schema of both builds)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:235 · Reading a policy key's release state (MEASURED, 40 Desktop builds, 1.18286.2 → 2.42304.0; CODE-READ, `index.pre.js`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:248 · Who this affects and what to do
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:217 · Configuration changes the notes announce (CODE-READ, policy schema of both builds)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:238 · Reading a policy key's release state (MEASURED, 40 Desktop builds, 1.18286.2 → 2.42304.0; CODE-READ, `index.pre.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:251 · Who this affects and what to do
 237 · 64-desktop-admin-keys-aug-oct-2026.md:17 · Reading a key's reach
 237 · 64-desktop-admin-keys-aug-oct-2026.md:26 · What Claude is told
 237 · 64-desktop-admin-keys-aug-oct-2026.md:39 · Which plugins load

@@ -186,6 +186,11 @@ Not established: the card for a `.mcpb` on 2.42304.0 was not watched, and the pl
 | A successful tool result rendered blank in Desktop's card and filled in minutes later | 1 extension, many calls |
 | With a claude.ai connector for the same service also connected, a generic prompt went to the claude.ai connector; naming "the local … MCP" routed it to the extension | 1 |
 
+## In the official release notes (checked 2026-10-16)
+
+- **Announced:** that "Always allow" for MCP tools is persistent, through the admin key that turns it off (`mcpPersistentAlwaysAllowEnabled`, 1.24012.9; extended to Code sessions in 2.42304.0); read-only tools from managed and built-in servers offering "Always allow" (2.9939.2); and "Allow for this task" for connector tools (1.22209.0, 1.25927.0).
+- **Not in the notes:** that the lasting approval is keyed to a hash of the tool's definition and asks again when the tool changes; the gate's order; that Auto mode runs a `readOnlyHint` tool without a card in Cowork; that `destructiveHint` and the managed `toolPolicy` don't apply to local servers; the Cowork-only switch for "Always allow"; the missing elicitation; and that a sideloaded `.mcpb` never updates. No note names `readOnlyHint` or `destructiveHint`.
+
 ## For an extension author
 
 - Report expected failures as a tool result with `isError:true` and a clear message, not as a JSON-RPC error.
