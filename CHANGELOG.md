@@ -1,5 +1,35 @@
 # Changelog
 
+## v2.73.0 — 2026-10-16 (this fork) — Desktop 2.42304.0: lasting tool approvals, and what changed without notice
+
+238 lessons across 68 chapters (1 new: L238, new Chapter 68; five extended). Sources: Desktop `app.asar` 2.42304.0
+diffed against 2.37337.1, its UI bundle (`ion-dist`), the live fcache recaptured on 2026-10-16 under Team, and
+Anthropic's v2.42304.0 release notes and configuration changelog.
+
+**What changed without notice (Chapter 68, new)**
+
+- L238: everything 2.42304.0 changed that its release notes don't mention.
+  - Code tab: `start_session` is no longer always loaded, so Claude finds it through tool search first. Detailed
+    startup-failure messages are on by default.
+  - SSH: the fallback that accepted unconfirmed host keys is gone, and plugins the host already has are left to the
+    host's copy.
+  - Windows Store installs: plugin paths point at the real folder.
+  - Three admin keys are prepared but not yet read: `releaseChannel`, `sshConfigs`, `disableDesktopLocalSessions`.
+
+**Extended**
+
+- L229: when Desktop asks before an extension's tool runs.
+  - "Always allow" saves a lasting approval on the account, which asks again when the tool's definition changes.
+  - `mcpPersistentAlwaysAllowEnabled` (third-party deployments) limits approvals to the session.
+  - `destructiveHint` and the admin tool policy don't apply to extensions.
+- L223: plugins synced from claude.ai are checked on the whole zip's compression ratio from 2.42304.0, so one
+  repetitive file no longer fails the install.
+- L236: the Chat file-analysis network key never shipped; the shell follows `coworkEgressAllowedHosts` instead.
+  Startup-failure messages are on by default.
+- L235 and L237: the v2.42304.0 notes on Git hooks, the third-party import and admin keys.
+- L223, L229 and L236 now say which of these findings the release notes announce.
+- Desktop server settings: fcache recaptured on 2026-10-16 under Team; one pinned gate is now served, still off.
+
 ## v2.72.0 — 2026-10-15 (this fork) — Desktop admin controls from August to October, and folder grants that carve
 
 237 lessons across 67 chapters (1 new: L237, new Chapter 67; seven extended). Sources: Anthropic's Claude Desktop release
