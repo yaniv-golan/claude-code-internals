@@ -3197,17 +3197,25 @@
     "134": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-05",
-      "input_sha256": "751de5e5a595ce7c28811fa363e10acb68ae0c8c66a3da847f7cdea16aa4f253",
-      "prior_terms_sha256": "ee09032c28097a8fdf33ddad846c1f3dea960b6b528b03b99915374a4df50117",
+      "date": "2026-10-16",
+      "input_sha256": "96ef5d057e66b591a6adc86b2cb0fe1ce99973f2185b7e6c17694ac5451acb5e",
+      "prior_terms_sha256": "651a359fad7959f3429e8b9217c047c434eecc246a2baf0539456ee5c65d0084",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "422214ea02f50df7acefe3075b4dfaf09bfc73c3",
-      "replaced": [],
+      "previous_text": "e605d7a8776897ffbf6a9c06c8ace3b6d079d032",
+      "replaced": [
+        "max subagents running at once"
+      ],
+      "dropped": [
+        {
+          "term": "max subagents running at once",
+          "why": "duplicate",
+          "duplicate_of": "how many subagents can run in parallel?"
+        }
+      ],
       "terms": [
         "concurrent subagent limit reached error",
         "can subagents spawn their own subagents?",
         "subagents no longer nest",
-        "max subagents running at once",
         "how many subagents can run in parallel?",
         "total subagent limit per session",
         "too many subagents launched",
@@ -3221,7 +3229,8 @@
         "budget limit stops background agents",
         "how many searches per web search call",
         "web search stopped without an error",
-        "does clearing the session reset web search count?"
+        "does clearing the session reset web search count?",
+        "why does web search return a summary now?"
       ]
     },
     "135": {
@@ -5763,27 +5772,12 @@
     "230": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-14",
-      "input_sha256": "ae6931983db364209f1c512864e47d0f8740bcd1d4d43e5e12e33e452e7698ea",
-      "prior_terms_sha256": "ce7b8961501c4e57f9fbb5d6498fd11c34e06f24a58f3547dc50e7654218b85a",
+      "date": "2026-10-16",
+      "input_sha256": "359c5a2a23f2414a6e2fb02119ddc8622882c9ae1cce53641db69836d4747b01",
+      "prior_terms_sha256": "8f2775af9071784ecd44b689682f0ebc672c44e7cf456e0f04d3058c7f7fb420",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "56c4b54ec9e5a389ae055a2a82fe18cb77bb6478",
-      "replaced": [
-        "why does my installed skill file look different",
-        "disabled team plugin disappeared"
-      ],
-      "dropped": [
-        {
-          "term": "why does my installed skill file look different",
-          "why": "duplicate",
-          "duplicate_of": "installed plugin files differ from source"
-        },
-        {
-          "term": "disabled team plugin disappeared",
-          "why": "duplicate",
-          "duplicate_of": "turning off org plugin deletes it"
-        }
-      ],
+      "previous_text": "e605d7a8776897ffbf6a9c06c8ace3b6d079d032",
+      "replaced": [],
       "terms": [
         "installed plugin files differ from source",
         "plugin description reformatted after install",
@@ -5929,26 +5923,11 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-16",
-      "input_sha256": "2652171ca260c1d44abc96a760d2b5c17316be107ce8d5c32659ce77d9ee3f82",
-      "prior_terms_sha256": "1ae8ec1bb2fdcf7a512e051d0b76bac8076845469f60cd78ef225c4446217bde",
+      "input_sha256": "bd10b94567e4accb7b0f89fb724f5516605b38aa238f9fa22129035fe7c77bdb",
+      "prior_terms_sha256": "2ff9b90279f3527e76c5a4be1c84b5aec691becd3818819c05368a4ac2c779fe",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "ddb0be6574755d06df1466c74dfe4603e9838009",
-      "replaced": [
-        "can't move session to cloud",
-        "worktree not created by this conversation"
-      ],
-      "dropped": [
-        {
-          "term": "can't move session to cloud",
-          "why": "duplicate",
-          "duplicate_of": "move session to cloud refused worktree"
-        },
-        {
-          "term": "worktree not created by this conversation",
-          "why": "duplicate",
-          "duplicate_of": "edits rejected in another worktree"
-        }
-      ],
+      "previous_text": "e605d7a8776897ffbf6a9c06c8ace3b6d079d032",
+      "replaced": [],
       "terms": [
         "scheduled task inherits auto mode",
         "why does my scheduled task skip approvals?",
@@ -5966,14 +5945,8 @@
         "which changes are in the release notes",
         "undocumented changes missing from changelog",
         "worktree edit block doesn't cover shell commands",
-        "git hooks and LFS skipped on cloud push",
-        "archived session deleted untracked worktree files"
-      ],
-      "withheld": [
-        {
-          "term": "git hooks and LFS skipped on cloud push",
-          "qid": "ranking-cases.json: hooks not firing (L32 within 3)"
-        }
+        "archived session deleted untracked worktree files",
+        "computer use refuses to save file"
       ]
     },
     "236": {
@@ -6010,10 +5983,10 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-16",
-      "input_sha256": "6244f13c69f2d5d7669014ac3c0d3685df298e5310095cb74fc941f814f08652",
-      "prior_terms_sha256": "44d468017083a8a605a2052d7cebbd8934aef95df5e0ba5741363ba9d759faff",
+      "input_sha256": "018498443388182fee3d316bf63268fb26ad0dcf169ab05a5221884ee7692528",
+      "prior_terms_sha256": "4aa76e36e0ded43b4e5b9bb56ba3f906e12405345f47047b9c13637b0efbda96",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "ddb0be6574755d06df1466c74dfe4603e9838009",
+      "previous_text": "e605d7a8776897ffbf6a9c06c8ace3b6d079d032",
       "replaced": [],
       "terms": [
         "admin policy settings for desktop app",

@@ -1437,8 +1437,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 132 · 34-skill-discovery-vcs-events-containment.md:451 · Why it matters (the payload of this lesson)
 132 · 34-skill-discovery-vcs-events-containment.md:457 · Identifier table
 132 · 34-skill-discovery-vcs-events-containment.md:478 · What this means for skill and agent authors
-137 · 35-verified-new-v2.1.217.md:131 · The bigger picture — what Anthropic is doing across v2.1.198 → v2.1.217
-137 · 35-verified-new-v2.1.217.md:147 · What this means for skill and agent authors
+137 · 35-verified-new-v2.1.217.md:132 · The bigger picture — what Anthropic is doing across v2.1.198 → v2.1.217
+137 · 35-verified-new-v2.1.217.md:148 · What this means for skill and agent authors
 138 · 36-cowork-lanes-mounts-snapshot-discipline.md:23 · The oracle
 138 · 36-cowork-lanes-mounts-snapshot-discipline.md:32 · ⚠️ `cse_` is NOT a lane oracle
 138 · 36-cowork-lanes-mounts-snapshot-discipline.md:38 · A live remote-lane record
@@ -1853,8 +1853,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 230 · 60-desktop-routing-cards-paths-extensions.md:221 · Switching off deletes the copy (MEASURED, n=1, Team)
 230 · 60-desktop-routing-cards-paths-extensions.md:227 · A marketplace listed in the settings file never refreshes (MEASURED, n=1, Team, Desktop 2.31226.1)
 230 · 60-desktop-routing-cards-paths-extensions.md:238 · Uploading a plugin the organization already provides (MEASURED, n=1 per organization, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:255 · A related default (MEASURED)
-230 · 60-desktop-routing-cards-paths-extensions.md:259 · For a plugin author
+230 · 60-desktop-routing-cards-paths-extensions.md:256 · A related default (MEASURED)
+230 · 60-desktop-routing-cards-paths-extensions.md:260 · For a plugin author
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:18 · An already-attached folder skips the card (CODE-READ, `index.chunk-QEr06WaZ.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:38 · Dispatch has its own create switch (CODE-READ, `index.chunk-Cyt2WTko.js`; refusal text in `index.chunk-hKMR2oV6.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:52 · The migration sweep keeps a bound task local when remote control is off (CODE-READ, `index.chunk-QEr06WaZ.js`)
@@ -1880,20 +1880,21 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 235 · 63-desktop-2.37337-sessions-admin-file-check.md:42 · Edits in someone else's worktree are rejected (CODE-READ, `index.chunk-BolytlRP.js`)
 235 · 63-desktop-2.37337-sessions-admin-file-check.md:52 · Cards, notes and credits (CODE-READ)
 235 · 63-desktop-2.37337-sessions-admin-file-check.md:61 · Computer use (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-Bim5jUQb.js`)
-235 · 63-desktop-2.37337-sessions-admin-file-check.md:71 · Observed on 2.37337.1 (MEASURED, Team, 2026-10-14)
-235 · 63-desktop-2.37337-sessions-admin-file-check.md:75 · Served state on 2026-10-14 (MEASURED, Team)
-235 · 63-desktop-2.37337-sessions-admin-file-check.md:80 · In the official release notes (checked 2026-10-14)
-235 · 63-desktop-2.37337-sessions-admin-file-check.md:96 · Who this affects and what to do
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:109 · The organization's file check (CODE-READ, `index.chunk-qbMm8eZ4.js` (new), `index.chunk-KpOoeR5G.js`, `index.chunk-m8lVroc8.js`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:137 · Microsoft 365 sensitivity labels (CODE-READ, `index.chunk-BWk6pVUt.js`, `resources/office365-mcp/office365-mcp-stdio.mjs`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:144 · Device profile vs a user's configuration-server pointer (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-CGQsUM80.js`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:152 · EDR integration (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-DkReRM12.js`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:163 · Other admin-facing changes (CODE-READ)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:181 · Gates new in this build, by effect (CODE-READ; served state MEASURED on Team, 2026-10-14)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:208 · In the official release notes (checked 2026-10-14)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:217 · Configuration changes the notes announce (CODE-READ, policy schema of both builds)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:238 · Reading a policy key's release state (MEASURED, 40 Desktop builds, 1.18286.2 → 2.42304.0; CODE-READ, `index.pre.js`)
-236 · 63-desktop-2.37337-sessions-admin-file-check.md:251 · Who this affects and what to do
+235 · 63-desktop-2.37337-sessions-admin-file-check.md:71 · Computer use refuses to save into protected places (macOS; CODE-READ, 2.42304.0 `index.chunk-muI2IV6k.js` and `index.chunk-BEf0UhNC.js`, history from the backed-up asars)
+235 · 63-desktop-2.37337-sessions-admin-file-check.md:97 · Observed on 2.37337.1 (MEASURED, Team, 2026-10-14)
+235 · 63-desktop-2.37337-sessions-admin-file-check.md:101 · Served state on 2026-10-14 (MEASURED, Team)
+235 · 63-desktop-2.37337-sessions-admin-file-check.md:106 · In the official release notes (checked 2026-10-14)
+235 · 63-desktop-2.37337-sessions-admin-file-check.md:123 · Who this affects and what to do
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:136 · The organization's file check (CODE-READ, `index.chunk-qbMm8eZ4.js` (new), `index.chunk-KpOoeR5G.js`, `index.chunk-m8lVroc8.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:164 · Microsoft 365 sensitivity labels (CODE-READ, `index.chunk-BWk6pVUt.js`, `resources/office365-mcp/office365-mcp-stdio.mjs`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:171 · Device profile vs a user's configuration-server pointer (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-CGQsUM80.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:179 · EDR integration (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-DkReRM12.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:190 · Other admin-facing changes (CODE-READ)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:208 · Gates new in this build, by effect (CODE-READ; served state MEASURED on Team, 2026-10-14)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:235 · In the official release notes (checked 2026-10-14)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:244 · Configuration changes the notes announce (CODE-READ, policy schema of both builds)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:265 · Reading a policy key's release state (MEASURED, 40 Desktop builds, 1.18286.2 → 2.42304.0; CODE-READ, `index.pre.js`)
+236 · 63-desktop-2.37337-sessions-admin-file-check.md:278 · Who this affects and what to do
 237 · 64-desktop-admin-keys-aug-oct-2026.md:17 · Reading a key's reach
 237 · 64-desktop-admin-keys-aug-oct-2026.md:26 · What Claude is told
 237 · 64-desktop-admin-keys-aug-oct-2026.md:39 · Which plugins load
@@ -1902,9 +1903,10 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 237 · 64-desktop-admin-keys-aug-oct-2026.md:69 · MCP tools and scheduled tasks
 237 · 64-desktop-admin-keys-aug-oct-2026.md:79 · Sessions kept on the device
 237 · 64-desktop-admin-keys-aug-oct-2026.md:88 · Updates, restarts and the rest
-237 · 64-desktop-admin-keys-aug-oct-2026.md:101 · For a skill or plugin author
-237 · 64-desktop-admin-keys-aug-oct-2026.md:108 · For an admin
-237 · 64-desktop-admin-keys-aug-oct-2026.md:114 · Not established
+237 · 64-desktop-admin-keys-aug-oct-2026.md:101 · Unified Claude: one home for Chat and Cowork
+237 · 64-desktop-admin-keys-aug-oct-2026.md:132 · For a skill or plugin author
+237 · 64-desktop-admin-keys-aug-oct-2026.md:140 · For an admin
+237 · 64-desktop-admin-keys-aug-oct-2026.md:146 · Not established
 238 · 65-desktop-2.42304-unannounced-changes.md:19 · Code tab
 238 · 65-desktop-2.42304-unannounced-changes.md:29 · SSH sessions
 238 · 65-desktop-2.42304-unannounced-changes.md:34 · Plugins

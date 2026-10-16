@@ -68,6 +68,32 @@ The tool itself is unchanged: `mcp__ccd_session__move_to_cloud`, card-only, inpu
   - Gate `3400412699` is read as `Ry(id)!=="off"`, so it is **on unless served off** (unserved on Team). If the gate can't be read, the guard also stays on.
 - **Zoomed pages:** a ref click in the built-in browser now uses the visual viewport and refuses targets outside the visible part. The error says the page may be zoomed in.
 
+## Computer use refuses to save into protected places (macOS; CODE-READ, 2.42304.0 `index.chunk-muI2IV6k.js` and `index.chunk-BEf0UhNC.js`, history from the backed-up asars)
+
+This guard predates 2.37337 and has grown with most builds since. It is a check on computer-use **input**, not on file writes: before each type, key, click, drag or menu action, and on every key repeat, Desktop probes the app's Save panel (`savePanelProbe`, from the native module's `cuSavePanelProbe*`; darwin only) and refuses input that would save into a protected place.
+
+- **What it refuses:**
+  - typing a path (a `/`, or a leading `..` or `~`) or a protected name into the Save sheet's name box;
+  - confirming a save, by click or Return, into a protected folder or under a protected name, or when the sheet doesn't show which folder it would use;
+  - pointer input into a window whose document is itself protected;
+  - from 2.42304.0, renaming or moving a document through its title-bar popover to a protected name or folder.
+- **What counts as protected:**
+  - any name starting with `.`, and anything under a hidden folder in the home directory (except `.Trash`);
+  - `~/.ssh` (keys, `authorized_keys`, `known_hosts`), `Library/LaunchAgents` and `LaunchDaemons`, `.plist` files in `Library/Preferences`;
+  - shell and terminal startup and config locations (zsh, bash, fish, oh-my-zsh, prezto, wezterm, kitty, iTerm2 AutoLaunch and others);
+  - git config files and hooks, and virtualenv `activate` scripts;
+  - file types that act when opened (`.command`, `.terminal`, `.webloc`, `.mobileconfig` and others).
+
+  Names are compared after Unicode normalization and case folding, and symlinks are resolved.
+- **New in 2.42304.0:** Homebrew's folders (`opt/homebrew`, `usr/local/homebrew`, `usr/local/cellar`, `/bin/brew`), the zsh and bash completion folders, Xcode's `xcdebugger` folder, and the title-bar popover checks. Nothing was removed.
+- **What the model gets:** an `isError` result (telemetry `save_panel_restricted`) that says why and suggests saving under another name or asking the user to save it. It also says not to get around the refusal with scripting or shell commands.
+- **History:** absent through 1.26832.0, first in 1.28929.0 (an ssh, launch-agent and shell-startup list), per-folder rules from 2.2553.1, the hidden-home rule in 2.26454.x.
+- **Other platforms:** Linux file dialogs reuse the same name rules; the Windows guard (`file_dialog_restricted`) checks only which dialog control is targeted.
+- **No gate of its own.** It runs wherever computer use runs, under computer use's own gates.
+- **Separate from the connected-folder carve.** The `[protectedSubpaths]` list (L128) is maintained apart from this one. They overlap (`.ssh`, launch agents, shell startup files) but differ: this one covers Homebrew and completion folders, the carve covers `.aws`, `.gnupg` and `.claude` by name.
+
+**For an author:** a skill that has computer use save a file should pick a plain name in an ordinary folder. A dot-file, a shell config or a `.command` file will be refused at the Save panel, and the model is told to hand that step to the user.
+
 ## Observed on 2.37337.1 (MEASURED, Team, 2026-10-14)
 
 **Connector switches in the message box persist.** Gmail, Google Drive, Notion and Beeper Desktop were switched off in a task's **+ → Connectors** menu, meant for that task only. They were still off in the user's later sessions until switched back on (n=1). Treat these switches as a standing setting, not a per-conversation one.
@@ -89,8 +115,9 @@ Anthropic's notes for v2.37337.1 (`claude.com/docs/cowork/changelog`) announce o
   - **A reminder for forks.** A fork that copies the transcript of a session with folder worktrees is told those worktrees belong to the session it was forked from, that it uses the folders in place, and "Do not edit the other session's worktree paths."
   - **Where it applies.** Local and WSL sessions always get the hook. An SSH session whose host doesn't apply the local workspace policy gets it only if it had its own worktree when its hooks were built.
 
-  The shared-checkout warning to subagents, `externalWorktreeContainers` and gate `2393677837` already existed in 2.26454.2. Nothing SSH-Linux-specific changed in the hook in 2.37337.1, so where that build fixes the SSH-on-Linux case the notes describe was not found.
+  The shared-checkout warning to subagents, `externalWorktreeContainers` and gate `2393677837` already existed in 2.26454.2. Nothing SSH-Linux-specific changed in the hook in 2.37337.1, so where that build fixes the SSH-on-Linux case the notes describe was not found in the hook. Outside it (CODE-READ, 2.31226.1 vs 2.37337.1, plausible but not confirmed as the fix): the host-side write check on SSH, which had run only for Linux hosts over OpenSSH (`hostDecidesWriteChecks`), became `hostWriteChecksSystem`, now also covering macOS hosts. It now receives other sessions' worktrees and withholds the host worktree variables when one would be wrongly blocked (`withheld_for_extra_tree`). And a host started through the remote-managed launcher no longer counts as guarding, so the app keeps its own write check. The first fits "another session's worktree" and the second "the main checkout", but no fragment names Linux.
 
+- **Computer use's save guard (above) in the notes:** 2.26454.0 (no hidden files in the home folder), 2.31226.0 (no saving into hidden folders) and 2.42304.0 (Homebrew's folders, shell start-up locations, protected document names) announce its growth. Its first appearance, in 1.28929.0, has no note, and neither do the Xcode and `/bin/brew` entries.
 - **Later, in the v2.42304.0 notes (checked 2026-10-16, not read in the code):** the Git operations the app runs for you (the commit and stash around a branch switch, the in-folder branch switch, and the push behind "Continue in cloud") no longer run the repository's Git hooks, so push Git LFS objects from a terminal before continuing in the cloud. Archiving a session after Claude moved it to the cloud no longer deletes untracked files in its worktrees, and deleting a session on an SSH host whose helper hadn't updated no longer deletes a branch holding unpushed commits.
 
 ## Who this affects and what to do

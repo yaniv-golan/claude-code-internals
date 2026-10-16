@@ -98,12 +98,44 @@ In the code the hold wins over every period (CODE-READ). For forensics this matt
 | `keepAwakeEnabled` | 2.7032.0 | 3p | Keep the computer awake for scheduled work |
 | `defaultModelEffort`, `alwaysStartWithDefaultModel` | 2.110.0 | 3p | An organization default for effort, and starting every session on the default model |
 
+## Unified Claude: one home for Chat and Cowork
+
+Desktop can merge Chat and Cowork into one home, the "unified view" (Anthropic calls it Unified Claude). The two kinds of organization reach it differently.
+
+**Third-party deployments: the `desktopHome` key** (CODE-READ, 2.42304.0 schema and `index.chunk-muI2IV6k.js`; unchanged from 2.37337.1).
+
+| value | Chat | file analysis | Cowork |
+|---|---|---|---|
+| `standard` | on | on | on |
+| `simple` | on | on | off |
+| `no-vm` (from 2.2553.0) | on | off | off |
+| `off` ("Code only") | off | off | off |
+
+- Scopes `3p`, available from 1.52386.0. The admin editor offers only `standard` and `off`; a value Desktop doesn't recognize reads as `off`.
+- While the key is set it alone decides those three surfaces, and `chatTabEnabled`, `chatAdvancedFileAnalysisEnabled` and `coworkTabEnabled` are ignored ("The unified view replaces this setting."). Unset, those three keys decide as before.
+- `off` still opens the unified view, with nothing in it. It doesn't bring back the classic split.
+- The notes say organizations that leave the key unset move to Unified Claude on November 10; no date logic was found in the code.
+
+**A chat in the unified view on a third-party deployment** runs as a Cowork local-agent session of type `chat`, on Cowork's agent and VM (CODE-READ, `index.chunk-CB6cNSrW.js`, `index.chunk-muI2IV6k.js`; the folder refusal and the session type were re-checked first-hand, the rest is from one code read). Compared with a Cowork task:
+- **No folders.** Connecting one is refused: "Folder access isn't available in chat sessions." Attached files are copied into `uploads`.
+- **Fixed mode.** The permission mode is always Default.
+- **Restricted shell.** `mcp__workspace__bash` exists, but its network is the Cowork egress list only when file analysis is on and Bash isn't disabled (Ch66/L236).
+- **Narrower approvals.** Bash gets no lasting always-allow, and a Skill approval covers only that exact skill.
+- **Missing features.** No built-in browser pane and no scheduled tasks.
+
+**claude.ai organizations (Team, Enterprise)** don't use `desktopHome`. The interface code (ion-dist 2.42304.0) shows organization settings `dramatic_shrimp_enabled` (depends on Cowork) and `marble_heron_enabled` (depends on Chat, needs consent to enable), both marked "pending rollout". It also shows two gates read in the browser, `3025514228` and `561366702`, which are absent from Desktop's own server-settings cache, so their state on a given organization can't be read on disk. A user can switch back to the classic layout from a menu. The admin card "Chat and Cowork are now one Claude… Turn it on for your organization" isn't in the app's files. It comes from claude.ai, and the bootstrap response's `gated_messages` is the likely carrier (INFERRED).
+
+In the notes: `desktopHome`, its values and the November 10 switch are announced (v2.31226.0, third-party), as is the merged home as default (v1.26832.0). The `type: chat` session, its limits and the claude.ai organization settings are not.
+
+Where a claude.ai organization's unified chat runs was not established. The code suggests the turn runs in the cloud, with Desktop serving device tools such as computer use, the browser pane and file transfer to it (INFERRED).
+
 ## For a skill or plugin author
 
 - **Hidden instructions.** On a third-party deployment the model may carry `organizationInstructions` you never see. If a step behaves differently on one customer's machines, ask whether that organization sets them.
 - **No bypass mode.** A workflow that assumes bypass mode is unavailable where `disableBypassPermissionsMode` is set. Design for Ask or Auto.
 - **Reads outside the folder.** Where `blockReadsOutsideWorkingDirectories` is on, reading anything outside the session folder and the allowed folders fails. That includes the home folder and a plugin's files read by an absolute host path. Ship what you read with the plugin.
 - **Your plugin may not load.** Where user marketplaces are off, a plugin installed from your marketplace doesn't load. Organization distribution is the only route there.
+- **A unified chat is not a Cowork task.** On a third-party deployment a skill run from a unified chat gets no connected folders and a shell whose network may be off, even on the same machine where a Cowork task has both.
 
 ## For an admin
 
