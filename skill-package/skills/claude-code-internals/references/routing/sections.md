@@ -1919,10 +1919,10 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 239 · 66-auto-mode-classifier-2.1.301.md:39 · Before the classifier: the shortcuts (CODE-READ by the subagent; the messages checked here)
 239 · 66-auto-mode-classifier-2.1.301.md:59 · What the local classifier sees (one code read)
 239 · 66-auto-mode-classifier-2.1.301.md:67 · Your own rules (CODE-READ)
-239 · 66-auto-mode-classifier-2.1.301.md:71 · When it blocks, and when it fails (CODE-READ)
-239 · 66-auto-mode-classifier-2.1.301.md:83 · For a skill or plugin author
-239 · 66-auto-mode-classifier-2.1.301.md:90 · In the official changelog (checked 2026-10-17, through 2.1.302)
-239 · 66-auto-mode-classifier-2.1.301.md:112 · Not established
+239 · 66-auto-mode-classifier-2.1.301.md:79 · When it blocks, and when it fails (CODE-READ)
+239 · 66-auto-mode-classifier-2.1.301.md:91 · For a skill or plugin author
+239 · 66-auto-mode-classifier-2.1.301.md:98 · In the official changelog (checked 2026-10-17, through 2.1.302)
+239 · 66-auto-mode-classifier-2.1.301.md:120 · Not established
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

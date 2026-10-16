@@ -68,6 +68,14 @@ Only a call that comes out as "ask" reaches the auto-mode branch. There, in orde
 
 `autoMode` in settings takes four lists: `allow`, `soft_deny`, `hard_deny` and `environment`. A list you set **replaces** the built-in one unless it contains the entry `"$defaults"`, which splices the built-in entries in at that point. These lists, and `classifyAllShell`, are read **only from user settings, `--settings` and managed settings**. Project and local settings are ignored with the warning "only user/flag/managed settings may set classifier rules (projectSettings and localSettings are repo-controllable)", so a repository can't loosen auto mode for whoever opens it. `permissions.disableAutoMode` turns the mode off.
 
+**Reading the rules without the binary.** The CLI has an `auto-mode` command group (checked on 2.1.302):
+- `claude auto-mode defaults` prints the built-in `environment`, `allow`, `soft_deny` and `hard_deny` rules as JSON, each with its full text. On 2.1.302 that is 21, 17, 72 and 1, the same counts as the bundled template. `--label <prefix>` filters by rule name.
+- `claude auto-mode config` prints the effective rules: your settings where set, the defaults otherwise.
+- `claude auto-mode critique` asks a model to review your custom rules alongside the classifier's own system prompt.
+- `claude auto-mode reset` removes the `autoMode` section from your user settings.
+
+This is the supported way for a tool outside Claude Code to use the same rules: run `defaults` or `config` on the user's machine at run time instead of copying them. The wrapper system prompt is not printed by any of these.
+
 ## When it blocks, and when it fails (CODE-READ)
 
 - **A block** becomes a denied tool call. The model gets the reason plus "If you have other tasks that don't depend on this action, continue working on those", sometimes with a hint that the user can add a permission rule. The model never gets an "ask" from the classifier.

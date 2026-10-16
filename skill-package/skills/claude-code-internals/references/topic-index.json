@@ -23279,7 +23279,7 @@
       "lesson_number": "239",
       "file": "66-auto-mode-classifier-2.1.301.md",
       "startLine": 13,
-      "endLine": 116,
+      "endLine": 124,
       "keywords": [
         "ANTHROPIC_DEFAULT_OPUS_MODEL",
         "ANTHROPIC_DEFAULT_SONNET_MODEL",
@@ -23316,7 +23316,10 @@
         "is the safety check done on anthropic servers",
         "auto mode behaves differently on bedrock",
         "why are npm run commands still checked in auto mode",
-        "does auto mode fail closed on errors"
+        "does auto mode fail closed on errors",
+        "list built-in auto mode rules",
+        "see my effective auto mode rules",
+        "review or reset my auto mode rules"
       ],
       "identifier_keys": [
         "ANTHROPIC_DEFAULT_OPUS_MODEL",
@@ -23356,13 +23359,16 @@
         "is the safety check done on anthropic servers",
         "auto mode behaves differently on bedrock",
         "why are npm run commands still checked in auto mode",
-        "does auto mode fail closed on errors"
+        "does auto mode fail closed on errors",
+        "list built-in auto mode rules",
+        "see my effective auto mode rules",
+        "review or reset my auto mode rules"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-16",
-        "terms_sha256": "dd9025833c6901f55aeba3673707131a1e70ab97591b6d8c11128bb9ffdfdc27"
+        "terms_sha256": "de9163d9859dcbabc646a430b11b03187e7661c956ef40143c682cffd4b607dc"
       }
     }
   ],
@@ -59832,6 +59838,15 @@
       239
     ],
     "does auto mode fail closed on errors": [
+      239
+    ],
+    "list built-in auto mode rules": [
+      239
+    ],
+    "see my effective auto mode rules": [
+      239
+    ],
+    "review or reset my auto mode rules": [
       239
     ]
   },
