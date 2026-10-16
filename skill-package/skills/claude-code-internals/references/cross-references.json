@@ -4792,6 +4792,38 @@
     "relevance": 0.4,
     "reason": "L124: reading gate state from the fcache before relying on a kill switch"
    }
+  ],
+  "239": [
+   {
+    "id": 25,
+    "relevance": 0.7,
+    "reason": "L25: the permission pipeline auto mode sits in"
+   },
+   {
+    "id": 96,
+    "relevance": 0.6,
+    "reason": "L96: auto mode becoming the default"
+   },
+   {
+    "id": 111,
+    "relevance": 0.5,
+    "reason": "L111: autoMode.classifyAllShell"
+   },
+   {
+    "id": 150,
+    "relevance": 0.6,
+    "reason": "L150: Cowork's additions to the auto-mode rule lists"
+   },
+   {
+    "id": 128,
+    "relevance": 0.4,
+    "reason": "L128: Desktop's forced re-prompt for destructive connector tools under auto mode"
+   },
+   {
+    "id": 184,
+    "relevance": 0.4,
+    "reason": "L184: the Cowork forced ask that defers to auto mode"
+   }
   ]
  }
 }

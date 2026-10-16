@@ -1,6 +1,6 @@
 {
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 238,
+  "total_lessons": 239,
   "lessons": [
     {
       "id": 1,
@@ -2591,7 +2591,9 @@
         "which settings file wins for permissions",
         "company policy locking permission rules",
         "ai classifier approving commands automatically",
-        "what explanation shows on the approval prompt"
+        "what explanation shows on the approval prompt",
+        "does the auto mode classifier run server-side",
+        "headless run stops after too many denials"
       ],
       "identifier_keys": [
         "allow-managed-permission-rules-only",
@@ -2612,13 +2614,15 @@
         "which settings file wins for permissions",
         "company policy locking permission rules",
         "ai classifier approving commands automatically",
-        "what explanation shows on the approval prompt"
+        "what explanation shows on the approval prompt",
+        "does the auto mode classifier run server-side",
+        "headless run stops after too many denials"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "2b52531ab7d3fc91b99c5ab47d105eef1c34138b00266217b562baac23d66166"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-16",
+        "terms_sha256": "3f0685a0520a320548a3e23e392ea64cfed1d16983c0fb9e8d763dc2afe92f9c"
       }
     },
     {
@@ -5924,7 +5928,6 @@
         "CLAUDE_CODE_SAVE_HOOK_ADDITIONAL_CONTEXT",
         "ANTHROPIC_DEFAULT_OPUS_MODEL",
         "ANTHROPIC_DEFAULT_OPUS_MODEL_SUPPORTED_CAPABILITIES",
-        "ANTHROPIC_DEFAULT_SONNET_MODEL",
         "ANTHROPIC_DEFAULT_SONNET_MODEL_SUPPORTED_CAPABILITIES",
         "ANTHROPIC_DEFAULT_HAIKU_MODEL",
         "ANTHROPIC_DEFAULT_HAIKU_MODEL_SUPPORTED_CAPABILITIES",
@@ -5957,7 +5960,6 @@
         "CLAUDE_CODE_SAVE_HOOK_ADDITIONAL_CONTEXT",
         "ANTHROPIC_DEFAULT_OPUS_MODEL",
         "ANTHROPIC_DEFAULT_OPUS_MODEL_SUPPORTED_CAPABILITIES",
-        "ANTHROPIC_DEFAULT_SONNET_MODEL",
         "ANTHROPIC_DEFAULT_SONNET_MODEL_SUPPORTED_CAPABILITIES",
         "ANTHROPIC_DEFAULT_HAIKU_MODEL",
         "ANTHROPIC_DEFAULT_HAIKU_MODEL_SUPPORTED_CAPABILITIES"
@@ -11262,7 +11264,6 @@
         "rule-value",
         "rule-values",
         "allow-apple-events",
-        "classify-all-shell",
         "CLAUDE_CODE_DISABLE_BG_SHELL_PRESSURE_REAP",
         "footer-links-regexes",
         "wheel-scroll-acceleration-enabled",
@@ -11286,7 +11287,6 @@
         "rule-value",
         "rule-values",
         "allow-apple-events",
-        "classify-all-shell",
         "CLAUDE_CODE_DISABLE_BG_SHELL_PRESSURE_REAP",
         "footer-links-regexes",
         "wheel-scroll-acceleration-enabled"
@@ -23271,6 +23271,98 @@
         "prompt_version": "vocab-v1",
         "date": "2026-10-16",
         "terms_sha256": "c5e23b9014028dbd0c19dd7826a8d16a4baea8466c0ed73ea52850b45048f64f"
+      }
+    },
+    {
+      "id": 239,
+      "title": "How Auto Mode Decides Whether a Tool Call Runs, and Which Model Decides",
+      "lesson_number": "239",
+      "file": "66-auto-mode-classifier-2.1.301.md",
+      "startLine": 13,
+      "endLine": 116,
+      "keywords": [
+        "ANTHROPIC_DEFAULT_OPUS_MODEL",
+        "ANTHROPIC_DEFAULT_SONNET_MODEL",
+        "tengu_auto_mode_config",
+        "classify-all-shell",
+        "save_to_disk",
+        "CLAUDE_CODE_AUTO_MODE_SERVER",
+        "tengu_smooth_chipmunk",
+        "tengu_iridescent_crystal",
+        "dangerous-tool-use-2026-09-03",
+        "dangerous_tool_use",
+        "safeguard_results",
+        "tengu_quiet_lantern",
+        "model-by-main-model",
+        "tengu_auto_mode_fallback_to_ask",
+        "prior-assistant-context",
+        "CLAUDE_CODE_AUTO_MODE_PRIOR_ASSISTANT_CONTEXT",
+        "CLAUDE_CODE_AUTO_MODE_TEMPERATURE",
+        "hard_deny",
+        "disable-auto-mode",
+        "tengu_auto_mode_classifier_overflow_compact",
+        "tengu_merry_popcorn",
+        "auto mode keeps blocking my commands",
+        "which model approves actions in auto mode",
+        "who decides if a tool call is safe",
+        "auto mode classifier model",
+        "my python allow rule ignored in auto mode",
+        "headless run aborted too many denials",
+        "why did auto mode go back to asking me",
+        "classifier unavailable action denied",
+        "project settings can't change auto mode rules",
+        "customize what auto mode blocks",
+        "auto mode stops after three blocks",
+        "is the safety check done on anthropic servers",
+        "auto mode behaves differently on bedrock",
+        "why are npm run commands still checked in auto mode",
+        "does auto mode fail closed on errors"
+      ],
+      "identifier_keys": [
+        "ANTHROPIC_DEFAULT_OPUS_MODEL",
+        "ANTHROPIC_DEFAULT_SONNET_MODEL",
+        "tengu_auto_mode_config",
+        "classify-all-shell",
+        "save_to_disk",
+        "CLAUDE_CODE_AUTO_MODE_SERVER",
+        "tengu_smooth_chipmunk",
+        "tengu_iridescent_crystal",
+        "dangerous-tool-use-2026-09-03",
+        "dangerous_tool_use",
+        "safeguard_results",
+        "tengu_quiet_lantern",
+        "model-by-main-model",
+        "tengu_auto_mode_fallback_to_ask",
+        "prior-assistant-context",
+        "CLAUDE_CODE_AUTO_MODE_PRIOR_ASSISTANT_CONTEXT",
+        "CLAUDE_CODE_AUTO_MODE_TEMPERATURE",
+        "hard_deny",
+        "disable-auto-mode",
+        "tengu_auto_mode_classifier_overflow_compact",
+        "tengu_merry_popcorn"
+      ],
+      "vocab_keys": [
+        "auto mode keeps blocking my commands",
+        "which model approves actions in auto mode",
+        "who decides if a tool call is safe",
+        "auto mode classifier model",
+        "my python allow rule ignored in auto mode",
+        "headless run aborted too many denials",
+        "why did auto mode go back to asking me",
+        "classifier unavailable action denied",
+        "project settings can't change auto mode rules",
+        "customize what auto mode blocks",
+        "auto mode stops after three blocks",
+        "is the safety check done on anthropic servers",
+        "auto mode behaves differently on bedrock",
+        "why are npm run commands still checked in auto mode",
+        "does auto mode fail closed on errors"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-16",
+        "terms_sha256": "dd9025833c6901f55aeba3673707131a1e70ab97591b6d8c11128bb9ffdfdc27"
       }
     }
   ],
@@ -42333,13 +42425,14 @@
       64
     ],
     "ANTHROPIC_DEFAULT_OPUS_MODEL": [
-      64
+      64,
+      239
     ],
     "ANTHROPIC_DEFAULT_OPUS_MODEL_SUPPORTED_CAPABILITIES": [
       64
     ],
     "ANTHROPIC_DEFAULT_SONNET_MODEL": [
-      64
+      239
     ],
     "ANTHROPIC_DEFAULT_SONNET_MODEL_SUPPORTED_CAPABILITIES": [
       64
@@ -43496,7 +43589,8 @@
       95
     ],
     "tengu_auto_mode_config": [
-      96
+      96,
+      239
     ],
     "opt-in": [
       96
@@ -44441,7 +44535,7 @@
       111
     ],
     "classify-all-shell": [
-      111
+      239
     ],
     "CLAUDE_CODE_DISABLE_BG_SHELL_PRESSURE_REAP": [
       111
@@ -48506,7 +48600,8 @@
       238
     ],
     "save_to_disk": [
-      238
+      238,
+      239
     ],
     "release-channel": [
       238
@@ -48540,6 +48635,54 @@
     ],
     "135563052": [
       238
+    ],
+    "CLAUDE_CODE_AUTO_MODE_SERVER": [
+      239
+    ],
+    "tengu_smooth_chipmunk": [
+      239
+    ],
+    "tengu_iridescent_crystal": [
+      239
+    ],
+    "dangerous-tool-use-2026-09-03": [
+      239
+    ],
+    "dangerous_tool_use": [
+      239
+    ],
+    "safeguard_results": [
+      239
+    ],
+    "tengu_quiet_lantern": [
+      239
+    ],
+    "model-by-main-model": [
+      239
+    ],
+    "tengu_auto_mode_fallback_to_ask": [
+      239
+    ],
+    "prior-assistant-context": [
+      239
+    ],
+    "CLAUDE_CODE_AUTO_MODE_PRIOR_ASSISTANT_CONTEXT": [
+      239
+    ],
+    "CLAUDE_CODE_AUTO_MODE_TEMPERATURE": [
+      239
+    ],
+    "hard_deny": [
+      239
+    ],
+    "disable-auto-mode": [
+      239
+    ],
+    "tengu_auto_mode_classifier_overflow_compact": [
+      239
+    ],
+    "tengu_merry_popcorn": [
+      239
     ],
     "why is claude startup slow": [
       1
@@ -49661,6 +49804,12 @@
       25
     ],
     "what explanation shows on the approval prompt": [
+      25
+    ],
+    "does the auto mode classifier run server-side": [
+      25
+    ],
+    "headless run stops after too many denials": [
       25
     ],
     "which settings file wins": [
@@ -59639,6 +59788,51 @@
     ],
     "admin provisioned ssh connections policy": [
       238
+    ],
+    "auto mode keeps blocking my commands": [
+      239
+    ],
+    "which model approves actions in auto mode": [
+      239
+    ],
+    "who decides if a tool call is safe": [
+      239
+    ],
+    "auto mode classifier model": [
+      239
+    ],
+    "my python allow rule ignored in auto mode": [
+      239
+    ],
+    "headless run aborted too many denials": [
+      239
+    ],
+    "why did auto mode go back to asking me": [
+      239
+    ],
+    "classifier unavailable action denied": [
+      239
+    ],
+    "project settings can't change auto mode rules": [
+      239
+    ],
+    "customize what auto mode blocks": [
+      239
+    ],
+    "auto mode stops after three blocks": [
+      239
+    ],
+    "is the safety check done on anthropic servers": [
+      239
+    ],
+    "auto mode behaves differently on bedrock": [
+      239
+    ],
+    "why are npm run commands still checked in auto mode": [
+      239
+    ],
+    "does auto mode fail closed on errors": [
+      239
     ]
   },
   "keyword_boundary": {

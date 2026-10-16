@@ -555,9 +555,13 @@
     },
     "25": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "cf6f12cbd3f75af3ad9b795e169f4289b3fd94b5b84bf9356996db937b1d6129",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-16",
+      "input_sha256": "45d776b8dce3bdaa1117d9409071217d0e81e2366baaa2e78b332712b4e3a63f",
+      "prior_terms_sha256": "2b52531ab7d3fc91b99c5ab47d105eef1c34138b00266217b562baac23d66166",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "d182e3b479e81caa34e7c2a0b2162a9696dae67b",
+      "replaced": [],
       "terms": [
         "why does Claude keep asking for permission",
         "stop Claude asking before every command",
@@ -573,7 +577,9 @@
         "which settings file wins for permissions",
         "company policy locking permission rules",
         "AI classifier approving commands automatically",
-        "what explanation shows on the approval prompt?"
+        "what explanation shows on the approval prompt?",
+        "does the auto mode classifier run server-side",
+        "headless run stops after too many denials"
       ]
     },
     "26": {
@@ -6031,6 +6037,33 @@
         "how to tell subagent messages in desktop session history?",
         "HIPAA organization Google Drive export blocked",
         "admin provisioned SSH connections policy"
+      ]
+    },
+    "239": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-16",
+      "input_sha256": "47b3543e3e9423db1e3ad597a739fac798335107049af55f42222ddab33919ba",
+      "prior_terms_sha256": "dd9025833c6901f55aeba3673707131a1e70ab97591b6d8c11128bb9ffdfdc27",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "not found",
+      "replaced": [],
+      "terms": [
+        "auto mode keeps blocking my commands",
+        "which model approves actions in auto mode",
+        "who decides if a tool call is safe",
+        "auto mode classifier model",
+        "my python allow rule ignored in auto mode",
+        "headless run aborted too many denials",
+        "why did auto mode go back to asking me",
+        "classifier unavailable action denied",
+        "project settings can't change auto mode rules",
+        "customize what auto mode blocks",
+        "auto mode stops after three blocks",
+        "is the safety check done on Anthropic servers?",
+        "auto mode behaves differently on Bedrock",
+        "why are npm run commands still checked in auto mode?",
+        "does auto mode fail closed on errors?"
       ]
     }
   }

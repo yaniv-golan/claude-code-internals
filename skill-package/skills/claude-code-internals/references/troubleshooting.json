@@ -3079,6 +3079,49 @@
     238
    ],
    "hint": "From Desktop 2.42304.0, MSIX installs translate plugin paths from the virtualized Roaming folder to the physical LocalCache copy (kill switch 4012727013)."
+  },
+  {
+   "pattern": [
+    "which model does auto mode use",
+    "auto mode classifier model",
+    "what decides in auto mode"
+   ],
+   "lessons": [
+    239
+   ],
+   "hint": "First-party accounts are judged server-side by default (dangerous_tool_use safeguard; model not visible). The local classifier uses a server-configured model, else Sonnet 5 (ANTHROPIC_DEFAULT_SONNET_MODEL or the provider's id), else the session's model."
+  },
+  {
+   "pattern": [
+    "Agent aborted: too many classifier denials in headless mode",
+    "auto mode headless run stops",
+    "claude -p auto mode aborted"
+   ],
+   "lessons": [
+    239
+   ],
+   "hint": "Headless auto mode stops after 3 consecutive or 20 total classifier blocks instead of prompting."
+  },
+  {
+   "pattern": [
+    "autoMode rules in project settings ignored",
+    "only user/flag/managed settings may set classifier rules",
+    "bash python allow rule ignored in auto mode"
+   ],
+   "lessons": [
+    239
+   ],
+   "hint": "autoMode lists come only from user, --settings and managed settings; interpreter and shell allow rules are ignored while auto mode is on."
+  },
+  {
+   "pattern": [
+    "Classifier unavailable - blocking for safety",
+    "auto mode classifier unavailable"
+   ],
+   "lessons": [
+    239
+   ],
+   "hint": "Classifier failures fail closed: the call is denied with retry guidance."
   }
  ]
 }

@@ -192,7 +192,7 @@ only URLs that exist:
 Print this and ask what they want to know:
 
 ```
-Available topics (238 lessons across 68 chapters):
+Available topics (239 lessons across 69 chapters):
   Boot & Core:    boot sequence, query engine, state management, system prompt, architecture overview
   Tools:          tool system, bash tool, file tools, search tools, MCP system
   Agents & AI:    skills system, agent system, coordinator mode, teams/swarm
@@ -222,4 +222,4 @@ chapter or lesson. Quick bands:
 | `24`–`34` | 27–37 | 110–132 | CLI refresh v2.1.198 + Desktop/Cowork internals: runtime detection, VM rootfs forensics, stream contract, cloud tasks/bridge, reasoning config, sub-agent execution, device/partner bridges, skill discovery |
 | `35`–`43` | 38–46 | 133–169 | CLI refresh v2.1.217/v2.1.231 + Cowork lanes & mounts, probe corrections, elicitation classes, auto-memory gates, path resolution, compaction budget, in-app browser |
 | `44`–`50` | 47–53 | 170–198 | CLI surface v2.1.250 + plugin `bin/` PATH & cloud lane, narration/silent-turn, Desktop 1.46388/2.7032, artifact host-tools & folder skills |
-| `51`–`65` | 54–68 | 199–238 | Plugin MCP stubs & hooks by lane, forked-skill relay & input channels, routine migration, Desktop 2.9939 artifacts/gates/egress, cloud device tools, uploaded skills, Desktop 2.16120 scheduled artifacts & host-loop permissions, Desktop 2.26454 spawn env, scheduled-task Auto mode, plugin-zip checks, MCPB extension launch & prompt completions, task routing, approval cards, VM vs host paths, local extensions, plugin installs, Desktop 2.31226 attached-folder allow, Dispatch task switch, spawn env & third-party imports, MCP 2026-07-28 negotiation & the org-dependent flag cache, Desktop 2.37337 sessions & admin file check, Desktop admin keys Aug–Oct 2026, Desktop 2.42304 unannounced changes |
+| `51`–`66` | 54–69 | 199–239 | Plugin MCP stubs & hooks by lane, forked-skill relay & input channels, routine migration, Desktop 2.9939 artifacts/gates/egress, cloud device tools, uploaded skills, Desktop 2.16120 scheduled artifacts & host-loop permissions, Desktop 2.26454 spawn env, scheduled-task Auto mode, plugin-zip checks, MCPB extension launch & prompt completions, task routing, approval cards, VM vs host paths, local extensions, plugin installs, Desktop 2.31226 attached-folder allow, Dispatch task switch, spawn env & third-party imports, MCP 2026-07-28 negotiation & the org-dependent flag cache, Desktop 2.37337 sessions & admin file check, Desktop admin keys Aug–Oct 2026, Desktop 2.42304 unannounced changes, how auto mode decides |

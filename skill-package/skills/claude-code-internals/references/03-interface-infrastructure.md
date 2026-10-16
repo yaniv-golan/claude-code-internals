@@ -665,7 +665,7 @@ The system follows seven main phases:
 - **plan**: Read-only phase blocking write operations
 - **acceptEdits**: Auto-approves file modifications within working directory
 - **bypassPermissions**: Skips prompts except for deny rules, safety checks, and interaction-required tools
-- **auto**: Routes decisions through secondary Claude classifier (ANT-only, feature-flagged)
+- **auto**: Routes "ask" decisions through a classifier, server-side by default on first-party accounts (Ch69/L239)
 - **dontAsk**: Converts all prompts to automatic denials
 
 > **Six is the SETTABLE count. There is a seventh union member, `bubble`, that you can never select.**
@@ -713,13 +713,13 @@ When `allowManagedPermissionRulesOnly` is enabled, non-policy sources are ignore
 
 ## Auto Mode Implementation
 
-The classifier employs three fast-path optimizations to reduce API calls:
+The current mechanism, read in CLI 2.1.301, is Ch69/L239: which model decides, the server-side path, about ten shortcuts that decide without the classifier, and the failure handling. In short:
 
-1. **Safety-check bypass**: Protected paths always prompt regardless of classifier
-2. **acceptEdits path**: File edits within CWD skip classifier entirely
-3. **Safe allowlist**: Read-only tools (FileRead, Grep, LSP, TodoWrite, etc.) automatically approve
+1. **Always asks**: protected paths and other hard safety checks, ask rules and plan mode's floor prompt regardless of the classifier.
+2. **acceptEdits path**: a call Accept-edits mode would allow skips the classifier.
+3. **Safe allowlist**: read-only tools approve automatically.
 
-Dangerous patterns like `python`, `npm run`, `bash`, `eval`, `sudo`, and execution multipliers are stripped from allow rules when entering auto mode. The system tracks denial limits (3 consecutive or 20 total) before falling back to human prompting.
+Allow rules for interpreters and shells (`python`, `npm run`, `bash`, `eval`, `sudo` and similar) are ignored while auto mode is on; they stay in your settings. Denial limits are 3 consecutive or 20 total: an interactive session then falls back to prompting, and a headless run stops.
 
 ## Bypass Limitations
 

@@ -75,3 +75,4 @@ convention and are spread across those legacy files, whose rows read `1–8`.
 | `63-desktop-2.37337-sessions-admin-file-check.md` | 66 | 235–236 | What Desktop 2.37337 Changed in Sessions, Permissions and Computer Use (id 235); What Desktop 2.37337 Changed for Admins: the File Check, Sensitivity Labels, Device Profiles, EDR and SSH (id 236) |
 | `64-desktop-admin-keys-aug-oct-2026.md` | 67 | 237 | The Managed-Configuration Keys Desktop Added from August to October 2026 (id 237) |
 | `65-desktop-2.42304-unannounced-changes.md` | 68 | 238 | What Desktop 2.42304.0 Changed Without Announcing It (id 238) |
+| `66-auto-mode-classifier-2.1.301.md` | 69 | 239 | How Auto Mode Decides Whether a Tool Call Runs, and Which Model Decides (id 239) |
