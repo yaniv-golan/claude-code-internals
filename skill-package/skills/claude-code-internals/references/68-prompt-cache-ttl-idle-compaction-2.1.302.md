@@ -65,10 +65,11 @@ A hook could pass these to the model as context; nothing does by default.
 ## For a skill or plugin author
 
 - **A workflow that waits** (for a build, a delegated task or another session) pays nothing while it waits. Each time it wakes, it sends the whole conversation again: cheap if the cache is still warm, a full re-cache if it isn't.
-- **On a 1-hour cache, wake once when the work is done.** Waking only to keep the cache warm is wasted, which is what the `ScheduleWakeup` text tells the model.
+- **What a wake costs.** At Anthropic's standard rates, reading a warm cache costs 0.1× the input price. Re-writing a cold one costs 1.25× on the 5-minute cache and **2× on the 1-hour cache**, which a subscriber's main conversation uses. A cache read also refreshes the lifetime: the client measures expiry from the last request that read or wrote the cache (CODE-READ), as the API documents.
+- **On a 1-hour cache, wake once when the work is done** for anything under about 55 minutes. Every wake inside the hour is warm, which is why the `ScheduleWakeup` text calls extra keep-warm wakes waste. For a wait you expect to run past the hour, one wake shortly before the hour costs 0.1× and saves a 2× re-write. A large conversation has an alternative: idle compaction (below) shrinks it at about 54 minutes instead. A wake before then cancels that compaction, so pick one.
 - **On a 5-minute cache, a wait over 5 minutes costs one re-cache**, roughly 1.25× the conversation's input price at standard rates. A keep-warm turn every 4–5 minutes costs about 0.1× each plus its output and the context it adds, so a few pings can cost less than one re-cache on a big conversation. Measure with `/cost` before building on that.
 - **Subagents are on 5 minutes by default.** A subagent that waits long will re-cache its own context.
-- **Expect compaction during a long idle.** In a 200K-token-plus terminal session, idle compaction may summarize the conversation about 54 minutes into an hour's wait. Keep anything a workflow must remember exactly (task ids, briefs, file paths) in files, not only in the conversation.
+- **Expect compaction during a long idle.** In a 200K-token-plus terminal session, idle compaction may summarize the conversation about 54 minutes into an hour's wait. Keep anything a workflow must remember exactly (task ids, briefs, file paths) in files, not only in the conversation. Any request in between (a wake turn, a notification, your message) restarts the timer, because it is set to 90% of the lifetime from the last cache activity, and a newer request cancels a pending one (CODE-READ).
 
 ## In the official changelog (checked 2026-10-17, through 2.1.302)
 

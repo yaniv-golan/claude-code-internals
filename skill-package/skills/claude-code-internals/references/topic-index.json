@@ -23485,7 +23485,7 @@
       "lesson_number": "241",
       "file": "68-prompt-cache-ttl-idle-compaction-2.1.302.md",
       "startLine": 13,
-      "endLine": 91,
+      "endLine": 92,
       "keywords": [
         "context_tokens",
         "CLAUDE_CODE_PROMPT_CACHE_TTL",
@@ -23520,7 +23520,10 @@
         "estimated cost to re-cache on resume",
         "turn off automatic compaction when idle",
         "long wait re-reads whole conversation",
-        "why did my next message cost so much after waiting"
+        "why did my next message cost so much after waiting",
+        "re-caching one hour cache costs double",
+        "does reading the cache reset its expiry",
+        "waking up cancels idle compaction"
       ],
       "identifier_keys": [
         "context_tokens",
@@ -23558,13 +23561,16 @@
         "estimated cost to re-cache on resume",
         "turn off automatic compaction when idle",
         "long wait re-reads whole conversation",
-        "why did my next message cost so much after waiting"
+        "why did my next message cost so much after waiting",
+        "re-caching one hour cache costs double",
+        "does reading the cache reset its expiry",
+        "waking up cancels idle compaction"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
+        "prompt_version": "vocab-v4-update",
         "date": "2026-10-17",
-        "terms_sha256": "8e39cdddf6a5300a9e7cec35d9a7c3efac541f1574059fbf4f4c33f2e311dadf"
+        "terms_sha256": "fc64f35df06fb156939006d549cf624aec9c92d4bc8f668b6e94fbb3bbc364b2"
       }
     }
   ],
@@ -60273,6 +60279,15 @@
       241
     ],
     "why did my next message cost so much after waiting": [
+      241
+    ],
+    "re-caching one hour cache costs double": [
+      241
+    ],
+    "does reading the cache reset its expiry": [
+      241
+    ],
+    "waking up cancels idle compaction": [
       241
     ]
   },

@@ -1939,8 +1939,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:50 · What the model is told
 241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:55 · What a hook is told (CODE-READ)
 241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:65 · For a skill or plugin author
-241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:73 · In the official changelog (checked 2026-10-17, through 2.1.302)
-241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:87 · Not established
+241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:74 · In the official changelog (checked 2026-10-17, through 2.1.302)
+241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:88 · Not established
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

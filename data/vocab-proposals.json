@@ -6110,10 +6110,13 @@
     },
     "241": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
+      "prompt_version": "vocab-v4-update",
       "date": "2026-10-17",
-      "input_sha256": "50c37ca4e2e3c9a696d2e92f146d4bcdcef89cc0c8e72a8be4afcf52ce3ecd08",
+      "input_sha256": "9a8aa4e13fb57559075b9160672de3b67bd51aa692eac7fcf93df069ca069597",
+      "prior_terms_sha256": "8e39cdddf6a5300a9e7cec35d9a7c3efac541f1574059fbf4f4c33f2e311dadf",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "5ef27a12689c3848f18cd3696a05046e0aab8818",
+      "replaced": [],
       "terms": [
         "prompt cache expiry time",
         "how long does the cache last",
@@ -6129,7 +6132,10 @@
         "estimated cost to re-cache on resume",
         "turn off automatic compaction when idle",
         "long wait re-reads whole conversation",
-        "why did my next message cost so much after waiting?"
+        "why did my next message cost so much after waiting?",
+        "re-caching one hour cache costs double",
+        "does reading the cache reset its expiry?",
+        "waking up cancels idle compaction"
       ]
     }
   }
