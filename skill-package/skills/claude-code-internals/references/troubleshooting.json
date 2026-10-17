@@ -3155,6 +3155,28 @@
     240
    ],
    "hint": "On macOS and Linux any program running as you can post to a session's socket; set crossSessionInbound to hold or refuse to limit it."
+  },
+  {
+   "pattern": [
+    "prompt cache expired after waiting",
+    "cache ttl 5 minutes or 1 hour",
+    "does claude know when cache expires"
+   ],
+   "lessons": [
+    241
+   ],
+   "hint": "The client picks 1h (subscribers, allowlisted request types) or 5m and tracks expiry; the model only sees the lifetime in ScheduleWakeup's description. Subagents default to 5 minutes."
+  },
+  {
+   "pattern": [
+    "Compacted while idle, before the prompt cache expired",
+    "conversation compacted while I was away",
+    "idleCompaction"
+   ],
+   "lessons": [
+    241
+   ],
+   "hint": "Idle compaction (2.1.299+): a 200K+ token terminal conversation idle about 54 minutes is compacted before its 1-hour cache expires; turn off with \"idleCompaction\": false."
   }
  ]
 }

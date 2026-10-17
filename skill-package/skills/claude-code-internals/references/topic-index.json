@@ -1,6 +1,6 @@
 {
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 240,
+  "total_lessons": 241,
   "lessons": [
     {
       "id": 1,
@@ -23377,8 +23377,9 @@
       "lesson_number": "240",
       "file": "67-cross-session-messaging-2.1.302.md",
       "startLine": 13,
-      "endLine": 125,
+      "endLine": 127,
       "keywords": [
+        "async-rewake",
         "proc-start",
         "messaging-socket-path",
         "bridge-session-id",
@@ -23405,7 +23406,6 @@
         "messaging-beyond-own-agents-disabled",
         "dialog-expiry",
         "send message between two claude sessions",
-        "how do claude sessions talk to each other",
         "list other running claude sessions",
         "message from another session held for approval",
         "why was my cross-session message not delivered",
@@ -23421,9 +23421,11 @@
         "turn off messaging between sessions",
         "does a message wake an idle session",
         "can a hook wake an idle session",
-        "wake idle session from outside program"
+        "wake idle session from outside program",
+        "background hook that wakes claude when it exits"
       ],
       "identifier_keys": [
+        "async-rewake",
         "proc-start",
         "messaging-socket-path",
         "bridge-session-id",
@@ -23452,7 +23454,6 @@
       ],
       "vocab_keys": [
         "send message between two claude sessions",
-        "how do claude sessions talk to each other",
         "list other running claude sessions",
         "message from another session held for approval",
         "why was my cross-session message not delivered",
@@ -23468,13 +23469,102 @@
         "turn off messaging between sessions",
         "does a message wake an idle session",
         "can a hook wake an idle session",
-        "wake idle session from outside program"
+        "wake idle session from outside program",
+        "background hook that wakes claude when it exits"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-17",
-        "terms_sha256": "4a429f5fc666dfad98159290e5603d28c8f5f6a7bf83218461f3a1ab8ceddf41"
+        "terms_sha256": "5a2b42330ce5f3d95d177433204dbf4ce2b27abe0e1190c884ac2100feaa2d41"
+      }
+    },
+    {
+      "id": 241,
+      "title": "Does a Session Know When Its Prompt Cache Expires?",
+      "lesson_number": "241",
+      "file": "68-prompt-cache-ttl-idle-compaction-2.1.302.md",
+      "startLine": 13,
+      "endLine": 91,
+      "keywords": [
+        "context_tokens",
+        "CLAUDE_CODE_PROMPT_CACHE_TTL",
+        "CLAUDE_CODE_SUBAGENT_PROMPT_CACHE_TTL",
+        "prompt-cache-ttl",
+        "subagent-prompt-cache-ttl",
+        "cache-ttl",
+        "ENABLE_PROMPT_CACHING_1H_BEDROCK",
+        "tengu_prompt_cache_1h_config",
+        "rolling_compact",
+        "agent_classifier",
+        "memdir_relevance",
+        "tengu_sunny_locket",
+        "compact_on_return",
+        "min-tokens",
+        "CLAUDE_CODE_IDLE_COMPACT_MIN_TOKENS",
+        "fire-at-fraction",
+        "idle-compaction",
+        "CLAUDE_CODE_SLEEP_COMPACT",
+        "FORCE_PROMPT_CACHING_5M",
+        "prompt cache expiry time",
+        "how long does the cache last",
+        "cache lifetime one hour vs five minutes",
+        "subagents use shorter cache",
+        "conversation compacted while i was idle",
+        "why was my chat summarized after an hour away",
+        "cost of cache going cold after a break",
+        "keep cache warm while waiting",
+        "is it worth pinging to keep cache alive",
+        "does the model know when cache expires",
+        "cache staleness when resuming a session",
+        "estimated cost to re-cache on resume",
+        "turn off automatic compaction when idle",
+        "long wait re-reads whole conversation",
+        "why did my next message cost so much after waiting"
+      ],
+      "identifier_keys": [
+        "context_tokens",
+        "CLAUDE_CODE_PROMPT_CACHE_TTL",
+        "CLAUDE_CODE_SUBAGENT_PROMPT_CACHE_TTL",
+        "prompt-cache-ttl",
+        "subagent-prompt-cache-ttl",
+        "cache-ttl",
+        "ENABLE_PROMPT_CACHING_1H_BEDROCK",
+        "tengu_prompt_cache_1h_config",
+        "rolling_compact",
+        "agent_classifier",
+        "memdir_relevance",
+        "tengu_sunny_locket",
+        "compact_on_return",
+        "min-tokens",
+        "CLAUDE_CODE_IDLE_COMPACT_MIN_TOKENS",
+        "fire-at-fraction",
+        "idle-compaction",
+        "CLAUDE_CODE_SLEEP_COMPACT",
+        "FORCE_PROMPT_CACHING_5M"
+      ],
+      "vocab_keys": [
+        "prompt cache expiry time",
+        "how long does the cache last",
+        "cache lifetime one hour vs five minutes",
+        "subagents use shorter cache",
+        "conversation compacted while i was idle",
+        "why was my chat summarized after an hour away",
+        "cost of cache going cold after a break",
+        "keep cache warm while waiting",
+        "is it worth pinging to keep cache alive",
+        "does the model know when cache expires",
+        "cache staleness when resuming a session",
+        "estimated cost to re-cache on resume",
+        "turn off automatic compaction when idle",
+        "long wait re-reads whole conversation",
+        "why did my next message cost so much after waiting"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-17",
+        "terms_sha256": "8e39cdddf6a5300a9e7cec35d9a7c3efac541f1574059fbf4f4c33f2e311dadf"
       }
     }
   ],
@@ -41391,7 +41481,8 @@
       32
     ],
     "async-rewake": [
-      32
+      32,
+      240
     ],
     "status-message": [
       32
@@ -46617,7 +46708,8 @@
       174
     ],
     "context_tokens": [
-      174
+      174,
+      241
     ],
     "stop-hook-reply-gate.py": [
       174
@@ -48870,6 +48962,60 @@
     ],
     "dialog-expiry": [
       240
+    ],
+    "CLAUDE_CODE_PROMPT_CACHE_TTL": [
+      241
+    ],
+    "CLAUDE_CODE_SUBAGENT_PROMPT_CACHE_TTL": [
+      241
+    ],
+    "prompt-cache-ttl": [
+      241
+    ],
+    "subagent-prompt-cache-ttl": [
+      241
+    ],
+    "cache-ttl": [
+      241
+    ],
+    "ENABLE_PROMPT_CACHING_1H_BEDROCK": [
+      241
+    ],
+    "tengu_prompt_cache_1h_config": [
+      241
+    ],
+    "rolling_compact": [
+      241
+    ],
+    "agent_classifier": [
+      241
+    ],
+    "memdir_relevance": [
+      241
+    ],
+    "tengu_sunny_locket": [
+      241
+    ],
+    "compact_on_return": [
+      241
+    ],
+    "min-tokens": [
+      241
+    ],
+    "CLAUDE_CODE_IDLE_COMPACT_MIN_TOKENS": [
+      241
+    ],
+    "fire-at-fraction": [
+      241
+    ],
+    "idle-compaction": [
+      241
+    ],
+    "CLAUDE_CODE_SLEEP_COMPACT": [
+      241
+    ],
+    "FORCE_PROMPT_CACHING_5M": [
+      241
     ],
     "why is claude startup slow": [
       1
@@ -60033,9 +60179,6 @@
     "send message between two claude sessions": [
       240
     ],
-    "how do claude sessions talk to each other": [
-      240
-    ],
     "list other running claude sessions": [
       240
     ],
@@ -60083,6 +60226,54 @@
     ],
     "wake idle session from outside program": [
       240
+    ],
+    "background hook that wakes claude when it exits": [
+      240
+    ],
+    "prompt cache expiry time": [
+      241
+    ],
+    "how long does the cache last": [
+      241
+    ],
+    "cache lifetime one hour vs five minutes": [
+      241
+    ],
+    "subagents use shorter cache": [
+      241
+    ],
+    "conversation compacted while i was idle": [
+      241
+    ],
+    "why was my chat summarized after an hour away": [
+      241
+    ],
+    "cost of cache going cold after a break": [
+      241
+    ],
+    "keep cache warm while waiting": [
+      241
+    ],
+    "is it worth pinging to keep cache alive": [
+      241
+    ],
+    "does the model know when cache expires": [
+      241
+    ],
+    "cache staleness when resuming a session": [
+      241
+    ],
+    "estimated cost to re-cache on resume": [
+      241
+    ],
+    "turn off automatic compaction when idle": [
+      241
+    ],
+    "long wait re-reads whole conversation": [
+      241
+    ],
+    "why did my next message cost so much after waiting": [
+      241
     ]
   },
   "keyword_boundary": {

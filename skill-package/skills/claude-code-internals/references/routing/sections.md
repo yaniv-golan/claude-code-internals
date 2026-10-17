@@ -1927,12 +1927,20 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 240 · 67-cross-session-messaging-2.1.302.md:38 · Finding peers (CODE-READ)
 240 · 67-cross-session-messaging-2.1.302.md:48 · The socket and the wire (CODE-READ)
 240 · 67-cross-session-messaging-2.1.302.md:56 · Delivery (CODE-READ unless marked)
-240 · 67-cross-session-messaging-2.1.302.md:77 · Remote Control and cloud (CODE-READ)
-240 · 67-cross-session-messaging-2.1.302.md:81 · Peer features
-240 · 67-cross-session-messaging-2.1.302.md:87 · The switch
-240 · 67-cross-session-messaging-2.1.302.md:91 · For you, and for a skill author
-240 · 67-cross-session-messaging-2.1.302.md:98 · In the official changelog (checked 2026-10-17, through 2.1.302)
-240 · 67-cross-session-messaging-2.1.302.md:120 · Not established
+240 · 67-cross-session-messaging-2.1.302.md:79 · Remote Control and cloud (CODE-READ)
+240 · 67-cross-session-messaging-2.1.302.md:83 · Peer features
+240 · 67-cross-session-messaging-2.1.302.md:89 · The switch
+240 · 67-cross-session-messaging-2.1.302.md:93 · For you, and for a skill author
+240 · 67-cross-session-messaging-2.1.302.md:100 · In the official changelog (checked 2026-10-17, through 2.1.302)
+240 · 67-cross-session-messaging-2.1.302.md:122 · Not established
+241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:17 · The lifetime (CODE-READ)
+241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:28 · What the program tracks (CODE-READ)
+241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:32 · Idle compaction: acting before expiry (CODE-READ)
+241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:50 · What the model is told
+241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:55 · What a hook is told (CODE-READ)
+241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:65 · For a skill or plugin author
+241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:73 · In the official changelog (checked 2026-10-17, through 2.1.302)
+241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:87 · Not established
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

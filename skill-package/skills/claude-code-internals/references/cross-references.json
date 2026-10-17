@@ -4851,6 +4851,18 @@
     "relevance": 0.4,
     "reason": "L239: auto mode, which checks messages to other sessions before sending"
    }
+  ],
+  "241": [
+   {
+    "id": 240,
+    "relevance": 0.4,
+    "reason": "L240: waking an idle session, which re-reads the cache"
+   },
+   {
+    "id": 239,
+    "relevance": 0.3,
+    "reason": "L239: auto mode's classifier, which has its own 1-hour cache"
+   }
   ]
  }
 }

@@ -77,3 +77,4 @@ convention and are spread across those legacy files, whose rows read `1–8`.
 | `65-desktop-2.42304-unannounced-changes.md` | 68 | 238 | What Desktop 2.42304.0 Changed Without Announcing It (id 238) |
 | `66-auto-mode-classifier-2.1.301.md` | 69 | 239 | How Auto Mode Decides Whether a Tool Call Runs, and Which Model Decides (id 239) |
 | `67-cross-session-messaging-2.1.302.md` | 70 | 240 | How Claude Code Sessions Find and Message Each Other (id 240) |
+| `68-prompt-cache-ttl-idle-compaction-2.1.302.md` | 71 | 241 | Does a Session Know When Its Prompt Cache Expires? (id 241) |
