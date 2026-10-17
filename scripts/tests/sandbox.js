@@ -133,7 +133,9 @@ function makeSandbox(base, { full = false, ghName = 'gh' } = {}) {
     RELEASE_TMPDIR: tmp,
     CCI_FCACHE_PATH: path.join(tmp, 'no-fcache'), // never this Mac's live Desktop cache
     RELEASE_POLL_INTERVAL_MS: '5',
-    RELEASE_POLL_TIMEOUT_MS: '3000',
+    // Room for the fake gh to start on a loaded machine; at 3000 runs under load timed out at random.
+    // The gh-timeout test sets its own 1500.
+    RELEASE_POLL_TIMEOUT_MS: '15000',
     RELEASE_RUN_APPEAR_TIMEOUT_MS: '300',
     RELEASE_VALIDATE_CMD: FAST_VALIDATE,
     FAKE_GH_ORIGIN: origin,
