@@ -1,5 +1,32 @@
 # Changelog
 
+## v2.76.0 — 2026-10-17 (this fork) — The prompt cache's lifetime, and waking an idle session
+
+241 lessons across 71 chapters (1 new: L241, new Chapter 71; L240 corrected). Sources: a code read of Claude Code CLI
+2.1.302, its cached server flags, the official hooks documentation, and Anthropic's CLI changelog through 2.1.302.
+
+**The prompt cache's lifetime (Chapter 71, new)**
+
+- L241: does a session know when its prompt cache expires?
+  - How a request's cache lifetime is chosen: environment, settings, agent frontmatter, then a server allowlist that
+    gives a subscriber's main conversation 1 hour. Subagents and sessions in usage overage get 5 minutes.
+  - What a wake costs: a warm read 0.1× the input price, a cold re-write 1.25× on the 5-minute cache and 2× on the
+    1-hour cache. A read refreshes the lifetime.
+  - Idle compaction: a 200K+ token terminal conversation idle about 54 minutes is compacted before its 1-hour cache
+    expires, and any request restarts that timer. A separate compactor runs in cloud sessions.
+  - The model sees only the lifetime, in the `/loop` wake-up tool's description. A resumed session's SessionStart hook
+    gets the staleness and the estimated re-cache cost.
+
+**Corrected**
+
+- L240: a message from another session wakes an idle session (observed); it waits only when the receiver is mid-turn.
+  A hook with `asyncRewake: true` can wake Claude on exit code 2; whether it wakes an already-idle session is untested.
+
+**Tests**
+
+- The release tool's tests give their stand-in `gh` 15 seconds to answer instead of 3, which failed at random on a
+  busy machine.
+
 ## v2.75.0 — 2026-10-17 (this fork) — How auto mode decides, and how sessions message each other
 
 240 lessons across 70 chapters (2 new: L239 and L240, new Chapters 69 and 70; L25 updated). Sources: code reads of
