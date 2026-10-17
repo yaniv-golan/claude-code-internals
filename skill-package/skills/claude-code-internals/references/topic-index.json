@@ -23418,7 +23418,10 @@
         "session messaging rate limit or dropped messages",
         "stale session entries after process exit",
         "duplicate session names renamed automatically",
-        "turn off messaging between sessions"
+        "turn off messaging between sessions",
+        "does a message wake an idle session",
+        "can a hook wake an idle session",
+        "wake idle session from outside program"
       ],
       "identifier_keys": [
         "proc-start",
@@ -23462,13 +23465,16 @@
         "session messaging rate limit or dropped messages",
         "stale session entries after process exit",
         "duplicate session names renamed automatically",
-        "turn off messaging between sessions"
+        "turn off messaging between sessions",
+        "does a message wake an idle session",
+        "can a hook wake an idle session",
+        "wake idle session from outside program"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-16",
-        "terms_sha256": "88e654daf105755866bd6708fb0cd223aa9412b55ae456c4c5b162b3f831d8ec"
+        "date": "2026-10-17",
+        "terms_sha256": "4a429f5fc666dfad98159290e5603d28c8f5f6a7bf83218461f3a1ab8ceddf41"
       }
     }
   ],
@@ -60067,6 +60073,15 @@
       240
     ],
     "turn off messaging between sessions": [
+      240
+    ],
+    "does a message wake an idle session": [
+      240
+    ],
+    "can a hook wake an idle session": [
+      240
+    ],
+    "wake idle session from outside program": [
       240
     ]
   },

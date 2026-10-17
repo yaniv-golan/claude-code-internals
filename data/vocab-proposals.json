@@ -6072,11 +6072,11 @@
     "240": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-16",
-      "input_sha256": "7cb5017888776bf39a6d26c32fbc696631d9572970fd78ee0feb6ecfed4aa2e3",
+      "date": "2026-10-17",
+      "input_sha256": "45b3deda47007c9b24fd8e13a43f5f08d6d8fca426c0e11dab790cd27ef799b3",
       "prior_terms_sha256": "88e654daf105755866bd6708fb0cd223aa9412b55ae456c4c5b162b3f831d8ec",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "not found",
+      "previous_text": "c841f4a3a2e67559c7a4385d8ef571612c4be0d5",
       "replaced": [],
       "terms": [
         "send message between two claude sessions",
@@ -6093,7 +6093,10 @@
         "session messaging rate limit or dropped messages",
         "stale session entries after process exit",
         "duplicate session names renamed automatically",
-        "turn off messaging between sessions"
+        "turn off messaging between sessions",
+        "does a message wake an idle session",
+        "can a hook wake an idle session",
+        "wake idle session from outside program"
       ]
     }
   }
