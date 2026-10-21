@@ -1,5 +1,39 @@
 # Changelog
 
+## v2.77.0 — 2026-10-21 (this fork) — Document tools and the shell's time limit in cloud Cowork
+
+241 lessons across 71 chapters (none new; L198, L174 and L241 extended). Sources: three cloud Cowork sessions run by
+the account's owner (2026-10-19 to 10-21), the local Cowork VM image read on disk, Claude Code CLI 2.1.305, and the
+official Claude Code documentation and changelog, the Cowork release notes and Cowork help articles.
+
+**Cloud Cowork (L198)**
+
+- What a skill that reads PDFs or scanned pages can count on, cloud vs the local VM:
+  - tesseract (5.3.4 vs 4.1.1, English only on both), pdftotext and pdftoppm, and Python (3.13.16 vs 3.10);
+  - which PDF libraries import; PyMuPDF and PyPDF2 are missing on both;
+  - OCR takes about 2 seconds a page on the cloud lane.
+- A shell command is killed at 2 minutes (exit 143), because background tasks are off there
+  (`CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1`). In the CLI, a command that reaches its timeout moves to the background
+  instead. What the command printed before the kill still comes back.
+- Uploads: two later sessions again had both copies, and a `.placed-by-name.json` file sits beside the hashed one.
+- What Anthropic documents and what it doesn't: the CLI's timeout rules are documented; the cloud kill, the upload
+  paths and the cloud lane's tools are not.
+
+**Corrected**
+
+- L174: the session with no `/mnt/user-data/uploads` was the exception; every later session had both paths.
+
+**Compaction (L241)**
+
+- A SessionStart hook with matcher `compact` puts back what a compaction summary drops (documented in the hooks guide;
+  seen working after automatic compactions in a field run). Keep the text under the 10,000-character cap: past it the
+  model gets only a 2,000-character preview.
+
+**Desktop flag cache**
+
+- Restamped (445 features). The cloud memory relay (gate `946844604`) is now on for Team organizations too, so it no
+  longer tells Team and Personal apart (L234 and the state page updated).
+
 ## v2.76.0 — 2026-10-17 (this fork) — The prompt cache's lifetime, and waking an idle session
 
 241 lessons across 71 chapters (1 new: L241, new Chapter 71; L240 corrected). Sources: a code read of Claude Code CLI
