@@ -1874,8 +1874,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 233 · 62-desktop-mcp-negotiation-fcache-org.md:59 · Not verified
 233 · 62-desktop-mcp-negotiation-fcache-org.md:64 · For a server author
 234 · 62-desktop-mcp-negotiation-fcache-org.md:79 · What was measured (MEASURED, Desktop 2.31226.1, 417 features each)
-234 · 62-desktop-mcp-negotiation-fcache-org.md:107 · Consequences
-234 · 62-desktop-mcp-negotiation-fcache-org.md:113 · For anyone reading the fcache
+234 · 62-desktop-mcp-negotiation-fcache-org.md:109 · Consequences
+234 · 62-desktop-mcp-negotiation-fcache-org.md:115 · For anyone reading the fcache
 235 · 63-desktop-2.37337-sessions-admin-file-check.md:18 · A scheduled task keeps a local session's mode (CODE-READ, `index.chunk-BolytlRP.js`, `index.chunk-BgYYQXqQ.js`)
 235 · 63-desktop-2.37337-sessions-admin-file-check.md:32 · `move_to_cloud` gets stricter (CODE-READ, `index.chunk-BolytlRP.js`, `index.chunk-BcT8Ail-.js`)
 235 · 63-desktop-2.37337-sessions-admin-file-check.md:42 · Edits in someone else's worktree are rejected (CODE-READ, `index.chunk-BolytlRP.js`)

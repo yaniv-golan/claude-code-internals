@@ -22553,7 +22553,7 @@
       "lesson_number": "234",
       "file": "62-desktop-mcp-negotiation-fcache-org.md",
       "startLine": 75,
-      "endLine": 117,
+      "endLine": 119,
       "keywords": [
         "app-scoped-enabled",
         "fcache-pinned.json",
@@ -22574,11 +22574,12 @@
         "cached flags rewritten on org switch",
         "comparing flag snapshots gives inconsistent results",
         "is this a rollout or an org switch",
-        "memory relay enabled only on personal account",
         "artifact sharing settings differ by organization",
         "why does computer use work on personal but not team",
         "flag cache drift false alarm",
-        "same mac different features per organization"
+        "same mac different features per organization",
+        "memory relay now enabled for team too",
+        "gate stopped differing between organizations"
       ],
       "identifier_keys": [
         "app-scoped-enabled",
@@ -22602,17 +22603,18 @@
         "cached flags rewritten on org switch",
         "comparing flag snapshots gives inconsistent results",
         "is this a rollout or an org switch",
-        "memory relay enabled only on personal account",
         "artifact sharing settings differ by organization",
         "why does computer use work on personal but not team",
         "flag cache drift false alarm",
-        "same mac different features per organization"
+        "same mac different features per organization",
+        "memory relay now enabled for team too",
+        "gate stopped differing between organizations"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-10-13",
-        "terms_sha256": "640208dea417da32cbee734844311c2f3ce1af0dc12a47a098bf1f1ca0feeb1f"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-21",
+        "terms_sha256": "fc72951c6ce5149a1e8f9ecd6876028349fe10850fee338e8852a4ab823368b7"
       }
     },
     {
@@ -59926,9 +59928,6 @@
     "is this a rollout or an org switch": [
       234
     ],
-    "memory relay enabled only on personal account": [
-      234
-    ],
     "artifact sharing settings differ by organization": [
       234
     ],
@@ -59939,6 +59938,12 @@
       234
     ],
     "same mac different features per organization": [
+      234
+    ],
+    "memory relay now enabled for team too": [
+      234
+    ],
+    "gate stopped differing between organizations": [
       234
     ],
     "scheduled task inherits auto mode": [

@@ -100,6 +100,8 @@ The same 8 gates differ between Team and Personal in both pairs, with identical 
 | `445885797` | off | on | no consumer found by id in `app.asar` |
 | `2947058150` | on | off | no consumer found by id in `app.asar` |
 
+From the 2026-10-21 capture, `946844604` is force-on under Team as well (a new rule), while the other seven kept their Team values: it was switched on for Team server-side and no longer tells the two organizations apart. The other seven still do.
+
 A ninth gate, `582101327`, changed between the two days in both organizations alike (`force` to `defaultValue`, value `true` throughout): that is a change over time, not the organization.
 
 Before these captures, `2486083521`, `946844604` and `3229517805` had been recorded as flipping at almost every capture since 2026-10-07. The captures behind that record were taken without noting the organization.
