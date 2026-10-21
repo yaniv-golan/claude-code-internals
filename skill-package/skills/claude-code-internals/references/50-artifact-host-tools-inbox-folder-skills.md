@@ -284,7 +284,7 @@ Other languages for OCR need their own traineddata files; neither lane has them.
 
 **Speed.** A 7-page image-only PDF (a synthetic scanned deck, no text layer) went through `pdftoppm -r 300` and `tesseract` page by page in about 13 seconds in one shell call on the cloud lane: about 2 seconds a page.
 
-**The time limit is 2 minutes, the same as the CLI's default.** With no `timeout` passed (checked in the tool-call view, not only the model's account), a loop printing a line every 10 seconds ended as:
+**A command is killed at 2 minutes.** The 2-minute figure is the documented CLI default, but the documented outcome is different: in the CLI a foreground command that reaches its timeout is moved to the background and keeps running, unless it starts with `sleep` or background tasks are off (`CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1` or `--bare`), in which case it stops. On the cloud lane it was stopped. Background tasks being off there is the likely cause; it wasn't checked in the session's environment. With no `timeout` passed (checked in the tool-call view, not only the model's account), a loop printing a line every 10 seconds ended as:
 
 ```
 Exit code 143
@@ -296,7 +296,9 @@ alive 110s
 
 The UI marked the call "Failed". Everything the command printed before the kill came back inside the error, after the two header lines. Exit 143 is 128 + 15, so the command was most likely stopped with SIGTERM; the signal itself wasn't seen. A model can pass a longer `timeout` on its own (up to the documented maximum of 10 minutes; `BASH_DEFAULT_TIMEOUT_MS` and `BASH_MAX_TIMEOUT_MS` change the two), so a probe of the limit has to tell it not to.
 
-For a skill: OCR a long document in batches of pages, one shell call each, or print progress so a killed call still returns the pages it finished. Not measured: whether a large partial output is cut, and the local lane's limit.
+For a skill: OCR a long document in batches of pages, one shell call each, or print progress so a killed call still returns the pages it finished. A killed call is a failed result, and the CLI documents that a failed result reaches the model inline up to about 10,000 characters, then as a head-and-tail excerpt with no file; that cut wasn't measured on the cloud lane. The local lane's limit wasn't measured either.
+
+**In the official documentation (checked 2026-10-21):** the 2-minute default and 10-minute ceiling, the move to the background at the timeout and its exceptions, and the failed-result output limit are documented for the CLI (code.claude.com tools reference and env-vars pages). Not documented anywhere checked (the Claude Code changelog, the Cowork release notes, the Cowork help articles): that the cloud lane stops the command instead, the upload paths, and the cloud lane's tools. The only package list Anthropic publishes is for the API's code-execution tool, a different sandbox (Python 3.11, no network, no tesseract).
 
 Also reported by the owner and not seen here: a shell command pasted on its own into a cloud task was not run. It ran once the message asked the model to run it.
 

@@ -1689,7 +1689,7 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 198 · 50-artifact-host-tools-inbox-folder-skills.md:239 · Git access by surface (2026-10-05, one run each)
 198 · 50-artifact-host-tools-inbox-folder-skills.md:249 · Uploaded files in a cloud session (2026-10-05)
 198 · 50-artifact-host-tools-inbox-folder-skills.md:269 · Document tools and the shell's time limit in a cloud session (2026-10-19 to 10-21)
-198 · 50-artifact-host-tools-inbox-folder-skills.md:303 · Long shell output on claude.ai web (2026-10-05, UI)
+198 · 50-artifact-host-tools-inbox-folder-skills.md:305 · Long shell output on claude.ai web (2026-10-05, UI)
 199 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:21 · The stub
 199 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:32 · What gets stubbed
 199 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:61 · Observed
