@@ -17399,7 +17399,9 @@
         "http mcp server not bridged to cloud",
         "subagent nesting depth limited in cloud",
         "stop hook block not shown in app",
-        "plugin session start hook not firing on startup"
+        "plugin session start hook not firing on startup",
+        "uploaded file appears in two places",
+        "read-only copy of uploads in cloud"
       ],
       "identifier_keys": [
         "transcript_path",
@@ -17451,13 +17453,15 @@
         "http mcp server not bridged to cloud",
         "subagent nesting depth limited in cloud",
         "stop hook block not shown in app",
-        "plugin session start hook not firing on startup"
+        "plugin session start hook not firing on startup",
+        "uploaded file appears in two places",
+        "read-only copy of uploads in cloud"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "6b9f67565f1e77e06236abba9ee8599af0a3962a1ec8098de1f3aff812afc794"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-21",
+        "terms_sha256": "e7d9b2b246dfd46b85cf2e925d00b0ac73526f27688aa1281d2165d0f9bf46ff"
       }
     },
     {
@@ -19496,7 +19500,6 @@
         "permission denied writing file in cowork",
         "relative paths are not supported error in claude.ai chat",
         "how to tell which claude surface my skill runs on",
-        "detect cloud cowork vs claude code on the web",
         "where do output files go in cloud cowork",
         "search without a path searches wrong folder",
         "grep exposes session tokens in cloud sandbox",
@@ -19505,10 +19508,11 @@
         "skill portable across cowork, web and chat",
         "can one cowork session see other sessions' folders",
         "which working directory does each claude environment use",
-        "claude.ai chat running in cloud container",
         "merged composer with no chat or cowork choice",
         "git push fails from cloud cowork",
-        "where are uploaded files in a cloud session"
+        "where are uploaded files in a cloud session",
+        "shell command killed after two minutes in cloud",
+        "ocr scanned pdf in cloud cowork"
       ],
       "identifier_keys": [
         "stop-hook-git-check.sh",
@@ -19534,7 +19538,6 @@
         "permission denied writing file in cowork",
         "relative paths are not supported error in claude.ai chat",
         "how to tell which claude surface my skill runs on",
-        "detect cloud cowork vs claude code on the web",
         "where do output files go in cloud cowork",
         "search without a path searches wrong folder",
         "grep exposes session tokens in cloud sandbox",
@@ -19543,16 +19546,17 @@
         "skill portable across cowork, web and chat",
         "can one cowork session see other sessions' folders",
         "which working directory does each claude environment use",
-        "claude.ai chat running in cloud container",
         "merged composer with no chat or cowork choice",
         "git push fails from cloud cowork",
-        "where are uploaded files in a cloud session"
+        "where are uploaded files in a cloud session",
+        "shell command killed after two minutes in cloud",
+        "ocr scanned pdf in cloud cowork"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-05",
-        "terms_sha256": "a601c9dd6e345c40032a9195ef5c5600031a58ff1bac00b1cb49ce924483e2bd"
+        "date": "2026-10-21",
+        "terms_sha256": "f19f966b6c11992b6d2f8dfb8389bd79835096c141dc0d369a4b89a33740cb43"
       }
     },
     {
@@ -23511,12 +23515,9 @@
         "CLAUDE_CODE_SLEEP_COMPACT",
         "FORCE_PROMPT_CACHING_5M",
         "prompt cache expiry time",
-        "how long does the cache last",
         "cache lifetime one hour vs five minutes",
         "subagents use shorter cache",
         "conversation compacted while i was idle",
-        "why was my chat summarized after an hour away",
-        "cost of cache going cold after a break",
         "keep cache warm while waiting",
         "is it worth pinging to keep cache alive",
         "does the model know when cache expires",
@@ -23527,7 +23528,10 @@
         "why did my next message cost so much after waiting",
         "re-caching one hour cache costs double",
         "does reading the cache reset its expiry",
-        "waking up cancels idle compaction"
+        "waking up cancels idle compaction",
+        "re-add instructions after compaction",
+        "compaction summary dropped my task steps",
+        "hook context too long gets cut off"
       ],
       "identifier_keys": [
         "context_tokens",
@@ -23552,12 +23556,9 @@
       ],
       "vocab_keys": [
         "prompt cache expiry time",
-        "how long does the cache last",
         "cache lifetime one hour vs five minutes",
         "subagents use shorter cache",
         "conversation compacted while i was idle",
-        "why was my chat summarized after an hour away",
-        "cost of cache going cold after a break",
         "keep cache warm while waiting",
         "is it worth pinging to keep cache alive",
         "does the model know when cache expires",
@@ -23568,13 +23569,16 @@
         "why did my next message cost so much after waiting",
         "re-caching one hour cache costs double",
         "does reading the cache reset its expiry",
-        "waking up cancels idle compaction"
+        "waking up cancels idle compaction",
+        "re-add instructions after compaction",
+        "compaction summary dropped my task steps",
+        "hook context too long gets cut off"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-17",
-        "terms_sha256": "fc64f35df06fb156939006d549cf624aec9c92d4bc8f668b6e94fbb3bbc364b2"
+        "date": "2026-10-21",
+        "terms_sha256": "f86b4002967ce443f1ba035ccc39893c40b86b41fd9511a8c3d1205eda3a0d5b"
       }
     }
   ],
@@ -57056,6 +57060,12 @@
     "plugin session start hook not firing on startup": [
       174
     ],
+    "uploaded file appears in two places": [
+      174
+    ],
+    "read-only copy of uploads in cloud": [
+      174
+    ],
     "why does claude explain what it's about to do": [
       175
     ],
@@ -58118,9 +58128,6 @@
     "how to tell which claude surface my skill runs on": [
       198
     ],
-    "detect cloud cowork vs claude code on the web": [
-      198
-    ],
     "where do output files go in cloud cowork": [
       198
     ],
@@ -58145,9 +58152,6 @@
     "which working directory does each claude environment use": [
       198
     ],
-    "claude.ai chat running in cloud container": [
-      198
-    ],
     "merged composer with no chat or cowork choice": [
       198
     ],
@@ -58155,6 +58159,12 @@
       198
     ],
     "where are uploaded files in a cloud session": [
+      198
+    ],
+    "shell command killed after two minutes in cloud": [
+      198
+    ],
+    "ocr scanned pdf in cloud cowork": [
       198
     ],
     "plugin mcp server shows no tools in cowork": [
@@ -60249,9 +60259,6 @@
     "prompt cache expiry time": [
       241
     ],
-    "how long does the cache last": [
-      241
-    ],
     "cache lifetime one hour vs five minutes": [
       241
     ],
@@ -60259,12 +60266,6 @@
       241
     ],
     "conversation compacted while i was idle": [
-      241
-    ],
-    "why was my chat summarized after an hour away": [
-      241
-    ],
-    "cost of cache going cold after a break": [
       241
     ],
     "keep cache warm while waiting": [
@@ -60298,6 +60299,15 @@
       241
     ],
     "waking up cancels idle compaction": [
+      241
+    ],
+    "re-add instructions after compaction": [
+      241
+    ],
+    "compaction summary dropped my task steps": [
+      241
+    ],
+    "hook context too long gets cut off": [
       241
     ]
   },

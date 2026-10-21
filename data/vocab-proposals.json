@@ -4193,9 +4193,13 @@
     },
     "174": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-30",
-      "input_sha256": "1291ba39ac487be2dfb4252d16146c5759543cb750a37ef8de6ac9c99b2e0de6",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-21",
+      "input_sha256": "30afba469bbadf061c778cce6921589036568e4d156c228da4448e336fcac05c",
+      "prior_terms_sha256": "6b9f67565f1e77e06236abba9ee8599af0a3962a1ec8098de1f3aff812afc794",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "41d50345e52b4915a7d2f91576aea8149ca3de76",
+      "replaced": [],
       "terms": [
         "cloud session environment variables differ from CLI",
         "version variable shows wrong version in cloud",
@@ -4211,7 +4215,9 @@
         "HTTP MCP server not bridged to cloud",
         "subagent nesting depth limited in cloud",
         "stop hook block not shown in app",
-        "plugin session start hook not firing on startup"
+        "plugin session start hook not firing on startup",
+        "uploaded file appears in two places",
+        "read-only copy of uploads in cloud"
       ]
     },
     "175": {
@@ -4774,25 +4780,25 @@
     "198": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-05",
-      "input_sha256": "68d6cc5138965606ba6952ae4fd0c6767e5cf353e481fa5bf2c2ac2d7e470ef3",
-      "prior_terms_sha256": "70be7076caab08ee5aafe83723d925fc983334e8018fcfaa36af362000b5e311",
+      "date": "2026-10-21",
+      "input_sha256": "0143ac9491c2a63cdcc0a4b2e108e8ce2e65ac5efa5e055dc90678b1466de8e5",
+      "prior_terms_sha256": "a601c9dd6e345c40032a9195ef5c5600031a58ff1bac00b1cb49ce924483e2bd",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "afc22d5267ccbe787b142e94ec605d968e0a7e8a",
+      "previous_text": "41d50345e52b4915a7d2f91576aea8149ca3de76",
       "replaced": [
-        "outputs folder exists but file not delivered",
-        "why does my chat get a cloud session?"
+        "detect cloud Cowork vs Claude Code on the web",
+        "claude.ai chat running in cloud container"
       ],
       "dropped": [
         {
-          "term": "why does my chat get a cloud session?",
+          "term": "detect cloud Cowork vs Claude Code on the web",
           "why": "duplicate",
-          "duplicate_of": "claude.ai chat running in cloud container"
+          "duplicate_of": "how to tell which Claude surface my skill runs on"
         },
         {
-          "term": "outputs folder exists but file not delivered",
+          "term": "claude.ai chat running in cloud container",
           "why": "duplicate",
-          "duplicate_of": "why wasn't my file delivered to the user?"
+          "duplicate_of": "merged composer with no Chat or Cowork choice"
         }
       ],
       "terms": [
@@ -4801,7 +4807,6 @@
         "permission denied writing file in Cowork",
         "relative paths are not supported error in claude.ai chat",
         "how to tell which Claude surface my skill runs on",
-        "detect cloud Cowork vs Claude Code on the web",
         "where do output files go in cloud Cowork",
         "search without a path searches wrong folder",
         "grep exposes session tokens in cloud sandbox",
@@ -4810,10 +4815,11 @@
         "skill portable across Cowork, web and chat",
         "can one Cowork session see other sessions' folders?",
         "which working directory does each Claude environment use?",
-        "claude.ai chat running in cloud container",
         "merged composer with no Chat or Cowork choice",
         "git push fails from cloud Cowork",
-        "where are uploaded files in a cloud session?"
+        "where are uploaded files in a cloud session?",
+        "shell command killed after two minutes in cloud",
+        "OCR scanned PDF in cloud Cowork"
       ]
     },
     "199": {
@@ -6111,20 +6117,38 @@
     "241": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-17",
-      "input_sha256": "9a8aa4e13fb57559075b9160672de3b67bd51aa692eac7fcf93df069ca069597",
-      "prior_terms_sha256": "8e39cdddf6a5300a9e7cec35d9a7c3efac541f1574059fbf4f4c33f2e311dadf",
+      "date": "2026-10-21",
+      "input_sha256": "f6b6a151172fb26d2c8f27965cedfb885f2640d16f7c51e534d4c2b6e7a3dbd1",
+      "prior_terms_sha256": "fc64f35df06fb156939006d549cf624aec9c92d4bc8f668b6e94fbb3bbc364b2",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "5ef27a12689c3848f18cd3696a05046e0aab8818",
-      "replaced": [],
+      "previous_text": "41d50345e52b4915a7d2f91576aea8149ca3de76",
+      "replaced": [
+        "how long does the cache last",
+        "why was my chat summarized after an hour away",
+        "cost of cache going cold after a break"
+      ],
+      "dropped": [
+        {
+          "term": "how long does the cache last",
+          "why": "duplicate",
+          "duplicate_of": "prompt cache expiry time"
+        },
+        {
+          "term": "why was my chat summarized after an hour away",
+          "why": "duplicate",
+          "duplicate_of": "conversation compacted while I was idle"
+        },
+        {
+          "term": "cost of cache going cold after a break",
+          "why": "duplicate",
+          "duplicate_of": "why did my next message cost so much after waiting?"
+        }
+      ],
       "terms": [
         "prompt cache expiry time",
-        "how long does the cache last",
         "cache lifetime one hour vs five minutes",
         "subagents use shorter cache",
         "conversation compacted while I was idle",
-        "why was my chat summarized after an hour away",
-        "cost of cache going cold after a break",
         "keep cache warm while waiting",
         "is it worth pinging to keep cache alive?",
         "does the model know when cache expires?",
@@ -6135,7 +6159,10 @@
         "why did my next message cost so much after waiting?",
         "re-caching one hour cache costs double",
         "does reading the cache reset its expiry?",
-        "waking up cancels idle compaction"
+        "waking up cancels idle compaction",
+        "re-add instructions after compaction",
+        "compaction summary dropped my task steps",
+        "hook context too long gets cut off"
       ]
     }
   }
