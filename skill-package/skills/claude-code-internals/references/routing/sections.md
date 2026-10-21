@@ -1688,7 +1688,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 198 · 50-artifact-host-tools-inbox-folder-skills.md:230 · Other things the probe showed
 198 · 50-artifact-host-tools-inbox-folder-skills.md:239 · Git access by surface (2026-10-05, one run each)
 198 · 50-artifact-host-tools-inbox-folder-skills.md:249 · Uploaded files in a cloud session (2026-10-05)
-198 · 50-artifact-host-tools-inbox-folder-skills.md:258 · Long shell output on claude.ai web (2026-10-05, UI)
+198 · 50-artifact-host-tools-inbox-folder-skills.md:269 · Document tools and the shell's time limit in a cloud session (2026-10-19 to 10-21)
+198 · 50-artifact-host-tools-inbox-folder-skills.md:303 · Long shell output on claude.ai web (2026-10-05, UI)
 199 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:21 · The stub
 199 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:32 · What gets stubbed
 199 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:61 · Observed
@@ -1939,8 +1940,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:50 · What the model is told
 241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:55 · What a hook is told (CODE-READ)
 241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:65 · For a skill or plugin author
-241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:74 · In the official changelog (checked 2026-10-17, through 2.1.302)
-241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:88 · Not established
+241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:75 · In the official changelog (checked 2026-10-17, through 2.1.302)
+241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:89 · Not established
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

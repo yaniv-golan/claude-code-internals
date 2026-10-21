@@ -255,6 +255,51 @@ A file attached in a cloud conversation exists in two places in the same contain
 
 Which one the model meets first varied with how the conversation began. In a run where a shell command came first and the skill's placeholders were filled, the attachment was reported at the first path. In a run that began with a typed slash command, whose placeholders arrived as written (L217), it was listed at the second. A skill script that looks for uploads found the first path, while the second held the same file under its plain name. Look in both, and match on the end of the name rather than the whole name.
 
+Two later sessions (2026-10-19 and 2026-10-21, one attachment each) again had both copies. The 2026-10-21 listing showed the hashed directory in full:
+
+```
+/root/.claude/uploads/<uuid>/:
+drwx------ root  .
+-rw------- root  .placed-by-name.json        (278 bytes, written a minute after the file)
+-rw------- root  a4da113c-<name>.pdf
+```
+
+A script that lists that directory with `*` also picks up the dotfile; match on the extension or the end of the name. The only session seen with the hashed copy alone was on 2026-09-21 (L174).
+
+## Document tools and the shell's time limit in a cloud session (2026-10-19 to 10-21)
+
+What a skill that reads PDFs or scanned pages can count on, from three cloud Cowork sessions on one account (each run by the account's owner, output pasted or relayed; n=1 per item), with the local VM's image read on disk for comparison:
+
+| | Cowork, cloud | Cowork, local VM |
+|---|---|---|
+| how it was read | a probe in the session | grep of the VM image on disk (rootfs origin `882518393e`, unchanged since Desktop 2.9939.2) |
+| Python | 3.13.16 (it was 3.11.15 on 2026-09-21: the cloud image moves) | 3.10 (Ubuntu 22.04) |
+| `tesseract` | 5.3.4, languages `eng` and `osd` only | 4.1.1, `eng` and `osd` only |
+| `pdftotext`, `pdftoppm` | present | present, plus `pdfinfo` |
+| imports that work | pdfplumber, pypdf, PIL, pytesseract, pdf2image | pdfplumber 0.11.10, pypdf 6.18.0, pillow 12.3.0, pytesseract 0.3.13, pdf2image, pypdfium2 |
+| not installed | PyPDF2, PyMuPDF (`fitz`) | PyPDF2, PyMuPDF |
+| `pip install` from PyPI | worked | `--user` works; the command lands in `~/.local/bin`, off PATH (L173) |
+
+Other languages for OCR need their own traineddata files; neither lane has them.
+
+**Speed.** A 7-page image-only PDF (a synthetic scanned deck, no text layer) went through `pdftoppm -r 300` and `tesseract` page by page in about 13 seconds in one shell call on the cloud lane: about 2 seconds a page.
+
+**The time limit is 2 minutes, the same as the CLI's default.** With no `timeout` passed (checked in the tool-call view, not only the model's account), a loop printing a line every 10 seconds ended as:
+
+```
+Exit code 143
+Command timed out after 2m 0s
+alive 10s
+...
+alive 110s
+```
+
+The UI marked the call "Failed". Everything the command printed before the kill came back inside the error, after the two header lines. Exit 143 is 128 + 15, so the command was most likely stopped with SIGTERM; the signal itself wasn't seen. A model can pass a longer `timeout` on its own (up to the documented maximum of 10 minutes; `BASH_DEFAULT_TIMEOUT_MS` and `BASH_MAX_TIMEOUT_MS` change the two), so a probe of the limit has to tell it not to.
+
+For a skill: OCR a long document in batches of pages, one shell call each, or print progress so a killed call still returns the pages it finished. Not measured: whether a large partial output is cut, and the local lane's limit.
+
+Also reported by the owner and not seen here: a shell command pasted on its own into a cloud task was not run. It ran once the message asked the model to run it.
+
 ## Long shell output on claude.ai web (2026-10-05, UI)
 
 claude.ai web cuts a shell tool's displayed Response at about 4,000 characters, with "Output truncated" and no way to expand it. Whether the model's copy is cut too was not checked. When you read evidence from a cloud run through the interface, put the line you need first in the command's output, or print it in a call of its own.

@@ -19454,7 +19454,7 @@
       "lesson_number": "198",
       "file": "50-artifact-host-tools-inbox-folder-skills.md",
       "startLine": 182,
-      "endLine": 260,
+      "endLine": 305,
       "keywords": [
         "four-surfaces",
         "surface-fingerprint",
@@ -19489,6 +19489,8 @@
         "create_or_update_file",
         "Co-Authored-By",
         "Claude-Session",
+        "BASH_DEFAULT_TIMEOUT_MS",
+        "BASH_MAX_TIMEOUT_MS",
         "relative path works differently in cloud vs local cowork",
         "file written with relative path never shown to user",
         "permission denied writing file in cowork",
@@ -19522,7 +19524,9 @@
         "api.githubcopilot.com",
         "create_or_update_file",
         "Co-Authored-By",
-        "Claude-Session"
+        "Claude-Session",
+        "BASH_DEFAULT_TIMEOUT_MS",
+        "BASH_MAX_TIMEOUT_MS"
       ],
       "vocab_keys": [
         "relative path works differently in cloud vs local cowork",
@@ -23485,7 +23489,7 @@
       "lesson_number": "241",
       "file": "68-prompt-cache-ttl-idle-compaction-2.1.302.md",
       "startLine": 13,
-      "endLine": 92,
+      "endLine": 93,
       "keywords": [
         "context_tokens",
         "CLAUDE_CODE_PROMPT_CACHE_TTL",
@@ -47069,6 +47073,12 @@
       198
     ],
     "Claude-Session": [
+      198
+    ],
+    "BASH_DEFAULT_TIMEOUT_MS": [
+      198
+    ],
+    "BASH_MAX_TIMEOUT_MS": [
       198
     ],
     "d-rgam-bl-q": [
