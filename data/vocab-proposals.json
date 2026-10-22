@@ -5108,12 +5108,21 @@
     "210": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-21",
-      "input_sha256": "74648c43004b4cf6de02e5904cd3bdbc9a8577fdbf278cdc5099c7b9a36fc07b",
+      "date": "2026-10-22",
+      "input_sha256": "c66368ed7b7c498d121b48aedd695db24ec2184779d665c8372cc778e050da29",
       "prior_terms_sha256": "be49bd207e246bff65c53330114cd407d873a726cfe2d7dd72e892e5a3b7ee04",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "e556bb4857e28128b93c67b57c57a7fa85670e8f",
-      "replaced": [],
+      "previous_text": "414afb4c09602234cbfa27d49e4f653ccee44bed",
+      "replaced": [
+        "personal org runs in cloud but team org local"
+      ],
+      "dropped": [
+        {
+          "term": "personal org runs in cloud but team org local",
+          "why": "duplicate",
+          "duplicate_of": "cloud only rollout per organization"
+        }
+      ],
       "terms": [
         "cowork task runs in cloud instead of locally",
         "only on this computer setting ignored",
@@ -5132,7 +5141,7 @@
         "chat cowork selector decides local or cloud",
         "does automatically approve carry into the session?",
         "cloud only rollout per organization",
-        "personal org runs in cloud but team org local"
+        "team org tasks now run in cloud"
       ]
     },
     "211": {
@@ -5611,19 +5620,19 @@
     "226": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-21",
-      "input_sha256": "68e5768b60c6f086e1d589f3bd185d1d810af75515977d8e7e87171b5d8ca51b",
-      "prior_terms_sha256": "d4a183b84afce9dc193a81ab677de3687f9f7ecf9c15face596f8ebf71bc48d5",
+      "date": "2026-10-22",
+      "input_sha256": "bb6d3810901f872ff4e65e225e3037bb2d2404e533528dd93a837a2f0e0852ee",
+      "prior_terms_sha256": "aa3dd203846c421b4b73070cb73a123cefad3a2f65db64a3b7b5f83945e01592",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "e556bb4857e28128b93c67b57c57a7fa85670e8f",
+      "previous_text": "414afb4c09602234cbfa27d49e4f653ccee44bed",
       "replaced": [
-        "task starts in cloud when admin disables local"
+        "deprecation banner on cowork task"
       ],
       "dropped": [
         {
-          "term": "task starts in cloud when admin disables local",
+          "term": "deprecation banner on cowork task",
           "why": "duplicate",
-          "duplicate_of": "admin turned off local VM cowork"
+          "duplicate_of": "local only cowork being deprecated"
         }
       ],
       "terms": [
@@ -5640,11 +5649,11 @@
         "cloud opt-out expires after a few days",
         "skill can't find plugin scripts from phone",
         "local only cowork being deprecated",
-        "deprecation banner on cowork task",
         "connected folder task ran in cloud",
         "why is bypass mode missing in cowork?",
         "admin turned off local VM cowork",
-        "why settings switch disagrees with where task ran"
+        "why settings switch disagrees with where task ran",
+        "team workspace tasks suddenly run in cloud"
       ]
     },
     "227": {
@@ -6167,21 +6176,12 @@
     "242": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-21",
-      "input_sha256": "d2f7e73d2e662e942b78d3aa7038c80be67f452087123b124a4dcbcaac6dc795",
-      "prior_terms_sha256": "950432b45e9e7d7290a342f39f9a58c08a45e67038af84f30fd1fa639cc9f880",
+      "date": "2026-10-22",
+      "input_sha256": "ccd000322d4d0de09ce393f0d13c23b8f7e229197beb5a48636bb57b8c22d996",
+      "prior_terms_sha256": "cae95454c4464245961c793c04dbb8881fcc3755a5729c68d83347a3fd753da7",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "not found",
-      "replaced": [
-        "admin can disable storage cleanup"
-      ],
-      "dropped": [
-        {
-          "term": "admin can disable storage cleanup",
-          "why": "inaccurate",
-          "replacement": "server switch turns off storage cleanup"
-        }
-      ],
+      "previous_text": "414afb4c09602234cbfa27d49e4f653ccee44bed",
+      "replaced": [],
       "terms": [
         "desktop app undocumented changes",
         "free up disk space desktop app",
@@ -6197,7 +6197,34 @@
         "skill import waiting for scanning",
         "reserved admin settings do nothing",
         "ssh host allowlist from admin settings",
-        "server switch turns off storage cleanup"
+        "server switch turns off storage cleanup",
+        "sign-in timed out waiting for browser",
+        "default models when model list fails",
+        "how far stored transcript reaches"
+      ]
+    },
+    "243": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-10-22",
+      "input_sha256": "d41dc3cb135650be3bb9ce6115e905d2b817b61e3e6828a79b6557040a672259",
+      "collision_check": "questions-v2.json dev",
+      "terms": [
+        "scheduled task can't ask me questions",
+        "why can't scheduled task ask user",
+        "scheduled run missing tools",
+        "difference between scheduled and manual task",
+        "detect if running as scheduled task",
+        "scheduled task turn limit",
+        "how to tell a session was scheduled",
+        "skill behaves differently on schedule",
+        "scheduled task no messages to user",
+        "unattended task credentials",
+        "scheduled task permission mode",
+        "is this session scheduled or interactive?",
+        "why does my skill fail when scheduled?",
+        "scheduled run tool list differs",
+        "what changes when a task runs on a schedule?"
       ]
     }
   }

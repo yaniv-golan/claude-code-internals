@@ -4890,6 +4890,38 @@
     "relevance": 0.4,
     "reason": "L124: an id absent from the fcache means its code default, not off"
    }
+  ],
+  "243": [
+   {
+    "id": 210,
+    "relevance": 0.8,
+    "reason": "L210: new tasks from the merged composer go to the cloud, leaving scheduled tasks as the local sessions"
+   },
+   {
+    "id": 226,
+    "relevance": 0.7,
+    "reason": "L226: how a new task is routed, and Team's runs that went to the cloud"
+   },
+   {
+    "id": 109,
+    "relevance": 0.6,
+    "reason": "L109: scheduled tasks and the scheduled_task_fire message"
+   },
+   {
+    "id": 107,
+    "relevance": 0.5,
+    "reason": "L107: allowedTools, disallowedTools and AskUserQuestion in the spawn contract"
+   },
+   {
+    "id": 116,
+    "relevance": 0.5,
+    "reason": "L116: detecting the runtime from inside a skill; the VM shell gets almost no host environment"
+   },
+   {
+    "id": 242,
+    "relevance": 0.4,
+    "reason": "L242: the skill scan whose context a scheduled run changes"
+   }
   ]
  }
 }

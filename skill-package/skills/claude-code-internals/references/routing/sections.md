@@ -1948,8 +1948,15 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 242 · 69-desktop-3.1623-unannounced-changes.md:31 · Third-party deployments: a model scans user-made skills
 242 · 69-desktop-3.1623-unannounced-changes.md:35 · Reserved: typed artifacts for third-party deployments
 242 · 69-desktop-3.1623-unannounced-changes.md:39 · Other changes
-242 · 69-desktop-3.1623-unannounced-changes.md:47 · In the official release notes (checked 2026-10-21)
-242 · 69-desktop-3.1623-unannounced-changes.md:52 · Not traced
+242 · 69-desktop-3.1623-unannounced-changes.md:47 · Desktop 3.1623.4 (2026-10-22)
+242 · 69-desktop-3.1623-unannounced-changes.md:58 · In the official release notes (checked 2026-10-21)
+242 · 69-desktop-3.1623-unannounced-changes.md:63 · Not traced
+243 · 70-desktop-scheduled-vs-interactive-sessions.md:17 · How the type is set (CODE-READ, `index.chunk-DbIevS2k.js`)
+243 · 70-desktop-scheduled-vs-interactive-sessions.md:22 · What a scheduled run doesn't get
+243 · 70-desktop-scheduled-vs-interactive-sessions.md:34 · What a scheduled run gets instead (CODE-READ)
+243 · 70-desktop-scheduled-vs-interactive-sessions.md:44 · How to tell a scheduled session from an interactive one
+243 · 70-desktop-scheduled-vs-interactive-sessions.md:55 · For a skill or test author
+243 · 70-desktop-scheduled-vs-interactive-sessions.md:62 · Not traced
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

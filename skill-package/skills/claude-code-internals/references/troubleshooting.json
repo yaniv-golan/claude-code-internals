@@ -3211,6 +3211,18 @@
     242
    ],
    "hint": "Storage's Cowork cleanup deletes inactive tasks and chats in full; Code cleanup removes worktrees (sessions and uncommitted changes only if chosen). From 3.1623.0 only the ticked rows go."
+  },
+  {
+   "pattern": [
+    "AskUserQuestion missing in scheduled task",
+    "scheduled task cannot ask the user",
+    "send_user_message missing in scheduled run",
+    "how to tell a scheduled cowork run"
+   ],
+   "lessons": [
+    243
+   ],
+   "hint": "A scheduled run is a session of type scheduled: no AskUserQuestion, onboarding role picker or send_user_message; it gets CLAUDE_CODE_HOST_SCHEDULED_RUN=1. The session record's sessionType tells them apart."
   }
  ]
 }

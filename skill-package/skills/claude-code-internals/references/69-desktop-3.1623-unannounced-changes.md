@@ -1,4 +1,4 @@
-Updated: 2026-10-21 (L242) | Source: **Claude Desktop `app.asar` 3.1623.0 diffed against 2.42304.0** (both extracted; `.vite/build/`) and the two builds' UI bundles (`ion-dist`, archived per build); the live GrowthBook fcache decoded on 2026-10-21 under a Team organization; two runs in a Team organization on 2026-10-21; and Anthropic's Desktop release notes and configuration changelog for v3.1623.0, checked 2026-10-21 (the notes page carries no dates any more; the build's files are dated 2026-10-20). A subagent did the first pass; each item below was then re-read here. Minified names are given with their chunk file, because the same short name is reused across chunks.
+Updated: 2026-10-22 (L242) | Source: **Claude Desktop `app.asar` 3.1623.0 diffed against 2.42304.0** (both extracted; `.vite/build/`) and the two builds' UI bundles (`ion-dist`, archived per build); the live GrowthBook fcache decoded on 2026-10-21 under a Team organization; two runs in a Team organization on 2026-10-21; and Anthropic's Desktop release notes and configuration changelog for v3.1623.0, checked 2026-10-21 (the notes page carries no dates any more; the build's files are dated 2026-10-20). A subagent did the first pass; each item below was then re-read here. Minified names are given with their chunk file, because the same short name is reused across chunks.
 
 # Chapter 72: What Desktop 3.1623.0 Changed Without Announcing It
 
@@ -43,6 +43,17 @@ Five new admin keys (`artifactsEnabled` plus `artifactsDashboardEnabled`, `artif
 - **Unchanged:** the control-protocol subtypes and the `mcp__`/`internal__` tool names are the same set in both builds.
 - **Spawn environment:** `CLAUDE_CODE_DESKTOP_SKILLS_PLUGIN_DIR` is new; Desktop removes any copy of it from the environment it passes and sets its own when it has a value (`WCr`, `index.chunk-BLvpT1n4.js`).
 - **Gates:** 65 numeric gate ids are new in `app.asar` and 7 are gone. Only four of the new ones were in the 2026-10-21 fcache. The others are absent, which means each one's code default, not off: depending on the helper, an absent gate reads as off or as the default written beside it, often on.
+
+## Desktop 3.1623.4 (2026-10-22)
+
+The patch release bundles agent 2.1.308 and changes little in Desktop itself. A subagent compared the two builds chunk by chunk; the items below were re-checked here.
+
+- **Unchanged:** the IPC interfaces, the managed-policy keys, the local agent's spawn (its chunk has the same words in the same numbers; only short minified names differ), the scheduled-task code (L243), and the routing of new Cowork tasks with its interface files.
+- **Sign-in:** the wait for the browser to return from a sign-in is now 10 minutes (`6e5`), and starting a sign-in again while one is waiting re-opens the sign-in page instead of silently joining it. A third-party deployment's Claude Console sign-in can be taken over after a restart, but that path needs the Windows key store; on macOS the build stores keys with `safe-storage`, so it never runs there. A sign-in that times out now says so instead of showing the generic failure.
+- **Fallback models:** the model list built into the app, used when the live one can't be fetched, now defaults to the 5.5 models (`claude-sonnet-5-5`, `claude-opus-5-5`, `claude-haiku-5-5`).
+- **A new VM image** (published 2026-10-22; contents not checked).
+- **Bundled agent code:** the copy of the agent's remote-session code that Desktop carries adds a `checkpoint_done` system message (the agent uploads the events it was holding back and tells the viewer how far the stored transcript reaches, when the server asks with `checkpoint_request`), and its worker socket protocol moves to version 2.
+- **Release notes:** v3.1623.4 lists plugins asking before using tools they pre-approve under `allowManagedPermissionRulesOnly`, and local servers in `managed-mcp.json` that use `${VAR}` only in `env` now running under `isLocalDevMcpEnabled: false`; neither was traced in code here.
 
 ## In the official release notes (checked 2026-10-21)
 
