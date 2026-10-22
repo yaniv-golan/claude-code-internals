@@ -54,7 +54,8 @@ Three new policy-schema keys, all for third-party deployments and all `available
 
 ## In the official release notes (checked 2026-10-16)
 
-- **Not in the notes:** everything in this lesson. No v2.42304.0 note names `start_session`, tool search for Code-tab tools, startup-failure categories, sub-agent tagging, host keys or `accept-new`, plugins on the SSH host, MSIX plugin paths, Drive export for HIPAA organizations, `releaseChannel` or `sshConfigs`.
+- **Not in the notes:** everything in this lesson. No v2.42304.0 note names `start_session`, tool search for Code-tab tools, startup-failure categories, sub-agent tagging, host keys or `accept-new`, plugins on the SSH host, MSIX plugin paths, Drive export for HIPAA organizations, `releaseChannel` or `sshConfigs`. Also in this build and not announced until v3.1623.0: Storage and the `/storage` command (gated on the capability `storageDialog`; L242).
+- **Later notes (checked 2026-10-21):** v3.1623.0 announces `releaseChannel` (`staggered` gets releases after they have fully rolled out on `stable`, skipping the ones in between), and its schema stamps `disableDesktopLocalSessions` and `sshConfigs` as available from 2.42304.0. The v3.1623.0 notes also say the Claude Code managed-settings `disableDesktopLocalSessions` now honours the text "true" and also applies where claude.ai admin settings apply (L242). Anthropic later added 13 Code-tab items and a third-party note (a failing `PreToolUse` hook on Windows without Git for Windows now blocks the call) to the v2.42304.0 entry itself; none of them names an item above.
 - **Nearby:** the notes announce that third-party SSH sessions carry on across an app restart on macOS and Linux and that Desktop restarts Claude Code on the host when it is lost mid-task. That `sshConfigs` belongs to the same work is INFERRED from the key's `sshRemoteSessions` beta flag, not traced.
 
 ## For a skill or plugin author

@@ -4781,26 +4781,11 @@
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
       "date": "2026-10-21",
-      "input_sha256": "0143ac9491c2a63cdcc0a4b2e108e8ce2e65ac5efa5e055dc90678b1466de8e5",
-      "prior_terms_sha256": "a601c9dd6e345c40032a9195ef5c5600031a58ff1bac00b1cb49ce924483e2bd",
+      "input_sha256": "dd27f65208ae16ee3e8ae312456ad36d2c688f228cb8de5834377f9f251ae5a2",
+      "prior_terms_sha256": "f19f966b6c11992b6d2f8dfb8389bd79835096c141dc0d369a4b89a33740cb43",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "41d50345e52b4915a7d2f91576aea8149ca3de76",
-      "replaced": [
-        "detect cloud Cowork vs Claude Code on the web",
-        "claude.ai chat running in cloud container"
-      ],
-      "dropped": [
-        {
-          "term": "detect cloud Cowork vs Claude Code on the web",
-          "why": "duplicate",
-          "duplicate_of": "how to tell which Claude surface my skill runs on"
-        },
-        {
-          "term": "claude.ai chat running in cloud container",
-          "why": "duplicate",
-          "duplicate_of": "merged composer with no Chat or Cowork choice"
-        }
-      ],
+      "previous_text": "e556bb4857e28128b93c67b57c57a7fa85670e8f",
+      "replaced": [],
       "terms": [
         "relative path works differently in cloud vs local Cowork",
         "file written with relative path never shown to user",
@@ -5123,11 +5108,11 @@
     "210": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-07",
-      "input_sha256": "5bec1a46a1b6e4ffe879c42cc00967203f165885d2238028fcd21f7ab3019dc3",
+      "date": "2026-10-21",
+      "input_sha256": "74648c43004b4cf6de02e5904cd3bdbc9a8577fdbf278cdc5099c7b9a36fc07b",
       "prior_terms_sha256": "be49bd207e246bff65c53330114cd407d873a726cfe2d7dd72e892e5a3b7ee04",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "7d740ad63199f4ff0f68d097420290c8384d97bd",
+      "previous_text": "e556bb4857e28128b93c67b57c57a7fa85670e8f",
       "replaced": [],
       "terms": [
         "cowork task runs in cloud instead of locally",
@@ -5260,11 +5245,12 @@
     },
     "215": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v4-fill-gaps",
-      "date": "2026-10-14",
-      "input_sha256": "65d7c2e5e44b0de25ae6e8c1ff32ba2be48682675d626b69426101bfd502bb4d",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-21",
+      "input_sha256": "ccc82de8e665d173ba072d4be220670d49811ace7e2c9694348010c939a6a419",
       "prior_terms_sha256": "4c698ea62321de569cdb45bf12c6cf07577998a558ac86d4301c8e52cf892c69",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "e556bb4857e28128b93c67b57c57a7fa85670e8f",
       "replaced": [],
       "terms": [
         "cloud task can't see files on my Mac",
@@ -5625,25 +5611,19 @@
     "226": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-15",
-      "input_sha256": "f8ad0c334df8b87476b4233db927d1f33d5598484bad0bc8e3f03ed9b3f8c8ff",
-      "prior_terms_sha256": "050d87cbcbcbd1447fb17f9f9c8f199edc7c1238a52f33f9e724bd76360a4552",
+      "date": "2026-10-21",
+      "input_sha256": "68e5768b60c6f086e1d589f3bd185d1d810af75515977d8e7e87171b5d8ca51b",
+      "prior_terms_sha256": "d4a183b84afce9dc193a81ab677de3687f9f7ecf9c15face596f8ebf71bc48d5",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "2f8df0bf4a4cf96e915807242e3dfddfcbc538f5",
+      "previous_text": "e556bb4857e28128b93c67b57c57a7fa85670e8f",
       "replaced": [
-        "why did my task run in the cloud?",
-        "verify which environment a task ran in"
+        "task starts in cloud when admin disables local"
       ],
       "dropped": [
         {
-          "term": "why did my task run in the cloud?",
+          "term": "task starts in cloud when admin disables local",
           "why": "duplicate",
-          "duplicate_of": "cowork task ran in cloud instead of locally"
-        },
-        {
-          "term": "verify which environment a task ran in",
-          "why": "duplicate",
-          "duplicate_of": "how to tell if task ran locally or in cloud"
+          "duplicate_of": "admin turned off local VM cowork"
         }
       ],
       "terms": [
@@ -5664,7 +5644,7 @@
         "connected folder task ran in cloud",
         "why is bypass mode missing in cowork?",
         "admin turned off local VM cowork",
-        "task starts in cloud when admin disables local"
+        "why settings switch disagrees with where task ran"
       ]
     },
     "227": {
@@ -6007,11 +5987,11 @@
     "237": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-16",
-      "input_sha256": "018498443388182fee3d316bf63268fb26ad0dcf169ab05a5221884ee7692528",
+      "date": "2026-10-21",
+      "input_sha256": "0e85325c525b291ef30a8bb5e4de692697cfb9eb8325dba17576fa0fe1e07aaf",
       "prior_terms_sha256": "4aa76e36e0ded43b4e5b9bb56ba3f906e12405345f47047b9c13637b0efbda96",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "e605d7a8776897ffbf6a9c06c8ace3b6d079d032",
+      "previous_text": "e556bb4857e28128b93c67b57c57a7fa85670e8f",
       "replaced": [],
       "terms": [
         "admin policy settings for desktop app",
@@ -6036,10 +6016,13 @@
     },
     "238": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-10-16",
-      "input_sha256": "b7ddb54d73819a2423433c34c52fc7c13971bb55ea7ac051f5bfce7724f9c17c",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-21",
+      "input_sha256": "850586b8a45ca23fb7a1371c2ccb2bfbcfdfa057558af3225629139e96672b74",
+      "prior_terms_sha256": "4f1321530f15778897d2f1195d31b3a557edf2c2c0adc6c4aaddc5982264c8b0",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "not found",
+      "replaced": [],
       "terms": [
         "undocumented desktop app changes",
         "desktop update changes not in release notes",
@@ -6055,7 +6038,10 @@
         "sub-agent messages tagged in saved session",
         "how to tell subagent messages in desktop session history?",
         "HIPAA organization Google Drive export blocked",
-        "admin provisioned SSH connections policy"
+        "admin provisioned SSH connections policy",
+        "staggered release channel for desktop updates",
+        "disable local sessions setting accepts text true",
+        "failing hook blocks on Windows without Git"
       ]
     },
     "239": {
@@ -6176,6 +6162,42 @@
         "re-add instructions after compaction",
         "compaction summary dropped my task steps",
         "hook context too long gets cut off"
+      ]
+    },
+    "242": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-21",
+      "input_sha256": "d2f7e73d2e662e942b78d3aa7038c80be67f452087123b124a4dcbcaac6dc795",
+      "prior_terms_sha256": "950432b45e9e7d7290a342f39f9a58c08a45e67038af84f30fd1fa639cc9f880",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "not found",
+      "replaced": [
+        "admin can disable storage cleanup"
+      ],
+      "dropped": [
+        {
+          "term": "admin can disable storage cleanup",
+          "why": "inaccurate",
+          "replacement": "server switch turns off storage cleanup"
+        }
+      ],
+      "terms": [
+        "desktop app undocumented changes",
+        "free up disk space desktop app",
+        "delete only selected old sessions",
+        "cleanup removed my worktrees",
+        "does storage cleanup delete uncommitted changes",
+        "cowork cleanup deleted my chats",
+        "starred tasks deleted by retention",
+        "resume session after five hour limit",
+        "auto continue after usage limit resets",
+        "why didn't my session resume after limit?",
+        "security scan of custom skills",
+        "skill import waiting for scanning",
+        "reserved admin settings do nothing",
+        "ssh host allowlist from admin settings",
+        "server switch turns off storage cleanup"
       ]
     }
   }

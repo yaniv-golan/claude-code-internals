@@ -1,4 +1,4 @@
-Updated: 2026-10-16 (L229: the approval gate and "Always allow", read in app.asar 2.37337.1 and 2.42304.0 and the 2.42304.0 ion-dist) | Earlier: 2026-10-11 (L226–L230) | Source: the installed **Claude Desktop `app.asar` 2.31226.1** and its UI bundle (`ion-dist`, 2.31226.0 and 2.31226.1), read but **not diffed** against an earlier build, so nothing here is claimed as new; plus live runs on Desktop 2.31226.0/2.31226.1 between 2026-10-09 and 2026-10-11 in a Personal org and a Team org (local and cloud Cowork tasks, a phone-started task, a real MCPB extension, an uploaded and an org-marketplace copy of one plugin). Minified names are given with their chunk file, because the same short name is reused across chunks.
+Updated: 2026-10-21 (L226: two Team runs that went to the cloud, and the row-vs-router split, read in the 3.1623.0 ion-dist and compared with 2.42304.0) | Earlier: 2026-10-16 (L229: the approval gate and "Always allow", read in app.asar 2.37337.1 and 2.42304.0 and the 2.42304.0 ion-dist); 2026-10-11 (L226–L230) | Source: the installed **Claude Desktop `app.asar` 2.31226.1** and its UI bundle (`ion-dist`, 2.31226.0 and 2.31226.1), read but **not diffed** against an earlier build, so nothing here is claimed as new; plus live runs on Desktop 2.31226.0/2.31226.1 between 2026-10-09 and 2026-10-11 in a Personal org and a Team org (local and cloud Cowork tasks, a phone-started task, a real MCPB extension, an uploaded and an org-marketplace copy of one plugin). Minified names are given with their chunk file, because the same short name is reused across chunks.
 
 # Chapter 63: Desktop Cowork — Task Routing, Approval Cards, Paths, Local Extensions and Plugin Installs
 
@@ -53,9 +53,23 @@ A separate error, `cowork_local_tasks_off`, exists for a task start that can't r
 | Personal | 2026-10-10 22:15Z: a task with only a connected folder ran **locally** (`/sessions/<slug>`), and the task showed a banner saying local-only Cowork tasks are being deprecated | 1 |
 | Personal | 2026-10-11 04:15–04:35Z, switch still showing ON: four tasks with a connected folder all ran in the **cloud** (Manual and Auto) | 4 |
 | Personal | Auto mode did **not** force local (cloud); Bypass not offered in the composer (only Manual and Auto) | 2 |
-| Team | Switch ON; Desktop-started tasks ran locally | many sessions |
+| Team | Switch ON; Desktop-started tasks ran locally (Desktop 2.31226, through 2026-10-11) | many sessions |
+| Team | 2026-10-21, Desktop 3.1623.0, Manual, no folder: row showing ON, task ran in the **cloud** (`/home/claude`, `remote_cowork`, `CLAUDE_CODE_REMOTE=true`) | 1 |
+| Team | Same day, with a Mac folder connected: still the **cloud**. The model also reached the Mac's VM through `device_bash` (L215), which is not a local task | 1 |
 | Team | A task started from the phone app in Cowork mode ran in the **cloud** despite the switch | 1 |
 | Team | A phone task sent as plain chat (not Cowork) got the skill without its plugin scripts; the skill reported its shared scripts unreachable | 1 |
+
+## Why the row and the lane can disagree (CODE-READ, ion-dist 3.1623.0, `shared-26` and `cabd7b1c1`)
+
+The row and the router read two different hooks:
+
+- **The row** shows the account setting as stored: its switch is `!isRemote` from the raw hook (`Zc`, exported as `ih`), which reads `dramatic_shrimp_enabled` (with the 3-day expiry for internal accounts). Only `canOptOut` comes from the router's hook.
+- **The router** gets `isRemote` from the mode hook (`Qc`, exported as `ah`). It starts from the same stored value, but several branches return `isRemote:true` regardless: cloud Cowork not available for the account, local tasks off by policy (`off_by_policy`), the account not loaded yet, and a plan check that routes some plans to the cloud.
+
+So the row can show ON while the router sends the task to the cloud, and nothing on screen says which branch did it. L210 found a second cause outside these hooks: the merged composer (no Chat/Cowork choice, a `/chat/` URL) sent every task to the cloud, and it reached organizations one at a time. Which cause applied to the 2026-10-21 Team runs, and which composer they came from, was not recorded. The routing function itself (`sj` above, now `SO`) and the mode hook are unchanged from 2.42304.0 to 3.1623.0 (compared after renaming), so those runs did not come from a new Desktop build.
+
+- **Connecting a folder doesn't force local any more when the cloud can reach it.** `local_folder_forced` applies only when the folder doesn't allow the cloud (`folderAllowsRemote`); the 2026-10-21 folder task went to the cloud and reached the folder through the device bridge (INFERRED from the run).
+- **The Desktop's own switch for local tasks** (`cowork-local-tasks-off`, gate `3634338308`, L208) was still served off on 2026-10-21, so the Desktop allowed a local task; the choice was made in the interface.
 
 ## The composer's Auto/Manual choice (CODE-READ, `shared-8` `Wj`/`Uj`/`Kj`)
 

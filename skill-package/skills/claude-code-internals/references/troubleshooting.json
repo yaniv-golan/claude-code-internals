@@ -3177,6 +3177,40 @@
     241
    ],
    "hint": "Idle compaction (2.1.299+): a 200K+ token terminal conversation idle about 54 minutes is compacted before its 1-hour cache expires; turn off with \"idleCompaction\": false."
+  },
+  {
+   "pattern": [
+    "device_bash timed out after 120000ms",
+    "cloud task shell on my computer returns no output",
+    "Command timed out after 120000ms"
+   ],
+   "lessons": [
+    215
+   ],
+   "hint": "A cloud task's shell on the Mac (device_bash) stops at 120 s by default (server gate 1263782781; up to 180 s with timeout_ms) and returns none of the output on a timeout. Write progress to a file in the connected folder."
+  },
+  {
+   "pattern": [
+    "Only on this computer is on but task runs in the cloud",
+    "Team Cowork task runs in the cloud",
+    "task ignores only on this computer"
+   ],
+   "lessons": [
+    226,
+    210
+   ],
+   "hint": "The Settings row shows the stored account setting; the router uses a separate hook that forces cloud in several cases, and the merged composer sends tasks to the cloud. Check pwd: /home/claude means cloud."
+  },
+  {
+   "pattern": [
+    "what does desktop storage cleanup delete",
+    "/storage removed my cowork tasks",
+    "storage settings delete chats"
+   ],
+   "lessons": [
+    242
+   ],
+   "hint": "Storage's Cowork cleanup deletes inactive tasks and chats in full; Code cleanup removes worktrees (sessions and uncommitted changes only if chosen). From 3.1623.0 only the ticked rows go."
   }
  ]
 }

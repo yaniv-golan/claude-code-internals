@@ -51,7 +51,7 @@ In the code both default to allowed: anything but an explicit `false` leaves the
 |---|---|---|---|---|
 | `disableBypassPermissionsMode` | 1.46388.1 | 3p | desktop,code | Removes bypass mode from Code and Cowork |
 | `blockReadsOutsideWorkingDirectories` | 1.46388.1 | 3p, 1p | desktop,code | File tools read only the session folder and `allowedWorkspaceFolders`; sandboxed shells lose the home folder (per the notes) |
-| `allowedWorkspaceFolders` | older (1.2581.0) | 3p, 1p | desktop,code | Gained reach in this window: limits which of a project's folders Chat can read (2.19675.1), and its read-only entries are enforced for file tools in SSH sessions except on Windows hosts and hosts with their own Claude Code managed settings (2.31226.0), per the notes |
+| `allowedWorkspaceFolders` | older (1.2581.0) | 3p, 1p | desktop,code | Gained reach in this window: limits which of a project's folders Chat can read (2.19675.1), and its read-only entries are enforced for file tools in SSH sessions except on Windows hosts and hosts with their own Claude Code managed settings (2.31226.0), per the notes. From 3.1623.0 Cowork is told which connected folders are read-only and to save new files in a writable one or in outputs (per the notes) |
 
 How the first two reach the agent (CODE-READ, 2.37337.1):
 - **`disableBypassPermissionsMode`:** on a third-party deployment set to `true`, Desktop writes `disableBypassPermissionsMode: "disable"` into the managed settings it gives the agent.
@@ -89,7 +89,7 @@ In the code the hold wins over every period (CODE-READ). For forensics this matt
 
 | key | since | scopes | effect (per the notes) |
 |---|---|---|---|
-| `relaunchEnforcementHours` | 1.40609.0 | 3p | Forces a restart after served configuration changes (0–336 hours; unset means 1 hour). From 1.46388.1 it also covers configuration changed by device management |
+| `relaunchEnforcementHours` | 1.40609.0 | 3p | Forces a restart after served configuration changes (0–336 hours; unset means 1 hour). From 1.46388.1 it also covers configuration changed by device management. From 3.1623.0 there is no wait when a device-management profile that sets more than app-behavior keys first applies to an app running on the user's own saved configuration (per the notes) |
 | `configRecheckIntervalMinutes` | 1.46388.1 | 3p | How often managed configuration is re-checked; the default went from 30 to 10 minutes |
 | `disableAutoUpdates` | older (1.2581.0) | 3p, 1p | From 2.26454.0 also decides whether Cowork's workspace image downloads in the background (unless `true`) instead of at the first task |
 | `isClaudeCodeForDesktopEnabled` | older (1.2581.0) | 3p, 1p | From 1.44121.1, `false` also blocks Code sessions requested directly, Preview's dev-server scan and offering the computer for Remote Control ("Code sessions are turned off by your organization") |

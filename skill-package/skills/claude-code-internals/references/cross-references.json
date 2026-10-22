@@ -4863,6 +4863,33 @@
     "relevance": 0.3,
     "reason": "L239: auto mode's classifier, which has its own 1-hour cache"
    }
+  ],
+  "242": [
+   {
+    "id": 215,
+    "relevance": 0.7,
+    "reason": "L215: the device shell's 120-second limit and lost output, served by a gate this build reads"
+   },
+   {
+    "id": 226,
+    "relevance": 0.7,
+    "reason": "L226: task routing, unchanged in this build, and the Team runs that went to the cloud"
+   },
+   {
+    "id": 238,
+    "relevance": 0.6,
+    "reason": "L238: the previous build's unannounced changes, where Storage first shipped dark"
+   },
+   {
+    "id": 237,
+    "relevance": 0.5,
+    "reason": "L237: the admin keys, including the new third-party ones"
+   },
+   {
+    "id": 124,
+    "relevance": 0.4,
+    "reason": "L124: an id absent from the fcache means its code default, not off"
+   }
   ]
  }
 }

@@ -1,6 +1,6 @@
 {
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 241,
+  "total_lessons": 242,
   "lessons": [
     {
       "id": 1,
@@ -20256,7 +20256,6 @@
         "computer-use-runs",
         "request-folder-access-runs",
         "built-in-browser-runs",
-        "disable-desktop-local-sessions",
         "no-self-hosted-endpoint",
         "scheduled task stopped running locally",
         "why did my scheduled task move to the cloud",
@@ -20306,7 +20305,6 @@
         "computer-use-runs",
         "request-folder-access-runs",
         "built-in-browser-runs",
-        "disable-desktop-local-sessions",
         "no-self-hosted-endpoint"
       ],
       "vocab_keys": [
@@ -20451,12 +20449,10 @@
         "run in the cloud despite setting",
         "scheduled-task-id",
         "dramatic_shrimp_disabled_at",
-        "can-opt-out",
         "cowork_remote_opt_out_returning_only_main",
         "local_ungated",
         "local_override_forced",
         "dramatic_shrimp_force_local",
-        "local_folder_forced",
         "local_space_forced",
         "local_auto_permission_forced",
         "local_bypass_permission_forced",
@@ -20486,12 +20482,10 @@
       "identifier_keys": [
         "scheduled-task-id",
         "dramatic_shrimp_disabled_at",
-        "can-opt-out",
         "cowork_remote_opt_out_returning_only_main",
         "local_ungated",
         "local_override_forced",
         "dramatic_shrimp_force_local",
-        "local_folder_forced",
         "local_space_forced",
         "local_auto_permission_forced",
         "local_bypass_permission_forced",
@@ -20523,7 +20517,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-07",
+        "date": "2026-10-21",
         "terms_sha256": "be49bd207e246bff65c53330114cd407d873a726cfe2d7dd72e892e5a3b7ee04"
       }
     },
@@ -20875,7 +20869,7 @@
       "lesson_number": "215",
       "file": "55-cloud-session-device-tools.md",
       "startLine": 16,
-      "endLine": 201,
+      "endLine": 208,
       "keywords": [
         "device tools",
         "mcp__remote-devices",
@@ -20894,6 +20888,7 @@
         "expectedMtimeMs guard",
         "Write to /Users path in cloud",
         "mcp__cowork__request_cowork_directory",
+        "timeout_ms",
         "app-version",
         "list_devices",
         "project_memory_read",
@@ -20915,6 +20910,9 @@
         "staged-path",
         "device-path",
         "native-write.txt",
+        "index.chunk-DwEoPAKu.js",
+        "default_ms",
+        "max_ms",
         "HEAD.lock",
         "maintenance.lock",
         "tmp_obj",
@@ -20933,6 +20931,7 @@
         "2745857735",
         "49458538",
         "733405693",
+        "1263782781",
         "cloud task can't see files on my mac",
         "why does write succeed but file is missing",
         "save output file to my laptop from cloud session",
@@ -20954,6 +20953,7 @@
       ],
       "identifier_keys": [
         "mcp__cowork__request_cowork_directory",
+        "timeout_ms",
         "app-version",
         "list_devices",
         "project_memory_read",
@@ -20975,6 +20975,9 @@
         "staged-path",
         "device-path",
         "native-write.txt",
+        "index.chunk-DwEoPAKu.js",
+        "default_ms",
+        "max_ms",
         "HEAD.lock",
         "maintenance.lock",
         "tmp_obj",
@@ -20992,7 +20995,8 @@
         "PRETTY_NAME",
         "2745857735",
         "49458538",
-        "733405693"
+        "733405693",
+        "1263782781"
       ],
       "vocab_keys": [
         "cloud task can't see files on my mac",
@@ -21016,8 +21020,8 @@
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v4-fill-gaps",
-        "date": "2026-10-14",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-21",
         "terms_sha256": "4c698ea62321de569cdb45bf12c6cf07577998a558ac86d4301c8e52cf892c69"
       }
     },
@@ -21026,8 +21030,8 @@
       "title": "One Conversation, Two Runtimes: How claude.ai Moves a Chat Into a Cowork Workspace",
       "lesson_number": "216",
       "file": "55-cloud-session-device-tools.md",
-      "startLine": 205,
-      "endLine": 251,
+      "startLine": 212,
+      "endLine": 258,
       "keywords": [
         "chat and Cowork merged",
         "hub backend",
@@ -21855,7 +21859,7 @@
       "lesson_number": "226",
       "file": "60-desktop-routing-cards-paths-extensions.md",
       "startLine": 17,
-      "endLine": 70,
+      "endLine": 84,
       "keywords": [
         "dramatic_shrimp_disabled_at",
         "can-opt-out",
@@ -21877,6 +21881,8 @@
         "local_chrome_skip_forced",
         "local_options_forced",
         "local_computer_use_forced",
+        "off_by_policy",
+        "folder-allows-remote",
         "shared-8",
         "cowork-unsupervised-sticky",
         "manual-opt-out",
@@ -21896,7 +21902,7 @@
         "connected folder task ran in cloud",
         "why is bypass mode missing in cowork",
         "admin turned off local vm cowork",
-        "task starts in cloud when admin disables local"
+        "why settings switch disagrees with where task ran"
       ],
       "identifier_keys": [
         "dramatic_shrimp_disabled_at",
@@ -21919,6 +21925,8 @@
         "local_chrome_skip_forced",
         "local_options_forced",
         "local_computer_use_forced",
+        "off_by_policy",
+        "folder-allows-remote",
         "shared-8",
         "cowork-unsupervised-sticky",
         "manual-opt-out"
@@ -21940,13 +21948,13 @@
         "connected folder task ran in cloud",
         "why is bypass mode missing in cowork",
         "admin turned off local vm cowork",
-        "task starts in cloud when admin disables local"
+        "why settings switch disagrees with where task ran"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-15",
-        "terms_sha256": "d4a183b84afce9dc193a81ab677de3687f9f7ecf9c15face596f8ebf71bc48d5"
+        "date": "2026-10-21",
+        "terms_sha256": "aa3dd203846c421b4b73070cb73a123cefad3a2f65db64a3b7b5f83945e01592"
       }
     },
     {
@@ -21954,8 +21962,8 @@
       "title": "Which Tool Calls Show an Approval Card in a Local Cowork Session",
       "lesson_number": "227",
       "file": "60-desktop-routing-cards-paths-extensions.md",
-      "startLine": 74,
-      "endLine": 107,
+      "startLine": 88,
+      "endLine": 121,
       "keywords": [
         "present_files",
         "accept-edits",
@@ -22022,8 +22030,8 @@
       "title": "The Model Sees VM Paths; audit.jsonl and the UI Show Host Paths",
       "lesson_number": "228",
       "file": "60-desktop-routing-cards-paths-extensions.md",
-      "startLine": 111,
-      "endLine": 141,
+      "startLine": 125,
+      "endLine": 155,
       "keywords": [
         "Bwge5-J7",
         "build-vm-path-context",
@@ -22084,8 +22092,8 @@
       "title": "Local Extensions (.mcpb) in Desktop: Updates, Confirmations, Errors, Settings",
       "lesson_number": "229",
       "file": "60-desktop-routing-cards-paths-extensions.md",
-      "startLine": 145,
-      "endLine": 201,
+      "startLine": 159,
+      "endLine": 215,
       "keywords": [
         "is-destructive-connector-tool",
         "index.chunk-BC1wbmHw.js",
@@ -22166,8 +22174,8 @@
       "title": "Plugin Installs: Desktop Rewrites Frontmatter, and Switching Off an Org-Marketplace Plugin Deletes Its Copy",
       "lesson_number": "230",
       "file": "60-desktop-routing-cards-paths-extensions.md",
-      "startLine": 205,
-      "endLine": 268,
+      "startLine": 219,
+      "endLine": 282,
       "keywords": [
         "extra-known-marketplaces",
         "plugin_upload_already_exists",
@@ -23183,7 +23191,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-16",
+        "date": "2026-10-21",
         "terms_sha256": "4aa76e36e0ded43b4e5b9bb56ba3f906e12405345f47047b9c13637b0efbda96"
       }
     },
@@ -23193,7 +23201,7 @@
       "lesson_number": "238",
       "file": "65-desktop-2.42304-unannounced-changes.md",
       "startLine": 13,
-      "endLine": 70,
+      "endLine": 71,
       "keywords": [
         "disable-desktop-local-sessions",
         "message-buffer",
@@ -23232,7 +23240,10 @@
         "sub-agent messages tagged in saved session",
         "how to tell subagent messages in desktop session history",
         "hipaa organization google drive export blocked",
-        "admin provisioned ssh connections policy"
+        "admin provisioned ssh connections policy",
+        "staggered release channel for desktop updates",
+        "disable local sessions setting accepts text true",
+        "failing hook blocks on windows without git"
       ],
       "identifier_keys": [
         "disable-desktop-local-sessions",
@@ -23274,13 +23285,16 @@
         "sub-agent messages tagged in saved session",
         "how to tell subagent messages in desktop session history",
         "hipaa organization google drive export blocked",
-        "admin provisioned ssh connections policy"
+        "admin provisioned ssh connections policy",
+        "staggered release channel for desktop updates",
+        "disable local sessions setting accepts text true",
+        "failing hook blocks on windows without git"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-10-16",
-        "terms_sha256": "c5e23b9014028dbd0c19dd7826a8d16a4baea8466c0ed73ea52850b45048f64f"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-21",
+        "terms_sha256": "4f1321530f15778897d2f1195d31b3a557edf2c2c0adc6c4aaddc5982264c8b0"
       }
     },
     {
@@ -23581,6 +23595,122 @@
         "prompt_version": "vocab-v4-update",
         "date": "2026-10-21",
         "terms_sha256": "f86b4002967ce443f1ba035ccc39893c40b86b41fd9511a8c3d1205eda3a0d5b"
+      }
+    },
+    {
+      "id": 242,
+      "title": "What Desktop 3.1623.0 Changed Without Announcing It",
+      "lesson_number": "242",
+      "file": "69-desktop-3.1623-unannounced-changes.md",
+      "startLine": 13,
+      "endLine": 56,
+      "keywords": [
+        "index.chunk-BLvpT1n4.js",
+        "cowork-session-retention-days",
+        "storage-dialog",
+        "device-storage",
+        "run-code-cleanup-selected",
+        "disable-storage-cleanup",
+        "limit-auto-resume-engine",
+        "index.chunk-k9Bk8AAN.js",
+        "five_hour",
+        "ccd-limit-auto-resume",
+        "desktop_ccd_limit_auto_resume",
+        "limit-auto-resume",
+        "epitaxy-prefs",
+        "skill-scanning-enabled",
+        "skill_plugins_scanning",
+        "index.chunk-y9YoSS0s.js",
+        "custom3p_skill_scan_completed",
+        "retry-local-skill-scan",
+        "artifacts-dashboard-enabled",
+        "artifacts-design-enabled",
+        "artifacts-motion-enabled",
+        "artifacts-slides-enabled",
+        "ssh-host-allowlist",
+        "disable-ssh-saved-passwords",
+        "ccd_ssh_computer_policy_killswitch",
+        "custom3p-api-key-sign-in",
+        "source-branch-prefetch",
+        "window-vibrancy",
+        "serve-remote-browser-session",
+        "stop-serving-remote-browser-session",
+        "CLAUDE_CODE_DESKTOP_SKILLS_PLUGIN_DIR",
+        "quick-entry-default-shortcut",
+        "2810334838",
+        "desktop app undocumented changes",
+        "free up disk space desktop app",
+        "delete only selected old sessions",
+        "cleanup removed my worktrees",
+        "does storage cleanup delete uncommitted changes",
+        "cowork cleanup deleted my chats",
+        "starred tasks deleted by retention",
+        "resume session after five hour limit",
+        "auto continue after usage limit resets",
+        "why didn't my session resume after limit",
+        "security scan of custom skills",
+        "skill import waiting for scanning",
+        "reserved admin settings do nothing",
+        "ssh host allowlist from admin settings",
+        "server switch turns off storage cleanup"
+      ],
+      "identifier_keys": [
+        "index.chunk-BLvpT1n4.js",
+        "cowork-session-retention-days",
+        "storage-dialog",
+        "device-storage",
+        "run-code-cleanup-selected",
+        "disable-storage-cleanup",
+        "limit-auto-resume-engine",
+        "index.chunk-k9Bk8AAN.js",
+        "five_hour",
+        "ccd-limit-auto-resume",
+        "desktop_ccd_limit_auto_resume",
+        "limit-auto-resume",
+        "epitaxy-prefs",
+        "skill-scanning-enabled",
+        "skill_plugins_scanning",
+        "index.chunk-y9YoSS0s.js",
+        "custom3p_skill_scan_completed",
+        "retry-local-skill-scan",
+        "artifacts-dashboard-enabled",
+        "artifacts-design-enabled",
+        "artifacts-motion-enabled",
+        "artifacts-slides-enabled",
+        "ssh-host-allowlist",
+        "disable-ssh-saved-passwords",
+        "ccd_ssh_computer_policy_killswitch",
+        "custom3p-api-key-sign-in",
+        "source-branch-prefetch",
+        "window-vibrancy",
+        "serve-remote-browser-session",
+        "stop-serving-remote-browser-session",
+        "CLAUDE_CODE_DESKTOP_SKILLS_PLUGIN_DIR",
+        "quick-entry-default-shortcut",
+        "2810334838"
+      ],
+      "vocab_keys": [
+        "desktop app undocumented changes",
+        "free up disk space desktop app",
+        "delete only selected old sessions",
+        "cleanup removed my worktrees",
+        "does storage cleanup delete uncommitted changes",
+        "cowork cleanup deleted my chats",
+        "starred tasks deleted by retention",
+        "resume session after five hour limit",
+        "auto continue after usage limit resets",
+        "why didn't my session resume after limit",
+        "security scan of custom skills",
+        "skill import waiting for scanning",
+        "reserved admin settings do nothing",
+        "ssh host allowlist from admin settings",
+        "server switch turns off storage cleanup"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-21",
+        "terms_sha256": "cae95454c4464245961c793c04dbb8881fcc3755a5729c68d83347a3fd753da7"
       }
     }
   ],
@@ -46198,7 +46328,8 @@
       154
     ],
     "timeout_ms": [
-      154
+      154,
+      215
     ],
     "ANT_CMD": [
       154
@@ -47299,7 +47430,6 @@
       208
     ],
     "disable-desktop-local-sessions": [
-      208,
       238
     ],
     "no-self-hosted-endpoint": [
@@ -47329,7 +47459,6 @@
       226
     ],
     "can-opt-out": [
-      210,
       226
     ],
     "cowork_remote_opt_out_returning_only_main": [
@@ -47347,7 +47476,6 @@
       210
     ],
     "local_folder_forced": [
-      210,
       226
     ],
     "local_space_forced": [
@@ -47509,6 +47637,18 @@
     "native-write.txt": [
       215
     ],
+    "index.chunk-DwEoPAKu.js": [
+      215
+    ],
+    "index.chunk-BLvpT1n4.js": [
+      242
+    ],
+    "default_ms": [
+      215
+    ],
+    "max_ms": [
+      215
+    ],
     "HEAD.lock": [
       215
     ],
@@ -47561,6 +47701,9 @@
       215
     ],
     "733405693": [
+      215
+    ],
+    "1263782781": [
       215
     ],
     "chat_backend": [
@@ -47922,6 +48065,12 @@
       226
     ],
     "local_computer_use_forced": [
+      226
+    ],
+    "off_by_policy": [
+      226
+    ],
+    "folder-allows-remote": [
       226
     ],
     "shared-8": [
@@ -48739,7 +48888,8 @@
       237
     ],
     "cowork-session-retention-days": [
-      237
+      237,
+      242
     ],
     "code-session-retention-days": [
       237
@@ -48837,6 +48987,9 @@
     ],
     "ssh-remote-sessions": [
       238
+    ],
+    "storage-dialog": [
+      242
     ],
     "1849776485": [
       238
@@ -49038,6 +49191,96 @@
     ],
     "FORCE_PROMPT_CACHING_5M": [
       241
+    ],
+    "device-storage": [
+      242
+    ],
+    "run-code-cleanup-selected": [
+      242
+    ],
+    "disable-storage-cleanup": [
+      242
+    ],
+    "limit-auto-resume-engine": [
+      242
+    ],
+    "index.chunk-k9Bk8AAN.js": [
+      242
+    ],
+    "five_hour": [
+      242
+    ],
+    "ccd-limit-auto-resume": [
+      242
+    ],
+    "desktop_ccd_limit_auto_resume": [
+      242
+    ],
+    "limit-auto-resume": [
+      242
+    ],
+    "epitaxy-prefs": [
+      242
+    ],
+    "skill-scanning-enabled": [
+      242
+    ],
+    "skill_plugins_scanning": [
+      242
+    ],
+    "index.chunk-y9YoSS0s.js": [
+      242
+    ],
+    "custom3p_skill_scan_completed": [
+      242
+    ],
+    "retry-local-skill-scan": [
+      242
+    ],
+    "artifacts-dashboard-enabled": [
+      242
+    ],
+    "artifacts-design-enabled": [
+      242
+    ],
+    "artifacts-motion-enabled": [
+      242
+    ],
+    "artifacts-slides-enabled": [
+      242
+    ],
+    "ssh-host-allowlist": [
+      242
+    ],
+    "disable-ssh-saved-passwords": [
+      242
+    ],
+    "ccd_ssh_computer_policy_killswitch": [
+      242
+    ],
+    "custom3p-api-key-sign-in": [
+      242
+    ],
+    "source-branch-prefetch": [
+      242
+    ],
+    "window-vibrancy": [
+      242
+    ],
+    "serve-remote-browser-session": [
+      242
+    ],
+    "stop-serving-remote-browser-session": [
+      242
+    ],
+    "CLAUDE_CODE_DESKTOP_SKILLS_PLUGIN_DIR": [
+      242
+    ],
+    "quick-entry-default-shortcut": [
+      242
+    ],
+    "2810334838": [
+      242
     ],
     "why is claude startup slow": [
       1
@@ -59535,7 +59778,7 @@
     "admin turned off local vm cowork": [
       226
     ],
-    "task starts in cloud when admin disables local": [
+    "why settings switch disagrees with where task ran": [
       226
     ],
     "cowork manual mode not asking permission": [
@@ -60153,6 +60396,15 @@
     "admin provisioned ssh connections policy": [
       238
     ],
+    "staggered release channel for desktop updates": [
+      238
+    ],
+    "disable local sessions setting accepts text true": [
+      238
+    ],
+    "failing hook blocks on windows without git": [
+      238
+    ],
     "auto mode keeps blocking my commands": [
       239
     ],
@@ -60314,6 +60566,51 @@
     ],
     "hook context too long gets cut off": [
       241
+    ],
+    "desktop app undocumented changes": [
+      242
+    ],
+    "free up disk space desktop app": [
+      242
+    ],
+    "delete only selected old sessions": [
+      242
+    ],
+    "cleanup removed my worktrees": [
+      242
+    ],
+    "does storage cleanup delete uncommitted changes": [
+      242
+    ],
+    "cowork cleanup deleted my chats": [
+      242
+    ],
+    "starred tasks deleted by retention": [
+      242
+    ],
+    "resume session after five hour limit": [
+      242
+    ],
+    "auto continue after usage limit resets": [
+      242
+    ],
+    "why didn't my session resume after limit": [
+      242
+    ],
+    "security scan of custom skills": [
+      242
+    ],
+    "skill import waiting for scanning": [
+      242
+    ],
+    "reserved admin settings do nothing": [
+      242
+    ],
+    "ssh host allowlist from admin settings": [
+      242
+    ],
+    "server switch turns off storage cleanup": [
+      242
     ]
   },
   "keyword_boundary": {

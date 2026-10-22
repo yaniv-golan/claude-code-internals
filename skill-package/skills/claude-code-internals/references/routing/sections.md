@@ -1767,15 +1767,15 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 215 · 55-cloud-session-device-tools.md:81 · Writing: commit from the outputs folder
 215 · 55-cloud-session-device-tools.md:97 · The ordinary Write tool does not reach the Mac
 215 · 55-cloud-session-device-tools.md:101 · Commands: `device_bash` runs in the Mac's Cowork VM
-215 · 55-cloud-session-device-tools.md:143 · The shells
-215 · 55-cloud-session-device-tools.md:159 · `computer://` links: which ones work
-215 · 55-cloud-session-device-tools.md:185 · Chrome from a cloud conversation
-215 · 55-cloud-session-device-tools.md:193 · For a skill author
-216 · 55-cloud-session-device-tools.md:211 · What the composer decides
-216 · 55-cloud-session-device-tools.md:223 · The hub can turn a chat into a workspace
-216 · 55-cloud-session-device-tools.md:235 · A cloud session can become, or be shown as, a chat
-216 · 55-cloud-session-device-tools.md:243 · Not the same as the Desktop's Chat mode
-216 · 55-cloud-session-device-tools.md:247 · Why it matters
+215 · 55-cloud-session-device-tools.md:149 · The shells
+215 · 55-cloud-session-device-tools.md:165 · `computer://` links: which ones work
+215 · 55-cloud-session-device-tools.md:191 · Chrome from a cloud conversation
+215 · 55-cloud-session-device-tools.md:199 · For a skill author
+216 · 55-cloud-session-device-tools.md:218 · What the composer decides
+216 · 55-cloud-session-device-tools.md:230 · The hub can turn a chat into a workspace
+216 · 55-cloud-session-device-tools.md:242 · A cloud session can become, or be shown as, a chat
+216 · 55-cloud-session-device-tools.md:250 · Not the same as the Desktop's Chat mode
+216 · 55-cloud-session-device-tools.md:254 · Why it matters
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:20 · The probe
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:36 · What the agent does with a skill's text, by how it was installed
 217 · 56-uploaded-skills-plugin-blocks-mcp-placeholders.md:69 · Creating and changing a skill by asking in chat
@@ -1832,30 +1832,31 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 226 · 60-desktop-routing-cards-paths-extensions.md:21 · Where the setting lives (CODE-READ, ion-dist 2.31226.0/.1)
 226 · 60-desktop-routing-cards-paths-extensions.md:28 · Per-task routing (CODE-READ, `shared-26` `sj`)
 226 · 60-desktop-routing-cards-paths-extensions.md:47 · What it did in practice (MEASURED, Desktop 2.31226.0/.1)
-226 · 60-desktop-routing-cards-paths-extensions.md:60 · The composer's Auto/Manual choice (CODE-READ, `shared-8` `Wj`/`Uj`/`Kj`)
-226 · 60-desktop-routing-cards-paths-extensions.md:64 · For an author or tester
-227 · 60-desktop-routing-cards-paths-extensions.md:78 · The layers (CODE-READ, asar 2.31226.1)
-227 · 60-desktop-routing-cards-paths-extensions.md:87 · Deletes (CODE-READ)
-227 · 60-desktop-routing-cards-paths-extensions.md:91 · The folder prompt (CODE-READ)
-227 · 60-desktop-routing-cards-paths-extensions.md:95 · Observed (MEASURED, Desktop 2.31226.1)
-227 · 60-desktop-routing-cards-paths-extensions.md:103 · For an author
-228 · 60-desktop-routing-cards-paths-extensions.md:115 · Where the rewrite happens (CODE-READ, asar 2.31226.1)
-228 · 60-desktop-routing-cards-paths-extensions.md:127 · The other direction (CODE-READ)
-228 · 60-desktop-routing-cards-paths-extensions.md:132 · Observed (MEASURED, Desktop 2.31226.1, Team, local)
-228 · 60-desktop-routing-cards-paths-extensions.md:137 · For an author or tester
-229 · 60-desktop-routing-cards-paths-extensions.md:149 · Updates (CODE-READ, asar 2.31226.0 `index.chunk-BC1wbmHw.js`; 2.31226.1 `index.chunk-Bk8mxCPb.js`)
-229 · 60-desktop-routing-cards-paths-extensions.md:155 · No elicitation (CODE-READ, asar 2.31226.1 `index.chunk-BEWlG8Pv.js`)
-229 · 60-desktop-routing-cards-paths-extensions.md:159 · When Desktop asks before an extension's tool runs (CODE-READ, asar 2.37337.1 and 2.42304.0)
-229 · 60-desktop-routing-cards-paths-extensions.md:178 · Observed (MEASURED, Desktop 2.31226.0/.1, one real extension)
-229 · 60-desktop-routing-cards-paths-extensions.md:189 · In the official release notes (checked 2026-10-16)
-229 · 60-desktop-routing-cards-paths-extensions.md:194 · For an extension author
-230 · 60-desktop-routing-cards-paths-extensions.md:209 · Frontmatter is rewritten (MEASURED, n=2 copies, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:217 · Marketplace sync installs everything (MEASURED, n=1)
-230 · 60-desktop-routing-cards-paths-extensions.md:221 · Switching off deletes the copy (MEASURED, n=1, Team)
-230 · 60-desktop-routing-cards-paths-extensions.md:227 · A marketplace listed in the settings file never refreshes (MEASURED, n=1, Team, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:238 · Uploading a plugin the organization already provides (MEASURED, n=1 per organization, Desktop 2.31226.1)
-230 · 60-desktop-routing-cards-paths-extensions.md:256 · A related default (MEASURED)
-230 · 60-desktop-routing-cards-paths-extensions.md:260 · For a plugin author
+226 · 60-desktop-routing-cards-paths-extensions.md:62 · Why the row and the lane can disagree (CODE-READ, ion-dist 3.1623.0, `shared-26` and `cabd7b1c1`)
+226 · 60-desktop-routing-cards-paths-extensions.md:74 · The composer's Auto/Manual choice (CODE-READ, `shared-8` `Wj`/`Uj`/`Kj`)
+226 · 60-desktop-routing-cards-paths-extensions.md:78 · For an author or tester
+227 · 60-desktop-routing-cards-paths-extensions.md:92 · The layers (CODE-READ, asar 2.31226.1)
+227 · 60-desktop-routing-cards-paths-extensions.md:101 · Deletes (CODE-READ)
+227 · 60-desktop-routing-cards-paths-extensions.md:105 · The folder prompt (CODE-READ)
+227 · 60-desktop-routing-cards-paths-extensions.md:109 · Observed (MEASURED, Desktop 2.31226.1)
+227 · 60-desktop-routing-cards-paths-extensions.md:117 · For an author
+228 · 60-desktop-routing-cards-paths-extensions.md:129 · Where the rewrite happens (CODE-READ, asar 2.31226.1)
+228 · 60-desktop-routing-cards-paths-extensions.md:141 · The other direction (CODE-READ)
+228 · 60-desktop-routing-cards-paths-extensions.md:146 · Observed (MEASURED, Desktop 2.31226.1, Team, local)
+228 · 60-desktop-routing-cards-paths-extensions.md:151 · For an author or tester
+229 · 60-desktop-routing-cards-paths-extensions.md:163 · Updates (CODE-READ, asar 2.31226.0 `index.chunk-BC1wbmHw.js`; 2.31226.1 `index.chunk-Bk8mxCPb.js`)
+229 · 60-desktop-routing-cards-paths-extensions.md:169 · No elicitation (CODE-READ, asar 2.31226.1 `index.chunk-BEWlG8Pv.js`)
+229 · 60-desktop-routing-cards-paths-extensions.md:173 · When Desktop asks before an extension's tool runs (CODE-READ, asar 2.37337.1 and 2.42304.0)
+229 · 60-desktop-routing-cards-paths-extensions.md:192 · Observed (MEASURED, Desktop 2.31226.0/.1, one real extension)
+229 · 60-desktop-routing-cards-paths-extensions.md:203 · In the official release notes (checked 2026-10-16)
+229 · 60-desktop-routing-cards-paths-extensions.md:208 · For an extension author
+230 · 60-desktop-routing-cards-paths-extensions.md:223 · Frontmatter is rewritten (MEASURED, n=2 copies, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:231 · Marketplace sync installs everything (MEASURED, n=1)
+230 · 60-desktop-routing-cards-paths-extensions.md:235 · Switching off deletes the copy (MEASURED, n=1, Team)
+230 · 60-desktop-routing-cards-paths-extensions.md:241 · A marketplace listed in the settings file never refreshes (MEASURED, n=1, Team, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:252 · Uploading a plugin the organization already provides (MEASURED, n=1 per organization, Desktop 2.31226.1)
+230 · 60-desktop-routing-cards-paths-extensions.md:270 · A related default (MEASURED)
+230 · 60-desktop-routing-cards-paths-extensions.md:274 · For a plugin author
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:18 · An already-attached folder skips the card (CODE-READ, `index.chunk-QEr06WaZ.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:38 · Dispatch has its own create switch (CODE-READ, `index.chunk-Cyt2WTko.js`; refusal text in `index.chunk-hKMR2oV6.js`)
 231 · 61-desktop-2.31226-permissions-dispatch-env-import.md:52 · The migration sweep keeps a bound task local when remote control is off (CODE-READ, `index.chunk-QEr06WaZ.js`)
@@ -1914,8 +1915,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 238 · 65-desktop-2.42304-unannounced-changes.md:39 · Cowork
 238 · 65-desktop-2.42304-unannounced-changes.md:45 · Admin keys prepared but not yet read
 238 · 65-desktop-2.42304-unannounced-changes.md:55 · In the official release notes (checked 2026-10-16)
-238 · 65-desktop-2.42304-unannounced-changes.md:60 · For a skill or plugin author
-238 · 65-desktop-2.42304-unannounced-changes.md:67 · Not established
+238 · 65-desktop-2.42304-unannounced-changes.md:61 · For a skill or plugin author
+238 · 65-desktop-2.42304-unannounced-changes.md:68 · Not established
 239 · 66-auto-mode-classifier-2.1.301.md:17 · Which model decides (CODE-READ)
 239 · 66-auto-mode-classifier-2.1.301.md:39 · Before the classifier: the shortcuts (CODE-READ by the subagent; the messages checked here)
 239 · 66-auto-mode-classifier-2.1.301.md:59 · What the local classifier sees (one code read)
@@ -1942,6 +1943,13 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:65 · For a skill or plugin author
 241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:75 · In the official changelog (checked 2026-10-17, through 2.1.302)
 241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:89 · Not established
+242 · 69-desktop-3.1623-unannounced-changes.md:19 · Storage: what was already there, and what it deletes
+242 · 69-desktop-3.1623-unannounced-changes.md:27 · Code sessions: a new engine for resuming after the five-hour limit (dark)
+242 · 69-desktop-3.1623-unannounced-changes.md:31 · Third-party deployments: a model scans user-made skills
+242 · 69-desktop-3.1623-unannounced-changes.md:35 · Reserved: typed artifacts for third-party deployments
+242 · 69-desktop-3.1623-unannounced-changes.md:39 · Other changes
+242 · 69-desktop-3.1623-unannounced-changes.md:47 · In the official release notes (checked 2026-10-21)
+242 · 69-desktop-3.1623-unannounced-changes.md:52 · Not traced
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)
