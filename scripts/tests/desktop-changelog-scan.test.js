@@ -129,6 +129,13 @@ test('parse: the plain format gives the same labels and item hashes, with no dat
   assert.strictEqual(plain[3].items.length, 1, 'Baseline keeps its table row, not the header');
 });
 
+test('a date line under the version line is the entry date, not an item', () => {
+  const dated = S.parse(PLAIN.replace('**v2.2.0**\n', '**v2.2.0**\n\n2026-10-22\n'));
+  assert.strictEqual(dated[0].date, '2026-10-22');
+  assert.deepStrictEqual(dated[0].items.map((x) => x.hash), S.parse(PLAIN)[0].items.map((x) => x.hash));
+  assert.strictEqual(dated[2].date, null);
+});
+
 test('item hash depends on section and text, not on whitespace', () => {
   const a = S.parse(PAGE())[0].items[0].hash;
   const b = S.parse(PAGE().replace('Added "Open in new window" for chats.', 'Added   "Open in new window"  for chats.'))[0].items[0].hash;

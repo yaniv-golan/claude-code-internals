@@ -29,9 +29,11 @@
  * sha256 of each item's section and whitespace-normalized text. The verbatim pages go to the
  * off-repo archive, one file per fetched content hash.
  *
- * DATES. Until 2026-10 every entry carried its release date. The page now has none, so an entry
- * keeps the date it was first recorded with, and a new one gets the scan's date (--date). For an
- * undated entry, --since therefore means "first seen on or after".
+ * DATES. Until 2026-10 every entry carried its release date. From 2026-10-21 the page had none,
+ * and from 2026-10-22 a plain date line ("2026-10-22") follows each version line again; parse()
+ * takes it as the entry's date. An entry without one keeps the date it was first recorded with,
+ * and a new one gets the scan's date (--date). For an undated entry, --since therefore means
+ * "first seen on or after".
  *
  * A "names" hit is a token match: a backticked identifier or quoted UI string from the item that
  * appears in a lesson. It proves a lesson names the thing, not that it says what the note says,
@@ -75,7 +77,8 @@ function blocks(md) {
 /** Parse one release-notes page into [{label, date, bundled, items:[{section,text,hash}]}]. */
 function parse(md) {
   const entries = [];
-  for (const [label, date, body] of blocks(md)) {
+  for (const [label, tagDate, body] of blocks(md)) {
+    let date = tagDate;
     let section = '';
     let fence = false;
     let bundled = null;
@@ -87,6 +90,7 @@ function parse(md) {
       const head = line.match(/^\*\*([^*]+?):?\*\*:?$/);
       if (head) { section = head[1]; continue; }
       if (/^\|\s*(MDM key|-)\s*\|/.test(line)) continue; // table header and separator rows
+      if (!date && !items.length && /^\d{4}-\d{2}-\d{2}$/.test(line)) { date = line; continue; } // "2026-10-22" under the version line
       const b = line.match(/^Bundled Claude Code version:\s*(\d+(?:\.\d+)+)/);
       if (b) { bundled = b[1]; continue; }
       const text = norm(line.replace(/^[*-]\s+/, ''));
