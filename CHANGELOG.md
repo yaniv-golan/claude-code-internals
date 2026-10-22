@@ -1,5 +1,41 @@
 # Changelog
 
+## v2.79.0 — 2026-10-22 (this fork) — Scheduled Cowork tasks are a different kind of session
+
+243 lessons across 73 chapters (L243 new; L242, L226 and L210 extended). Sources: Claude Desktop `app.asar` 3.1623.4
+and its bundled agent 2.1.308, compared with 3.1623.0; the session records, transcripts and logs of about 1,000 Cowork
+sessions on one Mac; the Desktop flag cache under a Team organization on 2026-10-22; and Anthropic's Desktop release
+notes through v3.6556.1.
+
+**Scheduled vs interactive Cowork sessions (new L243, Ch73)**
+
+- Desktop starts a scheduled task as a session of type `scheduled`; a task you start has no type.
+- A scheduled run gets no `AskUserQuestion`, no onboarding role picker and no `send_user_message`. A skill that asks
+  the user a question has to decide on its own there.
+- It runs with `CLAUDE_CODE_HOST_SCHEDULED_RUN=1`, has its own turn limit, and its first message is tagged as a
+  scheduled trigger.
+- The session record's `sessionType` tells the two apart reliably; a missing `AskUserQuestion` alone does not.
+
+**Team routing (L210, L226)**
+
+- On 2026-10-22 the Team organization had only the merged new-task screen, with no Chat/Cowork choice. Tasks from it
+  go to the cloud, which is the likeliest reason two Team tasks ran in the cloud the day before. A scheduled task is
+  now the only local Cowork session left on such an account.
+
+**Desktop 3.1623.4 (L242)**
+
+- Little changed in Desktop itself: the spawn, IPC, admin keys, scheduled-task code and routing are the same.
+- A sign-in now waits up to 10 minutes for the browser, and starting it again re-opens the page. Built-in fallback
+  models are now the 5.5 models. A new VM image ships.
+
+**Desktop flag cache**
+
+- Restamped under Team (454 features); none of the tracked gates moved.
+
+**Tooling**
+
+- The release-notes scan reads the date line the notes page shows under each version again.
+
 ## v2.78.0 — 2026-10-22 (this fork) — What Desktop 3.1623.0 changed without announcing it
 
 242 lessons across 72 chapters (L242 new; L226, L215, L210, L198, L237 and L238 extended). Sources: Claude Desktop
