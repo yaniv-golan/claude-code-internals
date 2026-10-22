@@ -1,9 +1,9 @@
 {
   "format": 1,
   "capture": {
-    "content16": "6b594013f9f9b78e",
-    "embedded_timestamp": 1792573994148,
-    "feature_count": 445,
+    "content16": "22b824593b6ee104",
+    "embedded_timestamp": 1792608237563,
+    "feature_count": 441,
     "observed_at": "2026-10-21",
     "mode": "1p"
   },
@@ -49,6 +49,24 @@
       "value": true
     },
     {
+      "id": "1263782781",
+      "present": true,
+      "source": "defaultValue",
+      "on": true,
+      "value": {
+        "bash": {
+          "default_ms": 120000,
+          "max_ms": 180000
+        },
+        "commit": {
+          "max_ms": 180000
+        },
+        "stage": {
+          "max_ms": 180000
+        }
+      }
+    },
+    {
       "id": "1311049725",
       "present": false,
       "source": null,
@@ -90,10 +108,9 @@
     },
     {
       "id": "1598976391",
-      "present": true,
-      "source": "force",
-      "on": true,
-      "value": true
+      "present": false,
+      "source": null,
+      "on": null
     },
     {
       "id": "1603637451",

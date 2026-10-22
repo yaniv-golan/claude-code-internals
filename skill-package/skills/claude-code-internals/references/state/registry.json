@@ -5,12 +5,12 @@
     "desktop_asar": "2.7032.0",
     "in_vm_elf": "2.1.280",
     "fcache_capture": {
-      "content16": "6b594013f9f9b78e",
-      "embedded_timestamp": 1792573994148,
-      "feature_count": 445,
+      "content16": "22b824593b6ee104",
+      "embedded_timestamp": 1792608237563,
+      "feature_count": 441,
       "observed_at": "2026-10-21",
       "mode": "1p",
-      "pinned16": "48aaeec925104c7b"
+      "pinned16": "b3a480beb33e72f1"
     },
     "agent_elf_parity_check": "2.1.280",
     "container_cc_version_observed": {
@@ -5115,7 +5115,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5137,7 +5137,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5166,7 +5166,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5191,7 +5191,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5213,7 +5213,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5246,7 +5246,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5271,7 +5271,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5294,7 +5294,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5316,7 +5316,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5339,10 +5339,10 @@
       ],
       "namespace": "desktop_fcache",
       "observed": {
-        "present": true,
-        "source": "force",
-        "on": true,
-        "at": "6b594013f9f9b78e"
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5367,7 +5367,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5389,7 +5389,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5411,7 +5411,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5433,7 +5433,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5447,7 +5447,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       },
       "summary": "MCP version-negotiation KILL SWITCH with INVERTED sense (zx() in Desktop 2.31226.1): every call site that opts in to versionNegotiation {mode:'auto'} does so only when the gate is off, so its live state (off, defaultValue) means 2026-07-28 negotiation IS active; flipping it on removes every probe. In 2.31226.1 the probing call sites are: chat's disposable sibling probe for built-in-Node extensions (2 s probe, 4 s deadline), LocalMcpServerManager in-place probe for built-in-Node extensions in Cowork/Code sessions and the local MCP bridge (2 s), and custom-3P remote HTTP servers (10 s). Exec-lane servers are never probed (L233). Earlier builds used a 500 ms probe timeout.",
       "provenance": [
@@ -5480,7 +5480,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5516,7 +5516,32 @@
         "present": true,
         "source": "experiment",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
+      }
+    },
+    {
+      "id": "gate.1263782781",
+      "kind": "gate",
+      "name": "1263782781 (device bridge time limits)",
+      "status": "live",
+      "first_seen": null,
+      "removed_in": null,
+      "as_of": "2.1.304",
+      "summary": "Time limits for the cloud-to-Mac device bridge's device_bash, device_stage_files and device_commit_files (Desktop app.asar 3.1623.0, the same code in 2.42304.0). Served 2026-10-20/21 under Team: {bash:{default_ms:120000,max_ms:180000}, stage:{max_ms:180000}, commit:{max_ms:180000}}, source defaultValue. Desktop's own limit is 45 s ({defaultMs:45e3,maxMs:45e3}); the served limits replace it only when the relay's RPC limit for the call is longer than its ordinary one, and the call never gets more than the relay limit minus a margin and the time spent. Measured 2026-10-21: a device_bash loop stopped at exactly 120000 ms and returned none of its output (Ch55/L215). Self-hosted session hosts get a local override of 600 s for stage and commit.",
+      "provenance": [
+        {
+          "lesson": 215
+        },
+        {
+          "lesson": 242
+        }
+      ],
+      "namespace": "desktop_fcache",
+      "observed": {
+        "present": true,
+        "source": "defaultValue",
+        "on": true,
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5542,7 +5567,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5564,7 +5589,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5586,7 +5611,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5608,7 +5633,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5630,7 +5655,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5660,7 +5685,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5682,7 +5707,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5704,7 +5729,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5730,7 +5755,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5759,7 +5784,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5787,7 +5812,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5813,7 +5838,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5843,7 +5868,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5865,7 +5890,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5887,7 +5912,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5912,7 +5937,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5949,7 +5974,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -5975,7 +6000,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6006,7 +6031,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6032,7 +6057,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6058,7 +6083,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6084,7 +6109,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6106,7 +6131,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6128,7 +6153,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6154,7 +6179,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6168,7 +6193,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       },
       "summary": "Declared-but-unconsumed: appears exactly once, in the client-side gate defaults table as {defaultValue:false}, with NO read site anywhere in the asar and NO fcache entry. Not dark-launched (no code behind it yet) -- the switch was declared before its consumer shipped.",
       "provenance": [
@@ -6199,7 +6224,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6221,7 +6246,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       },
       "served_keys": [
         "displayName",
@@ -6248,7 +6273,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6271,7 +6296,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6293,7 +6318,7 @@
         "present": true,
         "source": "force",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6315,7 +6340,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6337,7 +6362,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6359,7 +6384,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6385,7 +6410,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6411,7 +6436,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6437,7 +6462,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6459,7 +6484,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6481,7 +6506,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -6495,7 +6520,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       },
       "summary": "Declared-but-unconsumed, same as 3671534883. Written as an UNQUOTED numeric object key, so a quoted-string-only gate regex misses it entirely.",
       "provenance": [
@@ -8023,7 +8048,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8102,7 +8127,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8133,7 +8158,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8155,7 +8180,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8177,7 +8202,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8199,7 +8224,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8221,7 +8246,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8318,7 +8343,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8340,7 +8365,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8362,7 +8387,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8410,7 +8435,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8432,7 +8457,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8454,7 +8479,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8476,7 +8501,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8498,7 +8523,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8520,7 +8545,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8542,7 +8567,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8564,7 +8589,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8586,7 +8611,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8608,7 +8633,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8630,7 +8655,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8652,7 +8677,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8775,7 +8800,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8797,7 +8822,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8819,7 +8844,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8845,7 +8870,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8867,7 +8892,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8889,7 +8914,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8911,7 +8936,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8933,7 +8958,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8955,7 +8980,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -8977,7 +9002,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -9047,7 +9072,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -9069,7 +9094,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -9091,7 +9116,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -9113,7 +9138,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -9138,7 +9163,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -9160,7 +9185,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     },
     {
@@ -9182,7 +9207,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "6b594013f9f9b78e"
+        "at": "22b824593b6ee104"
       }
     }
   ]
