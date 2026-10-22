@@ -4,21 +4,93 @@
     "changelog": "https://claude.com/docs/cowork/changelog.md",
     "config": "https://claude.com/docs/third-party/claude-desktop/configuration-changelog.md"
   },
-  "scanned": "2026-10-16",
+  "scanned": "2026-10-21",
   "pages": {
     "changelog": {
+      "v3.1623.0": {
+        "date": "2026-10-21",
+        "bundled": "2.1.304",
+        "items": [
+          "3d38f3b9feef47b4",
+          "6eca4bbb5caeae64",
+          "4a682e08370c4793",
+          "88a679d798a38963",
+          "2167b33d10f75a0d",
+          "b0df0d2b630b5b6d",
+          "50957bb31bad9d63",
+          "a0678069d3b39f95",
+          "2971c261989430aa",
+          "0fc98bf2e7ed1a85",
+          "5c9b8abc423a160e",
+          "c9abb42632536671",
+          "2c9af7cab3f34765",
+          "5d5c72fed7ff6f97",
+          "28bcaabdd0937eeb",
+          "7bf2dd62ce2badf0",
+          "627af2d099ea306c",
+          "f7333e81d238f88c",
+          "f646f5e172e8ac45",
+          "25664e8dd6697107",
+          "302c07b7c48230c7",
+          "a417e389591c01e3",
+          "34d93ee94eae7244",
+          "be2d14aac76981f9",
+          "97dbe445cbc5d431",
+          "9e75c78b89bc2024",
+          "74d8b253304177fa",
+          "9883d43efe75cfa9",
+          "a3dfbe820463ae84",
+          "8bc50197f6b58e07",
+          "e8bcb5fbd5adf313",
+          "81a60e0333c2495a",
+          "0933621e435d4c67",
+          "da89ca603758e22e",
+          "e96365c1b231527f",
+          "238bc839b9b894c8",
+          "b45d6408108eb549",
+          "505c19f826bd55ad",
+          "113c580263486a06",
+          "d19e63634f25113d",
+          "e4a178b99e1be3b0",
+          "b3882309764a9f97",
+          "8a2fd7fa4754919c"
+        ]
+      },
+      "v2.42304.2": {
+        "date": "2026-10-21",
+        "bundled": "2.1.299",
+        "items": [
+          "210a942f139f550a",
+          "3e5162c98d149ade",
+          "fe235c8c231c1b0a",
+          "93067b5ae8404372"
+        ]
+      },
       "v2.42304.0": {
         "date": "2026-10-15",
         "bundled": "2.1.299",
         "items": [
           "2f54e162440318bf",
           "c5ed0d558be3c247",
-          "b0833e0ec415da38",
+          "f2473443ad6e3c0c",
           "3349bab61e37dc77",
           "e95f1f472a561f15",
           "937bb8b0f32db1ac",
           "191194dace779738",
           "df7055b348ed2892",
+          "7762a2fec0646fee",
+          "615fb52839446528",
+          "75dd42dbffc72a94",
+          "ce48b13db9801309",
+          "d728c459277541dd",
+          "9d0cb26ab469a50b",
+          "ac19a35a7308f09f",
+          "954e8258ea0e1709",
+          "c8134597bfe5eff5",
+          "1aa8c6ba990cfdcb",
+          "a19ef6b057cf3372",
+          "41c1ab319c462a92",
+          "2ef1fc85d7a880c9",
           "dfc0eda508655487",
           "e2e009509d6f8771",
           "dd7373cc7a450485",
@@ -32,6 +104,7 @@
           "96fa7be969a6f44a",
           "1c2ad18664b1c2f4",
           "83f2bb5cb8284494",
+          "0fc79da0c9435b88",
           "467cd26fd79e5d1e",
           "b3bb49c7b70a7db2",
           "c1543ddc59af2305",
@@ -1531,6 +1604,26 @@
       }
     },
     "config": {
+      "v3.1623.0": {
+        "date": "2026-10-21",
+        "bundled": null,
+        "items": [
+          "8b8dba3696be6846",
+          "ff3facd1b8d6a668",
+          "1128ba060b29dc38",
+          "233af2e961ec64b3",
+          "1e57bfcd17206c48",
+          "c1fcfdde622cbc75",
+          "3da64bbca8cfc8d8"
+        ]
+      },
+      "v2.42304.2": {
+        "date": "2026-10-21",
+        "bundled": null,
+        "items": [
+          "162ba80dcc5a64dc"
+        ]
+      },
       "v2.42304.0": {
         "date": "2026-10-15",
         "bundled": null,
@@ -2213,6 +2306,52 @@
         "bundled": null,
         "items": [
           "ae696ad983c4dc7d"
+        ]
+      },
+      "Baseline": {
+        "date": "2026-10-21",
+        "bundled": null,
+        "items": [
+          "eb5c6f55343f2e95",
+          "24474ecd5d8bce28",
+          "e59ca310b80a73c7",
+          "a0656e28db1a6a93",
+          "9d77d38a85ad036d",
+          "17faf6e11df9cdcd",
+          "da001a0d6597dde0",
+          "2475a76834953c1b",
+          "f8ad9f5953a7786d",
+          "4a03cf442c0a97a5",
+          "da4502cf7bb0de10",
+          "9b9e5dec00a30a1a",
+          "1b2067cd8f57d825",
+          "6d1e6c88986fe1c5",
+          "9d2040a1ef3a9ce6",
+          "c123f86c6f76a7c2",
+          "d4f3ba4ccd921df2",
+          "51d87dcc43566cf5",
+          "8919b473c7725d6d",
+          "984a389370ed6b0f",
+          "f8ed61c94a3fe72e",
+          "dac9b08780088b0f",
+          "44fff144e8490614",
+          "237dc1830c1a5c8f",
+          "dfd0707fddf432ae",
+          "635c9d83081373bb",
+          "17f946b7f15f206e",
+          "db4a71f677b5f4b2",
+          "a9ec76ccad46f4b6",
+          "ea9661b8bb848f21",
+          "ebbf73f3742bb41a",
+          "16931a9f10f6456d",
+          "8ff5dd17fa65d8f5",
+          "2ce7b1697de64723",
+          "23ea6d76dd27195e",
+          "e0e598b9e084d9bf",
+          "e09a9fe2cb94eeb4",
+          "b5a13b5a876d1db7",
+          "6672c9fe63d5365b",
+          "04910da9435035a2"
         ]
       }
     }
