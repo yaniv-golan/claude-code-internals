@@ -85,6 +85,50 @@ test('parse: entries, sections, bundled version, table rows, fenced JSON skipped
   assert.match(c[0].items[0].text, /developerModeEnabled/);
 });
 
+// The page format since 2026-10: a bold label line opens each block, no <Update>, no dates.
+const PLAIN = `# Changelog
+
+**v2.2.0**
+
+Bundled Claude Code version: 2.1.295.
+
+**General**
+
+* Added "Open in new window" for chats.
+* Added \`developerModeEnabled\`.
+
+**Cowork**
+
+* Fixed a thing.
+
+**Known issue: something**
+
+A note with no section.
+
+**v2.1.0**
+
+**Code**
+
+* Fixed \`move_to_cloud\` refusing.
+
+**Baseline**
+
+| MDM key | Type | Description |
+| - | - | - |
+| \`isLocalDevMcpEnabled\` | \`boolean\` | Allow user-added MCP servers |
+`;
+
+test('parse: the plain format gives the same labels and item hashes, with no dates', () => {
+  const plain = S.parse(PLAIN);
+  assert.deepStrictEqual(plain.map((x) => x.label), ['v2.2.0', 'Known issue: something', 'v2.1.0', 'Baseline']);
+  assert.ok(plain.every((x) => x.date === null));
+  const old = S.parse(PAGE());
+  for (let i = 0; i < old.length; i++) {
+    assert.deepStrictEqual(plain[i].items.map((x) => x.hash), old[i].items.map((x) => x.hash), old[i].label);
+  }
+  assert.strictEqual(plain[3].items.length, 1, 'Baseline keeps its table row, not the header');
+});
+
 test('item hash depends on section and text, not on whitespace', () => {
   const a = S.parse(PAGE())[0].items[0].hash;
   const b = S.parse(PAGE().replace('Added "Open in new window" for chats.', 'Added   "Open in new window"  for chats.'))[0].items[0].hash;
@@ -156,4 +200,16 @@ test('the committed snapshot, when present, holds hashes and dates only', () => 
       for (const h of e.items) assert.match(h, /^[0-9a-f]{16}$/);
     }
   }
+});
+
+test('main: an undated entry keeps the date first recorded, a new one gets the scan date', async () => {
+  const { dir, write } = scratch();
+  const cfg = write('k.md', CONFIG);
+  assert.strictEqual((await run(dir, ['--accept', '--changelog', write('c.md', PAGE()), '--config', cfg])).code, 0);
+  const plain = write('p.md', PLAIN.replace('# Changelog\n', '# Changelog\n\n**v2.3.0**\n\n* Added a newer thing.\n'));
+  assert.strictEqual((await run(dir, ['--accept', '--date', '2026-10-21', '--changelog', plain, '--config', cfg])).code, 0);
+  const rec = JSON.parse(fs.readFileSync(path.join(dir, 'data', 'desktop-changelog.json'), 'utf8')).pages.changelog;
+  assert.strictEqual(rec['v2.2.0'].date, '2026-10-13');
+  assert.strictEqual(rec['v2.1.0'].date, '2026-10-01');
+  assert.strictEqual(rec['v2.3.0'].date, '2026-10-21');
 });

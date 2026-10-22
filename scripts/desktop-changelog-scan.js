@@ -29,6 +29,10 @@
  * sha256 of each item's section and whitespace-normalized text. The verbatim pages go to the
  * off-repo archive, one file per fetched content hash.
  *
+ * DATES. Until 2026-10 every entry carried its release date. The page now has none, so an entry
+ * keeps the date it was first recorded with, and a new one gets the scan's date (--date). For an
+ * undated entry, --since therefore means "first seen on or after".
+ *
  * A "names" hit is a token match: a backticked identifier or quoted UI string from the item that
  * appears in a lesson. It proves a lesson names the thing, not that it says what the note says,
  * so those items are listed too, marked for comparison: a note that overturns a lesson sits
@@ -56,13 +60,22 @@ const GENERIC = new Set(['true', 'false', 'boolean', 'string', 'integer', 'enum'
 const sha16 = (s) => crypto.createHash('sha256').update(s).digest('hex').slice(0, 16);
 const norm = (s) => s.replace(/\s+/g, ' ').trim();
 
+/** Split a page into [label, date, body]. Until 2026-10 entries were <Update label description>
+ *  blocks; since then each starts at a bold version line ("**v3.1623.0**") and carries no date. */
+function blocks(md) {
+  const re = /<Update label="([^"]+)" description="([^"]*)">([\s\S]*?)<\/Update>/g;
+  const out = [...md.matchAll(re)].map((m) => [m[1], m[2], m[3]]);
+  if (out.length) return out;
+  // Non-release blocks keep their old labels: "Baseline", "Known issue: …", "Resolved: …".
+  const parts = md.split(/^\*\*(v\d+(?:\.\d+)+|Baseline|(?:Known issue|Resolved): [^*\n]+)\*\*[ \t]*$/m);
+  for (let i = 1; i < parts.length; i += 2) out.push([parts[i], null, parts[i + 1]]);
+  return out;
+}
+
 /** Parse one release-notes page into [{label, date, bundled, items:[{section,text,hash}]}]. */
 function parse(md) {
   const entries = [];
-  const re = /<Update label="([^"]+)" description="([^"]*)">([\s\S]*?)<\/Update>/g;
-  let m;
-  while ((m = re.exec(md))) {
-    const [, label, date, body] = m;
+  for (const [label, date, body] of blocks(md)) {
     let section = '';
     let fence = false;
     let bundled = null;
@@ -214,7 +227,13 @@ async function main(argv) {
     raw.config = await load('config', o.config);
   } catch (e) { console.error(`fetch failed: ${e.message}`); return 2; }
   const pages = { changelog: parse(raw.changelog), config: parse(raw.config) };
-  if (!pages.changelog.length) { console.error('no <Update> entries parsed from the changelog; the page format changed'); return 2; }
+  if (!pages.changelog.length) { console.error('no release entries parsed from the changelog; the page format changed'); return 2; }
+  const recPath = path.join(root, RECORD_REL);
+  const record = fs.existsSync(recPath) ? JSON.parse(fs.readFileSync(recPath, 'utf8')) : null;
+  // Undated entries (the page has had no dates since 2026-10) keep the date first recorded, else today's.
+  for (const [page, entries] of Object.entries(pages)) {
+    for (const e of entries) if (!e.date) e.date = record?.pages?.[page]?.[e.label]?.date || date;
+  }
 
   if (o.find) {
     // A term with a capital letter is an identifier or acronym: match its case ("EDR" ≠ "credential").
@@ -232,8 +251,6 @@ async function main(argv) {
     return 0;
   }
 
-  const recPath = path.join(root, RECORD_REL);
-  const record = fs.existsSync(recPath) ? JSON.parse(fs.readFileSync(recPath, 'utf8')) : null;
   const floor = o.since ? sinceDate(pages, o.since) : null;
   if (o.since && !floor) { console.error(`--since ${o.since}: no entry with that label`); return 2; }
   const changes = diff(pages, record).filter((c) => !floor || c.date >= floor);
