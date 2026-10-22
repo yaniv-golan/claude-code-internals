@@ -1,5 +1,44 @@
 # Changelog
 
+## v2.78.0 — 2026-10-22 (this fork) — What Desktop 3.1623.0 changed without announcing it
+
+242 lessons across 72 chapters (L242 new; L226, L215, L210, L198, L237 and L238 extended). Sources: Claude Desktop
+`app.asar` and UI bundle 3.1623.0 diffed against 2.42304.0, the Desktop flag cache decoded under a Team organization
+on 2026-10-21, two Team Cowork tasks run by the account's owner on 2026-10-21, and Anthropic's Desktop release notes
+and configuration changelog for v3.1623.0.
+
+**Desktop 3.1623.0 (new L242, Ch72)**
+
+- Storage and `/storage`, announced as new, were already in 2.42304.0. New: removing only the rows you tick (the app
+  refuses a selection that doesn't match its preview), and a server switch that can turn cleanup off. Cowork cleanup
+  deletes inactive tasks and chats in full.
+- A new Desktop-side engine resumes Code sessions after the five-hour limit; it is off until the server turns it on.
+  Resuming after the limit itself was announced in v1.32352.0.
+- Third-party deployments: an admin key that has a model scan user-made skills and plugins for behaviour against the
+  person who installs them.
+- Five admin keys for typed artifacts are reserved and do nothing yet.
+
+**Team routing (L226, L210)**
+
+- Two new Team tasks ran in the cloud while "Only on this computer" showed on. The settings row reads the stored
+  value; the code that picks the lane forces the cloud in several cases, so the two can disagree with nothing on
+  screen saying why. That code is unchanged from 2.42304.0, so the update didn't cause it.
+
+**The device shell (L215)**
+
+- A cloud task's shell on your computer is cut at 2 minutes (a server setting; Desktop's own default is 45 seconds),
+  and a cut call returns none of its output, unlike the cloud shell. Keep calls short and write progress to a file.
+
+**Desktop flag cache**
+
+- Restamped under Team (441 features). The device shell's time-limit gate (`1263782781`) is now pinned.
+
+**Tooling**
+
+- The release-notes scan reads the notes page's new undated format.
+- Retrieval baseline-v10: two lower-ranked dev questions dropped a few places (pl-0086 12 → 16, pl-0278 19 → 21),
+  accepted by the maintainer.
+
 ## v2.77.0 — 2026-10-21 (this fork) — Document tools and the shell's time limit in cloud Cowork
 
 241 lessons across 71 chapters (none new; L198, L174 and L241 extended). Sources: three cloud Cowork sessions run by
