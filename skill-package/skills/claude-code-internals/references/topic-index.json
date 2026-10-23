@@ -1,6 +1,6 @@
 {
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 243,
+  "total_lessons": 244,
   "lessons": [
     {
       "id": 1,
@@ -3074,7 +3074,7 @@
       "lesson_number": "09",
       "file": "04-connectivity-plugins.md",
       "startLine": 8,
-      "endLine": 695,
+      "endLine": 632,
       "keywords": [
         "plugins",
         "marketplace",
@@ -3138,17 +3138,6 @@
         "vm-name",
         "list-marketplaces",
         "plugin-context",
-        "theme-factory",
-        "consolidate-memory",
-        "doc-coauthoring",
-        "algorithmic-art",
-        "internal-comms",
-        "fiction-studio",
-        "download-skills",
-        "write-manifest",
-        "updated-at",
-        "calculate-delta",
-        "local-manifest",
         "BLOCKED_OFFICIAL_NAME_PATTERN",
         "NON_ASCII_PATTERN",
         "9086500",
@@ -3160,7 +3149,6 @@
         "plugin dependencies not installing from another marketplace",
         "plugin disabled because dependency missing",
         "cowork built-in skills stale after update",
-        "how do i fix an outdated pdf skill in cowork",
         "plugin changes not picked up in running cowork task",
         "desktop app shows no plugins but cli does",
         "reserved marketplace name rejected",
@@ -3169,7 +3157,8 @@
         "can plugins ship language servers or mcp servers",
         "new plugin changes need a task run on this computer",
         "cowork session folder named with short hex",
-        "where are per-session marketplace files stored"
+        "where are per-session marketplace files stored",
+        "where are my claude.ai skills stored for cowork"
       ],
       "identifier_keys": [
         "refresh-marketplace",
@@ -3229,17 +3218,6 @@
         "vm-name",
         "list-marketplaces",
         "plugin-context",
-        "theme-factory",
-        "consolidate-memory",
-        "doc-coauthoring",
-        "algorithmic-art",
-        "internal-comms",
-        "fiction-studio",
-        "download-skills",
-        "write-manifest",
-        "updated-at",
-        "calculate-delta",
-        "local-manifest",
         "BLOCKED_OFFICIAL_NAME_PATTERN",
         "NON_ASCII_PATTERN",
         "9086500"
@@ -3253,7 +3231,6 @@
         "plugin dependencies not installing from another marketplace",
         "plugin disabled because dependency missing",
         "cowork built-in skills stale after update",
-        "how do i fix an outdated pdf skill in cowork",
         "plugin changes not picked up in running cowork task",
         "desktop app shows no plugins but cli does",
         "reserved marketplace name rejected",
@@ -3262,13 +3239,14 @@
         "can plugins ship language servers or mcp servers",
         "new plugin changes need a task run on this computer",
         "cowork session folder named with short hex",
-        "where are per-session marketplace files stored"
+        "where are per-session marketplace files stored",
+        "where are my claude.ai skills stored for cowork"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-02",
-        "terms_sha256": "48106c8ee0f4878b90cafaed8133f11b19001579553396678f29f14a477b86f3"
+        "date": "2026-10-23",
+        "terms_sha256": "79af63f8ef9ef03ff7db24169b9f1fdb2cc881d838dd83f35864ee5bd96fad71"
       }
     },
     {
@@ -3277,8 +3255,8 @@
       "description": "Hooks system: lifecycle hooks, pre-tool-use, post-tool-use, exit code, hook events, session hooks, HTTP hooks, prompt hooks, agent hooks, async hooks",
       "lesson_number": "10",
       "file": "04-connectivity-plugins.md",
-      "startLine": 699,
-      "endLine": 844,
+      "startLine": 636,
+      "endLine": 781,
       "keywords": [
         "hooks",
         "lifecycle",
@@ -3380,8 +3358,8 @@
       "description": "Error handling and recovery: retry logic, abort, conversation recovery, error taxonomy, typed errors, error overlay, persistent retry, deserialization",
       "lesson_number": "44",
       "file": "04-connectivity-plugins.md",
-      "startLine": 848,
-      "endLine": 964,
+      "startLine": 785,
+      "endLine": 901,
       "keywords": [
         "errors",
         "recovery",
@@ -3474,8 +3452,8 @@
       "description": "Bridge and remote control: CCR, WebSocket, JWT, bridge v1/v2, flush gate, standalone bridge, permission bridge",
       "lesson_number": "20",
       "file": "04-connectivity-plugins.md",
-      "startLine": 968,
-      "endLine": 1071,
+      "startLine": 905,
+      "endLine": 1008,
       "keywords": [
         "bridge",
         "remote-control",
@@ -3538,8 +3516,8 @@
       "description": "OAuth authentication: PKCE flow, token storage, keychain, token refresh, logout, enterprise, FedStart, scopes",
       "lesson_number": "25",
       "file": "04-connectivity-plugins.md",
-      "startLine": 1075,
-      "endLine": 1146,
+      "startLine": 1012,
+      "endLine": 1083,
       "keywords": [
         "oauth",
         "pkce",
@@ -3600,8 +3578,8 @@
       "description": "Git integration: filesystem-first approach, git watcher, branch tracking, commit tracking, git config parser, ref validation, gitignore, GitHub auth",
       "lesson_number": "28",
       "file": "04-connectivity-plugins.md",
-      "startLine": 1150,
-      "endLine": 1222,
+      "startLine": 1087,
+      "endLine": 1159,
       "keywords": [
         "git",
         "filesystem-first",
@@ -3664,8 +3642,8 @@
       "description": "Upstream proxy system: CCR container, TLS, MITM, protobuf, connect over WebSocket, keepalive",
       "lesson_number": "36",
       "file": "04-connectivity-plugins.md",
-      "startLine": 1226,
-      "endLine": 1286,
+      "startLine": 1163,
+      "endLine": 1223,
       "keywords": [
         "proxy",
         "upstream",
@@ -3740,8 +3718,8 @@
       "description": "Cron and task scheduling: jitter, recurring tasks, timer, cron task, one-shot tasks",
       "lesson_number": "43",
       "file": "04-connectivity-plugins.md",
-      "startLine": 1290,
-      "endLine": 1346,
+      "startLine": 1227,
+      "endLine": 1283,
       "keywords": [
         "cron",
         "scheduling",
@@ -3810,8 +3788,8 @@
       "description": "Voice system: speech-to-text, audio backend, push-to-talk, hold-to-talk, WebSocket STT, focus mode, microphone",
       "lesson_number": "27",
       "file": "04-connectivity-plugins.md",
-      "startLine": 1350,
-      "endLine": 1410,
+      "startLine": 1287,
+      "endLine": 1347,
       "keywords": [
         "voice",
         "speech-to-text",
@@ -3890,8 +3868,8 @@
       "description": "Buddy companion system: tamagotchi pet easter egg, sprites, PRNG, rarity, animation, April Fools",
       "lesson_number": "45",
       "file": "04-connectivity-plugins.md",
-      "startLine": 1414,
-      "endLine": 1501,
+      "startLine": 1351,
+      "endLine": 1438,
       "keywords": [
         "buddy",
         "tamagotchi",
@@ -9554,7 +9532,6 @@
         "reload-skills",
         "org_denied",
         "oauth-account",
-        "include_wiggle_skills",
         "enabled_only",
         "tengu_plugins_sync_mcp_skipped",
         "tengu_plugins_sync_mcp_timeout",
@@ -9591,7 +9568,6 @@
       "identifier_keys": [
         "org_denied",
         "oauth-account",
-        "include_wiggle_skills",
         "enabled_only",
         "tengu_plugins_sync_mcp_skipped",
         "tengu_plugins_sync_mcp_timeout",
@@ -13305,7 +13281,6 @@
         "context_label",
         "fr_msdcdhx0",
         "fr_mrz4imok",
-        "skills_instructions",
         "which skill tools does cowork actually see",
         "cowork skill discovery tools list",
         "model says it has different tools than it does",
@@ -13341,8 +13316,7 @@
         "get-deployment-mode",
         "context_label",
         "fr_msdcdhx0",
-        "fr_mrz4imok",
-        "skills_instructions"
+        "fr_mrz4imok"
       ],
       "vocab_keys": [
         "which skill tools does cowork actually see",
@@ -13514,7 +13488,6 @@
         "defaultValue-vs-force",
         "worktree-path",
         "TASK_TOOL_NAMES",
-        "skills_instructions",
         "mcp__scheduled-tasks__create_scheduled_task",
         "mcp__scheduled-tasks__update_scheduled_task",
         "mcp__scheduled-tasks__delete_scheduled_task",
@@ -13545,7 +13518,6 @@
       "identifier_keys": [
         "worktree-path",
         "TASK_TOOL_NAMES",
-        "skills_instructions",
         "mcp__scheduled-tasks__create_scheduled_task",
         "mcp__scheduled-tasks__update_scheduled_task",
         "mcp__scheduled-tasks__delete_scheduled_task",
@@ -14206,7 +14178,6 @@
         "local-mcp-bridge",
         "desktop-bridges-plugin-mcp",
         "mcp-crosses-the-boundary",
-        "skill-creator",
         "status_detail",
         "needs_action",
         "claude_code_cli",
@@ -14219,6 +14190,7 @@
         "mcp__remote-devices__device_commit_files",
         "uploads-tmp",
         "doc-export-out",
+        "skill-creator",
         "14479288",
         "cowork local vs cloud execution",
         "does cowork run on my machine or anthropic servers",
@@ -14240,7 +14212,6 @@
         "local cowork still available for existing desktop deployments"
       ],
       "identifier_keys": [
-        "skill-creator",
         "status_detail",
         "needs_action",
         "claude_code_cli",
@@ -14253,6 +14224,7 @@
         "mcp__remote-devices__device_commit_files",
         "uploads-tmp",
         "doc-export-out",
+        "skill-creator",
         "14479288"
       ],
       "vocab_keys": [
@@ -23630,7 +23602,6 @@
         "window-vibrancy",
         "serve-remote-browser-session",
         "stop-serving-remote-browser-session",
-        "CLAUDE_CODE_DESKTOP_SKILLS_PLUGIN_DIR",
         "checkpoint_done",
         "checkpoint_request",
         "quick-entry-default-shortcut",
@@ -23688,7 +23659,6 @@
         "window-vibrancy",
         "serve-remote-browser-session",
         "stop-serving-remote-browser-session",
-        "CLAUDE_CODE_DESKTOP_SKILLS_PLUGIN_DIR",
         "checkpoint_done",
         "checkpoint_request",
         "quick-entry-default-shortcut",
@@ -23797,6 +23767,104 @@
         "prompt_version": "vocab-v1",
         "date": "2026-10-22",
         "terms_sha256": "015dbda7196ebc46d4a855c9fe80fa05bc36f56a0e018f46f9cde1d1a3a7d56b"
+      }
+    },
+    {
+      "id": 244,
+      "title": "How Desktop's `anthropic-skills` Plugin Is Built, Handed to the Agent and Shown to the Model",
+      "lesson_number": "244",
+      "file": "71-desktop-skills-plugin-anthropic-skills.md",
+      "startLine": 13,
+      "endLine": 120,
+      "keywords": [
+        "include_wiggle_skills",
+        "skill_invoked",
+        "account-id",
+        "server_plugin_id",
+        "CLAUDE_CODE_DESKTOP_SKILLS_PLUGIN_DIR",
+        "index.chunk-CyZGni4N.js",
+        "consolidate-memory",
+        "skill-id",
+        "creator_type",
+        "anthropic-example",
+        "updated_at",
+        "download-dot-skill-file",
+        "default_false",
+        "resolve-served-skills",
+        "app_shipped",
+        "skill_creator_type",
+        "index.chunk-WpC68JQw.js",
+        "plugin-dir-no-mcp",
+        "index.chunk-B0WFoI_A.js",
+        "account-skills-wrapper",
+        "host-named-skills-folder",
+        "skill_reserved_namespace",
+        "not_sent",
+        "tengu_plaid_harbor",
+        "list_scheduled_tasks",
+        "where desktop stores my skills on mac",
+        "my skills and anthropic skills in one plugin",
+        "claude.ai skills not showing in desktop",
+        "why does a skill appear twice to the model",
+        "hidden skill still offered to the model",
+        "my plugin skill dropped because of name clash",
+        "which skill wins when names collide",
+        "skill download failed retry sync",
+        "skills in cowork virtual machine project skills",
+        "skill waiting for security scan cannot enable",
+        "test skills plugin outside desktop app",
+        "how desktop skills reach the agent",
+        "skills list in desktop system prompt",
+        "why can't i edit or delete anthropic skills"
+      ],
+      "identifier_keys": [
+        "include_wiggle_skills",
+        "skill_invoked",
+        "account-id",
+        "server_plugin_id",
+        "CLAUDE_CODE_DESKTOP_SKILLS_PLUGIN_DIR",
+        "index.chunk-CyZGni4N.js",
+        "consolidate-memory",
+        "skill-id",
+        "creator_type",
+        "anthropic-example",
+        "updated_at",
+        "download-dot-skill-file",
+        "default_false",
+        "resolve-served-skills",
+        "app_shipped",
+        "skill_creator_type",
+        "index.chunk-WpC68JQw.js",
+        "plugin-dir-no-mcp",
+        "index.chunk-B0WFoI_A.js",
+        "account-skills-wrapper",
+        "host-named-skills-folder",
+        "skill_reserved_namespace",
+        "not_sent",
+        "tengu_plaid_harbor",
+        "list_scheduled_tasks"
+      ],
+      "vocab_keys": [
+        "where desktop stores my skills on mac",
+        "my skills and anthropic skills in one plugin",
+        "claude.ai skills not showing in desktop",
+        "why does a skill appear twice to the model",
+        "hidden skill still offered to the model",
+        "my plugin skill dropped because of name clash",
+        "which skill wins when names collide",
+        "skill download failed retry sync",
+        "skills in cowork virtual machine project skills",
+        "skill waiting for security scan cannot enable",
+        "test skills plugin outside desktop app",
+        "how desktop skills reach the agent",
+        "skills list in desktop system prompt",
+        "why can't i edit or delete anthropic skills"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-10-23",
+        "terms_sha256": "b4ff6e388f17d37b429c11cefebf9d7954ae0974c5ce776b427564e406e7ee47"
       }
     }
   ],
@@ -41639,42 +41707,6 @@
     "plugin-context": [
       31
     ],
-    "theme-factory": [
-      31
-    ],
-    "consolidate-memory": [
-      31
-    ],
-    "doc-coauthoring": [
-      31
-    ],
-    "algorithmic-art": [
-      31
-    ],
-    "internal-comms": [
-      31
-    ],
-    "skill-creator": [
-      138
-    ],
-    "fiction-studio": [
-      31
-    ],
-    "download-skills": [
-      31
-    ],
-    "write-manifest": [
-      31
-    ],
-    "updated-at": [
-      31
-    ],
-    "calculate-delta": [
-      31
-    ],
-    "local-manifest": [
-      31
-    ],
     "manifest.json": [
       217
     ],
@@ -44070,7 +44102,7 @@
       98
     ],
     "include_wiggle_skills": [
-      98
+      244
     ],
     "enabled_only": [
       98
@@ -44527,7 +44559,8 @@
       107
     ],
     "skill_invoked": [
-      107
+      107,
+      244
     ],
     "cowork_consolidate_memory_called": [
       107
@@ -44928,7 +44961,8 @@
       109
     ],
     "account-id": [
-      109
+      109,
+      244
     ],
     "LC_ALL": [
       109
@@ -45817,10 +45851,6 @@
     "fr_mrz4imok": [
       129
     ],
-    "skills_instructions": [
-      129,
-      131
-    ],
     "pr_create": [
       130
     ],
@@ -46102,6 +46132,9 @@
       138
     ],
     "doc-export-out": [
+      138
+    ],
+    "skill-creator": [
       138
     ],
     "14479288": [
@@ -47024,7 +47057,8 @@
       180
     ],
     "server_plugin_id": [
-      181
+      181,
+      244
     ],
     "index.chunk-CmsiOYDG.js": [
       181
@@ -49360,7 +49394,7 @@
       242
     ],
     "CLAUDE_CODE_DESKTOP_SKILLS_PLUGIN_DIR": [
-      242
+      244
     ],
     "checkpoint_done": [
       242
@@ -49406,6 +49440,66 @@
     ],
     "get-sessions-for-scheduled-task": [
       243
+    ],
+    "index.chunk-CyZGni4N.js": [
+      244
+    ],
+    "consolidate-memory": [
+      244
+    ],
+    "skill-id": [
+      244
+    ],
+    "creator_type": [
+      244
+    ],
+    "anthropic-example": [
+      244
+    ],
+    "updated_at": [
+      244
+    ],
+    "download-dot-skill-file": [
+      244
+    ],
+    "default_false": [
+      244
+    ],
+    "resolve-served-skills": [
+      244
+    ],
+    "app_shipped": [
+      244
+    ],
+    "skill_creator_type": [
+      244
+    ],
+    "index.chunk-WpC68JQw.js": [
+      244
+    ],
+    "plugin-dir-no-mcp": [
+      244
+    ],
+    "index.chunk-B0WFoI_A.js": [
+      244
+    ],
+    "account-skills-wrapper": [
+      244
+    ],
+    "host-named-skills-folder": [
+      244
+    ],
+    "skill_reserved_namespace": [
+      244
+    ],
+    "not_sent": [
+      244
+    ],
+    "tengu_plaid_harbor": [
+      244
+    ],
+    "list_scheduled_tasks": [
+      244
     ],
     "why is claude startup slow": [
       1
@@ -50784,9 +50878,6 @@
     "cowork built-in skills stale after update": [
       31
     ],
-    "how do i fix an outdated pdf skill in cowork": [
-      31
-    ],
     "plugin changes not picked up in running cowork task": [
       31
     ],
@@ -50812,6 +50903,9 @@
       31
     ],
     "where are per-session marketplace files stored": [
+      31
+    ],
+    "where are my claude.ai skills stored for cowork": [
       31
     ],
     "run a script before every tool call": [
@@ -60790,6 +60884,48 @@
     ],
     "what changes when a task runs on a schedule": [
       243
+    ],
+    "where desktop stores my skills on mac": [
+      244
+    ],
+    "my skills and anthropic skills in one plugin": [
+      244
+    ],
+    "claude.ai skills not showing in desktop": [
+      244
+    ],
+    "why does a skill appear twice to the model": [
+      244
+    ],
+    "hidden skill still offered to the model": [
+      244
+    ],
+    "my plugin skill dropped because of name clash": [
+      244
+    ],
+    "which skill wins when names collide": [
+      244
+    ],
+    "skill download failed retry sync": [
+      244
+    ],
+    "skills in cowork virtual machine project skills": [
+      244
+    ],
+    "skill waiting for security scan cannot enable": [
+      244
+    ],
+    "test skills plugin outside desktop app": [
+      244
+    ],
+    "how desktop skills reach the agent": [
+      244
+    ],
+    "skills list in desktop system prompt": [
+      244
+    ],
+    "why can't i edit or delete anthropic skills": [
+      244
     ]
   },
   "keyword_boundary": {

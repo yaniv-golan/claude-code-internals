@@ -700,12 +700,21 @@
     "31": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-02",
-      "input_sha256": "1c333bcdf1005a408e75949ef66807eb8b0c7ac6b3a24d432baefd68014dfbbf",
-      "prior_terms_sha256": "aeeb8d7c33af4272191b4eab67456e76070c4e4e0817146dc0ab346096618feb",
+      "date": "2026-10-23",
+      "input_sha256": "fceff55565ad749db1bbfecc92c97de8eb5e5bee76628dbc46cb34bf30414d5f",
+      "prior_terms_sha256": "48106c8ee0f4878b90cafaed8133f11b19001579553396678f29f14a477b86f3",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "65b3a9e82c7c10a022bc703406e71a69cd7d7bc3",
-      "replaced": [],
+      "previous_text": "7122f3b9f7ac0327e3a42dd408909efd77294cea",
+      "replaced": [
+        "how do I fix an outdated pdf skill in cowork"
+      ],
+      "dropped": [
+        {
+          "term": "how do I fix an outdated pdf skill in cowork",
+          "why": "duplicate",
+          "duplicate_of": "cowork built-in skills stale after update"
+        }
+      ],
       "terms": [
         "plugin update says already up to date but new version exists",
         "how does claude plugin update detect a new version",
@@ -715,7 +724,6 @@
         "plugin dependencies not installing from another marketplace",
         "plugin disabled because dependency missing",
         "cowork built-in skills stale after update",
-        "how do I fix an outdated pdf skill in cowork",
         "plugin changes not picked up in running cowork task",
         "desktop app shows no plugins but CLI does",
         "reserved marketplace name rejected",
@@ -724,7 +732,8 @@
         "can plugins ship language servers or MCP servers",
         "new plugin changes need a task run on this computer",
         "cowork session folder named with short hex",
-        "where are per-session marketplace files stored"
+        "where are per-session marketplace files stored",
+        "where are my claude.ai skills stored for cowork"
       ]
     },
     "32": {
@@ -6225,6 +6234,36 @@
         "why does my skill fail when scheduled?",
         "scheduled run tool list differs",
         "what changes when a task runs on a schedule?"
+      ]
+    },
+    "244": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-10-23",
+      "input_sha256": "58990823fb990ef2beeff89495ac51342eac0456eb1d413fd70ab3b0cfef840e",
+      "collision_check": "questions-v2.json dev",
+      "terms": [
+        "where desktop stores my skills on mac",
+        "my skills and anthropic skills in one plugin",
+        "claude.ai skills not showing in desktop",
+        "skills turned off by organization only builtin skills",
+        "why does a skill appear twice to the model",
+        "hidden skill still offered to the model",
+        "my plugin skill dropped because of name clash",
+        "which skill wins when names collide",
+        "skill download failed retry sync",
+        "skills in cowork virtual machine project skills",
+        "skill waiting for security scan cannot enable",
+        "test skills plugin outside desktop app",
+        "how desktop skills reach the agent",
+        "skills list in desktop system prompt",
+        "why can't I edit or delete anthropic skills"
+      ],
+      "withheld": [
+        {
+          "term": "skills turned off by organization only builtin skills",
+          "qid": "pl-0036"
+        }
       ]
     }
   }

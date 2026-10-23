@@ -2691,6 +2691,11 @@
     "id": 26,
     "relevance": 0.5,
     "reason": "settings cascade"
+   },
+   {
+    "id": 244,
+    "relevance": 0.7,
+    "reason": "Desktop's anthropic-skills plugin: sources, handoff and listings"
    }
   ],
   "host-auth-refresh": [
@@ -4921,6 +4926,48 @@
     "id": 242,
     "relevance": 0.4,
     "reason": "L242: the skill scan whose context a scheduled run changes"
+   }
+  ],
+  "244": [
+   {
+    "id": 31,
+    "relevance": 0.8,
+    "reason": "L31: the skills-plugin cache on disk and how it syncs"
+   },
+   {
+    "id": 217,
+    "relevance": 0.7,
+    "reason": "L217: an uploaded claude.ai skill reaching the CLI, the cloud and a local session as anthropic-skills:<name>"
+   },
+   {
+    "id": 129,
+    "relevance": 0.6,
+    "reason": "L129: the skill-discovery tools the model really has in Cowork"
+   },
+   {
+    "id": 242,
+    "relevance": 0.6,
+    "reason": "L242: the security scan that holds a user-made skill"
+   },
+   {
+    "id": 181,
+    "relevance": 0.5,
+    "reason": "L181: the skill attribution env Desktop builds from the manifest"
+   },
+   {
+    "id": 206,
+    "relevance": 0.5,
+    "reason": "L206: save_skill, the source of a skill saved on this computer"
+   },
+   {
+    "id": 243,
+    "relevance": 0.4,
+    "reason": "L243: scheduled runs, where the schedule skill's tools matter"
+   },
+   {
+    "id": 116,
+    "relevance": 0.4,
+    "reason": "L116: host-loop vs VM-loop as a skill sees them"
    }
   ]
  }

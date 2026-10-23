@@ -3223,6 +3223,19 @@
     243
    ],
    "hint": "A scheduled run is a session of type scheduled: no AskUserQuestion, onboarding role picker or send_user_message; it gets CLAUDE_CODE_HOST_SCHEDULED_RUN=1. The session record's sessionType tells them apart."
+  },
+  {
+   "pattern": [
+    "anthropic-skills plugin mixes my skills with Anthropic's",
+    "skill from my plugin dropped in Desktop session",
+    "CLAUDE_CODE_DESKTOP_SKILLS_PLUGIN_DIR",
+    "disabled skill still offered to the model",
+    "skills-plugin manifest.json enabled false ignored"
+   ],
+   "lessons": [
+    244
+   ],
+   "hint": "Desktop merges in-code, claude.ai and local skills into one anthropic-skills plugin, passed by --plugin-dir in host-loop only. The agent reads manifest.json switches only in third-party deployments; names reserved for synced skills drop colliding plugin skills."
   }
  ]
 }

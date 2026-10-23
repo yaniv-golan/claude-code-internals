@@ -80,3 +80,4 @@ convention and are spread across those legacy files, whose rows read `1–8`.
 | `68-prompt-cache-ttl-idle-compaction-2.1.302.md` | 71 | 241 | Does a Session Know When Its Prompt Cache Expires? (id 241) |
 | `69-desktop-3.1623-unannounced-changes.md` | 72 | 242 | What Desktop 3.1623.0 Changed Without Announcing It (id 242) |
 | `70-desktop-scheduled-vs-interactive-sessions.md` | 73 | 243 | What a Scheduled Cowork Task Gets That an Interactive One Doesn't, and the Reverse (id 243) |
+| `71-desktop-skills-plugin-anthropic-skills.md` | 74 | 244 | How Desktop's `anthropic-skills` Plugin Is Built, Handed to the Agent and Shown to the Model (id 244) |

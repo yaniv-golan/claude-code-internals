@@ -444,106 +444,106 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 31 · 04-connectivity-plugins.md:580 · `installed_plugins.json` v1→v2 migration is CLI-only
 31 · 04-connectivity-plugins.md:603 · Per-session `known_marketplaces.json` files (CLI-internal, not consulted by Desktop IPC)
 31 · 04-connectivity-plugins.md:609 · Settings UI's marketplace listing is single-`(accountId, orgId)` per IPC call
-31 · 04-connectivity-plugins.md:615 · Anthropic-managed skills cache (`skills-plugin/`)
-32 · 04-connectivity-plugins.md:701 · Core Files
-32 · 04-connectivity-plugins.md:709 · The 27 Hook Events of v2.1.88 (Categorized)
-32 · 04-connectivity-plugins.md:723 · Exit Code Semantics
-32 · 04-connectivity-plugins.md:747 · Five Hook Command Types
-32 · 04-connectivity-plugins.md:749 · 1. `command` (Shell subprocess)
-32 · 04-connectivity-plugins.md:752 · 2. `prompt` (LLM prompt)
-32 · 04-connectivity-plugins.md:757 · 3. `agent` (Agentic verifier)
-32 · 04-connectivity-plugins.md:769 · 4. `http` (HTTP POST)
-32 · 04-connectivity-plugins.md:773 · 5. `function` (TypeScript callback)
-32 · 04-connectivity-plugins.md:777 · Configuration Sources (6 total, merged)
-32 · 04-connectivity-plugins.md:788 · Session Hooks API
-32 · 04-connectivity-plugins.md:802 · Async and asyncRewake
-32 · 04-connectivity-plugins.md:807 · HTTP Hooks Security (Three Layers)
-32 · 04-connectivity-plugins.md:813 · The `if` Filter Field
-32 · 04-connectivity-plugins.md:817 · Hook Event Bus (SDK Telemetry)
-32 · 04-connectivity-plugins.md:821 · Real-World Patterns
-33 · 04-connectivity-plugins.md:850 · Four-Layer Architecture
-33 · 04-connectivity-plugins.md:857 · Error Taxonomy
-33 · 04-connectivity-plugins.md:869 · Three-Way Abort Check
-33 · 04-connectivity-plugins.md:881 · Normalization Helpers
-33 · 04-connectivity-plugins.md:893 · Filesystem Error Helpers
-33 · 04-connectivity-plugins.md:901 · Tool Error Formatting
-33 · 04-connectivity-plugins.md:914 · Error Log Sink
-33 · 04-connectivity-plugins.md:918 · API Retry Engine
-33 · 04-connectivity-plugins.md:920 · Retry Delay Formula
-33 · 04-connectivity-plugins.md:931 · 529 Overload Handling
-33 · 04-connectivity-plugins.md:934 · Context Overflow Auto-Adjustment
-33 · 04-connectivity-plugins.md:937 · 10+ Failure Modes Handled
-33 · 04-connectivity-plugins.md:940 · Persistent Retry Mode
-33 · 04-connectivity-plugins.md:943 · Conversation Recovery
-33 · 04-connectivity-plugins.md:945 · Four-Stage Deserialization
-33 · 04-connectivity-plugins.md:951 · Interruption Classification
-33 · 04-connectivity-plugins.md:963 · Synthetic Continuation
-34 · 04-connectivity-plugins.md:970 · Architecture Overview
-34 · 04-connectivity-plugins.md:974 · Bridge v1 vs v2
-34 · 04-connectivity-plugins.md:980 · WorkSecret (v1)
-34 · 04-connectivity-plugins.md:993 · Session ID Compatibility
-34 · 04-connectivity-plugins.md:1011 · Transport Layer
-34 · 04-connectivity-plugins.md:1030 · FlushGate
-34 · 04-connectivity-plugins.md:1042 · Permission Bridge Protocol
-34 · 04-connectivity-plugins.md:1046 · Standalone Bridge
-34 · 04-connectivity-plugins.md:1066 · Key Design Patterns
-35 · 04-connectivity-plugins.md:1077 · Architecture
-35 · 04-connectivity-plugins.md:1082 · PKCE Primitives
-35 · 04-connectivity-plugins.md:1096 · OAuth Flow
-35 · 04-connectivity-plugins.md:1105 · Scopes
-35 · 04-connectivity-plugins.md:1113 · Token Storage
-35 · 04-connectivity-plugins.md:1123 · Token Refresh
-35 · 04-connectivity-plugins.md:1129 · Logout
-35 · 04-connectivity-plugins.md:1136 · Authorization URL
-35 · 04-connectivity-plugins.md:1144 · Enterprise/FedStart
-36 · 04-connectivity-plugins.md:1152 · Design Philosophy: Filesystem-First
-36 · 04-connectivity-plugins.md:1156 · Config Parser
-36 · 04-connectivity-plugins.md:1166 · Git Filesystem Reading
-36 · 04-connectivity-plugins.md:1168 · resolveGitDir
-36 · 04-connectivity-plugins.md:1171 · readGitHead
-36 · 04-connectivity-plugins.md:1178 · resolveRef
-36 · 04-connectivity-plugins.md:1181 · GitFileWatcher
-36 · 04-connectivity-plugins.md:1191 · Security: Ref Validation
-36 · 04-connectivity-plugins.md:1204 · Operation Tracking
-36 · 04-connectivity-plugins.md:1216 · GitHub Auth
-36 · 04-connectivity-plugins.md:1220 · Gitignore
-37 · 04-connectivity-plugins.md:1228 · Architecture
-37 · 04-connectivity-plugins.md:1232 · Initialization (6 steps)
-37 · 04-connectivity-plugins.md:1241 · CONNECT-over-WebSocket Relay
-37 · 04-connectivity-plugins.md:1246 · Protobuf Encoding
-37 · 04-connectivity-plugins.md:1255 · Runtime Dispatch
-37 · 04-connectivity-plugins.md:1261 · Environment Variables
-37 · 04-connectivity-plugins.md:1274 · Security
-37 · 04-connectivity-plugins.md:1280 · Keepalive and Chunking
-37 · 04-connectivity-plugins.md:1284 · ConnState Guards
-38 · 04-connectivity-plugins.md:1292 · Five Layers
-38 · 04-connectivity-plugins.md:1300 · CronTask Model
-38 · 04-connectivity-plugins.md:1310 · Scheduler State Machine
-38 · 04-connectivity-plugins.md:1314 · Jitter System
-38 · 04-connectivity-plugins.md:1329 · Tools
-38 · 04-connectivity-plugins.md:1335 · REPL Integration
-38 · 04-connectivity-plugins.md:1339 · Missed Tasks
-38 · 04-connectivity-plugins.md:1344 · Feature Gates
-39 · 04-connectivity-plugins.md:1352 · Architecture
-39 · 04-connectivity-plugins.md:1358 · Feature Gating
-39 · 04-connectivity-plugins.md:1364 · Audio Backends (Priority Order)
-39 · 04-connectivity-plugins.md:1370 · WebSocket STT Protocol
-39 · 04-connectivity-plugins.md:1379 · Hold-to-Talk
-39 · 04-connectivity-plugins.md:1391 · Silent-Drop Replay
-39 · 04-connectivity-plugins.md:1395 · Focus Mode
-39 · 04-connectivity-plugins.md:1399 · Language and Keyterms
-39 · 04-connectivity-plugins.md:1403 · Audio Levels
-40 · 04-connectivity-plugins.md:1416 · Overview
-40 · 04-connectivity-plugins.md:1420 · Bones/Soul Split
-40 · 04-connectivity-plugins.md:1428 · Mulberry32 PRNG
-40 · 04-connectivity-plugins.md:1444 · Rarity
-40 · 04-connectivity-plugins.md:1456 · Stats
-40 · 04-connectivity-plugins.md:1460 · Species (18 total)
-40 · 04-connectivity-plugins.md:1469 · Sprite Engine
-40 · 04-connectivity-plugins.md:1473 · Animation
-40 · 04-connectivity-plugins.md:1487 · Context Injection
-40 · 04-connectivity-plugins.md:1491 · Launch Strategy
-40 · 04-connectivity-plugins.md:1495 · Anti-Cheat
+31 · 04-connectivity-plugins.md:615 · The account's skills cache (`skills-plugin/`)
+32 · 04-connectivity-plugins.md:638 · Core Files
+32 · 04-connectivity-plugins.md:646 · The 27 Hook Events of v2.1.88 (Categorized)
+32 · 04-connectivity-plugins.md:660 · Exit Code Semantics
+32 · 04-connectivity-plugins.md:684 · Five Hook Command Types
+32 · 04-connectivity-plugins.md:686 · 1. `command` (Shell subprocess)
+32 · 04-connectivity-plugins.md:689 · 2. `prompt` (LLM prompt)
+32 · 04-connectivity-plugins.md:694 · 3. `agent` (Agentic verifier)
+32 · 04-connectivity-plugins.md:706 · 4. `http` (HTTP POST)
+32 · 04-connectivity-plugins.md:710 · 5. `function` (TypeScript callback)
+32 · 04-connectivity-plugins.md:714 · Configuration Sources (6 total, merged)
+32 · 04-connectivity-plugins.md:725 · Session Hooks API
+32 · 04-connectivity-plugins.md:739 · Async and asyncRewake
+32 · 04-connectivity-plugins.md:744 · HTTP Hooks Security (Three Layers)
+32 · 04-connectivity-plugins.md:750 · The `if` Filter Field
+32 · 04-connectivity-plugins.md:754 · Hook Event Bus (SDK Telemetry)
+32 · 04-connectivity-plugins.md:758 · Real-World Patterns
+33 · 04-connectivity-plugins.md:787 · Four-Layer Architecture
+33 · 04-connectivity-plugins.md:794 · Error Taxonomy
+33 · 04-connectivity-plugins.md:806 · Three-Way Abort Check
+33 · 04-connectivity-plugins.md:818 · Normalization Helpers
+33 · 04-connectivity-plugins.md:830 · Filesystem Error Helpers
+33 · 04-connectivity-plugins.md:838 · Tool Error Formatting
+33 · 04-connectivity-plugins.md:851 · Error Log Sink
+33 · 04-connectivity-plugins.md:855 · API Retry Engine
+33 · 04-connectivity-plugins.md:857 · Retry Delay Formula
+33 · 04-connectivity-plugins.md:868 · 529 Overload Handling
+33 · 04-connectivity-plugins.md:871 · Context Overflow Auto-Adjustment
+33 · 04-connectivity-plugins.md:874 · 10+ Failure Modes Handled
+33 · 04-connectivity-plugins.md:877 · Persistent Retry Mode
+33 · 04-connectivity-plugins.md:880 · Conversation Recovery
+33 · 04-connectivity-plugins.md:882 · Four-Stage Deserialization
+33 · 04-connectivity-plugins.md:888 · Interruption Classification
+33 · 04-connectivity-plugins.md:900 · Synthetic Continuation
+34 · 04-connectivity-plugins.md:907 · Architecture Overview
+34 · 04-connectivity-plugins.md:911 · Bridge v1 vs v2
+34 · 04-connectivity-plugins.md:917 · WorkSecret (v1)
+34 · 04-connectivity-plugins.md:930 · Session ID Compatibility
+34 · 04-connectivity-plugins.md:948 · Transport Layer
+34 · 04-connectivity-plugins.md:967 · FlushGate
+34 · 04-connectivity-plugins.md:979 · Permission Bridge Protocol
+34 · 04-connectivity-plugins.md:983 · Standalone Bridge
+34 · 04-connectivity-plugins.md:1003 · Key Design Patterns
+35 · 04-connectivity-plugins.md:1014 · Architecture
+35 · 04-connectivity-plugins.md:1019 · PKCE Primitives
+35 · 04-connectivity-plugins.md:1033 · OAuth Flow
+35 · 04-connectivity-plugins.md:1042 · Scopes
+35 · 04-connectivity-plugins.md:1050 · Token Storage
+35 · 04-connectivity-plugins.md:1060 · Token Refresh
+35 · 04-connectivity-plugins.md:1066 · Logout
+35 · 04-connectivity-plugins.md:1073 · Authorization URL
+35 · 04-connectivity-plugins.md:1081 · Enterprise/FedStart
+36 · 04-connectivity-plugins.md:1089 · Design Philosophy: Filesystem-First
+36 · 04-connectivity-plugins.md:1093 · Config Parser
+36 · 04-connectivity-plugins.md:1103 · Git Filesystem Reading
+36 · 04-connectivity-plugins.md:1105 · resolveGitDir
+36 · 04-connectivity-plugins.md:1108 · readGitHead
+36 · 04-connectivity-plugins.md:1115 · resolveRef
+36 · 04-connectivity-plugins.md:1118 · GitFileWatcher
+36 · 04-connectivity-plugins.md:1128 · Security: Ref Validation
+36 · 04-connectivity-plugins.md:1141 · Operation Tracking
+36 · 04-connectivity-plugins.md:1153 · GitHub Auth
+36 · 04-connectivity-plugins.md:1157 · Gitignore
+37 · 04-connectivity-plugins.md:1165 · Architecture
+37 · 04-connectivity-plugins.md:1169 · Initialization (6 steps)
+37 · 04-connectivity-plugins.md:1178 · CONNECT-over-WebSocket Relay
+37 · 04-connectivity-plugins.md:1183 · Protobuf Encoding
+37 · 04-connectivity-plugins.md:1192 · Runtime Dispatch
+37 · 04-connectivity-plugins.md:1198 · Environment Variables
+37 · 04-connectivity-plugins.md:1211 · Security
+37 · 04-connectivity-plugins.md:1217 · Keepalive and Chunking
+37 · 04-connectivity-plugins.md:1221 · ConnState Guards
+38 · 04-connectivity-plugins.md:1229 · Five Layers
+38 · 04-connectivity-plugins.md:1237 · CronTask Model
+38 · 04-connectivity-plugins.md:1247 · Scheduler State Machine
+38 · 04-connectivity-plugins.md:1251 · Jitter System
+38 · 04-connectivity-plugins.md:1266 · Tools
+38 · 04-connectivity-plugins.md:1272 · REPL Integration
+38 · 04-connectivity-plugins.md:1276 · Missed Tasks
+38 · 04-connectivity-plugins.md:1281 · Feature Gates
+39 · 04-connectivity-plugins.md:1289 · Architecture
+39 · 04-connectivity-plugins.md:1295 · Feature Gating
+39 · 04-connectivity-plugins.md:1301 · Audio Backends (Priority Order)
+39 · 04-connectivity-plugins.md:1307 · WebSocket STT Protocol
+39 · 04-connectivity-plugins.md:1316 · Hold-to-Talk
+39 · 04-connectivity-plugins.md:1328 · Silent-Drop Replay
+39 · 04-connectivity-plugins.md:1332 · Focus Mode
+39 · 04-connectivity-plugins.md:1336 · Language and Keyterms
+39 · 04-connectivity-plugins.md:1340 · Audio Levels
+40 · 04-connectivity-plugins.md:1353 · Overview
+40 · 04-connectivity-plugins.md:1357 · Bones/Soul Split
+40 · 04-connectivity-plugins.md:1365 · Mulberry32 PRNG
+40 · 04-connectivity-plugins.md:1381 · Rarity
+40 · 04-connectivity-plugins.md:1393 · Stats
+40 · 04-connectivity-plugins.md:1397 · Species (18 total)
+40 · 04-connectivity-plugins.md:1406 · Sprite Engine
+40 · 04-connectivity-plugins.md:1410 · Animation
+40 · 04-connectivity-plugins.md:1424 · Context Injection
+40 · 04-connectivity-plugins.md:1428 · Launch Strategy
+40 · 04-connectivity-plugins.md:1432 · Anti-Cheat
 41 · 05-unreleased-bigpicture.md:5 · LESSON 1: ULTRAPLAN -- Remote Planning via Claude Code on the Web
 41 · 05-unreleased-bigpicture.md:21 · Four Phases
 41 · 05-unreleased-bigpicture.md:31 · Keyword Trigger: Smart Disambiguation
@@ -1957,6 +1957,15 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 243 · 70-desktop-scheduled-vs-interactive-sessions.md:44 · How to tell a scheduled session from an interactive one
 243 · 70-desktop-scheduled-vs-interactive-sessions.md:55 · For a skill or test author
 243 · 70-desktop-scheduled-vs-interactive-sessions.md:62 · Not traced
+244 · 71-desktop-skills-plugin-anthropic-skills.md:17 · Where it lives
+244 · 71-desktop-skills-plugin-anthropic-skills.md:26 · Three sources, one manifest (`_syncSkills`, `index.chunk-CyZGni4N.js`)
+244 · 71-desktop-skills-plugin-anthropic-skills.md:42 · What the type and flags change in Desktop
+244 · 71-desktop-skills-plugin-anthropic-skills.md:53 · How Desktop hands it to the agent
+244 · 71-desktop-skills-plugin-anthropic-skills.md:64 · What the agent does with it (agent 2.1.308)
+244 · 71-desktop-skills-plugin-anthropic-skills.md:82 · Where the model sees the skills
+244 · 71-desktop-skills-plugin-anthropic-skills.md:95 · What the in-code skills need
+244 · 71-desktop-skills-plugin-anthropic-skills.md:104 · For a skill or test author
+244 · 71-desktop-skills-plugin-anthropic-skills.md:116 · Not traced
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

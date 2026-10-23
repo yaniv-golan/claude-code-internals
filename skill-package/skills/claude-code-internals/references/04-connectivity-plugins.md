@@ -612,87 +612,24 @@ Desktop's IPC handlers (`listMarketplaces`, `installPlugin`, etc.) do NOT read t
 
 Empirically the Settings UI's "Personal" tab can show entries from CCD's host file even from a Cowork session — implying the renderer is calling `listMarketplaces` more than once with different `pluginContext` values and merging. The renderer is partially served from a remote web origin, so the exact merge logic is outside the local-bundle audit. Bundle-side: each individual IPC call reads exactly one file.
 
-#### Anthropic-managed skills cache (`skills-plugin/`)
+#### The account's skills cache (`skills-plugin/`)
 
-Cowork ships with Anthropic-curated built-in skills (`pdf`, `xlsx`, `theme-factory`, `consolidate-memory`, `schedule`, `setup-cowork`, `doc-coauthoring`, `algorithmic-art`, `internal-comms`, `skill-creator`, `fiction-studio`) that are **not user-installed plugins** and don't appear in `installed_plugins.json` or any `marketplace.json`. They live in their own cache:
+Desktop keeps one plugin per organization and account, named `anthropic-skills`. It holds the skills defined in Desktop's code, the account's claude.ai skills (Anthropic's and the user's own) and skills saved on this computer, all listed in one `manifest.json`. None of these are user-installed plugins: they appear in no `installed_plugins.json` and no `marketplace.json`.
 
 ```text
 <userData>/local-agent-mode-sessions/skills-plugin/<orgId>/<accountId>/
   .claude-plugin/plugin.json
-  skills/<skill-name>/
-    SKILL.md
-    (auxiliary files)
+  manifest.json
+  skills/<skill-name>/SKILL.md
 ```
 
-Note the directory order: `<orgId>/<accountId>` — opposite of the Cowork plugin roots which use `<accountId>/<orgId>`. Tooling that walks one structure and assumes the other will miss this cache.
+The directory order is `<orgId>/<accountId>`, the opposite of the Cowork plugin roots (`<accountId>/<orgId>`), so tooling that walks one structure misses the other.
 
-The sync model:
+Desktop syncs it every **10 minutes** and when the app gains focus. It downloads only enabled skills that are new, changed, or missing their `SKILL.md`. A failed download keeps the skill's previous manifest entry and schedules another sync, so the next round retries it.
 
-- Background timer fires every **10 minutes** (`_syncIntervalMs = 6e5`); also runs on app focus.
-- `_syncSkills` calls the org skills API for the enabled-skill list, then computes a delta against the local manifest:
+**Stale skill text:** if a session still runs an old version, delete that skill's folder under `skills/` and focus Desktop; a missing `SKILL.md` forces the download.
 
-```js
-calculateDelta(A, t, i) {
-  const r = new Map(i.map(c => [c.name, c]));   // local
-  ...
-  for (const c of t) {                           // remote
-    const g = r.get(c.name);
-    const u = XA.existsSync(path.join(getSkillDir(A, c.name), "SKILL.md"));
-    (!g || g.updatedAt !== c.updatedAt || !u) && s.push(c);
-  }
-  ...
-}
-```
-
-- Downloads run with concurrency 10 via `downloadSkills`:
-
-```js
-async downloadSkills(A, t) {
-  const i = new P1({ concurrency: mbr });   // mbr = 10
-  let r = 0;
-  return await i.addAll(t.map(n => async () => {
-    try {
-      await wjA(n.skillId, getSkillDir(A, n.name));
-      r++;
-    } catch (s) {
-      R.error(`[SkillsPlugin] Failed to download ${n.name}:`, s);   // caught & logged, NOT propagated
-    }
-  }));
-  return r;
-}
-```
-
-- After downloads complete (successful or not), `_syncSkills` calls `writeManifest` **unconditionally** with the full remote skill list, including the new `updatedAt` for any skill that failed to download.
-
-##### The silent-stale failure mode
-
-This combination produces an operationally-serious bug:
-
-1. Delta says skill X needs download (remote `updatedAt` is newer than local).
-2. Download throws — network failure, 4xx, OAuth glitch, whatever. Error caught and logged.
-3. `writeManifest` runs anyway, recording X's new `updatedAt` in the local manifest.
-4. Next sync: `calculateDelta` sees `localManifest.updatedAt === remote.updatedAt` for X. If the old SKILL.md is still on disk (download threw before overwriting), the third condition (`!SKILL.md exists`) is also false. **The skill is not redownloaded.**
-5. Stale skill text persists — potentially indefinitely. Desktop restart doesn't fix it (next sync still sees matching `updatedAt`). The 10-minute sync timer can't recover from this state.
-
-**Recovery**: delete the stale SKILL.md (or the whole skill directory) under `skills-plugin/<orgId>/<accountId>/skills/<skill-name>/`, then trigger a sync (focus Desktop or wait 10 minutes). The third "needs download" check (`SKILL.md missing`) will fire and the skill will be redownloaded:
-
-```bash
-rm -rf "<userData>/local-agent-mode-sessions/skills-plugin/<orgId>/<accountId>/skills/<skill-name>"
-# Or just the SKILL.md file:
-rm "<userData>/local-agent-mode-sessions/skills-plugin/<orgId>/<accountId>/skills/<skill-name>/SKILL.md"
-```
-
-##### Why this matters for stale-plugin debugging
-
-This cache is invisible to every other staleness check covered earlier in this lesson:
-
-- Not in `installed_plugins.json` (these aren't user-installed plugins).
-- Not in any `marketplace.json` (no marketplace catalog lists them).
-- Not in `rpm/manifest.json` (RPM doesn't track them).
-- Not affected by `refreshPluginMcps` (that's MCP-only).
-- Not refreshed by starting a new Cowork task or conversation (the new task uses whatever the local skill files say).
-
-If a Cowork session is using stale `pdf` / `xlsx` / etc. content, the cause is here. Tools that diagnose Cowork plugin staleness should include this cache in their checks.
+This cache is invisible to the other staleness checks in this lesson: it isn't in `installed_plugins.json`, `marketplace.json` or `rpm/manifest.json`, and `refreshPluginMcps` doesn't touch it. How the three sources merge, how the plugin reaches the agent and how the model sees it: **L244**.
 
 ---
 
