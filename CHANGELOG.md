@@ -1,5 +1,49 @@
 # Changelog
 
+## v2.80.0 — 2026-10-23 (this fork) — Desktop's skills plugin, and what Desktop 3.6556.1 changed
+
+245 lessons across 75 chapters (L244 and L245 new; L31, L233, L237, L242 and L243 updated). Sources: Claude Desktop
+`app.asar` 3.6556.1 compared in full with 3.1623.4, both bundling agent 2.1.308; the agent's own binary; the
+skills-plugin folders on one Mac; the Desktop flag cache under a Team organization on 2026-10-23; and Anthropic's
+Desktop release notes for v3.6556.1.
+
+**Desktop's `anthropic-skills` plugin (new L244, Ch74)**
+
+- One plugin per organization and account mixes Anthropic's skills with your own by design. Desktop merges three
+  sources into it: skills defined in its code, the account's claude.ai skills, and skills saved on this computer.
+- When an organization has Skills off, Desktop serves a separate plugin with only the app's own skills.
+- With the agent running on the Mac, Desktop passes the plugin first as `--plugin-dir`. With the agent in the VM,
+  its skills appear as ordinary project skills.
+- The agent reads the plugin's skill on/off switches only in third-party deployments, and drops a plugin skill whose
+  name collides with one of the account's skills.
+- The model sees these skills twice: in Desktop's system-prompt list, and in the agent's own list, which doesn't know
+  Desktop's hide and enable rules.
+- L31's section on this cache was out of date and is rewritten: a failed download now keeps the previous version and
+  is retried.
+
+**Desktop 3.6556.1 (new L245, Ch75)**
+
+- Same agent (2.1.308) and VM image as 3.1623.4; every change is in Desktop itself.
+- An MCP tool its server marks as needing a person can be approved only on the in-app card, with no "always allow".
+  A scheduled or other unattended turn skips it.
+- The fix for plugins and skills in scheduled tasks was found only for Code-tab sessions, which now wait up to 5
+  seconds for the first plugin sync. No Cowork-side change was found.
+- The built-in `schedule` skill is gone; the scheduled-task tools stay. Desktop now implements `sshHostCommands`.
+- Not in the notes: a local Typed Artifact Service with nine tools for interactive host-loop Cowork sessions; the
+  `toolPolicyEndpoint` admin key removed; a note on every admin key saying whether a self-hosted session host applies
+  it; `CLAUDE_CODE_ATTRIBUTION_PROJECT` in the agent's environment; 17 new server flags.
+
+**Updated lessons**
+
+- L243: its scheduled-run rules still hold in 3.6556.1. A scheduled run also never gets the typed-artifact tools, and
+  skips person-only MCP tools.
+- L242: the skill-scan and artifact admin keys are now stamped as released in 3.1623.0.
+- L237: the four admin keys added in 3.6556.1. L233: `toolPolicyEndpoint` is gone.
+
+**Desktop flag cache**
+
+- Restamped under Team on 3.6556.1 (455 features); none of the tracked gates moved.
+
 ## v2.79.0 — 2026-10-22 (this fork) — Scheduled Cowork tasks are a different kind of session
 
 243 lessons across 73 chapters (L243 new; L242, L226 and L210 extended). Sources: Claude Desktop `app.asar` 3.1623.4
