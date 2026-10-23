@@ -1905,10 +1905,10 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 237 · 64-desktop-admin-keys-aug-oct-2026.md:69 · MCP tools and scheduled tasks
 237 · 64-desktop-admin-keys-aug-oct-2026.md:79 · Sessions kept on the device
 237 · 64-desktop-admin-keys-aug-oct-2026.md:88 · Updates, restarts and the rest
-237 · 64-desktop-admin-keys-aug-oct-2026.md:101 · Unified Claude: one home for Chat and Cowork
-237 · 64-desktop-admin-keys-aug-oct-2026.md:132 · For a skill or plugin author
-237 · 64-desktop-admin-keys-aug-oct-2026.md:140 · For an admin
-237 · 64-desktop-admin-keys-aug-oct-2026.md:146 · Not established
+237 · 64-desktop-admin-keys-aug-oct-2026.md:103 · Unified Claude: one home for Chat and Cowork
+237 · 64-desktop-admin-keys-aug-oct-2026.md:134 · For a skill or plugin author
+237 · 64-desktop-admin-keys-aug-oct-2026.md:142 · For an admin
+237 · 64-desktop-admin-keys-aug-oct-2026.md:148 · Not established
 238 · 65-desktop-2.42304-unannounced-changes.md:19 · Code tab
 238 · 65-desktop-2.42304-unannounced-changes.md:29 · SSH sessions
 238 · 65-desktop-2.42304-unannounced-changes.md:34 · Plugins
@@ -1949,23 +1949,35 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 242 · 69-desktop-3.1623-unannounced-changes.md:35 · Reserved: typed artifacts for third-party deployments
 242 · 69-desktop-3.1623-unannounced-changes.md:39 · Other changes
 242 · 69-desktop-3.1623-unannounced-changes.md:47 · Desktop 3.1623.4 (2026-10-22)
-242 · 69-desktop-3.1623-unannounced-changes.md:58 · In the official release notes (checked 2026-10-21)
-242 · 69-desktop-3.1623-unannounced-changes.md:63 · Not traced
+242 · 69-desktop-3.1623-unannounced-changes.md:58 · Desktop 3.6556.1
+242 · 69-desktop-3.1623-unannounced-changes.md:62 · In the official release notes (checked 2026-10-21)
+242 · 69-desktop-3.1623-unannounced-changes.md:67 · Not traced
 243 · 70-desktop-scheduled-vs-interactive-sessions.md:17 · How the type is set (CODE-READ, `index.chunk-DbIevS2k.js`)
 243 · 70-desktop-scheduled-vs-interactive-sessions.md:22 · What a scheduled run doesn't get
 243 · 70-desktop-scheduled-vs-interactive-sessions.md:34 · What a scheduled run gets instead (CODE-READ)
 243 · 70-desktop-scheduled-vs-interactive-sessions.md:44 · How to tell a scheduled session from an interactive one
 243 · 70-desktop-scheduled-vs-interactive-sessions.md:55 · For a skill or test author
-243 · 70-desktop-scheduled-vs-interactive-sessions.md:62 · Not traced
+243 · 70-desktop-scheduled-vs-interactive-sessions.md:62 · In Desktop 3.6556.1
+243 · 70-desktop-scheduled-vs-interactive-sessions.md:68 · Not traced
 244 · 71-desktop-skills-plugin-anthropic-skills.md:17 · Where it lives
 244 · 71-desktop-skills-plugin-anthropic-skills.md:26 · Three sources, one manifest (`_syncSkills`, `index.chunk-CyZGni4N.js`)
-244 · 71-desktop-skills-plugin-anthropic-skills.md:42 · What the type and flags change in Desktop
-244 · 71-desktop-skills-plugin-anthropic-skills.md:53 · How Desktop hands it to the agent
-244 · 71-desktop-skills-plugin-anthropic-skills.md:64 · What the agent does with it (agent 2.1.308)
-244 · 71-desktop-skills-plugin-anthropic-skills.md:82 · Where the model sees the skills
-244 · 71-desktop-skills-plugin-anthropic-skills.md:95 · What the in-code skills need
-244 · 71-desktop-skills-plugin-anthropic-skills.md:104 · For a skill or test author
-244 · 71-desktop-skills-plugin-anthropic-skills.md:116 · Not traced
+244 · 71-desktop-skills-plugin-anthropic-skills.md:43 · What the type and flags change in Desktop
+244 · 71-desktop-skills-plugin-anthropic-skills.md:54 · How Desktop hands it to the agent
+244 · 71-desktop-skills-plugin-anthropic-skills.md:65 · What the agent does with it (agent 2.1.308)
+244 · 71-desktop-skills-plugin-anthropic-skills.md:83 · Where the model sees the skills
+244 · 71-desktop-skills-plugin-anthropic-skills.md:96 · What the in-code skills need
+244 · 71-desktop-skills-plugin-anthropic-skills.md:105 · For a skill or test author
+244 · 71-desktop-skills-plugin-anthropic-skills.md:117 · Not traced
+245 · 72-desktop-3.6556-changes.md:17 · Unchanged
+245 · 72-desktop-3.6556-changes.md:23 · Person-only MCP tools (announced)
+245 · 72-desktop-3.6556-changes.md:33 · Plugins and skills in scheduled tasks (announced; Cowork side not located)
+245 · 72-desktop-3.6556-changes.md:41 · `/schedule` and the `schedule` skill (announced)
+245 · 72-desktop-3.6556-changes.md:47 · `sshHostCommands` (announced)
+245 · 72-desktop-3.6556-changes.md:57 · Typed Artifact Service (not in the notes)
+245 · 72-desktop-3.6556-changes.md:65 · Admin keys
+245 · 72-desktop-3.6556-changes.md:76 · Other changes
+245 · 72-desktop-3.6556-changes.md:87 · In the official release notes (checked 2026-10-23)
+245 · 72-desktop-3.6556-changes.md:93 · Not traced
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

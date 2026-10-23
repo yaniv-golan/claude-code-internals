@@ -1,4 +1,4 @@
-Updated: 2026-10-23 (L244) | Source: **Claude Desktop `app.asar` 3.1623.4** and the bundled agent **2.1.308** (the Desktop-managed host Mach-O), read on 2026-10-23; in **Desktop 3.6556.1** (installed the same day) about 20 of the code fragments quoted here were still found, but the two builds were not compared in full; the `skills-plugin` folders of one Mac (4 organization folders, one account each). Code-read except where a measurement is named. Minified names are given with their chunk file, because the same short name is reused across chunks.
+Updated: 2026-10-23 (L244) | Source: **Claude Desktop `app.asar` 3.1623.4** and the bundled agent **2.1.308** (the Desktop-managed host Mach-O), read on 2026-10-23; re-read against a full diff of **Desktop 3.6556.1** (L245) the same day: unchanged except that the in-code `schedule` skill is gone and a corrupt manifest is now moved aside and rebuilt; the `skills-plugin` folders of one Mac (4 organization folders, one account each). Code-read except where a measurement is named. Minified names are given with their chunk file, because the same short name is reused across chunks.
 
 # Chapter 74: Desktop's `anthropic-skills` Plugin
 
@@ -27,13 +27,14 @@ Neither existed on the Mac read here.
 
 | source | manifest entry | how it gets there |
 |---|---|---|
-| skills defined in Desktop's code: `schedule`, `setup-cowork` (and its former name, hidden), `consolidate-memory`, the usage explainer | `creatorType:"anthropic"`, `skillId` = name, `updatedAt: null` (this shape is how Desktop recognises them) | written on every sync as one `SKILL.md`: name, description, `disable-model-invocation: true` only when hidden, then the prompt. Other files in that folder are removed. |
+| skills defined in Desktop's code: `setup-cowork` (and its former name, hidden), `consolidate-memory`, the usage explainer, and in 3.1623.4 also `schedule` (removed in 3.6556.1) | `creatorType:"anthropic"`, `skillId` = name, `updatedAt: null` (this shape is how Desktop recognises them) | written on every sync as one `SKILL.md`: name, description, `disable-model-invocation: true` only when hidden, then the prompt. Other files in that folder are removed. |
 | the account's skills from claude.ai | the server's `creator_type`, `source` (kept only when `anthropic` or `anthropic-example`), `updated_at`, `enabled`, and `backing_plugin_id` when it looks like `plugin_…` | `GET /api/organizations/<org>/skills/list-skills?include_wiggle_skills=true&entrypoint=local-agent`, enabled entries only; content from `…/skills/download-dot-skill-file?skill_id=…` |
 | skills saved on this computer | `creatorType:"user"`, `syncManaged:false` | `save_skill` and local saving |
 
 - **Name clashes:** the app's own skill wins, then the local one, then the claude.ai one, each with a `[SkillsPlugin] … takes precedence` log line.
 - **Third-party deployments** never call `list-skills`. They read a local store and seed the skill archives shipped in the app (`resources/bundled-skills/*.skill`), each enabled unless its tier is `default_false`. First-party accounts get those skills (docx, pdf, pptx, xlsx and others) from the server, except when Desktop serves only the app's own skills (below), when they too are seeded from the app.
-- **A failed download** keeps the skill's previous manifest entry, or none if it is new, and schedules another sync. So the next round retries it.
+- **A failed download** keeps the skill's previous manifest entry, or none if it is new, and schedules another sync. So the next round retries it. From 3.6556.1 a manifest that can't be used is moved aside with a `.corrupt` suffix and rebuilt.
+- **Code-tab sessions** in 3.6556.1 wait up to 5 seconds for the first plugin sync when they start before it finishes (L245).
 - **The skills Desktop serves** follow the organization (`resolveServedSkills`):
   - `synced`: the normal mixed plugin.
   - `app_shipped`: Skills are off under the organization's policy, or a HIPAA block applies (`lam_hipaa_gate_blocked`, surface `skills_sync`). Desktop serves the `-builtins` plugin, limited to the names the organization serves.
@@ -96,7 +97,7 @@ So a skill Desktop hides only through an enabled check can still reach the model
 
 | skill | needs |
 |---|---|
-| `schedule` | the scheduled-task tools (`create_scheduled_task`, `update_scheduled_task`, `list_scheduled_tasks`). Where scheduled tasks are unavailable, Desktop writes a placeholder that tells Claude to say so, marked not model-invocable |
+| `schedule` (3.1623.4 only) | the scheduled-task tools (`create_scheduled_task`, `update_scheduled_task`, `list_scheduled_tasks`). Where scheduled tasks are unavailable, Desktop writes a placeholder that tells Claude to say so, marked not model-invocable |
 | `setup-cowork` | the onboarding role picker, the plugin-marketplace search and suggestion card, the connector-registry search and suggestion card. Where the organization blocks suggestions, Desktop writes a placeholder instead |
 | `consolidate-memory` | the auto-memory section of Desktop's system prompt (the memory folder and `MEMORY.md`) |
 | the usage explainer | shell access to the session's transcripts under `$HOME/mnt/.claude/projects/` (the VM layout) |

@@ -1,4 +1,4 @@
-Updated: 2026-10-22 (L243) | Source: **Claude Desktop `app.asar` 3.1623.4** (the installed build, byte-identical to the archived copy) and the bundled agent **2.1.308**, read on 2026-10-22; the session records, `audit.jsonl` files and `main.log` of one Mac (1,003 Cowork session records, agents 2.1.2xx–2.1.308); and Anthropic's Desktop release notes through v3.6556.1, checked 2026-10-22. A subagent did the first code pass; the session-type assignment, the `send_user_message` rule, the `AskUserQuestion` removal, the environment variable, the attendance flag and the first-message tag were re-read here, and the on-disk counts were re-counted here. Minified names are given with their chunk file, because the same short name is reused across chunks.
+Updated: 2026-10-22 (L243) | Source: **Claude Desktop `app.asar` 3.1623.4** (the installed build, byte-identical to the archived copy) and the bundled agent **2.1.308**, read on 2026-10-22; the session records, `audit.jsonl` files and `main.log` of one Mac (1,003 Cowork session records, agents 2.1.2xx–2.1.308); and Anthropic's Desktop release notes through v3.6556.1, checked 2026-10-22. Re-read in **Desktop 3.6556.1** on 2026-10-23 (full diff in L245): every rule below still holds under new minified names, and the section on 3.6556.1 adds two differences. A subagent did the first code pass; the session-type assignment, the `send_user_message` rule, the `AskUserQuestion` removal, the environment variable, the attendance flag and the first-message tag were re-read here, and the on-disk counts were re-counted here. Minified names are given with their chunk file, because the same short name is reused across chunks.
 
 # Chapter 73: Scheduled Cowork Tasks Are a Different Kind of Session
 
@@ -58,6 +58,12 @@ Updated: 2026-10-22 (L243) | Source: **Claude Desktop `app.asar` 3.1623.4** (the
 - **A tool list or environment captured from a scheduled run is not an interactive session's.** Subtract the differences above before comparing, and treat the three missing tools as known from the code, not observed.
 - **To detect a scheduled run from inside a skill**, check `CLAUDE_CODE_HOST_SCHEDULED_RUN` in the agent's environment. It reaches the host-side agent; whether it reaches the VM shell wasn't checked (the VM shell gets almost no host environment, L116).
 - **Release notes after this build:** v3.6556.1 fixes Claude not finding plugins and skills in scheduled tasks (except in third-party deployments), and makes MCP tools that their server marks as needing a person ask only on the in-app card, so a scheduled task goes on without those calls.
+
+## In Desktop 3.6556.1
+
+- **No typed-artifact tools.** The Typed Artifact Service's tools (`create_from_type`, `db_get` and the rest, L245) are offered only to host-loop sessions with no session type and no scheduled task (`index.chunk-DCfOtL-w.js`). A scheduled run never gets them.
+- **Person-only MCP tools are refused.** A tool whose server marks it as needing a person is refused at once in an unattended turn, so a scheduled run goes on without it. A scheduled run whose own turn is continuing is exempt.
+- **No `schedule` skill.** The in-code `schedule` skill is gone; the scheduled-task tools remain.
 
 ## Not traced
 

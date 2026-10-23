@@ -3236,6 +3236,19 @@
     244
    ],
    "hint": "Desktop merges in-code, claude.ai and local skills into one anthropic-skills plugin, passed by --plugin-dir in host-loop only. The agent reads manifest.json switches only in third-party deployments; names reserved for synced skills drop colliding plugin skills."
+  },
+  {
+   "pattern": [
+    "MCP tool skipped in scheduled task",
+    "requiresUserInteraction tool denied unattended",
+    "no always allow for an MCP tool",
+    "/schedule skill missing",
+    "typed artifact tools missing in scheduled run"
+   ],
+   "lessons": [
+    245
+   ],
+   "hint": "From Desktop 3.6556.1 a tool marked anthropic/requiresUserInteraction is approved only on the card and refused in unattended turns; the schedule skill is gone; typed-artifact tools reach only interactive host-loop sessions."
   }
  ]
 }

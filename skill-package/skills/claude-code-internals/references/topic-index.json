@@ -1,6 +1,6 @@
 {
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 244,
+  "total_lessons": 245,
   "lessons": [
     {
       "id": 1,
@@ -10982,7 +10982,6 @@
         "read-file-contents",
         "open-file",
         "get-auto-memory-dir-for-session",
-        "cowork-tab-enabled",
         "update-scheduled-task",
         "get-all-scheduled-tasks",
         "update-scheduled-task-status",
@@ -11064,7 +11063,6 @@
         "read-file-contents",
         "open-file",
         "get-auto-memory-dir-for-session",
-        "cowork-tab-enabled",
         "update-scheduled-task",
         "get-all-scheduled-tasks",
         "update-scheduled-task-status",
@@ -22842,7 +22840,6 @@
         "otlp-headers",
         "otlp-resource-attributes",
         "tool-policy-rules",
-        "tool-policy-endpoint",
         "2.31226.0",
         "skill-bundles",
         "inference-bedrock-web-identity-role-arn",
@@ -22964,7 +22961,6 @@
         "otlp-headers",
         "otlp-resource-attributes",
         "tool-policy-rules",
-        "tool-policy-endpoint",
         "2.31226.0",
         "skill-bundles",
         "inference-bedrock-web-identity-role-arn",
@@ -23013,7 +23009,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-16",
+        "date": "2026-10-23",
         "terms_sha256": "deab1615f9a481dd6a044640ea0c33a340bf4e83ab7cc50597db1c16280880a5"
       }
     },
@@ -23023,9 +23019,8 @@
       "lesson_number": "237",
       "file": "64-desktop-admin-keys-aug-oct-2026.md",
       "startLine": 13,
-      "endLine": 148,
+      "endLine": 150,
       "keywords": [
-        "cowork-tab-enabled",
         "mcp-scheduled-task-approval-lifetime-days",
         "mcp-tool-timeout-sec",
         "index.chunk-muI2IV6k.js",
@@ -23060,6 +23055,10 @@
         "keep-awake-enabled",
         "default-model-effort",
         "always-start-with-default-model",
+        "installed-update-enforcement-enabled",
+        "installed-update-enforcement-hours",
+        "quick-entry-screenshots-enabled",
+        "quick-entry-file-sharing-enabled",
         "desktop-home",
         "no-vm",
         "chat-tab-enabled",
@@ -23088,7 +23087,6 @@
         "hipaa organizations excluded from automatic import"
       ],
       "identifier_keys": [
-        "cowork-tab-enabled",
         "mcp-scheduled-task-approval-lifetime-days",
         "mcp-tool-timeout-sec",
         "index.chunk-muI2IV6k.js",
@@ -23123,6 +23121,10 @@
         "keep-awake-enabled",
         "default-model-effort",
         "always-start-with-default-model",
+        "installed-update-enforcement-enabled",
+        "installed-update-enforcement-hours",
+        "quick-entry-screenshots-enabled",
+        "quick-entry-file-sharing-enabled",
         "desktop-home",
         "no-vm",
         "chat-tab-enabled",
@@ -23155,7 +23157,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-21",
+        "date": "2026-10-23",
         "terms_sha256": "4aa76e36e0ded43b4e5b9bb56ba3f906e12405345f47047b9c13637b0efbda96"
       }
     },
@@ -23567,7 +23569,7 @@
       "lesson_number": "242",
       "file": "69-desktop-3.1623-unannounced-changes.md",
       "startLine": 13,
-      "endLine": 67,
+      "endLine": 71,
       "keywords": [
         "allow-managed-permission-rules-only",
         "index.chunk-BLvpT1n4.js",
@@ -23687,7 +23689,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-22",
+        "date": "2026-10-23",
         "terms_sha256": "c4203ff78b7707f95eec13b50068c0cd90278aa49d8d681a59897291fcb569b5"
       }
     },
@@ -23697,7 +23699,7 @@
       "lesson_number": "243",
       "file": "70-desktop-scheduled-vs-interactive-sessions.md",
       "startLine": 13,
-      "endLine": 66,
+      "endLine": 72,
       "keywords": [
         "lam_session_type",
         "scheduled-task-id",
@@ -23713,6 +23715,8 @@
         "auto-continuation",
         "scheduled-run-continued",
         "get-sessions-for-scheduled-task",
+        "create_from_type",
+        "db_get",
         "scheduled task can't ask me questions",
         "why can't scheduled task ask user",
         "scheduled run missing tools",
@@ -23727,7 +23731,10 @@
         "is this session scheduled or interactive",
         "why does my skill fail when scheduled",
         "scheduled run tool list differs",
-        "what changes when a task runs on a schedule"
+        "what changes when a task runs on a schedule",
+        "scheduled run can't create typed artifacts",
+        "where did the schedule skill go",
+        "tools needing a person refused when unattended"
       ],
       "identifier_keys": [
         "lam_session_type",
@@ -23743,7 +23750,9 @@
         "scheduled-trigger",
         "auto-continuation",
         "scheduled-run-continued",
-        "get-sessions-for-scheduled-task"
+        "get-sessions-for-scheduled-task",
+        "create_from_type",
+        "db_get"
       ],
       "vocab_keys": [
         "scheduled task can't ask me questions",
@@ -23760,13 +23769,16 @@
         "is this session scheduled or interactive",
         "why does my skill fail when scheduled",
         "scheduled run tool list differs",
-        "what changes when a task runs on a schedule"
+        "what changes when a task runs on a schedule",
+        "scheduled run can't create typed artifacts",
+        "where did the schedule skill go",
+        "tools needing a person refused when unattended"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-10-22",
-        "terms_sha256": "015dbda7196ebc46d4a855c9fe80fa05bc36f56a0e018f46f9cde1d1a3a7d56b"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-23",
+        "terms_sha256": "c9c2469e71dd6ade9ca16884f8c18a528d2336bfe7b5864c96a9b85178b672c7"
       }
     },
     {
@@ -23775,7 +23787,7 @@
       "lesson_number": "244",
       "file": "71-desktop-skills-plugin-anthropic-skills.md",
       "startLine": 13,
-      "endLine": 120,
+      "endLine": 121,
       "keywords": [
         "include_wiggle_skills",
         "skill_invoked",
@@ -23815,7 +23827,10 @@
         "test skills plugin outside desktop app",
         "how desktop skills reach the agent",
         "skills list in desktop system prompt",
-        "why can't i edit or delete anthropic skills"
+        "why can't i edit or delete anthropic skills",
+        "corrupt skills manifest rebuilt",
+        "code tab waits for skills sync",
+        "schedule skill missing in newer desktop"
       ],
       "identifier_keys": [
         "include_wiggle_skills",
@@ -23858,13 +23873,186 @@
         "test skills plugin outside desktop app",
         "how desktop skills reach the agent",
         "skills list in desktop system prompt",
-        "why can't i edit or delete anthropic skills"
+        "why can't i edit or delete anthropic skills",
+        "corrupt skills manifest rebuilt",
+        "code tab waits for skills sync",
+        "schedule skill missing in newer desktop"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-23",
+        "terms_sha256": "23041b5571bbec02a744a23f5d45f621ed1d3ec02fb94de510b043653a0d8e2f"
+      }
+    },
+    {
+      "id": 245,
+      "title": "What Desktop 3.6556.1 Changed, Announced and Not",
+      "lesson_number": "245",
+      "file": "72-desktop-3.6556-changes.md",
+      "startLine": 13,
+      "endLine": 98,
+      "keywords": [
+        "office365-mcp",
+        "tool-policy-endpoint",
+        "installed-update-enforcement-enabled",
+        "installed-update-enforcement-hours",
+        "quick-entry-screenshots-enabled",
+        "quick-entry-file-sharing-enabled",
+        "scheduled-run-continued",
+        "create_from_type",
+        "db_get",
+        "index.chunk-DCfOtL-w.js",
+        "ssh-host-commands",
+        "sdk-wrapper-version",
+        "honours-person-only-mark",
+        "index.chunk-CwIoiQq-.js",
+        "person-only",
+        "empty-manifest",
+        "sync-before-first-record",
+        "index.chunk-C6IZyYvr.js",
+        "rpm_first_enabled_state_source",
+        "rpm_sync_wait_ms",
+        "rpm_sync_wait_timed_out",
+        "index.chunk-BwpRRBAq.js",
+        "ssh-identity-file",
+        "start-directory",
+        "get-ssh-host-commands",
+        "create-ssh-command-host",
+        "cancel-ssh-command-host",
+        "ssh-host-mcp-call-tool",
+        "ssh-host-mcp-read-resource",
+        "CLAUDE_SSH_ASKPASS_RELAY",
+        "SSH_SK_HELPER",
+        "SSH_PKCS11_HELPER",
+        "SSH_SK_PROVIDER",
+        "frame-local-worker",
+        "index.chunk-CI-UZNsz.js",
+        "db_list",
+        "db_write",
+        "publish_files",
+        "list_types",
+        "describe_type",
+        "list_files",
+        "index.chunk-Dpp_oKu-.js",
+        "headers-helper-args",
+        "env-helper-args",
+        "CLAUDE_CODE_ATTRIBUTION_PROJECT",
+        "result_not_for_model",
+        "artifact-shell",
+        "get-session-list",
+        "window-state",
+        "app-config",
+        "set-app-feature",
+        "3963759544",
+        "2684344147",
+        "3141359837",
+        "632367876",
+        "1934689456",
+        "2841250005",
+        "1936069307",
+        "2369932081",
+        "592261068",
+        "what changed in latest desktop release",
+        "undocumented changes in desktop update",
+        "mcp tool always needs manual approval",
+        "always allow option missing for mcp tool",
+        "scheduled task skips mcp tool calls",
+        "why is my tool refused in scheduled task",
+        "schedule skill removed from desktop",
+        "what does typing schedule do now",
+        "run commands on ssh host from desktop",
+        "plugins not found in scheduled tasks fix",
+        "new artifact tools in cowork sessions",
+        "tool policy endpoint admin setting removed",
+        "which admin settings apply to self-hosted session host",
+        "why don't scheduled runs get artifact tools",
+        "release notes vs actual desktop changes"
+      ],
+      "identifier_keys": [
+        "office365-mcp",
+        "tool-policy-endpoint",
+        "installed-update-enforcement-enabled",
+        "installed-update-enforcement-hours",
+        "quick-entry-screenshots-enabled",
+        "quick-entry-file-sharing-enabled",
+        "scheduled-run-continued",
+        "create_from_type",
+        "db_get",
+        "index.chunk-DCfOtL-w.js",
+        "ssh-host-commands",
+        "sdk-wrapper-version",
+        "honours-person-only-mark",
+        "index.chunk-CwIoiQq-.js",
+        "person-only",
+        "empty-manifest",
+        "sync-before-first-record",
+        "index.chunk-C6IZyYvr.js",
+        "rpm_first_enabled_state_source",
+        "rpm_sync_wait_ms",
+        "rpm_sync_wait_timed_out",
+        "index.chunk-BwpRRBAq.js",
+        "ssh-identity-file",
+        "start-directory",
+        "get-ssh-host-commands",
+        "create-ssh-command-host",
+        "cancel-ssh-command-host",
+        "ssh-host-mcp-call-tool",
+        "ssh-host-mcp-read-resource",
+        "CLAUDE_SSH_ASKPASS_RELAY",
+        "SSH_SK_HELPER",
+        "SSH_PKCS11_HELPER",
+        "SSH_SK_PROVIDER",
+        "frame-local-worker",
+        "index.chunk-CI-UZNsz.js",
+        "db_list",
+        "db_write",
+        "publish_files",
+        "list_types",
+        "describe_type",
+        "list_files",
+        "index.chunk-Dpp_oKu-.js",
+        "headers-helper-args",
+        "env-helper-args",
+        "CLAUDE_CODE_ATTRIBUTION_PROJECT",
+        "result_not_for_model",
+        "artifact-shell",
+        "get-session-list",
+        "window-state",
+        "app-config",
+        "set-app-feature",
+        "3963759544",
+        "2684344147",
+        "3141359837",
+        "632367876",
+        "1934689456",
+        "2841250005",
+        "1936069307",
+        "2369932081",
+        "592261068"
+      ],
+      "vocab_keys": [
+        "what changed in latest desktop release",
+        "undocumented changes in desktop update",
+        "mcp tool always needs manual approval",
+        "always allow option missing for mcp tool",
+        "scheduled task skips mcp tool calls",
+        "why is my tool refused in scheduled task",
+        "schedule skill removed from desktop",
+        "what does typing schedule do now",
+        "run commands on ssh host from desktop",
+        "plugins not found in scheduled tasks fix",
+        "new artifact tools in cowork sessions",
+        "tool policy endpoint admin setting removed",
+        "which admin settings apply to self-hosted session host",
+        "why don't scheduled runs get artifact tools",
+        "release notes vs actual desktop changes"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
         "date": "2026-10-23",
-        "terms_sha256": "b4ff6e388f17d37b429c11cefebf9d7954ae0974c5ce776b427564e406e7ee47"
+        "terms_sha256": "c19b3bbed0faa2c72692feebc71a7b035075ecbde3fd4b20579bca91adbb8b94"
       }
     }
   ],
@@ -44843,10 +45031,6 @@
     "get-auto-memory-dir-for-session": [
       109
     ],
-    "cowork-tab-enabled": [
-      109,
-      237
-    ],
     "update-scheduled-task": [
       109
     ],
@@ -48724,7 +48908,8 @@
       236
     ],
     "office365-mcp": [
-      236
+      236,
+      245
     ],
     "office365-mcp-stdio.mjs": [
       236
@@ -48893,7 +49078,7 @@
       236
     ],
     "tool-policy-endpoint": [
-      236
+      245
     ],
     "2.31226.0": [
       236
@@ -49058,6 +49243,22 @@
     ],
     "always-start-with-default-model": [
       237
+    ],
+    "installed-update-enforcement-enabled": [
+      237,
+      245
+    ],
+    "installed-update-enforcement-hours": [
+      237,
+      245
+    ],
+    "quick-entry-screenshots-enabled": [
+      237,
+      245
+    ],
+    "quick-entry-file-sharing-enabled": [
+      237,
+      245
     ],
     "desktop-home": [
       237
@@ -49436,10 +49637,22 @@
       243
     ],
     "scheduled-run-continued": [
-      243
+      243,
+      245
     ],
     "get-sessions-for-scheduled-task": [
       243
+    ],
+    "create_from_type": [
+      243,
+      245
+    ],
+    "db_get": [
+      243,
+      245
+    ],
+    "index.chunk-DCfOtL-w.js": [
+      245
     ],
     "index.chunk-CyZGni4N.js": [
       244
@@ -49500,6 +49713,156 @@
     ],
     "list_scheduled_tasks": [
       244
+    ],
+    "ssh-host-commands": [
+      245
+    ],
+    "sdk-wrapper-version": [
+      245
+    ],
+    "honours-person-only-mark": [
+      245
+    ],
+    "index.chunk-CwIoiQq-.js": [
+      245
+    ],
+    "person-only": [
+      245
+    ],
+    "empty-manifest": [
+      245
+    ],
+    "sync-before-first-record": [
+      245
+    ],
+    "index.chunk-C6IZyYvr.js": [
+      245
+    ],
+    "rpm_first_enabled_state_source": [
+      245
+    ],
+    "rpm_sync_wait_ms": [
+      245
+    ],
+    "rpm_sync_wait_timed_out": [
+      245
+    ],
+    "index.chunk-BwpRRBAq.js": [
+      245
+    ],
+    "ssh-identity-file": [
+      245
+    ],
+    "start-directory": [
+      245
+    ],
+    "get-ssh-host-commands": [
+      245
+    ],
+    "create-ssh-command-host": [
+      245
+    ],
+    "cancel-ssh-command-host": [
+      245
+    ],
+    "ssh-host-mcp-call-tool": [
+      245
+    ],
+    "ssh-host-mcp-read-resource": [
+      245
+    ],
+    "CLAUDE_SSH_ASKPASS_RELAY": [
+      245
+    ],
+    "SSH_SK_HELPER": [
+      245
+    ],
+    "SSH_PKCS11_HELPER": [
+      245
+    ],
+    "SSH_SK_PROVIDER": [
+      245
+    ],
+    "frame-local-worker": [
+      245
+    ],
+    "index.chunk-CI-UZNsz.js": [
+      245
+    ],
+    "db_list": [
+      245
+    ],
+    "db_write": [
+      245
+    ],
+    "publish_files": [
+      245
+    ],
+    "list_types": [
+      245
+    ],
+    "describe_type": [
+      245
+    ],
+    "list_files": [
+      245
+    ],
+    "index.chunk-Dpp_oKu-.js": [
+      245
+    ],
+    "headers-helper-args": [
+      245
+    ],
+    "env-helper-args": [
+      245
+    ],
+    "CLAUDE_CODE_ATTRIBUTION_PROJECT": [
+      245
+    ],
+    "result_not_for_model": [
+      245
+    ],
+    "artifact-shell": [
+      245
+    ],
+    "get-session-list": [
+      245
+    ],
+    "window-state": [
+      245
+    ],
+    "app-config": [
+      245
+    ],
+    "set-app-feature": [
+      245
+    ],
+    "3963759544": [
+      245
+    ],
+    "2684344147": [
+      245
+    ],
+    "3141359837": [
+      245
+    ],
+    "632367876": [
+      245
+    ],
+    "1934689456": [
+      245
+    ],
+    "2841250005": [
+      245
+    ],
+    "1936069307": [
+      245
+    ],
+    "2369932081": [
+      245
+    ],
+    "592261068": [
+      245
     ],
     "why is claude startup slow": [
       1
@@ -60885,6 +61248,15 @@
     "what changes when a task runs on a schedule": [
       243
     ],
+    "scheduled run can't create typed artifacts": [
+      243
+    ],
+    "where did the schedule skill go": [
+      243
+    ],
+    "tools needing a person refused when unattended": [
+      243
+    ],
     "where desktop stores my skills on mac": [
       244
     ],
@@ -60926,6 +61298,60 @@
     ],
     "why can't i edit or delete anthropic skills": [
       244
+    ],
+    "corrupt skills manifest rebuilt": [
+      244
+    ],
+    "code tab waits for skills sync": [
+      244
+    ],
+    "schedule skill missing in newer desktop": [
+      244
+    ],
+    "what changed in latest desktop release": [
+      245
+    ],
+    "undocumented changes in desktop update": [
+      245
+    ],
+    "mcp tool always needs manual approval": [
+      245
+    ],
+    "always allow option missing for mcp tool": [
+      245
+    ],
+    "scheduled task skips mcp tool calls": [
+      245
+    ],
+    "why is my tool refused in scheduled task": [
+      245
+    ],
+    "schedule skill removed from desktop": [
+      245
+    ],
+    "what does typing schedule do now": [
+      245
+    ],
+    "run commands on ssh host from desktop": [
+      245
+    ],
+    "plugins not found in scheduled tasks fix": [
+      245
+    ],
+    "new artifact tools in cowork sessions": [
+      245
+    ],
+    "tool policy endpoint admin setting removed": [
+      245
+    ],
+    "which admin settings apply to self-hosted session host": [
+      245
+    ],
+    "why don't scheduled runs get artifact tools": [
+      245
+    ],
+    "release notes vs actual desktop changes": [
+      245
     ]
   },
   "keyword_boundary": {

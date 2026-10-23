@@ -260,7 +260,7 @@ A string diff of the two builds did not surface these; a diff of the managed-pol
   - The admin text says an empty list keeps the sandbox offline, `*` turns the network sandbox off, commands run without asking (`Bash: ask` in `builtinToolPolicy` restores prompting), and chats in the unified Chat and Cowork view already follow the Cowork list. No GrowthBook gate; the HIPAA `*` filter (L214) wraps this spawn too.
 - **A malformed `managedMcpServers` `toolPolicy`** is kept with every tool treated as "blocked", with the error "…is not a map of tool names to permissions".
 - **Deprecation flags** are cleared on `managedMcpServers`, `orgPluginSettings`, `builtinToolPolicy`, `inferenceCustomHeaders`, `bootstrapHeaders` and `otlpHeaders`/`otlpResourceAttributes`. The old spellings now fail as plain invalid values. For `ask-session` the configuration changelog (Desktop 1.40609.0) spells out what an unrecognized value becomes in each field: `ask` for a built-in tool, `blocked` for a plugin-delivered tool, and an invalid entry for a managed server. Use `ask`.
-- **Also in the schema diff:** the `toolPolicyRules` key (added `@next` in 2.31226.0) is gone, unannounced. `toolPolicyEndpoint` was stamped `2.31226.0`, also unannounced.
+- **Also in the schema diff:** the `toolPolicyRules` key (added `@next` in 2.31226.0) is gone, unannounced. `toolPolicyEndpoint` was stamped `2.31226.0`, also unannounced; it is gone from the schema in 3.6556.1, again unannounced (L245).
 
 ## Reading a policy key's release state (MEASURED, 40 Desktop builds, 1.18286.2 → 2.42304.0; CODE-READ, `index.pre.js`)
 

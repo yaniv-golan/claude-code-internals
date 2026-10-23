@@ -5975,11 +5975,11 @@
     "236": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-16",
-      "input_sha256": "59cf4c07208052c3f738e3a634beec30372fa8639cf87a43a177c5f545565fd0",
+      "date": "2026-10-23",
+      "input_sha256": "57d9f3aa96cceb961113d367f1a2f85ee4220b1c7e69526040bbe1b7b3f02ad5",
       "prior_terms_sha256": "deab1615f9a481dd6a044640ea0c33a340bf4e83ab7cc50597db1c16280880a5",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "4948c793dfc70fe0f4acef8b5d797050205bbe0a",
+      "previous_text": "dd455164975843b3bad2f16e1945740006987d5e",
       "replaced": [],
       "terms": [
         "require approval program before Claude reads files",
@@ -6005,11 +6005,11 @@
     "237": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-21",
-      "input_sha256": "0e85325c525b291ef30a8bb5e4de692697cfb9eb8325dba17576fa0fe1e07aaf",
+      "date": "2026-10-23",
+      "input_sha256": "06ca250c0ae08b3b11bfae4001301d94464f5aeb35117c89e4b232f4ce8b1187",
       "prior_terms_sha256": "4aa76e36e0ded43b4e5b9bb56ba3f906e12405345f47047b9c13637b0efbda96",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "e556bb4857e28128b93c67b57c57a7fa85670e8f",
+      "previous_text": "dd455164975843b3bad2f16e1945740006987d5e",
       "replaced": [],
       "terms": [
         "admin policy settings for desktop app",
@@ -6185,11 +6185,11 @@
     "242": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-22",
-      "input_sha256": "ccd000322d4d0de09ce393f0d13c23b8f7e229197beb5a48636bb57b8c22d996",
-      "prior_terms_sha256": "cae95454c4464245961c793c04dbb8881fcc3755a5729c68d83347a3fd753da7",
+      "date": "2026-10-23",
+      "input_sha256": "edd31a1bf1db06e577a2d1bd48e212bc88487e1d39bbc5aeebf734f418c61399",
+      "prior_terms_sha256": "c4203ff78b7707f95eec13b50068c0cd90278aa49d8d681a59897291fcb569b5",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "414afb4c09602234cbfa27d49e4f653ccee44bed",
+      "previous_text": "dd455164975843b3bad2f16e1945740006987d5e",
       "replaced": [],
       "terms": [
         "desktop app undocumented changes",
@@ -6214,10 +6214,13 @@
     },
     "243": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-10-22",
-      "input_sha256": "d41dc3cb135650be3bb9ce6115e905d2b817b61e3e6828a79b6557040a672259",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-23",
+      "input_sha256": "cdc5e336594dc2aa2890e0755f8ce25346c98f44a8ff08444508169d6e48bbd8",
+      "prior_terms_sha256": "015dbda7196ebc46d4a855c9fe80fa05bc36f56a0e018f46f9cde1d1a3a7d56b",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "dd455164975843b3bad2f16e1945740006987d5e",
+      "replaced": [],
       "terms": [
         "scheduled task can't ask me questions",
         "why can't scheduled task ask user",
@@ -6233,20 +6236,25 @@
         "is this session scheduled or interactive?",
         "why does my skill fail when scheduled?",
         "scheduled run tool list differs",
-        "what changes when a task runs on a schedule?"
+        "what changes when a task runs on a schedule?",
+        "scheduled run can't create typed artifacts",
+        "where did the schedule skill go?",
+        "tools needing a person refused when unattended"
       ]
     },
     "244": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
+      "prompt_version": "vocab-v4-update",
       "date": "2026-10-23",
-      "input_sha256": "58990823fb990ef2beeff89495ac51342eac0456eb1d413fd70ab3b0cfef840e",
+      "input_sha256": "ea1b765e5bf7671650e22f707894ecb42778e6348e911a9f3f55009f68b39d47",
+      "prior_terms_sha256": "4e1d4d01de680516cb6f292d8e9341f9ef5477d631953602eb51c34e4c92c4ac",
       "collision_check": "questions-v2.json dev",
+      "previous_text": "dd455164975843b3bad2f16e1945740006987d5e",
+      "replaced": [],
       "terms": [
         "where desktop stores my skills on mac",
         "my skills and anthropic skills in one plugin",
         "claude.ai skills not showing in desktop",
-        "skills turned off by organization only builtin skills",
         "why does a skill appear twice to the model",
         "hidden skill still offered to the model",
         "my plugin skill dropped because of name clash",
@@ -6257,13 +6265,34 @@
         "test skills plugin outside desktop app",
         "how desktop skills reach the agent",
         "skills list in desktop system prompt",
-        "why can't I edit or delete anthropic skills"
-      ],
-      "withheld": [
-        {
-          "term": "skills turned off by organization only builtin skills",
-          "qid": "pl-0036"
-        }
+        "why can't I edit or delete anthropic skills",
+        "corrupt skills manifest rebuilt",
+        "code tab waits for skills sync",
+        "schedule skill missing in newer desktop"
+      ]
+    },
+    "245": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-10-23",
+      "input_sha256": "b1dfc3622b3f4bcc2cfd6d2bd84a4c29241c3b654daf438c5bc31e19028898a4",
+      "collision_check": "questions-v2.json dev",
+      "terms": [
+        "what changed in latest desktop release",
+        "undocumented changes in desktop update",
+        "MCP tool always needs manual approval",
+        "always allow option missing for MCP tool",
+        "scheduled task skips MCP tool calls",
+        "why is my tool refused in scheduled task?",
+        "schedule skill removed from desktop",
+        "what does typing schedule do now?",
+        "run commands on SSH host from desktop",
+        "plugins not found in scheduled tasks fix",
+        "new artifact tools in Cowork sessions",
+        "tool policy endpoint admin setting removed",
+        "which admin settings apply to self-hosted session host",
+        "why don't scheduled runs get artifact tools?",
+        "release notes vs actual desktop changes"
       ]
     }
   }

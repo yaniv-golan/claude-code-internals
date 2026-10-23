@@ -4969,6 +4969,33 @@
     "relevance": 0.4,
     "reason": "L116: host-loop vs VM-loop as a skill sees them"
    }
+  ],
+  "245": [
+   {
+    "id": 243,
+    "relevance": 0.8,
+    "reason": "L243: scheduled runs, which now skip person-only MCP tools and never get typed-artifact tools"
+   },
+   {
+    "id": 244,
+    "relevance": 0.7,
+    "reason": "L244: the skills plugin; the schedule skill removed, the Code-tab first-sync wait"
+   },
+   {
+    "id": 242,
+    "relevance": 0.7,
+    "reason": "L242: the previous build's unannounced changes and the reserved artifact keys"
+   },
+   {
+    "id": 237,
+    "relevance": 0.6,
+    "reason": "L237: the admin keys, including the four added here"
+   },
+   {
+    "id": 233,
+    "relevance": 0.4,
+    "reason": "L233: toolPolicyEndpoint, removed in this build"
+   }
   ]
  }
 }

@@ -30,11 +30,11 @@ A new engine (`LimitAutoResumeEngine`, `index.chunk-k9Bk8AAN.js`) watches for a 
 
 ## Third-party deployments: a model scans user-made skills
 
-New admin key `skillScanningEnabled` ("Scan user-created skills", third-party only, not yet in a released build per its `@next` marker, and fail-closed: an unreadable value counts as on). When it is on, Desktop advertises the capability `skill_plugins_scanning`, and importing skills from another Claude app waits until scanning is available to the member. The scan is a model call made by the app (`index.chunk-y9YoSS0s.js`) with a security reviewer's prompt that asks whether a plugin "acts against the interests of the person who installs and runs it". It looks for covert telemetry, undisclosed data destinations, remotely loaded instructions, credential exposure, tampering with guardrails or records, and spoofed system prompts. Each result (pass, warn, fail or error) is exported as `custom3p_skill_scan_completed`. A session can retry a scan (`retryLocalSkillScan`). What a failing verdict blocks wasn't traced.
+New admin key `skillScanningEnabled` ("Scan user-created skills", third-party only, marked `@next` in this build and stamped as released in 3.1623.0 by the 3.6556.1 schema, and fail-closed: an unreadable value counts as on). When it is on, Desktop advertises the capability `skill_plugins_scanning`, and importing skills from another Claude app waits until scanning is available to the member. The scan is a model call made by the app (`index.chunk-y9YoSS0s.js`) with a security reviewer's prompt that asks whether a plugin "acts against the interests of the person who installs and runs it". It looks for covert telemetry, undisclosed data destinations, remotely loaded instructions, credential exposure, tampering with guardrails or records, and spoofed system prompts. Each result (pass, warn, fail or error) is exported as `custom3p_skill_scan_completed`. A session can retry a scan (`retryLocalSkillScan`). What a failing verdict blocks wasn't traced.
 
 ## Reserved: typed artifacts for third-party deployments
 
-Five new admin keys (`artifactsEnabled` plus `artifactsDashboardEnabled`, `artifactsDesignEnabled`, `artifactsMotionEnabled`, `artifactsSlidesEnabled`) are titled "Reserved setting 1" to "5", third-party only and unreleased. The reader returns on only for a third-party deployment whose `artifacts.enabled` is true, and the registry of artifact types it would enable is empty. Nothing uses them yet.
+Five new admin keys (`artifactsEnabled` plus `artifactsDashboardEnabled`, `artifactsDesignEnabled`, `artifactsMotionEnabled`, `artifactsSlidesEnabled`) are titled "Reserved setting 1" to "5", third-party only, and marked `@next` here; the 3.6556.1 schema stamps them as released in 3.1623.0. The reader returns on only for a third-party deployment whose `artifacts.enabled` is true, and the registry of artifact types it would enable is empty. Nothing uses them yet.
 
 ## Other changes
 
@@ -54,6 +54,10 @@ The patch release bundles agent 2.1.308 and changes little in Desktop itself. A 
 - **A new VM image** (published 2026-10-22; contents not checked).
 - **Bundled agent code:** the copy of the agent's remote-session code that Desktop carries adds a `checkpoint_done` system message (the agent uploads the events it was holding back and tells the viewer how far the stored transcript reaches, when the server asks with `checkpoint_request`), and its worker socket protocol moves to version 2.
 - **Release notes:** v3.1623.4 lists plugins asking before using tools they pre-approve under `allowManagedPermissionRulesOnly`, and local servers in `managed-mcp.json` that use `${VAR}` only in `env` now running under `isLocalDevMcpEnabled: false`; neither was traced in code here.
+
+## Desktop 3.6556.1
+
+The next release (2026-10-22) is in L245. It brings the typed artifacts these reserved keys prepare for: a local Typed Artifact Service with its own tools, offered to interactive host-loop sessions.
 
 ## In the official release notes (checked 2026-10-21)
 
