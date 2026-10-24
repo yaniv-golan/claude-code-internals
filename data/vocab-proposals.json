@@ -4203,11 +4203,11 @@
     "174": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-21",
-      "input_sha256": "30afba469bbadf061c778cce6921589036568e4d156c228da4448e336fcac05c",
-      "prior_terms_sha256": "6b9f67565f1e77e06236abba9ee8599af0a3962a1ec8098de1f3aff812afc794",
+      "date": "2026-10-24",
+      "input_sha256": "beb11342c77b513d8d84c4be76ff70ff2ba4d1b74ff95202fbfc85a03c1fc443",
+      "prior_terms_sha256": "e7d9b2b246dfd46b85cf2e925d00b0ac73526f27688aa1281d2165d0f9bf46ff",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "41d50345e52b4915a7d2f91576aea8149ca3de76",
+      "previous_text": "7d1aa09889c2a24c0a4922f0ee209879ea45e78f",
       "replaced": [],
       "terms": [
         "cloud session environment variables differ from CLI",
@@ -4226,7 +4226,8 @@
         "stop hook block not shown in app",
         "plugin session start hook not firing on startup",
         "uploaded file appears in two places",
-        "read-only copy of uploads in cloud"
+        "read-only copy of uploads in cloud",
+        "why does cloud session keep asking me to commit and push"
       ]
     },
     "175": {
@@ -4789,11 +4790,11 @@
     "198": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-21",
-      "input_sha256": "dd27f65208ae16ee3e8ae312456ad36d2c688f228cb8de5834377f9f251ae5a2",
+      "date": "2026-10-24",
+      "input_sha256": "1a90427dcce2d92177c9eff25aba91ec0d3acda0f3aaff1e28f43ee7be1a91df",
       "prior_terms_sha256": "f19f966b6c11992b6d2f8dfb8389bd79835096c141dc0d369a4b89a33740cb43",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "e556bb4857e28128b93c67b57c57a7fa85670e8f",
+      "previous_text": "7d1aa09889c2a24c0a4922f0ee209879ea45e78f",
       "replaced": [],
       "terms": [
         "relative path works differently in cloud vs local Cowork",

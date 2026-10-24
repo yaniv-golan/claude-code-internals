@@ -3249,6 +3249,20 @@
     245
    ],
    "hint": "From Desktop 3.6556.1 a tool marked anthropic/requiresUserInteraction is approved only on the card and refused in unattended turns; the schedule skill is gone; typed-artifact tools reach only interactive host-loop sessions."
+  },
+  {
+   "pattern": [
+    "cloud session commits and pushes untracked files at end of turn",
+    "stop-hook-git-check",
+    "Please commit and push these changes to the remote branch",
+    "claude.ai chat pushes a branch unasked",
+    "can a repo disable the cloud git hook"
+   ],
+   "lessons": [
+    174,
+    198
+   ],
+   "hint": "The cloud environment's own Stop hook (~/.claude/stop-hook-git-check.sh) refuses the end of every turn while the shell sits inside a repo with changes, untracked files or unpushed commits; the model does the committing. It is registered at session claim time, not in any settings file a repo controls. Keep scratch files out of the clone, stage by name, or run git with git -C from outside the clone, which never triggers it."
   }
  ]
 }

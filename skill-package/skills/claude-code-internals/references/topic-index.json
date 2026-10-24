@@ -17274,7 +17274,7 @@
       "lesson_number": "174",
       "file": "45-plugin-bin-path-and-cloud-lane.md",
       "startLine": 159,
-      "endLine": 235,
+      "endLine": 268,
       "keywords": [
         "cloud-lane-env-census",
         "remote-cowork-entrypoint",
@@ -17349,6 +17349,9 @@
         "stop-hook-git-check.sh",
         "user-prompt-submit-reply-reminder.py",
         "stop-hook-error",
+        "ls-files",
+        "exclude-standard",
+        "environment-manager",
         "cloud session environment variables differ from cli",
         "version variable shows wrong version in cloud",
         "how to tell which agent build runs in the cloud",
@@ -17365,7 +17368,8 @@
         "stop hook block not shown in app",
         "plugin session start hook not firing on startup",
         "uploaded file appears in two places",
-        "read-only copy of uploads in cloud"
+        "read-only copy of uploads in cloud",
+        "why does cloud session keep asking me to commit and push"
       ],
       "identifier_keys": [
         "transcript_path",
@@ -17400,7 +17404,10 @@
         "stop-hook-reply-gate.py",
         "stop-hook-git-check.sh",
         "user-prompt-submit-reply-reminder.py",
-        "stop-hook-error"
+        "stop-hook-error",
+        "ls-files",
+        "exclude-standard",
+        "environment-manager"
       ],
       "vocab_keys": [
         "cloud session environment variables differ from cli",
@@ -17419,13 +17426,14 @@
         "stop hook block not shown in app",
         "plugin session start hook not firing on startup",
         "uploaded file appears in two places",
-        "read-only copy of uploads in cloud"
+        "read-only copy of uploads in cloud",
+        "why does cloud session keep asking me to commit and push"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-21",
-        "terms_sha256": "e7d9b2b246dfd46b85cf2e925d00b0ac73526f27688aa1281d2165d0f9bf46ff"
+        "date": "2026-10-24",
+        "terms_sha256": "eb0bc95f3f19ec9560aeebfa73fa23f7f2c3563e74cc9d8d567fa8e1975b1c38"
       }
     },
     {
@@ -19443,7 +19451,6 @@
         "ccr_outputs_path_delivery",
         "SendUserFile vs outputs",
         "/mnt/user-data/outputs empty",
-        "stop-hook-git-check.sh",
         "probe2.md",
         "str_replace",
         "x.txt",
@@ -19479,7 +19486,6 @@
         "ocr scanned pdf in cloud cowork"
       ],
       "identifier_keys": [
-        "stop-hook-git-check.sh",
         "probe2.md",
         "str_replace",
         "x.txt",
@@ -19519,7 +19525,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-21",
+        "date": "2026-10-24",
         "terms_sha256": "f19f966b6c11992b6d2f8dfb8389bd79835096c141dc0d369a4b89a33740cb43"
       }
     },
@@ -47162,13 +47168,21 @@
       174
     ],
     "stop-hook-git-check.sh": [
-      174,
-      198
+      174
     ],
     "user-prompt-submit-reply-reminder.py": [
       174
     ],
     "stop-hook-error": [
+      174
+    ],
+    "ls-files": [
+      174
+    ],
+    "exclude-standard": [
+      174
+    ],
+    "environment-manager": [
       174
     ],
     "claude-opus-5": [
@@ -57891,6 +57905,9 @@
       174
     ],
     "read-only copy of uploads in cloud": [
+      174
+    ],
+    "why does cloud session keep asking me to commit and push": [
       174
     ],
     "why does claude explain what it's about to do": [

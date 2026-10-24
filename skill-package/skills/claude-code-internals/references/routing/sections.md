@@ -1573,7 +1573,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 174 · 45-plugin-bin-path-and-cloud-lane.md:177 · `CLAUDE_CODE_VERSION` is not the agent's version
 174 · 45-plugin-bin-path-and-cloud-lane.md:211 · What the same dump confirms first-party
 174 · 45-plugin-bin-path-and-cloud-lane.md:220 · What the 2026-09-21 canary adds (relayed measurements; semantics verified first-party)
-174 · 45-plugin-bin-path-and-cloud-lane.md:233 · Honest scope
+174 · 45-plugin-bin-path-and-cloud-lane.md:233 · The git Stop hook (`stop-hook-git-check.sh`)
+174 · 45-plugin-bin-path-and-cloud-lane.md:266 · Honest scope
 175 · 46-narration-turn-updates-silent-turn.md:21 · The mechanism
 175 · 46-narration-turn-updates-silent-turn.md:55 · The selector is not a gate you can read
 175 · 46-narration-turn-updates-silent-turn.md:71 · `CLAUDE_CODE_TURN_UPDATES` — closing a lead

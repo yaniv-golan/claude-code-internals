@@ -1,4 +1,4 @@
-Updated: 2026-09-22 | Source: **live probes in three lanes** — a standalone CLI session (2.1.250, this machine), a Claude Cowork **local** session (host-loop VM shell, slug `nice-nifty-sagan`), and a Claude Cowork **cloud** session (`CLAUDE_CODE_ENTRYPOINT=remote_cowork`, `CLAUDE_CODE_VERSION=2.1.42`) — cross-read against CLI binaries 2.1.233/2.1.246/2.1.250 and `app.asar` 1.40609.0. Counts taken with `scripts/count-symbol.js` (ASCII + UTF-16LE, refuses a single total when a null-stripped extract disagrees). **Does NOT move the CLI content baseline.** First chapter here built primarily on *live session measurement* rather than artifact reading; static-only claims say so.
+Updated: 2026-10-24 (L174: the git Stop hook, measured in a claude.ai chat) | Source: **live probes in three lanes** — a standalone CLI session (2.1.250, this machine), a Claude Cowork **local** session (host-loop VM shell, slug `nice-nifty-sagan`), and a Claude Cowork **cloud** session (`CLAUDE_CODE_ENTRYPOINT=remote_cowork`, `CLAUDE_CODE_VERSION=2.1.42`) — cross-read against CLI binaries 2.1.233/2.1.246/2.1.250 and `app.asar` 1.40609.0. Counts taken with `scripts/count-symbol.js` (ASCII + UTF-16LE, refuses a single total when a null-stripped extract disagrees). **Does NOT move the CLI content baseline.** First chapter here built primarily on *live session measurement* rather than artifact reading; static-only claims say so.
 
 # Chapter 48: The Plugin `bin/` PATH Affordance, and What a Live Cloud Session Shows
 
@@ -225,10 +225,43 @@ The canary's measurements are the `founder-skills` project's (`docs/internal/202
 - **`CLAUDE_CODE_DESKTOP_APP_VERSION` is a local-lane discriminator, set by Desktop and read under two entrypoints.** `app.asar` 2.2553.1 sets it in the local-agent spawn env — `CLAUDE_CODE_DESKTOP_APP_VERSION: n.type==="3p" ? "" : app.getVersion()` (blank for third-party providers). The agent reads it only when `CLAUDE_CODE_ENTRYPOINT` is `claude-desktop` or `local-agent` (`t5t()`). The cloud runner leaves it unset, and under `remote_cowork` it would be ignored even if set.
 - **Uploads on the cloud lane land at `$HOME/.claude/uploads/<session-id>/<8-hex>-<original name>` with `HOME=/root`** (measured once, mid-session attach). `/mnt/user-data/uploads` — which the lane's own environment text and `CLAUDE_ADDITIONAL_DIRECTORIES` name — did not exist before or after. `.claude/uploads` occurs **0** times in every agent binary on disk, so the directory is runner-placed; the model learns of the file through the message, and a script reads it from that path. A resolver keyed on `/sessions/<id>/mnt/uploads` (local lane) or `/mnt/user-data/uploads` returned nothing in that session. Every later session checked (2026-10-05, 10-19, 10-21) also had a plain-named, read-only copy in `/mnt/user-data/uploads`, so look in both (L198).
 - **Hook payload fields new since the L107/2.1.197 contract**, all present in the cloud payloads: Stop carries `scratchpad_dir`, `prompt_id`, `last_assistant_message`, `background_tasks`, `session_crons`, `stop_hook_active`; SessionStart(`resume`) carries `seconds_since_last_response`, `context_tokens`, `prompt_cache_likely_expired`, `estimated_cache_write_usd`. `scratchpad_dir` is gated agent-side (`GE()`), so its presence is not guaranteed by version alone.
-- **Cowork ships its own hooks on the cloud lane**, under `/home/claude/.claude/`: `stop-hook-reply-gate.py`, `stop-hook-git-check.sh`, `user-prompt-submit-reply-reminder.py`. Ordering against a plugin's Stop hook is untested.
+- **Cowork ships its own hooks on the cloud lane**, under `/home/claude/.claude/`: `stop-hook-reply-gate.py`, `stop-hook-git-check.sh`, `user-prompt-submit-reply-reminder.py`. Ordering against a plugin's Stop hook is untested. What the git hook does is in the next section.
 - **Plugin `SessionStart` fired on `source:"resume"` only** — no `startup` entry, though the same plugin's Stop hook fired minutes earlier. One observation; the canary's inference (plugins are synced after the session starts, `CLAUDE_CODE_SYNC_PLUGINS=1`, so `startup` is missed) is plausible and unverified.
 - **A Stop-hook block shows nothing in the app UI**; the CLI's `stop-hook-error` notification has no counterpart there. The blocked message stays visible with the corrected one beneath it.
 - **Link rendering:** every `computer://` form rendered as plain text (the rule, measured later: in a cloud conversation only a file the conversation's own tools produced gets a working link — L215); a bare absolute path rendered as `https://claude.ai/home/claude/x.md` and 404'd. The presented file card was the only working delivery — and it worked from `/home/claude`, outside `outputs/`.
+
+## The git Stop hook (`stop-hook-git-check.sh`)
+
+Measured on 2026-10-24 in a claude.ai chat under a Team organization, in five scripted turns, against a local repo whose remote was a fake address. The chat had never seen the script, so the hook's exact sentence in its replies came from the hook. The script's text was read from the same container.
+
+- **What it does:** it never commits or pushes. It exits 2, which refuses the end of the turn and hands the model an instruction. The model decides what to stage, which branch to use and whether to push.
+- **When it stays silent:**
+  - the agent is already continuing because of a Stop hook (`stop_hook_active`), so it nags once per turn, but again at the end of every turn;
+  - the shell's current directory is not inside a git repo;
+  - the repo has no remote.
+- **What it checks, stopping at the first problem:**
+  1. staged or unstaged changes;
+  2. untracked files not covered by `.gitignore` (`git ls-files --others --exclude-standard`);
+  3. a signing check, described below;
+  4. commits ahead of `origin/<branch>`, or ahead of `origin/HEAD` when the branch has no remote copy, so on a new branch any local commit counts.
+
+  With no branch checked out, only the first two apply.
+- **The signing check** runs only when `commit.gpgsign` is true and `origin/<branch>` exists.
+  - It looks at commits that are on no remote ref and flags any without a signature header or with a committer other than `noreply@anthropic.com`, the identity the environment's commit-signing key belongs to.
+  - It then asks the model to set `user.name`/`user.email` to Claude and re-author those commits. A range rebase is suggested only when that cannot replay a published commit.
+  - So following it rewrites unpushed commits only, with no force push.
+  - It skips a branch the agent created until that branch exists on the remote. The script's comments call that gap deliberate.
+- **It runs in the shell's current directory, and `cd` carries over between commands.**
+  - The hook stayed silent while the shell sat in `/home/claude`.
+  - It fired after a `cd` into the repo, and again on the next turn.
+  - It stayed silent once the shell moved back and git ran as `git -C <repo>`.
+  - Working on a clone from outside it, with `git -C` and absolute paths, never triggers it.
+- **How it is registered is not visible from inside.**
+  - `~/.claude/settings.json` was `{}`, and `/etc/claude-code/` did not exist.
+  - The agent ran as `claude --preload ~/.claude/remote/spare.sock` under `environment-manager task-run --stdin`, with no `--settings` flag.
+  - In agent 2.1.310 `--preload` starts a pre-warmed spare that receives its environment over that socket when a session claims it.
+  - So the hook arrives at claim time or over stdin. A repo has no known switch for it, and a clone made mid-session sits below the session's start directory, so its `.claude/settings.json` is not where project settings are read from (not tested).
+- **For a repo used from cloud sessions:** keep scratch files out of the clone, widen `.gitignore`, and tell the agent to stage by name. A model that answers this hook with `git add -A` commits whatever is lying in the tree.
 
 ## Honest scope
 
