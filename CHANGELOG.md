@@ -1,5 +1,24 @@
 # Changelog
 
+## v2.81.0 — 2026-10-24 (this fork) — The cloud environment's git Stop hook
+
+245 lessons across 75 chapters (L174 extended; L198 points to it). Sources: a five-turn test in a claude.ai chat under a
+Team organization on 2026-10-24, against a local repo with a fake remote; the hook script read from the same
+container; and agent 2.1.310.
+
+**The git Stop hook (L174)**
+
+- Cloud sessions carry their own Stop hook, `stop-hook-git-check.sh`. It never commits or pushes: it refuses the end of
+  every turn while the shell sits inside a repo with changes, untracked files not covered by `.gitignore`, or unpushed
+  commits, and the model does the committing.
+- When commit signing is on, it asks the model to re-author unpushed commits as Claude. It never asks to rewrite
+  published ones, so no force push is involved.
+- It runs in the shell's current directory, and `cd` carries over between commands. Running git with `git -C` from
+  outside the clone never triggers it.
+- It is not in any settings file the session can see: the agent starts as a pre-warmed spare and gets its setup when a
+  session claims it. A repo has no known switch for it.
+- New troubleshooting entry for a cloud session that commits and pushes at the end of every turn.
+
 ## v2.80.0 — 2026-10-23 (this fork) — Desktop's skills plugin, and what Desktop 3.6556.1 changed
 
 245 lessons across 75 chapters (L244 and L245 new; L31, L233, L237, L242 and L243 updated). Sources: Claude Desktop
