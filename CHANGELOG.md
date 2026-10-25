@@ -1,5 +1,29 @@
 # Changelog
 
+## v2.82.0 — 2026-10-25 (this fork) — A cloud Cowork field report, and a vocabulary check for ranking tests
+
+245 lessons across 75 chapters (L164, L174, L198, L209 and L239 extended). Sources: one cloud Cowork session under a
+Team organization on 2026-10-25, reported by another session (n=1); a claude.ai chat test on 2026-10-24; and CLI
+2.1.310 with agents 2.1.304 and 2.1.308, read for the code paths.
+
+**Lessons**
+
+- L164: cloud sessions also get the agent's scratchpad folder, under `/tmp/claude-0/-home-claude/<uuid>/scratchpad`.
+- L174: the git Stop hook script was found in both `/home/claude/.claude/` and `/root/.claude/`, and `/root` was the
+  home in use. Don't hard-code either folder. Which copy runs is not checked.
+- L198: files attached in the chat can also land in a third place, `/mnt/user-data/attachments/<conversation-id>/`.
+  The agent derives that folder from the uploads path in code. Search all three places, go into subfolders, and match on
+  the end of the file name.
+- L209: a command hook that succeeds with no output leaves no transcript record. An HTTP hook always leaves one.
+- L239: the server classifier's "no verdict, not shown this call" denial. It was seen twice, each time on a session's
+  first shell call, and the retry ran each time.
+
+**Tooling**
+
+- The vocabulary collision check now covers the corpus ranking tests. A new search term is held back when it would push
+  another lesson out of the position a test requires. `prepare-lessons.js --recheck <ids>` runs the check again on
+  uncommitted proposals without a model call.
+
 ## v2.81.0 — 2026-10-24 (this fork) — The cloud environment's git Stop hook
 
 245 lessons across 75 chapters (L174 extended; L198 points to it). Sources: a five-turn test in a claude.ai chat under a
