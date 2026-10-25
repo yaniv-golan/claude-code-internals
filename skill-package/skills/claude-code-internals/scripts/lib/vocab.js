@@ -77,7 +77,8 @@
  * every stale lesson under --fresh.
  *
  * WITHHELD TERMS. At generation, lib/vocab-collision.js withholds a new term
- * that would make its lesson first on a gated dev question of another lesson.
+ * that would make its lesson first on a gated dev question of another lesson,
+ * or push another lesson out of the position a corpus ranking case asserts.
  * The entry keeps the model's `terms` unfiltered and records `withheld`
  * ([{term, qid}]) and `collision_check` (what it ran against, or why it was
  * skipped); planVocab() drops withheld terms on every derivation (rule 4,
@@ -210,7 +211,7 @@ function integrityErrors(proposals, lessonIds, pinned = PROPOSALS_SHA256) {
     errs.push(`${PROPOSALS_FILE} is missing (${proposals.abs}): it is frozen model output that no offline script can regenerate; restore it from git`);
   } else if (proposals.sha256 !== pinned) {
     errs.push(`${PROPOSALS_FILE} is not the pinned proposals file (sha256 ${proposals.sha256}, pinned ${pinned}). ` +
-      'Only prepare-lessons.js --generate/--regen writes it: after such a run set PROPOSALS_SHA256 in scripts/lib/vocab.js ' +
+      'Only prepare-lessons.js --generate/--regen/--recheck writes it: after such a run set PROPOSALS_SHA256 in scripts/lib/vocab.js ' +
       'to the new hash; otherwise restore the file (git checkout)');
   }
   const live = new Set(lessonIds);

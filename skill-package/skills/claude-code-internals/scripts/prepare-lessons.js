@@ -53,7 +53,8 @@
  *                                                   none and UPDATE stale ones (the lesson changed since: the
  *                                                   model gets the old terms and keeps every one still true;
  *                                                   lib/vocab.js), withhold new terms that would take another
- *                                                   lesson's dev question (lib/vocab-collision.js), then derive (--model M, default
+ *                                                   lesson's dev question or push another lesson out of a corpus
+ *                                                   ranking case (lib/vocab-collision.js), then derive (--model M, default
  *                                                   claude-opus-5-5; --concurrency N). Refuses to start unless
  *                                                   data/vocab-proposals.json is the pinned file (PROPOSALS_SHA256)
  *   node scripts/prepare-lessons.js --regen <ids>   MODEL CALLS: as --generate, and also replace those lessons'
@@ -62,6 +63,9 @@
  *   node scripts/prepare-lessons.js --fill-gaps <ids>  MODEL CALLS: as --generate, and also review those lessons'
  *                                                   terms for topics already in the lesson that no term reaches
  *                                                   (up to 3 swaps each, recorded in "replaced"); deliberate only
+ *   node scripts/prepare-lessons.js --recheck <ids>  NO MODEL CALL: run the collision check again on those
+ *                                                   lessons' current terms (new = not in the last commit's
+ *                                                   proposals file), add what it withholds, then derive
  *   --bootstrap           with --generate/--regen: accept a proposals file that is
  *                         missing (the first-ever run) or not the pinned one (an
  *                         intentional re-pin, after inspecting its diff). Never
@@ -785,6 +789,7 @@ function parseArgs(argv) {
     else if (a === '--generate') opts.generate = true;
     else if (a === '--regen') { opts.generate = true; opts.regen = need(a, argv[++i]).split(',').map((x) => { if (!/^\d+$/.test(x)) throw new Error(`--regen takes lesson ids, got "${x}"`); return Number(x); }); }
     else if (a === '--fill-gaps') { opts.generate = true; opts.fillGaps = need(a, argv[++i]).split(',').map((x) => { if (!/^\d+$/.test(x)) throw new Error(`--fill-gaps takes lesson ids, got "${x}"`); return Number(x); }); }
+    else if (a === '--recheck') opts.recheck = need(a, argv[++i]).split(',').map((x) => { if (!/^\d+$/.test(x)) throw new Error(`--recheck takes lesson ids, got "${x}"`); return Number(x); });
     else if (a === '--model') opts.model = need(a, argv[++i]);
     else if (a === '--concurrency') { opts.concurrency = parseInt(need(a, argv[++i]), 10); if (!(opts.concurrency > 0)) throw new Error('--concurrency must be a positive integer'); }
     else if (a === '--dry-run') opts.dryRun = true;
@@ -798,6 +803,7 @@ function parseArgs(argv) {
   }
   if (opts.bootstrap && !opts.generate) throw new Error('--bootstrap only applies to --generate / --regen');
   if (opts.fresh && !opts.generate) throw new Error('--fresh only applies to --generate');
+  if (opts.recheck && opts.generate) throw new Error('--recheck makes no model call; run it apart from --generate');
   return opts;
 }
 
@@ -824,10 +830,12 @@ function parseArgs(argv) {
  * place: each gets `collision_check` and, when a term is withheld, `withheld`.
  * A term is NEW when its normalized form is not among the lesson's previous terms;
  * kept terms are never checked. deps.questions (tests) replaces the repository's
- * dev questions; null means the check cannot run here.
+ * dev questions; null means the check cannot run here. The corpus ranking cases
+ * are checked too (deps.cases in tests; with deps.questions set and no
+ * deps.cases, none).
  */
-function withholdCollisions(skillDir, topic, added, prior, questionsDep, log) {
-  const { loadDevQuestions, findCollisions } = require('./lib/vocab-collision.js');
+function withholdCollisions(skillDir, topic, added, prior, questionsDep, log, casesDep) {
+  const { loadDevQuestions, loadRankingCases, findCollisions } = require('./lib/vocab-collision.js');
   const { normalize } = require('./lib/identifiers.js');
   const q = questionsDep !== undefined
     ? (questionsDep ? { questions: questionsDep, source: 'injected questions' } : { questions: null, reason: 'no questions' })
@@ -837,6 +845,7 @@ function withholdCollisions(skillDir, topic, added, prior, questionsDep, log) {
     for (const p of added.values()) p.collision_check = `skipped: ${q.reason}`;
     return;
   }
+  const cases = casesDep !== undefined ? casesDep : questionsDep !== undefined ? [] : loadRankingCases(skillDir);
   // A term planVocab() would drop anyway is never simulated (key null).
   const keyOf = (raw) => {
     const t = cleanTerm(raw);
@@ -846,16 +855,18 @@ function withholdCollisions(skillDir, topic, added, prior, questionsDep, log) {
   };
   for (const [id, p] of added) {
     const before = new Set((prior.get(id) || []).map((t) => normalize(cleanTerm(t))));
+    const already = new Set((p.withheld || []).map((w) => normalize(cleanTerm(w.term))));
     const keptKeys = [];
     const candidates = [];
     for (const raw of p.terms.slice(0, MAX_TERMS_CAP)) {
       const key = keyOf(raw);
+      if (already.has(normalize(cleanTerm(raw)))) continue;
       if (before.has(normalize(cleanTerm(raw)))) { if (key) keptKeys.push(key); } else candidates.push({ term: raw, key });
     }
-    const withheld = findCollisions({ topic, lessonId: id, candidates, keptKeys, questions: q.questions });
-    p.collision_check = q.source;
+    const withheld = findCollisions({ topic, lessonId: id, candidates, keptKeys, questions: q.questions, cases });
+    p.collision_check = cases.length ? `${q.source} + ranking cases` : q.source;
     if (withheld.length) {
-      p.withheld = withheld;
+      p.withheld = [...(p.withheld || []), ...withheld];
       // A withheld REPLACEMENT gives back the previous term it replaced (vocab.js, WITHHELD TERMS).
       const swaps = p.swaps || new Map();
       for (const w of withheld) {
@@ -867,10 +878,65 @@ function withholdCollisions(skillDir, topic, added, prior, questionsDep, log) {
         p.kept_by_rule = [...(p.kept_by_rule || []), { term: back, reason: `replacement withheld ("${w.term}", ${w.qid})` }];
         log(`vocab: lesson ${id}: restored "${back}": its replacement "${w.term}" was withheld`);
       }
-      log(`vocab: lesson ${id}: withheld ${withheld.length} new term(s) that would take another lesson's dev question: ` +
+      log(`vocab: lesson ${id}: withheld ${withheld.length} new term(s) that would take another lesson's dev question or ranking case: ` +
         withheld.map((w) => `"${w.term}" (${w.qid})`).join(', '));
     }
   }
+}
+
+function writeProposals(proposals, merged, what, log) {
+  const { writeAtomic } = require('./build.js');
+  fs.mkdirSync(path.dirname(proposals.abs), { recursive: true });
+  const text = renderProposals(merged);
+  writeAtomic(proposals.abs, text);
+  const hash = crypto.createHash('sha256').update(text).digest('hex');
+  log(`vocab: wrote ${PROPOSALS_FILE} (${what}); its sha256 is now ${hash}`);
+  log(`vocab: set PROPOSALS_SHA256 in scripts/lib/vocab.js to '${hash}' in the same commit — build.js --check fails until you do`);
+}
+
+/**
+ * --recheck <ids>: run the collision check again on the named lessons' CURRENT
+ * proposals, without a model call, for proposals generated before the check
+ * covered what it covers now (the corpus ranking cases came later). A term is
+ * new when it is not among the lesson's terms in the last commit's proposals
+ * file (deps.priorTerms in tests), so run it before committing the --generate
+ * output it reviews. Newly withheld terms are added to `withheld`; nothing else
+ * in the proposal changes. Starts only from the pinned file, like --generate.
+ */
+function runRecheck(skillDir, ids, opts = {}, deps = {}, log = console.log) {
+  const loaded = load(skillDir);
+  const proposals = loadProposals(skillDir);
+  if (proposals.errors.length) throw new Error(proposals.errors.join('\n'));
+  const pin = opts.proposalsPin || PROPOSALS_SHA256;
+  if (proposals.sha256 !== pin) throw new Error(`${PROPOSALS_FILE} is not the pinned proposals file (sha256 ${proposals.sha256}, pinned ${pin}); nothing rechecked`);
+  const missing = ids.filter((id) => !proposals.byId.has(id));
+  if (missing.length) throw new Error(`--recheck: lesson ${missing.join(', ')} has no proposal`);
+  let priorTerms = deps.priorTerms;
+  if (!priorTerms) {
+    const repo = path.dirname(path.dirname(proposals.abs));
+    const head = JSON.parse(require('child_process').execFileSync('git', ['-C', repo, 'show', `HEAD:${PROPOSALS_FILE}`], { encoding: 'utf8' })).lessons;
+    priorTerms = (id) => (head[id] ? head[id].terms : null);
+  }
+  const prior = new Map();
+  const added = new Map();
+  for (const id of ids) {
+    const terms = priorTerms(id);
+    if (!terms) throw new Error(`--recheck: lesson ${id} has no proposal in the last commit; --generate checks a new lesson's terms`);
+    prior.set(id, terms);
+    added.set(id, JSON.parse(JSON.stringify(proposals.byId.get(id))));
+  }
+  const before = new Map([...added].map(([id, p]) => [id, (p.withheld || []).length]));
+  withholdCollisions(skillDir, loaded.topic, added, prior, deps.questions, log, deps.cases);
+  const changed = [...added].filter(([id, p]) => (p.withheld || []).length !== before.get(id));
+  if (!changed.length) {
+    log(`vocab: --recheck: nothing to withhold in ${listed(ids.map(String))}; ${PROPOSALS_FILE} unchanged`);
+    return { rechecked: ids.length, changed: 0 };
+  }
+  const merged = new Map(proposals.byId);
+  for (const [id, p] of changed) merged.set(id, p);
+  writeProposals(proposals, merged, `${changed.length} rechecked with new withheld terms`, log);
+  runIdentifiers(skillDir, opts, log);
+  return { rechecked: ids.length, changed: changed.length };
 }
 
 async function runGenerate(skillDir, opts = {}, deps = {}, log = console.log) {
@@ -948,7 +1014,7 @@ async function runGenerate(skillDir, opts = {}, deps = {}, log = console.log) {
     })
     : { added: new Map(), failed: [] };
   for (const f of failed) log(`vocab: lesson ${f.id} failed (retried on the next run): ${f.error.split('\n')[0]}`);
-  if (added.size) withholdCollisions(skillDir, loaded.topic, added, prior, deps.questions, log);
+  if (added.size) withholdCollisions(skillDir, loaded.topic, added, prior, deps.questions, log, deps.cases);
   if (added.size) {
     // Re-verify the inputs against the lessons as they are on disk NOW. A fresh
     // load(): the first one caches file text, so it would always agree.
@@ -968,13 +1034,7 @@ async function runGenerate(skillDir, opts = {}, deps = {}, log = console.log) {
     const merged = new Map(proposals.byId);
     for (const id of stale) merged.delete(id);
     for (const [id, p] of added) merged.set(id, p);
-    const { writeAtomic } = require('./build.js');
-    fs.mkdirSync(path.dirname(proposals.abs), { recursive: true });
-    const text = renderProposals(merged);
-    writeAtomic(proposals.abs, text);
-    const hash = crypto.createHash('sha256').update(text).digest('hex');
-    log(`vocab: wrote ${PROPOSALS_FILE} (${added.size} added or replaced, ${stale.length} dropped); its sha256 is now ${hash}`);
-    log(`vocab: set PROPOSALS_SHA256 in scripts/lib/vocab.js to '${hash}' in the same commit — build.js --check fails until you do`);
+    writeProposals(proposals, merged, `${added.size} added or replaced, ${stale.length} dropped`, log);
   }
   const result = runIdentifiers(skillDir, opts, log);
   return { ...result, generated: added.size, failed };
@@ -1005,6 +1065,10 @@ async function main(argv) {
       console.log('prepare-lessons check OK');
       return 0;
     }
+    if (opts.recheck) {
+      runRecheck(skillDir, opts.recheck, opts);
+      return 0;
+    }
     if (opts.generate) {
       const r = await runGenerate(skillDir, opts);
       return r.failed && r.failed.length ? 1 : 0;
@@ -1019,6 +1083,6 @@ async function main(argv) {
 
 module.exports = {
   KeyState, surfaceTokens, selfReachable, planIdentifiers, planAll, storedKeyList, storedGenerated, diffGenerated,
-  ceilingOf, renderTopic, checkLessons, runIdentifiers, runGenerate, parseArgs, load, main, MAX_HOMES, STALE_VOCAB_BLOCKS,
+  ceilingOf, renderTopic, checkLessons, runIdentifiers, runGenerate, runRecheck, parseArgs, load, main, MAX_HOMES, STALE_VOCAB_BLOCKS,
 };
 if (require.main === module) main(process.argv.slice(2)).then((code) => { process.exitCode = code; });

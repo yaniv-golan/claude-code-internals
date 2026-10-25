@@ -23,6 +23,18 @@
  * CURRENT_QUESTIONS); outside the repository the check cannot run, and the
  * proposal records that it was skipped.
  *
+ * The same check guards the corpus ranking cases (scripts/tests/ranking-cases.json),
+ * the searches the test suite requires to rank a lesson first or within its top k:
+ * a NEW term is withheld when the new terms together push another lesson's case
+ * out of the position it asserts, and the case held without them. A case's
+ * lesson is always a dev lesson (corpus-ranking.test.js guards it), so this
+ * consults no holdout question either. Positions are read in the keyword layer;
+ * a case lesson with no keyword hit is counted as ranking right after the hits
+ * (the TF-IDF tail follows them), a lower bound. Its withheld entries carry
+ * qid `case: <query>`. Measured: an update of lesson 174 added "cowork built-in
+ * hooks found in two folders", which pushed lesson 32 from 3rd to 4th on the
+ * case "hooks not firing" (2026-10-25); the dev check alone could not see it.
+ *
  * The outcome is frozen in the proposal (`withheld`, `collision_check`), and
  * planVocab() drops withheld terms on every derivation, so a derivation stays a
  * pure function of the proposals file.
@@ -57,9 +69,10 @@ function loadDevQuestions(skillDir) {
  * @param topic      the committed topic-index object (keyword_map, lessons)
  * @param candidates [{term, key}] — key: the cleaned term planVocab() would use; null when it drops it anyway
  * @param keptKeys   cleaned keys of the terms kept from the previous proposal
- * @returns {{term, qid}[]} one entry per withheld term (the question it was withheld for)
+ * @param cases      ranking cases ({qid, text, lesson_id, within}, loadRankingCases)
+ * @returns {{term, qid}[]} one entry per withheld term (the question or case it was withheld for)
  */
-function findCollisions({ topic, lessonId, candidates, keptKeys, questions }) {
+function findCollisions({ topic, lessonId, candidates, keptKeys, questions, cases = [] }) {
   const N = topic.lessons.length;
   const exactOnly = new Set(topic.lessons.flatMap((l) => [...lessonGenerated(l)]));
   const own = new Set((topic.lessons.find((l) => l.id === lessonId) || {}).vocab_keys || []);
@@ -81,21 +94,26 @@ function findCollisions({ topic, lessonId, candidates, keptKeys, questions }) {
     for (const k of keys) { addKey(map, k); ex.add(k); }
     return keywordMatch.rankLessons(q.tokens, map, N, ex, q.text);
   };
+  const caseQs = cases
+    .filter((c) => c.lesson_id !== lessonId)
+    .map((c) => ({ ...c, tokens: tokenizeQuery(c.text) }))
+    .sort((a, b) => (a.qid < b.qid ? -1 : a.qid > b.qid ? 1 : 0));
   const isFirst = (r) => r.length > 0 && r[0].id === lessonId;
+  // A case lesson with no keyword hit ranks after every hit (lower bound: the tail's order is not known here).
+  const holds = (r, c) => { const i = r.findIndex((e) => e.id === c.lesson_id); return (i >= 0 ? i : r.length) < c.within; };
   const scoreIn = (r) => (r.find((e) => e.id === lessonId) || { score: 0 }).score;
   // Each new key against the questions it can hit (the same hit test rankLessons uses).
   const live = candidates.filter((c) => c.key).map((c) => {
     const ck = keywordMatch.compileKey(c.key, { exactOnly: true });
-    return { ...c, hits: new Set(relevantQs.filter((q) => q.tokens.some((t) => keywordMatch.hitKind(ck, t) !== null)).map((q) => q.qid)) };
+    return { ...c, hits: new Set([...relevantQs, ...caseQs].filter((q) => q.tokens.some((t) => keywordMatch.hitKind(ck, t) !== null)).map((q) => q.qid)) };
   });
   const withheld = [];
-  for (const q of relevantQs) {
-    const touching = live.filter((c) => c.hits.has(q.qid));
-    if (!touching.length || isFirst(rank([], q))) continue;
-    // All new terms together: their effect adds up, so a set of terms can take a question none takes alone.
-    let active = touching.filter((c) => !withheld.some((w) => w.term === c.term));
-    while (active.length && isFirst(rank(active.map((c) => c.key), q))) {
-      // Withhold the term whose removal lowers the lesson's score most (ties: the later term).
+  // Withhold new terms touching `q` until `ok` holds for the ranking, each time the term whose
+  // removal lowers the lesson's score most (ties: the later term). All new terms are ranked
+  // together: their effect adds up, so a set of terms can take a question none takes alone.
+  const withholdUntil = (q, ok) => {
+    let active = live.filter((c) => c.hits.has(q.qid) && !withheld.some((w) => w.term === c.term));
+    while (active.length && !ok(rank(active.map((c) => c.key), q), q)) {
       let worst = null;
       let worstScore = Infinity;
       for (const c of active) {
@@ -105,8 +123,27 @@ function findCollisions({ topic, lessonId, candidates, keptKeys, questions }) {
       withheld.push({ term: worst.term, qid: q.qid });
       active = active.filter((c) => c !== worst);
     }
+  };
+  const touched = (q) => live.some((c) => c.hits.has(q.qid));
+  for (const q of relevantQs) {
+    if (touched(q) && !isFirst(rank([], q))) withholdUntil(q, (r) => !isFirst(r));
+  }
+  // Ranking cases: until the case's lesson is back in the position it asserts.
+  for (const q of caseQs) {
+    if (touched(q) && holds(rank([], q), q)) withholdUntil(q, holds);
   }
   return withheld;
 }
 
-module.exports = { loadDevQuestions, findCollisions };
+/**
+ * The corpus ranking cases of the skill at `skillDir`, as {qid, text, lesson_id, within}.
+ * Empty when the file is absent.
+ */
+function loadRankingCases(skillDir) {
+  const file = path.join(skillDir, 'scripts', 'tests', 'ranking-cases.json');
+  if (!fs.existsSync(file)) return [];
+  return JSON.parse(fs.readFileSync(file, 'utf8')).cases
+    .map((c) => ({ qid: `case: ${c.query}`, text: c.query, lesson_id: c.lesson, within: c.within || 1 }));
+}
+
+module.exports = { loadDevQuestions, loadRankingCases, findCollisions };

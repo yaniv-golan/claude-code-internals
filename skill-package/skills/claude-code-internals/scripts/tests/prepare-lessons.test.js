@@ -1272,6 +1272,67 @@ test('collision check: a new term that takes another lesson\'s dev question is w
   assert.deepStrictEqual(C.findCollisions({ topic, lessonId: 89, candidates: [{ term: odd, key: null }], keptKeys: [], questions: qs }), []);
 });
 
+test('collision check: a new term that pushes another lesson out of a ranking case is withheld', () => {
+  const C = require(path.join(SKILL_DIR, 'scripts', 'lib', 'vocab-collision.js'));
+  const topic = JSON.parse(fs.readFileSync(path.join(SKILL_DIR, 'references', 'topic-index.json'), 'utf8'));
+  const odd = 'zebra quokka marmalade';
+  // The phrase alone: the query's other words would hit other lessons' keys, so lesson 12 would not start first.
+  const kase = { qid: `case: ${odd}`, text: odd, lesson_id: 12, within: 1 };
+  const cand = [{ term: odd, key: odd }];
+  // No keyword hit for the query: lesson 12 counts as first; the term would put lesson 89 above it.
+  assert.deepStrictEqual(C.findCollisions({ topic, lessonId: 89, candidates: cand, keptKeys: [], questions: [], cases: [kase] }), [{ term: odd, qid: kase.qid }]);
+  // Within 2, lesson 12 second is still inside the case.
+  assert.deepStrictEqual(C.findCollisions({ topic, lessonId: 89, candidates: cand, keptKeys: [], questions: [], cases: [{ ...kase, within: 2 }] }), []);
+  // A case on the lesson's own id is never something its terms break.
+  assert.deepStrictEqual(C.findCollisions({ topic, lessonId: 89, candidates: cand, keptKeys: [], questions: [], cases: [{ ...kase, lesson_id: 89 }] }), []);
+  // A case already broken without the new terms is not theirs to fix.
+  assert.deepStrictEqual(C.findCollisions({ topic, lessonId: 89, candidates: cand, keptKeys: [odd], questions: [], cases: [kase] }), []);
+});
+
+test('loadRankingCases reads the corpus ranking cases as checkable questions', () => {
+  const C = require(path.join(SKILL_DIR, 'scripts', 'lib', 'vocab-collision.js'));
+  const { cases } = require('./ranking-cases.json');
+  const got = C.loadRankingCases(SKILL_DIR);
+  assert.strictEqual(got.length, cases.length);
+  const hooks = got.find((c) => c.text === 'hooks not firing');
+  assert.deepStrictEqual(hooks, { qid: 'case: hooks not firing', text: 'hooks not firing', lesson_id: 32, within: 3 });
+  assert.ok(got.every((c) => c.within >= 1));
+  assert.deepStrictEqual(C.loadRankingCases(os.tmpdir()), []);
+});
+
+test('--recheck withholds, without a model call, a committed-since term that breaks a ranking case', () => {
+  const dir = fixture();
+  const pin0 = freshen(dir);
+  const odd = 'zebra quokka marmalade';
+  const props = loadProposals(dir);
+  const before = props.byId.get(VL).terms.slice();
+  props.byId.get(VL).terms = [...before, odd];
+  fs.writeFileSync(proposalsPath(dir), V.renderProposals(props.byId));
+  const pin = loadProposals(dir).sha256;
+  assert.notStrictEqual(pin, pin0);
+  const other = VL === 12 ? 13 : 12;
+  const cases = [{ qid: `case: ${odd}`, text: odd, lesson_id: other, within: 1 }];
+  const deps = { questions: [], cases, priorTerms: (id) => (id === VL ? before : props.byId.get(id).terms) };
+  assert.throws(() => P.runRecheck(dir, [VL], { proposalsPin: pin0 }, deps, () => {}), /not the pinned proposals file/);
+  const lines = [];
+  const r = P.runRecheck(dir, [VL], { proposalsPin: pin }, deps, (l) => lines.push(l));
+  assert.deepStrictEqual(r, { rechecked: 1, changed: 1 });
+  const p = loadProposals(dir).byId.get(VL);
+  assert.deepStrictEqual(p.withheld, [{ term: odd, qid: cases[0].qid }]);
+  assert.strictEqual(p.collision_check, 'injected questions + ranking cases');
+  assert.deepStrictEqual(p.terms, [...before, odd], 'terms are kept as written; derivation drops the withheld one');
+  assert.ok(!(odd in topicOf(dir).keyword_map), 'a withheld term is never a key');
+  assert.ok(lines.some((l) => /set PROPOSALS_SHA256/.test(l)), lines.join('\n'));
+  // Run again: the term is already withheld, so nothing changes.
+  const pin2 = loadProposals(dir).sha256;
+  const again = P.runRecheck(dir, [VL], { proposalsPin: pin2 }, deps, () => {});
+  assert.deepStrictEqual(again, { rechecked: 1, changed: 0 });
+  assert.strictEqual(loadProposals(dir).sha256, pin2);
+  assert.deepStrictEqual(P.parseArgs(['--recheck', '174,209']).recheck, [174, 209]);
+  assert.throws(() => P.parseArgs(['--recheck', 'x']), /lesson ids/);
+  assert.throws(() => P.parseArgs(['--recheck', '1', '--generate']), /no model call/);
+});
+
 test('collision check reads only dev identifier/plain questions of the current gated set', (t) => {
   const C = require(path.join(SKILL_DIR, 'scripts', 'lib', 'vocab-collision.js'));
   const q = C.loadDevQuestions(SKILL_DIR);

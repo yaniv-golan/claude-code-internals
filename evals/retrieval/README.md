@@ -315,8 +315,11 @@ node --test evals/retrieval/agentic-run.test.js
   (`resolveUpdate()` in `scripts/lib/vocab.js`): every term still true is kept verbatim; a term
   goes only as inaccurate or as a named near-duplicate of a kept term; a topic the edit added gets
   added terms, up to 18 in all, never a swap. It withholds new terms that together would make
-  their lesson first on another lesson's **dev** question (`scripts/lib/vocab-collision.js`;
-  holdout questions are never read), and a withheld replacement gives back the term it replaced.
+  their lesson first on another lesson's **dev** question, or push another lesson out of the
+  position a corpus ranking case asserts (`scripts/tests/ranking-cases.json`, dev lessons only)
+  (`scripts/lib/vocab-collision.js`; holdout questions are never read), and a withheld
+  replacement gives back the term it replaced. `prepare-lessons.js --recheck <ids>` runs the
+  check again on uncommitted proposals without a model call.
   A gate trip after a regeneration is accepted with a new baseline or fixed by a rule change;
   re-rolling or rewording one lesson's terms until a question ranks again is tuning.
 - **Whole-set replacement only.** `questions-vN.json` is replaced as a whole new version on a
