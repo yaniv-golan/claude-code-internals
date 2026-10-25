@@ -16336,7 +16336,7 @@
       "lesson_number": "164",
       "file": "41-cowork-path-resolution-lanes.md",
       "startLine": 88,
-      "endLine": 211,
+      "endLine": 213,
       "keywords": [
         "two-path-forms",
         "bare-filename-file-tools",
@@ -16380,6 +16380,7 @@
         "host_loop_shell",
         "claude-501",
         "slugified-cwd",
+        "claude-0",
         "CLAUDE_TMPDIR",
         "file saved but user can't see it",
         "bash wrote file to wrong place in cowork",
@@ -16395,7 +16396,9 @@
         "file tool rejects sessions path",
         "bare filename refused by write tool",
         "temp directory override where do files go",
-        "shell write lands in vm scratch"
+        "shell write lands in vm scratch",
+        "scratchpad directory in cloud cowork session",
+        "where do temp files go in cloud sessions"
       ],
       "identifier_keys": [
         "report.md",
@@ -16408,6 +16411,7 @@
         "host_loop_shell",
         "claude-501",
         "slugified-cwd",
+        "claude-0",
         "CLAUDE_TMPDIR"
       ],
       "vocab_keys": [
@@ -16425,13 +16429,15 @@
         "file tool rejects sessions path",
         "bare filename refused by write tool",
         "temp directory override where do files go",
-        "shell write lands in vm scratch"
+        "shell write lands in vm scratch",
+        "scratchpad directory in cloud cowork session",
+        "where do temp files go in cloud sessions"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "1162f0b804418d58d77c6d2ef0bb41e91af715f8d1722ebca5b64796c1630c72"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-10-25",
+        "terms_sha256": "fd85cd3080c8c4ab8749e80cf7f60e3e58ea4daa1c3f15b866d380b50927eb57"
       }
     },
     {
@@ -16439,8 +16445,8 @@
       "title": "Write's Result Carries the Raw Input",
       "lesson_number": "165",
       "file": "41-cowork-path-resolution-lanes.md",
-      "startLine": 215,
-      "endLine": 234,
+      "startLine": 217,
+      "endLine": 236,
       "keywords": [
         "write-result-raw-path",
         "does-not-absolutize",
@@ -16495,8 +16501,8 @@
       "title": "Surface Separation, and Two Greps That Lie",
       "lesson_number": "166",
       "file": "41-cowork-path-resolution-lanes.md",
-      "startLine": 238,
-      "endLine": 311,
+      "startLine": 240,
+      "endLine": 313,
       "keywords": [
         "surface-separation",
         "chat-mode-prompt",
@@ -17355,7 +17361,6 @@
         "cloud session environment variables differ from cli",
         "version variable shows wrong version in cloud",
         "how to tell which agent build runs in the cloud",
-        "why does cloud shell report an old version number",
         "unknown variables set in remote cowork session",
         "cloud session runs as root user",
         "where do uploaded files go in cloud session",
@@ -17413,7 +17418,6 @@
         "cloud session environment variables differ from cli",
         "version variable shows wrong version in cloud",
         "how to tell which agent build runs in the cloud",
-        "why does cloud shell report an old version number",
         "unknown variables set in remote cowork session",
         "cloud session runs as root user",
         "where do uploaded files go in cloud session",
@@ -17432,8 +17436,8 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-24",
-        "terms_sha256": "eb0bc95f3f19ec9560aeebfa73fa23f7f2c3563e74cc9d8d567fa8e1975b1c38"
+        "date": "2026-10-25",
+        "terms_sha256": "297e18f299a40084b72a1a229829d90b1ea02413e221266940fcf7117222b837"
       }
     },
     {
@@ -19430,7 +19434,7 @@
       "lesson_number": "198",
       "file": "50-artifact-host-tools-inbox-folder-skills.md",
       "startLine": 182,
-      "endLine": 307,
+      "endLine": 315,
       "keywords": [
         "four-surfaces",
         "surface-fingerprint",
@@ -19464,6 +19468,8 @@
         "create_or_update_file",
         "Co-Authored-By",
         "Claude-Session",
+        "conversation-id",
+        "project-docs",
         "BASH_DEFAULT_TIMEOUT_MS",
         "BASH_MAX_TIMEOUT_MS",
         "relative path works differently in cloud vs local cowork",
@@ -19499,6 +19505,8 @@
         "create_or_update_file",
         "Co-Authored-By",
         "Claude-Session",
+        "conversation-id",
+        "project-docs",
         "BASH_DEFAULT_TIMEOUT_MS",
         "BASH_MAX_TIMEOUT_MS"
       ],
@@ -19525,7 +19533,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-24",
+        "date": "2026-10-25",
         "terms_sha256": "f19f966b6c11992b6d2f8dfb8389bd79835096c141dc0d369a4b89a33740cb43"
       }
     },
@@ -20310,7 +20318,7 @@
       "lesson_number": "209",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
       "startLine": 70,
-      "endLine": 163,
+      "endLine": 165,
       "keywords": [
         "cowork plugin hook events",
         "cowork cloud hooks",
@@ -20389,7 +20397,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-15",
+        "date": "2026-10-25",
         "terms_sha256": "71077b2997f3a7b51901f5c0f8e5790e29f4e0031ddeaa1883b04bfb2e6de846"
       }
     },
@@ -20398,8 +20406,8 @@
       "title": "Where a New Cowork Task Runs, and the Switch That Did Not Keep It Local",
       "lesson_number": "210",
       "file": "53-routine-migration-plugin-hooks-by-lane.md",
-      "startLine": 167,
-      "endLine": 254,
+      "startLine": 169,
+      "endLine": 256,
       "keywords": [
         "Only on this computer",
         "dramatic_shrimp_enabled",
@@ -23275,7 +23283,7 @@
       "lesson_number": "239",
       "file": "66-auto-mode-classifier-2.1.301.md",
       "startLine": 13,
-      "endLine": 124,
+      "endLine": 125,
       "keywords": [
         "ANTHROPIC_DEFAULT_OPUS_MODEL",
         "ANTHROPIC_DEFAULT_SONNET_MODEL",
@@ -23301,7 +23309,6 @@
         "auto mode keeps blocking my commands",
         "which model approves actions in auto mode",
         "who decides if a tool call is safe",
-        "auto mode classifier model",
         "my python allow rule ignored in auto mode",
         "headless run aborted too many denials",
         "why did auto mode go back to asking me",
@@ -23312,10 +23319,11 @@
         "is the safety check done on anthropic servers",
         "auto mode behaves differently on bedrock",
         "why are npm run commands still checked in auto mode",
-        "does auto mode fail closed on errors",
         "list built-in auto mode rules",
         "see my effective auto mode rules",
-        "review or reset my auto mode rules"
+        "review or reset my auto mode rules",
+        "first shell command denied in auto mode",
+        "server classifier gave no verdict, retry call"
       ],
       "identifier_keys": [
         "ANTHROPIC_DEFAULT_OPUS_MODEL",
@@ -23344,7 +23352,6 @@
         "auto mode keeps blocking my commands",
         "which model approves actions in auto mode",
         "who decides if a tool call is safe",
-        "auto mode classifier model",
         "my python allow rule ignored in auto mode",
         "headless run aborted too many denials",
         "why did auto mode go back to asking me",
@@ -23355,16 +23362,17 @@
         "is the safety check done on anthropic servers",
         "auto mode behaves differently on bedrock",
         "why are npm run commands still checked in auto mode",
-        "does auto mode fail closed on errors",
         "list built-in auto mode rules",
         "see my effective auto mode rules",
-        "review or reset my auto mode rules"
+        "review or reset my auto mode rules",
+        "first shell command denied in auto mode",
+        "server classifier gave no verdict, retry call"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-16",
-        "terms_sha256": "de9163d9859dcbabc646a430b11b03187e7661c956ef40143c682cffd4b607dc"
+        "date": "2026-10-25",
+        "terms_sha256": "e0a658e0b2d79ca1b47a9e1083fdd455a36a0967b9eb1b2775a570f0e470ac6f"
       }
     },
     {
@@ -46831,6 +46839,9 @@
     "slugified-cwd": [
       164
     ],
+    "claude-0": [
+      164
+    ],
     "CLAUDE_TMPDIR": [
       164
     ],
@@ -47525,6 +47536,12 @@
       198
     ],
     "Claude-Session": [
+      198
+    ],
+    "conversation-id": [
+      198
+    ],
+    "project-docs": [
       198
     ],
     "BASH_DEFAULT_TIMEOUT_MS": [
@@ -57424,6 +57441,12 @@
     "shell write lands in vm scratch": [
       164
     ],
+    "scratchpad directory in cloud cowork session": [
+      164
+    ],
+    "where do temp files go in cloud sessions": [
+      164
+    ],
     "file write result shows relative path": [
       165
     ],
@@ -57863,9 +57886,6 @@
       174
     ],
     "how to tell which agent build runs in the cloud": [
-      174
-    ],
-    "why does cloud shell report an old version number": [
       174
     ],
     "unknown variables set in remote cowork session": [
@@ -61013,9 +61033,6 @@
     "who decides if a tool call is safe": [
       239
     ],
-    "auto mode classifier model": [
-      239
-    ],
     "my python allow rule ignored in auto mode": [
       239
     ],
@@ -61046,9 +61063,6 @@
     "why are npm run commands still checked in auto mode": [
       239
     ],
-    "does auto mode fail closed on errors": [
-      239
-    ],
     "list built-in auto mode rules": [
       239
     ],
@@ -61056,6 +61070,12 @@
       239
     ],
     "review or reset my auto mode rules": [
+      239
+    ],
+    "first shell command denied in auto mode": [
+      239
+    ],
+    "server classifier gave no verdict, retry call": [
       239
     ],
     "send message between two claude sessions": [

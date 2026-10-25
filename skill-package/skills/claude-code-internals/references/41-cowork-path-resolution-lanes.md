@@ -188,6 +188,8 @@ That section does not exist in a sub-agent's prompt. Three-part proof, first-par
 
 **NEW — a third scratch location, injected by the agent rather than the Desktop.** The probe's prompt carries a `# Scratchpad Directory` block naming `/private/tmp/claude-501/-<slugified-cwd>/<uuid>/scratchpad` and instructing *"Always use this scratchpad directory for temporary files instead of `/tmp`"*. Cross-artifact: that block occurs **4 times in the agent Mach-O 2.1.246 and zero times in the Desktop `app.asar`** — it is a Claude Code harness feature that Cowork inherits because the Cowork agent *is* Claude Code. It is not Cowork-aware, and its path is derived by slugifying the agent's cwd (the outputs dir).
 
+The same block exists in a cloud Cowork session, with that lane's user and working directory: `/tmp/claude-0/-home-claude/<uuid>/scratchpad` (uid 0, cwd `/home/claude`), and `mktemp` under it worked (2026-10-25, RELAYED, n=1). There it is inside the container, like everything else in that session.
+
 So host-loop has **three** distinct not-user-visible write locations, failing in different ways:
 
 | location | side | survives session end | user sees it |

@@ -266,6 +266,14 @@ drwx------ root  .
 
 A script that lists that directory with `*` also picks up the dotfile; match on the extension or the end of the name. The only session seen with the hashed copy alone was on 2026-09-21 (L174).
 
+**A third place: `/mnt/user-data/attachments/` (2026-10-25, RELAYED, n=1).** In a cloud Cowork task started from a Team organization, a PDF attached in the chat was reported at `/mnt/user-data/attachments/<conversation-id>/<8 hex>-<name>.pdf`, and at neither `/mnt/user-data/uploads/` nor `/root/.claude/uploads/<uuid>/`. A listing in the same session showed `/root/.claude/uploads/` absent.
+
+`/mnt/user-data/` held `attachments/` (mode 700, the PDF's folder), `uploads/` (present from the session's start and apparently empty), `working/`, and `outputs`, a link to `/mnt/attach/outputs`. So a script that treats an empty `uploads/` as "no uploads" and never looks in `attachments/` finds nothing. Whether `<conversation-id>` is the conversation URL's id was not recorded.
+
+The agent knows the path (CODE-READ): CLI 2.1.310 and the Desktop-staged agents 2.1.304 and 2.1.308 derive it from the uploads constant, `join(dirname("/mnt/user-data/uploads"), "attachments")`, beside a `project-docs` sibling, and the browser file-upload check treats an `attachments` folder like a chat upload (`fromChat || kind === "attachments"`). Earlier builds were not checked, so 2.1.304 is a floor for the code, not the date the runner started using it.
+
+A script that finds uploads should look in all three places, walk `attachments/` recursively (the file sits one folder down), and match on the end of the name. Only the `attachments` root is in the code; the `<conversation-id>/` folder and the `<8 hex>-` prefix were seen once.
+
 ## Document tools and the shell's time limit in a cloud session (2026-10-19 to 10-21)
 
 What a skill that reads PDFs or scanned pages can count on, from three cloud Cowork sessions on one account (each run by the account's owner, output pasted or relayed; n=1 per item), with the local VM's image read on disk for comparison:

@@ -1524,10 +1524,10 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 164 · 41-cowork-path-resolution-lanes.md:140 · Why the prompt reads as self-contradictory: the tokens collapse
 164 · 41-cowork-path-resolution-lanes.md:150 · Measured consequences
 164 · 41-cowork-path-resolution-lanes.md:171 · ADDENDUM (2026-08-27) — a live sub-agent probe: two confirmations, two new facts
-166 · 41-cowork-path-resolution-lanes.md:242 · Three surfaces, three contracts
-166 · 41-cowork-path-resolution-lanes.md:252 · Lane facts, re-derived extraction-free
-166 · 41-cowork-path-resolution-lanes.md:260 · The two greps that lie
-166 · 41-cowork-path-resolution-lanes.md:289 · ADDENDUM — the class these all belong to
+166 · 41-cowork-path-resolution-lanes.md:244 · Three surfaces, three contracts
+166 · 41-cowork-path-resolution-lanes.md:254 · Lane facts, re-derived extraction-free
+166 · 41-cowork-path-resolution-lanes.md:262 · The two greps that lie
+166 · 41-cowork-path-resolution-lanes.md:291 · ADDENDUM — the class these all belong to
 167 · 42-skill-reattach-compaction-budget.md:17 · The mechanism
 167 · 42-skill-reattach-compaction-budget.md:43 · The two caps
 167 · 42-skill-reattach-compaction-budget.md:69 · Four conditions the naive statement misses
@@ -1689,8 +1689,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 198 · 50-artifact-host-tools-inbox-folder-skills.md:230 · Other things the probe showed
 198 · 50-artifact-host-tools-inbox-folder-skills.md:239 · Git access by surface (2026-10-05, one run each)
 198 · 50-artifact-host-tools-inbox-folder-skills.md:249 · Uploaded files in a cloud session (2026-10-05)
-198 · 50-artifact-host-tools-inbox-folder-skills.md:269 · Document tools and the shell's time limit in a cloud session (2026-10-19 to 10-21)
-198 · 50-artifact-host-tools-inbox-folder-skills.md:305 · Long shell output on claude.ai web (2026-10-05, UI)
+198 · 50-artifact-host-tools-inbox-folder-skills.md:277 · Document tools and the shell's time limit in a cloud session (2026-10-19 to 10-21)
+198 · 50-artifact-host-tools-inbox-folder-skills.md:313 · Long shell output on claude.ai web (2026-10-05, UI)
 199 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:21 · The stub
 199 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:32 · What gets stubbed
 199 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:61 · Observed
@@ -1737,14 +1737,14 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 209 · 53-routine-migration-plugin-hooks-by-lane.md:108 · A PreToolUse hook on a dispatch, by CLI version
 209 · 53-routine-migration-plugin-hooks-by-lane.md:132 · Matchers and the local session's shell
 209 · 53-routine-migration-plugin-hooks-by-lane.md:142 · Three traps
-209 · 53-routine-migration-plugin-hooks-by-lane.md:148 · For a plugin author
-209 · 53-routine-migration-plugin-hooks-by-lane.md:158 · In the official release notes (checked 2026-10-15)
-210 · 53-routine-migration-plugin-hooks-by-lane.md:173 · Three controls with one name
-210 · 53-routine-migration-plugin-hooks-by-lane.md:185 · The account setting
-210 · 53-routine-migration-plugin-hooks-by-lane.md:199 · The routing function
-210 · 53-routine-migration-plugin-hooks-by-lane.md:215 · What happened
-210 · 53-routine-migration-plugin-hooks-by-lane.md:232 · The composer decides (Desktop 2.19675.0, 2026-10-02)
-210 · 53-routine-migration-plugin-hooks-by-lane.md:250 · For an author or tester
+209 · 53-routine-migration-plugin-hooks-by-lane.md:150 · For a plugin author
+209 · 53-routine-migration-plugin-hooks-by-lane.md:160 · In the official release notes (checked 2026-10-15)
+210 · 53-routine-migration-plugin-hooks-by-lane.md:175 · Three controls with one name
+210 · 53-routine-migration-plugin-hooks-by-lane.md:187 · The account setting
+210 · 53-routine-migration-plugin-hooks-by-lane.md:201 · The routing function
+210 · 53-routine-migration-plugin-hooks-by-lane.md:217 · What happened
+210 · 53-routine-migration-plugin-hooks-by-lane.md:234 · The composer decides (Desktop 2.19675.0, 2026-10-02)
+210 · 53-routine-migration-plugin-hooks-by-lane.md:252 · For an author or tester
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:22 · The three layers
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:32 · Layer 1: publishing refuses `host:`
 211 · 54-desktop-2.9939-artifacts-gates-egress.md:48 · Layer 2: the viewer enforces the manifest
@@ -1923,9 +1923,9 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 239 · 66-auto-mode-classifier-2.1.301.md:59 · What the local classifier sees (one code read)
 239 · 66-auto-mode-classifier-2.1.301.md:67 · Your own rules (CODE-READ)
 239 · 66-auto-mode-classifier-2.1.301.md:79 · When it blocks, and when it fails (CODE-READ)
-239 · 66-auto-mode-classifier-2.1.301.md:91 · For a skill or plugin author
-239 · 66-auto-mode-classifier-2.1.301.md:98 · In the official changelog (checked 2026-10-17, through 2.1.302)
-239 · 66-auto-mode-classifier-2.1.301.md:120 · Not established
+239 · 66-auto-mode-classifier-2.1.301.md:92 · For a skill or plugin author
+239 · 66-auto-mode-classifier-2.1.301.md:99 · In the official changelog (checked 2026-10-17, through 2.1.302)
+239 · 66-auto-mode-classifier-2.1.301.md:121 · Not established
 240 · 67-cross-session-messaging-2.1.302.md:17 · The registry (CODE-READ)
 240 · 67-cross-session-messaging-2.1.302.md:38 · Finding peers (CODE-READ)
 240 · 67-cross-session-messaging-2.1.302.md:48 · The socket and the wire (CODE-READ)

@@ -3944,9 +3944,13 @@
     },
     "164": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-30",
-      "input_sha256": "952e08a82419861d50143b009c9d596ed7f3b0dc6c09b4e4f516edc39b6b8ce3",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-10-25",
+      "input_sha256": "2c8701745fe52491d6b9b23905f8e7a1fd28966c7e09201aea9cd1a584b0a8de",
+      "prior_terms_sha256": "1162f0b804418d58d77c6d2ef0bb41e91af715f8d1722ebca5b64796c1630c72",
+      "collision_check": "questions-v2.json dev",
+      "previous_text": "0cb343183a4ab0be7c89640ffe5694ad3ab40177",
+      "replaced": [],
       "terms": [
         "file saved but user can't see it",
         "bash wrote file to wrong place in Cowork",
@@ -3962,7 +3966,9 @@
         "file tool rejects sessions path",
         "bare filename refused by write tool",
         "temp directory override where do files go",
-        "shell write lands in VM scratch"
+        "shell write lands in VM scratch",
+        "scratchpad directory in cloud Cowork session",
+        "where do temp files go in cloud sessions"
       ]
     },
     "165": {
@@ -4203,17 +4209,25 @@
     "174": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-24",
-      "input_sha256": "beb11342c77b513d8d84c4be76ff70ff2ba4d1b74ff95202fbfc85a03c1fc443",
-      "prior_terms_sha256": "e7d9b2b246dfd46b85cf2e925d00b0ac73526f27688aa1281d2165d0f9bf46ff",
-      "collision_check": "questions-v2.json dev",
-      "previous_text": "7d1aa09889c2a24c0a4922f0ee209879ea45e78f",
-      "replaced": [],
+      "date": "2026-10-25",
+      "input_sha256": "6c2a988604593b5eb92b5342870d3ccdfa1b4d4075ded1baaf8b45cc2fc2d6e4",
+      "prior_terms_sha256": "eb0bc95f3f19ec9560aeebfa73fa23f7f2c3563e74cc9d8d567fa8e1975b1c38",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "0cb343183a4ab0be7c89640ffe5694ad3ab40177",
+      "replaced": [
+        "why does cloud shell report an old version number"
+      ],
+      "dropped": [
+        {
+          "term": "why does cloud shell report an old version number",
+          "why": "duplicate",
+          "duplicate_of": "version variable shows wrong version in cloud"
+        }
+      ],
       "terms": [
         "cloud session environment variables differ from CLI",
         "version variable shows wrong version in cloud",
         "how to tell which agent build runs in the cloud",
-        "why does cloud shell report an old version number",
         "unknown variables set in remote cowork session",
         "cloud session runs as root user",
         "where do uploaded files go in cloud session",
@@ -4227,7 +4241,14 @@
         "plugin session start hook not firing on startup",
         "uploaded file appears in two places",
         "read-only copy of uploads in cloud",
-        "why does cloud session keep asking me to commit and push"
+        "why does cloud session keep asking me to commit and push",
+        "cowork built-in hooks found in two folders"
+      ],
+      "withheld": [
+        {
+          "term": "cowork built-in hooks found in two folders",
+          "qid": "case: hooks not firing"
+        }
       ]
     },
     "175": {
@@ -4790,11 +4811,11 @@
     "198": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-24",
-      "input_sha256": "1a90427dcce2d92177c9eff25aba91ec0d3acda0f3aaff1e28f43ee7be1a91df",
+      "date": "2026-10-25",
+      "input_sha256": "7fb6f8594a4b0552d903f4711b373ed6a814646b2d9c8f9945ad8ed8f82d9987",
       "prior_terms_sha256": "f19f966b6c11992b6d2f8dfb8389bd79835096c141dc0d369a4b89a33740cb43",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "7d1aa09889c2a24c0a4922f0ee209879ea45e78f",
+      "previous_text": "0cb343183a4ab0be7c89640ffe5694ad3ab40177",
       "replaced": [],
       "terms": [
         "relative path works differently in cloud vs local Cowork",
@@ -5079,21 +5100,12 @@
     "209": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-15",
-      "input_sha256": "658931a74277e4e45e0e02589f2d3c014864d1b78a8bf96fb94d5980d494f5dc",
-      "prior_terms_sha256": "82d9e6b52c6d928ce50273927c3606a7d7a6c702762954ea48b106de9e23f59e",
+      "date": "2026-10-25",
+      "input_sha256": "8d9ce25e4a7d73e74753dbb36171d6373a97262cee92626ddadd2905f907a865",
+      "prior_terms_sha256": "71077b2997f3a7b51901f5c0f8e5790e29f4e0031ddeaa1883b04bfb2e6de846",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "2f8df0bf4a4cf96e915807242e3dfddfcbc538f5",
-      "replaced": [
-        "hook blocked subagent dispatch"
-      ],
-      "dropped": [
-        {
-          "term": "hook blocked subagent dispatch",
-          "why": "duplicate",
-          "duplicate_of": "subagent shows failed with no steps yet"
-        }
-      ],
+      "previous_text": "0cb343183a4ab0be7c89640ffe5694ad3ab40177",
+      "replaced": [],
       "terms": [
         "plugin hook not firing in cowork",
         "session start hook not running in cloud",
@@ -6066,17 +6078,31 @@
     "239": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-16",
-      "input_sha256": "18e7a9b28f0e1f8f00e85976a6c014265c098a2ca4541211b794e686c64e641d",
-      "prior_terms_sha256": "dd9025833c6901f55aeba3673707131a1e70ab97591b6d8c11128bb9ffdfdc27",
+      "date": "2026-10-25",
+      "input_sha256": "77912eea3b7e22942350fb93cb715f047cc48c69fbae6f3936c7b52ca0de8b7e",
+      "prior_terms_sha256": "de9163d9859dcbabc646a430b11b03187e7661c956ef40143c682cffd4b607dc",
       "collision_check": "questions-v2.json dev",
-      "previous_text": "9e00a03bfe0e48095208580ef3ac52517508da8a",
-      "replaced": [],
+      "previous_text": "0cb343183a4ab0be7c89640ffe5694ad3ab40177",
+      "replaced": [
+        "auto mode classifier model",
+        "does auto mode fail closed on errors?"
+      ],
+      "dropped": [
+        {
+          "term": "auto mode classifier model",
+          "why": "duplicate",
+          "duplicate_of": "which model approves actions in auto mode"
+        },
+        {
+          "term": "does auto mode fail closed on errors?",
+          "why": "duplicate",
+          "duplicate_of": "classifier unavailable action denied"
+        }
+      ],
       "terms": [
         "auto mode keeps blocking my commands",
         "which model approves actions in auto mode",
         "who decides if a tool call is safe",
-        "auto mode classifier model",
         "my python allow rule ignored in auto mode",
         "headless run aborted too many denials",
         "why did auto mode go back to asking me",
@@ -6087,10 +6113,11 @@
         "is the safety check done on Anthropic servers?",
         "auto mode behaves differently on Bedrock",
         "why are npm run commands still checked in auto mode?",
-        "does auto mode fail closed on errors?",
         "list built-in auto mode rules",
         "see my effective auto mode rules",
-        "review or reset my auto mode rules"
+        "review or reset my auto mode rules",
+        "first shell command denied in auto mode",
+        "server classifier gave no verdict, retry call"
       ]
     },
     "240": {
