@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.82.1 — 2026-11-05 (this fork) — Unified Claude's November 10 switch
+
+- **L237 (Ch67):** Desktop 4.16336.0 gives an unset `desktopHome` a dated rule: from 12:00 PM PT on November 10, 2026, by the device's clock, it reads as `standard`, with Chat, file analysis and Cowork on, even where `coworkTabEnabled` is `false`. It never applies in `1p` mode and waits for a pending served configuration. New conversations then start as Cowork tasks, which only `coworkSessionRetentionDays` deletes, so set it equal to `chatSessionRetentionDays`. The lesson no longer says an unset key leaves the old keys in charge, or that the code has no date logic (true of the earlier builds it read).
+- **L237:** `coworkTabEnabled`, `chatTabEnabled`, `chatAdvancedFileAnalysisEnabled` and the `sessionRetentionHold` legal hold stop working on December 17, 2026. The retention periods then permanently delete the sessions the hold kept, with no warning in the app. To keep them, set all three periods to 3650 days first.
+- **fcache restamp under Team (Desktop 4.16336.0):** the first-party direct MCP pool (`4074604942`) is served on; `1978029737` adds `workspaceBashDownloadStatus` (bash reports a still-downloading VM image with progress); `2974609625` adds `boundFileGrantsEnabled` and `boundFileGrantsMoveEnabled`.
+
 ## v2.82.0 — 2026-10-25 (this fork) — A cloud Cowork field report, and a vocabulary check for ranking tests
 
 245 lessons across 75 chapters (L164, L174, L198, L209 and L239 extended). Sources: one cloud Cowork session under a
