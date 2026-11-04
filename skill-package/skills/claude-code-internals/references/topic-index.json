@@ -22846,7 +22846,6 @@
         "chat-shell-allowed-domains",
         "chat-surface",
         "advanced-file-analysis-network",
-        "chat-advanced-file-analysis-enabled",
         "builtin-tool-policy",
         "org-plugin-settings",
         "inference-custom-headers",
@@ -22967,7 +22966,6 @@
         "chat-shell-allowed-domains",
         "chat-surface",
         "advanced-file-analysis-network",
-        "chat-advanced-file-analysis-enabled",
         "builtin-tool-policy",
         "org-plugin-settings",
         "inference-custom-headers",
@@ -23033,8 +23031,9 @@
       "lesson_number": "237",
       "file": "64-desktop-admin-keys-aug-oct-2026.md",
       "startLine": 13,
-      "endLine": 150,
+      "endLine": 161,
       "keywords": [
+        "cowork-tab-enabled",
         "mcp-scheduled-task-approval-lifetime-days",
         "mcp-tool-timeout-sec",
         "index.chunk-muI2IV6k.js",
@@ -23076,6 +23075,9 @@
         "desktop-home",
         "no-vm",
         "chat-tab-enabled",
+        "2026-11-10",
+        "surface_default",
+        "retention_default",
         "index.chunk-CB6cNSrW.js",
         "marble_heron_enabled",
         "gated_messages",
@@ -23101,6 +23103,7 @@
         "hipaa organizations excluded from automatic import"
       ],
       "identifier_keys": [
+        "cowork-tab-enabled",
         "mcp-scheduled-task-approval-lifetime-days",
         "mcp-tool-timeout-sec",
         "index.chunk-muI2IV6k.js",
@@ -23142,6 +23145,9 @@
         "desktop-home",
         "no-vm",
         "chat-tab-enabled",
+        "2026-11-10",
+        "surface_default",
+        "retention_default",
         "index.chunk-CB6cNSrW.js",
         "marble_heron_enabled",
         "gated_messages",
@@ -23171,7 +23177,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-23",
+        "date": "2026-11-04",
         "terms_sha256": "4aa76e36e0ded43b4e5b9bb56ba3f906e12405345f47047b9c13637b0efbda96"
       }
     },
@@ -23589,7 +23595,6 @@
         "index.chunk-BLvpT1n4.js",
         "claude-sonnet-5-5",
         "claude-haiku-5-5",
-        "cowork-session-retention-days",
         "storage-dialog",
         "device-storage",
         "run-code-cleanup-selected",
@@ -23646,7 +23651,6 @@
         "index.chunk-BLvpT1n4.js",
         "claude-sonnet-5-5",
         "claude-haiku-5-5",
-        "cowork-session-retention-days",
         "storage-dialog",
         "device-storage",
         "run-code-cleanup-selected",
@@ -45045,6 +45049,9 @@
     "get-auto-memory-dir-for-session": [
       109
     ],
+    "cowork-tab-enabled": [
+      237
+    ],
     "update-scheduled-task": [
       109
     ],
@@ -49084,7 +49091,6 @@
       236
     ],
     "chat-advanced-file-analysis-enabled": [
-      236,
       237
     ],
     "builtin-tool-policy": [
@@ -49224,8 +49230,7 @@
       237
     ],
     "cowork-session-retention-days": [
-      237,
-      242
+      237
     ],
     "code-session-retention-days": [
       237
@@ -49298,6 +49303,15 @@
       237
     ],
     "chat-tab-enabled": [
+      237
+    ],
+    "2026-11-10": [
+      237
+    ],
+    "surface_default": [
+      237
+    ],
+    "retention_default": [
       237
     ],
     "index.chunk-CB6cNSrW.js": [

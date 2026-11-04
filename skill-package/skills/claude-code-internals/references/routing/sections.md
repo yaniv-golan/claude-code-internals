@@ -1907,9 +1907,9 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 237 · 64-desktop-admin-keys-aug-oct-2026.md:79 · Sessions kept on the device
 237 · 64-desktop-admin-keys-aug-oct-2026.md:88 · Updates, restarts and the rest
 237 · 64-desktop-admin-keys-aug-oct-2026.md:103 · Unified Claude: one home for Chat and Cowork
-237 · 64-desktop-admin-keys-aug-oct-2026.md:134 · For a skill or plugin author
-237 · 64-desktop-admin-keys-aug-oct-2026.md:142 · For an admin
-237 · 64-desktop-admin-keys-aug-oct-2026.md:148 · Not established
+237 · 64-desktop-admin-keys-aug-oct-2026.md:145 · For a skill or plugin author
+237 · 64-desktop-admin-keys-aug-oct-2026.md:153 · For an admin
+237 · 64-desktop-admin-keys-aug-oct-2026.md:159 · Not established
 238 · 65-desktop-2.42304-unannounced-changes.md:19 · Code tab
 238 · 65-desktop-2.42304-unannounced-changes.md:29 · SSH sessions
 238 · 65-desktop-2.42304-unannounced-changes.md:34 · Plugins

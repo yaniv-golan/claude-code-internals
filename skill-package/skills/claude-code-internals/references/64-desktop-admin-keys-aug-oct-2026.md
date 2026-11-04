@@ -81,9 +81,9 @@ How the first two reach the agent (CODE-READ, 2.37337.1):
 | key | since | scopes | effect |
 |---|---|---|---|
 | `chatSessionRetentionDays`, `coworkSessionRetentionDays`, `codeSessionRetentionDays` | 1.52386.0 | 3p | Delete idle sessions, with their files, from the device after N days (the form suggests 90) |
-| `sessionRetentionHold` | 1.52386.0 | 3p | A legal hold that suspends that deletion |
+| `sessionRetentionHold` | 1.52386.0, deprecated | 3p | A legal hold that suspends that deletion, until December 17, 2026 |
 
-In the code the hold wins over every period (CODE-READ). For forensics this matters: on such a deployment the on-disk transcripts and session records the Cowork lessons read (Ch37/L129–L132) can be gone by policy, not by a bug.
+In the code the hold wins over every period (CODE-READ). The hold is deprecated in 4.16336.0. The notes say this release and later ignore it from 12:00 PM PT on December 17, 2026, and the retention periods then permanently delete the idle sessions it kept, with no warning in the app. To keep them, first set all three periods to 3650 days in the configuration that sets them, wait until devices have the new periods, then remove the key. For forensics this matters: on such a deployment the on-disk transcripts and session records the Cowork lessons read (Ch37/L129–L132) can be gone by policy, not by a bug.
 
 ## Updates, restarts and the rest
 
@@ -114,9 +114,20 @@ Desktop can merge Chat and Cowork into one home, the "unified view" (Anthropic c
 | `off` ("Code only") | off | off | off |
 
 - Scopes `3p`, available from 1.52386.0. The admin editor offers only `standard` and `off`; a value Desktop doesn't recognize reads as `off`.
-- While the key is set it alone decides those three surfaces, and `chatTabEnabled`, `chatAdvancedFileAnalysisEnabled` and `coworkTabEnabled` are ignored ("The unified view replaces this setting."). Unset, those three keys decide as before.
+- While the key is set it alone decides those three surfaces, and `chatTabEnabled`, `chatAdvancedFileAnalysisEnabled` and `coworkTabEnabled` are ignored ("The unified view replaces this setting."). What an unset key does depends on the date, below.
 - `off` still opens the unified view, with nothing in it. It doesn't bring back the classic split.
-- The notes say organizations that leave the key unset move to Unified Claude on November 10; no date logic was found in the code.
+
+**An unset `desktopHome` from November 10, 2026** (CODE-READ, 4.16336.0 schema; the date is absent from 3.6556.1). The key carries a rule for the unset case: from `2026-11-10`, read it as `standard`.
+- The switch is at 12:00 PM PT (20:00 UTC) by the device's clock. Before it, an unset key leaves the three old keys in charge.
+- After it, Chat, file analysis and Cowork are on, even where `coworkTabEnabled` is `false`. `chatTabEnabled` and `chatAdvancedFileAnalysisEnabled` have no effect either.
+- The rule never applies in `1p` mode, and it waits while a served configuration is still pending.
+- New conversations then start as Cowork tasks, which `coworkSessionRetentionDays` deletes and `chatSessionRetentionDays` doesn't. To delete both after the same time, set both to the same number.
+- While the key is unset, the configuration check warns about both cases, before and after the date: `coworkTabEnabled` set to `false` (`surface_default`), and a `chatSessionRetentionDays` that differs from `coworkSessionRetentionDays` (`retention_default`). A self-hosted install skips this check.
+- To keep Cowork off, set the key: `simple`, `no-vm` or `off`.
+- Versions differ. The notes say 4.29.0 applied the switch only where Cowork was on and kept the current view where the two retention periods differed; 4.4212.0 dropped the first exception and 4.16336.0 the second. Earlier releases have no switch.
+- The notes say the switch happens at launch. That timing wasn't traced in the code.
+
+**The old keys end on December 17, 2026.** The 4.16336.0 schema marks `coworkTabEnabled`, `chatTabEnabled` and `chatAdvancedFileAnalysisEnabled` deprecated in favor of `desktopHome`, with a warning from November 17 and support ending at 12:00 PM PT on December 17 (CODE-READ). The notes add that this release and later then ignore them, earlier releases go on reading them, and they've left the policy templates. A device profile holding only settings past their date then has no effect.
 
 **A chat in the unified view on a third-party deployment** runs as a Cowork local-agent session of type `chat`, on Cowork's agent and VM (CODE-READ, `index.chunk-CB6cNSrW.js`, `index.chunk-muI2IV6k.js`; the folder refusal and the session type were re-checked first-hand, the rest is from one code read). Compared with a Cowork task:
 - **No folders.** Connecting one is refused: "Folder access isn't available in chat sessions." Attached files are copied into `uploads`.
@@ -127,7 +138,7 @@ Desktop can merge Chat and Cowork into one home, the "unified view" (Anthropic c
 
 **claude.ai organizations (Team, Enterprise)** don't use `desktopHome`. The interface code (ion-dist 2.42304.0) shows organization settings `dramatic_shrimp_enabled` (depends on Cowork) and `marble_heron_enabled` (depends on Chat, needs consent to enable), both marked "pending rollout". It also shows two gates read in the browser, `3025514228` and `561366702`, which are absent from Desktop's own server-settings cache, so their state on a given organization can't be read on disk. A user can switch back to the classic layout from a menu. The admin card "Chat and Cowork are now one Claude… Turn it on for your organization" isn't in the app's files. It comes from claude.ai, and the bootstrap response's `gated_messages` is the likely carrier (INFERRED).
 
-In the notes: `desktopHome`, its values and the November 10 switch are announced (v2.31226.0, third-party), as is the merged home as default (v1.26832.0). The `type: chat` session, its limits and the claude.ai organization settings are not.
+In the notes: `desktopHome`, its values and the November 10 switch are announced (v2.31226.0, third-party; changed in v4.29.0, v4.4212.0 and v4.16336.0), as is the merged home as default (v1.26832.0). The `type: chat` session, its limits and the claude.ai organization settings are not.
 
 Where a claude.ai organization's unified chat runs was not established. The code suggests the turn runs in the cloud, with Desktop serving device tools such as computer use, the browser pane and file transfer to it (INFERRED).
 
