@@ -10555,7 +10555,6 @@
         "inference-only",
         "expires-in",
         "sk-ant-oat01",
-        "global-this",
         "is-developer-approved-dev-url-override-enabled",
         "MCP_WORKSPACE_WEB_FETCH",
         "build headless driver for cowork agent",
@@ -10614,7 +10613,6 @@
         "inference-only",
         "expires-in",
         "sk-ant-oat01",
-        "global-this",
         "is-developer-approved-dev-url-override-enabled",
         "MCP_WORKSPACE_WEB_FETCH"
       ],
@@ -12655,7 +12653,6 @@
         "Pm-host-loop",
         "hardcodedMainGrowthBookFeatures",
         "host-loop-vm-loop-decision-function",
-        "global-this",
         "is-developer-approved-dev-url-override-enabled",
         "CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS",
         "MCP_DISPATCH_LIST_PROJECTS",
@@ -12716,7 +12713,6 @@
         "which effort level does a subagent use"
       ],
       "identifier_keys": [
-        "global-this",
         "is-developer-approved-dev-url-override-enabled",
         "CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS",
         "MCP_DISPATCH_LIST_PROJECTS",
@@ -24565,7 +24561,7 @@
       "lesson_number": "249",
       "file": "74-cli-2.1.318-code-mode-mods-boundaries.md",
       "startLine": 16,
-      "endLine": 80,
+      "endLine": 110,
       "keywords": [
         "CLAUDE_CODE_EXPERIMENTAL_CODE_MODE",
         "tengu_rustling_blossom",
@@ -24574,6 +24570,10 @@
         "CLAUDE_CODE_ENABLE_TELEMETRY",
         "search-tools",
         "describe-tool",
+        "unsandboxed-retry",
+        "release-context",
+        "list-contexts",
+        "spawn-context",
         "model writes scripts instead of calling tools",
         "all tools replaced by one javascript tool",
         "do hooks still fire inside scripts",
@@ -24588,7 +24588,10 @@
         "auto mode classifier checks script once",
         "script execution time limit",
         "will my bash hook work inside a script",
-        "only three tools showing in tool list"
+        "only three tools showing in tool list",
+        "how are shell arguments quoted in scripts",
+        "long shell command moved to background after timeout",
+        "can a script spawn sub-agent contexts"
       ],
       "identifier_keys": [
         "CLAUDE_CODE_EXPERIMENTAL_CODE_MODE",
@@ -24597,7 +24600,11 @@
         "code-mode-auto-mode-caveat-accepted-v1",
         "CLAUDE_CODE_ENABLE_TELEMETRY",
         "search-tools",
-        "describe-tool"
+        "describe-tool",
+        "unsandboxed-retry",
+        "release-context",
+        "list-contexts",
+        "spawn-context"
       ],
       "vocab_keys": [
         "model writes scripts instead of calling tools",
@@ -24614,13 +24621,16 @@
         "auto mode classifier checks script once",
         "script execution time limit",
         "will my bash hook work inside a script",
-        "only three tools showing in tool list"
+        "only three tools showing in tool list",
+        "how are shell arguments quoted in scripts",
+        "long shell command moved to background after timeout",
+        "can a script spawn sub-agent contexts"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
         "date": "2026-11-05",
-        "terms_sha256": "7e05d0babadcc4f6b25e58bb53f3a4aa073885f64649c3c2dfbc42825a5c36ae"
+        "terms_sha256": "c47c47ef8ead5459a81a62ba5101b3710ff3a46364a605c3e43312c5462cb70b"
       }
     },
     {
@@ -24628,8 +24638,8 @@
       "title": "Mods: JavaScript Plugins That Run Inside the Claude Code Process",
       "lesson_number": "250",
       "file": "74-cli-2.1.318-code-mode-mods-boundaries.md",
-      "startLine": 84,
-      "endLine": 125,
+      "startLine": 114,
+      "endLine": 155,
       "keywords": [
         "LD_PRELOAD",
         "disable-all-hooks",
@@ -24698,8 +24708,8 @@
       "title": "New Boundaries: Blocking Writes, the rm Waiver and the Privacy Check",
       "lesson_number": "251",
       "file": "74-cli-2.1.318-code-mode-mods-boundaries.md",
-      "startLine": 129,
-      "endLine": 162,
+      "startLine": 159,
+      "endLine": 192,
       "keywords": [
         "block-writes-outside-working-directories",
         "CLAUDE_CODE_EVEN_MORE_DANGEROUSLY_SKIP_PERMISSIONS",
@@ -24776,8 +24786,8 @@
       "title": "What Else CLI 2.1.311 to 2.1.318 Changed",
       "lesson_number": "252",
       "file": "74-cli-2.1.318-code-mode-mods-boundaries.md",
-      "startLine": 166,
-      "endLine": 204,
+      "startLine": 196,
+      "endLine": 234,
       "keywords": [
         "tengu_turtle_carbon",
         "CLAUDE_CODE_SUBAGENT_EFFORT",
@@ -45675,10 +45685,6 @@
     "sk-ant-oat01": [
       107
     ],
-    "global-this": [
-      107,
-      124
-    ],
     "is-developer-approved-dev-url-override-enabled": [
       107,
       124
@@ -51162,6 +51168,18 @@
       249
     ],
     "describe-tool": [
+      249
+    ],
+    "unsandboxed-retry": [
+      249
+    ],
+    "release-context": [
+      249
+    ],
+    "list-contexts": [
+      249
+    ],
+    "spawn-context": [
       249
     ],
     "plugin-authoring": [
@@ -63059,6 +63077,15 @@
       249
     ],
     "only three tools showing in tool list": [
+      249
+    ],
+    "how are shell arguments quoted in scripts": [
+      249
+    ],
+    "long shell command moved to background after timeout": [
+      249
+    ],
+    "can a script spawn sub-agent contexts": [
       249
     ],
     "customize claude code interface with javascript plugin": [

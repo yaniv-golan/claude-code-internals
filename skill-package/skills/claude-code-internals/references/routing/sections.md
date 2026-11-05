@@ -2007,23 +2007,24 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 248 · 73-desktop-4.16336-changes.md:258 · Not traced
 249 · 74-cli-2.1.318-code-mode-mods-boundaries.md:20 · Turning it on
 249 · 74-cli-2.1.318-code-mode-mods-boundaries.md:43 · What the model sees
-249 · 74-cli-2.1.318-code-mode-mods-boundaries.md:51 · Hooks and permissions
-249 · 74-cli-2.1.318-code-mode-mods-boundaries.md:71 · For hook and skill authors
-249 · 74-cli-2.1.318-code-mode-mods-boundaries.md:76 · Not traced
-250 · 74-cli-2.1.318-code-mode-mods-boundaries.md:88 · What a mod is
-250 · 74-cli-2.1.318-code-mode-mods-boundaries.md:92 · Where it runs
-250 · 74-cli-2.1.318-code-mode-mods-boundaries.md:96 · What gates it
-250 · 74-cli-2.1.318-code-mode-mods-boundaries.md:109 · Mods Claude writes in a session
-250 · 74-cli-2.1.318-code-mode-mods-boundaries.md:117 · With Code Mode
-250 · 74-cli-2.1.318-code-mode-mods-boundaries.md:121 · Not traced
-251 · 74-cli-2.1.318-code-mode-mods-boundaries.md:133 · `blockWritesOutsideWorkingDirectories`
-251 · 74-cli-2.1.318-code-mode-mods-boundaries.md:142 · The rm waiver
-251 · 74-cli-2.1.318-code-mode-mods-boundaries.md:156 · `cc-plugin-privacy` (2.1.317)
-251 · 74-cli-2.1.318-code-mode-mods-boundaries.md:160 · Server-managed settings
-252 · 74-cli-2.1.318-code-mode-mods-boundaries.md:170 · Changes to existing behaviour
-252 · 74-cli-2.1.318-code-mode-mods-boundaries.md:182 · New, gated off or narrow
-252 · 74-cli-2.1.318-code-mode-mods-boundaries.md:195 · The runtime
-252 · 74-cli-2.1.318-code-mode-mods-boundaries.md:201 · Not traced
+249 · 74-cli-2.1.318-code-mode-mods-boundaries.md:51 · The script globals
+249 · 74-cli-2.1.318-code-mode-mods-boundaries.md:80 · Hooks and permissions
+249 · 74-cli-2.1.318-code-mode-mods-boundaries.md:100 · For hook and skill authors
+249 · 74-cli-2.1.318-code-mode-mods-boundaries.md:105 · Not traced
+250 · 74-cli-2.1.318-code-mode-mods-boundaries.md:118 · What a mod is
+250 · 74-cli-2.1.318-code-mode-mods-boundaries.md:122 · Where it runs
+250 · 74-cli-2.1.318-code-mode-mods-boundaries.md:126 · What gates it
+250 · 74-cli-2.1.318-code-mode-mods-boundaries.md:139 · Mods Claude writes in a session
+250 · 74-cli-2.1.318-code-mode-mods-boundaries.md:147 · With Code Mode
+250 · 74-cli-2.1.318-code-mode-mods-boundaries.md:151 · Not traced
+251 · 74-cli-2.1.318-code-mode-mods-boundaries.md:163 · `blockWritesOutsideWorkingDirectories`
+251 · 74-cli-2.1.318-code-mode-mods-boundaries.md:172 · The rm waiver
+251 · 74-cli-2.1.318-code-mode-mods-boundaries.md:186 · `cc-plugin-privacy` (2.1.317)
+251 · 74-cli-2.1.318-code-mode-mods-boundaries.md:190 · Server-managed settings
+252 · 74-cli-2.1.318-code-mode-mods-boundaries.md:200 · Changes to existing behaviour
+252 · 74-cli-2.1.318-code-mode-mods-boundaries.md:212 · New, gated off or narrow
+252 · 74-cli-2.1.318-code-mode-mods-boundaries.md:225 · The runtime
+252 · 74-cli-2.1.318-code-mode-mods-boundaries.md:231 · Not traced
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)
