@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.84.0 — 2026-11-06 (this fork) — Code Mode's script globals
+
+L249 now lists every global a Code Mode script gets, read from the declaration files shipped in CLI 2.1.318: how `$` quotes values, which exits don't throw, timeouts and the move to the background, spilled output, batch `edit`, `file()`, the output helpers and `running()`.
+
+It also covers the child-agent "contexts" (`spawnContext`, `contexts.<name>`). They are built on `Agent`, `TaskStop` and `SendMessage`, but no script can reach them in 2.1.318: they are installed only outside Code Mode, and the `REPL` tool runs only inside it.
+
 ## v2.83.0 — 2026-11-06 (this fork) — Desktop 4.16336.0 and CLI 2.1.318
 
 Adds Chapters 76 and 77 (L246–L252), read from Desktop 4.16336.0 (diffed against 3.6556.1) and CLI 2.1.318. The features were read from code, not run.
