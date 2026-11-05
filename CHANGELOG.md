@@ -1,5 +1,29 @@
 # Changelog
 
+## v2.83.0 — 2026-11-06 (this fork) — Desktop 4.16336.0 and CLI 2.1.318
+
+Adds Chapters 76 and 77 (L246–L252), read from Desktop 4.16336.0 (diffed against 3.6556.1) and CLI 2.1.318. The features were read from code, not run.
+
+- **L246–L248, Desktop:** the UI bundle moves to `ion-dist.asar`; connector wire names behind gate `52253313`; new admin keys; Code-tab SSH environment filtering, hooks without Git Bash, `$defaults` across several sources, dev servers and `ccd_pr`.
+- **L249, Code Mode:** the tool list collapses to `REPL`, `Poll` and `StructuredOutput`, with hooks and permissions still applied per inner call. Gated off on the capturing machine.
+- **L250, mods:** on by default, running in a `Worker` thread inside the process. Corrects L187's enablement.
+- **L251, boundaries:** `blockWritesOutsideWorkingDirectories`, the rm waiver, `cc-plugin-privacy`, silent server-managed settings.
+- **L252, the rest of 2.1.311–2.1.318.**
+
+Corrected in existing lessons:
+
+- L8: `Read` no longer returns an unchanged-file stub from 2.1.317, and `Write` has a fourth failure mode.
+- L239 and L150: 16 replaceable allow rules from 2.1.316, and the multi-source `$defaults` rule.
+- L241: idle compaction uses constants; `tengu_sunny_locket` is gone.
+- L51, L183, L32, L124: `ultrathink`, the model catalog ladder, hook `onFailure` and the cap, sub-agent effort.
+- L11: dollar amounts in skill prose.
+- L139 and L140: `.mcpb-cache` is a per-session overlay from 4.29.0.
+- L243 and L245: scheduled spawn environment; typed artifact tools are third-party only.
+- L229: an admin `toolPolicy` does govern a `stdio` server in `managedMcpServers`, which Desktop's connector pool runs; only servers run by the local manager, such as `.mcpb` extensions, skip it.
+- L75, L125, L141, L199, and the gates in Ch61 and Ch66.
+
+`scripts/desktop-policy-schema.js` now stops an entry at its own closing brace, which removes false key changes, and recognises `deprecations:` in any form.
+
 ## v2.82.1 — 2026-11-05 (this fork) — Unified Claude's November 10 switch
 
 - **L237 (Ch67):** Desktop 4.16336.0 gives an unset `desktopHome` a dated rule: from 12:00 PM PT on November 10, 2026, by the device's clock, it reads as `standard`, with Chat, file analysis and Cowork on, even where `coworkTabEnabled` is `false`. It never applies in `1p` mode and waits for a pending served configuration. New conversations then start as Cowork tasks, which only `coworkSessionRetentionDays` deletes, so set it equal to `chatSessionRetentionDays`. The lesson no longer says an unset key leaves the old keys in charge, or that the code has no date logic (true of the earlier builds it read).
