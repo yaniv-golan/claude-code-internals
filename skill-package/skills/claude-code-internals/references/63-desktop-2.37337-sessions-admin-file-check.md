@@ -173,7 +173,7 @@ Anthropic's notes for v2.37337.1 (`claude.com/docs/cowork/changelog`) announce o
 - A local `hybridPointer` (a configuration-server bootstrap URL the user chose) now supersedes the device profile's hybrid-scoped keys. The log says "[custom-3p] the device profile yields to the hybrid pointer".
 - **It doesn't, if:**
   - the profile sets `disableDeploymentModeChooser`, or can't be read;
-  - or `forceLoginOrgUUID` doesn't include the pointer's organization.
+  - or `forceLoginOrgUUID` doesn't include the pointer's organization. (Separately, from 4.16336.0 the key warns on Console sign-in; the enforce branch is built but a constant keeps it at `warn`, L247.)
 - The log export explains which applied ("the next launch ignores it…"). Policy only, no gate.
 
 ## EDR integration (CODE-READ, `index.chunk-BWk6pVUt.js`, `index.chunk-DkReRM12.js`)
@@ -198,7 +198,7 @@ Anthropic's notes for v2.37337.1 (`claude.com/docs/cowork/changelog`) announce o
   - OpenSSH is the live transport (`3946462706` served on).
   - A banner explains the two cases the built-in library can't handle (`proxy_jump_unsupported`, `host_key_source_unsupported`).
   - A message names `claude-ssh-askpass.exe`, `claude-ssh-broker.exe` and `claude-ssh-proxy.exe` when the OS blocks the sign-in helper.
-  - New kill switches: `1731450842` (user name via config file) and `1846651524` (host-key "who asks" check). Both are unserved, so the new behaviour is active.
+  - New kill switches: `1731450842` (user name via config file) and `1846651524` (host-key "who asks" check). Both are unserved, so the new behaviour is active. `1731450842` is gone by 4.16336.0, so that behaviour no longer has an off switch.
   - `CLAUDE_SSH_NO_LOGIN_PATH_WARM` has a setter with no callers.
 - **Plugins sent to an SSH host** are refused when a SKILL.md front matter has an `experimental` key, which can set plugin hooks (reason `skill_hooks`). A YAML parser that can't load also refuses ("SKILL.md was not read…").
 - **MCP Apps from agent-spawned plugin servers (dark).** Gate `3184956269` would route widget `tools/call` and `resources/read` to plugin MCP servers the agent spawned in host-loop. It also sets `CLAUDE_CODE_MCP_APPS_HOST=1` at spawn. Unserved, so off. See L105 and L233.
@@ -235,7 +235,7 @@ The 8 ids removed since 2.31226.1 were retired kill switches. What they guarded 
 ## In the official release notes (checked 2026-10-14)
 
 - **Not in the notes (dark):** everything above. That covers the file check and `import_files`, sensitivity labels, the hybrid pointer, EDR, the shell-off message, restart-parking categories, the SSH banner and helper names, the `experimental` refusal, and every gate in the table.
-- **Nearby:** the notes say a `WebFetch` or bare `Bash` entry in `disabledBuiltinTools` now also applies to Cowork and Chat conversations already open. They also say SSH on Windows runs only an `ssh.exe` found on PATH, never a `.bat`, `.cmd` or `.ps1` wrapper.
+- **Nearby:** the notes say a `WebFetch` or bare `Bash` entry in `disabledBuiltinTools` now also applies to Cowork and Chat conversations already open. A `Monitor` entry is honoured from 4.16336.0 (L247). They also say SSH on Windows runs only an `ssh.exe` found on PATH, never a `.bat`, `.cmd` or `.ps1` wrapper.
 - **Announced:** the configuration changes in the next section.
 - **Rechecked 2026-10-16 against the v2.42304.0 notes:**
   - Announced: Chat's file-analysis shell reaching `coworkEgressAllowedHosts`, with commands that run without asking.

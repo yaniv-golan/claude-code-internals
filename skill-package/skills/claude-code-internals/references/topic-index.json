@@ -1,6 +1,6 @@
 {
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 245,
+  "total_lessons": 252,
   "lessons": [
     {
       "id": 1,
@@ -879,7 +879,7 @@
       "lesson_number": "18",
       "file": "01-core-architecture-tools.md",
       "startLine": 1748,
-      "endLine": 1904,
+      "endLine": 1907,
       "keywords": [
         "file-read",
         "file-write",
@@ -895,6 +895,9 @@
         "agent_id-agent_type-hook",
         "image-processor-napi",
         "map-notebook-cells-to-tool-result",
+        "file_unchanged",
+        "tengu_read_dedup_killswitch",
+        "tengu_file_read_reread",
         "CLAUDE_CODE_FILE_READ_MAX_OUTPUT_TOKENS",
         "tengu_amber_wren",
         "did-change",
@@ -921,11 +924,17 @@
         "why does claude say file unchanged since last read",
         "write converts line endings to lf",
         "trailing whitespace removed after edit",
-        "editing jupyter notebooks"
+        "editing jupyter notebooks",
+        "repeat read returns full file content",
+        "refuses to overwrite file it only partly saw",
+        "claude only saw the start of the file"
       ],
       "identifier_keys": [
         "image-processor-napi",
         "map-notebook-cells-to-tool-result",
+        "file_unchanged",
+        "tengu_read_dedup_killswitch",
+        "tengu_file_read_reread",
         "CLAUDE_CODE_FILE_READ_MAX_OUTPUT_TOKENS",
         "tengu_amber_wren",
         "did-change",
@@ -954,13 +963,16 @@
         "why does claude say file unchanged since last read",
         "write converts line endings to lf",
         "trailing whitespace removed after edit",
-        "editing jupyter notebooks"
+        "editing jupyter notebooks",
+        "repeat read returns full file content",
+        "refuses to overwrite file it only partly saw",
+        "claude only saw the start of the file"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "7bb99565fc853baac7311542d78b669f3ac6ed84118325473820cd622c68df84"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "4e34a5f4a6270b162c4954af12c8704ae165acf0d0982ae2f3567c6105a8dae3"
       }
     },
     {
@@ -969,8 +981,8 @@
       "description": "Search tools Glob and Grep: ripgrep integration, mtime sorting, pagination, head limit, binary detection, EAGAIN retry",
       "lesson_number": "19",
       "file": "01-core-architecture-tools.md",
-      "startLine": 1908,
-      "endLine": 2143,
+      "startLine": 1911,
+      "endLine": 2146,
       "keywords": [
         "glob",
         "grep",
@@ -1052,8 +1064,8 @@
       "description": "MCP Model Context Protocol: OAuth, stdio and SSE transports, elicitation, WebSocket, tool proxy, server deduplication, instructions",
       "lesson_number": "07",
       "file": "01-core-architecture-tools.md",
-      "startLine": 2147,
-      "endLine": 2249,
+      "startLine": 2150,
+      "endLine": 2252,
       "keywords": [
         "mcp",
         "model-context-protocol",
@@ -1148,7 +1160,7 @@
       "lesson_number": "03",
       "file": "02-agents-intelligence-interface.md",
       "startLine": 7,
-      "endLine": 332,
+      "endLine": 333,
       "keywords": [
         "skills",
         "skill-md",
@@ -1160,6 +1172,7 @@
         "validate-input",
         "get-skill-dir-commands",
         "skill-name",
+        "1.72M",
         "CLAUDE_SESSION_ID",
         "run-agent",
         "CLAUDE_CODE_DISABLE_POLICY_SKILLS",
@@ -1207,12 +1220,16 @@
         "skill changes not picked up after editing",
         "which skill wins with duplicate names",
         "skill shell commands not running from mcp server",
-        "skill override setting has no effect"
+        "skill override setting has no effect",
+        "dollar amounts garbled in skill text",
+        "how to escape dollar sign in skill",
+        "why did my skill change a price"
       ],
       "identifier_keys": [
         "validate-input",
         "get-skill-dir-commands",
         "skill-name",
+        "1.72M",
         "CLAUDE_SESSION_ID",
         "run-agent",
         "CLAUDE_CODE_DISABLE_POLICY_SKILLS",
@@ -1262,13 +1279,16 @@
         "skill changes not picked up after editing",
         "which skill wins with duplicate names",
         "skill shell commands not running from mcp server",
-        "skill override setting has no effect"
+        "skill override setting has no effect",
+        "dollar amounts garbled in skill text",
+        "how to escape dollar sign in skill",
+        "why did my skill change a price"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-10-01",
-        "terms_sha256": "7cfadcd6ee0e8025336900bc9d51f0b651f68bbd19b219b24515d2ee4ed0607a"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "f612562a2f76248b9f7fb15592a1cd6199760ac3e4a63bb859c4bd0e87aaca31"
       }
     },
     {
@@ -1277,8 +1297,8 @@
       "description": "Agent system: subagents, fork, async agents, agent tool, built-in and custom agents, explore agent, worktree isolation, send-message, agent frontmatter",
       "lesson_number": "05",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 336,
-      "endLine": 603,
+      "startLine": 337,
+      "endLine": 604,
       "keywords": [
         "agents",
         "subagent",
@@ -1391,8 +1411,8 @@
       "description": "Coordinator mode: dispatcher, workers, scratchpad, parallel agents, research-synthesis-implement-verify pattern",
       "lesson_number": "21",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 607,
-      "endLine": 759,
+      "startLine": 608,
+      "endLine": 760,
       "keywords": [
         "coordinator",
         "dispatcher",
@@ -1483,8 +1503,8 @@
       "description": "Teams and Swarm: multi-agent teams, tmux pane creation, mailbox communication, teammate, iTerm2, in-process backend, permission sync, shutdown",
       "lesson_number": "22",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 763,
-      "endLine": 1026,
+      "startLine": 764,
+      "endLine": 1027,
       "keywords": [
         "swarm",
         "teams",
@@ -1599,8 +1619,8 @@
       "description": "Memory system: auto-memory, MEMORY.md, team memory, session memory, memory extraction, topic files, staleness detection, secret scanning",
       "lesson_number": "08",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1030,
-      "endLine": 1193,
+      "startLine": 1031,
+      "endLine": 1194,
       "keywords": [
         "memory",
         "auto-memory",
@@ -1661,8 +1681,8 @@
       "description": "Auto memory and dreams: consolidation, extract-memories, memory recall, KAIROS memory, auto-dream, lock file, daily log",
       "lesson_number": "40",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1197,
-      "endLine": 1351,
+      "startLine": 1198,
+      "endLine": 1352,
       "keywords": [
         "dreams",
         "consolidation",
@@ -1749,8 +1769,8 @@
       "description": "Ink renderer: terminal UI rendering with React-like reconciler, Yoga layout, screen buffer, virtual DOM, blit, dirty flag, scroll, style pool, wide character, ANSI",
       "lesson_number": "11",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1355,
-      "endLine": 1544,
+      "startLine": 1356,
+      "endLine": 1545,
       "keywords": [
         "ink",
         "renderer",
@@ -1837,8 +1857,8 @@
       "description": "Commands system: slash commands, registration, local commands, prompt commands, local JSX commands, shell substitution, availability, bridge-safe",
       "lesson_number": "13",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1548,
-      "endLine": 1704,
+      "startLine": 1549,
+      "endLine": 1705,
       "keywords": [
         "commands",
         "slash-commands",
@@ -1921,8 +1941,8 @@
       "description": "Dialog UI: wizard pattern, permission dialog, onboarding, launcher pattern, custom select, pane component",
       "lesson_number": "35",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1708,
-      "endLine": 1865,
+      "startLine": 1709,
+      "endLine": 1866,
       "keywords": [
         "dialog",
         "ui",
@@ -2009,8 +2029,8 @@
       "description": "Notification system: toast notifications, terminal-notifier, OSC sequences, priority queue, Kitty, Ghostty, bell, progress reporting",
       "lesson_number": "30",
       "file": "02-agents-intelligence-interface.md",
-      "startLine": 1869,
-      "endLine": 2098,
+      "startLine": 1870,
+      "endLine": 2099,
       "keywords": [
         "notifications",
         "toast",
@@ -2575,7 +2595,6 @@
         "shouldAvoidPermissionPrompts",
         "settable-vs-union-modes",
         "fork-worker-agent-mode",
-        "allow-managed-permission-rules-only",
         "side-query",
         "why does claude keep asking for permission",
         "stop claude asking before every command",
@@ -2596,7 +2615,6 @@
         "headless run stops after too many denials"
       ],
       "identifier_keys": [
-        "allow-managed-permission-rules-only",
         "side-query"
       ],
       "vocab_keys": [
@@ -3256,7 +3274,7 @@
       "lesson_number": "10",
       "file": "04-connectivity-plugins.md",
       "startLine": 636,
-      "endLine": 781,
+      "endLine": 785,
       "keywords": [
         "hooks",
         "lifecycle",
@@ -3281,6 +3299,7 @@
         "hookEvents.ts",
         "async-rewake",
         "status-message",
+        "on-failure",
         "query-model-without-streaming",
         "allowed-env-vars",
         "add-function-hook",
@@ -3304,7 +3323,10 @@
         "load direnv when changing directory",
         "custom instructions before compaction",
         "filter hook to only git commands",
-        "can a hook deny a pre-approved tool"
+        "can a hook deny a pre-approved tool",
+        "block the tool if a hook crashes",
+        "fail closed when hook times out",
+        "why did my prompt hooks stop running"
       ],
       "identifier_keys": [
         "permission-behavior",
@@ -3318,6 +3340,7 @@
         "hookEvents.ts",
         "async-rewake",
         "status-message",
+        "on-failure",
         "query-model-without-streaming",
         "allowed-env-vars",
         "add-function-hook",
@@ -3343,13 +3366,16 @@
         "load direnv when changing directory",
         "custom instructions before compaction",
         "filter hook to only git commands",
-        "can a hook deny a pre-approved tool"
+        "can a hook deny a pre-approved tool",
+        "block the tool if a hook crashes",
+        "fail closed when hook times out",
+        "why did my prompt hooks stop running"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "268d225782b99cfbc013c86423959f735e4df32a7eb8a71927858dc2614f1353"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "d28cb667adc206eaef37a4c5acbe499ac4894ffeb62da6ccede12145e00f2499"
       }
     },
     {
@@ -3358,8 +3384,8 @@
       "description": "Error handling and recovery: retry logic, abort, conversation recovery, error taxonomy, typed errors, error overlay, persistent retry, deserialization",
       "lesson_number": "44",
       "file": "04-connectivity-plugins.md",
-      "startLine": 785,
-      "endLine": 901,
+      "startLine": 789,
+      "endLine": 905,
       "keywords": [
         "errors",
         "recovery",
@@ -3452,8 +3478,8 @@
       "description": "Bridge and remote control: CCR, WebSocket, JWT, bridge v1/v2, flush gate, standalone bridge, permission bridge",
       "lesson_number": "20",
       "file": "04-connectivity-plugins.md",
-      "startLine": 905,
-      "endLine": 1008,
+      "startLine": 909,
+      "endLine": 1012,
       "keywords": [
         "bridge",
         "remote-control",
@@ -3516,8 +3542,8 @@
       "description": "OAuth authentication: PKCE flow, token storage, keychain, token refresh, logout, enterprise, FedStart, scopes",
       "lesson_number": "25",
       "file": "04-connectivity-plugins.md",
-      "startLine": 1012,
-      "endLine": 1083,
+      "startLine": 1016,
+      "endLine": 1087,
       "keywords": [
         "oauth",
         "pkce",
@@ -3578,8 +3604,8 @@
       "description": "Git integration: filesystem-first approach, git watcher, branch tracking, commit tracking, git config parser, ref validation, gitignore, GitHub auth",
       "lesson_number": "28",
       "file": "04-connectivity-plugins.md",
-      "startLine": 1087,
-      "endLine": 1159,
+      "startLine": 1091,
+      "endLine": 1163,
       "keywords": [
         "git",
         "filesystem-first",
@@ -3642,8 +3668,8 @@
       "description": "Upstream proxy system: CCR container, TLS, MITM, protobuf, connect over WebSocket, keepalive",
       "lesson_number": "36",
       "file": "04-connectivity-plugins.md",
-      "startLine": 1163,
-      "endLine": 1223,
+      "startLine": 1167,
+      "endLine": 1227,
       "keywords": [
         "proxy",
         "upstream",
@@ -3718,8 +3744,8 @@
       "description": "Cron and task scheduling: jitter, recurring tasks, timer, cron task, one-shot tasks",
       "lesson_number": "43",
       "file": "04-connectivity-plugins.md",
-      "startLine": 1227,
-      "endLine": 1283,
+      "startLine": 1231,
+      "endLine": 1287,
       "keywords": [
         "cron",
         "scheduling",
@@ -3788,8 +3814,8 @@
       "description": "Voice system: speech-to-text, audio backend, push-to-talk, hold-to-talk, WebSocket STT, focus mode, microphone",
       "lesson_number": "27",
       "file": "04-connectivity-plugins.md",
-      "startLine": 1287,
-      "endLine": 1347,
+      "startLine": 1291,
+      "endLine": 1351,
       "keywords": [
         "voice",
         "speech-to-text",
@@ -3868,8 +3894,8 @@
       "description": "Buddy companion system: tamagotchi pet easter egg, sprites, PRNG, rarity, animation, April Fools",
       "lesson_number": "45",
       "file": "04-connectivity-plugins.md",
-      "startLine": 1351,
-      "endLine": 1438,
+      "startLine": 1355,
+      "endLine": 1442,
       "keywords": [
         "buddy",
         "tamagotchi",
@@ -4554,7 +4580,6 @@
         "keychain",
         "sandbox-runtime",
         "base-sandbox-manager",
-        "sandbox-exec",
         "example.com",
         "get-claude-temp-dir",
         "deny-write",
@@ -4584,7 +4609,6 @@
       "identifier_keys": [
         "sandbox-runtime",
         "base-sandbox-manager",
-        "sandbox-exec",
         "example.com",
         "get-claude-temp-dir",
         "deny-write",
@@ -4868,7 +4892,7 @@
       "lesson_number": "51",
       "file": "06-verified-new-v2.1.90.md",
       "startLine": 37,
-      "endLine": 95,
+      "endLine": 97,
       "keywords": [
         "effort",
         "reasoning-budget",
@@ -4876,6 +4900,7 @@
         "ultrathink",
         "thinking",
         "ultrathink_effort",
+        "tengu_turtle_carbon",
         "effort-value",
         "thinking-type",
         "tengu_api_query",
@@ -4895,10 +4920,14 @@
         "how do i make claude respond faster with less deliberation",
         "override effort level with environment setting",
         "which models support low medium high effort",
-        "reset effort to model default"
+        "reset effort to model default",
+        "typing ultrathink in my prompt",
+        "disable the ultrathink keyword",
+        "boost effort for just one turn"
       ],
       "identifier_keys": [
         "ultrathink_effort",
+        "tengu_turtle_carbon",
         "effort-value",
         "thinking-type",
         "tengu_api_query",
@@ -4920,13 +4949,16 @@
         "how do i make claude respond faster with less deliberation",
         "override effort level with environment setting",
         "which models support low medium high effort",
-        "reset effort to model default"
+        "reset effort to model default",
+        "typing ultrathink in my prompt",
+        "disable the ultrathink keyword",
+        "boost effort for just one turn"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "72dddc51c0c17cf74ce335e7b373daf2b9f123039b0ea6dfaed3be8fa4105c2e"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "2af403f8f7b404a5d1e2142e1837a291f92e884e8d192c3c3c40a20fce7b8434"
       }
     },
     {
@@ -4934,8 +4966,8 @@
       "title": "/rewind & File Checkpointing",
       "lesson_number": "52",
       "file": "06-verified-new-v2.1.90.md",
-      "startLine": 99,
-      "endLine": 157,
+      "startLine": 101,
+      "endLine": 159,
       "keywords": [
         "rewind",
         "checkpoint",
@@ -5003,8 +5035,8 @@
       "title": "/teleport: Session Transfer",
       "lesson_number": "53",
       "file": "06-verified-new-v2.1.90.md",
-      "startLine": 161,
-      "endLine": 227,
+      "startLine": 163,
+      "endLine": 229,
       "keywords": [
         "teleport",
         "session-transfer",
@@ -5084,8 +5116,8 @@
       "title": "/branch: Conversation Forking",
       "lesson_number": "54",
       "file": "06-verified-new-v2.1.90.md",
-      "startLine": 231,
-      "endLine": 285,
+      "startLine": 233,
+      "endLine": 287,
       "keywords": [
         "branch",
         "fork",
@@ -5137,8 +5169,8 @@
       "title": "Session Resume & New env vars (v2.1.90)",
       "lesson_number": "55",
       "file": "06-verified-new-v2.1.90.md",
-      "startLine": 289,
-      "endLine": 430,
+      "startLine": 291,
+      "endLine": 432,
       "keywords": [
         "session-resume",
         "advisor-model",
@@ -5250,8 +5282,8 @@
       "title": "New Commands: /autocompact, /buddy, /powerup, /toggle-memory",
       "lesson_number": "56",
       "file": "06-verified-new-v2.1.90.md",
-      "startLine": 434,
-      "endLine": 602,
+      "startLine": 436,
+      "endLine": 604,
       "keywords": [
         "autocompact",
         "buddy",
@@ -6748,7 +6780,7 @@
       "lesson_number": "75",
       "file": "12-verified-new-v2.1.109.md",
       "startLine": 189,
-      "endLine": 306,
+      "endLine": 308,
       "keywords": [
         "repl-mode",
         "CLAUDE_CODE_REPL",
@@ -6779,7 +6811,9 @@
         "how to turn on the hidden scripting mode",
         "explanatory or learning output style variant",
         "prompt suggestions only appear in some mode",
-        "tool calls not shown in transcript"
+        "tool calls not shown in transcript",
+        "why does the repl environment variable no longer work",
+        "reach repl through code mode"
       ],
       "identifier_keys": [
         "is-running-with-bun"
@@ -6799,13 +6833,15 @@
         "how to turn on the hidden scripting mode",
         "explanatory or learning output style variant",
         "prompt suggestions only appear in some mode",
-        "tool calls not shown in transcript"
+        "tool calls not shown in transcript",
+        "why does the repl environment variable no longer work",
+        "reach repl through code mode"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "fd32e9aa85b718be2a79baf54075afa0c1df912891ea7cc8d25a5399fb287030"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "70f65dbf2061575f1132d74cc2d8cde5f964bf4c8d7f9ccac5d3b6a99edb71ec"
       }
     },
     {
@@ -6813,8 +6849,8 @@
       "title": "v2.1.107-v2.1.109 Command & Env Var Changes",
       "lesson_number": "76",
       "file": "12-verified-new-v2.1.109.md",
-      "startLine": 310,
-      "endLine": 485,
+      "startLine": 312,
+      "endLine": 487,
       "keywords": [
         "think-back-removed",
         "thinkback-play-removed",
@@ -8140,7 +8176,6 @@
         "access_token",
         "proper-lockfile.lock",
         "async-dispose",
-        "subagent-stop",
         "non_blocking_error",
         "turn-count",
         "tengu_frontmatter_strict",
@@ -8174,7 +8209,6 @@
         "access_token",
         "proper-lockfile.lock",
         "async-dispose",
-        "subagent-stop",
         "non_blocking_error",
         "turn-count",
         "tengu_frontmatter_strict",
@@ -8452,7 +8486,6 @@
         "same-dir",
         "CLAUDE_CODE_RESUME_INTERRUPTED_TURN",
         "diff-versions.sh",
-        "subagent-stop",
         "tengu_slate_meadow",
         "main-loop-model",
         "rm-handler",
@@ -8529,7 +8562,6 @@
         "wait-for-mcp-servers",
         "load-plugin-hooks",
         "hooks-config",
-        "disable-all-hooks",
         "allow-managed-hooks-only",
         "use-cowork-plugins",
         "COWORK_HOOK_CANARY_FIRED",
@@ -8590,7 +8622,6 @@
         "same-dir",
         "CLAUDE_CODE_RESUME_INTERRUPTED_TURN",
         "diff-versions.sh",
-        "subagent-stop",
         "tengu_slate_meadow",
         "main-loop-model",
         "rm-handler",
@@ -8667,7 +8698,6 @@
         "wait-for-mcp-servers",
         "load-plugin-hooks",
         "hooks-config",
-        "disable-all-hooks",
         "allow-managed-hooks-only",
         "use-cowork-plugins",
         "COWORK_HOOK_CANARY_FIRED",
@@ -10517,7 +10547,6 @@
         "tools-narrowing",
         "HOST_LOOP_PATH_GATED",
         "cowork-pluginroot-probe",
-        "power-shell",
         "always-allow-rules",
         "always-ask-rules",
         "replace-rules",
@@ -10577,7 +10606,6 @@
         "tools-narrowing",
         "HOST_LOOP_PATH_GATED",
         "cowork-pluginroot-probe",
-        "power-shell",
         "always-allow-rules",
         "always-ask-rules",
         "replace-rules",
@@ -11366,7 +11394,7 @@
       "lesson_number": "113",
       "file": "24-verified-new-v2.1.198.md",
       "startLine": 156,
-      "endLine": 200,
+      "endLine": 202,
       "keywords": [
         "auto-memory-knowledge-base",
         "bulk-inflate",
@@ -11414,8 +11442,8 @@
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
         "terms_sha256": "f421b46b097a4f19d2d9bb3e5d2094b7de620f8ea474a5714ecec8b841d69d99"
       }
     },
@@ -12334,7 +12362,6 @@
         "disallowedTools-doc-bug",
         "is-concurrency-safe",
         "MCP_DELETE_SCHEDULED_TASK",
-        "power-shell",
         "MCP_WORKSPACE_WEB_FETCH",
         "accept-edits",
         "skill-tools",
@@ -12366,7 +12393,6 @@
       "identifier_keys": [
         "is-concurrency-safe",
         "MCP_DELETE_SCHEDULED_TASK",
-        "power-shell",
         "MCP_WORKSPACE_WEB_FETCH",
         "accept-edits",
         "skill-tools",
@@ -12604,7 +12630,7 @@
       "lesson_number": "124",
       "file": "32-cowork-subagent-execution-model.md",
       "startLine": 278,
-      "endLine": 449,
+      "endLine": 451,
       "keywords": [
         "subagent-model",
         "CLAUDE_CODE_SUBAGENT_MODEL",
@@ -12646,6 +12672,7 @@
         "resolve-workspace-mount-mode",
         "index.chunk-CCRuCFON.js",
         "SUBAGENT_MODEL_FORCE",
+        "CLAUDE_CODE_SUBAGENT_EFFORT",
         "teammate-default-model",
         "subagent_model_resolve",
         "override_dropped",
@@ -12685,7 +12712,8 @@
         "why no permission denied event for path block",
         "feature flag cache grep shows nothing",
         "feature flag missing from cache uses default",
-        "new feature cache file format version"
+        "new feature cache file format version",
+        "which effort level does a subagent use"
       ],
       "identifier_keys": [
         "global-this",
@@ -12705,6 +12733,7 @@
         "resolve-workspace-mount-mode",
         "index.chunk-CCRuCFON.js",
         "SUBAGENT_MODEL_FORCE",
+        "CLAUDE_CODE_SUBAGENT_EFFORT",
         "teammate-default-model",
         "subagent_model_resolve",
         "override_dropped",
@@ -12746,13 +12775,14 @@
         "why no permission denied event for path block",
         "feature flag cache grep shows nothing",
         "feature flag missing from cache uses default",
-        "new feature cache file format version"
+        "new feature cache file format version",
+        "which effort level does a subagent use"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-02",
-        "terms_sha256": "2c2d0b74ea03915ce4b5fc5fc2553b57c220419179bbc300e22528ab5aa7be89"
+        "date": "2026-11-05",
+        "terms_sha256": "3dcbc7fa4387566f4ff471445123eecb968ede80a5798f27017f02cd6ef78f0d"
       }
     },
     {
@@ -12805,7 +12835,8 @@
         "install and launch built ios app in simulator",
         "simulator tools only in coding sessions",
         "admin kill switch for device simulator",
-        "sandbox around ios simulator control"
+        "sandbox around ios simulator control",
+        "ios simulator sandbox profile file missing"
       ],
       "identifier_keys": [
         "cowork-remote",
@@ -12839,13 +12870,14 @@
         "install and launch built ios app in simulator",
         "simulator tools only in coding sessions",
         "admin kill switch for device simulator",
-        "sandbox around ios simulator control"
+        "sandbox around ios simulator control",
+        "ios simulator sandbox profile file missing"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "22cc718fc0fddab504e48d7858a9611b77ab12e3c6b334c76fddb07d47f8c95e"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "3c701d69f747a3e8a6699e23f552b18526285865780c7db160e372d65feb2e54"
       }
     },
     {
@@ -14392,7 +14424,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-03",
+        "date": "2026-11-05",
         "terms_sha256": "6e3854c938e85e2a17fd59b7677e0366a07e0f4f10032c61646f47a77fd8f044"
       }
     },
@@ -14444,11 +14476,14 @@
         "proc-mounts-fuse-source",
         "search-scoped-by-kernel",
         "user-selected-folders",
+        "mcpb-cache",
         "peaceful-hopeful-feynman",
         "magical-zen-babbage",
         "awesome-intelligent-franklin",
         "creative-problem-solving",
         "plugin-install-paths",
+        "vm-mcpb",
+        "mcpb_cache_session_dir_failed",
         "multiple cowork sessions share same vm",
         "can one session read another session's files",
         "permission denied on other session folders",
@@ -14463,15 +14498,21 @@
         "local plugin path has no version number",
         "agent reported wrong mount path",
         "how are cowork sessions isolated from each other",
-        "why does my plugin cache folder not exist in the vm"
+        "why does my plugin cache folder not exist in the vm",
+        "plugin has no writable cache",
+        "is plugin cache shared across sessions",
+        "per-session overlay for plugin cache"
       ],
       "identifier_keys": [
         "user-selected-folders",
+        "mcpb-cache",
         "peaceful-hopeful-feynman",
         "magical-zen-babbage",
         "awesome-intelligent-franklin",
         "creative-problem-solving",
-        "plugin-install-paths"
+        "plugin-install-paths",
+        "vm-mcpb",
+        "mcpb_cache_session_dir_failed"
       ],
       "vocab_keys": [
         "multiple cowork sessions share same vm",
@@ -14488,13 +14529,16 @@
         "local plugin path has no version number",
         "agent reported wrong mount path",
         "how are cowork sessions isolated from each other",
-        "why does my plugin cache folder not exist in the vm"
+        "why does my plugin cache folder not exist in the vm",
+        "plugin has no writable cache",
+        "is plugin cache shared across sessions",
+        "per-session overlay for plugin cache"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-30",
-        "terms_sha256": "a4d307747307c68a79235f98dbcb528972a92f0593ac7552affdbaa4309dd5af"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "ff20d92fba05c38ee0ebf3d0cec6802bc550d1f99e56c70e3dd6a2eaf3a3b831"
       }
     },
     {
@@ -14583,8 +14627,8 @@
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
         "terms_sha256": "62c3ae80d18fdc13cb358829f1c3b03db214ac2c8c83ec9c2c72a90c446f8aff"
       }
     },
@@ -15191,7 +15235,8 @@
         "approve a website once in claude in chrome",
         "data exfiltration and irreversible destruction rules",
         "are cowork permission checks done on my machine or by the agent",
-        "soft deny and allow rules for cowork tools"
+        "soft deny and allow rules for cowork tools",
+        "what happens when several sources set auto mode allow rules"
       ],
       "identifier_keys": [
         "is-chat-session",
@@ -15216,13 +15261,14 @@
         "approve a website once in claude in chrome",
         "data exfiltration and irreversible destruction rules",
         "are cowork permission checks done on my machine or by the agent",
-        "soft deny and allow rules for cowork tools"
+        "soft deny and allow rules for cowork tools",
+        "what happens when several sources set auto mode allow rules"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "9c94ca876dcc752156e44649bdd83b27877d87372b4216f4f3871b1b031d6502"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "495b98628c97bda027bce33ae9c4c813aa16ab676fb7659a757050178743835c"
       }
     },
     {
@@ -15628,7 +15674,6 @@
         "30-events-superseded",
         "hooks-config",
         "post-compact",
-        "permission-request",
         "slash_command",
         "how many hook events are there",
         "hook when adding a working directory",
@@ -15649,7 +15694,6 @@
       "identifier_keys": [
         "hooks-config",
         "post-compact",
-        "permission-request",
         "slash_command"
       ],
       "vocab_keys": [
@@ -16820,7 +16864,7 @@
       "lesson_number": "169",
       "file": "43-cowork-in-app-browser-preview.md",
       "startLine": 84,
-      "endLine": 137,
+      "endLine": 139,
       "keywords": [
         "preview_start",
         "preview-family",
@@ -16886,8 +16930,8 @@
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
         "terms_sha256": "0994121b49d84e1829e160ce4d0da5a4dbd71630127204793f39b6a161ec3ccb"
       }
     },
@@ -18177,7 +18221,7 @@
       "lesson_number": "183",
       "file": "47-desktop-1.46388-lanes-computed-env-flags.md",
       "startLine": 264,
-      "endLine": 350,
+      "endLine": 354,
       "keywords": [
         "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS",
         "tengu_plugin_hooks_modules",
@@ -18229,6 +18273,9 @@
         "fetched-at",
         "stale-at",
         "cache-key",
+        "not_first_party",
+        "release_off",
+        "not_claude_ai_auth",
         "invalid_url",
         "ANTHROPIC_UNIX_SOCKET",
         "hooks written as javascript functions instead of shell commands",
@@ -18245,7 +18292,10 @@
         "model catalog url loopback blocked",
         "what do the new unexplained flags actually do",
         "mysterious codename environment flags meaning",
-        "force subagent model ignoring task model parameter"
+        "force subagent model ignoring task model parameter",
+        "function hooks now called mods",
+        "are function hooks on by default now",
+        "model catalog on bedrock or vertex"
       ],
       "identifier_keys": [
         "SUBAGENT_MODEL_FORCE",
@@ -18256,6 +18306,9 @@
         "fetched-at",
         "stale-at",
         "cache-key",
+        "not_first_party",
+        "release_off",
+        "not_claude_ai_auth",
         "invalid_url",
         "ANTHROPIC_UNIX_SOCKET"
       ],
@@ -18274,13 +18327,16 @@
         "model catalog url loopback blocked",
         "what do the new unexplained flags actually do",
         "mysterious codename environment flags meaning",
-        "force subagent model ignoring task model parameter"
+        "force subagent model ignoring task model parameter",
+        "function hooks now called mods",
+        "are function hooks on by default now",
+        "model catalog on bedrock or vertex"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "09738d9f365d9ce0f9334129c32c35f8917c26f85346d7de17799b2baf8b8450"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "4b02de7e808812f2f679fd30f7895a04aa65d40229febc69ed0eda171024b454"
       }
     },
     {
@@ -18524,7 +18580,7 @@
       "lesson_number": "187",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
       "startLine": 295,
-      "endLine": 352,
+      "endLine": 354,
       "keywords": [
         "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS",
         "tengu_plugin_hooks_modules",
@@ -18557,7 +18613,10 @@
         "how to tell why a feature flag is off",
         "undocumented hook authoring method",
         "hook matcher argument in javascript hooks",
-        "can javascript hooks bypass forced permission prompts"
+        "can javascript hooks bypass forced permission prompts",
+        "function hooks renamed to mods",
+        "are function hooks on by default in newer versions",
+        "function hooks environment variable no longer works"
       ],
       "vocab_keys": [
         "write plugin hooks in javascript instead of shell",
@@ -18574,13 +18633,16 @@
         "how to tell why a feature flag is off",
         "undocumented hook authoring method",
         "hook matcher argument in javascript hooks",
-        "can javascript hooks bypass forced permission prompts"
+        "can javascript hooks bypass forced permission prompts",
+        "function hooks renamed to mods",
+        "are function hooks on by default in newer versions",
+        "function hooks environment variable no longer works"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "e112860594f27f4422fed51e4b93ecf94ca82f861a6ccc4cd518ca9025a99489"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "b2a54b4ade28daf6c648134b150b14e4de89d2df6c5578743b2d6cfdb8db1c30"
       }
     },
     {
@@ -18588,8 +18650,8 @@
       "title": "The Rest of the 2.1.260 Surface, and a Count That Moved",
       "lesson_number": "188",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
-      "startLine": 356,
-      "endLine": 426,
+      "startLine": 358,
+      "endLine": 428,
       "keywords": [
         "thirty-three-hook-events",
         "33-hook-events",
@@ -18620,7 +18682,6 @@
         "is this feature announced",
         "account-uuid",
         "post-compact",
-        "permission-request",
         "parent_org_policy",
         "start-early-hydrate-reads",
         "tengu_cobalt_plinth_holly",
@@ -18646,7 +18707,6 @@
       "identifier_keys": [
         "account-uuid",
         "post-compact",
-        "permission-request",
         "parent_org_policy",
         "start-early-hydrate-reads",
         "tengu_cobalt_plinth_holly",
@@ -18683,8 +18743,8 @@
       "title": "The Release CDN Has Two Channels",
       "lesson_number": "189",
       "file": "48-forced-ask-deferral-silent-turn-2.1.260.md",
-      "startLine": 430,
-      "endLine": 462,
+      "startLine": 432,
+      "endLine": 464,
       "keywords": [
         "manifest.zst.json",
         "compressed-release-channel",
@@ -19571,6 +19631,7 @@
         "list_pdfs",
         "slack_add_reaction",
         "notion-ai-search",
+        "52253313",
         "plugin mcp server shows no tools in cowork",
         "why does my plugin's mcp server have zero tools",
         "plugin server replaced by claude.ai connector",
@@ -19585,7 +19646,9 @@
         "skill breaks when tool names change between organizations",
         "cowork session refuses to start mcp policy active",
         "does a local stdio plugin server work in cowork",
-        "how to tell if my plugin server was stubbed"
+        "how to tell if my plugin server was stubbed",
+        "connector tool names derived from url",
+        "why are connector tools named after their url"
       ],
       "identifier_keys": [
         "d-rgam-bl-q",
@@ -19595,7 +19658,8 @@
         "mcp__plugin_pdf-viewer_pdf__display_pdf",
         "list_pdfs",
         "slack_add_reaction",
-        "notion-ai-search"
+        "notion-ai-search",
+        "52253313"
       ],
       "vocab_keys": [
         "plugin mcp server shows no tools in cowork",
@@ -19612,13 +19676,15 @@
         "skill breaks when tool names change between organizations",
         "cowork session refuses to start mcp policy active",
         "does a local stdio plugin server work in cowork",
-        "how to tell if my plugin server was stubbed"
+        "how to tell if my plugin server was stubbed",
+        "connector tool names derived from url",
+        "why are connector tools named after their url"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "2820fe5e230faa3c86ea5329e0b7698947dd6e9def4b8b6195c4502c55f9cebc"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "632542c5b4fce4a28efa27c18b8e5d269448b6f6836161c1178aab0c22a82131"
       }
     },
     {
@@ -21532,7 +21598,6 @@
         "ui_client_fault",
         "ui_prompt_edit",
         "flag_off",
-        "claude-sonnet-5-5",
         "claude-haiku-5-5",
         "echo_task_suggestions",
         "browse-and-add-trusted-folder",
@@ -21575,7 +21640,6 @@
         "ui_client_fault",
         "ui_prompt_edit",
         "flag_off",
-        "claude-sonnet-5-5",
         "claude-haiku-5-5",
         "echo_task_suggestions",
         "browse-and-add-trusted-folder",
@@ -21613,7 +21677,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-15",
+        "date": "2026-11-05",
         "terms_sha256": "ff51d689941890e3dbea7c7ee310018c24bb4a8b719abfae671d4600f977e812"
       }
     },
@@ -22141,7 +22205,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-16",
+        "date": "2026-11-05",
         "terms_sha256": "85f5604cca2579a8edee66e5904e7d5f31d4dcf5dd497ddd55ee7384d244ad2f"
       }
     },
@@ -22662,7 +22726,6 @@
         "withheld_for_extra_tree",
         "346871663",
         "2393677837",
-        "2222745432",
         "2371478310",
         "3400412699",
         "scheduled task inherits auto mode",
@@ -22738,7 +22801,6 @@
         "withheld_for_extra_tree",
         "346871663",
         "2393677837",
-        "2222745432",
         "2371478310",
         "3400412699"
       ],
@@ -22805,7 +22867,6 @@
         "MCP_SENSITIVITY_LABELS",
         "index.chunk-CGQsUM80.js",
         "hybrid-pointer",
-        "disable-deployment-mode-chooser",
         "force-login-org-uuid",
         "index.chunk-DkReRM12.js",
         "cowork-edr-integration",
@@ -22925,7 +22986,6 @@
         "MCP_SENSITIVITY_LABELS",
         "index.chunk-CGQsUM80.js",
         "hybrid-pointer",
-        "disable-deployment-mode-chooser",
         "force-login-org-uuid",
         "index.chunk-DkReRM12.js",
         "cowork-edr-integration",
@@ -23021,7 +23081,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-23",
+        "date": "2026-11-05",
         "terms_sha256": "deab1615f9a481dd6a044640ea0c33a340bf4e83ab7cc50597db1c16280880a5"
       }
     },
@@ -23031,7 +23091,7 @@
       "lesson_number": "237",
       "file": "64-desktop-admin-keys-aug-oct-2026.md",
       "startLine": 13,
-      "endLine": 161,
+      "endLine": 163,
       "keywords": [
         "cowork-tab-enabled",
         "mcp-scheduled-task-approval-lifetime-days",
@@ -23078,6 +23138,7 @@
         "2026-11-10",
         "surface_default",
         "retention_default",
+        "organization-plugins-url",
         "index.chunk-CB6cNSrW.js",
         "marble_heron_enabled",
         "gated_messages",
@@ -23148,6 +23209,7 @@
         "2026-11-10",
         "surface_default",
         "retention_default",
+        "organization-plugins-url",
         "index.chunk-CB6cNSrW.js",
         "marble_heron_enabled",
         "gated_messages",
@@ -23177,7 +23239,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-11-04",
+        "date": "2026-11-05",
         "terms_sha256": "4aa76e36e0ded43b4e5b9bb56ba3f906e12405345f47047b9c13637b0efbda96"
       }
     },
@@ -23377,7 +23439,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-25",
+        "date": "2026-11-05",
         "terms_sha256": "e0a658e0b2d79ca1b47a9e1083fdd455a36a0967b9eb1b2775a570f0e470ac6f"
       }
     },
@@ -23495,7 +23557,7 @@
       "lesson_number": "241",
       "file": "68-prompt-cache-ttl-idle-compaction-2.1.302.md",
       "startLine": 13,
-      "endLine": 93,
+      "endLine": 97,
       "keywords": [
         "context_tokens",
         "CLAUDE_CODE_PROMPT_CACHE_TTL",
@@ -23510,9 +23572,16 @@
         "memdir_relevance",
         "tengu_sunny_locket",
         "compact_on_return",
-        "min-tokens",
         "CLAUDE_CODE_IDLE_COMPACT_MIN_TOKENS",
-        "fire-at-fraction",
+        "compaction_off",
+        "idle_compaction_off",
+        "precompute_compaction_off",
+        "swap_unsupported",
+        "prefix_changed",
+        "not_one_hour",
+        "newer_request",
+        "near_limit",
+        "precompute-compaction-enabled",
         "idle-compaction",
         "CLAUDE_CODE_SLEEP_COMPACT",
         "FORCE_PROMPT_CACHING_5M",
@@ -23549,9 +23618,16 @@
         "memdir_relevance",
         "tengu_sunny_locket",
         "compact_on_return",
-        "min-tokens",
         "CLAUDE_CODE_IDLE_COMPACT_MIN_TOKENS",
-        "fire-at-fraction",
+        "compaction_off",
+        "idle_compaction_off",
+        "precompute_compaction_off",
+        "swap_unsupported",
+        "prefix_changed",
+        "not_one_hour",
+        "newer_request",
+        "near_limit",
+        "precompute-compaction-enabled",
         "idle-compaction",
         "CLAUDE_CODE_SLEEP_COMPACT",
         "FORCE_PROMPT_CACHING_5M"
@@ -23579,7 +23655,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-21",
+        "date": "2026-11-05",
         "terms_sha256": "f86b4002967ce443f1ba035ccc39893c40b86b41fd9511a8c3d1205eda3a0d5b"
       }
     },
@@ -23591,9 +23667,7 @@
       "startLine": 13,
       "endLine": 71,
       "keywords": [
-        "allow-managed-permission-rules-only",
         "index.chunk-BLvpT1n4.js",
-        "claude-sonnet-5-5",
         "claude-haiku-5-5",
         "storage-dialog",
         "device-storage",
@@ -23647,9 +23721,7 @@
         "how far stored transcript reaches"
       ],
       "identifier_keys": [
-        "allow-managed-permission-rules-only",
         "index.chunk-BLvpT1n4.js",
-        "claude-sonnet-5-5",
         "claude-haiku-5-5",
         "storage-dialog",
         "device-storage",
@@ -23707,7 +23779,7 @@
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-23",
+        "date": "2026-11-05",
         "terms_sha256": "c4203ff78b7707f95eec13b50068c0cd90278aa49d8d681a59897291fcb569b5"
       }
     },
@@ -23717,7 +23789,7 @@
       "lesson_number": "243",
       "file": "70-desktop-scheduled-vs-interactive-sessions.md",
       "startLine": 13,
-      "endLine": 72,
+      "endLine": 73,
       "keywords": [
         "lam_session_type",
         "scheduled-task-id",
@@ -23726,6 +23798,7 @@
         "index.chunk-DbIevS2k.js",
         "index.chunk-uXhgx7My.js",
         "is-array",
+        "CLAUDE_CODE_DISABLE_FILE_MENTIONS",
         "index.chunk-BHK0ncEj.js",
         "fire-reason",
         "scheduled-task-max-turns",
@@ -23733,10 +23806,8 @@
         "auto-continuation",
         "scheduled-run-continued",
         "get-sessions-for-scheduled-task",
-        "create_from_type",
         "db_get",
         "scheduled task can't ask me questions",
-        "why can't scheduled task ask user",
         "scheduled run missing tools",
         "difference between scheduled and manual task",
         "detect if running as scheduled task",
@@ -23752,7 +23823,8 @@
         "what changes when a task runs on a schedule",
         "scheduled run can't create typed artifacts",
         "where did the schedule skill go",
-        "tools needing a person refused when unattended"
+        "tools needing a person refused when unattended",
+        "file mentions disabled in scheduled task"
       ],
       "identifier_keys": [
         "lam_session_type",
@@ -23762,6 +23834,7 @@
         "index.chunk-DbIevS2k.js",
         "index.chunk-uXhgx7My.js",
         "is-array",
+        "CLAUDE_CODE_DISABLE_FILE_MENTIONS",
         "index.chunk-BHK0ncEj.js",
         "fire-reason",
         "scheduled-task-max-turns",
@@ -23769,12 +23842,10 @@
         "auto-continuation",
         "scheduled-run-continued",
         "get-sessions-for-scheduled-task",
-        "create_from_type",
         "db_get"
       ],
       "vocab_keys": [
         "scheduled task can't ask me questions",
-        "why can't scheduled task ask user",
         "scheduled run missing tools",
         "difference between scheduled and manual task",
         "detect if running as scheduled task",
@@ -23790,13 +23861,14 @@
         "what changes when a task runs on a schedule",
         "scheduled run can't create typed artifacts",
         "where did the schedule skill go",
-        "tools needing a person refused when unattended"
+        "tools needing a person refused when unattended",
+        "file mentions disabled in scheduled task"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-23",
-        "terms_sha256": "c9c2469e71dd6ade9ca16884f8c18a528d2336bfe7b5864c96a9b85178b672c7"
+        "date": "2026-11-05",
+        "terms_sha256": "26291c0b96b064a8e938e10d302f308f6388951655cd0c25e5cc2c7ff6b02278"
       }
     },
     {
@@ -23918,7 +23990,6 @@
         "quick-entry-screenshots-enabled",
         "quick-entry-file-sharing-enabled",
         "scheduled-run-continued",
-        "create_from_type",
         "db_get",
         "index.chunk-DCfOtL-w.js",
         "ssh-host-commands",
@@ -23985,7 +24056,10 @@
         "tool policy endpoint admin setting removed",
         "which admin settings apply to self-hosted session host",
         "why don't scheduled runs get artifact tools",
-        "release notes vs actual desktop changes"
+        "release notes vs actual desktop changes",
+        "artifact tools only in third-party deployments",
+        "why no artifact tools on first-party",
+        "do chat sessions get artifact tools"
       ],
       "identifier_keys": [
         "office365-mcp",
@@ -23995,7 +24069,6 @@
         "quick-entry-screenshots-enabled",
         "quick-entry-file-sharing-enabled",
         "scheduled-run-continued",
-        "create_from_type",
         "db_get",
         "index.chunk-DCfOtL-w.js",
         "ssh-host-commands",
@@ -24064,13 +24137,764 @@
         "tool policy endpoint admin setting removed",
         "which admin settings apply to self-hosted session host",
         "why don't scheduled runs get artifact tools",
-        "release notes vs actual desktop changes"
+        "release notes vs actual desktop changes",
+        "artifact tools only in third-party deployments",
+        "why no artifact tools on first-party",
+        "do chat sessions get artifact tools"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "30492b7dcdfad746394055a31a08360cfff0378543012323a0ccd4828046bd11"
+      }
+    },
+    {
+      "id": 246,
+      "title": "What Desktop 4.16336.0 Changed, Announced and Not",
+      "lesson_number": "246",
+      "file": "73-desktop-4.16336-changes.md",
+      "startLine": 15,
+      "endLine": 116,
+      "keywords": [
+        "frame-rt",
+        "claude-ios-sim.sb",
+        "vm-mcpb",
+        "index.html",
+        "52253313",
+        "allow-modals",
+        "CLAUDE_CODE_HOST_WORKTREE_FENCE",
+        "CLAUDE_CODE_DISABLE_FILE_MENTIONS",
+        "create_from_type",
+        "sdk-wrapper-version",
+        "db_write",
+        "publish_files",
+        "ion-dist.asar",
+        "claude-ssh-remote",
+        "Info.plist",
+        "electron-asar-integrity",
+        "index.chunk-C9iXV3l-.js",
+        "claudeai-rpc",
+        "claudeai_edge",
+        "client-metrics-service",
+        "top_site_loads",
+        "maybe_captcha",
+        "maybe_login",
+        "got_in_later",
+        "got_in_by",
+        "person_or_itself",
+        "TOP_SITES",
+        "third_party_analytics",
+        "index.chunk-5BS-c_bO.js",
+        "connector-wire-boundary",
+        "CLAUDE_CODE_DESKTOP_CONNECTOR_NAMES",
+        "connector-tools-ask-first",
+        "rules-locked",
+        "mcp-tool-call-gate",
+        "lam_gmail_host_fill",
+        "gmailmcp.googleapis.com",
+        "session-open-consent",
+        "list_typed_artifacts",
+        "CLAUDE_CODE_HOST_GUARDS_ARTIFACTS_MCP",
+        "CLAUDE_CODE_HOST_OFFERS_DEVICE_MCP",
+        "CLAUDE_CODE_HOST_SHORT_TEMP_DIRS",
+        "CLAUDE_CODE_PLUGIN_DIRS",
+        "session-text-policy",
+        "claude_code_zdr",
+        "CLAUDE_CODE_SESSIONS_OAUTH_TOKEN",
+        "mcpAppView.js",
+        "mcp-app-views",
+        "claude-mcp-app",
+        "passes-mcp-app-pages",
+        "may-use-mcp-app-view",
+        "start_hour",
+        "end_hour",
+        "preview-certificates",
+        "claude_code_desktop",
+        "session_deletions",
+        "modern-installer",
+        "preview-snapshot",
+        "navigate-preview-from-model",
+        "call-remote-browser-tool",
+        "cowork-org-skip-approvals-enabled",
+        "cowork-org-auto-mode-enabled",
+        "smol-bin.arm64.img",
+        "1766199337",
+        "1420990291",
+        "781221254",
+        "4127301062",
+        "2575231602",
+        "1966121882",
+        "1533230508",
+        "2474107749",
+        "1373298314",
+        "2526291435",
+        "1666705513",
+        "desktop app update undocumented changes",
+        "grep finds nothing in app resources folder",
+        "where did the desktop ui files go",
+        "does the built-in browser report sites to anthropic",
+        "browser telemetry captcha and login tracking",
+        "connector tool names changing from random ids",
+        "plugin hook stopped firing after connector rename",
+        "connector approvals ignored under managed rules",
+        "why does desktop ask before opening word or excel files",
+        "macro file open permission prompt",
+        "attach local file to gmail connector approval",
+        "typed artifact tools missing in my session",
+        "chrome shortcut tools disappeared from desktop",
+        "zero data retention hides error text from telemetry",
+        "what changed that release notes didn't mention"
+      ],
+      "identifier_keys": [
+        "frame-rt",
+        "claude-ios-sim.sb",
+        "vm-mcpb",
+        "index.html",
+        "52253313",
+        "allow-modals",
+        "CLAUDE_CODE_HOST_WORKTREE_FENCE",
+        "CLAUDE_CODE_DISABLE_FILE_MENTIONS",
+        "create_from_type",
+        "sdk-wrapper-version",
+        "db_write",
+        "publish_files",
+        "ion-dist.asar",
+        "claude-ssh-remote",
+        "Info.plist",
+        "electron-asar-integrity",
+        "index.chunk-C9iXV3l-.js",
+        "claudeai-rpc",
+        "claudeai_edge",
+        "client-metrics-service",
+        "top_site_loads",
+        "maybe_captcha",
+        "maybe_login",
+        "got_in_later",
+        "got_in_by",
+        "person_or_itself",
+        "TOP_SITES",
+        "third_party_analytics",
+        "index.chunk-5BS-c_bO.js",
+        "connector-wire-boundary",
+        "CLAUDE_CODE_DESKTOP_CONNECTOR_NAMES",
+        "connector-tools-ask-first",
+        "rules-locked",
+        "mcp-tool-call-gate",
+        "lam_gmail_host_fill",
+        "gmailmcp.googleapis.com",
+        "session-open-consent",
+        "list_typed_artifacts",
+        "CLAUDE_CODE_HOST_GUARDS_ARTIFACTS_MCP",
+        "CLAUDE_CODE_HOST_OFFERS_DEVICE_MCP",
+        "CLAUDE_CODE_HOST_SHORT_TEMP_DIRS",
+        "CLAUDE_CODE_PLUGIN_DIRS",
+        "session-text-policy",
+        "claude_code_zdr",
+        "CLAUDE_CODE_SESSIONS_OAUTH_TOKEN",
+        "mcpAppView.js",
+        "mcp-app-views",
+        "claude-mcp-app",
+        "passes-mcp-app-pages",
+        "may-use-mcp-app-view",
+        "start_hour",
+        "end_hour",
+        "preview-certificates",
+        "claude_code_desktop",
+        "session_deletions",
+        "modern-installer",
+        "preview-snapshot",
+        "navigate-preview-from-model",
+        "call-remote-browser-tool",
+        "cowork-org-skip-approvals-enabled",
+        "cowork-org-auto-mode-enabled",
+        "smol-bin.arm64.img",
+        "1766199337",
+        "1420990291",
+        "781221254",
+        "4127301062",
+        "2575231602",
+        "1966121882",
+        "1533230508",
+        "2474107749",
+        "1373298314",
+        "2526291435",
+        "1666705513"
+      ],
+      "vocab_keys": [
+        "desktop app update undocumented changes",
+        "grep finds nothing in app resources folder",
+        "where did the desktop ui files go",
+        "does the built-in browser report sites to anthropic",
+        "browser telemetry captcha and login tracking",
+        "connector tool names changing from random ids",
+        "plugin hook stopped firing after connector rename",
+        "connector approvals ignored under managed rules",
+        "why does desktop ask before opening word or excel files",
+        "macro file open permission prompt",
+        "attach local file to gmail connector approval",
+        "typed artifact tools missing in my session",
+        "chrome shortcut tools disappeared from desktop",
+        "zero data retention hides error text from telemetry",
+        "what changed that release notes didn't mention"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "c62efc03c283fdd32fa3b9630f1f1b917cf5ec261cbfd9bb6edb53c8c1ea5874"
+      }
+    },
+    {
+      "id": 247,
+      "title": "The Admin Keys and Connector Options Added in Desktop 4.x",
+      "lesson_number": "247",
+      "file": "73-desktop-4.16336-changes.md",
+      "startLine": 120,
+      "endLine": 180,
+      "keywords": [
+        "disable-deployment-mode-chooser",
+        "force-login-org-uuid",
+        "disabled-builtin-tools",
+        "organization-plugins-url",
+        "skill-scanning-enabled",
+        "deployment-mode",
+        "session-status-line",
+        "tool-timeout-sec",
+        "projects-enabled",
+        "inference-token-warning-percent",
+        "inference-gateway-auto-mode-server-checks",
+        "mcp-app-widgets-enabled",
+        "user-file-uploads-enabled",
+        "default-state",
+        "omit-resource",
+        "offline_access",
+        "pull_request_review_write",
+        "delete_repository",
+        "code-tab-egress-policy",
+        "disable-browser-external-navigation",
+        "browser-external-page-tools",
+        "disable-browser-certificate-exceptions",
+        "disable-nonessential-telemetry",
+        "force first-party mode on managed devices",
+        "lock deployment mode for all users",
+        "show custom status line above message box",
+        "status line program rejected not owned by root",
+        "stop users creating projects as admin",
+        "warn users nearing token limit",
+        "per-server tool timeout not working",
+        "can i shorten a connector tool timeout",
+        "one bad path drops connector on every os",
+        "connector default on or off for users",
+        "old managed settings stopped applying after deprecation",
+        "why did server configuration come back on devices",
+        "code tab shell commands can reach network",
+        "github connector asks approval for deleting repository",
+        "new enterprise policy settings in latest desktop release"
+      ],
+      "identifier_keys": [
+        "disable-deployment-mode-chooser",
+        "force-login-org-uuid",
+        "disabled-builtin-tools",
+        "organization-plugins-url",
+        "skill-scanning-enabled",
+        "deployment-mode",
+        "session-status-line",
+        "tool-timeout-sec",
+        "projects-enabled",
+        "inference-token-warning-percent",
+        "inference-gateway-auto-mode-server-checks",
+        "mcp-app-widgets-enabled",
+        "user-file-uploads-enabled",
+        "default-state",
+        "omit-resource",
+        "offline_access",
+        "pull_request_review_write",
+        "delete_repository",
+        "code-tab-egress-policy",
+        "disable-browser-external-navigation",
+        "browser-external-page-tools",
+        "disable-browser-certificate-exceptions",
+        "disable-nonessential-telemetry"
+      ],
+      "vocab_keys": [
+        "force first-party mode on managed devices",
+        "lock deployment mode for all users",
+        "show custom status line above message box",
+        "status line program rejected not owned by root",
+        "stop users creating projects as admin",
+        "warn users nearing token limit",
+        "per-server tool timeout not working",
+        "can i shorten a connector tool timeout",
+        "one bad path drops connector on every os",
+        "connector default on or off for users",
+        "old managed settings stopped applying after deprecation",
+        "why did server configuration come back on devices",
+        "code tab shell commands can reach network",
+        "github connector asks approval for deleting repository",
+        "new enterprise policy settings in latest desktop release"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "5ecd9298f61040f5ed1719df5ae0c64b524db138e5305bea43ca3e6ecc5cf332"
+      }
+    },
+    {
+      "id": 248,
+      "title": "The Code Tab in Desktop 4.x: SSH Environment, Hooks, Auto Mode and Dev Servers",
+      "lesson_number": "248",
+      "file": "73-desktop-4.16336-changes.md",
+      "startLine": 184,
+      "endLine": 262,
+      "keywords": [
+        "permission-request",
+        "FILE_DESCRIPTOR",
+        "3946462706",
+        "hard_deny",
+        "ccd_pr",
+        "CLAUDE_DEV",
+        "CLAUDE_E2E",
+        "CLAUDE_SSH",
+        "CLAUDE_SIM",
+        "ANTHROPIC_DEFAULT",
+        "ssh-transport",
+        "system-openssh",
+        "host_kept",
+        "ssh-client-path",
+        "REG_SZ",
+        "max-sessions",
+        "allow-unsandboxed-commands",
+        "no-checkout",
+        "post-checkout",
+        "run-post-checkout-hook",
+        "desktop-session-cleanup-period-days",
+        "apparmor_restrict_unprivileged_userns",
+        "fail-if-unavailable",
+        "get_status",
+        "set_monitor",
+        "address_comments",
+        "auto_archive_on_close",
+        "set_auto_merge",
+        "merge_method",
+        "unbind_pr",
+        "ssh-host-launcher",
+        "1751199319",
+        "3039720315",
+        "1743527783",
+        "1776348311",
+        "why isn't my env var reaching the remote host",
+        "desktop app withholding variables from wsl",
+        "hook blocks every tool call on windows without git bash",
+        "why does my hook fail on windows",
+        "windows ssh connection refused old openssh client",
+        "asked to sign in twice over ssh",
+        "managed allow list removed built-in auto mode exceptions",
+        "desktop auto mode rules differ from cli",
+        "dev server still asks for approval",
+        "dev server not started from remote control",
+        "auto mode turned off in ssh session",
+        "session resumes after quitting the app",
+        "post-checkout hook not running in worktree",
+        "turn on auto-merge for pull request from session"
+      ],
+      "identifier_keys": [
+        "permission-request",
+        "FILE_DESCRIPTOR",
+        "3946462706",
+        "hard_deny",
+        "ccd_pr",
+        "CLAUDE_DEV",
+        "CLAUDE_E2E",
+        "CLAUDE_SSH",
+        "CLAUDE_SIM",
+        "ANTHROPIC_DEFAULT",
+        "ssh-transport",
+        "system-openssh",
+        "host_kept",
+        "ssh-client-path",
+        "REG_SZ",
+        "max-sessions",
+        "allow-unsandboxed-commands",
+        "no-checkout",
+        "post-checkout",
+        "run-post-checkout-hook",
+        "desktop-session-cleanup-period-days",
+        "apparmor_restrict_unprivileged_userns",
+        "fail-if-unavailable",
+        "get_status",
+        "set_monitor",
+        "address_comments",
+        "auto_archive_on_close",
+        "set_auto_merge",
+        "merge_method",
+        "unbind_pr",
+        "ssh-host-launcher",
+        "1751199319",
+        "3039720315",
+        "1743527783",
+        "1776348311"
+      ],
+      "vocab_keys": [
+        "why isn't my env var reaching the remote host",
+        "desktop app withholding variables from wsl",
+        "hook blocks every tool call on windows without git bash",
+        "why does my hook fail on windows",
+        "windows ssh connection refused old openssh client",
+        "asked to sign in twice over ssh",
+        "managed allow list removed built-in auto mode exceptions",
+        "desktop auto mode rules differ from cli",
+        "dev server still asks for approval",
+        "dev server not started from remote control",
+        "auto mode turned off in ssh session",
+        "session resumes after quitting the app",
+        "post-checkout hook not running in worktree",
+        "turn on auto-merge for pull request from session"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v1",
-        "date": "2026-10-23",
-        "terms_sha256": "c19b3bbed0faa2c72692feebc71a7b035075ecbde3fd4b20579bca91adbb8b94"
+        "date": "2026-11-05",
+        "terms_sha256": "129ee85a1d528e54ccfe26775640056f959a726490f4a92b63575d3c5fdd8648"
+      }
+    },
+    {
+      "id": 249,
+      "title": "Code Mode: One Tool That Runs JavaScript, with Hooks Still Applied per Call",
+      "lesson_number": "249",
+      "file": "74-cli-2.1.318-code-mode-mods-boundaries.md",
+      "startLine": 16,
+      "endLine": 80,
+      "keywords": [
+        "CLAUDE_CODE_EXPERIMENTAL_CODE_MODE",
+        "tengu_rustling_blossom",
+        "code-mode-caveats-accepted-v1",
+        "code-mode-auto-mode-caveat-accepted-v1",
+        "CLAUDE_CODE_ENABLE_TELEMETRY",
+        "search-tools",
+        "describe-tool",
+        "model writes scripts instead of calling tools",
+        "all tools replaced by one javascript tool",
+        "do hooks still fire inside scripts",
+        "does running a script bypass permissions",
+        "why no permission prompt for a script",
+        "hook timeout blocks tool call inside script",
+        "enable experimental javascript tool mode",
+        "why is javascript scripting mode refused",
+        "admin disable scripting tool mode",
+        "mcp tools hidden from the model",
+        "how to find mcp tools from a script",
+        "auto mode classifier checks script once",
+        "script execution time limit",
+        "will my bash hook work inside a script",
+        "only three tools showing in tool list"
+      ],
+      "identifier_keys": [
+        "CLAUDE_CODE_EXPERIMENTAL_CODE_MODE",
+        "tengu_rustling_blossom",
+        "code-mode-caveats-accepted-v1",
+        "code-mode-auto-mode-caveat-accepted-v1",
+        "CLAUDE_CODE_ENABLE_TELEMETRY",
+        "search-tools",
+        "describe-tool"
+      ],
+      "vocab_keys": [
+        "model writes scripts instead of calling tools",
+        "all tools replaced by one javascript tool",
+        "do hooks still fire inside scripts",
+        "does running a script bypass permissions",
+        "why no permission prompt for a script",
+        "hook timeout blocks tool call inside script",
+        "enable experimental javascript tool mode",
+        "why is javascript scripting mode refused",
+        "admin disable scripting tool mode",
+        "mcp tools hidden from the model",
+        "how to find mcp tools from a script",
+        "auto mode classifier checks script once",
+        "script execution time limit",
+        "will my bash hook work inside a script",
+        "only three tools showing in tool list"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "7e05d0babadcc4f6b25e58bb53f3a4aa073885f64649c3c2dfbc42825a5c36ae"
+      }
+    },
+    {
+      "id": 250,
+      "title": "Mods: JavaScript Plugins That Run Inside the Claude Code Process",
+      "lesson_number": "250",
+      "file": "74-cli-2.1.318-code-mode-mods-boundaries.md",
+      "startLine": 84,
+      "endLine": 125,
+      "keywords": [
+        "LD_PRELOAD",
+        "disable-all-hooks",
+        "allow-managed-hooks-only",
+        "register.ts",
+        "plugin-authoring",
+        "cc-plugin-sec-default",
+        "allow-managed-mods-only",
+        "allow-mods-to-override-deny-rules",
+        "dev-mods",
+        "mod_hot_reload",
+        "customize claude code interface with javascript plugin",
+        "add custom pane or status line",
+        "are plugins sandboxed or isolated",
+        "plugin code running with my permissions",
+        "stop claude loading mods it wrote",
+        "prompt asking to turn on claude's mods",
+        "what happens if i decline claude's mods",
+        "restrict plugins to company approved only",
+        "disable all installed mods",
+        "mods disappeared in the middle of a session",
+        "can a mod bypass deny rules",
+        "why are my mods not loading",
+        "plugin refuses to work with code mode",
+        "hot reload plugins during a session",
+        "are third-party mods safe to install"
+      ],
+      "identifier_keys": [
+        "LD_PRELOAD",
+        "disable-all-hooks",
+        "allow-managed-hooks-only",
+        "register.ts",
+        "plugin-authoring",
+        "cc-plugin-sec-default",
+        "allow-managed-mods-only",
+        "allow-mods-to-override-deny-rules",
+        "dev-mods",
+        "mod_hot_reload"
+      ],
+      "vocab_keys": [
+        "customize claude code interface with javascript plugin",
+        "add custom pane or status line",
+        "are plugins sandboxed or isolated",
+        "plugin code running with my permissions",
+        "stop claude loading mods it wrote",
+        "prompt asking to turn on claude's mods",
+        "what happens if i decline claude's mods",
+        "restrict plugins to company approved only",
+        "disable all installed mods",
+        "mods disappeared in the middle of a session",
+        "can a mod bypass deny rules",
+        "why are my mods not loading",
+        "plugin refuses to work with code mode",
+        "hot reload plugins during a session",
+        "are third-party mods safe to install"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-11-05",
+        "terms_sha256": "aaf40a183d10aeaff133962a5084de42c26849c7020d2281f6f44145294d8c62"
+      }
+    },
+    {
+      "id": 251,
+      "title": "New Boundaries: Blocking Writes, the rm Waiver and the Privacy Check",
+      "lesson_number": "251",
+      "file": "74-cli-2.1.318-code-mode-mods-boundaries.md",
+      "startLine": 129,
+      "endLine": 162,
+      "keywords": [
+        "block-writes-outside-working-directories",
+        "CLAUDE_CODE_EVEN_MORE_DANGEROUSLY_SKIP_PERMISSIONS",
+        "block-reads-exempt-paths",
+        "dangerous-removal",
+        "isolate-peer-machines",
+        "restricted-mode",
+        "outside-reads-blocked",
+        "connector-file-send",
+        "unfinished-check",
+        "permission_bypass_removal_prompt_waived",
+        "cc-plugin-privacy",
+        "web-browser",
+        "tengu_wise_newt",
+        "first_party_silent",
+        "stop claude editing files outside my project",
+        "restrict file writes to project folder",
+        "why can't claude edit its own settings file",
+        "worktree tools disappeared from session",
+        "can shell commands still write outside the project",
+        "bypass mode still asks before rm",
+        "skip delete confirmation in bypass mode",
+        "why does bypass mode still prompt on removal",
+        "managed settings disable dangerous skip option",
+        "nested claude session won't skip delete prompt",
+        "claude asks before sending my email address",
+        "headless skill stalls posting account email",
+        "turn off email privacy prompt",
+        "org settings applied without security dialog",
+        "why no security prompt for server-managed settings"
+      ],
+      "identifier_keys": [
+        "block-writes-outside-working-directories",
+        "CLAUDE_CODE_EVEN_MORE_DANGEROUSLY_SKIP_PERMISSIONS",
+        "block-reads-exempt-paths",
+        "dangerous-removal",
+        "isolate-peer-machines",
+        "restricted-mode",
+        "outside-reads-blocked",
+        "connector-file-send",
+        "unfinished-check",
+        "permission_bypass_removal_prompt_waived",
+        "cc-plugin-privacy",
+        "web-browser",
+        "tengu_wise_newt",
+        "first_party_silent"
+      ],
+      "vocab_keys": [
+        "stop claude editing files outside my project",
+        "restrict file writes to project folder",
+        "why can't claude edit its own settings file",
+        "worktree tools disappeared from session",
+        "can shell commands still write outside the project",
+        "bypass mode still asks before rm",
+        "skip delete confirmation in bypass mode",
+        "why does bypass mode still prompt on removal",
+        "managed settings disable dangerous skip option",
+        "nested claude session won't skip delete prompt",
+        "claude asks before sending my email address",
+        "headless skill stalls posting account email",
+        "turn off email privacy prompt",
+        "org settings applied without security dialog",
+        "why no security prompt for server-managed settings"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "f3bbcee513360744e540493ecfc9f9b4d8662aea48a0594ee5a42c72dc01945c"
+      }
+    },
+    {
+      "id": 252,
+      "title": "What Else CLI 2.1.311 to 2.1.318 Changed",
+      "lesson_number": "252",
+      "file": "74-cli-2.1.318-code-mode-mods-boundaries.md",
+      "startLine": 166,
+      "endLine": 204,
+      "keywords": [
+        "tengu_turtle_carbon",
+        "CLAUDE_CODE_SUBAGENT_EFFORT",
+        "not_first_party",
+        "not_claude_ai_auth",
+        "remote_desktop",
+        "compact_on_return",
+        "compaction_off",
+        "idle_compaction_off",
+        "precompute_compaction_off",
+        "swap_unsupported",
+        "prefix_changed",
+        "not_one_hour",
+        "newer_request",
+        "near_limit",
+        "tengu_sunset_penguin_opus48",
+        "wrap-up",
+        "CLAUDE_CODE_ENABLE_WRAP_UP",
+        "tengu_merry_thunder",
+        "attribution-project",
+        "tengu_gentle_cupcake",
+        "use-case",
+        "tengu_federated_possum",
+        "CLAUDE_CODE_PROGRAM_USE_CASE_ID",
+        "tengu_projects_compact_thread_rule_enabled",
+        "tool-provenance-2026-10-26",
+        "tengu_snappy_noodle",
+        "claude-code-side-query-2026-09-29",
+        "program-use-case-ids-2026-09-17",
+        "CLAUDE_CODE_PERSONAL_HOOKS_OFF",
+        "CLAUDE_CODE_DISABLE_SUBAGENT_HANDBACK",
+        "CLAUDE_CODE_DISABLE_MCP_TASKS",
+        "CLAUDE_CODE_AUTO_MODE_FULL_CONTEXT",
+        "CLAUDE_CODE_LAZY_ENV_GETTERS",
+        "CLAUDE_CODE_TOOL_CONTAINER_PLUGINS_NAMED",
+        "CLAUDE_WORKSHOP_PROGRESS",
+        "bun_aot",
+        "bun_trim",
+        "Bun__AOT__compile",
+        "rereading a file uses tokens again",
+        "file unchanged message no longer appears",
+        "why does a repeat file read return everything",
+        "write fails after partial file read",
+        "keyword that raises thinking effort for one turn",
+        "why didn't idle compaction run",
+        "idle compaction token threshold",
+        "auto mode default allow rules count",
+        "scheduled task rule stays after replacing allow list",
+        "model catalog on third-party cloud providers",
+        "why is my subagent effort setting ignored",
+        "make a failed hook block",
+        "when does opus fast mode end",
+        "is claude code compiled ahead of time",
+        "assign usage reports to a project"
+      ],
+      "identifier_keys": [
+        "tengu_turtle_carbon",
+        "CLAUDE_CODE_SUBAGENT_EFFORT",
+        "not_first_party",
+        "not_claude_ai_auth",
+        "remote_desktop",
+        "compact_on_return",
+        "compaction_off",
+        "idle_compaction_off",
+        "precompute_compaction_off",
+        "swap_unsupported",
+        "prefix_changed",
+        "not_one_hour",
+        "newer_request",
+        "near_limit",
+        "tengu_sunset_penguin_opus48",
+        "wrap-up",
+        "CLAUDE_CODE_ENABLE_WRAP_UP",
+        "tengu_merry_thunder",
+        "attribution-project",
+        "tengu_gentle_cupcake",
+        "use-case",
+        "tengu_federated_possum",
+        "CLAUDE_CODE_PROGRAM_USE_CASE_ID",
+        "tengu_projects_compact_thread_rule_enabled",
+        "tool-provenance-2026-10-26",
+        "tengu_snappy_noodle",
+        "claude-code-side-query-2026-09-29",
+        "program-use-case-ids-2026-09-17",
+        "CLAUDE_CODE_PERSONAL_HOOKS_OFF",
+        "CLAUDE_CODE_DISABLE_SUBAGENT_HANDBACK",
+        "CLAUDE_CODE_DISABLE_MCP_TASKS",
+        "CLAUDE_CODE_AUTO_MODE_FULL_CONTEXT",
+        "CLAUDE_CODE_LAZY_ENV_GETTERS",
+        "CLAUDE_CODE_TOOL_CONTAINER_PLUGINS_NAMED",
+        "CLAUDE_WORKSHOP_PROGRESS",
+        "bun_aot",
+        "bun_trim",
+        "Bun__AOT__compile"
+      ],
+      "vocab_keys": [
+        "rereading a file uses tokens again",
+        "file unchanged message no longer appears",
+        "why does a repeat file read return everything",
+        "write fails after partial file read",
+        "keyword that raises thinking effort for one turn",
+        "why didn't idle compaction run",
+        "idle compaction token threshold",
+        "auto mode default allow rules count",
+        "scheduled task rule stays after replacing allow list",
+        "model catalog on third-party cloud providers",
+        "why is my subagent effort setting ignored",
+        "make a failed hook block",
+        "when does opus fast mode end",
+        "is claude code compiled ahead of time",
+        "assign usage reports to a project"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-05",
+        "terms_sha256": "c79f3a611e755166fa4584c40fc18f43468513237539a8dddc0425bba3b9b22a"
       }
     }
   ],
@@ -40290,7 +41114,8 @@
       7
     ],
     "LD_PRELOAD": [
-      7
+      7,
+      250
     ],
     "should-use-sandbox": [
       7
@@ -40395,6 +41220,15 @@
       8
     ],
     "map-notebook-cells-to-tool-result": [
+      8
+    ],
+    "file_unchanged": [
+      8
+    ],
+    "tengu_read_dedup_killswitch": [
+      8
+    ],
+    "tengu_file_read_reread": [
       8
     ],
     "CLAUDE_CODE_FILE_READ_MAX_OUTPUT_TOKENS": [
@@ -40524,6 +41358,9 @@
       11
     ],
     "skill-name": [
+      11
+    ],
+    "1.72M": [
       11
     ],
     "CLAUDE_SESSION_ID": [
@@ -41477,10 +42314,6 @@
     "is-teammate": [
       24
     ],
-    "allow-managed-permission-rules-only": [
-      25,
-      242
-    ],
     "bypass-permissions": [
       107
     ],
@@ -41956,6 +42789,9 @@
       240
     ],
     "status-message": [
+      32
+    ],
+    "on-failure": [
       32
     ],
     "query-model-without-streaming": [
@@ -42573,9 +43409,6 @@
     "base-sandbox-manager": [
       47
     ],
-    "sandbox-exec": [
-      47
-    ],
     "example.com": [
       47
     ],
@@ -42709,6 +43542,10 @@
     ],
     "ultrathink_effort": [
       51
+    ],
+    "tengu_turtle_carbon": [
+      51,
+      252
     ],
     "effort-value": [
       51
@@ -43643,10 +44480,6 @@
     "async-dispose": [
       88
     ],
-    "subagent-stop": [
-      88,
-      89
-    ],
     "non_blocking_error": [
       88
     ],
@@ -43902,10 +44735,11 @@
       155
     ],
     "disable-all-hooks": [
-      89
+      250
     ],
     "allow-managed-hooks-only": [
-      89
+      89,
+      250
     ],
     "use-cowork-plugins": [
       89
@@ -44665,7 +45499,8 @@
       225
     ],
     "frame-rt": [
-      105
+      105,
+      246
     ],
     "2204227020": [
       105
@@ -44815,10 +45650,6 @@
     "report.md": [
       164,
       190
-    ],
-    "power-shell": [
-      107,
-      121
     ],
     "always-allow-rules": [
       107
@@ -45701,6 +46532,10 @@
       124,
       183
     ],
+    "CLAUDE_CODE_SUBAGENT_EFFORT": [
+      124,
+      252
+    ],
     "teammate-default-model": [
       124
     ],
@@ -45816,7 +46651,8 @@
       125
     ],
     "claude-ios-sim.sb": [
-      125
+      125,
+      246
     ],
     "INTERNAL_SERVER_UUIDS": [
       126
@@ -46366,6 +47202,9 @@
     "get-file-delete-approved-mounts": [
       139
     ],
+    "mcpb-cache": [
+      140
+    ],
     "index.chunk-j7zghOJ6.js": [
       139
     ],
@@ -46412,6 +47251,13 @@
     "plugin-install-paths": [
       140,
       217
+    ],
+    "vm-mcpb": [
+      140,
+      246
+    ],
+    "mcpb_cache_session_dir_failed": [
+      140
     ],
     "fcache_capture": [
       141
@@ -46675,8 +47521,7 @@
       188
     ],
     "permission-request": [
-      155,
-      188
+      248
     ],
     "slash_command": [
       155
@@ -46913,7 +47758,8 @@
       168
     ],
     "index.html": [
-      168
+      168,
+      246
     ],
     "file_open_unavailable": [
       168
@@ -47306,7 +48152,8 @@
       182
     ],
     "register.ts": [
-      183
+      183,
+      250
     ],
     "THRIFTY_SONIC": [
       183
@@ -47325,6 +48172,17 @@
     ],
     "cache-key": [
       183
+    ],
+    "not_first_party": [
+      183,
+      252
+    ],
+    "release_off": [
+      183
+    ],
+    "not_claude_ai_auth": [
+      183,
+      252
     ],
     "invalid_url": [
       183
@@ -47418,7 +48276,8 @@
       194
     ],
     "FILE_DESCRIPTOR": [
-      194
+      194,
+      248
     ],
     "cron-create": [
       194
@@ -47581,6 +48440,10 @@
     "notion-ai-search": [
       199
     ],
+    "52253313": [
+      199,
+      246
+    ],
     "plugin_errors": [
       200
     ],
@@ -47609,7 +48472,8 @@
       202
     ],
     "remote_desktop": [
-      202
+      202,
+      252
     ],
     "tengu_violin_pegbox": [
       202
@@ -48013,7 +48877,8 @@
       215
     ],
     "allow-modals": [
-      215
+      215,
+      246
     ],
     "list_connected_browsers": [
       215
@@ -48246,10 +49111,6 @@
     "flag_off": [
       222
     ],
-    "claude-sonnet-5-5": [
-      222,
-      242
-    ],
     "claude-haiku-5-5": [
       222,
       242
@@ -48264,7 +49125,8 @@
       222
     ],
     "CLAUDE_CODE_HOST_WORKTREE_FENCE": [
-      222
+      222,
+      246
     ],
     "mcp-scheduled-task-approval-lifetime-days": [
       222,
@@ -48885,9 +49747,6 @@
     "2393677837": [
       235
     ],
-    "2222745432": [
-      235
-    ],
     "2371478310": [
       235
     ],
@@ -48965,10 +49824,11 @@
       236
     ],
     "disable-deployment-mode-chooser": [
-      236
+      247
     ],
     "force-login-org-uuid": [
-      236
+      236,
+      247
     ],
     "index.chunk-DkReRM12.js": [
       236
@@ -49034,7 +49894,8 @@
       236
     ],
     "disabled-builtin-tools": [
-      236
+      236,
+      247
     ],
     "ssh.exe": [
       236
@@ -49151,7 +50012,8 @@
       236
     ],
     "3946462706": [
-      236
+      236,
+      248
     ],
     "1731450842": [
       236
@@ -49314,6 +50176,10 @@
     "retention_default": [
       237
     ],
+    "organization-plugins-url": [
+      237,
+      247
+    ],
     "index.chunk-CB6cNSrW.js": [
       237
     ],
@@ -49418,7 +50284,8 @@
       239
     ],
     "hard_deny": [
-      239
+      239,
+      248
     ],
     "disable-auto-mode": [
       239
@@ -49538,15 +50405,45 @@
       241
     ],
     "compact_on_return": [
-      241
-    ],
-    "min-tokens": [
-      241
+      241,
+      252
     ],
     "CLAUDE_CODE_IDLE_COMPACT_MIN_TOKENS": [
       241
     ],
-    "fire-at-fraction": [
+    "compaction_off": [
+      241,
+      252
+    ],
+    "idle_compaction_off": [
+      241,
+      252
+    ],
+    "precompute_compaction_off": [
+      241,
+      252
+    ],
+    "swap_unsupported": [
+      241,
+      252
+    ],
+    "prefix_changed": [
+      241,
+      252
+    ],
+    "not_one_hour": [
+      241,
+      252
+    ],
+    "newer_request": [
+      241,
+      252
+    ],
+    "near_limit": [
+      241,
+      252
+    ],
+    "precompute-compaction-enabled": [
       241
     ],
     "idle-compaction": [
@@ -49589,7 +50486,8 @@
       242
     ],
     "skill-scanning-enabled": [
-      242
+      242,
+      247
     ],
     "skill_plugins_scanning": [
       242
@@ -49666,6 +50564,10 @@
     "is-array": [
       243
     ],
+    "CLAUDE_CODE_DISABLE_FILE_MENTIONS": [
+      243,
+      246
+    ],
     "index.chunk-BHK0ncEj.js": [
       243
     ],
@@ -49689,8 +50591,7 @@
       243
     ],
     "create_from_type": [
-      243,
-      245
+      246
     ],
     "db_get": [
       243,
@@ -49763,7 +50664,8 @@
       245
     ],
     "sdk-wrapper-version": [
-      245
+      245,
+      246
     ],
     "honours-person-only-mark": [
       245
@@ -49838,10 +50740,12 @@
       245
     ],
     "db_write": [
-      245
+      245,
+      246
     ],
     "publish_files": [
-      245
+      245,
+      246
     ],
     "list_types": [
       245
@@ -49908,6 +50812,489 @@
     ],
     "592261068": [
       245
+    ],
+    "ion-dist.asar": [
+      246
+    ],
+    "claude-ssh-remote": [
+      246
+    ],
+    "Info.plist": [
+      246
+    ],
+    "electron-asar-integrity": [
+      246
+    ],
+    "index.chunk-C9iXV3l-.js": [
+      246
+    ],
+    "claudeai-rpc": [
+      246
+    ],
+    "claudeai_edge": [
+      246
+    ],
+    "client-metrics-service": [
+      246
+    ],
+    "top_site_loads": [
+      246
+    ],
+    "maybe_captcha": [
+      246
+    ],
+    "maybe_login": [
+      246
+    ],
+    "got_in_later": [
+      246
+    ],
+    "got_in_by": [
+      246
+    ],
+    "person_or_itself": [
+      246
+    ],
+    "TOP_SITES": [
+      246
+    ],
+    "third_party_analytics": [
+      246
+    ],
+    "index.chunk-5BS-c_bO.js": [
+      246
+    ],
+    "connector-wire-boundary": [
+      246
+    ],
+    "CLAUDE_CODE_DESKTOP_CONNECTOR_NAMES": [
+      246
+    ],
+    "connector-tools-ask-first": [
+      246
+    ],
+    "rules-locked": [
+      246
+    ],
+    "mcp-tool-call-gate": [
+      246
+    ],
+    "lam_gmail_host_fill": [
+      246
+    ],
+    "gmailmcp.googleapis.com": [
+      246
+    ],
+    "session-open-consent": [
+      246
+    ],
+    "list_typed_artifacts": [
+      246
+    ],
+    "CLAUDE_CODE_HOST_GUARDS_ARTIFACTS_MCP": [
+      246
+    ],
+    "CLAUDE_CODE_HOST_OFFERS_DEVICE_MCP": [
+      246
+    ],
+    "CLAUDE_CODE_HOST_SHORT_TEMP_DIRS": [
+      246
+    ],
+    "CLAUDE_CODE_PLUGIN_DIRS": [
+      246
+    ],
+    "session-text-policy": [
+      246
+    ],
+    "claude_code_zdr": [
+      246
+    ],
+    "CLAUDE_CODE_SESSIONS_OAUTH_TOKEN": [
+      246
+    ],
+    "mcpAppView.js": [
+      246
+    ],
+    "mcp-app-views": [
+      246
+    ],
+    "claude-mcp-app": [
+      246
+    ],
+    "passes-mcp-app-pages": [
+      246
+    ],
+    "may-use-mcp-app-view": [
+      246
+    ],
+    "start_hour": [
+      246
+    ],
+    "end_hour": [
+      246
+    ],
+    "preview-certificates": [
+      246
+    ],
+    "claude_code_desktop": [
+      246
+    ],
+    "session_deletions": [
+      246
+    ],
+    "modern-installer": [
+      246
+    ],
+    "preview-snapshot": [
+      246
+    ],
+    "navigate-preview-from-model": [
+      246
+    ],
+    "call-remote-browser-tool": [
+      246
+    ],
+    "cowork-org-skip-approvals-enabled": [
+      246
+    ],
+    "cowork-org-auto-mode-enabled": [
+      246
+    ],
+    "smol-bin.arm64.img": [
+      246
+    ],
+    "1766199337": [
+      246
+    ],
+    "1420990291": [
+      246
+    ],
+    "781221254": [
+      246
+    ],
+    "4127301062": [
+      246
+    ],
+    "2575231602": [
+      246
+    ],
+    "1966121882": [
+      246
+    ],
+    "1533230508": [
+      246
+    ],
+    "2474107749": [
+      246
+    ],
+    "1373298314": [
+      246
+    ],
+    "2526291435": [
+      246
+    ],
+    "1666705513": [
+      246
+    ],
+    "deployment-mode": [
+      247
+    ],
+    "session-status-line": [
+      247
+    ],
+    "tool-timeout-sec": [
+      247
+    ],
+    "projects-enabled": [
+      247
+    ],
+    "inference-token-warning-percent": [
+      247
+    ],
+    "inference-gateway-auto-mode-server-checks": [
+      247
+    ],
+    "mcp-app-widgets-enabled": [
+      247
+    ],
+    "user-file-uploads-enabled": [
+      247
+    ],
+    "default-state": [
+      247
+    ],
+    "omit-resource": [
+      247
+    ],
+    "offline_access": [
+      247
+    ],
+    "pull_request_review_write": [
+      247
+    ],
+    "delete_repository": [
+      247
+    ],
+    "code-tab-egress-policy": [
+      247
+    ],
+    "disable-browser-external-navigation": [
+      247
+    ],
+    "browser-external-page-tools": [
+      247
+    ],
+    "disable-browser-certificate-exceptions": [
+      247
+    ],
+    "disable-nonessential-telemetry": [
+      247
+    ],
+    "ccd_pr": [
+      248
+    ],
+    "CLAUDE_DEV": [
+      248
+    ],
+    "CLAUDE_E2E": [
+      248
+    ],
+    "CLAUDE_SSH": [
+      248
+    ],
+    "CLAUDE_SIM": [
+      248
+    ],
+    "ANTHROPIC_DEFAULT": [
+      248
+    ],
+    "ssh-transport": [
+      248
+    ],
+    "system-openssh": [
+      248
+    ],
+    "host_kept": [
+      248
+    ],
+    "ssh-client-path": [
+      248
+    ],
+    "REG_SZ": [
+      248
+    ],
+    "max-sessions": [
+      248
+    ],
+    "allow-unsandboxed-commands": [
+      248
+    ],
+    "no-checkout": [
+      248
+    ],
+    "post-checkout": [
+      248
+    ],
+    "run-post-checkout-hook": [
+      248
+    ],
+    "desktop-session-cleanup-period-days": [
+      248
+    ],
+    "apparmor_restrict_unprivileged_userns": [
+      248
+    ],
+    "fail-if-unavailable": [
+      248
+    ],
+    "get_status": [
+      248
+    ],
+    "set_monitor": [
+      248
+    ],
+    "address_comments": [
+      248
+    ],
+    "auto_archive_on_close": [
+      248
+    ],
+    "set_auto_merge": [
+      248
+    ],
+    "merge_method": [
+      248
+    ],
+    "unbind_pr": [
+      248
+    ],
+    "ssh-host-launcher": [
+      248
+    ],
+    "1751199319": [
+      248
+    ],
+    "3039720315": [
+      248
+    ],
+    "1743527783": [
+      248
+    ],
+    "1776348311": [
+      248
+    ],
+    "CLAUDE_CODE_EXPERIMENTAL_CODE_MODE": [
+      249
+    ],
+    "tengu_rustling_blossom": [
+      249
+    ],
+    "code-mode-caveats-accepted-v1": [
+      249
+    ],
+    "code-mode-auto-mode-caveat-accepted-v1": [
+      249
+    ],
+    "CLAUDE_CODE_ENABLE_TELEMETRY": [
+      249
+    ],
+    "search-tools": [
+      249
+    ],
+    "describe-tool": [
+      249
+    ],
+    "plugin-authoring": [
+      250
+    ],
+    "cc-plugin-sec-default": [
+      250
+    ],
+    "allow-managed-mods-only": [
+      250
+    ],
+    "allow-mods-to-override-deny-rules": [
+      250
+    ],
+    "dev-mods": [
+      250
+    ],
+    "mod_hot_reload": [
+      250
+    ],
+    "block-writes-outside-working-directories": [
+      251
+    ],
+    "CLAUDE_CODE_EVEN_MORE_DANGEROUSLY_SKIP_PERMISSIONS": [
+      251
+    ],
+    "block-reads-exempt-paths": [
+      251
+    ],
+    "dangerous-removal": [
+      251
+    ],
+    "isolate-peer-machines": [
+      251
+    ],
+    "restricted-mode": [
+      251
+    ],
+    "outside-reads-blocked": [
+      251
+    ],
+    "connector-file-send": [
+      251
+    ],
+    "unfinished-check": [
+      251
+    ],
+    "permission_bypass_removal_prompt_waived": [
+      251
+    ],
+    "cc-plugin-privacy": [
+      251
+    ],
+    "web-browser": [
+      251
+    ],
+    "tengu_wise_newt": [
+      251
+    ],
+    "first_party_silent": [
+      251
+    ],
+    "tengu_sunset_penguin_opus48": [
+      252
+    ],
+    "wrap-up": [
+      252
+    ],
+    "CLAUDE_CODE_ENABLE_WRAP_UP": [
+      252
+    ],
+    "tengu_merry_thunder": [
+      252
+    ],
+    "attribution-project": [
+      252
+    ],
+    "tengu_gentle_cupcake": [
+      252
+    ],
+    "use-case": [
+      252
+    ],
+    "tengu_federated_possum": [
+      252
+    ],
+    "CLAUDE_CODE_PROGRAM_USE_CASE_ID": [
+      252
+    ],
+    "tengu_projects_compact_thread_rule_enabled": [
+      252
+    ],
+    "tool-provenance-2026-10-26": [
+      252
+    ],
+    "tengu_snappy_noodle": [
+      252
+    ],
+    "claude-code-side-query-2026-09-29": [
+      252
+    ],
+    "program-use-case-ids-2026-09-17": [
+      252
+    ],
+    "CLAUDE_CODE_PERSONAL_HOOKS_OFF": [
+      252
+    ],
+    "CLAUDE_CODE_DISABLE_SUBAGENT_HANDBACK": [
+      252
+    ],
+    "CLAUDE_CODE_DISABLE_MCP_TASKS": [
+      252
+    ],
+    "CLAUDE_CODE_AUTO_MODE_FULL_CONTEXT": [
+      252
+    ],
+    "CLAUDE_CODE_LAZY_ENV_GETTERS": [
+      252
+    ],
+    "CLAUDE_CODE_TOOL_CONTAINER_PLUGINS_NAMED": [
+      252
+    ],
+    "CLAUDE_WORKSHOP_PROGRESS": [
+      252
+    ],
+    "bun_aot": [
+      252
+    ],
+    "bun_trim": [
+      252
+    ],
+    "Bun__AOT__compile": [
+      252
     ],
     "why is claude startup slow": [
       1
@@ -50269,6 +51656,15 @@
     "editing jupyter notebooks": [
       8
     ],
+    "repeat read returns full file content": [
+      8
+    ],
+    "refuses to overwrite file it only partly saw": [
+      8
+    ],
+    "claude only saw the start of the file": [
+      8
+    ],
     "file search only returns 100 results": [
       9
     ],
@@ -50402,6 +51798,15 @@
       11
     ],
     "skill override setting has no effect": [
+      11
+    ],
+    "dollar amounts garbled in skill text": [
+      11
+    ],
+    "how to escape dollar sign in skill": [
+      11
+    ],
+    "why did my skill change a price": [
       11
     ],
     "how do subagents work": [
@@ -51361,6 +52766,15 @@
     "can a hook deny a pre-approved tool": [
       32
     ],
+    "block the tool if a hook crashes": [
+      32
+    ],
+    "fail closed when hook times out": [
+      32
+    ],
+    "why did my prompt hooks stop running": [
+      32
+    ],
     "how does claude code retry failed api calls": [
       33
     ],
@@ -52208,6 +53622,15 @@
       51
     ],
     "reset effort to model default": [
+      51
+    ],
+    "typing ultrathink in my prompt": [
+      51
+    ],
+    "disable the ultrathink keyword": [
+      51
+    ],
+    "boost effort for just one turn": [
       51
     ],
     "undo changes claude made to my files": [
@@ -53286,6 +54709,12 @@
       75
     ],
     "tool calls not shown in transcript": [
+      75
+    ],
+    "why does the repl environment variable no longer work": [
+      75
+    ],
+    "reach repl through code mode": [
       75
     ],
     "think back command disappeared": [
@@ -55584,6 +57013,9 @@
     "new feature cache file format version": [
       124
     ],
+    "which effort level does a subagent use": [
+      124
+    ],
     "ios simulator tools missing in cowork": [
       125
     ],
@@ -55627,6 +57059,9 @@
       125
     ],
     "sandbox around ios simulator control": [
+      125
+    ],
+    "ios simulator sandbox profile file missing": [
       125
     ],
     "control another computer from cowork": [
@@ -56363,6 +57798,15 @@
     "why does my plugin cache folder not exist in the vm": [
       140
     ],
+    "plugin has no writable cache": [
+      140
+    ],
+    "is plugin cache shared across sessions": [
+      140
+    ],
+    "per-session overlay for plugin cache": [
+      140
+    ],
     "feature flag missing but still enabled": [
       141
     ],
@@ -56820,6 +58264,9 @@
       150
     ],
     "soft deny and allow rules for cowork tools": [
+      150
+    ],
+    "what happens when several sources set auto mode allow rules": [
       150
     ],
     "desktop app sets environment variable agent ignores": [
@@ -58358,6 +59805,15 @@
     "force subagent model ignoring task model parameter": [
       183
     ],
+    "function hooks now called mods": [
+      183
+    ],
+    "are function hooks on by default now": [
+      183
+    ],
+    "model catalog on bedrock or vertex": [
+      183
+    ],
     "cowork stopped asking approval for some tools": [
       184
     ],
@@ -58536,6 +59992,15 @@
       187
     ],
     "can javascript hooks bypass forced permission prompts": [
+      187
+    ],
+    "function hooks renamed to mods": [
+      187
+    ],
+    "are function hooks on by default in newer versions": [
+      187
+    ],
+    "function hooks environment variable no longer works": [
       187
     ],
     "how many hook events are there now": [
@@ -59088,6 +60553,12 @@
       199
     ],
     "how to tell if my plugin server was stubbed": [
+      199
+    ],
+    "connector tool names derived from url": [
+      199
+    ],
+    "why are connector tools named after their url": [
       199
     ],
     "local plugin copy overrides installed plugin": [
@@ -61257,9 +62728,6 @@
     "scheduled task can't ask me questions": [
       243
     ],
-    "why can't scheduled task ask user": [
-      243
-    ],
     "scheduled run missing tools": [
       243
     ],
@@ -61306,6 +62774,9 @@
       243
     ],
     "tools needing a person refused when unattended": [
+      243
+    ],
+    "file mentions disabled in scheduled task": [
       243
     ],
     "where desktop stores my skills on mac": [
@@ -61403,9 +62874,330 @@
     ],
     "release notes vs actual desktop changes": [
       245
+    ],
+    "artifact tools only in third-party deployments": [
+      245
+    ],
+    "why no artifact tools on first-party": [
+      245
+    ],
+    "do chat sessions get artifact tools": [
+      245
+    ],
+    "desktop app update undocumented changes": [
+      246
+    ],
+    "grep finds nothing in app resources folder": [
+      246
+    ],
+    "where did the desktop ui files go": [
+      246
+    ],
+    "does the built-in browser report sites to anthropic": [
+      246
+    ],
+    "browser telemetry captcha and login tracking": [
+      246
+    ],
+    "connector tool names changing from random ids": [
+      246
+    ],
+    "plugin hook stopped firing after connector rename": [
+      246
+    ],
+    "connector approvals ignored under managed rules": [
+      246
+    ],
+    "why does desktop ask before opening word or excel files": [
+      246
+    ],
+    "macro file open permission prompt": [
+      246
+    ],
+    "attach local file to gmail connector approval": [
+      246
+    ],
+    "typed artifact tools missing in my session": [
+      246
+    ],
+    "chrome shortcut tools disappeared from desktop": [
+      246
+    ],
+    "zero data retention hides error text from telemetry": [
+      246
+    ],
+    "what changed that release notes didn't mention": [
+      246
+    ],
+    "force first-party mode on managed devices": [
+      247
+    ],
+    "lock deployment mode for all users": [
+      247
+    ],
+    "show custom status line above message box": [
+      247
+    ],
+    "status line program rejected not owned by root": [
+      247
+    ],
+    "stop users creating projects as admin": [
+      247
+    ],
+    "warn users nearing token limit": [
+      247
+    ],
+    "per-server tool timeout not working": [
+      247
+    ],
+    "can i shorten a connector tool timeout": [
+      247
+    ],
+    "one bad path drops connector on every os": [
+      247
+    ],
+    "connector default on or off for users": [
+      247
+    ],
+    "old managed settings stopped applying after deprecation": [
+      247
+    ],
+    "why did server configuration come back on devices": [
+      247
+    ],
+    "code tab shell commands can reach network": [
+      247
+    ],
+    "github connector asks approval for deleting repository": [
+      247
+    ],
+    "new enterprise policy settings in latest desktop release": [
+      247
+    ],
+    "why isn't my env var reaching the remote host": [
+      248
+    ],
+    "desktop app withholding variables from wsl": [
+      248
+    ],
+    "hook blocks every tool call on windows without git bash": [
+      248
+    ],
+    "why does my hook fail on windows": [
+      248
+    ],
+    "windows ssh connection refused old openssh client": [
+      248
+    ],
+    "asked to sign in twice over ssh": [
+      248
+    ],
+    "managed allow list removed built-in auto mode exceptions": [
+      248
+    ],
+    "desktop auto mode rules differ from cli": [
+      248
+    ],
+    "dev server still asks for approval": [
+      248
+    ],
+    "dev server not started from remote control": [
+      248
+    ],
+    "auto mode turned off in ssh session": [
+      248
+    ],
+    "session resumes after quitting the app": [
+      248
+    ],
+    "post-checkout hook not running in worktree": [
+      248
+    ],
+    "turn on auto-merge for pull request from session": [
+      248
+    ],
+    "model writes scripts instead of calling tools": [
+      249
+    ],
+    "all tools replaced by one javascript tool": [
+      249
+    ],
+    "do hooks still fire inside scripts": [
+      249
+    ],
+    "does running a script bypass permissions": [
+      249
+    ],
+    "why no permission prompt for a script": [
+      249
+    ],
+    "hook timeout blocks tool call inside script": [
+      249
+    ],
+    "enable experimental javascript tool mode": [
+      249
+    ],
+    "why is javascript scripting mode refused": [
+      249
+    ],
+    "admin disable scripting tool mode": [
+      249
+    ],
+    "mcp tools hidden from the model": [
+      249
+    ],
+    "how to find mcp tools from a script": [
+      249
+    ],
+    "auto mode classifier checks script once": [
+      249
+    ],
+    "script execution time limit": [
+      249
+    ],
+    "will my bash hook work inside a script": [
+      249
+    ],
+    "only three tools showing in tool list": [
+      249
+    ],
+    "customize claude code interface with javascript plugin": [
+      250
+    ],
+    "add custom pane or status line": [
+      250
+    ],
+    "are plugins sandboxed or isolated": [
+      250
+    ],
+    "plugin code running with my permissions": [
+      250
+    ],
+    "stop claude loading mods it wrote": [
+      250
+    ],
+    "prompt asking to turn on claude's mods": [
+      250
+    ],
+    "what happens if i decline claude's mods": [
+      250
+    ],
+    "restrict plugins to company approved only": [
+      250
+    ],
+    "disable all installed mods": [
+      250
+    ],
+    "mods disappeared in the middle of a session": [
+      250
+    ],
+    "can a mod bypass deny rules": [
+      250
+    ],
+    "why are my mods not loading": [
+      250
+    ],
+    "plugin refuses to work with code mode": [
+      250
+    ],
+    "hot reload plugins during a session": [
+      250
+    ],
+    "are third-party mods safe to install": [
+      250
+    ],
+    "stop claude editing files outside my project": [
+      251
+    ],
+    "restrict file writes to project folder": [
+      251
+    ],
+    "why can't claude edit its own settings file": [
+      251
+    ],
+    "worktree tools disappeared from session": [
+      251
+    ],
+    "can shell commands still write outside the project": [
+      251
+    ],
+    "bypass mode still asks before rm": [
+      251
+    ],
+    "skip delete confirmation in bypass mode": [
+      251
+    ],
+    "why does bypass mode still prompt on removal": [
+      251
+    ],
+    "managed settings disable dangerous skip option": [
+      251
+    ],
+    "nested claude session won't skip delete prompt": [
+      251
+    ],
+    "claude asks before sending my email address": [
+      251
+    ],
+    "headless skill stalls posting account email": [
+      251
+    ],
+    "turn off email privacy prompt": [
+      251
+    ],
+    "org settings applied without security dialog": [
+      251
+    ],
+    "why no security prompt for server-managed settings": [
+      251
+    ],
+    "rereading a file uses tokens again": [
+      252
+    ],
+    "file unchanged message no longer appears": [
+      252
+    ],
+    "why does a repeat file read return everything": [
+      252
+    ],
+    "write fails after partial file read": [
+      252
+    ],
+    "keyword that raises thinking effort for one turn": [
+      252
+    ],
+    "why didn't idle compaction run": [
+      252
+    ],
+    "idle compaction token threshold": [
+      252
+    ],
+    "auto mode default allow rules count": [
+      252
+    ],
+    "scheduled task rule stays after replacing allow list": [
+      252
+    ],
+    "model catalog on third-party cloud providers": [
+      252
+    ],
+    "why is my subagent effort setting ignored": [
+      252
+    ],
+    "make a failed hook block": [
+      252
+    ],
+    "when does opus fast mode end": [
+      252
+    ],
+    "is claude code compiled ahead of time": [
+      252
+    ],
+    "assign usage reports to a project": [
+      252
     ]
   },
   "keyword_boundary": {
-    "unreachable_max": 31
+    "unreachable_max": 32
   }
 }

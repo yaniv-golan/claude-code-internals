@@ -58,7 +58,7 @@ The notes: "Fixed Claude not finding your plugins and skills in scheduled tasks 
 
 - **The service:** a new local worker, `frame-local-worker` with an HTML-rewriter wasm, runs as "Claude Desktop Typed Artifact Service" (`index.chunk-CI-UZNsz.js`).
 - **Its tools:** `db_get`, `db_list`, `db_write`, `create_from_type`, `publish_files`, `list_types`, `describe_type`, `list_files` and `read_file` (`index.chunk-Dpp_oKu-.js`).
-- **Who gets them:** only interactive host-loop sessions, meaning sessions with no session type and no scheduled task (`index.chunk-DCfOtL-w.js`). A scheduled run and a Dispatch child (both typed sessions) don't get them, and neither does a VM-loop session (L243).
+- **Who gets them:** third-party deployments only, because the list needs `dl()` non-empty and `ZUa` returns false for first-party, and then only interactive host-loop sessions, meaning sessions with no session type and no scheduled task (`index.chunk-DCfOtL-w.js`); from 4.29.0 type `chat` qualifies too. A scheduled run and a Dispatch child (both typed sessions) don't get them, and neither does a VM-loop session (L243).
 - **Claude Design** is withheld from a session that has these tools.
 - **Connection to the admin keys:** they are the typed artifacts that the five reserved `artifacts*` admin keys (L242) prepare for. Those keys are now stamped as released in 3.1623.0.
 

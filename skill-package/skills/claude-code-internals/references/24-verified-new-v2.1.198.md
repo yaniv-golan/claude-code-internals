@@ -170,6 +170,8 @@ Building on L90's memory-write survey and `CLAUDE_COWORK_MEMORY_GUIDELINES`, the
 
 ## New API betas (v2.1.198) — 3 of 4 are GB-gated
 
+For the three betas added in 2.1.317 and 2.1.318, see L252.
+
 `[binary]` beta strings and their wiring:
 
 | Beta | Wiring | Sent by default? |

@@ -64,7 +64,7 @@ How the first two reach the agent (CODE-READ, 2.37337.1):
 | `egressProxyUrl`, `egressProxyPacUrl` | 1.44121.1 | 3p, 1p | Route egress through a fixed proxy or a PAC file instead of the OS proxy. The PAC file wins when both are set. Cowork's workspace follows it on macOS and Windows. Read only from device management or a local file, never from a bootstrap URL (per the notes) |
 | `skipWebFetchPreflight` | 1.37937.0 | 3p | Code sessions stop contacting api.anthropic.com to check a domain before a fetch (per the notes) |
 | `coworkVmIpv6Enabled` | 1.52386.0 | 3p | Gives the Cowork VM IPv6; `coworkEgressAllowedHosts` still decides which hosts are reachable (per the notes) |
-| `coworkEgressAllowedHosts` | older | 3p | From 2.42304.0 also the network of Chat's file-analysis shell, whose commands run without asking; with no list, or an empty one, that shell stays offline (per the notes; code in Ch66/L236) |
+| `coworkEgressAllowedHosts` | older | 3p | From 2.42304.0 also the network of Chat's file-analysis shell, whose commands run without asking; with no list, or an empty one, that shell stays offline (per the notes; code in Ch66/L236). From 4.16336.0 the Code tab reads it too (L247) |
 
 ## MCP tools and scheduled tasks
 
@@ -126,6 +126,8 @@ Desktop can merge Chat and Cowork into one home, the "unified view" (Anthropic c
 - To keep Cowork off, set the key: `simple`, `no-vm` or `off`.
 - Versions differ. The notes say 4.29.0 applied the switch only where Cowork was on and kept the current view where the two retention periods differed; 4.4212.0 dropped the first exception and 4.16336.0 the second. Earlier releases have no switch.
 - The notes say the switch happens at launch. That timing wasn't traced in the code.
+
+**`organizationPluginsUrl`** is past its deprecation date, so it's now ignored rather than an error (L247).
 
 **The old keys end on December 17, 2026.** The 4.16336.0 schema marks `coworkTabEnabled`, `chatTabEnabled` and `chatAdvancedFileAnalysisEnabled` deprecated in favor of `desktopHome`, with a warning from November 17 and support ending at 12:00 PM PT on December 17 (CODE-READ). The notes add that this release and later then ignore them, earlier releases go on reading them, and they've left the policy templates. A device profile holding only settings past their date then has no effect.
 

@@ -85,6 +85,8 @@ Mid-investigation a fixed-size sample of the tool array returned its first ten e
 
 **The tool named `preview_start` takes `{name}` and starts a dev server from `.claude/launch.json` on one surface, and takes `{url}` and opens a browser tab on another. Same name, different input schema, different semantics — selected by session kind at tool-list construction time. Reading either description and writing for the other produces a call that cannot succeed.**
 
+For dev-server changes in the Code tab at 4.16336.0, see L248.
+
 ## The branch
 
 ```js

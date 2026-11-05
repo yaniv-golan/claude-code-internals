@@ -75,6 +75,7 @@ refusal→fallback path specifically.
 
 ## Fast-mode and family-override env vars
 
+- **Opus 4.8 fast mode** ends on 2026-11-30 (`tengu_sunset_penguin_opus48`, L252).
 - **`CLAUDE_CODE_ENABLE_OPUS_4_7_FAST_MODE`** — opt-in fast mode for Opus
   4.7, complementing the earlier `CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE`.
 - **`ANTHROPIC_DEFAULT_FABLE_MODEL` quartet** (+ `_NAME`, `_DESCRIPTION`,

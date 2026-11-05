@@ -33,6 +33,7 @@ Updated: 2026-10-22 (L243) | Source: **Claude Desktop `app.asar` 3.1623.4** (the
 
 ## What a scheduled run gets instead (CODE-READ)
 
+- **`CLAUDE_CODE_DISABLE_FILE_MENTIONS=1`** beside it from 4.29.0, also only for type `scheduled`.
 - **`CLAUDE_CODE_HOST_SCHEDULED_RUN=1`** in the agent's environment, set only for type `scheduled` (`index.chunk-DbIevS2k.js` offset 378670; the object is in `index.chunk-BHK0ncEj.js`). The agent (2.1.308) reads it in four places. The one traced: a scheduled-trigger message may carry a `fireReason` from the host, and the agent honours it only in a process the host started with this variable. The other three (a skipped startup fallback, a flag function that returns false, a prompt section left out) weren't traced to their purpose.
 - **A turn limit:** `scheduledTaskMaxTurns`, else `maxTurns`, else 100.
 - **Unattended for credentials:** the spawn marks the session `unattended` when it has a scheduled task's id, and credential overrides are resolved for the context `scheduled-task` rather than `interactive`.
@@ -61,7 +62,7 @@ Updated: 2026-10-22 (L243) | Source: **Claude Desktop `app.asar` 3.1623.4** (the
 
 ## In Desktop 3.6556.1
 
-- **No typed-artifact tools.** The Typed Artifact Service's tools (`create_from_type`, `db_get` and the rest, L245) are offered only to host-loop sessions with no session type and no scheduled task (`index.chunk-DCfOtL-w.js`). A scheduled run never gets them.
+- **No typed-artifact tools.** The Typed Artifact Service's tools (`create_from_type`, `db_get` and the rest, L245) are offered only to host-loop sessions with no session type or, from 4.29.0, type `chat`, and no scheduled task (`index.chunk-DCfOtL-w.js`). A scheduled run never gets them.
 - **Person-only MCP tools are refused.** A tool whose server marks it as needing a person is refused at once in an unattended turn, so a scheduled run goes on without it. A scheduled run whose own turn is continuing is exempt.
 - **No `schedule` skill.** The in-code `schedule` skill is gone; the scheduled-task tools remain.
 

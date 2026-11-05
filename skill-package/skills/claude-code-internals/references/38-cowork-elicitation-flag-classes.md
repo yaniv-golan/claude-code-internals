@@ -219,7 +219,7 @@ function ys(e){ return rs(I.f(), !e.isChatSession && !e.hostLoopMode && c.Ht(`34
 
 ## The `$defaults` sentinel — extend, not replace
 
-Every one of the three arrays (`environment`, `soft_deny`, `allow`) is `[`$defaults`, …additions]`. The leading sentinel means these entries **extend** the agent's built-in auto-mode rule set rather than replacing it wholesale — a settings-merge convention this skill had no prior record of.
+Every one of the three arrays (`environment`, `soft_deny`, `allow`) is `[`$defaults`, …additions]`. The leading sentinel means these entries **extend** the agent's built-in auto-mode rule set rather than replacing it wholesale — a settings-merge convention this skill had no prior record of. `allow` is the exception once several sources set it: L248.
 
 ## Reachability — gate OFF, and doubly conditioned besides
 

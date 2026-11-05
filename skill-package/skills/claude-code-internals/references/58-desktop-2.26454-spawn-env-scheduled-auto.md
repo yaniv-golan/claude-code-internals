@@ -69,7 +69,7 @@ Served values that moved between the 2026-09-27 and 2026-10-07 caches:
 There are 49 new gate ids, most of them for SSH and Claude Code desktop sessions. The Cowork-relevant ones:
 
 - **`3626967935`** (served on): when the user trusts a remote folder, Desktop records that consent in settings, so the folder stays trusted. With the gate off, `browseAndAddTrustedFolder` returns Disabled.
-- **Not in the 2026-10-07 cache:** `975160870` (`hostGitConfinedInstall`), `3165386771` (git private index directory) and `480673358` (`CLAUDE_CODE_HOST_WORKTREE_FENCE`), plus the two kill switches above.
+- **Not in the 2026-10-07 cache:** `975160870` (`hostGitConfinedInstall`), `3165386771` (git private index directory) and `480673358` (`CLAUDE_CODE_HOST_WORKTREE_FENCE`), plus the two kill switches above. By 4.16336.0 `480673358` is gone from the code; the darwin-only kill `2222745432` remains.
 
 One id was removed, `2685067074`, a boot-window latch.
 

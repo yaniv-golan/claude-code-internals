@@ -3263,6 +3263,77 @@
     198
    ],
    "hint": "The cloud environment's own Stop hook (~/.claude/stop-hook-git-check.sh) refuses the end of every turn while the shell sits inside a repo with changes, untracked files or unpushed commits; the model does the committing. It is registered at session claim time, not in any settings file a repo controls. Keep scratch files out of the clone, stage by name, or run git with git -C from outside the clone, which never triggers it."
+  },
+  {
+   "pattern": [
+    "Code Mode",
+    "tools collapse to REPL and Poll",
+    "CLAUDE_CODE_EXPERIMENTAL_CODE_MODE",
+    "do hooks fire inside REPL scripts",
+    "MCP tools missing from the tool list"
+   ],
+   "lessons": [
+    249
+   ],
+   "hint": "Code Mode hides every tool behind REPL. PreToolUse, permission rules and canUseTool still run per inner call under the inner tool name, and a timed-out PreToolUse hook refuses the call there. It needs the env var, the tengu_rustling_blossom gate and one-time consent."
+  },
+  {
+   "pattern": [
+    "Turn on the mods Claude writes in this session",
+    "what is a mod",
+    "hooks/register.ts",
+    "mod runs in worker thread",
+    "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS does nothing"
+   ],
+   "lessons": [
+    250,
+    187
+   ],
+   "hint": "A mod is a plugin with a JavaScript hooks module, running in a Worker thread inside the Claude Code process with your own access. Installed mods are on by default; the old env var has no reader in 2.1.318."
+  },
+  {
+   "pattern": [
+    "blockWritesOutsideWorkingDirectories",
+    "Write refused outside working directory",
+    "EnterWorktree missing",
+    "CLAUDE_CODE_EVEN_MORE_DANGEROUSLY_SKIP_PERMISSIONS",
+    "bypass mode still asks about rm"
+   ],
+   "lessons": [
+    251
+   ],
+   "hint": "blockWritesOutsideWorkingDirectories refuses Write, Edit and NotebookEdit outside working directories in every mode and removes the worktree tools, but does not limit the shell. The rm waiver only works in bypass mode with no managed settings at all."
+  },
+  {
+   "pattern": [
+    "repeat Read returns the whole file again",
+    "file unchanged stub gone",
+    "Read no longer deduplicates",
+    "auto-mode defaults shows 16 allow rules",
+    "tengu_sunny_locket missing"
+   ],
+   "lessons": [
+    252,
+    8,
+    239,
+    241
+   ],
+   "hint": "From 2.1.317 a repeat Read returns the content. From 2.1.316 auto-mode defaults prints 16 allow rules, with Scheduled-Task Fires outside the replaceable slot. From 2.1.314 idle compaction uses constants, not a server flag."
+  },
+  {
+   "pattern": [
+    "ion-dist.asar",
+    "Desktop UI strings not in app.asar",
+    "managed allow without $defaults",
+    "connector tool names changed from uuid",
+    "mcpb-cache writes not persisting between sessions"
+   ],
+   "lessons": [
+    246,
+    247,
+    248
+   ],
+   "hint": "Desktop 4.16336.0 keeps the UI bundle in Resources/ion-dist.asar. A managed allow without $defaults removes the 16 replaceable built-in exceptions. Gate 52253313 can rename connector tools, and .mcpb-cache is a per-session overlay from 4.29.0."
   }
  ]
 }

@@ -31,10 +31,14 @@ For each request stream the program keeps the cache's state: tokens written and 
 
 ## Idle compaction: acting before expiry (CODE-READ)
 
-**In the terminal** (changelog 2.1.299), an idle conversation is compacted shortly before its 1-hour cache expires, so your next message doesn't reprocess all of it. The server flag `tengu_sunny_locket` sets:
-- `mode`: `off`, `log`, `compact` or `compact_on_return` (`compact` on this machine on 2026-10-17);
-- `minTokens`: default 200,000, at least 100,000; `CLAUDE_CODE_IDLE_COMPACT_MIN_TOKENS` overrides it;
-- `fireAtFraction`: default 0.9 of the lifetime, so about 54 minutes into an hour, kept between 0.5 and 0.95.
+**In the terminal** (changelog 2.1.299), an idle conversation is compacted shortly before its 1-hour cache expires, so your next message doesn't reprocess all of it. From 2.1.314 its values are constants; the server flag `tengu_sunny_locket` and the `compact_on_return` mode are gone:
+- minimum 200,000 tokens, floor 100,000; `CLAUDE_CODE_IDLE_COMPACT_MIN_TOKENS` overrides it;
+- it fires at 0.9 of the lifetime, so about 54 minutes into an hour;
+- a cache that lapsed more than 60 seconds ago doesn't count.
+
+It records why it didn't run: `compaction_off`, `idle_compaction_off`, `precompute_compaction_off`, `swap_unsupported`, `prefix_changed`, `not_one_hour`, `lapsed`, `small`, `newer_request` or `near_limit`. `"idleCompaction": false` still turns it off, and `precomputeCompactionEnabled` is a further condition.
+
+The 2.1.318 changelog says it now reaches VS Code, the Code tab, subscribers with telemetry off, and Bedrock, Vertex, Foundry and gateways with a 1-hour cache. That reach comes from the notes and wasn't traced.
 
 It runs only when:
 - compaction is on and `"idleCompaction"` isn't `false` in settings (`/config` has an "Idle compaction" row from 2.1.302);
@@ -43,7 +47,7 @@ It runs only when:
 - no newer request has been sent;
 - usage isn't near its limit.
 
-Afterwards a notice says "Compacted while idle, before the prompt cache expired", or with `compact_on_return`, "Compacted after an hour idle, using a summary written while you were away".
+Afterwards a notice says "Compacted while idle, before the prompt cache expired", or "Compacted using a summary written while you were away".
 
 **In cloud sessions** a separate sleep compactor does the same at 90% of the cache's life. It needs `CLAUDE_CODE_SLEEP_COMPACT` and a cloud (`CLAUDE_CODE_REMOTE`) session, and a minimum of 150,000 tokens by default (`CLAUDE_CODE_IDLE_COMPACT_MIN_TOKENS` again). It also won't fire while a permission prompt is open.
 

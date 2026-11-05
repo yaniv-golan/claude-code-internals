@@ -57,7 +57,7 @@ sessionType === "ccd" && !requireFullVmSandbox() && isIosSimulatorEnabled()
 > cannot see either tool-group no matter how the gate resolves. The gate answers only "is the iOS
 > tool-group live for a `ccd` session," not "can Cowork reach it."
 
-A new Seatbelt sandbox wraps the iOS control sidecar: profile `claude-ios-sim.sb`, env `CLAUDE_SIM_SANDBOX` (default **on** in packaged builds; `=0` is honored only in unpackaged dev builds).
+A new Seatbelt sandbox wraps the iOS control sidecar: profile `claude-ios-sim.sb` (by 4.16336.0 no `.sb` file ships and the profile is passed inline to `sandbox-exec -p`), env `CLAUDE_SIM_SANDBOX` (default **on** in packaged builds; `=0` is honored only in unpackaged dev builds).
 
 ## New managed setting
 

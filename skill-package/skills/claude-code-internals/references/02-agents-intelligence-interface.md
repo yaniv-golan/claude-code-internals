@@ -37,6 +37,7 @@ A skill is a named, reusable prompt workflow that Claude Code can discover and e
 3. Full arg string: `$ARGUMENTS` (exact and case-sensitive; with no argument it becomes the empty string)
 4. If no placeholder found and args exist: append as `ARGUMENTS: ...`
 - A lowercase or undeclared `$token` (e.g. `$argument`) matches none of these and survives as literal text; only names declared in `arguments` frontmatter substitute (agent 2.1.284)
+- **Dollar amounts in skill prose are a trap.** `$1.72M` becomes the second argument plus `.72M`, because `$1` matches an index. `$1M` stays literal, and `$@` and `$*` are untouched. `\$` escapes only when this pass runs, and it doesn't run on every path (a forked skill with no arguments may skip it), so reword prose amounts rather than escape them.
 5. Shell injection: `` !`command` `` or ` ```! ` blocks (local skills only)
 6. Special vars: `${CLAUDE_SKILL_DIR}`, `${CLAUDE_SESSION_ID}`
 

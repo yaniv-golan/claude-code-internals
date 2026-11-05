@@ -345,6 +345,8 @@ var M=()=>!1;
 var LWt=()=>a.CLAUDE_CODE_ENABLE_FUNCTION_HOOKS??I(cyt,M());
 ```
 
+This is the reading at this lesson's version. In 2.1.318 the default is **true**, `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS` has no reader, and the feature is called mods (L250).
+
 Default false; the env var wins outright over the flag. A provenance string set explains *why* the current value holds — `from a local override` / `from GrowthBook (this session's payload)` / `from GrowthBook (the disk cache of an earlier session)` / `from the default (GrowthBook is off for this session: a third-party provider, or telemetry opted out)` / `from the default (a cold GrowthBook cache, no payload yet)` — which is worth knowing exists, because it turns "the flag is off" into an answerable question. The Cowork spawn does not set the var.
 
 ## What is not established

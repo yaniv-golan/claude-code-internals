@@ -48,6 +48,18 @@ test('extract: stamp, undocumented, hidden and legacy names', () => {
   assert.deepStrictEqual(n.legacy, []);
 });
 
+test('extract: an entry stops at its own closing brace, and the word deprecated is not the field', () => {
+  const k = P.extract('a:U(x,{flatKey:"plainKey",title:"a } in a title",support:{enabled:{scopes:["3p"],availableInVersion:"1.0.0"}}}),' +
+    'function f(){return{show:()=>!1,visibility:"public-undocumented",deprecations:[Z]}},' +
+    'b:U(x,{flatKey:"disableConfigDeprecationWarnings",title:"Disable deprecation warnings",support:{enabled:{scopes:["3p"],availableInVersion:"1.0.0"}}}),' +
+    'c:U(x,{flatKey:"goneKey",deprecations:[Z,{noUserWarning:!0}],support:{enabled:{scopes:["3p"],availableInVersion:"1.0.0"}}}),' +
+    'd:U(x,{flatKey:"callKey",deprecations:oZ(rZ),support:{enabled:{scopes:["3p"],availableInVersion:"1.0.0"}}})').keys;
+  assert.strictEqual(P.marks(k.plainKey), '1.0.0');
+  assert.strictEqual(P.marks(k.disableConfigDeprecationWarnings), '1.0.0');
+  assert.strictEqual(P.marks(k.goneKey), '1.0.0, deprecated');
+  assert.strictEqual(P.marks(k.callKey), '1.0.0, deprecated');
+});
+
 test('diff: added key, restamped key, dropped legacy name', () => {
   const lines = P.diff(P.extract(OLD), P.extract(NEW));
   assert.ok(lines.includes('+ coworkFileReadCheck (@next, undocumented, hidden)'));

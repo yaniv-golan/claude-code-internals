@@ -684,12 +684,16 @@ failure). The hook **input contract** (shared `Ad()` builder): base `session_id`
 ## Five Hook Command Types
 
 ### 1. `command` (Shell subprocess)
-Options: `if`, `timeout`, `once`, `async`, `asyncRewake`, `statusMessage`, `shell`
+Options: `if`, `timeout`, `once`, `async`, `asyncRewake`, `statusMessage`, `shell`, `onFailure`
+
+`onFailure` (command and HTTP hooks from 2.1.295, SDK callbacks from 2.1.317): `continue` by default. `block` treats a hook that couldn't start, timed out, exited with another code or returned invalid JSON as exit 2. It's ignored for async hooks and on `Stop`, `SubagentStop`, `TaskCompleted` and `TeammateIdle`.
 
 ### 2. `prompt` (LLM prompt)
 Uses `$ARGUMENTS` placeholder. Model responds `{"ok": true}` or `{"ok": false, "reason": "..."}`.
 Options: `if`, `timeout` (30s), `model`, `once`, `statusMessage`
 Uses `queryModelWithoutStreaming` -- does NOT trigger UserPromptSubmit hooks.
+
+**Cap (2.1.312):** prompt and agent hooks stop at 24 model hooks, or 12 overdue ones (`AIn=24`, `$0r=12`). That the cap is per session and leaves command hooks alone is inferred.
 
 ### 3. `agent` (Agentic verifier)
 Up to 50 turns with tool access. Calls `StructuredOutput` tool. Disallows AgentTool/plan mode.
@@ -705,7 +709,7 @@ addFunctionHook(setAppState, sessionId, 'Stop', '',
 
 ### 4. `http` (HTTP POST)
 Supports env var interpolation in headers. SSRF guard blocks private IPs; loopback allowed.
-Options: `if`, `timeout` (10 min), `headers`, `allowedEnvVars`, `once`, `statusMessage`
+Options: `if`, `timeout` (10 min), `headers`, `allowedEnvVars`, `once`, `statusMessage`, `onFailure`
 
 ### 5. `function` (TypeScript callback)
 In-process via `addFunctionHook()`. Session-scoped only.

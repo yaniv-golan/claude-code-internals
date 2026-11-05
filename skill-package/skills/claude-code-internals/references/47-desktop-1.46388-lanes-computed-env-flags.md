@@ -281,6 +281,8 @@ var ce={override:"from a local override",
         fallback:"from the default (a cold GrowthBook cache, no payload yet)"};
 ```
 
+This is the reading at this lesson's version. In 2.1.318 the default is **true**, `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS` has no reader, and the feature is called mods (L250).
+
 Default **false**; env wins outright over the flag. The feature is plugin hooks written as **functions in a registered module** rather than shell commands — the binary carries `hooks/register.ts`, `builtin-hooks-module:` and `builtin-hooks-module`, plus a reference linter whose diagnostics enumerate how a hook function may *not* be referenced: "bound to a name", "assigned", "returned", "put in an object", "put in an array", "optionally chained", "put in a template". It also appears in the settings-disable allowlist alongside `CLAUDE_CODE_ENABLE_TASKS` and `CLAUDE_CODE_FORK_SUBAGENT`. This is a real second hook-authoring surface, off by default, and the only new 2.1.260 flag besides `SKILL_ATTRIBUTION` with more than export-table presence in the asar.
 
 ## `CLAUDE_CODE_COZY_TEAPOT` — not a boolean
@@ -340,6 +342,8 @@ function fs({skipEssentialTrafficGate:P=!1}={}){
   if(!Ot("allow_model_catalog"))return"policy";
   return null}
 ```
+
+This ladder is the agent's reading at this lesson's version. From 2.1.311 (`c6t` is its first stage) `not_first_party` no longer ends the check: a second stage returns `cloud_gateway` for gateways and `release_off` unless the provider is `bedrock`, `vertex`, `foundry` or `mantle`, and `not_claude_ai_auth` and `api_key_helper` pass subject to `allow_model_catalog`.
 
 `CLAUDE_CODE_MODEL_CATALOG_URL` overrides the source, validated hard: a non-URL is refused (`invalid_url`, "configured catalog URL is not a URL; published path off"), so is an unsupported scheme, and so is a **loopback or metadata host** ("names a loopback or metadata host; published path off") — an SSRF guard on a value the user controls. A `file:` scheme has its own branch. Managed source settings are honoured only from an admin policy origin: "ignoring managed model-catalog source settings from a non-admin policy origin". The whole subsystem sits behind `tengu_delegated_quail`, default `{mode:"off"}`.
 

@@ -292,6 +292,8 @@ In-process, **zero per-sub-agent env** (Lesson 122) — identity is context fiel
 > was already stale when published against 2.1.205. Read `resolvedModel` off `toolUseResult` rather
 > than assuming a `model` parameter took. See L186.
 
+**Sub-agent effort (2.1.316, 2.1.317):** `CLAUDE_CODE_SUBAGENT_EFFORT` applies only if the agent isn't a fork, has no frontmatter `effort`, isn't an excluded built-in and inherited no effort; `inherit` is accepted. Otherwise the agent's model's saved or default effort applies.
+
 **Model resolution chain** (`Fae`/`JYu`, host bundle ~10166687–10167214), verbatim precedence: `CLAUDE_CODE_SUBAGENT_MODEL` env (unless `"inherit"`) → Agent-tool `model` param → frontmatter `model:` → inherit main-loop model (default). Built-in **Explore** inherits, except on first-party when the main model is outside the haiku/sonnet/opus families → pinned `"opus"` (`w4e`/`m7c`); teammates use their own resolver (`teammateDefaultModel` setting, default opus48).
 
 **Unrecognized `CLAUDE_CODE_SUBAGENT_MODEL` warns and inherits — it does not fall through to the tool param or frontmatter.** In `Fae`: `if(a&&a!=="inherit"){let p=oi(a);if(!yl(p))return s(a);return p}`, where `s` calls `DJg`: *"Subagent model \"${e}\" is not in the availableModels allowlist; inheriting the parent model instead"* (level warn), returning the inherit resolution `i()`. It is precisely an **availableModels-allowlist** check (`yl`); a failing env value short-circuits straight to inherit. Telemetry: `subagent_model_resolve`/`override_dropped`.

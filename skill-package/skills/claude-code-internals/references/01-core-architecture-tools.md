@@ -1761,7 +1761,7 @@ BASH_SILENT_COMMANDS = ['mv', 'cp', 'rm', 'mkdir', ...]
 | Handles PDFs natively | If supported | No | No |
 | Handles Jupyter notebooks | Yes | No | No -- use NotebookEdit |
 | Quote normalization | -- | -- | Yes |
-| Dedup (skip re-sending unchanged file) | Yes | -- | -- |
+| Dedup (skip re-sending unchanged file) | Through 2.1.316 | -- | -- |
 | Token limit enforced | 25,000 tok default | -- | -- |
 | LSP notifications on save | No | Yes | Yes |
 | Max file size (Edit) | -- | -- | 1 GiB |
@@ -1788,6 +1788,8 @@ Detected types: PNG, JPG, JPEG, GIF, WebP. Optionally resized via `sharp` or nat
 `.ipynb` files: Every cell passed through `mapNotebookCellsToToolResult()`.
 
 ### Dedup: Avoiding Re-Sent Unchanged Files
+
+**Through 2.1.316 only.** From 2.1.317 a repeat `Read` returns the content: `file_unchanged` and `tengu_read_dedup_killswitch` are gone from the binary, and `tengu_file_read_reread` stays as telemetry. The rest of this section describes the older behaviour.
 
 ```javascript
 readFileState.set(fullFilePath, {
@@ -1820,10 +1822,11 @@ Full-content replacement. Creates new file or overwrites existing entirely.
 
 ### The Read-Before-Write Gate
 
-Three failure modes:
+Four failure modes:
 1. **No read in session** -- `errorCode: 2`
 2. **Read was partial** -- `errorCode: 2`, partial reads flagged `isPartialView: true`
 3. **File modified after read** -- `errorCode: 3`
+4. **Claude was given only the start of the file** (changelog 2.1.312): Write refuses a file it saw only part of, however that part reached it.
 
 **Windows special case:** On Windows, mtime can change without content changes. For full reads, Write falls back to content comparison.
 

@@ -28,7 +28,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PRE = '.vite/build/index.pre.js';
-/** How far past a flatKey an entry's options can reach before the next entry. */
+/** The most an entry's options can run to; only reached when entryEnd can't balance the entry. */
 const SPAN = 6000;
 
 /** The bytes of one file inside an asar archive. */
@@ -59,13 +59,32 @@ function loadPre(p) {
   return st.isDirectory() ? fs.readFileSync(path.join(p, PRE), 'utf8') : readAsarFile(p, PRE);
 }
 
+/**
+ * Where the object holding the flatKey at `from` closes. A fixed window ran on into the next
+ * entry's code and marked keys hidden or deprecated that were neither.
+ */
+function entryEnd(src, from, limit) {
+  let depth = 0;
+  for (let i = from; i < limit; i++) {
+    const c = src[i];
+    if (c === '"' || c === "'" || c === '`') {
+      for (i++; i < limit && src[i] !== c; i++) if (src[i] === '\\') i++;
+    } else if (c === '{' || c === '[' || c === '(') {
+      depth++;
+    } else if (c === '}' || c === ']' || c === ')') {
+      if (--depth < 0) return i;
+    }
+  }
+  return limit;
+}
+
 /** Schema entries by flatKey: {avail, scopes, undocumented, hidden, deprecated, legacy}. */
 function extract(src) {
   const out = {};
   const starts = [...src.matchAll(/flatKey:"([^"]+)"/g)];
   starts.forEach((m, i) => {
     const end = Math.min(i + 1 < starts.length ? starts[i + 1].index : src.length, m.index + SPAN);
-    const seg = src.slice(m.index, end);
+    const seg = src.slice(m.index, entryEnd(src, m.index, end));
     const avail = (seg.match(/availableInVersion:"([^"]+)"/) || [])[1] || null;
     const rec = {
       avail,
@@ -73,7 +92,7 @@ function extract(src) {
       readers: (seg.match(/readers:\[([^\]]*)\]/) || [])[1] || '"desktop"',
       undocumented: seg.includes('public-undocumented'),
       hidden: /show:\(\)=>!1/.test(seg),
-      deprecated: /deprecat/i.test(seg),
+      deprecated: /\bdeprecations:/.test(seg), // the field: the word alone is in key names and titles
     };
     if (!out[m[1]]) out[m[1]] = rec; // the first entry wins; later ones are references
   });

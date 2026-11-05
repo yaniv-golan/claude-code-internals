@@ -197,7 +197,7 @@ First-party count over **every** persisted Cowork session record on the capturin
 | `.claude/projects` | `ro` | — |
 | `.claude/skills`, `uploads`, plugin mounts, `.projects/<uuid>` | `ro` | `ro` |
 | auto-memory dir | **`ro`** | **`rwd`** |
-| `<pluginMount>/.mcpb-cache` (only if it exists) | — | **`rw`** |
+| `<pluginMount>/.mcpb-cache` (from 4.29.0 a per-session overlay, `optional`) | — | **`rw`** |
 | `.artifacts/<id>`, `.scheduled/<id>` | — | `ro` |
 
 Everything outside the first row is a hardcoded literal — no approval state reaches it.
@@ -352,7 +352,7 @@ So a **project attachment is not writable at all** — it is not "writable but d
 
 **Two mount classes are missing from the 29 because only the VM-loop builder emits them:** `.artifacts/<id>` and `.scheduled/<id>`, both `ro`. A host-loop `/proc/mounts` capture can never show them.
 
-**One `rw` sub-mount exists inside a `ro` parent:** `<pluginMount>/.mcpb-cache`, created only when that directory is present on the host — so "plugin mounts are read-only" is true only of the plugin root.
+**One `rw` sub-mount exists inside a `ro` parent:** `<pluginMount>/.mcpb-cache`, so "plugin mounts are read-only" is true only of the plugin root. From 4.29.0 it's a per-session overlay backed by `<sessionStorageDir>/.vm-mcpb/<sha256(mountName) first 8>`, marked `optional`, so the guest no longer writes the host plugin's copy. Before 4.29.0 it was the host's own `.mcpb-cache`, shared across sessions, mounted only when present. If the folder can't be made, Desktop warns `mcpb_cache_session_dir_failed` and the plugin has no writable cache. Whether a real session mounted it wasn't observed.
 
 ---
 
@@ -367,7 +367,7 @@ Two decodes on one machine, ~9 h apart:
 | | earlier | later |
 |---|---|---|
 | feature count | 241 | 241 |
-| `4074604942` | absent | present, `on:false`, `source:force` |
+| `4074604942` | absent | present, `on:false`, `source:force` (`on:true` by 4.16336.0, L246) |
 | `2403605075` | present, `on:true` | **absent** |
 
 One in, one out. **Equal feature counts do not imply the same payload** — a trap that caught both this project and the emulator project independently.

@@ -4996,6 +4996,155 @@
     "relevance": 0.4,
     "reason": "L233: toolPolicyEndpoint, removed in this build"
    }
+  ],
+  "246": [
+   {
+    "id": 245,
+    "relevance": 0.8,
+    "reason": "L245: the previous build's changes, including typed artifact tools"
+   },
+   {
+    "id": 199,
+    "relevance": 0.6,
+    "reason": "L199: uuid connector tool names, which gate 52253313 can replace"
+   },
+   {
+    "id": 139,
+    "relevance": 0.5,
+    "reason": "L139: plugin mounts and the per-session .mcpb-cache overlay"
+   },
+   {
+    "id": 243,
+    "relevance": 0.5,
+    "reason": "L243: the scheduled spawn environment"
+   }
+  ],
+  "247": [
+   {
+    "id": 237,
+    "relevance": 0.8,
+    "reason": "L237: the admin keys this lesson extends"
+   },
+   {
+    "id": 236,
+    "relevance": 0.6,
+    "reason": "L236: the network allowlist key's earlier reach"
+   },
+   {
+    "id": 246,
+    "relevance": 0.5,
+    "reason": "L246: the same build"
+   }
+  ],
+  "248": [
+   {
+    "id": 239,
+    "relevance": 0.8,
+    "reason": "L239: auto-mode lists and $defaults for one source"
+   },
+   {
+    "id": 150,
+    "relevance": 0.6,
+    "reason": "L150: Cowork's own auto-mode additions"
+   },
+   {
+    "id": 169,
+    "relevance": 0.6,
+    "reason": "L169: preview_start and dev servers"
+   },
+   {
+    "id": 32,
+    "relevance": 0.5,
+    "reason": "L32: hook types and onFailure"
+   }
+  ],
+  "249": [
+   {
+    "id": 75,
+    "relevance": 0.8,
+    "reason": "L75: the older REPL mode"
+   },
+   {
+    "id": 239,
+    "relevance": 0.7,
+    "reason": "L239: the auto-mode classifier that reads a script once"
+   },
+   {
+    "id": 32,
+    "relevance": 0.6,
+    "reason": "L32: hooks, which still run per inner call"
+   },
+   {
+    "id": 250,
+    "relevance": 0.6,
+    "reason": "L250: mods that refuse Code Mode"
+   }
+  ],
+  "250": [
+   {
+    "id": 187,
+    "relevance": 0.9,
+    "reason": "L187: the function-hooks machinery mods are built on"
+   },
+   {
+    "id": 249,
+    "relevance": 0.6,
+    "reason": "L249: Code Mode refused by tool-checking mods"
+   },
+   {
+    "id": 237,
+    "relevance": 0.4,
+    "reason": "L237: managed policy keys"
+   }
+  ],
+  "251": [
+   {
+    "id": 237,
+    "relevance": 0.7,
+    "reason": "L237: blockReadsOutsideWorkingDirectories, the read twin"
+   },
+   {
+    "id": 26,
+    "relevance": 0.6,
+    "reason": "L26: server-managed settings"
+   },
+   {
+    "id": 239,
+    "relevance": 0.5,
+    "reason": "L239: auto mode and bypass boundaries"
+   }
+  ],
+  "252": [
+   {
+    "id": 8,
+    "relevance": 0.7,
+    "reason": "L8: Read and Write behaviour changed here"
+   },
+   {
+    "id": 239,
+    "relevance": 0.7,
+    "reason": "L239: the 16-rule allow list"
+   },
+   {
+    "id": 241,
+    "relevance": 0.7,
+    "reason": "L241: idle compaction constants"
+   },
+   {
+    "id": 51,
+    "relevance": 0.6,
+    "reason": "L51: ultrathink and effort"
+   },
+   {
+    "id": 183,
+    "relevance": 0.6,
+    "reason": "L183: the model catalog"
+   },
+   {
+    "id": 113,
+    "relevance": 0.5,
+    "reason": "L113: earlier API betas"
+   }
   ]
  }
 }

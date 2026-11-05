@@ -82,3 +82,5 @@ convention and are spread across those legacy files, whose rows read `1–8`.
 | `70-desktop-scheduled-vs-interactive-sessions.md` | 73 | 243 | What a Scheduled Cowork Task Gets That an Interactive One Doesn't, and the Reverse (id 243) |
 | `71-desktop-skills-plugin-anthropic-skills.md` | 74 | 244 | How Desktop's `anthropic-skills` Plugin Is Built, Handed to the Agent and Shown to the Model (id 244) |
 | `72-desktop-3.6556-changes.md` | 75 | 245 | What Desktop 3.6556.1 Changed, Announced and Not (id 245) |
+| `73-desktop-4.16336-changes.md` | 76 | 246–248 | What Desktop 4.16336.0 Changed, Announced and Not (id 246); The Admin Keys and Connector Options Added in Desktop 4.x (id 247); The Code Tab in Desktop 4.x: SSH Environment, Hooks, Auto Mode and Dev Servers (id 248) |
+| `74-cli-2.1.318-code-mode-mods-boundaries.md` | 77 | 249–252 | Code Mode: One Tool That Runs JavaScript, with Hooks Still Applied per Call (id 249); Mods: JavaScript Plugins That Run Inside the Claude Code Process (id 250); New Boundaries: Blocking Writes, the rm Waiver and the Privacy Check (id 251); What Else CLI 2.1.311 to 2.1.318 Changed (id 252) |

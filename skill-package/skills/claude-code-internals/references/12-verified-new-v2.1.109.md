@@ -199,6 +199,8 @@ Feature flag: `tengu_slate_harbor` (default: **false**).
 
 ## Enablement Logic
 
+This describes 2.1.109. In 2.1.318 `CLAUDE_CODE_REPL` has no reader, and the `REPL` tool is reached through Code Mode (L249).
+
 `Wj()` enablement check:
 
 1. Requires `K6H()` — this is `isRunningWithBun`, which always returns `true` in the Bun SEA

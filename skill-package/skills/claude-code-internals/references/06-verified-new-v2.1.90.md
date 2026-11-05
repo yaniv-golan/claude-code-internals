@@ -77,6 +77,8 @@ The `max` level corresponds to "ultrathink" (`ultrathink_effort` message type); 
 a system message: `"The user has requested reasoning effort level: high. Apply this to the
 current turn."` (type: `ultrathink_effort`, level: `"high"`).
 
+From 2.1.311 the word itself (`\bultrathink\b`, any case) calls `setTurnEffort("xhigh")` and adds an effort layer for that turn. `CLAUDE_CODE_DISABLE_ULTRATHINK` turns it off, and gate `tengu_turtle_carbon` defaults on.
+
 ## Effort in the Query Pipeline
 
 `effortValue` flows through the query pipeline as a distinct parameter alongside `thinkingType`

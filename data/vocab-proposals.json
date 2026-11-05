@@ -164,9 +164,13 @@
     },
     "8": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "8e2b8cdf3d2c2b78f0f5c50d2cb6a0f535840ba5ed68f556a9594597ac229f63",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "fde91c276de7d3446df1e24e4786f18cfc507c36255d9057def1eae707155d69",
+      "prior_terms_sha256": "7bb99565fc853baac7311542d78b669f3ac6ed84118325473820cd622c68df84",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "file has not been read yet error",
         "why must Claude read a file before editing it",
@@ -182,7 +186,10 @@
         "why does Claude say file unchanged since last read",
         "write converts line endings to LF",
         "trailing whitespace removed after edit",
-        "editing Jupyter notebooks"
+        "editing Jupyter notebooks",
+        "repeat read returns full file content",
+        "refuses to overwrite file it only partly saw",
+        "Claude only saw the start of the file"
       ]
     },
     "9": {
@@ -233,9 +240,13 @@
     },
     "11": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-10-01",
-      "input_sha256": "d87a0c9add1b07f8f94aefd2eafb4a3d8332882cc2284d1d43edc739ace9577b",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "483f429b5bbf1253739c541c9c8cf3ff041e945ac1bcbcad90f4f229963332e5",
+      "prior_terms_sha256": "7cfadcd6ee0e8025336900bc9d51f0b651f68bbd19b219b24515d2ee4ed0607a",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "how to create a custom skill",
         "skill not showing up in list",
@@ -251,7 +262,10 @@
         "skill changes not picked up after editing",
         "which skill wins with duplicate names?",
         "skill shell commands not running from MCP server",
-        "skill override setting has no effect"
+        "skill override setting has no effect",
+        "dollar amounts garbled in skill text",
+        "how to escape dollar sign in skill",
+        "why did my skill change a price?"
       ]
     },
     "12": {
@@ -738,9 +752,13 @@
     },
     "32": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-30",
-      "input_sha256": "344dacad0ee95d05251f814092fb93334509e17b4444483abfce0c627bd78d0d",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "22965cf3ca51a9761eb47b09538a3ae829b8d56c6e79828cd9a729e3d2d288ff",
+      "prior_terms_sha256": "268d225782b99cfbc013c86423959f735e4df32a7eb8a71927858dc2614f1353",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "run a script before every tool call",
         "block a command from running automatically",
@@ -756,7 +774,10 @@
         "load direnv when changing directory",
         "custom instructions before compaction",
         "filter hook to only git commands",
-        "can a hook deny a pre-approved tool?"
+        "can a hook deny a pre-approved tool?",
+        "block the tool if a hook crashes",
+        "fail closed when hook times out",
+        "why did my prompt hooks stop running"
       ]
     },
     "33": {
@@ -1175,9 +1196,13 @@
     },
     "51": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "60ba3c78a839d75a8f6598aa9e5acf17fcf583c03a287d196607a9f37ba58d8c",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "8284a62f295178ee16643da1d05da17922caae3457d893dab01d0b9746d533a4",
+      "prior_terms_sha256": "72dddc51c0c17cf74ce335e7b373daf2b9f123039b0ea6dfaed3be8fa4105c2e",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "make Claude think harder before answering",
         "reduce thinking time for quick edits",
@@ -1193,7 +1218,10 @@
         "how do I make Claude respond faster with less deliberation?",
         "override effort level with environment setting",
         "which models support low medium high effort",
-        "reset effort to model default"
+        "reset effort to model default",
+        "typing ultrathink in my prompt",
+        "disable the ultrathink keyword",
+        "boost effort for just one turn"
       ]
     },
     "52": {
@@ -1727,9 +1755,13 @@
     },
     "75": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "70b76ab8f17d068d0f5cc4253b9d65a96177d38189aead39d9ca17eb32343fc6",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "6987587937add7e8c5ab69f38530e40fd4b42ef27e4c6399297bf7ca46e2bca0",
+      "prior_terms_sha256": "fd32e9aa85b718be2a79baf54075afa0c1df912891ea7cc8d25a5399fb287030",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "let Claude run JavaScript code directly",
         "code execution sandbox inside Claude Code",
@@ -1745,7 +1777,9 @@
         "how to turn on the hidden scripting mode",
         "explanatory or learning output style variant",
         "prompt suggestions only appear in some mode",
-        "tool calls not shown in transcript"
+        "tool calls not shown in transcript",
+        "why does the REPL environment variable no longer work",
+        "reach REPL through code mode"
       ]
     },
     "76": {
@@ -2652,9 +2686,13 @@
     },
     "113": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "4d109d57749db562b131b6c7e0e97c923406e7da75969ce1a5738b49372d69a0",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "7c84b347391ab2c4174cd951672d3d5a236caa75db902796765a4f9098939f5f",
+      "prior_terms_sha256": "f421b46b097a4f19d2d9bb3e5d2094b7de620f8ea474a5714ecec8b841d69d99",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "memory keeps resyncing in the background",
         "stop memory from periodically refreshing",
@@ -2949,11 +2987,11 @@
     "124": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-02",
-      "input_sha256": "1f439cc825b023661eb405db8d120ed28eea6c3ace8491d8c25e52ee72043909",
-      "prior_terms_sha256": "7b3ee61f8bc23d6ce4ea74a567d3a8c0890528472eabbbffa533437e5892df69",
-      "collision_check": "questions-v2.json dev",
-      "previous_text": "80cd9d13d62d1dbbeb054ee0cecc15f05dbcf971",
+      "date": "2026-11-05",
+      "input_sha256": "116af5b4c559d1577c48d80c160db54e30a4c98763bdc74621595df6dbab1126",
+      "prior_terms_sha256": "2c2d0b74ea03915ce4b5fc5fc2553b57c220419179bbc300e22528ab5aa7be89",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
       "replaced": [],
       "terms": [
         "which model does a subagent use",
@@ -2972,14 +3010,19 @@
         "why no permission denied event for path block",
         "feature flag cache grep shows nothing",
         "feature flag missing from cache uses default",
-        "new feature cache file format version"
+        "new feature cache file format version",
+        "which effort level does a subagent use"
       ]
     },
     "125": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-30",
-      "input_sha256": "629aefa957cea9b0e5e9a4e189ba3643af91599ba3374db9e9a772e7b5490466",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "ce28ad87557c2a0856220415727b6e36f9b08c474e91aa1b9b7635d782f221d6",
+      "prior_terms_sha256": "22cc718fc0fddab504e48d7858a9611b77ab12e3c6b334c76fddb07d47f8c95e",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "iOS simulator tools missing in Cowork",
         "can Cowork drive the Android emulator?",
@@ -2995,7 +3038,8 @@
         "install and launch built iOS app in simulator",
         "simulator tools only in coding sessions",
         "admin kill switch for device simulator",
-        "sandbox around iOS simulator control"
+        "sandbox around iOS simulator control",
+        "iOS simulator sandbox profile file missing"
       ]
     },
     "126": {
@@ -3350,11 +3394,11 @@
     "139": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-03",
-      "input_sha256": "71dc86f0370909e0c484f676e31a49b643c9094edd9687df6b5057256377353b",
+      "date": "2026-11-05",
+      "input_sha256": "0faf4bf41dc6f3311e3729f2d19a18f0c33f7165312b0fba7876ebb860854c49",
       "prior_terms_sha256": "6e3854c938e85e2a17fd59b7677e0366a07e0f4f10032c61646f47a77fd8f044",
-      "collision_check": "questions-v2.json dev",
-      "previous_text": "a258522f17067f62344e662a9c3b44d7a0342fd0",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
       "replaced": [],
       "terms": [
         "cowork cannot delete files",
@@ -3379,9 +3423,13 @@
     },
     "140": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-30",
-      "input_sha256": "ea4ebd01d5a3defab201c45fd1ea66a2b20427bb72a97dfe3534f478c6fca4bc",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "bdaadb4f2b1cec0462d0c6a947063b1d12cf1d7fa6844a9d2124be52198fabca",
+      "prior_terms_sha256": "a4d307747307c68a79235f98dbcb528972a92f0593ac7552affdbaa4309dd5af",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "multiple cowork sessions share same VM",
         "can one session read another session's files",
@@ -3397,14 +3445,21 @@
         "local plugin path has no version number",
         "agent reported wrong mount path",
         "how are cowork sessions isolated from each other?",
-        "why does my plugin cache folder not exist in the VM?"
+        "why does my plugin cache folder not exist in the VM?",
+        "plugin has no writable cache",
+        "is plugin cache shared across sessions?",
+        "per-session overlay for plugin cache"
       ]
     },
     "141": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "8e35115363f6fbcbe7fa0ef3c7fb46cc06e37e412478f5950128aaaba0001f99",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "75a5dc07bc0532142d03c741d1b87d70d09806de83afb65b6969612c40452841",
+      "prior_terms_sha256": "62c3ae80d18fdc13cb358829f1c3b03db214ac2c8c83ec9c2c72a90c446f8aff",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "feature flag missing but still enabled",
         "does a missing feature flag mean it's off",
@@ -3616,9 +3671,13 @@
     },
     "150": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "12952c1dbf1ebec0b02c9586c60654229aa432feb3c4a2ddc46301691e4f7e87",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "165fd05c64285352ce9177609faa0a94a6917d9a915060518d7b4a29d94cc620",
+      "prior_terms_sha256": "9c94ca876dcc752156e44649bdd83b27877d87372b4216f4f3871b1b031d6502",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "does cowork have a client-side safety classifier",
         "cowork extra auto mode rules",
@@ -3634,7 +3693,8 @@
         "approve a website once in claude in chrome",
         "data exfiltration and irreversible destruction rules",
         "are cowork permission checks done on my machine or by the agent",
-        "soft deny and allow rules for cowork tools"
+        "soft deny and allow rules for cowork tools",
+        "what happens when several sources set auto mode allow rules"
       ]
     },
     "151": {
@@ -4079,9 +4139,13 @@
     },
     "169": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "9dc44f90e848c2c3634e3f6aa757b210f1b27635a564abcc81fb50d7866afe93",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "0e7316086e8a501a813213d54c38d1ca7a7c5b3ce6fca77dd70abaddd3f71295",
+      "prior_terms_sha256": "0994121b49d84e1829e160ce4d0da5a4dbd71630127204793f39b6a161ec3ccb",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "preview tool won't start my dev server in Cowork",
         "preview tool opens a browser tab instead of a server",
@@ -4459,9 +4523,13 @@
     },
     "183": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "1db80b8a005451c0bdf6c074c284a4d1ad29ec23705c89b9f09f860e96770131",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "5e2b3929e71ae903b01a51cf0666118a89376a63ac84248bb2b0c765d0a295ee",
+      "prior_terms_sha256": "09738d9f365d9ce0f9334129c32c35f8917c26f85346d7de17799b2baf8b8450",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "hooks written as javascript functions instead of shell commands",
         "can plugin hooks be written as code modules?",
@@ -4477,7 +4545,10 @@
         "model catalog url loopback blocked",
         "what do the new unexplained flags actually do?",
         "mysterious codename environment flags meaning",
-        "force subagent model ignoring task model parameter"
+        "force subagent model ignoring task model parameter",
+        "function hooks now called mods",
+        "are function hooks on by default now?",
+        "model catalog on bedrock or vertex"
       ]
     },
     "184": {
@@ -4551,9 +4622,13 @@
     },
     "187": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "5493b4d51bfcb28864760f2a13af0e8a93073befbc0940c3b929828534ce8bb8",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "f77a28d472a98fe6b80ca1f5c848b474060a44361010125b96eb22b41d7c88ba",
+      "prior_terms_sha256": "e112860594f27f4422fed51e4b93ecf94ca82f861a6ccc4cd518ca9025a99489",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "write plugin hooks in JavaScript instead of shell",
         "hooks as a JavaScript module",
@@ -4569,7 +4644,10 @@
         "how to tell why a feature flag is off",
         "undocumented hook authoring method",
         "hook matcher argument in JavaScript hooks",
-        "can JavaScript hooks bypass forced permission prompts"
+        "can JavaScript hooks bypass forced permission prompts",
+        "function hooks renamed to mods",
+        "are function hooks on by default in newer versions",
+        "function hooks environment variable no longer works"
       ]
     },
     "188": {
@@ -4840,9 +4918,13 @@
     },
     "199": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "504b27ea701078ae76b0ba5b3d29b99a55860033f28cbb86dbad7cdabf14c62a",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "e1934f7868bc6be488530594ac929e809ab85c52bf4c15d5e52c28e4ebbfc3c0",
+      "prior_terms_sha256": "2820fe5e230faa3c86ea5329e0b7698947dd6e9def4b8b6195c4502c55f9cebc",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "plugin MCP server shows no tools in Cowork",
         "why does my plugin's MCP server have zero tools?",
@@ -4858,7 +4940,9 @@
         "skill breaks when tool names change between organizations",
         "Cowork session refuses to start MCP policy active",
         "does a local stdio plugin server work in Cowork?",
-        "how to tell if my plugin server was stubbed?"
+        "how to tell if my plugin server was stubbed?",
+        "connector tool names derived from URL",
+        "why are connector tools named after their URL?"
       ]
     },
     "200": {
@@ -5525,11 +5609,11 @@
     "222": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-15",
-      "input_sha256": "52c6ed2a033a43794d5372a362beb43ff185e00a72762e4b71b0a3e64f085e20",
+      "date": "2026-11-05",
+      "input_sha256": "cd8af9960b56d1e00f37093fb17be4ebc4b96d8b14210edc6cb6526faf0ab6ee",
       "prior_terms_sha256": "ff51d689941890e3dbea7c7ee310018c24bb4a8b719abfae671d4600f977e812",
-      "collision_check": "questions-v2.json dev",
-      "previous_text": "5b637f93ea59a77fb14a53c80ae2c9f1f8ae2549",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
       "replaced": [],
       "terms": [
         "why doesn't my minimal mode setting work in Cowork?",
@@ -5756,21 +5840,12 @@
     "229": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-16",
-      "input_sha256": "d57478fbcbb9913178eb437025b101ed5e0f45d46ccf9669bde757aa083dee97",
-      "prior_terms_sha256": "fb945f5e865257baa77cc28d7b042177b42cf63d034b520b202ed1f67b7a68d2",
-      "collision_check": "questions-v2.json dev",
-      "previous_text": "4948c793dfc70fe0f4acef8b5d797050205bbe0a",
-      "replaced": [
-        "why doesn't my local extension get updates?"
-      ],
-      "dropped": [
-        {
-          "term": "why doesn't my local extension get updates?",
-          "why": "duplicate",
-          "duplicate_of": "sideloaded desktop extension not updating"
-        }
-      ],
+      "date": "2026-11-05",
+      "input_sha256": "fe678147f8f5dedae0eb7fbe2f3182a5702948eca089400a05c5695206fe969b",
+      "prior_terms_sha256": "85f5604cca2579a8edee66e5904e7d5f31d4dcf5dd497ddd55ee7384d244ad2f",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "sideloaded desktop extension not updating",
         "how to update a manually installed extension",
@@ -5988,11 +6063,11 @@
     "236": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-23",
-      "input_sha256": "57d9f3aa96cceb961113d367f1a2f85ee4220b1c7e69526040bbe1b7b3f02ad5",
+      "date": "2026-11-05",
+      "input_sha256": "da656d6aa3e954aef23fcaa1e6d91a984f70fe5a4527bca9966a4255fb82bb75",
       "prior_terms_sha256": "deab1615f9a481dd6a044640ea0c33a340bf4e83ab7cc50597db1c16280880a5",
-      "collision_check": "questions-v2.json dev",
-      "previous_text": "dd455164975843b3bad2f16e1945740006987d5e",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "not found",
       "replaced": [],
       "terms": [
         "require approval program before Claude reads files",
@@ -6018,11 +6093,11 @@
     "237": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-11-04",
-      "input_sha256": "58d737525f22e11accdc5813a4c3ac81aac516274b4a5745d59c1e20c11e18af",
+      "date": "2026-11-05",
+      "input_sha256": "2f695eae893fa93de0eefba07dfec5778ae0457c8fda8542fcf3b3c73d49fe51",
       "prior_terms_sha256": "4aa76e36e0ded43b4e5b9bb56ba3f906e12405345f47047b9c13637b0efbda96",
       "collision_check": "questions-v2.json dev + ranking cases",
-      "previous_text": "b76a42e08bded7984d325b87971bc5076174fe84",
+      "previous_text": "not found",
       "replaced": [],
       "terms": [
         "admin policy settings for desktop app",
@@ -6078,27 +6153,12 @@
     "239": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-25",
-      "input_sha256": "77912eea3b7e22942350fb93cb715f047cc48c69fbae6f3936c7b52ca0de8b7e",
-      "prior_terms_sha256": "de9163d9859dcbabc646a430b11b03187e7661c956ef40143c682cffd4b607dc",
-      "collision_check": "questions-v2.json dev",
-      "previous_text": "0cb343183a4ab0be7c89640ffe5694ad3ab40177",
-      "replaced": [
-        "auto mode classifier model",
-        "does auto mode fail closed on errors?"
-      ],
-      "dropped": [
-        {
-          "term": "auto mode classifier model",
-          "why": "duplicate",
-          "duplicate_of": "which model approves actions in auto mode"
-        },
-        {
-          "term": "does auto mode fail closed on errors?",
-          "why": "duplicate",
-          "duplicate_of": "classifier unavailable action denied"
-        }
-      ],
+      "date": "2026-11-05",
+      "input_sha256": "4d60815828e3c508895959b8101055226b5f2e099b8b019581e70bbaf4d4b056",
+      "prior_terms_sha256": "e0a658e0b2d79ca1b47a9e1083fdd455a36a0967b9eb1b2775a570f0e470ac6f",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "auto mode keeps blocking my commands",
         "which model approves actions in auto mode",
@@ -6162,33 +6222,12 @@
     "241": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-21",
-      "input_sha256": "f6b6a151172fb26d2c8f27965cedfb885f2640d16f7c51e534d4c2b6e7a3dbd1",
-      "prior_terms_sha256": "fc64f35df06fb156939006d549cf624aec9c92d4bc8f668b6e94fbb3bbc364b2",
-      "collision_check": "questions-v2.json dev",
-      "previous_text": "41d50345e52b4915a7d2f91576aea8149ca3de76",
-      "replaced": [
-        "how long does the cache last",
-        "why was my chat summarized after an hour away",
-        "cost of cache going cold after a break"
-      ],
-      "dropped": [
-        {
-          "term": "how long does the cache last",
-          "why": "duplicate",
-          "duplicate_of": "prompt cache expiry time"
-        },
-        {
-          "term": "why was my chat summarized after an hour away",
-          "why": "duplicate",
-          "duplicate_of": "conversation compacted while I was idle"
-        },
-        {
-          "term": "cost of cache going cold after a break",
-          "why": "duplicate",
-          "duplicate_of": "why did my next message cost so much after waiting?"
-        }
-      ],
+      "date": "2026-11-05",
+      "input_sha256": "c9fe7cec6f939a5a9385c0da6e886fcffb925339990b79f8c2a2165d78966839",
+      "prior_terms_sha256": "f86b4002967ce443f1ba035ccc39893c40b86b41fd9511a8c3d1205eda3a0d5b",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "prompt cache expiry time",
         "cache lifetime one hour vs five minutes",
@@ -6213,11 +6252,11 @@
     "242": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-23",
-      "input_sha256": "edd31a1bf1db06e577a2d1bd48e212bc88487e1d39bbc5aeebf734f418c61399",
+      "date": "2026-11-05",
+      "input_sha256": "3dae5947c746b7d8dbdd24d5fd3ae8acda22530d6be28596f708924c875c886c",
       "prior_terms_sha256": "c4203ff78b7707f95eec13b50068c0cd90278aa49d8d681a59897291fcb569b5",
-      "collision_check": "questions-v2.json dev",
-      "previous_text": "dd455164975843b3bad2f16e1945740006987d5e",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
       "replaced": [],
       "terms": [
         "desktop app undocumented changes",
@@ -6243,15 +6282,23 @@
     "243": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-23",
-      "input_sha256": "cdc5e336594dc2aa2890e0755f8ce25346c98f44a8ff08444508169d6e48bbd8",
-      "prior_terms_sha256": "015dbda7196ebc46d4a855c9fe80fa05bc36f56a0e018f46f9cde1d1a3a7d56b",
-      "collision_check": "questions-v2.json dev",
-      "previous_text": "dd455164975843b3bad2f16e1945740006987d5e",
-      "replaced": [],
+      "date": "2026-11-05",
+      "input_sha256": "f53e99134492285e5a1be7f364e5183b7e1e66e86d522a78d345823af8e05873",
+      "prior_terms_sha256": "c9c2469e71dd6ade9ca16884f8c18a528d2336bfe7b5864c96a9b85178b672c7",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [
+        "why can't scheduled task ask user"
+      ],
+      "dropped": [
+        {
+          "term": "why can't scheduled task ask user",
+          "why": "duplicate",
+          "duplicate_of": "scheduled task can't ask me questions"
+        }
+      ],
       "terms": [
         "scheduled task can't ask me questions",
-        "why can't scheduled task ask user",
         "scheduled run missing tools",
         "difference between scheduled and manual task",
         "detect if running as scheduled task",
@@ -6267,7 +6314,8 @@
         "what changes when a task runs on a schedule?",
         "scheduled run can't create typed artifacts",
         "where did the schedule skill go?",
-        "tools needing a person refused when unattended"
+        "tools needing a person refused when unattended",
+        "file mentions disabled in scheduled task"
       ]
     },
     "244": {
@@ -6301,10 +6349,13 @@
     },
     "245": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-10-23",
-      "input_sha256": "b1dfc3622b3f4bcc2cfd6d2bd84a4c29241c3b654daf438c5bc31e19028898a4",
-      "collision_check": "questions-v2.json dev",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "460a4d39238f49f5af3a363b2e65c5ee2a9b907d151953e3da79fe7e033596e8",
+      "prior_terms_sha256": "c19b3bbed0faa2c72692feebc71a7b035075ecbde3fd4b20579bca91adbb8b94",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "b3ec757ce5dcdce0be8da8630ecc7ba44f78fa7b",
+      "replaced": [],
       "terms": [
         "what changed in latest desktop release",
         "undocumented changes in desktop update",
@@ -6320,7 +6371,208 @@
         "tool policy endpoint admin setting removed",
         "which admin settings apply to self-hosted session host",
         "why don't scheduled runs get artifact tools?",
-        "release notes vs actual desktop changes"
+        "release notes vs actual desktop changes",
+        "artifact tools only in third-party deployments",
+        "why no artifact tools on first-party?",
+        "do chat sessions get artifact tools?"
+      ]
+    },
+    "246": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "c1eee62dda842ec327874cdee27e655d10a4ea60f15e99d4bcc62eca93373b52",
+      "prior_terms_sha256": "c62efc03c283fdd32fa3b9630f1f1b917cf5ec261cbfd9bb6edb53c8c1ea5874",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "not found",
+      "replaced": [],
+      "terms": [
+        "desktop app update undocumented changes",
+        "grep finds nothing in app resources folder",
+        "where did the desktop UI files go",
+        "does the built-in browser report sites to Anthropic",
+        "browser telemetry captcha and login tracking",
+        "connector tool names changing from random ids",
+        "plugin hook stopped firing after connector rename",
+        "connector approvals ignored under managed rules",
+        "why does desktop ask before opening Word or Excel files",
+        "macro file open permission prompt",
+        "attach local file to Gmail connector approval",
+        "typed artifact tools missing in my session",
+        "Chrome shortcut tools disappeared from desktop",
+        "zero data retention hides error text from telemetry",
+        "what changed that release notes didn't mention"
+      ]
+    },
+    "247": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "9000d23183cb017dd8bfedd0f61518a3a16572cacf0dc7f568960066099bb56b",
+      "prior_terms_sha256": "5ecd9298f61040f5ed1719df5ae0c64b524db138e5305bea43ca3e6ecc5cf332",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "not found",
+      "replaced": [],
+      "terms": [
+        "force first-party mode on managed devices",
+        "lock deployment mode for all users",
+        "show custom status line above message box",
+        "status line program rejected not owned by root",
+        "stop users creating projects as admin",
+        "warn users nearing token limit",
+        "per-server tool timeout not working",
+        "can I shorten a connector tool timeout?",
+        "one bad path drops connector on every OS",
+        "connector default on or off for users",
+        "old managed settings stopped applying after deprecation",
+        "why did server configuration come back on devices?",
+        "Code tab shell commands can reach network",
+        "GitHub connector asks approval for deleting repository",
+        "new enterprise policy settings in latest desktop release"
+      ]
+    },
+    "248": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-11-05",
+      "input_sha256": "7cdc828f3d340c218021814ba63a115fad27914299ce5d1951efa8601d6d3b68",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "terms": [
+        "environment variables missing over SSH session",
+        "why isn't my env var reaching the remote host",
+        "desktop app withholding variables from WSL",
+        "hook blocks every tool call on Windows without Git Bash",
+        "why does my hook fail on Windows?",
+        "Windows SSH connection refused old OpenSSH client",
+        "asked to sign in twice over SSH",
+        "managed allow list removed built-in auto mode exceptions",
+        "desktop auto mode rules differ from CLI",
+        "dev server still asks for approval",
+        "dev server not started from remote control",
+        "auto mode turned off in SSH session",
+        "session resumes after quitting the app",
+        "post-checkout hook not running in worktree",
+        "turn on auto-merge for pull request from session"
+      ],
+      "withheld": [
+        {
+          "term": "environment variables missing over SSH session",
+          "qid": "pl-0128"
+        }
+      ]
+    },
+    "249": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "9d586210a02880cebc79cb20cfbbb9d80ce92d911390d3c64ac85d98531afaf7",
+      "prior_terms_sha256": "403e280f86b869dc36e8efa38686065fea6df64eb00470a94f5e768cc76061ad",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "not found",
+      "replaced": [
+        "only two tools showing in tool list"
+      ],
+      "dropped": [
+        {
+          "term": "only two tools showing in tool list",
+          "why": "inaccurate",
+          "replacement": "only three tools showing in tool list"
+        }
+      ],
+      "terms": [
+        "model writes scripts instead of calling tools",
+        "all tools replaced by one javascript tool",
+        "do hooks still fire inside scripts",
+        "does running a script bypass permissions",
+        "why no permission prompt for a script",
+        "hook timeout blocks tool call inside script",
+        "enable experimental javascript tool mode",
+        "why is javascript scripting mode refused",
+        "admin disable scripting tool mode",
+        "mcp tools hidden from the model",
+        "how to find mcp tools from a script",
+        "auto mode classifier checks script once",
+        "script execution time limit",
+        "will my bash hook work inside a script?",
+        "only three tools showing in tool list"
+      ]
+    },
+    "250": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-11-05",
+      "input_sha256": "ca73310f3b9ab0f7349287e0f7f62e3ce24130325008453cbffa8a1d4d48989b",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "terms": [
+        "customize Claude Code interface with JavaScript plugin",
+        "add custom pane or status line",
+        "are plugins sandboxed or isolated?",
+        "plugin code running with my permissions",
+        "stop Claude loading mods it wrote",
+        "prompt asking to turn on Claude's mods",
+        "what happens if I decline Claude's mods?",
+        "restrict plugins to company approved only",
+        "disable all installed mods",
+        "mods disappeared in the middle of a session",
+        "can a mod bypass deny rules?",
+        "why are my mods not loading?",
+        "plugin refuses to work with code mode",
+        "hot reload plugins during a session",
+        "are third-party mods safe to install?"
+      ]
+    },
+    "251": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "3f438266e350771f6804350644aadfcc4bedcc887627cca4fe5ca33e071ba613",
+      "prior_terms_sha256": "f3bbcee513360744e540493ecfc9f9b4d8662aea48a0594ee5a42c72dc01945c",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "not found",
+      "replaced": [],
+      "terms": [
+        "stop Claude editing files outside my project",
+        "restrict file writes to project folder",
+        "why can't Claude edit its own settings file?",
+        "worktree tools disappeared from session",
+        "can shell commands still write outside the project?",
+        "bypass mode still asks before rm",
+        "skip delete confirmation in bypass mode",
+        "why does bypass mode still prompt on removal?",
+        "managed settings disable dangerous skip option",
+        "nested Claude session won't skip delete prompt",
+        "Claude asks before sending my email address",
+        "headless skill stalls posting account email",
+        "turn off email privacy prompt",
+        "org settings applied without security dialog",
+        "why no security prompt for server-managed settings?"
+      ]
+    },
+    "252": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-05",
+      "input_sha256": "f4fd8721781d1174bce32778b7b18d4033f40e29043410f5e1e93b2e4feb706a",
+      "prior_terms_sha256": "c79f3a611e755166fa4584c40fc18f43468513237539a8dddc0425bba3b9b22a",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "not found",
+      "replaced": [],
+      "terms": [
+        "rereading a file uses tokens again",
+        "file unchanged message no longer appears",
+        "why does a repeat file read return everything?",
+        "write fails after partial file read",
+        "keyword that raises thinking effort for one turn",
+        "why didn't idle compaction run?",
+        "idle compaction token threshold",
+        "auto mode default allow rules count",
+        "scheduled task rule stays after replacing allow list",
+        "model catalog on third-party cloud providers",
+        "why is my subagent effort setting ignored?",
+        "make a failed hook block",
+        "when does opus fast mode end?",
+        "is claude code compiled ahead of time?",
+        "assign usage reports to a project"
       ]
     }
   }

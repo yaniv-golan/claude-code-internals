@@ -283,6 +283,8 @@ cached session field (`N.cicCanUseToolEnabled ?? false` /
 change, at least two others) forces a fresh generation and therefore a fresh
 read of all of these together, not just `builtSystemPrompt`.
 
+The built-in auto-mode `allow` list prints 16 rules from 2.1.316, with one more outside the replaceable slot (L252); multi-source behaviour of `$defaults` is in L248.
+
 **Cowork's own additions to the agent's auto-mode rule set** — gate
 `3424551112`, **OFF (defaultValue)** — merge
 `{autoMode:{environment, soft_deny, allow}}` into the agent's own

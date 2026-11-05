@@ -4,9 +4,164 @@
     "changelog": "https://claude.com/docs/cowork/changelog.md",
     "config": "https://claude.com/docs/third-party/claude-desktop/configuration-changelog.md"
   },
-  "scanned": "2026-10-22",
+  "scanned": "2026-11-05",
   "pages": {
     "changelog": {
+      "v4.16336.0": {
+        "date": "2026-11-03",
+        "bundled": "2.1.317",
+        "items": [
+          "59c73f827b3eb4f1",
+          "5165308c32a9a0c7",
+          "8bed7fa2b3c140a2",
+          "db79fa2f16b8e0af",
+          "f608f83767f003ec",
+          "2545bcc9c8d0d922",
+          "fdd7251e65076fd5",
+          "094765689b8797d8",
+          "895e594daec7f583",
+          "809564d78907c834",
+          "e322e8e7f2b3e828",
+          "82bc2ab1f4aef4b8",
+          "aaeeed7a70c0518c",
+          "aa185e84de45e06b",
+          "8ebade8f184ab1d0",
+          "05a703d8c036c88d",
+          "5d12cba0cc063615",
+          "abf6a30ead0c5c75",
+          "e1ba5015c2b88a3f",
+          "186e2a176e556300",
+          "d705c2e215f7c00f",
+          "1690c6552b1b7cc1",
+          "d315168353ad9eb3",
+          "6b6e1dac5a7589c3",
+          "9e53455d0f5b2295",
+          "70b7c7e5e5337305",
+          "06f2f45b147dd069",
+          "89072f1bfefb1ce4",
+          "bab57baee7155ba4",
+          "33a93f15911d4334",
+          "deaa8d2f7d5cfb40",
+          "887ee337c2294f1c",
+          "a1d139f193fc31e6",
+          "ba80dcb1fb14f538",
+          "f97a1370c995962f",
+          "612d907dfbf319b2",
+          "0a52ef82add2aefb",
+          "eb18908e304b3a33",
+          "f3eaec6226ad1469",
+          "3745080570a936ee",
+          "fe2de2311e5006c4",
+          "2bf60e68ab347d74",
+          "70cdcfa914b93a4d",
+          "01d87e4004fc90e9",
+          "55ee7bfd97e891a7",
+          "e1f43607960c3020",
+          "02d9684017081d4b",
+          "0d323c88aea3eed0",
+          "573453633748e969",
+          "126c7db02687103d",
+          "d827b3f9994674cf",
+          "1c93b3deb538e0ec",
+          "bccbfcc803b2ce57",
+          "4ad77201b791f2e8",
+          "866bea46de92631c",
+          "7c4aa94fa2605b6c",
+          "97b9b109e3f62c67"
+        ]
+      },
+      "v4.4212.0": {
+        "date": "2026-10-29",
+        "bundled": "2.1.309",
+        "items": [
+          "b7f67b66db350eb8",
+          "ff31825dcb39a037",
+          "d92be52997f137b8",
+          "30c9add023c7a10f",
+          "ae3547d0993ea7bf",
+          "23b93a1ce31bd20f",
+          "0ca71cdd9dc705bd",
+          "656825e8e857ed25",
+          "5b9eb18c8c0c961f",
+          "3b03c1df8fb36c4e",
+          "1f293f786ab09003",
+          "da4bad9723968878",
+          "c1316cb6af50b0f1",
+          "f16cb3ecbe65c2b9",
+          "f87ad3a7f8f4d518",
+          "2e33a7ca4145f845",
+          "382e017530f91da2",
+          "16884da8d4a1f68f",
+          "38ba53552467055e",
+          "fcb626ac6459ec80",
+          "991876b6ceacc463",
+          "2d390e3a10344d6f",
+          "632d80d2051e2d64",
+          "9b1c70edbc91ab57",
+          "75085f098d650415",
+          "34d3d5b1671b94b0",
+          "372a857a74c366ca",
+          "26f94c9475094e1c",
+          "950cc91079e1247b",
+          "33d6987b07b51747",
+          "d975f4589907fc72",
+          "082a218b108823a2",
+          "f22a4df093624eb6",
+          "88b640b43c7a8411"
+        ]
+      },
+      "v4.29.0": {
+        "date": "2026-10-27",
+        "bundled": "2.1.309",
+        "items": [
+          "e375426cfb435932",
+          "54b0b357ea3f9a5c",
+          "e84fc1ad53c6899b",
+          "9f02b99e864dde01",
+          "dae1057509e6a99a",
+          "d528f5df7938ca57",
+          "e41b5f61d7bcca91",
+          "a1b1c85b2fe51611",
+          "db7af90fbb479e6a",
+          "5db6e4a3d7ed36fc",
+          "d164b54f21750c43",
+          "95727d00241c99b1",
+          "21e16d6ebfaff6f0",
+          "bbf04a89588eb689",
+          "fd0891c827062e33",
+          "b752da9b09f05114",
+          "fc3b09029fa688d4",
+          "28b4bd6e2533df93",
+          "0c63355adc83fc64",
+          "ab8c296acc4752d7",
+          "3eced0763de5aef5",
+          "eb5161007fec4f58",
+          "639793dc999bc424",
+          "0164b4d38296ebff",
+          "eba08db5db9d7185",
+          "f5e4f85cf7700136",
+          "2820398824dfc2d9",
+          "0392c32dde612581",
+          "b0681fd7ff79f658",
+          "430d55bc2cedd681",
+          "9aec0e8d4e038672",
+          "f38abb1b347f5b6d",
+          "b3818b7e009afa8e",
+          "4715f55b90ba191f",
+          "f228c5ff0123e84f",
+          "a7364999ac9284f0"
+        ]
+      },
+      "v3.6556.2": {
+        "date": "2026-10-22",
+        "bundled": "2.1.308",
+        "items": [
+          "210a942f139f550a",
+          "3e5162c98d149ade",
+          "fe235c8c231c1b0a",
+          "93067b5ae8404372"
+        ]
+      },
       "v3.6556.1": {
         "date": "2026-10-22",
         "bundled": "2.1.308",
@@ -119,7 +274,7 @@
           "113c580263486a06",
           "d19e63634f25113d",
           "e4a178b99e1be3b0",
-          "b3882309764a9f97",
+          "822496481a41ee64",
           "8a2fd7fa4754919c"
         ]
       },
@@ -1671,14 +1826,62 @@
       }
     },
     "config": {
+      "v4.16336.0": {
+        "date": "2026-11-03",
+        "bundled": null,
+        "items": [
+          "8b9ad3c14c7befc1",
+          "1b323d9b90e0e749",
+          "da9bc7c179c4b1fd",
+          "88e58fc36f1feb2b",
+          "572bcb365d9b0431",
+          "88a3f0d5f752c59c",
+          "90e3e8925c73955b",
+          "7c09309835354af0",
+          "6ff02e33da1457dd"
+        ]
+      },
+      "v4.4212.0": {
+        "date": "2026-10-29",
+        "bundled": null,
+        "items": [
+          "8d36d215bca67fbe",
+          "8bf809cff004c512",
+          "bd5d926fc5621d89",
+          "890c88037e737190",
+          "1ee7c1704e8466b8"
+        ]
+      },
+      "v4.29.0": {
+        "date": "2026-10-27",
+        "bundled": null,
+        "items": [
+          "5f96fb8a9d76d651",
+          "9bdb1f60e0ad7174",
+          "e686d945fd0c58f3",
+          "761dc9c54488fa19",
+          "b58ea947f5c6bc8a",
+          "fa2b34e6df9eab91",
+          "354b190945a06f6e",
+          "425b770318e3ab7b",
+          "af7bae8dcfd4be33"
+        ]
+      },
+      "v3.6556.2": {
+        "date": "2026-10-22",
+        "bundled": null,
+        "items": [
+          "162ba80dcc5a64dc"
+        ]
+      },
       "v3.6556.1": {
         "date": "2026-10-22",
         "bundled": null,
         "items": [
-          "250c3c4bca5e462b",
-          "4c23c296d39b2331",
-          "e0415e0ac89ce4b8",
-          "9959c626b4fe0d1c",
+          "5fbc8266caacd708",
+          "1dfca41ac349bca4",
+          "0f09811d06cccd23",
+          "48218cf59f497004",
           "beeb771a29cd1287",
           "1530f127179c1cee",
           "4b1010dae3221ddd",
@@ -1707,8 +1910,8 @@
         "date": "2026-10-20",
         "bundled": null,
         "items": [
-          "8b8dba3696be6846",
-          "ff3facd1b8d6a668",
+          "9042d38fdfcc77bd",
+          "ce13f2ad49807e1a",
           "1128ba060b29dc38",
           "233af2e961ec64b3",
           "1e57bfcd17206c48",
@@ -1736,7 +1939,7 @@
         "date": "2026-10-13",
         "bundled": null,
         "items": [
-          "c72f8ac3166e2dc1",
+          "59018cdca805a7dd",
           "7e751067263e8884",
           "27a2a78f18eca11f",
           "241901f9fdfe51b2",
@@ -1764,8 +1967,8 @@
         "date": "2026-10-08",
         "bundled": null,
         "items": [
-          "9d4d12cb98d3a912",
-          "7cf14abc0a788386",
+          "b63cb087cf32e119",
+          "be3fa177eb4a104b",
           "dd2e3a2d87856aa1",
           "207eab1f7711a244",
           "d4908510760f43d2"
@@ -1782,7 +1985,7 @@
         "date": "2026-10-06",
         "bundled": null,
         "items": [
-          "411a7a23f344bd37",
+          "fe0b42cf09cac2bd",
           "fb43ab55531ab428",
           "61d78b0e92ef3fa7",
           "7b1336cdfd3fe583",
@@ -1807,7 +2010,7 @@
         "date": "2026-09-29",
         "bundled": null,
         "items": [
-          "07a512a3cbf94d6e",
+          "5885633b83402f89",
           "8dc58a0c0c3fc952"
         ]
       },
@@ -1830,11 +2033,11 @@
         "date": "2026-09-22",
         "bundled": null,
         "items": [
-          "804ae708f4a1becc",
-          "cda28760ee1b1cf3",
-          "af6b0e28e6130525",
-          "71344efe5bfb718a",
-          "c0823fa89b2d04d8",
+          "b2bab768e98cd681",
+          "50a9f03a2aa98a2c",
+          "f79a60b86f99f3ba",
+          "c24d7ef6558c805e",
+          "9be0fc2f5889ee58",
           "40b33681d9c6cb09",
           "7a80762961531dcc",
           "fbf6bd7ad15d0db0",
@@ -1860,12 +2063,12 @@
         "date": "2026-09-17",
         "bundled": null,
         "items": [
-          "b03a649caf76e672",
-          "a637cd736f04a36d",
-          "947d24eaa50d03cd",
-          "148f51479ea8f620",
-          "2fe07a8527aff02f",
-          "fdb61cb65f28645b",
+          "72e16824d8fcf540",
+          "7da9bdf3e911d6a8",
+          "f07b5b1b555a95de",
+          "22054da1a0163000",
+          "749dd65c6e36b544",
+          "4cf8bfdce1109660",
           "749346fee333ef92"
         ]
       },
@@ -1873,13 +2076,13 @@
         "date": "2026-09-15",
         "bundled": null,
         "items": [
-          "93afd90f334f8863",
-          "3d09e1d49bfd15a9",
-          "99baccb369fd60b4",
-          "ec8318733e958344",
-          "638db8e320f37390",
-          "541fdb226d5fc2e4",
-          "41de4e111e2a21db",
+          "797047c2f502ce77",
+          "7ebedcdf36fdf596",
+          "440e5cfacf1b2a5d",
+          "fd23531f0ff0547e",
+          "35bbde923455ba6a",
+          "a46200441156c96b",
+          "9c9dc347be806981",
           "531f14c5bb2e6a13",
           "8d55e326babe9158",
           "98d06a52ba527d3a"
@@ -1903,12 +2106,12 @@
         "date": "2026-09-10",
         "bundled": null,
         "items": [
-          "208e01a9fd4d7d2f",
-          "903bc98e626ae989",
-          "a7be5b7badd2b058",
-          "7ae12cf6d9ec493e",
-          "0fbdc30210c75a14",
-          "c2fdd7be53f605a4"
+          "564f793dbfead85a",
+          "d3532e39920ed406",
+          "fa6287ac959543ce",
+          "cf857992f9a9c909",
+          "5d6d0b07c7010d45",
+          "5f14d29ebd67d102"
         ]
       },
       "v1.49585.0": {
@@ -1944,10 +2147,10 @@
         "date": "2026-09-04",
         "bundled": null,
         "items": [
-          "eb0f61bee1e47e93",
-          "fbf202ecaf250ec1",
-          "1141727c3f0b6f97",
-          "ad2ca13b79c55ea1",
+          "7125bada2aa06780",
+          "83ba2d83b1851ee4",
+          "b5647735aeae73b6",
+          "d2e84871ce2f6d38",
           "ffcbc53b19d9fc02"
         ]
       },
@@ -1969,10 +2172,10 @@
         "date": "2026-09-02",
         "bundled": null,
         "items": [
-          "740ecbd8e8364f08",
-          "bba27c36515c906c",
-          "0150aef10e8113c9",
-          "58aa8817d6648563",
+          "893bfa37e6f524b8",
+          "996a75033767bb74",
+          "4bc05fe417a825aa",
+          "f858e058b41f4a8f",
           "efa8fecdad0ac662",
           "b14b05a468128b37"
         ]
@@ -1988,8 +2191,8 @@
         "date": "2026-08-27",
         "bundled": null,
         "items": [
-          "446c776ba316d47d",
-          "8afdf5c4890ab14e",
+          "49404538641174e7",
+          "4c0b452ed8b887f8",
           "87d78018f80365cf",
           "ae4e28aa34027642",
           "0a1cc745ef59d2e1",
@@ -2036,14 +2239,14 @@
         "date": "2026-08-25",
         "bundled": null,
         "items": [
-          "24782c4870b1c6a1",
-          "1d4d1e2b658fae0c",
-          "e288ec0653d62261",
-          "08febf28cc82c4dc",
-          "34b801750725a733",
-          "08bbf01dab4465b4",
-          "16687bc8c2670bda",
-          "7da1c52f04a8eeee",
+          "c9b4a95754493b84",
+          "a096007fe64bf3bf",
+          "8a1f00ad8510c409",
+          "4e052458366e93c4",
+          "130f3adf0f6400c6",
+          "cf0e42e7befc292d",
+          "40ff194dde9b287d",
+          "78066dfb83497bff",
           "c7236a059300c63c"
         ]
       },
@@ -2065,8 +2268,8 @@
         "date": "2026-08-18",
         "bundled": null,
         "items": [
-          "55cf8f29edd4517a",
-          "2b13584aafecf1da",
+          "fa10b875cfa25618",
+          "eefe86e11ac36830",
           "45fe2d20c77ed7e8"
         ]
       },
@@ -2081,8 +2284,8 @@
         "date": "2026-08-17",
         "bundled": null,
         "items": [
-          "f6525383dbd79d7e",
-          "05f9a2f9040a08d4",
+          "d3280fc4ea58cc8e",
+          "21325725d936192e",
           "9ca204312bd968b6",
           "69aea0ae493e0209",
           "6199a06cb29f27df"
@@ -2099,9 +2302,9 @@
         "date": "2026-08-13",
         "bundled": null,
         "items": [
-          "730ae85673e614f3",
-          "5b6881e175d98daa",
-          "7619195034df951a",
+          "f2a23a2a45380d48",
+          "8b9806d3e73a9fa3",
+          "628de60c55af0d75",
           "f2f72e893c05dba2"
         ]
       },
@@ -2109,9 +2312,9 @@
         "date": "2026-08-11",
         "bundled": null,
         "items": [
-          "46a9dfdfb644f1e3",
-          "cb91fa7785181cea",
-          "11c9fbdd6f04fceb",
+          "f223c536992ecd6b",
+          "8c6681d850524a3d",
+          "70c6871682fe0961",
           "9a3f9f3d666b4768"
         ]
       },
@@ -2119,8 +2322,8 @@
         "date": "2026-08-06",
         "bundled": null,
         "items": [
-          "1175d573a9b0f2b9",
-          "28328902a64e3c3a",
+          "91e684773fe48723",
+          "605085a9dd283214",
           "c94d2fbf6521ffc9"
         ]
       },
@@ -2128,10 +2331,10 @@
         "date": "2026-08-04",
         "bundled": null,
         "items": [
-          "431374bb697f466d",
-          "42e0abf905aa7845",
-          "26a6fab145184822",
-          "6cea1fde7f4d2722",
+          "a2883cafaa83f47c",
+          "3b528a911409c1d0",
+          "b5d31bedbbe1486a",
+          "7796c937790c4146",
           "8ee3d317f572ca65",
           "2029569740c507d9",
           "358e1edcec440b7a",
@@ -2150,15 +2353,15 @@
         "date": "2026-07-24",
         "bundled": null,
         "items": [
-          "2235cf39c0f64925"
+          "319f2f591745f01f"
         ]
       },
       "v1.24012.0": {
         "date": "2026-07-21",
         "bundled": null,
         "items": [
-          "9909c1d79c26b927",
-          "4931d901fdf0011e"
+          "fb3a9043363360c9",
+          "9f326176b4242938"
         ]
       },
       "v1.22209.3": {
@@ -2172,7 +2375,7 @@
         "date": "2026-07-16",
         "bundled": null,
         "items": [
-          "a371a5b2353597fd"
+          "12ff46afa6ccff0f"
         ]
       },
       "v1.21459.3": {
@@ -2186,12 +2389,12 @@
         "date": "2026-07-14",
         "bundled": null,
         "items": [
-          "00f59ef8c8dd0e42",
-          "d0b2d9036e0200cd",
-          "35a18a6504684dfb",
-          "f45e2af34d75b945",
-          "91a04d44b2249a0c",
-          "fc03dec0dc1e36d2",
+          "18634bf7fd1ee894",
+          "9c1464901b41c3ce",
+          "c6eabdfdfb90e732",
+          "45b59954f1697d78",
+          "205c4b87dac02a9a",
+          "dff73ea81f0318b5",
           "72f133369c83117b",
           "bc4d3e10dc32de26"
         ]
@@ -2214,9 +2417,9 @@
         "date": "2026-07-07",
         "bundled": null,
         "items": [
-          "e0d655b561ed7d1f",
-          "c2326671e86f607c",
-          "08114326aa88aee5",
+          "cb9754e4318164df",
+          "884a8e0ad56e6f68",
+          "1c8d31426f1cbdc8",
           "a7703acb250c0334",
           "0dc91c2b62ccb231"
         ]
@@ -2246,8 +2449,8 @@
         "date": "2026-06-30",
         "bundled": null,
         "items": [
-          "5185fe53eda814c1",
-          "2be02bd82ba5ecc9"
+          "7acf3bbae68e0c2c",
+          "3b0357124a80a462"
         ]
       },
       "v1.15962.2": {
@@ -2268,9 +2471,9 @@
         "date": "2026-06-25",
         "bundled": null,
         "items": [
-          "a2c92d47ce7592e9",
-          "fb5ce5dfaa105ff4",
-          "68efe65d5908ec2e"
+          "52544d811acce39b",
+          "49e6405c3c10d794",
+          "4d588d30b0e69a94"
         ]
       },
       "v1.15200.0": {

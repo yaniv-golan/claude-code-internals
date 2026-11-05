@@ -1003,7 +1003,7 @@ calling `mountPath`. The VM-loop `mountPath(…,"rwd")` path is **untested**.
 reaches: `uploads`, `.claude/skills`, plugin mounts and **`.projects/<uuid>`** are `ro` in both
 builders; host-loop adds `.claude/projects` `ro` and auto-memory `ro`; VM-loop instead mounts
 `.claude` whole as `rwd`, auto-memory as `rwd`, and adds `.artifacts/<id>` / `.scheduled/<id>` (`ro`)
-plus a `rw` `<pluginMount>/.mcpb-cache`. A **project attachment is therefore not writable at all**,
+plus a `rw` `<pluginMount>/.mcpb-cache` (a per-session overlay from 4.29.0). A **project attachment is therefore not writable at all**,
 not merely delete-denied. Host-loop modes are recomputed **per bash call** (`computeBashMounts`), not
 only at spawn.
 

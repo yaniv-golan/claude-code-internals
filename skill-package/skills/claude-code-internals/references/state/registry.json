@@ -3451,11 +3451,14 @@
       "status": "dark-launched",
       "first_seen": "2.1.255",
       "removed_in": null,
-      "as_of": "2.1.260",
-      "summary": "Kill switch for the [publishedCatalog] signed model-catalog subsystem; first rejection in the enable ladder (env_off), ahead of bare / essential_traffic / unix_socket / not_first_party / not_claude_ai_auth / no_org / no_account / policy(allow_model_catalog). Subsystem gate tengu_delegated_quail defaults {mode:\"off\"}.",
+      "as_of": "2.1.318",
+      "summary": "Kill switch for the [publishedCatalog] signed model-catalog subsystem; first rejection in the enable ladder (env_off), ahead of bare / essential_traffic / unix_socket / not_first_party / not_claude_ai_auth / no_org / no_account / policy(allow_model_catalog). Subsystem gate tengu_delegated_quail defaults {mode:\"off\"}. From 2.1.311 not_first_party is only stage one: gateways get cloud_gateway, providers other than bedrock/vertex/foundry/mantle get release_off, and not_claude_ai_auth/api_key_helper pass subject to allow_model_catalog (L252).",
       "provenance": [
         {
           "lesson": 183
+        },
+        {
+          "lesson": 252
         }
       ]
     },
@@ -7496,11 +7499,14 @@
       "status": "live",
       "first_seen": null,
       "removed_in": null,
-      "as_of": "2.1.231",
-      "summary": "Messaging tool that doubles as the subagent RESUME path: sending to a completed/stopped background agent's agentId (format a...-...) calls dfe/resumeAgentBackground, which reloads the disk transcript and continues the agent with the new prompt (tool result carries resumedAgentId; agents stopped by the user are refused). Default-enabled in the plain CLI (no isEnabled of its own); the il() agent-teams gate only shapes its structured-message schema. In Cowork it is ABSENT from the Desktop spawn's explicit tools:/allowedTools: lists, making resume unreachable there.",
+      "as_of": "2.1.318",
+      "summary": "Messaging tool that doubles as the subagent RESUME path: sending to a completed/stopped background agent's agentId (format a...-...) calls dfe/resumeAgentBackground, which reloads the disk transcript and continues the agent with the new prompt (tool result carries resumedAgentId; agents stopped by the user are refused). Default-enabled in the plain CLI (no isEnabled of its own); the il() agent-teams gate only shapes its structured-message schema. In Cowork it is ABSENT from the Desktop spawn's explicit tools:/allowedTools: lists, making resume unreachable there. From 2.1.317 a message to a running background agent moves its running command to the background without stopping it (L252).",
       "provenance": [
         {
           "lesson": 115
+        },
+        {
+          "lesson": 252
         }
       ]
     },
@@ -8372,11 +8378,11 @@
       "id": "gate.3469616823",
       "kind": "gate",
       "name": "3469616823 (skill-creation access bypass)",
-      "status": "dark-launched",
+      "status": "removed",
       "first_seen": null,
-      "removed_in": null,
+      "removed_in": "4.16336.0",
       "as_of": "2.1.280",
-      "summary": "New in Desktop 2.7032.0: bypasses the current_user_access block check for skill_creation when computing canSaveSkill (Ch55/L206). Capture state is in observed.",
+      "summary": "New in Desktop 2.7032.0: bypasses the current_user_access block check for skill_creation when computing canSaveSkill (Ch55/L206). Capture state is in observed. Gone from the code by Desktop 4.16336.0 (L246).",
       "provenance": [
         {
           "lesson": 206
@@ -9209,6 +9215,96 @@
         "on": false,
         "at": "fb3a2cb6c76b0001"
       }
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_ULTRATHINK",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_ULTRATHINK",
+      "status": "live",
+      "first_seen": "2.1.316",
+      "removed_in": null,
+      "as_of": "2.1.316",
+      "summary": "Turns off the ultrathink keyword, which otherwise sets xhigh effort for the turn.",
+      "provenance": [
+        {
+          "lesson": 252
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_SUBAGENT_EFFORT",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_SUBAGENT_EFFORT",
+      "status": "live",
+      "first_seen": "2.1.316",
+      "removed_in": null,
+      "as_of": "2.1.316",
+      "summary": "Sets sub-agent effort when the agent is not a fork, has no frontmatter effort and inherited none; inherit is accepted.",
+      "provenance": [
+        {
+          "lesson": 252
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_EXPERIMENTAL_CODE_MODE",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_EXPERIMENTAL_CODE_MODE",
+      "status": "dark-launched",
+      "first_seen": "2.1.318",
+      "removed_in": null,
+      "as_of": "2.1.318",
+      "summary": "Opts in to Code Mode with gate tengu_rustling_blossom and one-time consent: the tool list collapses to REPL, Poll and StructuredOutput.",
+      "provenance": [
+        {
+          "lesson": 249
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_NESTED_SESSION_ID",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_NESTED_SESSION_ID",
+      "status": "live",
+      "first_seen": "2.1.317",
+      "removed_in": null,
+      "as_of": "2.1.317",
+      "summary": "On a self-hosted runner, makes claude -p inside a session use that session id and transcript, as in earlier versions.",
+      "provenance": [
+        {
+          "lesson": 252
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_CODE_DISABLE_LOOPED_CROSS_CERT_DROP",
+      "kind": "env-var",
+      "name": "CLAUDE_CODE_DISABLE_LOOPED_CROSS_CERT_DROP",
+      "status": "live",
+      "first_seen": "2.1.316",
+      "removed_in": null,
+      "as_of": "2.1.316",
+      "summary": "Keeps system cross-certificates that certify each other in a loop, for servers whose private CA needs one.",
+      "provenance": [
+        {
+          "lesson": 252
+        }
+      ]
+    },
+    {
+      "id": "env.CLAUDE_RUNNER_SPAWN_REASON",
+      "kind": "env-var",
+      "name": "CLAUDE_RUNNER_SPAWN_REASON",
+      "status": "live",
+      "first_seen": "2.1.318",
+      "removed_in": null,
+      "as_of": "2.1.318",
+      "summary": "In the self-hosted orchestrator spawn-runner hook environment: why Anthropic sent the request, such as runner_lost or resumed.",
+      "provenance": [
+        {
+          "lesson": 252
+        }
+      ]
     }
   ]
 }
