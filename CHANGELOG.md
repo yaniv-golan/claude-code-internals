@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.84.1 — 2026-11-06 (this fork) — What Code Mode is for
+
+L249 gains a "What it's for" section: the cost model the `REPL` tool description gives the model (each call is a full round trip, the work inside a script is comparatively cheap), what stays in context, and how `Poll` waits without costing a turn. The expected effects (fewer turns, slower context growth, long builds off the conversation's path) are marked as our reading, not a measurement. Checked against CLI 2.1.319: Code Mode's gate, opt-in, model list and these passages are unchanged.
+
 ## v2.84.0 — 2026-11-06 (this fork) — Code Mode's script globals
 
 L249 now lists every global a Code Mode script gets, read from the declaration files shipped in CLI 2.1.318: how `$` quotes values, which exits don't throw, timeouts and the move to the background, spilled output, batch `edit`, `file()`, the output helpers and `running()`.
