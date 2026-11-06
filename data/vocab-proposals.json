@@ -6464,12 +6464,21 @@
     "249": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-11-05",
-      "input_sha256": "ad4f6c840a5ec70f53b0ff31574eb4d2480755257e08777e67b325d341437b88",
-      "prior_terms_sha256": "7e05d0babadcc4f6b25e58bb53f3a4aa073885f64649c3c2dfbc42825a5c36ae",
+      "date": "2026-11-06",
+      "input_sha256": "28e5d3f6c18d7283af0c89100fe4277bf25f5a14a3a4b374042930c6932ea7d8",
+      "prior_terms_sha256": "c47c47ef8ead5459a81a62ba5101b3710ff3a46364a605c3e43312c5462cb70b",
       "collision_check": "questions-v2.json dev + ranking cases",
-      "previous_text": "916c5979ca46ab9c1c429e5d05a829e24b0e9b94",
-      "replaced": [],
+      "previous_text": "d9befd5967a8aa16e08dcd6008e0749109205a95",
+      "replaced": [
+        "will my bash hook work inside a script?"
+      ],
+      "dropped": [
+        {
+          "term": "will my bash hook work inside a script?",
+          "why": "duplicate",
+          "duplicate_of": "do hooks still fire inside scripts"
+        }
+      ],
       "terms": [
         "model writes scripts instead of calling tools",
         "all tools replaced by one javascript tool",
@@ -6484,11 +6493,11 @@
         "how to find mcp tools from a script",
         "auto mode classifier checks script once",
         "script execution time limit",
-        "will my bash hook work inside a script?",
         "only three tools showing in tool list",
         "how are shell arguments quoted in scripts",
         "long shell command moved to background after timeout",
-        "can a script spawn sub-agent contexts?"
+        "can a script spawn sub-agent contexts?",
+        "does scripting reduce model turns and context growth?"
       ]
     },
     "250": {
