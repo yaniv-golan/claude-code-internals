@@ -181,6 +181,8 @@ Nineteen variables that this skill did not carry, grouped by what they reach:
 | storage | `_ARTIFACT_ASSETS` (`/_blob/`, `/api/frame/blob/`, `/agent-upload`, `/agent-list`, `/agent-delete`) · `_ARTIFACT_DB` (`tengu_umber_lattice`; `write_capacity`/`scan_budget`/`response_budget`, `quota-exceeded`, `custody_403`) · `_ARTIFACT_ROOM` |
 | lifecycle | `_ARTIFACT_DELETE` (`tengu_cobalt_plinth_alder`) · `_ARTIFACT_PREVIEW` (`tengu_cobalt_plinth_aspen`) · `_ARTIFACT_VERIFY` (**`tengu_osier_pylon_trace`**) · `_ARTIFACT_MCP` |
 
+The two endpoint variables `_ARTIFACTS_API_BASE_URL` and `_ARTIFACTS_API_TOKEN` have no effect in the shipped CLI. When the tool is offered at all (OAuth only, off by default in the SDK and `-p`) is L253.
+
 Two of these are worth pulling out.
 
 **Two of the nineteen default ON**, and only two: `CLAUDE_CODE_ARTIFACT_MCP`

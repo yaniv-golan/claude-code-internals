@@ -3257,6 +3257,11 @@
     "id": 158,
     "relevance": 0.7,
     "reason": "gate resolution for artifact comments"
+   },
+   {
+    "id": 253,
+    "relevance": 0.8,
+    "reason": "when the tool is offered headless and how comments reach a session"
    }
   ],
   "157": [
@@ -5144,6 +5149,28 @@
     "id": 113,
     "relevance": 0.5,
     "reason": "L113: earlier API betas"
+   }
+  ],
+  "253": [
+   {
+    "id": 172,
+    "relevance": 0.85,
+    "reason": "Artifacts env vars and gate family"
+   },
+   {
+    "id": 156,
+    "relevance": 0.85,
+    "reason": "artifact comments and the agent responder"
+   },
+   {
+    "id": 212,
+    "relevance": 0.7,
+    "reason": "Cowork has its own artifact tools"
+   },
+   {
+    "id": 86,
+    "relevance": 0.6,
+    "reason": "OIDC federation env quad also enables the tool"
    }
   ]
  }

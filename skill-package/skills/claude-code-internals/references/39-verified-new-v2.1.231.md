@@ -137,6 +137,8 @@ So a `DirectoryAdded` hook that returns a `systemMessage` influences the model *
 
 **Artifacts — dark-launched in Ch27/L112 as a publish target — now carry comments, an assets/live/viewer URL split, and an agent that answers comments. Still dark: "artifact" and "comment" each appear ZERO times in the changelog for this range,** while eight new `CLAUDE_CODE_ARTIFACT*` variables landed.
 
+For how comments reach a session today (a live connection while it runs, or a webhook trigger for cloud sessions) and why your own server can only poll, see L253.
+
 **The gate, verbatim:**
 
 ```

@@ -3334,6 +3334,21 @@
     248
    ],
    "hint": "Desktop 4.16336.0 keeps the UI bundle in Resources/ion-dist.asar. A managed allow without $defaults removes the 16 replaceable built-in exceptions. Gate 52253313 can rename connector tools, and .mcpb-cache is a per-session overlay from 4.29.0."
+  },
+  {
+   "pattern": [
+    "Artifact tool missing in Agent SDK",
+    "artifact tool not available with API key",
+    "artifacts not working in claude -p",
+    "artifact comments not reaching my server",
+    "CLAUDE_CODE_ARTIFACTS_API_TOKEN ignored"
+   ],
+   "lessons": [
+    253,
+    172,
+    156
+   ],
+   "hint": "The Artifact tool needs a claude.ai OAuth sign-in with the user:inference scope; an API key never gets it. SDK, claude -p, GitHub Action and mcp serve sessions also need CLAUDE_CODE_ARTIFACT=1. Comments reach only a running session or an Anthropic webhook trigger; your own server can only poll."
   }
  ]
 }

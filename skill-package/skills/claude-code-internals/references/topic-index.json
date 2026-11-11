@@ -1,6 +1,6 @@
 {
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 252,
+  "total_lessons": 253,
   "lessons": [
     {
       "id": 1,
@@ -5857,7 +5857,6 @@
         "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB",
         "git-status",
         "perforce-mode",
-        "ANTHROPIC_API_KEY",
         "GITHUB_PATH",
         "GITHUB_ENV",
         "GITHUB_OUTPUT",
@@ -5881,7 +5880,6 @@
         "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB",
         "git-status",
         "perforce-mode",
-        "ANTHROPIC_API_KEY",
         "GITHUB_PATH",
         "GITHUB_ENV",
         "GITHUB_OUTPUT"
@@ -10523,7 +10521,6 @@
         "mcp-config",
         "add-rules",
         "bypass-permissions",
-        "ANTHROPIC_API_KEY",
         "ANTHROPIC_ENVIRONMENT_KEY",
         "output-format",
         "request_id",
@@ -10581,7 +10578,6 @@
         "mcp-config",
         "add-rules",
         "bypass-permissions",
-        "ANTHROPIC_API_KEY",
         "ANTHROPIC_ENVIRONMENT_KEY",
         "output-format",
         "request_id",
@@ -11335,7 +11331,6 @@
         "toggle-memory-renamed",
         "dark-launched-2.1.198",
         "ARTIFACT_TOOL_NAME",
-        "disable-artifact",
         "tengu_cobalt_plinth_direct",
         "memory-pause",
         "tengu_design_oauth_login_success",
@@ -11357,7 +11352,6 @@
       ],
       "identifier_keys": [
         "ARTIFACT_TOOL_NAME",
-        "disable-artifact",
         "tengu_cobalt_plinth_direct",
         "memory-pause",
         "tengu_design_oauth_login_success"
@@ -15722,7 +15716,7 @@
       "lesson_number": "156",
       "file": "39-verified-new-v2.1.231.md",
       "startLine": 136,
-      "endLine": 170,
+      "endLine": 172,
       "keywords": [
         "artifact-comments",
         "CLAUDE_CODE_ARTIFACT_COMMENTS",
@@ -15746,7 +15740,6 @@
         "agent that replies to artifact comments",
         "automatic reactions to comments",
         "artifact comments not showing up",
-        "why can't i see artifact comments",
         "how to enable artifact comments",
         "hidden artifact commenting feature",
         "human vs agent comment authors",
@@ -15755,7 +15748,10 @@
         "where are artifact assets hosted",
         "local storage for artifact comments",
         "artifact api authentication token",
-        "is plan artifact feature disabled"
+        "is plan artifact feature disabled",
+        "how do comments reach a running session",
+        "webhook trigger for artifact comments",
+        "can my own server get comment notifications"
       ],
       "identifier_keys": [
         "ARTIFACTS_API_BASE_URL",
@@ -15767,7 +15763,6 @@
         "agent that replies to artifact comments",
         "automatic reactions to comments",
         "artifact comments not showing up",
-        "why can't i see artifact comments",
         "how to enable artifact comments",
         "hidden artifact commenting feature",
         "human vs agent comment authors",
@@ -15776,13 +15771,16 @@
         "where are artifact assets hosted",
         "local storage for artifact comments",
         "artifact api authentication token",
-        "is plan artifact feature disabled"
+        "is plan artifact feature disabled",
+        "how do comments reach a running session",
+        "webhook trigger for artifact comments",
+        "can my own server get comment notifications"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "b6fe33b2327787a8feb297c6bc6635d882f6944a6a7a4edf2ab4cb865629f1ca"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-11",
+        "terms_sha256": "474475edab4b5c74bf4a7b784dfb42b9730a81db85b2579520b9a03a64610139"
       }
     },
     {
@@ -15790,8 +15788,8 @@
       "title": "Remote-Session State: Directory Sync, Cross-Session Messaging, and L151's Closed Loop",
       "lesson_number": "157",
       "file": "39-verified-new-v2.1.231.md",
-      "startLine": 174,
-      "endLine": 212,
+      "startLine": 176,
+      "endLine": 214,
       "keywords": [
         "dir-sync",
         "startWorkerDirSync",
@@ -15895,8 +15893,8 @@
       "title": "The UTr() Codename Resolver, New Betas & Retired Surface",
       "lesson_number": "158",
       "file": "39-verified-new-v2.1.231.md",
-      "startLine": 216,
-      "endLine": 268,
+      "startLine": 218,
+      "endLine": 270,
       "keywords": [
         "UTr-resolver",
         "codename-flags",
@@ -17016,7 +17014,6 @@
         "persists-to-2.1.250",
         "disable-bundled-skills-not-consulted",
         "cowork-skill-surface",
-        "disable-artifact",
         "cowork-harness",
         "claude-coworker-terminal",
         "menu-description",
@@ -17042,7 +17039,6 @@
         "skill files compressed inside the binary"
       ],
       "identifier_keys": [
-        "disable-artifact",
         "cowork-harness",
         "claude-coworker-terminal",
         "menu-description",
@@ -17082,7 +17078,7 @@
       "lesson_number": "172",
       "file": "44-cli-surface-2.1.233-to-2.1.250.md",
       "startLine": 164,
-      "endLine": 212,
+      "endLine": 214,
       "keywords": [
         "artifact-subsystem",
         "tengu-cobalt-plinth-family",
@@ -17095,6 +17091,7 @@
         "artifact-comment-responder",
         "artifact-direct-upload-removed",
         "removal-found-by-audit-not-diff",
+        "ARTIFACTS_API_BASE_URL",
         "ARTIFACTS_API_TOKEN",
         "ARTIFACT_ASSET_BASE_URL",
         "ARTIFACT_LIVE_BASE_URL",
@@ -17148,9 +17145,13 @@
         "per feature flags for artifacts",
         "why can't i preview artifacts in the cli",
         "which feature flag controls artifact deletion",
-        "artifact custom types catalog"
+        "artifact custom types catalog",
+        "artifacts api token has no effect",
+        "why is my artifacts base url ignored",
+        "artifact tool only with oauth login"
       ],
       "identifier_keys": [
+        "ARTIFACTS_API_BASE_URL",
         "ARTIFACTS_API_TOKEN",
         "ARTIFACT_ASSET_BASE_URL",
         "ARTIFACT_LIVE_BASE_URL",
@@ -17206,13 +17207,16 @@
         "per feature flags for artifacts",
         "why can't i preview artifacts in the cli",
         "which feature flag controls artifact deletion",
-        "artifact custom types catalog"
+        "artifact custom types catalog",
+        "artifacts api token has no effect",
+        "why is my artifacts base url ignored",
+        "artifact tool only with oauth login"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "df5948735e85fcf605a47c1e2eafe38120e06e1722f6c572de755dbc67582c85"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-11",
+        "terms_sha256": "1c2017b21e3ae3d064a9d13dbaa1b8c949f4706774fbd13e18d1d0237373cffe"
       }
     },
     {
@@ -24905,6 +24909,118 @@
         "prompt_version": "vocab-v4-update",
         "date": "2026-11-05",
         "terms_sha256": "c79f3a611e755166fa4584c40fc18f43468513237539a8dddc0425bba3b9b22a"
+      }
+    },
+    {
+      "id": 253,
+      "title": "Can I Use Artifacts from the Agent SDK or a Headless Run, and How Do Comments Reach Me?",
+      "lesson_number": "253",
+      "file": "75-cli-2.1.322-artifacts-headless-sdk.md",
+      "startLine": 13,
+      "endLine": 98,
+      "keywords": [
+        "sdk-cli",
+        "BASE_API_URL",
+        "withheld_reason",
+        "surface_excluded",
+        "third_party_provider",
+        "essential_traffic_only",
+        "artifact_env_off",
+        "sdk_default_off",
+        "sdk-ts",
+        "sdk-py",
+        "CLAUDE_CODE_BRIDGE_CHILD_ARTIFACT",
+        "enable-artifact",
+        "allow_cobalt_plinth",
+        "org_policy_unverifiable",
+        "watch-token",
+        "tengu_cobalt_plinth_sorrel",
+        "watch_url",
+        "trigger_id",
+        "sealed_secret",
+        "webhook-triggers",
+        "session_not_found",
+        "session_device_bound",
+        "org_not_enabled",
+        "tool_not_offered",
+        "url_webhook_trigger_limit",
+        "no_originator",
+        "subscribe_forbidden",
+        "relay_unavailable",
+        "artifact-data",
+        "artifacts not available in sdk",
+        "publish artifacts from headless script",
+        "why is artifact tool missing with api key",
+        "artifacts in non-interactive mode",
+        "get notified of artifact comments",
+        "receive artifact comments on my server",
+        "webhook for artifact comments",
+        "can my server subscribe to comments",
+        "poll artifact comments from a bot",
+        "who owns artifacts published by a bot",
+        "enable artifacts in automated runs",
+        "artifacts with bedrock or vertex",
+        "custom artifacts api base url ignored",
+        "viewer billed for ask claude in artifact",
+        "which cdns can artifact pages load scripts from",
+        "do artifact viewers need a claude.ai login",
+        "artifacts blocked by organization policy"
+      ],
+      "identifier_keys": [
+        "sdk-cli",
+        "BASE_API_URL",
+        "withheld_reason",
+        "surface_excluded",
+        "third_party_provider",
+        "essential_traffic_only",
+        "artifact_env_off",
+        "sdk_default_off",
+        "sdk-ts",
+        "sdk-py",
+        "CLAUDE_CODE_BRIDGE_CHILD_ARTIFACT",
+        "enable-artifact",
+        "allow_cobalt_plinth",
+        "org_policy_unverifiable",
+        "watch-token",
+        "tengu_cobalt_plinth_sorrel",
+        "watch_url",
+        "trigger_id",
+        "sealed_secret",
+        "webhook-triggers",
+        "session_not_found",
+        "session_device_bound",
+        "org_not_enabled",
+        "tool_not_offered",
+        "url_webhook_trigger_limit",
+        "no_originator",
+        "subscribe_forbidden",
+        "relay_unavailable",
+        "artifact-data"
+      ],
+      "vocab_keys": [
+        "artifacts not available in sdk",
+        "publish artifacts from headless script",
+        "why is artifact tool missing with api key",
+        "artifacts in non-interactive mode",
+        "get notified of artifact comments",
+        "receive artifact comments on my server",
+        "webhook for artifact comments",
+        "can my server subscribe to comments",
+        "poll artifact comments from a bot",
+        "who owns artifacts published by a bot",
+        "enable artifacts in automated runs",
+        "artifacts with bedrock or vertex",
+        "custom artifacts api base url ignored",
+        "viewer billed for ask claude in artifact",
+        "which cdns can artifact pages load scripts from",
+        "do artifact viewers need a claude.ai login",
+        "artifacts blocked by organization policy"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v4-fill-gaps",
+        "date": "2026-11-11",
+        "terms_sha256": "1df31c7738700f8f5ec70e9a976ea7136801e18ef45a72e4892cf6b61bb765cb"
       }
     }
   ],
@@ -43905,10 +44021,6 @@
     "perforce-mode": [
       63
     ],
-    "ANTHROPIC_API_KEY": [
-      63,
-      107
-    ],
     "GITHUB_PATH": [
       63
     ],
@@ -46057,10 +46169,6 @@
     "ARTIFACT_TOOL_NAME": [
       112
     ],
-    "disable-artifact": [
-      112,
-      171
-    ],
     "tengu_cobalt_plinth_direct": [
       112
     ],
@@ -46157,7 +46265,8 @@
       116
     ],
     "sdk-cli": [
-      116
+      116,
+      253
     ],
     "cowork-vm-env-injection.md": [
       116
@@ -46353,7 +46462,8 @@
       231
     ],
     "BASE_API_URL": [
-      119
+      119,
+      253
     ],
     "22-cowork-env-gates-protocol.md": [
       119
@@ -47533,7 +47643,8 @@
       155
     ],
     "ARTIFACTS_API_BASE_URL": [
-      156
+      156,
+      172
     ],
     "COMMENT_RESPONDER": [
       156
@@ -51313,6 +51424,87 @@
     ],
     "Bun__AOT__compile": [
       252
+    ],
+    "withheld_reason": [
+      253
+    ],
+    "surface_excluded": [
+      253
+    ],
+    "third_party_provider": [
+      253
+    ],
+    "essential_traffic_only": [
+      253
+    ],
+    "artifact_env_off": [
+      253
+    ],
+    "sdk_default_off": [
+      253
+    ],
+    "sdk-ts": [
+      253
+    ],
+    "sdk-py": [
+      253
+    ],
+    "CLAUDE_CODE_BRIDGE_CHILD_ARTIFACT": [
+      253
+    ],
+    "enable-artifact": [
+      253
+    ],
+    "allow_cobalt_plinth": [
+      253
+    ],
+    "org_policy_unverifiable": [
+      253
+    ],
+    "watch-token": [
+      253
+    ],
+    "tengu_cobalt_plinth_sorrel": [
+      253
+    ],
+    "watch_url": [
+      253
+    ],
+    "trigger_id": [
+      253
+    ],
+    "sealed_secret": [
+      253
+    ],
+    "webhook-triggers": [
+      253
+    ],
+    "session_not_found": [
+      253
+    ],
+    "session_device_bound": [
+      253
+    ],
+    "org_not_enabled": [
+      253
+    ],
+    "tool_not_offered": [
+      253
+    ],
+    "url_webhook_trigger_limit": [
+      253
+    ],
+    "no_originator": [
+      253
+    ],
+    "subscribe_forbidden": [
+      253
+    ],
+    "relay_unavailable": [
+      253
+    ],
+    "artifact-data": [
+      253
     ],
     "why is claude startup slow": [
       1
@@ -58524,9 +58716,6 @@
     "artifact comments not showing up": [
       156
     ],
-    "why can't i see artifact comments": [
-      156
-    ],
     "how to enable artifact comments": [
       156
     ],
@@ -58552,6 +58741,15 @@
       156
     ],
     "is plan artifact feature disabled": [
+      156
+    ],
+    "how do comments reach a running session": [
+      156
+    ],
+    "webhook trigger for artifact comments": [
+      156
+    ],
+    "can my own server get comment notifications": [
       156
     ],
     "sync files between local and remote session": [
@@ -59302,6 +59500,15 @@
       172
     ],
     "artifact custom types catalog": [
+      172
+    ],
+    "artifacts api token has no effect": [
+      172
+    ],
+    "why is my artifacts base url ignored": [
+      172
+    ],
+    "artifact tool only with oauth login": [
       172
     ],
     "plugin executables added to shell path": [
@@ -63222,9 +63429,60 @@
     ],
     "assign usage reports to a project": [
       252
+    ],
+    "artifacts not available in sdk": [
+      253
+    ],
+    "publish artifacts from headless script": [
+      253
+    ],
+    "why is artifact tool missing with api key": [
+      253
+    ],
+    "artifacts in non-interactive mode": [
+      253
+    ],
+    "get notified of artifact comments": [
+      253
+    ],
+    "receive artifact comments on my server": [
+      253
+    ],
+    "webhook for artifact comments": [
+      253
+    ],
+    "can my server subscribe to comments": [
+      253
+    ],
+    "poll artifact comments from a bot": [
+      253
+    ],
+    "who owns artifacts published by a bot": [
+      253
+    ],
+    "enable artifacts in automated runs": [
+      253
+    ],
+    "artifacts with bedrock or vertex": [
+      253
+    ],
+    "custom artifacts api base url ignored": [
+      253
+    ],
+    "viewer billed for ask claude in artifact": [
+      253
+    ],
+    "which cdns can artifact pages load scripts from": [
+      253
+    ],
+    "do artifact viewers need a claude.ai login": [
+      253
+    ],
+    "artifacts blocked by organization policy": [
+      253
     ]
   },
   "keyword_boundary": {
-    "unreachable_max": 32
+    "unreachable_max": 33
   }
 }

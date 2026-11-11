@@ -1513,7 +1513,7 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 152 · 38-cowork-elicitation-flag-classes.md:344 · 2. `|| echo 0` converts a tool failure into a data point
 152 · 38-cowork-elicitation-flag-classes.md:348 · 3. `rg -c` counts matching lines, not occurrences
 152 · 38-cowork-elicitation-flag-classes.md:352 · 4. Per-string occurrence locator, not a set diff
-158 · 39-verified-new-v2.1.231.md:247 · ADDENDUM — what a registry-vs-bundle sweep found
+158 · 39-verified-new-v2.1.231.md:249 · ADDENDUM — what a registry-vs-bundle sweep found
 163 · 41-cowork-path-resolution-lanes.md:20 · The guidance the old prompt suggests, and why it is wrong
 163 · 41-cowork-path-resolution-lanes.md:24 · The measurement that settles it
 163 · 41-cowork-path-resolution-lanes.md:46 · What actually changed at 1.32885.1: the text
@@ -1557,8 +1557,8 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 171 · 44-cli-surface-2.1.233-to-2.1.250.md:156 · Reading a bundled skill's text (CLI 2.1.289)
 172 · 44-cli-surface-2.1.233-to-2.1.250.md:168 · The gate family
 172 · 44-cli-surface-2.1.233-to-2.1.250.md:172 · The environment surface
-172 · 44-cli-surface-2.1.233-to-2.1.250.md:200 · The gate↔variable pairings needed re-deriving, and two were wrong
-172 · 44-cli-surface-2.1.233-to-2.1.250.md:210 · One removal
+172 · 44-cli-surface-2.1.233-to-2.1.250.md:202 · The gate↔variable pairings needed re-deriving, and two were wrong
+172 · 44-cli-surface-2.1.233-to-2.1.250.md:212 · One removal
 173 · 45-plugin-bin-path-and-cloud-lane.md:18 · Organization distribution rejects a top-level `bin/`
 173 · 45-plugin-bin-path-and-cloud-lane.md:35 · The mechanism
 173 · 45-plugin-bin-path-and-cloud-lane.md:52 · Measured in three lanes — three path shapes, each correct locally
@@ -2026,6 +2026,11 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 252 · 74-cli-2.1.318-code-mode-mods-boundaries.md:228 · New, gated off or narrow
 252 · 74-cli-2.1.318-code-mode-mods-boundaries.md:241 · The runtime
 252 · 74-cli-2.1.318-code-mode-mods-boundaries.md:247 · Not traced
+253 · 75-cli-2.1.322-artifacts-headless-sdk.md:17 · When the tool is offered
+253 · 75-cli-2.1.322-artifacts-headless-sdk.md:49 · Where a publish goes
+253 · 75-cli-2.1.322-artifacts-headless-sdk.md:67 · How comments come back
+253 · 75-cli-2.1.322-artifacts-headless-sdk.md:84 · Traps for anyone building on this
+253 · 75-cli-2.1.322-artifacts-headless-sdk.md:92 · Not traced
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

@@ -3814,16 +3814,28 @@
     },
     "156": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "928d18b876a0bce0046640f88a81b025aba0d54365f0b3ed7ffe91bd22377ce9",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-11",
+      "input_sha256": "ed5a6167f6bcf007d05dca745170cd16db52b90ad1370774af4a7ba73311c144",
+      "prior_terms_sha256": "b6fe33b2327787a8feb297c6bc6635d882f6944a6a7a4edf2ab4cb865629f1ca",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "97cea194b236e22d768f68040a0b8470b0fa386b",
+      "replaced": [
+        "why can't I see artifact comments"
+      ],
+      "dropped": [
+        {
+          "term": "why can't I see artifact comments",
+          "why": "duplicate",
+          "duplicate_of": "artifact comments not showing up"
+        }
+      ],
       "terms": [
         "comments on published artifacts",
         "can people comment on artifacts",
         "agent that replies to artifact comments",
         "automatic reactions to comments",
         "artifact comments not showing up",
-        "why can't I see artifact comments",
         "how to enable artifact comments",
         "hidden artifact commenting feature",
         "human vs agent comment authors",
@@ -3832,7 +3844,10 @@
         "where are artifact assets hosted",
         "local storage for artifact comments",
         "artifact API authentication token",
-        "is plan artifact feature disabled"
+        "is plan artifact feature disabled",
+        "how do comments reach a running session",
+        "webhook trigger for artifact comments",
+        "can my own server get comment notifications"
       ]
     },
     "157": {
@@ -4219,9 +4234,13 @@
     },
     "172": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "64d426a881f02c6363c28db6a18412642751686aa9459546fdb9490464824c0d",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-11",
+      "input_sha256": "afb08f76ce810a3cfdc97f56b6e807ef7d0f035cc9fa66f332699a47e00750b4",
+      "prior_terms_sha256": "df5948735e85fcf605a47c1e2eafe38120e06e1722f6c572de755dbc67582c85",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "97cea194b236e22d768f68040a0b8470b0fa386b",
+      "replaced": [],
       "terms": [
         "artifacts feature settings list",
         "how many settings control artifacts",
@@ -4237,7 +4256,10 @@
         "per feature flags for artifacts",
         "why can't I preview artifacts in the CLI?",
         "which feature flag controls artifact deletion?",
-        "artifact custom types catalog"
+        "artifact custom types catalog",
+        "artifacts API token has no effect",
+        "why is my artifacts base URL ignored?",
+        "artifact tool only with OAuth login"
       ]
     },
     "173": {
@@ -6576,6 +6598,41 @@
         "when does opus fast mode end?",
         "is claude code compiled ahead of time?",
         "assign usage reports to a project"
+      ]
+    },
+    "253": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v4-fill-gaps",
+      "date": "2026-11-11",
+      "input_sha256": "7565e589cc11ee80bb7cc47a4ea8587828f442a9abfdf8fe965991e8bf2f1cf6",
+      "prior_terms_sha256": "ba816d2afc0542b8e7c26c4fe2d088ab5cfb5b67c2c71d1f81a5884f292b39cf",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "replaced": [],
+      "terms": [
+        "artifacts not available in SDK",
+        "publish artifacts from headless script",
+        "why is artifact tool missing with API key",
+        "artifacts in non-interactive mode",
+        "get notified of artifact comments",
+        "receive artifact comments on my server",
+        "webhook for artifact comments",
+        "can my server subscribe to comments?",
+        "poll artifact comments from a bot",
+        "who owns artifacts published by a bot",
+        "enable artifacts in automated runs",
+        "artifacts with Bedrock or Vertex",
+        "custom artifacts API base URL ignored",
+        "viewer billed for ask Claude in artifact",
+        "which CDNs can artifact pages load scripts from",
+        "do artifact viewers need a claude.ai login",
+        "artifacts blocked by organization policy",
+        "comment wakes cloud session"
+      ],
+      "withheld": [
+        {
+          "term": "comment wakes cloud session",
+          "qid": "pl-0304"
+        }
       ]
     }
   }
