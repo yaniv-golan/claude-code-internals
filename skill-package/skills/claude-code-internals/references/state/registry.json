@@ -5,12 +5,12 @@
     "desktop_asar": "2.7032.0",
     "in_vm_elf": "2.1.280",
     "fcache_capture": {
-      "content16": "fb3a2cb6c76b0001",
-      "embedded_timestamp": 1793832181669,
-      "feature_count": 480,
-      "observed_at": "2026-11-05",
+      "content16": "8fcbb8011e15090f",
+      "embedded_timestamp": 1794429248603,
+      "feature_count": 504,
+      "observed_at": "2026-11-11",
       "mode": "1p",
-      "pinned16": "e7dd01886e993e5d"
+      "pinned16": "cd480392e9dd3d3c"
     },
     "agent_elf_parity_check": "2.1.280",
     "container_cc_version_observed": {
@@ -5118,7 +5118,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5140,7 +5140,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5169,7 +5169,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5194,7 +5194,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5216,7 +5216,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5249,7 +5249,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5274,7 +5274,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5297,7 +5297,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5319,7 +5319,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5345,7 +5345,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5370,7 +5370,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5392,7 +5392,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5414,7 +5414,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5436,7 +5436,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5450,7 +5450,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       },
       "summary": "MCP version-negotiation KILL SWITCH with INVERTED sense (zx() in Desktop 2.31226.1): every call site that opts in to versionNegotiation {mode:'auto'} does so only when the gate is off, so its live state (off, defaultValue) means 2026-07-28 negotiation IS active; flipping it on removes every probe. In 2.31226.1 the probing call sites are: chat's disposable sibling probe for built-in-Node extensions (2 s probe, 4 s deadline), LocalMcpServerManager in-place probe for built-in-Node extensions in Cowork/Code sessions and the local MCP bridge (2 s), and custom-3P remote HTTP servers (10 s). Exec-lane servers are never probed (L233). Earlier builds used a 500 ms probe timeout.",
       "provenance": [
@@ -5483,7 +5483,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5519,7 +5519,7 @@
         "present": true,
         "source": "experiment",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5544,7 +5544,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5570,7 +5570,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5592,7 +5592,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5614,7 +5614,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5636,7 +5636,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5658,7 +5658,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5688,7 +5688,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5710,7 +5710,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5732,7 +5732,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5758,7 +5758,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5787,7 +5787,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5815,7 +5815,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5841,7 +5841,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5871,7 +5871,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5893,7 +5893,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5915,7 +5915,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5940,7 +5940,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -5977,7 +5977,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6003,7 +6003,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6014,7 +6014,7 @@
       "first_seen": null,
       "removed_in": null,
       "as_of": "2.1.289",
-      "summary": "Whitelists claude-fable-5 (+ the [1m] variant) as selectable in Desktop/Cowork; ON (force). By the 2026-07-02 capture this makes Fable 5 the live production Cowork model. At the 2026-09-23 capture (Desktop 2.7032.0) the enabled list is claude-fable-5[1m], claude-fable-5, claude-fable-5-1[1m], claude-fable-5-1, claude-opus-5-5[1m], claude-opus-5-5 -- Fable 5.1 and Opus 5.5 are now allow-listed for Cowork (Ch52/L193). At the 2026-10-07 capture the list also has claude-sonnet-5-5[1m] and claude-sonnet-5-5: Sonnet 5.5 is allow-listed for Cowork (Ch61/L222). A later 2026-10-07 capture (b8a98998b6de83b2) adds claude-haiku-5-5[1m] and claude-haiku-5-5: Haiku 5.5 is allow-listed for Cowork.",
+      "summary": "Whitelists claude-fable-5 (+ the [1m] variant) as selectable in Desktop/Cowork; ON (force). By the 2026-07-02 capture this makes Fable 5 the live production Cowork model. At the 2026-09-23 capture (Desktop 2.7032.0) the enabled list is claude-fable-5[1m], claude-fable-5, claude-fable-5-1[1m], claude-fable-5-1, claude-opus-5-5[1m], claude-opus-5-5 -- Fable 5.1 and Opus 5.5 are now allow-listed for Cowork (Ch52/L193). At the 2026-10-07 capture the list also has claude-sonnet-5-5[1m] and claude-sonnet-5-5: Sonnet 5.5 is allow-listed for Cowork (Ch61/L222). A later 2026-10-07 capture (b8a98998b6de83b2) adds claude-haiku-5-5[1m] and claude-haiku-5-5: Haiku 5.5 is allow-listed for Cowork. The 2026-11-11 capture (8fcbb8011e15090f) adds claude-fable-5-2[1m] and claude-fable-5-2: Fable 5.2 is allow-listed for Cowork.",
       "provenance": [
         {
           "lesson": 108
@@ -6034,7 +6034,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6060,7 +6060,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6086,7 +6086,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6112,7 +6112,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6134,7 +6134,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6156,7 +6156,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6182,7 +6182,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6196,7 +6196,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       },
       "summary": "Declared-but-unconsumed: appears exactly once, in the client-side gate defaults table as {defaultValue:false}, with NO read site anywhere in the asar and NO fcache entry. Not dark-launched (no code behind it yet) -- the switch was declared before its consumer shipped.",
       "provenance": [
@@ -6227,7 +6227,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6249,7 +6249,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       },
       "served_keys": [
         "displayName",
@@ -6276,7 +6276,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6299,7 +6299,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6321,7 +6321,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6343,7 +6343,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6365,7 +6365,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6387,7 +6387,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6413,7 +6413,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6439,7 +6439,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6465,7 +6465,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6487,7 +6487,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6509,7 +6509,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -6523,7 +6523,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       },
       "summary": "Declared-but-unconsumed, same as 3671534883. Written as an UNQUOTED numeric object key, so a quoted-string-only gate regex misses it entirely.",
       "provenance": [
@@ -8054,7 +8054,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8133,7 +8133,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8164,7 +8164,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8186,7 +8186,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8208,7 +8208,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8230,7 +8230,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8252,7 +8252,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8349,7 +8349,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8371,7 +8371,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8393,7 +8393,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8441,7 +8441,7 @@
         "present": true,
         "source": "force",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8463,7 +8463,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8485,7 +8485,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8507,7 +8507,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8529,7 +8529,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8551,7 +8551,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8573,7 +8573,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8595,7 +8595,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8617,7 +8617,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8639,7 +8639,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8661,7 +8661,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8683,7 +8683,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8806,7 +8806,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8828,7 +8828,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8850,7 +8850,7 @@
         "present": true,
         "source": "defaultValue",
         "on": true,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8876,7 +8876,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8898,7 +8898,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8920,7 +8920,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8942,7 +8942,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8964,7 +8964,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -8986,7 +8986,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -9008,7 +9008,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -9078,7 +9078,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -9100,7 +9100,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -9122,7 +9122,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -9144,7 +9144,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -9169,7 +9169,7 @@
         "present": false,
         "source": null,
         "on": null,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -9180,7 +9180,7 @@
       "first_seen": "2.37337.1",
       "removed_in": "2.42304.0",
       "as_of": "2.1.295",
-      "summary": "New in Desktop 2.37337.1 (index.chunk-9HWJKfP5.js): when on (hZ===\"on\", GrowthBook data under 90 minutes old), unattended remote-control serving counts as accepted by organization default when no consent record exists (~/.claude/state/unattended-serving-consent.json). Desktop 2.42304.0 no longer reads it (still served off on 2026-10-16); the unattended-serving consent there uses gate 1311831313.",
+      "summary": "New in Desktop 2.37337.1 (index.chunk-9HWJKfP5.js): when on (hZ===\"on\", GrowthBook data under 90 minutes old), unattended remote-control serving counts as accepted by organization default when no consent record exists (~/.claude/state/unattended-serving-consent.json). Desktop 2.42304.0 no longer reads it (served off on 2026-10-16, no longer served at all in the 2026-11-11 capture); the unattended-serving consent there uses gate 1311831313.",
       "provenance": [
         {
           "lesson": 235
@@ -9188,10 +9188,10 @@
       ],
       "namespace": "desktop_fcache",
       "observed": {
-        "present": true,
-        "source": "defaultValue",
-        "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "present": false,
+        "source": null,
+        "on": null,
+        "at": "8fcbb8011e15090f"
       }
     },
     {
@@ -9213,7 +9213,7 @@
         "present": true,
         "source": "defaultValue",
         "on": false,
-        "at": "fb3a2cb6c76b0001"
+        "at": "8fcbb8011e15090f"
       }
     },
     {

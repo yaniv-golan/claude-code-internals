@@ -214,7 +214,7 @@ Anthropic's notes for v2.37337.1 (`claude.com/docs/cowork/changelog`) announce o
 | `3400412699` | close background pop-up menus | unserved (on by default) |
 | `346871663` | refuse a hard-linked scheduled-task file | unserved (off) |
 | `61799151` | old single-prefix `.host-home` match | unserved (off) |
-| `3475553907` | organization default for unattended remote-control serving | unserved (off). 2.42304.0 no longer reads it (served off from 2026-10-16 all the same); the unattended-serving consent now uses gate `1311831313` |
+| `3475553907` | organization default for unattended remote-control serving | not served (2026-11-11 capture; served off from 2026-10-16 until then). 2.42304.0 no longer reads it; the unattended-serving consent now uses gate `1311831313` |
 | `1985233154` | list and tail standalone CLI sessions | off |
 | `144153584` | browser-data import also needs an organization capability | on |
 | `3868149774` | Preview user agent without `Electron/` | on |

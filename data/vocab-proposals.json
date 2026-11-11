@@ -6085,11 +6085,11 @@
     "236": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-11-05",
-      "input_sha256": "da656d6aa3e954aef23fcaa1e6d91a984f70fe5a4527bca9966a4255fb82bb75",
+      "date": "2026-11-11",
+      "input_sha256": "012ee834f5588391684bc7ef1a52edbb6008882eadf7ea0eac968330db12d7e4",
       "prior_terms_sha256": "deab1615f9a481dd6a044640ea0c33a340bf4e83ab7cc50597db1c16280880a5",
       "collision_check": "questions-v2.json dev + ranking cases",
-      "previous_text": "not found",
+      "previous_text": "3a4def509da3973c3c3ce80f51de7ce68032d4a8",
       "replaced": [],
       "terms": [
         "require approval program before Claude reads files",

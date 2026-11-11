@@ -1,10 +1,10 @@
 {
   "format": 1,
   "capture": {
-    "content16": "fb3a2cb6c76b0001",
-    "embedded_timestamp": 1793832181669,
-    "feature_count": 480,
-    "observed_at": "2026-11-05",
+    "content16": "8fcbb8011e15090f",
+    "embedded_timestamp": 1794429248603,
+    "feature_count": 504,
+    "observed_at": "2026-11-11",
     "mode": "1p"
   },
   "gates": [
@@ -423,7 +423,9 @@
           "claude-sonnet-5-5[1m]",
           "claude-sonnet-5-5",
           "claude-haiku-5-5[1m]",
-          "claude-haiku-5-5"
+          "claude-haiku-5-5",
+          "claude-fable-5-2[1m]",
+          "claude-fable-5-2"
         ]
       }
     },
@@ -518,10 +520,9 @@
     },
     {
       "id": "3475553907",
-      "present": true,
-      "source": "defaultValue",
-      "on": false,
-      "value": false
+      "present": false,
+      "source": null,
+      "on": null
     },
     {
       "id": "3488857202",
