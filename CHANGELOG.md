@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.85.0 — 2026-11-11 (this fork) — Artifacts from the Agent SDK, headless runs and your own server
+
+Adds Chapter 78 (L253), read from CLI 2.1.322 and not run:
+
+- **When the `Artifact` tool is offered:** only with a claude.ai OAuth sign-in carrying `user:inference` (never with an API key), and off by default in the Agent SDK, plain `claude -p`, the GitHub action and `claude mcp serve` unless `CLAUDE_CODE_ARTIFACT=1` is set. Covers the new `enableArtifact` setting ("Artifacts" in `/config`), which replaces `disableArtifact`.
+- **Where a publish goes:** straight to the Anthropic API under the token's account. `CLAUDE_CODE_ARTIFACTS_API_BASE_URL` and `CLAUDE_CODE_ARTIFACTS_API_TOKEN` have no effect.
+- **How comments come back:** a live connection while the session runs, or a webhook trigger that only cloud sessions can get. A process you run yourself can only poll.
+
+L156 and L172 point to it.
+
+Also restamps the Desktop feature-flag snapshot (2026-11-11): Cowork's model allow-list now includes Fable 5.2 (`claude-fable-5-2` and its `[1m]` variant), and gate `3475553907` is no longer served.
+
 ## v2.84.1 — 2026-11-06 (this fork) — What Code Mode is for
 
 L249 gains a "What it's for" section: the cost model the `REPL` tool description gives the model (each call is a full round trip, the work inside a script is comparatively cheap), what stays in context, and how `Poll` waits without costing a turn. The expected effects (fewer turns, slower context growth, long builds off the conversation's path) are marked as our reading, not a measurement. Checked against CLI 2.1.319: Code Mode's gate, opt-in, model list and these passages are unchanged.
