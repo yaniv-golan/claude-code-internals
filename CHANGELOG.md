@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.86.0 — 2026-11-17 (this fork) — Why messages to an elevated session are refused
+
+Adds Chapter 79 (L254), read from CLI 2.1.326 and not run:
+
+- **Elevated sessions:** a cloud session can be limited to your trusted devices for good (`security_tier: "elevated"`), which it must be before it can use a folder on your computer. This is separate from the **Require trusted devices** setting and can happen with that setting off.
+- **Who can write into one:** a sender needs a trusted-device token and a signature from the computer the session is bound to. A cloud session has neither, so its messages are refused.
+- **`elevated_session_untrusted_device`:** the session service's code, returned by its own `send_message` tool. Its refusals cover a cloud session writing to an elevated session, and a cloud session writing to a session on your own computer. The lesson separates this from the CLI's own `SendMessage` path, lists what users report the service refuses, and gives workarounds for orchestrators with cloud workers.
+
+L202 and L240 point to it. The retrieval gate moves to baseline-v11.
+
+Also restamps the Desktop feature-flag snapshot (2026-11-17, Desktop 5.11492.5): the cache now uses format 3, which the restamp tool reads, and gate `1978029737` serves a new key, `deviceStageInlineGzip`, which this Desktop build doesn't read yet.
+
 ## v2.85.0 — 2026-11-11 (this fork) — Artifacts from the Agent SDK, headless runs and your own server
 
 Adds Chapter 78 (L253), read from CLI 2.1.322 and not run:
