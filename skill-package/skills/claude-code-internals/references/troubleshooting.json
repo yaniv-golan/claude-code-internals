@@ -3349,6 +3349,21 @@
     156
    ],
    "hint": "The Artifact tool needs a claude.ai OAuth sign-in with the user:inference scope; an API key never gets it. SDK, claude -p, GitHub Action and mcp serve sessions also need CLAUDE_CODE_ARTIFACT=1. Comments reach only a running session or an Anthropic webhook trigger; your own server can only poll."
+  },
+  {
+   "pattern": [
+    "elevated_session_untrusted_device",
+    "cloud session can't message another session",
+    "child session can't reply to parent session",
+    "elevated session requires a trusted device",
+    "send_message refused trusted device"
+   ],
+   "lessons": [
+    254,
+    240,
+    202
+   ],
+   "hint": "An elevated cloud session (one limited to your trusted devices, for example after you let it use a folder on your computer) accepts messages only with a device proof, which a cloud session can't give. Retrying or /login won't help: keep the orchestrator standard, or have workers report through git."
   }
  ]
 }

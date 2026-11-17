@@ -1706,11 +1706,11 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 202 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:194 · The mechanism
 202 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:200 · What `"device"` allows
 202 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:204 · Guards
-202 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:213 · For a hook author
-203 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:223 · The gate
-203 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:238 · Observed
-203 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:242 · Two related details
-203 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:247 · For anyone reading Cowork records
+202 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:215 · For a hook author
+203 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:225 · The gate
+203 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:240 · Observed
+203 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:244 · Two related details
+203 · 51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md:249 · For anyone reading Cowork records
 204 · 52-fork-relay-input-channels-save-skill-mechanics.md:22 · The mechanism
 204 · 52-fork-relay-input-channels-save-skill-mechanics.md:32 · The measurements
 204 · 52-fork-relay-input-channels-save-skill-mechanics.md:51 · For a skill author
@@ -1931,11 +1931,11 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 240 · 67-cross-session-messaging-2.1.302.md:48 · The socket and the wire (CODE-READ)
 240 · 67-cross-session-messaging-2.1.302.md:56 · Delivery (CODE-READ unless marked)
 240 · 67-cross-session-messaging-2.1.302.md:79 · Remote Control and cloud (CODE-READ)
-240 · 67-cross-session-messaging-2.1.302.md:83 · Peer features
-240 · 67-cross-session-messaging-2.1.302.md:89 · The switch
-240 · 67-cross-session-messaging-2.1.302.md:93 · For you, and for a skill author
-240 · 67-cross-session-messaging-2.1.302.md:100 · In the official changelog (checked 2026-10-17, through 2.1.302)
-240 · 67-cross-session-messaging-2.1.302.md:122 · Not established
+240 · 67-cross-session-messaging-2.1.302.md:85 · Peer features
+240 · 67-cross-session-messaging-2.1.302.md:91 · The switch
+240 · 67-cross-session-messaging-2.1.302.md:95 · For you, and for a skill author
+240 · 67-cross-session-messaging-2.1.302.md:102 · In the official changelog (checked 2026-10-17, through 2.1.302)
+240 · 67-cross-session-messaging-2.1.302.md:124 · Not established
 241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:17 · The lifetime (CODE-READ)
 241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:28 · What the program tracks (CODE-READ)
 241 · 68-prompt-cache-ttl-idle-compaction-2.1.302.md:32 · Idle compaction: acting before expiry (CODE-READ)
@@ -2031,6 +2031,15 @@ Format: `id · file:line · heading` for lessons, `state:<page> · file:line · 
 253 · 75-cli-2.1.322-artifacts-headless-sdk.md:67 · How comments come back
 253 · 75-cli-2.1.322-artifacts-headless-sdk.md:84 · Traps for anyone building on this
 253 · 75-cli-2.1.322-artifacts-headless-sdk.md:92 · Not traced
+254 · 76-cli-2.1.326-elevated-sessions-trusted-devices.md:17 · Two things with similar names
+254 · 76-cli-2.1.326-elevated-sessions-trusted-devices.md:22 · What makes a cloud session elevated (CODE-READ)
+254 · 76-cli-2.1.326-elevated-sessions-trusted-devices.md:28 · Who can write into an elevated session (CODE-READ)
+254 · 76-cli-2.1.326-elevated-sessions-trusted-devices.md:38 · The two send paths
+254 · 76-cli-2.1.326-elevated-sessions-trusted-devices.md:44 · What the service refuses (REPORTED)
+254 · 76-cli-2.1.326-elevated-sessions-trusted-devices.md:62 · What to do
+254 · 76-cli-2.1.326-elevated-sessions-trusted-devices.md:69 · Since when
+254 · 76-cli-2.1.326-elevated-sessions-trusted-devices.md:74 · In the official sources (checked 2026-11-17)
+254 · 76-cli-2.1.326-elevated-sessions-trusted-devices.md:91 · Not traced
 state:command-surface · state/command-surface.md:16 · The three-gate reachability rule
 state:command-surface · state/command-surface.md:36 · Live (announced — in both binary and official CHANGELOG)
 state:command-surface · state/command-surface.md:63 · Dark-launched (in the binary, absent from the official CHANGELOG)

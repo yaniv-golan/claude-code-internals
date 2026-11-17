@@ -5015,9 +5015,13 @@
     },
     "202": {
       "model": "claude-opus-5-5",
-      "prompt_version": "vocab-v1",
-      "date": "2026-09-28",
-      "input_sha256": "f00b65b937db3da18ba84093ceb6a568e88d49f330a4509b495bf3bc07773ed1",
+      "prompt_version": "vocab-v4-update",
+      "date": "2026-11-17",
+      "input_sha256": "3452a2a94df82478ffd9f32bad3d9cab7acbffd7c1c2a5d34e1619cb975d4abd",
+      "prior_terms_sha256": "d25102eb1ef7f84466be2485032bcc5b2600365e4ebd20df7e80469604ce8d88",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "20cbe511db3ce933e79e9b1cb17fadfefdf5eca8",
+      "replaced": [],
       "terms": [
         "run my local hooks for a cloud session",
         "cloud session hooks on my laptop",
@@ -5033,7 +5037,10 @@
         "is it safe to allow cloud hooks locally?",
         "cloud hook skipped when laptop offline",
         "remote session executing scripts it wrote",
-        "opt a hook out of cloud forwarding"
+        "opt a hook out of cloud forwarding",
+        "cloud session using a folder on my computer",
+        "limit cloud session to trusted devices",
+        "why can't other sessions message my cloud session?"
       ]
     },
     "203": {
@@ -6205,19 +6212,19 @@
     "240": {
       "model": "claude-opus-5-5",
       "prompt_version": "vocab-v4-update",
-      "date": "2026-10-17",
-      "input_sha256": "e711c2e9bb51883394546ba8a82133495e394555a15a8d31625db3e823a7c027",
-      "prior_terms_sha256": "4a429f5fc666dfad98159290e5603d28c8f5f6a7bf83218461f3a1ab8ceddf41",
-      "collision_check": "questions-v2.json dev",
-      "previous_text": "69983c14e5c909ef745a66bb3c59a8d2ad26e2b4",
+      "date": "2026-11-17",
+      "input_sha256": "0d49bc150e27683d52e2b08897dfc4e8494fdd16cd3e25e7d05a1d07612fe1bf",
+      "prior_terms_sha256": "5a2b42330ce5f3d95d177433204dbf4ce2b27abe0e1190c884ac2100feaa2d41",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "previous_text": "20cbe511db3ce933e79e9b1cb17fadfefdf5eca8",
       "replaced": [
-        "how do claude sessions talk to each other"
+        "cloud session cannot reply to messages"
       ],
       "dropped": [
         {
-          "term": "how do claude sessions talk to each other",
-          "why": "duplicate",
-          "duplicate_of": "send message between two claude sessions"
+          "term": "cloud session cannot reply to messages",
+          "why": "inaccurate",
+          "replacement": "cloud session message to my computer refused"
         }
       ],
       "terms": [
@@ -6229,7 +6236,6 @@
         "can any local program inject messages into my session",
         "prompt injection through session messaging",
         "message another session on a different machine",
-        "cloud session cannot reply to messages",
         "get notified when another session goes idle",
         "session messaging rate limit or dropped messages",
         "stale session entries after process exit",
@@ -6238,7 +6244,8 @@
         "does a message wake an idle session",
         "can a hook wake an idle session",
         "wake idle session from outside program",
-        "background hook that wakes claude when it exits"
+        "background hook that wakes claude when it exits",
+        "cloud session message to my computer refused"
       ]
     },
     "241": {
@@ -6633,6 +6640,30 @@
           "term": "comment wakes cloud session",
           "qid": "pl-0304"
         }
+      ]
+    },
+    "254": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "vocab-v1",
+      "date": "2026-11-17",
+      "input_sha256": "68321ceaf9f7b409a4c2709d7bd18f0b0950c7ba471d81200a0405f369fb7653",
+      "collision_check": "questions-v2.json dev + ranking cases",
+      "terms": [
+        "cloud worker can't reply to orchestrator",
+        "message to cloud session refused trusted device",
+        "cloud session cannot message my local session",
+        "session limited to trusted devices permanently",
+        "undo session trusted devices restriction",
+        "cross-session message blocked after allowing computer access",
+        "subagent cloud session reply rejected",
+        "retrying or logging in doesn't fix refused message",
+        "orchestrator with cloud workers stopped working in October",
+        "why can't my cloud session send to another session?",
+        "message refused even after logging in again",
+        "does allowing folder access lock the session?",
+        "how do cloud workers report back to orchestrator?",
+        "trusted device signature needed to send message",
+        "approving on phone doesn't let child session reply"
       ]
     }
   }

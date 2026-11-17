@@ -80,6 +80,8 @@ It also lists the session's own subagents and teammates.
 
 Sending to a `bridge:session_…` address asks you first ("Remote Control session '<name>'"), then posts the wrapped message to `/v1/sessions/<id>/events` (or `/v1/code/sessions/<id>/events`) with your OAuth credentials. A cloud session's own credential is refused (401) for posting to another session, which is why cloud sessions can receive but not reply. No delivery receipts come back over this path.
 
+A cloud session sends instead with the session service's own `send_message` tool. Messages into an elevated session, or from a cloud session into a session on your computer, are refused with `elevated_session_untrusted_device`; see L254.
+
 ## Peer features
 
 - **`notify_idle`:** `SendMessage` with `notify_when_idle` asks a session on this machine to send one notice when it next goes idle or exits. A subscription expires after 12 hours, and a sender can have up to 3 outstanding per target. The notice says it is automated, "not an instruction".

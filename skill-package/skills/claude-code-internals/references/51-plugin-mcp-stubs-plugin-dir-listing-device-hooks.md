@@ -210,6 +210,8 @@ It skips the checks that refuse: a script inside the checkout, the synced direct
 
 `claude --cloud` is not in the official CHANGELOG for 2.1.261–2.1.280.
 
+Before a cloud session can use a folder on your computer, it must be limited to your trusted devices for good, which makes it an elevated session. Other cloud sessions then can't message it (L254).
+
 ## For a hook author
 
 Do not mark a hook `"device"` unless you mean it: it lets a cloud session you drive from this machine run, on this machine, a script or helper that the session itself could have written. Leaving the field out is the safe default.

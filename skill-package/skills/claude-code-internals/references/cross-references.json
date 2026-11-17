@@ -3939,6 +3939,11 @@
     "id": 107,
     "relevance": 0.5,
     "reason": "hook contract"
+   },
+   {
+    "id": 254,
+    "relevance": 0.7,
+    "reason": "using a folder on your computer elevates the cloud session"
    }
   ],
   "203": [
@@ -4860,6 +4865,11 @@
     "id": 239,
     "relevance": 0.4,
     "reason": "L239: auto mode, which checks messages to other sessions before sending"
+   },
+   {
+    "id": 254,
+    "relevance": 0.85,
+    "reason": "elevated sessions refuse messages from cloud sessions"
    }
   ],
   "241": [
@@ -5171,6 +5181,33 @@
     "id": 86,
     "relevance": 0.6,
     "reason": "OIDC federation env quad also enables the tool"
+   }
+  ],
+  "254": [
+   {
+    "id": 240,
+    "relevance": 0.9,
+    "reason": "how sessions find and message each other"
+   },
+   {
+    "id": 202,
+    "relevance": 0.75,
+    "reason": "claude --cloud runs a cloud session's calls on your computer"
+   },
+   {
+    "id": 196,
+    "relevance": 0.6,
+    "reason": "the Remote Control session inbox"
+   },
+   {
+    "id": 215,
+    "relevance": 0.6,
+    "reason": "a cloud Cowork session's device tools"
+   },
+   {
+    "id": 86,
+    "relevance": 0.5,
+    "reason": "workload-identity sessions can't send under a claude.ai login"
    }
   ]
  }

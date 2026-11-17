@@ -192,7 +192,7 @@ only URLs that exist:
 Print this and ask what they want to know:
 
 ```
-Available topics (253 lessons across 78 chapters):
+Available topics (254 lessons across 79 chapters):
   Boot & Core:    boot sequence, query engine, state management, system prompt, architecture overview
   Tools:          tool system, bash tool, file tools, search tools, MCP system
   Agents & AI:    skills system, agent system, coordinator mode, teams/swarm

@@ -1,6 +1,6 @@
 {
   "source": "Claude Code Source Deep Dive course (markdown.engineering) + binary extraction v2.1.118-v2.1.159 + Claude.app app.asar 1.9659.4 + Cowork spawn/control-protocol contract (binary-verified: app.asar 1.12603.1 + in-VM ELF claude-code-vm/2.1.170) + Cowork Spaces/Scheduled Tasks/Tasks-tool/file-checkpointing (binary-verified: app.asar 1.17377.2 + in-VM ELF claude-code-vm/2.1.197 + live fcache 2026-07-02) + CLI v2.1.198 content refresh (L110-L113, diff vs v2.1.159 + CHANGELOG-crosscheck) + Desktop v1.18286.0 re-verification pass (L114, no byte-diff baseline available; effort-spawn correction + new Cowork surface) + subagent resume semantics (L115, CLI 2.1.198 + asar 1.18286.0 cross-artifact) + skill runtime detection (L116, same artifacts + v2.12.1/v2.12.2 probes) + VM rootfs forensics (L117, direct inspection of the golden VM guest disk image vm_bundles/claudevm.bundle/rootfs.img, a third artifact class beyond app.asar and the in-VM ELF) + skill-scope attribution & the per-tool_use stream contract (L118, cross-artifact first-party: in-VM ELF claude-code-vm/2.1.197 + host CLI 2.1.201 + app.asar 1.18286.0; prompted by the claude-cowork-headless-emulator plan, independently re-derived first-party) + Desktop cloud tasks: teleport-to-cloud, bridge-session workers, and the CLAUDE_CODE_ENVIRONMENT_KIND=bridge link (L119, cross-artifact first-party: app.asar 1.19367.0 diffed vs 1.18286.2 + agent ELF 2.1.202; prompted by the claude-cowork-headless-emulator project's 2026-07-08 cloud-tasks analysis, independently re-derived first-party, two of its open questions substantially resolved) + Desktop reasoning-config fidelity: effort & extended thinking (L120, first-party against app.asar 1.19367.0; corrects Ch28/L114's CLAUDE_CODE_EFFORT_LEVEL backing-store claim; prompted by the claude-cowork-headless-emulator project's 2026-07-08 reasoning-config-fidelity plan, independently re-derived first-party) + Cowork sub-agent (Task tool) execution model: the GY tool-composition algorithm, the type-less-subagent_type fallback trap, the outputs-cwd file-tool namespace, the subagent_env_hl/subagent_env_vm prompt append, and sub-agent model resolution/lifecycle/stream observability (L121-L124, cross-artifact first-party: Desktop app.asar 1.20186.1 + the Desktop-managed host agent claude-code/2.1.205 (a new artifact class) + in-VM ELF claude-code-vm/2.1.205 + live GrowthBook fcache (207 gates, now gzip-wrapped) + the production audit corpus of 509 real Agent/Task dispatches; a six-round mutual-correction pass against the claude-cowork-headless-emulator project's independent subagent-fidelity investigation on the same binaries) + Desktop device automation, the grand_prix partner bridge, and permission tuning (L125-L128, first-party app.asar 1.21459.0 diffed vs 1.22209.0, no live fcache captured this pass; investigation delegated to a Fable-5 subagent)",
-  "total_lessons": 253,
+  "total_lessons": 254,
   "lessons": [
     {
       "id": 1,
@@ -19820,7 +19820,7 @@
       "lesson_number": "202",
       "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
       "startLine": 176,
-      "endLine": 215,
+      "endLine": 217,
       "keywords": [
         "claude --cloud",
         "device-hooks",
@@ -19855,7 +19855,10 @@
         "is it safe to allow cloud hooks locally",
         "cloud hook skipped when laptop offline",
         "remote session executing scripts it wrote",
-        "opt a hook out of cloud forwarding"
+        "opt a hook out of cloud forwarding",
+        "cloud session using a folder on my computer",
+        "limit cloud session to trusted devices",
+        "why can't other sessions message my cloud session"
       ],
       "identifier_keys": [
         "CLAUDE_CODE_SHELL_PREFIX",
@@ -19883,13 +19886,16 @@
         "is it safe to allow cloud hooks locally",
         "cloud hook skipped when laptop offline",
         "remote session executing scripts it wrote",
-        "opt a hook out of cloud forwarding"
+        "opt a hook out of cloud forwarding",
+        "cloud session using a folder on my computer",
+        "limit cloud session to trusted devices",
+        "why can't other sessions message my cloud session"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
-        "prompt_version": "vocab-v1",
-        "date": "2026-09-28",
-        "terms_sha256": "d25102eb1ef7f84466be2485032bcc5b2600365e4ebd20df7e80469604ce8d88"
+        "prompt_version": "vocab-v4-update",
+        "date": "2026-11-17",
+        "terms_sha256": "40cf0eb14dad9b8c15a478aba92f57a7e2d079c3043ccc4040a9cbdee778363a"
       }
     },
     {
@@ -19897,8 +19903,8 @@
       "title": "Hook Events in the Stream Are Gated: Local Cowork Shows Only SessionStart",
       "lesson_number": "203",
       "file": "51-plugin-mcp-stubs-plugin-dir-listing-device-hooks.md",
-      "startLine": 219,
-      "endLine": 249,
+      "startLine": 221,
+      "endLine": 251,
       "keywords": [
         "hook-frame-gating",
         "include-hook-events",
@@ -23449,7 +23455,7 @@
       "lesson_number": "240",
       "file": "67-cross-session-messaging-2.1.302.md",
       "startLine": 13,
-      "endLine": 127,
+      "endLine": 129,
       "keywords": [
         "async-rewake",
         "proc-start",
@@ -23485,7 +23491,6 @@
         "can any local program inject messages into my session",
         "prompt injection through session messaging",
         "message another session on a different machine",
-        "cloud session cannot reply to messages",
         "get notified when another session goes idle",
         "session messaging rate limit or dropped messages",
         "stale session entries after process exit",
@@ -23494,7 +23499,8 @@
         "does a message wake an idle session",
         "can a hook wake an idle session",
         "wake idle session from outside program",
-        "background hook that wakes claude when it exits"
+        "background hook that wakes claude when it exits",
+        "cloud session message to my computer refused"
       ],
       "identifier_keys": [
         "async-rewake",
@@ -23533,7 +23539,6 @@
         "can any local program inject messages into my session",
         "prompt injection through session messaging",
         "message another session on a different machine",
-        "cloud session cannot reply to messages",
         "get notified when another session goes idle",
         "session messaging rate limit or dropped messages",
         "stale session entries after process exit",
@@ -23542,13 +23547,14 @@
         "does a message wake an idle session",
         "can a hook wake an idle session",
         "wake idle session from outside program",
-        "background hook that wakes claude when it exits"
+        "background hook that wakes claude when it exits",
+        "cloud session message to my computer refused"
       ],
       "vocab": {
         "model": "claude-opus-5-5",
         "prompt_version": "vocab-v4-update",
-        "date": "2026-10-17",
-        "terms_sha256": "5a2b42330ce5f3d95d177433204dbf4ce2b27abe0e1190c884ac2100feaa2d41"
+        "date": "2026-11-17",
+        "terms_sha256": "2f4b024d37f72d0b9eb02e1157ae6ce31f918e940cdb5913afc2f820bec09960"
       }
     },
     {
@@ -25021,6 +25027,98 @@
         "prompt_version": "vocab-v4-fill-gaps",
         "date": "2026-11-11",
         "terms_sha256": "1df31c7738700f8f5ec70e9a976ea7136801e18ef45a72e4892cf6b61bb765cb"
+      }
+    },
+    {
+      "id": 254,
+      "title": "Why Is My Message Refused with elevated_session_untrusted_device?",
+      "lesson_number": "254",
+      "file": "76-cli-2.1.326-elevated-sessions-trusted-devices.md",
+      "startLine": 13,
+      "endLine": 96,
+      "keywords": [
+        "untrusted_device",
+        "elevated_session_untrusted_device",
+        "require_trusted_devices",
+        "tengu_sessions_elevated_auth_enforcement",
+        "security_tier",
+        "target_device_id",
+        "bind_attestation",
+        "X-Trusted-Device-Token",
+        "sign-for-elevated-peer",
+        "bound_elsewhere",
+        "trusted_devices",
+        "sub_reason",
+        "bound_unattested",
+        "served_call_unsigned",
+        "ccr-sessions",
+        "is-remote-control-peer-unreachable-from-here",
+        "send-file",
+        "unreachable_elevated",
+        "get_session",
+        "list_events",
+        "peer_send_signer",
+        "cloud worker can't reply to orchestrator",
+        "message to cloud session refused trusted device",
+        "cloud session cannot message my local session",
+        "session limited to trusted devices permanently",
+        "undo session trusted devices restriction",
+        "cross-session message blocked after allowing computer access",
+        "subagent cloud session reply rejected",
+        "retrying or logging in doesn't fix refused message",
+        "orchestrator with cloud workers stopped working in october",
+        "why can't my cloud session send to another session",
+        "message refused even after logging in again",
+        "does allowing folder access lock the session",
+        "how do cloud workers report back to orchestrator",
+        "trusted device signature needed to send message",
+        "approving on phone doesn't let child session reply"
+      ],
+      "identifier_keys": [
+        "untrusted_device",
+        "elevated_session_untrusted_device",
+        "require_trusted_devices",
+        "tengu_sessions_elevated_auth_enforcement",
+        "security_tier",
+        "target_device_id",
+        "bind_attestation",
+        "X-Trusted-Device-Token",
+        "sign-for-elevated-peer",
+        "bound_elsewhere",
+        "trusted_devices",
+        "sub_reason",
+        "bound_unattested",
+        "served_call_unsigned",
+        "ccr-sessions",
+        "is-remote-control-peer-unreachable-from-here",
+        "send-file",
+        "unreachable_elevated",
+        "get_session",
+        "list_events",
+        "peer_send_signer"
+      ],
+      "vocab_keys": [
+        "cloud worker can't reply to orchestrator",
+        "message to cloud session refused trusted device",
+        "cloud session cannot message my local session",
+        "session limited to trusted devices permanently",
+        "undo session trusted devices restriction",
+        "cross-session message blocked after allowing computer access",
+        "subagent cloud session reply rejected",
+        "retrying or logging in doesn't fix refused message",
+        "orchestrator with cloud workers stopped working in october",
+        "why can't my cloud session send to another session",
+        "message refused even after logging in again",
+        "does allowing folder access lock the session",
+        "how do cloud workers report back to orchestrator",
+        "trusted device signature needed to send message",
+        "approving on phone doesn't let child session reply"
+      ],
+      "vocab": {
+        "model": "claude-opus-5-5",
+        "prompt_version": "vocab-v1",
+        "date": "2026-11-17",
+        "terms_sha256": "5214463a1e5d7905a34d79c4491c701e2ad64eafb50dc2c4c571d4636bda8cc2"
       }
     }
   ],
@@ -48453,7 +48551,8 @@
       196
     ],
     "untrusted_device": [
-      196
+      196,
+      254
     ],
     "owner_changed": [
       196
@@ -50473,6 +50572,9 @@
     "tengu_harbor_kite_limits": [
       240
     ],
+    "elevated_session_untrusted_device": [
+      254
+    ],
     "notify_idle": [
       240
     ],
@@ -51505,6 +51607,63 @@
     ],
     "artifact-data": [
       253
+    ],
+    "require_trusted_devices": [
+      254
+    ],
+    "tengu_sessions_elevated_auth_enforcement": [
+      254
+    ],
+    "security_tier": [
+      254
+    ],
+    "target_device_id": [
+      254
+    ],
+    "bind_attestation": [
+      254
+    ],
+    "X-Trusted-Device-Token": [
+      254
+    ],
+    "sign-for-elevated-peer": [
+      254
+    ],
+    "bound_elsewhere": [
+      254
+    ],
+    "trusted_devices": [
+      254
+    ],
+    "sub_reason": [
+      254
+    ],
+    "bound_unattested": [
+      254
+    ],
+    "served_call_unsigned": [
+      254
+    ],
+    "ccr-sessions": [
+      254
+    ],
+    "is-remote-control-peer-unreachable-from-here": [
+      254
+    ],
+    "send-file": [
+      254
+    ],
+    "unreachable_elevated": [
+      254
+    ],
+    "get_session": [
+      254
+    ],
+    "list_events": [
+      254
+    ],
+    "peer_send_signer": [
+      254
     ],
     "why is claude startup slow": [
       1
@@ -60921,6 +61080,15 @@
     "opt a hook out of cloud forwarding": [
       202
     ],
+    "cloud session using a folder on my computer": [
+      202
+    ],
+    "limit cloud session to trusted devices": [
+      202
+    ],
+    "why can't other sessions message my cloud session": [
+      202
+    ],
     "cowork hook not showing in logs": [
       203
     ],
@@ -62812,9 +62980,6 @@
     "message another session on a different machine": [
       240
     ],
-    "cloud session cannot reply to messages": [
-      240
-    ],
     "get notified when another session goes idle": [
       240
     ],
@@ -62840,6 +63005,9 @@
       240
     ],
     "background hook that wakes claude when it exits": [
+      240
+    ],
+    "cloud session message to my computer refused": [
       240
     ],
     "prompt cache expiry time": [
@@ -63480,6 +63648,51 @@
     ],
     "artifacts blocked by organization policy": [
       253
+    ],
+    "cloud worker can't reply to orchestrator": [
+      254
+    ],
+    "message to cloud session refused trusted device": [
+      254
+    ],
+    "cloud session cannot message my local session": [
+      254
+    ],
+    "session limited to trusted devices permanently": [
+      254
+    ],
+    "undo session trusted devices restriction": [
+      254
+    ],
+    "cross-session message blocked after allowing computer access": [
+      254
+    ],
+    "subagent cloud session reply rejected": [
+      254
+    ],
+    "retrying or logging in doesn't fix refused message": [
+      254
+    ],
+    "orchestrator with cloud workers stopped working in october": [
+      254
+    ],
+    "why can't my cloud session send to another session": [
+      254
+    ],
+    "message refused even after logging in again": [
+      254
+    ],
+    "does allowing folder access lock the session": [
+      254
+    ],
+    "how do cloud workers report back to orchestrator": [
+      254
+    ],
+    "trusted device signature needed to send message": [
+      254
+    ],
+    "approving on phone doesn't let child session reply": [
+      254
     ]
   },
   "keyword_boundary": {
