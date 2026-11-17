@@ -1,10 +1,10 @@
 {
   "format": 1,
   "capture": {
-    "content16": "8fcbb8011e15090f",
-    "embedded_timestamp": 1794429248603,
-    "feature_count": 504,
-    "observed_at": "2026-11-11",
+    "content16": "25c01a6cc645e3ec",
+    "embedded_timestamp": 1794910157079,
+    "feature_count": 560,
+    "observed_at": "2026-11-17",
     "mode": "1p"
   },
   "gates": [
@@ -217,6 +217,7 @@
         "coworkWebFetchDedupTtlMs": 3600000,
         "coworkWebFetchPrompt": true,
         "coworkWebFetchViaApi": true,
+        "deviceStageInlineGzip": true,
         "pluginsFullSyncStalenessMs": 3600000,
         "pluginsSyncIntervalMs": 1200000,
         "remoteBashVmStartHandling": true,

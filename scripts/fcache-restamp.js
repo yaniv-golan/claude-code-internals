@@ -128,11 +128,11 @@ function nonAsciiKeys(v, at = '', out = []) {
 
 class Fail extends Error {}
 
-/** Decode a CLF fcache file: "CLF" + format byte (1 or 2), 4 unexplained bytes, then gzip. */
+/** Decode a CLF fcache file: "CLF" + format byte (1, 2 or 3), 4 unexplained bytes, then gzip. Version 3 (Desktop 5.x) adds an "origin" field beside "features"; the layout is unchanged. */
 function decode(buf) {
   if (buf.length < 10 || buf.slice(0, 3).toString('latin1') !== 'CLF') throw new Fail('not an fcache file (no CLF magic)');
   const ver = buf[3];
-  if (ver !== 1 && ver !== 2) throw new Fail(`unknown fcache format version ${ver} (known: 1, 2)`);
+  if (ver !== 1 && ver !== 2 && ver !== 3) throw new Fail(`unknown fcache format version ${ver} (known: 1, 2, 3)`);
   let text;
   try { text = zlib.gunzipSync(buf.slice(8)).toString('utf8'); } catch (e) { throw new Fail(`gunzip from byte 8 failed: ${e.message}`); }
   const bad = unsafeNumbers(text);

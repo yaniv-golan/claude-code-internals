@@ -124,7 +124,8 @@ test('content16 reproduces a real capture id when its decode is on this machine'
 
 test('decode refuses a bad magic, an unknown version and numbers that would not hash like Python', () => {
   assert.throws(() => R.decode(Buffer.from('XXXX0000garbage')), /CLF magic/);
-  assert.throws(() => R.decode(clf(capture({}), 3)), /format version 3/);
+  assert.doesNotThrow(() => R.decode(clf(capture({}), 3)));
+  assert.throws(() => R.decode(clf(capture({}), 4)), /format version 4/);
   for (const n of ['1.0', '1e5', '-0', '12345678901234567']) {
     assert.throws(() => R.decode(clf(`{"features":{"1":{"value":${n}}}}`)), /would not hash like Python/, n);
   }
